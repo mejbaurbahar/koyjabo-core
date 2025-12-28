@@ -1,6 +1,6 @@
 # KoyJabo (কই যাবো) - Dhaka Bus Route Finder
 # Robots.txt for SEO Optimization
-# Updated: December 19, 2025
+# Updated: December 28, 2025
 
 # Allow all good bots
 User-agent: *
@@ -9,7 +9,6 @@ Disallow: /api/
 Disallow: /*.json$
 Disallow: /*?q=*
 Disallow: /404.html
-Disallow: /for-ai
 
 # Sitemap Location
 Sitemap: https://koyjabo.com/sitemap.xml
@@ -46,32 +45,68 @@ Allow: /
 User-agent: WhatsApp
 Allow: /
 
-# Block AI Training Bots
+# ===================================
+# AI SEARCH BOTS - ALLOWED FOR VISIBILITY
+# ===================================
+# These bots power AI search engines and chat interfaces
+# Allowing them helps users discover your site through AI searches
+
+# OpenAI GPT Search & ChatGPT
 User-agent: GPTBot
-Disallow: /
+Allow: /
+Disallow: /api/
+Crawl-delay: 10
 
 User-agent: ChatGPT-User
-Disallow: /
+Allow: /
+Disallow: /api/
+Crawl-delay: 10
 
-User-agent: CCBot
-Disallow: /
+# Perplexity AI Search
+User-agent: PerplexityBot
+Allow: /
+Disallow: /api/
+Crawl-delay: 10
 
+# Anthropic Claude (Search)
 User-agent: anthropic-ai
-Disallow: /
+Allow: /
+Disallow: /api/
+Crawl-delay: 10
 
 User-agent: Claude-Web
-Disallow: /
+Allow: /
+Disallow: /api/
+Crawl-delay: 10
 
+# Cohere AI
 User-agent: cohere-ai
-Disallow: /
+Allow: /
+Disallow: /api/
+Crawl-delay: 10
 
-User-agent: PerplexityBot
-Disallow: /
+# Common Crawl (used by many AI models)
+User-agent: CCBot
+Allow: /
+Disallow: /api/
+Crawl-delay: 15
 
+# Google Gemini/Bard (if separate)
+User-agent: Google-Extended
+Allow: /
+Disallow: /api/
+Crawl-delay: 10
+
+# ===================================
+# BLOCK ONLY AGGRESSIVE SCRAPERS
+# ===================================
+
+# Block Omgili (aggressive scraper)
 User-agent: Omgilibot
 Disallow: /
 
 # Block SEO Tool Scrapers (Save Bandwidth)
+# Note: You may want to allow these if you use their services
 User-agent: SemrushBot
 Disallow: /
 
@@ -112,6 +147,7 @@ Crawl-delay: 20
 User-agent: *Scraper*
 Disallow: /
 
+# Default for other bots
 User-agent: *Bot*
 Allow: /
 Disallow: /api/

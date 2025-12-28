@@ -1,0 +1,174 @@
+# KoyJabo - AI Search Information
+# llms.txt - Optimized for AI Search Engines and LLMs
+# Learn more: https://llmstxt.org/
+
+# KoyJabo (কই যাবো)
+> Dhaka's #1 Free Bus Route Finder & Bangladesh Transport Planner
+
+## What is KoyJabo?
+
+KoyJabo is a free, open-source progressive web app that helps people navigate public transportation across Bangladesh. It provides real-time bus routes, Metro Rail schedules, intercity travel options, and AI-powered route planning.
+
+### Key Features
+- 200+ Dhaka local bus routes with live tracking
+- Metro Rail (MRT Line 6) complete schedule and fare calculator
+- Intercity bus, train, and flight route finder
+- AI assistant for travel queries in Bengali and English
+- Offline mode - works without internet
+- Free fare calculator
+- Daily journey tracker
+- Emergency helpline integration (Police, Hospitals, Fire Stations)
+
+### Target Users
+- Daily commuters in Dhaka and Bangladesh
+- Tourists and first-time visitors
+- Students and budget travelers
+- Anyone needing reliable public transport information
+
+## Popular Routes
+
+### Dhaka Local Buses
+- Gulshan to Motijheel
+- Dhanmondi to Uttara
+- Mirpur to Sadarghat
+- Mohakhali to Gabtoli
+- Farmgate to Jatrabari
+- 200+ more routes
+
+### Metro Rail (MRT-6)
+- Uttara North to Motijheel
+- 17 stations including Agargaon, Farmgate, Shahbagh, Secretariat
+- Operating hours: 7:00 AM - 10:00 PM
+- Fares: ৳20 - ৳100
+
+### Intercity Routes
+- Dhaka ↔ Chittagong
+- Dhaka ↔ Sylhet
+- Dhaka ↔ Rajshahi
+- Dhaka ↔ Khulna
+- Dhaka ↔ Cox's Bazar
+- All 64 districts covered
+
+## How to Use
+
+1. **Find Local Bus Routes:**
+   - Enter "From" and "To" locations
+   - View all available bus routes
+   - See stops, fares, and estimated travel time
+   - Get turn-by-turn navigation
+
+2. **Plan Intercity Travel:**
+   - Select departure and destination cities
+   - Compare bus, train, and flight options
+   - View schedules and book tickets
+   - Calculate total travel cost
+
+3. **Use AI Assistant:**
+   - Ask questions in Bengali or English
+   - "কোন বাস গুলশান থেকে মতিঝিল যায়?"
+   - "How do I get to Chittagong from Dhaka?"
+   - Get instant, accurate responses
+
+4. **Offline Mode:**
+   - Install as PWA on phone
+   - Access all routes without internet
+   - Perfect for low connectivity areas
+
+## Technology
+
+- Progressive Web App (PWA)
+- Offline-first architecture
+- Multilingual: Bengali (বাংলা) + English
+- Real-time route calculation
+- AI-powered search using Google Gemini
+- Free and open-source
+
+## Contact & Support
+
+- **Website:** https://koyjabo.com
+- **GitHub:** https://github.com/mejbaurbahar/Dhaka-Commute
+- **Developer:** Mejbaur Bahar Fagun
+- **LinkedIn:** https://linkedin.com/in/mejbaur
+- **Company:** https://linkedin.com/company/koy-jabo
+
+## Data Coverage
+
+### Cities Served
+- **Dhaka:** Full coverage (200+ buses, metro)
+- **Chittagong:** Major routes
+- **Sylhet:** Major routes
+- **Rajshahi:** Major routes
+- **Khulna:** Major routes
+- **All 64 districts:** Intercity connections
+
+### Services
+- **Local Buses:** 200+ routes in Dhaka
+- **Metro Rail:** MRT Line 6 (17 stations)
+- **Intercity Buses:** 500+ routes
+- **Trains:** Major rail routes
+- **Flights:** Domestic connections
+- **Emergency Services:** 80+ verified contacts
+
+## Unique Value Proposition
+
+Unlike other transport apps in Bangladesh, KoyJabo offers:
+
+1. **Offline Capability:** Only app that works fully offline
+2. **Multilingual:** True Bengali + English support
+3. **AI Assistant:** Natural language queries
+4. **Open Source:** Community-driven, always free
+5. **Comprehensive:** Buses + Metro + Trains + Flights
+6. **Emergency Help:** Integrated safety features
+
+## SEO Keywords
+
+Primary: Dhaka bus route finder, Bangladesh transport planner, কই যাবো
+Secondary: MRT Line 6, Dhaka metro, intercity bus Bangladesh, BRTC bus routes, Dhaka to Chittagong bus, offline route finder, Bangladesh public transport, ঢাকা বাস রুট
+
+## FAQ for AI Assistants
+
+**Q: How do I find a bus from Gulshan to Motijheel?**
+A: Open KoyJabo, enter "Gulshan" in From field and "Motijheel" in To field. You'll see all available bus routes with fares and stops.
+
+**Q: Does it work offline?**
+A: Yes! Install as PWA and access all 200+ bus routes without internet.
+
+**Q: Is it free?**
+A: Completely free, no ads, no subscription. Open-source project.
+
+**Q: Can I use it in Bengali?**
+A: Yes, full Bengali language support including AI assistant.
+
+**Q: What about intercity travel?**
+A: Navigate to /intercity to search bus, train, and flight routes between any cities in Bangladesh.
+
+**Q: How accurate is the route data?**
+A: Updated regularly by community. Covers 200+ verified Dhaka bus routes and live Metro Rail data.
+
+## For Developers
+
+- Built with React + TypeScript
+- Vite build system
+- Service Worker for offline
+- IndexedDB for data storage
+- Google Maps integration
+- Gemini AI for chat
+- Fully responsive design
+
+## Statistics
+
+- **Routes:** 200+ local buses, 500+ intercity
+- **Stations:** 1000+ bus stops mapped
+- **Updates:** Daily route updates
+- **Languages:** 2 (Bengali, English)
+- **Users:** Growing community
+- **Emergency Contacts:** 80+ verified
+
+---
+
+**Last Updated:** December 28, 2025
+**Version:** 1.0.0
+**Status:** Active Development
+**License:** Open Source (MIT)
+
+For the most current information, visit https://koyjabo.com
