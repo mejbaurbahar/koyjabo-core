@@ -56,7 +56,10 @@ export const fetchActiveNotifications = async (): Promise<NotificationResponse> 
 
         return data;
     } catch (error) {
-        console.error('Error fetching notifications:', error);
+        // Silence errors for cleaner console, as we have a graceful cache fallback
+        if (import.meta.env.DEV) {
+            console.debug('Notification fetch failed (expected if backend is blocking):', error);
+        }
 
         // If offline or error, try to return cached notifications
         const cached = getCachedNotifications();

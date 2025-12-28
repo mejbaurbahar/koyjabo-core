@@ -275,8 +275,9 @@ const initRealTimeConnection = () => {
         };
 
         ws.onerror = (err) => {
-            console.error('WS Error:', err);
-            // Close will trigger reconnect
+            if (import.meta.env.DEV) {
+                console.debug('WS Connection failed (expected if backend is blocking):', err);
+            }
         };
 
         wsConnection = ws;
@@ -328,7 +329,9 @@ export const fetchGlobalStats = async (): Promise<void> => {
             updateGlobalStatsFromApi(data);
         }
     } catch (e) {
-        // console.warn('Failed to fetch global stats:', e);
+        if (import.meta.env.DEV) {
+            console.debug('Failed to fetch global stats (likely backend blocking):', e);
+        }
     }
 };
 
@@ -431,7 +434,9 @@ export const incrementVisitCount = async (): Promise<void> => {
                 // console.warn('⚠️ Failed to register visit with backend, status:', response.status);
             }
         } catch (e) {
-            // console.debug('❌ Error registering visit (likely blocking/CORS):', e);
+            if (import.meta.env.DEV) {
+                console.debug('❌ Error registering visit (likely blocking/CORS):', e);
+            }
         }
 
         // Immediately fetch fresh data from backend to ensure sync (silently)

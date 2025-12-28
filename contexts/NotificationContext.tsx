@@ -49,7 +49,9 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
             const activeIds = response.notifications.map(n => n.id);
             cleanupOldNotifications(activeIds);
         } catch (err) {
-            console.error('Error refreshing notifications:', err);
+            if (import.meta.env.DEV) {
+                console.debug('Failed to refresh notifications (likely backend blocking):', err);
+            }
             setError('Failed to load notifications');
         } finally {
             setLoading(false);

@@ -16,15 +16,21 @@ export const getCurrentLocation = (): Promise<UserLocation> => {
     };
 
     const errorHandler = (error: GeolocationPositionError) => {
-      console.warn(`Geolocation Failed: ${error.message} (${error.code})`);
+      if (import.meta.env.DEV) {
+        console.debug(`Geolocation Attempt Failed: ${error.message} (${error.code})`);
+      }
 
       // If first attempt fails, try with even more relaxed settings
       if (error.code === error.TIMEOUT || error.code === error.POSITION_UNAVAILABLE) {
-        console.log("Attempting ultra-fast fallback with cached position...");
+        if (import.meta.env.DEV) {
+          console.debug("Attempting ultra-fast fallback with cached position...");
+        }
         navigator.geolocation.getCurrentPosition(
           successHandler,
           (err) => {
-            console.error(`Geolocation Fallback Failed: ${err.message} (${err.code})`);
+            if (import.meta.env.DEV) {
+              console.debug(`Geolocation Fallback Failed: ${err.message} (${err.code})`);
+            }
             // Custom error messages for better user experience
             if (err.code === err.TIMEOUT) {
               reject(new Error("Location request timed out. Please ensure GPS is enabled."));

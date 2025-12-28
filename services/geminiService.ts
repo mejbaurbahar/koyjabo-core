@@ -124,6 +124,11 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
         }
       }
 
+      // Handle 403 Forbidden (Origin/IP Blocking)
+      if (response.status === 403) {
+        return "🌐 Service Access Restricted\n\nThe server is currently restricting access from your location or browser. Our team is working on resolving this server-side configuration issue. Please try again later.";
+      }
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
@@ -145,11 +150,18 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
         return "⏱️ Request Timeout\n\nThe request took more than 2 minutes to complete. The AI service is likely experiencing extreme load right now.\n\nPlease try again later, preferably during off-peak hours (2-6 AM).";
       }
 
+      // Silence expected 403 errors in console
+      if (fetchError.message?.includes('403')) {
+        return "🌐 Service Access Restricted\n\nThe server is currently restricting access. Please try again later.";
+      }
+
       throw fetchError;
     }
 
   } catch (error: any) {
-    console.error("❌ API Error:", error);
+    if (import.meta.env.DEV && !error.message?.includes('403')) {
+      console.error("❌ API Error:", error);
+    }
 
     const errorMsg = error.message || 'Unknown error';
 
