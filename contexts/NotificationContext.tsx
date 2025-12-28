@@ -23,7 +23,7 @@ interface NotificationContextType {
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
-const POLLING_INTERVAL = 60000; // 60 seconds
+const POLLING_INTERVAL = 30000; // 30 seconds
 
 export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
