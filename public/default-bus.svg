@@ -1,0 +1,30 @@
+<svg width="600" height="400" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Shadows/Glow -->
+  <rect x="100" y="340" width="400" height="20" rx="10" fill="black" fill-opacity="0.1"/>
+  
+  <!-- Main Body -->
+  <path d="M80 140C80 117.909 97.9086 100 120 100H480C502.091 100 520 117.909 520 140V280C520 302.091 502.091 320 480 320H120C97.9086 320 80 302.091 80 280V140Z" fill="#1B5E20"/>
+  
+  <!-- Yellow Stripe -->
+  <rect x="80" y="240" width="440" height="40" fill="#FDD835"/>
+  
+  <!-- Windows Section -->
+  <rect x="100" y="120" width="80" height="80" rx="10" fill="#E3F2FD" stroke="#0D47A1" stroke-width="2"/>
+  <rect x="200" y="120" width="80" height="80" rx="10" fill="#E3F2FD" stroke="#0D47A1" stroke-width="2"/>
+  <rect x="300" y="120" width="80" height="80" rx="10" fill="#E3F2FD" stroke="#0D47A1" stroke-width="2"/>
+  <rect x="400" y="120" width="40" height="80" rx="10" fill="#E3F2FD" stroke="#0D47A1" stroke-width="2"/>
+  
+  <!-- Front Window/Mirror -->
+  <path d="M460 120H500C511.046 120 520 128.954 520 140V220H460V120Z" fill="#BBDEFB" stroke="#0D47A1" stroke-width="2"/>
+  
+  <!-- Wheels -->
+  <circle cx="160" cy="320" r="35" fill="#263238" stroke="#000" stroke-width="4"/>
+  <circle cx="160" cy="320" r="15" fill="#90A4AE"/>
+  <circle cx="440" cy="320" r="35" fill="#263238" stroke="#000" stroke-width="4"/>
+  <circle cx="440" cy="320" r="15" fill="#90A4AE"/>
+
+  <!-- Lights -->
+  <rect x="80" y="250" width="10" height="30" rx="2" fill="#FF5722"/>
+  <rect x="510" y="250" width="10" height="30" rx="2" fill="#FFEB3B"/>
+
+</svg>

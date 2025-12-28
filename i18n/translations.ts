@@ -36,6 +36,7 @@ export const translations: Record<Language, Translations> = {
             local: 'লোকাল',
             sitting: 'সিটিং',
             ac: 'এসি',
+            semiSitting: 'সেমি-সিটিং',
             online: 'অনলাইন',
         },
 
@@ -137,6 +138,11 @@ export const translations: Record<Language, Translations> = {
             awayFrom: 'দূরত্ব',
             stops: 'স্টপ',
             startHere: 'শুরু করুন',
+            totalStops: 'মোট স্টপেজ',
+            viewBusImage: 'বাসের ছবি',
+            viewBusImageShort: 'ছবি',
+            realBusImage: 'এই বাসের প্রকৃত ছবি',
+            imageNotFound: 'প্রকৃত বাস ছবি পাওয়া যায়নি',
         },
 
         // Live Navigation
@@ -567,6 +573,7 @@ export const translations: Record<Language, Translations> = {
             local: 'Local',
             sitting: 'Sitting',
             ac: 'AC',
+            semiSitting: 'Semi-Sitting',
             online: 'Online',
         },
 
@@ -666,6 +673,11 @@ export const translations: Record<Language, Translations> = {
             selectFromFirst: 'Select From first',
             startHere: 'Start Here',
             awayFrom: 'away from',
+            totalStops: 'Total Stops',
+            viewBusImage: 'Bus Image',
+            viewBusImageShort: 'Image',
+            realBusImage: 'Real Bus Image',
+            imageNotFound: 'Original Bus image not found',
         },
 
         // Live Navigation

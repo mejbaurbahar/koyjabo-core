@@ -31,6 +31,7 @@ import { NotificationProvider } from './contexts/NotificationContext';
 import { useLanguage } from './contexts/LanguageContext';
 
 import NotificationBell from './components/NotificationBell';
+import BusImageViewer from './components/BusImageViewer';
 
 import SettingsPage from './components/SettingsPage';
 import DailyJourneyView from './components/DailyJourneyView';
@@ -2354,13 +2355,16 @@ const App: React.FC = () => {
             >
               <Heart className={`w-5 h-5 transition-all ${favorites.includes(selectedBus.id) ? 'fill-pink-500 text-pink-500 scale-110 drop-shadow-lg' : 'text-gray-300 dark:text-gray-600'} `} />
             </button>
-            <button
-              onClick={() => setView(AppView.LIVE_NAV)}
-              className="ml-2 bg-gradient-to-r from-dhaka-green to-[#005c44] text-white p-2.5 rounded-xl font-bold shadow-lg shadow-green-900/20 active:scale-[0.98] transition-all flex items-center justify-center"
-              aria-label={t('liveNav.startNavigation')}
-            >
-              <Navigation className="w-5 h-5" />
-            </button>
+            <div className="flex items-center gap-1">
+              <BusImageViewer key={`mob-${selectedBus.id}`} busName={selectedBus.name} busBnName={selectedBus.bnName} isCompact />
+              <button
+                onClick={() => setView(AppView.LIVE_NAV)}
+                className="bg-gradient-to-r from-dhaka-green to-[#005c44] text-white p-2.5 rounded-xl font-bold shadow-lg shadow-green-900/20 active:scale-[0.98] transition-all flex items-center justify-center"
+                aria-label={t('liveNav.startNavigation')}
+              >
+                <Navigation className="w-5 h-5" />
+              </button>
+            </div>
           </div>
         </div>
 
@@ -2373,6 +2377,7 @@ const App: React.FC = () => {
             <h2 className="text-lg font-bold text-dhaka-dark dark:text-gray-100 truncate max-w-[220px]">{formatBusName(selectedBus.name)}</h2>
             <p className="text-xs text-gray-500 dark:text-gray-400">{selectedBus.bnName}</p>
           </div>
+          <BusImageViewer key={`desk-${selectedBus.id}`} busName={selectedBus.name} busBnName={selectedBus.bnName} />
           <button
             onClick={() => setView(AppView.LIVE_NAV)}
             className="bg-dhaka-green text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-green-700 transition-colors flex items-center gap-2 mr-2"
@@ -2444,21 +2449,20 @@ const App: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white mb-2 shadow-lg shadow-blue-500/30">
                 <Info className="w-5 h-5" />
               </div>
-              <span className="text-[10px] text-gray-600 dark:text-gray-400 uppercase font-bold tracking-wider">Type</span>
-              <span className="font-bold text-gray-800 dark:text-gray-200 text-sm mt-0.5">{selectedBus.type}</span>
+              <span className="text-[10px] text-gray-600 dark:text-gray-400 uppercase font-bold tracking-wider">{t('common.type')}</span>
+              <span className="font-bold text-gray-800 dark:text-gray-200 text-sm mt-0.5">
+                {selectedBus.type === 'Local' ? t('common.local') :
+                  selectedBus.type === 'Sitting' ? t('common.sitting') :
+                    selectedBus.type === 'Semi-Sitting' ? t('common.semiSitting') :
+                      selectedBus.type === 'AC' ? t('common.ac') : selectedBus.type}
+              </span>
             </div>
             <div className="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-[0_2px_8px_rgba(0,0,0,0.02)] flex flex-col items-center text-center justify-center">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white mb-2 shadow-lg shadow-orange-500/30">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-dhaka-green to-emerald-600 flex items-center justify-center text-white mb-2 shadow-lg shadow-green-500/30">
                 <Bus className="w-5 h-5" />
               </div>
-              <span className="text-[10px] text-gray-600 dark:text-gray-400 uppercase font-bold tracking-wider">{t('busDetails.stops')}</span>
-              <span className="font-bold text-gray-800 dark:text-gray-200 text-sm mt-0.5">
-                {fareStart && fareEnd ? (
-                  formatNumber(Math.abs(selectedBus.stops.indexOf(fareEnd) - selectedBus.stops.indexOf(fareStart)) + 1)
-                ) : (
-                  formatNumber(selectedBus.stops.length)
-                )}
-              </span>
+              <span className="text-[10px] text-gray-600 dark:text-gray-400 uppercase font-bold tracking-wider">{t('busDetails.totalStops')}</span>
+              <span className="font-bold text-gray-800 dark:text-gray-200 text-sm mt-0.5">{formatNumber(selectedBus.stops.length)}</span>
             </div>
             <div className="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-[0_2px_8px_rgba(0,0,0,0.02)] flex flex-col items-center text-center justify-center">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-yellow-600 flex items-center justify-center text-white mb-2 shadow-lg shadow-amber-500/30">
@@ -2474,6 +2478,8 @@ const App: React.FC = () => {
               </span>
             </div>
           </div>
+
+
 
           {/* Additional Stats when fare is selected */}
           {
@@ -3306,8 +3312,9 @@ const App: React.FC = () => {
                         } `}>
                         {bus.type === 'Local' ? t('common.local') :
                           bus.type === 'Sitting' ? t('common.sitting') :
-                            bus.type === 'AC' ? t('common.ac') :
-                              bus.type}
+                            bus.type === 'Semi-Sitting' ? t('common.semiSitting') :
+                              bus.type === 'AC' ? t('common.ac') :
+                                bus.type}
                       </span>
                     </div>
                   </div>
