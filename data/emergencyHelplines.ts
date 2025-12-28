@@ -802,7 +802,17 @@ export const EMERGENCY_SERVICES: EmergencyService[] = [
         lng: 90.2670,
         area: 'Savar'
     },
-    // Removed duplicate - Gabtoli is actually Kallyanpur Fire Station
+    {
+        id: 'kallyanpur_fire',
+        name: 'Kallyanpur Fire Station',
+        bnName: 'কল্যাণপুর ফায়ার স্টেশন',
+        type: 'fire',
+        phone: '01713398807',
+        lat: 23.7650,
+        lng: 90.3550,
+        area: 'Kallyanpur'
+    },
+    // Note: Kallyanpur Fire Station is also known as Gabtoli Fire Station
 
     // === MILITARY & DEFENSE ===
 
