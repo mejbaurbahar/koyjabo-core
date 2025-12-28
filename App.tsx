@@ -34,6 +34,7 @@ import NotificationBell from './components/NotificationBell';
 
 import SettingsPage from './components/SettingsPage';
 import DailyJourneyView from './components/DailyJourneyView';
+import SocialShare from './components/SocialShare';
 
 
 
@@ -1568,6 +1569,15 @@ const App: React.FC = () => {
                 <Facebook className="w-5 h-5" />
                 <span>Facebook</span>
               </a>
+            </div>
+
+            {/* Share Widget */}
+            <div className="mt-8 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 p-6 rounded-2xl border border-blue-200 dark:border-blue-800">
+              <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-2 text-center">Share KoyJabo</h4>
+              <p className="text-xs text-gray-600 dark:text-gray-400 mb-4 text-center">
+                Help others discover the easiest way to navigate Bangladesh!
+              </p>
+              <SocialShare className="justify-center" />
             </div>
           </div>
         </div>
