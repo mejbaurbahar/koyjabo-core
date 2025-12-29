@@ -158,10 +158,10 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
         {/* Detail Panel (Left) */}
         <div className="lg:col-span-8 p-8 md:p-14 bg-white dark:bg-slate-900">
           {selectedMode ? (
-            <div className="max-w-3xl space-y-12 animate-in fade-in slide-in-from-bottom-6 duration-1000">
+            <div className="max-w-3xl space-y-16 animate-in fade-in slide-in-from-bottom-6 duration-1000">
 
               {/* Highlight Card */}
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 p-8 md:p-10 bg-gradient-to-br from-slate-50 to-blue-50/30 dark:from-slate-800/50 dark:to-slate-900 rounded-[40px] border border-slate-100 dark:border-slate-700/50 shadow-inner">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 p-8 md:p-10 bg-gradient-to-br from-slate-50 to-blue-50/30 dark:from-slate-800/50 dark:to-slate-900 rounded-[40px] border border-slate-100 dark:border-slate-700/50 shadow-inner mb-8">
                 <div className="flex items-center gap-6">
                   <div className="w-20 h-20 bg-blue-600 dark:bg-blue-500 rounded-[28px] flex items-center justify-center text-4xl shadow-xl shadow-blue-500/20 text-white">
                     {selectedMode.icon}
@@ -187,11 +187,11 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
 
               {/* Markdown Content */}
               <div className="prose prose-slate lg:prose-lg dark:prose-invert max-w-none 
-                prose-headings:font-black prose-headings:tracking-tight 
-                prose-p:text-slate-600 dark:prose-p:text-slate-300 prose-p:leading-relaxed 
-                prose-li:text-slate-600 dark:prose-li:text-slate-300
+                prose-headings:font-black prose-headings:tracking-tight prose-headings:mb-6
+                prose-p:text-slate-600 dark:prose-p:text-slate-300 prose-p:leading-relaxed prose-p:mb-6
+                prose-li:text-slate-600 dark:prose-li:text-slate-300 prose-li:mb-3
                 prose-strong:text-slate-900 dark:prose-strong:text-white
-                prose-table:rounded-3xl prose-table:overflow-hidden 
+                prose-table:rounded-3xl prose-table:overflow-hidden prose-table:mb-8
                 prose-th:bg-slate-100/50 dark:prose-th:bg-slate-800/50 prose-th:p-4
                 prose-td:p-4 prose-td:border-slate-100 dark:prose-td:border-slate-800">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>{selectedMode.fullContent}</ReactMarkdown>
