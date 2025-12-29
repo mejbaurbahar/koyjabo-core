@@ -3014,8 +3014,9 @@ const App: React.FC = () => {
               </div>
             ) : (
               <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">
-                <IntercitySearchSection onSearch={handleIntercitySearch} isOnline={isOnline} />
-                {renderLocalBusButton()}
+                {renderLocalBusSearch()}
+                <div className="mb-4"></div>
+                {renderIntercityButton()}
               </div>
             )}
 
