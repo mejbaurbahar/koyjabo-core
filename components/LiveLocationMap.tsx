@@ -4,6 +4,8 @@ import 'leaflet/dist/leaflet.css';
 import { X, Layers, Navigation, Map as MapIcon, Globe, Wifi, WifiOff, Lock } from 'lucide-react';
 import { UserLocation, BusRoute, Station } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
+import { liveBusService, LiveBus } from '../services/liveBusService';
+import { Bus } from 'lucide-react';
 
 // Fix for default marker icons using local assets for offline support
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -38,10 +40,12 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
     const userMarkerRef = useRef<L.Marker | null>(null);
     const accuracyCircleRef = useRef<L.Circle | null>(null);
     const routeLayerRef = useRef<L.LayerGroup | null>(null);
+    const busMarkersRef = useRef<Map<string, L.Marker>>(new Map());
 
     const [activeLayer, setActiveLayer] = useState<string>('standard');
     const [showLayerMenu, setShowLayerMenu] = useState(false);
     const [isOffline, setIsOffline] = useState(!navigator.onLine);
+    const [liveBuses, setLiveBuses] = useState<LiveBus[]>([]);
 
     // Monitor online status
     useEffect(() => {
@@ -263,7 +267,64 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
         );
 
         return () => navigator.geolocation.clearWatch(watchId);
+
     }, [isOpen, isOffline]);
+
+    // Subscribe to Live Buses
+    useEffect(() => {
+        if (!isOpen) return;
+        return liveBusService.subscribe(setLiveBuses);
+    }, [isOpen]);
+
+    // Render Bus Markers
+    useEffect(() => {
+        if (!mapInstanceRef.current) return;
+        const map = mapInstanceRef.current;
+        const markers = busMarkersRef.current;
+
+        liveBuses.forEach(bus => {
+            const latLng: [number, number] = [bus.lat, bus.lng];
+
+            if (markers.has(bus.id)) {
+                const marker = markers.get(bus.id)!;
+                marker.setLatLng(latLng);
+            } else {
+                const busIcon = L.divIcon({
+                    className: 'bg-transparent border-none',
+                    html: `<div class="relative w-8 h-8 flex items-center justify-center -ml-1 -mt-1">
+                             <div class="absolute w-full h-full bg-green-500/30 rounded-full animate-pulse"></div>
+                             <div class="relative w-6 h-6 bg-white border-2 border-green-600 rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" class="text-green-700" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6v6"/><path d="M15 6v6"/><path d="M2 12h19.6"/><path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3"/><circle cx="7" cy="18" r="2"/><path d="M9 18h5"/><circle cx="16" cy="18" r="2"/></svg>
+                             </div>
+                           </div>`,
+                    iconSize: [24, 24],
+                    iconAnchor: [12, 12]
+                });
+
+                const marker = L.marker(latLng, { icon: busIcon })
+                    .bindPopup(`
+                        <div class="p-2 min-w-[120px]">
+                            <h3 class="font-bold text-sm text-gray-800">${bus.busName}</h3>
+                            <p class="text-xs text-gray-500">Speed: ${Math.round(bus.speed)} km/h</p>
+                            <span class="inline-block mt-1 px-1.5 py-0.5 bg-green-100 text-green-700 text-[10px] rounded font-bold uppercase">Live</span>
+                        </div>
+                    `)
+                    .addTo(map);
+
+                markers.set(bus.id, marker);
+            }
+        });
+
+        // Cleanup removed buses
+        const currentIds = new Set(liveBuses.map(b => b.id));
+        markers.forEach((marker, id) => {
+            if (!currentIds.has(id)) {
+                marker.remove();
+                markers.delete(id);
+            }
+        });
+
+    }, [liveBuses, isOpen]);
 
     if (!isOpen) return null;
 

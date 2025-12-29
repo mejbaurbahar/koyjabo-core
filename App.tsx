@@ -40,7 +40,6 @@ import NotificationBanner from './components/NotificationBanner';
 
 
 
-
 interface ChatMessage {
   role: 'user' | 'assistant';
   text: string;
@@ -1331,6 +1330,7 @@ const App: React.FC = () => {
             userLocation={userLocation}
             speed={speed}
             onBack={() => setView(AppView.BUS_DETAILS)}
+            onViewLiveMap={() => setShowLiveMap(true)}
           />
         </div>
       </div>

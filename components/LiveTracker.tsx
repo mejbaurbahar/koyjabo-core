@@ -2,8 +2,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { BusRoute, UserLocation, Station } from '../types';
 import { getCurrentLocation, findNearestStation, getDistance } from '../services/locationService';
+import { liveBusService } from '../services/liveBusService';
 import { STATIONS } from '../constants';
-import { Navigation, Clock, MapPin, AlertCircle, RefreshCw, Compass, Gauge, Flag, Phone } from 'lucide-react';
+import { Navigation, Clock, MapPin, AlertCircle, RefreshCw, Compass, Gauge, Flag, Phone, Radio, Users } from 'lucide-react';
 import EmergencyHelplineModal from './EmergencyHelplineModal';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -14,9 +15,10 @@ interface LiveTrackerProps {
   userLocation?: UserLocation | null;
   speed?: number | null;
   onBack?: () => void;
+  onViewLiveMap?: () => void; // New prop to open map
 }
 
-const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highlightEndIdx, userLocation: propUserLocation, speed: propSpeed, onBack }) => {
+const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highlightEndIdx, userLocation: propUserLocation, speed: propSpeed, onBack, onViewLiveMap }) => {
   const { t, formatNumber } = useLanguage();
   const [location, setLocation] = useState<UserLocation | null>(null);
   const [speed, setSpeed] = useState<number | null>(null);
@@ -26,11 +28,16 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
   const [globalNearest, setGlobalNearest] = useState<{ station: Station, distance: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [showEmergencyModal, setShowEmergencyModal] = useState(false);
+  const [isBroadcasting, setIsBroadcasting] = useState(liveBusService.isBroadcasting()); // Init from service
+  const [isOnline, setIsOnline] = useState(navigator.onLine); // Track online/offline status
+  const [proximityError, setProximityError] = useState<string | null>(null); // Proximity verification error
   const watchIdRef = useRef<number | null>(null);
 
   const processLocation = (loc: UserLocation, speedVal: number | null) => {
     setLocation(loc);
     setSpeed(speedVal);
+
+    // Note: Broadcasting update is now handled internally by liveBusService!
 
     // Nearest on Route
     const nearest = findNearestStation(loc, bus.stops);
@@ -50,6 +57,42 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
     setError(null);
   };
 
+  // Sync broadcasting state from service on mount and when bus changes
+  // IMPORTANT: Only show as broadcasting if THIS specific bus is being broadcast
+  useEffect(() => {
+    const isGenerallyBroadcasting = liveBusService.isBroadcasting();
+    const currentBroadcastingBus = liveBusService.getCurrentBusName();
+    const isThisBusBroadcasting = isGenerallyBroadcasting && currentBroadcastingBus === bus.name;
+    setIsBroadcasting(isThisBusBroadcasting);
+    console.log('🔄 Synced broadcasting state:', {
+      isActive: isThisBusBroadcasting,
+      currentBus: bus.name,
+      broadcastingBus: currentBroadcastingBus
+    });
+  }, [bus.name]);
+
+  // Online/Offline detection
+  useEffect(() => {
+    const handleOnline = () => {
+      setIsOnline(true);
+      console.log('✅ Network: Online');
+    };
+    const handleOffline = () => {
+      setIsOnline(false);
+      console.log('❌ Network: Offline');
+      // If broadcasting while going offline, show warning but don't stop
+      // (they might reconnect soon)
+    };
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
   useEffect(() => {
     setLoading(true);
     setError(null);
@@ -63,28 +106,22 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
       setLoading(false);
     });
 
-    // Start Watch
+    // Start Watch (For UI only)
     if ('geolocation' in navigator) {
       watchIdRef.current = navigator.geolocation.watchPosition(
         (position) => {
           const { latitude, longitude, speed: rawSpeed } = position.coords;
-          // rawSpeed is m/s. Convert to km/h.
           const speedKmh = rawSpeed ? rawSpeed * 3.6 : 0;
           processLocation({ lat: latitude, lng: longitude }, speedKmh);
         },
         (err) => {
           console.error("Watch Error", err);
-          // Set error if we don't have location yet
           if (!location) {
             setError(err.message || "Location access denied");
             setLoading(false);
           }
         },
-        {
-          enableHighAccuracy: true,
-          maximumAge: 5000,
-          timeout: 30000
-        }
+        { enableHighAccuracy: true, maximumAge: 5000, timeout: 30000 }
       );
     }
 
@@ -92,8 +129,67 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
       if (watchIdRef.current !== null) {
         navigator.geolocation.clearWatch(watchIdRef.current);
       }
+      // CRITICAL: Do NOT stop broadcasting on unmount to maintain state!
     };
-  }, [bus, location]);
+  }, [bus]);
+
+  // Handle Broadcast Toggle with validation
+  const toggleBroadcast = () => {
+    // Clear any previous proximity errors
+    setProximityError(null);
+
+    if (isBroadcasting) {
+      // Stop broadcasting
+      liveBusService.stopBroadcasting();
+      setIsBroadcasting(false);
+      console.log('🔕 Stopped broadcasting');
+    } else {
+      // Validation before starting broadcast
+
+      // 1. Check if online
+      if (!isOnline) {
+        setProximityError(t('liveNav.offlineError') || 'You are offline. Please connect to the internet to use Live Tracking.');
+        return;
+      }
+
+      // 2. Check if location is available
+      if (!location) {
+        setProximityError(t('liveNav.locationNeeded') || 'Location not available. Please enable location services.');
+        return;
+      }
+
+      // 3. Proximity check: User must be within 0.5km of ANY station on this route
+      const MAX_DISTANCE_KM = 0.5; // 500 meters threshold (close proximity required)
+      const minDistance = distanceToStation; // Already calculated in meters
+
+      if (minDistance > MAX_DISTANCE_KM * 1000) {
+        const nearestStation = nearestIndex !== -1 ? STATIONS[bus.stops[nearestIndex]] : null;
+        setProximityError(
+          t('liveNav.tooFarError') ||
+          `You are ${(minDistance / 1000).toFixed(1)}km away from the nearest station${nearestStation ? ` (${nearestStation.name})` : ''}. You must be within ${MAX_DISTANCE_KM}km of the route to go live.`
+        );
+        console.warn('❌ Proximity check failed:', {
+          distance: minDistance,
+          threshold: MAX_DISTANCE_KM * 1000,
+          nearestStation: nearestStation?.name
+        });
+        return;
+      }
+
+      // All checks passed - start broadcasting
+      console.log('✅ Proximity check passed:', {
+        distance: minDistance,
+        threshold: MAX_DISTANCE_KM * 1000
+      });
+      liveBusService.startBroadcasting(bus.name);
+      setIsBroadcasting(true);
+
+      // Send immediate update if we have location
+      if (location) {
+        liveBusService.updateLocation(location.lat, location.lng, speed || 0);
+      }
+    }
+  };
 
   if (error) {
     return (
@@ -196,6 +292,52 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
           </p>
         )}
         <p className="text-xs text-gray-500 dark:text-gray-400 font-bengali mt-1 mb-3 ml-0.5">{currentStation?.bnName}</p>
+
+        {/* Live Tracking Controls */}
+        <div className="space-y-2">
+          {/* Offline Warning Badge */}
+          {!isOnline && (
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-3 py-2 rounded-lg flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0" />
+              <p className="text-xs font-bold text-red-600 dark:text-red-400">
+                {t('liveNav.offline') || 'You are offline. Connect to internet to use Live Tracking.'}
+              </p>
+            </div>
+          )}
+
+          {/* Proximity Error */}
+          {proximityError && (
+            <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 px-3 py-2 rounded-lg flex items-start gap-2 animate-in slide-in-from-top">
+              <AlertCircle className="w-4 h-4 text-orange-600 dark:text-orange-400 shrink-0 mt-0.5" />
+              <p className="text-xs font-bold text-orange-600 dark:text-orange-400 leading-tight">
+                {proximityError}
+              </p>
+            </div>
+          )}
+
+          <div className="flex gap-2">
+            <button
+              onClick={onViewLiveMap}
+              className="flex-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 px-3 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors"
+            >
+              <Users className="w-4 h-4" />
+              {t('map.liveLocation') || 'Live Map'}
+            </button>
+            <button
+              onClick={toggleBroadcast}
+              disabled={!isOnline && !isBroadcasting}
+              className={`flex-1 px-3 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-sm ${!isOnline && !isBroadcasting
+                ? 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed opacity-50'
+                : isBroadcasting
+                  ? 'bg-red-500 text-white animate-pulse shadow-red-200'
+                  : 'bg-dhaka-green text-white shadow-green-200 dark:shadow-green-900/30 hover:bg-green-700'
+                }`}
+            >
+              <Radio className={`w-4 h-4 ${isBroadcasting ? 'animate-ping' : ''}`} />
+              {isBroadcasting ? 'Stop Casting' : 'Go Live (Inside Bus)'}
+            </button>
+          </div>
+        </div>
 
         {/* Trip Stats Grid */}
         {hasDestination ? (

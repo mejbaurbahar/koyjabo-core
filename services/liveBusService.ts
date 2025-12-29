@@ -1,0 +1,211 @@
+import { BusRoute } from '../types';
+
+// Types for Live Bus Tracking
+export interface LiveBus {
+    id: string; // Unique ID (e.g. device ID or session ID)
+    busName: string; // e.g. "Baishakhi"
+    lat: number;
+    lng: number;
+    speed: number;
+    heading?: number;
+    timestamp: number;
+    isUser?: boolean; // Is this the current user?
+}
+
+const WS_URL = 'wss://koyjabo-backend.onrender.com';
+let ws: WebSocket | null = null;
+let reconnectTimer: ReturnType<typeof setTimeout> | null = null;
+let subscribers: ((buses: LiveBus[]) => void)[] = [];
+let activeBroadcasting = false;
+let currentBusName: string | null = null;
+let lastLocation: { lat: number, lng: number, speed: number } | null = null;
+let watchId: number | null = null;
+
+// Store latest state of all buses
+let liveBuses: Map<string, LiveBus> = new Map();
+
+export const liveBusService = {
+    // Start broadcasting location for a specific bus
+    startBroadcasting: (busName: string) => {
+        if (activeBroadcasting) return; // Already running
+
+        activeBroadcasting = true;
+        currentBusName = busName;
+        connect();
+
+        // Start persistent background watcher
+        if ('geolocation' in navigator) {
+            watchId = navigator.geolocation.watchPosition(
+                (pos) => {
+                    const { latitude, longitude, speed } = pos.coords;
+                    const speedKmh = speed ? speed * 3.6 : 0;
+                    liveBusService.updateLocation(latitude, longitude, speedKmh);
+                },
+                (err) => console.error('Broadcasting GPS Error:', err),
+                { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
+            );
+        }
+
+        console.log(`📡 Started broadcasting as ${busName}`);
+    },
+
+    // Stop broadcasting
+    stopBroadcasting: () => {
+        activeBroadcasting = false;
+        currentBusName = null;
+        console.log('🔕 Stopped broadcasting');
+
+        if (watchId !== null) {
+            navigator.geolocation.clearWatch(watchId);
+            watchId = null;
+        }
+
+        // Remove self from local map immediately
+        if (liveBuses.has('SELF_DEVICE')) {
+            liveBuses.delete('SELF_DEVICE');
+            subscribers.forEach(cb => cb(Array.from(liveBuses.values())));
+        }
+
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({
+                type: 'stop_broadcast'
+            }));
+        }
+    },
+
+    // Check if currently broadcasting (for UI state)
+    isBroadcasting: () => activeBroadcasting,
+
+    // Update current location (called by internal watcher)
+    updateLocation: (lat: number, lng: number, speed: number) => {
+        if (!activeBroadcasting || !currentBusName) return;
+
+        lastLocation = { lat, lng, speed };
+
+        // 1. IMMEDIATE LOCAL UPDATE (So user sees themselves instantly)
+        const selfId = 'SELF_DEVICE'; // Special ID for local reflection
+        const selfBus: LiveBus = {
+            id: selfId,
+            busName: currentBusName,
+            lat,
+            lng,
+            speed,
+            timestamp: Date.now(),
+            isUser: true // Mark as self
+        };
+
+        liveBuses.set(selfId, selfBus);
+        // Notify subscribers immediately
+        console.log('📡 Broadcasting self as:', selfBus);
+        console.log('👥 Total subscribers:', subscribers.length);
+        subscribers.forEach(cb => cb(Array.from(liveBuses.values())));
+
+
+        // 2. SEND TO SERVER
+        if (!ws || ws.readyState !== WebSocket.OPEN) {
+            connect(); // Try to reconnect if dropped
+            return;
+        }
+
+        // Send update to server
+        ws.send(JSON.stringify({
+            type: 'bus_location_update',
+            busName: currentBusName,
+            lat,
+            lng,
+            speed,
+            timestamp: Date.now()
+        }));
+    },
+
+    // Subscribe to updates of OTHER buses
+    subscribe: (callback: (buses: LiveBus[]) => void) => {
+        subscribers.push(callback);
+        // Immediately return current state
+        callback(Array.from(liveBuses.values()));
+
+        if (!ws || ws.readyState !== WebSocket.OPEN) {
+            connect();
+        }
+
+        return () => {
+            subscribers = subscribers.filter(s => s !== callback);
+        };
+    },
+
+    // Get current active buses
+    getBuses: (): LiveBus[] => {
+        return Array.from(liveBuses.values());
+    },
+
+    // Get the current broadcasting bus name (or null if not broadcasting)
+    getCurrentBusName: (): string | null => {
+        return currentBusName;
+    }
+};
+
+// Internal: Connect to WebSocket
+const connect = () => {
+    if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) return;
+
+    try {
+        ws = new WebSocket(WS_URL);
+
+        ws.onopen = () => {
+            console.log('✅ Connected to Bus Tracking Server');
+            if (activeBroadcasting && currentBusName && lastLocation) {
+                // Resend last known location immediately
+                liveBusService.updateLocation(lastLocation.lat, lastLocation.lng, lastLocation.speed);
+            }
+        };
+
+        ws.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+
+                // Handle Broadcast from Server
+                if (data.type === 'bus_locations_broadcast') {
+                    // data.buses should be an array of LiveBus
+                    const buses: LiveBus[] = data.buses || [];
+
+                    // Update local map
+                    buses.forEach(bus => {
+                        liveBuses.set(bus.id, bus);
+                    });
+
+                    // Cleanup stale buses (older than 5 mins)
+                    const now = Date.now();
+                    Array.from(liveBuses.entries()).forEach(([id, bus]) => {
+                        if (now - bus.timestamp > 5 * 60 * 1000) {
+                            liveBuses.delete(id);
+                        }
+                    });
+
+                    // Notify subscribers
+                    const currentList = Array.from(liveBuses.values());
+                    subscribers.forEach(cb => cb(currentList));
+                }
+            } catch (e) {
+                console.error('Error parsing bus data:', e);
+            }
+        };
+
+        ws.onclose = () => {
+            ws = null;
+            // Auto reconnect if we have active subscribers OR broadcasting
+            if ((activeBroadcasting || subscribers.length > 0) && !reconnectTimer) {
+                reconnectTimer = setTimeout(() => {
+                    reconnectTimer = null;
+                    connect();
+                }, 3000);
+            }
+        };
+
+        ws.onerror = (err) => {
+            console.error('Bus WS Error:', err);
+        };
+
+    } catch (e) {
+        console.error('Failed to connect to Bus Service:', e);
+    }
+};

@@ -175,6 +175,9 @@ export const translations: Record<Language, Translations> = {
             enableLocation: 'অবস্থান চালু করুন',
             startHere: 'শুরু করুন',
             arrivedDestination: 'আপনি গন্তব্যে পৌঁছে গেছেন!',
+            offline: 'আপনি অফলাইনে আছেন। লাইভ ট্র্যাকিং ব্যবহার করতে ইন্টারনেটের সাথে সংযুক্ত হন।',
+            offlineError: 'আপনি অফলাইনে আছেন। লাইভ ট্র্্যাকিং ব্যবহার করতে ইন্টারনেটের সাথে সংযুক্ত হন।',
+            tooFarError: 'আপনি রুট থেকে অনেক দূরে আছেন। লাইভ ট্র্যাকিং সক্রিয় করতে আপনাকে রুটের ৫০০ মিটার (০.৫ কিমি) এর মধ্যে থাকতে হবে।',
         },
 
         // Emergency Helplines
@@ -710,6 +713,9 @@ export const translations: Record<Language, Translations> = {
             enableLocation: 'Enable Location',
             startHere: 'Start Here',
             arrivedDestination: 'You have reached the destination!',
+            offline: 'You are offline. Connect to the internet to use Live Tracking.',
+            offlineError: 'You are offline. Connect to the internet to use Live Tracking.',
+            tooFarError: 'You are too far from the route. You must be within 500 meters (0.5km) of the route to go live.',
         },
 
         // Emergency Helplines

@@ -3,6 +3,7 @@ import { BusRoute, UserLocation } from '../types';
 import { STATIONS, METRO_STATIONS, RAILWAY_STATIONS, AIRPORTS } from '../constants';
 import { findNearestStation, getDistance } from '../services/locationService';
 import { getTrafficColor, TrafficLevel } from '../services/trafficSimulator';
+import { liveBusService } from '../services/liveBusService';
 import { MapPin, Bus, Plus, Minus, Navigation, AlertCircle, Grip, ArrowUpRight, Train, Plane, Layers, X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -305,6 +306,94 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
     return { userPos: uPos, layout: lay, nearestStationPosForLine: nearestPos };
   }, [userLocation, stations, baseWidth, padding, nodePositions, userStationIndex, isUserFar, height]);
 
+  // LIVE BUS TRACKING INTEGRATION
+  const [liveBuses, setLiveBuses] = useState<any[]>([]);
+  useEffect(() => {
+    // Only subscribe if we have a valid route
+    if (!route) return;
+
+    // Normalize name for robust matching (e.g. "Baishakhi" vs "Baishakhi Paribahan")
+    const normalize = (str: string) => str.toLowerCase().replace(/\s+/g, '');
+    const routeName = normalize(route.name);
+
+    // Subscribe to live bus updates
+    const unsubscribe = liveBusService.subscribe((allBuses) => {
+      console.log('📡 MapVisualizer received bus update:', {
+        totalBuses: allBuses.length,
+        routeName: route.name,
+        normalizedRouteName: routeName,
+        allBusNames: allBuses.map(b => b.busName)
+      });
+      // Robust name matching
+      const matches = allBuses.filter(b => normalize(b.busName).includes(routeName) || routeName.includes(normalize(b.busName)));
+      console.log('✅ Matched buses for this route:', matches.length, matches);
+      setLiveBuses(matches);
+    });
+
+    console.log('📞 MapVisualizer subscribed to liveBusService for route:', route.name);
+
+    return unsubscribe;
+  }, [route]);
+
+  // Calculate positions of live buses on the schematic map
+  const liveBusPositions = React.useMemo(() => {
+    return liveBuses.map(bus => {
+      // Find nearest station from the VISUAL list 'stations'
+      let minDst = Infinity;
+      let closestIdx = -1;
+
+      stations.forEach((s, idx) => {
+        const d = getDistance({ lat: bus.lat, lng: bus.lng }, { lat: s.lat, lng: s.lng });
+        if (d < minDst) {
+          minDst = d;
+          closestIdx = idx;
+        }
+      });
+
+      if (closestIdx === -1) return null;
+
+      const pos = nodePositions[closestIdx];
+      // OLD LOGIC STARTS HERE (To be removed)
+      /*
+      // Find nearest station on THIS route for the bus
+      const nearest = findNearestStation({ lat: bus.lat, lng: bus.lng }, route!.stops);
+      if (!nearest) return null;
+
+      // Find the index in our *filtered* visual station list
+      // Note: `stations` prop is filtered valid stations. `route.stops` contains all IDs.
+      const visualIndex = stations.findIndex(s => s.id === route!.stops[nearest.index]);
+
+      if (visualIndex === -1) return null;
+
+      */
+      // Slight random jitter or interpolation could be added here for multiple buses at same stop
+      // For now, basic station snapping
+      return {
+        ...pos,
+        busId: bus.id,
+        speed: bus.speed,
+        isSelf: bus.isUser
+      };
+    }).filter(Boolean) as { x: number, y: number, busId: string, speed: number, isSelf?: boolean }[];
+  }, [liveBuses, stations, nodePositions]);
+
+  // Debug: Log when live buses change
+  useEffect(() => {
+    console.log('🔄 Live bus state updated:', {
+      liveBusesCount: liveBuses.length,
+      liveBusPositionsCount: liveBusPositions.length,
+      stations: stations.length,
+      nodePositions: nodePositions.length
+    });
+    if (liveBuses.length > 0) {
+      console.log('🚍 Live Buses detected:', liveBuses);
+      console.log('📍 Live Bus Positions (calculated):', liveBusPositions);
+      if (liveBusPositions.length === 0) {
+        console.warn('⚠️ WARNING: Live buses exist but positions array is empty! Check position calculation logic.');
+      }
+    }
+  }, [liveBuses, liveBusPositions]);
+
 
   // Adjusted dimensions for Zoom
   const zoomedWidth = layout.width * zoom;
@@ -400,7 +489,7 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
 
 
       {/* Bottom Left - Layer Toggles */}
-      <div className="absolute bottom-4 left-4 z-10 flex flex-col gap-2 items-start">
+      < div className="absolute bottom-4 left-4 z-10 flex flex-col gap-2 items-start" >
 
         {/* Collapsible Panel */}
         {showLayers && (
@@ -466,10 +555,10 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
           <Layers className={`w-4 h-4 ${!showLayers && 'group-hover:scale-110 transition-transform'}`} />
           <span className="text-xs font-bold">{t('liveNav.layers')}</span>
         </button>
-      </div>
+      </div >
 
       {/* Scrollable Container */}
-      <div
+      < div
         ref={scrollContainerRef}
         className={`w-full h-full overflow-auto no-scrollbar ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
         onMouseDown={onMouseDown}
@@ -1096,10 +1185,40 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                 );
               })()}
 
+              {/* Render Live Buses - Must be LAST for top layer visibility */}
+              {liveBusPositions.length > 0 && console.log('🎨 Rendering', liveBusPositions.length, 'live bus icons on map')}
+              {liveBusPositions.map((bus, i) => (
+                <g key={bus.busId} transform={`translate(${bus.x}, ${bus.y})`} className="live-bus-marker">
+                  {/* Bus Icon Marker */}
+                  <g transform="translate(-14, -40)"> {/* Lift above station */}
+
+                    {/* Pulse Ring */}
+                    <circle cx="14" cy="14" r="20" fill="#22c55e" opacity="0.3">
+                      <animate attributeName="r" from="10" to="25" dur="1.5s" repeatCount="indefinite" />
+                      <animate attributeName="opacity" from="0.4" to="0" dur="1.5s" repeatCount="indefinite" />
+                    </circle>
+
+                    {/* Bus Body */}
+                    <rect x="0" y="0" width="28" height="28" rx="6" fill="#16a34a" stroke="white" strokeWidth="2" />
+
+                    {/* Bus Icon SVG */}
+                    <path d="M8 6v6 M15 6v6 M2 12h19.6 M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3 M9 18h5"
+                      stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" transform="translate(2.5, 2.5) scale(0.8)" />
+
+                    {/* Tail of marker */}
+                    <path d="M7 26 L14 34 L21 26 Z" fill="#16a34a" stroke="white" strokeWidth="1" />
+                  </g>
+
+                  {/* Speed Label */}
+                  <rect x="-18" y="-55" width="36" height="12" rx="3" fill="#22c55e" />
+                  <text x="0" y="-46" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">{Math.round(bus.speed)} km/h</text>
+                </g>
+              ))}
+
             </g>
           </svg>
         </div>
-      </div>
+      </div >
     </div >
   );
 };
