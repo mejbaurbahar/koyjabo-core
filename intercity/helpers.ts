@@ -14,31 +14,54 @@ export interface ParsedRouteData {
 
 /**
  * Parses the AI's markdown response into structured transport modes.
+ * Strictly filters out AI system instructions and "Critical Rules".
  */
 export const parseRouteMarkdown = (markdown: string): ParsedRouteData => {
   if (!markdown) return { intro: '', modes: [], footer: '' };
 
-  // Strict list of emojis that represent REAL transport modes
-  const transportEmojis = ['🚌', '🚂', '✈️', '🚢', '🚗', '🚕', '🚲', '🚇', '🚆', '🚍', '🚊', '🚁', '⛵', '🚤', '⛴️', '🚀', '🚕'];
-  const modeStartRegex = /^\s*(?:[\*\-\+]|\d+[\.\)])?\s*([\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}])/u;
-
-  // 1. Separate Metadata/Rules into Footer
-  const footerHeaders = [
-    '🎯 Critical Rules', '🎯 critical rules', '🎯 Recommended Option',
-    '⚠️ Rules', '💡 General Travel Tips', '🔍 General Travel Tips',
-    'Remember: Users want', '🗺️ Route Highlights', '📱 Booking',
-    '**Booking Links:**', '**বুকিং লিংক:**', '### Booking', '### বুকিং',
-    '📱 Booking & Information Resources'
+  // 0. EXTREME CLEANUP: Forcefully remove the "Critical Rules" block and everything after it.
+  // This is the specific instruction block that often leaks into output.
+  const criticalRulesMarkers = [
+    '🎯 Critical Rules',
+    '🎯 critical rules',
+    '✅ Use ONLY real operators',
+    '❌ NO fake operators',
+    'Remember: Users want MAXIMUM detail'
   ];
 
-  let mainContent = markdown;
+  let cleanedMarkdown = markdown;
+  for (const marker of criticalRulesMarkers) {
+    const index = cleanedMarkdown.indexOf(marker);
+    if (index !== -1) {
+      cleanedMarkdown = cleanedMarkdown.substring(0, index).trim();
+    }
+  }
+
+  // Strict list of emojis that represent REAL transport modes
+  const transportEmojis = ['🚌', '🚂', '✈️', '🚢', '🚗', '🚕', '🚲', '🚇', '🚆', '🚍', '🚊', '🚁', '⛵', '🚤', '⛴️', '🚀', '🚕', '🏎️', '🏍️'];
+
+  // Regex covers: Emoji at start of line, possibly after a bullet or number
+  const modeStartRegex = /^\s*(?:[\*\-\+]|\d+[\.\)])?\s*([\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}])/u;
+
+  // 1. SPLIT FOOTER (Booking links, etc.)
+  const footerHeaders = [
+    '**Booking Links:**', '**বুকিং লিংক:**', '### Booking', '### বুকিং',
+    '📱 Booking', '📱 বুকিং', '🗺️ Route Highlights', '🔍 General Travel Tips',
+    '💰 Cost Comparison', '💰 Cost Comparison Summary', '📊 Comparison', '**Cost Comparison Summary:**'
+  ];
+
+  let mainContent = cleanedMarkdown;
   let footer = '';
   let earliestFooterIndex = -1;
 
   for (const header of footerHeaders) {
-    const index = mainContent.toLowerCase().indexOf(header.toLowerCase());
-    if (index !== -1 && (earliestFooterIndex === -1 || index < earliestFooterIndex)) {
-      earliestFooterIndex = index;
+    const lowerMarkdown = mainContent.toLowerCase();
+    const lowerHeader = header.toLowerCase();
+    const index = lowerMarkdown.indexOf(lowerHeader);
+    if (index !== -1) {
+      if (earliestFooterIndex === -1 || index < earliestFooterIndex) {
+        earliestFooterIndex = index;
+      }
     }
   }
 
@@ -47,30 +70,53 @@ export const parseRouteMarkdown = (markdown: string): ParsedRouteData => {
     mainContent = mainContent.substring(0, earliestFooterIndex);
   }
 
-  // 2. Identify Modes Content
+  // 2. SPLIT INTRO vs MODES
   const modeHeaders = [
     '**Recommended Modes:**', '**প্রস্তাবিত যাতায়াত মাধ্যম:**',
-    '### Recommended', '### প্রস্তাবিত', '### Travel Options'
+    '### Recommended', '### প্রস্তাবিত', '### Travel Options', '### যাতায়াতের মাধ্যম'
   ];
 
-  let introRaw = '';
-  let modesContent = mainContent;
+  let introRaw = mainContent.trim();
+  let modesContent = '';
 
   for (const header of modeHeaders) {
-    const index = mainContent.toLowerCase().indexOf(header.toLowerCase());
-    if (index !== -1) {
+    const lowerMain = mainContent.toLowerCase();
+    const lowerHeader = header.toLowerCase();
+    if (lowerMain.includes(lowerHeader)) {
+      const index = lowerMain.indexOf(lowerHeader);
       introRaw = mainContent.substring(0, index).trim();
-      modesContent = mainContent.substring(index).trim();
-      // Remove the header line from modesContent
-      const lines = modesContent.split('\n');
-      modesContent = lines.slice(1).join('\n').trim();
+      modesContent = mainContent.substring(index + header.length).trim();
       break;
     }
   }
 
-  // 3. Parse Mode Blocks
+  // Fallback: If no mode header, split at the first REAL mode header (e.g. "By Bus")
+  if (!modesContent) {
+    const lines = mainContent.split('\n');
+    let firstModeLineIndex = -1;
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      // Check for "By [Transport]" or "🚌 By [Transport]" or "**By [Transport]**"
+      const isByMode = line.toLowerCase().includes('by ') && (line.includes('**') || transportEmojis.some(e => line.includes(e)));
+      const match = line.match(modeStartRegex);
+      const isEmojiMode = match && transportEmojis.includes(match[1]);
+
+      if ((isByMode || isEmojiMode) && line.length < 60) {
+        firstModeLineIndex = i;
+        break;
+      }
+    }
+
+    if (firstModeLineIndex !== -1) {
+      const allLines = mainContent.split('\n');
+      introRaw = allLines.slice(0, firstModeLineIndex).join('\n').trim();
+      modesContent = allLines.slice(firstModeLineIndex).join('\n').trim();
+    }
+  }
+
+  // 3. PARSE MODE BLOCKS
   const modes: ParsedMode[] = [];
-  const lines = modesContent.split('\n');
+  const lines = (modesContent || mainContent).split('\n');
   let currentMode: Partial<ParsedMode> | null = null;
   let buffer = '';
 
@@ -78,50 +124,63 @@ export const parseRouteMarkdown = (markdown: string): ParsedRouteData => {
     const trimmed = line.trim();
     const match = trimmed.match(modeStartRegex);
 
+    // Check if this line is a VALID new transport mode header
     let isNewMode = false;
-    if (match && transportEmojis.includes(match[1])) {
-      // Must be a header-like line
-      if (trimmed.length < 60 || trimmed.toLowerCase().startsWith('by ') || trimmed.includes('**')) {
+    const isByMode = trimmed.toLowerCase().includes('by ') && (trimmed.includes('**') || (match && transportEmojis.includes(match[1])));
+    const isEmojiMode = match && transportEmojis.includes(match[1]) && trimmed.length < 50;
+
+    if (isNewMode || isByMode || isEmojiMode) {
+      // Must be a short line to be a header
+      if (trimmed.length < 60) {
         isNewMode = true;
       }
     }
 
-    if (isNewMode && match) {
+    if (isNewMode) {
       if (currentMode) {
         currentMode.fullContent = buffer.trim();
         modes.push(currentMode as ParsedMode);
       }
 
-      const icon = match[1];
+      const icon = match ? match[1] : (trimmed.includes('Bus') ? '🚌' : trimmed.includes('Train') ? '🚂' : trimmed.includes('Air') ? '✈️' : '🚗');
+
       let title = trimmed.replace(modeStartRegex, '').replace(/\*\*/g, '').replace(':', '').trim();
+      if (title.toLowerCase().startsWith('by ')) {
+        title = title.substring(3).trim();
+      }
 
       let summary = "";
-      ['–', '-', '|'].forEach(sep => {
-        if (!summary && title.includes(sep)) {
+      const separators = ['–', '-', '|'];
+      for (const sep of separators) {
+        if (title.includes(sep)) {
           const parts = title.split(sep);
           summary = parts[parts.length - 1].trim();
           title = parts[0].trim();
+          break;
         }
-      });
+      }
 
       buffer = line + '\n';
-      currentMode = { id: modes.length + 1, icon, title: title || 'Option', summary, fullContent: '' };
+      currentMode = {
+        id: modes.length + 1,
+        icon,
+        title: title || 'Option',
+        summary
+      };
     } else if (currentMode) {
       buffer += line + '\n';
-
-      // Pull out Time/Price for the chip if not found in header
-      if (!currentMode.summary || !currentMode.summary.includes('|')) {
+      // Attempt to extract summary from details if empty
+      if (!currentMode.summary) {
         const tLine = trimmed.toLowerCase();
-        if (tLine.includes('duration:') || tLine.includes('time:') || tLine.includes('সময়:')) {
-          const val = trimmed.split(':')[1]?.trim();
-          if (val) currentMode.summary = currentMode.summary ? `${currentMode.summary} | ${val}` : val;
-        } else if (tLine.includes('fare:') || tLine.includes('price:') || tLine.includes('ভাড়া:')) {
-          const val = trimmed.split(':')[1]?.trim();
-          if (val) currentMode.summary = currentMode.summary ? `${currentMode.summary} | ${val}` : val;
+        if (tLine.includes('duration:') || tLine.includes('time:')) {
+          currentMode.summary = trimmed.split(':')[1]?.trim() || '';
         }
       }
     } else if (trimmed.length > 0) {
-      introRaw += '\n' + line;
+      // Content before modes
+      if (!introRaw.includes(trimmed)) {
+        introRaw += '\n' + line;
+      }
     }
   });
 
