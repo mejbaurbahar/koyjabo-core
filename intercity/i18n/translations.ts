@@ -561,7 +561,10 @@ export const translations: Record<Language, Translations> = {
             direct: 'সরাসরি',
             instant: 'ইনস্ট্যান্ট',
             ai: 'এআই',
-            analyzingRoute: 'রুট বিশ্লেষণ এবং সময়সূচী যাচাই করা হচ্ছে...',
+            analyzingRoute: 'রুট বিশ্লেষণ এবং সময়সূচী যাচাই করা হচ্ছে...',
+            journeyInsightTitle: 'যাত্রার পরামর্শ',
+            journeyInsightHeading: 'আপনার যাত্রা শুরু করতে প্রস্তুত?',
+            journeyInsightDescription: 'সেরা সিট এবং মূল্য নিশ্চিত করতে আগে থেকেই টিকিট বুক করুন।',
             locationCategories: {
                 "Popular Tourist Spots": "জনপ্রিয় পর্যটন কেন্দ্র",
                 "Dhaka Division": "ঢাকা বিভাগ",
