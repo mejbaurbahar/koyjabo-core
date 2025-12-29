@@ -410,96 +410,78 @@ const IntercitySearchSection: React.FC<{
   isOnline: boolean;
 }> = ({ onSearch, isOnline }) => {
   const { t } = useLanguage();
-  const [from, setFrom] = useState('');
-  const [to, setTo] = useState('');
-  const [showFromSuggestions, setShowFromSuggestions] = useState(false);
-  const [showToSuggestions, setShowToSuggestions] = useState(false);
-
-  // Filter logic
-  const getFiltered = (val: string) => POPULAR_LOCATIONS.filter(l => l.toLowerCase().includes(val.toLowerCase()));
 
   return (
-    <div className="bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 rounded-[2rem] shadow-xl shadow-emerald-500/30 relative overflow-visible text-white transition-all duration-300 w-full mb-4">
+    <a
+      href="/intercity"
+      className="block bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 rounded-[2rem] shadow-2xl shadow-blue-500/30 relative overflow-hidden text-white transition-all duration-300 w-full mb-4 group hover:scale-[1.02] active:scale-[0.98]"
+    >
+      {/* Decorative animated gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
       {/* Decorative Elements */}
-      <div className="absolute top-0 right-0 -mr-12 -mt-12 w-40 h-40 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
-      <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-32 h-32 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
+      <div className="absolute top-0 right-0 -mr-12 -mt-12 w-40 h-40 rounded-full bg-white/10 blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-32 h-32 rounded-full bg-white/10 blur-3xl pointer-events-none"></div>
 
-      {/* Text Content */}
-      <div className="px-6 pt-6 pb-4 relative z-10 pointer-events-none">
-        <div>
-          <h2 className="text-3xl font-bold mb-2 font-bengali drop-shadow-lg text-white">{t('home.intercitySearch')}</h2>
-          <p className="text-white/90 text-sm font-medium">{t('home.findBusesBetweenCities')}</p>
-        </div>
-      </div>
-
-      <div className="px-6 pb-6 relative z-20">
-        <div className="flex flex-col gap-3">
-          {/* From Input */}
-          <div className="relative group z-50">
-            <div className="relative">
-              <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 z-10" />
-              <input
-                type="text"
-                placeholder="From (e.g. Dhaka)..."
-                value={from}
-                onChange={(e) => { setFrom(e.target.value); setShowFromSuggestions(true); }}
-                onFocus={() => setShowFromSuggestions(true)}
-                onBlur={() => setTimeout(() => setShowFromSuggestions(false), 200)}
-                className="w-full pl-10 pr-4 py-3 bg-white text-gray-800 rounded-xl focus:outline-none focus:ring-4 focus:ring-green-400/30 font-medium placeholder:text-gray-400 text-sm"
-              />
+      {/* Content */}
+      <div className="px-8 py-10 relative z-10">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex-1">
+            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full mb-4">
+              <Navigation className="w-4 h-4" />
+              <span className="text-xs font-bold uppercase tracking-wider">{t('nav.intercityRoute')}</span>
             </div>
-            {showFromSuggestions && from && (
-              <div className="absolute left-0 right-0 top-full mt-1 bg-white dark:bg-slate-800 rounded-xl shadow-xl max-h-48 overflow-y-auto z-[60] text-gray-800 dark:text-gray-100 p-1 border border-gray-100 dark:border-gray-700">
-                {getFiltered(from).map(loc => (
-                  <div key={loc} className="px-3 py-2 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 rounded-lg cursor-pointer text-sm" onClick={() => setFrom(loc)}>
-                    {loc}
-                  </div>
-                ))}
-                {getFiltered(from).length === 0 && <div className="p-2 text-xs text-gray-400 dark:text-gray-500 text-center">No matches</div>}
+
+            <h2 className="text-4xl font-[1000] mb-3 font-bengali drop-shadow-lg text-white leading-tight tracking-tight">
+              {t('home.intercitySearch')}
+            </h2>
+
+            <p className="text-white/90 text-base font-medium mb-6 leading-relaxed">
+              সমগ্র বাংলাদেশের রুট খুঁজুন
+            </p>
+
+            {/* Premium Feature Pills */}
+            <div className="flex flex-wrap gap-2 mb-6">
+              <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/20">
+                <MapPin className="w-3.5 h-3.5" />
+                <span className="text-xs font-bold">Bus • Train • Air</span>
               </div>
-            )}
+              <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/20">
+                <Calendar className="w-3.5 h-3.5" />
+                <span className="text-xs font-bold">Real-time Schedule</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/20">
+                <Bot className="w-3.5 h-3.5" />
+                <span className="text-xs font-bold">AI Powered</span>
+              </div>
+            </div>
+
+            {/* CTA Button */}
+            <div className="inline-flex items-center gap-3 bg-white text-blue-600 px-6 py-3.5 rounded-2xl font-black shadow-2xl shadow-white/20 group-hover:shadow-white/30 transition-all group-hover:gap-4">
+              <span className="text-sm">{t('intercity.searchRoutes')}</span>
+              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+            </div>
           </div>
 
-          {/* To Input */}
-          <div className="relative group z-40">
-            <div className="relative">
-              <Flag className="absolute left-4 top-1/2 -translate-y-1/2 text-dhaka-red w-4 h-4 z-10" />
-              <input
-                type="text"
-                placeholder="To (e.g. Cox's Bazar)..."
-                value={to}
-                onChange={(e) => { setTo(e.target.value); setShowToSuggestions(true); }}
-                onFocus={() => setShowToSuggestions(true)}
-                onBlur={() => setTimeout(() => setShowToSuggestions(false), 200)}
-                className="w-full pl-10 pr-4 py-3 bg-white text-gray-800 rounded-xl focus:outline-none focus:ring-4 focus:ring-red-400/30 font-medium placeholder:text-gray-400 text-sm"
-              />
+          {/* Icon */}
+          <div className="relative">
+            <div className="w-20 h-20 rounded-3xl bg-white/20 backdrop-blur-md flex items-center justify-center border-2 border-white/30 shadow-xl group-hover:scale-110 transition-transform">
+              <MapPin className="w-10 h-10 text-white" />
             </div>
-            {showToSuggestions && to && (
-              <div className="absolute left-0 right-0 top-full mt-1 bg-white dark:bg-slate-800 rounded-xl shadow-xl max-h-48 overflow-y-auto z-[60] text-gray-800 dark:text-gray-100 p-1 border border-gray-100 dark:border-gray-700">
-                {getFiltered(to).map(loc => (
-                  <div key={loc} className="px-3 py-2 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 rounded-lg cursor-pointer text-sm" onClick={() => setTo(loc)}>
-                    {loc}
-                  </div>
-                ))}
-                {getFiltered(to).length === 0 && <div className="p-2 text-xs text-gray-400 dark:text-gray-500 text-center">No matches</div>}
-              </div>
-            )}
+            <div className="absolute -top-2 -right-2 w-6 h-6 bg-emerald-400 rounded-full flex items-center justify-center shadow-lg">
+              <span className="text-xs font-black text-white">AI</span>
+            </div>
           </div>
-
-          {/* Offline Warning */}
-
-
-          <button
-            onClick={() => onSearch(from, to)}
-            disabled={!from || !to}
-            className="w-full bg-white/20 backdrop-blur-md hover:bg-white/30 border border-white/40 text-white font-bold py-3 rounded-xl transition-all shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-          >
-            <Search className="w-5 h-5" />
-            Search Intercity
-          </button>
         </div>
+
+        {!isOnline && (
+          <div className="mt-4 flex items-center gap-2 bg-amber-500/20 backdrop-blur-sm border border-amber-300/30 px-4 py-2 rounded-xl">
+            <AlertCircle className="w-4 h-4 text-amber-200" />
+            <span className="text-xs text-amber-100 font-medium">{t('intercity.offlineCheck')}</span>
+          </div>
+        )}
       </div>
-    </div>
+    </a>
   );
 };
 
