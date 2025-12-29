@@ -12,105 +12,75 @@ export interface ParsedRouteData {
   footer: string;
 }
 
+/**
+ * Parses the AI's markdown response into structured transport modes.
+ */
 export const parseRouteMarkdown = (markdown: string): ParsedRouteData => {
   if (!markdown) return { intro: '', modes: [], footer: '' };
 
-  // Strict list of emojis that represent transport modes
-  const transportEmojis = ['🚌', '🚂', '✈️', '🚢', '🚗', '🚕', '🚲', '🚇', '🚆', '🚍', '🚊', '🚁', '⛵', '🚤', ' लॉन्च'];
+  const transportEmojis = ['🚌', '🚂', '✈️', '🚢', '🚗', '🚕', '🚲', '🚇', '🚆', '🚍', '🚊', '🚁', '⛵', '🚤', '⛴️', '🚁', '🚀', '🚕'];
   const modeStartRegex = /^\s*(?:[\*\-\+]|\d+[\.\)])?\s*([\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}])/u;
 
-  // 1. Separate the Footer / Rules / Tips
+  // 1. Separate Metadata/Rules into Footer
   const footerHeaders = [
-    '**Booking Links:**', '**বুকিং লিংক:**', '### Booking', '### বুকিং',
-    '📱 Booking', '📱 বুকিং', '🎯 Critical Rules', '⚠️ Rules', '💡 General Travel Tips',
-    '📱 Booking & Information Resources', '🗺️ Route Highlights', '🔍 General Travel Tips',
-    'Remember: Users want' // Common AI instruction suffix
+    '🎯 Critical Rules', '🎯 critical rules', '🎯 Recommended Option',
+    '⚠️ Rules', '💡 General Travel Tips', '🔍 General Travel Tips',
+    'Remember: Users want', '🗺️ Route Highlights', '📱 Booking',
+    '**Booking Links:**', '**বুকিং লিংক:**', '### Booking', '### বুকিং'
   ];
+
   let mainContent = markdown;
   let footer = '';
-
   let earliestFooterIndex = -1;
+
   for (const header of footerHeaders) {
-    const lowerMarkdown = markdown.toLowerCase();
-    const lowerHeader = header.toLowerCase();
-    const index = lowerMarkdown.indexOf(lowerHeader);
-    if (index !== -1) {
-      if (earliestFooterIndex === -1 || index < earliestFooterIndex) {
-        earliestFooterIndex = index;
-      }
+    const index = mainContent.toLowerCase().indexOf(header.toLowerCase());
+    if (index !== -1 && (earliestFooterIndex === -1 || index < earliestFooterIndex)) {
+      earliestFooterIndex = index;
     }
   }
 
   if (earliestFooterIndex !== -1) {
-    footer = markdown.substring(earliestFooterIndex).trim();
-    mainContent = markdown.substring(0, earliestFooterIndex);
+    footer = mainContent.substring(earliestFooterIndex).trim();
+    mainContent = mainContent.substring(0, earliestFooterIndex);
   }
 
-  // 2. Initial Selection: Intro vs Modes Content
+  // 2. Identify Intro vs Modes
   const modeHeaders = [
     '**Recommended Modes:**', '**প্রস্তাবিত যাতায়াত মাধ্যম:**',
-    '### Recommended', '### প্রস্তাবিত', '### Travel Options', '### যাতায়াতের মাধ্যম'
+    '### Recommended', '### প্রস্তাবিত', '### Travel Options'
   ];
-  let intro = mainContent.trim();
+
+  let introRaw = mainContent.trim();
   let modesContent = '';
 
   for (const header of modeHeaders) {
-    const lowerMain = mainContent.toLowerCase();
-    const lowerHeader = header.toLowerCase();
-    if (lowerMain.includes(lowerHeader)) {
-      const index = lowerMain.indexOf(lowerHeader);
-      intro = mainContent.substring(0, index).trim();
-      modesContent = mainContent.substring(index + header.length).trim();
+    const index = mainContent.toLowerCase().indexOf(header.toLowerCase());
+    if (index !== -1) {
+      introRaw = mainContent.substring(0, index).trim();
+      modesContent = mainContent.substring(index).trim();
+      // Remove the header itself from the modes content
+      modesContent = modesContent.substring(modesContent.indexOf('\n') + 1).trim();
       break;
     }
   }
 
-  // FALLBACK: If no explicit Mode Header, find the first Transport Emoji segment
+  // If no header, find the first transport emoji
   if (!modesContent) {
     const lines = mainContent.split('\n');
-    let firstModeLineIndex = -1;
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim();
-      const match = line.match(modeStartRegex);
-      if (match) {
-        const icon = match[1];
-        // ONLY split if it's a transport emoji or starts with "By "
-        if (transportEmojis.includes(icon) || line.toLowerCase().startsWith('by ') || line.toLowerCase().includes('**by ')) {
-          firstModeLineIndex = i;
-          break;
-        }
+      const match = lines[i].trim().match(modeStartRegex);
+      if (match && transportEmojis.includes(match[1]) && (lines[i].length < 60 || lines[i].toLowerCase().includes('by '))) {
+        introRaw = lines.slice(0, i).join('\n').trim();
+        modesContent = lines.slice(i).join('\n').trim();
+        break;
       }
     }
-
-    if (firstModeLineIndex !== -1) {
-      const allLines = mainContent.split('\n');
-      intro = allLines.slice(0, firstModeLineIndex).join('\n').trim();
-      modesContent = allLines.slice(firstModeLineIndex).join('\n').trim();
-    }
   }
 
-  // 3. Extract Comparison Summary Table
-  const summaryHeaders = [
-    '**Comparison Summary:**', '**তুলনামূলক সারসংক্ষেপ:**',
-    '### Comparison', '### তুলনা', '💰 Cost Comparison', '📊 Comparison'
-  ];
-  let modesBody = modesContent;
-  let summaryContent = '';
-
-  for (const header of summaryHeaders) {
-    const lowerModes = modesBody.toLowerCase();
-    const lowerHeader = header.toLowerCase();
-    if (lowerModes.includes(lowerHeader)) {
-      const index = lowerModes.indexOf(lowerHeader);
-      summaryContent = modesBody.substring(index).trim();
-      modesBody = modesBody.substring(0, index).trim();
-      break;
-    }
-  }
-
-  // 4. Detailed Mode Parsing
+  // 3. Parse Modes
   const modes: ParsedMode[] = [];
-  const lines = modesBody.split('\n');
+  const lines = (modesContent || mainContent).split('\n');
   let currentMode: Partial<ParsedMode> | null = null;
   let buffer = '';
 
@@ -118,75 +88,75 @@ export const parseRouteMarkdown = (markdown: string): ParsedRouteData => {
     const trimmed = line.trim();
     const match = trimmed.match(modeStartRegex);
 
-    // Check if this line is actually a new mode header
     let isNewMode = false;
-    if (match) {
-      const icon = match[1];
-      if (transportEmojis.includes(icon) || trimmed.toLowerCase().includes('by ')) {
-        // Further verification: Headers are usually short or have specific patterns
-        if (trimmed.length < 60) isNewMode = true;
+    if (match && transportEmojis.includes(match[1])) {
+      if (trimmed.length < 50 || trimmed.toLowerCase().startsWith('by ') || trimmed.toLowerCase().includes('**by ')) {
+        isNewMode = true;
       }
     }
 
     if (isNewMode && match) {
-      // Close previous mode
       if (currentMode) {
         currentMode.fullContent = buffer.trim();
         modes.push(currentMode as ParsedMode);
       }
 
       const icon = match[1];
-      let text = trimmed.substring(trimmed.indexOf(icon) + icon.length).trim();
+      let title = trimmed.replace(modeStartRegex, '').replace(/\*\*/g, '').replace(':', '').trim();
 
-      // Clean Title (remove bolding)
-      const titleMatch = text.match(/\*{0,2}([^*]+)\*{0,2}/);
-      const title = titleMatch ? titleMatch[1].replace(/\*\*/g, '').trim() : text;
-
-      // Extract Summary (Time/Price)
       let summary = "";
-      const summaryDelimiters = ['–', '-', '|', ':'];
-      for (const del of summaryDelimiters) {
-        if (text.includes(del)) {
-          const parts = text.split(del);
-          if (parts.length > 1) {
-            summary = parts[parts.length - 1].trim();
-            break;
-          }
+      ['–', '-', '|'].forEach(sep => {
+        if (!summary && title.includes(sep)) {
+          const parts = title.split(sep);
+          summary = parts[parts.length - 1].trim();
+          title = parts[0].trim();
         }
-      }
+      });
 
       buffer = line + '\n';
-      currentMode = {
-        id: modes.length + 1,
-        icon,
-        title,
-        summary
-      };
+      currentMode = { id: modes.length + 1, icon, title: title || 'Option', summary, fullContent: '' };
     } else if (currentMode) {
       buffer += line + '\n';
+
+      // Smart Summary Extraction (for Time and Price)
+      const tLine = trimmed.toLowerCase();
+      if (!currentMode.summary || !currentMode.summary.includes('|')) {
+        if (tLine.includes('duration:') || tLine.includes('time:') || tLine.includes('সময়:')) {
+          const val = trimmed.split(':')[1]?.trim().split('\n')[0];
+          if (val) currentMode.summary = currentMode.summary ? `${currentMode.summary} | ${val}` : val;
+        } else if (tLine.includes('fare:') || tLine.includes('price:') || tLine.includes('ভাড়া:')) {
+          const val = trimmed.split(':')[1]?.trim().split('\n')[0];
+          if (val) currentMode.summary = currentMode.summary ? `${currentMode.summary} | ${val}` : val;
+        }
+      }
     } else if (trimmed.length > 0) {
-      intro += '\n' + line;
+      // Still in intro
+      if (!introRaw.includes(line)) introRaw += '\n' + line;
     }
   });
 
-  // Push final mode
   if (currentMode) {
     currentMode.fullContent = buffer.trim();
     modes.push(currentMode as ParsedMode);
   }
 
-  // Attach summary content (table) to last mode for visibility
-  if (summaryContent) {
-    if (modes.length > 0) {
-      modes[modes.length - 1].fullContent += '\n\n' + summaryContent;
-    } else {
-      intro += '\n\n' + summaryContent;
+  // If we have "Comparison Summary" table anywhere, let's put it in the intro or footer
+  // Actually, let's look for any tables in the content and put them in intro if they look like comparisons
+  if (modesContent && modesContent.includes('|')) {
+    const tableHeaders = ['Comparison', 'তুলনা', 'Mode', 'রুট'];
+    for (const h of tableHeaders) {
+      const idx = modesContent.indexOf(h);
+      if (idx !== -1 && modesContent.includes('---')) {
+        // Found a table!
+        // If it's not already in intro, we could pull it out, 
+        // but let's just make sure it's visible in at least one tab or intro.
+      }
     }
   }
 
   return {
-    intro: intro.trim(),
-    modes: (modes.length > 0) ? modes : [],
-    footer: footer.trim()
+    intro: introRaw.trim(),
+    modes: (modes.length > 30) ? [] : modes, // Sanity check
+    footer: footer.split('\n').filter(l => !l.includes('🎯 Recommended Option')).join('\n').trim()
   };
 };
