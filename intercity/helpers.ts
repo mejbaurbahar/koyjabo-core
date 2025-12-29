@@ -15,14 +15,16 @@ export interface ParsedRouteData {
 export const parseRouteMarkdown = (markdown: string): ParsedRouteData => {
   if (!markdown) return { intro: '', modes: [], footer: '' };
 
+  // Strict list of emojis that represent transport modes
+  const transportEmojis = ['🚌', '🚂', '✈️', '🚢', '🚗', '🚕', '🚲', '🚇', '🚆', '🚍', '🚊', '🚁', '⛵', '🚤', ' लॉन्च'];
   const modeStartRegex = /^\s*(?:[\*\-\+]|\d+[\.\)])?\s*([\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}])/u;
-  const transportEmojis = ['🚌', '🚂', '✈️', '🚢', '🚗', '🚕', '🚲', '🚇', '🚠', '⛵', '🚤', '🚆', '🚍', '🚊', '🚁'];
 
-  // 1. Separate the Footer/Booking Links / Rules
+  // 1. Separate the Footer / Rules / Tips
   const footerHeaders = [
     '**Booking Links:**', '**বুকিং লিংক:**', '### Booking', '### বুকিং',
     '📱 Booking', '📱 বুকিং', '🎯 Critical Rules', '⚠️ Rules', '💡 General Travel Tips',
-    '📱 Booking & Information Resources'
+    '📱 Booking & Information Resources', '🗺️ Route Highlights', '🔍 General Travel Tips',
+    'Remember: Users want' // Common AI instruction suffix
   ];
   let mainContent = markdown;
   let footer = '';
@@ -44,7 +46,7 @@ export const parseRouteMarkdown = (markdown: string): ParsedRouteData => {
     mainContent = markdown.substring(0, earliestFooterIndex);
   }
 
-  // 2. Separate Intro from Modes
+  // 2. Initial Selection: Intro vs Modes Content
   const modeHeaders = [
     '**Recommended Modes:**', '**প্রস্তাবিত যাতায়াত মাধ্যম:**',
     '### Recommended', '### প্রস্তাবিত', '### Travel Options', '### যাতায়াতের মাধ্যম'
@@ -63,36 +65,34 @@ export const parseRouteMarkdown = (markdown: string): ParsedRouteData => {
     }
   }
 
-  // Fallback: If no mode header, look for the first transport emoji start or "By Bus" line
+  // FALLBACK: If no explicit Mode Header, find the first Transport Emoji segment
   if (!modesContent) {
     const lines = mainContent.split('\n');
-    let splitIndex = -1;
+    let firstModeLineIndex = -1;
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();
       const match = line.match(modeStartRegex);
       if (match) {
         const icon = match[1];
-        if (transportEmojis.includes(icon) || line.toLowerCase().includes('by ')) {
-          // If we are past the first 2 lines, this is likely the start of modes
-          if (i > 1) {
-            splitIndex = i;
-            break;
-          }
+        // ONLY split if it's a transport emoji or starts with "By "
+        if (transportEmojis.includes(icon) || line.toLowerCase().startsWith('by ') || line.toLowerCase().includes('**by ')) {
+          firstModeLineIndex = i;
+          break;
         }
       }
     }
 
-    if (splitIndex !== -1) {
+    if (firstModeLineIndex !== -1) {
       const allLines = mainContent.split('\n');
-      intro = allLines.slice(0, splitIndex).join('\n').trim();
-      modesContent = allLines.slice(splitIndex).join('\n').trim();
+      intro = allLines.slice(0, firstModeLineIndex).join('\n').trim();
+      modesContent = allLines.slice(firstModeLineIndex).join('\n').trim();
     }
   }
 
-  // 3. Special handling for "Comparison Summary" or similar tables at the end of modes
+  // 3. Extract Comparison Summary Table
   const summaryHeaders = [
     '**Comparison Summary:**', '**তুলনামূলক সারসংক্ষেপ:**',
-    '### Comparison', '### তুলনা', '💰 Cost Comparison', '💰 তুলনা'
+    '### Comparison', '### তুলনা', '💰 Cost Comparison', '📊 Comparison'
   ];
   let modesBody = modesContent;
   let summaryContent = '';
@@ -108,7 +108,7 @@ export const parseRouteMarkdown = (markdown: string): ParsedRouteData => {
     }
   }
 
-  // 4. Parse individual modes
+  // 4. Detailed Mode Parsing
   const modes: ParsedMode[] = [];
   const lines = modesBody.split('\n');
   let currentMode: Partial<ParsedMode> | null = null;
@@ -116,33 +116,42 @@ export const parseRouteMarkdown = (markdown: string): ParsedRouteData => {
 
   lines.forEach((line) => {
     const trimmed = line.trim();
-    if (trimmed.length === 0) {
-      if (currentMode) buffer += '\n';
-      return;
+    const match = trimmed.match(modeStartRegex);
+
+    // Check if this line is actually a new mode header
+    let isNewMode = false;
+    if (match) {
+      const icon = match[1];
+      if (transportEmojis.includes(icon) || trimmed.toLowerCase().includes('by ')) {
+        // Further verification: Headers are usually short or have specific patterns
+        if (trimmed.length < 60) isNewMode = true;
+      }
     }
 
-    const match = trimmed.match(modeStartRegex);
-    const isLikelyHeader = match && (trimmed.length < 50 || trimmed.toLowerCase().includes('by '));
-
-    if (isLikelyHeader) {
+    if (isNewMode && match) {
+      // Close previous mode
       if (currentMode) {
         currentMode.fullContent = buffer.trim();
         modes.push(currentMode as ParsedMode);
       }
 
-      const icon = match![1];
+      const icon = match[1];
       let text = trimmed.substring(trimmed.indexOf(icon) + icon.length).trim();
 
+      // Clean Title (remove bolding)
       const titleMatch = text.match(/\*{0,2}([^*]+)\*{0,2}/);
       const title = titleMatch ? titleMatch[1].replace(/\*\*/g, '').trim() : text;
 
+      // Extract Summary (Time/Price)
       let summary = "";
-      if (text.includes('–')) {
-        summary = text.split('–')[1].trim();
-      } else if (text.includes('-')) {
-        const parts = text.split('-');
-        if (parts.length > 1) {
-          summary = parts[parts.length - 1].trim();
+      const summaryDelimiters = ['–', '-', '|', ':'];
+      for (const del of summaryDelimiters) {
+        if (text.includes(del)) {
+          const parts = text.split(del);
+          if (parts.length > 1) {
+            summary = parts[parts.length - 1].trim();
+            break;
+          }
         }
       }
 
@@ -155,16 +164,18 @@ export const parseRouteMarkdown = (markdown: string): ParsedRouteData => {
       };
     } else if (currentMode) {
       buffer += line + '\n';
-    } else {
+    } else if (trimmed.length > 0) {
       intro += '\n' + line;
     }
   });
 
+  // Push final mode
   if (currentMode) {
     currentMode.fullContent = buffer.trim();
     modes.push(currentMode as ParsedMode);
   }
 
+  // Attach summary content (table) to last mode for visibility
   if (summaryContent) {
     if (modes.length > 0) {
       modes[modes.length - 1].fullContent += '\n\n' + summaryContent;
@@ -175,7 +186,7 @@ export const parseRouteMarkdown = (markdown: string): ParsedRouteData => {
 
   return {
     intro: intro.trim(),
-    modes,
+    modes: (modes.length > 0) ? modes : [],
     footer: footer.trim()
   };
 };
