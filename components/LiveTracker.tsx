@@ -334,7 +334,7 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
                 }`}
             >
               <Radio className={`w-4 h-4 ${isBroadcasting ? 'animate-ping' : ''}`} />
-              {isBroadcasting ? 'Stop Casting' : 'Go Live (Inside Bus)'}
+              {isBroadcasting ? t('liveNav.stopCasting') : t('liveNav.goLive')}
             </button>
           </div>
         </div>
