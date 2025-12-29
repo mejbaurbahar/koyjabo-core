@@ -265,7 +265,7 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
         {onBack && (
           <button
             onClick={onBack}
-            className="mb-3 flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-dhaka-green dark:hover:text-dhaka-green transition-colors"
+            className="hidden md:flex mb-3 items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-dhaka-green dark:hover:text-dhaka-green transition-colors"
             aria-label="Go back"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
