@@ -89,17 +89,20 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
 
     // Helper to get coords
     const getCoords = (name: string): [number, number] | null => {
+      if (!name) return null;
       // 1. Try direct match or Bengali mapping
       let searchName = name;
-      const bnMatch = Object.keys(BENGALI_TO_ENGLISH_NAMES).find(bn => name.includes(bn));
+      const bnMatch = Object.keys(BENGALI_TO_ENGLISH_NAMES).find(bn => name && name.includes(bn));
       if (bnMatch) {
         searchName = BENGALI_TO_ENGLISH_NAMES[bnMatch];
       }
 
       // 2. Find in coordinates map
-      const key = Object.keys(DISTRICT_COORDINATES).find(k =>
-        searchName.toLowerCase().includes(k.toLowerCase()) || k.toLowerCase().includes(searchName.toLowerCase())
-      );
+      const key = Object.keys(DISTRICT_COORDINATES).find(k => {
+        const sName = (searchName || '').toLowerCase();
+        const kName = k.toLowerCase();
+        return sName.includes(kName) || kName.includes(sName);
+      });
       return key ? DISTRICT_COORDINATES[key] : null;
     };
 
@@ -248,7 +251,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
       const lat = currentSegment.p1[0] + (currentSegment.p2[0] - currentSegment.p1[0]) * segmentProgress;
       const lng = currentSegment.p1[1] + (currentSegment.p2[1] - currentSegment.p1[1]) * segmentProgress;
 
-      const rawMode = currentSegment.mode;
+      const rawMode = currentSegment.mode || '';
       let iconChar = '📍';
       for (const key of Object.keys(MODE_ICONS)) {
         if (rawMode.includes(key)) {

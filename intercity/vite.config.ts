@@ -35,18 +35,20 @@ export default defineConfig(({ mode }) => {
           theme_color: '#006a4e',
           background_color: '#ffffff',
           display: 'standalone',
-          start_url: '/intercity',
-          scope: '/intercity',
+          start_url: '/intercity/',
+          scope: '/intercity/',
           icons: [
             {
-              src: '/icon-192x192.png',
+              src: 'logo.png',
               sizes: '192x192',
-              type: 'image/png'
+              type: 'image/png',
+              purpose: 'any maskable'
             },
             {
-              src: '/icon-512x512.png',
+              src: 'logo.png',
               sizes: '512x512',
-              type: 'image/png'
+              type: 'image/png',
+              purpose: 'any maskable'
             }
           ]
         },

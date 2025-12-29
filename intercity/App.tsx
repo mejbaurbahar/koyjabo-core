@@ -183,7 +183,13 @@ function App() {
         }
       }
 
-      setResult(data as RouteResponse);
+      const resultData = data as RouteResponse;
+      // Ensure essential fields are present for ResultCard
+      if (!resultData.from) resultData.from = from;
+      if (!resultData.to) resultData.to = to;
+      if (!resultData.date) resultData.date = date;
+
+      setResult(resultData);
 
       // Increment usage on success if it's not a cached response
       incrementUsage();

@@ -50,3 +50,72 @@ body {
 .hidden-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* Premium Markdown Table Styles */
+.prose table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.dark .prose table {
+  border-color: #334155;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
+
+.prose th {
+  background-color: #f8fafc;
+  padding: 0.875rem 1rem;
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #475569;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.dark .prose th {
+  background-color: #1e293b;
+  color: #94a3b8;
+  border-bottom-color: #334155;
+}
+
+.prose td {
+  padding: 0.875rem 1rem;
+  font-size: 0.9rem;
+  color: #334155;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.dark .prose td {
+  color: #cbd5e1;
+  border-bottom-color: #1e293b;
+}
+
+.prose tr:last-child td {
+  border-bottom: none;
+}
+
+.prose tr:hover td {
+  background-color: #f8fafc;
+}
+
+.dark .prose tr:hover td {
+  background-color: rgba(30, 41, 59, 0.5);
+}
+
+.prose th:first-child, .prose td:first-child {
+  padding-left: 1.25rem;
+}
+
+.prose th:last-child, .prose td:last-child {
+  padding-right: 1.25rem;
+}
