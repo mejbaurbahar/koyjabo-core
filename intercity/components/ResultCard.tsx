@@ -124,12 +124,6 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400">{data.to}</span>
             </h2>
           </div>
-
-          <div className="flex gap-3">
-            <button onClick={handleCopy} className="p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-750 transition-all shadow-xl shadow-slate-200/50 dark:shadow-none hover:scale-105 active:scale-95">
-              <Share2 size={24} strokeWidth={2.5} />
-            </button>
-          </div>
         </div>
 
         {/* 2. MODE SELECTOR - PREMIUM CHIPS */}
