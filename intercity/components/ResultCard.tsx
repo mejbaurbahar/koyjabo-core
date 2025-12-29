@@ -224,9 +224,9 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
           {/* Quick Stats Overlay - Visual Flair */}
           <div className="p-8 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[32px] text-white shadow-2xl shadow-blue-500/20 overflow-hidden relative group">
             <Compass className="absolute -bottom-6 -right-6 w-32 h-32 opacity-10 rotate-12 transition-transform group-hover:scale-110" />
-            <p className="text-blue-100 text-[10px] font-black uppercase tracking-[0.2em] mb-4">Journey Insight</p>
-            <h5 className="text-xl font-black mb-2 leading-tight">Ready to start your adventure?</h5>
-            <p className="text-sm text-blue-100 opacity-80">Book your tickets early to secure the best seats and prices.</p>
+            <p className="text-blue-100 text-[10px] font-black uppercase tracking-[0.2em] mb-4">{t('intercity.journeyInsightTitle') || 'Journey Insight'}</p>
+            <h5 className="text-xl font-black mb-2 leading-tight">{t('intercity.journeyInsightHeading') || 'Ready to start your adventure?'}</h5>
+            <p className="text-sm text-blue-100 opacity-80">{t('intercity.journeyInsightDescription') || 'Book your tickets early to secure the best seats and prices.'}</p>
           </div>
         </div>
       </div>

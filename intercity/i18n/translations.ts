@@ -1149,6 +1149,9 @@ export const translations: Record<Language, Translations> = {
             instant: 'Instant',
             ai: 'AI',
             analyzingRoute: 'Analyzing route and checking schedule...',
+            journeyInsightTitle: 'Journey Insight',
+            journeyInsightHeading: 'Ready to start your adventure?',
+            journeyInsightDescription: 'Book your tickets early to secure the best seats and prices.',
             locationCategories: {
                 "Popular Tourist Spots": "Popular Tourist Spots",
                 "Dhaka Division": "Dhaka Division",
@@ -1197,3 +1200,4 @@ export const translations: Record<Language, Translations> = {
 };
 
 export default translations;
+
