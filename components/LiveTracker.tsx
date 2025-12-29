@@ -345,26 +345,26 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
             <div className="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-xl text-center">
               <div className="flex items-center justify-center gap-1 text-blue-600 dark:text-blue-400 mb-1">
                 <Gauge className="w-3 h-3" />
-                <span className="text-[10px] font-bold uppercase">Speed</span>
+                <span className="text-[10px] font-bold uppercase">{t('liveNav.speed')}</span>
               </div>
               <p className="text-lg font-bold text-blue-900 dark:text-blue-100">{formatNumber((speed || 0).toFixed(0))} <span className="text-[10px] font-normal text-blue-600 dark:text-blue-400">km/h</span></p>
             </div>
             <div className="bg-purple-50 dark:bg-purple-900/20 p-2 rounded-xl text-center">
               <div className="flex items-center justify-center gap-1 text-purple-600 dark:text-purple-400 mb-1">
                 <Flag className="w-3 h-3" />
-                <span className="text-[10px] font-bold uppercase">Dist</span>
+                <span className="text-[10px] font-bold uppercase">{t('liveNav.dist')}</span>
               </div>
               <p className="text-lg font-bold text-purple-900 dark:text-purple-100">{formatNumber((distToDest / 1000).toFixed(1))} <span className="text-[10px] font-normal text-purple-600 dark:text-purple-400">km</span></p>
             </div>
             <div className="bg-green-50 dark:bg-green-900/20 p-2 rounded-xl text-center">
               <div className="flex items-center justify-center gap-1 text-green-600 dark:text-green-400 mb-1">
                 <Clock className="w-3 h-3" />
-                <span className="text-[10px] font-bold uppercase">ETA</span>
+                <span className="text-[10px] font-bold uppercase">{t('liveNav.eta')}</span>
               </div>
               <p className="text-lg font-bold text-green-900 dark:text-green-100">
                 {etaMinutes < 60
-                  ? `${formatNumber(etaMinutes.toFixed(0))} min`
-                  : `${formatNumber(Math.floor(etaMinutes / 60))}h ${formatNumber(Math.round(etaMinutes % 60))}m`
+                  ? `${formatNumber(etaMinutes.toFixed(0))} ${t('liveNav.min')}`
+                  : `${formatNumber(Math.floor(etaMinutes / 60))}${t('liveNav.h')} ${formatNumber(Math.round(etaMinutes % 60))}${t('liveNav.m')}`
                 }
               </p>
             </div>
@@ -378,7 +378,7 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
               <div>
                 <p className="text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-wide">{t('liveNav.nextStopIn')}</p>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-lg font-bold text-gray-800 dark:text-gray-100">{formatNumber((distToNext / 1000 * 3 + 2).toFixed(0))} min</span>
+                  <span className="text-lg font-bold text-gray-800 dark:text-gray-100">{formatNumber((distToNext / 1000 * 3 + 2).toFixed(0))} {t('liveNav.min')}</span>
                   <span className="text-xs text-gray-400">({formatNumber((distToNext / 1000).toFixed(1))} km)</span>
                 </div>
               </div>
