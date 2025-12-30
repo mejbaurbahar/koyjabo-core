@@ -100,19 +100,6 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, language })
 
     return (
         <div className="flex flex-col h-full bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-y-auto">
-            {/* Header with Back Button */}
-            <div className="sticky top-0 z-20 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-gray-200 dark:border-gray-700 shadow-sm">
-                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
-                    <button
-                        onClick={onBack}
-                        className="inline-flex items-center gap-2 text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 font-medium transition-colors group"
-                    >
-                        <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-                        <span>{language === 'bn' ? 'ব্লগে ফিরে যান' : 'Back to Blog'}</span>
-                    </button>
-                </div>
-            </div>
-
             {/* Hero Image */}
             <div className="w-full bg-gradient-to-br from-teal-500 to-cyan-600">
                 <div className="max-w-5xl mx-auto">
@@ -130,6 +117,15 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, language })
             </div>
 
             <article className="max-w-5xl mx-auto px-4 sm:px-6 py-8 md:py-12 w-full">
+                {/* Back Button - Inside Content */}
+                <button
+                    onClick={onBack}
+                    className="inline-flex items-center gap-2 px-4 py-2 mb-8 text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 font-semibold transition-all bg-teal-50 dark:bg-teal-900/20 hover:bg-teal-100 dark:hover:bg-teal-900/30 rounded-xl group"
+                >
+                    <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+                    <span>{language === 'bn' ? 'ব্লগে ফিরে যান' : 'Back to Blog'}</span>
+                </button>
+
                 {/* Post Header */}
                 <header className="mb-8">
                     {/* Category & Metadata */}
@@ -212,21 +208,21 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, language })
                 {/* Post Content with Better Formatting */}
                 <div className="prose prose-lg md:prose-xl dark:prose-invert max-w-none
           prose-headings:font-black prose-headings:text-gray-900 dark:prose-headings:text-gray-100 prose-headings:scroll-mt-20
-          prose-h2:text-3xl md:prose-h2:text-4xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b-4 prose-h2:border-teal-500
-          prose-h3:text-2xl md:prose-h3:text-3xl prose-h3:mt-12 prose-h3:mb-4 prose-h3:text-teal-700 dark:prose-h3:text-teal-400
-          prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-6 prose-p:text-base md:prose-p:text-lg
-          prose-a:text-teal-600 dark:prose-a:text-teal-400 prose-a:font-semibold prose-a:no-underline hover:prose-a:underline hover:prose-a:text-teal-700
-          prose-strong:text-gray-900 dark:prose-strong:text-gray-100 prose-strong:font-bold
-          prose-ul:my-8 prose-ul:list-disc prose-ul:pl-8 prose-ul:space-y-3
-          prose-ol:my-8 prose-ol:list-decimal prose-ol:pl-8 prose-ol:space-y-3
-          prose-li:text-gray-700 dark:prose-li:text-gray-300 prose-li:text-base md:prose-li:text-lg prose-li:leading-relaxed
-          prose-blockquote:border-l-4 prose-blockquote:border-teal-500 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-400 prose-blockquote:bg-teal-50 dark:prose-blockquote:bg-slate-800/50 prose-blockquote:py-4 prose-blockquote:rounded-r-lg
-          prose-code:bg-teal-100 dark:prose-code:bg-slate-800 prose-code:text-teal-800 dark:prose-code:text-teal-300 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:font-mono
-          prose-pre:bg-slate-900 dark:prose-pre:bg-slate-950 prose-pre:rounded-xl prose-pre:shadow-xl
-          prose-table:border-collapse prose-table:w-full prose-table:shadow-md prose-table:rounded-lg prose-table:overflow-hidden
-          prose-th:bg-teal-600 prose-th:text-white prose-th:p-4 prose-th:text-left prose-th:font-bold prose-th:text-base
-          prose-td:border prose-td:border-gray-200 dark:prose-td:border-gray-700 prose-td:p-4 prose-td:bg-white dark:prose-td:bg-slate-800
-          prose-img:rounded-xl prose-img:shadow-2xl prose-img:my-8
+          prose-h2:text-3xl md:prose-h2:text-4xl prose-h2:mt-20 prose-h2:mb-8 prose-h2:pb-5 prose-h2:border-b-4 prose-h2:border-teal-500
+          prose-h3:text-2xl md:prose-h3:text-3xl prose-h3:mt-16 prose-h3:mb-6 prose-h3:text-teal-700 dark:prose-h3:text-teal-400
+          prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-loose prose-p:mb-8 prose-p:text-base md:prose-p:text-xl
+          prose-a:text-teal-600 dark:prose-a:text-teal-400 prose-a:font-bold prose-a:no-underline hover:prose-a:underline hover:prose-a:text-teal-700
+          prose-strong:text-gray-900 dark:prose-strong:text-gray-100 prose-strong:font-black prose-strong:text-lg
+          prose-ul:my-10 prose-ul:list-disc prose-ul:pl-8 prose-ul:space-y-4
+          prose-ol:my-10 prose-ol:list-decimal prose-ol:pl-8 prose-ol:space-y-4
+          prose-li:text-gray-700 dark:prose-li:text-gray-300 prose-li:text-base md:prose-li:text-lg prose-li:leading-loose prose-li:mb-3
+          prose-blockquote:border-l-4 prose-blockquote:border-teal-500 prose-blockquote:pl-8 prose-blockquote:italic prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-400 prose-blockquote:bg-teal-50 dark:prose-blockquote:bg-slate-800/50 prose-blockquote:py-6 prose-blockquote:rounded-r-lg prose-blockquote:my-8
+          prose-code:bg-teal-100 dark:prose-code:bg-slate-800 prose-code:text-teal-800 dark:prose-code:text-teal-300 prose-code:px-3 prose-code:py-1.5 prose-code:rounded prose-code:text-base prose-code:font-mono prose-code:font-semibold
+          prose-pre:bg-slate-900 dark:prose-pre:bg-slate-950 prose-pre:rounded-xl prose-pre:shadow-2xl prose-pre:p-6 prose-pre:my-8
+          prose-table:border-collapse prose-table:w-full prose-table:shadow-lg prose-table:rounded-lg prose-table:overflow-hidden prose-table:my-10
+          prose-th:bg-teal-600 prose-th:text-white prose-th:p-5 prose-th:text-left prose-th:font-black prose-th:text-lg
+          prose-td:border prose-td:border-gray-200 dark:prose-td:border-gray-700 prose-td:p-5 prose-td:bg-white dark:prose-td:bg-slate-800 prose-td:text-base
+          prose-img:rounded-2xl prose-img:shadow-2xl prose-img:my-12
         ">
                     <ReactMarkdown>{language === 'bn' ? post.bnContent : post.content}</ReactMarkdown>
                 </div>
