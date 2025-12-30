@@ -4,6 +4,12 @@ import { BLOG_POSTS, BlogPost as BlogPostType } from '../data/blogPosts';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
+declare global {
+    interface Window {
+        adsbygoogle: any[];
+    }
+}
+
 interface BlogPostProps {
     postSlug: string;
     onBack: () => void;
@@ -68,12 +74,26 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
             });
             document.head.appendChild(scriptTag);
 
+            // Initialize AdSense ads safely
+            try {
+                if (typeof window !== 'undefined' && window.adsbygoogle) {
+                    // We have 3 ad units in this component, so we need up to 3 pushes
+                    // It's safer to push sequentially as the ads are rendered
+                    const adsContainers = document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status])');
+                    adsContainers.forEach(() => {
+                        (window.adsbygoogle = window.adsbygoogle || []).push({});
+                    });
+                }
+            } catch (err) {
+                console.error('AdSense initialization error:', err);
+            }
+
             return () => {
                 document.head.removeChild(scriptTag);
                 document.title = 'কই যাবো - Dhaka Bus & Transport Guide';
             };
         }
-    }, [post, language]);
+    }, [post, language, postSlug]);
 
     // Copy blog URL to clipboard
     const handleShare = async () => {
@@ -359,18 +379,6 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                 <ArrowUp className="w-6 h-6" />
             </button>
 
-            {/* Initialize AdSense ads */}
-            <script
-                dangerouslySetInnerHTML={{
-                    __html: `
-            if (typeof window !== 'undefined' && window.adsbygoogle) {
-              (adsbygoogle = window.adsbygoogle || []).push({});
-              (adsbygoogle = window.adsbygoogle || []).push({});
-              (adsbygoogle = window.adsbygoogle || []).push({});
-            }
-          `
-                }}
-            />
         </div>
     );
 };
