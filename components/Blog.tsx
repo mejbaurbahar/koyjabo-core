@@ -53,6 +53,16 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                             onClick={() => onSelectPost(featuredPost.slug)}
                             className="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer border border-gray-100 dark:border-gray-700"
                         >
+                            {/* Cover Image */}
+                            <div className="relative h-64 sm:h-80 overflow-hidden">
+                                <img
+                                    src={featuredPost.coverImage}
+                                    alt={language === 'bn' ? featuredPost.bnTitle : featuredPost.title}
+                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                            </div>
+
                             <div className="p-6 sm:p-8">
                                 <div className="flex flex-wrap items-center gap-3 mb-4">
                                     <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full text-xs font-medium">
@@ -106,14 +116,25 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                             <div
                                 key={post.id}
                                 onClick={() => onSelectPost(post.slug)}
-                                className="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 dark:border-gray-700 hover:-translate-y-1"
+                                className="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 dark:border-gray-700 hover:-translate-y-1 flex flex-col"
                             >
-                                <div className="p-6">
-                                    <div className="flex flex-wrap items-center gap-2 mb-3">
-                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 rounded-lg text-xs font-medium">
+                                {/* Cover Image */}
+                                <div className="relative h-48 overflow-hidden">
+                                    <img
+                                        src={post.coverImage}
+                                        alt={language === 'bn' ? post.bnTitle : post.title}
+                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                    />
+                                    <div className="absolute top-3 left-3">
+                                        <span className="inline-flex items-center gap-1 px-3 py-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm text-teal-600 dark:text-teal-400 rounded-lg text-xs font-medium shadow-lg">
                                             <Tag className="w-3 h-3" />
                                             {post.category}
                                         </span>
+                                    </div>
+                                </div>
+
+                                <div className="p-6 flex-1 flex flex-col">
+                                    <div className="flex items-center gap-2 mb-3">
                                         <span className="inline-flex items-center gap-1 text-gray-500 dark:text-gray-400 text-xs">
                                             <Clock className="w-3 h-3" />
                                             {post.readTime}

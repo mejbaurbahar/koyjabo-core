@@ -7,6 +7,7 @@ export interface BlogPost {
     bnExcerpt: string;
     content: string;
     bnContent: string;
+    coverImage: string;
     author: string;
     publishDate: string;
     readTime: string;
@@ -22,6 +23,7 @@ export const BLOG_POSTS: BlogPost[] = [
         bnTitle: 'ঢাকার সেরা ১০টি বাস রুট: সম্পূর্ণ গাইড ২০২৪',
         excerpt: 'Discover the most efficient and popular bus routes in Dhaka. Learn which buses to take for your daily commute with our comprehensive guide.',
         bnExcerpt: 'ঢাকার সবচেয়ে দক্ষ এবং জনপ্রিয় বাস রুটগুলি আবিষ্কার করুন। আমাদের বিস্তৃত গাইড দিয়ে আপনার দৈনিক যাতায়াতের জন্য কোন বাসগুলি নিতে হবে তা জানুন।',
+        coverImage: '/blog-best-bus-routes.png',
         content: `
 # Top 10 Best Bus Routes in Dhaka
 
@@ -199,6 +201,7 @@ These routes form the backbone of Dhaka's public transport system. Use the ক�
         bnTitle: 'ঢাকা মেট্রো রেল সম্পূর্ণ গাইড: এমআরটি লাইন-৬ রুট, ভাড়া ও সময়সূচী',
         excerpt: 'Everything you need to know about Dhaka Metro Rail (MRT Line-6): stations, fares, timings, and how to travel. Complete guide for commuters.',
         bnExcerpt: 'ঢাকা মেট্রো রেল (এমআরটি লাইন-৬) সম্পর্কে আপনার যা জানা দরকার: স্টেশন, ভাড়া, টাইমিং এবং কীভাবে ভ্রমণ করবেন। যাত্রীদের জন্য সম্পূর্ণ গাইড।',
+        coverImage: '/blog-metro-rail-guide.png',
         content: `
 # Complete Dhaka Metro Rail Guide (MRT Line-6)
 
