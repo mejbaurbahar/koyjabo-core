@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ArrowLeft, Clock, Calendar, Tag, Share2, Check, Copy } from 'lucide-react';
 import { BLOG_POSTS, BlogPost as BlogPostType } from '../data/blogPosts';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface BlogPostProps {
     postSlug: string;
@@ -225,7 +226,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
           prose-td:border prose-td:border-gray-200 dark:prose-td:border-gray-700 prose-td:p-5 prose-td:bg-white dark:prose-td:bg-slate-800 prose-td:text-base
           prose-img:rounded-2xl prose-img:shadow-2xl prose-img:my-12
         ">
-                    <ReactMarkdown>{language === 'bn' ? post.bnContent : post.content}</ReactMarkdown>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{language === 'bn' ? post.bnContent : post.content}</ReactMarkdown>
                 </div>
 
                 {/* AdSense - Middle of Post */}
