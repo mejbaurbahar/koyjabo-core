@@ -38,6 +38,7 @@ import DailyJourneyView from './components/DailyJourneyView';
 import SocialShare from './components/SocialShare';
 import NotificationBanner from './components/NotificationBanner';
 import Blog from './components/Blog';
+import BlogPostDetail from './components/BlogPostDetail';
 
 
 
@@ -432,6 +433,7 @@ const App: React.FC = () => {
 
   const [view, setView] = useState<AppView>(getStoredView);
   const [selectedBus, setSelectedBus] = useState<BusRoute | null>(getStoredBus);
+  const [selectedBlogPost, setSelectedBlogPost] = useState<string | null>(null);
   const [initialLocationChecked, setInitialLocationChecked] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -3346,14 +3348,24 @@ const App: React.FC = () => {
             {view === AppView.WHY_USE && renderWhyUse()}
             {view === AppView.FAQ && renderFAQ()}
             {view === AppView.BLOG && (
-              <Blog
-                onBack={() => setView(AppView.HOME)}
-                onSelectPost={(slug) => {
-                  // For now, just show a message. We'll implement individual post view later
-                  console.log('Selected blog post:', slug);
-                }}
-                language={language}
-              />
+              selectedBlogPost ? (
+                <BlogPostDetail
+                  postSlug={selectedBlogPost}
+                  onBack={() => {
+                    setSelectedBlogPost(null);
+                    setView(AppView.BLOG);
+                  }}
+                  language={language}
+                />
+              ) : (
+                <Blog
+                  onBack={() => setView(AppView.HOME)}
+                  onSelectPost={(slug) => {
+                    setSelectedBlogPost(slug);
+                  }}
+                  language={language}
+                />
+              )
             )}
             {view === AppView.HISTORY && (
               <HistoryView
