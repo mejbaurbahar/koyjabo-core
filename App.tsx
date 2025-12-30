@@ -37,6 +37,7 @@ import SettingsPage from './components/SettingsPage';
 import DailyJourneyView from './components/DailyJourneyView';
 import SocialShare from './components/SocialShare';
 import NotificationBanner from './components/NotificationBanner';
+import Blog from './components/Blog';
 
 
 
@@ -3344,6 +3345,16 @@ const App: React.FC = () => {
             {view === AppView.ABOUT && renderAbout()}
             {view === AppView.WHY_USE && renderWhyUse()}
             {view === AppView.FAQ && renderFAQ()}
+            {view === AppView.BLOG && (
+              <Blog
+                onBack={() => setView(AppView.HOME)}
+                onSelectPost={(slug) => {
+                  // For now, just show a message. We'll implement individual post view later
+                  console.log('Selected blog post:', slug);
+                }}
+                language={language}
+              />
+            )}
             {view === AppView.HISTORY && (
               <HistoryView
                 onBack={() => setView(AppView.HOME)}
