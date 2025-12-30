@@ -60,15 +60,19 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, language })
 
     // Copy blog URL to clipboard
     const handleShare = async () => {
-        const url = window.location.href;
+        // Create full URL with blog post path
+        const baseUrl = window.location.origin; // e.g., https://koyjabo.com
+        const blogPath = `/blog/${postSlug}`; // e.g., /blog/best-bus-routes-dhaka
+        const fullUrl = `${baseUrl}${blogPath}`;
+
         try {
-            await navigator.clipboard.writeText(url);
+            await navigator.clipboard.writeText(fullUrl);
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
         } catch (err) {
             // Fallback for older browsers
             const textArea = document.createElement('textarea');
-            textArea.value = url;
+            textArea.value = fullUrl;
             document.body.appendChild(textArea);
             textArea.select();
             document.execCommand('copy');

@@ -19,8 +19,8 @@ export const BLOG_POSTS: BlogPost[] = [
     {
         id: 'best-bus-routes-dhaka',
         slug: 'best-bus-routes-dhaka',
-        title: 'Top 10 Best Bus Routes in Dhaka: Complete Guide 2024',
-        bnTitle: 'ঢাকার সেরা ১০টি বাস রুট: সম্পূর্ণ গাইড ২০২৪',
+        title: 'Top 10 Best Bus Routes in Dhaka: Complete Guide 2025',
+        bnTitle: 'ঢাকার সেরা ১০টি বাস রুট: সম্পূর্ণ গাইড ২০২৫',
         excerpt: 'Discover the most efficient and popular bus routes in Dhaka. Learn which buses to take for your daily commute with our comprehensive guide.',
         bnExcerpt: 'ঢাকার সবচেয়ে দক্ষ এবং জনপ্রিয় বাস রুটগুলি আবিষ্কার করুন। আমাদের বিস্তৃত গাইড দিয়ে আপনার দৈনিক যাতায়াতের জন্য কোন বাসগুলি নিতে হবে তা জানুন।',
         coverImage: '/blog-best-bus-routes.png',
