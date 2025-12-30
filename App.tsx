@@ -89,6 +89,7 @@ const getStoredView = (): AppView => {
         case 'why-use': return AppView.WHY_USE;
         case 'faq': return AppView.FAQ;
 
+        case 'blog': return AppView.BLOG;
         case 'history': return AppView.HISTORY;
         case 'install': return AppView.INSTALL_APP;
         case 'privacy': return AppView.PRIVACY;
