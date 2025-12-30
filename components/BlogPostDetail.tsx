@@ -116,6 +116,11 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, language })
                         src={post.coverImage}
                         alt={language === 'bn' ? post.bnTitle : post.title}
                         className="w-full h-64 sm:h-80 md:h-96 object-cover"
+                        onError={(e) => {
+                            // Fallback if image fails to load
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = 'none';
+                        }}
                     />
                 </div>
             </div>
