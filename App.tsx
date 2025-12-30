@@ -625,25 +625,36 @@ const App: React.FC = () => {
   // Track if view was set from hash to prevent conflict
   const viewSetFromHash = useRef(false);
 
-  // Reverse mapping: View to hash key
-  const viewToHash: Record<AppView, string> = {
-    [AppView.AI_ASSISTANT]: 'ai-assistant',
+  // Reverse mapping:  // Map views to URL paths
+  const viewToPath: Record<AppView, string> = {
+    [AppView.HOME]: '/',
+    [AppView.BUS_DETAILS]: '/bus',
+    [AppView.LIVE_NAV]: '/navigate',
+    [AppView.AI_ASSISTANT]: '/ai',
     [AppView.ABOUT]: 'about',
     [AppView.WHY_USE]: 'why-use',
     [AppView.FAQ]: 'faq',
-
     [AppView.HISTORY]: 'history',
     [AppView.SETTINGS]: 'settings',
-    [AppView.INSTALL_APP]: 'install',
     [AppView.PRIVACY]: 'privacy',
     [AppView.TERMS]: 'terms',
-    [AppView.HOME]: '',
-    [AppView.BUS_DETAILS]: '',
-    [AppView.LIVE_NAV]: '',
-    [AppView.NOT_FOUND]: '',
-    [AppView.SERVER_ERROR]: '',
+    [AppView.INSTALL_APP]: 'install',
+    [AppView.NOT_FOUND]: '404',
+    [AppView.SERVER_ERROR]: '500',
     [AppView.FOR_AI]: 'for-ai',
-    [AppView.DAILY_JOURNEY]: 'daily-journey'
+    [AppView.DAILY_JOURNEY]: 'daily-journey',
+    // Blog views
+    [AppView.BLOG]: 'blog',
+    [AppView.BLOG_BEST_BUS_ROUTES]: 'blog/best-bus-routes-dhaka',
+    [AppView.BLOG_METRO_GUIDE]: 'blog/dhaka-metro-guide',
+    [AppView.BLOG_SAVE_MONEY]: 'blog/save-money-bus-fare',
+    [AppView.BLOG_CHITTAGONG_ROUTES]: 'blog/chittagong-bus-routes',
+    [AppView.BLOG_SYLHET_GUIDE]: 'blog/sylhet-travel-guide',
+    [AppView.BLOG_COX_BAZAR]: 'blog/cox-bazar-how-to-reach',
+    [AppView.BLOG_TOURIST_SPOTS]: 'blog/bangladesh-tourist-spots',
+    [AppView.BLOG_TRAFFIC_TIPS]: 'blog/dhaka-traffic-tips',
+    [AppView.BLOG_BRTC_VS_PRIVATE]: 'blog/brtc-vs-private-buses',
+    [AppView.BLOG_METRO_VS_BUS]: 'blog/metro-rail-vs-bus',
   };
 
   // Push state when view changes (for browser history)
@@ -656,7 +667,7 @@ const App: React.FC = () => {
 
     // Check if we are already at the clean URL path, so we don't dirty it with a hash
     // e.g. if we are at /for-ai, don't add #for-ai
-    const hash = viewToHash[view];
+    const hash = viewToPath[view];
     const currentPath = window.location.pathname.substring(1).replace(/\/$/, ''); // Remove trailing slash
 
     // Simple check: if current path matches the intended view slug
@@ -665,7 +676,7 @@ const App: React.FC = () => {
     }
 
     if (view !== AppView.HOME && hash) {
-      window.history.pushState({ view }, '', `#${hash} `);
+      window.history.pushState({ view }, '', `#${hash}`);
     }
   }, [view]);
 
@@ -677,6 +688,7 @@ const App: React.FC = () => {
       'about': AppView.ABOUT,
       'why-use': AppView.WHY_USE,
       'faq': AppView.FAQ,
+      'blog': AppView.BLOG,
       'history': AppView.HISTORY,
       'install': AppView.INSTALL_APP,
       'privacy': AppView.PRIVACY,
@@ -3559,6 +3571,15 @@ const App: React.FC = () => {
                 >
                   <FileText className="w-5 h-5 text-cyan-600 dark:text-cyan-400" /> {t('nav.faq')}
                 </button>
+
+                {/* Blog Button */}
+                <button
+                  onClick={() => { setView(AppView.BLOG); setIsMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.BLOG ? 'bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800' : ''} `}
+                >
+                  <FileText className="w-5 h-5 text-teal-600 dark:text-teal-400" /> {t('nav.blog')}
+                </button>
+
                 <button
                   onClick={() => { setView(AppView.HISTORY); setIsMenuOpen(false); }}
                   className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.HISTORY ? 'bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800' : ''}`}

@@ -76,6 +76,7 @@ export const translations: Record<Language, Translations> = {
             privacy: 'গোপনীয়তা নীতি',
             terms: 'শর্তাবলী',
             faq: 'প্রশ্ন ও উত্তর',
+            blog: 'ব্লগ',
             forAI: 'এআই এর জন্য',
         },
 
@@ -624,6 +625,7 @@ export const translations: Record<Language, Translations> = {
             privacy: 'Privacy Policy',
             terms: 'Terms of Service',
             faq: 'FAQ',
+            blog: 'Blog',
             forAI: 'For AI',
         },
 
