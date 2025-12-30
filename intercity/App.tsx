@@ -623,7 +623,7 @@ function App() {
 
       {/* Mobile Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 pb-safe z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] md:hidden">
-        <div className="grid grid-cols-5 h-16">
+        <div className="grid grid-cols-4 h-16">
           <button
             onClick={() => window.location.href = '/'}
             className="flex flex-col items-center justify-center gap-1 border-t-2 transition-all border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
@@ -645,14 +645,6 @@ function App() {
           >
             <Train className="w-6 h-6 text-blue-600 dark:text-blue-400 fill-blue-100 dark:fill-blue-900" />
             <span className="text-[10px] font-bold uppercase tracking-wide">{t('nav.intercity')}</span>
-          </button>
-
-          <button
-            onClick={() => window.location.href = '/#blog'}
-            className="flex flex-col items-center justify-center gap-1 border-t-2 transition-all border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
-          >
-            <FileText className="w-6 h-6 text-gray-400 dark:text-gray-500" />
-            <span className="text-[10px] font-bold uppercase tracking-wide">{t('nav.blog')}</span>
           </button>
 
           <button
