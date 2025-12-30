@@ -179,3 +179,103 @@ body {
   background: rgba(15, 23, 42, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+/* ===== GOOGLE ADSENSE INTEGRATION ===== */
+
+/* Prevent ads from breaking layout */
+.adsbygoogle {
+  display: block !important;
+  overflow: hidden;
+  margin: 0 auto;
+  text-align: center;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* AdSense container styling */
+.adsense-container {
+  margin: 1.5rem auto;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, rgba(245, 247, 250, 0.6) 0%, rgba(195, 207, 226, 0.3) 100%);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.dark .adsense-container {
+  background: linear-gradient(135deg, rgba(45, 55, 72, 0.6) 0%, rgba(26, 32, 44, 0.4) 100%);
+}
+
+/* Mobile-specific ad optimizations */
+@media (max-width: 768px) {
+  .adsbygoogle {
+    min-height: 50px;
+    max-height: 100px;
+  }
+
+  .adsense-container {
+    margin: 1rem auto;
+    padding: 0.5rem;
+  }
+
+  .adsbygoogle[data-anchor-status] {
+    max-width: 100vw !important;
+    margin: 0 !important;
+  }
+}
+
+/* Desktop ad optimization */
+@media (min-width: 769px) {
+  .adsbygoogle {
+    min-height: 90px;
+    max-height: 600px;
+  }
+
+  .adsense-container {
+    max-width: 728px;
+  }
+}
+
+/* Prevent layout shift */
+.adsbygoogle:empty {
+  min-height: 90px;
+  background: linear-gradient(90deg,
+      rgba(200, 200, 200, 0.1) 25%,
+      rgba(200, 200, 200, 0.2) 50%,
+      rgba(200, 200, 200, 0.1) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Navigation protection */
+header,
+nav {
+  z-index: 100;
+}
+
+.adsbygoogle {
+  z-index: 10;
+}
+
+/* Performance optimization */
+.adsense-container,
+.adsbygoogle {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
