@@ -14,7 +14,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
     const regularPosts = BLOG_POSTS.slice(1);
 
     return (
-        <div className="flex flex-col h-full bg-gradient-to-br from-white via-teal-50/30 to-cyan-50/30 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 overflow-y-auto pt-24 md:pt-20">
+        <div className="flex flex-col h-full bg-gradient-to-br from-white via-teal-50/30 to-cyan-50/30 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 overflow-y-auto pt-0 md:pt-16">
             {/* Header */}
             <div className="sticky top-0 z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
@@ -22,7 +22,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
 
                         <div>
                             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">
-                                {language === 'bn' ? '📝 ব্লগ' : '📝 Blog'}
+                                {language === 'bn' ? 'ব্লগ' : 'Blog'}
                             </h1>
                             <p className="text-sm text-gray-600 dark:text-gray-400">
                                 {language === 'bn'
@@ -40,7 +40,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                     <div className="mb-12">
                         <h2 className="text-lg font-bold text-teal-600 dark:text-teal-400 mb-4 flex items-center gap-2">
                             <span className="bg-teal-100 dark:bg-teal-900/30 px-3 py-1 rounded-full text-sm">
-                                {language === 'bn' ? '⭐ ফিচার্ড' : '⭐ Featured'}
+                                {language === 'bn' ? 'ফিচার্ড' : 'Featured'}
                             </span>
                         </h2>
                         <div
@@ -102,7 +102,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                 {/* Regular Posts Grid */}
                 <div>
                     <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">
-                        {language === 'bn' ? '📚 সকল পোস্ট' : '📚 All Posts'}
+                        {language === 'bn' ? 'সকল পোস্ট' : 'All Posts'}
                     </h2>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -159,7 +159,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                 {/* Coming Soon Section */}
                 <div className="mt-12 bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-slate-800 dark:to-slate-700 rounded-2xl p-8 text-center border border-teal-100 dark:border-teal-800">
                     <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                        {language === 'bn' ? '🚀 আরও আসছে শীঘ্রই!' : '🚀 More Coming Soon!'}
+                        {language === 'bn' ? 'আরও আসছে শীঘ্রই!' : 'More Coming Soon!'}
                     </h3>
                     <p className="text-gray-600 dark:text-gray-300">
                         {language === 'bn'

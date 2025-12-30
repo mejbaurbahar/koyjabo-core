@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowLeft, Clock, Calendar, Tag, Share2, Check, Copy } from 'lucide-react';
+import { ArrowLeft, Clock, Calendar, Tag, Share2, Check, Copy, ArrowUp } from 'lucide-react';
 import { BLOG_POSTS, BlogPost as BlogPostType } from '../data/blogPosts';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -14,6 +14,21 @@ interface BlogPostProps {
 const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, language }) => {
     const post = BLOG_POSTS.find(p => p.slug === postSlug);
     const [copied, setCopied] = useState(false);
+    const [showScrollTop, setShowScrollTop] = useState(false);
+    const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+
+    // Handle scroll for "Scroll to Top" button
+    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+        const scrollTop = e.currentTarget.scrollTop;
+        setShowScrollTop(scrollTop > 400);
+    };
+
+    const scrollToTop = () => {
+        scrollContainerRef.current?.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
 
     // Set document title and meta tags for SEO
     useEffect(() => {
@@ -101,7 +116,11 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
     }
 
     return (
-        <div className="flex flex-col h-full bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-y-auto">
+        <div
+            ref={scrollContainerRef}
+            onScroll={handleScroll}
+            className="flex flex-col h-full bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-y-auto"
+        >
             {/* Hero Image */}
             <div className="w-full bg-gradient-to-br from-teal-500 to-cyan-600">
                 <div className="max-w-5xl mx-auto">
@@ -262,7 +281,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                 {/* Related Posts */}
                 <div className="mt-16 pt-10 border-t-2 border-gray-200 dark:border-gray-700">
                     <h3 className="text-3xl font-black text-gray-900 dark:text-gray-100 mb-8">
-                        {language === 'bn' ? '📚 আরও পড়ুন' : '📚 Read More'}
+                        {language === 'bn' ? 'আরও পড়ুন' : 'Read More'}
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {BLOG_POSTS.filter(p => p.id !== post.id && p.category === post.category)
@@ -311,7 +330,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                 {/* CTA */}
                 <div className="mt-16 bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 rounded-3xl p-8 md:p-12 text-center shadow-2xl">
                     <h3 className="text-3xl md:text-4xl font-black text-white mb-4">
-                        {language === 'bn' ? '🚌 এখনই রুট খুঁজুন!' : '🚌 Find Your Route Now!'}
+                        {language === 'bn' ? 'এখনই রুট খুঁজুন!' : 'Find Your Route Now!'}
                     </h3>
                     <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
                         {language === 'bn'
@@ -329,6 +348,16 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                 {/* Bottom Spacing for Mobile */}
                 <div className="h-20"></div>
             </article>
+
+            {/* Scroll to Top Button */}
+            <button
+                onClick={scrollToTop}
+                className={`fixed bottom-24 right-6 p-4 bg-teal-600 text-white rounded-full shadow-2xl transition-all duration-300 z-50 hover:bg-teal-700 hover:scale-110 active:scale-95 ${showScrollTop ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0 pointer-events-none'
+                    }`}
+                aria-label="Scroll to top"
+            >
+                <ArrowUp className="w-6 h-6" />
+            </button>
 
             {/* Initialize AdSense ads */}
             <script
