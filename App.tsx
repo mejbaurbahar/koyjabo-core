@@ -3355,6 +3355,10 @@ const App: React.FC = () => {
                     setSelectedBlogPost(null);
                     setView(AppView.BLOG);
                   }}
+                  onGoHome={() => {
+                    setSelectedBlogPost(null);
+                    setView(AppView.HOME);
+                  }}
                   language={language}
                 />
               ) : (

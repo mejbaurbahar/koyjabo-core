@@ -19,13 +19,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
             <div className="sticky top-0 z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
                     <div className="flex items-center gap-3">
-                        <button
-                            onClick={onBack}
-                            className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
-                            aria-label="Go back"
-                        >
-                            <ArrowLeft className="w-5 h-5 text-gray-700 dark:text-gray-200" />
-                        </button>
+
                         <div>
                             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">
                                 {language === 'bn' ? '📝 ব্লগ' : '📝 Blog'}

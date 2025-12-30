@@ -6,10 +6,11 @@ import ReactMarkdown from 'react-markdown';
 interface BlogPostProps {
     postSlug: string;
     onBack: () => void;
+    onGoHome: () => void;
     language: 'en' | 'bn';
 }
 
-const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, language }) => {
+const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, language }) => {
     const post = BLOG_POSTS.find(p => p.slug === postSlug);
     const [copied, setCopied] = useState(false);
 
@@ -317,7 +318,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, language })
                             : 'Navigate Dhaka easily with the কই যাবো app'}
                     </p>
                     <button
-                        onClick={onBack}
+                        onClick={onGoHome}
                         className="px-10 py-4 bg-white text-teal-600 rounded-xl font-black text-lg hover:bg-gray-50 transition-all shadow-xl hover:shadow-2xl transform hover:-translate-y-1"
                     >
                         {language === 'bn' ? 'হোমে ফিরে যান' : 'Go to Home'}
