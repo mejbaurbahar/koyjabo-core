@@ -19,10 +19,10 @@ export const BLOG_POSTS: BlogPost[] = [
     {
         id: 'best-bus-routes-dhaka',
         slug: 'best-bus-routes-dhaka',
-        title: 'Top 10 Best Bus Routes in Dhaka: Complete Guide 2025',
-        bnTitle: 'ঢাকার সেরা ১০টি বাস রুট: সম্পূর্ণ গাইড ২০২৫',
-        excerpt: 'Discover the most efficient and popular bus routes in Dhaka. Learn which buses to take for your daily commute with our comprehensive guide.',
-        bnExcerpt: 'ঢাকার সবচেয়ে দক্ষ এবং জনপ্রিয় বাস রুটগুলি আবিষ্কার করুন। আমাদের বিস্তৃত গাইড দিয়ে আপনার দৈনিক যাতায়াতের জন্য কোন বাসগুলি নিতে হবে তা জানুন।',
+        title: 'Top 10 Best Bus Routes in Dhaka: Complete Guide & Fare Chart 2025',
+        bnTitle: 'ঢাকার সেরা ১০টি বাস রুট: সম্পূর্ণ গাইড ও ভাড়া তালিকা ২০২৫',
+        excerpt: 'Looking for the best bus routes in Dhaka? Check out our 2025 guide covering the most efficient routes, fare charts, and pro tips for commuting with the Koi Jabo app.',
+        bnExcerpt: '২০২৫ সালে ঢাকার সবচেয়ে সহজ এবং সাশ্রয়ী বাস রুট খুঁজছেন? ভাড়া তালিকা এবং প্রো-টিপস সহ সেরা ১০টি রুটের বিস্তারিত তথ্য জানুন আমাদের এই গাইডে।',
         coverImage: '/blog-best-bus-routes.png',
         content: `
 Dhaka's public transport system is the main lifeline for millions of people every day. However, not knowing the right bus route can lead to wasted time and suffering. Based on coverage, frequency, and user experience, here are the 10 most effective bus routes in Dhaka.
@@ -347,17 +347,17 @@ Use Koi Jabo — 200+ Dhaka bus routes, on one platform.
         author: 'কই যাবো Team',
         publishDate: '2025-12-30',
         readTime: '8 min read',
-        keywords: ['Dhaka bus routes', 'best buses Dhaka', 'Dhaka public transport', 'BRTC buses', 'Gulistan Gabtoli bus', 'Uttara Motijheel bus', 'Dhaka commute', 'bus fare Dhaka'],
+        keywords: ['Dhaka bus routes 2025', 'best bus for commute dhaka', 'Dhaka public transport guide', 'BRTC bus list', 'Gulistan to Gabtoli bus', 'Uttara to Motijheel bus', 'Dhaka bus fare chart 2025', 'real-time bus tracking dhaka', 'Koi Jabo app', 'Dhaka transport map', 'bus route finder dhaka', 'cheapest bus dhaka'],
         category: 'Bus Routes'
     },
 
     {
         id: 'dhaka-metro-guide',
         slug: 'dhaka-metro-guide',
-        title: 'Complete Dhaka Metro Rail Guide 2025: MRT Line-6 Routes, Fare & Timings',
-        bnTitle: 'ঢাকা মেট্রো রেল সম্পূর্ণ গাইড ২০২৫: এমআরটি লাইন-৬ রুট, ভাড়া ও সময়সূচী',
-        excerpt: 'Everything you need to know about Dhaka Metro Rail (MRT Line-6): stations, fares, timings, and how to travel. Complete guide for commuters.',
-        bnExcerpt: 'ঢাকা মেট্রো রেল (এমআরটি লাইন-৬) সম্পর্কে আপনার যা জানা দরকার: স্টেশন, ভাড়া, টাইমিং এবং কীভাবে ভ্রমণ করবেন। যাত্রীদের জন্য সম্পূর্ণ গাইড।',
+        title: 'Dhaka Metro Rail Guide 2025: Stations, Fare Chart, Timings & MRT Pass',
+        bnTitle: 'ঢাকা মেট্রো রেল গাইড ২০২৫: স্টেশন লিস্ট, ভাড়ার তালিকা, ও এমআরটি পাস নিয়ম',
+        excerpt: 'Get the latest information on Dhaka Metro Rail (MRT Line-6) stations, distance-based fare chart, Friday timings, and how to get an MRT Pass for traffic-free travel.',
+        bnExcerpt: 'ঢাকা মেট্রো রেলের (এমআরটি লাইন-৬) স্টেশন লিস্ট, ভাড়ার তালিকা এবং এমআরটি পাস তৈরির নিয়মসহ যাবতীয় সব সর্বশেষ আপডেট জানুন এক জায়গায়।',
         coverImage: '/blog-metro-rail-guide.png',
         content: `
 Dhaka Metro Rail (MRT Line-6) is Bangladesh's first-ever modern mass rapid transit system, playing a major role in reducing traffic congestion and making commuting fast and reliable. This guide provides all necessary information about MRT Line-6 in one place.
@@ -602,7 +602,7 @@ Find the best **Metro + Bus** routes for your journey in one place!
         author: 'কই যাবো Team',
         publishDate: '2025-12-30',
         readTime: '10 min read',
-        keywords: ['Dhaka metro rail', 'MRT Line 6', 'metro fare Dhaka', 'metro stations Dhaka', 'Dhaka metro timings', 'metro rail Bangladesh', 'Uttara Motijheel metro'],
+        keywords: ['Dhaka Metro Rail Guide 2025', 'MRT Line 6 stations list', 'Dhaka metro fare chart', 'Metro rail timings Friday', 'How to buy MRT Pass', 'Dhaka metro rail map', 'Uttara to Motijheel metro fare', 'Bangladesh metro rail update', 'Metro rail ticket price', 'Metro vs Bus Dhaka', 'Rapid Pass Bangladesh', 'Metro rail Motijheel'],
         category: 'Metro Rail'
     }
 ];
