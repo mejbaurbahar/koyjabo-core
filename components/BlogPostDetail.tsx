@@ -177,7 +177,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, language })
           prose-th:bg-gray-50 dark:prose-th:bg-slate-800 prose-th:p-3 prose-th:text-left prose-th:font-bold
           prose-td:border prose-td:border-gray-200 dark:prose-td:border-gray-700 prose-td:p-3
         ">
-                    <ReactMarkdown>{post.content}</ReactMarkdown>
+                    <ReactMarkdown>{language === 'bn' ? post.bnContent : post.content}</ReactMarkdown>
                 </div>
 
                 {/* AdSense - Middle of Post */}
