@@ -604,5 +604,135 @@ Find the best **Metro + Bus** routes for your journey in one place!
         readTime: '10 min read',
         keywords: ['Dhaka Metro Rail Guide 2025', 'MRT Line 6 stations list', 'Dhaka metro fare chart', 'Metro rail timings Friday', 'How to buy MRT Pass', 'Dhaka metro rail map', 'Uttara to Motijheel metro fare', 'Bangladesh metro rail update', 'Metro rail ticket price', 'Metro vs Bus Dhaka', 'Rapid Pass Bangladesh', 'Metro rail Motijheel'],
         category: 'Metro Rail'
+    },
+    {
+        id: 'uttara-to-motijheel-bus-guide',
+        slug: 'uttara-to-motijheel-bus-guide',
+        title: 'Uttara to Motijheel Bus Route Guide 2025: All Options, Fares & Timings',
+        bnTitle: 'উত্তরা থেকে মতিঝিল বাস রুট গাইড ২০২৫: সব বাসের তালিকা এবং ভাড়া',
+        excerpt: 'Looking for the best way to travel from Uttara to Motijheel? Whether by Metro Rail or local bus, find all routes, fares, and travel tips in this 2025 guide.',
+        bnExcerpt: 'উত্তরা থেকে মতিঝিল যাওয়ার সবচেয়ে সহজ উপায় খুঁজছেন? মেট্রো রেল নাকি লোকাল বাস—সাশ্রয়ী ও দ্রুত যাত্রার সব পথ এবং ভাড়া জানুন এই গাইডে।',
+        coverImage: '/blog-uttara-motijheel.png',
+        content: `
+Traveling from Uttara to Motijheel is one of the most common commutes in Dhaka. With the introduction of the Metro Rail and various express bus services, commuters now have several options. This guide helps you choose the best one.
+
+---
+
+## 1. Top Local Buses for Uttara to Motijheel
+
+Several buses operate directly or via major hubs between these two points.
+
+**Best Bus Services:**
+* **Bihongo Paribahan:** Known for frequency.
+* **Projapati Paribahan (A-1):** Reliable and covers the full length of the corridor.
+* **Shikor Paribahan:** Good option for those starting from deeper Uttara sectors.
+* **BRTC (Articulated/Double Decker):** Cost-effective but can be crowded.
+
+**Route:** Uttara (House Building/Azampur) -> Airport -> Khilkhet -> Banani -> Mohakhali -> Bijoy Sarani -> Farmgate -> Shahbagh -> Paltan -> Motijheel.
+
+**Fare:** ৳35–45 (Sitting Service) | ৳25–30 (Local Service)
+**Avg. Time:** 60–90 minutes depending on traffic.
+
+---
+
+## 2. Metro Rail (The Fastest Option)
+
+The MRT Line-6 has revolutionized this route. If you want to avoid traffic completely, this is your best bet.
+
+* **Start Station:** Uttara North / Uttara Center / Uttara South
+* **End Station:** Motijheel
+* **Fare:** ৳100 (Single Journey)
+* **Travel Time:** 32–35 minutes
+
+**Pro Tip:** Use an MRT Pass or Rapid Pass to skip the ticket counter queues.
+
+---
+
+## 3. Comparing Bus vs. Metro
+
+| Feature | Local Bus | Metro Rail |
+|---------|-----------|------------|
+| Cost | ৳30–45 | ৳100 |
+| Time | 60–120 min | 35 min |
+| Comfort | Variable | High (AC) |
+| Availability | 24/7 (Almost) | 8 AM - 8 PM |
+
+---
+
+## 4. Tips for a Smarter Commute
+
+1. **Check Live Traffic**: Use the Koi Jabo app to see if there are major jams on the Airport-Mohakhali corridor.
+2. **First/Last Mile**: If your office is far from the Motijheel Metro station, take a short rickshaw ride or a local circular bus.
+3. **Morning Peak**: If traveling between 8 AM and 10 AM, Metro Rail is highly recommended to save at least 1 hour.
+
+---
+
+## Conclusion
+
+Whether you choose the budget-friendly bus or the lightning-fast Metro Rail, knowing your options saves time and money. Use the **Koi Jabo** app to find the nearest bus stop and real-time route info instantly.
+        `,
+        bnContent: `
+উত্তরা থেকে মতিঝিল যাতায়াত ঢাকার অন্যতম ব্যস্ত রুট। মেট্রো রেল চালু হওয়ায় এখন এই রুটে যাতায়াত আগের চেয়ে অনেক সহজ হয়েছে। তবুও বাসে যাতায়াতের চাহিদা এখনও অনেক। এই গাইডে আমরা উত্তরা থেকে মতিঝিল যাওয়ার সব সেরা উপায়গুলো আলোচনা করব।
+
+---
+
+## ১. উত্তরা থেকে মতিঝিল সেরা লোকাল বাসসমূহ
+
+এই রুটে সরাসরি যাতায়াতের জন্য বেশ কিছু বাসের সার্ভিস রয়েছে।
+
+**সেরা বাস সার্ভিস:**
+* **বিহঙ্গ পরিবহন:** নিয়মিত ট্রিপ এবং সহজলভ্যতা।
+* **প্রজাপতি পরিবহন (এ-১):** নির্ভরযোগ্য এবং পুরো রুট কভার করে।
+* **শিকর পরিবহন:** উত্তরার ভেতর থেকে যারা যাত্রা করেন তাদের জন্য ভালো।
+* **বিআরটিসি (ডাবল ডেকার):** সরকারি বাসে কম ভাড়ায় যাতায়াতের সুযোগ।
+
+**রুট:** উত্তরা (হাউস বিল্ডিং/আজমপুর) -> বিমানবন্দর -> খিলক্ষেত -> বনানী -> মহাখালী -> বিজয় সরণি -> ফার্মগেট -> শাহবাগ -> পল্টন -> মতিঝিল।
+
+**ভাড়া:** ৫০–৬০ টাকা (সিটিং সার্ভিস) | ৩০–৪০ টাকা (লোকাল সার্ভিস) - সময় ও পরিস্থিতিভেদে পরিবর্তন হতে পারে।
+**সময়:** যানজটভেদে ৬০ থেকে ৯০ মিনিট।
+
+---
+
+## ২. মেট্রো রেল (সবচেয়ে দ্রুত উপায়)
+
+মেট্রো রেল এই রুটের চেহারা বদলে দিয়েছে। যানজট এড়াতে চাইলে এর কোনো বিকল্প নেই।
+
+* **শুরুর স্টেশন:** উত্তরা উত্তর / উত্তরা সেন্টার / উত্তরা দক্ষিণ
+* **গন্তব্য স্টেশন:** মতিঝিল
+* **ভাড়া:** ১০০ টাকা
+* **সময়:** মাত্র ৩২–৩৫ মিনিট
+
+**টিপস:** এমআরটি পাস ব্যবহার করলে স্টেশনে লাইনে দাঁড়ানোর ঝামেলা থাকে না।
+
+---
+
+## ৩. বাস বনাম মেট্রো: কোনটি আপনার জন্য?
+
+| বৈশিষ্ট্য | লোকাল বাস | মেট্রো রেল |
+|---------|-----------|------------|
+| খরচ | ৩০–৫০ টাকা | ১০০ টাকা |
+| সময় | ৬০–১২০ মিনিট | ৩৫ মিনিট |
+| আরাম | সাধারণ | খুব ভালো (এসি) |
+| সময়সূচি | প্রায় সবসময় | সকাল ৮টা - রাত ৮টা |
+
+---
+
+## ৪. স্মার্ট যাতায়াতের জন্য কিছু টিপস
+
+১. **লাইভ ট্রাফিক চেক:** বিমানবন্দর বা মহাখালী রুটে জ্যাম আছে কি না তা 'কই যাবো' অ্যাপে দেখে নিন।
+২. **সময় বাঁচান:** সকাল ৮টা থেকে ১০টার মধ্যে যাতায়াত করলে মেট্রো রেল ব্যবহার করে আপনি অন্তত ১ ঘণ্টা সময় বাঁচাতে পারেন।
+৩. **শেষ দূরত্ব:** মতিঝিল মেট্রো স্টেশন থেকে অফিস দূরে হলে রিকশা বা লোকাল সার্কুলার বাস ব্যবহার করুন।
+
+---
+
+## উপসংহার
+
+সাশ্রয়ী যাতায়াতের জন্য বাস এবং দ্রুত গন্তব্যে পৌঁছানোর জন্য মেট্রো রেল—উভয় পথই এখন আগের চেয়ে উন্নত। আপনার সঠিক রুট এবং বাসের সঠিক লোকেশন জানতে আজই ব্যবহার করুন **কই যাবো** অ্যাপ।
+        `,
+        author: 'কই যাবো Team',
+        publishDate: '2026-01-02',
+        readTime: '6 min read',
+        keywords: ['Uttara to Motijheel bus route', 'Dhaka metro rail Uttara to Motijheel', 'Uttara to Motijheel bus fare', 'Bihongo Paribahan route', 'Dhaka bus guide 2025', 'উত্তরা থেকে মতিঝিল বাস ভাড়া', 'উত্তরা থেকে মতিঝিল মেট্রো রেল ভাড়া', 'ঢাকা বাস রুট গাইড'],
+        category: 'Bus Routes'
     }
 ];

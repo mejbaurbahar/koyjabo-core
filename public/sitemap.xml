@@ -8,7 +8,7 @@
   <!-- Homepage - Highest Priority -->
   <url>
     <loc>https://koyjabo.com/</loc>
-    <lastmod>2025-12-23</lastmod>
+    <lastmod>2026-01-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <mobile:mobile/>
@@ -121,9 +121,41 @@
   <!-- Daily Journey Tracker -->
   <url>
     <loc>https://koyjabo.com/daily-journey</loc>
-    <lastmod>2025-12-23</lastmod>
+    <lastmod>2026-01-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
+    <mobile:mobile/>
+  </url>
+
+  <!-- Blog Index -->
+  <url>
+    <loc>https://koyjabo.com/blog</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <mobile:mobile/>
+  </url>
+
+  <!-- Blog Posts -->
+  <url>
+    <loc>https://koyjabo.com/blog/best-bus-routes-dhaka</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <mobile:mobile/>
+  </url>
+  <url>
+    <loc>https://koyjabo.com/blog/dhaka-metro-guide</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <mobile:mobile/>
+  </url>
+  <url>
+    <loc>https://koyjabo.com/blog/uttara-to-motijheel-bus-guide</loc>
+    <lastmod>2026-01-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
     <mobile:mobile/>
   </url>
 
