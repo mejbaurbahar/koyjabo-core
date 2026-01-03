@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, useTransition } from 'react';
-import { Search, Map as MapIcon, Navigation, Info, Bus, ArrowLeft, ArrowRight, Bot, ExternalLink, MapPin, Heart, Shield, Zap, Users, FileText, AlertTriangle, Home, ChevronRight, CheckCircle2, User, Linkedin, Facebook, ArrowRightLeft, Settings, Save, Eye, EyeOff, Trash2, Key, Calculator, Coins, Train, Sparkles, X, Gauge, Flag, Clock, Menu, WifiOff, Plane, Phone, Download, TramFront, Sun, Moon, Calendar } from 'lucide-react';
+import { Search, Map as MapIcon, Navigation, Info, Bus, ArrowLeft, ArrowRight, Bot, ExternalLink, MapPin, Heart, Shield, Zap, Users, FileText, AlertTriangle, Home, ChevronRight, CheckCircle2, User, Linkedin, Facebook, ArrowRightLeft, Settings, Save, Eye, EyeOff, Trash2, Key, Calculator, Coins, Train, Sparkles, X, Gauge, Flag, Clock, Menu, WifiOff, Plane, Phone, Download, TramFront, Sun, Moon, Calendar, Plus } from 'lucide-react';
 import { Analytics } from "@vercel/analytics/react";
-import { BusRoute, AppView, UserLocation } from './types';
+import { BusRoute, AppView, UserLocation, ChatMessage } from './types';
 import { STATIONS, BUS_DATA, METRO_STATIONS, METRO_LINES, RAILWAY_STATIONS, AIRPORTS } from './constants';
 import MapVisualizer from './components/MapVisualizer';
 import { SearchableSelect } from './components/SearchableSelect';
@@ -29,6 +29,14 @@ import { sortBusesByLocation } from './services/locationBasedSortService';
 import { DesktopNavbar } from './components/DesktopNavbar';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { useLanguage } from './contexts/LanguageContext';
+import {
+  saveChatMessage,
+  getAllSessions,
+  getSession,
+  deleteSession,
+  clearAllHistory,
+  formatChatTimestamp
+} from './services/chatHistoryManager';
 
 import NotificationBell from './components/NotificationBell';
 import BusImageViewer from './components/BusImageViewer';
@@ -42,10 +50,6 @@ import BlogPostDetail from './components/BlogPostDetail';
 
 
 
-interface ChatMessage {
-  role: 'user' | 'assistant';
-  text: string;
-}
 
 const getStoredFavorites = (): string[] => {
   try {
@@ -492,14 +496,9 @@ const App: React.FC = () => {
 
   const [aiQuery, setAiQuery] = useState('');
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
+  const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const [aiLoading, setAiLoading] = useState(false);
 
-  // Clear Chat History when leaving the AI View
-  useEffect(() => {
-    if (view !== AppView.AI_ASSISTANT) {
-      setChatHistory([]);
-    }
-  }, [view]);
 
   const [intercityLoading, setIntercityLoading] = useState(false);
   const [showOfflineNavModal, setShowOfflineNavModal] = useState(false);
@@ -1141,8 +1140,17 @@ const App: React.FC = () => {
     e.preventDefault();
     if (!aiQuery.trim() || !isOnline) return;
 
-    const userMessage: ChatMessage = { role: 'user', text: aiQuery };
+    const userMessage: ChatMessage = {
+      id: `msg_${Date.now()}_u`,
+      role: 'user',
+      text: aiQuery,
+      timestamp: Date.now()
+    };
     const queryToSend = aiQuery;
+
+    // Save user message and get/set session ID
+    const sessionId = saveChatMessage(userMessage, currentSessionId);
+    if (!currentSessionId) setCurrentSessionId(sessionId);
 
     // Create new history immediately including the latest user message
     const updatedHistory = [...chatHistory, userMessage];
@@ -1180,7 +1188,16 @@ const App: React.FC = () => {
       result = `⏰ ${t('ai.dailyLimitReached')}\n\n${t('ai.usedQueries', { count: formatNumber(2) })}`;
     }
 
-    const assistantMessage: ChatMessage = { role: 'assistant', text: result };
+    const assistantMessage: ChatMessage = {
+      id: `msg_${Date.now()}_a`,
+      role: 'assistant',
+      text: result,
+      timestamp: Date.now()
+    };
+
+    // Save assistant message
+    saveChatMessage(assistantMessage, sessionId);
+
     setChatHistory(prev => [...prev, assistantMessage]);
     setAiLoading(false);
   };
@@ -1271,6 +1288,13 @@ const App: React.FC = () => {
             <span className={`w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-green-500 animate-pulse' : 'bg-red-500'} `}></span> {isOnline ? t('common.online') : t('common.offline')}
           </p>
         </div>
+        <button
+          onClick={() => setShowHistoryManager(true)}
+          className="p-2 rounded-xl bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
+          title="Chat History"
+        >
+          <Clock className="w-5 h-5" />
+        </button>
       </div>
 
       {/* Usage Indicator for Mobile */}
@@ -1288,6 +1312,13 @@ const App: React.FC = () => {
             <span className={`w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-green-500 animate-pulse' : 'bg-red-500'} `}></span> {isOnline ? t('common.online') : t('common.offline')}
           </p>
         </div>
+        <button
+          onClick={() => setShowHistoryManager(true)}
+          className="p-2 rounded-xl bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
+          title="Chat History"
+        >
+          <Clock className="w-5 h-5" />
+        </button>
       </div>
 
       {/* Usage Indicator for Desktop */}
@@ -1295,66 +1326,51 @@ const App: React.FC = () => {
         <AIUsageIndicator />
       </div>
 
-      {!isOnline ? (
-        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-          <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4">
-            <AlertTriangle className="w-8 h-8 text-orange-500" />
+      <div className="flex-1 p-4 space-y-4 bg-slate-50 dark:bg-slate-900 pb-[140px] md:pb-4 overflow-y-auto">
+        {chatHistory.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full text-center p-8 opacity-50">
+            <Bot className="w-16 h-16 text-gray-300 dark:text-gray-600 mb-4" />
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('ai.emptyState')}</p>
           </div>
-          <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200 mb-2">{t('offline.youAreOffline')}</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6 max-w-xs">
+        ) : (
+          chatHistory.map((msg, idx) => (
+            <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} `}>
+              <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-dhaka-dark dark:bg-emerald-700 text-white rounded-br-none' : 'bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-200 border border-gray-100 dark:border-gray-700 rounded-bl-none'} `}>
+                <div className="whitespace-pre-wrap">{msg.text.replace(/\*\*/g, '')}</div>
+              </div>
+            </div>
+          ))
+        )}
+
+        {aiLoading && <AiThinkingIndicator />}
+        <div ref={chatEndRef}></div>
+      </div>
+
+      <div className="p-4 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 z-30 fixed md:relative bottom-16 md:bottom-0 left-0 right-0 pb-safe">
+        {!isOnline && (
+          <div className="mb-3 bg-orange-50 border border-orange-200 text-orange-700 px-3 py-2 rounded-lg text-xs font-medium flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4" />
             {t('offline.aiRequiresInternet')}
-          </p>
-
-        </div>
-      ) : (
-        <>
-          <div className="flex-1 p-4 space-y-4 bg-slate-50 dark:bg-slate-900 pb-[140px] md:pb-4 overflow-y-auto">
-            {chatHistory.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-full text-center p-8 opacity-50">
-                <Bot className="w-16 h-16 text-gray-300 dark:text-gray-600 mb-4" />
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('ai.emptyState')}</p>
-              </div>
-            ) : (
-              chatHistory.map((msg, idx) => (
-                <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} `}>
-                  <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-dhaka-dark dark:bg-emerald-700 text-white rounded-br-none' : 'bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-200 border border-gray-100 dark:border-gray-700 rounded-bl-none'} `}>
-                    <div className="whitespace-pre-wrap">{msg.text.replace(/\*\*/g, '')}</div>
-                  </div>
-                </div>
-              ))
-            )}
-
-            {aiLoading && <AiThinkingIndicator />}
-            <div ref={chatEndRef}></div>
           </div>
-
-          <div className="p-4 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 z-30 fixed md:relative bottom-16 md:bottom-0 left-0 right-0 pb-safe">
-            {!isOnline && (
-              <div className="mb-3 bg-orange-50 border border-orange-200 text-orange-700 px-3 py-2 rounded-lg text-xs font-medium flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4" />
-                {t('offline.aiRequiresInternet')}
-              </div>
-            )}
-            <form onSubmit={handleAiSubmit} className="flex gap-2 relative">
-              <input
-                type="text"
-                value={aiQuery}
-                onChange={(e) => setAiQuery(e.target.value)}
-                placeholder={isOnline ? t('ai.placeholder') : t('offline.aiRequiresInternet')}
-                disabled={!isOnline}
-                className="w-full bg-gray-100 dark:bg-slate-800 border-0 rounded-xl pl-4 pr-12 py-3 text-sm dark:text-gray-100 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/40 focus:bg-white dark:focus:bg-slate-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-              />
-              <button
-                type="submit"
-                disabled={!aiQuery.trim() || aiLoading || !isOnline}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 text-white rounded-xl disabled:opacity-40 disabled:bg-gray-400 transition-all hover:shadow-lg hover:shadow-blue-500/50 hover:scale-105 active:scale-95 disabled:hover:scale-100 disabled:hover:shadow-none group"
-              >
-                <Navigation className="w-5 h-5 rotate-90 group-hover:rotate-[100deg] transition-transform" />
-              </button>
-            </form>
-          </div>
-        </>
-      )}
+        )}
+        <form onSubmit={handleAiSubmit} className="flex gap-2 relative">
+          <input
+            type="text"
+            value={aiQuery}
+            onChange={(e) => setAiQuery(e.target.value)}
+            placeholder={isOnline ? t('ai.placeholder') : t('offline.aiRequiresInternet')}
+            disabled={!isOnline}
+            className="w-full bg-gray-100 dark:bg-slate-800 border-0 rounded-xl pl-4 pr-12 py-3 text-sm dark:text-gray-100 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/40 focus:bg-white dark:focus:bg-slate-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          />
+          <button
+            type="submit"
+            disabled={!aiQuery.trim() || aiLoading || !isOnline}
+            className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 text-white rounded-xl disabled:opacity-40 disabled:bg-gray-400 transition-all hover:shadow-lg hover:shadow-blue-500/50 hover:scale-105 active:scale-95 disabled:hover:scale-100 disabled:hover:shadow-none group"
+          >
+            <Navigation className="w-5 h-5 rotate-90 group-hover:rotate-[100deg] transition-transform" />
+          </button>
+        </form>
+      </div>
     </div>
   );
 
@@ -1432,80 +1448,160 @@ const App: React.FC = () => {
             </p>
           </div>
 
-          <button
-            onClick={handleInstallClick}
-            className="w-full md:w-auto px-12 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl font-bold text-white text-lg shadow-2xl shadow-emerald-500/40 hover:shadow-3xl hover:scale-105 transition-all active:scale-95 flex items-center justify-center gap-3 mx-auto mb-4"
-          >
-            <Download className="w-6 h-6" />
-            {isInstalling ? t('common.loading') : t('home.installApp')}
-          </button>
 
-          <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-6 rounded-2xl border border-emerald-200 dark:border-emerald-800/50">
-            <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-3 text-lg">{t('about.ourGoal')}</h3>
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed font-medium">
-              {t('about.ourGoalDesc')}
-            </p>
-          </div>
+          <div className="mt-8 flex flex-col items-center gap-4 pb-20 md:pb-0">
+            <div className="text-center w-full">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-3">Our Social Media</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Connect with us for updates and news</p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <a
+                  href="https://www.linkedin.com/company/koy-jabo"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-3 px-6 py-3 bg-[#0077b5] hover:bg-[#006396] text-white font-bold rounded-xl transition-all hover:scale-105 active:scale-95 shadow-lg"
+                >
+                  <Linkedin className="w-5 h-5" />
+                  <span>LinkedIn</span>
+                </a>
+                <a
+                  href="https://www.facebook.com/koyjabo"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-3 px-6 py-3 bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold rounded-xl transition-all hover:scale-105 active:scale-95 shadow-lg"
+                >
+                  <Facebook className="w-5 h-5" />
+                  <span>Facebook</span>
+                </a>
+              </div>
 
-          <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
-            <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-4">Connect</h3>
-            <div className="flex gap-4">
-              <a href="https://linkedin.com/in/mejbaur/" target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 text-blue-700 dark:text-blue-400 rounded-lg text-sm font-bold hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors">
-                <Linkedin className="w-4 h-4" /> LinkedIn
-              </a>
-            </div>
-            <div className="flex items-center gap-3 text-xs text-gray-400 mt-4">
-              <span>
-                <span className="text-red-500 font-medium">Developed by</span> <span className="text-emerald-600 font-bold">Mejbaur Bahar Fagun</span>
-              </span>
-              <span>•</span>
-              <button onClick={() => setView(AppView.FOR_AI)} className="opacity-5 hover:opacity-50 transition-opacity">
-                For AI
-              </button>
-            </div>
-          </div>
-        </div>
-
-
-        <div className="mt-8 flex flex-col items-center gap-4 pb-20 md:pb-0">
-          <div className="text-center w-full">
-            <h3 className="text-lg font-bold text-gray-900 mb-3">Our Social Media</h3>
-            <p className="text-sm text-gray-600 mb-4">Connect with us for updates and news</p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a
-                href="https://www.linkedin.com/company/koy-jabo"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-3 px-6 py-3 bg-[#0077b5] hover:bg-[#006396] text-white font-bold rounded-xl transition-all hover:scale-105 active:scale-95 shadow-lg"
-              >
-                <Linkedin className="w-5 h-5" />
-                <span>LinkedIn</span>
-              </a>
-              <a
-                href="https://www.facebook.com/koyjabo"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-3 px-6 py-3 bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold rounded-xl transition-all hover:scale-105 active:scale-95 shadow-lg"
-              >
-                <Facebook className="w-5 h-5" />
-                <span>Facebook</span>
-              </a>
+              {/* Share Widget */}
+              <div className="mt-8 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 p-6 rounded-2xl border border-blue-200 dark:border-blue-800">
+                <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-2 text-center">Share KoyJabo</h4>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mb-4 text-center">
+                  Help others discover the easiest way to navigate Bangladesh!
+                </p>
+                <SocialShare className="justify-center" />
+              </div>
             </div>
 
-            {/* Share Widget */}
-            <div className="mt-8 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 p-6 rounded-2xl border border-blue-200 dark:border-blue-800">
-              <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-2 text-center">Share KoyJabo</h4>
-              <p className="text-xs text-gray-600 dark:text-gray-400 mb-4 text-center">
-                Help others discover the easiest way to navigate Bangladesh!
-              </p>
-              <SocialShare className="justify-center" />
+            <div className="pt-6 border-t border-gray-200 dark:border-gray-700 w-full">
+              <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-4">Connect</h3>
+              <div className="flex gap-4">
+                <a href="https://linkedin.com/in/mejbaur/" target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 text-blue-700 dark:text-blue-400 rounded-lg text-sm font-bold hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors">
+                  <Linkedin className="w-4 h-4" /> LinkedIn (Developer)
+                </a>
+              </div>
+              <div className="flex items-center gap-3 text-xs text-gray-400 mt-4">
+                <span>
+                  <span className="text-red-500 font-medium">Developed by</span> <span className="text-emerald-600 font-bold">Mejbaur Bahar Fagun</span>
+                </span>
+                <span>•</span>
+                <button onClick={() => setView(AppView.FOR_AI)} className="opacity-5 hover:opacity-50 transition-opacity">
+                  For AI
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div >
-    </div >
-
+      </div>
+    </div>
   );
+
+  const renderHistoryManager = () => {
+    const sessions = getAllSessions();
+
+    return (
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+        <div className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 max-h-[80vh] flex flex-col">
+          <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+            <div className="flex items-center gap-3">
+              <Clock className="w-6 h-6" />
+              <h2 className="text-xl font-bold">Chat History</h2>
+            </div>
+            <button
+              onClick={() => setShowHistoryManager(false)}
+              className="p-2 hover:bg-white/20 rounded-full transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+
+          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            {sessions.length === 0 ? (
+              <div className="text-center py-12 opacity-50 flex flex-col items-center">
+                <Bot className="w-16 h-16 mb-4" />
+                <p>No chat history found</p>
+              </div>
+            ) : (
+              sessions.sort((a, b) => b.lastUpdated - a.lastUpdated).map(session => (
+                <div
+                  key={session.id}
+                  className={`group p-4 rounded-2xl border-2 transition-all cursor-pointer flex justify-between items-center ${currentSessionId === session.id ? 'border-blue-500 bg-blue-50/50 dark:bg-blue-900/20' : 'border-gray-100 dark:border-gray-800 hover:border-blue-200 dark:hover:border-blue-800 bg-gray-50 dark:bg-slate-800/50'}`}
+                  onClick={() => {
+                    setChatHistory(session.messages);
+                    setCurrentSessionId(session.id);
+                    setShowHistoryManager(false);
+                  }}
+                >
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-gray-900 dark:text-gray-100 truncate pr-4">
+                      {session.messages[0]?.text || 'Empty Chat'}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 flex items-center gap-1">
+                      <Calendar className="w-3 h-3" />
+                      {formatChatTimestamp(session.lastUpdated, language)} • {session.messages.length} messages
+                    </p>
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteSession(session.id);
+                      if (currentSessionId === session.id) {
+                        setChatHistory([]);
+                        setCurrentSessionId(null);
+                      }
+                    }}
+                    className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all opacity-0 group-hover:opacity-100"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </div>
+              ))
+            )}
+          </div>
+
+          <div className="p-6 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-slate-900/50 flex gap-3">
+            <button
+              onClick={() => {
+                setChatHistory([]);
+                setCurrentSessionId(null);
+                setShowHistoryManager(false);
+              }}
+              className="flex-1 px-4 py-3 bg-white dark:bg-slate-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl font-bold transition-all hover:bg-gray-100 dark:hover:bg-slate-700 flex items-center justify-center gap-2"
+            >
+              <Plus className="w-5 h-5" /> New Chat
+            </button>
+            {sessions.length > 0 && (
+              <button
+                onClick={() => {
+                  if (confirm('Clear all chat history?')) {
+                    clearAllHistory();
+                    setChatHistory([]);
+                    setCurrentSessionId(null);
+                    setShowHistoryManager(false);
+                  }
+                }}
+                className="px-4 py-3 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all flex items-center justify-center gap-2"
+              >
+                <Trash2 className="w-5 h-5" /> Clear All
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
 
   const renderPrivacyPolicy = () => (
     <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-y-auto w-full relative">
@@ -3738,6 +3834,21 @@ const App: React.FC = () => {
           userLocation={userLocation}
           selectedRoute={selectedBus}
         />
+
+        {/* Global Offline Indicator Toast */}
+        {!isOnline && (
+          <div className="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-[100] animate-in slide-in-from-bottom duration-300">
+            <div className="bg-slate-900/90 dark:bg-slate-800/95 backdrop-blur-md text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border border-white/10">
+              <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-500">
+                <WifiOff className="w-5 h-5" />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-bold text-sm leading-none mb-1">{t('map.offlineMode')}</span>
+                <p className="text-[10px] text-gray-400 font-medium">{t('offline.usingCachedData')}</p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </NotificationProvider >
   );

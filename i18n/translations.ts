@@ -521,6 +521,7 @@ export const translations: Record<Language, Translations> = {
             proceedAnyway: 'যাই হোক এগিয়ে যান',
             intercityRequiresInternet: 'আন্তঃশহর অনুসন্ধানের জন্য ইন্টারনেট সংযোগ প্রয়োজন।',
             aiRequiresInternet: 'এআই সহায়ক ব্যবহার করতে ইন্টারনেট সংযোগ প্রয়োজন।',
+            usingCachedData: 'অফলাইন ডেটা ব্যবহার করা হচ্ছে',
         },
 
         // Route Finder Results
@@ -1053,6 +1054,20 @@ export const translations: Record<Language, Translations> = {
             proceedAnyway: 'Proceed Anyway',
             intercityRequiresInternet: 'Intercity search requires an internet connection.',
             aiRequiresInternet: 'AI Assistant requires an internet connection.',
+            usingCachedData: 'Using cached offline data',
+        },
+
+        // Map UI
+        map: {
+            liveLocation: 'Live Location',
+            gpsSignalActive: 'GPS Signal Active',
+            acquiringSignal: 'Acquiring Signal...',
+            offlineMode: 'Offline Mode',
+            standard: 'Standard',
+            satellite: 'Satellite',
+            terrain: 'Terrain',
+            traffic: 'Traffic',
+            darkMode: 'Dark Mode',
         },
 
         // Route Finder Results

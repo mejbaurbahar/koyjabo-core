@@ -16,6 +16,7 @@ interface MapVisualizerProps {
   userLocation?: UserLocation | null;
   tripDestination?: string; // ID of the final destination station if different from route end
   tripTransferPoint?: string; // ID of the transfer point station
+  isReversed?: boolean;
 }
 
 const MapVisualizer: React.FC<MapVisualizerProps> = ({
@@ -99,7 +100,7 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
       let targetIndex = -1;
 
       if (hasHighlight) {
-        targetIndex = highlightStartIdx;
+        targetIndex = isReversed ? highlightEndIdx : highlightStartIdx;
       } else if (userStationIndex !== -1) {
         targetIndex = userStationIndex;
       }
@@ -472,10 +473,10 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
             <p className="text-[10px] font-bold text-orange-800 uppercase">Outside Route</p>
             <p className="text-xs font-medium text-orange-900 leading-tight">
               Go {
-                hasHighlight && highlightStartIdx !== -1 && userLocation && nodePositions[highlightStartIdx]
-                  ? (getDistance(userLocation, stations[highlightStartIdx]) / 1000).toFixed(1)
+                hasHighlight && highlightStartIdx !== -1 && userLocation && nodePositions[isReversed ? highlightEndIdx : highlightStartIdx]
+                  ? (getDistance(userLocation, stations[isReversed ? highlightEndIdx : highlightStartIdx]) / 1000).toFixed(1)
                   : (userDistance / 1000).toFixed(1)
-              }km to start at <b>{hasHighlight && highlightStartIdx !== -1 ? stations[highlightStartIdx].name : stations[userStationIndex].name}</b>
+              }km to start at <b>{hasHighlight && highlightStartIdx !== -1 ? stations[isReversed ? highlightEndIdx : highlightStartIdx].name : stations[userStationIndex].name}</b>
             </p>
             {globalNearestName && (
               <p className="text-[10px] text-orange-800 mt-1 border-t border-orange-200 pt-1">
@@ -626,8 +627,8 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                   <line
                     x1={userPos.x}
                     y1={userPos.y}
-                    x2={hasHighlight && highlightStartIdx !== -1 ? nodePositions[highlightStartIdx].x : nearestStationPosForLine!.x}
-                    y2={hasHighlight && highlightStartIdx !== -1 ? nodePositions[highlightStartIdx].y : nearestStationPosForLine!.y}
+                    x2={hasHighlight && highlightStartIdx !== -1 ? nodePositions[isReversed ? highlightEndIdx : highlightStartIdx].x : nearestStationPosForLine!.x}
+                    y2={hasHighlight && highlightStartIdx !== -1 ? nodePositions[isReversed ? highlightEndIdx : highlightStartIdx].y : nearestStationPosForLine!.y}
                     stroke="#3b82f6"
                     strokeWidth="1.5"
                     strokeDasharray="4,4"
@@ -699,11 +700,18 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
 
                 const isHighlightStart = hasHighlight && idx === highlightStartIdx;
                 const isHighlightEnd = hasHighlight && idx === highlightEndIdx;
-                // "Start Here" suggestion when user is far
-                const isUserConnectionStart = !hasHighlight && isUserFar && idx === userStationIndex;
 
-                // Old Variable for compatibility with ripple logic if needed, but we'll update that too
-                const isStartHereTarget = isHighlightStart || isUserConnectionStart;
+                // Reversed-aware start/end stations for specific logic
+                const isRealStart = hasHighlight && idx === (isReversed ? highlightEndIdx : highlightStartIdx);
+                const isRealEnd = hasHighlight && idx === (isReversed ? highlightStartIdx : highlightEndIdx);
+
+                // "Start Here" suggestion when user is far
+                // We show this if the user is far from the nearest station (if no highlight) 
+                // OR if they are far from the REAL start of the highlighted route
+                const isUserConnectionStart = isUserFar && idx === (hasHighlight ? (isReversed ? highlightEndIdx : highlightStartIdx) : userStationIndex);
+
+                // Target for starting ripple (Real Start OR User's connection point)
+                const isStartHereTarget = isRealStart || isUserConnectionStart;
 
                 let fill = "white";
                 let stroke = hasHighlight ? "#e5e7eb" : "#006a4e";
@@ -749,9 +757,9 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                       </circle>
                     )}
 
-                    {/* Connect target ripple */}
-                    {(isHighlightStart || isUserConnectionStart) && (
-                      <circle cx={x} cy={y} r={20} fill={isHighlightStart ? "#16a34a" : "#f97316"} opacity="0.2">
+                    {/* Connect target ripple (START or START HERE) */}
+                    {isStartHereTarget && (
+                      <circle cx={x} cy={y} r={20} fill={isUserConnectionStart ? "#f97316" : "#16a34a"} opacity="0.2">
                         <animate attributeName="r" from="8" to="25" dur="2s" repeatCount="indefinite" />
                         <animate attributeName="opacity" from="0.5" to="0" dur="2s" repeatCount="indefinite" />
                       </circle>
@@ -779,7 +787,7 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                         height="20"
                         rx="4"
                         fill={undefined}
-                        stroke={isCurrent ? "#ef4444" : (isHighlightStart || isUserConnectionStart) ? (isHighlightStart ? "#16a34a" : "#f97316") : isHighlightEnd ? "#ef4444" : isHighlighted ? "#e5e7eb" : "#f1f5f9"}
+                        stroke={isCurrent ? "#ef4444" : isUserConnectionStart ? "#f97316" : isRealStart ? "#16a34a" : isRealEnd ? "#ef4444" : isHighlighted ? "#e5e7eb" : "#f1f5f9"}
                         strokeWidth="1"
                         className={`drop-shadow-sm fill-white dark:fill-slate-800`}
                       />
@@ -816,7 +824,7 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                           If reversed: Destination is at highlightStartIdx
                           Only show if NOT a transit point (unless it's the final trip destination)
                       */}
-                      {(tripDestination === s.id || ((isReversed ? isHighlightStart : isHighlightEnd) && s.id !== tripTransferPoint)) && (
+                      {(tripDestination === s.id || (isRealEnd && s.id !== tripTransferPoint)) && (
                         <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 42 : y - 48})`}>
                           <rect x="-38" y="-7" width="76" height="14" rx="3" fill="#ef4444" />
                           <text x="0" y="3" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">{t('busDetails.destination')}</text>
@@ -828,7 +836,7 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                           If reversed: Start is at highlightEndIdx
                           Only show if NOT a transit point.
                       */}
-                      {((isReversed ? isHighlightEnd : isHighlightStart) && s.id !== tripTransferPoint) && (
+                      {(isRealStart && s.id !== tripTransferPoint && !isUserConnectionStart) && (
                         <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 42 : y - 48})`}>
                           <rect x="-23" y="-7" width="46" height="14" rx="3" fill="#16a34a" />
                           <text x="0" y="3" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">{t('busDetails.start')}</text>
@@ -1107,24 +1115,38 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                     const segmentIndex = Math.floor(simulationStep * totalSegments);
                     const segmentProgress = (simulationStep * totalSegments) % 1;
 
-                    const currentIdx = highlightStartIdx + segmentIndex;
-                    if (currentIdx >= highlightEndIdx) return nodePositions[highlightEndIdx].x;
-
-                    const p1 = nodePositions[currentIdx];
-                    const p2 = nodePositions[currentIdx + 1];
-                    return p1.x + (p2.x - p1.x) * segmentProgress;
+                    if (!isReversed) {
+                      const currentIdx = highlightStartIdx + segmentIndex;
+                      if (currentIdx >= highlightEndIdx) return nodePositions[highlightEndIdx].x;
+                      const p1 = nodePositions[currentIdx];
+                      const p2 = nodePositions[currentIdx + 1];
+                      return p1.x + (p2.x - p1.x) * segmentProgress;
+                    } else {
+                      const currentIdx = highlightEndIdx - segmentIndex;
+                      if (currentIdx <= highlightStartIdx) return nodePositions[highlightStartIdx].x;
+                      const p1 = nodePositions[currentIdx];
+                      const p2 = nodePositions[currentIdx - 1];
+                      return p1.x + (p2.x - p1.x) * segmentProgress;
+                    }
                   })()
                   }, ${(() => {
                     const totalSegments = highlightEndIdx - highlightStartIdx;
                     const segmentIndex = Math.floor(simulationStep * totalSegments);
                     const segmentProgress = (simulationStep * totalSegments) % 1;
 
-                    const currentIdx = highlightStartIdx + segmentIndex;
-                    if (currentIdx >= highlightEndIdx) return nodePositions[highlightEndIdx].y;
-
-                    const p1 = nodePositions[currentIdx];
-                    const p2 = nodePositions[currentIdx + 1];
-                    return p1.y + (p2.y - p1.y) * segmentProgress;
+                    if (!isReversed) {
+                      const currentIdx = highlightStartIdx + segmentIndex;
+                      if (currentIdx >= highlightEndIdx) return nodePositions[highlightEndIdx].y;
+                      const p1 = nodePositions[currentIdx];
+                      const p2 = nodePositions[currentIdx + 1];
+                      return p1.y + (p2.y - p1.y) * segmentProgress;
+                    } else {
+                      const currentIdx = highlightEndIdx - segmentIndex;
+                      if (currentIdx <= highlightStartIdx) return nodePositions[highlightStartIdx].y;
+                      const p1 = nodePositions[currentIdx];
+                      const p2 = nodePositions[currentIdx - 1];
+                      return p1.y + (p2.y - p1.y) * segmentProgress;
+                    }
                   })()
                   })`}>
                   <circle r="12" fill="#006a4e" className="animate-pulse opacity-50" />
@@ -1186,7 +1208,6 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
               })()}
 
               {/* Render Live Buses - Must be LAST for top layer visibility */}
-              {liveBusPositions.length > 0 && console.log('🎨 Rendering', liveBusPositions.length, 'live bus icons on map')}
               {liveBusPositions.map((bus, i) => (
                 <g key={bus.busId} transform={`translate(${bus.x}, ${bus.y})`} className="live-bus-marker">
                   {/* Bus Icon Marker */}

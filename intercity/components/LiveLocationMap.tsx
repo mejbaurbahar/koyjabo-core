@@ -1,8 +1,8 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { X, Layers, Navigation, Map as MapIcon, Globe, Wifi, WifiOff, Lock } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 // Interfaces
 interface UserLocation {
@@ -28,6 +28,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
     isOpen,
     onClose,
 }) => {
+    const { t } = useLanguage();
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const mapInstanceRef = useRef<L.Map | null>(null);
     const userMarkerRef = useRef<L.Marker | null>(null);
@@ -229,9 +230,9 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                                 {userLocation && <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-slate-900 rounded-full animate-bounce"></div>}
                             </div>
                             <div>
-                                <h3 className="font-bold text-gray-800 dark:text-gray-200 text-sm">Live Location</h3>
+                                <h3 className="font-bold text-gray-800 dark:text-gray-200 text-sm">{t('map.liveLocation')}</h3>
                                 <p className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">
-                                    {userLocation ? 'GPS Signal Active' : 'Acquiring Signal...'}
+                                    {userLocation ? t('map.gpsSignalActive') : t('map.acquiringSignal')}
                                 </p>
                             </div>
                         </div>
@@ -256,12 +257,12 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                         <div className="absolute top-14 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2 rounded-2xl shadow-xl border border-gray-200/50 dark:border-gray-700/50 w-44 flex flex-col gap-1 animate-in slide-in-from-top-2">
                             {isOffline && (
                                 <div className="px-3 py-2 text-[10px] text-red-500 font-bold bg-red-50 dark:bg-red-900/30 rounded-lg mb-1 flex items-center gap-2">
-                                    <WifiOff className="w-3 h-3" /> Offline Mode
+                                    <WifiOff className="w-3 h-3" /> {t('map.offlineMode')}
                                 </div>
                             )}
 
                             <button onClick={() => setActiveLayer('standard')} className={`text-xs font-bold px-3 py-2 rounded-lg text-left flex items-center gap-2 ${activeLayer === 'standard' ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'}`}>
-                                <MapIcon className="w-4 h-4" /> Standard
+                                <MapIcon className="w-4 h-4" /> {t('map.standard')}
                             </button>
 
                             <button
@@ -269,7 +270,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                                 disabled={isOffline}
                                 className={`text-xs font-bold px-3 py-2 rounded-lg text-left flex items-center gap-2 justify-between ${activeLayer === 'satellite' ? 'bg-blue-50 text-blue-600' : isOffline ? 'text-gray-400 cursor-not-allowed opacity-60' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'}`}
                             >
-                                <div className="flex items-center gap-2"><Globe className="w-4 h-4" /> Satellite</div>
+                                <div className="flex items-center gap-2"><Globe className="w-4 h-4" /> {t('map.satellite')}</div>
                                 {isOffline && <Lock className="w-3 h-3" />}
                             </button>
 
@@ -278,7 +279,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                                 disabled={isOffline}
                                 className={`text-xs font-bold px-3 py-2 rounded-lg text-left flex items-center gap-2 justify-between ${activeLayer === 'terrain' ? 'bg-blue-50 text-blue-600' : isOffline ? 'text-gray-400 cursor-not-allowed opacity-60' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'}`}
                             >
-                                <div className="flex items-center gap-2"><MapIcon className="w-4 h-4" /> Terrain</div>
+                                <div className="flex items-center gap-2"><MapIcon className="w-4 h-4" /> {t('map.terrain')}</div>
                                 {isOffline && <Lock className="w-3 h-3" />}
                             </button>
 
@@ -287,7 +288,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                                 disabled={isOffline}
                                 className={`text-xs font-bold px-3 py-2 rounded-lg text-left flex items-center gap-2 justify-between ${activeLayer === 'traffic' ? 'bg-blue-50 text-blue-600' : isOffline ? 'text-gray-400 cursor-not-allowed opacity-60' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'}`}
                             >
-                                <div className="flex items-center gap-2"><Navigation className="w-4 h-4" /> Traffic</div>
+                                <div className="flex items-center gap-2"><Navigation className="w-4 h-4" /> {t('map.traffic')}</div>
                                 {isOffline && <Lock className="w-3 h-3" />}
                             </button>
 
@@ -296,7 +297,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                                 disabled={isOffline}
                                 className={`text-xs font-bold px-3 py-2 rounded-lg text-left flex items-center gap-2 justify-between ${activeLayer === 'dark' ? 'bg-blue-50 text-blue-600' : isOffline ? 'text-gray-400 cursor-not-allowed opacity-60' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'}`}
                             >
-                                <div className="flex items-center gap-2"><MapIcon className="w-4 h-4" /> Dark Mode</div>
+                                <div className="flex items-center gap-2"><MapIcon className="w-4 h-4" /> {t('map.darkMode')}</div>
                                 {isOffline && <Lock className="w-3 h-3" />}
                             </button>
                         </div>

@@ -77,3 +77,18 @@ export enum AppView {
   BLOG_BRTC_VS_PRIVATE = 'BLOG_BRTC_VS_PRIVATE',
   BLOG_METRO_VS_BUS = 'BLOG_METRO_VS_BUS'
 }
+
+export interface ChatMessage {
+  id: string;
+  role: 'user' | 'assistant';
+  text: string;
+  timestamp: number;
+}
+
+export interface ChatSession {
+  id: string;
+  messages: ChatMessage[];
+  createdAt: number;
+  lastUpdated: number;
+}
+

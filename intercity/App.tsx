@@ -98,8 +98,17 @@ function App() {
         localStorage.setItem('intercity_usage', JSON.stringify(newUsage));
         setUsageCount(0);
       }
+
+      // Load last cached result
+      const cachedResult = localStorage.getItem('intercity_last_result');
+      if (cachedResult) {
+        const parsed = JSON.parse(cachedResult);
+        setResult(parsed);
+        setFrom(parsed.from || '');
+        setTo(parsed.to || '');
+      }
     } catch (e) {
-      console.error("Failed to parse usage data", e);
+      console.error("Failed to parse data", e);
     }
   }, []);
 
@@ -190,6 +199,7 @@ function App() {
       if (!resultData.date) resultData.date = date;
 
       setResult(resultData);
+      localStorage.setItem('intercity_last_result', JSON.stringify(resultData));
 
       // Increment usage on success if it's not a cached response
       incrementUsage();
@@ -620,6 +630,21 @@ function App() {
         isOpen={showLiveMap}
         onClose={() => setShowLiveMap(false)}
       />
+
+      {/* Global Offline Indicator Toast */}
+      {!isOnline && (
+        <div className="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-[100] animate-in slide-in-from-bottom duration-300 w-[90%] max-w-sm">
+          <div className="bg-slate-900/90 dark:bg-slate-800/95 backdrop-blur-md text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border border-white/10">
+            <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-500 shrink-0">
+              <WifiOff className="w-5 h-5" />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-bold text-sm leading-none mb-1">{t('offline.offlineMode')}</span>
+              <p className="text-[10px] text-gray-400 font-medium">{t('offline.intercityRequiresInternet')}</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Mobile Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 pb-safe z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] md:hidden">
