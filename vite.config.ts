@@ -112,9 +112,10 @@ export default defineConfig(({ mode }) => {
           mode: 'production',
           sourcemap: false,
           // Cache versioning for proper updates
-          cacheId: 'dhaka-commute-v2',
+          cacheId: 'dhaka-commute-v3',
           // Precache intercity index.html for offline access
           additionalManifestEntries: [
+            { url: '/intercity/', revision: null },
             { url: '/intercity/index.html', revision: null }
           ],
           runtimeCaching: [

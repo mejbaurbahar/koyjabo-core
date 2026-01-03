@@ -1375,7 +1375,7 @@ const App: React.FC = () => {
   );
 
   const renderAbout = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-24 md:pt-24 overflow-y-auto w-full">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-20 md:pt-24 pb-32 md:pb-12 overflow-y-auto w-full">
       <div className="max-w-5xl mx-auto text-center">
         <div className="w-20 h-20 bg-dhaka-red rounded-3xl flex items-center justify-center text-white mx-auto mb-6 shadow-xl shadow-red-200 rotate-3 hover:rotate-6 transition-transform">
           <Bus className="w-10 h-10" />
@@ -1384,7 +1384,7 @@ const App: React.FC = () => {
         <h2 className="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-200">কই<span className="text-dhaka-red ml-2">যাবো</span> <span className="text-gray-600 dark:text-gray-400 text-lg">(KoyJabo)</span></h2>
         <p className="text-gray-500 dark:text-gray-400 mb-8">{t('settings.version')} 1.0.0</p>
 
-        <div className="text-left space-y-6 bg-slate-50 dark:bg-slate-800 p-8 rounded-3xl border border-gray-100 dark:border-gray-700">
+        <div className="text-left space-y-6 bg-slate-50 dark:bg-slate-800 p-6 md:p-8 rounded-3xl border border-gray-100 dark:border-gray-700">
           <p className="leading-relaxed text-gray-700 dark:text-gray-300 text-lg">
             {t('about.description')}
           </p>
@@ -1449,7 +1449,7 @@ const App: React.FC = () => {
           </div>
 
 
-          <div className="mt-8 flex flex-col items-center gap-4 pb-20 md:pb-0">
+          <div className="mt-8 flex flex-col items-center gap-4">
             <div className="text-center w-full">
               <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-3">Our Social Media</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Connect with us for updates and news</p>
@@ -1605,7 +1605,7 @@ const App: React.FC = () => {
 
   const renderPrivacyPolicy = () => (
     <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-y-auto w-full relative">
-      <div className="max-w-3xl mx-auto p-6 md:p-12 pt-24 md:pt-24">
+      <div className="max-w-3xl mx-auto p-6 md:p-12 pt-20 md:pt-24 pb-32 md:pb-12">
 
         <h1 className="text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100">{t('privacy.title')}</h1>
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">{t('privacy.lastUpdated')}: November 26, 2025</p>
@@ -1689,7 +1689,7 @@ const App: React.FC = () => {
 
   const renderTerms = () => (
     <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-y-auto w-full relative">
-      <div className="max-w-3xl mx-auto p-6 md:p-12 pt-24 md:pt-24">
+      <div className="max-w-3xl mx-auto p-6 md:p-12 pt-20 md:pt-24 pb-32 md:pb-12">
         <h1 className="text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100">{t('terms.title')}</h1>
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">{t('terms.lastUpdated')}: November 26, 2025</p>
 
@@ -2793,7 +2793,7 @@ const App: React.FC = () => {
                       onClick={() => {
                         setShowOfflineNavModal(false);
                         if (pendingIntercityNav) {
-                          window.location.href = `/intercity?from=${encodeURIComponent(pendingIntercityNav.from)}&to=${encodeURIComponent(pendingIntercityNav.to)}`;
+                          window.location.href = `/intercity/?from=${encodeURIComponent(pendingIntercityNav.from)}&to=${encodeURIComponent(pendingIntercityNav.to)}`;
                         }
                       }}
                       className="w-full bg-dhaka-green text-white font-bold py-3 rounded-xl hover:bg-green-700 transition-all flex items-center justify-center gap-2"
@@ -3108,7 +3108,7 @@ const App: React.FC = () => {
       // Allow navigation even if offline, relying on SW caching
       setIntercityLoading(true);
       setTimeout(() => {
-        window.location.href = `/intercity?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`;
+        window.location.href = `/intercity/?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`;
       }, 500);
     };
 
@@ -3636,7 +3636,7 @@ const App: React.FC = () => {
                     setPrimarySearch('INTERCITY');
                   } else {
                     // For users inside Dhaka, navigate to intercity page
-                    window.location.href = '/intercity';
+                    window.location.href = '/intercity/';
                   }
                 }}
                 className={`flex flex-col items-center justify-center gap-1 border-t-2 transition-all duration-300 transform ${!isInDhaka && view === AppView.HOME && primarySearch === 'INTERCITY' ? 'border-teal-500 text-teal-600 dark:text-teal-400 bg-teal-50/50 dark:bg-teal-900/20 scale-105' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:scale-105'} `}
