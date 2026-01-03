@@ -1274,7 +1274,7 @@ const App: React.FC = () => {
   };
 
   const renderAiAssistant = () => (
-    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 md:rounded-l-3xl md:border-l md:border-gray-200 dark:md:border-gray-800 overflow-hidden w-full pt-[65px] md:pt-24 relative">
+    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 md:rounded-l-3xl md:border-l md:border-gray-200 dark:md:border-gray-800 overflow-hidden w-full max-w-full pt-[65px] md:pt-24 relative">
       <div className="md:hidden flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shadow-sm z-20 absolute top-0 left-0 right-0 h-[65px]">
         <button onClick={() => setView(AppView.HOME)} className="p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors">
           <ArrowLeft className="w-5 h-5 text-gray-600" />
@@ -1375,7 +1375,7 @@ const App: React.FC = () => {
   );
 
   const renderAbout = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-20 md:pt-24 pb-32 md:pb-12 overflow-y-auto w-full">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-20 md:pt-24 pb-32 md:pb-12 overflow-y-auto overflow-x-hidden w-full max-w-full">
       <div className="max-w-5xl mx-auto text-center">
         <div className="w-20 h-20 bg-dhaka-red rounded-3xl flex items-center justify-center text-white mx-auto mb-6 shadow-xl shadow-red-200 rotate-3 hover:rotate-6 transition-transform">
           <Bus className="w-10 h-10" />
@@ -1604,7 +1604,7 @@ const App: React.FC = () => {
 
 
   const renderPrivacyPolicy = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-y-auto w-full relative">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-y-auto overflow-x-hidden w-full relative max-w-full">
       <div className="max-w-3xl mx-auto p-6 md:p-12 pt-20 md:pt-24 pb-32 md:pb-12">
 
         <h1 className="text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100">{t('privacy.title')}</h1>
@@ -1688,7 +1688,7 @@ const App: React.FC = () => {
   );
 
   const renderTerms = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-y-auto w-full relative">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-y-auto overflow-x-hidden w-full relative max-w-full">
       <div className="max-w-3xl mx-auto p-6 md:p-12 pt-20 md:pt-24 pb-32 md:pb-12">
         <h1 className="text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100">{t('terms.title')}</h1>
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">{t('terms.lastUpdated')}: November 26, 2025</p>
@@ -2353,9 +2353,9 @@ const App: React.FC = () => {
 
     const generalFareInfo = calculateFare(selectedBus);
     return (
-      <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-y-auto w-full">
+      <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-y-auto overflow-x-hidden w-full max-w-full">
         {/* Mobile Header */}
-        <div className="block md:hidden fixed top-0 w-full z-40">
+        <div className="block md:hidden fixed top-0 left-0 right-0 w-full z-40">
           <div className="bg-white dark:bg-slate-900 px-5 py-4 shadow-sm border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
             <button onClick={() => setView(AppView.HOME)} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors" aria-label="Go back to home">
               <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
@@ -3379,7 +3379,7 @@ const App: React.FC = () => {
 
   return (
     <NotificationProvider>
-      <div className="flex flex-col h-screen bg-slate-50 dark:bg-slate-900 font-sans text-gray-800 dark:text-gray-100 overflow-hidden">
+      <div className="flex flex-col h-screen bg-slate-50 dark:bg-slate-900 font-sans text-gray-800 dark:text-gray-100 overflow-hidden max-w-full">
         <NotificationBanner />
         {/* Mobile Header */}
         <header className={`fixed top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-5 py-3 shadow-sm z-[100] pt-safe-top md:hidden transition-transform duration-300 ${(view === AppView.BUS_DETAILS || view === AppView.LIVE_NAV) ? '-translate-y-full' : 'translate-y-0'} `}>
@@ -3420,7 +3420,7 @@ const App: React.FC = () => {
 
 
 
-        <main className="flex flex-1 overflow-hidden relative w-full mx-auto bg-slate-50 dark:bg-slate-900 h-full">
+        <main className="flex flex-1 overflow-hidden relative w-full max-w-full mx-auto bg-slate-50 dark:bg-slate-900 h-full">
           {/* Left Sidebar (Desktop) / Main View (Mobile Home) */}
           <div className={`
             ${'w-full md:w-1/3 md:min-w-[320px] md:max-w-md md:flex md:flex-col border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900 z-0 h-full overflow-y-auto'}

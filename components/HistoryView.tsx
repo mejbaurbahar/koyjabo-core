@@ -117,7 +117,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onViewJo
     };
 
     return (
-        <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-y-auto w-full relative">
+        <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-y-auto overflow-x-hidden w-full relative max-w-full">
             {/* Confirmation Modal */}
             {showClearConfirm && (
                 <div className="fixed inset-0 bg-black/50 z-[200] flex items-center justify-center p-4 animate-in fade-in duration-200">
