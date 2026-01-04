@@ -7,6 +7,16 @@ import { findNearbyStations, getNearbyStationNames } from './nearbyStationsServi
  * Supports Bengali text, station names, and bus names/numbers
  */
 
+// Custom Cache to avoid Object.values repetition
+let CACHED_STATIONS_LIST: Station[] | null = null;
+const getStationsList = () => {
+    if (!CACHED_STATIONS_LIST) {
+        CACHED_STATIONS_LIST = Object.values(STATIONS);
+    }
+    return CACHED_STATIONS_LIST;
+};
+
+
 export interface SearchSuggestion {
     type: 'bus' | 'station';
     id: string;
@@ -32,7 +42,9 @@ export const generateSearchSuggestions = (query: string): SearchSuggestion[] => 
     const suggestions: SearchSuggestion[] = [];
 
     // Search stations (both English and Bengali names)
-    Object.values(STATIONS).forEach(station => {
+    const stationsList = getStationsList();
+    for (let i = 0; i < stationsList.length; i++) {
+        const station = stationsList[i];
         const englishMatch = station.name.toLowerCase().includes(lowerQuery);
         const bengaliMatch = station.bnName?.includes(query.trim());
 
@@ -44,8 +56,11 @@ export const generateSearchSuggestions = (query: string): SearchSuggestion[] => 
                 bnName: station.bnName,
                 subtitle: station.bnName || station.name
             });
+            // Optimization: Limit internal collection if we have enough
+            if (suggestions.length > 20) break;
         }
-    });
+    }
+
 
     // Search bus names/numbers
     BUS_DATA.forEach(bus => {
@@ -136,7 +151,7 @@ export const enhancedBusSearch = (query: string): SearchResult => {
         const expandedToQueries = expandWithAliases(toQuery);
 
         // Find matching stations for "from" and "to" - trim station names for better matching
-        const fromStations = Object.values(STATIONS).filter(station => {
+        const fromStations = getStationsList().filter(station => {
             const stationName = station.name.trim().toLowerCase();
 
             // Check against all expanded queries
@@ -148,7 +163,7 @@ export const enhancedBusSearch = (query: string): SearchResult => {
             });
         });
 
-        const toStations = Object.values(STATIONS).filter(station => {
+        const toStations = getStationsList().filter(station => {
             const stationName = station.name.trim().toLowerCase();
 
             // Check against all expanded queries
@@ -159,6 +174,7 @@ export const enhancedBusSearch = (query: string): SearchResult => {
                 return englishMatch || bengaliMatch;
             });
         });
+
 
         if (fromStations.length > 0 && toStations.length > 0) {
             // Find buses that connect these stations
@@ -334,12 +350,13 @@ export const enhancedBusSearch = (query: string): SearchResult => {
     }
 
     // STEP 2: Search for stations matching the query
-    const matchingStations = Object.values(STATIONS).filter(station => {
+    const matchingStations = getStationsList().filter(station => {
         const englishMatch = station.name.toLowerCase().includes(lowerQuery);
         const bengaliMatch = station.bnName?.includes(queryTrimmed);
 
         return englishMatch || bengaliMatch;
     });
+
 
     if (matchingStations.length > 0) {
         // Find all buses that stop at any of these matching stations
@@ -411,8 +428,9 @@ export const enhancedBusSearch = (query: string): SearchResult => {
  * Get all stations sorted alphabetically for dropdowns
  */
 export const getAllStationsSorted = (): Station[] => {
-    return Object.values(STATIONS).sort((a, b) => a.name.localeCompare(b.name));
+    return getStationsList().sort((a, b) => a.name.localeCompare(b.name));
 };
+
 
 /**
  * Get all buses sorted by name

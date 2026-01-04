@@ -1043,12 +1043,16 @@ const App: React.FC = () => {
 
     // Generate intelligent route suggestions and search context
     if (inputValue.trim()) {
-      const searchResult = enhancedBusSearch(inputValue.trim());
-      const routes = planRoutes(userLocation, inputValue);
+      // Defer heavy calculation to next tick to allow UI to update first (INP fix)
+      setTimeout(() => {
+        const searchResult = enhancedBusSearch(inputValue.trim());
+        const routes = planRoutes(userLocation, inputValue);
 
-      setSuggestedRoutes(routes);
-      setSearchContext(searchResult.searchContext);
-      setDestinationStationIds(searchResult.destinationStationIds || []);
+        // Batch updates
+        setSuggestedRoutes(routes);
+        setSearchContext(searchResult.searchContext);
+        setDestinationStationIds(searchResult.destinationStationIds || []);
+      }, 0);
     } else {
       setSuggestedRoutes([]);
       setSearchContext(undefined);

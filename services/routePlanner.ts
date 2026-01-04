@@ -3,6 +3,27 @@ import { BUS_DATA, STATIONS, METRO_STATIONS } from '../constants';
 import { TRANSFER_POINTS, TransferPoint, findNearestTransferPoint } from './transferPoints';
 import { getDistance, findNearestStation } from './locationService';
 
+// --- Optimization: Cache for Station -> Buses lookup ---
+const STATION_TO_BUSES_MAP: Record<string, BusRoute[]> = {};
+let IS_MAP_INITIALIZED = false;
+
+const initStationMap = () => {
+    if (IS_MAP_INITIALIZED) return;
+
+    // Build the map once
+    BUS_DATA.forEach(bus => {
+        bus.stops.forEach(stopId => {
+            if (!STATION_TO_BUSES_MAP[stopId]) {
+                STATION_TO_BUSES_MAP[stopId] = [];
+            }
+            STATION_TO_BUSES_MAP[stopId].push(bus);
+        });
+    });
+
+    IS_MAP_INITIALIZED = true;
+};
+
+
 export interface RouteStep {
     type: 'walk' | 'bus' | 'metro' | 'railway';
     instruction: string;
@@ -43,18 +64,42 @@ const calculateMetroTime = (distanceKm: number): number => {
     return (distanceKm / 35) * 60; // minutes
 };
 
-// Find direct bus routes
+// Find direct bus routes (Optimized)
 const findDirectBuses = (fromStationId: string, toStationId: string): BusRoute[] => {
-    return BUS_DATA.filter(bus => {
+    if (!IS_MAP_INITIALIZED) initStationMap();
+
+    // Get buses for both stations
+    const fromBuses = STATION_TO_BUSES_MAP[fromStationId];
+    const toBuses = STATION_TO_BUSES_MAP[toStationId];
+
+    // Quick exit if either station has no buses
+    if (!fromBuses || !toBuses) return [];
+
+    // Optimization: Intersect the two lists. Loop over the smaller list.
+    const [smaller, larger] = fromBuses.length < toBuses.length
+        ? [fromBuses, toBuses]
+        : [toBuses, fromBuses];
+
+    // Create a Set for O(1) lookups of the larger list
+    const largerSet = new Set(larger.map(b => b.id));
+
+    return smaller.filter(bus => {
+        // 1. Bus must be in both lists
+        if (!largerSet.has(bus.id)) return false;
+
+        // 2. Bus must go from A to B (direction check)
+        // Note: strict direction check is safer for route planning
         const fromIdx = bus.stops.indexOf(fromStationId);
         const toIdx = bus.stops.indexOf(toStationId);
+
         return fromIdx !== -1 && toIdx !== -1;
     });
 };
 
 // Find buses passing through a station
 const findBusesAtStation = (stationId: string): BusRoute[] => {
-    return BUS_DATA.filter(bus => bus.stops.includes(stationId));
+    if (!IS_MAP_INITIALIZED) initStationMap();
+    return STATION_TO_BUSES_MAP[stationId] || [];
 };
 
 // Calculate fare for a bus route segment
