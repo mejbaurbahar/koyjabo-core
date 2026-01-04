@@ -651,7 +651,7 @@ export const translations: Record<Language, Translations> = {
             whyUse: 'Why Use',
             allDhakaLocalBuses: 'All Dhaka Local Buses',
             whereToGo: 'Where would you like to go in Dhaka?',
-            whereToGoInDhaka: 'Where do you want to go in Dhaka?',
+            whereToGoInDhaka: 'Where would you want to go in Dhaka?',
             findPerfectRoute: 'Find your perfect route in one click',
             findIntercityRoutes: 'Find Intercity Routes',
             findBusesBetweenCities: 'Find buses between cities',
