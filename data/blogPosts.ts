@@ -1,30 +1,30 @@
-export interface BlogPost {
-    id: string;
-    slug: string;
-    title: string;
-    bnTitle: string;
-    excerpt: string;
-    bnExcerpt: string;
-    content: string;
-    bnContent: string;
-    coverImage: string;
-    author: string;
-    publishDate: string;
-    readTime: string;
-    keywords: string[];
-    category: string;
+﻿export interface BlogPost {
+        id: string;
+        slug: string;
+        title: string;
+        bnTitle: string;
+        excerpt: string;
+        bnExcerpt: string;
+        content: string;
+        bnContent: string;
+        coverImage: string;
+        author: string;
+        publishDate: string;
+        readTime: string;
+        keywords: string[];
+        category: string;
 }
 
 export const BLOG_POSTS: BlogPost[] = [
-    {
-        id: 'best-bus-routes-dhaka',
-        slug: 'best-bus-routes-dhaka',
-        title: 'Top 10 Best Bus Routes in Dhaka: Complete Guide & Fare Chart 2025',
-        bnTitle: 'ঢাকার সেরা ১০টি বাস রুট: সম্পূর্ণ গাইড ও ভাড়া তালিকা ২০২৫',
-        excerpt: 'Looking for the best bus routes in Dhaka? Check out our 2025 guide covering the most efficient routes, fare charts, and pro tips for commuting with the Koi Jabo app.',
-        bnExcerpt: '২০২৫ সালে ঢাকার সবচেয়ে সহজ এবং সাশ্রয়ী বাস রুট খুঁজছেন? ভাড়া তালিকা এবং প্রো-টিপস সহ সেরা ১০টি রুটের বিস্তারিত তথ্য জানুন আমাদের এই গাইডে।',
-        coverImage: '/blog-best-bus-routes.png',
-        content: `
+        {
+                id: 'best-bus-routes-dhaka',
+                slug: 'best-bus-routes-dhaka',
+                title: 'Top 10 Best Bus Routes in Dhaka: Complete Guide & Fare Chart 2025',
+                bnTitle: 'ঢাকার সেরা ১০টি বাস রুট: সম্পূর্ণ গাইড ও ভাড়া তালিকা ২০২৫',
+                excerpt: 'Looking for the best bus routes in Dhaka? Check out our 2025 guide covering the most efficient routes, fare charts, and pro tips for commuting with the Koi Jabo app.',
+                bnExcerpt: '২০২৫ সালে ঢাকার সবচেয়ে সহজ এবং সাশ্রয়ী বাস রুট খুঁজছেন? ভাড়া তালিকা এবং প্রো-টিপস সহ সেরা ১০টি রুটের বিস্তারিত তথ্য জানুন আমাদের এই গাইডে।',
+                coverImage: '/blog-best-bus-routes.png',
+                content: `
 Dhaka's public transport system is the main lifeline for millions of people every day. However, not knowing the right bus route can lead to wasted time and suffering. Based on coverage, frequency, and user experience, here are the 10 most effective bus routes in Dhaka.
 
 ---
@@ -189,7 +189,7 @@ Knowing the right bus route is crucial for traveling smartly in Dhaka. To save t
 
 Use Koi Jabo — 200+ Dhaka bus routes, on one platform.
 `,
-        bnContent: `
+                bnContent: `
 ঢাকার গণপরিবহন ব্যবস্থা প্রতিদিন লক্ষ লক্ষ মানুষের চলাচলের প্রধান ভরসা। কিন্তু সঠিক বাস রুট না জানলে সময় নষ্ট হয়, ভোগান্তিও বাড়ে। এই ব্লগে কভারেজ, ফ্রিকোয়েন্সি ও ব্যবহারকারীর অভিজ্ঞতার ভিত্তিতে ঢাকার সবচেয়ে কার্যকর ১০টি বাস রুট তুলে ধরা হলো।
 
 ---
@@ -344,22 +344,22 @@ Use Koi Jabo — 200+ Dhaka bus routes, on one platform.
 
 কই যাবো ব্যবহার করুন — ঢাকার ২০০+ বাস রুট, এক প্ল্যাটফর্মে।
 `,
-        author: 'কই যাবো Team',
-        publishDate: '2025-12-30',
-        readTime: '8 min read',
-        keywords: ['Dhaka bus routes 2025', 'best bus for commute dhaka', 'Dhaka public transport guide', 'BRTC bus list', 'Gulistan to Gabtoli bus', 'Uttara to Motijheel bus', 'Dhaka bus fare chart 2025', 'real-time bus tracking dhaka', 'Koi Jabo app', 'Dhaka transport map', 'bus route finder dhaka', 'cheapest bus dhaka'],
-        category: 'Bus Routes'
-    },
+                author: 'কই যাবো Team',
+                publishDate: '2025-12-30',
+                readTime: '8 min read',
+                keywords: ['Dhaka bus routes 2025', 'best bus for commute dhaka', 'Dhaka public transport guide', 'BRTC bus list', 'Gulistan to Gabtoli bus', 'Uttara to Motijheel bus', 'Dhaka bus fare chart 2025', 'real-time bus tracking dhaka', 'Koi Jabo app', 'Dhaka transport map', 'bus route finder dhaka', 'cheapest bus dhaka'],
+                category: 'Bus Routes'
+        },
 
-    {
-        id: 'dhaka-metro-guide',
-        slug: 'dhaka-metro-guide',
-        title: 'Dhaka Metro Rail Guide 2025: Stations, Fare Chart, Timings & MRT Pass',
-        bnTitle: 'ঢাকা মেট্রো রেল গাইড ২০২৫: স্টেশন লিস্ট, ভাড়ার তালিকা, ও এমআরটি পাস নিয়ম',
-        excerpt: 'Get the latest information on Dhaka Metro Rail (MRT Line-6) stations, distance-based fare chart, Friday timings, and how to get an MRT Pass for traffic-free travel.',
-        bnExcerpt: 'ঢাকা মেট্রো রেলের (এমআরটি লাইন-৬) স্টেশন লিস্ট, ভাড়ার তালিকা এবং এমআরটি পাস তৈরির নিয়মসহ যাবতীয় সব সর্বশেষ আপডেট জানুন এক জায়গায়।',
-        coverImage: '/blog-metro-rail-guide.png',
-        content: `
+        {
+                id: 'dhaka-metro-guide',
+                slug: 'dhaka-metro-guide',
+                title: 'Dhaka Metro Rail Guide 2025: Stations, Fare Chart, Timings & MRT Pass',
+                bnTitle: 'ঢাকা মেট্রো রেল গাইড ২০২৫: স্টেশন লিস্ট, ভাড়ার তালিকা, ও এমআরটি পাস নিয়ম',
+                excerpt: 'Get the latest information on Dhaka Metro Rail (MRT Line-6) stations, distance-based fare chart, Friday timings, and how to get an MRT Pass for traffic-free travel.',
+                bnExcerpt: 'ঢাকা মেট্রো রেলের (এমআরটি লাইন-৬) স্টেশন লিস্ট, ভাড়ার তালিকা এবং এমআরটি পাস তৈরির নিয়মসহ যাবতীয় সব সর্বশেষ আপডেট জানুন এক জায়গায়।',
+                coverImage: '/blog-metro-rail-guide.png',
+                content: `
 Dhaka Metro Rail (MRT Line-6) is Bangladesh's first-ever modern mass rapid transit system, playing a major role in reducing traffic congestion and making commuting fast and reliable. This guide provides all necessary information about MRT Line-6 in one place.
 
 ---
@@ -479,7 +479,7 @@ Dhaka Metro Rail (MRT Line-6) is a new chapter in the city's transport system. I
 **Use Koi Jabo Today**
 Find the best **Metro + Bus** routes for your journey in one place!
 `,
-        bnContent: `
+                bnContent: `
 ঢাকা মেট্রো রেল (MRT Line-6) বাংলাদেশের প্রথম আধুনিক গণপরিবহন ব্যবস্থা, যা ঢাকার যানজট কমাতে ও যাতায়াতকে দ্রুত ও নির্ভরযোগ্য করতে বড় ভূমিকা রাখছে। এই ব্লগে এমআরটি লাইন-৬ সম্পর্কে প্রয়োজনীয় সব তথ্য এক জায়গায় দেওয়া হলো।
 
 ---
@@ -599,21 +599,21 @@ Find the best **Metro + Bus** routes for your journey in one place!
 **আজই কই যাবো ব্যবহার করুন**
 আপনার যাত্রার জন্য সেরা **মেট্রো + বাস** রুট খুঁজে নিন এক জায়গায়!
 `,
-        author: 'কই যাবো Team',
-        publishDate: '2025-12-30',
-        readTime: '10 min read',
-        keywords: ['Dhaka Metro Rail Guide 2025', 'MRT Line 6 stations list', 'Dhaka metro fare chart', 'Metro rail timings Friday', 'How to buy MRT Pass', 'Dhaka metro rail map', 'Uttara to Motijheel metro fare', 'Bangladesh metro rail update', 'Metro rail ticket price', 'Metro vs Bus Dhaka', 'Rapid Pass Bangladesh', 'Metro rail Motijheel'],
-        category: 'Metro Rail'
-    },
-    {
-        id: 'uttara-to-motijheel-bus-guide',
-        slug: 'uttara-to-motijheel-bus-guide',
-        title: 'Uttara to Motijheel Bus Route Guide 2025: All Options, Fares & Timings',
-        bnTitle: 'উত্তরা থেকে মতিঝিল বাস রুট গাইড ২০২৫: সব বাসের তালিকা এবং ভাড়া',
-        excerpt: 'Looking for the best way to travel from Uttara to Motijheel? Whether by Metro Rail or local bus, find all routes, fares, and travel tips in this 2025 guide.',
-        bnExcerpt: 'উত্তরা থেকে মতিঝিল যাওয়ার সবচেয়ে সহজ উপায় খুঁজছেন? মেট্রো রেল নাকি লোকাল বাস—সাশ্রয়ী ও দ্রুত যাত্রার সব পথ এবং ভাড়া জানুন এই গাইডে।',
-        coverImage: '/blog-uttara-motijheel.png',
-        content: `
+                author: 'কই যাবো Team',
+                publishDate: '2025-12-30',
+                readTime: '10 min read',
+                keywords: ['Dhaka Metro Rail Guide 2025', 'MRT Line 6 stations list', 'Dhaka metro fare chart', 'Metro rail timings Friday', 'How to buy MRT Pass', 'Dhaka metro rail map', 'Uttara to Motijheel metro fare', 'Bangladesh metro rail update', 'Metro rail ticket price', 'Metro vs Bus Dhaka', 'Rapid Pass Bangladesh', 'Metro rail Motijheel'],
+                category: 'Metro Rail'
+        },
+        {
+                id: 'uttara-to-motijheel-bus-guide',
+                slug: 'uttara-to-motijheel-bus-guide',
+                title: 'Uttara to Motijheel Bus Route Guide 2025: All Options, Fares & Timings',
+                bnTitle: 'উত্তরা থেকে মতিঝিল বাস রুট গাইড ২০২৫: সব বাসের তালিকা এবং ভাড়া',
+                excerpt: 'Looking for the best way to travel from Uttara to Motijheel? Whether by Metro Rail or local bus, find all routes, fares, and travel tips in this 2025 guide.',
+                bnExcerpt: 'উত্তরা থেকে মতিঝিল যাওয়ার সবচেয়ে সহজ উপায় খুঁজছেন? মেট্রো রেল নাকি লোকাল বাস—সাশ্রয়ী ও দ্রুত যাত্রার সব পথ এবং ভাড়া জানুন এই গাইডে।',
+                coverImage: '/blog-uttara-motijheel.png',
+                content: `
 Traveling from Uttara to Motijheel is one of the most common commutes in Dhaka. With the introduction of the Metro Rail and various express bus services, commuters now have several options. This guide helps you choose the best one.
 
 ---
@@ -623,14 +623,15 @@ Traveling from Uttara to Motijheel is one of the most common commutes in Dhaka. 
 Several buses operate directly or via major hubs between these two points.
 
 **Best Bus Services:**
-* **Bihongo Paribahan:** Known for frequency.
-* **Projapati Paribahan (A-1):** Reliable and covers the full length of the corridor.
-* **Shikor Paribahan:** Good option for those starting from deeper Uttara sectors.
-* **BRTC (Articulated/Double Decker):** Cost-effective but can be crowded.
+* **BRTC (Motijheel-Abdullahpur):** Direct route with reliable service.
+* **BRTC (Motijheel-Tongi):** Extended service through Uttara to Tongi.
+* **Gazipur Paribahan:** Long-distance service covering Uttara to Motijheel corridor.
+* **Green Dhaka:** Comfortable sitting service on this route.
+* **Shatabdi:** Semi-sitting service via Rampura route.
 
-**Route:** Uttara (House Building/Azampur) -> Airport -> Khilkhet -> Banani -> Mohakhali -> Bijoy Sarani -> Farmgate -> Shahbagh -> Paltan -> Motijheel.
+**Route:** Motijheel -> Gulistan -> Paltan -> Shahbagh -> Farmgate -> Mohakhali -> Banani -> Airport -> Khilkhet -> Kuril -> Bashundhara -> Uttara -> Abdullahpur.
 
-**Fare:** ৳35–45 (Sitting Service) | ৳25–30 (Local Service)
+**Fare:** ৳30–50 (depending on service type)
 **Avg. Time:** 60–90 minutes depending on traffic.
 
 ---
@@ -671,7 +672,7 @@ The MRT Line-6 has revolutionized this route. If you want to avoid traffic compl
 
 Whether you choose the budget-friendly bus or the lightning-fast Metro Rail, knowing your options saves time and money. Use the **Koi Jabo** app to find the nearest bus stop and real-time route info instantly.
         `,
-        bnContent: `
+                bnContent: `
 উত্তরা থেকে মতিঝিল যাতায়াত ঢাকার অন্যতম ব্যস্ত রুট। মেট্রো রেল চালু হওয়ায় এখন এই রুটে যাতায়াত আগের চেয়ে অনেক সহজ হয়েছে। তবুও বাসে যাতায়াতের চাহিদা এখনও অনেক। এই গাইডে আমরা উত্তরা থেকে মতিঝিল যাওয়ার সব সেরা উপায়গুলো আলোচনা করব।
 
 ---
@@ -686,7 +687,7 @@ Whether you choose the budget-friendly bus or the lightning-fast Metro Rail, kno
 * **শিকর পরিবহন:** উত্তরার ভেতর থেকে যারা যাত্রা করেন তাদের জন্য ভালো।
 * **বিআরটিসি (ডাবল ডেকার):** সরকারি বাসে কম ভাড়ায় যাতায়াতের সুযোগ।
 
-**রুট:** উত্তরা (হাউস বিল্ডিং/আজমপুর) -> বিমানবন্দর -> খিলক্ষেত -> বনানী -> মহাখালী -> বিজয় সরণি -> ফার্মগেট -> শাহবাগ -> পল্টন -> মতিঝিল।
+**রুট:** মতিঝিল -> গুলিস্তান -> পল্টন -> শাহবাগ -> ফার্মগেট -> মহাখালী -> বনানী -> বিমানবন্দর -> খিলক্ষেত -> কুড়িল -> বসুন্ধরা -> উত্তরা -> আবদুল্লাহপুর।
 
 **ভাড়া:** ৫০–৬০ টাকা (সিটিং সার্ভিস) | ৩০–৪০ টাকা (লোকাল সার্ভিস) - সময় ও পরিস্থিতিভেদে পরিবর্তন হতে পারে।
 **সময়:** যানজটভেদে ৬০ থেকে ৯০ মিনিট।
@@ -729,10 +730,10 @@ Whether you choose the budget-friendly bus or the lightning-fast Metro Rail, kno
 
 সাশ্রয়ী যাতায়াতের জন্য বাস এবং দ্রুত গন্তব্যে পৌঁছানোর জন্য মেট্রো রেল—উভয় পথই এখন আগের চেয়ে উন্নত। আপনার সঠিক রুট এবং বাসের সঠিক লোকেশন জানতে আজই ব্যবহার করুন **কই যাবো** অ্যাপ।
         `,
-        author: 'কই যাবো Team',
-        publishDate: '2026-01-02',
-        readTime: '6 min read',
-        keywords: ['Uttara to Motijheel bus route', 'Dhaka metro rail Uttara to Motijheel', 'Uttara to Motijheel bus fare', 'Bihongo Paribahan route', 'Dhaka bus guide 2025', 'উত্তরা থেকে মতিঝিল বাস ভাড়া', 'উত্তরা থেকে মতিঝিল মেট্রো রেল ভাড়া', 'ঢাকা বাস রুট গাইড'],
-        category: 'Bus Routes'
-    }
+                author: 'কই যাবো Team',
+                publishDate: '2026-01-02',
+                readTime: '6 min read',
+                keywords: ['Uttara to Motijheel bus route', 'Dhaka metro rail Uttara to Motijheel', 'Uttara to Motijheel bus fare', 'Bihongo Paribahan route', 'Dhaka bus guide 2025', 'উত্তরা থেকে মতিঝিল বাস ভাড়া', 'উত্তরা থেকে মতিঝিল মেট্রো রেল ভাড়া', 'ঢাকা বাস রুট গাইড'],
+                category: 'Bus Routes'
+        }
 ];
