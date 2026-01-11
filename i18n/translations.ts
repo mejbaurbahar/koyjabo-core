@@ -522,6 +522,9 @@ export const translations: Record<Language, Translations> = {
             intercityRequiresInternet: 'আন্তঃশহর অনুসন্ধানের জন্য ইন্টারনেট সংযোগ প্রয়োজন।',
             aiRequiresInternet: 'এআই সহায়ক ব্যবহার করতে ইন্টারনেট সংযোগ প্রয়োজন।',
             usingCachedData: 'অফলাইন ডেটা ব্যবহার করা হচ্ছে',
+            staleWarningTitle: 'আপনি অফলাইনে আছেন',
+            staleWarningMessage: 'মনে হচ্ছে আপনি অনেকদিন অ্যাপটি ব্যবহার করেননি। সময়সূচী পুরানো হতে পারে।\n\nআপডেট পেতে ইন্টারনেটে সংযোগ করুন, অথবা অফলাইনে চালিয়ে যান।',
+            continueOffline: 'অফলাইনে চালিয়ে যান',
         },
 
         // Route Finder Results
@@ -1055,6 +1058,9 @@ export const translations: Record<Language, Translations> = {
             intercityRequiresInternet: 'Intercity search requires an internet connection.',
             aiRequiresInternet: 'AI Assistant requires an internet connection.',
             usingCachedData: 'Using cached offline data',
+            staleWarningTitle: 'You are Offline',
+            staleWarningMessage: 'It looks like you haven\'t used the app in a while. Schedules might be outdated.\n\nPlease connect to the internet to update, or continue offline.',
+            continueOffline: 'Continue Offline',
         },
 
         // Map UI

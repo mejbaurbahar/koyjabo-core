@@ -490,6 +490,44 @@ const App: React.FC = () => {
 
   // Offline detection
   const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [showStaleOfflineWarning, setShowStaleOfflineWarning] = useState(false);
+
+  // Offline and Stale Data Logic
+  useEffect(() => {
+    // Online/Offline Listeners
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    // Stale Data Check (3 days)
+    const checkStaleData = () => {
+      const lastOpenedStr = localStorage.getItem('last_app_opened_timestamp');
+      const now = Date.now();
+      const STALE_THRESHOLD = 3 * 24 * 60 * 60 * 1000; // 3 days
+
+      if (lastOpenedStr) {
+        const lastOpened = parseInt(lastOpenedStr, 10);
+        const diff = now - lastOpened;
+
+        // Condition: Stale (>3 days) AND Offline
+        if (diff > STALE_THRESHOLD && !navigator.onLine) {
+          setShowStaleOfflineWarning(true);
+        }
+      }
+
+      // Update timestamp
+      localStorage.setItem('last_app_opened_timestamp', now.toString());
+    };
+
+    checkStaleData();
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   const [speed, setSpeed] = useState<number | null>(null);
   const watchIdRef = useRef<number | null>(null);
@@ -3838,6 +3876,29 @@ const App: React.FC = () => {
           userLocation={userLocation}
           selectedRoute={selectedBus}
         />
+
+
+        {/* Stale Offline Warning Modal */}
+        {showStaleOfflineWarning && (
+          <div className="fixed inset-0 z-[101] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-sm w-full p-6 animate-in zoom-in-95 border border-red-100 dark:border-red-900/30">
+              <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <WifiOff className="w-8 h-8" />
+              </div>
+              <h3 className="text-xl font-bold text-center text-gray-900 dark:text-gray-100 mb-2">{t('offline.staleWarningTitle')}</h3>
+              <p className="text-center text-gray-600 dark:text-gray-400 mb-6 text-sm whitespace-pre-line">
+                {t('offline.staleWarningMessage')}
+              </p>
+
+              <button
+                onClick={() => setShowStaleOfflineWarning(false)}
+                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition-colors shadow-lg shadow-emerald-500/20"
+              >
+                {t('offline.continueOffline')}
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Global Offline Indicator Toast */}
         {!isOnline && (
