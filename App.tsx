@@ -1319,7 +1319,7 @@ const App: React.FC = () => {
         <button onClick={() => setView(AppView.HOME)} className="p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors">
           <ArrowLeft className="w-5 h-5 text-gray-600" />
         </button>
-        <div className={`w-10 h-10 rounded-full ${isOnline ? 'bg-blue-600' : 'bg-gray-400'} flex items-center justify-center text-white shadow-lg ${isOnline ? 'shadow-blue-200' : 'shadow-gray-200'} `}>
+        <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-200 ">
           <Bot className="w-6 h-6" />
         </div>
         <div className="flex-1">
@@ -1340,7 +1340,7 @@ const App: React.FC = () => {
 
 
       <div className="hidden md:flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shadow-sm z-20">
-        <div className={`w-10 h-10 rounded-full ${isOnline ? 'bg-blue-600' : 'bg-gray-400'} flex items-center justify-center text-white shadow-lg ${isOnline ? 'shadow-blue-200' : 'shadow-gray-200'} `}>
+        <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-200 ">
           <Bot className="w-6 h-6" />
         </div>
         <div className="flex-1">
@@ -3885,20 +3885,7 @@ const App: React.FC = () => {
           </div>
         )}
 
-        {/* Global Offline Indicator Toast */}
-        {!isOnline && (
-          <div className="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-[100] animate-in slide-in-from-bottom duration-300">
-            <div className="bg-slate-900/90 dark:bg-slate-800/95 backdrop-blur-md text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border border-white/10">
-              <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-500">
-                <WifiOff className="w-5 h-5" />
-              </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-sm leading-none mb-1">{t('map.offlineMode')}</span>
-                <p className="text-[10px] text-gray-400 font-medium">{t('offline.usingCachedData')}</p>
-              </div>
-            </div>
-          </div>
-        )}
+
       </div>
     </NotificationProvider >
   );
