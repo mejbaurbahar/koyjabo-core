@@ -69,7 +69,7 @@ const DistrictSelect: React.FC<DistrictSelectProps> = ({ label, value, onChange,
                   <div
                     key={`${category}-${location}`}
                     onClick={() => handleSelect(location)}
-                    className={`px-3 py-1.5 text-sm md:text-base hover:bg-blue-50 dark:hover:bg-slate-700 cursor-pointer ${value === location ? 'bg-blue-50 dark:bg-slate-700 text-blue-600 dark:text-blue-400 font-medium' : 'text-green-600 dark:text-green-400'
+                    className={`px-3 py-1.5 text-sm md:text-base hover:bg-blue-50 dark:hover:bg-slate-700 cursor-pointer ${value === location ? 'bg-blue-50 dark:bg-slate-700 text-blue-600 dark:text-blue-400 font-medium' : 'text-slate-700 dark:text-slate-200'
                       }`}
                   >
                     {location}

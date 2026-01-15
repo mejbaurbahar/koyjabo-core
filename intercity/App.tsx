@@ -8,7 +8,8 @@ import DistrictSelect from './components/DistrictSelect';
 import ResultCard from './components/ResultCard';
 import LoadingState from './components/LoadingState';
 import LiveLocationMap from './components/LiveLocationMap';
-import { API_ENDPOINT, POPULAR_ROUTES, DEMO_RESPONSE, DEMO_RESPONSE_BN } from './constants';
+import { POPULAR_ROUTES, DEMO_RESPONSE, DEMO_RESPONSE_BN } from './constants';
+import { getOfflineIntercityData } from './offlineService';
 import { RouteResponse, ErrorResponse } from './types';
 
 function App() {
@@ -29,8 +30,7 @@ function App() {
 
   // New States for Offline and Usage
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const [usageCount, setUsageCount] = useState(0);
-  const DAILY_LIMIT = 2;
+  // Removed usage limit as requested
 
   // Dark Mode State
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -76,30 +76,9 @@ function App() {
     };
   }, []);
 
-  // Handle Daily Usage Limit
+  // Load last cached result
   useEffect(() => {
     try {
-      const today = new Date().toLocaleDateString('en-GB'); // DD/MM/YYYY format
-      const saved = localStorage.getItem('intercity_usage');
-
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed.date === today) {
-          setUsageCount(parsed.count);
-        } else {
-          // New day, reset
-          const newUsage = { date: today, count: 0 };
-          localStorage.setItem('intercity_usage', JSON.stringify(newUsage));
-          setUsageCount(0);
-        }
-      } else {
-        // Initialize
-        const newUsage = { date: today, count: 0 };
-        localStorage.setItem('intercity_usage', JSON.stringify(newUsage));
-        setUsageCount(0);
-      }
-
-      // Load last cached result
       const cachedResult = localStorage.getItem('intercity_last_result');
       if (cachedResult) {
         const parsed = JSON.parse(cachedResult);
@@ -108,16 +87,9 @@ function App() {
         setTo(parsed.to || '');
       }
     } catch (e) {
-      console.error("Failed to parse data", e);
+      console.error("Failed to parse cached data", e);
     }
   }, []);
-
-  const incrementUsage = () => {
-    const today = new Date().toLocaleDateString('en-GB');
-    const newCount = usageCount + 1;
-    setUsageCount(newCount);
-    localStorage.setItem('intercity_usage', JSON.stringify({ date: today, count: newCount }));
-  };
 
   const handleSwap = () => {
     setFrom(to);
@@ -148,19 +120,8 @@ function App() {
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!isOnline) {
-      setError(t('intercity.offlineCheck'));
-      return;
-    }
-
     if (!from || !to) {
       setError(t('intercity.selectStartEnd'));
-      return;
-    }
-
-    // Check usage limit before calling API (Frontend Check)
-    if (usageCount >= DAILY_LIMIT) {
-      setError(t('intercity.dailyLimitReached'));
       return;
     }
 
@@ -168,51 +129,19 @@ function App() {
     setError(null);
     setResult(null);
 
-    try {
-      const response = await fetch(API_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ from, to, date }),
-      });
+    // Simulate a brief loading for UX
+    setTimeout(() => {
+      try {
+        const resultData = getOfflineIntercityData(from, to, language as 'en' | 'bn');
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        const errorData = data as ErrorResponse;
-
-        if (response.status === 429) {
-          // Backend limit reached
-          throw new Error(t('intercity.backendLimitReached'));
-        } else if (response.status === 503) {
-          throw new Error(t('intercity.aiBusy'));
-        } else {
-          throw new Error(errorData.message || errorData.error || t('errors.unknown'));
-        }
+        setResult(resultData);
+        localStorage.setItem('intercity_last_result', JSON.stringify(resultData));
+      } catch (err: any) {
+        setError(t('intercity.loadFailed'));
+      } finally {
+        setLoading(false);
       }
-
-      const resultData = data as RouteResponse;
-      // Ensure essential fields are present for ResultCard
-      if (!resultData.from) resultData.from = from;
-      if (!resultData.to) resultData.to = to;
-      if (!resultData.date) resultData.date = date;
-
-      setResult(resultData);
-      localStorage.setItem('intercity_last_result', JSON.stringify(resultData));
-
-      // Increment usage on success if it's not a cached response
-      incrementUsage();
-
-    } catch (err: any) {
-      if (err.message === 'ERROR_DAILY_LIMIT') {
-        setError(t('intercity.dailyLimitReached'));
-      } else {
-        setError(err.message || t('intercity.loadFailed'));
-      }
-    } finally {
-      setLoading(false);
-    }
+    }, 800);
   };
 
   return (
@@ -353,16 +282,7 @@ function App() {
           <div className="absolute inset-0 opacity-10 dark:opacity-5 bg-[radial-gradient(#444cf7_1px,transparent_1px)] [background-size:20px_20px]"></div>
         </div>
 
-        {/* Top Right Usage Badge */}
-        <div className="absolute top-2 right-2 md:top-4 md:right-4 z-50 flex items-center gap-2">
-          <div className={`px-2 py-1 md:px-3 md:py-1.5 rounded-full text-[10px] md:text-xs font-bold flex items-center gap-1 md:gap-1.5 border shadow-sm transition-all duration-300 backdrop-blur-md ${usageCount >= DAILY_LIMIT
-            ? 'bg-red-50/90 text-red-600 border-red-200 dark:bg-red-900/40 dark:text-red-400 dark:border-red-800'
-            : 'bg-blue-50/90 text-blue-600 border-blue-200 dark:bg-blue-900/40 dark:text-blue-400 dark:border-blue-800'
-            }`}>
-            <Activity size={14} />
-            <span>{t('intercity.searchLimit')}: {formatNumber(usageCount)}/{formatNumber(DAILY_LIMIT)}</span>
-          </div>
-        </div>
+        {/* Removed Usage Badge */}
 
         {/* Container - Content sits relative above background */}
         <div className="py-4 md:py-8 px-4 relative z-10">
@@ -395,13 +315,7 @@ function App() {
 
           {/* Search Box */}
           <div className="max-w-4xl mx-auto bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm rounded-2xl shadow-xl shadow-blue-900/5 border border-gray-100 dark:border-slate-700 p-1.5 md:p-2 relative z-10 transition-colors duration-300">
-            {/* Offline Banner inside Search Box */}
-            {!isOnline && (
-              <div className="absolute -top-12 left-0 right-0 mx-auto w-max max-w-[90%] bg-red-500 text-white text-xs md:text-sm px-4 py-2 rounded-full shadow-md flex items-center gap-2 justify-center animate-slide-up z-50">
-                <WifiOff size={16} />
-                <span className="font-semibold">{t('intercity.offlineCheck')}</span>
-              </div>
-            )}
+            {/* Removed Offline Banner as requested */}
 
             <form onSubmit={handleSearch} className="flex flex-col md:flex-row md:items-end gap-1.5 md:gap-2 relative">
 
@@ -451,35 +365,24 @@ function App() {
                 />
               </div>
 
-              {/* SEARCH BUTTON */}
               <div className="w-full md:w-auto mt-1 md:mt-0">
                 <button
                   type="submit"
-                  disabled={loading || !isOnline || usageCount >= DAILY_LIMIT || !from || !to}
+                  disabled={loading || !from || !to}
                   className={`
-                    w-full h-10 md:h-[50px] px-6 md:px-8 font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 transform active:scale-95 text-sm md:text-base dark:shadow-blue-900/20
-                    ${loading || !isOnline || usageCount >= DAILY_LIMIT || !from || !to
-                      ? 'bg-gray-300 dark:bg-slate-700 text-gray-500 cursor-not-allowed'
-                      : 'bg-blue-600 hover:bg-blue-700 text-white'
+                     w-full h-14 md:h-[50px] px-8 md:px-10 font-black rounded-2xl transition-all flex items-center justify-center gap-3 transform active:scale-95 text-base md:text-base uppercase tracking-widest
+                     ${loading || !from || !to
+                      ? 'bg-slate-200 dark:bg-slate-700 text-slate-400 cursor-not-allowed'
+                      : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-[0_10px_20px_-10px_rgba(37,99,235,0.4)] hover:shadow-[0_15px_30px_-10px_rgba(37,99,235,0.5)] hover:-translate-y-0.5 group'
                     }
-                  `}
+                   `}
                 >
                   {loading ? (
-                    <div className="w-4 h-4 md:w-5 md:h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  ) : !isOnline ? (
-                    <>
-                      <WifiOff size={16} className="md:w-[18px]" />
-                      <span>{t('intercity.offline')}</span>
-                    </>
-                  ) : usageCount >= DAILY_LIMIT ? (
-                    <>
-                      <Activity size={16} className="md:w-[18px]" />
-                      <span>{t('intercity.limitReached')}</span>
-                    </>
+                    <div className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />
                   ) : (
                     <>
-                      <Search size={16} className="md:w-[18px]" />
-                      <span>{t('intercity.search')}</span>
+                      <Search size={22} className="transition-transform group-hover:scale-110" />
+                      <span className="font-black">{t('intercity.search')}</span>
                     </>
                   )}
                 </button>
@@ -524,7 +427,7 @@ function App() {
                     <button
                       onClick={handleDemoSearch}
                       // disabled={!isOnline} // Demo works offline now
-                      className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-sm font-black rounded-xl transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wider"
                     >
                       {t('intercity.viewDemo')}
                     </button>
@@ -630,21 +533,6 @@ function App() {
         isOpen={showLiveMap}
         onClose={() => setShowLiveMap(false)}
       />
-
-      {/* Global Offline Indicator Toast */}
-      {!isOnline && (
-        <div className="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-[100] animate-in slide-in-from-bottom duration-300 w-[90%] max-w-sm">
-          <div className="bg-slate-900/90 dark:bg-slate-800/95 backdrop-blur-md text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border border-white/10">
-            <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-500 shrink-0">
-              <WifiOff className="w-5 h-5" />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-sm leading-none mb-1">{t('offline.offlineMode')}</span>
-              <p className="text-[10px] text-gray-400 font-medium">{t('offline.intercityRequiresInternet')}</p>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Mobile Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 pb-safe z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] md:hidden">

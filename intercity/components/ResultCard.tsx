@@ -107,13 +107,6 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
               <span className="px-4 py-1.5 bg-blue-600 dark:bg-blue-500 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2 shadow-lg shadow-blue-500/20">
                 <Calendar size={14} strokeWidth={3} /> {new Date(data.date).toLocaleDateString('bn-BD', { day: 'numeric', month: 'short', year: 'numeric' })}
               </span>
-              <span className={`px-4 py-1.5 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2 border ${data.source === 'memory_cache'
-                ? 'bg-amber-100 border-amber-200 text-amber-700 dark:bg-amber-900/40 dark:border-amber-800/50 dark:text-amber-400'
-                : 'bg-emerald-100 border-emerald-200 text-emerald-700 dark:bg-emerald-900/40 dark:border-emerald-800/50 dark:text-emerald-400'
-                }`}>
-                {data.source === 'memory_cache' ? <Zap size={14} fill="currentColor" /> : <Bot size={14} fill="currentColor" />}
-                {data.source === 'memory_cache' ? 'Verified Result' : 'AI Generated'}
-              </span>
             </div>
 
             <h2 className="text-4xl md:text-6xl font-[1000] tracking-tighter text-slate-900 dark:text-white flex items-center gap-6 flex-wrap">
@@ -207,19 +200,6 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
         {/* Sidebar (Right) */}
         <div className="lg:col-span-4 bg-slate-50/50 dark:bg-slate-900/50 border-l border-slate-100 dark:border-slate-800 p-8 md:p-12 space-y-12">
 
-          {parsedData.footer && (
-            <div className="space-y-6">
-              <div className="flex items-center gap-3 text-slate-900 dark:text-white">
-                <div className="w-10 h-10 rounded-2xl bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
-                  <ExternalLink size={20} strokeWidth={2.5} />
-                </div>
-                <h4 className="font-black text-lg uppercase tracking-wider">Resources</h4>
-              </div>
-              <div className="p-8 bg-white dark:bg-slate-800 rounded-[32px] border border-slate-200 dark:border-slate-700 shadow-sm prose prose-sm dark:prose-invert">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>{parsedData.footer}</ReactMarkdown>
-              </div>
-            </div>
-          )}
 
           {/* Quick Stats Overlay - Visual Flair */}
           <div className="p-8 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[32px] text-white shadow-2xl shadow-blue-500/20 overflow-hidden relative group">

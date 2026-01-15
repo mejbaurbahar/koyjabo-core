@@ -58,8 +58,8 @@ export default defineConfig(({ mode }) => {
           cleanupOutdatedCaches: true,
           clientsClaim: true,
           skipWaiting: true,
-          // Cache versioning for proper updates - BUMPED to v3 to force cache refresh
-          cacheId: 'dhaka-commute-intercity-v3',
+          // Cache versioning for proper updates - BUMPED to v4 to force cache refresh
+          cacheId: 'dhaka-commute-intercity-v4',
           // Runtime caching for intercity navigation
           navigateFallbackAllowlist: [/^\/intercity/],  // Only handle intercity routes
           // Runtime caching for intercity external resources
@@ -178,10 +178,6 @@ export default defineConfig(({ mode }) => {
         }
       })
     ],
-    define: {
-      'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
-    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

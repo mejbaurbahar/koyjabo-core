@@ -1,8 +1,5 @@
 import { DistrictMap, RouteResponse } from './types';
 
-// Backend API endpoint for intercity routes
-export const API_ENDPOINT = 'https://koyjabo-backend.onrender.com/api/routes/intercity';
-
 // [Latitude, Longitude] - Covering all 64 Districts + Major Spots
 export const DISTRICT_COORDINATES: { [key: string]: [number, number] } = {
   // Dhaka Division (13)
@@ -327,11 +324,6 @@ Fly to Cox's Bazar (45 min), then taxi/bus to Teknaf (2 hrs), then ship to islan
 🚂 **By Train + Bus + Ship** – Time: 14+ hours | Price: 800-2500 BDT  
 Train (Cox's Bazar Express) to Cox's Bazar, then bus to Teknaf, then ship.  
 **Train:** Dhaka to Cox's Bazar (Non-stop).
-
-**Booking Links:**  
-- Bus: [Shohoz](https://shohoz.com)  
-- Ship: [Keari](https://keari.com)  
-- Air: [Fly Novoair](https://flynovoair.com)
 `
 };
 export const DEMO_RESPONSE_BN: RouteResponse = {
@@ -356,10 +348,5 @@ export const DEMO_RESPONSE_BN: RouteResponse = {
 🚂 **ট্রেন + বাস + জাহাজ** – সময়: ১৪+ ঘণ্টা | ভাড়া: ৮০০-২৫০০ টাকা  
 কক্সবাজার পর্যন্ত ট্রেন (কক্সবাজার এক্সপ্রেস), তারপর টেকনাফ পর্যন্ত বাস, তারপর জাহাজ।  
 **ট্রেন:** ঢাকা থেকে কক্সবাজার (বিরতিহীন)।
-
-**বুকিং লিংক:**  
-- বাস: [সহজ](https://shohoz.com)  
-- জাহাজ: [কেয়ারি](https://keari.com)  
-- বিমান: [ফ্লাই নভোএয়ার](https://flynovoair.com)
 `
 };
