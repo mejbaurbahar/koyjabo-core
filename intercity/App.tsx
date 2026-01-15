@@ -554,6 +554,7 @@ function App() {
           </button>
 
           <button
+            onClick={() => window.location.href = '/intercity/'}
             className="flex flex-col items-center justify-center gap-1 border-t-2 transition-all border-blue-500 text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-900/20"
           >
             <Train className="w-6 h-6 text-blue-600 dark:text-blue-400 fill-blue-100 dark:fill-blue-900" />

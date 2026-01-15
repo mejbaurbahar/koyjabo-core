@@ -1,175 +1,175 @@
 import { BUS_DATA, METRO_STATIONS, STATIONS } from '../constants';
-import { canUseAiChat, trackAiChatUsage } from './apiKeyManager';
 
-// Backend API Configuration
-const BACKEND_API_URL = 'https://koyjabo-backend.onrender.com';
+// --- OFFLINE DATASETS (Copied/Adapted for standalone service) ---
+
+const TRAIN_ROUTES = [
+  { from: "Dhaka", to: "Chattogram", trains: ["Subarna Express", "Sonar Bangla Express", "Turna Express", "Mohanagar Goduli"] },
+  { from: "Dhaka", to: "Sylhet", trains: ["Upaban Express", "Jayantika Express", "Kalni Express", "Parabat Express"] },
+  { from: "Dhaka", to: "Cox's Bazar", trains: ["Cox's Bazar Express", "Parjatak Express"] },
+  { from: "Dhaka", to: "Rajshahi", trains: ["Silk City", "Padma Express", "Dhumketu Express"] },
+  { from: "Dhaka", to: "Khulna", trains: ["Sundarban Express", "Chitra Express"] },
+  { from: "Dhaka", to: "Mymensingh", trains: ["Tista Express", "Agnibina Express"] },
+  { from: "Dhaka", to: "Barishal", trains: ["No Direct Train (Use Launch/Bus)"] },
+];
+
+const MAJOR_LOCATIONS = [
+  "Dhaka", "Chattogram", "Sylhet", "Rajshahi", "Khulna", "Barishal", "Rangpur", "Mymensingh", "Cox's Bazar", "Cumilla", "Feni", "Bogura", "Jashore"
+];
 
 export interface ChatMessage {
   role: 'user' | 'assistant';
   text: string;
 }
 
-// Helper to construct knowledge base from local constants
-const constructKnowledgeBase = (): string => {
-  let context = "IMPORTANT SYSTEM CONTEXT: You are KoyJabo AI. Use the following REAL-TIME DHAKA TRANSPORT DATA to answer the user's question. Do not hallucinate routes. Only use the buses/metro listed below.\n\n";
+// --- HELPER FUNCTIONS ---
 
-  // Add Metro Rail Data
-  context += "--- METRO RAIL (MRT LINE 6) ---\n";
-  context += "Route: Uttara North to Motijheel.\n";
-  context += "Stations: Uttara North, Uttara Center, Uttara South, Pallabi, Mirpur 11, Mirpur 10, Kazipara, Shewrapara, Agargaon, Bijoy Sarani, Farmgate, Karwan Bazar, Shahbag, Dhaka University, Secretariat, Motijheel.\n";
-  context += "Timing: 7:10 AM - 8:40 PM (Friday closed currently or check updates).\n\n";
+// Normalize text for search
+const normalize = (text: string) => text.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
 
-  // Add Bus Data (Summarized to save tokens)
-  context += "--- DHAKA LOCAL BUSES ---\n";
-  const busSummaries = BUS_DATA.map(bus => {
-    // Resolve stop IDs to full English names
-    const resolvedStops = bus.stops.map(stopId => {
-      const station = STATIONS[stopId];
-      return station ? station.name : stopId;
-    }).join(', ');
+const findBusRoute = (start: string, end: string): string => {
+  const s = normalize(start);
+  const e = normalize(end);
 
-    return `- ${bus.name} (${bus.type}): ${bus.routeString}. Stops: ${resolvedStops}`;
-  }).join('\n');
-  context += busSummaries;
+  const foundBuses = BUS_DATA.filter(bus => {
+    const stops = bus.stops.map(st => normalize(st));
+    const startIdx = stops.findIndex(stop => stop.includes(s) || s.includes(stop));
+    const endIdx = stops.findIndex(stop => stop.includes(e) || e.includes(stop));
+    return startIdx !== -1 && endIdx !== -1;
+  });
 
-  context += "\n\nEnd of Transport Data. Now answer the USER QUESTION based on this data.\n";
-  return context;
+  if (foundBuses.length === 0) return "";
+
+  const busNames = foundBuses.map(b => b.name).slice(0, 3).join(", ");
+  return `🚌 **Bus Route:** You can take **${busNames}** to go from ${start} to ${end}.`;
 };
+
+const findMetroRoute = (query: string): string => {
+  const lowerQuery = normalize(query);
+  const stations = Object.values(METRO_STATIONS || {}) as any[]; // Assuming structure
+
+  // If constants.ts structure is different, we fallback to hardcoded list for safety
+  const MRT_STATIONS = [
+    "Uttara North", "Uttara Center", "Uttara South", "Pallabi", "Mirpur 11", "Mirpur 10",
+    "Kazipara", "Shewrapara", "Agargaon", "Bijoy Sarani", "Farmgate", "Karwan Bazar",
+    "Shahbag", "Dhaka University", "Secretariat", "Motijheel"
+  ];
+
+  const foundStations = MRT_STATIONS.filter(st => lowerQuery.includes(normalize(st)));
+
+  if (foundStations.length >= 2) {
+    const s1 = foundStations[0];
+    const s2 = foundStations[1];
+    return `🚇 **Metro Rail:** Yes, you can travel between **${s1}** and **${s2}** using MRT Line 6. Timing: 7:10 AM - 8:40 PM (Friday Closed).`;
+  }
+
+  return `🚇 **Metro Rail (MRT Line 6):** Runs from Uttara North to Motijheel.\n\n**Stations:** ${MRT_STATIONS.join(", ")}.\n**Timing:** 7:10 AM - 8:40 PM.`;
+};
+
+const findIntercityRoute = (query: string): string => {
+  const lowerQuery = normalize(query);
+
+  // Find mention of districts
+  const foundDistricts = MAJOR_LOCATIONS.filter(d => lowerQuery.includes(normalize(d)));
+
+  if (foundDistricts.length >= 2) {
+    const from = foundDistricts[0]; // Naive assumptions on direction
+    const to = foundDistricts[1];
+
+    // Check Train
+    const train = TRAIN_ROUTES.find(r =>
+      (normalize(r.from) === normalize(from) && normalize(r.to) === normalize(to)) ||
+      (normalize(r.from) === normalize(to) && normalize(r.to) === normalize(from))
+    );
+
+    if (train) {
+      return `🚂 **Intercity Train:** To travel between **${from}** and **${to}**, available trains are: ${train.trains.join(", ")}.`;
+    }
+
+    return `🚌 **Intercity:** For **${from}** to **${to}**, direct trains may not be available. Please check Bus options from major terminals (Gabtoli/Sayedabad).`;
+  }
+
+  // General Intercity Info
+  if (lowerQuery.includes("train") || lowerQuery.includes("intercity")) {
+    return "🚂 **Intercity Info:** I can help you with train routes for major districts like Dhaka, Chattogram, Sylhet, Cox's Bazar, etc. Just mention the city names!";
+  }
+
+  return "";
+};
+
+const findLocalBusInfo = (query: string): string => {
+  const lowerQuery = normalize(query);
+  // Search for a specific bus name
+  const bus = BUS_DATA.find(b => lowerQuery.includes(normalize(b.name)));
+  if (bus) {
+    return `🚌 **${bus.name}**: Route is ${bus.routeString}.\n**Stops:** ${bus.stops.join(', ')}.`;
+  }
+  return "";
+}
+
+// --- MAIN AI LOGIC ---
 
 export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, chatHistory: ChatMessage[] = []): Promise<string> => {
-  // Note: userApiKey parameter is now ignored since we use backend API
 
-  // Check usage limit before making API call
-  if (!canUseAiChat()) {
-    return "ERROR_DAILY_LIMIT";
+  const query = userQuery.trim();
+  const lowerQuery = normalize(query);
+  let responseParts: string[] = [];
+
+  // 0. Greeting / General
+  if (lowerQuery.match(/^(hi|hello|hey|salam|help)/)) {
+    return "👋 Hello! I am your Offline Transport Assistant. I can help you with:\n- 🚌 **Local Bus Routes** (e.g., 'Bus from Farmgate to Mirpur')\n- 🚇 **Metro Rail Info** (e.g., 'Metro from Uttara to Motijheel')\n- 🚂 **Intercity Trains** (e.g., 'Train to Sylhet')\n\nHow can I help you today?";
   }
 
-  try {
-    // Prepare Chat History Context (keep it minimal - only last 2 messages)
-    const historyContext = chatHistory.length > 0
-      ? chatHistory.slice(-2).map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.text}`).join('\n')
-      : '';
+  // 1. Check for specific Bus Route (A to B)
+  if (lowerQuery.includes(" to ") || lowerQuery.includes(" from ")) {
+    // Extract potential locations?
+    // Since we don't have NLP, we iterate known stations
+    const stationNames = Object.values(STATIONS).map(s => s.name);
+    const foundStations = stationNames.filter(name => lowerQuery.includes(normalize(name)));
 
-    // ✅ SHORT SYSTEM INSTRUCTION (instead of entire knowledge base)
-    // The AI already knows about Dhaka transport from its training data!
-    const systemInstruction = `You are a helpful Dhaka transport expert. Answer questions about:
-- Dhaka Metro Rail (MRT Line 6): Uttara North to Motijheel
-- Local buses and their routes
-- Best ways to travel between locations in Dhaka
-- Provide accurate, practical information
-- Respond in the same language as the question (Bengali or English)`;
-
-    // Build the prompt with only user question + minimal history
-    const userPrompt = historyContext
-      ? `${historyContext}\n\nCurrent question: ${userQuery}`
-      : userQuery;
-
-    console.log('📡 Calling Backend AI Chat API...');
-    console.log(`📊 Estimated prompt size: ~${userPrompt.length} characters`);
-
-    // Create abort controller for timeout (120 seconds for 8 retries with exponential backoff)
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 120000); // 2 minutes
-
-    try {
-      const response = await fetch(`${BACKEND_API_URL}/api/ai/chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          prompt: userPrompt,
-          systemInstruction: systemInstruction
-        }),
-        signal: controller.signal
-      });
-
-      clearTimeout(timeoutId);
-
-      // Handle 400 Bad Request (Prompt Too Large)
-      if (response.status === 400) {
-        try {
-          const errorData = await response.json();
-          if (errorData.error === 'Prompt Too Large') {
-            return `⚠️ Message Too Long\n\n${errorData.message}\n\nTip: Try asking a simpler, shorter question.`;
-          }
-          return `⚠️ ${errorData.message || 'Invalid request. Please try rephrasing your question.'}`;
-        } catch {
-          return "⚠️ Invalid request. Please try rephrasing your question.";
-        }
-      }
-
-      // Handle rate limiting (backend)
-      if (response.status === 429) {
-        return "ERROR_DAILY_LIMIT";
-      }
-
-      // Handle payload too large
-      if (response.status === 413) {
-        return "⚠️ Your message is too long. Please try a shorter question.";
-      }
-
-      // Handle server errors
-      if (response.status === 500) {
-        return "⚠️ Service Temporarily Unavailable\n\nOur AI service is experiencing issues. Please try again in a few minutes.";
-      }
-
-      // Handle service overload - backend tried 8 times but still failed
-      if (response.status === 503) {
-        try {
-          const errorData = await response.json();
-          const retryAfter = errorData.retryAfter || 30;
-
-          return `🔄 Service Overloaded\n\nThe AI service is experiencing very high demand right now. Our system tried 8 times with smart delays but couldn't complete your request.\n\n⏱️ Please wait ${retryAfter} seconds and try again.\n\nTip: Early morning (2-6 AM) usually has better availability.`;
-        } catch {
-          return "🔄 Service Overloaded\n\nThe AI service is experiencing very high demand right now. Please wait 30-60 seconds and try again.";
-        }
-      }
-
-      // Handle 403 Forbidden (Origin/IP Blocking)
-      if (response.status === 403) {
-        return "🌐 Service Access Restricted\n\nThe server is currently restricting access from your location or browser. Our team is working on resolving this server-side configuration issue. Please try again later.";
-      }
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      const text = data.result || "Sorry, I couldn't process that request.";
-
-      // Track usage after successful response
-      trackAiChatUsage();
-
-      console.log('✅ API response received');
-      return text;
-
-    } catch (fetchError: any) {
-      clearTimeout(timeoutId);
-
-      // Handle timeout
-      if (fetchError.name === 'AbortError') {
-        return "⏱️ Request Timeout\n\nThe request took more than 2 minutes to complete. The AI service is likely experiencing extreme load right now.\n\nPlease try again later, preferably during off-peak hours (2-6 AM).";
-      }
-
-      // Silence expected 403 errors in console
-      if (fetchError.message?.includes('403')) {
-        return "🌐 Service Access Restricted\n\nThe server is currently restricting access. Please try again later.";
-      }
-
-      throw fetchError;
+    if (foundStations.length >= 2) {
+      const busRes = findBusRoute(foundStations[0], foundStations[1]);
+      if (busRes) responseParts.push(busRes);
     }
-
-  } catch (error: any) {
-    if (import.meta.env.DEV && !error.message?.includes('403')) {
-      console.error("❌ API Error:", error);
-    }
-
-    const errorMsg = error.message || 'Unknown error';
-
-    // Network errors
-    if (errorMsg.includes('fetch') || errorMsg.includes('network') || errorMsg.includes('Failed to fetch')) {
-      return "🌐 Connection Error\n\nCouldn't reach the server. Please check your internet connection and try again.";
-    }
-
-    return "⚠️ Something went wrong. Please try again in a moment.";
   }
+
+  // 2. Check Metro
+  if (lowerQuery.includes("metro") || lowerQuery.includes("mrt") || lowerQuery.includes("rail")) {
+    const metroRes = findMetroRoute(query);
+    if (metroRes) responseParts.push(metroRes);
+  }
+
+  // 3. Check Specific Bus Details
+  const busInfo = findLocalBusInfo(query);
+  if (busInfo) responseParts.push(busInfo);
+
+  // 4. Check Intercity
+  if (lowerQuery.includes("chattogram") || lowerQuery.includes("sylhet") || lowerQuery.includes("cox") || lowerQuery.includes("khulna") || lowerQuery.includes("train")) {
+    const intercityRes = findIntercityRoute(query);
+    if (intercityRes) responseParts.push(intercityRes);
+  }
+
+  // Fallback if no specific match but query exists
+  if (responseParts.length === 0) {
+    // Try to find ANY station mentioned
+    const stationNames = Object.values(STATIONS).map(s => s.name);
+    const mentionedStations = stationNames.filter(name => lowerQuery.includes(normalize(name)));
+
+    if (mentionedStations.length > 0) {
+      responseParts.push(`📍 **Locations Found:** I see you mentioned **${mentionedStations.join(", ")}**.`);
+
+      // Find buses for this single station
+      const busPassEx = BUS_DATA.filter(b => b.stops.some(s => normalize(s).includes(normalize(mentionedStations[0])))).slice(0, 3).map(b => b.name);
+      if (busPassEx.length > 0) {
+        responseParts.push(`🚌 **Buses passing here:** ${busPassEx.join(", ")}...`);
+      }
+    } else {
+      return "🤔 I couldn't understand that location. Please try mentioning specific stations like 'Farmgate', 'Mirpur', 'Gulshan' or district names.";
+    }
+  }
+
+  return responseParts.join("\n\n");
 };
+
+// Keeping these for compatibility but making them no-ops or always true
+export const canUseAiChat = () => true;
+export const trackAiChatUsage = () => { };
