@@ -122,6 +122,30 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   const lowerQuery = normalize(query);
   let responseParts: string[] = [];
 
+  // Special Detection: Dhaka International Trade Fair (DITF) / Banijyo Mela
+  const isTradeFairQuery = lowerQuery.includes("trade fair") ||
+    lowerQuery.includes("ditf") ||
+    lowerQuery.includes("banijyo mela") ||
+    lowerQuery.includes("purbachal fair") ||
+    lowerQuery.includes("mela jabo") ||
+    lowerQuery.includes("mela fare");
+
+  if (isTradeFairQuery) {
+    return `🎡 **ঢাকা আন্তর্জাতিক বাণিজ্য মেলা যাবেন? কই যাবো থাকলেই চিন্তা নাই!** 🎡\n\n` +
+      `পূর্বাচলের **বাংলাদেশ-চায়না ফ্রেন্ডশিপ এক্সিবিশন সেন্টারে** যেতে এখন সহজ যাতায়াত।\n` +
+      `কই যাবো অ্যাপে দেখুন সব শাটল বাস রুট, ভাড়া আর সময় এক ক্লিকেই 👇\n\n` +
+      `**🚌 ডেডিকেটেড শাটল বাস রুটসমূহ:**\n` +
+      `- **কুড়িল বিশ্বরোড → মেলা প্রাঙ্গণ**: ভাড়া ৪০ টাকা\n` +
+      `- **ফার্মগেট (খামারবাড়ি/পুরনো বিমানবন্দর) → মেলা**: ভাড়া ৭০ টাকা\n` +
+      `- **চাষাড়া (নারায়ণগঞ্জ) → মেলা**: ভাড়া ১২০ টাকা\n` +
+      `- **মুক্তারপুর → মেলা**: ভাড়া ১৩০ টাকা\n` +
+      `- **নরসিংদী → মেলা**: ভাড়া ১০০ টাকা\n` +
+      `- **গাজীপুর (শিববাড়ী) → মেলা**: ভাড়া ৭৫ টাকা\n` +
+      `- **মেলা প্রাঙ্গণ → সাইনবোর্ড**: ভাড়া ১০০ টাকা\n\n` +
+      `**🕗 সময়:** সকাল ৮টা থেকে | শেষ ট্রিপ রাত ১১টা পর্যন্ত।\n\n` +
+      `🎟️ **টিকিট মূল্য:** বড় ৫০ টাকা, ছোট ২৫ টাকা (৫ বছরের কম ফ্রি)।`;
+  }
+
   // 0. Greeting / General
   if (lowerQuery.match(/^(hi|hello|hey|salam|help)/)) {
     return "👋 Hello! I am your Offline Transport Assistant. I can help you with:\n- 🚌 **Local Bus Routes** (e.g., 'Bus from Farmgate to Mirpur')\n- 🚇 **Metro Rail Info** (e.g., 'Metro from Uttara to Motijheel')\n- 🚂 **Intercity (Bus/Train/Air/Launch)** (e.g., 'Dhaka to Barishal')\n\nHow can I help you today?";
