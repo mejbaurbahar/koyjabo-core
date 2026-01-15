@@ -83,15 +83,40 @@ const findIntercityRoute = (query: string): string => {
     );
 
     if (train) {
-      return `🚂 **Intercity Train:** To travel between **${from}** and **${to}**, available trains are: ${train.trains.join(", ")}.`;
+      const isBenapole = normalize(from) === 'benapole' || normalize(to) === 'benapole';
+      const isCox = normalize(from) === 'coxs bazar' || normalize(to) === 'coxs bazar';
+
+      let details = `🚂 **Intercity Travel: ${from} ⇄ ${to}**\n\n` +
+        `**Available Trains:**\n` +
+        `- ${train.trains.join("\n- ")}\n\n`;
+
+      if (isBenapole) {
+        details += `**🚌 Bus Options:**\n` +
+          `You can also take luxury AC/Non-AC buses (Green Line, Shohagh, Hanif, Shyamoli) from Gabtoli, Kalyanpur, or Kalabagan. Since Benapole is a major land port, buses run frequently (approx 6-8 hours).\n\n` +
+          `**💡 Travel Tips:**\n` +
+          `- Train tickets available on 'Eticket' or at usage counters.\n` +
+          `- The **Benapole Express** is a modern train with AC cabins.`;
+      } else if (isCox) {
+        details += `**🚌 Bus Options:**\n` +
+          `Luxury buses (Green Line, Saintmartin Paribahan, Desh Travels) connect Dhaka to Cox's Bazar seamlessly from Rajarbagh/Arambagh.\n\n` +
+          `**💡 Travel Tips:**\n` +
+          `- The new **Cox's Bazar Express** train goes directly to the iconic station.\n` +
+          `- Flight options are also available (~1 hour).`;
+      } else {
+        details += `**💡 Travel Tips:**\n` +
+          `- Purchase tickets online via Shohoz/Eticket or at the station.\n` +
+          `- Arrive at the station at least 30 mins before departure.`;
+      }
+
+      return details;
     }
 
-    return `🚌 **Intercity:** For **${from}** to **${to}**, direct trains may not be available. Please check Bus options from major terminals (Gabtoli/Sayedabad).`;
+    return `🚌 **Intercity:** For **${from}** to **${to}**, direct trains may not be available. Please check Bus options from major terminals (Gabtoli, Sayedabad, or Mohakhali).`;
   }
 
   // General Intercity Info
-  if (lowerQuery.includes("train") || lowerQuery.includes("intercity")) {
-    return "🚂 **Intercity Info:** I can help you with train routes for major districts like Dhaka, Chattogram, Sylhet, Cox's Bazar, etc. Just mention the city names!";
+  if (lowerQuery.includes("train") || lowerQuery.includes("intercity") || lowerQuery.includes("benapole")) {
+    return "🚂 **Intercity Info:** I can help you with train & bus routes for major districts like Dhaka, Chattogram, Sylhet, Cox's Bazar, Benapole, etc. Just mention the city names (e.g., 'Dhaka to Sylhet')!";
   }
 
   return "";

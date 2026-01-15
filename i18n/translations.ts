@@ -38,6 +38,7 @@ export const translations: Record<Language, Translations> = {
             ac: 'এসি',
             semiSitting: 'সেমি-সিটিং',
             online: 'অনলাইন',
+            ready: 'প্রস্তুত',
         },
 
         // Settings
@@ -601,6 +602,7 @@ export const translations: Record<Language, Translations> = {
             ac: 'AC',
             semiSitting: 'Semi-Sitting',
             online: 'Online',
+            ready: 'Ready',
         },
 
         // Settings
