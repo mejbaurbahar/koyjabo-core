@@ -15,6 +15,21 @@ const MAJOR_LOCATIONS = [
   "Narsingdi", "Bandarban", "Rangamati", "Khagrachari", "Panchagarh", "Thakurgaon"
 ];
 
+const TRAIN_ROUTES = [
+  { from: "Dhaka", to: "Chattogram", trains: ["Subarna Express", "Sonar Bangla Express", "Turna Express", "Mohanagar Goduli", "Chattala Express"] },
+  { from: "Dhaka", to: "Sylhet", trains: ["Upaban Express", "Jayantika Express", "Kalni Express", "Parabat Express", "Surma Mail"] },
+  { from: "Dhaka", to: "Cox's Bazar", trains: ["Cox's Bazar Express", "Parjatak Express"] },
+  { from: "Dhaka", to: "Rajshahi", trains: ["Silk City", "Padma Express", "Dhumketu Express", "Banalata Express"] },
+  { from: "Dhaka", to: "Khulna", trains: ["Sundarban Express", "Chitra Express"] },
+  { from: "Dhaka", to: "Mymensingh", trains: ["Tista Express", "Agnibina Express", "Brahmaputra Express", "Jamuna Express"] },
+  { from: "Dhaka", to: "Barishal", trains: ["No Direct Train (Use Launch/Bus)"] },
+  { from: "Dhaka", to: "Benapole", trains: ["Benapole Express"] },
+  { from: "Dhaka", to: "Noakhali", trains: ["Upakul Express", "Noakhali Express"] },
+  { from: "Dhaka", to: "Chilahati", trains: ["Nilsagar Express", "Chilahati Express"] },
+  { from: "Dhaka", to: "Panchagarh", trains: ["Ekota Express", "Drutojan Express", "Panchagarh Express"] },
+  { from: "Dhaka", to: "Rangpur", trains: ["Rangpur Express", "Kurigram Express"] },
+];
+
 // --- HELPER FUNCTIONS ---
 
 // Normalize text for search
