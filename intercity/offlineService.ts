@@ -177,10 +177,10 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
 
         result += `### প্রস্তাবিত যাতায়াত মাধ্যম:  \n\n`;
 
-        // Plane
+        // Plane (Only suggest via Dhaka if distance is > 250km)
         if (connFrom.plane && connTo.plane) {
             result += `✈️ **বিমানে** – সময়: ৪৫-৬০ মিনিট | ভাড়া: ৩,৫০০-৮,০০০ টাকা  \nসরাসরি ফ্লাইট উপলব্ধ। এয়ারলাইন্স: ইউএস-বাংলা, বিমান বাংলাদেশ, নভোএয়ার।  \n\n`;
-        } else if (from !== 'Dhaka' && to !== 'Dhaka' && connTo.plane) {
+        } else if (from !== 'Dhaka' && to !== 'Dhaka' && connTo.plane && distance > 250) {
             result += `✈️ **বিমানে (ঢাকা হয়ে)** – সময়: ৩-৪ ঘণ্টা | ভাড়া: ৫,০০০-১০,০০০ টাকা  \nপ্রথমে ঢাকা যান, তারপর সেখান থেকে কানেক্টিং ফ্লাইট।  \n\n`;
         }
 
@@ -196,8 +196,22 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
             result += `🚢 **লঞ্চ/জাহাজ** – সময়: ৮-১২ ঘণ্টা | ভাড়া: ৩০০-৩,০০০ টাকা  \nনদীমাতৃক বাংলার সৌন্দর্য উপভোগের সেরা মাধ্যম। টার্মিনাল: সদরঘাট (ঢাকা) বা স্থানীয় ঘাট।  \n\n`;
         }
 
+        // Private Car / Jeep / Local Bus (For short distances or Hill tracks)
+        if (distance < 120 || from === "Bandarban" || to === "Bandarban" || from === "Rangamati" || to === "Rangamati") {
+            result += `🚗 **প্রাইভেট কার / জিপ / লোকাল বাস:**  \nস্বল্প দূরত্বের জন্য লোকাল বাস অথবা রিজার্ভ কার/মাইক্রোবাস সুবিধাজনক।  \n`;
+            if (from.includes("Bandarban") || to.includes("Bandarban") || from.includes("Rangamati") || to.includes("Rangamati")) {
+                result += `পাহাড়ি এলাকায় (যেমন: বান্দরবান/রাঙ্গামাটি) "চান্দের গাড়ি" (Jeep) রিজার্ভ করে ঘুরে দেখা সবচেয়ে জনপ্রিয়।  \n`;
+            }
+            // Specific: Bandarban <-> Cox's Bazar
+            if ((from === "Bandarban" && to === "Cox's Bazar") || (from === "Cox's Bazar" && to === "Bandarban")) {
+                result += `💡 **বিশেষ টিপ:** বান্দরবান ও কক্সবাজারের মধ্যে সরাসরি **"পূর্বানী"** বা **"মারশা"** বাস চলে। ভাড়া ২০০-৩০০ টাকা। সময় লাগে ২.৫ - ৩ ঘণ্টা। এছাড়া প্রাইভেট কার বা জিপ রিজার্ভ করা যায়।  \n`;
+            }
+            result += `\n`;
+        }
+
         // Bus
         result += `🚌 **বাস (সরাসরি)** – সময়: ${Math.max(2, Math.ceil(distance / 35))} ঘণ্টা (আনুমানিক) | ভাড়া: ${Math.max(150, Math.ceil(distance * 3))}-৩,০০০ টাকা  \nসবচেয়ে সহজলভ্য মাধ্যম। এসি, নন-এসি এবং স্লিপার কোচ পাওয়া যায়।  \n**জনপ্রিয় অপারেটর:** হানিফ, শ্যামলী, এনা, গ্রিন লাইন, দেশ ট্রাভেলস, এস.আলম, সউদিয়া।  \n\n`;
+
 
         // Via Hub Suggestion logic
         let hubResult = '';
@@ -245,23 +259,41 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
 
         result += `### Recommended Modes:  \n\n`;
 
+        // Plane (Distance check)
         if (connFrom.plane && connTo.plane) {
             result += `✈️ **By Air** – Time: 45-60 min | Price: 3,500-8,000 BDT  \nDirect flights are available. Airlines: US-Bangla, Biman Bangladesh, Novoair.  \n\n`;
-        } else if (from !== 'Dhaka' && to !== 'Dhaka' && connTo.plane) {
+        } else if (from !== 'Dhaka' && to !== 'Dhaka' && connTo.plane && distance > 250) {
             result += `✈️ **By Air (via Dhaka)** – Time: 3-4 hours | Price: 5,000-10,000 BDT  \nTake a connecting flight via Dhaka.  \n\n`;
         }
 
+        // Train
         if (trainInfo) {
             result += `🚂 **By Train (${trainInfo.trains.length > 1 ? 'Intercity' : 'Local/Express'})** – Time: ${Math.max(2, Math.ceil(distance / 55))} hours (Est.) | Price: ${trainInfo.fare} BDT  \n**Trains:** ${trainInfo.trains.join(', ')}.  \n\n`;
         } else if (connFrom.train && connTo.train) {
             result += `🚂 **By Train (Intercity)** – Time: ${Math.max(4, Math.ceil(distance / 45))} hours (Est.) | Price: 400-2,000 BDT  \nGreat journey through Bangladesh via Intercity Express.  \n\n`;
         }
 
+        // Boat
         if (connTo.boat && (from === 'Dhaka' || connFrom.boat)) {
             result += `🚢 **By Launch / Ship** – Time: 8-12 hours | Price: 300-3,000 BDT  \nBest way to travel to Southern districts. Terminal: Sadarghat or local ports.  \n\n`;
         }
 
+        // Short Distance / Car / Jeep
+        if (distance < 120 || from === "Bandarban" || to === "Bandarban" || from === "Rangamati" || to === "Rangamati") {
+            result += `🚗 **Private Car / Jeep / Local Bus:**  \nFor short distances, local buses or Rent-a-Car services are convenient.  \n`;
+            if (from.includes("Bandarban") || to.includes("Bandarban") || from.includes("Rangamati") || to.includes("Rangamati")) {
+                result += `In Hill Tracts (e.g. Bandarban), "Chander Gari" (Jeep) is the most popular way to travel.  \n`;
+            }
+            // Specific: Bandarban <-> Cox's Bazar
+            if ((from === "Bandarban" && to === "Cox's Bazar") || (from === "Cox's Bazar" && to === "Bandarban")) {
+                result += `💡 **Tip:** Direct **"Purbani"** or **"Marsa"** buses run between local terminals. Fare: 200-300 BDT. Time: 2.5 - 3 Hours. You can also hire a private car/jeep.  \n`;
+            }
+            result += `\n`;
+        }
+
+        // Bus General (Always show)
         result += `🚌 **Bus (Direct)** – Time: ${Math.max(2, Math.ceil(distance / 35))} hours (Est.) | Price: ${Math.max(150, Math.ceil(distance * 3))}-3,000 BDT  \nMost flexible option. AC, Non-AC, and Sleeper coaches available.  \n**Operators:** Hanif, Shyamoli, Ena, Green Line, Desh Travels, S.Alam.  \n\n`;
+
 
         if (distance > 150 && brtcRoutes.length === 0) {
             let selectedHub = "";
