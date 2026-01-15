@@ -10,10 +10,11 @@ const TRAIN_ROUTES = [
   { from: "Dhaka", to: "Khulna", trains: ["Sundarban Express", "Chitra Express"] },
   { from: "Dhaka", to: "Mymensingh", trains: ["Tista Express", "Agnibina Express"] },
   { from: "Dhaka", to: "Barishal", trains: ["No Direct Train (Use Launch/Bus)"] },
+  { from: "Dhaka", to: "Benapole", trains: ["Benapole Express"] },
 ];
 
 const MAJOR_LOCATIONS = [
-  "Dhaka", "Chattogram", "Sylhet", "Rajshahi", "Khulna", "Barishal", "Rangpur", "Mymensingh", "Cox's Bazar", "Cumilla", "Feni", "Bogura", "Jashore"
+  "Dhaka", "Chattogram", "Sylhet", "Rajshahi", "Khulna", "Barishal", "Rangpur", "Mymensingh", "Cox's Bazar", "Cumilla", "Feni", "Bogura", "Jashore", "Benapole", "Kushtia", "Satkhira", "Dinajpur", "Pabna", "Faridpur"
 ];
 
 export interface ChatMessage {
@@ -110,7 +111,9 @@ const findLocalBusInfo = (query: string): string => {
 
 export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, chatHistory: ChatMessage[] = []): Promise<string> => {
 
-  const query = userQuery.trim();
+  // Separate actual query from context if present
+  const [actualQueryPart] = userQuery.split('[Context:');
+  const query = actualQueryPart.trim();
   const lowerQuery = normalize(query);
   let responseParts: string[] = [];
 
@@ -143,7 +146,7 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   if (busInfo) responseParts.push(busInfo);
 
   // 4. Check Intercity
-  if (lowerQuery.includes("chattogram") || lowerQuery.includes("sylhet") || lowerQuery.includes("cox") || lowerQuery.includes("khulna") || lowerQuery.includes("train")) {
+  if (lowerQuery.includes("chattogram") || lowerQuery.includes("sylhet") || lowerQuery.includes("cox") || lowerQuery.includes("khulna") || lowerQuery.includes("train") || lowerQuery.includes("benapole")) {
     const intercityRes = findIntercityRoute(query);
     if (intercityRes) responseParts.push(intercityRes);
   }

@@ -18,7 +18,7 @@ import RouteSuggestions from './components/RouteSuggestions';
 import { incrementVisitCount, trackBusSearch, trackRouteSearch } from './services/analyticsService';
 import ThemeToggle from './components/ThemeToggle';
 import LiveLocationMap from './components/LiveLocationMap';
-import { AIUsageIndicator } from './components/UsageIndicators';
+
 import { autoPreloadMapTiles } from './services/offlineMapService';
 import {
   enhancedBusSearch,
@@ -1180,7 +1180,7 @@ const App: React.FC = () => {
 
   const handleAiSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!aiQuery.trim() || !isOnline) return;
+    if (!aiQuery.trim()) return;
 
     const userMessage: ChatMessage = {
       id: `msg_${Date.now()}_u`,
@@ -1226,9 +1226,7 @@ const App: React.FC = () => {
     // Pass the FULL updated history to the service
     let result = await askGeminiRoute(queryToSend + ` [Context: ${locationContext}]`, latestApiKey, updatedHistory);
 
-    if (result === 'ERROR_DAILY_LIMIT') {
-      result = `⏰ ${t('ai.dailyLimitReached')}\n\n${t('ai.usedQueries', { count: formatNumber(2) })}`;
-    }
+
 
     const assistantMessage: ChatMessage = {
       id: `msg_${Date.now()}_a`,
@@ -1326,8 +1324,8 @@ const App: React.FC = () => {
         </div>
         <div className="flex-1">
           <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">{t('common.appName')} {t('nav.aiAssistant')}</h2>
-          <p className={`text-xs font-bold flex items-center gap-1 ${isOnline ? 'text-green-600' : 'text-red-600'} `}>
-            <span className={`w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-green-500 animate-pulse' : 'bg-red-500'} `}></span> {isOnline ? t('common.online') : t('common.offline')}
+          <p className="text-xs font-bold flex items-center gap-1 text-green-600">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> {t('common.ready')}
           </p>
         </div>
         <button
@@ -1339,10 +1337,7 @@ const App: React.FC = () => {
         </button>
       </div>
 
-      {/* Usage Indicator for Mobile */}
-      <div className="md:hidden flex justify-center py-2 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-gray-800">
-        <AIUsageIndicator />
-      </div>
+
 
       <div className="hidden md:flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shadow-sm z-20">
         <div className={`w-10 h-10 rounded-full ${isOnline ? 'bg-blue-600' : 'bg-gray-400'} flex items-center justify-center text-white shadow-lg ${isOnline ? 'shadow-blue-200' : 'shadow-gray-200'} `}>
@@ -1350,8 +1345,8 @@ const App: React.FC = () => {
         </div>
         <div className="flex-1">
           <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">{t('common.appName')} {t('nav.aiAssistant')}</h2>
-          <p className={`text-xs font-bold flex items-center gap-1 ${isOnline ? 'text-green-600' : 'text-red-600'} `}>
-            <span className={`w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-green-500 animate-pulse' : 'bg-red-500'} `}></span> {isOnline ? t('common.online') : t('common.offline')}
+          <p className="text-xs font-bold flex items-center gap-1 text-green-600">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> {t('common.ready')}
           </p>
         </div>
         <button
@@ -1363,10 +1358,7 @@ const App: React.FC = () => {
         </button>
       </div>
 
-      {/* Usage Indicator for Desktop */}
-      <div className="hidden md:flex justify-center py-2 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-gray-800">
-        <AIUsageIndicator />
-      </div>
+
 
       <div className="flex-1 p-4 space-y-4 bg-slate-50 dark:bg-slate-900 pb-[140px] md:pb-4 overflow-y-auto">
         {chatHistory.length === 0 ? (
@@ -1389,31 +1381,24 @@ const App: React.FC = () => {
       </div>
 
       <div className="p-4 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 z-30 fixed md:relative bottom-16 md:bottom-0 left-0 right-0 pb-safe">
-        {!isOnline && (
-          <div className="mb-3 bg-orange-50 border border-orange-200 text-orange-700 px-3 py-2 rounded-lg text-xs font-medium flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4" />
-            {t('offline.aiRequiresInternet')}
-          </div>
-        )}
         <form onSubmit={handleAiSubmit} className="flex gap-2 relative">
           <input
             type="text"
             value={aiQuery}
             onChange={(e) => setAiQuery(e.target.value)}
-            placeholder={isOnline ? t('ai.placeholder') : t('offline.aiRequiresInternet')}
-            disabled={!isOnline}
+            placeholder={t('ai.placeholder')}
             className="w-full bg-gray-100 dark:bg-slate-800 border-0 rounded-xl pl-4 pr-12 py-3 text-sm dark:text-gray-100 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/40 focus:bg-white dark:focus:bg-slate-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           />
           <button
             type="submit"
-            disabled={!aiQuery.trim() || aiLoading || !isOnline}
+            disabled={!aiQuery.trim() || aiLoading}
             className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 text-white rounded-xl disabled:opacity-40 disabled:bg-gray-400 transition-all hover:shadow-lg hover:shadow-blue-500/50 hover:scale-105 active:scale-95 disabled:hover:scale-100 disabled:hover:shadow-none group"
           >
             <Navigation className="w-5 h-5 rotate-90 group-hover:rotate-[100deg] transition-transform" />
           </button>
         </form>
       </div>
-    </div>
+    </div >
   );
 
   const renderAbout = () => (

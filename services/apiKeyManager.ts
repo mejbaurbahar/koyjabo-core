@@ -10,8 +10,8 @@ interface UsageRecord {
 }
 
 export const USAGE_LIMITS = {
-    AI_CHAT_PER_DAY: 2,
-    INTERCITY_SEARCH_PER_DAY: 2
+    AI_CHAT_PER_DAY: Infinity,
+    INTERCITY_SEARCH_PER_DAY: Infinity
 };
 
 const STORAGE_KEYS = {
