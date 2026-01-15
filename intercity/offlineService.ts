@@ -10,7 +10,7 @@ interface Connectivity {
 }
 
 const DISTRICT_CONNECTIVITY: { [key: string]: Connectivity } = {
-    // Divisional Capitals
+    // Divisional Capitals & Major Hubs
     "Dhaka": { bus: true, train: true, plane: true, boat: true },
     "Chattogram": { bus: true, train: true, plane: true, boat: false },
     "Sylhet": { bus: true, train: true, plane: true, boat: false },
@@ -19,24 +19,23 @@ const DISTRICT_CONNECTIVITY: { [key: string]: Connectivity } = {
     "Barishal": { bus: true, train: false, plane: true, boat: true },
     "Rangpur": { bus: true, train: true, plane: false, boat: false },
     "Mymensingh": { bus: true, train: true, plane: false, boat: false },
-
-    // Major Transport Hubs & Districts
     "Cox's Bazar": { bus: true, train: true, plane: true, boat: true },
     "Saidpur": { bus: true, train: true, plane: true, boat: false },
     "Jashore": { bus: true, train: true, plane: true, boat: false },
     "Bogura": { bus: true, train: true, plane: false, boat: false },
-    "Chandpur": { bus: true, train: false, plane: false, boat: true },
+    "Chandpur": { bus: true, train: true, plane: false, boat: true },
     "Bhola": { bus: true, train: false, plane: false, boat: true },
-    "Patuakhali": { bus: true, train: false, plane: false, boat: true },
+    "Patuakhali": { bus: true, train: false, plane: false, boat: true }, // For Kuakata
+    "Kuakata": { bus: true, train: false, plane: false, boat: true }, // Added Kuakata
     "Pirojpur": { bus: true, train: false, plane: false, boat: true },
     "Barguna": { bus: true, train: false, plane: false, boat: true },
     "Jhalokati": { bus: true, train: false, plane: false, boat: true },
     "Noakhali": { bus: true, train: true, plane: false, boat: false },
     "Cumilla": { bus: true, train: true, plane: false, boat: false },
     "Feni": { bus: true, train: true, plane: false, boat: false },
-    "Brahmanbaria": { bus: true, train: true, plane: false, boat: false },
-    "Kushtia": { bus: true, train: true, plane: false, boat: false },
-    "Pabna": { bus: true, train: true, plane: false, boat: false },
+    "Brahmanbaria": { bus: true, train: true, plane: false, boat: true }, // Launch via trawler sometimes/train main
+    "Kushtia": { bus: true, train: true, plane: false, boat: false }, // Bus via bridge
+    "Pabna": { bus: true, train: true, plane: true, boat: false }, // Ishwardi Airport nearby
     "Dinajpur": { bus: true, train: true, plane: false, boat: false },
     "Jamalpur": { bus: true, train: true, plane: false, boat: false },
     "Kishoreganj": { bus: true, train: true, plane: false, boat: false },
@@ -64,19 +63,19 @@ const DISTRICT_CONNECTIVITY: { [key: string]: Connectivity } = {
     "Chapainawabganj": { bus: true, train: true, plane: false, boat: false },
     "Naogaon": { bus: true, train: true, plane: false, boat: false },
     "Joypurhat": { bus: true, train: true, plane: false, boat: false },
-    "Nilphamari": { bus: true, train: true, plane: false, boat: false },
+    "Nilphamari": { bus: true, train: true, plane: true, boat: false }, // Saidpur is here
     "Lalmonirhat": { bus: true, train: true, plane: false, boat: false },
     "Habiganj": { bus: true, train: true, plane: false, boat: false },
-    "Moulvibazar": { bus: true, train: true, plane: false, boat: false },
-    "Sunamganj": { bus: true, train: false, plane: false, boat: false },
+    "Moulvibazar": { bus: true, train: true, plane: false, boat: false }, // Srimangal
+    "Sunamganj": { bus: true, train: false, plane: false, boat: false }, // Boat in haor but not launch to Dhaka per se
     "Lakshmipur": { bus: true, train: false, plane: false, boat: true },
     "Khagrachari": { bus: true, train: false, plane: false, boat: false },
-    "Rangamati": { bus: true, train: false, plane: false, boat: true },
+    "Rangamati": { bus: true, train: false, plane: false, boat: true }, // Boat within
     "Bandarban": { bus: true, train: false, plane: false, boat: false },
     "Netrokona": { bus: true, train: true, plane: false, boat: false },
     "Sherpur": { bus: true, train: false, plane: false, boat: false },
     "Satkhira": { bus: true, train: false, plane: false, boat: false },
-    "Bagerhat": { bus: true, train: false, plane: false, boat: true },
+    "Bagerhat": { bus: true, train: false, plane: false, boat: false },
     "Narail": { bus: true, train: false, plane: false, boat: false },
     "Meherpur": { bus: true, train: false, plane: false, boat: false },
     "Chuadanga": { bus: true, train: true, plane: false, boat: false },
@@ -112,39 +111,86 @@ const findBrtcRoutes = (from: string, to: string) => {
     });
 };
 
-const MAJOR_HUBS = ["Dhaka", "Chattogram", "Sylhet", "Rajshahi", "Khulna", "Barishal", "Rangpur", "Mymensingh", "Jashore", "Bogura", "Comilla", "Feni", "Bhairab", "Dinajpur", "Panchagarh"];
+const MAJOR_HUBS = ["Dhaka", "Chattogram", "Sylhet", "Rajshahi", "Khulna", "Barishal", "Rangpur", "Mymensingh", "Jashore", "Bogura", "Cumilla", "Feni", "Bhairab", "Dinajpur", "Panchagarh"];
+
+// --- DETAILED ROUTE DATA ---
 
 const TRAIN_ROUTES = [
-    { from: "Dhaka", to: "Chattogram", trains: ["Subarna Express", "Sonar Bangla Express", "Turna Express", "Mohanagar Goduli", "Chattala Express"], fare: "400-1500" },
+    { from: "Dhaka", to: "Chattogram", trains: ["Subarna Express", "Sonar Bangla Express (Non-Stop)", "Turna Express (Night)", "Mohanagar Goduli", "Chattala Express"], fare: "400-1500" },
     { from: "Dhaka", to: "Sylhet", trains: ["Upaban Express", "Jayantika Express", "Kalni Express", "Parabat Express"], fare: "350-1200" },
-    { from: "Dhaka", to: "Rajshahi", trains: ["Silk City", "Padma Express", "Dhumketu Express", "Banalata Express"], fare: "350-1200" },
-    { from: "Dhaka", to: "Khulna", trains: ["Sundarban Express", "Chitra Express"], fare: "500-1500" },
+    { from: "Dhaka", to: "Rajshahi", trains: ["Silk City", "Padma Express", "Dhumketu Express", "Banalata Express (Non-Stop)"], fare: "350-1200" },
+    { from: "Dhaka", to: "Khulna", trains: ["Sundarban Express", "Chitra Express"], fare: "505-1500" },
     { from: "Dhaka", to: "Rangpur", trains: ["Rangpur Express", "Kurigram Express"], fare: "500-1500" },
-    { from: "Dhaka", to: "Cox's Bazar", trains: ["Cox's Bazar Express", "Parjatak Express"], fare: "700-2000" },
-    { from: "Dhaka", to: "Panchagarh", trains: ["Ekota Express", "Drutojan Express", "Panchagarh Express"], fare: "600-1800" },
-    { from: "Dhaka", to: "Noakhali", trains: ["Upakul Express"], fare: "300-1000" },
-    { from: "Dhaka", to: "Kishoreganj", trains: ["Egarosindhur Express", "Kishoreganj Express"], fare: "150-500" },
-    { from: "Dhaka", to: "Mymensingh", trains: ["Tista Express", "Agnibina Express", "Brahmaputra Express"], fare: "150-500" },
-    { from: "Dhaka", to: "Netrokona", trains: ["Haor Express", "Mohanganj Express"], fare: "200-800" },
+    { from: "Dhaka", to: "Cox's Bazar", trains: ["Cox's Bazar Express", "Parjatak Express"], fare: "700-2400" },
+    { from: "Dhaka", to: "Panchagarh", trains: ["Ekota Express", "Drutojan Express", "Panchagarh Express (Non-Stop)"], fare: "600-1800" },
+    { from: "Dhaka", to: "Noakhali", trains: ["Upakul Express"], fare: "350-1100" },
+    { from: "Dhaka", to: "Kishoreganj", trains: ["Egarosindhur Provati", "Egarosindhur Godhuli", "Kishoreganj Express"], fare: "150-500" },
+    { from: "Dhaka", to: "Mymensingh", trains: ["Tista Express", "Agnibina Express", "Brahmaputra Express", "Jamuna Express"], fare: "150-600" },
+    { from: "Dhaka", to: "Netrokona", trains: ["Haor Express", "Mohanganj Express"], fare: "250-800" },
     { from: "Dhaka", to: "Dinajpur", trains: ["Ekota Express", "Drutojan Express"], fare: "500-1500" },
     { from: "Dhaka", to: "Lalmonirhat", trains: ["Lalmoni Express"], fare: "500-1500" },
     { from: "Dhaka", to: "Chandpur", trains: ["Meghna Express"], fare: "200-600" },
+    { from: "Dhaka", to: "Brahmanbaria", trains: ["Titas Commuter", "Mahanagar Express", "Almost all Sylhet/Ctg trains stop here"], fare: "120-600" },
+    { from: "Dhaka", to: "Jamalpur", trains: ["Tista Express", "Jamuna Express", "Agnibina Express"], fare: "200-600" },
+    { from: "Dhaka", to: "Faridpur", trains: ["Madhumati Express", "Benapole Express (via Bhanga)"], fare: "300-800" },
     { from: "Chattogram", to: "Sylhet", trains: ["Paharika Express", "Udayan Express"], fare: "400-1200" },
     { from: "Chattogram", to: "Chandpur", trains: ["Meghna Express"], fare: "150-500" },
     { from: "Chattogram", to: "Mymensingh", trains: ["Bijoy Express"], fare: "400-1000" },
+    { from: "Chattogram", to: "Dhaka", trains: ["Subarna Express", "Sonar Bangla Express", "Turna Express"], fare: "400-1500" },
     { from: "Khulna", to: "Rajshahi", trains: ["Kapotaksha Express", "Sagardari Express"], fare: "300-800" },
     { from: "Khulna", to: "Saidpur", trains: ["Rupsha Express", "Simanta Express"], fare: "400-1200" },
     { from: "Rajshahi", to: "Panchagarh", trains: ["Banglabandha Express"], fare: "300-1000" },
     { from: "Rajshahi", to: "Chilahati", trains: ["Barendra Express", "Titumir Express"], fare: "250-800" },
     { from: "Benapole", to: "Khulna", trains: ["Betna Express (Local)"], fare: "45-100" },
     { from: "Benapole", to: "Dhaka", trains: ["Benapole Express"], fare: "535-1500" },
+    { from: "Chuadanga", to: "Dhaka", trains: ["Chitra Express", "Sundarban Express", "Benapole Express"], fare: "400-1200" },
 ];
 
-const getTrainInfo = (from: string, to: string) => {
-    return TRAIN_ROUTES.find(r =>
-        (r.from === from && r.to === to) || (r.from === to && r.to === from)
-    );
-};
+const AIR_ROUTES = [
+    { from: "Dhaka", to: "Chattogram", airlines: ["Biman", "US-Bangla", "Novoair", "Air Astra"], time: "45m", fare: "3500-8000" },
+    { from: "Dhaka", to: "Cox's Bazar", airlines: ["Biman", "US-Bangla", "Novoair", "Air Astra"], time: "1h", fare: "4500-12000" },
+    { from: "Dhaka", to: "Sylhet", airlines: ["Biman", "US-Bangla", "Novoair", "Air Astra"], time: "45m", fare: "3500-7500" },
+    { from: "Dhaka", to: "Saidpur", airlines: ["Biman", "US-Bangla", "Novoair", "Air Astra"], time: "50m", fare: "3800-8500" },
+    { from: "Dhaka", to: "Jashore", airlines: ["Biman", "US-Bangla", "Novoair"], time: "40m", fare: "3200-7000" },
+    { from: "Dhaka", to: "Barishal", airlines: ["Biman", "US-Bangla", "Novoair"], time: "30m", fare: "3000-6000" },
+    { from: "Dhaka", to: "Rajshahi", airlines: ["Biman", "US-Bangla", "Novoair"], time: "40m", fare: "3500-7500" },
+    { from: "Chattogram", to: "Dhaka", airlines: ["Biman", "US-Bangla", "Novoair"], time: "45m", fare: "3500-8000" },
+    { from: "Sylhet", to: "Dhaka", airlines: ["Biman", "US-Bangla", "Novoair"], time: "45m", fare: "3500-7500" },
+    { from: "Cox's Bazar", to: "Dhaka", airlines: ["Biman", "US-Bangla", "Novoair"], time: "1h", fare: "4500-12000" }
+];
+
+const LAUNCH_ROUTES = [
+    { from: "Dhaka", to: "Barishal", operators: ["Sundarban", "Surovi", "Parabat", "Manami", "Kirtonkhola"], time: "Overnight/6-8h", fare: "300 (Deck) - 5000 (VIP Room)" },
+    { from: "Dhaka", to: "Bhola", operators: ["Karnaphuli", "Crystal", "Prince Awlad", "Green Line (Water Bus)"], time: "5-6h", fare: "300-1500" },
+    { from: "Dhaka", to: "Patuakhali", operators: ["Sundarban", "Kamal Khan", "Sattar Khan"], time: "10-12h", fare: "400-3000" },
+    { from: "Dhaka", to: "Chandpur", operators: ["Mayur", "Sonartori", "Bogdad", "Imam Hasan"], time: "3-4h", fare: "150-500" },
+    { from: "Dhaka", to: "Hatiya", operators: ["Farhan", "Tasrif"], time: "12h+", fare: "500-3000" },
+    { from: "Dhaka", to: "Shariatpur", operators: ["Sureshwar Launch"], time: "4-5h", fare: "150-400" },
+    { from: "Dhaka", to: "Kuakata", operators: ["Sundarban (Direct) - Seasonal"], time: "12-14h", fare: "500-3000" },
+];
+
+const BUS_ROUTES_MAJOR = [
+    { from: "Dhaka", to: "Cox's Bazar", buses: ["Green Line (Scania/Double Decker)", "Shohagh", "Hanif", "Shyamoli", "Desh Travels", "Saintmartin Paribahan", "Relax Transport"], fare: "900-2500" },
+    { from: "Dhaka", to: "Chattogram", buses: ["Green Line", "Saudia", "Hanif", "Shyamoli", "Ena", "Shohagh", "Tisha"], fare: "680-1500" },
+    { from: "Dhaka", to: "Sylhet", buses: ["Green Line", "Ena", "London Express", "Hanif", "Shyamoli", "Al-Mobaraka"], fare: "570-1400" },
+    { from: "Dhaka", to: "Khulna", buses: ["Shohagh", "Hanif", "Green Line", "Tungipara Express", "Falguni"], fare: "700-1400" },
+    { from: "Dhaka", to: "Rajshahi", buses: ["Desh Travels", "National Travels", "Hanif", "Shyamoli", "Grameen Travels"], fare: "600-1300" },
+    { from: "Dhaka", to: "Barishal", buses: ["Sakura", "Hanif", "Shyamoli", "Drutish"], fare: "500-1000" },
+    { from: "Dhaka", to: "Rangpur", buses: ["Nabil", "SR Travels", "Hanif", "Agomony", "Dipjol"], fare: "700-1400" },
+    { from: "Dhaka", to: "Benapole", buses: ["Green Line", "Shohagh", "Hanif", "Shyamoli", "Royal"], fare: "600-1400" },
+    { from: "Dhaka", to: "Kolkata", buses: ["Green Line", "Shohagh", "Shyamoli", "Maitree (BRTC)"], fare: "1800-2400 (Direct)" },
+    { from: "Dhaka", to: "Bandarban", buses: ["Hanif", "Shyamoli", "Saintmartin Paribahan", "Dolphin"], fare: "900-1800" },
+    { from: "Dhaka", to: "Rangamati", buses: ["Hanif", "Shyamoli", "Dolphin", "S.Alam"], fare: "900-1800" },
+    { from: "Dhaka", to: "Khagrachari", buses: ["Shanti Paribahan", "S.Alam", "Shyamoli", "Hanif"], fare: "850-1600" },
+    { from: "Dhaka", to: "Kushtia", buses: ["SB Super Deluxe", "Hanif", "Shyamoli"], fare: "600-1000" },
+];
+
+// --- HELPERS ---
+
+const getTrainInfo = (from: string, to: string) => TRAIN_ROUTES.find(r => (r.from === from && r.to === to) || (r.from === to && r.to === from));
+const getAirInfo = (from: string, to: string) => AIR_ROUTES.find(r => (r.from === from && r.to === to) || (r.from === to && r.to === from));
+const getLaunchInfo = (from: string, to: string) => LAUNCH_ROUTES.find(r => (r.from === from && r.to === to) || (r.from === to && r.to === from));
+const getBusInfo = (from: string, to: string) => BUS_ROUTES_MAJOR.find(r => (r.from === from && r.to === to) || (r.from === to && r.to === from));
 
 export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | 'bn' = 'en'): RouteResponse => {
     const connFrom = getConnectivity(from);
@@ -159,6 +205,9 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
 
     const brtcRoutes = findBrtcRoutes(from, to);
     const trainInfo = getTrainInfo(from, to);
+    const airInfo = getAirInfo(from, to);
+    const launchInfo = getLaunchInfo(from, to);
+    const busInfo = getBusInfo(from, to);
     const isBn = lang === 'bn';
 
     let result = '';
@@ -167,153 +216,95 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
         result = `**রুট: ${from} থেকে ${to}**  \n`;
         result += `**দূরত্ব:** ${distance > 0 ? distance + ' কিমি (আকাশপথ)' : 'তথ্য নেই'}  \n\n`;
 
+        // 1. Bus (BRTC + Private)
+        result += `### 🚌 বাস সার্ভিস:  \n`;
+        if (busInfo) {
+            result += `**জনপ্রিয় অপারেটর:** ${busInfo.buses.join(', ')}।  \n**ভাড়া:** ${busInfo.fare} টাকা।  \n`;
+        }
         if (brtcRoutes.length > 0) {
-            result += `### 🚌 বিআরটিসি (BRTC) বাস সার্ভিস:  \n`;
+            result += `**বিআরটিসি (BRTC):**  \n`;
             brtcRoutes.forEach(br => {
-                result += `- **${br.bnName}** (${br.type})  \n  রুট: ${br.routeString}  \n  ছাড়ার সময়: ${br.hours}  \n`;
+                result += `- ${br.bnName} (${br.type}) - ${br.hours}  \n`;
             });
-            result += `\n`;
         }
-
-        result += `### প্রস্তাবিত যাতায়াত মাধ্যম:  \n\n`;
-
-        // Plane (Only suggest via Dhaka if distance is > 250km)
-        if (connFrom.plane && connTo.plane) {
-            result += `✈️ **বিমানে** – সময়: ৪৫-৬০ মিনিট | ভাড়া: ৩,৫০০-৮,০০০ টাকা  \nসরাসরি ফ্লাইট উপলব্ধ। এয়ারলাইন্স: ইউএস-বাংলা, বিমান বাংলাদেশ, নভোএয়ার।  \n\n`;
-        } else if (from !== 'Dhaka' && to !== 'Dhaka' && connTo.plane && distance > 250) {
-            result += `✈️ **বিমানে (ঢাকা হয়ে)** – সময়: ৩-৪ ঘণ্টা | ভাড়া: ৫,০০০-১০,০০০ টাকা  \nপ্রথমে ঢাকা যান, তারপর সেখান থেকে কানেক্টিং ফ্লাইট।  \n\n`;
+        if (!busInfo && brtcRoutes.length === 0) {
+            result += `ভাড়া: ${Math.max(150, Math.ceil(distance * 3))}-১,২০০ টাকা (আনুমানিক)।  \nলোকাল এবং আন্তঃজেলা বাস টার্মিনাল থেকে নিয়মিত বাস পাওয়া যায়।  \n`;
         }
+        result += `\n`;
 
-        // Train
+        // 2. Train
         if (trainInfo) {
-            result += `🚂 **ট্রেনে (${trainInfo.trains.length > 1 ? 'আন্তঃনগর' : 'লোকাল/এক্সপ্রেস'})** – সময়: ${Math.max(2, Math.ceil(distance / 55))} ঘণ্টা (আনুমানিক) | ভাড়া: ${trainInfo.fare} টাকা  \n**ট্রেনের নাম:** ${trainInfo.trains.join(', ')}।  \n\n`;
+            result += `### 🚂 রেলওয়ে (ট্রেন):  \n`;
+            result += `**ট্রেনের নাম:** ${trainInfo.trains.join(', ')}।  \n**ভাড়া:** ${trainInfo.fare} টাকা।  \nসময়: ${Math.max(2, Math.ceil(distance / 55))} ঘণ্টা (আনুমানিক)।  \n\n`;
         } else if (connFrom.train && connTo.train) {
-            result += `🚂 **ট্রেনে (আন্তঃনগর)** – সময়: ${Math.max(4, Math.ceil(distance / 45))} ঘণ্টা (আনুমানিক) | ভাড়া: ৪০০-২,০০০ টাকা  \nআরামদায়ক এবং সাশ্রয়ী যাত্রা। আন্তঃনগর এক্সপ্রেস সার্ভিস।  \n\n`;
+            result += `### 🚂 রেলওয়ে (ট্রেন):  \n`;
+            result += `সরাসরি ট্রেন নেই তবে সংযোগ ট্রেন ব্যবহার করে যাওয়া সম্ভব হতে পারে।  \n\n`;
         }
 
-        // Boat / Launch
-        if (connTo.boat && (from === 'Dhaka' || connFrom.boat)) {
-            result += `🚢 **লঞ্চ/জাহাজ** – সময়: ৮-১২ ঘণ্টা | ভাড়া: ৩০০-৩,০০০ টাকা  \nনদীমাতৃক বাংলার সৌন্দর্য উপভোগের সেরা মাধ্যম। টার্মিনাল: সদরঘাট (ঢাকা) বা স্থানীয় ঘাট।  \n\n`;
+        // 3. Air
+        if (airInfo) {
+            result += `### ✈️ আকাশপথ (ফ্লাইট):  \n`;
+            result += `**এয়ারলাইন্স:** ${airInfo.airlines.join(', ')}।  \n**সময়:** ${airInfo.time}। **ভাড়া:** ${airInfo.fare} টাকা।  \n\n`;
+        } else if (connFrom.plane && connTo.plane) {
+            result += `### ✈️ আকাশপথ (ফ্লাইট):  \n`;
+            result += `সরাসরি ফ্লাইট নেই। ঢাকা হয়ে কানেক্টিং ফ্লাইট চেক করুন।  \n\n`;
         }
 
-        // Private Car / Jeep / Local Bus (For short distances or Hill tracks)
-        if (distance < 120 || from === "Bandarban" || to === "Bandarban" || from === "Rangamati" || to === "Rangamati") {
-            result += `🚗 **প্রাইভেট কার / জিপ / লোকাল বাস:**  \nস্বল্প দূরত্বের জন্য লোকাল বাস অথবা রিজার্ভ কার/মাইক্রোবাস সুবিধাজনক।  \n`;
-            if (from.includes("Bandarban") || to.includes("Bandarban") || from.includes("Rangamati") || to.includes("Rangamati")) {
-                result += `পাহাড়ি এলাকায় (যেমন: বান্দরবান/রাঙ্গামাটি) "চান্দের গাড়ি" (Jeep) রিজার্ভ করে ঘুরে দেখা সবচেয়ে জনপ্রিয়।  \n`;
-            }
-            // Specific: Bandarban <-> Cox's Bazar
-            if ((from === "Bandarban" && to === "Cox's Bazar") || (from === "Cox's Bazar" && to === "Bandarban")) {
-                result += `💡 **বিশেষ টিপ:** বান্দরবান ও কক্সবাজারের মধ্যে সরাসরি **"পূর্বানী"** বা **"মারশা"** বাস চলে। ভাড়া ২০০-৩০০ টাকা। সময় লাগে ২.৫ - ৩ ঘণ্টা। এছাড়া প্রাইভেট কার বা জিপ রিজার্ভ করা যায়।  \n`;
-            }
-            result += `\n`;
+        // 4. Boat/Launch
+        if (launchInfo) {
+            result += `### 🚢 নৌপথ (লঞ্চ/জাহাজ):  \n`;
+            result += `**টার্মিনাল:** সদরঘাট (ঢাকা) বা স্থানীয় ঘাট।  \n**লঞ্চসমূহ:** ${launchInfo.operators.join(', ')}।  \n**সময়:** ${launchInfo.time}। **ভাড়া:** ${launchInfo.fare} টাকা।  \n\n`;
+        } else if (connTo.boat && (from === 'Dhaka' || connFrom.boat)) {
+            result += `### 🚢 নৌপথ:  \nএই রুটে নৌযান চলাচল করতে পারে। স্থানীয় ঘাটে খোঁজ নিন।  \n\n`;
         }
 
-        // Bus
-        result += `🚌 **বাস (সরাসরি)** – সময়: ${Math.max(2, Math.ceil(distance / 35))} ঘণ্টা (আনুমানিক) | ভাড়া: ${Math.max(150, Math.ceil(distance * 3))}-৩,০০০ টাকা  \nসবচেয়ে সহজলভ্য মাধ্যম। এসি, নন-এসি এবং স্লিপার কোচ পাওয়া যায়।  \n**জনপ্রিয় অপারেটর:** হানিফ, শ্যামলী, এনা, গ্রিন লাইন, দেশ ট্রাভেলস, এস.আলম, সউদিয়া।  \n\n`;
-
-
-        // Via Hub Suggestion logic
-        let hubResult = '';
-        if (distance > 150 && brtcRoutes.length === 0) {
-            // Find if both can connect to a common high-tier hub (Dhaka or Divisional Capital)
-            const possibleHubs = MAJOR_HUBS.filter(h => h !== from && h !== to);
-            let selectedHub = "";
-
-            if (from !== "Dhaka" && to !== "Dhaka") {
-                selectedHub = "Dhaka"; // Dhaka is the primary hub for almost everything
-            } else if (from === "Dhaka") {
-                // If going from Dhaka to somewhere obscure, maybe suggest a regional hub
-                if (distance > 300) {
-                    if (to.includes('Khulna') || to.includes('Jashore')) selectedHub = "Jashore";
-                    else if (to.includes('Rangpur') || to.includes('Bogura')) selectedHub = "Bogura";
-                }
-            }
-
-            if (selectedHub) {
-                hubResult = `🔍 **বিকল্প যাতায়াত (ভায়া ${selectedHub}):**  \nসরাসরি ভালো সার্ভিস না পেলে আপনি প্রথমে **${selectedHub}** যেতে পারেন, তারপর সেখান থেকে **${to}** এর বাস বা ট্রেনে যাতায়াত করতে পারেন। এটি সাধারণত বেশি আরামদায়ক হয়।  \n\n`;
-            }
-        }
-        result += hubResult;
-
-        // Specific logic for Benapole to Khulna (Via Jashore)
-        if (from === "Benapole" && to === "Khulna") {
-            result += `💡 **পরামর্শ:** বেনাপোল থেকে খুলনা যাওয়ার জন্য সরাসরি বাসের পাশাপাশি আপনি প্রথমে লোকাল বাসে **যশোর** যেতে পারেন (ভাড়া ৪০-৫০ টাকা), তারপর যশোর থেকে খুলনা যাওয়ার জন্য প্রতি ১৫-২০ মিনিট অন্তর বাস এবং দিনে একাধিক ট্রেন পাবেন।  \n\n`;
-        }
-
-        if (to === "Saint Martin's Island") {
-            result += `⚠️ **বিশেষ দ্রষ্টব্য:** সেন্টমার্টিন যাওয়ার জন্য আপনাকে অবশ্যই প্রথমে টেকনাফ বা কক্সবাজার পৌঁছাতে হবে, তারপর সেখান থেকে জাহাজে উঠতে হবে। সরাসরি বাস টেকনাফ পর্যন্ত যায়।  \n\n`;
+        // Via Hub Logic
+        if (!busInfo && !trainInfo && distance > 200 && from !== "Dhaka" && to !== "Dhaka") {
+            result += `💡 **পরামর্শ (ভায়া ঢাকা):** সরাসরি ভালো সার্ভিস না থাকলে, প্রথমে **ঢাকা** এসে তারপর **${to}** এর বাস/ট্রেন/ফ্লাইট নেওয়া সুবিধাজনক হতে পারে।  \n\n`;
         }
 
     } else {
+        // ENGLISH
         result = `**Route: ${from} to ${to}**  \n`;
-        result += `**Distance:** ${distance > 0 ? distance + ' km (Great-circle distance)' : 'N/A'}  \n\n`;
+        result += `**Distance:** ${distance > 0 ? distance + ' km (Great-circle)' : 'N/A'}  \n\n`;
 
+        // 1. Bus
+        result += `### 🚌 Bus Services:  \n`;
+        if (busInfo) {
+            result += `**Operators:** ${busInfo.buses.join(', ')}.  \n**Fare:** ${busInfo.fare} BDT.  \n`;
+        }
         if (brtcRoutes.length > 0) {
-            result += `### 🚌 BRTC Bus Services:  \n`;
+            result += `**BRTC:**  \n`;
             brtcRoutes.forEach(br => {
-                result += `- **${br.name}** (${br.type})  \n  Route: ${br.routeString}  \n  Schedules: ${br.hours}  \n`;
+                result += `- ${br.name} (${br.type}) - ${br.hours}  \n`;
             });
-            result += '\n';
         }
-
-        result += `### Recommended Modes:  \n\n`;
-
-        // Plane (Distance check)
-        if (connFrom.plane && connTo.plane) {
-            result += `✈️ **By Air** – Time: 45-60 min | Price: 3,500-8,000 BDT  \nDirect flights are available. Airlines: US-Bangla, Biman Bangladesh, Novoair.  \n\n`;
-        } else if (from !== 'Dhaka' && to !== 'Dhaka' && connTo.plane && distance > 250) {
-            result += `✈️ **By Air (via Dhaka)** – Time: 3-4 hours | Price: 5,000-10,000 BDT  \nTake a connecting flight via Dhaka.  \n\n`;
+        if (!busInfo && brtcRoutes.length === 0) {
+            result += `**Fare:** ${Math.max(150, Math.ceil(distance * 3))}-1,200 BDT (Est).  \nAvailable from regional terminals.  \n`;
         }
+        result += `\n`;
 
-        // Train
+        // 2. Train
         if (trainInfo) {
-            result += `🚂 **By Train (${trainInfo.trains.length > 1 ? 'Intercity' : 'Local/Express'})** – Time: ${Math.max(2, Math.ceil(distance / 55))} hours (Est.) | Price: ${trainInfo.fare} BDT  \n**Trains:** ${trainInfo.trains.join(', ')}.  \n\n`;
-        } else if (connFrom.train && connTo.train) {
-            result += `🚂 **By Train (Intercity)** – Time: ${Math.max(4, Math.ceil(distance / 45))} hours (Est.) | Price: 400-2,000 BDT  \nGreat journey through Bangladesh via Intercity Express.  \n\n`;
+            result += `### 🚂 Railway (Train):  \n`;
+            result += `**Trains:** ${trainInfo.trains.join(', ')}.  \n**Fare:** ${trainInfo.fare} BDT.  \n**Time:** ${Math.max(2, Math.ceil(distance / 55))} h (Approx).  \n\n`;
         }
 
-        // Boat
-        if (connTo.boat && (from === 'Dhaka' || connFrom.boat)) {
-            result += `🚢 **By Launch / Ship** – Time: 8-12 hours | Price: 300-3,000 BDT  \nBest way to travel to Southern districts. Terminal: Sadarghat or local ports.  \n\n`;
+        // 3. Air
+        if (airInfo) {
+            result += `### ✈️ Air (Flight):  \n`;
+            result += `**Airlines:** ${airInfo.airlines.join(', ')}.  \n**Time:** ${airInfo.time}. **Fare:** ${airInfo.fare} BDT.  \n\n`;
         }
 
-        // Short Distance / Car / Jeep
-        if (distance < 120 || from === "Bandarban" || to === "Bandarban" || from === "Rangamati" || to === "Rangamati") {
-            result += `🚗 **Private Car / Jeep / Local Bus:**  \nFor short distances, local buses or Rent-a-Car services are convenient.  \n`;
-            if (from.includes("Bandarban") || to.includes("Bandarban") || from.includes("Rangamati") || to.includes("Rangamati")) {
-                result += `In Hill Tracts (e.g. Bandarban), "Chander Gari" (Jeep) is the most popular way to travel.  \n`;
-            }
-            // Specific: Bandarban <-> Cox's Bazar
-            if ((from === "Bandarban" && to === "Cox's Bazar") || (from === "Cox's Bazar" && to === "Bandarban")) {
-                result += `💡 **Tip:** Direct **"Purbani"** or **"Marsa"** buses run between local terminals. Fare: 200-300 BDT. Time: 2.5 - 3 Hours. You can also hire a private car/jeep.  \n`;
-            }
-            result += `\n`;
+        // 4. Boat
+        if (launchInfo) {
+            result += `### 🚢 Waterway (Launch/Ship):  \n`;
+            result += `**Terminal:** Sadarghat (Dhaka) or local.  \n**Operators:** ${launchInfo.operators.join(', ')}.  \n**Time:** ${launchInfo.time}. **Fare:** ${launchInfo.fare} BDT.  \n\n`;
         }
 
-        // Bus General (Always show)
-        result += `🚌 **Bus (Direct)** – Time: ${Math.max(2, Math.ceil(distance / 35))} hours (Est.) | Price: ${Math.max(150, Math.ceil(distance * 3))}-3,000 BDT  \nMost flexible option. AC, Non-AC, and Sleeper coaches available.  \n**Operators:** Hanif, Shyamoli, Ena, Green Line, Desh Travels, S.Alam.  \n\n`;
-
-
-        if (distance > 150 && brtcRoutes.length === 0) {
-            let selectedHub = "";
-            if (from !== "Dhaka" && to !== "Dhaka") selectedHub = "Dhaka";
-            else if (from === "Dhaka" && distance > 300) {
-                if (to.includes('Khulna') || to.includes('Jashore')) selectedHub = "Jashore";
-                else if (to.includes('Rangpur') || to.includes('Bogura')) selectedHub = "Bogura";
-            }
-
-            if (selectedHub) {
-                result += `🔍 **Alternative Route (via ${selectedHub}):**  \nIf direct service is poor, first travel to **${selectedHub}** and then find frequent transport to **${to}**.  \n\n`;
-            }
-        }
-
-        if (from === "Benapole" && to === "Khulna") {
-            result += `💡 **Tip:** Instead of a direct bus, you can take a local bus to **Jashore** (40-50 BDT), then find frequent buses or trains to Khulna.  \n\n`;
-        }
-
-        if (to === "Saint Martin's Island") {
-            result += `⚠️ **Note:** To reach Saint Martin's, first reach Teknaf/Cox's Bazar, then take a ship.  \n\n`;
+        // Special Tips
+        if (!busInfo && !trainInfo && distance > 200 && from !== "Dhaka" && to !== "Dhaka") {
+            result += `💡 **Tip:** If direct transport is rare, travel via **Dhaka** for better connectivity.  \n\n`;
         }
     }
 

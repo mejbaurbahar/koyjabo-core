@@ -1,26 +1,19 @@
 import { BUS_DATA, METRO_STATIONS, STATIONS } from '../constants';
-
-// --- OFFLINE DATASETS (Copied/Adapted for standalone service) ---
-
-const TRAIN_ROUTES = [
-  { from: "Dhaka", to: "Chattogram", trains: ["Subarna Express", "Sonar Bangla Express", "Turna Express", "Mohanagar Goduli"] },
-  { from: "Dhaka", to: "Sylhet", trains: ["Upaban Express", "Jayantika Express", "Kalni Express", "Parabat Express"] },
-  { from: "Dhaka", to: "Cox's Bazar", trains: ["Cox's Bazar Express", "Parjatak Express"] },
-  { from: "Dhaka", to: "Rajshahi", trains: ["Silk City", "Padma Express", "Dhumketu Express"] },
-  { from: "Dhaka", to: "Khulna", trains: ["Sundarban Express", "Chitra Express"] },
-  { from: "Dhaka", to: "Mymensingh", trains: ["Tista Express", "Agnibina Express"] },
-  { from: "Dhaka", to: "Barishal", trains: ["No Direct Train (Use Launch/Bus)"] },
-  { from: "Dhaka", to: "Benapole", trains: ["Benapole Express"] },
-];
-
-const MAJOR_LOCATIONS = [
-  "Dhaka", "Chattogram", "Sylhet", "Rajshahi", "Khulna", "Barishal", "Rangpur", "Mymensingh", "Cox's Bazar", "Cumilla", "Feni", "Bogura", "Jashore", "Benapole", "Kushtia", "Satkhira", "Dinajpur", "Pabna", "Faridpur"
-];
+import { getOfflineIntercityData } from '../intercity/offlineService';
 
 export interface ChatMessage {
   role: 'user' | 'assistant';
   text: string;
 }
+
+// Major locations for intent detection
+const MAJOR_LOCATIONS = [
+  "Dhaka", "Chattogram", "Sylhet", "Rajshahi", "Khulna", "Barishal", "Rangpur", "Mymensingh",
+  "Cox's Bazar", "Cumilla", "Feni", "Bogura", "Jashore", "Benapole", "Kushtia", "Satkhira",
+  "Dinajpur", "Pabna", "Faridpur", "Noakhali", "Chandpur", "Brahmanbaria", "Natore",
+  "Tangail", "Sirajganj", "Naogaon", "Chapainawabganj", "Gazipur", "Narayanganj",
+  "Narsingdi", "Bandarban", "Rangamati", "Khagrachari", "Panchagarh", "Thakurgaon"
+];
 
 // --- HELPER FUNCTIONS ---
 
@@ -70,53 +63,24 @@ const findIntercityRoute = (query: string): string => {
   const lowerQuery = normalize(query);
 
   // Find mention of districts
+  // We sort by length desc to match "Cox's Bazar" before "Cox" if needed, though normalize handles it
   const foundDistricts = MAJOR_LOCATIONS.filter(d => lowerQuery.includes(normalize(d)));
 
-  if (foundDistricts.length >= 2) {
-    const from = foundDistricts[0]; // Naive assumptions on direction
-    const to = foundDistricts[1];
+  // Remove duplicates (e.g. if query has "Dhaka to Dhaka")
+  const uniqueDistricts = [...new Set(foundDistricts)];
 
-    // Check Train
-    const train = TRAIN_ROUTES.find(r =>
-      (normalize(r.from) === normalize(from) && normalize(r.to) === normalize(to)) ||
-      (normalize(r.from) === normalize(to) && normalize(r.to) === normalize(from))
-    );
+  if (uniqueDistricts.length >= 2) {
+    const from = uniqueDistricts[0];
+    const to = uniqueDistricts[1];
 
-    if (train) {
-      const isBenapole = normalize(from) === 'benapole' || normalize(to) === 'benapole';
-      const isCox = normalize(from) === 'coxs bazar' || normalize(to) === 'coxs bazar';
-
-      let details = `🚂 **Intercity Travel: ${from} ⇄ ${to}**\n\n` +
-        `**Available Trains:**\n` +
-        `- ${train.trains.join("\n- ")}\n\n`;
-
-      if (isBenapole) {
-        details += `**🚌 Bus Options:**\n` +
-          `You can also take luxury AC/Non-AC buses (Green Line, Shohagh, Hanif, Shyamoli) from Gabtoli, Kalyanpur, or Kalabagan. Since Benapole is a major land port, buses run frequently (approx 6-8 hours).\n\n` +
-          `**💡 Travel Tips:**\n` +
-          `- Train tickets available on 'Eticket' or at usage counters.\n` +
-          `- The **Benapole Express** is a modern train with AC cabins.`;
-      } else if (isCox) {
-        details += `**🚌 Bus Options:**\n` +
-          `Luxury buses (Green Line, Saintmartin Paribahan, Desh Travels) connect Dhaka to Cox's Bazar seamlessly from Rajarbagh/Arambagh.\n\n` +
-          `**💡 Travel Tips:**\n` +
-          `- The new **Cox's Bazar Express** train goes directly to the iconic station.\n` +
-          `- Flight options are also available (~1 hour).`;
-      } else {
-        details += `**💡 Travel Tips:**\n` +
-          `- Purchase tickets online via Shohoz/Eticket or at the station.\n` +
-          `- Arrive at the station at least 30 mins before departure.`;
-      }
-
-      return details;
-    }
-
-    return `🚌 **Intercity:** For **${from}** to **${to}**, direct trains may not be available. Please check Bus options from major terminals (Gabtoli, Sayedabad, or Mohakhali).`;
+    // Delegate to the robust Intercity Service
+    const routeData = getOfflineIntercityData(from, to, 'en');
+    return routeData.result;
   }
 
   // General Intercity Info
-  if (lowerQuery.includes("train") || lowerQuery.includes("intercity") || lowerQuery.includes("benapole")) {
-    return "🚂 **Intercity Info:** I can help you with train & bus routes for major districts like Dhaka, Chattogram, Sylhet, Cox's Bazar, Benapole, etc. Just mention the city names (e.g., 'Dhaka to Sylhet')!";
+  if (lowerQuery.includes("train") || lowerQuery.includes("intercity") || lowerQuery.includes("flight") || lowerQuery.includes("plane")) {
+    return "🚂 **Intercity Info:** I can help you with **Train**, **Bus**, **Flight**, and **Launch** routes for all 64 districts! Just tell me where you want to go (e.g., 'Dhaka to Barishal' or 'Flight to Cox's Bazar').";
   }
 
   return "";
@@ -144,7 +108,7 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
 
   // 0. Greeting / General
   if (lowerQuery.match(/^(hi|hello|hey|salam|help)/)) {
-    return "👋 Hello! I am your Offline Transport Assistant. I can help you with:\n- 🚌 **Local Bus Routes** (e.g., 'Bus from Farmgate to Mirpur')\n- 🚇 **Metro Rail Info** (e.g., 'Metro from Uttara to Motijheel')\n- 🚂 **Intercity Trains** (e.g., 'Train to Sylhet')\n\nHow can I help you today?";
+    return "👋 Hello! I am your Offline Transport Assistant. I can help you with:\n- 🚌 **Local Bus Routes** (e.g., 'Bus from Farmgate to Mirpur')\n- 🚇 **Metro Rail Info** (e.g., 'Metro from Uttara to Motijheel')\n- 🚂 **Intercity (Bus/Train/Air/Launch)** (e.g., 'Dhaka to Barishal')\n\nHow can I help you today?";
   }
 
   // 1. Check for specific Bus Route (A to B)
@@ -171,7 +135,15 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   if (busInfo) responseParts.push(busInfo);
 
   // 4. Check Intercity
-  if (lowerQuery.includes("chattogram") || lowerQuery.includes("sylhet") || lowerQuery.includes("cox") || lowerQuery.includes("khulna") || lowerQuery.includes("train") || lowerQuery.includes("benapole")) {
+  // Check against our comprehensive list
+  const isIntercityQuery = MAJOR_LOCATIONS.some(loc => lowerQuery.includes(normalize(loc))) ||
+    lowerQuery.includes("train") ||
+    lowerQuery.includes("flight") ||
+    lowerQuery.includes("air") ||
+    lowerQuery.includes("launch") ||
+    lowerQuery.includes("intercity");
+
+  if (isIntercityQuery) {
     const intercityRes = findIntercityRoute(query);
     if (intercityRes) responseParts.push(intercityRes);
   }
@@ -198,11 +170,8 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
 
           // Show distinct routes (max 5)
           busesToTarget.slice(0, 5).forEach(bus => {
-            // Determine direction relative to target? 
-            // Just show start and end for context
             const start = bus.stops[0];
             const end = bus.stops[bus.stops.length - 1];
-            // Try to map slugs to nice names if possible, relying on bus.routeString usually better
             responseParts.push(`- **${bus.name}**: Runs between ${bus.routeString}`);
           });
 
@@ -219,7 +188,7 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
         }
       }
     } else {
-      return "🤔 I couldn't understand that location. Please try mentioning specific stations like 'Farmgate', 'Mirpur', 'Gulshan' or district names.";
+      return "🤔 I couldn't understand that location. Please try mentioning specific stations like 'Farmgate', 'Mirpur', 'Gulshan' or district names for intercity travel.";
     }
   }
 
