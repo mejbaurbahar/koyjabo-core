@@ -155,12 +155,40 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
     const mentionedStations = stationNames.filter(name => lowerQuery.includes(normalize(name)));
 
     if (mentionedStations.length > 0) {
-      responseParts.push(`📍 **Locations Found:** I see you mentioned **${mentionedStations.join(", ")}**.`);
+      // Logic to detect "How to go" intent
+      const isNavIntent = lowerQuery.match(/(jabo|kivabe|jawa|go to|reach|direction|jite|kemne|route)/);
+      const targetStation = mentionedStations[0];
 
-      // Find buses for this single station
-      const busPassEx = BUS_DATA.filter(b => b.stops.some(s => normalize(s).includes(normalize(mentionedStations[0])))).slice(0, 3).map(b => b.name);
-      if (busPassEx.length > 0) {
-        responseParts.push(`🚌 **Buses passing here:** ${busPassEx.join(", ")}...`);
+      responseParts.push(`📍 **Locations Found:** I see you mentioned **${targetStation}**.`);
+
+      if (isNavIntent) {
+        // Assume user wants to GO TO this station
+        const busesToTarget = BUS_DATA.filter(b => b.stops.some(s => normalize(s).includes(normalize(targetStation))));
+
+        if (busesToTarget.length > 0) {
+          responseParts.push(`🚌 **To reach ${targetStation}:**\nYou can take these buses from various locations:\n`);
+
+          // Show distinct routes (max 5)
+          busesToTarget.slice(0, 5).forEach(bus => {
+            // Determine direction relative to target? 
+            // Just show start and end for context
+            const start = bus.stops[0];
+            const end = bus.stops[bus.stops.length - 1];
+            // Try to map slugs to nice names if possible, relying on bus.routeString usually better
+            responseParts.push(`- **${bus.name}**: Runs between ${bus.routeString}`);
+          });
+
+          responseParts.push(`\n❓ **Tip:** To get a specific route, tell me your starting point! (e.g. "From Mirpur to ${targetStation}")`);
+        } else {
+          responseParts.push(`⚠️ I know where **${targetStation}** is, but I can't find direct local buses in my current database. Try finding a connection via a major hub like Farmgate or Mohakhali.`);
+        }
+
+      } else {
+        // Original logic: Just list buses passing
+        const busPassEx = BUS_DATA.filter(b => b.stops.some(s => normalize(s).includes(normalize(targetStation)))).slice(0, 3).map(b => b.name);
+        if (busPassEx.length > 0) {
+          responseParts.push(`🚌 **Buses passing here:** ${busPassEx.join(", ")}...`);
+        }
       }
     } else {
       return "🤔 I couldn't understand that location. Please try mentioning specific stations like 'Farmgate', 'Mirpur', 'Gulshan' or district names.";
