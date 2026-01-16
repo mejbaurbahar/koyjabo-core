@@ -73,17 +73,14 @@ const getStoredBus = (): BusRoute | null => {
 
 const getStoredView = (): AppView => {
   try {
-    // 1. Check URL Search Params first (Priority)
-    // 1. Check URL Search Params or Hash
     const params = new URLSearchParams(window.location.search);
     const viewParam = params.get('view');
-    const hash = window.location.hash.substring(1); // Remove '#'
-    const path = window.location.pathname.substring(1); // Remove leading '/'
+    const hash = window.location.hash.substring(1);
+    const path = window.location.pathname.substring(1);
 
     const target = viewParam || hash || path;
 
     if (target) {
-      // Clear the query param/hash to clean up URL (optional, but good for UX)
       if (viewParam) window.history.replaceState({}, '', window.location.pathname);
 
       switch (target) {
@@ -92,7 +89,6 @@ const getStoredView = (): AppView => {
         case 'about': return AppView.ABOUT;
         case 'why-use': return AppView.WHY_USE;
         case 'faq': return AppView.FAQ;
-
         case 'blog': return AppView.BLOG;
         case 'history': return AppView.HISTORY;
         case 'install': return AppView.INSTALL_APP;
@@ -103,12 +99,10 @@ const getStoredView = (): AppView => {
       }
     }
 
-    // 2. Check Local Storage
     const stored = localStorage.getItem('dhaka_commute_view');
     if (!stored) return AppView.HOME;
     const view = JSON.parse(stored);
 
-    // Views that require a selected bus
     if (view === AppView.BUS_DETAILS || view === AppView.LIVE_NAV) {
       return getStoredBus() ? view : AppView.HOME;
     }
@@ -464,15 +458,17 @@ const App: React.FC = () => {
     }
   }, [isDarkMode]);
 
-  const [searchMode, setSearchMode] = useState<'TEXT' | 'ROUTE'>('ROUTE');
-  const [inputValue, setInputValue] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchMode, setSearchMode] = useState<'TEXT' | 'ROUTE'>(() =>
+    (localStorage.getItem('dhaka_commute_search_mode') as 'TEXT' | 'ROUTE') || 'ROUTE'
+  );
+  const [inputValue, setInputValue] = useState(() => localStorage.getItem('dhaka_commute_input_value') || '');
+  const [searchQuery, setSearchQuery] = useState(() => localStorage.getItem('dhaka_commute_search_query') || '');
 
-  const [fromStation, setFromStation] = useState<string>('');
-  const [toStation, setToStation] = useState<string>('');
+  const [fromStation, setFromStation] = useState<string>(() => localStorage.getItem('dhaka_commute_from_station') || '');
+  const [toStation, setToStation] = useState<string>(() => localStorage.getItem('dhaka_commute_to_station') || '');
 
-  const [fareStart, setFareStart] = useState<string>('');
-  const [fareEnd, setFareEnd] = useState<string>('');
+  const [fareStart, setFareStart] = useState<string>(() => localStorage.getItem('dhaka_commute_fare_start') || '');
+  const [fareEnd, setFareEnd] = useState<string>(() => localStorage.getItem('dhaka_commute_fare_end') || '');
 
   const [favorites, setFavorites] = useState<string[]>(getStoredFavorites);
   const [listFilter, setListFilter] = useState<'ALL' | 'FAVORITES'>('ALL');
@@ -546,12 +542,30 @@ const App: React.FC = () => {
   const [nearestStopDistance, setNearestStopDistance] = useState<number>(Infinity);
   const [userLocation, setUserLocation] = useState<UserLocation | null>(null);
   const [nearestMetro, setNearestMetro] = useState<{ stationId: string; distance: number } | null>(null);
-  const [suggestedRoutes, setSuggestedRoutes] = useState<SuggestedRoute[]>([]);
+  const [suggestedRoutes, setSuggestedRoutes] = useState<SuggestedRoute[]>(() => {
+    try {
+      const saved = localStorage.getItem('dhaka_commute_suggested_routes');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
   const [searchSuggestions, setSearchSuggestions] = useState<SearchSuggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [searchContext, setSearchContext] = useState<string | undefined>();
   const [destinationStationIds, setDestinationStationIds] = useState<string[]>([]);
-  const [selectedTrip, setSelectedTrip] = useState<SuggestedRoute | null>(null);
+  const [selectedTrip, setSelectedTrip] = useState<SuggestedRoute | null>(() => {
+    try {
+      const saved = localStorage.getItem('dhaka_commute_selected_trip');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem('dhaka_commute_selected_trip', JSON.stringify(selectedTrip));
+  }, [selectedTrip]);
   const [showEmergencyModal, setShowEmergencyModal] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showInstallPrompt, setShowInstallPrompt] = useState(false);
@@ -574,19 +588,66 @@ const App: React.FC = () => {
   }, [userLocation]);
 
   const isInDhaka = useMemo(() => checkIfInDhaka(userLocation), [userLocation]);
-  const [primarySearch, setPrimarySearch] = useState<'LOCAL' | 'INTERCITY'>('LOCAL');
+  const [primarySearch, setPrimarySearch] = useState<'LOCAL' | 'INTERCITY'>(() =>
+    (localStorage.getItem('dhaka_commute_primary_search') as 'LOCAL' | 'INTERCITY') || 'LOCAL'
+  );
 
   // Sync primary search with location, but only on significant changes or init
   useEffect(() => {
     if (initialLocationChecked) {
-      setPrimarySearch(isInDhaka ? 'LOCAL' : 'INTERCITY');
+      // Only auto-switch if no previous state was stored or if it's the first visit
+      const stored = localStorage.getItem('dhaka_commute_primary_search');
+      if (!stored) {
+        setPrimarySearch(isInDhaka ? 'LOCAL' : 'INTERCITY');
+      }
 
-      // If user is outside Dhaka and on HOME view, switch to showing Intercity search
-      if (!isInDhaka && view === AppView.HOME) {
+      // If user is outside Dhaka and on HOME view, switch to showing Intercity search (only on fresh start)
+      if (!isInDhaka && view === AppView.HOME && !stored) {
         setPrimarySearch('INTERCITY');
       }
     }
   }, [isInDhaka, initialLocationChecked]);
+
+  // Persistence Effects
+  useEffect(() => {
+    localStorage.setItem('dhaka_commute_search_mode', searchMode);
+  }, [searchMode]);
+
+  useEffect(() => {
+    localStorage.setItem('dhaka_commute_input_value', inputValue);
+  }, [inputValue]);
+
+  useEffect(() => {
+    localStorage.setItem('dhaka_commute_search_query', searchQuery);
+  }, [searchQuery]);
+
+  useEffect(() => {
+    localStorage.setItem('dhaka_commute_from_station', fromStation);
+  }, [fromStation]);
+
+  useEffect(() => {
+    localStorage.setItem('dhaka_commute_to_station', toStation);
+  }, [toStation]);
+
+  useEffect(() => {
+    localStorage.setItem('dhaka_commute_fare_start', fareStart);
+  }, [fareStart]);
+
+  useEffect(() => {
+    localStorage.setItem('dhaka_commute_fare_end', fareEnd);
+  }, [fareEnd]);
+
+  useEffect(() => {
+    localStorage.setItem('dhaka_commute_primary_search', primarySearch);
+  }, [primarySearch]);
+
+  useEffect(() => {
+    localStorage.setItem('dhaka_commute_view', JSON.stringify(view));
+  }, [view]);
+
+  useEffect(() => {
+    localStorage.setItem('dhaka_commute_suggested_routes', JSON.stringify(suggestedRoutes));
+  }, [suggestedRoutes]);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
