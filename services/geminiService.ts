@@ -116,6 +116,309 @@ const AIRPORTS = {
   "Rajshahi": { name: "Shah Makhdum Airport", domestic: true, international: false }
 };
 
+// Complete tour plans for popular destinations
+const TOUR_PLANS: Record<string, { en: string; bn: string }> = {
+  "Cox's Bazar": {
+    en: `🏖️ **Complete Cox's Bazar Tour Plan (3 Days/2 Nights)**
+
+📅 **DAY 1: Arrival & Beach Exploration**
+🕐 Morning: Depart Dhaka (Night bus at 10 PM or early morning flight)
+🕐 Arrival: Check-in hotel (Book near Laboni/Sugandha Beach)
+🍽️ Lunch: Fresh seafood at beach restaurants (৳300-500)
+🌊 Afternoon: Laboni Beach, Marine Drive (world's longest sea drive 80km)
+🌅 Evening: Sunset at Laboni Point
+🍽️ Dinner: Hotel or beach-side BBQ
+**Accommodation:** Budget ৳1500-2500, Mid-range ৳3000-5000, Luxury ৳8000+
+
+📅 **DAY 2: Himchari & Inani Beach**
+🕐 Morning: Breakfast, hire CNG/car for day (৳2000-3000)
+🏞️ Visit: Himchari National Park, Waterfall
+🏖️ Inani Beach: Most beautiful beach, clear water, perfect for photos
+🍽️ Lunch: Local restaurants
+🌊 Optional: Paragliding at Inani (৳1500-2500)
+🌅 Return: Hotel, sunset at hotel beach
+🍽️ Dinner: Try dried fish, local curry
+
+📅 **DAY 3: Local Sightseeing & Departure**
+🕐 Morning: Visit Aggmeda Khyang (Buddhist Temple)
+🐟 Fishery Ghat: Watch boats, buy dried fish
+🛍️ Shopping: Burmese Market, seashells, pearls
+🍽️ Lunch: Hotel checkout
+🚌 Departure: Bus/Flight to Dhaka
+
+💰 **BUDGET BREAKDOWN (Per Person):**
+🚌 Transport: Bus ৳2000-2500, Flight ৳8000-12000
+🏨 Accommodation: ৳3000-10000 (2 nights)
+🍽️ Food: ৳1500-3000 (3 days)
+🚗 Local transport: ৳1000-2000
+🎯 Activities: ৳1000-3000
+**TOTAL: ৳8500-20000** (Budget to Comfortable)
+
+📝 **TIPS:**
+✅ Best season: Nov-March (avoid monsoon)
+✅ Book hotels in advance during peak season
+✅ Carry sunscreen, hats, swimwear
+✅ Don't swim during high tide warnings
+✅ Bargain at markets (30-40% off initial price)
+
+🎁 **BONUS:** Add Saint Martin (+2 days, +৳5000-8000)`,
+
+    bn: `🏖️ **সম্পূর্ণ কক্সবাজার ট্যুর প্ল্যান (৩ দিন/২ রাত)**
+
+📅 **১ম দিন: আগমন ও সৈকত ভ্রমণ**
+🕐 সকাল: ঢাকা থেকে出发 (রাত ১০টার বাস বা ভোরের ফ্লাইট)
+🕐 পৌঁছানো: হোটেল চেক-ইন (লাবনি/সুগন্ধা বিচের কাছে বুক করুন)
+🍽️ দুপুর: সমুদ্র সৈকতের রেস্তোরাঁয় তাজা সামুদ্রিক খাবার (৳৩০০-৫০০)
+🌊 বিকাল: লাবনি বিচ, মেরিন ড্রাইভ (বিশ্বের দীর্ঘতম সমুদ্র সড়ক ৮০ কিমি)
+🌅 সন্ধ্যা: লাবনি পয়েন্টে সূর্যাস্ত
+🍽️ রাতের খাবার: হোটেল বা বিচ-সাইড বারবিকিউ
+**থাকা:** বাজেট ৳১৫০০-২৫০০, মিড-রেঞ্জ ৳৩০০০-৫০০০, লাক্সারি ৳৮০০০+
+
+📅 **২য় দিন: হিমছড়ি ও ইনানী বিচ**
+🕐 সকাল: নাশতা, দিনের জন্য সিএনজি/গাড়ি ভাড়া (৳২০০০-৩০০০)
+🏞️ দর্শন: হিমছড়ি জাতীয় উদ্যান, ঝর্ণা
+🏖️ ইনানী বিচ: সবচেয়ে সুন্দর সৈকত, স্বচ্ছ পানি, ফটোর জন্য পারফেক্ট
+🍽️ দুপুর: স্থানীয় রেস্তোরাঁ
+🌊 অপশনাল: ইনানীতে প্যারাগ্লাইডিং (৳১৫০০-২৫০০)
+🌅 ফিরুন: হোটেল, হোটেল বিচে সূর্যাস্ত
+🍽️ রাতের খাবার: শুঁটকি, স্থানীয় তরকারি ট্রাই করুন
+
+📅 **৩য় দিন: স্থানীয় দর্শনীয় স্থান ও প্রস্থান**
+🕐 সকাল: আগমেডা খিয়াং (বৌদ্ধ মন্দির) পরিদর্শন
+🐟 ফিশারি ঘাট: নৌকা দেখুন, শুঁটকি কিনুন
+🛍️ কেনাকাটা: বার্মিজ মার্কেট, ঝিনুক, মুক্তা
+🍽️ দুপুর: হোটেল চেক-আউট
+🚌 প্রস্থান: ঢাকায় বাস/ফ্লাইট
+
+💰 **বাজেট ব্রেকডাউন (প্রতি ব্যক্তি):**
+🚌 যাতায়াত: বাস ৳২০০০-২৫০০, ফ্লাইট ৳৮০০০-১২০০০
+🏨 থাকা: ৳৩০০০-১০০০০ (২ রাত)
+🍽️ খাবার: ৳১৫০০-৩০০০ (৩ দিন)
+🚗 স্থানীয় যাতায়াত: ৳১০০০-২০০০
+🎯 কার্যক্রম: ৳১০০০-৩০০০
+**সর্বমোট: ৳৮৫০০-২০০০০** (বাজেট থেকে আরামদায়ক)
+
+📝 **টিপস:**
+✅ সেরা মৌসুম: নভেম্বর-মার্চ (বর্ষা এড়িয়ে চলুন)
+✅ পিক সিজনে আগে থেকে হোটেল বুক করুন
+✅ সানস্ক্রিন, টুপি, সাঁতারের পোশাক নিন
+✅ উচ্চ ঢেউয়ের সতর্কতার সময় সাঁতার কাটবেন না
+✅ বাজারে দরদাম করুন (প্রথম দামের ৩০-৪০% ছাড়)
+
+🎁 **বোনাস:** সেন্ট মার্টিন যোগ করুন (+২ দিন, +৳৫০০০-৮০০০)`
+  },
+
+  "Sylhet": {
+    en: `🍃 **Complete Sylhet Tour Plan (4 Days/3 Nights)**
+
+📅 **DAY 1: Arrival & Sylhet City**
+✈️ Morning: Flight to Sylhet (45 mins) or Night train
+🏨 Check-in: Hotel near Zindabazar/Amberkhana
+🍽️ Lunch: Try Shahi Egg, local cuisine
+🕌 Visit: Hazrat Shah Jalal Mazar, Keane Bridge
+🏞️ Tamabil Border (if time permits)
+🌅 Evening: Tea at Akhalia Tea Garden nearby
+**Accommodation:** ৳2000-5000
+
+📅 **DAY 2: Jaflong & Bichnakandi**
+🚗 Early morning: Hire car for the day (৳3000-4000)
+🏞️ Jaflong: Stone collection, Dawki River view, Zero Point
+⛰️ Bichnakandi: Must-visit! Hills & streams
+🍽️ Lunch: Local restaurants in Jaflong
+🛶 Optional: Boat ride in Piyain River
+🌅 Return: Sylhet city, riverside walk
+**Cost:** ৳1500-3000 (transport + food)
+
+📅 **DAY 3: Ratargul Swamp Forest**
+🌳 Morning: Ratargul (30km from Sylhet)
+🚣 Boat ride: Through the swamp forest (৳500-800)
+📸 Amazing photography spot! (Visit monsoon for best exp)
+🍽️ Lunch: Return to Sylhet
+🏛️ Visit: Lalakhal (Blue water), if time
+🌃 Evening: Shopping at Zindabazar, try street food
+
+📅 **DAY 4: Srimangal Tea Capital**
+🚂 Morning: Train/Bus to Srimangal (2-3 hours)
+🍃 Visit: Lawachara National Park (rare hoolock gibbons!)
+☕ Tea Garden Tour: Learn tea processing, fresh tea
+🏞️ Madhobpur Lake (if time)
+🍽️ Lunch: Seven-layer tea at Nilkantha Tea Cabin
+🚂 Return: Sylhet → Dhaka (evening train/bus)
+
+💰 **BUDGET (Per Person):**
+✈️ Transport: Flight ৳6000-10000, Train ৳600-1500
+🏨 Stay: ৳6000-15000 (3 nights)
+🍽️ Food: ৳2000-4000
+🚗 Local: ৳2000-4000
+**TOTAL: ৳16000-35000**
+
+📝 **TIPS:**
+✅ Visit Ratargul in monsoon (Jun-Oct) for water
+✅ Book Lawachara guide (৳300-500)
+✅ Try 7-layer tea, pineapple, orange juice
+✅ Bargain at stone markets in Jaflong`,
+
+    bn: `🍃 **সম্পূর্ণ সিলেট ট্যুর প্ল্যান (৪ দিন/৩ রাত)**
+
+📅 **১ম দিন: আগমন ও সিলেট শহর**
+✈️ সকাল: সিলেটে ফ্লাইট (৪৫ মিনিট) বা রাতের ট্রেন
+🏨 চেক-ইন: জিন্দাবাজার/আম্বরখানার কাছে হোটেল
+🍽️ দুপুর: শাহী ডিম, স্থানীয় খাবার ট্রাই করুন
+🕌 দর্শন: হযরত শাহ জালাল মাজার, কিন ব্রিজ
+🏞️ তামাবিল বর্ডার (সময় থাকলে)
+🌅 সন্ধ্যা: কাছের আখালিয়া চা বাগানে চা
+**থাকা:** ৳২০০০-৫০০০
+
+📅 **২য় দিন: জাফলং ও বিছনাকান্দি**
+🚗 ভোর: দিনের জন্য গাড়ি ভাড়া (৳৩০০০-৪০০০)
+🏞️ জাফলং: পাথর সংগ্রহ, ডাউকি নদীর দৃশ্য, জিরো পয়েন্ট
+⛰️ বিছনাকান্দি: অবশ্যই যেতে হবে! পাহাড় ও স্রোতধারা
+🍽️ দুপুর: জাফলংয়ের স্থানীয় রেস্তোরাঁ
+🛶 অপশনাল: পিয়াইন নদীতে নৌকা ভ্রমণ
+🌅 ফিরুন: সিলেট শহর, নদীর ধারে হাঁটা
+**খরচ:** ৳১৫০০-৩০০০ (যাতায়াত + খাবার)
+
+📅 **৩য় দিন: রাতারগুল জলাবন**
+🌳 সকাল: রাতারগুল (সিলেট থেকে ৩০ কিমি)
+🚣 নৌকা ভ্রমণ: জলাবনের মধ্য দিয়ে (৳৫০০-৮০০)
+📸 দুর্দান্ত ফটোগ্রাফি স্পট! (সেরা অভিজ্ঞতার জন্য বর্ষায় যান)
+🍽️ দুপুর: সিলেটে ফিরুন
+🏛️ দর্শন: লালাখাল (নীল পানি), সময় থাকলে
+🌃 সন্ধ্যা: জিন্দাবাজারে কেনাকাটা, রাস্তার খাবার ট্রাই করুন
+
+📅 **৪র্থ দিন: শ্রীমঙ্গল চা রাজধানী**
+🚂 সকাল: শ্রীমঙ্গলে ট্রেন/বাস (২-৩ ঘন্টা)
+🍃 দর্শন: লাউয়াছড়া জাতীয় উদ্যান (বিরল হুলক গিবন!)
+☕ চা বাগান ট্যুর: চা প্রক্রিয়াকরণ শিখুন, তাজা চা
+🏞️ মাধবপুর লেক (সময় থাকলে)
+🍽️ দুপুর: নীলকণ্ঠ চা কেবিনে সাত স্তরের চা
+🚂 ফিরুন: সিলেট → ঢাকা (সন্ধ্যার ট্রেন/বাস)
+
+💰 **বাজেট (প্রতি ব্যক্তি):**
+✈️ যাতায়াত: ফ্লাইট ৳৬০০০-১০০০০, ট্রেন ৳৬০০-১৫০০
+🏨 থাকা: ৳৬০০০-১৫০০০ (৩ রাত)
+🍽️ খাবার: ৳২০০০-৪০০০
+🚗 স্থানীয়: ৳২০০০-৪০০০
+**সর্বমোট: ৳১৬০০০-৩৫০০০**
+
+📝 **টিপস:**
+✅ পানির জন্য বর্ষায় (জুন-অক্টোবর) রাতারগুল যান
+✅ লাউয়াছড়া গাইড বুক করুন (৳৩০০-৫০০)
+✅ ৭ স্তরের চা, আনারস, কমলার রস ট্রাই করুন
+✅ জাফলংয়ের পাথরের বাজারে দরদাম করুন`
+  },
+
+  "Bandarban": {
+    en: `⛰️ **Complete Bandarban Adventure Plan (3-4 Days)**
+
+📅 **DAY 1: Arrival & Nilgiri**
+🚌 Night bus from Dhaka (arrive morning)
+🏨 Check-in: Hotel in Bandarban town
+🍽️ Breakfast: Try tribal bamboo chicken
+🚗 Hire jeep/chander gari for Nilgiri (৳4000-6000 round trip)
+⛰️ Nilgiri: Highest peak tour spot, cloud touching!
+☁️ Walk on sky bridge, military check post
+🌅 Sunset view (if weather permits)
+🏨 Stay: Nilgiri resort or return to Bandarban
+**Permit:** Required, arranged by driver
+
+📅 **DAY 2: Thanchi & Remakri Waterfall**
+🚙 Very early start (5 AM)
+🏞️ Drive to Thanchi (4-5 hours, adventurous road!)
+💦 Remakri/Nafakum Waterfall: Trek 30 mins
+🏊 Swimming in natural pool (bring swimwear!)
+🍽️ Packed lunch (no restaurants)
+🌄 Return: Long journey back
+**Cost:** Jeep ৳8000-12000, Permit ৳500
+**Note:** Need army permission for Thanchi!
+
+📅 **DAY 3: Shoilo Propat & Golden Temple**
+🌄 Morning: Shoilo Propat (waterfall) - easy access
+🏔️ Chimbuk: 2nd highest peak, beautiful view
+🛕 Buddha Dhatu Jadi (Golden Temple): Must-visit!
+🏞️ Meghla: Tourist complex, hanging bridge
+🛍️ Shopping: Tribal handicrafts, traditional wear
+🍽️ Try: Bamboo chicken, rice wine (check legality)
+
+📅 **DAY 4: Departure** (Optional)
+🌅 Sunrise from hotel
+🏞️ Quick visit: Sangu River
+🚌 Return to Dhaka/Chattogram
+
+💰 **BUDGET (Per Person):**
+🚌 Transport: ৳1600-3000
+🏨 Stay: ৳1500-4000/night
+🍽️ Food: ৳1500-2500
+🚗 Local jeep/CNG: ৳3000-6000
+📋 Permits: ৳500-1000
+**TOTAL: ৳12000-25000**
+
+⚠️ **IMPORTANT:**
+🔐 Keep original NID/Passport for permits
+👮 Army checkpoints - be cooperative
+🥾 Wear trekking shoes, carry water
+📵 Limited network in remote areas
+🚫 Some areas restricted (Ruma, deep Thanchi)
+
+📝 **BEST TIME:** Oct-March (avoid monsoon)`,
+
+    bn: `⛰️ **সম্পূর্ণ বান্দরবান অ্যাডভেঞ্চার প্ল্যান (৩-৪ দিন)**
+
+📅 **১ম দিন: আগমন ও নীলগিরি**
+🚌 ঢাকা থেকে রাতের বাস (সকালে পৌঁছান)
+🏨 চেক-ইন: বান্দরবান শহরে হোটেল
+🍽️ নাশতা: ট্রাইবাল বাঁশের মুরগি ট্রাই করুন
+🚗 নীলগিরির জন্য জিপ/চাঁদের গাড়ি ভাড়া (৳৪০০০-৬০০০ রাউন্ড ট্রিপ)
+⛰️ নীলগিরি: সর্বোচ্চ শিখর ট্যুর স্পট, মেঘ ছোঁয়া!
+☁️ স্কাই ব্রিজে হাঁটুন, সামরিক চেক পোস্ট
+🌅 সূর্যাস্তের দৃশ্য (আবহাওয়া অনুমতি দিলে)
+🏨 থাকুন: নীলগিরি রিসোর্ট বা বান্দরবানে ফিরুন
+**পারমিট:** প্রয়োজন, ড্রাইভার দ্বারা ব্যবস্থা করা হবে
+
+📅 **২য় দিন: থানচি ও রেমাক্রি ঝর্ণা**
+🚙 খুব ভোরে শুরু (সকাল ৫টা)
+🏞️ থানচিতে ড্রাইভ (৪-৫ ঘন্টা, রোমাঞ্চকর রাস্তা!)
+💦 রেমাক্রি/নাফাকুম ঝর্ণা: ৩০ মিনিট ট্রেক
+🏊 প্রাকৃতিক পুলে সাঁতার (সাঁতারের পোশাক আনুন!)
+🍽️ প্যাকড লাঞ্চ (কোন রেস্তোরাঁ নেই)
+🌄 ফিরুন: দীর্ঘ যাত্রা ফিরে
+**খরচ:** জিপ ৳৮০০০-১২০০০, পারমিট ৳৫০০
+**নোট:** থানচির জন্য সেনা অনুমতি প্রয়োজন!
+
+📅 **৩য় দিন: শৈলপ্রপাত ও গোল্ডেন টেম্পল**
+🌄 সকাল: শৈলপ্রপাত (ঝর্ণা) - সহজ অ্যাক্সেস
+🏔️ চিম্বুক: ২য় সর্বোচ্চ শিখর, সুন্দর দৃশ্য
+🛕 বুদ্ধ ধাতু জাদি (গোল্ডেন টেম্পল): অবশ্যই দেখতে হবে!
+🏞️ মেঘলা: পর্যটন কমপ্লেক্স, ঝুলন্ত সেতু
+🛍️ কেনাকাটা: উপজাতীয় হস্তশিল্প, ঐতিহ্যবাহী পোশাক
+🍽️ ট্রাই করুন: বাঁশের মুরগি, রাইস ওয়াইন (আইনি কিনা চেক করুন)
+
+📅 **৪র্থ দিন: প্রস্থান** (ঐচ্ছিক)
+🌅 হোটেল থেকে সূর্যোদয়
+🏞️ দ্রুত ভিজিট: সাঙ্গু নদী
+🚌 ঢাকা/চট্টগ্রামে ফিরুন
+
+💰 **বাজেট (প্রতি ব্যক্তি):**
+🚌 যাতায়াত: ৳১৬০০-৩০০০
+🏨 থাকা: ৳১৫০০-৪০০০/রাত
+🍽️ খাবার: ৳১৫০০-২৫০০
+🚗 স্থানীয় জিপ/সিএনজি: ৳৩০০০-৬০০০
+📋 পারমিট: ৳৫০০-১০০০
+**সর্বমোট: ৳১২০০০-২৫০০০**
+
+⚠️ **গুরুত্বপূর্ণ:**
+🔐 পারমিটের জন্য মূল NID/পাসপোর্ট রাখুন
+👮 সেনা চেকপয়েন্ট - সহযোগিতা করুন
+🥾 ট্রেকিং জুতা পরুন, পানি বহন করুন
+📵 দূরবর্তী এলাকায় সীমিত নেটওয়ার্ক
+🚫 কিছু এলাকা নিষিদ্ধ (রুমা, গভীর থানচি)
+
+📝 **সেরা সময়:** অক্টোবর-মার্চ (বর্ষা এড়িয়ে চলুন)`
+  }
+};
+
+
+
 // --- HELPER FUNCTIONS ---
 
 // Normalize text for search
@@ -266,6 +569,71 @@ const findTouristInfo = (query: string): string => {
   return "";
 };
 
+// Helper to detect destination from query and offer tour plan
+const detectDestinationAndOfferPlan = (query: string): { destination: string | null; offerMessage: string } => {
+  const lowerQuery = normalize(query);
+  const isBn = /[\u0980-\u09FF]/.test(query);
+
+  for (const [key, destination] of Object.entries(TOURIST_DESTINATIONS)) {
+    if (lowerQuery.includes(normalize(key)) ||
+      (destination.bn && lowerQuery.includes(normalize(destination.bn)))) {
+
+      if (lowerQuery.includes("how") || lowerQuery.includes("jabo") || lowerQuery.includes("kivabe") ||
+        lowerQuery.includes("যাব") || lowerQuery.includes("কিভাবে") || lowerQuery.includes("যেতে")) {
+
+        const offerMsg = isBn
+          ? `\n\n💡 **আরও সাহায্য চান?**\nআমি আপনার জন্য ${destination.bn} এর একটি **সম্পূর্ণ ট্যুর প্ল্যান** তৈরি করতে পারি - দিন-অনুযায়ী পরিকল্পনা, বাজেট, থাকার জায়গা এবং টিপস সহ!\n\n✨ **বলুন "হ্যাঁ", "নিশ্চিত", "ঠিক আছে" বা "প্ল্যান দিন"** এবং আমি আপনার জন্য বিস্তারিত প্ল্যান তৈরি করে দেব! 🗺️`
+          : `\n\n💡 **Want more help?**\nI can create a **complete tour plan** for your ${key} trip - with day-by-day itinerary, budget breakdown, accommodation suggestions, and insider tips!\n\n✨ **Just say "yes", "sure", "okay", or "give me the plan"** and I'll prepare a detailed plan for you! 🗺️`;
+
+        return { destination: key, offerMessage: offerMsg };
+      }
+    }
+  }
+
+  return { destination: null, offerMessage: "" };
+};
+
+const isAffirmativeResponse = (query: string, chatHistory: ChatMessage[]): { isAffirm: boolean; requestedDestination: string | null } => {
+  const lowerQuery = normalize(query);
+
+  const affirmatives = [
+    'yes', 'yeah', 'yep', 'sure', 'ok', 'okay', 'perfect', 'fine', 'good',
+    'great', 'awesome', 'please', 'give', 'plan', 'show', 'want',
+    'হ্যাঁ', 'হা', 'ঠিক', 'আছে', 'পারফেক্ট', 'দিন', 'প্ল্যান', 'চাই', 'দেখান', 'নিশ্চিত'
+  ];
+
+  const isAffirm = affirmatives.some(keyword => lowerQuery.includes(keyword)) &&
+    lowerQuery.split(' ').length <= 5;
+
+  if (!isAffirm) return { isAffirm: false, requestedDestination: null };
+
+  if (chatHistory.length >= 2) {
+    const lastAssistantMessage = chatHistory[chatHistory.length - 2];
+
+    if (lastAssistantMessage && lastAssistantMessage.role === 'assistant') {
+      const lastMsg = lastAssistantMessage.text;
+
+      if (lastMsg.includes("complete tour plan") || lastMsg.includes("সম্পূর্ণ ট্যুর প্ল্যান")) {
+        for (const [key, destination] of Object.entries(TOURIST_DESTINATIONS)) {
+          if (lastMsg.includes(key) || (destination.bn && lastMsg.includes(destination.bn))) {
+            return { isAffirm: true, requestedDestination: key };
+          }
+        }
+      }
+    }
+  }
+
+  return { isAffirm, requestedDestination: null };
+};
+
+const getTourPlan = (destination: string, isBn: boolean): string => {
+  const plan = TOUR_PLANS[destination];
+  if (!plan) return "";
+
+  return isBn ? plan.bn : plan.en;
+};
+
+
 // Check for launch/ferry queries
 const findLaunchInfo = (query: string): string => {
   const lowerQuery = normalize(query);
@@ -390,6 +758,16 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
       `🎟️ **টিকিট মূল্য:** বড় ৫০ টাকা, ছোট ২৫ টাকা (৫ বছরের কম ফ্রি)।`;
   }
 
+  // 0. Check if user is responding affirmatively to a tour plan offer
+  const { isAffirm, requestedDestination } = isAffirmativeResponse(query, chatHistory);
+  if (isAffirm && requestedDestination) {
+    const isBn = /[\u0980-\u09FF]/.test(query);
+    const plan = getTourPlan(requestedDestination, isBn);
+    if (plan) {
+      return plan;
+    }
+  }
+
   // 0. Greeting / General
   if (lowerQuery.match(/^(hi|hello|hey|salam|help|হাই|হেলো|সাহায্য)/)) {
     const isBn = /[\u0980-\u09FF]/.test(query);
@@ -400,7 +778,15 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
 
   // Priority checks for specific info types
   const touristInfo = findTouristInfo(query);
-  if (touristInfo) responseParts.push(touristInfo);
+  if (touristInfo) {
+    responseParts.push(touristInfo);
+
+    // Check if we should offer a tour plan
+    const { destination, offerMessage } = detectDestinationAndOfferPlan(query);
+    if (destination && offerMessage) {
+      responseParts.push(offerMessage);
+    }
+  }
 
   const launchInfo = findLaunchInfo(query);
   if (launchInfo) responseParts.push(launchInfo);
