@@ -15,6 +15,19 @@ const MAJOR_LOCATIONS = [
   "Narsingdi", "Bandarban", "Rangamati", "Khagrachari", "Panchagarh", "Thakurgaon"
 ];
 
+const MAJOR_LOCATIONS_BN: Record<string, string> = {
+  "Dhaka": "ঢাকা", "Chattogram": "চট্টগ্রাম", "Sylhet": "সিলেট", "Rajshahi": "রাজশাহী",
+  "Khulna": "খুলনা", "Barishal": "বরিশাল", "Rangpur": "রংপুর", "Mymensingh": "ময়মনসিংহ",
+  "Cox's Bazar": "কক্সবাজার", "Cumilla": "কুমিল্লা", "Feni": "ফেনী", "Bogura": "বগুড়া",
+  "Jashore": "যশোর", "Benapole": "বেনাপোল", "Kushtia": "কুষ্টিয়া", "Satkhira": "সাতক্ষীরা",
+  "Dinajpur": "দিনাজপুর", "Pabna": "পাবনা", "Faridpur": "ফরিদপুর", "Noakhali": "নোয়াখালী",
+  "Chandpur": "চাঁদপুর", "Brahmanbaria": "ব্রাহ্মণবাড়িয়া", "Natore": "নাটোর",
+  "Tangail": "টাঙ্গাইল", "Sirajganj": "সিরাজগঞ্জ", "Naogaon": "নওগাঁ",
+  "Chapainawabganj": "চাঁপাইনবাবগঞ্জ", "Gazipur": "গাজীপুর", "Narayanganj": "নারায়ণগঞ্জ",
+  "Narsingdi": "নরসিংদী", "Bandarban": "বান্দরবান", "Rangamati": "রাঙ্গামাটি",
+  "Khagrachari": "খাগড়াছড়ি", "Panchagarh": "পঞ্চগড়", "Thakurgaon": "ঠাকুরগাঁও"
+};
+
 const TRAIN_ROUTES = [
   { from: "Dhaka", to: "Chattogram", trains: ["Subarna Express", "Sonar Bangla Express", "Turna Express", "Mohanagar Goduli", "Chattala Express"] },
   { from: "Dhaka", to: "Sylhet", trains: ["Upaban Express", "Jayantika Express", "Kalni Express", "Parabat Express", "Surma Mail"] },
@@ -34,16 +47,29 @@ const TRAIN_ROUTES = [
 // --- HELPER FUNCTIONS ---
 
 // Normalize text for search
-const normalize = (text: string) => text.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
+const normalize = (text: string) => text.toLowerCase().replace(/[^\w\s\u0980-\u09FF]/g, '').trim();
 
 const findBusRoute = (start: string, end: string): string => {
   const s = normalize(start);
   const e = normalize(end);
 
   const foundBuses = BUS_DATA.filter(bus => {
-    const stops = bus.stops.map(st => normalize(st));
-    const startIdx = stops.findIndex(stop => stop.includes(s) || s.includes(stop));
-    const endIdx = stops.findIndex(stop => stop.includes(e) || e.includes(stop));
+    const stops = bus.stops.map(st => {
+      const station = STATIONS[st];
+      return {
+        en: normalize(station?.name || st),
+        bn: normalize(station?.bnName || '')
+      };
+    });
+
+    const startIdx = stops.findIndex(stop =>
+      stop.en.includes(s) || s.includes(stop.en) ||
+      (stop.bn && (stop.bn.includes(s) || s.includes(stop.bn)))
+    );
+    const endIdx = stops.findIndex(stop =>
+      stop.en.includes(e) || e.includes(stop.en) ||
+      (stop.bn && (stop.bn.includes(e) || e.includes(stop.bn)))
+    );
     return startIdx !== -1 && endIdx !== -1;
   });
 
@@ -53,44 +79,57 @@ const findBusRoute = (start: string, end: string): string => {
   return `🚌 **Bus Route:** You can take **${busNames}** to go from ${start} to ${end}.`;
 };
 
-const findMetroRoute = (query: string): string => {
+const findMetroRoute = (query: string, isBn: boolean): string => {
   const lowerQuery = normalize(query);
   const stations = Object.values(METRO_STATIONS || {}) as any[]; // Assuming structure
 
   // If constants.ts structure is different, we fallback to hardcoded list for safety
   const MRT_STATIONS = [
-    "Uttara North", "Uttara Center", "Uttara South", "Pallabi", "Mirpur 11", "Mirpur 10",
-    "Kazipara", "Shewrapara", "Agargaon", "Bijoy Sarani", "Farmgate", "Karwan Bazar",
-    "Shahbag", "Dhaka University", "Secretariat", "Motijheel"
+    { en: "Uttara North", bn: "উত্তরা উত্তর" }, { en: "Uttara Center", bn: "উত্তরা সেন্টার" },
+    { en: "Uttara South", bn: "উত্তরা দক্ষিণ" }, { en: "Pallabi", bn: "পল্লবী" },
+    { en: "Mirpur 11", bn: "মিরপুর ১১" }, { en: "Mirpur 10", bn: "মিরপুর ১০" },
+    { en: "Kazipara", bn: "কাজীপাড়া" }, { en: "Shewrapara", bn: "শেওড়াপাড়া" },
+    { en: "Agargaon", bn: "আগারগাঁও" }, { en: "Bijoy Sarani", bn: "বিজয় সরণি" },
+    { en: "Farmgate", bn: "ফার্মগেট" }, { en: "Karwan Bazar", bn: "কাওরান বাজার" },
+    { en: "Shahbag", bn: "শাহবাগ" }, { en: "Dhaka University", bn: "ঢাকা বিশ্ববিদ্যালয়" },
+    { en: "Secretariat", bn: "সচিবালয়" }, { en: "Motijheel", bn: "মতিঝিল" }
   ];
 
-  const foundStations = MRT_STATIONS.filter(st => lowerQuery.includes(normalize(st)));
+  const foundStations = MRT_STATIONS.filter(st =>
+    lowerQuery.includes(normalize(st.en)) || lowerQuery.includes(normalize(st.bn))
+  );
 
   if (foundStations.length >= 2) {
-    const s1 = foundStations[0];
-    const s2 = foundStations[1];
-    return `🚇 **Metro Rail:** Yes, you can travel between **${s1}** and **${s2}** using MRT Line 6. Timing: 7:10 AM - 8:40 PM (Friday Closed).`;
+    const s1 = isBn ? foundStations[0].bn : foundStations[0].en;
+    const s2 = isBn ? foundStations[1].bn : foundStations[1].en;
+    return isBn
+      ? `🚇 **মেট্রোরেল:** হ্যাঁ, আপনি MRT Line 6 ব্যবহার করে **${s1}** এবং **${s2}** এর মধ্যে যাতায়াত করতে পারেন। সময়: সকাল ৭:১০ - রাত ৮:৪০ (শুক্রবার বন্ধ)।`
+      : `🚇 **Metro Rail:** Yes, you can travel between **${s1}** and **${s2}** using MRT Line 6. Timing: 7:10 AM - 8:40 PM (Friday Closed).`;
   }
 
-  return `🚇 **Metro Rail (MRT Line 6):** Runs from Uttara North to Motijheel.\n\n**Stations:** ${MRT_STATIONS.join(", ")}.\n**Timing:** 7:10 AM - 8:40 PM.`;
+  const stationList = isBn ? MRT_STATIONS.map(s => s.bn).join(", ") : MRT_STATIONS.map(s => s.en).join(", ");
+  return isBn
+    ? `🚇 **মেট্রোরেল (MRT Line 6):** উত্তরা উত্তর থেকে মতিঝিল পর্যন্ত চলাচল করে।\n\n**স্টেশনসমূহ:** ${stationList}.\n**সময়:** সকাল ৭:১০ - রাত ৮:৪০।`
+    : `🚇 **Metro Rail (MRT Line 6):** Runs from Uttara North to Motijheel.\n\n**Stations:** ${stationList}.\n**Timing:** 7:10 AM - 8:40 PM.`;
 };
 
 const findIntercityRoute = (query: string): string => {
   const lowerQuery = normalize(query);
+  const isBn = /[\u0980-\u09FF]/.test(query);
 
-  // Find mention of districts
-  // We sort by length desc to match "Cox's Bazar" before "Cox" if needed, though normalize handles it
-  const foundDistricts = MAJOR_LOCATIONS.filter(d => lowerQuery.includes(normalize(d)));
+  const foundDistricts = MAJOR_LOCATIONS.filter(d => {
+    const enMatch = lowerQuery.includes(normalize(d));
+    const bnMatch = MAJOR_LOCATIONS_BN[d] && lowerQuery.includes(normalize(MAJOR_LOCATIONS_BN[d]));
+    return enMatch || bnMatch;
+  });
 
-  // Remove duplicates (e.g. if query has "Dhaka to Dhaka")
   const uniqueDistricts = [...new Set(foundDistricts)];
 
   if (uniqueDistricts.length >= 2) {
     const from = uniqueDistricts[0];
     const to = uniqueDistricts[1];
 
-    // Delegate to the robust Intercity Service
-    const routeData = getOfflineIntercityData(from, to, 'en');
+    const routeData = getOfflineIntercityData(from, to, isBn ? 'bn' : 'en');
     return routeData.result;
   }
 
@@ -128,7 +167,10 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
     lowerQuery.includes("banijyo mela") ||
     lowerQuery.includes("purbachal fair") ||
     lowerQuery.includes("mela jabo") ||
-    lowerQuery.includes("mela fare");
+    lowerQuery.includes("mela fare") ||
+    lowerQuery.includes("বাণিজ্য মেলা") ||
+    lowerQuery.includes("বাণিজ্যমেলা") ||
+    lowerQuery.includes("ট্রেড ফেয়ার");
 
   if (isTradeFairQuery) {
     return `🎡 **ঢাকা আন্তর্জাতিক বাণিজ্য মেলা যাবেন? কই যাবো থাকলেই চিন্তা নাই!** 🎡\n\n` +
@@ -155,18 +197,20 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   if (lowerQuery.includes(" to ") || lowerQuery.includes(" from ")) {
     // Extract potential locations?
     // Since we don't have NLP, we iterate known stations
-    const stationNames = Object.values(STATIONS).map(s => s.name);
-    const foundStations = stationNames.filter(name => lowerQuery.includes(normalize(name)));
+    const mentionedStations = Object.values(STATIONS).filter(s =>
+      lowerQuery.includes(normalize(s.name)) || (s.bnName && lowerQuery.includes(normalize(s.bnName)))
+    );
 
-    if (foundStations.length >= 2) {
-      const busRes = findBusRoute(foundStations[0], foundStations[1]);
+    if (mentionedStations.length >= 2) {
+      const busRes = findBusRoute(mentionedStations[0].name, mentionedStations[1].name);
       if (busRes) responseParts.push(busRes);
     }
   }
 
   // 2. Check Metro
-  if (lowerQuery.includes("metro") || lowerQuery.includes("mrt") || lowerQuery.includes("rail")) {
-    const metroRes = findMetroRoute(query);
+  if (lowerQuery.includes("metro") || lowerQuery.includes("mrt") || lowerQuery.includes("rail") || lowerQuery.includes("মেট্রো")) {
+    const isBnUser = /[\u0980-\u09FF]/.test(query);
+    const metroRes = findMetroRoute(query, isBnUser);
     if (metroRes) responseParts.push(metroRes);
   }
 
@@ -176,12 +220,20 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
 
   // 4. Check Intercity
   // Check against our comprehensive list
-  const isIntercityQuery = MAJOR_LOCATIONS.some(loc => lowerQuery.includes(normalize(loc))) ||
+  const isIntercityQuery = MAJOR_LOCATIONS.some(loc => {
+    const enMatch = lowerQuery.includes(normalize(loc));
+    const bnMatch = MAJOR_LOCATIONS_BN[loc] && lowerQuery.includes(normalize(MAJOR_LOCATIONS_BN[loc]));
+    return enMatch || bnMatch;
+  }) ||
     lowerQuery.includes("train") ||
     lowerQuery.includes("flight") ||
     lowerQuery.includes("air") ||
     lowerQuery.includes("launch") ||
-    lowerQuery.includes("intercity");
+    lowerQuery.includes("intercity") ||
+    lowerQuery.includes("ট্রেন") ||
+    lowerQuery.includes("বিমান") ||
+    lowerQuery.includes("লঞ্চ") ||
+    lowerQuery.includes("বাস");
 
   if (isIntercityQuery) {
     const intercityRes = findIntercityRoute(query);
@@ -191,44 +243,55 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   // Fallback if no specific match but query exists
   if (responseParts.length === 0) {
     // Try to find ANY station mentioned
-    const stationNames = Object.values(STATIONS).map(s => s.name);
-    const mentionedStations = stationNames.filter(name => lowerQuery.includes(normalize(name)));
+    const mentionedStations = Object.values(STATIONS).filter(s =>
+      lowerQuery.includes(normalize(s.name)) || (s.bnName && lowerQuery.includes(normalize(s.bnName)))
+    );
 
     if (mentionedStations.length > 0) {
       // Logic to detect "How to go" intent
-      const isNavIntent = lowerQuery.match(/(jabo|kivabe|jawa|go to|reach|direction|jite|kemne|route)/);
+      const isNavIntent = lowerQuery.match(/(jabo|kivabe|jawa|go to|reach|direction|jite|kemne|route|যাব|কিভাবে|জাব|কেমনে|path|পথ)/);
       const targetStation = mentionedStations[0];
+      const isBn = /[\u0980-\u09FF]/.test(query);
 
-      responseParts.push(`📍 **Locations Found:** I see you mentioned **${targetStation}**.`);
+      const displayName = isBn && targetStation.bnName ? targetStation.bnName : targetStation.name;
+      responseParts.push(isBn ? `📍 **লোকেশন পাওয়া গেছে:** আপনি **${displayName}** এর কথা বলছেন।` : `📍 **Locations Found:** I see you mentioned **${displayName}**.`);
 
       if (isNavIntent) {
         // Assume user wants to GO TO this station
-        const busesToTarget = BUS_DATA.filter(b => b.stops.some(s => normalize(s).includes(normalize(targetStation))));
+        const busesToTarget = BUS_DATA.filter(b => b.stops.some(s => s === targetStation.id || s === targetStation.name.toLowerCase()));
 
         if (busesToTarget.length > 0) {
-          responseParts.push(`🚌 **To reach ${targetStation}:**\nYou can take these buses from various locations:\n`);
+          responseParts.push(isBn ? `🚌 **${displayName} পৌঁছাতে:**\nআপনি এই বাসগুলো ব্যবহার করতে পারেন:\n` : `🚌 **To reach ${displayName}:**\nYou can take these buses from various locations:\n`);
 
           // Show distinct routes (max 5)
           busesToTarget.slice(0, 5).forEach(bus => {
-            const start = bus.stops[0];
-            const end = bus.stops[bus.stops.length - 1];
-            responseParts.push(`- **${bus.name}**: Runs between ${bus.routeString}`);
+            const busDisplayName = isBn && bus.bnName ? bus.bnName : bus.name;
+            responseParts.push(`- **${busDisplayName}**: ${bus.routeString}`);
           });
 
-          responseParts.push(`\n❓ **Tip:** To get a specific route, tell me your starting point! (e.g. "From Mirpur to ${targetStation}")`);
+          responseParts.push(isBn ? `\n❓ **টিপ:** নির্দিষ্ট রুটের জন্য আপনার শুরুর স্থান বলুন! (যেমন: "মিরপুর থেকে ${displayName}")` : `\n❓ **Tip:** To get a specific route, tell me your starting point! (e.g. "From Mirpur to ${displayName}")`);
         } else {
-          responseParts.push(`⚠️ I know where **${targetStation}** is, but I can't find direct local buses in my current database. Try finding a connection via a major hub like Farmgate or Mohakhali.`);
+          responseParts.push(isBn
+            ? `⚠️ আমি জানি **${displayName}** কোথায়, কিন্তু আমার কাছে এই মূহূর্তে সরাসরি লোকাল বাসের তথ্য নেই। ফার্মগেট বা মহাখালীর মতো বড় হাব হয়ে চেষ্টা করুন।`
+            : `⚠️ I know where **${displayName}** is, but I can't find direct local buses in my current database. Try finding a connection via a major hub like Farmgate or Mohakhali.`);
         }
 
       } else {
         // Original logic: Just list buses passing
-        const busPassEx = BUS_DATA.filter(b => b.stops.some(s => normalize(s).includes(normalize(targetStation)))).slice(0, 3).map(b => b.name);
+        const busPassEx = BUS_DATA.filter(b => b.stops.some(s => {
+          const station = STATIONS[s];
+          return normalize(station?.name || s).includes(normalize(targetStation.name)) ||
+            (station?.bnName && targetStation.bnName && normalize(station.bnName).includes(normalize(targetStation.bnName)));
+        })).slice(0, 3).map(b => (isBn && b.bnName ? b.bnName : b.name));
         if (busPassEx.length > 0) {
-          responseParts.push(`🚌 **Buses passing here:** ${busPassEx.join(", ")}...`);
+          responseParts.push(isBn ? `🚌 **এখান দিয়ে চলাচলকারী বাসসমূহ:** ${busPassEx.join(", ")}...` : `🚌 **Buses passing here:** ${busPassEx.join(", ")}...`);
         }
       }
     } else {
-      return "🤔 I couldn't understand that location. Please try mentioning specific stations like 'Farmgate', 'Mirpur', 'Gulshan' or district names for intercity travel.";
+      const isBnFinal = /[\u0980-\u09FF]/.test(query);
+      return isBnFinal
+        ? "🤔 আমি আপনার উল্লেখিত স্থানটি বুঝতে পারছি না। দয়া করে নির্দিষ্ট স্টেশনের নাম (যেমন: ‘ফার্মগেট’, ‘মিরপুর’, ‘গুলশান’) অথবা আন্তঃজেলা ভ্রমণের জন্য জেলার নাম উল্লেখ করুন।"
+        : "🤔 I couldn't understand that location. Please try mentioning specific stations like 'Farmgate', 'Mirpur', 'Gulshan' or district names for intercity travel.";
     }
   }
 
