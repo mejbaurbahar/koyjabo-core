@@ -508,9 +508,22 @@ const findIntercityRoute = (query: string): string => {
     return routeData.result;
   }
 
+  // Handle single location mention with navigation intent
+  if (uniqueDistricts.length === 1) {
+    const isNavIntent = lowerQuery.match(/(jabo|kivabe|jawa|go|reach|direction|jite|kemne|route|যাব|কিভাবে|জাব|কেমনে|পথ|how|ticket|fare|বাস|ট্রেন)/);
+    if (isNavIntent) {
+      const to = uniqueDistricts[0];
+      const from = to === "Dhaka" ? "Chattogram" : "Dhaka"; // Default from Dhaka unless asking about Dhaka
+      const routeData = getOfflineIntercityData(from, to, isBn ? 'bn' : 'en');
+      return routeData.result;
+    }
+  }
+
   // General Intercity Info
   if (lowerQuery.includes("train") || lowerQuery.includes("intercity") || lowerQuery.includes("flight") || lowerQuery.includes("plane")) {
-    return "🚂 **Intercity Info:** I can help you with **Train**, **Bus**, **Flight**, and **Launch** routes for all 64 districts! Just tell me where you want to go (e.g., 'Dhaka to Barishal' or 'Flight to Cox's Bazar').";
+    return isBn
+      ? "🚂 **আন্তঃজেলা তথ্য:** আমি আপনাকে ৬৪টি জেলার **ট্রেন**, **বাস**, **বিমান** এবং **লঞ্চ** রুট খুঁজে পেতে সাহায্য করতে পারি! শুধু বলুন আপনি কোথায় যেতে চান (যেমন: 'ঢাকা থেকে বরিশাল' বা 'কক্সবাজার যাওয়ার বিমান রুট')।"
+      : "🚂 **Intercity Info:** I can help you with **Train**, **Bus**, **Flight**, and **Launch** routes for all 64 districts! Just tell me where you want to go (e.g., 'Dhaka to Barishal' or 'Flight to Cox's Bazar').";
   }
 
   return "";
@@ -889,7 +902,22 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
         }
       }
     } else {
+      // Check if it's an intercity location we recognize
+      const mentionedIntercity = MAJOR_LOCATIONS.find(loc => {
+        const enMatch = lowerQuery.includes(normalize(loc));
+        const bnMatch = MAJOR_LOCATIONS_BN[loc] && lowerQuery.includes(normalize(MAJOR_LOCATIONS_BN[loc]));
+        return enMatch || bnMatch;
+      });
+
       const isBnFinal = /[\u0980-\u09FF]/.test(query);
+
+      if (mentionedIntercity) {
+        const displayName = isBnFinal && MAJOR_LOCATIONS_BN[mentionedIntercity] ? MAJOR_LOCATIONS_BN[mentionedIntercity] : mentionedIntercity;
+        return isBnFinal
+          ? `📍 **আন্তঃজেলা লোকেশন:** আমি বুঝতে পেরেছি আপনি **${displayName}** এর কথা বলছেন।\nরুট, সময় এবং ভাড়া জানতে লিখুন: "ঢাকা থেকে ${displayName}" বা "${displayName} যাতায়াত"।`
+          : `📍 **Intercity Location:** I see you are asking about **${displayName}**. \nTo see available Bus, Train, and Flight routes, try: "Dhaka to ${displayName}" or "How to reach ${displayName}".`;
+      }
+
       return isBnFinal
         ? "🤔 আমি আপনার উল্লেখিত স্থানটি বুঝতে পারছি না। দয়া করে নির্দিষ্ট স্টেশনের নাম (যেমন: ‘ফার্মগেট’, ‘মিরপুর’, ‘গুলশান’) অথবা আন্তঃজেলা ভ্রমণের জন্য জেলার নাম উল্লেখ করুন।"
         : "🤔 I couldn't understand that location. Please try mentioning specific stations like 'Farmgate', 'Mirpur', 'Gulshan' or district names for intercity travel.";
