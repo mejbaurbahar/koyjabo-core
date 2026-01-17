@@ -1297,7 +1297,8 @@ const App: React.FC = () => {
     // Check for offline mode
     let result = '';
     if (!navigator.onLine) {
-      result = getAiChatOfflineResponse(queryToSend, language as 'en' | 'bn');
+      // Use the powerful rule-based AI even offline
+      result = await askGeminiRoute(queryToSend + ` [OfflineMode] [Context: ${locationContext}]`, '', updatedHistory);
     } else {
       // Always read the latest API key from localStorage
       const latestApiKey = localStorage.getItem('gemini_api_key') || '';

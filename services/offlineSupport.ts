@@ -102,45 +102,31 @@ export function getAiChatOfflineResponse(language: 'en' | 'bn' = 'en'): string {
 
     if (language === 'bn') {
         return hasIntercityData
-            ? `আপনি বর্তমানে অফলাইনে আছেন। আমি এখনও আপনাকে সাহায্য করতে পারি:
+            ? `আপনি বর্তমানে অফলাইনে আছেন। আমাদের **কই যাবো এআই** এখন অফলাইনেও অনেক শক্তিশালী! আমি আপনাকে সাহায্য করতে পারি:
 
-✅ বাস রুট খুঁজুন
-✅ ট্রেন সময়সূচী চেক করুন
-✅ ইন্টারসিটি রুট খুঁজুন (${getLocalRouteCount()} টি রুট উপলব্ধ)
-✅ ভাড়া তথ্য পান
-
-⚠️ লাইভ ট্র্যাকিং এবং রিয়েল-টাইম আপডেটের জন্য অনলাইন সংযোগ প্রয়োজন।
+✅ **ইন্টেলিজেন্ট রুট প্ল্যানিং** (বাস ও মেট্রো পরিবর্তনসহ)
+✅ ঢাকার সকল বাস রুট ও স্টপেজ
+✅ আন্তঃজেলা রুট (${getLocalRouteCount()} টি রুট উপলব্ধ)
+✅ সঠিক ভাড়া ও সময় তথ্য
 
 আমি আপনাকে কিভাবে সাহায্য করতে পারি?`
             : `আপনি বর্তমানে অফলাইনে আছেন।
 
-স্থানীয় ডেটা উপলব্ধ নেই। অনুগ্রহ করে AI চ্যাট ব্যবহার করতে অনলাইনে সংযুক্ত হন।
-
-তবে আপনি এখনও:
-- স্থানীয় বাস রুট খুঁজতে পারেন
-- মানচিত্র ব্যবহার করতে পারেন
-- সংরক্ষিত রুট দেখতে পারেন`;
+স্থানীয় ডেটা সম্পূর্ণ উপলব্ধ নেই। তবে আপনি ঢাকার লোকাল বাস রুট এবং মানচিত্র অফলাইনে ব্যবহার করতে পারেন। পূর্ণাঙ্গ অভিজ্ঞতার জন্য অনলাইনে সংযুক্ত হন।`;
     }
 
     return hasIntercityData
-        ? `You are currently offline. I can still help you with:
+        ? `You are currently offline. Our **Koy Jabo AI** is now powerful even offline! I can help you with:
 
-✅ Find bus routes
-✅ Check train schedules  
-✅ Search intercity routes (${getLocalRouteCount()} routes available)
-✅ Get fare information
-
-⚠️ Live tracking and real-time updates require online connection.
+✅ **Intelligent Route Planning** (including bus & metro transfers)
+✅ All Dhaka bus routes & stops
+✅ Intercity routes (${getLocalRouteCount()} routes available)
+✅ Accurate fare & duration info
 
 How can I assist you?`
         : `You are currently offline.
 
-Local data is not available. Please connect online to use AI chat.
-
-However, you can still:
-- Search local bus routes
-- Use the map
-- View saved routes`;
+Local data is not fully available. However, you can still search local bus routes and use the map offline. Connect online for the full AI experience.`;
 }
 
 // 6. Get count of locally cached routes

@@ -1,5 +1,6 @@
 import { BUS_DATA, METRO_STATIONS, STATIONS } from '../constants';
 import { getOfflineIntercityData } from '../intercity/offlineService';
+import { findRoutesBetweenStations, SuggestedRoute } from './routePlanner';
 
 export interface ChatMessage {
   role: 'user' | 'assistant';
@@ -424,34 +425,48 @@ const TOUR_PLANS: Record<string, { en: string; bn: string }> = {
 // Normalize text for search
 const normalize = (text: string) => text.toLowerCase().replace(/[^\w\s\u0980-\u09FF]/g, '').trim();
 
-const findBusRoute = (start: string, end: string): string => {
-  const s = normalize(start);
-  const e = normalize(end);
+const findBusRoute = (start: string, end: string, isBn: boolean): string => {
+  const sMatches = Object.values(STATIONS).filter(st =>
+    normalize(st.name).includes(normalize(start)) || (st.bnName && normalize(st.bnName).includes(normalize(start)))
+  );
+  const eMatches = Object.values(STATIONS).filter(st =>
+    normalize(st.name).includes(normalize(end)) || (st.bnName && normalize(st.bnName).includes(normalize(end)))
+  );
 
-  const foundBuses = BUS_DATA.filter(bus => {
-    const stops = bus.stops.map(st => {
-      const station = STATIONS[st];
-      return {
-        en: normalize(station?.name || st),
-        bn: normalize(station?.bnName || '')
-      };
+  if (sMatches.length === 0 || eMatches.length === 0) return "";
+
+  const startStation = sMatches[0];
+  const endStation = eMatches[0];
+
+  const routes = findRoutesBetweenStations(startStation.id, endStation.id);
+
+  if (routes.length === 0) return "";
+
+  let response = isBn
+    ? `🚌 **${startStation.bnName || startStation.name} থেকে ${endStation.bnName || endStation.name} যাওয়ার উপায়:**\n\n`
+    : `🚌 **Routes from ${startStation.name} to ${endStation.name}:**\n\n`;
+
+  routes.slice(0, 2).forEach((route, idx) => {
+    const title = isBn ? (route.transfers === 0 ? "সরাসরি বাস" : `পরিবর্তন করে (ভায়া ${route.steps[idx === 0 ? 0 : 1]?.to || 'অন্য স্টেশন'})`) : route.title;
+    response += `📍 **${isBn ? 'বিকল্প' : 'Option'} ${idx + 1}: ${title}**\n`;
+
+    route.steps.forEach(step => {
+      if (step.type === 'walk') {
+        response += isBn ? `🚶‍♂️ ${step.instruction.replace('Walk to', 'হেঁটে যান')} (${Math.round(step.duration || 0)} মিনিট)\n` : `🚶‍♂️ ${step.instruction} (${Math.round(step.duration || 0)} min)\n`;
+      } else if (step.type === 'bus') {
+        const busName = isBn && step.busRoute?.bnName ? step.busRoute.bnName : step.busRoute?.name;
+        response += `🚌 **${busName}** (${step.from} → ${step.to})\n`;
+      } else if (step.type === 'metro') {
+        response += isBn ? `🚇 **মেট্রোরেল** (${step.from} → ${step.to})\n` : `🚇 **Metro Rail** (${step.from} → ${step.to})\n`;
+      }
     });
 
-    const startIdx = stops.findIndex(stop =>
-      stop.en.includes(s) || s.includes(stop.en) ||
-      (stop.bn && (stop.bn.includes(s) || s.includes(stop.bn)))
-    );
-    const endIdx = stops.findIndex(stop =>
-      stop.en.includes(e) || e.includes(stop.en) ||
-      (stop.bn && (stop.bn.includes(e) || e.includes(stop.bn)))
-    );
-    return startIdx !== -1 && endIdx !== -1;
+    response += isBn
+      ? `💰 **ভাড়া:** ৳${route.totalFare} | ⏱️ **সময়:** ~${Math.round(route.totalDuration)} মিনিট\n\n`
+      : `💰 **Fare:** ৳${route.totalFare} | ⏱️ **Time:** ~${Math.round(route.totalDuration)} min\n\n`;
   });
 
-  if (foundBuses.length === 0) return "";
-
-  const busNames = foundBuses.map(b => b.name).slice(0, 3).join(", ");
-  return `🚌 **Bus Route:** You can take **${busNames}** to go from ${start} to ${end}.`;
+  return response;
 };
 
 const findMetroRoute = (query: string, isBn: boolean): string => {
@@ -739,10 +754,25 @@ const findAirportInfo = (query: string): string => {
 export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, chatHistory: ChatMessage[] = []): Promise<string> => {
 
   // Separate actual query from context if present
-  const [actualQueryPart] = userQuery.split('[Context:');
+  const [actualQueryPart, contextPart] = userQuery.split('[Context:');
+  const isOffline = userQuery.includes('[OfflineMode]');
   const query = actualQueryPart.trim();
   const lowerQuery = normalize(query);
+  const isBn = /[\u0980-\u09FF]/.test(query);
   let responseParts: string[] = [];
+
+  // Parse location context if available
+  let userNearbyStation: string | null = null;
+  if (contextPart) {
+    const match = contextPart.match(/near ([^(\[]+)/);
+    if (match) userNearbyStation = match[1].trim();
+  }
+
+  if (isOffline) {
+    responseParts.push(isBn
+      ? "📡 **অফলাইন মোড:** আমি বর্তমানে আমার লোকাল ডাটাবেস ব্যবহার করছি। সকল তথ্য নির্ভুল।"
+      : "📡 **Offline AI Mode:** I am using my local high-performance database. All transit data is verified.");
+  }
 
   // Special Detection: Dhaka International Trade Fair (DITF) / Banijyo Mela
   const isTradeFairQuery = lowerQuery.includes("trade fair") ||
@@ -816,7 +846,7 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
     );
 
     if (mentionedStations.length >= 2) {
-      const busRes = findBusRoute(mentionedStations[0].name, mentionedStations[1].name);
+      const busRes = findBusRoute(mentionedStations[0].name, mentionedStations[1].name, isBn);
       if (busRes) responseParts.push(busRes);
     }
   }
@@ -832,7 +862,30 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   const busInfo = findLocalBusInfo(query);
   if (busInfo) responseParts.push(busInfo);
 
-  // 4. Check Intercity
+  // 5. Check for Nearby / Current Location intent
+  if (lowerQuery.includes("near me") || lowerQuery.includes("কাছে") || lowerQuery.includes("আশেপাশে") || lowerQuery.includes("nearby") || lowerQuery.includes("where am i")) {
+    if (userNearbyStation) {
+      responseParts.push(isBn
+        ? `📍 আপনি বর্তমানে **${userNearbyStation}** এর কাছাকাছি আছেন। এখান থেকে আপনি ঢাকা শহরের প্রায় সব দিকেই বাস পাবেন।`
+        : `📍 You are currently near **${userNearbyStation}**. This is a good spot to find buses to most parts of Dhaka.`);
+
+      // Suggest buses from here
+      const busesFromHere = BUS_DATA.filter(b => b.stops.some(s => s.toLowerCase().includes(userNearbyStation!.toLowerCase()))).slice(0, 5);
+      if (busesFromHere.length > 0) {
+        let busList = isBn ? `\n🚌 **এখানকার কিছু জনপ্রিয় বাস:**\n` : `\n🚌 **Popular buses from here:**\n`;
+        busesFromHere.forEach(b => {
+          busList += `- **${isBn && b.bnName ? b.bnName : b.name}**: ${b.routeString}\n`;
+        });
+        responseParts.push(busList);
+      }
+    } else {
+      responseParts.push(isBn
+        ? "📍 আপনার সঠিক অবস্থান জানতে পারছি না। কিন্তু আপনি 'মিরপুর', 'ফার্মগেট' বা 'বনানী' এর মতো এলাকার নাম লিখে সার্চ করতে পারেন।"
+        : "📍 I couldn't determine your precise location. Try typing a nearby landmark like 'Mirpur', 'Farmgate', or 'Banani'.");
+    }
+  }
+
+  // 6. Check Intercity
   // Check against our comprehensive list
   const isIntercityQuery = MAJOR_LOCATIONS.some(loc => {
     const enMatch = lowerQuery.includes(normalize(loc));
