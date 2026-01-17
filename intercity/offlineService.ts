@@ -247,7 +247,7 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
         result += `**দূরত্ব:** ${distance > 0 ? distance + ' কিমি (আকাশপথ)' : 'তথ্য নেই'}  \n\n`;
 
         // 1. Bus (BRTC + Private)
-        result += `### 🚌 বাস সার্ভিস:  \n`;
+        result += `**🚌 বাস সার্ভিস:**  \n`;
         if (busInfo) {
             result += `**জনপ্রিয় অপারেটর:** ${busInfo.buses.join(', ')}।  \n**ভাড়া:** ${busInfo.fare} টাকা।  \n`;
         }
@@ -269,28 +269,28 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
 
         // 2. Train
         if (trainInfo) {
-            result += `### 🚂 রেলওয়ে (ট্রেন):  \n`;
+            result += `**🚂 রেলওয়ে (ট্রেন):**  \n`;
             result += `**ট্রেনের নাম:** ${trainInfo.trains.join(', ')}।  \n**ভাড়া:** ${trainInfo.fare} টাকা।  \nসময়: ${Math.max(2, Math.ceil(distance / 55))} ঘণ্টা (আনুমানিক)।  \n\n`;
         } else if (connFrom.train && connTo.train) {
-            result += `### 🚂 রেলওয়ে (ট্রেন):  \n`;
+            result += `**🚂 রেলওয়ে (ট্রেন):**  \n`;
             result += `সরাসরি ট্রেন নেই তবে সংযোগ ট্রেন ব্যবহার করে যাওয়া সম্ভব হতে পারে।  \n\n`;
         }
 
         // 3. Air
         if (airInfo) {
-            result += `### ✈️ আকাশপথ (ফ্লাইট):  \n`;
+            result += `**✈️ আকাশপথ (ফ্লাইট):**  \n`;
             result += `**এয়ারলাইন্স:** ${airInfo.airlines.join(', ')}।  \n**সময়:** ${airInfo.time}। **ভাড়া:** ${airInfo.fare} টাকা।  \n\n`;
         } else if (connFrom.plane && connTo.plane) {
-            result += `### ✈️ আকাশপথ (ফ্লাইট):  \n`;
+            result += `**✈️ আকাশপথ (ফ্লাইট):**  \n`;
             result += `সরাসরি ফ্লাইট নেই। ঢাকা হয়ে কানেক্টিং ফ্লাইট চেক করুন।  \n\n`;
         }
 
         // 4. Boat/Launch
         if (launchInfo) {
-            result += `### 🚢 নৌপথ (লঞ্চ/জাহাজ):  \n`;
+            result += `**🚢 নৌপথ (লঞ্চ/জাহাজ):**  \n`;
             result += `**টার্মিনাল:** সদরঘাট (ঢাকা) বা স্থানীয় ঘাট।  \n**লঞ্চসমূহ:** ${launchInfo.operators.join(', ')}।  \n**সময়:** ${launchInfo.time}। **ভাড়া:** ${launchInfo.fare} টাকা।  \n\n`;
         } else if (connTo.boat && (from === 'Dhaka' || connFrom.boat)) {
-            result += `### 🚢 নৌপথ:  \nএই রুটে নৌযান চলাচল করতে পারে। স্থানীয় ঘাটে খোঁজ নিন।  \n\n`;
+            result += `**🚢 নৌপথ:**  \nএই রুটে নৌযান চলাচল করতে পারে। স্থানীয় ঘাটে খোঁজ নিন।  \n\n`;
         }
 
         // Via Hub Logic
@@ -304,7 +304,7 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
         result += `**Distance:** ${distance > 0 ? distance + ' km (Great-circle)' : 'N/A'}  \n\n`;
 
         // 1. Bus
-        result += `### 🚌 Bus Services:  \n`;
+        result += `**🚌 Bus Services:**  \n`;
         if (busInfo) {
             result += `**Operators:** ${busInfo.buses.join(', ')}.  \n**Fare:** ${busInfo.fare} BDT.  \n`;
         }
@@ -326,19 +326,19 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
 
         // 2. Train
         if (trainInfo) {
-            result += `### 🚂 Railway (Train):  \n`;
+            result += `**🚂 Railway (Train):**  \n`;
             result += `**Trains:** ${trainInfo.trains.join(', ')}.  \n**Fare:** ${trainInfo.fare} BDT.  \n**Time:** ${Math.max(2, Math.ceil(distance / 55))} h (Approx).  \n\n`;
         }
 
         // 3. Air
         if (airInfo) {
-            result += `### ✈️ Air (Flight):  \n`;
+            result += `**✈️ Air (Flight):**  \n`;
             result += `**Airlines:** ${airInfo.airlines.join(', ')}.  \n**Time:** ${airInfo.time}. **Fare:** ${airInfo.fare} BDT.  \n\n`;
         }
 
         // 4. Boat
         if (launchInfo) {
-            result += `### 🚢 Waterway (Launch/Ship):  \n`;
+            result += `**🚢 Waterway (Launch/Ship):**  \n`;
             result += `**Terminal:** Sadarghat (Dhaka) or local.  \n**Operators:** ${launchInfo.operators.join(', ')}.  \n**Time:** ${launchInfo.time}. **Fare:** ${launchInfo.fare} BDT.  \n\n`;
         }
 

@@ -3,11 +3,11 @@ const DYNAMIC_CACHE = 'intercity-go-dynamic-v1';
 
 // Assets to pre-cache immediately
 const PRE_CACHE_ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/data/comprehensive-bangladesh-intercity-routes.json',
-  '/data/bangladesh-intercity-routes.json'
+  '/intercity/',
+  '/intercity/index.html',
+  '/intercity/manifest.json',
+  '/intercity/data/comprehensive-bangladesh-intercity-routes.json',
+  '/intercity/data/bangladesh-intercity-routes.json'
 ];
 
 // Install Event: Cache core static assets

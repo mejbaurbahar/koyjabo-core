@@ -2,6 +2,7 @@ import path from 'path';
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
@@ -44,6 +45,14 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       react(),
+      viteStaticCopy({
+        targets: [
+          {
+            src: 'intercity/dist/**/*',
+            dest: 'intercity'
+          }
+        ]
+      }),
       VitePWA({
         registerType: 'autoUpdate',
         includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg', 'logo.png', 'offline-styles.css', 'manifest.json'],
@@ -100,8 +109,8 @@ export default defineConfig(({ mode }) => {
         },
         workbox: {
           globPatterns: [
-            '**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf}',
-            'intercity/**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf}'
+            '**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest}',
+            'intercity/**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest}'
           ],
           navigateFallback: null,  // Disable automatic fallback, we'll handle routes explicitly
           navigateFallbackDenylist: [/^\/api/],
@@ -115,8 +124,8 @@ export default defineConfig(({ mode }) => {
           cacheId: 'dhaka-commute-v3',
           // Precache intercity index.html for offline access
           additionalManifestEntries: [
-            { url: '/intercity/', revision: null },
-            { url: '/intercity/index.html', revision: null }
+            { url: '/intercity/', revision: 'v4' },
+            { url: '/intercity/index.html', revision: 'v4' }
           ],
           runtimeCaching: [
             // Cache Intercity App - NetworkFirst with fast fallback to cache
@@ -141,7 +150,9 @@ export default defineConfig(({ mode }) => {
             // Main App - Handle all other HTML navigation requests
             {
               urlPattern: ({ request, url }) => {
-                return request.destination === 'document' && !url.pathname.startsWith('/intercity') && !url.pathname.startsWith('/api');
+                const isIntercity = url.pathname.startsWith('/intercity');
+                const isApi = url.pathname.startsWith('/api');
+                return request.destination === 'document' && !isIntercity && !isApi;
               },
               handler: 'NetworkFirst',
               options: {

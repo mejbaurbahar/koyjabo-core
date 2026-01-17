@@ -233,7 +233,7 @@ export function getOfflineFeatureStatus(): OfflineFeatureStatus {
     return {
         busRoutes: true, // Always available (constants.ts)
         intercitySearch: hasIntercityData,
-        aiChat: false, // Requires API
+        aiChat: true, // Assistant now has rule-based offline logic
         liveTracking: false, // Requires internet
         maps: true, // Cached tiles
         trainSchedules: hasIntercityData
