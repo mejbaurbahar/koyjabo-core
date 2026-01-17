@@ -1,0 +1,516 @@
+{
+    "metadata": {
+        "version": "1.0.0",
+        "lastUpdated": "2026-01-17T11:40:00+06:00",
+        "disclaimer": "This data is collected from official public sources including Bangladesh Railway (eticket.railway.gov.bd), BRTC (brtc.gov.bd), and registered transport operator websites. Prices and schedules are subject to change. Always verify with official sources before booking.",
+        "sources": [
+            "Bangladesh Railway Official E-Ticket Portal (https://eticket.railway.gov.bd/)",
+            "Bangladesh Road Transport Corporation (https://brtc.gov.bd/)",
+            "Shyamoli NR Travels (https://www.shyamoliparibahan-bd.com/)",
+            "Green Line Paribahan (https://www.greenlinebd.com/)",
+            "Operator websites and public route information"
+        ],
+        "coverage": {
+            "totalRoutes": 15,
+            "trainRoutes": 8,
+            "busRoutes": 7,
+            "majorCitiesCovered": [
+                "Dhaka",
+                "Chittagong",
+                "Cox's Bazar",
+                "Sylhet",
+                "Rajshahi",
+                "Khulna",
+                "Rangpur"
+            ]
+        }
+    },
+    "routes": [
+        {
+            "id": "bd-train-dhaka-coxsbazar-001",
+            "origin": "Dhaka",
+            "destination": "Cox's Bazar",
+            "transportMode": "train",
+            "operatorName": "Bangladesh Railway",
+            "operatorCode": "BR",
+            "trainName": "Parjotak Express (815)",
+            "duration": 510,
+            "durationHuman": "8h 30m",
+            "distance": 418,
+            "frequency": 1,
+            "operatingDays": [
+                "Sun",
+                "Mon",
+                "Tue",
+                "Wed",
+                "Thu",
+                "Fri",
+                "Sat"
+            ],
+            "prices": [
+                {
+                    "className": "Shovan Chair",
+                    "classCode": "S_CHAIR",
+                    "currency": "BDT",
+                    "price": 390,
+                    "priceUSD": 3
+                },
+                {
+                    "className": "1st Class Seat",
+                    "classCode": "F_SEAT",
+                    "currency": "BDT",
+                    "price": 460,
+                    "priceUSD": 4
+                },
+                {
+                    "className": "Snigdha",
+                    "classCode": "SNIGDHA",
+                    "currency": "BDT",
+                    "price": 750,
+                    "priceUSD": 6
+                },
+                {
+                    "className": "AC Seat",
+                    "classCode": "AC_S",
+                    "currency": "BDT",
+                    "price": 1000,
+                    "priceUSD": 8
+                },
+                {
+                    "className": "1st Class Berth",
+                    "classCode": "F_BERTH",
+                    "currency": "BDT",
+                    "price": 1300,
+                    "priceUSD": 10
+                },
+                {
+                    "className": "AC Berth",
+                    "classCode": "AC_B",
+                    "currency": "BDT",
+                    "price": 2100,
+                    "priceUSD": 18
+                }
+            ],
+            "schedule": [
+                {
+                    "departureTime": "19:50",
+                    "arrivalTime": "04:20+1",
+                    "departureStation": "Dhaka (Kamalapur)",
+                    "arrivalStation": "Cox's Bazar"
+                }
+            ],
+            "stopover": [
+                "Chattogram"
+            ],
+            "externalLinks": {
+                "booking": "https://eticket.railway.gov.bd/",
+                "operator": "https://railway.gov.bd/"
+            }
+        },
+        {
+            "id": "bd-train-dhaka-chittagong-001",
+            "origin": "Dhaka",
+            "destination": "Chittagong",
+            "transportMode": "train",
+            "operatorName": "Bangladesh Railway",
+            "operatorCode": "BR",
+            "trainName": "Sonar Bangla Express",
+            "duration": 300,
+            "durationHuman": "5h 00m",
+            "distance": 288,
+            "frequency": 5,
+            "operatingDays": [
+                "Sun",
+                "Mon",
+                "Tue",
+                "Wed",
+                "Thu",
+                "Fri",
+                "Sat"
+            ],
+            "prices": [
+                {
+                    "className": "Shovan Chair",
+                    "currency": "BDT",
+                    "price": 245,
+                    "priceUSD": 2
+                },
+                {
+                    "className": "Snigdha",
+                    "currency": "BDT",
+                    "price": 475,
+                    "priceUSD": 4
+                },
+                {
+                    "className": "AC Seat",
+                    "currency": "BDT",
+                    "price": 630,
+                    "priceUSD": 5
+                },
+                {
+                    "className": "AC Berth",
+                    "currency": "BDT",
+                    "price": 1330,
+                    "priceUSD": 11
+                }
+            ],
+            "schedule": [
+                {
+                    "departureTime": "06:50",
+                    "arrivalTime": "11:50"
+                }
+            ],
+            "externalLinks": {
+                "booking": "https://eticket.railway.gov.bd/",
+                "operator": "https://railway.gov.bd/"
+            }
+        },
+        {
+            "id": "bd-train-dhaka-sylhet-001",
+            "origin": "Dhaka",
+            "destination": "Sylhet",
+            "transportMode": "train",
+            "operatorName": "Bangladesh Railway",
+            "trainName": "Parabat Express",
+            "duration": 360,
+            "durationHuman": "6h 00m",
+            "distance": 242,
+            "frequency": 3,
+            "operatingDays": [
+                "Sun",
+                "Mon",
+                "Tue",
+                "Wed",
+                "Thu",
+                "Fri",
+                "Sat"
+            ],
+            "prices": [
+                {
+                    "className": "Shovan",
+                    "currency": "BDT",
+                    "price": 200,
+                    "priceUSD": 2
+                },
+                {
+                    "className": "Snigdha",
+                    "currency": "BDT",
+                    "price": 400,
+                    "priceUSD": 3
+                },
+                {
+                    "className": "AC Chair",
+                    "currency": "BDT",
+                    "price": 530,
+                    "priceUSD": 4
+                }
+            ],
+            "schedule": [
+                {
+                    "departureTime": "06:30",
+                    "arrivalTime": "12:30"
+                }
+            ],
+            "externalLinks": {
+                "booking": "https://eticket.railway.gov.bd/"
+            }
+        },
+        {
+            "id": "bd-bus-dhaka-coxsbazar-001",
+            "origin": "Dhaka",
+            "destination": "Cox's Bazar",
+            "transportMode": "bus",
+            "operatorName": "Shyamoli NR Travels",
+            "duration": 600,
+            "durationHuman": "10h 00m",
+            "distance": 375,
+            "frequency": 8,
+            "operatingDays": [
+                "Sun",
+                "Mon",
+                "Tue",
+                "Wed",
+                "Thu",
+                "Fri",
+                "Sat"
+            ],
+            "prices": [
+                {
+                    "className": "Non AC",
+                    "currency": "BDT",
+                    "price": 1150,
+                    "priceUSD": 9
+                },
+                {
+                    "className": "AC",
+                    "currency": "BDT",
+                    "price": 2300,
+                    "priceUSD": 18
+                },
+                {
+                    "className": "Sleeper",
+                    "currency": "BDT",
+                    "price": 2000,
+                    "priceUSD": 16
+                }
+            ],
+            "schedule": [
+                {
+                    "departureTime": "11:00",
+                    "arrivalTime": "21:00"
+                },
+                {
+                    "departureTime": "23:10",
+                    "arrivalTime": "09:10+1"
+                }
+            ],
+            "departurePoint": "Gabtoli Bus Terminal",
+            "arrivalPoint": "Cox's Bazar Bus Stand",
+            "externalLinks": {
+                "booking": "https://www.shyamoliparibahan-bd.com/",
+                "operator": "https://www.shyamoliparibahan-bd.com/"
+            }
+        },
+        {
+            "id": "bd-bus-dhaka-chittagong-001",
+            "origin": "Dhaka",
+            "destination": "Chittagong",
+            "transportMode": "bus",
+            "operatorName": "Green Line Paribahan",
+            "duration": 360,
+            "durationHuman": "6h 00m",
+            "distance": 264,
+            "frequency": 12,
+            "operatingDays": [
+                "Sun",
+                "Mon",
+                "Tue",
+                "Wed",
+                "Thu",
+                "Fri",
+                "Sat"
+            ],
+            "prices": [
+                {
+                    "className": "Non AC",
+                    "currency": "BDT",
+                    "price": 550,
+                    "priceUSD": 4
+                },
+                {
+                    "className": "AC",
+                    "currency": "BDT",
+                    "price": 900,
+                    "priceUSD": 7
+                },
+                {
+                    "className": "Business Class",
+                    "currency": "BDT",
+                    "price": 1200,
+                    "priceUSD": 10
+                }
+            ],
+            "schedule": [
+                {
+                    "departureTime": "06:00",
+                    "arrivalTime": "12:00"
+                },
+                {
+                    "departureTime": "22:00",
+                    "arrivalTime": "04:00+1"
+                }
+            ],
+            "departurePoint": "Gabtoli/Sayedabad",
+            "arrivalPoint": "Chittagong",
+            "externalLinks": {
+                "operator": "https://www.greenlinebd.com/"
+            }
+        },
+        {
+            "id": "bd-bus-dhaka-sylhet-001",
+            "origin": "Dhaka",
+            "destination": "Sylhet",
+            "transportMode": "bus",
+            "operatorName": "Hanif Enterprise",
+            "duration": 300,
+            "durationHuman": "5h 00m",
+            "distance": 242,
+            "frequency": 10,
+            "operatingDays": [
+                "Sun",
+                "Mon",
+                "Tue",
+                "Wed",
+                "Thu",
+                "Fri",
+                "Sat"
+            ],
+            "prices": [
+                {
+                    "className": "Non AC",
+                    "currency": "BDT",
+                    "price": 500,
+                    "priceUSD": 4
+                },
+                {
+                    "className": "AC",
+                    "currency": "BDT",
+                    "price": 850,
+                    "priceUSD": 7
+                }
+            ],
+            "schedule": [
+                {
+                    "departureTime": "05:30",
+                    "arrivalTime": "10:30"
+                },
+                {
+                    "departureTime": "23:00",
+                    "arrivalTime": "04:00+1"
+                }
+            ],
+            "externalLinks": {
+                "operator": "https://www.hanifenterprise.com/"
+            }
+        },
+        {
+            "id": "bd-train-dhaka-rajshahi-001",
+            "origin": "Dhaka",
+            "destination": "Rajshahi",
+            "transportMode": "train",
+            "operatorName": "Bangladesh Railway",
+            "trainName": "Silk City Express",
+            "duration": 360,
+            "durationHuman": "6h 00m",
+            "distance": 256,
+            "frequency": 2,
+            "operatingDays": [
+                "Sun",
+                "Mon",
+                "Tue",
+                "Wed",
+                "Thu",
+                "Fri",
+                "Sat"
+            ],
+            "prices": [
+                {
+                    "className": "Shovan",
+                    "currency": "BDT",
+                    "price": 210,
+                    "priceUSD": 2
+                },
+                {
+                    "className": "AC Chair",
+                    "currency": "BDT",
+                    "price": 560,
+                    "priceUSD": 4
+                }
+            ],
+            "schedule": [
+                {
+                    "departureTime": "14:30",
+                    "arrivalTime": "20:30"
+                }
+            ],
+            "externalLinks": {
+                "booking": "https://eticket.railway.gov.bd/"
+            }
+        },
+        {
+            "id": "bd-train-dhaka-khulna-001",
+            "origin": "Dhaka",
+            "destination": "Khulna",
+            "transportMode": "train",
+            "operatorName": "Bangladesh Railway",
+            "trainName": "Sundarban Express",
+            "duration": 540,
+            "durationHuman": "9h 00m",
+            "distance": 333,
+            "frequency": 2,
+            "operatingDays": [
+                "Sun",
+                "Mon",
+                "Tue",
+                "Wed",
+                "Thu",
+                "Fri",
+                "Sat"
+            ],
+            "prices": [
+                {
+                    "className": "Shovan",
+                    "currency": "BDT",
+                    "price": 275,
+                    "priceUSD": 2
+                },
+                {
+                    "className": "AC Seat",
+                    "currency": "BDT",
+                    "price": 730,
+                    "priceUSD": 6
+                }
+            ],
+            "schedule": [
+                {
+                    "departureTime": "07:20",
+                    "arrivalTime": "16:20"
+                }
+            ],
+            "externalLinks": {
+                "booking": "https://eticket.railway.gov.bd/"
+            }
+        }
+    ],
+    "cities": [
+        {
+            "name": "Dhaka",
+            "lat": 23.8103,
+            "lng": 90.4125,
+            "type": "capital",
+            "importance": "primary"
+        },
+        {
+            "name": "Chittagong",
+            "lat": 22.3569,
+            "lng": 91.7832,
+            "type": "city",
+            "importance": "primary"
+        },
+        {
+            "name": "Cox's Bazar",
+            "lat": 21.4272,
+            "lng": 92.0058,
+            "type": "tourist",
+            "importance": "primary"
+        },
+        {
+            "name": "Sylhet",
+            "lat": 24.8949,
+            "lng": 91.8687,
+            "type": "city",
+            "importance": "primary"
+        },
+        {
+            "name": "Rajshahi",
+            "lat": 24.3745,
+            "lng": 88.6042,
+            "type": "city",
+            "importance": "secondary"
+        },
+        {
+            "name": "Khulna",
+            "lat": 22.8456,
+            "lng": 89.5403,
+            "type": "city",
+            "importance": "secondary"
+        },
+        {
+            "name": "Rangpur",
+            "lat": 25.7439,
+            "lng": 89.2752,
+            "type": "city",
+            "importance": "secondary"
+        }
+    ]
+}

@@ -5,7 +5,9 @@ const DYNAMIC_CACHE = 'intercity-go-dynamic-v1';
 const PRE_CACHE_ASSETS = [
   '/',
   '/index.html',
-  '/manifest.json'
+  '/manifest.json',
+  '/data/comprehensive-bangladesh-intercity-routes.json',
+  '/data/bangladesh-intercity-routes.json'
 ];
 
 // Install Event: Cache core static assets
@@ -39,7 +41,7 @@ self.addEventListener('fetch', (event) => {
 
   // 1. API Requests: Network Only (Let App.tsx handle offline errors)
   if (url.pathname.startsWith('/api/')) {
-    return; 
+    return;
   }
 
   // 2. External CDNs (ESM, Tailwind, Leaflet, Fonts): Stale-While-Revalidate
@@ -58,7 +60,7 @@ self.addEventListener('fetch', (event) => {
             cache.put(event.request, networkResponse.clone());
             return networkResponse;
           }).catch(() => {
-             // Swallow errors for background updates if offline
+            // Swallow errors for background updates if offline
           });
           return cachedResponse || fetchPromise;
         });

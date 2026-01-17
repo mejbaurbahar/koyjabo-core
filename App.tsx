@@ -19,6 +19,14 @@ import { incrementVisitCount, trackBusSearch, trackRouteSearch } from './service
 import ThemeToggle from './components/ThemeToggle';
 import LiveLocationMap from './components/LiveLocationMap';
 
+import {
+  initializeOfflineSupport,
+  getAiChatOfflineResponse,
+  getIntercityRoutesOffline,
+  isIntercityDataStale,
+  getOfflineFeatureStatus
+} from './services/offlineSupport';
+
 import { autoPreloadMapTiles } from './services/offlineMapService';
 import {
   enhancedBusSearch,
@@ -518,6 +526,11 @@ const App: React.FC = () => {
     };
 
     checkStaleData();
+
+    // Initialize Offline Support
+    initializeOfflineSupport().then(() => {
+      console.log('Offline support initialized');
+    });
 
     return () => {
       window.removeEventListener('online', handleOnline);
@@ -1281,11 +1294,17 @@ const App: React.FC = () => {
       console.log("Location not available for AI context");
     }
 
-    // Always read the latest API key from localStorage
-    const latestApiKey = localStorage.getItem('gemini_api_key') || '';
+    // Check for offline mode
+    let result = '';
+    if (!navigator.onLine) {
+      result = getAiChatOfflineResponse(queryToSend, language as 'en' | 'bn');
+    } else {
+      // Always read the latest API key from localStorage
+      const latestApiKey = localStorage.getItem('gemini_api_key') || '';
 
-    // Pass the FULL updated history to the service
-    let result = await askGeminiRoute(queryToSend + ` [Context: ${locationContext}]`, latestApiKey, updatedHistory);
+      // Pass the FULL updated history to the service
+      result = await askGeminiRoute(queryToSend + ` [Context: ${locationContext}]`, latestApiKey, updatedHistory);
+    }
 
 
 
@@ -1441,7 +1460,7 @@ const App: React.FC = () => {
         <div ref={chatEndRef}></div>
       </div>
 
-      <div className="p-4 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 z-30 fixed md:relative bottom-16 md:bottom-0 left-0 right-0 pb-safe">
+      <div className="p-4 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 z-30 fixed md:relative bottom-16 md:bottom-0 left-0 right-0">
         <form onSubmit={handleAiSubmit} className="flex gap-2 relative">
           <input
             type="text"
@@ -1459,7 +1478,7 @@ const App: React.FC = () => {
           </button>
         </form>
       </div>
-    </div >
+    </div>
   );
 
   const renderAbout = () => (
@@ -3193,7 +3212,16 @@ const App: React.FC = () => {
     // Intercity Search Handler with Offline Check
     // Intercity Search Handler with Offline Check
     const handleIntercitySearch = (from: string, to: string) => {
-      // Allow navigation even if offline, relying on SW caching
+      // Check for offline data first
+      if (!navigator.onLine) {
+        const offlineData = getIntercityRoutesOffline(from, to);
+        if (offlineData.routes.length > 0) {
+          // If we found cached data, we can still redirect or just alert
+          // Redirecting to intercity app is preferred as it's designed for it
+          console.log(`Found ${offlineData.routes.length} intercity routes offline`);
+        }
+      }
+
       setIntercityLoading(true);
       setTimeout(() => {
         window.location.href = `/intercity/?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`;
@@ -3508,7 +3536,7 @@ const App: React.FC = () => {
 
 
 
-        <main className="flex flex-1 overflow-hidden relative w-full max-w-full mx-auto bg-slate-50 dark:bg-slate-900 h-full">
+        <main className="flex flex-1 overflow-hidden relative w-full max-w-full mx-auto bg-slate-50 dark:bg-slate-900">
           {/* Left Sidebar (Desktop) / Main View (Mobile Home) */}
           <div className={`
             ${'w-full md:w-1/3 md:min-w-[320px] md:max-w-md md:flex md:flex-col border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900 z-0 h-full overflow-y-auto'}
@@ -3697,7 +3725,7 @@ const App: React.FC = () => {
 
         {/* Mobile Bottom Navigation - Always show except on BUS_DETAILS and LIVE_NAV */}
         {view !== AppView.BUS_DETAILS && view !== AppView.LIVE_NAV && (
-          <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 pb-safe z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] md:hidden">
+          <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] md:hidden">
             <div className="grid grid-cols-4 h-16">
               <button
                 onClick={() => {

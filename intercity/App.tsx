@@ -76,18 +76,28 @@ function App() {
     };
   }, []);
 
-  // Load last cached result
+  // Handle URL parameters for redirection from main app
   useEffect(() => {
-    try {
-      const cachedResult = localStorage.getItem('intercity_last_result');
-      if (cachedResult) {
-        const parsed = JSON.parse(cachedResult);
-        setResult(parsed);
-        setFrom(parsed.from || '');
-        setTo(parsed.to || '');
-      }
-    } catch (e) {
-      console.error("Failed to parse cached data", e);
+    const params = new URLSearchParams(window.location.search);
+    const fromParam = params.get('from');
+    const toParam = params.get('to');
+
+    if (fromParam && toParam) {
+      setFrom(fromParam);
+      setTo(toParam);
+
+      // Automatic search if params are provided
+      setLoading(true);
+      setTimeout(() => {
+        try {
+          const resultData = getOfflineIntercityData(fromParam, toParam, language as 'en' | 'bn');
+          setResult(resultData);
+        } catch (err) {
+          console.error("Search failed", err);
+        } finally {
+          setLoading(false);
+        }
+      }, 500);
     }
   }, []);
 

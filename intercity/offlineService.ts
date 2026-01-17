@@ -1,6 +1,7 @@
 import { RouteResponse } from './types';
 import { BRTC_DHAKA_INTERCITY, BRTC_REGIONAL_INTERCITY } from '../BRTC_INTERCITY_ROUTES_DATA';
 import { DISTRICT_COORDINATES } from './constants';
+import COMPREHENSIVE_ROUTES from '../data/comprehensive-bangladesh-intercity-routes.json';
 
 interface Connectivity {
     bus: boolean;
@@ -233,6 +234,12 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
     const busInfo = getBusInfo(from, to);
     const isBn = lang === 'bn';
 
+    // Get comprehensive data
+    const comprehensiveRoutes = (COMPREHENSIVE_ROUTES as any).routes.filter((r: any) =>
+        (r.origin.toLowerCase().includes(from.toLowerCase()) && r.destination.toLowerCase().includes(to.toLowerCase())) ||
+        (r.origin.toLowerCase().includes(to.toLowerCase()) && r.destination.toLowerCase().includes(from.toLowerCase()))
+    );
+
     let result = '';
 
     if (isBn) {
@@ -250,8 +257,13 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
                 result += `- ${br.bnName} (${br.type}) - ${br.hours}  \n`;
             });
         }
-        if (!busInfo && brtcRoutes.length === 0) {
+        if (!busInfo && brtcRoutes.length === 0 && comprehensiveRoutes.length === 0) {
             result += `ভাড়া: ${Math.max(150, Math.ceil(distance * 3))}-১,২০০ টাকা (আনুমানিক)।  \nলোকাল এবং আন্তঃজেলা বাস টার্মিনাল থেকে নিয়মিত বাস পাওয়া যায়।  \n`;
+        } else if (comprehensiveRoutes.length > 0) {
+            result += `**উপলব্ধ রুট:** ${comprehensiveRoutes.length}টি রুট পাওয়া গেছে।  \n`;
+            comprehensiveRoutes.slice(0, 3).forEach((r: any) => {
+                result += `- ${r.operator || 'বাস'} (${r.type || 'Non-AC'}) - ৳${r.fare || 'তথ্য নেই'}  \n`;
+            });
         }
         result += `\n`;
 
@@ -302,8 +314,13 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
                 result += `- ${br.name} (${br.type}) - ${br.hours}  \n`;
             });
         }
-        if (!busInfo && brtcRoutes.length === 0) {
+        if (!busInfo && brtcRoutes.length === 0 && comprehensiveRoutes.length === 0) {
             result += `**Fare:** ${Math.max(150, Math.ceil(distance * 3))}-1,200 BDT (Est).  \nAvailable from regional terminals.  \n`;
+        } else if (comprehensiveRoutes.length > 0) {
+            result += `**Available Routes:** Found ${comprehensiveRoutes.length} specific routes.  \n`;
+            comprehensiveRoutes.slice(0, 3).forEach((r: any) => {
+                result += `- ${r.operator || 'Bus'} (${r.type || 'Non-AC'}) - ৳${r.fare || 'N/A'}  \n`;
+            });
         }
         result += `\n`;
 
