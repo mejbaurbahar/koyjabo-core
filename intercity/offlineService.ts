@@ -262,7 +262,9 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
         } else if (comprehensiveRoutes.length > 0) {
             result += `**উপলব্ধ রুট:** ${comprehensiveRoutes.length}টি রুট পাওয়া গেছে।  \n`;
             comprehensiveRoutes.slice(0, 3).forEach((r: any) => {
-                result += `- ${r.operator || 'বাস'} (${r.type || 'Non-AC'}) - ৳${r.fare || 'তথ্য নেই'}  \n`;
+                const price = r.prices && r.prices.length > 0 ? r.prices[0].price : 'তথ্য নেই';
+                const type = r.prices && r.prices.length > 0 ? r.prices[0].className : 'Non-AC';
+                result += `- ${r.operatorName || 'বাস'} (${type}) - ৳${price}  \n`;
             });
         }
         result += `\n`;
@@ -319,7 +321,9 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
         } else if (comprehensiveRoutes.length > 0) {
             result += `**Available Routes:** Found ${comprehensiveRoutes.length} specific routes.  \n`;
             comprehensiveRoutes.slice(0, 3).forEach((r: any) => {
-                result += `- ${r.operator || 'Bus'} (${r.type || 'Non-AC'}) - ৳${r.fare || 'N/A'}  \n`;
+                const price = r.prices && r.prices.length > 0 ? r.prices[0].price : 'N/A';
+                const type = r.prices && r.prices.length > 0 ? r.prices[0].className : 'Non-AC';
+                result += `- ${r.operatorName || 'Bus'} (${type}) - ৳${price}  \n`;
             });
         }
         result += `\n`;
