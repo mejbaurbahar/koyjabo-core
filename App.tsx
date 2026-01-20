@@ -55,6 +55,9 @@ import SocialShare from './components/SocialShare';
 import NotificationBanner from './components/NotificationBanner';
 import Blog from './components/Blog';
 import BlogPostDetail from './components/BlogPostDetail';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import TermsOfService from './components/TermsOfService';
+import ContactUs from './components/ContactUs';
 
 
 
@@ -102,6 +105,7 @@ const getStoredView = (): AppView => {
         case 'install': return AppView.INSTALL_APP;
         case 'privacy': return AppView.PRIVACY;
         case 'terms': return AppView.TERMS;
+        case 'contact': return AppView.CONTACT;
         case 'for-ai': return AppView.FOR_AI;
         case 'daily-journey': return AppView.DAILY_JOURNEY;
       }
@@ -753,6 +757,7 @@ const App: React.FC = () => {
     [AppView.SETTINGS]: 'settings',
     [AppView.PRIVACY]: 'privacy',
     [AppView.TERMS]: 'terms',
+    [AppView.CONTACT]: 'contact',
     [AppView.INSTALL_APP]: 'install',
     [AppView.NOT_FOUND]: '404',
     [AppView.SERVER_ERROR]: '500',
@@ -1711,204 +1716,7 @@ const App: React.FC = () => {
   };
 
 
-  const renderPrivacyPolicy = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-y-auto overflow-x-hidden w-full relative max-w-full">
-      <div className="max-w-3xl mx-auto p-6 md:p-12 pt-20 md:pt-24 pb-32 md:pb-12">
 
-        <h1 className="text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100">{t('privacy.title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">{t('privacy.lastUpdated')}: November 26, 2025</p>
-
-        <div className="space-y-6 text-gray-700 dark:text-gray-300 leading-relaxed">
-          <section>
-            <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">1. {t('privacy.introduction')}</h2>
-            <p>Welcome to কই যাবো. We respect your privacy and are committed to protecting your personal data. This privacy policy explains how we handle your information when you use our bus route finder application for traveling across Bangladesh.</p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">2. {t('privacy.dataWeDoNotCollect')}</h2>
-            <p>কই যাবো is designed with privacy in mind. We do NOT collect, store, or transmit:</p>
-            <ul className="list-disc list-inside space-y-2 mt-2 ml-4">
-              <li>Personal identification information (name, email, phone number)</li>
-              <li>Your location data to any server</li>
-              <li>Your search history or route preferences</li>
-              <li>Any browsing behavior or analytics</li>
-              <li>Device information or IP addresses</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">3. {t('privacy.localDataProcessing')}</h2>
-            <p><strong>Location Services:</strong> When you grant location permission, your GPS coordinates are processed entirely on your device to:</p>
-            <ul className="list-disc list-inside space-y-2 mt-2 ml-4">
-              <li>Show your position on the route map</li>
-              <li>Find the nearest bus stop to your current location</li>
-              <li>Calculate distances to stations</li>
-            </ul>
-            <p className="mt-3">This data never leaves your device and is not stored permanently.</p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">4. {t('privacy.localStorage')}</h2>
-            <p>We use your browser's local storage to save:</p>
-            <ul className="list-disc list-inside space-y-2 mt-2 ml-4">
-              <li><strong>Favorite buses:</strong> Your saved bus routes (stored locally on your device)</li>
-              <li><strong>Search History:</strong> Your search history and favorite routes (stored locally for your convenience)</li>
-            </ul>
-            <p className="mt-3">You can clear this data anytime through your browser settings or the app's settings page.</p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">5. {t('privacy.thirdPartyServices')}</h2>
-            <p><strong>Koy Jabo AI Assistant:</strong> Our built-in AI assistant processes your route queries to provide intelligent recommendations. Your questions are handled securely and are not stored permanently or shared with third parties.</p>
-            <p className="mt-3"><strong>Google Maps:</strong> When you click "Real Map" to view routes in Google Maps, you'll be redirected to Google Maps. Google's privacy policy applies to that service.</p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">6. {t('privacy.cookies')}</h2>
-            <p>কই যাবো does not use cookies for tracking or analytics. We only use browser local storage for the features mentioned above.</p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">7. {t('privacy.childrensPrivacy')}</h2>
-            <p>Our service is available to users of all ages. Since we don't collect any personal data, there are no special considerations for children's privacy.</p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">8. {t('privacy.changesToPolicy')}</h2>
-            <p>We may update this privacy policy from time to time. Any changes will be posted on this page with an updated "Last updated" date.</p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">9. {t('privacy.contactUs')}</h2>
-            <p>If you have any questions about this privacy policy, please contact us through our <a href="https://linkedin.com/in/mejbaur/" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">LinkedIn profile</a>.</p>
-          </section>
-
-          <div className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-xl p-4 mt-8">
-            <p className="text-sm font-bold text-green-800 dark:text-green-300">✓ Privacy-First Design</p>
-            <p className="text-sm text-green-700 dark:text-green-400 mt-1">কই যাবো is built with your privacy as a top priority. All data processing happens on your device, and nothing is sent to our servers.</p>
-          </div>
-        </div>
-
-        {/* Bottom padding for better scrolling */}
-        <div className="h-20"></div>
-      </div>
-    </div>
-  );
-
-  const renderTerms = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-y-auto overflow-x-hidden w-full relative max-w-full">
-      <div className="max-w-3xl mx-auto p-6 md:p-12 pt-20 md:pt-24 pb-32 md:pb-12">
-        <h1 className="text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100">{t('terms.title')}</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">{t('terms.lastUpdated')}: November 26, 2025</p>
-
-        <div className="space-y-6 text-gray-700 dark:text-gray-300 leading-relaxed">
-          <section>
-            <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">1. {t('terms.acceptanceOfTerms')}</h2>
-            <p>By accessing and using কই যাবো, you accept and agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our service.</p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">2. {t('terms.serviceDescription')}</h2>
-            <p>কই যাবো is a free, web-based application that provides:</p>
-            <ul className="list-disc list-inside space-y-2 mt-2 ml-4">
-              <li>Bus route information across Bangladesh (inter-district, inter-city, local, and highway routes)</li>
-              <li>Metro rail, train, and launch station information (where available)</li>
-              <li>Fare estimation based on official rates</li>
-              <li>Route visualization and mapping</li>
-              <li>AI-powered route assistance (when you provide your own API key)</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">3. {t('terms.noWarranty')}</h2>
-            <p>কই যাবো is provided "AS IS" and "AS AVAILABLE" without any warranties of any kind, either express or implied, including but not limited to:</p>
-            <ul className="list-disc list-inside space-y-2 mt-2 ml-4">
-              <li>Accuracy of bus routes, schedules, or fare information</li>
-              <li>Availability or reliability of the service</li>
-              <li>Fitness for a particular purpose</li>
-              <li>Non-infringement of third-party rights</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">4. {t('terms.dataAccuracy')}</h2>
-            <p><strong>Important Notice:</strong> Bus routes, stops, timings, and fares are subject to change by transport authorities without notice. We make reasonable efforts to keep information current, but:</p>
-            <ul className="list-disc list-inside space-y-2 mt-2 ml-4">
-              <li>Routes may be modified or discontinued</li>
-              <li>Fares may change based on government regulations</li>
-              <li>Bus schedules may vary due to traffic, weather, or other factors</li>
-              <li>Station locations and names may be updated</li>
-            </ul>
-            <p className="mt-3">Always verify critical information with official sources or bus operators.</p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">5. {t('terms.limitationOfLiability')}</h2>
-            <p>To the maximum extent permitted by law, কই যাবো and its developers shall not be liable for:</p>
-            <ul className="list-disc list-inside space-y-2 mt-2 ml-4">
-              <li>Any direct, indirect, incidental, or consequential damages</li>
-              <li>Loss of time, money, or opportunities due to inaccurate information</li>
-              <li>Missed buses, wrong routes, or incorrect fare calculations</li>
-              <li>Any damages arising from the use or inability to use the service</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">6. {t('terms.userResponsibilities')}</h2>
-            <p>When using কই যাবো, you agree to:</p>
-            <ul className="list-disc list-inside space-y-2 mt-2 ml-4">
-              <li>Use the service for lawful purposes only</li>
-              <li>Not attempt to reverse engineer or modify the application</li>
-              <li>Not use automated systems to scrape or download data</li>
-              <li>Verify important information with official sources</li>
-              <li>Keep your API keys (if used) secure and confidential</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">7. {t('terms.thirdPartyServices')}</h2>
-            <p><strong>Koy Jabo AI Assistant:</strong> Our AI assistant is provided as-is to help you navigate Bangladesh more easily. It is completely free and available to all users.</p>
-            <p className="mt-2"><strong>Google Maps:</strong> Links to Google Maps are provided for convenience and are subject to Google's terms of service.</p>
-            <p className="mt-2">We are not responsible for the availability, accuracy, or terms of these third-party services.</p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">8. {t('terms.intellectualProperty')}</h2>
-            <p>The কই যাবো application, including its design, code, and content, is the property of its developers. Bus route data is compiled from publicly available sources and transport authority information.</p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">9. {t('terms.serviceModifications')}</h2>
-            <p>We reserve the right to:</p>
-            <ul className="list-disc list-inside space-y-2 mt-2 ml-4">
-              <li>Modify or discontinue the service at any time</li>
-              <li>Update features, routes, or information</li>
-              <li>Change these terms of service</li>
-            </ul>
-            <p className="mt-3">Continued use of the service after changes constitutes acceptance of the new terms.</p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">10. {t('terms.governingLaw')}</h2>
-            <p>These terms shall be governed by and construed in accordance with the laws of Bangladesh, without regard to its conflict of law provisions.</p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">11. {t('terms.contactUs')}</h2>
-            <p>For questions about these terms, please contact us through our <a href="https://linkedin.com/in/mejbaur/" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">LinkedIn profile</a>.</p>
-          </section>
-
-          <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-xl p-4 mt-8">
-            <p className="text-sm font-bold text-blue-800 dark:text-blue-300">📱 Free & Open Service</p>
-            <p className="text-sm text-blue-700 dark:text-blue-400 mt-1">কই যাবো is provided as a free public service to help Dhaka commuters navigate the city. Use it as a helpful guide, but always exercise your own judgment when traveling.</p>
-          </div>
-        </div>
-
-        {/* Bottom padding for better scrolling */}
-        <div className="h-20"></div>
-      </div>
-    </div>
-  );
 
   const renderNotFound = () => (
     <div className="flex flex-col items-center justify-center h-full text-center p-6 bg-sky-50 dark:bg-slate-900 overflow-hidden relative w-full">
@@ -3599,13 +3407,15 @@ const App: React.FC = () => {
               <SettingsPage
                 isDarkMode={isDarkMode}
                 toggleTheme={() => setIsDarkMode(!isDarkMode)}
+                onContactClick={() => setView(AppView.CONTACT)}
               />
             )}
             {view === AppView.DAILY_JOURNEY && (
               <DailyJourneyView onBack={() => setView(previousView)} />
             )}
-            {view === AppView.PRIVACY && renderPrivacyPolicy()}
-            {view === AppView.TERMS && renderTerms()}
+            {view === AppView.PRIVACY && <PrivacyPolicy />}
+            {view === AppView.TERMS && <TermsOfService />}
+            {view === AppView.CONTACT && <ContactUs />}
             {view === AppView.FOR_AI && renderForAi()}
             {view === AppView.INSTALL_APP && (
               <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-20 md:pt-12 overflow-y-auto w-full">

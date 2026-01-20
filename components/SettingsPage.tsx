@@ -1,13 +1,14 @@
 import React from 'react';
-import { Settings as SettingsIcon, Sun, Moon, Monitor, Globe } from 'lucide-react';
+import { Settings as SettingsIcon, Sun, Moon, Monitor, Globe, Mail, ChevronRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface SettingsPageProps {
     isDarkMode: boolean;
     toggleTheme: () => void;
+    onContactClick: () => void;
 }
 
-const SettingsPage: React.FC<SettingsPageProps> = ({ isDarkMode, toggleTheme }) => {
+const SettingsPage: React.FC<SettingsPageProps> = ({ isDarkMode, toggleTheme, onContactClick }) => {
     const { language, setLanguage, t } = useLanguage();
 
     return (
@@ -173,6 +174,27 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ isDarkMode, toggleTheme }) 
                         </div>
                     </div>
 
+                    {/* Support & Contact */}
+                    <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
+                        <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">
+                            Support & Feedback
+                        </h2>
+
+                        <button
+                            onClick={onContactClick}
+                            className="w-full flex items-center gap-4 p-4 rounded-xl border-2 border-slate-100 dark:border-slate-700 hover:border-blue-200 dark:hover:border-blue-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-all text-left group"
+                        >
+                            <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform">
+                                <Mail className="w-6 h-6" />
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Contact Us</h3>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">Get help or report an issue</p>
+                            </div>
+                            <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
+                        </button>
+                    </div>
+
                     {/* App Info */}
                     <div className="bg-slate-50 dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
                         <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
@@ -185,7 +207,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ isDarkMode, toggleTheme }) 
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-gray-600 dark:text-gray-300">{t('settings.lastUpdated')}</span>
-                                <span className="font-medium text-gray-900 dark:text-white">December 2025</span>
+                                <span className="font-medium text-gray-900 dark:text-white">January 2026</span>
                             </div>
                         </div>
                     </div>

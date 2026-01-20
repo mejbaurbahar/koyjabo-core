@@ -118,6 +118,15 @@
     <mobile:mobile/>
   </url>
 
+  <!-- Contact Page -->
+  <url>
+    <loc>https://koyjabo.com/contact</loc>
+    <lastmod>2026-01-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <mobile:mobile/>
+  </url>
+
   <!-- Daily Journey Tracker -->
   <url>
     <loc>https://koyjabo.com/daily-journey</loc>
