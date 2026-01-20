@@ -62,7 +62,7 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
                     display: 'block',
                     textAlign: 'center'
                 }}
-                data-ad-client="ca-pub-5648495168981727"
+                data-ad-client="ca-pub-6933713424631305"
                 data-ad-slot={adSlot}
                 data-ad-format={adFormat}
                 data-full-width-responsive={responsive ? 'true' : 'false'}

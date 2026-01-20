@@ -239,7 +239,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                     <ins
                         className="adsbygoogle"
                         style={{ display: 'block', textAlign: 'center' }}
-                        data-ad-client="ca-pub-5648495168981727"
+                        data-ad-client="ca-pub-6933713424631305"
                         data-ad-slot="auto"
                         data-ad-format="auto"
                         data-full-width-responsive="true"
@@ -275,7 +275,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                         style={{ display: 'block' }}
                         data-ad-format="fluid"
                         data-ad-layout-key="-6t+ed+2i-1n-4w"
-                        data-ad-client="ca-pub-5648495168981727"
+                        data-ad-client="ca-pub-6933713424631305"
                         data-ad-slot="auto"
                     ></ins>
                 </div>
@@ -340,7 +340,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                     <ins
                         className="adsbygoogle"
                         style={{ display: 'block' }}
-                        data-ad-client="ca-pub-5648495168981727"
+                        data-ad-client="ca-pub-6933713424631305"
                         data-ad-slot="auto"
                         data-ad-format="auto"
                         data-full-width-responsive="true"
