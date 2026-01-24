@@ -158,15 +158,15 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
         return;
       }
 
-      // 3. Proximity check: User must be within 0.5km of ANY station on this route
-      const MAX_DISTANCE_KM = 0.5; // 500 meters threshold (close proximity required)
+      // 3. Proximity check: User must be within 2km of ANY station on this route
+      const MAX_DISTANCE_KM = 2.0; // 2km threshold (more lenient for GPS/distance between stops)
       const minDistance = distanceToStation; // Already calculated in meters
 
       if (minDistance > MAX_DISTANCE_KM * 1000) {
         const nearestStation = nearestIndex !== -1 ? STATIONS[bus.stops[nearestIndex]] : null;
         setProximityError(
           t('liveNav.tooFarError') ||
-          `You are ${(minDistance / 1000).toFixed(1)}km away from the nearest station${nearestStation ? ` (${nearestStation.name})` : ''}. You must be within ${MAX_DISTANCE_KM}km of the route to go live.`
+          `You are ${(minDistance / 1000).toFixed(1)}km away from the nearest station${nearestStation ? ` (${nearestStation.name})` : ''}. You must be on the bus or within ${MAX_DISTANCE_KM}km of the route to go live.`
         );
         console.warn('❌ Proximity check failed:', {
           distance: minDistance,
@@ -228,8 +228,8 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
   const currentStation = nearestIndex !== -1 ? STATIONS[bus.stops[nearestIndex]] : null;
   const nextStopId = nearestIndex !== -1 && nearestIndex < bus.stops.length - 1 ? bus.stops[nearestIndex + 1] : null;
 
-  // Is the user actually AT the station (within 500m)?
-  const isAtStation = distanceToStation < 500;
+  // Is the user actually AT the station (within 1km)?
+  const isAtStation = distanceToStation < 1000;
 
   // Calculate dist to next stop
   let distToNext = 0;
