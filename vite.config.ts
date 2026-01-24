@@ -109,8 +109,9 @@ export default defineConfig(({ mode }) => {
         },
         workbox: {
           globPatterns: [
-            '**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest}',
-            'intercity/**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest}'
+            '**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest,webp,jpg,jpeg,gif}',
+            'intercity/**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest}',
+            'data/**/*.json'  // Include all JSON data files for offline
           ],
           navigateFallback: null,  // Disable automatic fallback, we'll handle routes explicitly
           navigateFallbackDenylist: [/^\/api/],

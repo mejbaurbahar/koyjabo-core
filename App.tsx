@@ -23,9 +23,9 @@ import {
   initializeOfflineSupport,
   getAiChatOfflineResponse,
   getIntercityRoutesOffline,
-  isIntercityDataStale,
+  isCacheStale,
   getOfflineFeatureStatus
-} from './services/offlineSupport';
+} from './services/enhancedOfflineSupport';
 
 import { autoPreloadMapTiles } from './services/offlineMapService';
 import {
@@ -58,6 +58,7 @@ import BlogPostDetail from './components/BlogPostDetail';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
 import ContactUs from './components/ContactUs';
+import OfflineIndicator from './components/OfflineIndicator';
 
 
 
@@ -3764,6 +3765,11 @@ const App: React.FC = () => {
           selectedRoute={selectedBus}
         />
 
+
+
+
+        {/* Offline Indicator - Shows all available offline features */}
+        <OfflineIndicator isOnline={isOnline} />
 
         {/* Stale Offline Warning Modal */}
         {showStaleOfflineWarning && (
