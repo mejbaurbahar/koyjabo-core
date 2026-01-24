@@ -2852,7 +2852,8 @@ const App: React.FC = () => {
                       <div
                         key={`${suggestion.type}-${suggestion.id}-${idx}`}
                         className="px-4 py-3.5 hover:bg-emerald-50 dark:hover:bg-slate-700 cursor-pointer border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors"
-                        onClick={() => {
+                        onMouseDown={(e) => {
+                          e.preventDefault(); // Prevent input blur
                           const displayName = suggestion.name;
                           setInputValue(displayName);
                           setShowSuggestions(false);
