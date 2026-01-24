@@ -175,7 +175,7 @@ const DhakaAlive: React.FC = () => {
             </div>
 
             {/* --- Far Background Layer (Skyline & Far Landmarks) (Z-5) --- */}
-            <div className={`absolute bottom-32 w-full h-96 z-0 flex items-end justify-center pointer-events-none ${isNight ? 'opacity-60' : 'opacity-80'}`}>
+            <div className={`absolute bottom-32 w-full h-64 md:h-96 z-0 flex items-end justify-center pointer-events-none ${isNight ? 'opacity-60' : 'opacity-80'}`}>
                 <Skyline isNight={isNight} />
                 <div className={`absolute bottom-0 transform scale-75 origin-bottom ${isNight ? 'brightness-50' : 'opacity-60'}`}>
                     <NationalMemorial onClick={() => handleLandmarkClick("National Martyrs' Memorial")} className="pointer-events-auto" />
@@ -193,7 +193,7 @@ const DhakaAlive: React.FC = () => {
                 <div className={`w-full max-w-[1600px] mx-auto flex items-end justify-between md:space-x-4 ${landmarkBrightness} transition-all duration-1000`}>
 
                     {/* Left Group */}
-                    <div className="flex items-end -space-x-8 md:space-x-4">
+                    <div className="flex items-end -space-x-4 md:space-x-4">
                         <div className="transform scale-90 md:scale-100 hover:-translate-y-2 transition-transform duration-500 origin-bottom">
                             <LalbaghFort onClick={() => handleLandmarkClick("Lalbagh Fort")} />
                         </div>
@@ -210,7 +210,7 @@ const DhakaAlive: React.FC = () => {
                     </div>
 
                     {/* Right Group */}
-                    <div className="flex items-end -space-x-8 md:space-x-4">
+                    <div className="flex items-end -space-x-4 md:space-x-4">
                         <div className="transform scale-90 md:scale-100 z-10 hover:-translate-y-2 transition-transform duration-500 origin-bottom">
                             <CurzonHall onClick={() => handleLandmarkClick("Curzon Hall")} />
                         </div>

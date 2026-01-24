@@ -193,16 +193,16 @@ export const Fog = () => (
 );
 
 const ThoughtBubble = ({ text, className }: { text: string, className?: string }) => (
-  <div className={`absolute z-50 flex flex-col items-center min-w-[180px] ${className}`}>
-    <div className="bg-white px-4 py-3 rounded-2xl shadow-xl border border-stone-200 transition-all duration-300">
-      <p className="text-xs md:text-sm text-stone-800 font-medium leading-snug text-center italic font-serif">
+  <div className={`absolute z-50 flex flex-col items-center min-w-[120px] md:min-w-[180px] max-w-[150px] md:max-w-[250px] ${className}`}>
+    <div className="bg-white px-3 py-2 md:px-4 md:py-3 rounded-2xl shadow-xl border border-stone-200 transition-all duration-300">
+      <p className="text-[10px] md:text-sm text-stone-800 font-medium leading-tight md:leading-snug text-center italic font-serif">
         "{text}"
       </p>
     </div>
     <div className="flex flex-col items-center -mt-1 space-y-[2px]">
-      <div className="w-2 h-2 bg-white rounded-full shadow-sm border border-stone-100"></div>
-      <div className="w-1.5 h-1.5 bg-white/90 rounded-full"></div>
-      <div className="w-1 h-1 bg-white/80 rounded-full"></div>
+      <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white rounded-full shadow-sm border border-stone-100"></div>
+      <div className="w-1 h-1 md:w-1.5 md:h-1.5 bg-white/90 rounded-full"></div>
+      <div className="w-0.5 h-0.5 md:w-1 md:h-1 bg-white/80 rounded-full"></div>
     </div>
   </div>
 );
@@ -366,15 +366,14 @@ export const CityBus = ({ isNight, isStopped }: { isNight: boolean, isStopped: b
     if (isStopped && busRef.current) {
       const rect = busRef.current.getBoundingClientRect();
       const screenWidth = window.innerWidth;
-      // Traffic police is around 80% of the screen (right-20%)
-      // If the bus is past 70% of the screen width, assume it's crossed or crossing the police
-      // and shouldn't stop.
-      if (rect.left < (screenWidth * 0.70)) {
+      // Traffic police is at right-20% (approx 80% of screen width)
+      // Stop only if the front of the bus (rect.right) hasn't reached the police yet
+      if (rect.right < (screenWidth * 0.75)) {
         setShouldHalt(true);
-        // Auto-resume after 3 seconds to prevent permanent stuck
+        // Auto-resume after 3.5 seconds to prevent permanent stuck
         const timer = setTimeout(() => {
           setShouldHalt(false);
-        }, 3000);
+        }, 3500);
         return () => clearTimeout(timer);
       } else {
         setShouldHalt(false);

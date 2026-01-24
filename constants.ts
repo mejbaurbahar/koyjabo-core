@@ -158,6 +158,7 @@ export const STATIONS: Record<string, Station> = {
   'dhour': { id: 'dhour', name: 'Dhour', bnName: 'ধৌর', lat: 23.8750, lng: 90.3600 },
   'kamarpara': { id: 'kamarpara', name: 'Kamarpara', bnName: 'কামারপাড়া', lat: 23.8850, lng: 90.3850 },
   'maowa': { id: 'maowa', name: 'Maowa', bnName: 'মাওয়া', lat: 23.4700, lng: 90.2600 },
+  'munshiganj': { id: 'munshiganj', name: 'Munshiganj', bnName: 'মুন্সীগঞ্জ', lat: 23.5435, lng: 90.5312 },
   'vashantek': { id: 'vashantek', name: 'Vashantek', bnName: 'ভাসানটেক', lat: 23.8180, lng: 90.3850 },
   'jahangir_gate': { id: 'jahangir_gate', name: 'Jahangir Gate', bnName: 'জাহাঙ্গীর গেট', lat: 23.7700, lng: 90.3900 },
   'staff_road': { id: 'staff_road', name: 'Staff Road', bnName: 'স্টাফ রোড', lat: 23.8000, lng: 90.4020 },
@@ -3011,6 +3012,141 @@ export const BUS_DATA: BusRoute[] = [
     stops: ['panchagarh', 'thakurgaon', 'dinajpur', 'bogra', 'pabna', 'kushtia', 'jessore', 'khulna'],
     type: 'Sitting',
     hours: '6:00 AM'
+  },
+  {
+    id: 'itihash',
+    name: 'Itihash Paribahan',
+    bnName: 'ইতিহাস পরিবহন',
+    routeString: 'Mirpur 14 ⇄ Chandra',
+    stops: ['mirpur14', 'mirpur10', 'mirpur1', 'gabtoli', 'savar', 'nobinagar', 'chandra'],
+    type: 'Semi-Sitting',
+    hours: '6:00 AM - 10:00 PM'
+  },
+  {
+    id: 'selfie',
+    name: 'Selfie Paribahan',
+    bnName: 'সেলফি পরিবহন',
+    routeString: 'Gabtoli ⇄ Paturia',
+    stops: ['gabtoli', 'savar', 'manikganj', 'paturia'],
+    type: 'Sitting',
+    hours: '5:00 AM - 9:00 PM'
+  },
+  {
+    id: 'provati_banasree',
+    name: 'Provati Banasree',
+    bnName: 'প্রভাতী বনশ্রী',
+    routeString: 'Gulistan ⇄ Gazipur',
+    stops: ['gulistan', 'shahbag', 'farmgate', 'mohakhali', 'banani', 'airport', 'tongi', 'board_bazar', 'gazipur'],
+    type: 'Semi-Sitting',
+    hours: '5:30 AM - 11:00 PM'
+  },
+  {
+    id: 'thikana',
+    name: 'Thikana Paribahan',
+    bnName: 'ঠিকানা পরিবহন',
+    routeString: 'Sayedabad ⇄ Savar',
+    stops: ['sayedabad', 'jatrabari', 'gulistan', 'shahbag', 'science_lab', 'kallyanpur', 'gabtoli', 'savar'],
+    type: 'Semi-Sitting',
+    hours: '6:00 AM - 10:30 PM'
+  },
+  {
+    id: 'bandhan',
+    name: 'Bandhan Paribahan',
+    bnName: 'বন্ধন পরিবহন',
+    routeString: 'Gulistan ⇄ Narayanganj',
+    stops: ['gulistan', 'jatrabari', 'signboard', 'narayanganj'],
+    type: 'Sitting',
+    hours: '5:30 AM - 11:30 PM'
+  },
+  {
+    id: 'utsab',
+    name: 'Utsab Paribahan',
+    bnName: 'উৎসব পরিবহন',
+    routeString: 'Gulistan ⇄ Narayanganj',
+    stops: ['gulistan', 'jatrabari', 'signboard', 'narayanganj'],
+    type: 'Sitting',
+    hours: '5:30 AM - 11:30 PM'
+  },
+  {
+    id: 'great_elish',
+    name: 'Great Elish',
+    bnName: 'গ্রেট ইলিশ',
+    routeString: 'Gulistan ⇄ Mawa',
+    stops: ['gulistan', 'jatrabari', 'sayedabad', 'postagola', 'maowa'],
+    type: 'Sitting',
+    hours: '6:00 AM - 10:00 PM'
+  },
+  {
+    id: 'dighirpar',
+    name: 'Dighirpar Transport',
+    bnName: 'দিঘীরপাড় পরিবহন',
+    routeString: 'Gulistan ⇄ Munshiganj',
+    stops: ['gulistan', 'jatrabari', 'sayedabad', 'postagola', 'munshiganj'],
+    type: 'Local',
+    hours: '6:00 AM - 9:00 PM'
+  },
+  {
+    id: 'vip_27',
+    name: 'VIP 27',
+    bnName: 'ভিআইপি ২৭',
+    routeString: 'Azimpur ⇄ Gazipur',
+    stops: ['azimpur', 'newmarket', 'science_lab', 'farmgate', 'mohakhali', 'banani', 'airport', 'gazipur'],
+    type: 'Sitting',
+    hours: '6:00 AM - 10:30 PM'
+  },
+  {
+    id: 'winner',
+    name: 'Winner',
+    bnName: 'উইনার',
+    routeString: 'Gulistan ⇄ Gazipur',
+    stops: ['gulistan', 'shahbag', 'farmgate', 'mohakhali', 'banani', 'airport', 'tongi', 'board_bazar', 'gazipur'],
+    type: 'Sitting',
+    hours: '6:00 AM - 11:30 PM'
+  },
+  {
+    id: 'gazipur_paribahan',
+    name: 'Gazipur Paribahan',
+    bnName: 'গাজীপুর পরিবহন',
+    routeString: 'Gulistan ⇄ Gazipur',
+    stops: ['gulistan', 'shahbag', 'farmgate', 'mohakhali', 'banani', 'airport', 'tongi', 'board_bazar', 'gazipur'],
+    type: 'Semi-Sitting',
+    hours: '6:00 AM - 10:30 PM'
+  },
+  {
+    id: 'prochesta',
+    name: 'Prochesta Paribahan',
+    bnName: 'প্রচেষ্টা পরিবহন',
+    routeString: 'Gulistan ⇄ Mawa',
+    stops: ['gulistan', 'jatrabari', 'sayedabad', 'postagola', 'maowa'],
+    type: 'Sitting',
+    hours: '5:30 AM - 10:00 PM'
+  },
+  {
+    id: 'nayan',
+    name: 'Nayan Paribahan',
+    bnName: 'নয়ন পরিবহন',
+    routeString: 'Gulistan ⇄ Munshiganj',
+    stops: ['gulistan', 'jatrabari', 'sayedabad', 'postagola', 'munshiganj'],
+    type: 'Local',
+    hours: '6:00 AM - 9:00 PM'
+  },
+  {
+    id: 'raida',
+    name: 'Raida Paribahan',
+    bnName: 'রাইদা পরিবহন',
+    routeString: 'Diabari ⇄ Postagola',
+    stops: ['diabari', 'uttara', 'airport', 'khilkhet', 'kuril', 'notun_bazar', 'badda', 'rampura', 'malibagh', 'sayedabad', 'jatrabari', 'postagola'],
+    type: 'Semi-Sitting',
+    hours: '6:00 AM - 10:00 PM'
+  },
+  {
+    id: 'trans_silva',
+    name: 'Trans Silva',
+    bnName: 'ট্রান্স সিলভা',
+    routeString: 'Mirpur 1 ⇄ Jatrabari',
+    stops: ['mirpur1', 'sony_cinema', 'mirpur2', 'mirpur10', 'kazipara', 'shewrapara', 'agargaon', 'farmgate', 'shahbag', 'paltan', 'gulistan', 'motijheel', 'jatrabari'],
+    type: 'Semi-Sitting',
+    hours: '6:00 AM - 10:30 PM'
   }
 ];
 
