@@ -1554,7 +1554,7 @@ export const BUS_DATA: BusRoute[] = [
     hours: '6:00 AM - 10:00 PM'
   },
   {
-    id: 'modhumoti',
+    id: 'modhumoti_2',
     name: 'Modhumoti',
     bnName: 'মধুমতি',
     routeString: 'Chiriyakhana ⇄ Demra',
@@ -3014,7 +3014,7 @@ export const BUS_DATA: BusRoute[] = [
     hours: '6:00 AM'
   },
   {
-    id: 'itihash',
+    id: 'itihash_paribahan',
     name: 'Itihash Paribahan',
     bnName: 'ইতিহাস পরিবহন',
     routeString: 'Mirpur 14 ⇄ Chandra',
@@ -3023,7 +3023,7 @@ export const BUS_DATA: BusRoute[] = [
     hours: '6:00 AM - 10:00 PM'
   },
   {
-    id: 'selfie',
+    id: 'selfie_paribahan',
     name: 'Selfie Paribahan',
     bnName: 'সেলফি পরিবহন',
     routeString: 'Gabtoli ⇄ Paturia',
@@ -3032,7 +3032,7 @@ export const BUS_DATA: BusRoute[] = [
     hours: '5:00 AM - 9:00 PM'
   },
   {
-    id: 'provati_banasree',
+    id: 'provati_banasree_2',
     name: 'Provati Banasree',
     bnName: 'প্রভাতী বনশ্রী',
     routeString: 'Gulistan ⇄ Gazipur',
@@ -3086,7 +3086,7 @@ export const BUS_DATA: BusRoute[] = [
     hours: '6:00 AM - 9:00 PM'
   },
   {
-    id: 'vip_27',
+    id: 'vip_27_2',
     name: 'VIP 27',
     bnName: 'ভিআইপি ২৭',
     routeString: 'Azimpur ⇄ Gazipur',
@@ -3095,7 +3095,7 @@ export const BUS_DATA: BusRoute[] = [
     hours: '6:00 AM - 10:30 PM'
   },
   {
-    id: 'winner',
+    id: 'winner_2',
     name: 'Winner',
     bnName: 'উইনার',
     routeString: 'Gulistan ⇄ Gazipur',
@@ -3104,7 +3104,7 @@ export const BUS_DATA: BusRoute[] = [
     hours: '6:00 AM - 11:30 PM'
   },
   {
-    id: 'gazipur_paribahan',
+    id: 'gazipur_paribahan_2',
     name: 'Gazipur Paribahan',
     bnName: 'গাজীপুর পরিবহন',
     routeString: 'Gulistan ⇄ Gazipur',
@@ -3113,7 +3113,7 @@ export const BUS_DATA: BusRoute[] = [
     hours: '6:00 AM - 10:30 PM'
   },
   {
-    id: 'prochesta',
+    id: 'prochesta_paribahan',
     name: 'Prochesta Paribahan',
     bnName: 'প্রচেষ্টা পরিবহন',
     routeString: 'Gulistan ⇄ Mawa',
@@ -3131,7 +3131,7 @@ export const BUS_DATA: BusRoute[] = [
     hours: '6:00 AM - 9:00 PM'
   },
   {
-    id: 'raida',
+    id: 'raida_paribahan',
     name: 'Raida Paribahan',
     bnName: 'রাইদা পরিবহন',
     routeString: 'Diabari ⇄ Postagola',
