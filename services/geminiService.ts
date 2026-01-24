@@ -1,6 +1,22 @@
 import { BUS_DATA, METRO_STATIONS, STATIONS } from '../constants';
 import { getOfflineIntercityData } from '../intercity/offlineService';
 import { findRoutesBetweenStations, SuggestedRoute } from './routePlanner';
+import {
+  FARE_DATA,
+  TRAFFIC_PATTERNS,
+  BUS_TYPES,
+  TRAVEL_TIPS,
+  FAQ_DATABASE,
+  SEASONAL_INFO,
+  EMERGENCY_INFO
+} from './enhancedAIData';
+import {
+  enhanceResponseWithOnlineData,
+  learningSystem,
+  fetchWeatherData,
+  getSmartSuggestions,
+  getWeatherRecommendations
+} from './onlineLearningService';
 
 export interface ChatMessage {
   role: 'user' | 'assistant';
@@ -749,16 +765,120 @@ const findAirportInfo = (query: string): string => {
   return "";
 };
 
+
+// --- ENHANCEMENT HELPERS ---
+
+function addTrafficContext(response: string, isBn: boolean): string {
+  const hour = new Date().getHours();
+  const day = new Date().getDay();
+
+  // Morning peak
+  if (hour >= 8 && hour <= 10) {
+    const delay = TRAFFIC_PATTERNS.dhaka.peakHours.morning.delayFactor;
+    response += isBn
+      ? `\n\n⏰ **সকালের পিক আওয়ার!** স্বাভাবিকের চেয়ে ${delay}x বেশি সময় লাগতে পারে।`
+      : `\n\n⏰ **Morning Peak Hour!** Expect ${delay}x normal travel time.`;
+  }
+
+  // Evening peak
+  if (hour >= 17 && hour <= 20) {
+    const delay = TRAFFIC_PATTERNS.dhaka.peakHours.evening.delayFactor;
+    response += isBn
+      ? `\n\n🌆 **সন্ধ্যার পিক আওয়ার!** স্বাভাবিকের চেয়ে ${delay}x বেশি সময় লাগবে। মেট্রোরেল দ্রুততম।`
+      : `\n\n🌆 **Evening Peak Hour!** Expect ${delay}x normal time. Metro is fastest.`;
+  }
+
+  // Friday
+  if (day === 5) {
+    response += isBn
+      ? `\n\n🕌 **শুক্রবার:** মেট্রোরেল বন্ধ। শুধু বাস সার্ভিস চলছে।`
+      : `\n\n🕌 **Friday:** Metro closed. Only bus services available.`;
+  }
+
+  return response;
+}
+
+function addBusTypeInfo(busType: string, isBn: boolean): string {
+  const typeInfo = BUS_TYPES[busType as keyof typeof BUS_TYPES];
+  if (!typeInfo) return '';
+
+  return isBn
+    ? `\n**ধরন:** ${typeInfo.bnName}\n**সুবিধা:** ${typeInfo.features.join(', ')}\n**ভাড়া রেঞ্জ:** ৳${typeInfo.avgFare}`
+    : `\n**Type:** ${typeInfo.fullName}\n**Features:** ${typeInfo.features.join(', ')}\n**Fare Range:** ৳${typeInfo.avgFare}`;
+}
+
+function addSeasonalAdvice(destination: string, isBn: boolean): string {
+  const month = new Date().getMonth();
+  let season: keyof typeof SEASONAL_INFO = 'winter';
+
+  if (month >= 3 && month <= 9) season = 'summer';
+  else if (month >= 5 && month <= 8) season = 'monsoon';
+  else season = 'winter';
+
+  const info = SEASONAL_INFO[season];
+  const tips = info.considerations.slice(0, 3).join('\n- ');
+
+  return isBn
+    ? `\n\n🌍 **${destination} ভ্রমণের জন্য কিছু পরামর্শ:**\n- ${tips}`
+    : `\n\n🌍 **Seasonal Advice for ${destination}:**\n- ${tips}`;
+}
+
+function addTravelTips(query: string, isBn: boolean): string {
+  const isIntercity = query.toLowerCase().match(/(cox|sylhet|chittagong|চট্টগ্রাম|সিলেট|কক্স)/);
+  const tips = isIntercity
+    ? TRAVEL_TIPS.intercity[isBn ? 'bn' : 'en']
+    : TRAVEL_TIPS.general[isBn ? 'bn' : 'en'];
+
+  const randomTips = tips.sort(() => 0.5 - Math.random()).slice(0, 3);
+
+  return isBn
+    ? `\n\n💡 **ট্রাভেল টিপস:**\n- ${randomTips.join('\n- ')}`
+    : `\n\n💡 **Travel Tips:**\n- ${randomTips.join('\n- ')}`;
+}
+
 // --- MAIN AI LOGIC ---
+learningSystem.loadFromStorage();
 
 export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, chatHistory: ChatMessage[] = []): Promise<string> => {
 
-  // Separate actual query from context if present
   const [actualQueryPart, contextPart] = userQuery.split('[Context:');
   const isOffline = userQuery.includes('[OfflineMode]');
   const query = actualQueryPart.trim();
   const lowerQuery = normalize(query);
   const isBn = /[\u0980-\u09FF]/.test(query);
+
+  // === FAQ Database Check ===
+  const faqChecks = {
+    'metro timing': lowerQuery.includes('metro') && (lowerQuery.includes('time') || lowerQuery.includes('timing') || lowerQuery.includes('সময়')),
+    'bus fare': (lowerQuery.includes('fare') || lowerQuery.includes('ভাড়া')) && !lowerQuery.includes('metro'),
+    'best time to travel': lowerQuery.includes('best time') || lowerQuery.includes('peak') || lowerQuery.includes('সেরা সময়')
+  };
+
+  for (const [key, condition] of Object.entries(faqChecks)) {
+    if (condition && FAQ_DATABASE[key as keyof typeof FAQ_DATABASE]) {
+      const faqResponse = FAQ_DATABASE[key as keyof typeof FAQ_DATABASE][isBn ? 'bn' : 'en'];
+      return await enhanceResponseWithOnlineData(faqResponse, query, isBn ? 'bn' : 'en');
+    }
+  }
+
+  // Emergency Info Check
+  if (lowerQuery.includes('emergency') || lowerQuery.includes('help') ||
+    lowerQuery.includes('hospital') || lowerQuery.includes('জরুরি')) {
+
+    const emergencyResponse = isBn
+      ? `🚨 **জরুরি নম্বর:**\n` +
+      `- পুলিশ/অ্যাম্বুলেন্স/ফায়ার: **${EMERGENCY_INFO.numbers.police}**\n` +
+      `- ট্রাফিক পুলিশ: **${EMERGENCY_INFO.numbers.trafficPolice}**\n` +
+      `- রেলওয়ে: **${EMERGENCY_INFO.numbers.railway}**\n\n` +
+      `🏥 **হাসপাতাল:** ${EMERGENCY_INFO.hospitals.dhaka.slice(0, 3).join(', ')}`
+      : `🚨 **Emergency Numbers:**\n` +
+      `- Police/Ambulance/Fire: **${EMERGENCY_INFO.numbers.police}**\n` +
+      `- Traffic Police: **${EMERGENCY_INFO.numbers.trafficPolice}**\n` +
+      `- Railway: **${EMERGENCY_INFO.numbers.railway}**\n\n` +
+      `🏥 **Hospitals:** ${EMERGENCY_INFO.hospitals.dhaka.slice(0, 3).join(', ')}`;
+
+    return emergencyResponse;
+  }
   let responseParts: string[] = [];
 
   // Parse location context if available
@@ -977,7 +1097,37 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
     }
   }
 
-  return responseParts.join("\n\n");
+  let finalResponse = responseParts.join("\n\n");
+
+  // Add traffic context
+  finalResponse = addTrafficContext(finalResponse, isBn);
+
+  // Add seasonal advice if destination mentioned
+  for (const [key, destination] of Object.entries(TOURIST_DESTINATIONS)) {
+    if (lowerQuery.includes(normalize(key)) || (destination.bn && lowerQuery.includes(normalize(destination.bn)))) {
+      finalResponse += addSeasonalAdvice(isBn ? destination.bn : key, isBn);
+      break;
+    }
+  }
+
+  // Add random travel tip (33% chance)
+  if (Math.random() < 0.33) {
+    finalResponse += addTravelTips(query, isBn);
+  }
+
+  // Final enhancement with online data
+  if (navigator.onLine && !isOffline) {
+    try {
+      finalResponse = await enhanceResponseWithOnlineData(finalResponse, query, isBn ? 'bn' : 'en');
+    } catch (e) {
+      // Ignored
+    }
+  }
+
+  // Log query for learning
+  learningSystem.logQuery(query, true);
+
+  return finalResponse;
 };
 
 // Keeping these for compatibility but making them no-ops or always true
