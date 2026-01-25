@@ -267,12 +267,14 @@ export function getOfflineStatusBanner(language: 'en' | 'bn' = 'en'): {
     const isStale = isCacheStale();
     const cacheAge = getCacheAgeDays();
 
+    // Even if cache flag is missing, Core App Data (bundled) is available.
+    // So we shouldn't scare the user.
     if (!hasCache) {
         return {
             message: language === 'bn'
-                ? '⚠️ অফলাইন ডেটা উপলব্ধ নেই। পূর্ণ অভিজ্ঞতার জন্য অনলাইনে সংযুক্ত হন।'
-                : '⚠️ Offline data not available. Connect online for full experience.',
-            type: 'warning'
+                ? '✅ অফলাইন মোড (বেসিক) - বাস রুট উপলব্ধ!'
+                : '✅ Offline Mode (Basic) - Bus routes available!',
+            type: 'success' // Changed from warning to success as core features work
         };
     }
 

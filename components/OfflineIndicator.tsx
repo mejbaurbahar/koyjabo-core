@@ -53,9 +53,9 @@ const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ isOnline }) => {
 
     return (
         <>
-            {/* Top Banner */}
-            <div className={`fixed top-0 left-0 right-0 z-50 ${getBgColor()} border-b shadow-sm`}>
-                <div className="max-w-7xl mx-auto px-4 py-2">
+            {/* Bottom Floating Banner (Toast Style) */}
+            <div className={`fixed bottom-20 md:bottom-8 left-4 right-4 md:left-auto md:right-8 md:w-auto min-w-[300px] z-[1000] ${getBgColor()} border rounded-xl shadow-lg animate-in slide-in-from-bottom-4`}>
+                <div className="px-4 py-3">
                     <div className="flex items-center justify-between gap-3">
                         <div className="flex items-center gap-2 flex-1">
                             {getIcon()}
