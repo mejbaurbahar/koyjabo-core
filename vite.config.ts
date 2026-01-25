@@ -113,7 +113,7 @@ export default defineConfig(({ mode }) => {
             'intercity/**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest}',
             'data/**/*.json'  // Include all JSON data files for offline
           ],
-          navigateFallback: null,  // Disable automatic fallback, we'll handle routes explicitly
+          navigateFallback: 'index.html',  // Enable automatic fallback to index.html for SPA offline support
           navigateFallbackDenylist: [/^\/api/],
           cleanupOutdatedCaches: true,
           clientsClaim: true,
