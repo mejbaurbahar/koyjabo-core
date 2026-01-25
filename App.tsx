@@ -58,7 +58,7 @@ import BlogPostDetail from './components/BlogPostDetail';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
 import ContactUs from './components/ContactUs';
-import OfflineIndicator from './components/OfflineIndicator';
+
 
 
 
@@ -3768,8 +3768,7 @@ const App: React.FC = () => {
 
 
 
-        {/* Offline Indicator - Shows all available offline features */}
-        <OfflineIndicator isOnline={isOnline} />
+
 
         {/* Stale Offline Warning Modal */}
         {showStaleOfflineWarning && (
