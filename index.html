@@ -968,47 +968,129 @@
   <script type="module" src="/src/main.tsx"></script>
 
   <!-- Footer Navigation - Added for AdSense Compliance -->
-  <footer
-    style="background: linear-gradient(135deg, #1f2937 0%, #111827 100%); color: #e5e7eb; padding: 40px 20px; text-align: center; font-family: 'Inter', sans-serif;">
-    <div style="max-width: 1200px; margin: 0 auto;">
-      <div style="margin-bottom: 25px;">
-        <img src="/logo.png" alt="কই যাবো" style="height: 60px; width: auto; margin-bottom: 15px;">
-        <p style="font-size: 1.1rem; margin-bottom: 5px; font-weight: 600;">কই যাবো - Bangladesh's Smart Transport
-          Finder</p>
-        <p style="font-size: 0.9rem; color: #9ca3af;">Find all bus routes in Dhaka and intercity routes across
-          Bangladesh instantly.</p>
+  <style>
+    .site-footer {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #e2e8f0;
+      padding: 50px 20px 30px;
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .site-footer .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .site-footer .footer-logo {
+      margin-bottom: 30px;
+    }
+
+    .site-footer .footer-logo img {
+      height: 50px;
+      width: auto;
+      margin-bottom: 12px;
+      opacity: 0.95;
+    }
+
+    .site-footer .footer-title {
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      font-weight: 700;
+      color: #10b981;
+      letter-spacing: 0.5px;
+    }
+
+    .site-footer .footer-tagline {
+      font-size: 0.95rem;
+      color: #94a3b8;
+      margin-bottom: 0;
+    }
+
+    .site-footer nav {
+      margin: 35px 0;
+      padding: 25px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .site-footer nav a {
+      color: #10b981;
+      text-decoration: none;
+      margin: 0 12px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .site-footer nav a:hover {
+      color: #34d399;
+      transform: translateY(-2px);
+    }
+
+    .site-footer nav .separator {
+      color: #475569;
+      margin: 0 5px;
+    }
+
+    .site-footer nav br {
+      line-height: 2;
+    }
+
+    .site-footer .footer-bottom {
+      margin-top: 30px;
+    }
+
+    .site-footer .copyright {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      margin-bottom: 12px;
+    }
+
+    .site-footer .features {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Hide footer on mobile devices */
+    @media (max-width: 768px) {
+      .site-footer {
+        display: none !important;
+      }
+    }
+  </style>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <img src="/logo.png" alt="কই যাবো">
+        <p class="footer-title">কই যাবো - Bangladesh's Smart Transport Finder</p>
+        <p class="footer-tagline">Find all bus routes in Dhaka and intercity routes across Bangladesh instantly.</p>
       </div>
 
-      <nav style="margin: 30px 0; padding: 20px 0; border-top: 1px solid #374151; border-bottom: 1px solid #374151;">
-        <a href="/"
-          style="color: #10b981; text-decoration: none; margin: 0 15px; font-weight: 500; transition: color 0.3s;">Home</a>
-        <span style="color: #4b5563;">|</span>
-        <a href="/intercity"
-          style="color: #10b981; text-decoration: none; margin: 0 15px; font-weight: 500; transition: color 0.3s;">Intercity
-          Routes</a>
-        <span style="color: #4b5563;">|</span>
-        <a href="/about.html"
-          style="color: #10b981; text-decoration: none; margin: 0 15px; font-weight: 500; transition: color 0.3s;">About
-          Us</a>
-        <span style="color: #4b5563;">|</span>
-        <a href="/contact.html"
-          style="color: #10b981; text-decoration: none; margin: 0 15px; font-weight: 500; transition: color 0.3s;">Contact</a>
-        <br style="margin: 10px 0;">
-        <a href="/privacy-policy.html"
-          style="color: #10b981; text-decoration: none; margin: 0 15px; font-weight: 500; transition: color 0.3s;">Privacy
-          Policy</a>
-        <span style="color: #4b5563;">|</span>
-        <a href="/terms-of-service.html"
-          style="color: #10b981; text-decoration: none; margin: 0 15px; font-weight: 500; transition: color 0.3s;">Terms
-          of Service</a>
+      <nav>
+        <a href="/">Home</a>
+        <span class="separator">|</span>
+        <a href="/intercity">Intercity Routes</a>
+        <span class="separator">|</span>
+        <a href="/about.html">About Us</a>
+        <span class="separator">|</span>
+        <a href="/contact.html">Contact</a>
+        <br>
+        <a href="/privacy-policy.html">Privacy Policy</a>
+        <span class="separator">|</span>
+        <a href="/terms-of-service.html">Terms of Service</a>
       </nav>
 
-      <div style="margin-top: 25px; font-size: 0.9rem; color: #9ca3af;">
-        <p style="margin-bottom: 10px;">&copy; 2024-2026 KoyJabo (কই যাবো). All rights reserved.</p>
-        <p style="margin-bottom: 10px;">Created with ❤️ in Bangladesh 🇧🇩 by <a href="https://linkedin.com/in/mejbaur/"
-            target="_blank" style="color: #10b981; text-decoration: none;">Mejbaur Bahar Fagun</a></p>
-        <p style="font-size: 0.85rem; color: #6b7280;">200+ Dhaka Buses | Metro Rail Guide | 50+ Intercity Routes |
-          AI-Powered | Works Offline</p>
+      <div class="footer-bottom">
+        <p class="copyright">&copy; 2024-2026 KoyJabo (কই যাবো). All rights reserved.</p>
+        <p class="features">200+ Dhaka Buses | Metro Rail Guide | 50+ Intercity Routes | AI-Powered | Works Offline</p>
       </div>
     </div>
   </footer>
