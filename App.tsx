@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, useTransition } from 'react';
-import { Search, Map as MapIcon, Navigation, Info, Bus, ArrowLeft, ArrowRight, Bot, ExternalLink, MapPin, Heart, Shield, Zap, Users, FileText, AlertTriangle, Home, ChevronRight, CheckCircle2, User, Linkedin, Facebook, ArrowRightLeft, Settings, Save, Eye, EyeOff, Trash2, Key, Calculator, Coins, Train, Sparkles, X, Gauge, Flag, Clock, Menu, WifiOff, Plane, Phone, Download, TramFront, Sun, Moon, Calendar, Plus, Mail } from 'lucide-react';
+import { Search, Map as MapIcon, Navigation, Info, Bus, ArrowLeft, ArrowRight, Bot, ExternalLink, MapPin, Heart, Shield, Zap, Users, FileText, AlertTriangle, Home, ChevronRight, CheckCircle2, User, Linkedin, Github, Facebook, ArrowRightLeft, Settings, Save, Eye, EyeOff, Trash2, Key, Calculator, Coins, Train, Sparkles, X, Gauge, Flag, Clock, Menu, WifiOff, Plane, Phone, Download, TramFront, Sun, Moon, Calendar, Plus, Mail } from 'lucide-react';
 import { Analytics } from "@vercel/analytics/react";
 import { BusRoute, AppView, UserLocation, ChatMessage } from './types';
 import { STATIONS, BUS_DATA, METRO_STATIONS, METRO_LINES, RAILWAY_STATIONS, AIRPORTS } from './constants';
@@ -1635,8 +1635,8 @@ const App: React.FC = () => {
                   <a href="https://linkedin.com/in/mejbaur/" target="_blank" rel="noreferrer" className="p-2 bg-gray-100 dark:bg-slate-800 hover:bg-blue-50 text-gray-600 dark:text-gray-400 hover:text-blue-600 rounded-xl transition-all">
                     <Linkedin className="w-5 h-5" />
                   </a>
-                  <a href="https://github.com/mejbaurbahar" target="_blank" rel="noreferrer" className="p-2 bg-gray-100 dark:bg-slate-800 hover:bg-slate-200 text-gray-600 dark:text-gray-400 hover:text-black rounded-xl transition-all">
-                    <ArrowRightLeft className="w-5 h-5" />
+                  <a href="https://github.com/fagun18" target="_blank" rel="noreferrer" className="p-2 bg-gray-100 dark:bg-slate-800 hover:bg-slate-200 text-gray-600 dark:text-gray-400 hover:text-black rounded-xl transition-all">
+                    <Github className="w-5 h-5" />
                   </a>
                 </div>
               </div>

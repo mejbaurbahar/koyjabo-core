@@ -136,7 +136,7 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/mejbaurbahar/Dhaka-Commute.git
+git clone https://github.com/fagun18/Dhaka-Commute.git
 cd Dhaka-Commute
 
 # Install dependencies
@@ -309,7 +309,7 @@ See our [Privacy Policy](https://koyjabo.com/privacy-policy.html) for details.
 - **Documentation**: [Full user guide](https://koyjabo.com/help)
 
 ### Follow Us
-- **GitHub**: [@mejbaurbahar](https://github.com/mejbaurbahar)
+- **GitHub**: [@fagun18](https://github.com/fagun18)
 - **LinkedIn**: [Mejbaur Bahar Fagun](https://linkedin.com/in/mejbaur/)
 
 ---
