@@ -274,7 +274,6 @@ If AdSense rejects again, check:
 3. **Google Search Console:** Check for manual actions
 
 **Need help?** Contact me at:
-- 📧 mejbaurbaharfagun@gmail.com
 - 🔗 [LinkedIn](https://linkedin.com/in/mejbaur/)
 
 ---

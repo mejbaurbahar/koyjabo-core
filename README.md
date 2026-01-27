@@ -306,7 +306,6 @@ See our [Privacy Policy](https://koyjabo.com/privacy-policy.html) for details.
 ## 🤝 Support
 
 ### Get Help
-- **Email**: [support@koyjabo.com](mailto:mejbaurbaharfagun@gmail.com)
 - **GitHub Issues**: [Report bugs or request features](https://github.com/mejbaurbahar/Dhaka-Commute/issues)
 - **Documentation**: [Full user guide](https://koyjabo.com/help)
 
@@ -345,7 +344,6 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 **Mejbaur Bahar Fagun**  
 Software Test Engineer | Full-stack Developer  
-📧 Email: mejbaurbaharfagun@gmail.com  
 🔗 LinkedIn: [linkedin.com/in/mejbaur](https://linkedin.com/in/mejbaur/)  
 🌐 Website: [koyjabo.com](https://koyjabo.com)
 

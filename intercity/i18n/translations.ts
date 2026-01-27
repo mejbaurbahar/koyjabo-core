@@ -75,6 +75,7 @@ export const translations: Record<Language, Translations> = {
             faq: 'প্রশ্ন ও উত্তর',
             forAI: 'এআই এর জন্য',
             blog: 'ব্লগ',
+            contact: 'যোগাযোগ',
             intercity: 'আন্তঃনগর',
         },
 
@@ -683,6 +684,7 @@ export const translations: Record<Language, Translations> = {
             faq: 'FAQ',
             forAI: 'For AI',
             blog: 'Blog',
+            contact: 'Contact',
             intercity: 'Intercity',
         },
 

@@ -1516,23 +1516,23 @@ const App: React.FC = () => {
             </p>
           </section>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-8 mb-16">
             <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-8 rounded-2xl border-l-6 border-dhaka-green">
               <h3 className="text-2xl font-bold text-dhaka-green dark:text-emerald-400 mb-3 flex items-center gap-2">
-                <Flag className="w-6 h-6" /> Our Mission
+                <Flag className="w-6 h-6" /> {t('about.mission')}
               </h3>
-              <p className="text-gray-800 dark:text-gray-200 font-bold mb-3 italic">To make public transport accessible, predictable, and stress-free for every Bangladeshi.</p>
+              <p className="text-gray-800 dark:text-gray-200 font-bold mb-3 italic">{t('about.missionMotto')}</p>
               <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                We believe that reliable transport information is a fundamental right, not a privilege. Whether you're a student commuting to university, a tourist exploring Dhaka, or a business traveler planning an intercity trip, KoyJabo ensures you always know the best way to reach your destination.
+                {t('about.missionDesc')}
               </p>
             </div>
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-8 rounded-2xl border-l-6 border-blue-600">
               <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-3 flex items-center gap-2">
-                <Eye className="w-6 h-6" /> Our Vision
+                <Eye className="w-6 h-6" /> {t('about.vision')}
               </h3>
-              <p className="text-gray-800 dark:text-gray-200 font-bold mb-3 italic">To become the most trusted transport companion for all of Bangladesh.</p>
+              <p className="text-gray-800 dark:text-gray-200 font-bold mb-3 italic">{t('about.visionMotto')}</p>
               <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                We envision a future where every Bangladeshi has instant access to accurate, real-time transport information in their native language. By leveraging AI, crowdsourcing, and cutting-edge technology, we're building the infrastructure for Bangladesh's smart transportation future.
+                {t('about.visionDesc')}
               </p>
             </div>
           </div>
@@ -1580,35 +1580,35 @@ const App: React.FC = () => {
                 <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 rounded-xl flex items-center justify-center mb-4">
                   <Zap className="w-6 h-6" />
                 </div>
-                <h4 className="font-bold text-xl text-gray-900 dark:text-gray-100 mb-2">Offline Capability</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Fast, reliable, and available even without an internet connection once cached.</p>
+                <h4 className="font-bold text-xl text-gray-900 dark:text-gray-100 mb-2">{t('about.offlineTitle')}</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{t('about.offlineDesc')}</p>
                 <ul className="mt-4 space-y-2 text-xs text-gray-500">
-                  <li>• Install as PWA on any device</li>
-                  <li>• Works 100% offline for searched routes</li>
-                  <li>• Faster load times & lower data usage</li>
+                  <li>• {t('about.offlineItem1')}</li>
+                  <li>• {t('about.offlineItem2')}</li>
+                  <li>• {t('about.offlineItem3')}</li>
                 </ul>
               </div>
             </div>
           </section>
 
           <section>
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">Our Impact</h2>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">{t('about.impactTitle')}</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="bg-dhaka-green dark:bg-emerald-800 p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
                 <span className="text-3xl font-bold block mb-1">10k+</span>
-                <span className="text-[10px] uppercase font-bold opacity-80">Monthly Users</span>
+                <span className="text-[10px] uppercase font-bold opacity-80">{t('about.impactMonthly')}</span>
               </div>
               <div className="bg-dhaka-red dark:bg-red-800 p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
                 <span className="text-3xl font-bold block mb-1">200+</span>
-                <span className="text-[10px] uppercase font-bold opacity-80">Local Buses</span>
+                <span className="text-[10px] uppercase font-bold opacity-80">{t('about.impactBuses')}</span>
               </div>
               <div className="bg-blue-600 dark:bg-blue-800 p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
                 <span className="text-3xl font-bold block mb-1">64</span>
-                <span className="text-[10px] uppercase font-bold opacity-80">Districts</span>
+                <span className="text-[10px] uppercase font-bold opacity-80">{t('about.impactDistricts')}</span>
               </div>
               <div className="bg-amber-500 dark:bg-amber-700 p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
                 <span className="text-3xl font-bold block mb-1">1k+</span>
-                <span className="text-[10px] uppercase font-bold opacity-80">Daily Searches</span>
+                <span className="text-[10px] uppercase font-bold opacity-80">{t('about.impactSearches')}</span>
               </div>
             </div>
           </section>
@@ -1618,8 +1618,12 @@ const App: React.FC = () => {
               <Users className="w-6 h-6 text-dhaka-green" /> Meet the Developer
             </h2>
             <div className="flex flex-col md:flex-row items-center gap-8">
-              <div className="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-tr from-dhaka-green to-emerald-400 rounded-full flex items-center justify-center text-white text-3xl md:text-5xl font-bold shrink-0 shadow-xl">
-                MBF
+              <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden shadow-xl shrink-0 border-4 border-dhaka-green/20">
+                <img
+                  src="https://media.licdn.com/dms/image/v2/D5603AQEU8R2MLGhUlg/profile-displayphoto-scale_200_200/B56Zk6N_ckHcAY-/0/1757618372796?e=1770854400&v=beta&t=t74_dMafBVi8TjEmKdXr_vgSMQsglJAow6s_2ye7ppg"
+                  alt="Mejbaur Bahar Fagun"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div className="text-center md:text-left">
                 <h3 className="text-2xl font-bold text-dhaka-green dark:text-emerald-400 mb-1">Mejbaur Bahar Fagun</h3>
@@ -1628,9 +1632,6 @@ const App: React.FC = () => {
                   Mejbaur is a Software Test Engineer and Full-stack Developer based in Dhaka, Bangladesh. With a passion for solving real-world problems through technology, he created KoyJabo to democratize transport information across Bangladesh.
                 </p>
                 <div className="flex flex-wrap gap-3 justify-center md:justify-start">
-                  <a href="mailto:mejbaurbaharfagun@gmail.com" className="p-2 bg-gray-100 dark:bg-slate-800 hover:bg-emerald-50 text-gray-600 dark:text-gray-400 hover:text-emerald-600 rounded-xl transition-all">
-                    <Mail className="w-5 h-5" />
-                  </a>
                   <a href="https://linkedin.com/in/mejbaur/" target="_blank" rel="noreferrer" className="p-2 bg-gray-100 dark:bg-slate-800 hover:bg-blue-50 text-gray-600 dark:text-gray-400 hover:text-blue-600 rounded-xl transition-all">
                     <Linkedin className="w-5 h-5" />
                   </a>
