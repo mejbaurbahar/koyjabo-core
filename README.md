@@ -1,7 +1,7 @@
 # 🚍 কই যাবো (KoyJabo) - Bangladesh's Smart Transport Route Finder
 
 [![Live Demo](https://img.shields.io/badge/Live-koyjabo.com-green)](https://koyjabo.com)
-[![Version](https://img.shields.io/badge/version-2.0-blue.svg)](https://github.com/mejbaurbahar/Dhaka-Commute)
+[![Version](https://img.shields.io/badge/version-2.0-blue.svg)](https://github.com/fagun18/Dhaka-Commute)
 [![License](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
 
 > **Find all bus routes in Dhaka and intercity routes across Bangladesh instantly! Powered by AI.**

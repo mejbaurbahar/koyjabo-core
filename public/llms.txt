@@ -86,7 +86,7 @@ KoyJabo is a free, open-source progressive web app that helps people navigate pu
 ## Contact & Support
 
 - **Website:** https://koyjabo.com
-- **GitHub:** https://github.com/mejbaurbahar/Dhaka-Commute
+- **GitHub:** https://github.com/fagun18/Dhaka-Commute
 - **Developer:** Mejbaur Bahar Fagun
 - **LinkedIn:** https://linkedin.com/in/mejbaur
 - **Company:** https://linkedin.com/company/koy-jabo
