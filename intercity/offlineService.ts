@@ -236,9 +236,17 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
 
     // Get comprehensive data
     const comprehensiveRoutes = (COMPREHENSIVE_ROUTES as any).routes.filter((r: any) =>
+        (r.origin.toLowerCase() === from.toLowerCase() && r.destination.toLowerCase() === to.toLowerCase()) ||
+        (r.origin.toLowerCase() === to.toLowerCase() && r.destination.toLowerCase() === from.toLowerCase())
+    );
+
+    // Fallback search if exact match fails
+    const partialRoutes = comprehensiveRoutes.length > 0 ? [] : (COMPREHENSIVE_ROUTES as any).routes.filter((r: any) =>
         (r.origin.toLowerCase().includes(from.toLowerCase()) && r.destination.toLowerCase().includes(to.toLowerCase())) ||
         (r.origin.toLowerCase().includes(to.toLowerCase()) && r.destination.toLowerCase().includes(from.toLowerCase()))
     );
+
+    const routesToDisplay = comprehensiveRoutes.length > 0 ? comprehensiveRoutes : partialRoutes;
 
     let result = '';
 
@@ -257,14 +265,15 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
                 result += `- ${br.bnName} (${br.type}) - ${br.hours}  \n`;
             });
         }
-        if (!busInfo && brtcRoutes.length === 0 && comprehensiveRoutes.length === 0) {
+        if (!busInfo && brtcRoutes.length === 0 && routesToDisplay.length === 0) {
             result += `ভাড়া: ${Math.max(150, Math.ceil(distance * 3))}-১,২০০ টাকা (আনুমানিক)।  \nলোকাল এবং আন্তঃজেলা বাস টার্মিনাল থেকে নিয়মিত বাস পাওয়া যায়।  \n`;
-        } else if (comprehensiveRoutes.length > 0) {
-            result += `**উপলব্ধ রুট:** ${comprehensiveRoutes.length}টি রুট পাওয়া গেছে।  \n`;
-            comprehensiveRoutes.slice(0, 3).forEach((r: any) => {
+        } else if (routesToDisplay.length > 0) {
+            result += `**উপলব্ধ রুট:** ${routesToDisplay.length}টি রুট পাওয়া গেছে।  \n`;
+            routesToDisplay.slice(0, 10).forEach((r: any) => {
                 const price = r.prices && r.prices.length > 0 ? r.prices[0].price : 'তথ্য নেই';
-                const type = r.prices && r.prices.length > 0 ? r.prices[0].className : 'Non-AC';
-                result += `- ${r.operatorName || 'বাস'} (${type}) - ৳${price}  \n`;
+                const type = r.prices && r.prices.length > 0 ? r.prices[1] ? 'AC/Non-AC' : r.prices[0].className : 'Non-AC';
+                const scheduleInfo = r.schedule && r.schedule.length > 0 ? `(${r.schedule[0].departureTime})` : '';
+                result += `- **${r.operatorName || 'বাস'}** (${type}) - ৳${price} ${scheduleInfo}  \n`;
             });
         }
         result += `\n`;
@@ -316,14 +325,15 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
                 result += `- ${br.name} (${br.type}) - ${br.hours}  \n`;
             });
         }
-        if (!busInfo && brtcRoutes.length === 0 && comprehensiveRoutes.length === 0) {
+        if (!busInfo && brtcRoutes.length === 0 && routesToDisplay.length === 0) {
             result += `**Fare:** ${Math.max(150, Math.ceil(distance * 3))}-1,200 BDT (Est).  \nAvailable from regional terminals.  \n`;
-        } else if (comprehensiveRoutes.length > 0) {
-            result += `**Available Routes:** Found ${comprehensiveRoutes.length} specific routes.  \n`;
-            comprehensiveRoutes.slice(0, 3).forEach((r: any) => {
+        } else if (routesToDisplay.length > 0) {
+            result += `**Available Routes:** Found ${routesToDisplay.length} specific routes.  \n`;
+            routesToDisplay.slice(0, 10).forEach((r: any) => {
                 const price = r.prices && r.prices.length > 0 ? r.prices[0].price : 'N/A';
-                const type = r.prices && r.prices.length > 0 ? r.prices[0].className : 'Non-AC';
-                result += `- ${r.operatorName || 'Bus'} (${type}) - ৳${price}  \n`;
+                const type = r.prices && r.prices.length > 0 ? r.prices[1] ? 'AC/Non-AC' : r.prices[0].className : 'Non-AC';
+                const scheduleInfo = r.schedule && r.schedule.length > 0 ? `(${r.schedule[0].departureTime})` : '';
+                result += `- **${r.operatorName || 'Bus'}** (${type}) - ৳${price} ${scheduleInfo}  \n`;
             });
         }
         result += `\n`;
