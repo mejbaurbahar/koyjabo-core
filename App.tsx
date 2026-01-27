@@ -765,12 +765,29 @@ const App: React.FC = () => {
     } else if (view === AppView.BLOG) {
       title = `Blog - Transport Tips & Guides | কই যাবো`;
       description = `Learn about Dhaka's transport system, bus route guides, Metro Rail updates, and travel tips on the কই যাবো blog.`;
-    } else if (window.location.hash === '#privacy') {
+    } else if (view === AppView.PRIVACY || window.location.hash === '#privacy') {
       title = `${t('privacy.title')} | কই যাবো`;
       description = `KoyJabo Privacy Policy - How we protect your data while using our bus route finder and AI assistant.`;
-    } else if (window.location.hash === '#terms') {
+    } else if (view === AppView.TERMS || window.location.hash === '#terms') {
       title = `${t('nav.terms')} | কই যাবো`;
       description = `KoyJabo Terms of Service - Usage guidelines for our Dhaka transport and intercity route finder.`;
+    } else if (view === AppView.ABOUT) {
+      title = `${t('nav.about')} | কই যাবো`;
+      description = `Learn more about কই যাবো (KoyJabo), our mission to simplify Dhaka's transport and the team behind it.`;
+    } else if (view === AppView.AI_ASSISTANT) {
+      title = `${t('nav.aiAssistant')} | কই যাবো`;
+      description = `Ask our AI assistant for bus routes, travel tips, and transport guides in Dhaka and across Bangladesh.`;
+    } else if (view === AppView.FAQ) {
+      title = `${t('nav.faq')} | কই যাবো`;
+      description = `Frequently asked questions about কই যাবো. How to find bus routes, use the fare calculator and more.`;
+    } else if (view === AppView.HISTORY) {
+      title = `${t('nav.history')} | কই যাবো`;
+      description = `View your search history and transport analytics on কই যাবো. 100% offline and private.`;
+    } else if (view === AppView.DAILY_JOURNEY) {
+      title = `${t('journey.title')} | কই যাবো`;
+      description = `Track your daily journey and stops in Dhaka. Real-time path tracking for smarter travel.`;
+    } else if (view === AppView.NOT_FOUND) {
+      title = `404 - Page Not Found | কই যাবো`;
     }
 
     document.title = title;
@@ -927,52 +944,7 @@ const App: React.FC = () => {
     }
   }, []);
 
-  // Update document title based on view
-  useEffect(() => {
-    const baseTitle = "কই যাবো";
-    let pageTitle = "";
 
-    switch (view) {
-      case AppView.HOME:
-        pageTitle = "";
-        break;
-      case AppView.BUS_DETAILS:
-        pageTitle = selectedBus ? `${selectedBus.name} ` : "Bus Details";
-        break;
-      case AppView.LIVE_NAV:
-        pageTitle = "Live Navigation";
-        break;
-      case AppView.AI_ASSISTANT:
-        pageTitle = "AI Assistant";
-        break;
-      case AppView.ABOUT:
-        pageTitle = "About";
-        break;
-      case AppView.HISTORY:
-        pageTitle = "History & Analytics";
-        break;
-      case AppView.PRIVACY:
-        pageTitle = "Privacy Policy";
-        break;
-      case AppView.TERMS:
-        pageTitle = "Terms of Service";
-        break;
-      case AppView.NOT_FOUND:
-        pageTitle = "Page Not Found";
-        break;
-      case AppView.FOR_AI:
-        pageTitle = "AI Dataset";
-        break;
-      default:
-        pageTitle = "";
-    }
-
-    if (pageTitle) {
-      document.title = `${pageTitle} | ${baseTitle} `;
-    } else {
-      document.title = baseTitle;
-    }
-  }, [view, selectedBus]);
 
   // Online/Offline detection
   useEffect(() => {
