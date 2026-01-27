@@ -342,7 +342,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 ## 📞 Contact
 
 **Mejbaur Bahar Fagun**  
-Software Test Engineer | Full-stack Developer  
+Senior Software Test Engineer  
 🔗 LinkedIn: [linkedin.com/in/mejbaur](https://linkedin.com/in/mejbaur/)  
 🌐 Website: [koyjabo.com](https://koyjabo.com)
 

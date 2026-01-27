@@ -1507,12 +1507,12 @@ const App: React.FC = () => {
 
         <div className="text-left space-y-8 bg-slate-50 dark:bg-slate-800 p-6 md:p-10 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm">
           <section>
-            <h2 className="text-3xl font-bold text-dhaka-green dark:text-emerald-400 mb-4 border-b-2 border-dhaka-green/20 pb-2">Our Story</h2>
+            <h2 className="text-3xl font-bold text-dhaka-green dark:text-emerald-400 mb-4 border-b-2 border-dhaka-green/20 pb-2">{t('about.ourStoryTitle')}</h2>
             <p className="leading-relaxed text-gray-700 dark:text-gray-300 text-lg mb-4">
-              <strong>KoyJabo (কই যাবো)</strong> - which translates to "Where do you want to go?" in Bengali - was born out of a simple frustration: navigating Dhaka's complex public transport system was unnecessarily difficult. As a daily commuter in one of the world's most densely populated cities, our founder experienced firsthand the challenges of finding the right bus route, understanding metro connections, or planning intercity travel.
+              {t('about.ourStoryPara1')}
             </p>
             <p className="leading-relaxed text-gray-700 dark:text-gray-300 text-lg">
-              In early 2024, what started as a weekend project to map local bus routes evolved into Bangladesh's most comprehensive transport route finder. Today, KoyJabo serves over <strong>10,000+ monthly users</strong>, helping thousands of Bangladeshis navigate their daily commutes and intercity journeys with confidence.
+              {t('about.ourStoryPara2')}
             </p>
           </section>
 
@@ -1615,7 +1615,7 @@ const App: React.FC = () => {
 
           <section className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 flex items-center gap-2">
-              <Users className="w-6 h-6 text-dhaka-green" /> Meet the Developer
+              <Users className="w-6 h-6 text-dhaka-green" /> {t('about.meetDev')}
             </h2>
             <div className="flex flex-col md:flex-row items-center gap-8">
               <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden shadow-xl shrink-0 border-4 border-dhaka-green/20">
@@ -1627,9 +1627,9 @@ const App: React.FC = () => {
               </div>
               <div className="text-center md:text-left">
                 <h3 className="text-2xl font-bold text-dhaka-green dark:text-emerald-400 mb-1">Mejbaur Bahar Fagun</h3>
-                <p className="text-sm font-bold text-gray-500 dark:text-gray-400 mb-4 uppercase tracking-wider">Founder, KoyJabo</p>
+                <p className="text-sm font-bold text-gray-500 dark:text-gray-400 mb-4 uppercase tracking-wider">{t('contactUs.founder')}</p>
                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
-                  Mejbaur is a Software Test Engineer and Full-stack Developer based in Dhaka, Bangladesh. With a passion for solving real-world problems through technology, he created KoyJabo to democratize transport information across Bangladesh.
+                  {t('about.devDesc')}
                 </p>
                 <div className="flex flex-wrap gap-3 justify-center md:justify-start">
                   <a href="https://linkedin.com/in/mejbaur/" target="_blank" rel="noreferrer" className="p-2 bg-gray-100 dark:bg-slate-800 hover:bg-blue-50 text-gray-600 dark:text-gray-400 hover:text-blue-600 rounded-xl transition-all">
