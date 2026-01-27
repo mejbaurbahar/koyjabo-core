@@ -89,8 +89,8 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100 border-b border-gray-100 dark:border-gray-800 pb-2">Contact Us</h2>
-                        <p className="mb-6">If you have any questions or concerns about this Privacy Policy, please reach out via our official channels:</p>
+                        <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100 border-b border-gray-100 dark:border-gray-800 pb-2">{t('privacy.contactUsTitle')}</h2>
+                        <p className="mb-6">{t('privacy.contactUsDesc')}</p>
                         <div className="bg-slate-50 dark:bg-slate-800 p-8 rounded-3xl border border-gray-100 dark:border-gray-700">
                             <div className="flex flex-col md:flex-row gap-8 items-center">
                                 <div className="w-20 h-20 rounded-2xl overflow-hidden shrink-0 shadow-lg border-2 border-white dark:border-slate-700">

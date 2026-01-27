@@ -468,7 +468,8 @@ export const translations: Record<Language, Translations> = {
             howWeUse3: 'অফলাইন অ্যাক্সেস: রুটের তথ্য লোকাল ক্যাশ করা যাতে ইন্টারনেট ছাড়াই অ্যাপটি ব্যবহার করা যায়।',
             thirdParty: '৪. থার্ড-পার্টি সার্ভিস',
             thirdPartyText: 'আমরা গুগল অ্যানালিটিক্স, গুগল অ্যাডসেন্স এবং গুগল জেমিনি এআই-এর মতো থার্ড-পার্টি সার্ভিস ব্যবহার করি।',
-            contactUs: 'যোগাযোগ',
+            contactUsTitle: 'যোগাযোগ করুন',
+            contactUsDesc: 'আপনার যদি এই গোপনীয়তা নীতি সম্পর্কে কোনো প্রশ্ন বা উদ্বেগ থাকে, তবে দয়া করে আমাদের অফিসিয়াল চ্যানেলের মাধ্যমে যোগাযোগ করুন:',
         },
 
         // Terms of Service
@@ -1055,7 +1056,8 @@ export const translations: Record<Language, Translations> = {
             howWeUse3: 'To Enable Offline Access: Cache route data locally so you can use the app without internet.',
             thirdParty: '4. Third-Party Services',
             thirdPartyText: 'We use third-party services like Google Analytics, Google AdSense, and Google Gemini AI.',
-            contactUs: 'Contact Us',
+            contactUsTitle: 'Contact Us',
+            contactUsDesc: 'If you have any questions or concerns about this Privacy Policy, please reach out via our official channels:',
         },
 
         // Terms of Service
