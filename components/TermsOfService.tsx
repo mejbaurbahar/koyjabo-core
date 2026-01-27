@@ -102,7 +102,7 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ view, setView }) => {
                             </div>
                             <div className="flex-1 text-center md:text-left">
                                 <h4 className="text-xl font-bold text-gray-900 dark:text-gray-100">Mejbaur Bahar Fagun</h4>
-                                <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">Developer & Owner, KoyJabo</p>
+                                <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">Founder, KoyJabo</p>
                                 <div className="flex flex-col gap-2">
                                     <a href="https://linkedin.com/in/mejbaur/" target="_blank" rel="noreferrer" className="flex items-center justify-center md:justify-start gap-2 text-blue-600 hover:underline font-bold">
                                         LinkedIn Profile <ExternalLink className="w-4 h-4" />

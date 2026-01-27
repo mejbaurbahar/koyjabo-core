@@ -306,7 +306,6 @@ See our [Privacy Policy](https://koyjabo.com/privacy-policy.html) for details.
 ## 🤝 Support
 
 ### Get Help
-- **GitHub Issues**: [Report bugs or request features](https://github.com/mejbaurbahar/Dhaka-Commute/issues)
 - **Documentation**: [Full user guide](https://koyjabo.com/help)
 
 ### Follow Us
@@ -354,7 +353,5 @@ Software Test Engineer | Full-stack Developer
 ### ⭐ Star this repository if you find it helpful!
 
 **Made with ❤️ in Bangladesh 🇧🇩**
-
-[Report Bug](https://github.com/mejbaurbahar/Dhaka-Commute/issues) · [Request Feature](https://github.com/mejbaurbahar/Dhaka-Commute/issues) · [Documentation](https://koyjabo.com/docs)
 
 </div>

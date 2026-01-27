@@ -1627,7 +1627,7 @@ const App: React.FC = () => {
               </div>
               <div className="text-center md:text-left">
                 <h3 className="text-2xl font-bold text-dhaka-green dark:text-emerald-400 mb-1">Mejbaur Bahar Fagun</h3>
-                <p className="text-sm font-bold text-gray-500 dark:text-gray-400 mb-4 uppercase tracking-wider">Founder & Lead Developer</p>
+                <p className="text-sm font-bold text-gray-500 dark:text-gray-400 mb-4 uppercase tracking-wider">Founder, KoyJabo</p>
                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
                   Mejbaur is a Software Test Engineer and Full-stack Developer based in Dhaka, Bangladesh. With a passion for solving real-world problems through technology, he created KoyJabo to democratize transport information across Bangladesh.
                 </p>

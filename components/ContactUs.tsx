@@ -29,19 +29,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
                     </p>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-6 mb-16">
-                    {/* Bug Report */}
-                    <div className="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-3xl border border-gray-100 dark:border-gray-700 text-center hover:shadow-xl transition-all hover:-translate-y-1">
-                        <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                            <Bug className="w-8 h-8" />
-                        </div>
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">{t('contactUs.reportBug')}</h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">{t('contactUs.reportBugDesc')}</p>
-                        <a href="https://github.com/mejbaurbahar/Dhaka-Commute/issues" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-red-600 dark:text-red-400 font-bold hover:underline">
-                            {t('contactUs.openIssue')} <Send className="w-4 h-4" />
-                        </a>
-                    </div>
-
+                <div className="grid md:grid-cols-2 gap-6 mb-16 max-w-2xl mx-auto">
                     {/* Feedback */}
                     <div className="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-3xl border border-gray-100 dark:border-gray-700 text-center hover:shadow-xl transition-all hover:-translate-y-1">
                         <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center mx-auto mb-6">
