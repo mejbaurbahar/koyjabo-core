@@ -1,10 +1,10 @@
 {
   "metadata": {
     "version": "2.0.0",
-    "lastUpdated": "2026-01-27T05:30:20.107Z",
+    "lastUpdated": "2026-01-27T05:45:28.983Z",
     "disclaimer": "Comprehensive Bangladesh intercity routes covering all 8 divisions and major cities. Data from official sources and Shohoz.com.",
     "coverage": {
-      "totalRoutes": 170,
+      "totalRoutes": 179,
       "trainRoutes": 41,
       "busRoutes": 124,
       "divisions": 8,
@@ -7934,6 +7934,345 @@
       "departurePoint": "Gazipur Chowrasta",
       "arrivalPoint": "Bandarban Bus Stand",
       "notes": "Board buses at Gazipur Chowrasta that are heading towards Chittagong/Bandarban from northern districts."
+    },
+    {
+      "id": "bd-bus-chittagong-khulna-01",
+      "origin": "Chittagong",
+      "destination": "Khulna",
+      "transportMode": "bus",
+      "operatorName": "Golden Line / Saintmartin Travels",
+      "frequency": 6,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "duration": 600,
+      "durationHuman": "10h 0m",
+      "distance": 445,
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 950
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 1600
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:30 PM"
+        },
+        {
+          "departureTime": "08:30 PM"
+        }
+      ],
+      "departurePoint": "AK Khan / Dampara",
+      "arrivalPoint": "Khulna Royal Mor",
+      "notes": "Direct service via Padma Bridge."
+    },
+    {
+      "id": "bd-bus-chittagong-rajshahi-01",
+      "origin": "Chittagong",
+      "destination": "Rajshahi",
+      "transportMode": "bus",
+      "operatorName": "Desh Travels / Grameen Travels",
+      "frequency": 5,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "duration": 660,
+      "durationHuman": "11h 0m",
+      "distance": 520,
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 1000
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 1800
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00 PM"
+        },
+        {
+          "departureTime": "08:00 PM"
+        }
+      ],
+      "departurePoint": "Dampara",
+      "arrivalPoint": "Rajshahi Shiroil"
+    },
+    {
+      "id": "bd-bus-chittagong-sylhet-01",
+      "origin": "Chittagong",
+      "destination": "Sylhet",
+      "transportMode": "bus",
+      "operatorName": "Ena Transport / Bengal Paribahan",
+      "frequency": 4,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "duration": 540,
+      "durationHuman": "9h 0m",
+      "distance": 380,
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 850
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 1400
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "09:00 PM"
+        }
+      ],
+      "departurePoint": "Dampara",
+      "arrivalPoint": "Sylhet Kadamtoli"
+    },
+    {
+      "id": "bd-bus-chittagong-barisal-01",
+      "origin": "Chittagong",
+      "destination": "Barishal",
+      "transportMode": "bus",
+      "operatorName": "Hanif Enterprise / Saudia",
+      "frequency": 3,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "duration": 540,
+      "durationHuman": "9h 0m",
+      "distance": 320,
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 900
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "08:00 PM"
+        }
+      ],
+      "departurePoint": "AK Khan",
+      "arrivalPoint": "Barishal Nathullabad"
+    },
+    {
+      "id": "bd-bus-chittagong-rangpur-01",
+      "origin": "Chittagong",
+      "destination": "Rangpur",
+      "transportMode": "bus",
+      "operatorName": "Hanif / Nabil Paribahan",
+      "frequency": 4,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "duration": 840,
+      "durationHuman": "14h 0m",
+      "distance": 540,
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 1100
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 2000
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "06:00 PM"
+        }
+      ],
+      "departurePoint": "AK Khan",
+      "arrivalPoint": "Rangpur Medical Mor"
+    },
+    {
+      "id": "bd-transit-sylhet-rajshahi-01",
+      "origin": "Sylhet",
+      "destination": "Rajshahi",
+      "transportMode": "bus",
+      "operatorName": "Transit via Dhaka (Ena/Desh)",
+      "frequency": 10,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "duration": 720,
+      "durationHuman": "12h 0m",
+      "distance": 500,
+      "prices": [
+        {
+          "className": "Combo Est",
+          "currency": "BDT",
+          "price": 1300
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "Morning/Night Transit"
+        }
+      ],
+      "notes": "Take Sylhet-Dhaka bus, then Dhaka-Rajshahi bus from Gabtoli."
+    },
+    {
+      "id": "bd-transit-sylhet-khulna-01",
+      "origin": "Sylhet",
+      "destination": "Khulna",
+      "transportMode": "bus",
+      "operatorName": "Transit via Dhaka (Ena/Shohagh)",
+      "frequency": 10,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "duration": 660,
+      "durationHuman": "11h 0m",
+      "distance": 420,
+      "prices": [
+        {
+          "className": "Combo Est",
+          "currency": "BDT",
+          "price": 1200
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "Night Transit"
+        }
+      ],
+      "notes": "Travel to Dhaka (Sayedabad) first, then take Khulna bus via Padma Bridge."
+    },
+    {
+      "id": "bd-bus-rangpur-rajshahi-01",
+      "origin": "Rangpur",
+      "destination": "Rajshahi",
+      "transportMode": "bus",
+      "operatorName": "Hanif / National Travels",
+      "frequency": 8,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "duration": 240,
+      "durationHuman": "4h 0m",
+      "distance": 220,
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 450
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00 AM"
+        },
+        {
+          "departureTime": "02:00 PM"
+        }
+      ],
+      "departurePoint": "Rangpur Terminal",
+      "arrivalPoint": "Rajshahi Shiroil"
+    },
+    {
+      "id": "bd-bus-bogra-chittagong-01",
+      "origin": "Bogura",
+      "destination": "Chittagong",
+      "transportMode": "bus",
+      "operatorName": "Hanif / Shyamoli / SR Travels",
+      "frequency": 8,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "duration": 600,
+      "durationHuman": "10h 0m",
+      "distance": 450,
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 950
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 1800
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "08:00 PM"
+        }
+      ],
+      "departurePoint": "Bogra Charmatha",
+      "arrivalPoint": "AK Khan"
     }
   ]
 }

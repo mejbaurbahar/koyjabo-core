@@ -3147,6 +3147,42 @@ export const BUS_DATA: BusRoute[] = [
     stops: ['mirpur1', 'sony_cinema', 'mirpur2', 'mirpur10', 'kazipara', 'shewrapara', 'agargaon', 'farmgate', 'shahbag', 'paltan', 'gulistan', 'motijheel', 'jatrabari'],
     type: 'Semi-Sitting',
     hours: '6:00 AM - 10:30 PM'
+  },
+  {
+    id: 'gangchil_paribahan',
+    name: 'Gangchil Paribahan',
+    bnName: 'গাংচিল পরিবহন',
+    routeString: 'Gulistan ⇄ Mawa',
+    stops: ['gulistan', 'jatrabari', 'sayedabad', 'postagola', 'kadamtoli', 'hasnabad', 'nimtola', 'kuchimura', 'sreenagar', 'maowa'],
+    type: 'Sitting',
+    hours: '6:00 AM - 10:00 PM'
+  },
+  {
+    id: 'bikrompur_express',
+    name: 'Bikrompur Express',
+    bnName: 'বিক্রমপুর এক্সপ্রেস',
+    routeString: 'Gulistan ⇄ Mawa',
+    stops: ['gulistan', 'jatrabari', 'sayedabad', 'postagola', 'kadamtoli', 'hasnabad', 'nimtola', 'kuchimura', 'sreenagar', 'maowa'],
+    type: 'Sitting',
+    hours: '6:00 AM - 10:00 PM'
+  },
+  {
+    id: 'munshiganj_super',
+    name: 'Munshiganj Super Service',
+    bnName: 'মুন্সীগঞ্জ সুপার সার্ভিস',
+    routeString: 'Gulistan ⇄ Munshiganj',
+    stops: ['gulistan', 'jatrabari', 'sayedabad', 'postagola', 'kadamtoli', 'munshiganj'],
+    type: 'Sitting',
+    hours: '6:00 AM - 9:00 PM'
+  },
+  {
+    id: 'prochesta_abdullahpur',
+    name: 'Prochesta (Abdullahpur-Mawa)',
+    bnName: 'প্রচেষ্টা (আবদুল্লাহপুর-মাওয়া)',
+    routeString: 'Abdullahpur ⇄ Mawa',
+    stops: ['abdullahpur', 'uttara', 'airport', 'khilkhet', 'kuril', 'nadda', 'notun_bazar', 'badda', 'rampura', 'malibagh', 'gulistan', 'babubazar', 'keraniganj', 'hasnabad', 'nimtola', 'kuchimura', 'sreenagar', 'maowa'],
+    type: 'Sitting',
+    hours: '5:30 AM - 10:00 PM'
   }
 ];
 
