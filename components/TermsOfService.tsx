@@ -1,119 +1,126 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { FileText, CheckCircle2, AlertTriangle, ShieldCheck, Mail, ExternalLink } from 'lucide-react';
 
 const TermsOfService: React.FC = () => {
     const { t } = useLanguage();
 
     return (
         <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-y-auto overflow-x-hidden w-full relative max-w-full">
-            <div className="max-w-3xl mx-auto p-6 md:p-12 pt-20 md:pt-24 pb-32 md:pb-12">
-                <h1 className="text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100">{t('terms.title') || 'Terms of Service'}</h1>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">Last Updated: January 20, 2026</p>
+            <div className="max-w-4xl mx-auto p-6 md:p-12 pt-20 md:pt-28 pb-32 md:pb-12">
 
-                <div className="space-y-6 text-gray-700 dark:text-gray-300 leading-relaxed">
-                    <section>
-                        <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">1. Acceptance of Terms</h2>
-                        <p>By accessing and using কই যাবো (Koy Jabo), you accept and agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our service.</p>
-                    </section>
-
-                    <section>
-                        <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">2. Service Description</h2>
-                        <p>Koy Jabo is a free, web-based application that provides:</p>
-                        <ul className="list-disc list-inside space-y-2 mt-2 ml-4">
-                            <li>Bus route information across Bangladesh (inter-district, inter-city, local, and highway routes)</li>
-                            <li>Metro rail, train, and launch station information (where available)</li>
-                            <li>Fare estimation based on official rates</li>
-                            <li>Route visualization and mapping</li>
-                            <li>AI-powered route assistance</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">3. No Warranty</h2>
-                        <p>Koy Jabo is provided "AS IS" and "AS AVAILABLE" without any warranties of any kind, either express or implied, including but not limited to:</p>
-                        <ul className="list-disc list-inside space-y-2 mt-2 ml-4">
-                            <li>Accuracy of bus routes, schedules, or fare information</li>
-                            <li>Availability or reliability of the service</li>
-                            <li>Fitness for a particular purpose</li>
-                            <li>Non-infringement of third-party rights</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">4. Data Accuracy</h2>
-                        <p><strong>Important Notice:</strong> Bus routes, stops, timings, and fares are subject to change by transport authorities without notice. We make reasonable efforts to keep information current, but:</p>
-                        <ul className="list-disc list-inside space-y-2 mt-2 ml-4">
-                            <li>Routes may be modified or discontinued by operators</li>
-                            <li>Fares may change based on government regulations</li>
-                            <li>Bus schedules may vary due to traffic, weather, or other factors</li>
-                            <li>Station locations and names may be updated</li>
-                        </ul>
-                        <p className="mt-3">Always verify critical information with official sources or bus operators before traveling.</p>
-                    </section>
-
-                    <section>
-                        <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">5. Limitation of Liability</h2>
-                        <p>To the maximum extent permitted by law, Koy Jabo and its developers shall not be liable for:</p>
-                        <ul className="list-disc list-inside space-y-2 mt-2 ml-4">
-                            <li>Any direct, indirect, incidental, or consequential damages</li>
-                            <li>Loss of time, money, or opportunities due to inaccurate information</li>
-                            <li>Missed buses, wrong routes, or incorrect fare calculations</li>
-                            <li>Any damages arising from the use or inability to use the service</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">6. User Responsibilities</h2>
-                        <p>When using Koy Jabo, you agree to:</p>
-                        <ul className="list-disc list-inside space-y-2 mt-2 ml-4">
-                            <li>Use the service for lawful purposes only</li>
-                            <li>Not attempt to reverse engineer or modify the application</li>
-                            <li>Not use automated systems to scrape or download data</li>
-                            <li>Verify important information with official sources</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">7. Third-Party Services</h2>
-                        <p><strong>Koy Jabo AI Assistant:</strong> Our AI assistant is provided as-is to help you navigate Bangladesh more easily. It is completely free and available to all users.</p>
-                        <p className="mt-2"><strong>Google Maps:</strong> Links to Google Maps are provided for convenience and are subject to Google's terms of service.</p>
-                        <p className="mt-2">We are not responsible for the availability, accuracy, or terms of these third-party services.</p>
-                    </section>
-
-                    <section>
-                        <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">8. Intellectual Property</h2>
-                        <p>The Koy Jabo application, including its design, code, and content, is the property of its developers. Bus route data is compiled from publicly available sources and transport authority information.</p>
-                    </section>
-
-                    <section>
-                        <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">9. Service Modifications</h2>
-                        <p>We reserve the right to:</p>
-                        <ul className="list-disc list-inside space-y-2 mt-2 ml-4">
-                            <li>Modify or discontinue the service at any time</li>
-                            <li>Update features, routes, or information</li>
-                            <li>Change these terms of service</li>
-                        </ul>
-                        <p className="mt-3">Continued use of the service after changes constitutes acceptance of the new terms.</p>
-                    </section>
-
-                    <section>
-                        <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">10. Governing Law</h2>
-                        <p>These terms shall be governed by and construed in accordance with the laws of Bangladesh, without regard to its conflict of law provisions.</p>
-                    </section>
-
-                    <section>
-                        <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">11. Contact Us</h2>
-                        <p>For questions about these terms, please contact us through our <a href="https://linkedin.com/in/mejbaur/" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">LinkedIn profile</a>.</p>
-                    </section>
-
-                    <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-xl p-4 mt-8">
-                        <p className="text-sm font-bold text-blue-800 dark:text-blue-300">📱 Free & Open Service</p>
-                        <p className="text-sm text-blue-700 dark:text-blue-400 mt-1">Koy Jabo is provided as a free public service to help Dhaka commuters navigate the city. Use it as a helpful guide, but always exercise your own judgment when traveling.</p>
+                <div className="text-center mb-12">
+                    <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <FileText className="w-8 h-8" />
                     </div>
+                    <h1 className="text-3xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-gray-100">📜 {t('terms.title') || 'Terms of Service'}</h1>
+                    <p className="text-lg text-gray-500 dark:text-gray-400">কই যাবো (KoyJabo) - Bangladesh's Smart Transport Route Finder</p>
                 </div>
 
-                {/* Bottom padding for better scrolling */}
-                <div className="h-20"></div>
+                <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-400 p-6 rounded-r-xl mb-10 shadow-sm">
+                    <div className="flex items-center gap-3 text-blue-800 dark:text-blue-200 font-bold mb-2">
+                        <CheckCircle2 className="w-5 h-5" />
+                        <span>Effective Date: January 1, 2024</span>
+                    </div>
+                    <p className="text-sm text-blue-700 dark:text-blue-300">Last Reviewed: January 26, 2026</p>
+                </div>
+
+                <div className="space-y-12 text-gray-700 dark:text-gray-300 leading-relaxed text-lg text-left">
+                    <section>
+                        <h2 className="text-2xl font-bold mb-4 text-blue-600 dark:text-blue-400 border-b border-gray-100 dark:border-gray-800 pb-2">1. Acceptance of Terms</h2>
+                        <p>
+                            Welcome to <strong>কই যাবো (KoyJabo)</strong>. By accessing or using our website at
+                            <a href="https://koyjabo.com" className="text-blue-600 hover:underline mx-1">koyjabo.com</a>,
+                            our mobile Progressive Web Application (PWA), or any related services, you agree to be bound by these Terms of Service.
+                        </p>
+                        <p className="mt-4 font-bold text-red-500">
+                            If you do not agree to these Terms, please do not use the Service.
+                        </p>
+                    </section>
+
+                    <section className="bg-slate-50 dark:bg-slate-800/50 p-6 md:p-8 rounded-[2rem] border border-gray-100 dark:border-gray-700">
+                        <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">2. Service Description</h2>
+                        <p className="mb-4">KoyJabo is a free, web-based transport route finder designed to help users navigate public transportation in Bangladesh. Our Service provides:</p>
+                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {[
+                                'Bus route information for Dhaka and other cities',
+                                'Metro Rail (MRT) schedules and fare information',
+                                'Intercity bus, train, and flight information',
+                                'Interactive maps and navigation',
+                                'AI-powered travel assistance',
+                                'Offline access to previously searched routes'
+                            ].map((item, idx) => (
+                                <li key={idx} className="flex items-start gap-2 bg-white dark:bg-slate-900 p-4 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm text-sm">
+                                    <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 shrink-0" />
+                                    <span>{item}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+
+                    <section className="bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/20 p-8 rounded-3xl">
+                        <h2 className="text-2xl font-bold mb-4 text-red-600 dark:text-red-400 flex items-center gap-2">
+                            <AlertTriangle className="w-6 h-6" /> 7. Disclaimer of Warranties
+                        </h2>
+                        <p className="font-bold text-red-800 dark:text-red-300 mb-4 uppercase text-sm tracking-wide">The Service is provided "AS IS" and "AS AVAILABLE" without any warranties.</p>
+                        <p className="text-sm">
+                            We make every effort to ensure route data is accurate and up-to-date, but we <strong>do not guarantee</strong> the accuracy or reliability of information provided.
+                            Bus routes, schedules, fares, and other transport information may change without notice. Always verify critical information with official sources.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100 border-b border-gray-100 dark:border-gray-800 pb-2">8. Limitation of Liability</h2>
+                        <p className="text-sm mb-4">TO THE FULLEST EXTENT PERMITTED BY LAW, KOYJABO SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING BUT NOT LIMITED TO:</p>
+                        <ul className="list-disc list-inside space-y-2 text-sm ml-4 italic text-gray-600 dark:text-gray-400 text-left">
+                            <li>Loss of time, money, or data</li>
+                            <li>Missed appointments or connections due to inaccurate information</li>
+                            <li>Personal injury or property damage resulting from use of the Service</li>
+                        </ul>
+                    </section>
+
+                    <section className="grid md:grid-cols-2 gap-6">
+                        <div className="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700">
+                            <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
+                                <ShieldCheck className="w-5 h-5 text-emerald-500" /> 10. Privacy
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                Your use is also governed by our Privacy Policy. We do NOT require account creation or personal information to use the Service.
+                            </p>
+                        </div>
+                        <div className="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700">
+                            <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
+                                <ExternalLink className="w-5 h-5 text-blue-500" /> 13. Modifications
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                We reserve the right to modify or discontinue any aspect of the Service at any time without notice.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section className="bg-slate-50 dark:bg-slate-800 p-8 rounded-3xl border border-gray-100 dark:border-gray-700">
+                        <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">Contact & Support</h2>
+                        <div className="flex flex-col md:flex-row gap-8 items-center">
+                            <div className="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center text-white text-3xl font-bold shrink-0 shadow-lg">MBF</div>
+                            <div className="flex-1 text-center md:text-left">
+                                <h4 className="text-xl font-bold text-gray-900 dark:text-gray-100">Mejbaur Bahar Fagun</h4>
+                                <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">Developer & Owner, KoyJabo</p>
+                                <a href="mailto:mejbaurbaharfagun@gmail.com" className="flex items-center justify-center md:justify-start gap-2 text-blue-600 hover:underline font-bold">
+                                    <Mail className="w-4 h-4" /> mejbaurbaharfagun@gmail.com
+                                </a>
+                                <p className="text-xs text-gray-400 mt-4">Dhaka, Bangladesh</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <footer className="text-center pt-10 border-t border-gray-100 dark:border-gray-800 pb-10">
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">© 2024-2026 KoyJabo (কই যাবো). All rights reserved.</p>
+                        <p className="text-xs text-gray-400 uppercase tracking-widest font-bold">BY USING THE SERVICE, YOU ACKNOWLEDGE THAT YOU HAVE READ, UNDERSTOOD, AND AGREE TO BE BOUND BY THESE TERMS.</p>
+                    </footer>
+                </div>
+
+                {/* Bottom padding for mobile footer */}
+                <div className="h-24 md:hidden"></div>
             </div>
         </div>
     );

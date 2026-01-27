@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, useTransition } from 'react';
-import { Search, Map as MapIcon, Navigation, Info, Bus, ArrowLeft, ArrowRight, Bot, ExternalLink, MapPin, Heart, Shield, Zap, Users, FileText, AlertTriangle, Home, ChevronRight, CheckCircle2, User, Linkedin, Facebook, ArrowRightLeft, Settings, Save, Eye, EyeOff, Trash2, Key, Calculator, Coins, Train, Sparkles, X, Gauge, Flag, Clock, Menu, WifiOff, Plane, Phone, Download, TramFront, Sun, Moon, Calendar, Plus } from 'lucide-react';
+import { Search, Map as MapIcon, Navigation, Info, Bus, ArrowLeft, ArrowRight, Bot, ExternalLink, MapPin, Heart, Shield, Zap, Users, FileText, AlertTriangle, Home, ChevronRight, CheckCircle2, User, Linkedin, Facebook, ArrowRightLeft, Settings, Save, Eye, EyeOff, Trash2, Key, Calculator, Coins, Train, Sparkles, X, Gauge, Flag, Clock, Menu, WifiOff, Plane, Phone, Download, TramFront, Sun, Moon, Calendar, Plus, Mail } from 'lucide-react';
 import { Analytics } from "@vercel/analytics/react";
 import { BusRoute, AppView, UserLocation, ChatMessage } from './types';
 import { STATIONS, BUS_DATA, METRO_STATIONS, METRO_LINES, RAILWAY_STATIONS, AIRPORTS } from './constants';
@@ -98,15 +98,21 @@ const getStoredView = (): AppView => {
       switch (target) {
         case 'ai':
         case 'ai-assistant': return AppView.AI_ASSISTANT;
-        case 'about': return AppView.ABOUT;
+        case 'about':
+        case 'about.html': return AppView.ABOUT;
         case 'why-use': return AppView.WHY_USE;
         case 'faq': return AppView.FAQ;
         case 'blog': return AppView.BLOG;
         case 'history': return AppView.HISTORY;
         case 'install': return AppView.INSTALL_APP;
-        case 'privacy': return AppView.PRIVACY;
-        case 'terms': return AppView.TERMS;
-        case 'contact': return AppView.CONTACT;
+        case 'privacy':
+        case 'privacy-policy':
+        case 'privacy-policy.html': return AppView.PRIVACY;
+        case 'terms':
+        case 'terms-of-service':
+        case 'terms-of-service.html': return AppView.TERMS;
+        case 'contact':
+        case 'contact.html': return AppView.CONTACT;
         case 'for-ai': return AppView.FOR_AI;
         case 'daily-journey': return AppView.DAILY_JOURNEY;
       }
@@ -1496,130 +1502,176 @@ const App: React.FC = () => {
         </div>
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">🚍 {t('about.title')}</h1>
         <h2 className="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-200">কই<span className="text-dhaka-red ml-2">যাবো</span> <span className="text-gray-600 dark:text-gray-400 text-lg">(KoyJabo)</span></h2>
-        <p className="text-gray-500 dark:text-gray-400 mb-8">{t('settings.version')} 1.0.0</p>
+        <p className="text-gray-500 dark:text-gray-400 mb-8">{t('settings.version')} 1.0.0 • {t('common.tagline') || 'Revolutionizing Public Transport Navigation in Bangladesh'}</p>
 
-        <div className="text-left space-y-6 bg-slate-50 dark:bg-slate-800 p-6 md:p-8 rounded-3xl border border-gray-100 dark:border-gray-700">
-          <p className="leading-relaxed text-gray-700 dark:text-gray-300 text-lg">
-            {t('about.description')}
-          </p>
-
-
-          <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm mb-6">
-            <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-3 text-lg">{t('about.allInOne')}</h3>
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-              {t('about.allInOneDesc')}
+        <div className="text-left space-y-8 bg-slate-50 dark:bg-slate-800 p-6 md:p-10 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm">
+          <section>
+            <h2 className="text-3xl font-bold text-dhaka-green dark:text-emerald-400 mb-4 border-b-2 border-dhaka-green/20 pb-2">Our Story</h2>
+            <p className="leading-relaxed text-gray-700 dark:text-gray-300 text-lg mb-4">
+              <strong>KoyJabo (কই যাবো)</strong> - which translates to "Where do you want to go?" in Bengali - was born out of a simple frustration: navigating Dhaka's complex public transport system was unnecessarily difficult. As a daily commuter in one of the world's most densely populated cities, our founder experienced firsthand the challenges of finding the right bus route, understanding metro connections, or planning intercity travel.
             </p>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
-                <h4 className="font-bold text-gray-800 dark:text-gray-200 mb-1">{t('about.busRoutesTitle')}</h4>
-                <p className="text-xs text-gray-600 dark:text-gray-400">{t('about.busRoutesDesc')}</p>
-              </div>
-              <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
-                <h4 className="font-bold text-gray-800 dark:text-gray-200 mb-1">{t('about.trainMetroTitle')}</h4>
-                <p className="text-xs text-gray-600 dark:text-gray-400">{t('about.trainMetroDesc')}</p>
-              </div>
-              <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
-                <h4 className="font-bold text-gray-800 dark:text-gray-200 mb-1">{t('about.flightsTitle')}</h4>
-                <p className="text-xs text-gray-600 dark:text-gray-400">{t('about.flightsDesc')}</p>
-              </div>
-              <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
-                <h4 className="font-bold text-gray-800 dark:text-gray-200 mb-1">{t('about.aiAssistantTitle')}</h4>
-                <p className="text-xs text-gray-600 dark:text-gray-400">{t('about.aiAssistantDesc')}</p>
-              </div>
+            <p className="leading-relaxed text-gray-700 dark:text-gray-300 text-lg">
+              In early 2024, what started as a weekend project to map local bus routes evolved into Bangladesh's most comprehensive transport route finder. Today, KoyJabo serves over <strong>10,000+ monthly users</strong>, helping thousands of Bangladeshis navigate their daily commutes and intercity journeys with confidence.
+            </p>
+          </section>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-8 rounded-2xl border-l-6 border-dhaka-green">
+              <h3 className="text-2xl font-bold text-dhaka-green dark:text-emerald-400 mb-3 flex items-center gap-2">
+                <Flag className="w-6 h-6" /> Our Mission
+              </h3>
+              <p className="text-gray-800 dark:text-gray-200 font-bold mb-3 italic">To make public transport accessible, predictable, and stress-free for every Bangladeshi.</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                We believe that reliable transport information is a fundamental right, not a privilege. Whether you're a student commuting to university, a tourist exploring Dhaka, or a business traveler planning an intercity trip, KoyJabo ensures you always know the best way to reach your destination.
+              </p>
+            </div>
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-8 rounded-2xl border-l-6 border-blue-600">
+              <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-3 flex items-center gap-2">
+                <Eye className="w-6 h-6" /> Our Vision
+              </h3>
+              <p className="text-gray-800 dark:text-gray-200 font-bold mb-3 italic">To become the most trusted transport companion for all of Bangladesh.</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                We envision a future where every Bangladeshi has instant access to accurate, real-time transport information in their native language. By leveraging AI, crowdsourcing, and cutting-edge technology, we're building the infrastructure for Bangladesh's smart transportation future.
+              </p>
             </div>
           </div>
 
-          <div>
-            <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-3 text-lg">{t('about.whyChoose')}</h3>
-            <ul className="space-y-3 text-sm text-gray-700 dark:text-gray-300">
-              <li className="flex items-start gap-2">
-                <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                <span><strong>{t('about.comprehensiveSearch')}:</strong> {t('about.comprehensiveSearchDesc')}</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                <span><strong>{t('about.smartFare')}:</strong> {t('about.smartFareDesc')}</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                <span><strong>{t('about.touristFriendly')}:</strong> {t('about.touristFriendlyDesc')}</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                <span><strong>{t('about.realTimeOffline')}:</strong> {t('about.realTimeOfflineDesc')}</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                <span><strong>{t('about.aiPowered')}:</strong> {t('about.aiPoweredDesc')}</span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-700">
-            <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-3 text-lg">{t('about.whoIsItFor')}</h3>
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-              {t('about.whoIsItForDesc')}
-            </p>
-          </div>
-
-
-          <div className="mt-8 flex flex-col items-center gap-4">
-            <div className="text-center w-full">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-3">Our Social Media</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Connect with us for updates and news</p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <a
-                  href="https://www.linkedin.com/company/koy-jabo"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-3 px-6 py-3 bg-[#0077b5] hover:bg-[#006396] text-white font-bold rounded-xl transition-all hover:scale-105 active:scale-95 shadow-lg"
-                >
-                  <Linkedin className="w-5 h-5" />
-                  <span>LinkedIn</span>
-                </a>
-                <a
-                  href="https://www.facebook.com/koyjabo"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-3 px-6 py-3 bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold rounded-xl transition-all hover:scale-105 active:scale-95 shadow-lg"
-                >
-                  <Facebook className="w-5 h-5" />
-                  <span>Facebook</span>
-                </a>
+          <section>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">{t('about.allInOne')}</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 rounded-xl flex items-center justify-center mb-4">
+                  <Bus className="w-6 h-6" />
+                </div>
+                <h4 className="font-bold text-xl text-gray-900 dark:text-gray-100 mb-2">{t('about.busRoutesTitle')}</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{t('about.busRoutesDesc')}</p>
+                <ul className="mt-4 space-y-2 text-xs text-gray-500">
+                  <li>• 200+ bus routes covering all Dhaka divisions</li>
+                  <li>• Detailed stop info & fare estimates</li>
+                  <li>• Real-time autocomplete search</li>
+                </ul>
               </div>
+              <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center mb-4">
+                  <TramFront className="w-6 h-6" />
+                </div>
+                <h4 className="font-bold text-xl text-gray-900 dark:text-gray-100 mb-2">{t('about.trainMetroTitle')}</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{t('about.trainMetroDesc')}</p>
+                <ul className="mt-4 space-y-2 text-xs text-gray-500">
+                  <li>• Full MRT Line 6 coverage (Uttara-Motijheel)</li>
+                  <li>• Station-to-station fare calculator</li>
+                  <li>• Intercity train schedules & timings</li>
+                </ul>
+              </div>
+              <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400 rounded-xl flex items-center justify-center mb-4">
+                  <Bot className="w-6 h-6" />
+                </div>
+                <h4 className="font-bold text-xl text-gray-900 dark:text-gray-100 mb-2">{t('about.aiAssistantTitle')}</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{t('about.aiAssistantDesc')}</p>
+                <ul className="mt-4 space-y-2 text-xs text-gray-500">
+                  <li>• Natural language queries in BN/EN</li>
+                  <li>• Personalized route recommendations</li>
+                  <li>• Smart travel tips & insights</li>
+                </ul>
+              </div>
+              <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 rounded-xl flex items-center justify-center mb-4">
+                  <Zap className="w-6 h-6" />
+                </div>
+                <h4 className="font-bold text-xl text-gray-900 dark:text-gray-100 mb-2">Offline Capability</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Fast, reliable, and available even without an internet connection once cached.</p>
+                <ul className="mt-4 space-y-2 text-xs text-gray-500">
+                  <li>• Install as PWA on any device</li>
+                  <li>• Works 100% offline for searched routes</li>
+                  <li>• Faster load times & lower data usage</li>
+                </ul>
+              </div>
+            </div>
+          </section>
 
-              {/* Share Widget */}
-              <div className="mt-8 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 p-6 rounded-2xl border border-blue-200 dark:border-blue-800">
-                <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-2 text-center">Share KoyJabo</h4>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mb-4 text-center">
-                  Help others discover the easiest way to navigate Bangladesh!
+          <section>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">Our Impact</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-dhaka-green dark:bg-emerald-800 p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
+                <span className="text-3xl font-bold block mb-1">10k+</span>
+                <span className="text-[10px] uppercase font-bold opacity-80">Monthly Users</span>
+              </div>
+              <div className="bg-dhaka-red dark:bg-red-800 p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
+                <span className="text-3xl font-bold block mb-1">200+</span>
+                <span className="text-[10px] uppercase font-bold opacity-80">Local Buses</span>
+              </div>
+              <div className="bg-blue-600 dark:bg-blue-800 p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
+                <span className="text-3xl font-bold block mb-1">64</span>
+                <span className="text-[10px] uppercase font-bold opacity-80">Districts</span>
+              </div>
+              <div className="bg-amber-500 dark:bg-amber-700 p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
+                <span className="text-3xl font-bold block mb-1">1k+</span>
+                <span className="text-[10px] uppercase font-bold opacity-80">Daily Searches</span>
+              </div>
+            </div>
+          </section>
+
+          <section className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 flex items-center gap-2">
+              <Users className="w-6 h-6 text-dhaka-green" /> Meet the Developer
+            </h2>
+            <div className="flex flex-col md:flex-row items-center gap-8">
+              <div className="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-tr from-dhaka-green to-emerald-400 rounded-full flex items-center justify-center text-white text-3xl md:text-5xl font-bold shrink-0 shadow-xl">
+                MBF
+              </div>
+              <div className="text-center md:text-left">
+                <h3 className="text-2xl font-bold text-dhaka-green dark:text-emerald-400 mb-1">Mejbaur Bahar Fagun</h3>
+                <p className="text-sm font-bold text-gray-500 dark:text-gray-400 mb-4 uppercase tracking-wider">Founder & Lead Developer</p>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+                  Mejbaur is a Software Test Engineer and Full-stack Developer based in Dhaka, Bangladesh. With a passion for solving real-world problems through technology, he created KoyJabo to democratize transport information across Bangladesh.
                 </p>
-                <SocialShare className="justify-center" />
+                <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+                  <a href="mailto:mejbaurbaharfagun@gmail.com" className="p-2 bg-gray-100 dark:bg-slate-800 hover:bg-emerald-50 text-gray-600 dark:text-gray-400 hover:text-emerald-600 rounded-xl transition-all">
+                    <Mail className="w-5 h-5" />
+                  </a>
+                  <a href="https://linkedin.com/in/mejbaur/" target="_blank" rel="noreferrer" className="p-2 bg-gray-100 dark:bg-slate-800 hover:bg-blue-50 text-gray-600 dark:text-gray-400 hover:text-blue-600 rounded-xl transition-all">
+                    <Linkedin className="w-5 h-5" />
+                  </a>
+                  <a href="https://github.com/mejbaurbahar" target="_blank" rel="noreferrer" className="p-2 bg-gray-100 dark:bg-slate-800 hover:bg-slate-200 text-gray-600 dark:text-gray-400 hover:text-black rounded-xl transition-all">
+                    <ArrowRightLeft className="w-5 h-5" />
+                  </a>
+                </div>
               </div>
             </div>
+          </section>
 
-            <div className="pt-6 border-t border-gray-200 dark:border-gray-700 w-full">
-              <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-4">Connect</h3>
-              <div className="flex gap-4">
-                <a href="https://linkedin.com/in/mejbaur/" target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 text-blue-700 dark:text-blue-400 rounded-lg text-sm font-bold hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors">
-                  <Linkedin className="w-4 h-4" /> LinkedIn (Developer)
-                </a>
-              </div>
-              <div className="flex items-center gap-3 text-xs text-gray-400 mt-4">
-                <span>
-                  <span className="text-red-500 font-medium">Developed by</span> <span className="text-emerald-600 font-bold">Mejbaur Bahar Fagun</span>
-                </span>
-                <span>•</span>
-                <button onClick={() => setView(AppView.FOR_AI)} className="opacity-5 hover:opacity-50 transition-opacity">
-                  For AI
-                </button>
-              </div>
+          <footer className="pt-8 border-t border-gray-100 dark:border-gray-700 text-center">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">Connect With Us</h3>
+            <div className="flex justify-center gap-4 mb-6">
+              <a href="https://www.facebook.com/koyjabo" target="_blank" rel="noreferrer" className="flex items-center gap-2 px-6 py-3 bg-[#1877F2] text-white font-bold rounded-xl hover:scale-105 transition-transform shadow-lg">
+                <Facebook className="w-5 h-5" /> Facebook
+              </a>
+              <a href="https://www.linkedin.com/company/koy-jabo" target="_blank" rel="noreferrer" className="flex items-center gap-2 px-6 py-3 bg-[#0077B5] text-white font-bold rounded-xl hover:scale-105 transition-transform shadow-lg">
+                <Linkedin className="w-5 h-5" /> LinkedIn
+              </a>
             </div>
-          </div>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+              Found a bug or incorrect route? <a href="https://github.com/mejbaurbahar/Dhaka-Commute/issues" target="_blank" rel="noreferrer" className="text-dhaka-green font-bold hover:underline">Report an Issue on GitHub</a>
+            </p>
+            <div className="bg-slate-100 dark:bg-slate-900/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-800">
+              <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-2 text-center">Share KoyJabo</h4>
+              <p className="text-xs text-gray-600 dark:text-gray-400 mb-4 text-center">
+                Help others discover the easiest way to navigate Bangladesh!
+              </p>
+              <SocialShare className="justify-center" />
+            </div>
+            <div className="mt-8 text-[10px] text-gray-400 uppercase tracking-widest">
+              © 2024-2026 KoyJabo (কই যাবো). All rights reserved. • <button onClick={() => setView(AppView.FOR_AI)} className="hover:text-gray-600 transition-colors">For AI</button>
+            </div>
+          </footer>
         </div>
       </div>
+      {/* Spacer for bottom nav on mobile */}
+      <div className="h-20 md:hidden"></div>
     </div>
   );
+
 
   const renderHistoryManager = () => {
     const sessions = getAllSessions();
@@ -3668,6 +3720,12 @@ const App: React.FC = () => {
                   className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
                 >
                   <FileText className="w-5 h-5 text-orange-600 dark:text-orange-400" /> {t('nav.terms')}
+                </button>
+                <button
+                  onClick={() => { setView(AppView.CONTACT); setIsMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.CONTACT ? 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800' : ''}`}
+                >
+                  <Phone className="w-5 h-5 text-red-600 dark:text-red-400" /> {t('nav.contact') || 'Contact Us'}
                 </button>
               </div>
 
