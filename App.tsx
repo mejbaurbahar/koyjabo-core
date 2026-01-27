@@ -1594,21 +1594,21 @@ const App: React.FC = () => {
           <section>
             <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">{t('about.impactTitle')}</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-dhaka-green dark:bg-emerald-800 p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
-                <span className="text-3xl font-bold block mb-1">{t('about.impactMonthlyVal')}</span>
-                <span className="text-[10px] uppercase font-bold opacity-80">{t('about.impactMonthly')}</span>
+              <div className="bg-dhaka-green dark:bg-emerald-800 p-4 md:p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
+                <span className="text-xl md:text-3xl font-bold block mb-1">{t('about.impactMonthlyVal')}</span>
+                <span className="text-[9px] md:text-[10px] uppercase font-bold opacity-80">{t('about.impactMonthly')}</span>
               </div>
-              <div className="bg-dhaka-red dark:bg-red-800 p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
-                <span className="text-3xl font-bold block mb-1">{t('about.impactBusesVal')}</span>
-                <span className="text-[10px] uppercase font-bold opacity-80">{t('about.impactBuses')}</span>
+              <div className="bg-dhaka-red dark:bg-red-800 p-4 md:p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
+                <span className="text-xl md:text-3xl font-bold block mb-1">{t('about.impactBusesVal')}</span>
+                <span className="text-[9px] md:text-[10px] uppercase font-bold opacity-80">{t('about.impactBuses')}</span>
               </div>
-              <div className="bg-blue-600 dark:bg-blue-800 p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
-                <span className="text-3xl font-bold block mb-1">{t('about.impactDistrictsVal')}</span>
-                <span className="text-[10px] uppercase font-bold opacity-80">{t('about.impactDistricts')}</span>
+              <div className="bg-blue-600 dark:bg-blue-800 p-4 md:p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
+                <span className="text-xl md:text-3xl font-bold block mb-1">{t('about.impactDistrictsVal')}</span>
+                <span className="text-[9px] md:text-[10px] uppercase font-bold opacity-80">{t('about.impactDistricts')}</span>
               </div>
-              <div className="bg-amber-500 dark:bg-amber-700 p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
-                <span className="text-3xl font-bold block mb-1">{t('about.impactSearchesVal')}</span>
-                <span className="text-[10px] uppercase font-bold opacity-80">{t('about.impactSearches')}</span>
+              <div className="bg-amber-500 dark:bg-amber-700 p-4 md:p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
+                <span className="text-xl md:text-3xl font-bold block mb-1">{t('about.impactSearchesVal')}</span>
+                <span className="text-[9px] md:text-[10px] uppercase font-bold opacity-80">{t('about.impactSearches')}</span>
               </div>
             </div>
           </section>
