@@ -139,7 +139,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
         <div
             ref={scrollContainerRef}
             onScroll={handleScroll}
-            className="flex flex-col h-full bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-y-auto pt-16"
+            className="flex flex-col h-full bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-y-auto pt-20 md:pt-24"
         >
             {/* Hero Image */}
             <div className="w-full bg-gradient-to-br from-teal-500 to-cyan-600">
