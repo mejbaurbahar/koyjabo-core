@@ -266,7 +266,15 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
             });
         }
         if (!busInfo && brtcRoutes.length === 0 && routesToDisplay.length === 0) {
-            result += `ভাড়া: ${Math.max(150, Math.ceil(distance * 3))}-১,২০০ টাকা (আনুমানিক)।  \nলোকাল এবং আন্তঃজেলা বাস টার্মিনাল থেকে নিয়মিত বাস পাওয়া যায়।  \n`;
+            const estFareNonAC = Math.max(150, Math.round(distance * 2.8));
+            const estFareAC = Math.max(350, Math.round(distance * 5.2));
+            const estTime = Math.max(1, Math.ceil(distance / 45));
+
+            result += `**ভ্রমণ নির্দেশিকা (আনুমানিক):**  \n`;
+            result += `সরাসরি ডেটা পাওয়া যায়নি, তবে সাধারণ হিসাব অনুযায়ী:  \n`;
+            result += `- **আনুমানিক সময়:** ${estTime}-${estTime + 2} ঘণ্টা (সড়কপথ)।  \n`;
+            result += `- **আনুমানিক ভাড়া:** ৳${estFareNonAC} (নন-এসি) - ৳${estFareAC} (এসি)।  \n\n`;
+            result += `**🚌 টিপস:**  \n${from}-এর স্থানীয় আন্তঃজেলা বাস টার্মিনালে খোঁজ নিন। হানিফ, শ্যামলী বা এনা-র মতো বড় অপারেটরদের কাউন্টার সাধারণত জেলা শহরগুলোতে থাকে।  \n`;
         } else if (routesToDisplay.length > 0) {
             result += `**উপলব্ধ রুট:** ${routesToDisplay.length}টি রুট পাওয়া গেছে।  \n`;
             routesToDisplay.slice(0, 10).forEach((r: any) => {
@@ -330,7 +338,15 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
             });
         }
         if (!busInfo && brtcRoutes.length === 0 && routesToDisplay.length === 0) {
-            result += `**Fare:** ${Math.max(150, Math.ceil(distance * 3))}-1,200 BDT (Est).  \nAvailable from regional terminals.  \n`;
+            const estFareNonAC = Math.max(150, Math.round(distance * 2.8));
+            const estFareAC = Math.max(350, Math.round(distance * 5.2));
+            const estTime = Math.max(1, Math.ceil(distance / 45));
+
+            result += `**Travel Guide (Estimated):**  \n`;
+            result += `No direct data found, but based on regional metrics:  \n`;
+            result += `- **Estimated Time:** ${estTime}-${estTime + 2} hours (By Road).  \n`;
+            result += `- **Estimated Fare:** ৳${estFareNonAC} (Non-AC) - ৳${estFareAC} (AC).  \n\n`;
+            result += `**🚌 Tips:**  \nCheck the local inter-district bus terminal in **${from}**. Major operators like Hanif, Shyamoli, and Ena usually have ticket counters in most district hubs.  \n`;
         } else if (routesToDisplay.length > 0) {
             result += `**Available Routes:** Found ${routesToDisplay.length} specific routes.  \n`;
             routesToDisplay.slice(0, 10).forEach((r: any) => {
