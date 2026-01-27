@@ -1,10 +1,10 @@
 {
   "metadata": {
     "version": "2.0.0",
-    "lastUpdated": "2026-01-27T05:07:52.271Z",
+    "lastUpdated": "2026-01-27T05:30:20.107Z",
     "disclaimer": "Comprehensive Bangladesh intercity routes covering all 8 divisions and major cities. Data from official sources and Shohoz.com.",
     "coverage": {
-      "totalRoutes": 168,
+      "totalRoutes": 170,
       "trainRoutes": 41,
       "busRoutes": 124,
       "divisions": 8,
@@ -7851,6 +7851,89 @@
       ],
       "departurePoint": "Sayedabad",
       "arrivalPoint": "Bhola Terminal"
+    },
+    {
+      "id": "bd-transit-bandarban-gazipur-01",
+      "origin": "Bandarban",
+      "destination": "Gazipur",
+      "transportMode": "bus",
+      "operatorName": "Ena Transport / Hanif Enterprise",
+      "frequency": 4,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "duration": 540,
+      "durationHuman": "9h 0m",
+      "distance": 390,
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 950
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 1600
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "08:00 AM"
+        },
+        {
+          "departureTime": "09:00 PM"
+        }
+      ],
+      "departurePoint": "Bandarban Bus Stand",
+      "arrivalPoint": "Gazipur Chowrasta (Transit Point)",
+      "notes": "Most buses go to Dhaka (Sayedabad). Ask for buses heading towards Mymensingh to drop off at Gazipur Chowrasta."
+    },
+    {
+      "id": "bd-transit-gazipur-bandarban-01",
+      "origin": "Gazipur",
+      "destination": "Bandarban",
+      "transportMode": "bus",
+      "operatorName": "Hanif / Shyamoli / Ena",
+      "frequency": 4,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "duration": 540,
+      "durationHuman": "9h 0m",
+      "distance": 390,
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 950
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 1600
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "08:30 PM"
+        }
+      ],
+      "departurePoint": "Gazipur Chowrasta",
+      "arrivalPoint": "Bandarban Bus Stand",
+      "notes": "Board buses at Gazipur Chowrasta that are heading towards Chittagong/Bandarban from northern districts."
     }
   ]
 }

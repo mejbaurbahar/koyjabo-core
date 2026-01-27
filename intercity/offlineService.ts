@@ -309,6 +309,10 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
             result += `💡 **পরামর্শ (ভায়া ঢাকা):** সরাসরি ভালো সার্ভিস না থাকলে, প্রথমে **ঢাকা** এসে তারপর **${to}** এর বাস/ট্রেন/ফ্লাইট নেওয়া সুবিধাজনক হতে পারে।  \n\n`;
         }
 
+        if (from === "Gazipur" || to === "Gazipur") {
+            result += `💡 **গাজীপুর ট্রানজিট নোট:** অধিকাংশ দূরপাল্লার বাস (ঢাকা থেকে উত্তরবঙ্গ ও চট্টগ্রামগামী) **গাজীপুর চৌরাস্তা** বা **বোর্ড বাজার** হয়ে যায়। আপনি সেখান থেকেও বাসে উঠতে পারেন।  \n\n`;
+        }
+
     } else {
         // ENGLISH
         result = `**Route: ${from} to ${to}**  \n`;
@@ -359,6 +363,10 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
         // Special Tips
         if (!busInfo && !trainInfo && distance > 200 && from !== "Dhaka" && to !== "Dhaka") {
             result += `💡 **Tip:** If direct transport is rare, travel via **Dhaka** for better connectivity.  \n\n`;
+        }
+
+        if (from === "Gazipur" || to === "Gazipur") {
+            result += `💡 **Gazipur Transit Note:** Most intercity buses departing from Dhaka towards the North or Chittagong pass through **Gazipur Chowrasta** or **Board Bazar**. You can often board from these points.  \n\n`;
         }
     }
 
