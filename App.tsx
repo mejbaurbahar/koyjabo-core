@@ -749,6 +749,37 @@ const App: React.FC = () => {
     return () => window.removeEventListener('popstate', handlePopState);
   }, [view]);
 
+  // Handle SEO Dynamic Titles and Meta Tags
+  useEffect(() => {
+    let title = 'কই যাবো - ঢাকা বাস রুট ও ট্রান্সপোর্ট গাইড | Dhaka Bus Route Finder';
+    let description = 'কই যাবো: ঢাকা এবং বাংলাদেশের বাস রুট, গন্তব্য এবং AI সহায়তা খুঁজুন। Find Dhaka bus routes instantly. 200+ buses, Metro Rail (MRT Line 6), intercity routes with AI. Free fare calculator.';
+
+    if (view === AppView.BUS_DETAILS && selectedBus) {
+      const busName = formatBusName(selectedBus.name);
+      title = `${busName} ${t('nav.busDetails')} | কই যাবো`;
+      description = `${busName} bus route details, stops, and fare calculator. ${selectedBus.stops.length} stops covered. Find where ${busName} goes in Dhaka.`;
+    } else if (view === AppView.LIVE_NAV && selectedBus) {
+      const busName = formatBusName(selectedBus.name);
+      title = `Tracking ${busName} | Live Navigation | কই যাবো`;
+      description = `Live tracking and navigation for ${busName} bus route. View real-time progress and estimated arrival times for stops in Dhaka.`;
+    } else if (view === AppView.BLOG) {
+      title = `Blog - Transport Tips & Guides | কই যাবো`;
+      description = `Learn about Dhaka's transport system, bus route guides, Metro Rail updates, and travel tips on the কই যাবো blog.`;
+    } else if (window.location.hash === '#privacy') {
+      title = `${t('privacy.title')} | কই যাবো`;
+      description = `KoyJabo Privacy Policy - How we protect your data while using our bus route finder and AI assistant.`;
+    } else if (window.location.hash === '#terms') {
+      title = `${t('nav.terms')} | কই যাবো`;
+      description = `KoyJabo Terms of Service - Usage guidelines for our Dhaka transport and intercity route finder.`;
+    }
+
+    document.title = title;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', description);
+    }
+  }, [view, selectedBus, language, t]);
+
   // Track if view was set from hash to prevent conflict
   const viewSetFromHash = useRef(false);
 

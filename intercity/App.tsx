@@ -155,6 +155,23 @@ function App() {
     }, 800);
   };
 
+  // Dynamic SEO Titles
+  useEffect(() => {
+    let title = 'কই যাবো - Intercity Bus, Train & Flight Finder';
+    let description = 'Search intercity buses, trains, and flights across Bangladesh. Compare fares and schedules for Dhaka, Chittagong, Sylhet & more.';
+
+    if (result) {
+      title = `${result.from} to ${result.to} Route | কই যাবো Intercity`;
+      description = `Find the best ways to travel from ${result.from} to ${result.to}. Bus schedules, train times, and flight options with price comparisons.`;
+    }
+
+    document.title = title;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', description);
+    }
+  }, [result]);
+
   return (
     <div className="h-screen flex flex-col bg-slate-50 dark:bg-slate-900 text-gray-800 dark:text-gray-100 overflow-hidden transition-colors duration-300">
 
