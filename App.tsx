@@ -1547,9 +1547,9 @@ const App: React.FC = () => {
                 <h4 className="font-bold text-xl text-gray-900 dark:text-gray-100 mb-2">{t('about.busRoutesTitle')}</h4>
                 <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{t('about.busRoutesDesc')}</p>
                 <ul className="mt-4 space-y-2 text-xs text-gray-500">
-                  <li>• 200+ bus routes covering all Dhaka divisions</li>
-                  <li>• Detailed stop info & fare estimates</li>
-                  <li>• Real-time autocomplete search</li>
+                  <li>• {t('about.busRouteItem1')}</li>
+                  <li>• {t('about.busRouteItem2')}</li>
+                  <li>• {t('about.busRouteItem3')}</li>
                 </ul>
               </div>
               <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
@@ -1559,9 +1559,9 @@ const App: React.FC = () => {
                 <h4 className="font-bold text-xl text-gray-900 dark:text-gray-100 mb-2">{t('about.trainMetroTitle')}</h4>
                 <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{t('about.trainMetroDesc')}</p>
                 <ul className="mt-4 space-y-2 text-xs text-gray-500">
-                  <li>• Full MRT Line 6 coverage (Uttara-Motijheel)</li>
-                  <li>• Station-to-station fare calculator</li>
-                  <li>• Intercity train schedules & timings</li>
+                  <li>• {t('about.trainMetroItem1')}</li>
+                  <li>• {t('about.trainMetroItem2')}</li>
+                  <li>• {t('about.trainMetroItem3')}</li>
                 </ul>
               </div>
               <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
@@ -1571,9 +1571,9 @@ const App: React.FC = () => {
                 <h4 className="font-bold text-xl text-gray-900 dark:text-gray-100 mb-2">{t('about.aiAssistantTitle')}</h4>
                 <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{t('about.aiAssistantDesc')}</p>
                 <ul className="mt-4 space-y-2 text-xs text-gray-500">
-                  <li>• Natural language queries in BN/EN</li>
-                  <li>• Personalized route recommendations</li>
-                  <li>• Smart travel tips & insights</li>
+                  <li>• {t('about.aiAssistantItem1')}</li>
+                  <li>• {t('about.aiAssistantItem2')}</li>
+                  <li>• {t('about.aiAssistantItem3')}</li>
                 </ul>
               </div>
               <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
@@ -1595,19 +1595,19 @@ const App: React.FC = () => {
             <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">{t('about.impactTitle')}</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="bg-dhaka-green dark:bg-emerald-800 p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
-                <span className="text-3xl font-bold block mb-1">10k+</span>
+                <span className="text-3xl font-bold block mb-1">{t('about.impactMonthlyVal')}</span>
                 <span className="text-[10px] uppercase font-bold opacity-80">{t('about.impactMonthly')}</span>
               </div>
               <div className="bg-dhaka-red dark:bg-red-800 p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
-                <span className="text-3xl font-bold block mb-1">200+</span>
+                <span className="text-3xl font-bold block mb-1">{t('about.impactBusesVal')}</span>
                 <span className="text-[10px] uppercase font-bold opacity-80">{t('about.impactBuses')}</span>
               </div>
               <div className="bg-blue-600 dark:bg-blue-800 p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
-                <span className="text-3xl font-bold block mb-1">64</span>
+                <span className="text-3xl font-bold block mb-1">{t('about.impactDistrictsVal')}</span>
                 <span className="text-[10px] uppercase font-bold opacity-80">{t('about.impactDistricts')}</span>
               </div>
               <div className="bg-amber-500 dark:bg-amber-700 p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
-                <span className="text-3xl font-bold block mb-1">1k+</span>
+                <span className="text-3xl font-bold block mb-1">{t('about.impactSearchesVal')}</span>
                 <span className="text-[10px] uppercase font-bold opacity-80">{t('about.impactSearches')}</span>
               </div>
             </div>
