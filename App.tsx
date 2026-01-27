@@ -3386,7 +3386,7 @@ const App: React.FC = () => {
         <main className="flex flex-1 overflow-hidden relative w-full max-w-full mx-auto bg-slate-50 dark:bg-slate-900">
           {/* Left Sidebar (Desktop) / Main View (Mobile Home) */}
           <div className={`
-            ${'w-full md:w-1/3 md:min-w-[320px] md:max-w-md md:flex md:flex-col border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900 z-0 h-full overflow-y-auto sticky top-0'}
+            ${'w-full md:w-1/3 md:min-w-[320px] md:max-w-md md:flex md:flex-col border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900 z-0 h-full overflow-y-auto'}
             ${view !== AppView.HOME && 'hidden md:flex'}
 `}>
             <div className="h-full pt-16 md:pt-0">
