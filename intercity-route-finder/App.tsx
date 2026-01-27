@@ -336,10 +336,10 @@ function App() {
         </div>
 
         {/* Container - Content sits relative above background */}
-        <div className="py-4 md:py-8 px-4 relative z-10">
+        <div className="py-2 md:py-8 px-4 relative z-10">
 
           {/* Hero Title Section */}
-          <div className="text-center mb-6 animate-fade-in">
+          <div className="text-center mb-3 md:mb-6 animate-fade-in">
             <h1 className="text-2xl md:text-4xl font-extrabold mb-2 tracking-tight drop-shadow-sm">
               <span className="text-dhaka-red">বাংলাদেশ</span>{' '}
               <span className="text-dhaka-green">ঘুরে দেখুন</span>

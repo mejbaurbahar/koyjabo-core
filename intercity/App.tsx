@@ -296,9 +296,9 @@ function App() {
         {/* Removed Usage Badge */}
 
         {/* Container - Content sits relative above background */}
-        <div className="py-4 md:py-8 px-4 relative z-10">
+        <div className="py-2 md:py-8 px-4 relative z-10">
 
-          <div className="text-center mb-6 animate-fade-in">
+          <div className="text-center mb-3 md:mb-6 animate-fade-in">
             <h1 className="text-2xl md:text-5xl font-extrabold mb-2 tracking-tight drop-shadow-sm flex flex-col items-center gap-1.5">
               <span className="text-xs md:text-lg text-gray-400 dark:text-gray-500 font-bold tracking-[0.2em] uppercase">
                 {t('intercity.exploreMini')}
@@ -405,7 +405,7 @@ function App() {
 
       {/* SCROLLABLE BOTTOM SECTION (Results) */}
       <div className="flex-1 overflow-y-auto bg-slate-50/50 dark:bg-slate-900/50 relative z-0">
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8">
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 md:py-8">
 
           {/* Error Message */}
           {error && (
@@ -427,7 +427,7 @@ function App() {
 
             {/* Empty State / Popular Routes */}
             {!loading && !result && !error && (
-              <div className="mt-4 md:mt-12 animate-slide-up max-w-4xl mx-auto">
+              <div className="mt-2 md:mt-12 animate-slide-up max-w-4xl mx-auto">
                 <div className="mt-8 md:mt-12 bg-white dark:bg-slate-800 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 max-w-2xl mx-auto border border-gray-100 dark:border-slate-700 shadow-sm text-center md:text-left transition-colors duration-300">
                   <div className="bg-blue-50 dark:bg-slate-700 p-4 rounded-full text-blue-500 dark:text-blue-400 animate-pulse">
                     <PlayCircle size={32} />

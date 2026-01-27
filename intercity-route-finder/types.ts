@@ -174,3 +174,9 @@ export interface RouteResponse {
 export type DistrictMap = {
   [category: string]: string[];
 };
+
+export interface ErrorResponse {
+  error?: string;
+  message?: string;
+  status?: number;
+}
