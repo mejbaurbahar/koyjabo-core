@@ -3680,16 +3680,33 @@ const App: React.FC = () => {
           </div>
         )}
 
-        {/* Intercity Loading Overlay - Using Main App Loader */}
+        {/* Intercity Loading Overlay - Modern Premium UI */}
         {intercityLoading && (
-          <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center" style={{ background: 'linear-gradient(135deg, #006a4e 0%, #00a86b 100%)' }}>
-            <div className="text-center p-5">
-              {/* Logo Animation */}
-              <img src="/logo.png" alt="Logo" className="block h-32 w-auto mb-6 mx-auto animate-bounce" />
-              <p className="text-lg text-white/90 mb-7">Loading...</p>
-              {/* Loading Spinner */}
-              <div className="w-12 h-12 border-4 border-white/30 border-t-white rounded-full animate-spin mx-auto"></div>
+          <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0f172a]">
+            {/* Ambient background glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+
+            <div className="relative z-10 bg-white/5 backdrop-blur-3xl border border-white/10 p-10 rounded-[40px] shadow-2xl max-w-sm w-[90%] flex flex-col items-center animate-in zoom-in duration-500">
+              <div className="w-24 h-24 bg-white rounded-3xl flex items-center justify-center mb-8 shadow-2xl relative animate-bounce [animation-duration:3s]">
+                <img src="/logo.png" alt="Logo" className="h-16 w-auto" />
+                <div className="absolute -inset-4 bg-emerald-500/20 blur-2xl -z-10 rounded-full animate-pulse"></div>
+              </div>
+
+              <h2 className="text-2xl font-bold text-white mb-2">কই যাবো</h2>
+              <p className="text-slate-400 text-sm mb-8 text-center font-medium">Finding the best intercity routes for you...</p>
+
+              <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden mb-4">
+                <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 w-[40%] rounded-full animate-[loading-progress_2s_infinite_ease-in-out]"></div>
+              </div>
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest animate-pulse">Initializing Data</span>
             </div>
+
+            <style>{`
+              @keyframes loading-progress {
+                0% { transform: translateX(-100%); }
+                100% { transform: translateX(300%); }
+              }
+            `}</style>
           </div>
         )}
 
