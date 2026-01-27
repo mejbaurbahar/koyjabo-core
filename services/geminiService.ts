@@ -29,7 +29,12 @@ const MAJOR_LOCATIONS = [
   "Cox's Bazar", "Cumilla", "Feni", "Bogura", "Jashore", "Benapole", "Kushtia", "Satkhira",
   "Dinajpur", "Pabna", "Faridpur", "Noakhali", "Chandpur", "Brahmanbaria", "Natore",
   "Tangail", "Sirajganj", "Naogaon", "Chapainawabganj", "Gazipur", "Narayanganj",
-  "Narsingdi", "Bandarban", "Rangamati", "Khagrachari", "Panchagarh", "Thakurgaon"
+  "Narsingdi", "Bandarban", "Rangamati", "Khagrachari", "Panchagarh", "Thakurgaon",
+  "Munshiganj", "Manikganj", "Maowa", "Paturia", "Aricha", "Gopalganj", "Madaripur",
+  "Shariatpur", "Lakshmipur", "Bhola", "Patuakhali", "Barguna", "Pirojpur", "Jhalokati",
+  "Bagerhat", "Narail", "Meherpur", "Chuadanga", "Magura", "Jhenaidah", "Rajbari",
+  "Jamalpur", "Sherpur", "Netrokona", "Kishoreganj", "Sunamganj", "Habiganj", "Moulvibazar",
+  "Nilphamari", "Gaibandha", "Kurigram", "Lalmonirhat", "Joypurhat"
 ];
 
 const MAJOR_LOCATIONS_BN: Record<string, string> = {
@@ -42,7 +47,16 @@ const MAJOR_LOCATIONS_BN: Record<string, string> = {
   "Tangail": "টাঙ্গাইল", "Sirajganj": "সিরাজগঞ্জ", "Naogaon": "নওগাঁ",
   "Chapainawabganj": "চাঁপাইনবাবগঞ্জ", "Gazipur": "গাজীপুর", "Narayanganj": "নারায়ণগঞ্জ",
   "Narsingdi": "নরসিংদী", "Bandarban": "বান্দরবান", "Rangamati": "রাঙ্গামাটি",
-  "Khagrachari": "খাগড়াছড়ি", "Panchagarh": "পঞ্চগড়", "Thakurgaon": "ঠাকুরগাঁও"
+  "Khagrachari": "খাগড়াছড়ি", "Panchagarh": "পঞ্চগড়", "Thakurgaon": "ঠাকুরগাঁও",
+  "Munshiganj": "মুন্সীগঞ্জ", "Manikganj": "মানিকগঞ্জ", "Maowa": "মাওয়া", "Paturia": "পাটুরিয়া",
+  "Aricha": "আরিচা", "Gopalganj": "গোপালগঞ্জ", "Madaripur": "মাদারীপুর", "Shariatpur": "শরীয়তপুর",
+  "Lakshmipur": "লক্ষ্মীপুর", "Bhola": "ভোলা", "Patuakhali": "পটুয়াখালী", "Barguna": "বরগুনা",
+  "Pirojpur": "পিরোজপুর", "Jhalokati": "ঝালকাঠি", "Bagerhat": "বাগেরহাট", "Narail": "নড়াইল",
+  "Meherpur": "মেহেরপুর", "Chuadanga": "চুয়াডাঙ্গা", "Magura": "মাগুরা", "Jhenaidah": "ঝিনাইদহ",
+  "Rajbari": "রাজবাড়ী", "Jamalpur": "জামালপুর", "Sherpur": "শেরপুর", "Netrokona": "নেত্রকোণা",
+  "Kishoreganj": "কিশোরগঞ্জ", "Sunamganj": "সুনামগঞ্জ", "Habiganj": "হবিগঞ্জ", "Moulvibazar": "মৌলভীবাজার",
+  "Nilphamari": "নীলফামারী", "Gaibandha": "গাইবান্ধা", "Kurigram": "কুড়িগ্রাম", "Lalmonirhat": "লালমনিরহাট",
+  "Joypurhat": "জয়পুরহাট"
 };
 
 const TRAIN_ROUTES = [
@@ -1044,23 +1058,41 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
       responseParts.push(isBn ? `📍 **লোকেশন পাওয়া গেছে:** আপনি **${displayName}** এর কথা বলছেন।` : `📍 **Locations Found:** I see you mentioned **${displayName}**.`);
 
       if (isNavIntent) {
-        // Assume user wants to GO TO this station
-        const busesToTarget = BUS_DATA.filter(b => b.stops.some(s => s === targetStation.id || s === targetStation.name.toLowerCase()));
-
-        if (busesToTarget.length > 0) {
-          responseParts.push(isBn ? `🚌 **${displayName} পৌঁছাতে:**\nআপনি এই বাসগুলো ব্যবহার করতে পারেন:\n` : `🚌 **To reach ${displayName}:**\nYou can take these buses from various locations:\n`);
-
-          // Show distinct routes (max 5)
-          busesToTarget.slice(0, 5).forEach(bus => {
-            const busDisplayName = isBn && bus.bnName ? bus.bnName : bus.name;
-            responseParts.push(`- **${busDisplayName}**: ${bus.routeString}`);
-          });
-
-          responseParts.push(isBn ? `\n❓ **টিপ:** নির্দিষ্ট রুটের জন্য আপনার শুরুর স্থান বলুন! (যেমন: "মিরপুর থেকে ${displayName}")` : `\n❓ **Tip:** To get a specific route, tell me your starting point! (e.g. "From Mirpur to ${displayName}")`);
+        // Assume user wants to GO TO this station. Use route planner if we have context.
+        if (userNearbyStation) {
+          const busRes = findBusRoute(userNearbyStation, targetStation.name, isBn);
+          if (busRes) {
+            responseParts.push(busRes);
+          } else {
+            // Fallback to simple listing if no route found
+            const busesToTarget = BUS_DATA.filter(b => b.stops.some(s => s === targetStation.id || s === targetStation.name.toLowerCase()));
+            if (busesToTarget.length > 0) {
+              responseParts.push(isBn ? `🚌 **${displayName} পৌঁছাতে:**\nআপনি এই বাসগুলো ব্যবহার করতে পারেন:\n` : `🚌 **To reach ${displayName}:**\nYou can take these buses from various locations:\n`);
+              busesToTarget.slice(0, 5).forEach(bus => {
+                const busDisplayName = isBn && bus.bnName ? bus.bnName : bus.name;
+                responseParts.push(`- **${busDisplayName}**: ${bus.routeString}`);
+              });
+            }
+          }
         } else {
-          responseParts.push(isBn
-            ? `⚠️ আমি জানি **${displayName}** কোথায়, কিন্তু আমার কাছে এই মূহূর্তে সরাসরি লোকাল বাসের তথ্য নেই। ফার্মগেট বা মহাখালীর মতো বড় হাব হয়ে চেষ্টা করুন।`
-            : `⚠️ I know where **${displayName}** is, but I can't find direct local buses in my current database. Try finding a connection via a major hub like Farmgate or Mohakhali.`);
+          // No user location context, just list buses
+          const busesToTarget = BUS_DATA.filter(b => b.stops.some(s => s === targetStation.id || s === targetStation.name.toLowerCase()));
+
+          if (busesToTarget.length > 0) {
+            responseParts.push(isBn ? `🚌 **${displayName} পৌঁছাতে:**\nআপনি এই বাসগুলো ব্যবহার করতে পারেন:\n` : `🚌 **To reach ${displayName}:**\nYou can take these buses from various locations:\n`);
+
+            // Show distinct routes (max 5)
+            busesToTarget.slice(0, 5).forEach(bus => {
+              const busDisplayName = isBn && bus.bnName ? bus.bnName : bus.name;
+              responseParts.push(`- **${busDisplayName}**: ${bus.routeString}`);
+            });
+
+            responseParts.push(isBn ? `\n❓ **টিপ:** নির্দিষ্ট রুটের জন্য আপনার শুরুর স্থান বলুন! (যেমন: "মিরপুর থেকে ${displayName}")` : `\n❓ **Tip:** To get a specific route, tell me your starting point! (e.g. "From Mirpur to ${displayName}")`);
+          } else {
+            responseParts.push(isBn
+              ? `⚠️ আমি জানি **${displayName}** কোথায়, কিন্তু আমার কাছে এই মূহূর্তে সরাসরি লোকাল বাসের তথ্য নেই। ফার্মগেট বা মহাখালীর মতো বড় হাব হয়ে চেষ্টা করুন।`
+              : `⚠️ I know where **${displayName}** is, but I can't find direct local buses in my current database. Try finding a connection via a major hub like Farmgate or Mohakhali.`);
+          }
         }
 
       } else {
