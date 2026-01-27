@@ -550,93 +550,107 @@
   <!-- Footer Navigation - Added for AdSense Compliance -->
   <style>
     .site-footer {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       color: #e2e8f0;
-      padding: 50px 20px 30px;
-      text-align: center;
+      padding: 10px 24px;
+      z-index: 1000;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
       font-family: 'Inter', sans-serif;
-      margin-top: auto;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
     }
 
     .site-footer .footer-content {
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
     }
 
     .site-footer .footer-logo {
-      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 0;
+      flex-shrink: 0;
     }
 
     .site-footer .footer-logo img {
-      height: 50px;
+      height: 28px;
       width: auto;
-      margin-bottom: 12px;
-      opacity: 0.95;
+      opacity: 1;
     }
 
     .site-footer .footer-title {
-      font-size: 1.2rem;
-      margin-bottom: 8px;
+      font-size: 0.85rem;
+      margin-bottom: 0;
       font-weight: 700;
       color: #10b981;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
     }
 
     .site-footer .footer-tagline {
-      font-size: 0.95rem;
-      color: #94a3b8;
-      margin-bottom: 0;
+      display: none;
     }
 
     .site-footer nav {
-      margin: 35px 0;
-      padding: 25px 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 0;
+      padding: 0;
+      border: none;
+      flex-grow: 1;
+      text-align: center;
     }
 
     .site-footer nav a {
-      color: #10b981;
+      color: #94a3b8;
       text-decoration: none;
-      margin: 0 12px;
+      margin: 0 10px;
       font-weight: 500;
-      font-size: 0.95rem;
-      transition: all 0.3s ease;
-      display: inline-block;
+      font-size: 0.8rem;
+      transition: all 0.2s ease;
+      white-space: nowrap;
     }
 
     .site-footer nav a:hover {
-      color: #34d399;
-      transform: translateY(-2px);
+      color: #10b981;
     }
 
     .site-footer nav .separator {
-      color: #475569;
-      margin: 0 5px;
-    }
-
-    .site-footer nav br {
-      line-height: 2;
+      color: #334155;
+      font-size: 0.7rem;
     }
 
     .site-footer .footer-bottom {
-      margin-top: 30px;
+      margin-top: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      flex-shrink: 0;
     }
 
     .site-footer .copyright {
-      font-size: 0.9rem;
-      color: #94a3b8;
-      margin-bottom: 12px;
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-bottom: 0;
     }
 
     .site-footer .features {
-      font-size: 0.85rem;
-      color: #64748b;
-      margin-top: 15px;
-      padding-top: 15px;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: none;
+    }
+
+    /* Adjust main content for fixed footer */
+    @media (min-width: 769px) {
+      #root {
+        padding-bottom: 50px;
+      }
     }
 
     /* Hide footer on mobile devices */
@@ -651,27 +665,25 @@
     <div class="footer-content">
       <div class="footer-logo">
         <img src="/logo.png" alt="কই যাবো">
-        <p class="footer-title">কই যাবো - Bangladesh's Smart Transport Finder</p>
-        <p class="footer-tagline">Find intercity bus, train & flight routes across Bangladesh instantly.</p>
+        <p class="footer-title">কই যাবো - Smart Transport Finder</p>
       </div>
 
       <nav>
         <a href="/">Home</a>
         <span class="separator">|</span>
-        <a href="/intercity">Intercity Routes</a>
+        <a href="/intercity">Intercity</a>
         <span class="separator">|</span>
-        <a href="/about.html">About Us</a>
+        <a href="/about.html">About</a>
         <span class="separator">|</span>
         <a href="/contact.html">Contact</a>
-        <br>
-        <a href="/privacy-policy.html">Privacy Policy</a>
         <span class="separator">|</span>
-        <a href="/terms-of-service.html">Terms of Service</a>
+        <a href="/privacy-policy.html">Privacy</a>
+        <span class="separator">|</span>
+        <a href="/terms-of-service.html">Terms</a>
       </nav>
 
       <div class="footer-bottom">
         <p class="copyright">&copy; 2024-2026 KoyJabo (কই যাবো). All rights reserved.</p>
-        <p class="features">Bus, Train & Flight Routes | 64 Districts | AI-Powered | Works Offline</p>
       </div>
     </div>
   </footer>
