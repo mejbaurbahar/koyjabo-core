@@ -250,6 +250,14 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
 
     let result = '';
 
+    // Generate Context-Aware Transit Advice Components
+    const availableModesArr = [];
+    if (connTo.bus) availableModesArr.push(isBn ? 'বাস' : 'Bus');
+    if (connTo.train) availableModesArr.push(isBn ? 'ট্রেন' : 'Train');
+    if (connTo.plane) availableModesArr.push(isBn ? 'ফ্লাইট' : 'Flight');
+    if (connTo.boat) availableModesArr.push(isBn ? 'লঞ্চ' : 'Launch');
+    const modesStr = availableModesArr.join('/');
+
     if (isBn) {
         result = `**রুট: ${from} থেকে ${to}**  \n`;
         result += `**দূরত্ব:** ${distance > 0 ? distance + ' কিমি (আকাশপথ)' : 'তথ্য নেই'}  \n\n`;
@@ -312,9 +320,9 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
             result += `**🚢 নৌপথ:**  \nএই রুটে নৌযান চলাচল করতে পারে। স্থানীয় ঘাটে খোঁজ নিন।  \n\n`;
         }
 
-        // Via Hub Logic
+        // Context-Aware Via Hub Logic
         if (!busInfo && !trainInfo && distance > 200 && from !== "Dhaka" && to !== "Dhaka") {
-            result += `💡 **পরামর্শ (ভায়া ঢাকা):** সরাসরি ভালো সার্ভিস না থাকলে, প্রথমে **ঢাকা** এসে তারপর **${to}** এর বাস/ট্রেন/ফ্লাইট নেওয়া সুবিধাজনক হতে পারে।  \n\n`;
+            result += `💡 **পরামর্শ (ভায়া ঢাকা):** সরাসরি ভালো সার্ভিস না থাকলে, প্রথমে **ঢাকা** এসে তারপর সেখান থেকে **${to}**-এর ${modesStr} নেওয়া সুবিধাজনক হতে পারে।  \n\n`;
         }
 
         if (from === "Gazipur" || to === "Gazipur") {
@@ -376,9 +384,9 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
             result += `**Terminal:** Sadarghat (Dhaka) or local.  \n**Operators:** ${launchInfo.operators.join(', ')}.  \n**Time:** ${launchInfo.time}. **Fare:** ${launchInfo.fare} BDT.  \n\n`;
         }
 
-        // Special Tips
+        // Context-Aware Via Hub Logic
         if (!busInfo && !trainInfo && distance > 200 && from !== "Dhaka" && to !== "Dhaka") {
-            result += `💡 **Tip:** If direct transport is rare, travel via **Dhaka** for better connectivity.  \n\n`;
+            result += `💡 **Tip (Via Dhaka):** If direct transport is limited, traveling via **Dhaka** to catch a ${modesStr} to **${to}** is often the most reliable option.  \n\n`;
         }
 
         if (from === "Gazipur" || to === "Gazipur") {
