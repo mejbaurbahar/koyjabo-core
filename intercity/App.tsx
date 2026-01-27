@@ -11,6 +11,7 @@ import LiveLocationMap from './components/LiveLocationMap';
 import { POPULAR_ROUTES, DEMO_RESPONSE, DEMO_RESPONSE_BN } from './constants';
 import { getOfflineIntercityData } from './offlineService';
 import { RouteResponse, ErrorResponse } from './types';
+import GlobalFooter from './components/GlobalFooter';
 
 function App() {
   const { t, language, setLanguage, formatNumber } = useLanguage();
@@ -446,6 +447,7 @@ function App() {
               </div>
             )}
           </div>
+          <GlobalFooter />
         </main>
       </div>
       {/* Menu Overlay */}

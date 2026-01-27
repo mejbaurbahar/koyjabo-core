@@ -1,8 +1,15 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { FileText, CheckCircle2, AlertTriangle, ShieldCheck, Mail, ExternalLink } from 'lucide-react';
+import GlobalFooter from './GlobalFooter';
+import { AppView } from '../types';
 
-const TermsOfService: React.FC = () => {
+interface TermsOfServiceProps {
+    view: AppView;
+    setView: (view: AppView) => void;
+}
+
+const TermsOfService: React.FC<TermsOfServiceProps> = ({ view, setView }) => {
     const { t } = useLanguage();
 
     return (
@@ -113,10 +120,7 @@ const TermsOfService: React.FC = () => {
                         </div>
                     </section>
 
-                    <footer className="text-center pt-10 border-t border-gray-100 dark:border-gray-800 pb-10">
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">© 2024-2026 KoyJabo (কই যাবো). All rights reserved.</p>
-                        <p className="text-xs text-gray-400 uppercase tracking-widest font-bold">BY USING THE SERVICE, YOU ACKNOWLEDGE THAT YOU HAVE READ, UNDERSTOOD, AND AGREE TO BE BOUND BY THESE TERMS.</p>
-                    </footer>
+                    <GlobalFooter view={view} setView={setView} />
                 </div>
 
                 {/* Bottom padding for mobile footer */}

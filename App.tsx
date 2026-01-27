@@ -58,6 +58,7 @@ import BlogPostDetail from './components/BlogPostDetail';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
 import ContactUs from './components/ContactUs';
+import GlobalFooter from './components/GlobalFooter';
 
 
 
@@ -1641,30 +1642,7 @@ const App: React.FC = () => {
             </div>
           </section>
 
-          <footer className="pt-8 border-t border-gray-100 dark:border-gray-700 text-center">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">Connect With Us</h3>
-            <div className="flex justify-center gap-4 mb-6">
-              <a href="https://www.facebook.com/koyjabo" target="_blank" rel="noreferrer" className="flex items-center gap-2 px-6 py-3 bg-[#1877F2] text-white font-bold rounded-xl hover:scale-105 transition-transform shadow-lg">
-                <Facebook className="w-5 h-5" /> Facebook
-              </a>
-              <a href="https://www.linkedin.com/company/koy-jabo" target="_blank" rel="noreferrer" className="flex items-center gap-2 px-6 py-3 bg-[#0077B5] text-white font-bold rounded-xl hover:scale-105 transition-transform shadow-lg">
-                <Linkedin className="w-5 h-5" /> LinkedIn
-              </a>
-            </div>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-              Found a bug or incorrect route? <a href="https://github.com/mejbaurbahar/Dhaka-Commute/issues" target="_blank" rel="noreferrer" className="text-dhaka-green font-bold hover:underline">Report an Issue on GitHub</a>
-            </p>
-            <div className="bg-slate-100 dark:bg-slate-900/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-800">
-              <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-2 text-center">Share KoyJabo</h4>
-              <p className="text-xs text-gray-600 dark:text-gray-400 mb-4 text-center">
-                Help others discover the easiest way to navigate Bangladesh!
-              </p>
-              <SocialShare className="justify-center" />
-            </div>
-            <div className="mt-8 text-[10px] text-gray-400 uppercase tracking-widest">
-              © 2024-2026 KoyJabo (কই যাবো). All rights reserved. • <button onClick={() => setView(AppView.FOR_AI)} className="hover:text-gray-600 transition-colors">For AI</button>
-            </div>
-          </footer>
+          <GlobalFooter view={view} setView={setView} />
         </div>
       </div>
       {/* Spacer for bottom nav on mobile */}
@@ -3350,6 +3328,7 @@ const App: React.FC = () => {
               )}
             </div>
           )}
+          <GlobalFooter view={view} setView={setView} />
         </div>
 
 
@@ -3468,9 +3447,9 @@ const App: React.FC = () => {
             {view === AppView.DAILY_JOURNEY && (
               <DailyJourneyView onBack={() => setView(previousView)} />
             )}
-            {view === AppView.PRIVACY && <PrivacyPolicy />}
-            {view === AppView.TERMS && <TermsOfService />}
-            {view === AppView.CONTACT && <ContactUs />}
+            {view === AppView.PRIVACY && <PrivacyPolicy view={view} setView={setView} />}
+            {view === AppView.TERMS && <TermsOfService view={view} setView={setView} />}
+            {view === AppView.CONTACT && <ContactUs view={view} setView={setView} />}
             {view === AppView.FOR_AI && renderForAi()}
             {view === AppView.INSTALL_APP && (
               <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-20 md:pt-12 overflow-y-auto w-full">

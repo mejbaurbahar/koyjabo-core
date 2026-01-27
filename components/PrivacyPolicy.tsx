@@ -1,8 +1,15 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Shield, Lock, Eye, Clock, Mail, ExternalLink } from 'lucide-react';
+import GlobalFooter from './GlobalFooter';
+import { AppView } from '../types';
 
-const PrivacyPolicy: React.FC = () => {
+interface PrivacyPolicyProps {
+    view: AppView;
+    setView: (view: AppView) => void;
+}
+
+const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
     const { t } = useLanguage();
 
     return (
@@ -125,10 +132,7 @@ const PrivacyPolicy: React.FC = () => {
                         </div>
                     </section>
 
-                    <footer className="text-center pt-10 border-t border-gray-100 dark:border-gray-800">
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">© 2024-2026 KoyJabo (কই যাবো). All rights reserved.</p>
-                        <p className="text-xs text-gray-400 italic">By using KoyJabo, you hereby consent to our Privacy Policy and agree to its terms.</p>
-                    </footer>
+                    <GlobalFooter view={view} setView={setView} />
                 </div>
 
                 {/* Bottom padding for mobile footer */}

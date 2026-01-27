@@ -1,8 +1,15 @@
 import React from 'react';
 import { Mail, Linkedin, Facebook, MapPin, Send, MessageSquare, Bug, Lightbulb, Share2 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import GlobalFooter from './GlobalFooter';
+import { AppView } from '../types';
 
-const ContactUs: React.FC = () => {
+interface ContactUsProps {
+    view: AppView;
+    setView: (view: AppView) => void;
+}
+
+const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
     const { t } = useLanguage();
 
     return (
@@ -113,11 +120,7 @@ const ContactUs: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="mt-16 text-center">
-                    <p className="text-gray-400 text-sm font-bold italic">
-                        © 2024-2026 KoyJabo (কই যাবো). Developed with ❤️ for the people of Bangladesh.
-                    </p>
-                </div>
+                <GlobalFooter view={view} setView={setView} />
 
                 {/* Mobile Bottom Spacer */}
                 <div className="h-24 md:hidden"></div>
