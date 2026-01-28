@@ -45,12 +45,21 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
 }) => {
     useEffect(() => {
         try {
-            // Push ad to AdSense queue
-            if (typeof window !== 'undefined' && (window as any).adsbygoogle) {
-                ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+            // Check if adsbygoogle is loaded and available
+            // If adblocker is active, this script might not be loaded or network requests might fail silently
+            if (typeof window !== 'undefined') {
+                // Check if the script exists in the document (simple check for ad blocker preventing script load)
+                const adScript = document.querySelector('script[src*="adsbygoogle.js"]');
+
+                if (adScript || (window as any).adsbygoogle) {
+                    ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+                } else {
+                    console.debug('AdSense script not found or blocked by client.');
+                }
             }
         } catch (error) {
-            console.error('AdSense error:', error);
+            // This catches errors during the push(), which might happen if the blocking mechanism is aggressive
+            console.debug('AdSense initialization suppressed (likely ad blocker):', error);
         }
     }, []);
 
