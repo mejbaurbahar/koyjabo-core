@@ -39,6 +39,7 @@ export const translations: Record<Language, Translations> = {
             semiSitting: 'সেমি-সিটিং',
             online: 'অনলাইন',
             ready: 'প্রস্তুত',
+            tagline: 'বাংলাদেশে গণপরিবহন নেভিগেশনে বিপ্লব নিয়ে আসছে',
         },
 
         // Settings
@@ -663,6 +664,7 @@ export const translations: Record<Language, Translations> = {
             semiSitting: 'Semi-Sitting',
             online: 'Online',
             ready: 'Ready',
+            tagline: 'Revolutionizing Public Transport Navigation in Bangladesh',
         },
 
         // Settings
