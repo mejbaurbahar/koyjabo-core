@@ -139,7 +139,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
         <div
             ref={scrollContainerRef}
             onScroll={handleScroll}
-            className="flex flex-col h-full relative z-0 bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-y-auto pt-20 md:pt-24 overscroll-y-contain"
+            className="flex flex-col h-full relative bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-y-auto pt-20 md:pt-24 pb-32"
             style={{ WebkitOverflowScrolling: 'touch' }}
         >
             {/* Hero Image */}
@@ -366,8 +366,8 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                     </button>
                 </div>
 
-                {/* Bottom Spacing for Mobile */}
-                <div className="h-20"></div>
+                {/* Bottom Spacing - already handled by pb-32 on container, but keeping a small spacer just in case */}
+                <div className="h-4"></div>
             </article>
 
             {/* Scroll to Top Button */}

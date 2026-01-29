@@ -3342,7 +3342,7 @@ const App: React.FC = () => {
 
   return (
     <NotificationProvider>
-      <div className="flex flex-col h-screen bg-slate-50 dark:bg-slate-900 font-sans text-gray-800 dark:text-gray-100 overflow-hidden max-w-full">
+      <div className="flex flex-col h-screen supports-[height:100dvh]:h-[100dvh] bg-slate-50 dark:bg-slate-900 font-sans text-gray-800 dark:text-gray-100 overflow-hidden max-w-full">
         <NotificationBanner />
         {/* Mobile Header */}
         <header className={`fixed top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-5 py-3 shadow-sm z-[100] pt-safe-top md:hidden transition-transform duration-300 ${(view === AppView.BUS_DETAILS || view === AppView.LIVE_NAV) ? '-translate-y-full' : 'translate-y-0'} `}>
