@@ -1897,5 +1897,517 @@ export const EMERGENCY_SERVICES: EmergencyService[] = [
         lat: 23.7050,
         lng: 90.4150,
         area: 'Sutrapur'
+    },
+
+    // === TANGAIL DISTRICT ===
+
+    {
+        id: 'tangail_medical_college',
+        name: 'Sheikh Hasina Medical College Hospital, Tangail',
+        bnName: 'শেখ হাসিনা মেডিকেল কলেজ হাসপাতাল, টাঙ্গাইল',
+        type: 'hospital',
+        phone: '092161100',
+        lat: 24.2500,
+        lng: 89.9167,
+        area: 'Tangail'
+    },
+    {
+        id: 'tangail_sadar_hospital',
+        name: 'Tangail 250 Bed General Hospital',
+        bnName: 'টাঙ্গাইল ২৫০ শয্যা জেনারেল হাসপাতাল',
+        type: 'hospital',
+        phone: '092164003',
+        lat: 24.2510,
+        lng: 89.9170,
+        area: 'Tangail'
+    },
+    {
+        id: 'tangail_sadar_ps',
+        name: 'Tangail Sadar Police Station',
+        bnName: 'টাঙ্গাইল সদর থানা',
+        type: 'police',
+        phone: '01320095801',
+        lat: 24.2490,
+        lng: 89.9200,
+        area: 'Tangail'
+    },
+    {
+        id: 'kalihati_ps',
+        name: 'Kalihati Police Station',
+        bnName: 'কালিহাতী থানা',
+        type: 'police',
+        phone: '01320096125',
+        lat: 24.3800,
+        lng: 90.0100,
+        area: 'Tangail'
+    },
+    {
+        id: 'ghatail_ps',
+        name: 'Ghatail Police Station',
+        bnName: 'ঘাটাইল থানা',
+        type: 'police',
+        phone: '01320096180',
+        lat: 24.5000,
+        lng: 89.9800,
+        area: 'Tangail'
+    },
+    {
+        id: 'madhupur_ps',
+        name: 'Madhupur Police Station',
+        bnName: 'মধুপুর থানা',
+        type: 'police',
+        phone: '01320096235',
+        lat: 24.6100,
+        lng: 90.0300,
+        area: 'Tangail'
+    },
+    {
+        id: 'mirzapur_ps',
+        name: 'Mirzapur Police Station',
+        bnName: 'মির্জাপুর থানা',
+        type: 'police',
+        phone: '01320096290',
+        lat: 24.1000,
+        lng: 90.0900,
+        area: 'Tangail'
+    },
+    {
+        id: 'tangail_fire',
+        name: 'Tangail Fire Station',
+        bnName: 'টাঙ্গাইল ফায়ার স্টেশন',
+        type: 'fire',
+        phone: '01713398912',
+        lat: 24.2520,
+        lng: 89.9150,
+        area: 'Tangail'
+    },
+    {
+        id: 'mirzapur_fire',
+        name: 'Mirzapur Fire Station',
+        bnName: 'মির্জাপুর ফায়ার স্টেশন',
+        type: 'fire',
+        phone: '01901020950',
+        lat: 24.1050,
+        lng: 90.0950,
+        area: 'Tangail'
+    },
+    {
+        id: 'madhupur_fire',
+        name: 'Madhupur Fire Station',
+        bnName: 'মধুপুর ফায়ার স্টেশন',
+        type: 'fire',
+        phone: '01901020954',
+        lat: 24.6150,
+        lng: 90.0350,
+        area: 'Tangail'
+    },
+
+    // === KISHOREGANJ DISTRICT ===
+
+    {
+        id: 'kishoreganj_medical_college',
+        name: 'Shaheed Syed Nazrul Islam Medical College',
+        bnName: 'শহীদ সৈয়দ নজরুল ইসলাম মেডিকেল কলেজ',
+        type: 'hospital',
+        phone: '094161100',
+        lat: 24.4333,
+        lng: 90.7667,
+        area: 'Kishoreganj'
+    },
+    {
+        id: 'kishoreganj_sadar_hospital',
+        name: 'Kishoreganj 250 Bed District Hospital',
+        bnName: 'কিশোরগঞ্জ ২৫০ শয্যা জেলা হাসপাতাল',
+        type: 'hospital',
+        phone: '094161555',
+        lat: 24.4400,
+        lng: 90.7750,
+        area: 'Kishoreganj'
+    },
+    {
+        id: 'kishoreganj_sadar_ps',
+        name: 'Kishoreganj Model Police Station',
+        bnName: 'কিশোরগঞ্জ মডেল থানা',
+        type: 'police',
+        phone: '01320095145',
+        lat: 24.4410,
+        lng: 90.7725,
+        area: 'Kishoreganj'
+    },
+    {
+        id: 'bhitair_ps',
+        name: 'Bhairab Police Station',
+        bnName: 'ভৈরব থানা',
+        type: 'police',
+        phone: '01320095325',
+        lat: 24.0500,
+        lng: 90.9833,
+        area: 'Kishoreganj'
+    },
+    {
+        id: 'kuliarchar_ps',
+        name: 'Kuliarchar Police Station',
+        bnName: 'কুলিয়ারচর থানা',
+        type: 'police',
+        phone: '01320095280',
+        lat: 24.1500,
+        lng: 90.9167,
+        area: 'Kishoreganj'
+    },
+    {
+        id: 'katiadi_ps',
+        name: 'Katiadi Police Station',
+        bnName: 'কটিয়াদী থানা',
+        type: 'police',
+        phone: '01320095235',
+        lat: 24.2500,
+        lng: 90.8167,
+        area: 'Kishoreganj'
+    },
+    {
+        id: 'kishoreganj_fire',
+        name: 'Kishoreganj Fire Station',
+        bnName: 'কিশোরগঞ্জ ফায়ার স্টেশন',
+        type: 'fire',
+        phone: '01713398911',
+        lat: 24.4420,
+        lng: 90.7780,
+        area: 'Kishoreganj'
+    },
+    {
+        id: 'bhairab_river_fire',
+        name: 'Bhairab River Fire Station',
+        bnName: 'ভৈরব নদী ফায়ার স্টেশন',
+        type: 'fire',
+        phone: '01901020942',
+        lat: 24.0520,
+        lng: 90.9850,
+        area: 'Kishoreganj'
+    },
+    {
+        id: 'bhairab_bazar_fire',
+        name: 'Bhairab Bazar Fire Station',
+        bnName: 'ভৈরব বাজার ফায়ার স্টেশন',
+        type: 'fire',
+        phone: '01901020940',
+        lat: 24.0550,
+        lng: 90.9900,
+        area: 'Kishoreganj'
+    },
+
+    // === FARIDPUR DISTRICT ===
+
+    {
+        id: 'faridpur_medical_college',
+        name: 'Bangabandhu Sheikh Mujib Medical College Hospital',
+        bnName: 'বঙ্গবন্ধু শেখ মুজিব মেডিকেল কলেজ হাসপাতাল',
+        type: 'hospital',
+        phone: '063162799',
+        lat: 23.6061,
+        lng: 89.8396,
+        area: 'Faridpur'
+    },
+    {
+        id: 'faridpur_general_hospital',
+        name: 'Faridpur General Hospital',
+        bnName: 'ফরিদপুর জেনারেল হাসপাতাল',
+        type: 'hospital',
+        phone: '063164477',
+        lat: 23.6000,
+        lng: 89.8400,
+        area: 'Faridpur'
+    },
+    {
+        id: 'kotwali_ps_faridpur',
+        name: 'Kotwali Police Station, Faridpur',
+        bnName: 'কোতোয়ালী থানা, ফরিদপুর',
+        type: 'police',
+        phone: '01320096585',
+        lat: 23.6060,
+        lng: 89.8370,
+        area: 'Faridpur'
+    },
+    {
+        id: 'bhanga_ps',
+        name: 'Bhanga Police Station',
+        bnName: 'ভাঙ্গা থানা',
+        type: 'police',
+        phone: '01320096815',
+        lat: 23.3833,
+        lng: 89.9833,
+        area: 'Faridpur'
+    },
+    {
+        id: 'boalmari_ps',
+        name: 'Boalmari Police Station',
+        bnName: 'বোয়ালমারী থানা',
+        type: 'police',
+        phone: '01320096700',
+        lat: 23.3833,
+        lng: 89.6833,
+        area: 'Faridpur'
+    },
+    {
+        id: 'faridpur_fire',
+        name: 'Faridpur Fire Station',
+        bnName: 'ফরিদপুর ফায়ার স্টেশন',
+        type: 'fire',
+        phone: '01713398913',
+        lat: 23.6040,
+        lng: 89.8420,
+        area: 'Faridpur'
+    },
+    {
+        id: 'bhanga_fire',
+        name: 'Bhanga Fire Station',
+        bnName: 'ভাঙ্গা ফায়ার স্টেশন',
+        type: 'fire',
+        phone: '01901021430',
+        lat: 23.3850,
+        lng: 89.9850,
+        area: 'Faridpur'
+    },
+
+    // === MADARIPUR DISTRICT ===
+
+    {
+        id: 'madaripur_sadar_hospital',
+        name: 'Madaripur Sadar Hospital',
+        bnName: 'মাদারীপুর সদর হাসপাতাল',
+        type: 'hospital',
+        phone: '066161424',
+        lat: 23.1667,
+        lng: 90.2000,
+        area: 'Madaripur'
+    },
+    {
+        id: 'madaripur_sadar_ps',
+        name: 'Madaripur Sadar Police Station',
+        bnName: 'মাদারীপুর সদর থানা',
+        type: 'police',
+        phone: '01320120530',
+        lat: 23.1650,
+        lng: 90.2010,
+        area: 'Madaripur'
+    },
+    {
+        id: 'kalkini_ps',
+        name: 'Kalkini Police Station',
+        bnName: 'কালকিনি থানা',
+        type: 'police',
+        phone: '01320120585',
+        lat: 23.0667,
+        lng: 90.2333,
+        area: 'Madaripur'
+    },
+    {
+        id: 'shibchar_ps',
+        name: 'Shibchar Police Station',
+        bnName: 'শিবচর থানা',
+        type: 'police',
+        phone: '01320120695',
+        lat: 23.3500,
+        lng: 90.1667,
+        area: 'Madaripur'
+    },
+    {
+        id: 'madaripur_fire',
+        name: 'Madaripur Fire Station',
+        bnName: 'মাদারীপুর ফায়ার স্টেশন',
+        type: 'fire',
+        phone: '01901021438',
+        lat: 23.1680,
+        lng: 90.2050,
+        area: 'Madaripur'
+    },
+
+    // === SHARIATPUR DISTRICT ===
+
+    {
+        id: 'shariatpur_sadar_hospital',
+        name: 'Shariatpur Sadar Hospital',
+        bnName: 'শরীয়তপুর সদর হাসপাতাল',
+        type: 'hospital',
+        phone: '060161434',
+        lat: 23.2167,
+        lng: 90.3500,
+        area: 'Shariatpur'
+    },
+    {
+        id: 'palong_ps',
+        name: 'Palong Model Police Station (Shariatpur Sadar)',
+        bnName: 'পালং মডেল থানা (শরীয়তপুর সদর)',
+        type: 'police',
+        phone: '01320119865',
+        lat: 23.2180,
+        lng: 90.3520,
+        area: 'Shariatpur'
+    },
+    {
+        id: 'naria_ps',
+        name: 'Naria Police Station',
+        bnName: 'নড়িয়া থানা',
+        type: 'police',
+        phone: '01320119975',
+        lat: 23.3000,
+        lng: 90.4167,
+        area: 'Shariatpur'
+    },
+    {
+        id: 'zajira_ps',
+        name: 'Zajira Police Station',
+        bnName: 'জাজিরা থানা',
+        type: 'police',
+        phone: '01320119920',
+        lat: 23.3333,
+        lng: 90.3333,
+        area: 'Shariatpur'
+    },
+    {
+        id: 'shariatpur_fire',
+        name: 'Shariatpur Fire Station',
+        bnName: 'শরীয়তপুর ফায়ার স্টেশন',
+        type: 'fire',
+        phone: '01901021434',
+        lat: 23.2200,
+        lng: 90.3480,
+        area: 'Shariatpur'
+    },
+
+    // === GOPALGANJ DISTRICT ===
+
+    {
+        id: 'gopalganj_medical_college',
+        name: 'Sheikh Sayera Khatun Medical College Hospital',
+        bnName: 'শেখ সায়েরা খাতুন মেডিকেল কলেজ হাসপাতাল',
+        type: 'hospital',
+        phone: '026685002',
+        lat: 23.0069,
+        lng: 89.8175,
+        area: 'Gopalganj'
+    },
+    {
+        id: 'gopalganj_sadar_hospital',
+        name: 'Gopalganj 250 Bed General Hospital',
+        bnName: 'গোপালগঞ্জ ২৫০ শয্যা জেনারেল হাসপাতাল',
+        type: 'hospital',
+        phone: '026685410',
+        lat: 23.0000,
+        lng: 89.8333,
+        area: 'Gopalganj'
+    },
+    {
+        id: 'gopalganj_sadar_ps',
+        name: 'Gopalganj Sadar Police Station',
+        bnName: 'গোপালগঞ্জ সদর থানা',
+        type: 'police',
+        phone: '01320118935',
+        lat: 23.0030,
+        lng: 89.8250,
+        area: 'Gopalganj'
+    },
+    {
+        id: 'tungipara_ps',
+        name: 'Tungipara Police Station',
+        bnName: 'টুঙ্গিপাড়া থানা',
+        type: 'police',
+        phone: '01320119045',
+        lat: 22.9000,
+        lng: 89.8833,
+        area: 'Gopalganj'
+    },
+    {
+        id: 'kotalipara_ps',
+        name: 'Kotalipara Police Station',
+        bnName: 'কোটালীপাড়া থানা',
+        type: 'police',
+        phone: '01320118990',
+        lat: 22.9833,
+        lng: 90.0000,
+        area: 'Gopalganj'
+    },
+    {
+        id: 'gopalganj_fire',
+        name: 'Gopalganj Fire Station',
+        bnName: 'গোপালগঞ্জ ফায়ার স্টেশন',
+        type: 'fire',
+        phone: '01713398914',
+        lat: 23.0050,
+        lng: 89.8290,
+        area: 'Gopalganj'
+    },
+    {
+        id: 'tungipara_fire',
+        name: 'Tungipara Fire Station',
+        bnName: 'টুঙ্গিপাড়া ফায়ার স্টেশন',
+        type: 'fire',
+        phone: '01901021428',
+        lat: 22.9030,
+        lng: 89.8860,
+        area: 'Gopalganj'
+    },
+
+    // === RAJBARI DISTRICT ===
+
+    {
+        id: 'rajbari_sadar_hospital',
+        name: 'Rajbari Sadar Hospital',
+        bnName: 'রাজবাড়ী সদর হাসপাতাল',
+        type: 'hospital',
+        phone: '064165596',
+        lat: 23.7583,
+        lng: 89.6500,
+        area: 'Rajbari'
+    },
+    {
+        id: 'rajbari_sadar_ps',
+        name: 'Rajbari Sadar Police Station',
+        bnName: 'রাজবাড়ী সদর থানা',
+        type: 'police',
+        phone: '01320117465',
+        lat: 23.7590,
+        lng: 89.6520,
+        area: 'Rajbari'
+    },
+    {
+        id: 'goalanda_ghat_ps',
+        name: 'Goalanda Ghat Police Station',
+        bnName: 'গোয়ালন্দ ঘাট থানা',
+        type: 'police',
+        phone: '01320117520',
+        lat: 23.7333,
+        lng: 89.7500,
+        area: 'Rajbari'
+    },
+    {
+        id: 'pangsha_ps',
+        name: 'Pangsha Police Station',
+        bnName: 'পাংশা থানা',
+        type: 'police',
+        phone: '01320117575',
+        lat: 23.7833,
+        lng: 89.4167,
+        area: 'Rajbari'
+    },
+    {
+        id: 'rajbari_fire',
+        name: 'Rajbari Fire Station',
+        bnName: 'রাজবাড়ী ফায়ার স্টেশন',
+        type: 'fire',
+        phone: '01713398915',
+        lat: 23.7600,
+        lng: 89.6480,
+        area: 'Rajbari'
+    },
+    {
+        id: 'goalanda_fire',
+        name: 'Goalanda Fire Station',
+        bnName: 'গোয়ালন্দ ফায়ার স্টেশন',
+        type: 'fire',
+        phone: '01901021422',
+        lat: 23.7360,
+        lng: 89.7550,
+        area: 'Rajbari'
     }
+
 ];
