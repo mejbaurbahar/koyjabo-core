@@ -3,6 +3,9 @@ import { BusRoute, Station, MetroStation, MetroLine } from './types';
 // Coordinate mapping for major Dhaka locations
 export const STATIONS: Record<string, Station> = {
   'gabtoli': { id: 'gabtoli', name: 'Gabtoli', bnName: 'গাবতলী', lat: 23.7831, lng: 90.3475 },
+  'saturia': { id: 'saturia', name: 'Saturia', bnName: 'সাটুরিয়া', lat: 23.8200, lng: 90.1500 },
+  'pakutia': { id: 'pakutia', name: 'Pakutia', bnName: 'পাকুটিয়া', lat: 23.8100, lng: 90.2000 },
+  'nagorpur': { id: 'nagorpur', name: 'Nagorpur', bnName: 'নাগরপুর', lat: 23.7950, lng: 90.2800 },
   'technical': { id: 'technical', name: 'Technical', bnName: 'টেকনিক্যাল', lat: 23.7800, lng: 90.3550 },
   'mirpur1': { id: 'mirpur1', name: 'Mirpur 1', bnName: 'মিরপুর ১', lat: 23.7936, lng: 90.3537 },
   'mirpur2': { id: 'mirpur2', name: 'Mirpur 2', bnName: 'মিরপুর ২', lat: 23.8050, lng: 90.3600 },
@@ -3127,6 +3130,15 @@ export const BUS_DATA: BusRoute[] = [
     bnName: 'নয়ন পরিবহন',
     routeString: 'Gulistan ⇄ Munshiganj',
     stops: ['gulistan', 'jatrabari', 'sayedabad', 'postagola', 'munshiganj'],
+    type: 'Local',
+    hours: '6:00 AM - 9:00 PM'
+  },
+  {
+    id: 'nagorpur',
+    name: 'Nagorpur',
+    bnName: 'নাগরপুর',
+    routeString: 'Saturia, Pakutia ⇄ Gabtoli',
+    stops: ['saturia', 'pakutia', 'nagorpur', 'gabtoli'],
     type: 'Local',
     hours: '6:00 AM - 9:00 PM'
   },
