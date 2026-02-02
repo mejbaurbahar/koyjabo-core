@@ -875,6 +875,46 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
     }
   }
 
+  // Election Restrictions Check
+  if (lowerQuery.includes('election') || lowerQuery.includes('নির্বাচন') ||
+    lowerQuery.includes('february 11') || lowerQuery.includes('february 12') ||
+    lowerQuery.includes('ফেব্রুয়ারি 11') || lowerQuery.includes('ফেব্রুয়ারি 12') ||
+    lowerQuery.includes('vehicle restriction') || lowerQuery.includes('যানবাহন নিষেধ') ||
+    lowerQuery.includes('motorcycle ban') || lowerQuery.includes('মোটরসাইকেল নিষেধ')) {
+
+    const electionResponse = isBn
+      ? `${EMERGENCY_INFO.electionRestrictions.announcement.bn}\n\n` +
+      `📅 **নির্বাচনের তারিখ:** ${EMERGENCY_INFO.electionRestrictions.date}\n` +
+      `📰 **ইভেন্ট:** ${EMERGENCY_INFO.electionRestrictions.event}\n\n` +
+      `🚫 **নিষিদ্ধ যানবাহন:**\n` +
+      `- ট্যাক্সি: ১১ ফেব ০০:০০ - ১২ ফেব ০০:০০ (২৪ ঘন্টা)\n` +
+      `- পিকআপ: ১১ ফেব ০০:০০ - ১২ ফেব ০০:০০ (২৪ ঘন্টা)\n` +
+      `- মাইক্রোবাস: ১১ ফেব ০০:০০ - ১২ ফেব ০০:০০ (২৪ ঘন্টা)\n` +
+      `- ট্রাক: ১১ ফেব ০০:০০ - ১২ ফেব ০০:০০ (২৪ ঘন্টা)\n` +
+      `- মোটরসাইকেল: ১০ ফেব ০০:০০ - ১৩ ফেব ০০:০০ (৭২ ঘন্টা)\n` +
+      `- নৌযান: ১১ ফেব ০০:০০ - ১২ ফেব ০০:০০ (নির্দিষ্ট রুট ছাড়া)\n\n` +
+      `✅ **ছাড়পত্রপ্রাপ্ত যানবাহন:**\n` +
+      EMERGENCY_INFO.electionRestrictions.exemptions.bn.map(ex => `- ${ex}`).join('\n') + '\n\n' +
+      `📞 **নির্বাচন কমিশন হেল্পলাইন:** ${EMERGENCY_INFO.numbers.electionCommission}\n` +
+      `📚 **সূত্র:** ${EMERGENCY_INFO.electionRestrictions.source}`
+      : `${EMERGENCY_INFO.electionRestrictions.announcement.en}\n\n` +
+      `📅 **Election Date:** ${EMERGENCY_INFO.electionRestrictions.date}\n` +
+      `📰 **Event:** ${EMERGENCY_INFO.electionRestrictions.event}\n\n` +
+      `🚫 **Restricted Vehicles:**\n` +
+      `- Taxis: Feb 11 00:00 - Feb 12 00:00 (24 hours)\n` +
+      `- Pickups: Feb 11 00:00 - Feb 12 00:00 (24 hours)\n` +
+      `- Microbuses: Feb 11 00:00 - Feb 12 00:00 (24 hours)\n` +
+      `- Trucks: Feb 11 00:00 - Feb 12 00:00 (24 hours)\n` +
+      `- Motorcycles: Feb 10 00:00 - Feb 13 00:00 (72 hours)\n` +
+      `- Watercraft: Feb 11 00:00 - Feb 12 00:00 (except fixed routes)\n\n` +
+      `✅ **Exempted Vehicles:**\n` +
+      EMERGENCY_INFO.electionRestrictions.exemptions.en.map(ex => `- ${ex}`).join('\n') + '\n\n' +
+      `📞 **Election Commission Helpline:** ${EMERGENCY_INFO.numbers.electionCommission}\n` +
+      `📚 **Source:** ${EMERGENCY_INFO.electionRestrictions.source}`;
+
+    return electionResponse;
+  }
+
   // Emergency Info Check
   if (lowerQuery.includes('emergency') || lowerQuery.includes('help') ||
     lowerQuery.includes('hospital') || lowerQuery.includes('জরুরি')) {

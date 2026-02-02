@@ -172,7 +172,8 @@ export const EMERGENCY_INFO = {
         fire: '999',
         trafficPolice: '09611140000',
         railway: '09617016101',
-        brtcHelpline: '02-9133973'
+        brtcHelpline: '02-9133973',
+        electionCommission: '02-9898989'
     },
     hospitals: {
         dhaka: [
@@ -183,12 +184,88 @@ export const EMERGENCY_INFO = {
             'Apollo Hospital'
         ]
     },
+    electionRestrictions: {
+        date: 'February 12, 2026',
+        event: '13th National Parliamentary Election and Referendum',
+        vehicleRestrictions: {
+            taxi: {
+                bn: 'ট্যাক্সি',
+                start: 'February 11, 2026 12:00 AM',
+                end: 'February 12, 2026 12:00 AM',
+                duration: '24 hours'
+            },
+            pickup: {
+                bn: 'পিকআপ',
+                start: 'February 11, 2026 12:00 AM',
+                end: 'February 12, 2026 12:00 AM',
+                duration: '24 hours'
+            },
+            microbus: {
+                bn: 'মাইক্রোবাস',
+                start: 'February 11, 2026 12:00 AM',
+                end: 'February 12, 2026 12:00 AM',
+                duration: '24 hours'
+            },
+            truck: {
+                bn: 'ট্রাক',
+                start: 'February 11, 2026 12:00 AM',
+                end: 'February 12, 2026 12:00 AM',
+                duration: '24 hours'
+            },
+            motorcycle: {
+                bn: 'মোটরসাইকেল',
+                start: 'February 10, 2026 12:00 AM',
+                end: 'February 13, 2026 12:00 AM',
+                duration: '72 hours'
+            },
+            watercraft: {
+                bn: 'নৌযান',
+                start: 'February 11, 2026 12:00 AM',
+                end: 'February 12, 2026 12:00 AM',
+                duration: '24 hours',
+                note: 'Except fixed route vessels'
+            }
+        },
+        exemptions: {
+            en: [
+                'Law enforcement and armed forces',
+                'Administration officials and approved election observers',
+                'Emergency services (ambulances, fire services)',
+                'Vehicles transporting medicines, health supplies, and newspapers',
+                'Airport transport with valid tickets/proof',
+                'Long-distance passenger vehicles',
+                'One vehicle per candidate and election agent (with EC sticker)',
+                'Journalists and observers with EC approval',
+                'Election duty officials',
+                'Telecom operators licensed by BTRC'
+            ],
+            bn: [
+                'আইন প্রয়োগকারী সংস্থা এবং সশস্ত্র বাহিনী',
+                'প্রশাসনিক কর্মকর্তা এবং অনুমোদিত নির্বাচন পর্যবেক্ষক',
+                'জরুরি সেবা (অ্যাম্বুলেন্স, ফায়ার সার্ভিস)',
+                'ওষুধ, স্বাস্থ্য সরবরাহ এবং সংবাদপত্র পরিবহনকারী যানবাহন',
+                'বৈধ টিকিট/প্রমাণসহ বিমানবন্দর পরিবহন',
+                'দূরপাল্লার যাত্রীবাহী যানবাহন',
+                'প্রার্থী ও নির্বাচন এজেন্টের জন্য একটি যানবাহন (ইসি স্টিকার সহ)',
+                'ইসি অনুমোদন সহ সাংবাদিক এবং পর্যবেক্ষক',
+                'নির্বাচনী দায়িত্বরত কর্মকর্তা',
+                'বিটিআরসি লাইসেন্সপ্রাপ্ত টেলিকম অপারেটর'
+            ]
+        },
+        announcement: {
+            en: '🗳️ **ELECTION ALERT:** Bangladesh Election Commission has imposed vehicle restrictions for the 13th National Parliamentary Election on February 12, 2026. Taxis, pickups, microbuses, and trucks will be restricted from 12 AM Feb 11 to 12 AM Feb 12. Motorcycles from 12 AM Feb 10 to 12 AM Feb 13. Plan your travel accordingly.',
+            bn: '🗳️ **নির্বাচন সতর্কতা:** বাংলাদেশ নির্বাচন কমিশন ১২ফেব্রুয়ারি ২০২৬ তারিখে অনুষ্ঠিতব্য ১৩তম জাতীয় সংসদ নির্বাচনের জন্য যানবাহনের উপর বিধিনিষেধ আরোপ করেছে। ট্যাক্সি, পিকআপ, মাইক্রোবাস এবং ট্রাক ১১ ফেব্রুয়ারি রাত ১২টা থেকে ১২ ফেব্রুয়ারি রাত ১২টা পর্যন্ত নিষিদ্ধ থাকবে। মোটরসাইকেল ১০ ফেব্রুয়ারি রাত ১২টা থেকে ১৩ ফেব্রুয়ারি রাত ১২টা পর্যন্ত। সেই অনুযায়ী আপনার ভ্রমণ পরিকল্পনা করুন।'
+        },
+        source: 'Bangladesh Election Commission Official Announcement',
+        lastUpdated: 'February 2, 2026'
+    },
     safetyTips: [
         'Keep valuables secure',
         'Avoid overcrowded buses late at night',
         'Use registered taxis/rideshares',
         'Keep emergency numbers handy',
-        'Inform someone of your travel plans'
+        'Inform someone of your travel plans',
+        'Check for election-related transport restrictions before traveling'
     ]
 };
 
