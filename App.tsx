@@ -3852,8 +3852,8 @@ const App: React.FC = () => {
         )}
 
 
-        {/* Offline Indicator - Non-blocking Banner */}
-        <OfflineIndicator isOnline={isOnline} />
+        {/* Offline Indicator - Hidden per user preference */}
+        {/* <OfflineIndicator isOnline={isOnline} /> */}
 
       </div>
     </NotificationProvider >
