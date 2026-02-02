@@ -77,48 +77,14 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
                         </ol>
                     </section>
 
-                    <section className="space-y-6">
-                        <div className="p-6 bg-amber-50 dark:bg-amber-900/20 rounded-2xl border-2 border-amber-200 dark:border-amber-800">
-                            <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2 text-xl">
-                                <ExternalLink className="w-6 h-6 text-amber-600" /> Cookies and Third-Party Advertisers
+                    <section className="grid md:grid-cols-2 gap-6">
+                        <div className="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
+                            <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
+                                <ExternalLink className="w-5 h-5 text-blue-500" /> {t('privacy.thirdParty')}
                             </h3>
-                            <div className="space-y-4 text-sm text-gray-700 dark:text-gray-300">
-                                <p>
-                                    <strong>Cookie Usage:</strong> KoyJabo and our third-party advertising partners (including Monetag) may place cookies on your browser to provide personalized advertising and improve your experience. Cookies are small data files stored on your device that help us understand how you use our service.
-                                </p>
-                                <p>
-                                    <strong>Third-Party Advertisers:</strong> We work with advertising networks like Monetag to display advertisements on our website. These third-party advertisers may use cookies, web beacons, and similar technologies to collect information about your visits to this and other websites to provide advertisements about goods and services of interest to you.
-                                </p>
-                                <p>
-                                    <strong>Data Collection by Advertisers:</strong> Our advertising partners may automatically collect certain information such as your IP address, browser type, device information, and pages visited. This information is used to deliver relevant ads and measure ad performance.
-                                </p>
-                                <p className="bg-white dark:bg-slate-800 p-4 rounded-lg border border-amber-300 dark:border-amber-700">
-                                    <strong>Your Consent:</strong> By using KoyJabo, you consent to the use of cookies and data collection by our advertising partners as described in this policy. If you are located in the European Union, you have the right to opt-in or opt-out of cookie usage through your browser settings or by contacting us directly.
-                                </p>
-                                <p>
-                                    <strong>Opt-Out Options:</strong> You can control cookies through your browser settings and opt-out of personalized advertising by visiting industry opt-out pages or adjusting your device privacy settings. Note that opting out may affect your user experience and the relevance of advertisements shown to you.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="grid md:grid-cols-2 gap-6">
-                            <div className="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
-                                <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
-                                    <ExternalLink className="w-5 h-5 text-blue-500" /> {t('privacy.thirdParty')}
-                                </h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">
-                                    {t('privacy.thirdPartyText')}
-                                </p>
-                            </div>
-
-                            <div className="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
-                                <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
-                                    <Lock className="w-5 h-5 text-emerald-500" /> Data Storage
-                                </h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">
-                                    We store your preferences locally on your device. No personal data is transmitted to our servers without your explicit consent. All location data requests require your permission.
-                                </p>
-                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {t('privacy.thirdPartyText')}
+                            </p>
                         </div>
                     </section>
 
