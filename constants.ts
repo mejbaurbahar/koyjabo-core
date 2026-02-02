@@ -3195,6 +3195,69 @@ export const BUS_DATA: BusRoute[] = [
     stops: ['abdullahpur', 'uttara', 'airport', 'khilkhet', 'kuril', 'nadda', 'notun_bazar', 'badda', 'rampura', 'malibagh', 'gulistan', 'babubazar', 'keraniganj', 'hasnabad', 'nimtola', 'kuchimura', 'sreenagar', 'maowa'],
     type: 'Sitting',
     hours: '5:30 AM - 10:00 PM'
+  },
+  {
+    id: 'provati_banashree',
+    name: 'Provati Banashree',
+    bnName: 'প্রভাতি বনশ্রী',
+    routeString: 'Fulbaria ⇄ Azampur',
+    stops: ['fulbaria', 'golap_shah_mazar', 'gpo', 'paltan', 'kakrail', 'shantinagar', 'malibagh', 'mouchak', 'mogbazar', 'wireless', 'banani', 'kuril', 'airport', 'uttara', 'azampur'],
+    type: 'Semi-Sitting',
+    hours: '6:00 AM - 10:00 PM'
+  },
+  {
+    id: 'taranga_plus',
+    name: 'Taranga Plus',
+    bnName: 'তরঙ্গ প্লাস',
+    routeString: 'Mohammadpur ⇄ Khilgaon',
+    stops: ['mohammadpur', 'dhanmondi15', 'jigatola', 'college_gate', 'nilkhet', 'science_lab', 'shahbag', 'kakrail', 'shantinagar', 'malibagh', 'khilgaon'],
+    type: 'Local',
+    hours: '6:00 AM - 10:00 PM'
+  },
+  {
+    id: 'shadhin_express',
+    name: 'Shadhin Express',
+    bnName: 'স্বাধীন এক্সপ্রেস',
+    routeString: 'Mirpur 12 ⇄ Press Club',
+    stops: ['mirpur12', 'mirpur11', 'mirpur10', 'kazipara', 'shewrapara', 'agargaon', 'khamar_bari', 'farmgate', 'kawran_bazar', 'bangla_motor', 'shahbag', 'high_court', 'press_club'],
+    type: 'Semi-Sitting',
+    hours: '6:00 AM - 10:30 PM'
+  },
+  {
+    id: 'labbayek',
+    name: 'Labbayek',
+    bnName: 'লাব্বাইক',
+    routeString: 'Savar ⇄ Signboard',
+    stops: ['savar', 'hemayetpur', 'gabtoli', 'kallyanpur', 'farmgate', 'bangla_motor', 'shahbag', 'paltan', 'gulistan', 'khilgaon', 'bashabo', 'mugdapara', 'sayedabad', 'jatrabari', 'shanir_akhra', 'matuail', 'signboard'],
+    type: 'Semi-Sitting',
+    hours: '6:00 AM - 9:30 PM'
+  },
+  {
+    id: 'shikor_paribahan',
+    name: 'Shikor Paribahan',
+    bnName: 'শিকড় পরিবহন',
+    routeString: 'Jatrabari ⇄ Mirpur 12',
+    stops: ['jatrabari', 'motijheel', 'paltan', 'press_club', 'shahbag', 'bangla_motor', 'farmgate', 'shewrapara', 'kazipara', 'mirpur10', 'mirpur11', 'mirpur12'],
+    type: 'Semi-Sitting',
+    hours: '6:00 AM - 10:00 PM'
+  },
+  {
+    id: 'ena_paribahan',
+    name: 'ENA Paribahan',
+    bnName: 'এনা পরিবহন',
+    routeString: 'Motijheel ⇄ Mirpur 1',
+    stops: ['motijheel', 'paltan', 'press_club', 'shahbag', 'bangla_motor', 'farmgate', 'agargaon', 'shewrapara', 'kazipara', 'mirpur10', 'mirpur2', 'mirpur1'],
+    type: 'Local',
+    hours: '6:00 AM - 10:00 PM'
+  },
+  {
+    id: 'projapati',
+    name: 'Projapati',
+    bnName: 'প্রজাপতি',
+    routeString: 'Bosila ⇄ Mirpur 10',
+    stops: ['bosila', 'mohammadpur', 'kallyanpur', 'bangla_college', 'ansar_camp', 'mirpur1', 'sony_cinema', 'mirpur2', 'mirpur10'],
+    type: 'Local',
+    hours: '6:00 AM - 9:30 PM'
   }
 ];
 
