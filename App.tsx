@@ -59,6 +59,7 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
 import ContactUs from './components/ContactUs';
 import GlobalFooter from './components/GlobalFooter';
+import OfflineIndicator from './components/OfflineIndicator';
 
 
 
@@ -3850,6 +3851,9 @@ const App: React.FC = () => {
           </div>
         )}
 
+
+        {/* Offline Indicator - Non-blocking Banner */}
+        <OfflineIndicator isOnline={isOnline} />
 
       </div>
     </NotificationProvider >
