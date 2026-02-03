@@ -1,14 +1,21 @@
 import { STATIONS } from '../constants';
 
 // TomTom API Configuration
+// API keys are loaded from environment variables for security
 const TOMTOM_API_KEYS = [
-    '3iPB0lMafzBAx7dCUXdxcNhOKFzwfgQc',
-    'teRApTUBTgGWfwNZJNNMgQv1MFvcNoS1'
-];
+    import.meta.env.VITE_TOMTOM_API_KEY_1 || '',
+    import.meta.env.VITE_TOMTOM_API_KEY_2 || ''
+].filter(key => key.length > 0);
 
+// Fallback to empty array if no keys provided
+// This will cause traffic data to gracefully fail without breaking the app
 let currentKeyIndex = 0;
 
 function getTomTomApiKey(): string {
+    if (TOMTOM_API_KEYS.length === 0) {
+        console.warn('No TomTom API keys configured. Traffic data will be unavailable.');
+        return '';
+    }
     return TOMTOM_API_KEYS[currentKeyIndex];
 }
 

@@ -315,11 +315,197 @@ export const TRAVEL_TIPS = {
     }
 };
 
+// Metro Rail Detailed Schedule Data
+export const METRO_RAIL_SCHEDULE = {
+    weekday: {
+        uttaraNorthToMotijheel: {
+            firstTrain: '06:30',
+            lastTrain: '21:30',
+            schedule: [
+                { from: '06:30', to: '07:10', headway: 20 },
+                { from: '07:11', to: '07:30', headway: 10 },
+                { from: '07:31', to: '08:10', headway: 8 },
+                { from: '08:11', to: '10:52', headway: 6 },
+                { from: '10:53', to: '16:20', headway: 8 },
+                { from: '16:21', to: '19:14', headway: 6 },
+                { from: '19:15', to: '20:00', headway: 8 },
+                { from: '20:01', to: '21:00', headway: 10 },
+                { from: '21:01', to: '21:30', headway: 15 }
+            ]
+        },
+        motijheelToUttaraNorth: {
+            firstTrain: '07:15',
+            lastTrain: '22:10',
+            schedule: [
+                { from: '07:15', to: '07:30', headway: 15 },
+                { from: '07:31', to: '08:10', headway: 10 },
+                { from: '08:11', to: '08:49', headway: 8 },
+                { from: '08:50', to: '11:31', headway: 6 },
+                { from: '11:32', to: '16:58', headway: 8 },
+                { from: '16:59', to: '19:52', headway: 6 },
+                { from: '19:53', to: '20:39', headway: 8 },
+                { from: '20:40', to: '21:40', headway: 10 },
+                { from: '21:41', to: '22:10', headway: 15 }
+            ]
+        }
+    },
+    saturdayAndHolidays: {
+        uttaraNorthToMotijheel: {
+            firstTrain: '06:30',
+            lastTrain: '21:30',
+            schedule: [
+                { from: '06:30', to: '07:10', headway: 20 },
+                { from: '07:11', to: '07:25', headway: 15 },
+                { from: '07:26', to: '10:37', headway: 12 },
+                { from: '10:38', to: '21:00', headway: 10 },
+                { from: '21:01', to: '21:30', headway: 15 }
+            ]
+        },
+        motijheelToUttaraNorth: {
+            firstTrain: '07:15',
+            lastTrain: '22:10',
+            schedule: [
+                { from: '07:15', to: '07:30', headway: 15 },
+                { from: '07:31', to: '11:17', headway: 12 },
+                { from: '11:18', to: '21:40', headway: 8 },
+                { from: '21:41', to: '22:10', headway: 15 }
+            ]
+        }
+    },
+    friday: {
+        uttaraNorthToMotijheel: {
+            firstTrain: '15:00',
+            lastTrain: '21:00',
+            schedule: [
+                { from: '15:00', to: '21:00', headway: 10 }
+            ]
+        },
+        motijheelToUttaraNorth: {
+            firstTrain: '15:20',
+            lastTrain: '21:40',
+            schedule: [
+                { from: '15:20', to: '21:40', headway: 10 }
+            ]
+        }
+    },
+    ticketInformation: {
+        weekdayTicketSales: {
+            start: '06:40',
+            end: '21:20',
+            services: ['Single Journey Ticket', 'MRT/Rapid Pass Top-up']
+        },
+        fridayTicketSales: {
+            uttaraNorth: {
+                start: '14:45',
+                end: '20:50',
+                services: ['Single Journey Ticket', 'Rapid Pass Purchase', 'MRT/Rapid Pass Top-up']
+            },
+            motijheel: {
+                start: '15:05',
+                end: '20:50',
+                services: ['Single Journey Ticket', 'Rapid Pass Purchase', 'MRT/Rapid Pass Top-up']
+            }
+        },
+        closureTime: '21:20',
+        note: 'All ticket counters and vending machines close after 21:20'
+    }
+};
+
 // Common questions and smart answers
 export const FAQ_DATABASE = {
     'metro timing': {
-        en: '🚇 **Metro Rail Timing:**\n- Weekdays: 7:10 AM - 8:40 PM\n- Friday: CLOSED\n- Frequency: Every 10-15 minutes\n- First train from Uttara North: 7:10 AM\n- Last train from Motijheel: 8:40 PM',
-        bn: '🚇 **মেট্রোরেল সময়সূচী:**\n- সপ্তাহের দিন: সকাল ৭:১০ - রাত ৮:৪০\n- শুক্রবার: বন্ধ\n- ফ্রিকোয়েন্সি: প্রতি ১০-১৫ মিনিটে\n- উত্তরা উত্তর থেকে প্রথম ট্রেন: সকাল ৭:১০\n- মতিঝিল থেকে শেষ ট্রেন: রাত ৮:৪০'
+        en: `🚇 **Metro Rail Schedule**
+
+📅 **WEEKDAY Schedule (Saturday-Thursday)**
+
+🔵 **Uttara North → Motijheel**
+- First Train: 6:30 AM
+- Last Train: 9:30 PM
+- Peak Hours (7:31-8:10 AM & 4:21-7:14 PM): Every 6-8 minutes
+- Off-Peak: Every 10-20 minutes
+
+🔵 **Motijheel → Uttara North**
+- First Train: 7:15 AM
+- Last Train: 10:10 PM
+- Peak Hours (8:11-8:49 AM & 4:59-7:52 PM): Every 6-8 minutes
+- Off-Peak: Every 10-15 minutes
+
+📅 **SATURDAY & HOLIDAYS Schedule**
+
+🔵 **Uttara North → Motijheel**
+- First Train: 6:30 AM
+- Last Train: 9:30 PM
+- Frequency: Every 10-20 minutes
+
+🔵 **Motijheel → Uttara North**
+- First Train: 7:15 AM
+- Last Train: 10:10 PM
+- Frequency: Every 8-15 minutes
+
+📅 **FRIDAY Schedule**
+
+🔵 **Uttara North → Motijheel**
+- First Train: 3:00 PM
+- Last Train: 9:00 PM
+- Frequency: Every 10 minutes
+
+🔵 **Motijheel → Uttara North**
+- First Train: 3:20 PM
+- Last Train: 9:40 PM
+- Frequency: Every 10 minutes
+
+🎫 **Ticket Purchase Times:**
+- Weekdays: 6:40 AM - 9:20 PM
+- Friday: 2:45 PM - 8:50 PM
+- All counters close after 9:20 PM`,
+
+        bn: `🚇 **মেট্রোরেল সময়সূচী**
+
+📅 **সাপ্তাহিক কর্মদিবসের সময়সূচী (শনিবার-বৃহস্পতিবার)**
+
+🔵 **উত্তরা উত্তর → মতিঝিল**
+- প্রথম ট্রেন: সকাল ০৬:৩০ ঘটিকা
+- সর্বশেষ ট্রেন: রাত ০৯:৩০ ঘটিকা
+- পিক আওয়ার (সকাল ৭:৩১-৮:১০ ও বিকাল ৪:২১-সন্ধ্যা ৭:১৪): প্রতি ৬-৮ মিনিট
+- অফ-পিক: প্রতি ১০-২০ মিনিট
+
+🔵 **মতিঝিল → উত্তরা উত্তর**
+- প্রথম ট্রেন: সকাল ০৭:১৫ ঘটিকা
+- সর্বশেষ ট্রেন: রাত ১০:১০ ঘটিকা
+- পিক আওয়ার (সকাল ৮:১১-৮:৪৯ ও বিকাল ৪:৫৯-সন্ধ্যা ৭:৫২): প্রতি ৬-৮ মিনিট
+- অফ-পিক: প্রতি ১০-১৫ মিনিট
+
+📅 **শনিবার ও অন্যান্য সকল সরকারী ছুটির দিনের সময়সূচী**
+
+🔵 **উত্তরা উত্তর → মতিঝিল**
+- প্রথম ট্রেন: সকাল ০৬:৩০ ঘটিকা
+- সর্বশেষ ট্রেন: রাত ০৯:৩০ ঘটিকা
+- হেডওয়ে: প্রতি ১০-২০ মিনিট
+
+🔵 **মতিঝিল → উত্তরা উত্তর**
+- প্রথম ট্রেন: সকাল ০৭:১৫ ঘটিকা
+- সর্বশেষ ট্রেন: রাত ১০:১০ ঘটিকা
+- হেডওয়ে: প্রতি ৮-১৫ মিনিট
+
+📅 **শুক্রবারের সময়সূচী**
+
+🔵 **উত্তরা উত্তর → মতিঝিল**
+- প্রথম ট্রেন: দুপুর ০৩:০০ ঘটিকা
+- সর্বশেষ ট্রেন: রাত ০৯:০০ ঘটিকা
+- হেডওয়ে: প্রতি ১০ মিনিট
+
+🔵 **মতিঝিল → উত্তরা উত্তর**
+- প্রথম ট্রেন: দুপুর ০৩:২০ মিনিট
+- সর্বশেষ ট্রেন: রাত ০৯:৪০ মিনিট
+- হেডওয়ে: প্রতি ১০ মিনিট
+
+🎫 **টিকিট ক্রয়ের সময়:**
+- সাপ্তাহিক কর্মদিবস: সকাল ০৬:৪০ - রাত ০৯:২০
+- শুক্রবার: বিকাল ০২:৪৫ - রাত ০৮:৫০
+- রাত ০৯:২০ এর পর সকল টিকিট বিক্রয় অফিস বন্ধ
+
+📝 **বিশেষ নোট:**
+শুক্রবার ব্যতিত অন্যান্য দিন সকাল ০৬:৪০ থেকে রাত ০৯:২০ পর্যন্ত Single Journey Ticket ক্রয় ও MRT/Rapid Pass Top up করা যাবে। উত্তরা উত্তর স্টেশন থেকে শুক্রবার বিকাল ০২:৪৫ মিনিট হতে এবং মতিঝিল স্টেশন হতে শুক্রবার বিকাল ০৩:০৫ মিনিট হতে টিকিট ক্রয় ও Rapid Pass ক্রয় করা যাবে।`
     },
     'bus fare': {
         en: '💰 **Bus Fare Calculation:**\n- Minimum fare: ৳10\n- Rate: ৳2.42 per km\n- AC buses: 2-3x regular fare\n- Average short trip: ৳20-30\n- Average long trip: ৳40-60',
@@ -353,5 +539,6 @@ export default {
     EMERGENCY_INFO,
     TRAVEL_TIPS,
     FAQ_DATABASE,
-    ONLINE_DATA_SOURCES
+    ONLINE_DATA_SOURCES,
+    METRO_RAIL_SCHEDULE
 };

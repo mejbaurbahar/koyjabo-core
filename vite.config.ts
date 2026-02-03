@@ -347,7 +347,10 @@ export default defineConfig(({ mode }) => {
       'process.env.GEMINI_API_KEY_2': JSON.stringify(env.GEMINI_API_KEY_2 || ''),
       'process.env.GEMINI_API_KEY_3': JSON.stringify(env.GEMINI_API_KEY_3 || ''),
       'process.env.GEMINI_API_KEY_4': JSON.stringify(env.GEMINI_API_KEY_4 || ''),
-      'process.env.GEMINI_API_KEY_5': JSON.stringify(env.GEMINI_API_KEY_5 || '')
+      'process.env.GEMINI_API_KEY_5': JSON.stringify(env.GEMINI_API_KEY_5 || ''),
+      // TomTom API keys for real-time traffic data
+      'import.meta.env.VITE_TOMTOM_API_KEY_1': JSON.stringify(env.VITE_TOMTOM_API_KEY_1 || ''),
+      'import.meta.env.VITE_TOMTOM_API_KEY_2': JSON.stringify(env.VITE_TOMTOM_API_KEY_2 || '')
     },
     resolve: {
       alias: {
