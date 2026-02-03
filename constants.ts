@@ -448,6 +448,12 @@ export const STATIONS: Record<string, Station> = {
   munshiganj_hospital: { id: 'munshiganj_hospital', name: 'Munshiganj General Hospital', bnName: 'মুন্সীগঞ্জ জেনারেল হাসপাতাল', lat: 23.5455, lng: 90.5332 },
   narayanganj_hospital: { id: 'narayanganj_hospital', name: 'Narayanganj General (Victoria) Hospital', bnName: 'নারায়ণগঞ্জ ভিক্টোরিয়া হাসপাতাল', lat: 23.6255, lng: 90.5020 },
   keraniganj_hospital: { id: 'keraniganj_hospital', name: 'Keraniganj Upazila Health Complex', bnName: 'কেরানীগঞ্জ উপজেলা স্বাস্থ্য কমপ্লেক্স', lat: 23.6825, lng: 90.3825 },
+  crp_savar: { id: 'crp_savar', name: 'CRP (Savar)', bnName: 'সিআরপি (সাভার)', lat: 23.8320, lng: 90.2780 },
+  malek_medical: { id: 'malek_medical', name: 'Colonel Maleque Medical College', bnName: 'কর্নেল মালেক মেডিকেল', lat: 23.8650, lng: 89.9850 },
+  monno_medical: { id: 'monno_medical', name: 'Monno Medical College', bnName: 'মুন্নু মেডিকেল কলেজ', lat: 23.8500, lng: 89.9200 },
+  sonargaon_hospital: { id: 'sonargaon_hospital', name: 'Sonargaon Health Complex', bnName: 'সোনারগাঁও স্বাস্থ্য কমপ্লেক্স', lat: 23.6300, lng: 90.6100 },
+  siddhirganj_hospital: { id: 'siddhirganj_hospital', name: 'Siddhirganj 300 Bed Hospital', bnName: 'সিদ্ধিরগঞ্জ ৩০০ শয্যা হাসপাতাল', lat: 23.6650, lng: 90.5150 },
+  sreenagar_hospital: { id: 'sreenagar_hospital', name: 'Sreenagar Health Complex', bnName: 'শ্রীনগর স্বাস্থ্য কমপ্লেক্স', lat: 23.5350, lng: 90.2850 },
 
   // ===== POLICE STATIONS (THANAS) =====
   mirpur_thana: { id: 'mirpur_thana', name: 'Mirpur Model Thana', bnName: 'মিরপুর মডেল থানা', lat: 23.8055, lng: 90.3615 },
@@ -476,6 +482,16 @@ export const STATIONS: Record<string, Station> = {
   munshiganj_thana: { id: 'munshiganj_thana', name: 'Munshiganj Sadar Thana', bnName: 'মুন্সীগঞ্জ সদর থানা', lat: 23.5435, lng: 90.5312 },
   narayanganj_thana: { id: 'narayanganj_thana', name: 'Narayanganj Model Thana', bnName: 'নারায়ণগঞ্জ মডেল থানা', lat: 23.6230, lng: 90.5000 },
   keraniganj_thana: { id: 'keraniganj_thana', name: 'Keraniganj Thana', bnName: 'কেরানীগঞ্জ থানা', lat: 23.6800, lng: 90.3800 },
+  savar_highway_thana: { id: 'savar_highway_thana', name: 'Savar Highway Thana', bnName: 'সাভার হাইওয়ে থানা', lat: 23.8500, lng: 90.2650 },
+  saturia_thana: { id: 'saturia_thana', name: 'Saturia Thana', bnName: 'সাটুরিয়া থানা', lat: 23.9315, lng: 90.0247 },
+  singair_thana: { id: 'singair_thana', name: 'Singair Thana', bnName: 'সিঙ্গাইর থানা', lat: 23.7950, lng: 90.1200 },
+  konabari_thana: { id: 'konabari_thana', name: 'Konabari Thana', bnName: 'কোনাবাড়ি থানা', lat: 24.0200, lng: 90.3200 },
+  fatullah_thana: { id: 'fatullah_thana', name: 'Fatullah Thana', bnName: 'ফতুল্লাহ থানা', lat: 23.6300, lng: 90.4850 },
+  siddhirganj_thana: { id: 'siddhirganj_thana', name: 'Siddhirganj Thana', bnName: 'সিদ্ধিরগঞ্জ থানা', lat: 23.6700, lng: 90.5100 },
+  sonargaon_thana: { id: 'sonargaon_thana', name: 'Sonargaon Thana', bnName: 'সোনারগাঁও থানা', lat: 23.6400, lng: 90.6000 },
+  sreenagar_thana: { id: 'sreenagar_thana', name: 'Sreenagar Thana', bnName: 'শ্রীনগর থানা', lat: 23.5300, lng: 90.2800 },
+  south_keraniganj_thana: { id: 'south_keraniganj_thana', name: 'South Keraniganj Thana', bnName: 'দক্ষিণ কেরানীগঞ্জ থানা', lat: 23.6600, lng: 90.3700 },
+  gazaria_thana: { id: 'gazaria_thana', name: 'Gazaria Thana', bnName: 'গজারিয়া থানা', lat: 23.5400, lng: 90.6100 },
 
   // ===== FIRE STATIONS =====
   fire_service_hq: { id: 'fire_service_hq', name: 'Fire Service HQ (Fulbaria)', bnName: 'ফায়ার সার্ভিস সদর দপ্তর', lat: 23.7225, lng: 90.4085 },
@@ -498,6 +514,14 @@ export const STATIONS: Record<string, Station> = {
   munshiganj_fire_station: { id: 'munshiganj_fire_station', name: 'Munshiganj Fire Station', bnName: 'মুন্সীগঞ্জ ফায়ার স্টেশন', lat: 23.5450, lng: 90.5332 },
   narayanganj_fire_station: { id: 'narayanganj_fire_station', name: 'Narayanganj Fire Station', bnName: 'নারায়ণগঞ্জ ফায়ার স্টেশন', lat: 23.6255, lng: 90.5025 },
   keraniganj_fire_station: { id: 'keraniganj_fire_station', name: 'Keraniganj Fire Station', bnName: 'কেরানীগঞ্জ ফায়ার স্টেশন', lat: 23.6825, lng: 90.3825 },
+  zirabo_fire_station: { id: 'zirabo_fire_station', name: 'Zirabo Fire Station', bnName: 'জিরাবো ফায়ার স্টেশন', lat: 23.9200, lng: 90.2850 },
+  bhogra_fire_station: { id: 'bhogra_fire_station', name: 'Bhogra Fire Station', bnName: 'ভোগড়া ফায়ার স্টেশন', lat: 23.9850, lng: 90.4150 },
+  board_bazar_fire_station: { id: 'board_bazar_fire_station', name: 'Board Bazar Fire Station', bnName: 'বোর্ড বাজার ফায়ার স্টেশন', lat: 23.9305, lng: 90.3985 },
+  maona_fire_station: { id: 'maona_fire_station', name: 'Maona Fire Station', bnName: 'মাওনা ফায়ার স্টেশন', lat: 24.1950, lng: 90.4750 },
+  sonargaon_fire_station: { id: 'sonargaon_fire_station', name: 'Sonargaon Fire Station', bnName: 'সোনারগাঁও ফায়ার স্টেশন', lat: 23.6350, lng: 90.6050 },
+  sreenagar_fire_station: { id: 'sreenagar_fire_station', name: 'Sreenagar Fire Station', bnName: 'শ্রীনগর ফায়ার স্টেশন', lat: 23.5350, lng: 90.2850 },
+  padma_bridge_fire_station: { id: 'padma_bridge_fire_station', name: 'Padma Bridge (Dogachi) Fire Station', bnName: 'পদ্মা সেতু (ডোগাছি) ফায়ার স্টেশন', lat: 23.4750, lng: 90.2650 },
+  jail_fire_station: { id: 'jail_fire_station', name: 'New Jail (Keraniganj) Fire Station', bnName: 'নতুন জেল ফায়ার স্টেশন', lat: 23.6580, lng: 90.3720 },
 
   // ===== SHOPPING & COMMERCIAL (Already existing entries below) =====
   bashundhara_city: { id: 'bashundhara_city', name: 'Bashundhara City Shopping Mall', bnName: 'বসুন্ধরা সিটি', lat: 23.7500, lng: 90.3880 },
