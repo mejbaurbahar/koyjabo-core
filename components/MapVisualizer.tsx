@@ -459,12 +459,21 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
 
   // Destination Logic
 
-  const destStation = tripDestination ? STATIONS[tripDestination] : null;
+  const destStation = tripDestination ? (STATIONS[tripDestination] || METRO_STATIONS[tripDestination] || RAILWAY_STATIONS[tripDestination] || AIRPORTS[tripDestination]) : null;
   const isDestOnRoute = destStation && stations.some(s => s.id === tripDestination);
+
+  const originStation = tripOrigin ? (STATIONS[tripOrigin] || METRO_STATIONS[tripOrigin] || RAILWAY_STATIONS[tripOrigin] || AIRPORTS[tripOrigin]) : null;
+  const isOriginOnRoute = originStation && stations.some(s => s.id === tripOrigin);
+
   const alightIdx = hasHighlight
     ? (isReversed ? highlightStartIdx : highlightEndIdx)
     : (isReversed ? 0 : (stations.length - 1));
   const alightPos = (alightIdx >= 0 && alightIdx < nodePositions.length) ? nodePositions[alightIdx] : null;
+
+  const startIdx = hasHighlight
+    ? (isReversed ? highlightEndIdx : highlightStartIdx)
+    : (isReversed ? (stations.length - 1) : 0);
+  const startPos = (startIdx >= 0 && startIdx < nodePositions.length) ? nodePositions[startIdx] : null;
 
   return (
     <div className="w-full h-80 md:h-[500px] bg-slate-50 dark:bg-slate-900 border-t border-b border-gray-100 dark:border-slate-800 relative group overflow-hidden">
@@ -819,28 +828,30 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                         </g>
                       )}
 
-                      {/* TRANSIT Badge logic */}
-                      {tripTransferPoint === s.id && (
+                      {/* TRANSIT Badge logic - HIGHEST PRIORITY */}
+                      {tripTransferPoint === s.id ? (
                         <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 42 : y - 48})`}>
                           <rect x="-30" y="-7" width="60" height="14" rx="3" fill="#6366f1" />
                           <text x="0" y="3" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">TRANSIT</text>
                         </g>
-                      )}
+                      ) : (
+                        <>
+                          {/* Destination Badge Logic */}
+                          {(tripDestination === s.id || isRealEnd) && (
+                            <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 42 : y - 48})`}>
+                              <rect x="-38" y="-7" width="76" height="14" rx="3" fill="#ef4444" />
+                              <text x="0" y="3" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">{t('busDetails.destination')}</text>
+                            </g>
+                          )}
 
-                      {/* Destination Badge Logic */}
-                      {(tripDestination === s.id || (isRealEnd && s.id !== tripTransferPoint)) && (
-                        <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 58 : y - 64})`}>
-                          <rect x="-38" y="-7" width="76" height="14" rx="3" fill="#ef4444" />
-                          <text x="0" y="3" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">{t('busDetails.destination')}</text>
-                        </g>
-                      )}
-
-                      {/* Start/Origin Badge Logic */}
-                      {((isRealStart && s.id !== tripTransferPoint && !isUserConnectionStart) || (tripOrigin === s.id && !isRealStart)) && (
-                        <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 58 : y - 64})`}>
-                          <rect x="-26" y="-7" width="52" height="14" rx="3" fill={s.id === tripOrigin ? "#475569" : "#16a34a"} />
-                          <text x="0" y="3" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">{s.id === tripOrigin ? "ORIGIN" : t('busDetails.start')}</text>
-                        </g>
+                          {/* Start/Origin Badge Logic */}
+                          {((isRealStart && !isUserConnectionStart) || tripOrigin === s.id) && (
+                            <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 42 : y - 48})`}>
+                              <rect x="-26" y="-7" width="52" height="14" rx="3" fill={s.id === tripOrigin ? "#475569" : "#16a34a"} />
+                              <text x="0" y="3" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">{s.id === tripOrigin ? "ORIGIN" : t('busDetails.start')}</text>
+                            </g>
+                          )}
+                        </>
                       )}
 
                       {isUserConnectionStart && (
@@ -855,6 +866,61 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                   </g>
                 );
               })}
+
+              {/* Off-Route Origin Visualization */}
+              {!isOriginOnRoute && originStation && startPos && (
+                <g className="animate-in fade-in zoom-in duration-700">
+                  {/* Dashed Line from Origin to First Stop of Leg */}
+                  <line
+                    x1={startPos.x}
+                    y1={startPos.y}
+                    x2={startPos.x + (isReversed ? 120 : -120)}
+                    y2={startPos.y}
+                    stroke="#475569"
+                    strokeWidth="2"
+                    strokeDasharray="6,4"
+                    className="opacity-60"
+                  />
+                  {/* Arrow head (backwards) */}
+                  <path
+                    d={isReversed
+                      ? `M${startPos.x + 10},${startPos.y - 4} L${startPos.x},${startPos.y} L${startPos.x + 10},${startPos.y + 4}`
+                      : `M${startPos.x - 10},${startPos.y - 4} L${startPos.x},${startPos.y} L${startPos.x - 10},${startPos.y + 4}`
+                    }
+                    fill="#475569"
+                    opacity="0.6"
+                  />
+
+                  {/* Origin Node */}
+                  <g className="cursor-pointer group/origin">
+                    <circle
+                      cx={startPos.x + (isReversed ? 120 : -120)}
+                      cy={startPos.y}
+                      r={10}
+                      fill="#475569"
+                      stroke="white"
+                      strokeWidth="3"
+                      className="shadow-lg"
+                    />
+                    <foreignObject
+                      x={startPos.x + (isReversed ? 120 : -120) - 60}
+                      y={startPos.y + 18}
+                      width="120"
+                      height="60"
+                      className="overflow-visible"
+                    >
+                      <div className="flex flex-col items-center">
+                        <div className="px-3 py-1.5 rounded-lg shadow-md bg-slate-600 text-white border border-slate-700 text-xs font-bold whitespace-nowrap mb-1">
+                          {originStation.name}
+                        </div>
+                        <div className="text-[9px] font-bold text-slate-500 bg-white/90 px-1.5 rounded-full border border-slate-100 shadow-sm">
+                          ORIGINAL START
+                        </div>
+                      </div>
+                    </foreignObject>
+                  </g>
+                </g>
+              )}
 
               {/* Off-Route Destination Visualization */}
               {!isDestOnRoute && destStation && alightPos && (
