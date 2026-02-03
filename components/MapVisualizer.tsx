@@ -459,7 +459,9 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
 
   const destStation = tripDestination ? STATIONS[tripDestination] : null;
   const isDestOnRoute = destStation && stations.some(s => s.id === tripDestination);
-  const alightIdx = hasHighlight ? highlightEndIdx : (stations.length - 1);
+  const alightIdx = hasHighlight
+    ? (isReversed ? highlightStartIdx : highlightEndIdx)
+    : (isReversed ? 0 : (stations.length - 1));
   const alightPos = (alightIdx >= 0 && alightIdx < nodePositions.length) ? nodePositions[alightIdx] : null;
 
   return (
@@ -863,7 +865,7 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                   <line
                     x1={alightPos.x}
                     y1={alightPos.y}
-                    x2={alightPos.x + 150} // 150px to the right
+                    x2={alightPos.x + (isReversed ? -120 : 120)}
                     y2={alightPos.y}
                     stroke="#ef4444"
                     strokeWidth="2"
@@ -871,12 +873,19 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                     className="opacity-60"
                   />
                   {/* Arrow head */}
-                  <path d={`M${alightPos.x + 140},${alightPos.y - 4} L${alightPos.x + 150},${alightPos.y} L${alightPos.x + 140},${alightPos.y + 4}`} fill="#ef4444" opacity="0.6" />
+                  <path
+                    d={isReversed
+                      ? `M${alightPos.x - 110},${alightPos.y - 4} L${alightPos.x - 120},${alightPos.y} L${alightPos.x - 110},${alightPos.y + 4}`
+                      : `M${alightPos.x + 110},${alightPos.y - 4} L${alightPos.x + 120},${alightPos.y} L${alightPos.x + 110},${alightPos.y + 4}`
+                    }
+                    fill="#ef4444"
+                    opacity="0.6"
+                  />
 
                   {/* Destination Node */}
                   <g className="cursor-pointer group/dest">
                     <circle
-                      cx={alightPos.x + 150}
+                      cx={alightPos.x + (isReversed ? -120 : 120)}
                       cy={alightPos.y}
                       r={10}
                       fill="#ef4444"
@@ -885,7 +894,7 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                       className="shadow-lg"
                     />
                     <foreignObject
-                      x={alightPos.x + 150 - 60}
+                      x={alightPos.x + (isReversed ? -120 : 120) - 60}
                       y={alightPos.y + 18}
                       width="120"
                       height="60"
