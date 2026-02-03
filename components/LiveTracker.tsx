@@ -33,6 +33,20 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [proximityError, setProximityError] = useState<string | null>(null);
 
+  // Detect if user is on desktop/laptop (less accurate location)
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const checkDevice = () => {
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      setIsDesktop(!isMobile);
+      if (!isMobile) {
+        console.log('💻 Desktop device detected - Location may be less accurate (IP/WiFi-based instead of GPS)');
+      }
+    };
+    checkDevice();
+  }, []);
+
   // Process location whenever it changes from parent
   useEffect(() => {
     if (!location) {
@@ -240,8 +254,8 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
 
         <div className="flex items-center justify-between mb-2">
           <span className={`text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 ${isAtStation
-              ? 'text-dhaka-red bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded-full'
-              : 'text-gray-400'
+            ? 'text-dhaka-red bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded-full'
+            : 'text-gray-400'
             }`}>
             <MapPin className={`w-3 h-3 ${isAtStation ? 'animate-bounce' : ''}`} />
             {isAtStation ? t('liveNav.currentStop') : t('liveNav.nearestStop')}
@@ -251,8 +265,8 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
           </span>
         </div>
         <h2 className={`text-2xl font-bold flex items-center gap-2 ${isAtStation
-            ? 'text-dhaka-red dark:text-red-400'
-            : 'text-dhaka-dark dark:text-gray-100'
+          ? 'text-dhaka-red dark:text-red-400'
+          : 'text-dhaka-dark dark:text-gray-100'
           }`}>
           {currentStation?.name || "Unknown Location"}
           {isAtStation && (
@@ -310,6 +324,19 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
               {isBroadcasting ? t('liveNav.stopCasting') : t('liveNav.goLive')}
             </button>
           </div>
+
+          {/* Desktop Location Accuracy Warning */}
+          {isDesktop && (
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 px-3 py-2 rounded-lg flex items-start gap-2">
+              <AlertCircle className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+              <div className="text-xs text-blue-600 dark:text-blue-400">
+                <p className="font-bold">💻 Desktop Mode Detected</p>
+                <p className="text-[10px] mt-0.5 leading-tight">
+                  Location may be less accurate on PC/laptop (WiFi/IP-based). For best accuracy, use a mobile device with GPS.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Trip Stats Grid */}

@@ -1064,33 +1064,60 @@ const App: React.FC = () => {
       if ('geolocation' in navigator) {
         watchIdRef.current = navigator.geolocation.watchPosition(
           (position) => {
-            const { latitude, longitude, speed: rawSpeed } = position.coords;
+            const { latitude, longitude, speed: rawSpeed, accuracy } = position.coords;
             const loc = { lat: latitude, lng: longitude };
             const speedKmh = rawSpeed ? rawSpeed * 3.6 : 0;
 
-            setUserLocation(loc);
-            setSpeed(speedKmh);
+            // Log accuracy for debugging desktop vs mobile differences
+            console.log('📍 Location update:', {
+              lat: latitude.toFixed(6),
+              lng: longitude.toFixed(6),
+              accuracy: accuracy ? `${accuracy.toFixed(0)}m` : 'unknown',
+              isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+            });
 
-            // Update nearest stop logic
-            const result = findNearestStation(loc, selectedBus.stops);
-            if (result) {
-              const validStopIds = selectedBus.stops.filter(id => !!STATIONS[id] || !!METRO_STATIONS[id] || !!RAILWAY_STATIONS[id] || !!AIRPORTS[id]);
-              const stationId = selectedBus.stops[result.index];
-              const filteredIndex = validStopIds.indexOf(stationId);
-
-              if (filteredIndex !== -1) {
-                setNearestStopIndex(filteredIndex);
-                setNearestStopDistance(result.distance);
-              }
+            // Warn if accuracy is poor (common on desktop/laptop)
+            if (accuracy && accuracy > 100) {
+              console.warn('⚠️ Low location accuracy detected:', accuracy.toFixed(0) + 'm',
+                'This is common on PC/laptop. For best accuracy, use a mobile device with GPS.');
             }
 
-            // Metro logic
-            const metroResult = findNearestMetroStation(loc);
-            if (metroResult) setNearestMetro(metroResult);
+            // Only update if accuracy is reasonable OR if we don't have a location yet
+            // Desktop often gives accuracy of ~1000-5000m (IP-based)
+            // Mobile GPS typically gives ~10-50m accuracy
+            const isAcceptableAccuracy = !accuracy || accuracy < 200 || !userLocation;
+
+            if (isAcceptableAccuracy) {
+              setUserLocation(loc);
+              setSpeed(speedKmh);
+
+              // Update nearest stop logic
+              const result = findNearestStation(loc, selectedBus.stops);
+              if (result) {
+                const validStopIds = selectedBus.stops.filter(id => !!STATIONS[id] || !!METRO_STATIONS[id] || !!RAILWAY_STATIONS[id] || !!AIRPORTS[id]);
+                const stationId = selectedBus.stops[result.index];
+                const filteredIndex = validStopIds.indexOf(stationId);
+
+                if (filteredIndex !== -1) {
+                  setNearestStopIndex(filteredIndex);
+                  setNearestStopDistance(result.distance);
+                }
+              }
+
+              // Metro logic
+              const metroResult = findNearestMetroStation(loc);
+              if (metroResult) setNearestMetro(metroResult);
+            } else {
+              console.warn('⚠️ Ignoring location update due to poor accuracy:', accuracy.toFixed(0) + 'm');
+            }
 
           },
           (err) => console.error("Watch Error", err),
-          { enableHighAccuracy: true, maximumAge: 5000, timeout: 30000 }
+          {
+            enableHighAccuracy: true, // Request GPS/high accuracy
+            maximumAge: 0,            // Don't use cached position
+            timeout: 10000            // 10 second timeout
+          }
         );
       }
     } else {
