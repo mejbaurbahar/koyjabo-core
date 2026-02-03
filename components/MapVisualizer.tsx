@@ -39,6 +39,14 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
   const [showAirport, setShowAirport] = useState(false);
   const [showLayers, setShowLayers] = useState(false);
 
+  // Track if device is mobile for showing/hiding station labels
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 768;
+    }
+    return false;
+  });
+
   // Responsive initial zoom: smaller on mobile for better overview
   const [zoom, setZoom] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -150,6 +158,16 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
     }, 50);
     return () => clearInterval(interval);
   }, [stations.length, hasHighlight]);
+
+  // Update isMobile on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Drag Handlers
   const onMouseDown = (e: React.MouseEvent) => {
@@ -776,82 +794,81 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                       className="transition-all duration-300 group-hover/node:r-8"
                     />
 
-                    {/* Label */}
-                    {/* SVG Label - Hidden on desktop, visible on mobile */}
-                    <g className="transition-all duration-300 opacity-100 md:opacity-0 md:pointer-events-none">
-                      {/* Background Pill */}
-                      <rect
-                        x={x - (s.name.length * 3 + 10)}
-                        y={idx % 2 === 0 ? y + 14 : y - 34}
-                        width={s.name.length * 6 + 20}
-                        height="20"
-                        rx="4"
-                        fill={undefined}
-                        stroke={isCurrent ? "#ef4444" : isUserConnectionStart ? "#f97316" : isRealStart ? "#16a34a" : isRealEnd ? "#ef4444" : isHighlighted ? "#e5e7eb" : "#f1f5f9"}
-                        strokeWidth="1"
-                        className={`drop-shadow-sm fill-white dark:fill-slate-800`}
-                      />
+                    {/* Label - Show only on mobile */}
+                    {isMobile && (
+                      <g className="transition-all duration-300 opacity-100">
+                        {/* Background Pill */}
+                        <rect
+                          x={x - (s.name.length * 3 + 10)}
+                          y={idx % 2 === 0 ? y + 14 : y - 34}
+                          width={s.name.length * 6 + 20}
+                          height="20"
+                          rx="4"
+                          fill={undefined}
+                          stroke={isCurrent ? "#ef4444" : isUserConnectionStart ? "#f97316" : isRealStart ? "#16a34a" : isRealEnd ? "#ef4444" : isHighlighted ? "#e5e7eb" : "#f1f5f9"}
+                          strokeWidth="1"
+                          className={`drop-shadow-sm fill-white dark:fill-slate-800`}
+                        />
 
-                      {/* Text Name */}
-                      <text
-                        x={x}
-                        y={idx % 2 === 0 ? y + 28 : y - 20}
-                        textAnchor="middle"
-                        className={`text-[10px] font-bold fill-gray-700 dark:fill-gray-200 pointer-events-none select-none`}
-                        style={{ fontSize: '10px' }}
-                      >
-                        {s.name}
-                      </text>
+                        {/* Text Name */}
+                        <text
+                          x={x}
+                          y={idx % 2 === 0 ? y + 28 : y - 20}
+                          textAnchor="middle"
+                          className={`text-[10px] font-bold fill-gray-700 dark:fill-gray-200 pointer-events-none select-none`}
+                          style={{ fontSize: '10px' }}
+                        >
+                          {s.name}
+                        </text>
+                      </g>
+                    )}
 
-                      {/* Status Badge (You/Dest) */}
-                      {isCurrent && (
-                        <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 42 : y - 48})`}>
-                          <rect x="-18" y="-7" width="36" height="14" rx="3" fill="#ef4444" />
-                          <text x="0" y="3" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">{t('busDetails.you')}</text>
-                        </g>
-                      )}
+                    {/* Status Badge (You/Dest) */}
+                    {isCurrent && (
+                      <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 42 : y - 48})`}>
+                        <rect x="-18" y="-7" width="36" height="14" rx="3" fill="#ef4444" />
+                        <text x="0" y="3" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">{t('busDetails.you')}</text>
+                      </g>
+                    )}
 
-                      {/* TRANSIT Badge logic (Prioritized over Dest/Start for intermediate stops) */}
-                      {tripTransferPoint === s.id && (
-                        <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 42 : y - 48})`}>
-                          <rect x="-26" y="-7" width="52" height="14" rx="3" fill="#6366f1" />
-                          <text x="0" y="3" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">TRANSIT</text>
-                        </g>
-                      )}
+                    {/* TRANSIT Badge logic (Prioritized over Dest/Start for intermediate stops) */}
+                    {tripTransferPoint === s.id && (
+                      <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 42 : y - 48})`}>
+                        <rect x="-26" y="-7" width="52" height="14" rx="3" fill="#6366f1" />
+                        <text x="0" y="3" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">TRANSIT</text>
+                      </g>
+                    )}
 
-                      {/* Destination Badge Logic: 
+                    {/* Destination Badge Logic: 
                           If NOT reversed: Destination is at highlightEndIdx
                           If reversed: Destination is at highlightStartIdx
                           Only show if NOT a transit point (unless it's the final trip destination)
                       */}
-                      {(tripDestination === s.id || (isRealEnd && s.id !== tripTransferPoint)) && (
-                        <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 42 : y - 48})`}>
-                          <rect x="-38" y="-7" width="76" height="14" rx="3" fill="#ef4444" />
-                          <text x="0" y="3" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">{t('busDetails.destination')}</text>
-                        </g>
-                      )}
+                    {(tripDestination === s.id || (isRealEnd && s.id !== tripTransferPoint)) && (
+                      <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 42 : y - 48})`}>
+                        <rect x="-38" y="-7" width="76" height="14" rx="3" fill="#ef4444" />
+                        <text x="0" y="3" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">{t('busDetails.destination')}</text>
+                      </g>
+                    )}
 
-                      {/* Start Badge Logic:
+                    {/* Start Badge Logic:
                           If NOT reversed: Start is at highlightStartIdx
                           If reversed: Start is at highlightEndIdx
                           Only show if NOT a transit point.
                       */}
-                      {(isRealStart && s.id !== tripTransferPoint && !isUserConnectionStart) && (
-                        <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 42 : y - 48})`}>
-                          <rect x="-23" y="-7" width="46" height="14" rx="3" fill="#16a34a" />
-                          <text x="0" y="3" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">{t('busDetails.start')}</text>
-                        </g>
-                      )}
+                    {(isRealStart && s.id !== tripTransferPoint && !isUserConnectionStart) && (
+                      <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 42 : y - 48})`}>
+                        <rect x="-23" y="-7" width="46" height="14" rx="3" fill="#16a34a" />
+                        <text x="0" y="3" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">{t('busDetails.start')}</text>
+                      </g>
+                    )}
 
-                      {isUserConnectionStart && (
-                        <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 42 : y - 48})`}>
-                          <rect x="-35" y="-7" width="70" height="14" rx="3" fill="#f97316" />
-                          <text x="0" y="3" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">{t('busDetails.startHere').toUpperCase()}</text>
-                        </g>
-                      )}
-                    </g>
-
-
+                    {isUserConnectionStart && (
+                      <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 42 : y - 48})`}>
+                        <rect x="-35" y="-7" width="70" height="14" rx="3" fill="#f97316" />
+                        <text x="0" y="3" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">{t('busDetails.startHere').toUpperCase()}</text>
+                      </g>
+                    )}
                   </g>
                 );
               })}
