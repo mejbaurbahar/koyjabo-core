@@ -20,45 +20,50 @@ interface LiveTrackerProps {
 
 const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highlightEndIdx, userLocation: propUserLocation, speed: propSpeed, onBack, onViewLiveMap }) => {
   const { t, formatNumber } = useLanguage();
-  const [location, setLocation] = useState<UserLocation | null>(null);
-  const [speed, setSpeed] = useState<number | null>(null);
+  // Use prop location directly instead of maintaining separate state
+  const location = propUserLocation;
+  const speed = propSpeed;
   const [error, setError] = useState<string | null>(null);
   const [nearestIndex, setNearestIndex] = useState<number>(-1);
   const [distanceToStation, setDistanceToStation] = useState<number>(Infinity);
   const [globalNearest, setGlobalNearest] = useState<{ station: Station, distance: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [showEmergencyModal, setShowEmergencyModal] = useState(false);
-  const [isBroadcasting, setIsBroadcasting] = useState(liveBusService.isBroadcasting()); // Init from service
-  const [isOnline, setIsOnline] = useState(navigator.onLine); // Track online/offline status
-  const [proximityError, setProximityError] = useState<string | null>(null); // Proximity verification error
-  const watchIdRef = useRef<number | null>(null);
+  const [isBroadcasting, setIsBroadcasting] = useState(liveBusService.isBroadcasting());
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [proximityError, setProximityError] = useState<string | null>(null);
 
-  const processLocation = (loc: UserLocation, speedVal: number | null) => {
-    setLocation(loc);
-    setSpeed(speedVal);
-
-    // Note: Broadcasting update is now handled internally by liveBusService!
+  // Process location whenever it changes from parent
+  useEffect(() => {
+    if (!location) {
+      setLoading(true);
+      return;
+    }
 
     // Nearest on Route
-    const nearest = findNearestStation(loc, bus.stops);
+    const nearest = findNearestStation(location, bus.stops);
     if (nearest) {
       setNearestIndex(nearest.index);
       setDistanceToStation(nearest.distance);
+      console.log('📍 Nearest stop updated:', {
+        index: nearest.index,
+        station: STATIONS[bus.stops[nearest.index]]?.name,
+        distance: (nearest.distance / 1000).toFixed(2) + ' km'
+      });
     }
 
     // Nearest Global (Real Location Name)
     const allStationIds = Object.keys(STATIONS);
-    const gNearest = findNearestStation(loc, allStationIds);
+    const gNearest = findNearestStation(location, allStationIds);
     if (gNearest) {
       setGlobalNearest({ station: gNearest.station, distance: gNearest.distance });
     }
 
     setLoading(false);
     setError(null);
-  };
+  }, [location, bus.stops]);
 
   // Sync broadcasting state from service on mount and when bus changes
-  // IMPORTANT: Only show as broadcasting if THIS specific bus is being broadcast
   useEffect(() => {
     const isGenerallyBroadcasting = liveBusService.isBroadcasting();
     const currentBroadcastingBus = liveBusService.getCurrentBusName();
@@ -80,8 +85,6 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
     const handleOffline = () => {
       setIsOnline(false);
       console.log('❌ Network: Offline');
-      // If broadcasting while going offline, show warning but don't stop
-      // (they might reconnect soon)
     };
 
     window.addEventListener('online', handleOnline);
@@ -92,46 +95,6 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
       window.removeEventListener('offline', handleOffline);
     };
   }, []);
-
-  useEffect(() => {
-    setLoading(true);
-    setError(null);
-
-    // Initial fetch
-    getCurrentLocation().then(loc => {
-      processLocation(loc, null);
-    }).catch(err => {
-      console.error("Initial Loc Error", err);
-      setError(err.message || "Location access denied");
-      setLoading(false);
-    });
-
-    // Start Watch (For UI only)
-    if ('geolocation' in navigator) {
-      watchIdRef.current = navigator.geolocation.watchPosition(
-        (position) => {
-          const { latitude, longitude, speed: rawSpeed } = position.coords;
-          const speedKmh = rawSpeed ? rawSpeed * 3.6 : 0;
-          processLocation({ lat: latitude, lng: longitude }, speedKmh);
-        },
-        (err) => {
-          console.error("Watch Error", err);
-          if (!location) {
-            setError(err.message || "Location access denied");
-            setLoading(false);
-          }
-        },
-        { enableHighAccuracy: true, maximumAge: 5000, timeout: 30000 }
-      );
-    }
-
-    return () => {
-      if (watchIdRef.current !== null) {
-        navigator.geolocation.clearWatch(watchIdRef.current);
-      }
-      // CRITICAL: Do NOT stop broadcasting on unmount to maintain state!
-    };
-  }, [bus]);
 
   // Handle Broadcast Toggle with validation
   const toggleBroadcast = () => {
@@ -276,15 +239,25 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
         )}
 
         <div className="flex items-center justify-between mb-2">
-          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1">
-            <MapPin className="w-3 h-3" /> {isAtStation ? t('liveNav.currentStop') : t('liveNav.nearestStop')}
+          <span className={`text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 ${isAtStation
+              ? 'text-dhaka-red bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded-full'
+              : 'text-gray-400'
+            }`}>
+            <MapPin className={`w-3 h-3 ${isAtStation ? 'animate-bounce' : ''}`} />
+            {isAtStation ? t('liveNav.currentStop') : t('liveNav.nearestStop')}
           </span>
-          <span className="flex items-center gap-1 text-[10px] text-dhaka-green bg-green-50 px-2 py-0.5 rounded-full border border-green-100">
+          <span className="flex items-center gap-1 text-[10px] text-dhaka-green bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded-full border border-green-100 dark:border-green-800">
             <RefreshCw className="w-3 h-3 animate-spin" /> Live
           </span>
         </div>
-        <h2 className="text-2xl font-bold text-dhaka-dark dark:text-gray-100 flex items-center gap-2">
+        <h2 className={`text-2xl font-bold flex items-center gap-2 ${isAtStation
+            ? 'text-dhaka-red dark:text-red-400'
+            : 'text-dhaka-dark dark:text-gray-100'
+          }`}>
           {currentStation?.name || "Unknown Location"}
+          {isAtStation && (
+            <span className="inline-block w-2 h-2 bg-dhaka-red rounded-full animate-pulse"></span>
+          )}
         </h2>
         {!isAtStation && (
           <p className="text-xs font-bold text-orange-600 bg-orange-50 dark:bg-orange-900/30 dark:text-orange-400 inline-block px-2 py-0.5 rounded mt-1">
@@ -422,9 +395,9 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
                 <div
                   className={`absolute -left-[9px] top-0 rounded-full transition-all duration-500
                     ${isCurrent && isAtStation
-                      ? 'bg-dhaka-red border-4 border-white shadow-[0_0_0_4px_rgba(244,42,65,0.2)] w-6 h-6 -left-[11px] z-10'
+                      ? 'bg-dhaka-red border-4 border-white shadow-[0_0_0_4px_rgba(244,42,65,0.2)] w-7 h-7 -left-[13px] z-10 animate-pulse'
                       : isCurrent // Nearest but far
-                        ? 'bg-orange-400 border-4 border-white w-5 h-5 -left-[9px] z-10'
+                        ? 'bg-orange-500 border-4 border-white w-6 h-6 -left-[11px] z-10 shadow-[0_0_12px_rgba(249,115,22,0.5)]'
                         : isStart
                           ? 'bg-green-600 border-4 border-white w-5 h-5 -left-[9px] z-10 ring-2 ring-green-200'
                           : isEnd
@@ -436,6 +409,10 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
                                 : 'bg-white border-4 border-dhaka-green w-5 h-5 -left-[9px]'
                     }`}
                 >
+                  {/* Pulsing ring for current location */}
+                  {isCurrent && (
+                    <div className="absolute -inset-2 border-2 border-current rounded-full opacity-75 animate-ping"></div>
+                  )}
                 </div>
 
                 {/* Content */}
