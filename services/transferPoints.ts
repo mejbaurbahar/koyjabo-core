@@ -129,6 +129,24 @@ export const TRANSFER_POINTS: Record<string, TransferPoint> = {
         lng: 90.4289,
         modes: ['bus'],
         nearbyStations: ['basabo', 'rajarbagh', 'malibagh']
+    },
+    'kuril': {
+        id: 'kuril',
+        name: 'Kuril',
+        bnName: 'কুড়িল',
+        lat: 23.8188,
+        lng: 90.4131,
+        modes: ['bus'],
+        nearbyStations: ['kuril', 'kuril_chourasta', 'shewra', 'bashundhara_300_feet']
+    },
+    'notun_bazar': {
+        id: 'notun_bazar',
+        name: 'Notun Bazar',
+        bnName: 'নতুন বাজার',
+        lat: 23.7978,
+        lng: 90.4234,
+        modes: ['bus'],
+        nearbyStations: ['notun_bazar', 'badda', 'shahjadpur']
     }
 };
 
