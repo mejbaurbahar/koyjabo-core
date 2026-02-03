@@ -3206,24 +3206,6 @@ export const BUS_DATA: BusRoute[] = [
     hours: '6:00 AM - 10:00 PM'
   },
   {
-    id: 'taranga_plus',
-    name: 'Taranga Plus',
-    bnName: 'তরঙ্গ প্লাস',
-    routeString: 'Mohammadpur ⇄ Khilgaon',
-    stops: ['mohammadpur', 'dhanmondi15', 'jigatola', 'college_gate', 'nilkhet', 'science_lab', 'shahbag', 'kakrail', 'shantinagar', 'malibagh', 'khilgaon'],
-    type: 'Local',
-    hours: '6:00 AM - 10:00 PM'
-  },
-  {
-    id: 'shadhin_express',
-    name: 'Shadhin Express',
-    bnName: 'স্বাধীন এক্সপ্রেস',
-    routeString: 'Mirpur 12 ⇄ Press Club',
-    stops: ['mirpur12', 'mirpur11', 'mirpur10', 'kazipara', 'shewrapara', 'agargaon', 'khamar_bari', 'farmgate', 'kawran_bazar', 'bangla_motor', 'shahbag', 'high_court', 'press_club'],
-    type: 'Semi-Sitting',
-    hours: '6:00 AM - 10:30 PM'
-  },
-  {
     id: 'labbayek',
     name: 'Labbayek',
     bnName: 'লাব্বাইক',
