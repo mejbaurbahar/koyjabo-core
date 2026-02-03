@@ -777,8 +777,8 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                     />
 
                     {/* Label */}
-                    {/* SVG Label */}
-                    <g className="transition-all duration-300 opacity-100">
+                    {/* SVG Label - Hidden on desktop, visible on mobile */}
+                    <g className="transition-all duration-300 opacity-100 md:opacity-0 md:pointer-events-none">
                       {/* Background Pill */}
                       <rect
                         x={x - (s.name.length * 3 + 10)}
