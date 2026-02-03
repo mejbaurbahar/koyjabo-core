@@ -438,6 +438,17 @@ export const STATIONS: Record<string, Station> = {
   ibn_sina_kalyanpur: { id: 'ibn_sina_kalyanpur', name: 'Ibn Sina Medical College (Kalyanpur)', bnName: 'ইবনে সিনা (কল্যাণপুর)', lat: 23.7820, lng: 90.3580 },
   popular_dhanmondi: { id: 'popular_dhanmondi', name: 'Popular Diagnostic Center (Dhanmondi)', bnName: 'পপুলার (ধানমন্ডি)', lat: 23.7450, lng: 90.3815 },
 
+  // ===== REGIONAL HOSPITALS =====
+  savar_hospital: { id: 'savar_hospital', name: 'Savar Upazila Health Complex', bnName: 'সাভার উপজেলা স্বাস্থ্য কমপ্লেক্স', lat: 23.8485, lng: 90.2625 },
+  enam_medical: { id: 'enam_medical', name: 'Enam Medical College & Hospital', bnName: 'এনাম মেডিকেল কলেজ', lat: 23.8465, lng: 90.2642 },
+  manikganj_hospital: { id: 'manikganj_hospital', name: 'Manikganj Sadar Hospital', bnName: 'মানিকগঞ্জ সদর হাসপাতাল', lat: 23.8625, lng: 89.9985 },
+  ashulia_hospital: { id: 'ashulia_hospital', name: 'Ashulia Women & Children Hospital', bnName: 'আশুলিয়া নারী ও শিশু হাসপাতাল', lat: 23.8925, lng: 90.3025 },
+  gazipur_medical: { id: 'gazipur_medical', name: 'Shaheed Tajuddin Ahmad Medical College', bnName: 'শহীদ তাজউদ্দীন আহমদ মেডিকেল', lat: 23.9925, lng: 90.3985 },
+  sreepur_hospital: { id: 'sreepur_hospital', name: 'Sreepur Upazila Health Complex', bnName: 'শ্রীপুর উপজেলা স্বাস্থ্য কমপ্লেক্স', lat: 24.1925, lng: 90.4725 },
+  munshiganj_hospital: { id: 'munshiganj_hospital', name: 'Munshiganj General Hospital', bnName: 'মুন্সীগঞ্জ জেনারেল হাসপাতাল', lat: 23.5455, lng: 90.5332 },
+  narayanganj_hospital: { id: 'narayanganj_hospital', name: 'Narayanganj General (Victoria) Hospital', bnName: 'নারায়ণগঞ্জ ভিক্টোরিয়া হাসপাতাল', lat: 23.6255, lng: 90.5020 },
+  keraniganj_hospital: { id: 'keraniganj_hospital', name: 'Keraniganj Upazila Health Complex', bnName: 'কেরানীগঞ্জ উপজেলা স্বাস্থ্য কমপ্লেক্স', lat: 23.6825, lng: 90.3825 },
+
   // ===== POLICE STATIONS (THANAS) =====
   mirpur_thana: { id: 'mirpur_thana', name: 'Mirpur Model Thana', bnName: 'মিরপুর মডেল থানা', lat: 23.8055, lng: 90.3615 },
   pallabi_thana: { id: 'pallabi_thana', name: 'Pallabi Thana', bnName: 'পল্লবী থানা', lat: 23.8245, lng: 90.3625 },
@@ -455,6 +466,17 @@ export const STATIONS: Record<string, Station> = {
   jatrabari_thana: { id: 'jatrabari_thana', name: 'Jatrabari Thana', bnName: 'যাত্রাবাড়ী থানা', lat: 23.7055, lng: 90.4355 },
   khilgaon_thana: { id: 'khilgaon_thana', name: 'Khilgaon Thana', bnName: 'খিলগাঁও থানা', lat: 23.7485, lng: 90.4255 },
 
+  // ===== REGIONAL THANAS =====
+  savar_thana: { id: 'savar_thana', name: 'Savar Model Thana', bnName: 'সাভার মডেল থানা', lat: 23.8450, lng: 90.2600 },
+  ashulia_thana: { id: 'ashulia_thana', name: 'Ashulia Thana', bnName: 'আশুলিয়া থানা', lat: 23.8900, lng: 90.3000 },
+  manikganj_thana: { id: 'manikganj_thana', name: 'Manikganj Sadar Thana', bnName: 'মানিকগঞ্জ সদর থানা', lat: 23.8600, lng: 90.0000 },
+  gazipur_thana: { id: 'gazipur_thana', name: 'Gazipur Sadar Thana', bnName: 'গাজীপুর সদর থানা', lat: 23.9900, lng: 90.3950 },
+  sreepur_thana: { id: 'sreepur_thana', name: 'Sreepur Thana', bnName: 'শ্রীপুর থানা', lat: 24.1900, lng: 90.4700 },
+  lohajang_thana: { id: 'lohajang_thana', name: 'Lohajang (Mawa) Thana', bnName: 'লৌহজং থানা', lat: 23.4700, lng: 90.2600 },
+  munshiganj_thana: { id: 'munshiganj_thana', name: 'Munshiganj Sadar Thana', bnName: 'মুন্সীগঞ্জ সদর থানা', lat: 23.5435, lng: 90.5312 },
+  narayanganj_thana: { id: 'narayanganj_thana', name: 'Narayanganj Model Thana', bnName: 'নারায়ণগঞ্জ মডেল থানা', lat: 23.6230, lng: 90.5000 },
+  keraniganj_thana: { id: 'keraniganj_thana', name: 'Keraniganj Thana', bnName: 'কেরানীগঞ্জ থানা', lat: 23.6800, lng: 90.3800 },
+
   // ===== FIRE STATIONS =====
   fire_service_hq: { id: 'fire_service_hq', name: 'Fire Service HQ (Fulbaria)', bnName: 'ফায়ার সার্ভিস সদর দপ্তর', lat: 23.7225, lng: 90.4085 },
   mirpur_fire_station: { id: 'mirpur_fire_station', name: 'Mirpur Fire Station', bnName: 'মিরপুর ফায়ার স্টেশন', lat: 23.8105, lng: 90.3655 },
@@ -465,6 +487,17 @@ export const STATIONS: Record<string, Station> = {
   mohammadpur_fire_station: { id: 'mohammadpur_fire_station', name: 'Mohammadpur Fire Station', bnName: 'মোহাম্মদপুর ফায়ার স্টেশন', lat: 23.7655, lng: 90.3625 },
   lalbagh_fire_station: { id: 'lalbagh_fire_station', name: 'Lalbagh Fire Station', bnName: 'লালবাগ ফায়ার স্টেশন', lat: 23.7185, lng: 90.3955 },
   sadarghat_fire_station: { id: 'sadarghat_fire_station', name: 'Sadarghat Fire Station', bnName: 'সদরঘাট ফায়ার স্টেশন', lat: 23.7055, lng: 90.4055 },
+
+  // ===== REGIONAL FIRE STATIONS =====
+  savar_fire_station: { id: 'savar_fire_station', name: 'Savar Fire Station', bnName: 'সাভার ফায়ার স্টেশন', lat: 23.8475, lng: 90.2615 },
+  depz_fire_station: { id: 'depz_fire_station', name: 'DEPZ (Ashulia) Fire Station', bnName: 'ডিইপিজেড ফায়ার স্টেশন', lat: 23.8915, lng: 90.2915 },
+  manikganj_fire_station: { id: 'manikganj_fire_station', name: 'Manikganj Fire Station', bnName: 'মানিকগঞ্জ ফায়ার স্টেশন', lat: 23.8615, lng: 90.0015 },
+  gazipur_fire_station: { id: 'gazipur_fire_station', name: 'Gazipur Fire Station', bnName: 'গাজীপুর ফায়ার স্টেশন', lat: 23.9915, lng: 90.3965 },
+  sreepur_fire_station: { id: 'sreepur_fire_station', name: 'Sreepur Fire Station', bnName: 'শ্রীপুর ফায়ার স্টেশন', lat: 24.1915, lng: 90.4715 },
+  mawa_fire_station: { id: 'mawa_fire_station', name: 'Mawa Fire Station', bnName: 'মাওয়া ফায়ার স্টেশন', lat: 23.4725, lng: 90.2625 },
+  munshiganj_fire_station: { id: 'munshiganj_fire_station', name: 'Munshiganj Fire Station', bnName: 'মুন্সীগঞ্জ ফায়ার স্টেশন', lat: 23.5450, lng: 90.5332 },
+  narayanganj_fire_station: { id: 'narayanganj_fire_station', name: 'Narayanganj Fire Station', bnName: 'নারায়ণগঞ্জ ফায়ার স্টেশন', lat: 23.6255, lng: 90.5025 },
+  keraniganj_fire_station: { id: 'keraniganj_fire_station', name: 'Keraniganj Fire Station', bnName: 'কেরানীগঞ্জ ফায়ার স্টেশন', lat: 23.6825, lng: 90.3825 },
 
   // ===== SHOPPING & COMMERCIAL (Already existing entries below) =====
   bashundhara_city: { id: 'bashundhara_city', name: 'Bashundhara City Shopping Mall', bnName: 'বসুন্ধরা সিটি', lat: 23.7500, lng: 90.3880 },
