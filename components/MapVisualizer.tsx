@@ -14,6 +14,7 @@ interface MapVisualizerProps {
   highlightStartIdx?: number;
   highlightEndIdx?: number;
   userLocation?: UserLocation | null;
+  tripOrigin?: string; // ID of the original start point
   tripDestination?: string; // ID of the final destination station if different from route end
   tripTransferPoint?: string; // ID of the transfer point station
   isReversed?: boolean;
@@ -27,6 +28,7 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
   highlightEndIdx = -1,
   isReversed = false,
   userLocation,
+  tripOrigin,
   tripDestination,
   tripTransferPoint
 }) => {
@@ -478,7 +480,11 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                 hasHighlight && highlightStartIdx !== -1 && userLocation && nodePositions[isReversed ? highlightEndIdx : highlightStartIdx]
                   ? (getDistance(userLocation, stations[isReversed ? highlightEndIdx : highlightStartIdx]) / 1000).toFixed(1)
                   : (userDistance / 1000).toFixed(1)
-              }km to start at <b>{hasHighlight && highlightStartIdx !== -1 ? stations[isReversed ? highlightEndIdx : highlightStartIdx].name : stations[userStationIndex].name}</b>
+              }km to {
+                hasHighlight && highlightStartIdx !== -1 && stations[isReversed ? highlightEndIdx : highlightStartIdx].id === tripTransferPoint
+                  ? 'transit at'
+                  : 'start at'
+              } <b>{hasHighlight && highlightStartIdx !== -1 ? stations[isReversed ? highlightEndIdx : highlightStartIdx].name : stations[userStationIndex].name}</b>
             </p>
             {globalNearestName && (
               <p className="text-[10px] text-orange-800 mt-1 border-t border-orange-200 pt-1">
@@ -813,35 +819,27 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                         </g>
                       )}
 
-                      {/* TRANSIT Badge logic (Prioritized over Dest/Start for intermediate stops) */}
+                      {/* TRANSIT Badge logic */}
                       {tripTransferPoint === s.id && (
                         <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 42 : y - 48})`}>
-                          <rect x="-26" y="-7" width="52" height="14" rx="3" fill="#6366f1" />
+                          <rect x="-30" y="-7" width="60" height="14" rx="3" fill="#6366f1" />
                           <text x="0" y="3" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">TRANSIT</text>
                         </g>
                       )}
 
-                      {/* Destination Badge Logic: 
-                          If NOT reversed: Destination is at highlightEndIdx
-                          If reversed: Destination is at highlightStartIdx
-                          Only show if NOT a transit point (unless it's the final trip destination)
-                      */}
+                      {/* Destination Badge Logic */}
                       {(tripDestination === s.id || (isRealEnd && s.id !== tripTransferPoint)) && (
-                        <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 42 : y - 48})`}>
+                        <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 58 : y - 64})`}>
                           <rect x="-38" y="-7" width="76" height="14" rx="3" fill="#ef4444" />
                           <text x="0" y="3" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">{t('busDetails.destination')}</text>
                         </g>
                       )}
 
-                      {/* Start Badge Logic:
-                          If NOT reversed: Start is at highlightStartIdx
-                          If reversed: Start is at highlightEndIdx
-                          Only show if NOT a transit point.
-                      */}
-                      {(isRealStart && s.id !== tripTransferPoint && !isUserConnectionStart) && (
-                        <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 42 : y - 48})`}>
-                          <rect x="-23" y="-7" width="46" height="14" rx="3" fill="#16a34a" />
-                          <text x="0" y="3" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">{t('busDetails.start')}</text>
+                      {/* Start/Origin Badge Logic */}
+                      {((isRealStart && s.id !== tripTransferPoint && !isUserConnectionStart) || (tripOrigin === s.id && !isRealStart)) && (
+                        <g transform={`translate(${x}, ${idx % 2 === 0 ? y + 58 : y - 64})`}>
+                          <rect x="-26" y="-7" width="52" height="14" rx="3" fill={s.id === tripOrigin ? "#475569" : "#16a34a"} />
+                          <text x="0" y="3" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">{s.id === tripOrigin ? "ORIGIN" : t('busDetails.start')}</text>
                         </g>
                       )}
 
