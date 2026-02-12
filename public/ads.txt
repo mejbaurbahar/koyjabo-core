@@ -1,1 +1,21 @@
+# AdSense Entry
 google.com, pub-9650038259132247, DIRECT, f08c47fec0942fa0
+
+# IMPORTANT: Ezoic ads.txt Management
+# ======================================
+# For Ezoic monetization, this file needs to be updated with Ezoic's authorized sellers.
+# 
+# OPTION 1 (Recommended): Manual Update
+# Visit: https://srv.adstxtmanager.com/19390/koyjabo.com
+# Copy ALL the content from that URL and replace everything below this line.
+# Update monthly to keep it current.
+#
+# OPTION 2: If you have server-side control
+# You can redirect /ads.txt to Ezoic's manager using server configuration.
+# For GitHub Pages, this requires manual updates (Option 1).
+#
+# ======================================
+# After getting your Ezoic ads.txt content from the URL above, paste it below:
+
+# TODO: Paste Ezoic ads.txt content here from:
+# https://srv.adstxtmanager.com/19390/koyjabo.com

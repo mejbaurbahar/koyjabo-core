@@ -19,6 +19,10 @@
         {
             "source": "/api/stats",
             "destination": "https://koyjabo-backend.onrender.com/api/stats"
+        },
+        {
+            "source": "/ads.txt",
+            "destination": "https://srv.adstxtmanager.com/19390/koyjabo.com"
         }
     ],
     "buildCommand": "npm run build",

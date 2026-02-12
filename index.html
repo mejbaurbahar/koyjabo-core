@@ -19,6 +19,18 @@
     })();
   </script>
 
+  <!-- ==================== EZOIC AD INTEGRATION ==================== -->
+  <!-- Privacy Scripts - MUST load before Ezoic header script for GDPR/Privacy compliance -->
+  <script data-cfasync="false" src="https://cmp.gatekeeperconsent.com/min.js"></script>
+  <script data-cfasync="false" src="https://the.gatekeeperconsent.com/cmp.min.js"></script>
+
+  <!-- Ezoic Header Script -->
+  <script async src="//www.ezojs.com/ezoic/sa.min.js"></script>
+  <script>
+    window.ezstandalone = window.ezstandalone || {};
+    ezstandalone.cmd = ezstandalone.cmd || [];
+  </script>
+  <!-- ============================================================== -->
 
   <!-- PWA Meta Tags -->
   <meta name="apple-mobile-web-app-capable" content="yes">

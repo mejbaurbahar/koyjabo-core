@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MapPin, Search } from 'lucide-react';
+import { MapPin, Search, X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface Station {
@@ -69,9 +69,27 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({ options, val
                     }}
                     placeholder={placeholder}
                     disabled={disabled}
-                    className="w-full pl-3 pr-10 py-3.5 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-green-400/30 disabled:bg-gray-100 dark:disabled:bg-slate-900 disabled:text-gray-400 dark:disabled:text-gray-600 border border-transparent focus:border-green-400/30 transition-all shadow-sm"
+                    className="w-full pl-3 pr-14 py-3.5 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-green-400/30 disabled:bg-gray-100 dark:disabled:bg-slate-900 disabled:text-gray-400 dark:disabled:text-gray-600 border border-transparent focus:border-green-400/30 transition-all shadow-sm"
                 />
-                <MapPin className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                    {searchTerm && !disabled && (
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                onChange('');
+                                setSearchTerm('');
+                                setIsOpen(false);
+                            }}
+                            className="p-2 bg-red-100 dark:bg-red-900/30 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors"
+                            title="Clear"
+                            aria-label="Clear selection"
+                        >
+                            <X className="w-4 h-4" />
+                        </button>
+                    )}
+                    <MapPin className="w-4 h-4 text-gray-400 pointer-events-none mx-1" />
+                </div>
             </div>
 
             {isOpen && !disabled && (
