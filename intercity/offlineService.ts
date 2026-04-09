@@ -194,6 +194,7 @@ const LAUNCH_ROUTES = [
 ];
 
 const BUS_ROUTES_MAJOR = [
+    // --- FROM DHAKA ---
     { from: "Dhaka", to: "Cox's Bazar", buses: ["Green Line (Scania/Double Decker)", "Shohagh", "Hanif", "Shyamoli", "Desh Travels", "Saintmartin Paribahan", "Relax Transport"], fare: "900-2500" },
     { from: "Dhaka", to: "Chattogram", buses: ["Green Line", "Saudia", "Hanif", "Shyamoli", "Ena", "Shohagh", "Tisha"], fare: "680-1500" },
     { from: "Dhaka", to: "Sylhet", buses: ["Green Line", "Ena", "London Express", "Hanif", "Shyamoli", "Al-Mobaraka"], fare: "570-1400" },
@@ -207,6 +208,52 @@ const BUS_ROUTES_MAJOR = [
     { from: "Dhaka", to: "Rangamati", buses: ["Hanif", "Shyamoli", "Dolphin", "S.Alam"], fare: "900-1800" },
     { from: "Dhaka", to: "Khagrachari", buses: ["Shanti Paribahan", "S.Alam", "Shyamoli", "Hanif"], fare: "850-1600" },
     { from: "Dhaka", to: "Kushtia", buses: ["SB Super Deluxe", "Hanif", "Shyamoli"], fare: "600-1000" },
+    { from: "Dhaka", to: "Bogura", buses: ["Hanif", "SR Travels", "Shyamoli", "Nabil", "National Travels"], fare: "500-1000" },
+    { from: "Dhaka", to: "Dinajpur", buses: ["Hanif", "Nabil", "SR Travels", "Dipjol"], fare: "600-1200" },
+    { from: "Dhaka", to: "Faridpur", buses: ["Shohagh", "Hanif", "Local buses (Gulistan)"], fare: "300-600" },
+    { from: "Dhaka", to: "Cumilla", buses: ["Hanif", "Shyamoli", "Ena", "Tisha", "Sonar Bangla"], fare: "250-500" },
+    { from: "Dhaka", to: "Noakhali", buses: ["Hanif", "Shyamoli", "Ena"], fare: "350-600" },
+    { from: "Dhaka", to: "Feni", buses: ["Hanif", "Shyamoli", "Ena", "Green Line"], fare: "300-550" },
+    { from: "Dhaka", to: "Jashore", buses: ["Shohagh", "Hanif", "Green Line", "Shyamoli"], fare: "600-1200" },
+    { from: "Dhaka", to: "Mymensingh", buses: ["Shohagh", "Ena", "Local buses (Mohakhali)"], fare: "200-400" },
+    { from: "Dhaka", to: "Tangail", buses: ["Shohagh", "Local buses (Mohakhali/Kalyanpur)"], fare: "150-300" },
+    { from: "Dhaka", to: "Narayanganj", buses: ["Local buses (Gulistan)"], fare: "50-100" },
+    // --- FROM CHATTOGRAM ---
+    { from: "Chattogram", to: "Cox's Bazar", buses: ["S.Alam", "Shohagh", "Green Line", "Desh Travels", "Hanif", "Modern Line", "Soudia"], fare: "300-700" },
+    { from: "Chattogram", to: "Bandarban", buses: ["Purbani", "Purabi", "Dolphin", "Local buses (Dampara Terminal)"], fare: "180-350" },
+    { from: "Chattogram", to: "Rangamati", buses: ["BRTC", "Local buses (New Bridge Terminal)", "Dolphin"], fare: "200-400" },
+    { from: "Chattogram", to: "Khagrachari", buses: ["Shanti Paribahan", "Local buses (New Bridge Terminal)"], fare: "150-300" },
+    { from: "Chattogram", to: "Cumilla", buses: ["Hanif", "Shyamoli", "Green Line", "Ena", "Tisha"], fare: "200-400" },
+    { from: "Chattogram", to: "Feni", buses: ["Hanif", "Shyamoli", "Local buses"], fare: "100-200" },
+    { from: "Chattogram", to: "Noakhali", buses: ["Local buses", "BRTC"], fare: "120-250" },
+    { from: "Chattogram", to: "Sylhet", buses: ["Hanif", "Shyamoli", "Green Line", "Ena"], fare: "500-1000" },
+    // --- CHITTAGONG HILL TRACTS INTERNAL ---
+    { from: "Bandarban", to: "Cox's Bazar", buses: ["Local buses (via Chokoria)", "Shared Jeep/Microbus (চাঁদের গাড়ি)"], fare: "150-300" },
+    { from: "Bandarban", to: "Chattogram", buses: ["Purbani", "Purabi", "Dolphin", "Local buses"], fare: "180-350" },
+    { from: "Rangamati", to: "Chattogram", buses: ["BRTC", "Local buses (New Bridge Terminal)"], fare: "200-400" },
+    { from: "Khagrachari", to: "Chattogram", buses: ["Shanti Paribahan", "Local buses"], fare: "150-300" },
+    // --- COX'S BAZAR AREA ---
+    { from: "Cox's Bazar", to: "Teknaf", buses: ["Local buses", "Shared transport"], fare: "80-150" },
+    { from: "Cox's Bazar", to: "Chattogram", buses: ["S.Alam", "Shohagh", "Green Line", "Hanif", "Modern Line"], fare: "300-700" },
+    // --- KHULNA DIVISION ---
+    { from: "Khulna", to: "Barishal", buses: ["Shohagh", "Hanif", "Local buses"], fare: "300-500" },
+    { from: "Khulna", to: "Satkhira", buses: ["Shohagh", "Local buses"], fare: "150-300" },
+    { from: "Khulna", to: "Jashore", buses: ["Shohagh", "Hanif", "Local buses"], fare: "100-200" },
+    { from: "Jashore", to: "Benapole", buses: ["Local buses", "BRTC"], fare: "50-100" },
+    // --- SYLHET DIVISION ---
+    { from: "Sylhet", to: "Sunamganj", buses: ["Local buses"], fare: "80-180" },
+    { from: "Sylhet", to: "Habiganj", buses: ["Local buses", "Hanif"], fare: "100-200" },
+    { from: "Sylhet", to: "Moulvibazar", buses: ["Local buses", "Hanif"], fare: "100-200" },
+    { from: "Sylhet", to: "Brahmanbaria", buses: ["Hanif", "Shyamoli", "Local buses"], fare: "250-450" },
+    // --- RAJSHAHI DIVISION ---
+    { from: "Rajshahi", to: "Chapainawabganj", buses: ["Local buses", "BRTC"], fare: "80-150" },
+    { from: "Rajshahi", to: "Naogaon", buses: ["Local buses"], fare: "100-200" },
+    { from: "Rajshahi", to: "Bogura", buses: ["Hanif", "Local buses"], fare: "200-400" },
+    { from: "Rajshahi", to: "Pabna", buses: ["Local buses"], fare: "150-250" },
+    // --- RANGPUR DIVISION ---
+    { from: "Rangpur", to: "Dinajpur", buses: ["Hanif", "Local buses"], fare: "150-250" },
+    { from: "Rangpur", to: "Bogura", buses: ["Nabil", "SR Travels", "Local buses"], fare: "200-350" },
+    { from: "Bogura", to: "Dinajpur", buses: ["Local buses", "Hanif"], fare: "200-350" },
 ];
 
 // --- HELPERS ---
@@ -304,19 +351,45 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
             });
         }
         if (!busInfo && brtcRoutes.length === 0 && routesToDisplay.length === 0) {
-            const estNonAC = Math.max(150, Math.round(distance * 2.8));
-            const estAC = Math.max(350, Math.round(distance * 5.2));
-            result += `**আনুমানিক নন-এসি ভাড়া:** ৳${estNonAC}  \n`;
-            result += `**আনুমানিক এসি ভাড়া:** ৳${estAC}  \n`;
-            result += `স্থানীয় বাস টার্মিনালে হানিফ, শ্যামলী বা এনা-র কাউন্টারে যোগাযোগ করুন।  \n`;
+            const estNonAC = Math.max(100, Math.round(distance * 2.5));
+            const estAC = Math.max(200, Math.round(distance * 4.5));
+            result += `**আনুমানিক ভাড়া:** ৳${estNonAC} (লোকাল/নন-এসি) — ৳${estAC} (এসি/শীতাতপ)  \n`;
+            const hillTracts = ['Bandarban', 'Rangamati', 'Khagrachari'];
+            const isHillTract = hillTracts.includes(from) || hillTracts.includes(to);
+            if (isHillTract) {
+                const hub = hillTracts.includes(from) ? to : from;
+                const hillCity = hillTracts.includes(from) ? from : to;
+                result += `💡 **পাহাড়ি রুট নোট:** ${hillCity} থেকে সরাসরি দূরপাল্লার বাস সীমিত। সাধারণত **চট্টগ্রাম** হয়ে যাওয়া সহজ।  \n`;
+                result += `লোকাল বাস বা শেয়ার্ড জিপ/মাইক্রোবাস পাওয়া যায় — স্থানীয় বাস টার্মিনালে খোঁজ নিন।  \n`;
+            } else if (distance < 100) {
+                result += `💡 এটি একটি স্বল্প দূরত্বের রুট। লোকাল বাস, সিএনজি বা অটোরিকশায় যাতায়াত করা যায়।  \n`;
+            } else {
+                result += `💡 ${from}-এর স্থানীয় বাস টার্মিনালে যোগাযোগ করুন। হানিফ, শ্যামলী, ইনা বা এনা পরিবহনের কাউন্টার পাওয়া যেতে পারে।  \n`;
+            }
         }
-        result += `**টিকেট:** কাউন্টার থেকে সংগ্রহ করুন বা shohoz.com / redbus.in  \n`;
+        result += `**টিকেট:** shohoz.com থেকে অনলাইনে বুক করুন বা সরাসরি কাউন্টার থেকে সংগ্রহ করুন।  \n`;
         result += `\n`;
 
         // ── 2. ট্রেন ──
         if (trainInfo) {
+            const stationNames: Record<string, string> = {
+                'Dhaka': 'ঢাকা কমলাপুর রেলওয়ে স্টেশন',
+                'Chattogram': 'চট্টগ্রাম রেলওয়ে স্টেশন',
+                'Sylhet': 'সিলেট রেলওয়ে স্টেশন',
+                'Rajshahi': 'রাজশাহী রেলওয়ে স্টেশন',
+                'Khulna': 'খুলনা রেলওয়ে স্টেশন',
+                'Mymensingh': 'ময়মনসিংহ রেলওয়ে স্টেশন',
+                'Rangpur': 'রংপুর রেলওয়ে স্টেশন',
+                'Dinajpur': 'দিনাজপুর রেলওয়ে স্টেশন',
+                'Bogura': 'বগুড়া রেলওয়ে স্টেশন',
+                'Cumilla': 'কুমিল্লা রেলওয়ে স্টেশন',
+                'Noakhali': 'নোয়াখালী রেলওয়ে স্টেশন',
+                "Cox's Bazar": "কক্সবাজার রেলওয়ে স্টেশন",
+                'Benapole': 'বেনাপোল রেলওয়ে স্টেশন',
+            };
+            const fromStation = stationNames[from] || `${from} রেলওয়ে স্টেশন`;
             result += `🚂 ট্রেন – ${trainTimeH}h | ৳${trainInfo.fare}\n`;
-            result += `**স্টেশন:** ঢাকা কমলাপুর রেলওয়ে স্টেশন  \n`;
+            result += `**স্টেশন:** ${fromStation}  \n`;
             result += `**ট্রেনসমূহ:** ${trainInfo.trains.join(' · ')}  \n`;
             const tfp = trainInfo.fare.split('-');
             result += `**শোভন ভাড়া:** ৳${tfp[0] || trainInfo.fare}  \n`;
@@ -326,7 +399,7 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
             result += `\n`;
         } else if (connFrom.train && connTo.train) {
             result += `🚂 ট্রেন – সংযোগ প্রয়োজন\n`;
-            result += `সরাসরি ট্রেন নেই। ঢাকা কমলাপুর হয়ে সংযোগ ট্রেন পাওয়া যেতে পারে।  \n\n`;
+            result += `এই রুটে সরাসরি ট্রেন নেই। ঢাকা কমলাপুর বা চট্টগ্রাম হয়ে সংযোগ ট্রেন নেওয়া যেতে পারে।  \n\n`;
         }
 
         // ── 3. বিমান ──
@@ -395,19 +468,44 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
             });
         }
         if (!busInfo && brtcRoutes.length === 0 && routesToDisplay.length === 0) {
-            const estNonAC = Math.max(150, Math.round(distance * 2.8));
-            const estAC = Math.max(350, Math.round(distance * 5.2));
-            result += `**Est. Non-AC Fare:** ৳${estNonAC}  \n`;
-            result += `**Est. AC Fare:** ৳${estAC}  \n`;
-            result += `Check the local bus terminal in **${from}**. Operators like Hanif, Shyamoli, and Ena have counters in most district hubs.  \n`;
+            const estNonAC = Math.max(100, Math.round(distance * 2.5));
+            const estAC = Math.max(200, Math.round(distance * 4.5));
+            result += `**Est. Fare:** ৳${estNonAC} (local/non-AC) — ৳${estAC} (AC)  \n`;
+            const hillTracts = ['Bandarban', 'Rangamati', 'Khagrachari'];
+            const isHillTract = hillTracts.includes(from) || hillTracts.includes(to);
+            if (isHillTract) {
+                const hillCity = hillTracts.includes(from) ? from : to;
+                result += `💡 **Hill Tract Note:** Direct long-distance buses from ${hillCity} are limited. The most reliable option is to travel via **Chattogram** first.  \n`;
+                result += `Local buses and shared jeeps/microbuses are available — check at the local bus stand.  \n`;
+            } else if (distance < 100) {
+                result += `💡 This is a short route. Local buses, CNGs, or auto-rickshaws are your best option.  \n`;
+            } else {
+                result += `💡 Check the local bus terminal in **${from}**. Operators like Hanif, Shyamoli, or Ena may have counters in this area.  \n`;
+            }
         }
-        result += `**Tickets:** Buy at counter or shohoz.com / redbus.in  \n`;
+        result += `**Tickets:** Book online at shohoz.com or buy directly at the counter.  \n`;
         result += `\n`;
 
         // ── 2. Train ──
         if (trainInfo) {
+            const stationNamesEn: Record<string, string> = {
+                'Dhaka': 'Dhaka Kamalapur Railway Station',
+                'Chattogram': 'Chattogram Railway Station',
+                'Sylhet': 'Sylhet Railway Station',
+                'Rajshahi': 'Rajshahi Railway Station',
+                'Khulna': 'Khulna Railway Station',
+                'Mymensingh': 'Mymensingh Railway Station',
+                'Rangpur': 'Rangpur Railway Station',
+                'Dinajpur': 'Dinajpur Railway Station',
+                'Bogura': 'Bogura Railway Station',
+                'Cumilla': 'Cumilla Railway Station',
+                'Noakhali': 'Noakhali Railway Station',
+                "Cox's Bazar": "Cox's Bazar Railway Station",
+                'Benapole': 'Benapole Railway Station',
+            };
+            const fromStationEn = stationNamesEn[from] || `${from} Railway Station`;
             result += `🚂 By Train – ${trainTimeH}h | ৳${trainInfo.fare}\n`;
-            result += `**Station:** Dhaka Kamalapur Railway Station  \n`;
+            result += `**Station:** ${fromStationEn}  \n`;
             result += `**Trains:** ${trainInfo.trains.join(' · ')}  \n`;
             const tfp = trainInfo.fare.split('-');
             result += `**Shovan (Economy) Fare:** ৳${tfp[0] || trainInfo.fare}  \n`;
