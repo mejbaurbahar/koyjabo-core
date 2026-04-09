@@ -175,8 +175,17 @@ function App() {
   return (
     <div className="h-screen flex flex-col bg-slate-50 dark:bg-slate-900 text-gray-800 dark:text-gray-100 overflow-hidden transition-colors duration-300">
 
+      {/* Offline Status Bar */}
+      {!isOnline && (
+        <div className="fixed top-0 left-0 right-0 z-[9999] bg-amber-500 text-white text-xs font-bold flex items-center justify-center gap-2 py-1.5 px-4 animate-in slide-in-from-top duration-300">
+          <WifiOff className="w-3.5 h-3.5 shrink-0" />
+          <span>অফলাইন মোড — আন্তঃজেলা রুট সম্পূর্ণ উপলব্ধ</span>
+          <span className="opacity-60 hidden sm:inline">| Offline — Intercity routes fully available</span>
+        </div>
+      )}
+
       {/* Fixed Header - Desktop */}
-      <header className="hidden md:flex fixed top-0 left-0 right-0 h-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-[100] px-8 items-center justify-between transition-all duration-300">
+      <header className="hidden md:flex fixed top-0 left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-[100] px-8 items-center justify-between transition-all duration-300" style={{ height: isOnline ? '5rem' : 'calc(5rem + 1.75rem)', paddingTop: isOnline ? 0 : '1.75rem' }}>
         {/* Logo Section */}
         <a
           href="/"
@@ -261,7 +270,7 @@ function App() {
       </header>
 
       {/* Fixed Header - Mobile */}
-      <header className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-[100] px-4 flex items-center justify-between transition-all duration-300 pt-safe-top">
+      <header className="md:hidden fixed top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-[100] px-4 flex items-center justify-between transition-all duration-300 pt-safe-top" style={{ height: isOnline ? '4rem' : 'calc(4rem + 1.75rem)', paddingTop: isOnline ? undefined : '1.75rem' }}>
         <a
           href="/"
           onClick={(e) => {
@@ -291,16 +300,22 @@ function App() {
       {/* FIXED TOP SECTION (Title + Search) - Add padding for fixed header */}
       <div className="flex-none relative overflow-visible bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 z-50 shadow-sm transition-colors duration-300 mt-16 md:mt-20">
 
+        {/* Push content below offline bar when offline (bar overlaps top of header, header paddingTop pushes its content clear) */}
+        {!isOnline && <div className="h-7" />}
+
         {/* === BACKGROUND ANIMATION LAYER === */}
         <div className="absolute inset-0 z-0">
           {/* 1. The Image (Beautiful Bangladesh - River/Greenery) */}
           {/* INCREASED OPACITY: from 30/20 to 60/40 */}
-          <div
-            className="absolute inset-0 bg-cover bg-center animate-kenburns opacity-60 dark:opacity-40"
-            style={{
-              backgroundImage: "url('https://images.unsplash.com/photo-1596799468498-842247b98d34?q=80&w=2000&auto=format&fit=crop')"
-            }}
-          ></div>
+          {/* Background image only when online — degrades to gradient offline */}
+          {isOnline && (
+            <div
+              className="absolute inset-0 bg-cover bg-center animate-kenburns opacity-60 dark:opacity-40"
+              style={{
+                backgroundImage: "url('https://images.unsplash.com/photo-1596799468498-842247b98d34?q=80&w=2000&auto=format&fit=crop')"
+              }}
+            ></div>
+          )}
 
           {/* 2. Gradient Overlay */}
           {/* REDUCED OPACITY at top: from-white/90 to from-white/40 */}
