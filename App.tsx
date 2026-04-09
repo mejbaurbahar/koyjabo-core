@@ -3728,6 +3728,38 @@ const App: React.FC = () => {
                   <Settings className="w-5 h-5 text-purple-600 dark:text-purple-400" /> {t('nav.settings')}
                 </button>
 
+                <div className="p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-400">{t('settings.language')}</span>
+                    <div className="flex gap-1">
+                      <button
+                        onClick={() => { setLanguage('bn'); setIsMenuOpen(false); }}
+                        className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${language === 'bn' ? 'bg-dhaka-red text-white shadow-sm' : 'bg-white dark:bg-slate-700 text-gray-500 border border-gray-200 dark:border-slate-600'}`}
+                      >বাং</button>
+                      <button
+                        onClick={() => { setLanguage('en'); setIsMenuOpen(false); }}
+                        className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${language === 'en' ? 'bg-dhaka-red text-white shadow-sm' : 'bg-white dark:bg-slate-700 text-gray-500 border border-gray-200 dark:border-slate-600'}`}
+                      >EN</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-400">{t('settings.language')}</span>
+                    <div className="flex gap-1">
+                      <button
+                        onClick={() => { setLanguage('bn'); setIsMenuOpen(false); }}
+                        className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${language === 'bn' ? 'bg-dhaka-red text-white shadow-sm' : 'bg-white dark:bg-slate-700 text-gray-500 border border-gray-200 dark:border-slate-600'}`}
+                      >বাং</button>
+                      <button
+                        onClick={() => { setLanguage('en'); setIsMenuOpen(false); }}
+                        className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${language === 'en' ? 'bg-dhaka-red text-white shadow-sm' : 'bg-white dark:bg-slate-700 text-gray-500 border border-gray-200 dark:border-slate-600'}`}
+                      >EN</button>
+                    </div>
+                  </div>
+                </div>
+
 
 
                 {/* Install/Uninstall App - Always show */}

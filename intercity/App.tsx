@@ -553,7 +553,7 @@ function App() {
                   <Settings className="w-5 h-5 text-purple-600 dark:text-purple-400" /> {t('nav.settings')}
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">{language === 'bn' ? 'ভাষা' : 'Language'}</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">{t('settings.language')}</span>
                   <div className="flex gap-1">
                     <button
                       onClick={() => { setLanguage('bn'); setIsMenuOpen(false); }}
