@@ -622,6 +622,72 @@ const TRAIN_ROUTES: TrainRouteEntry[] = [
         fare: "60-120", time: "3.5h",
         shovan: "60", snigdha: "—", acSeat: "—", acBerth: "—"
     },
+    {
+        from: "Dhaka", to: "Brahmanbaria",
+        trains: ["Titas Commuter (multiple departures)", "Chattala Express"],
+        fare: "100-200", time: "2.5-3h",
+        shovan: "100", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Joydebpur", to: "Mymensingh",
+        trains: ["Balaka Commuter", "Isha Khan Express", "Local Train"],
+        fare: "45-90", time: "2-3h",
+        shovan: "45", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Chattogram", to: "Dohazari",
+        trains: ["Dohazari Commuter (Shuttle)"],
+        fare: "20-40", time: "1.5h",
+        shovan: "20", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Chattogram", to: "Nazirhat",
+        trains: ["Nazirhat Commuter (Shuttle)"],
+        fare: "15-30", time: "1h",
+        shovan: "15", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Laksam", to: "Noakhali",
+        trains: ["Noakhali Local", "Samartata Express"],
+        fare: "30-60", time: "1.5h",
+        shovan: "30", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Laksam", to: "Chandpur",
+        trains: ["Chandpur Local", "Puffing Train"],
+        fare: "25-50", time: "1.5h",
+        shovan: "25", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Santahar", to: "Bogura",
+        trains: ["Padma Local", "North Bihar Express"],
+        fare: "25-50", time: "1h",
+        shovan: "25", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Bogura", to: "Bonarpara",
+        trains: ["College Train", "Local Service"],
+        fare: "20-40", time: "1h",
+        shovan: "20", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Khulna", to: "Goalanda Ghat",
+        trains: ["Nakshikantha Express", "Local Train"],
+        fare: "75-150", time: "4-5h",
+        shovan: "75", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Rajshahi", to: "Ishwardi",
+        trains: ["Ishwardi-Rajshahi Commuter", "Mahananda Express"],
+        fare: "35-70", time: "1.5h",
+        shovan: "35", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Mymensingh", to: "Netrokona",
+        trains: ["Mohanganj Local", "Mahua Express"],
+        fare: "40-80", time: "1.5-2h",
+        shovan: "40", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
 ];
 
 const AIR_ROUTES = [
