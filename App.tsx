@@ -1653,7 +1653,7 @@ const App: React.FC = () => {
             <div className="flex flex-col md:flex-row items-center gap-8">
               <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden shadow-xl shrink-0 border-4 border-dhaka-green/20">
                 <img
-                  src="https://media.licdn.com/dms/image/v2/D5603AQEU8R2MLGhUlg/profile-displayphoto-scale_200_200/B56Zk6N_ckHcAY-/0/1757618372796?e=1770854400&v=beta&t=t74_dMafBVi8TjEmKdXr_vgSMQsglJAow6s_2ye7ppg"
+                  src="https://media.licdn.com/dms/image/v2/D5603AQEU8R2MLGhUlg/profile-displayphoto-scale_200_200/B56Zk6N_ckHcAY-/0/1757618372796?e=1777507200&v=beta&t=ATjuFSUVIoqhudnqT9ZVUjdmLMCr75XaIxz--WayDik"
                   alt="Mejbaur Bahar Fagun"
                   className="w-full h-full object-cover"
                 />

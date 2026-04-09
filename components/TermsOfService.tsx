@@ -95,7 +95,7 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ view, setView }) => {
                         <div className="flex flex-col md:flex-row gap-8 items-center">
                             <div className="w-20 h-20 rounded-2xl overflow-hidden shrink-0 shadow-lg border-2 border-white dark:border-slate-700">
                                 <img
-                                    src="https://media.licdn.com/dms/image/v2/D5603AQEU8R2MLGhUlg/profile-displayphoto-scale_200_200/B56Zk6N_ckHcAY-/0/1757618372796?e=1770854400&v=beta&t=t74_dMafBVi8TjEmKdXr_vgSMQsglJAow6s_2ye7ppg"
+                                    src="https://media.licdn.com/dms/image/v2/D5603AQEU8R2MLGhUlg/profile-displayphoto-scale_200_200/B56Zk6N_ckHcAY-/0/1757618372796?e=1777507200&v=beta&t=ATjuFSUVIoqhudnqT9ZVUjdmLMCr75XaIxz--WayDik"
                                     alt="Mejbaur Bahar Fagun"
                                     className="w-full h-full object-cover"
                                 />

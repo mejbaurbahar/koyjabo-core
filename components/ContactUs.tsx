@@ -63,7 +63,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
                         <div className="shrink-0">
                             <div className="w-32 h-32 md:w-48 md:h-48 rounded-[2.5rem] overflow-hidden shadow-2xl rotate-3 border-4 border-white dark:border-slate-800">
                                 <img
-                                    src="https://media.licdn.com/dms/image/v2/D5603AQEU8R2MLGhUlg/profile-displayphoto-scale_200_200/B56Zk6N_ckHcAY-/0/1757618372796?e=1770854400&v=beta&t=t74_dMafBVi8TjEmKdXr_vgSMQsglJAow6s_2ye7ppg"
+                                    src="https://media.licdn.com/dms/image/v2/D5603AQEU8R2MLGhUlg/profile-displayphoto-scale_200_200/B56Zk6N_ckHcAY-/0/1757618372796?e=1777507200&v=beta&t=ATjuFSUVIoqhudnqT9ZVUjdmLMCr75XaIxz--WayDik"
                                     alt="Mejbaur Bahar Fagun"
                                     className="w-full h-full object-cover"
                                 />
