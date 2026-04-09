@@ -260,6 +260,13 @@ function App() {
             <span>{t('busDetails.liveView')}</span>
           </button>
           <ThemeToggle isDarkMode={isDarkMode} toggleTheme={() => setIsDarkMode(!isDarkMode)} />
+          <button
+            onClick={() => setLanguage(language === 'bn' ? 'en' : 'bn')}
+            className="px-3 py-1.5 text-sm font-semibold rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 transition-colors"
+            title={language === 'bn' ? 'Switch to English' : 'বাংলায় পরিবর্তন করুন'}
+          >
+            {language === 'bn' ? 'EN' : 'বাং'}
+          </button>
           <NotificationBell />
           <button
             onClick={() => setIsMenuOpen(true)}
@@ -284,6 +291,13 @@ function App() {
 
         <div className="flex items-center gap-2">
           <NotificationBell />
+          <button
+            onClick={() => setLanguage(language === 'bn' ? 'en' : 'bn')}
+            className="px-2.5 py-1 text-xs font-semibold rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 transition-colors"
+            aria-label="Toggle language"
+          >
+            {language === 'bn' ? 'EN' : 'বাং'}
+          </button>
           <button
             onClick={() => setShowLiveMap(true)}
             className="p-2 hover:bg-blue-50 bg-white border-2 border-blue-100 rounded-full text-blue-600 transition-colors shadow-lg shadow-blue-100 active:scale-95 animate-pulse flex items-center justify-center" aria-label="Live Location">
@@ -537,12 +551,24 @@ function App() {
               >
                 <BookOpen className="w-5 h-5 text-teal-600 dark:text-teal-400" /> {t('nav.blog')}
               </button>
-              <button
-                onClick={() => window.location.href = '/#settings'}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
-              >
-                <Settings className="w-5 h-5 text-purple-600 dark:text-purple-400" /> {t('nav.settings')}
-              </button>
+              <div className="p-3 rounded-xl bg-gray-50 dark:bg-slate-800">
+                <div className="flex items-center gap-3 mb-3 text-gray-700 dark:text-gray-200 font-medium">
+                  <Settings className="w-5 h-5 text-purple-600 dark:text-purple-400" /> {t('nav.settings')}
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">{language === 'bn' ? 'ভাষা' : 'Language'}</span>
+                  <div className="flex gap-1">
+                    <button
+                      onClick={() => { setLanguage('bn'); setIsMenuOpen(false); }}
+                      className={`px-3 py-1 text-sm font-semibold rounded-full transition-colors ${language === 'bn' ? 'bg-blue-600 text-white' : 'border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700'}`}
+                    >বাং</button>
+                    <button
+                      onClick={() => { setLanguage('en'); setIsMenuOpen(false); }}
+                      className={`px-3 py-1 text-sm font-semibold rounded-full transition-colors ${language === 'en' ? 'bg-blue-600 text-white' : 'border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700'}`}
+                    >EN</button>
+                  </div>
+                </div>
+              </div>
               <button
                 onClick={() => window.location.href = '/#install-app'}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"

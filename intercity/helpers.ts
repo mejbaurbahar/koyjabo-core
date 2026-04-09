@@ -38,7 +38,8 @@ export const parseRouteMarkdown = (markdown: string): ParsedRouteData => {
   }
 
   // Strict list of emojis that represent REAL transport modes
-  const transportEmojis = ['🚌', '🚂', '✈️', '🚢', '🚗', '🚕', '🚲', '🚇', '🚆', '🚍', '🚊', '🚁', '⛵', '🚤', '⛴️', '🚀', '🚕', '🏎️', '🏍️'];
+  // Note: Include both VS16 variants and base characters for cross-platform compatibility
+  const transportEmojis = ['🚌', '🚂', '✈️', '✈', '🛫', '🛬', '🚢', '🚗', '🚕', '🚲', '🚇', '🚆', '🚍', '🚊', '🚁', '⛵', '🚤', '⛴️', '⛴', '🚀', '🚕', '🏎️', '🏍️'];
 
   // Regex covers: Emoji at start of line, possibly after a bullet or number
   const modeStartRegex = /^\s*(?:[\*\-\+]|\d+[\.\)])?\s*([\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}])/u;
@@ -142,7 +143,15 @@ export const parseRouteMarkdown = (markdown: string): ParsedRouteData => {
         modes.push(currentMode as ParsedMode);
       }
 
-      const icon = match ? match[1] : (trimmed.includes('Bus') ? '🚌' : trimmed.includes('Train') ? '🚂' : trimmed.includes('Air') ? '✈️' : '🚗');
+      const rawIcon = match ? match[1] : (
+        trimmed.includes('Bus') || trimmed.includes('বাস') ? '🚌' :
+        trimmed.includes('Train') || trimmed.includes('ট্রেন') ? '🚂' :
+        trimmed.includes('Flight') || trimmed.includes('Air') || trimmed.includes('বিমান') || trimmed.includes('ফ্লাইট') ? '🛫' :
+        trimmed.includes('Launch') || trimmed.includes('লঞ্চ') || trimmed.includes('Water') || trimmed.includes('নৌ') ? '🚢' :
+        '🚗'
+      );
+      // Normalize base emoji chars (without variation selector) to display variants
+      const icon = rawIcon === '✈' ? '✈️' : rawIcon === '⛴' ? '⛴️' : rawIcon;
 
       let title = trimmed.replace(modeStartRegex, '').replace(/\*\*/g, '').replace(':', '').trim();
       if (title.toLowerCase().startsWith('by ')) {
