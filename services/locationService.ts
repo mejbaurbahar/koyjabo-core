@@ -1,6 +1,24 @@
 import { UserLocation, Station } from '../types';
 import { STATIONS, METRO_STATIONS, RAILWAY_STATIONS, AIRPORTS } from '../constants';
 
+// IP-based geolocation fallback for when browser GPS is unavailable or denied
+export const getLocationByIP = async (): Promise<UserLocation | null> => {
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+    const response = await fetch('https://ipapi.co/json/', { signal: controller.signal });
+    clearTimeout(timeoutId);
+    if (!response.ok) return null;
+    const data = await response.json();
+    if (typeof data.latitude === 'number' && typeof data.longitude === 'number') {
+      return { lat: data.latitude, lng: data.longitude };
+    }
+    return null;
+  } catch {
+    return null;
+  }
+};
+
 export const getCurrentLocation = (): Promise<UserLocation> => {
   return new Promise((resolve, reject) => {
     if (typeof navigator === 'undefined' || !navigator.geolocation) {

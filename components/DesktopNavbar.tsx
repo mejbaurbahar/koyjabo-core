@@ -55,9 +55,17 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
         {
             label: t('intercity.title'),
             icon: Train,
-            isActive: false, // Never active on main page since intercity is separate
+            // Active when outside Dhaka and in intercity search mode (main app intercity view)
+            isActive: !isInDhaka && view === AppView.HOME && primarySearch === 'INTERCITY',
             onClick: () => {
-                window.location.href = '/intercity';
+                if (!isInDhaka) {
+                    // Outside Dhaka: show intercity search within the main app
+                    setView(AppView.HOME);
+                    setPrimarySearch('INTERCITY');
+                } else {
+                    // Inside Dhaka: navigate to the dedicated intercity app
+                    window.location.href = '/intercity';
+                }
             }
         },
         {

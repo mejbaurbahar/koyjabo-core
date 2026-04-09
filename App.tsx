@@ -11,7 +11,7 @@ import HistoryView from './components/HistoryView';
 import EmergencyHelplineModal from './components/EmergencyHelplineModal';
 import { AnimatedLogo } from './components/AnimatedLogo';
 import { askGeminiRoute } from './services/geminiService';
-import { getCurrentLocation, findNearestStation, getDistance } from './services/locationService';
+import { getCurrentLocation, getLocationByIP, findNearestStation, getDistance } from './services/locationService';
 import { findNearestMetroStation } from './services/metroService';
 import { planRoutes, findRoutesBetweenStations, SuggestedRoute } from './services/routePlanner';
 import RouteSuggestions from './components/RouteSuggestions';
@@ -618,19 +618,11 @@ const App: React.FC = () => {
     (localStorage.getItem('dhaka_commute_primary_search') as 'LOCAL' | 'INTERCITY') || 'LOCAL'
   );
 
-  // Sync primary search with location, but only on significant changes or init
+  // Sync primary search with location whenever location status is determined
   useEffect(() => {
     if (initialLocationChecked) {
-      // Only auto-switch if no previous state was stored or if it's the first visit
-      const stored = localStorage.getItem('dhaka_commute_primary_search');
-      if (!stored) {
-        setPrimarySearch(isInDhaka ? 'LOCAL' : 'INTERCITY');
-      }
-
-      // If user is outside Dhaka and on HOME view, switch to showing Intercity search (only on fresh start)
-      if (!isInDhaka && view === AppView.HOME && !stored) {
-        setPrimarySearch('INTERCITY');
-      }
+      // Always sync with detected location — overrides any stale localStorage value
+      setPrimarySearch(isInDhaka ? 'LOCAL' : 'INTERCITY');
     }
   }, [isInDhaka, initialLocationChecked]);
 
@@ -961,24 +953,33 @@ const App: React.FC = () => {
     };
   }, []);
 
-  // Initial Location Fetch
+  // Initial Location Fetch - tries browser GPS first, falls back to IP geolocation
   useEffect(() => {
-    getCurrentLocation()
-      .then(loc => {
-        setUserLocation(loc);
-        console.log("Initial location fetched:", loc);
+    const fetchInitialLocation = async () => {
+      let loc: UserLocation | null = null;
 
-        const inDhaka = checkIfInDhaka(loc);
-        // Set initial primary search based on location
-        if (!inDhaka) {
-          setPrimarySearch('INTERCITY');
+      // Try browser GPS first
+      try {
+        loc = await getCurrentLocation();
+        setUserLocation(loc);
+      } catch {
+        // GPS failed (denied or unavailable) — try IP-based geolocation
+        try {
+          loc = await getLocationByIP();
+          if (loc) setUserLocation(loc);
+        } catch {
+          // Both failed — location stays null
         }
-        setInitialLocationChecked(true);
-      })
-      .catch(err => {
-        console.log("Initial location fetch failed:", err);
-        setInitialLocationChecked(true);
-      });
+      }
+
+      // Always set primarySearch based on detected location.
+      // checkIfInDhaka(null) returns true (default to LOCAL when truly unknown).
+      const inDhaka = checkIfInDhaka(loc);
+      setPrimarySearch(inDhaka ? 'LOCAL' : 'INTERCITY');
+      setInitialLocationChecked(true);
+    };
+
+    fetchInitialLocation();
   }, []);
 
   // Auto-preload offline map tiles in background
