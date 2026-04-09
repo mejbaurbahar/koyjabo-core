@@ -695,9 +695,14 @@ const getAirInfo = (from: string, to: string) => {
             return {
                 ...hubFlight,
                 isIndirect: true,
-                viaHub: airportTo.city === to ? airportFrom.city : airportTo.city,
-                hubAirport: airportTo.city === to ? airportFrom.airport : airportTo.airport,
-                bnHubAirport: airportTo.city === to ? airportFrom.bnAirport : airportTo.bnAirport
+                fromNeedsRoad: airportFrom.city !== from,
+                toNeedsRoad: airportTo.city !== to,
+                fromHub: airportFrom.city,
+                toHub: airportTo.city,
+                fromAirport: airportFrom.airport,
+                toAirport: airportTo.airport,
+                bnFromAirport: airportFrom.bnAirport,
+                bnToAirport: airportTo.bnAirport
             };
         }
     }
@@ -854,15 +859,22 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
         // ── 3. বিমান ──
         if (airInfo) {
             const isIndirect = (airInfo as any).isIndirect;
-            const hubName = (airInfo as any).viaHub;
-            const airportName = (airInfo as any).bnHubAirport || (airInfo as any).hubAirport;
 
             if (isIndirect) {
+                const { fromNeedsRoad, toNeedsRoad, fromHub, toHub, bnFromAirport, bnToAirport } = airInfo as any;
                 result += `🛫 বিমান – ${(airInfo as any).time} | ৳${(airInfo as any).fare}\n`;
-                result += `**নির্দেশনা:** সরাসরি ফ্লাইট নেই। প্রথমে **${hubName}** (${airportName}) পর্যন্ত বিমানে গিয়ে সেখান থেকে সড়কপথে **${to}** পৌঁছাতে হবে।  \n`;
+                
+                if (fromNeedsRoad && toNeedsRoad) {
+                    result += `**নির্দেশনা:** সরাসরি ফ্লাইট নেই। প্রথমে সড়কপথে **${fromHub}** (${bnFromAirport}) গিয়ে, সেখান থেকে বিমানে **${toHub}** (${bnToAirport}) হয়ে সড়কপথে **${to}** পৌঁছাতে হবে।  \n`;
+                } else if (fromNeedsRoad) {
+                    result += `**নির্দেশনা:** সরাসরি ফ্লাইট নেই। প্রথমে **${from}** থেকে সড়কপথে **${fromHub}** (${bnFromAirport}) গিয়ে সেখান থেকে বিমানে **${to}** পৌঁছাতে হবে।  \n`;
+                } else {
+                    result += `**নির্দেশনা:** সরাসরি ফ্লাইট নেই। প্রথমে বিমানে **${toHub}** (${bnToAirport}) গিয়ে সেখান থেকে সড়কপথে **${to}** পৌঁছাতে হবে।  \n`;
+                }
             } else {
                 result += `🛫 বিমান – ${airInfo.time} | ৳${airInfo.fare}\n`;
-                result += `**বিমানবন্দর:** ${from === 'Dhaka' ? 'হজরত শাহজালাল আন্তর্জাতিক বিমানবন্দর, ঢাকা' : (AIRPORT_MAP[from]?.bnAirport || from + ' বিমানবন্দর')}  \n`;
+                const airport = AIRPORT_MAP[from]?.bnAirport || (from === 'Dhaka' ? 'হজরত শাহজালাল আন্তর্জাতিক বিমানবন্দর, ঢাকা' : from + ' বিমানবন্দর');
+                result += `**বিমানবন্দর:** ${airport}  \n`;
             }
             result += `**এয়ারলাইন্স:** ${airInfo.airlines.join(' · ')}  \n`;
             const afp = airInfo.fare.split('-');
@@ -983,15 +995,22 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
         // ── 3. Flight ──
         if (airInfo) {
             const isIndirect = (airInfo as any).isIndirect;
-            const hubName = (airInfo as any).viaHub;
-            const airportName = (airInfo as any).hubAirport;
 
             if (isIndirect) {
+                const { fromNeedsRoad, toNeedsRoad, fromHub, toHub, fromAirport, toAirport } = airInfo as any;
                 result += `🛫 By Flight – ${(airInfo as any).time} | ৳${(airInfo as any).fare}\n`;
-                result += `**Guidance:** No direct flight. Fly to **${hubName}** (${airportName}) and then take a car/bus to **${to}**.  \n`;
+
+                if (fromNeedsRoad && toNeedsRoad) {
+                    result += `**Guidance:** No direct flight. Travel by road to **${fromHub}** (${fromAirport}), fly to **${toHub}** (${toAirport}), then take road transport to **${to}**.  \n`;
+                } else if (fromNeedsRoad) {
+                    result += `**Guidance:** No direct flight. Take road transport from **${from}** to **${fromHub}** (${fromAirport}) then fly to **${to}**.  \n`;
+                } else {
+                    result += `**Guidance:** No direct flight. Fly to **${toHub}** (${toAirport}) then take road transport to **${to}**.  \n`;
+                }
             } else {
                 result += `🛫 By Flight – ${airInfo.time} | ৳${airInfo.fare}\n`;
-                result += `**Airport:** ${from === 'Dhaka' ? 'Hazrat Shahjalal International Airport, Dhaka' : (AIRPORT_MAP[from]?.airport || from + ' Airport')}  \n`;
+                const airport = AIRPORT_MAP[from]?.airport || (from === 'Dhaka' ? 'Hazrat Shahjalal International Airport, Dhaka' : from + ' Airport');
+                result += `**Airport:** ${airport}  \n`;
             }
             result += `**Airlines:** ${airInfo.airlines.join(' · ')}  \n`;
             const afp = airInfo.fare.split('-');
