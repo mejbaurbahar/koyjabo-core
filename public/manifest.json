@@ -38,7 +38,7 @@
     "screenshots": [
         {
             "src": "/mobile-screenshot.png",
-            "sizes": "1170x2532",
+            "sizes": "500x572",
             "type": "image/png",
             "form_factor": "narrow",
             "label": "Home Screen Mobile"
