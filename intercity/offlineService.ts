@@ -645,8 +645,64 @@ const BUS_ROUTES_MAJOR = [
 
 // --- HELPERS ---
 
+const AIRPORT_MAP: { [key: string]: { city: string, airport: string, bnAirport: string } } = {
+    "Dhaka": { city: "Dhaka", airport: "Hazrat Shahjalal International Airport", bnAirport: "হজরত শাহজালাল আন্তর্জাতিক বিমানবন্দর" },
+    "Chattogram": { city: "Chattogram", airport: "Shah Amanat International Airport", bnAirport: "শাহ আমানত আন্তর্জাতিক বিমানবন্দর" },
+    "Sylhet": { city: "Sylhet", airport: "Osmani International Airport", bnAirport: "ওসমানী আন্তর্জাতিক বিমানবন্দর" },
+    "Rajshahi": { city: "Rajshahi", airport: "Shah Makhdum Airport", bnAirport: "শাহ মখদুম বিমানবন্দর" },
+    "Barishal": { city: "Barishal", airport: "Barishal Airport", bnAirport: "বরিশাল বিমানবন্দর" },
+    "Jashore": { city: "Jashore", airport: "Jashore Airport", bnAirport: "যশোর বিমানবন্দর" },
+    "Saidpur": { city: "Saidpur", airport: "Saidpur Airport", bnAirport: "সৈয়দপুর বিমানবন্দর" },
+    "Cox's Bazar": { city: "Cox's Bazar", airport: "Cox's Bazar Airport", bnAirport: "কক্সবাজার বিমানবন্দর" },
+    "Rangpur": { city: "Saidpur", airport: "Saidpur Airport", bnAirport: "সৈয়দপুর বিমানবন্দর" },
+    "Dinajpur": { city: "Saidpur", airport: "Saidpur Airport", bnAirport: "সৈয়দপুর বিমানবন্দর" },
+    "Nilphamari": { city: "Saidpur", airport: "Saidpur Airport", bnAirport: "সৈয়দপুর বিমানবন্দর" },
+    "Benapole": { city: "Jashore", airport: "Jashore Airport", bnAirport: "যশোর বিমানবন্দর" },
+    "Khulna": { city: "Jashore", airport: "Jashore Airport", bnAirport: "যশোর বিমানবন্দর" },
+    "Satkhira": { city: "Jashore", airport: "Jashore Airport", bnAirport: "যশোর বিমানবন্দর" },
+    "Chapainawabganj": { city: "Rajshahi", airport: "Shah Makhdum Airport", bnAirport: "শাহ মখদুম বিমানবন্দর" },
+    "Naogaon": { city: "Rajshahi", airport: "Shah Makhdum Airport", bnAirport: "শাহ মখদুম বিমানবন্দর" },
+    "Sunamganj": { city: "Sylhet", airport: "Osmani International Airport", bnAirport: "ওসমানী আন্তর্জাতিক বিমানবন্দর" },
+    "Moulvibazar": { city: "Sylhet", airport: "Osmani International Airport", bnAirport: "ওসমানী আন্তর্জাতিক বিমানবন্দর" },
+    "Habiganj": { city: "Sylhet", airport: "Osmani International Airport", bnAirport: "ওসমানী আন্তর্জাতিক বিমানবন্দর" },
+    "Pabna": { city: "Rajshahi", airport: "Shah Makhdum Airport", bnAirport: "শাহ মখদুম বিমানবন্দর" },
+    "Noakhali": { city: "Chattogram", airport: "Shah Amanat International Airport", bnAirport: "শাহ আমানত আন্তর্জাতিক বিমানবন্দর" },
+    "Feni": { city: "Chattogram", airport: "Shah Amanat International Airport", bnAirport: "শাহ আমানত আন্তর্জাতিক বিমানবন্দর" },
+    "Lalmonirhat": { city: "Saidpur", airport: "Saidpur Airport", bnAirport: "সৈয়দপুর বিমানবন্দর" },
+    "Kurigram": { city: "Saidpur", airport: "Saidpur Airport", bnAirport: "সৈয়দপুর বিমানবন্দর" },
+    "Thakurgaon": { city: "Saidpur", airport: "Saidpur Airport", bnAirport: "সৈয়দপুর বিমানবন্দর" },
+    "Panchagarh": { city: "Saidpur", airport: "Saidpur Airport", bnAirport: "সৈয়দপুর বিমানবন্দর" },
+};
+
 const getTrainInfo = (from: string, to: string) => TRAIN_ROUTES.find(r => (r.from === from && r.to === to) || (r.from === to && r.to === from));
-const getAirInfo = (from: string, to: string) => AIR_ROUTES.find(r => (r.from === from && r.to === to) || (r.from === to && r.to === from));
+const getAirInfo = (from: string, to: string) => {
+    // 1. Try exact match
+    const direct = AIR_ROUTES.find(r => (r.from === from && r.to === to) || (r.from === to && r.to === from));
+    if (direct) return direct;
+
+    // 2. Try nearby airport logic
+    const airportFrom = AIRPORT_MAP[from];
+    const airportTo = AIRPORT_MAP[to];
+
+    if (airportFrom && airportTo) {
+        // Find flight between the hubs serving these districts
+        const hubFlight = AIR_ROUTES.find(r =>
+            (r.from === airportFrom.city && r.to === airportTo.city) ||
+            (r.from === airportTo.city && r.to === airportFrom.city)
+        );
+
+        if (hubFlight) {
+            return {
+                ...hubFlight,
+                isIndirect: true,
+                viaHub: airportTo.city === to ? airportFrom.city : airportTo.city,
+                hubAirport: airportTo.city === to ? airportFrom.airport : airportTo.airport,
+                bnHubAirport: airportTo.city === to ? airportFrom.bnAirport : airportTo.bnAirport
+            };
+        }
+    }
+    return undefined;
+};
 const getLaunchInfo = (from: string, to: string) => LAUNCH_ROUTES.find(r => (r.from === from && r.to === to) || (r.from === to && r.to === from));
 const getBusInfo = (from: string, to: string) => BUS_ROUTES_MAJOR.find(r => (r.from === from && r.to === to) || (r.from === to && r.to === from));
 
@@ -797,8 +853,17 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
 
         // ── 3. বিমান ──
         if (airInfo) {
-            result += `🛫 বিমান – ${airInfo.time} | ৳${airInfo.fare}\n`;
-            result += `**বিমানবন্দর:** হজরত শাহজালাল আন্তর্জাতিক বিমানবন্দর, ঢাকা  \n`;
+            const isIndirect = (airInfo as any).isIndirect;
+            const hubName = (airInfo as any).viaHub;
+            const airportName = (airInfo as any).bnHubAirport || (airInfo as any).hubAirport;
+
+            if (isIndirect) {
+                result += `🛫 বিমান – ${(airInfo as any).time} | ৳${(airInfo as any).fare}\n`;
+                result += `**নির্দেশনা:** সরাসরি ফ্লাইট নেই। প্রথমে **${hubName}** (${airportName}) পর্যন্ত বিমানে গিয়ে সেখান থেকে সড়কপথে **${to}** পৌঁছাতে হবে।  \n`;
+            } else {
+                result += `🛫 বিমান – ${airInfo.time} | ৳${airInfo.fare}\n`;
+                result += `**বিমানবন্দর:** ${from === 'Dhaka' ? 'হজরত শাহজালাল আন্তর্জাতিক বিমানবন্দর, ঢাকা' : (AIRPORT_MAP[from]?.bnAirport || from + ' বিমানবন্দর')}  \n`;
+            }
             result += `**এয়ারলাইন্স:** ${airInfo.airlines.join(' · ')}  \n`;
             const afp = airInfo.fare.split('-');
             result += `**সর্বনিম্ন ভাড়া:** ৳${afp[0] || airInfo.fare} (একমুখী, বেসিক)  \n`;
@@ -917,8 +982,17 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
 
         // ── 3. Flight ──
         if (airInfo) {
-            result += `🛫 By Flight – ${airInfo.time} | ৳${airInfo.fare}\n`;
-            result += `**Airport:** Hazrat Shahjalal International Airport, Dhaka  \n`;
+            const isIndirect = (airInfo as any).isIndirect;
+            const hubName = (airInfo as any).viaHub;
+            const airportName = (airInfo as any).hubAirport;
+
+            if (isIndirect) {
+                result += `🛫 By Flight – ${(airInfo as any).time} | ৳${(airInfo as any).fare}\n`;
+                result += `**Guidance:** No direct flight. Fly to **${hubName}** (${airportName}) and then take a car/bus to **${to}**.  \n`;
+            } else {
+                result += `🛫 By Flight – ${airInfo.time} | ৳${airInfo.fare}\n`;
+                result += `**Airport:** ${from === 'Dhaka' ? 'Hazrat Shahjalal International Airport, Dhaka' : (AIRPORT_MAP[from]?.airport || from + ' Airport')}  \n`;
+            }
             result += `**Airlines:** ${airInfo.airlines.join(' · ')}  \n`;
             const afp = airInfo.fare.split('-');
             result += `**Lowest Fare:** ৳${afp[0] || airInfo.fare} (one-way, basic)  \n`;
