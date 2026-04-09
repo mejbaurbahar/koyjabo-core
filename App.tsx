@@ -939,19 +939,17 @@ const App: React.FC = () => {
 
 
 
-  // Online/Offline detection
+  // Re-cache offline data when connection is restored after being offline
+  const wasOfflineRef = useRef(false);
   useEffect(() => {
-    const handleOnline = () => setIsOnline(true);
-    const handleOffline = () => setIsOnline(false);
-
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
-
-    return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
-    };
-  }, []);
+    if (!isOnline) {
+      wasOfflineRef.current = true;
+    } else if (wasOfflineRef.current) {
+      // Only re-cache when transitioning offline → online (not on initial mount)
+      wasOfflineRef.current = false;
+      initializeOfflineSupport().catch(() => {});
+    }
+  }, [isOnline]);
 
   // Initial Location Fetch - tries browser GPS first, falls back to IP geolocation
   useEffect(() => {
@@ -1341,15 +1339,18 @@ const App: React.FC = () => {
 
     // Check for offline mode
     let result = '';
-    if (!navigator.onLine) {
-      // Use the powerful rule-based AI even offline
-      result = await askGeminiRoute(queryToSend + ` [OfflineMode] [Context: ${locationContext}]`, '', updatedHistory);
-    } else {
-      // Always read the latest API key from localStorage
-      const latestApiKey = localStorage.getItem('gemini_api_key') || '';
-
-      // Pass the FULL updated history to the service
-      result = await askGeminiRoute(queryToSend + ` [Context: ${locationContext}]`, latestApiKey, updatedHistory);
+    try {
+      if (!navigator.onLine) {
+        // Rule-based AI works fully offline
+        result = await askGeminiRoute(queryToSend + ` [OfflineMode] [Context: ${locationContext}]`, '', updatedHistory);
+      } else {
+        const latestApiKey = localStorage.getItem('gemini_api_key') || '';
+        result = await askGeminiRoute(queryToSend + ` [Context: ${locationContext}]`, latestApiKey, updatedHistory);
+      }
+    } catch (aiError) {
+      result = !navigator.onLine
+        ? 'আপনি অফলাইনে আছেন। বাস রুট, ভাড়া ও মেট্রো তথ্য অফলাইনেই পাওয়া যাবে — একটু ভিন্নভাবে প্রশ্ন করে দেখুন।\n\nYou are offline. Bus routes, fares, and metro info are available offline — try rephrasing your question.'
+        : 'Something went wrong. Please try again.';
     }
 
 
@@ -3373,8 +3374,18 @@ const App: React.FC = () => {
     <NotificationProvider>
       <div className="flex flex-col h-screen supports-[height:100dvh]:h-[100dvh] bg-slate-50 dark:bg-slate-900 font-sans text-gray-800 dark:text-gray-100 overflow-hidden max-w-full">
         <NotificationBanner />
+
+        {/* Offline Status Bar */}
+        {!isOnline && (
+          <div className="fixed top-0 left-0 right-0 z-[9998] bg-amber-500 text-white text-xs font-bold flex items-center justify-center gap-2 py-1.5 px-4 animate-in slide-in-from-top duration-300">
+            <WifiOff className="w-3.5 h-3.5 shrink-0" />
+            <span>অফলাইন মোড — বাস রুট ও মেট্রো তথ্য সম্পূর্ণ উপলব্ধ</span>
+            <span className="opacity-60 hidden sm:inline">| Offline — Bus routes &amp; metro fully available</span>
+          </div>
+        )}
+
         {/* Mobile Header */}
-        <header className={`fixed top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-5 py-3 shadow-sm z-[100] pt-safe-top md:hidden transition-transform duration-300 ${(view === AppView.BUS_DETAILS || view === AppView.LIVE_NAV) ? '-translate-y-full' : 'translate-y-0'} `}>
+        <header className={`fixed left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-5 py-3 shadow-sm z-[100] md:hidden transition-transform duration-300 ${!isOnline ? 'top-7' : 'top-0 pt-safe-top'} ${(view === AppView.BUS_DETAILS || view === AppView.LIVE_NAV) ? '-translate-y-full' : 'translate-y-0'} `}>
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2 outline-none cursor-pointer" onClick={() => setView(AppView.HOME)}>
               <AnimatedLogo size="small" />
@@ -3418,7 +3429,7 @@ const App: React.FC = () => {
             ${'w-full md:w-1/3 md:min-w-[320px] md:max-w-md md:flex md:flex-col border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900 z-0 h-full overflow-y-auto'}
             ${view !== AppView.HOME && 'hidden md:flex'}
 `}>
-            <div className="h-full pt-16 md:pt-0">
+            <div className={`h-full md:pt-0 ${!isOnline ? 'pt-24' : 'pt-16'}`}>
               {renderHomeContent()}
             </div>
           </div>

@@ -3,6 +3,8 @@ import { STATIONS, METRO_STATIONS, RAILWAY_STATIONS, AIRPORTS } from '../constan
 
 // IP-based geolocation fallback for when browser GPS is unavailable or denied
 export const getLocationByIP = async (): Promise<UserLocation | null> => {
+  // Skip network call immediately when offline — avoids 5s hang waiting for abort
+  if (typeof navigator !== 'undefined' && !navigator.onLine) return null;
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000);
