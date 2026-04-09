@@ -1196,11 +1196,113 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
     }
   }
 
+  // === NEW: Smart Response Filtering ===
+  finalResponse = filterSmartResponse(finalResponse, query, isBn);
+
   // Log query for learning
   learningSystem.logQuery(query, true);
 
   return finalResponse;
 };
+
+/**
+ * Advanced filtering to provide more relevant and concise answers
+ */
+function filterSmartResponse(text: string, query: string, isBn: boolean): string {
+    const lowerQuery = normalize(query);
+    
+    // 1. Detect Intent
+    const isBus = lowerQuery.includes('bus') || lowerQuery.includes('বাস');
+    const isTrain = lowerQuery.includes('train') || lowerQuery.includes('ট্রেন');
+    const isFlight = lowerQuery.includes('flight') || lowerQuery.includes('plane') || lowerQuery.includes('বিমান');
+    const isLaunch = lowerQuery.includes('launch') || lowerQuery.includes('লঞ্চ');
+    const isFare = lowerQuery.includes('fare') || lowerQuery.includes('ভাড়া') || lowerQuery.includes('vara') || lowerQuery.includes('কত') || lowerQuery.includes('price');
+    
+    // Operators
+    const operators = [
+        { en: 'shohagh', bn: 'সোহাগ', name: 'Shohagh' },
+        { en: 'hanif', bn: 'হানিফ', name: 'Hanif' },
+        { en: 'shyamoli', bn: 'শ্যামলী', name: 'Shyamoli' },
+        { en: 'green line', bn: 'গ্রীন লাইন', name: 'Green Line' },
+        { en: 'eagle', bn: 'ঈগল', name: 'Eagle' },
+        { en: 'ena', bn: 'এনা', name: 'Ena' },
+        { en: 'london express', bn: 'লন্ডন এক্সপ্রেস', name: 'London Express' },
+        { en: 'desh travels', bn: 'দেশ ট্রাভেলস', name: 'Desh Travels' }
+    ];
+    
+    const requestedOperator = operators.find(op => lowerQuery.includes(op.en) || lowerQuery.includes(op.bn));
+    const isNonAc = lowerQuery.includes('non ac') || lowerQuery.includes('নন এসি') || lowerQuery.includes('নন-এসি');
+    const isAc = (lowerQuery.includes(' ac ') || lowerQuery.includes('এসি')) && !isNonAc;
+    
+    // 2. Slicing Logic
+    const sections = text.split('\n\n');
+    const routeHeader = sections[0]; // **Route: From to To**
+    
+    // Map icons to sections
+    const busSection = sections.find(s => s.includes('🚌'));
+    const trainSection = sections.find(s => s.includes('🚂'));
+    const flightSection = sections.find(s => s.includes('🛫'));
+    const launchSection = sections.find(s => s.includes('🚢'));
+    const tipsSection = sections.find(s => s.includes('💡') || s.includes('🌆'));
+
+    let filteredResponse = '';
+    let foundSpecific = false;
+
+    // Filter by mode
+    if (isBus && busSection) {
+        filteredResponse += (filteredResponse ? '\n\n' : '') + busSection;
+        foundSpecific = true;
+    }
+    if (isTrain && trainSection) {
+        filteredResponse += (filteredResponse ? '\n\n' : '') + trainSection;
+        foundSpecific = true;
+    }
+    if (isFlight && flightSection) {
+        filteredResponse += (filteredResponse ? '\n\n' : '') + flightSection;
+        foundSpecific = true;
+    }
+    if (isLaunch && launchSection) {
+        filteredResponse += (filteredResponse ? '\n\n' : '') + launchSection;
+        foundSpecific = true;
+    }
+
+    // 3. Super-Specific Filtering (e.g. just a specific operator's fare)
+    if (requestedOperator && isBus && busSection) {
+        const fareLines = busSection.split('\n');
+        const operatorMatch = fareLines.some(l => l.includes(requestedOperator.name));
+        
+        if (operatorMatch && isFare) {
+            const nonAcFare = fareLines.find(l => l.includes('Non-AC') || l.includes('নন-এসি'));
+            const acFare = fareLines.find(l => l.includes('AC Fare') || l.includes('এসি ভাড়া'));
+            
+            let specificAns = isBn 
+                ? `🚌 **${requestedOperator.bn} পরিবহনের তথ্য:**\n`
+                : `🚌 **${requestedOperator.name} Paribahan Info:**\n`;
+                
+            if (isNonAc && nonAcFare) specificAns += `${nonAcFare}\n`;
+            else if (isAc && acFare) specificAns += `${acFare}\n`;
+            else {
+                if (nonAcFare) specificAns += `${nonAcFare}\n`;
+                if (acFare) specificAns += `${acFare}\n`;
+            }
+            
+            // Add operator list from section
+            const opLine = fareLines.find(l => l.includes('Operators') || l.includes('অপারেটর'));
+            if (opLine) specificAns += opLine;
+            
+            return `${routeHeader}\n\n${specificAns}${tipsSection ? '\n\n' + tipsSection : ''}`;
+        }
+    }
+
+    // If we only found one specific mode, return just that + header
+    if (foundSpecific) {
+        const result = `${routeHeader}\n\n${filteredResponse}`;
+        // Add tips if relevant
+        return tipsSection ? `${result}\n\n${tipsSection}` : result;
+    }
+
+    return text; // Fallback to full response if not specific enough
+}
 
 // Keeping these for compatibility but making them no-ops or always true
 export const canUseAiChat = () => true;
