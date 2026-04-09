@@ -331,6 +331,22 @@ textarea {
 }
 
 /* Safe area insets for notched devices (iPhone X, etc.) */
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.mt-safe {
+  margin-top: env(safe-area-inset-top);
+}
+
+.mb-safe {
+  margin-bottom: env(safe-area-inset-bottom);
+}
+
 .safe-top {
   padding-top: env(safe-area-inset-top);
 }
@@ -346,6 +362,7 @@ textarea {
 .safe-right {
   padding-right: env(safe-area-inset-right);
 }
+
 
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {

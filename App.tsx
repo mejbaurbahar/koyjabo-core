@@ -348,7 +348,7 @@ const SettingsView: React.FC<{
   };
 
   return (
-    <div className="flex flex-col h-full bg-white p-6 md:p-12 pt-20 md:pt-12 overflow-y-auto w-full">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-20 md:pt-12 pt-safe overflow-y-auto w-full">
 
       <h1 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
         <Settings className="w-6 h-6 text-gray-600" /> Settings
@@ -1400,7 +1400,7 @@ const App: React.FC = () => {
     return (
       <div className="flex flex-col h-full bg-white dark:bg-slate-900 md:rounded-l-3xl md:border-l md:border-gray-200 dark:md:border-gray-800 overflow-hidden relative w-full">
         {/* Mobile Header */}
-        <div className="block md:hidden flex items-center gap-3 p-4 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-slate-900 z-20 shrink-0 fixed top-0 left-0 right-0">
+        <div className="block md:hidden flex items-center gap-3 p-4 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-slate-900 z-20 shrink-0 fixed top-0 left-0 right-0 pt-safe">
           <button onClick={() => setView(AppView.BUS_DETAILS)} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors">
             <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
           </button>
@@ -1441,8 +1441,8 @@ const App: React.FC = () => {
   };
 
   const renderAiAssistant = () => (
-    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 md:rounded-l-3xl md:border-l md:border-gray-200 dark:md:border-gray-800 overflow-hidden w-full max-w-full pt-[65px] md:pt-24 relative">
-      <div className="md:hidden flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shadow-sm z-20 absolute top-0 left-0 right-0 h-[65px]">
+    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 md:rounded-l-3xl md:border-l md:border-gray-200 dark:md:border-gray-800 overflow-hidden w-full max-w-full pt-[65px] md:pt-24 pt-safe relative">
+      <div className="md:hidden flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shadow-sm z-20 absolute top-0 left-0 right-0 h-[65px] pt-safe">
         <button onClick={() => setView(AppView.HOME)} className="p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors">
           <ArrowLeft className="w-5 h-5 text-gray-600" />
         </button>
@@ -1529,7 +1529,7 @@ const App: React.FC = () => {
   );
 
   const renderAbout = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-20 md:pt-24 pb-32 md:pb-12 overflow-y-auto overflow-x-hidden w-full max-w-full">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-20 md:pt-24 pb-32 md:pb-12 pt-safe overflow-y-auto overflow-x-hidden w-full max-w-full">
       <div className="max-w-5xl mx-auto text-center">
         <div className="w-20 h-20 bg-dhaka-red rounded-3xl flex items-center justify-center text-white mx-auto mb-6 shadow-xl shadow-red-200 rotate-3 hover:rotate-6 transition-transform">
           <Bus className="w-10 h-10" />
@@ -1829,7 +1829,7 @@ const App: React.FC = () => {
   );
 
   const renderWhyUse = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-24 md:pt-24 overflow-y-auto w-full">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-24 md:pt-24 pt-safe overflow-y-auto w-full">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100 leading-tight">{t('whyUse.title')}</h1>
         <p className="text-gray-500 dark:text-gray-400 mb-8">{t('whyUse.subtitle')}</p>
@@ -2005,7 +2005,7 @@ const App: React.FC = () => {
   );
 
   const renderFAQ = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-24 md:pt-24 overflow-y-auto w-full">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-24 md:pt-24 pt-safe overflow-y-auto w-full">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100 leading-tight">{t('faq.title')}</h1>
         <p className="text-gray-500 dark:text-gray-400 mb-8">{t('faq.subtitle')}</p>
@@ -2336,8 +2336,8 @@ const App: React.FC = () => {
     return (
       <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-y-auto overflow-x-hidden w-full max-w-full">
         {/* Mobile Header */}
-        <div className="block md:hidden fixed top-0 left-0 right-0 w-full z-40">
-          <div className="bg-white dark:bg-slate-900 px-5 py-4 shadow-sm border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+        <div className="block md:hidden fixed top-0 left-0 right-0 w-full z-40 pt-safe bg-white dark:bg-slate-900">
+          <div className="px-5 py-4 shadow-sm border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
             <button onClick={() => setView(AppView.HOME)} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors" aria-label="Go back to home">
               <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
             </button>
@@ -3385,7 +3385,7 @@ const App: React.FC = () => {
         )}
 
         {/* Mobile Header */}
-        <header className={`fixed left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-5 py-3 shadow-sm z-[100] md:hidden transition-transform duration-300 ${!isOnline ? 'top-7' : 'top-0 pt-safe-top'} ${(view === AppView.BUS_DETAILS || view === AppView.LIVE_NAV) ? '-translate-y-full' : 'translate-y-0'} `}>
+        <header className={`fixed left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-5 py-3 shadow-sm z-[100] md:hidden transition-transform duration-300 ${!isOnline ? 'top-7' : 'top-0 pt-safe'} ${(view === AppView.BUS_DETAILS || view === AppView.LIVE_NAV) ? '-translate-y-full' : 'translate-y-0'} `}>
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2 outline-none cursor-pointer" onClick={() => setView(AppView.HOME)}>
               <AnimatedLogo size="small" />
@@ -3502,7 +3502,7 @@ const App: React.FC = () => {
             {view === AppView.CONTACT && <ContactUs view={view} setView={setView} />}
             {view === AppView.FOR_AI && renderForAi()}
             {view === AppView.INSTALL_APP && (
-              <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-20 md:pt-12 overflow-y-auto w-full">
+              <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-20 md:pt-12 pt-safe overflow-y-auto w-full">
                 <div className="max-w-2xl mx-auto text-center">
                   {/* App Icon */}
                   <div className="w-24 h-24 bg-dhaka-red rounded-3xl flex items-center justify-center text-white mx-auto mb-6 shadow-xl shadow-red-200">
@@ -3620,7 +3620,7 @@ const App: React.FC = () => {
 
         {/* Mobile Bottom Navigation - Always show except on BUS_DETAILS and LIVE_NAV */}
         {view !== AppView.BUS_DETAILS && view !== AppView.LIVE_NAV && (
-          <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] md:hidden">
+          <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] md:hidden pb-safe">
             <div className="grid grid-cols-4 h-16">
               <button
                 onClick={() => {
@@ -3816,7 +3816,7 @@ const App: React.FC = () => {
         {/* PWA Install Prompt - Don't show on INSTALL_APP page */}
         {showInstallPrompt && view !== AppView.INSTALL_APP && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-end md:items-center justify-center p-4 animate-in fade-in">
-            <div className="bg-white dark:bg-slate-900 rounded-t-3xl md:rounded-3xl p-6 max-w-md w-full shadow-2xl animate-in slide-in-from-bottom md:slide-in-from-bottom-0">
+            <div className="bg-white dark:bg-slate-900 rounded-t-3xl md:rounded-3xl p-6 max-w-md w-full shadow-2xl animate-in slide-in-from-bottom md:slide-in-from-bottom-0 pb-safe">
               <div className="flex items-start gap-4 mb-4">
                 <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shrink-0 shadow-lg">
                   <Bus className="w-8 h-8 text-white" />

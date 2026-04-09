@@ -275,7 +275,7 @@ function App() {
       </header>
 
       {/* Fixed Header - Mobile */}
-      <header className="md:hidden fixed top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-[100] px-4 flex items-center justify-between transition-all duration-300 pt-safe-top" style={{ height: isOnline ? '4rem' : 'calc(4rem + 1.75rem)', paddingTop: isOnline ? undefined : '1.75rem' }}>
+      <header className="md:hidden fixed top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-[100] px-4 flex items-center justify-between transition-all duration-300 pt-safe" style={{ height: isOnline ? '4rem' : 'calc(4rem + 1.75rem)', paddingTop: isOnline ? undefined : '1.75rem' }}>
         <a
           href="/"
           onClick={(e) => {

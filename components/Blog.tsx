@@ -14,9 +14,9 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
     const regularPosts = BLOG_POSTS.slice(1);
 
     return (
-        <div className="flex flex-col h-full bg-gradient-to-br from-white via-teal-50/30 to-cyan-50/30 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 overflow-y-auto pt-16 pb-32">
+        <div className="flex flex-col h-full bg-gradient-to-br from-white via-teal-50/30 to-cyan-50/30 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 overflow-y-auto pt-16 pb-32 pt-safe">
             {/* Header */}
-            <div className="sticky top-0 z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
+            <div className="sticky top-0 z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 pt-safe">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
                     <div className="flex items-center gap-3">
 
