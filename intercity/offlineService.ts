@@ -82,6 +82,7 @@ const DISTRICT_CONNECTIVITY: { [key: string]: Connectivity } = {
     "Chuadanga": { bus: true, train: true, plane: false, boat: false },
     "Magura": { bus: true, train: false, plane: false, boat: false },
     "Jhenaidah": { bus: true, train: false, plane: false, boat: false },
+    "Mongla": { bus: true, train: true, plane: false, boat: true },
 };
 const DEFAULT_CONNECTIVITY: Connectivity = { bus: true, train: false, plane: false, boat: false };
 
@@ -687,6 +688,42 @@ const TRAIN_ROUTES: TrainRouteEntry[] = [
         trains: ["Mohanganj Local", "Mahua Express"],
         fare: "40-80", time: "1.5-2h",
         shovan: "40", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Benapole", to: "Mongla",
+        trains: ["Mongla Commuter (9:15AM departure, off Tuesday)"],
+        fare: "85-150", time: "3-4h (via Phultala)",
+        shovan: "85", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Dhaka", to: "Bhanga",
+        trains: ["Bhanga Commuter (via Padma Bridge)", "Nakshikantha Express"],
+        fare: "80-150", time: "1.5-2h",
+        shovan: "80", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Dhaka", to: "Faridpur",
+        trains: ["Faridpur Express", "Nakshikantha Express (via Bhanga)"],
+        fare: "100-200", time: "2-3h",
+        shovan: "100", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Dhaka", to: "Tangail",
+        trains: ["Tangail Commuter", "Sirajganj Express (pass-through)"],
+        fare: "60-120", time: "2h",
+        shovan: "60", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Rajshahi", to: "Rajbari",
+        trains: ["Madhumati Express", "Commuter Train"],
+        fare: "120-250", time: "3-4h",
+        shovan: "120", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Ishwardi", to: "Pabna",
+        trains: ["Pabna Express", "Dhaka-Pabna Express"],
+        fare: "30-60", time: "45m",
+        shovan: "30", snigdha: "—", acSeat: "—", acBerth: "—"
     },
 ];
 
