@@ -116,58 +116,288 @@ const MAJOR_HUBS = ["Dhaka", "Chattogram", "Sylhet", "Rajshahi", "Khulna", "Bari
 
 // --- DETAILED ROUTE DATA ---
 
-const TRAIN_ROUTES = [
-    // --- MAJOR INTERCITY & FAST TRAINS ---
-    { from: "Dhaka", to: "Chattogram", trains: ["Subarna Express", "Sonar Bangla Express (Non-Stop)", "Turna Express (Night)", "Mohanagar Goduli", "Chattala Express", "Cox's Bazar Express", "Parjatak Express", "Dhaka Mail", "Karnaphuli Express", "Chittagong Mail"], fare: "400-1500" },
-    { from: "Dhaka", to: "Sylhet", trains: ["Upaban Express", "Jayantika Express", "Kalni Express", "Parabat Express", "Surma Mail", "Jalalabad Express"], fare: "350-1200" },
-    { from: "Dhaka", to: "Rajshahi", trains: ["Silk City", "Padma Express", "Dhumketu Express", "Banalata Express (Non-Stop)", "Modhumati Express"], fare: "350-1200" },
-    { from: "Dhaka", to: "Khulna", trains: ["Sundarban Express", "Chitra Express", "Nakshikantha Express"], fare: "505-1500" },
-    { from: "Dhaka", to: "Rangpur", trains: ["Rangpur Express", "Kurigram Express", "Burimari Express"], fare: "500-1500" },
-    { from: "Dhaka", to: "Cox's Bazar", trains: ["Cox's Bazar Express", "Parjatak Express"], fare: "700-2400" },
-    { from: "Dhaka", to: "Panchagarh", trains: ["Ekota Express", "Drutojan Express", "Panchagarh Express (Non-Stop)"], fare: "600-1800" },
-    { from: "Dhaka", to: "Noakhali", trains: ["Upakul Express", "Noakhali Express", "Dhaka Express"], fare: "350-1100" },
-    { from: "Dhaka", to: "Kishoreganj", trains: ["Egarosindhur Provati", "Egarosindhur Godhuli", "Kishoreganj Express", "Isha Khan Express"], fare: "150-500" },
-    { from: "Dhaka", to: "Mymensingh", trains: ["Tista Express", "Agnibina Express", "Brahmaputra Express", "Jamuna Express", "Mohanganj Express", "Haor Express", "Balaka Commuter", "Vawall Express", "Mymensingh Express"], fare: "150-600" },
-    { from: "Dhaka", to: "Netrokona", trains: ["Haor Express", "Mohanganj Express", "Mahua Express"], fare: "250-800" },
-    { from: "Dhaka", to: "Dinajpur", trains: ["Ekota Express", "Drutojan Express", "Nilsagar Express"], fare: "500-1500" },
-    { from: "Dhaka", to: "Lalmonirhat", trains: ["Lalmoni Express", "Burimari Express"], fare: "500-1500" },
-    { from: "Dhaka", to: "Chandpur", trains: ["Meghna Express"], fare: "200-600" },
-    { from: "Dhaka", to: "Brahmanbaria", trains: ["Titas Commuter", "Mahanagar Express", "Sylhet/Ctg Bound Trains"], fare: "120-600" },
-    { from: "Dhaka", to: "Jamalpur", trains: ["Tista Express", "Jamuna Express", "Agnibina Express", "Jamalpur Express", "Brahmaputra Express"], fare: "200-600" },
-    { from: "Dhaka", to: "Faridpur", trains: ["Madhumati Express", "Rupashi Bangla Express (Fast)"], fare: "300-800" },
-    { from: "Dhaka", to: "Chilahati", trains: ["Nilsagar Express", "Chilahati Express"], fare: "500-1600" },
-    { from: "Dhaka", to: "Sirajganj", trains: ["Sirajganj Express"], fare: "250-700" },
-    { from: "Dhaka", to: "Chapainawabganj", trains: ["Banalata Express", "Mahananda Express"], fare: "400-1300" },
-    { from: "Dhaka", to: "Burimari", trains: ["Burimari Express (Direct/Shuttle via Lalmonirhat)"], fare: "600-1600" },
-    { from: "Dhaka", to: "Gopalganj", trains: ["Tungipara Express"], fare: "300-900" },
-    { from: "Dhaka", to: "Dewanganj", trains: ["Tista Express", "Dewanganj Commuter"], fare: "200-700" },
-    { from: "Dhaka", to: "Nilphamari", trains: ["Nilsagar Express", "Chilahati Express"], fare: "500-1500" },
-    { from: "Dhaka", to: "Natore", trains: ["Lalmoni Express", "Rangpur Express", "Burimari Express", "Drutojan Express"], fare: "300-900" },
-    { from: "Dhaka", to: "Pabna", trains: ["Dhaka-Pabna Express"], fare: "350-1000" },
-    { from: "Dhaka", to: "Kushtia", trains: ["Sundarban Express", "Chitra Express (Nearby Poradaha)"], fare: "400-1200" },
-    // --- REGIONAL & LOCAL CONNECTIONS ---
-    { from: "Chattogram", to: "Sylhet", trains: ["Paharika Express", "Udayan Express", "Jalalabad Express"], fare: "400-1200" },
-    { from: "Chattogram", to: "Chandpur", trains: ["Meghna Express", "Sagarika Express"], fare: "150-500" },
-    { from: "Chattogram", to: "Mymensingh", trains: ["Bijoy Express"], fare: "400-1000" },
-    { from: "Chattogram", to: "Jamalpur", trains: ["Bijoy Express"], fare: "450-1100" },
-    { from: "Chattogram", to: "Noakhali", trains: ["Sagarika Express"], fare: "100-400" },
-    { from: "Chattogram", to: "Cumilla", trains: ["Paharika/Udayan/Mahanagar/Turna"], fare: "150-500" },
-    { from: "Khulna", to: "Rajshahi", trains: ["Kapotaksha Express", "Sagardari Express", "Mahananda Express"], fare: "300-800" },
-    { from: "Khulna", to: "Saidpur", trains: ["Rupsha Express", "Simanta Express"], fare: "400-1200" },
-    { from: "Khulna", to: "Goalanda Ghat", trains: ["Nakshikantha Express"], fare: "150-500" },
-    { from: "Benapole", to: "Mongla", trains: ["Mongla Commuter"], fare: "100-300" },
-    { from: "Benapole", to: "Dhaka", trains: ["Benapole Express", "Rupashi Bangla Express (via Padma Bridge)"], fare: "455-1500" },
-    { from: "Rajshahi", to: "Panchagarh", trains: ["Banglabandha Express"], fare: "300-1000" },
-    { from: "Rajshahi", to: "Chilahati", trains: ["Barendra Express", "Titumir Express"], fare: "250-800" },
-    { from: "Sylhet", to: "Akhaura", trains: ["Jalalabad Express", "Surma Mail", "Sylhet Bound Intercity"], fare: "100-400" },
-    { from: "Mymensingh", to: "Bhairab", trains: ["Isha Khan Express", "Local Trains"], fare: "50-150" },
-    { from: "Mymensingh", to: "Mohanganj", trains: ["Mymensingh Express", "Local Trains"], fare: "40-120" },
-    { from: "Parbatipur", to: "Panchagarh", trains: ["Kanchan Express", "Ramsagor Express"], fare: "50-150" },
-    { from: "Santahar", to: "Burimari", trains: ["Korotoa Express"], fare: "150-400" },
-    // --- CROSS BORDER (INDIA) ---
-    { from: "Dhaka", to: "Kolkata", trains: ["Maitree Express"], fare: "2500+" },
-    { from: "Khulna", to: "Kolkata", trains: ["Bandhan Express"], fare: "1500+" },
-    { from: "Dhaka", to: "New Jalpaiguri", trains: ["Mitali Express"], fare: "3000+" },
+// Extended train route type with real fare breakdown and schedules
+interface TrainRouteEntry {
+    from: string; to: string;
+    trains: string[];  // train name (departure time) format
+    fare: string;      // "shovanChair-acBerth" for header summary
+    time: string;      // actual journey duration
+    shovan?: string;   // Shovan / Shovan Chair fare
+    snigdha?: string;  // Snigdha (AC Chair) fare
+    acSeat?: string;   // AC Seat fare
+    acBerth?: string;  // AC Berth / 1st Class Berth fare
+}
+
+const TRAIN_ROUTES: TrainRouteEntry[] = [
+    // ── DHAKA EASTERN ZONE ──
+    {
+        from: "Dhaka", to: "Chattogram",
+        trains: ["Sonar Bangla Express (7:00AM, off Wed)", "Mahanagar Provati (7:45AM)", "Parjotak Express (6:15AM, off Sun)", "Suborno Express (4:30PM, off Mon)", "Chattala Express (1:45PM, off Fri)", "Mahanagar Express (9:20PM, off Sun)", "Turna Express (11:40PM)", "Cox's Bazar Express (10:30PM, off Mon)"],
+        fare: "405-1591", time: "5-6.5h",
+        shovan: "265", snigdha: "777", acSeat: "932", acBerth: "1591"
+    },
+    {
+        from: "Dhaka", to: "Cox's Bazar",
+        trains: ["Cox's Bazar Express (10:30PM, off Mon)", "Parjotak Express (6:15AM, off Sun)"],
+        fare: "745-2656", time: "8-10h (via Chattogram)",
+        shovan: "695", snigdha: "1449", acSeat: "1900", acBerth: "2656"
+    },
+    {
+        from: "Dhaka", to: "Sylhet",
+        trains: ["Parabat Express (6:30AM, off Tue)", "Joyontika Express (11:15AM, off Tue)", "Kalni Express (2:55PM, off Fri)", "Upaban Express (10:00PM, off Wed)", "Surma Mail (10:50PM, all days)"],
+        fare: "375-1678", time: "6.5-8h",
+        shovan: "375", snigdha: "719", acSeat: "1087", acBerth: "1678"
+    },
+    {
+        from: "Dhaka", to: "Noakhali",
+        trains: ["Upakul Express (6:30AM, off Thu)", "Dhaka-Noakhali Express (3:30PM, Thu only)"],
+        fare: "350-700", time: "5.5-6h",
+        shovan: "350", snigdha: "600", acSeat: "700", acBerth: "—"
+    },
+    {
+        from: "Dhaka", to: "Kishoreganj",
+        trains: ["Egarosindhur Provati (7:15AM)", "Egarosindhur Godhuli (4:00PM)", "Kishoreganj Express (2:00PM)", "Isha Khan Express (7:30PM)"],
+        fare: "160-500", time: "2.5-3.5h",
+        shovan: "160", snigdha: "305", acSeat: "—", acBerth: "500"
+    },
+    {
+        from: "Dhaka", to: "Brahmanbaria",
+        trains: ["Titas Commuter (multiple)", "Mahanagar Express (9:20PM)", "Turna Express (11:40PM)", "Upaban/Parabat/Kalni (pass-through)"],
+        fare: "120-600", time: "2-3h",
+        shovan: "120", snigdha: "230", acSeat: "275", acBerth: "—"
+    },
+    {
+        from: "Dhaka", to: "Chandpur",
+        trains: ["Meghna Express (7:00AM, off Tue)"],
+        fare: "175-550", time: "3h",
+        shovan: "175", snigdha: "335", acSeat: "400", acBerth: "550"
+    },
+    // ── DHAKA WESTERN ZONE ──
+    {
+        from: "Dhaka", to: "Rajshahi",
+        trains: ["Dhumketu Express (6:00AM, off Thu)", "Bonolota Express (1:30PM, off Fri — fastest 4h40m)", "Silk City Express (2:40PM, off Sun)", "Madhumati Express (3:00PM, off Thu)", "Padma Express (10:45PM, off Tue)"],
+        fare: "405-1386", time: "4.5-8h",
+        shovan: "310", snigdha: "592", acSeat: "710", acBerth: "1065"
+    },
+    {
+        from: "Dhaka", to: "Khulna",
+        trains: ["Jahanabad Express (8:00PM via Padma Bridge, 3h45m, off Mon)", "Sundarban Express (8:15AM, 9h, off Wed)", "Chitra Express (7:00PM, 8h40m, off Mon)"],
+        fare: "445-2168", time: "4-9h",
+        shovan: "445", snigdha: "840", acSeat: "1005", acBerth: "1510"
+    },
+    {
+        from: "Dhaka", to: "Rangpur",
+        trains: ["Rangpur Express (9:10AM, 10h, off Mon)", "Kurigram Express (8:45PM, 8.5h, off Wed)"],
+        fare: "420-1510", time: "8.5-10h",
+        shovan: "420", snigdha: "800", acSeat: "960", acBerth: "1510"
+    },
+    {
+        from: "Dhaka", to: "Dinajpur",
+        trains: ["Ekota Express (10:15AM, 9h, off Tue)", "Drutojan Express (7:20PM, 8.5h, off Wed)", "Panchagarh Express (10:45PM, 8h, daily)"],
+        fare: "465-1599", time: "8-9h",
+        shovan: "465", snigdha: "892", acSeat: "—", acBerth: "1599"
+    },
+    {
+        from: "Dhaka", to: "Panchagarh",
+        trains: ["Ekota Express (10:15AM, off Tue)", "Drutojan Express (7:20PM, off Wed)", "Panchagarh Express (10:45PM, daily)"],
+        fare: "560-1800", time: "9-10h",
+        shovan: "560", snigdha: "1072", acSeat: "—", acBerth: "1800"
+    },
+    {
+        from: "Dhaka", to: "Lalmonirhat",
+        trains: ["Lalmoni Express (8:10PM, off Fri)", "Burimari Express (off Tue)"],
+        fare: "500-1600", time: "9-10h",
+        shovan: "500", snigdha: "957", acSeat: "—", acBerth: "1600"
+    },
+    {
+        from: "Dhaka", to: "Nilphamari",
+        trains: ["Nilsagar Express (10:30PM, off Thu)", "Chilahati Express"],
+        fare: "500-1500", time: "9-10h",
+        shovan: "500", snigdha: "957", acSeat: "—", acBerth: "1500"
+    },
+    {
+        from: "Dhaka", to: "Chapainawabganj",
+        trains: ["Banalata Express (Non-Stop, off Fri)", "Mahananda Express"],
+        fare: "405-1386", time: "5.5-7h",
+        shovan: "340", snigdha: "651", acSeat: "782", acBerth: "1173"
+    },
+    {
+        from: "Dhaka", to: "Pabna",
+        trains: ["Dhaka-Pabna Express (off Thu)"],
+        fare: "265-900", time: "4-5h",
+        shovan: "265", snigdha: "507", acSeat: "—", acBerth: "900"
+    },
+    {
+        from: "Dhaka", to: "Kushtia",
+        trains: ["Sundarban Express (8:15AM, passes via Poradaha)", "Chitra Express (7:00PM)"],
+        fare: "330-1100", time: "5-6h",
+        shovan: "330", snigdha: "632", acSeat: "—", acBerth: "1100"
+    },
+    {
+        from: "Dhaka", to: "Sirajganj",
+        trains: ["Sirajganj Express (off Wed)"],
+        fare: "250-700", time: "3.5-4h",
+        shovan: "250", snigdha: "480", acSeat: "—", acBerth: "700"
+    },
+    // ── DHAKA NORTH-CENTRAL ──
+    {
+        from: "Dhaka", to: "Mymensingh",
+        trains: ["Tista Express (6:15AM)", "Agnibina Express (2:45PM)", "Brahmaputra Express (4:00PM)", "Jamuna Express (7:45AM)", "Haor Express (6:50AM)", "Balaka Commuter (multiple)"],
+        fare: "145-550", time: "2.5-3.5h",
+        shovan: "145", snigdha: "277", acSeat: "—", acBerth: "550"
+    },
+    {
+        from: "Dhaka", to: "Jamalpur",
+        trains: ["Tista Express (6:15AM)", "Jamuna Express (7:45AM)", "Agnibina Express (2:45PM)", "Brahmaputra Express (4:00PM)"],
+        fare: "190-600", time: "3.5-4.5h",
+        shovan: "190", snigdha: "364", acSeat: "—", acBerth: "600"
+    },
+    {
+        from: "Dhaka", to: "Netrokona",
+        trains: ["Haor Express (6:50AM)", "Mohanganj Express (3:15PM)", "Mahua Express"],
+        fare: "250-800", time: "4-5h",
+        shovan: "250", snigdha: "479", acSeat: "—", acBerth: "800"
+    },
+    {
+        from: "Dhaka", to: "Gopalganj",
+        trains: ["Tungipara Express (off Wed — via Padma Bridge)"],
+        fare: "265-900", time: "3.5-4h",
+        shovan: "265", snigdha: "507", acSeat: "—", acBerth: "900"
+    },
+    {
+        from: "Dhaka", to: "Faridpur",
+        trains: ["Madhumati Express (off Thu — via Padma Bridge)", "Rupashi Bangla Express"],
+        fare: "265-800", time: "2.5-3h",
+        shovan: "265", snigdha: "507", acSeat: "—", acBerth: "800"
+    },
+    {
+        from: "Dhaka", to: "Chilahati",
+        trains: ["Nilsagar Express (10:30PM, off Thu)", "Chilahati Express"],
+        fare: "540-1700", time: "10-11h",
+        shovan: "540", snigdha: "1034", acSeat: "—", acBerth: "1700"
+    },
+    {
+        from: "Dhaka", to: "Burimari",
+        trains: ["Burimari Express (via Lalmonirhat, off Tue)"],
+        fare: "560-1800", time: "10-11h",
+        shovan: "560", snigdha: "1072", acSeat: "—", acBerth: "1800"
+    },
+    {
+        from: "Dhaka", to: "Natore",
+        trains: ["Lalmoni Express (8:10PM)", "Rangpur Express (9:10AM)", "Drutojan Express (7:20PM)"],
+        fare: "310-1050", time: "4.5-5.5h",
+        shovan: "310", snigdha: "594", acSeat: "—", acBerth: "1050"
+    },
+    {
+        from: "Dhaka", to: "Dewanganj",
+        trains: ["Tista Express (6:15AM)", "Dewanganj Commuter"],
+        fare: "180-550", time: "4-5h",
+        shovan: "180", snigdha: "345", acSeat: "—", acBerth: "550"
+    },
+    // ── CROSS-REGIONAL ──
+    {
+        from: "Chattogram", to: "Sylhet",
+        trains: ["Paharika Express (7:00AM, off Wed)", "Udayan Express (9:45PM, off Tue)"],
+        fare: "395-1350", time: "7-8h",
+        shovan: "395", snigdha: "757", acSeat: "907", acBerth: "1350"
+    },
+    {
+        from: "Chattogram", to: "Cumilla",
+        trains: ["Paharika Express", "Udayan Express", "Mahanagar Provati", "Turna Express (pass-through)"],
+        fare: "115-400", time: "1.5-2h",
+        shovan: "115", snigdha: "220", acSeat: "264", acBerth: "396"
+    },
+    {
+        from: "Chattogram", to: "Noakhali",
+        trains: ["Sagarika Express (off Thu)"],
+        fare: "100-350", time: "2-2.5h",
+        shovan: "100", snigdha: "192", acSeat: "—", acBerth: "350"
+    },
+    {
+        from: "Chattogram", to: "Chandpur",
+        trains: ["Meghna Express", "Sagarika Express"],
+        fare: "130-450", time: "3-4h",
+        shovan: "130", snigdha: "249", acSeat: "—", acBerth: "450"
+    },
+    {
+        from: "Chattogram", to: "Mymensingh",
+        trains: ["Bijoy Express (off Fri)"],
+        fare: "360-1200", time: "8-9h",
+        shovan: "360", snigdha: "689", acSeat: "827", acBerth: "1200"
+    },
+    {
+        from: "Chattogram", to: "Jamalpur",
+        trains: ["Bijoy Express (off Fri)"],
+        fare: "400-1300", time: "9-10h",
+        shovan: "400", snigdha: "766", acSeat: "919", acBerth: "1300"
+    },
+    {
+        from: "Khulna", to: "Rajshahi",
+        trains: ["Kapotaksha Express (off Wed)", "Sagardari Express"],
+        fare: "265-850", time: "5-6h",
+        shovan: "265", snigdha: "507", acSeat: "—", acBerth: "850"
+    },
+    {
+        from: "Khulna", to: "Saidpur",
+        trains: ["Rupsha Express (off Sun)", "Simanta Express"],
+        fare: "400-1300", time: "8-10h",
+        shovan: "400", snigdha: "766", acSeat: "—", acBerth: "1300"
+    },
+    {
+        from: "Benapole", to: "Dhaka",
+        trains: ["Benapole Express (6:30AM, off Mon)", "Rupashi Bangla Express (via Padma Bridge)"],
+        fare: "455-1500", time: "5-6h",
+        shovan: "455", snigdha: "871", acSeat: "1044", acBerth: "1500"
+    },
+    {
+        from: "Rajshahi", to: "Chapainawabganj",
+        trains: ["Barendra Express", "Titumir Express"],
+        fare: "70-220", time: "1h",
+        shovan: "70", snigdha: "—", acSeat: "—", acBerth: "220"
+    },
+    {
+        from: "Rajshahi", to: "Chilahati",
+        trains: ["Barendra Express (off Tue)", "Titumir Express (off Fri)"],
+        fare: "250-800", time: "4-5h",
+        shovan: "250", snigdha: "479", acSeat: "—", acBerth: "800"
+    },
+    {
+        from: "Sylhet", to: "Akhaura",
+        trains: ["Jalalabad Express", "Surma Mail", "Upaban/Parabat/Kalni (pass-through)"],
+        fare: "80-300", time: "2-2.5h",
+        shovan: "80", snigdha: "153", acSeat: "—", acBerth: "300"
+    },
+    {
+        from: "Mymensingh", to: "Bhairab",
+        trains: ["Isha Khan Express", "Brahmaputra Commuter"],
+        fare: "60-180", time: "1.5h",
+        shovan: "60", snigdha: "—", acSeat: "—", acBerth: "180"
+    },
+    {
+        from: "Parbatipur", to: "Panchagarh",
+        trains: ["Kanchan Express", "Ramsagor Express"],
+        fare: "60-180", time: "1.5-2h",
+        shovan: "60", snigdha: "—", acSeat: "—", acBerth: "180"
+    },
+    // ── CROSS BORDER (INDIA) ──
+    {
+        from: "Dhaka", to: "Kolkata",
+        trains: ["Maitree Express (Dhaka Cantonment, Thu & Sun)"],
+        fare: "2500+", time: "10-12h",
+        shovan: "—", snigdha: "2500", acSeat: "3000", acBerth: "4500"
+    },
+    {
+        from: "Khulna", to: "Kolkata",
+        trains: ["Bandhan Express (Thu & Sun)"],
+        fare: "1500+", time: "5h",
+        shovan: "—", snigdha: "1500", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Dhaka", to: "New Jalpaiguri",
+        trains: ["Mitali Express (Sun & Wed, from Dhaka Cantonment)"],
+        fare: "3000+", time: "~18h",
+        shovan: "—", snigdha: "3000", acSeat: "4000", acBerth: "5500"
+    },
 ];
 
 const AIR_ROUTES = [
@@ -381,20 +611,23 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
                 'Mymensingh': 'ময়মনসিংহ রেলওয়ে স্টেশন',
                 'Rangpur': 'রংপুর রেলওয়ে স্টেশন',
                 'Dinajpur': 'দিনাজপুর রেলওয়ে স্টেশন',
-                'Bogura': 'বগুড়া রেলওয়ে স্টেশন',
                 'Cumilla': 'কুমিল্লা রেলওয়ে স্টেশন',
                 'Noakhali': 'নোয়াখালী রেলওয়ে স্টেশন',
                 "Cox's Bazar": "কক্সবাজার রেলওয়ে স্টেশন",
                 'Benapole': 'বেনাপোল রেলওয়ে স্টেশন',
+                'Kishoreganj': 'ভৈরব / কিশোরগঞ্জ রেলওয়ে স্টেশন',
             };
             const fromStation = stationNames[from] || `${from} রেলওয়ে স্টেশন`;
-            result += `🚂 ট্রেন – ${trainTimeH}h | ৳${trainInfo.fare}\n`;
+            const trainDuration = (trainInfo as any).time || `${trainTimeH}h`;
+            result += `🚂 ট্রেন – ${trainDuration} | ৳${trainInfo.shovan || trainInfo.fare.split('-')[0]}-${trainInfo.acBerth || trainInfo.fare.split('-')[1] || trainInfo.fare}\n`;
             result += `**স্টেশন:** ${fromStation}  \n`;
-            result += `**ট্রেনসমূহ:** ${trainInfo.trains.join(' · ')}  \n`;
-            const tfp = trainInfo.fare.split('-');
-            result += `**শোভন ভাড়া:** ৳${tfp[0] || trainInfo.fare}  \n`;
-            if (tfp[1]) result += `**স্নিগ্ধা / এসি ভাড়া:** ৳${tfp[1]}  \n`;
-            result += `**অনলাইন বুকিং:** eticket.railway.gov.bd  \n`;
+            result += `**ট্রেনসমূহ:**  \n`;
+            trainInfo.trains.forEach(t => result += `- ${t}  \n`);
+            if (trainInfo.shovan && trainInfo.shovan !== '—') result += `**শোভন চেয়ার:** ৳${trainInfo.shovan}  \n`;
+            if (trainInfo.snigdha && trainInfo.snigdha !== '—') result += `**স্নিগ্ধা (এসি চেয়ার):** ৳${trainInfo.snigdha}  \n`;
+            if (trainInfo.acSeat && trainInfo.acSeat !== '—') result += `**এসি সিট:** ৳${trainInfo.acSeat}  \n`;
+            if (trainInfo.acBerth && trainInfo.acBerth !== '—') result += `**এসি বার্থ:** ৳${trainInfo.acBerth}  \n`;
+            result += `**অনলাইন টিকেট:** eticket.railway.gov.bd বা Rail Sheba অ্যাপ  \n`;
             result += `**টিপস:** ৩-৫ দিন আগে টিকেট কেটে নিন, বিশেষত শুক্র-শনিবার ও ছুটির সময়।  \n`;
             result += `\n`;
         } else if (connFrom.train && connTo.train) {
@@ -497,19 +730,22 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
                 'Mymensingh': 'Mymensingh Railway Station',
                 'Rangpur': 'Rangpur Railway Station',
                 'Dinajpur': 'Dinajpur Railway Station',
-                'Bogura': 'Bogura Railway Station',
                 'Cumilla': 'Cumilla Railway Station',
                 'Noakhali': 'Noakhali Railway Station',
                 "Cox's Bazar": "Cox's Bazar Railway Station",
                 'Benapole': 'Benapole Railway Station',
+                'Kishoreganj': 'Bhairab / Kishoreganj Railway Station',
             };
             const fromStationEn = stationNamesEn[from] || `${from} Railway Station`;
-            result += `🚂 By Train – ${trainTimeH}h | ৳${trainInfo.fare}\n`;
+            const trainDurationEn = (trainInfo as any).time || `${trainTimeH}h`;
+            result += `🚂 By Train – ${trainDurationEn} | ৳${trainInfo.shovan || trainInfo.fare.split('-')[0]}-${trainInfo.acBerth || trainInfo.fare.split('-')[1] || trainInfo.fare}\n`;
             result += `**Station:** ${fromStationEn}  \n`;
-            result += `**Trains:** ${trainInfo.trains.join(' · ')}  \n`;
-            const tfp = trainInfo.fare.split('-');
-            result += `**Shovan (Economy) Fare:** ৳${tfp[0] || trainInfo.fare}  \n`;
-            if (tfp[1]) result += `**Snigdha / AC Fare:** ৳${tfp[1]}  \n`;
+            result += `**Trains:**  \n`;
+            trainInfo.trains.forEach(t => result += `- ${t}  \n`);
+            if (trainInfo.shovan && trainInfo.shovan !== '—') result += `**Shovon Chair:** ৳${trainInfo.shovan}  \n`;
+            if (trainInfo.snigdha && trainInfo.snigdha !== '—') result += `**Snigdha (AC Chair):** ৳${trainInfo.snigdha}  \n`;
+            if (trainInfo.acSeat && trainInfo.acSeat !== '—') result += `**AC Seat:** ৳${trainInfo.acSeat}  \n`;
+            if (trainInfo.acBerth && trainInfo.acBerth !== '—') result += `**AC Berth:** ৳${trainInfo.acBerth}  \n`;
             result += `**Online Booking:** eticket.railway.gov.bd  \n`;
             result += `**Tip:** Book 3–5 days ahead, especially for weekends and holidays.  \n`;
             result += `\n`;
