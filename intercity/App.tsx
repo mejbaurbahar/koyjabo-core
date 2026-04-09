@@ -3,7 +3,6 @@ import { useLanguage } from './contexts/LanguageContext';
 import { Search, ArrowRightLeft, AlertCircle, PlayCircle, WifiOff, Activity, Home, Train, Sparkles, Clock, Info, Sun, Moon, Menu, Navigation, Map, X, Bot, FileText, Settings, Shield, Download, Calendar, HelpCircle, BookOpen } from 'lucide-react';
 import { AnimatedLogo } from './components/AnimatedLogo';
 import ThemeToggle from './components/ThemeToggle';
-import NotificationBell from './components/NotificationBell';
 import DistrictSelect from './components/DistrictSelect';
 import ResultCard from './components/ResultCard';
 import LoadingState from './components/LoadingState';
@@ -267,7 +266,6 @@ function App() {
           >
             {language === 'bn' ? 'EN' : 'বাং'}
           </button>
-          <NotificationBell />
           <button
             onClick={() => setIsMenuOpen(true)}
             className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors text-gray-600 dark:text-gray-300">
@@ -290,7 +288,6 @@ function App() {
         </a>
 
         <div className="flex items-center gap-2">
-          <NotificationBell />
           <button
             onClick={() => setLanguage(language === 'bn' ? 'en' : 'bn')}
             className="px-2.5 py-1 text-xs font-semibold rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 transition-colors"

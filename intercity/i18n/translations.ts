@@ -35,6 +35,7 @@ export const translations: Record<Language, Translations> = {
             sitting: 'সিটিং',
             ac: 'এসি',
             online: 'অনলাইন',
+            mode: 'মোড',
         },
 
         // Settings
@@ -644,6 +645,7 @@ export const translations: Record<Language, Translations> = {
             sitting: 'Sitting',
             ac: 'AC',
             online: 'Online',
+            mode: 'Mode',
         },
 
         // Settings

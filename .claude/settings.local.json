@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3:*)",
+      "Bash(node:*)",
+      "Bash(npm run:*)",
+      "WebFetch(domain:eticket.railway.gov.bd)",
+      "WebSearch",
+      "WebFetch(domain:amartrain.com)",
+      "WebFetch(domain:bdrailway.vercel.app)",
+      "WebFetch(domain:railwayticketgovbd.com)",
+      "WebFetch(domain:railway.portal.gov.bd)",
+      "WebFetch(domain:www.bddata.org)",
+      "WebFetch(domain:bangladesh-railways.com)",
+      "WebFetch(domain:amadertrain.com)",
+      "WebFetch(domain:www.bdrailwayinfo.org)",
+      "Bash(xargs grep:*)"
+    ]
+  }
+}

@@ -2,8 +2,7 @@ import React from 'react';
 import { Home, Map, Bot, Heart, Info, Train, Menu, Sparkles, Navigation, Clock, MapPin } from 'lucide-react';
 import { AppView } from '../types';
 import ThemeToggle from './ThemeToggle';
-import { AnimatedLogo } from './AnimatedLogo'; // Assuming we can use this or just text
-import NotificationBell from './NotificationBell';
+import { AnimatedLogo } from './AnimatedLogo';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface DesktopNavbarProps {
@@ -34,7 +33,7 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
     toggleTheme,
     isInDhaka
 }) => {
-    const { t } = useLanguage();
+    const { t, language, setLanguage } = useLanguage();
 
     // Navbar should be visible on all views for desktop now
     // if (view === AppView.BUS_DETAILS || view === AppView.LIVE_NAV) {
@@ -133,7 +132,13 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
                     <span>{t('busDetails.liveView')}</span>
                 </button>
                 <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-                <NotificationBell />
+                <button
+                    onClick={() => setLanguage(language === 'bn' ? 'en' : 'bn')}
+                    className="px-3 py-1.5 text-sm font-semibold rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 transition-colors"
+                    title={language === 'bn' ? 'Switch to English' : 'বাংলায় পরিবর্তন করুন'}
+                >
+                    {language === 'bn' ? 'EN' : 'বাং'}
+                </button>
                 <button
                     onClick={onOpenMenu}
                     className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors text-gray-600 dark:text-gray-300"

@@ -1,4 +1,4 @@
-import { EnhancedIntercityResponse, BusOption, TrainOption, FlightOption, DrivingInfo, TravelTips } from './types';
+import { EnhancedIntercityResponse, BusOption, TrainOption, FlightOption, DrivingInfo, TravelTips, RouteResponse } from './types';
 import { BRTC_DHAKA_INTERCITY, BRTC_REGIONAL_INTERCITY } from '../BRTC_INTERCITY_ROUTES_DATA';
 import { DISTRICT_COORDINATES } from './constants';
 import COMPREHENSIVE_ROUTES from '../data/comprehensive-bangladesh-intercity-routes.json';
@@ -238,6 +238,163 @@ const TRAIN_ROUTES: TrainRouteEntry[] = [
         trains: ["Sirajganj Express (off Wed)"],
         fare: "250-700", time: "3.5-4h",
         shovan: "250", snigdha: "480", acSeat: "—", acBerth: "700"
+    },
+    // ── DHAKA TO KHULNA DIVISION ──
+    {
+        from: "Dhaka", to: "Jashore",
+        trains: ["Benapole Express (6:30AM, off Mon)", "Jahanabad Express (8:00PM, via Padma Bridge, off Mon)", "Sundarban Express (8:15AM, off Wed)", "Chitra Express (7:00PM, off Mon)"],
+        fare: "350-1200", time: "4.5-6h",
+        shovan: "350", snigdha: "670", acSeat: "804", acBerth: "1200"
+    },
+    {
+        from: "Dhaka", to: "Jhenaidah",
+        trains: ["Sundarban Express (8:15AM, off Wed)", "Chitra Express (7:00PM, off Mon)"],
+        fare: "330-1100", time: "5-6h",
+        shovan: "330", snigdha: "632", acSeat: "—", acBerth: "1100"
+    },
+    {
+        from: "Dhaka", to: "Chuadanga",
+        trains: ["Sundarban Express (8:15AM, off Wed)", "Chitra Express (7:00PM, off Mon)"],
+        fare: "315-1050", time: "5-6.5h",
+        shovan: "315", snigdha: "604", acSeat: "—", acBerth: "1050"
+    },
+    // ── DHAKA NORTH (RAJSHAHI / RANGPUR DIVISION) ──
+    {
+        from: "Dhaka", to: "Bogura",
+        trains: ["Rangpur Express (9:10AM, off Mon)", "Kurigram Express (8:45PM, off Wed)", "Lalmoni Express (8:10PM, off Fri)", "Silk City Express (2:40PM, off Sun)"],
+        fare: "395-1300", time: "5-6.5h",
+        shovan: "395", snigdha: "756", acSeat: "—", acBerth: "1300"
+    },
+    {
+        from: "Dhaka", to: "Naogaon",
+        trains: ["Dhumketu Express (6:00AM, off Thu, via Santahar)"],
+        fare: "395-1300", time: "6-7h",
+        shovan: "395", snigdha: "756", acSeat: "—", acBerth: "1300"
+    },
+    {
+        from: "Dhaka", to: "Joypurhat",
+        trains: ["Barendra Express (off Tue, via Santahar)", "Titumir Express (off Fri, via Santahar)"],
+        fare: "420-1400", time: "6.5-7.5h",
+        shovan: "420", snigdha: "805", acSeat: "—", acBerth: "1400"
+    },
+    {
+        from: "Dhaka", to: "Gaibandha",
+        trains: ["Rangpur Express (9:10AM, off Mon)", "Kurigram Express (8:45PM, off Wed)"],
+        fare: "450-1500", time: "7-9h",
+        shovan: "450", snigdha: "862", acSeat: "—", acBerth: "1500"
+    },
+    {
+        from: "Dhaka", to: "Thakurgaon",
+        trains: ["Drutojan Express (7:20PM, off Wed)", "Panchagarh Express (10:45PM, daily)"],
+        fare: "500-1700", time: "8.5-10h",
+        shovan: "500", snigdha: "957", acSeat: "—", acBerth: "1700"
+    },
+    {
+        from: "Dhaka", to: "Kurigram",
+        trains: ["Kurigram Express (8:45PM, off Wed)"],
+        fare: "550-1800", time: "9-10h",
+        shovan: "550", snigdha: "1053", acSeat: "—", acBerth: "1800"
+    },
+    {
+        from: "Dhaka", to: "Habiganj",
+        trains: ["Parabat Express (6:30AM, off Tue)", "Joyontika Express (11:15AM, off Tue)", "Kalni Express (2:55PM, off Fri)", "Upaban Express (10:00PM, off Wed)"],
+        fare: "250-950", time: "3.5-5h",
+        shovan: "250", snigdha: "479", acSeat: "574", acBerth: "950"
+    },
+    {
+        from: "Dhaka", to: "Moulvibazar",
+        trains: ["Parabat Express (6:30AM, off Tue)", "Joyontika Express (11:15AM, off Tue)", "Kalni Express (2:55PM, off Fri)", "Upaban Express (10:00PM, off Wed)"],
+        fare: "300-1100", time: "4.5-6h",
+        shovan: "300", snigdha: "575", acSeat: "690", acBerth: "1100"
+    },
+    // ── CROSS-REGIONAL (KHULNA DIVISION) ──
+    {
+        from: "Khulna", to: "Jashore",
+        trains: ["Jahanabad Express (via Padma Bridge)", "Sundarban Express", "Chitra Express", "Rupsha Express (off Sun)", "Simanta Express"],
+        fare: "85-280", time: "1-1.5h",
+        shovan: "85", snigdha: "163", acSeat: "—", acBerth: "280"
+    },
+    {
+        from: "Jashore", to: "Benapole",
+        trains: ["Benapole Express (pass-through, ~45min)"],
+        fare: "50-165", time: "45m",
+        shovan: "50", snigdha: "—", acSeat: "—", acBerth: "165"
+    },
+    {
+        from: "Khulna", to: "Chuadanga",
+        trains: ["Sundarban Express", "Chitra Express", "Kapotaksha Express (off Wed)", "Sagardari Express"],
+        fare: "175-550", time: "2-3h",
+        shovan: "175", snigdha: "335", acSeat: "—", acBerth: "550"
+    },
+    {
+        from: "Khulna", to: "Jhenaidah",
+        trains: ["Sundarban Express", "Chitra Express", "Kapotaksha Express (off Wed)"],
+        fare: "120-400", time: "1.5-2h",
+        shovan: "120", snigdha: "230", acSeat: "—", acBerth: "400"
+    },
+    // ── RAJSHAHI DIVISION ──
+    {
+        from: "Rajshahi", to: "Bogura",
+        trains: ["Barendra Express (off Tue)", "Titumir Express (off Fri)"],
+        fare: "150-480", time: "2-3h",
+        shovan: "150", snigdha: "288", acSeat: "—", acBerth: "480"
+    },
+    {
+        from: "Rajshahi", to: "Sirajganj",
+        trains: ["Sirajganj Express (off Wed, via Ullapara)"],
+        fare: "170-520", time: "2.5-3h",
+        shovan: "170", snigdha: "326", acSeat: "—", acBerth: "520"
+    },
+    {
+        from: "Rajshahi", to: "Joypurhat",
+        trains: ["Barendra Express (via Santahar)", "Titumir Express (via Santahar)"],
+        fare: "180-580", time: "2.5-3.5h",
+        shovan: "180", snigdha: "345", acSeat: "—", acBerth: "580"
+    },
+    {
+        from: "Rajshahi", to: "Naogaon",
+        trains: ["Barendra Express (via Santahar)", "Titumir Express (via Santahar)", "Mahananda Express"],
+        fare: "120-380", time: "1.5-2h",
+        shovan: "120", snigdha: "230", acSeat: "—", acBerth: "380"
+    },
+    // ── RANGPUR DIVISION ──
+    {
+        from: "Bogura", to: "Rangpur",
+        trains: ["Rangpur Express (pass-through)", "Kurigram Express (pass-through)", "Lalmoni Express (pass-through)"],
+        fare: "130-420", time: "1.5-2h",
+        shovan: "130", snigdha: "249", acSeat: "—", acBerth: "420"
+    },
+    {
+        from: "Bogura", to: "Dinajpur",
+        trains: ["Ekota Express (pass-through)", "Drutojan Express (pass-through)", "Panchagarh Express (pass-through)"],
+        fare: "200-640", time: "2.5-3.5h",
+        shovan: "200", snigdha: "384", acSeat: "—", acBerth: "640"
+    },
+    {
+        from: "Rangpur", to: "Dinajpur",
+        trains: ["Ekota Express (pass-through)", "Drutojan Express (pass-through)", "Panchagarh Express (pass-through)"],
+        fare: "130-420", time: "1.5-2h",
+        shovan: "130", snigdha: "249", acSeat: "—", acBerth: "420"
+    },
+    // ── CHATTOGRAM EXTENSION ──
+    {
+        from: "Chattogram", to: "Cox's Bazar",
+        trains: ["Cox's Bazar Express (off Mon)", "Parjotak Express (pass-through, off Sun)"],
+        fare: "265-950", time: "2-2.5h",
+        shovan: "265", snigdha: "507", acSeat: "—", acBerth: "950"
+    },
+    {
+        from: "Chattogram", to: "Brahmanbaria",
+        trains: ["Paharika Express (7:00AM, off Wed)", "Udayan Express (9:45PM, off Tue)", "Titas Commuter (multiple)"],
+        fare: "115-400", time: "2-3h",
+        shovan: "115", snigdha: "220", acSeat: "264", acBerth: "400"
+    },
+    // ── MYMENSINGH DIVISION ──
+    {
+        from: "Dhaka", to: "Sherpur",
+        trains: ["Haor Express (6:50AM, via Mymensingh)"],
+        fare: "200-650", time: "4-5h",
+        shovan: "200", snigdha: "384", acSeat: "—", acBerth: "650"
     },
     // ── DHAKA NORTH-CENTRAL ──
     {
@@ -631,8 +788,11 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
             result += `**টিপস:** ৩-৫ দিন আগে টিকেট কেটে নিন, বিশেষত শুক্র-শনিবার ও ছুটির সময়।  \n`;
             result += `\n`;
         } else if (connFrom.train && connTo.train) {
+            // Find nearest major hub for connection guidance
+            const nearestHub = ['Dhaka', 'Chattogram', 'Sylhet', 'Rajshahi', 'Khulna'].find(h => h !== from && h !== to) || 'Dhaka';
             result += `🚂 ট্রেন – সংযোগ প্রয়োজন\n`;
-            result += `এই রুটে সরাসরি ট্রেন নেই। ঢাকা কমলাপুর বা চট্টগ্রাম হয়ে সংযোগ ট্রেন নেওয়া যেতে পারে।  \n\n`;
+            result += `এই রুটে ${from} থেকে ${to} পর্যন্ত সরাসরি ট্রেন নেই। **${from}** থেকে ঢাকা কমলাপুর বা নিকটতম জংশনে এসে সংযোগ ট্রেন নেওয়া যেতে পারে।  \n`;
+            result += `**বিকল্প:** eticket.railway.gov.bd-তে রুট সার্চ করুন অথবা রেলওয়ে হেল্পলাইন 131-এ কল করুন।  \n\n`;
         }
 
         // ── 3. বিমান ──
@@ -751,7 +911,8 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
             result += `\n`;
         } else if (connFrom.train && connTo.train) {
             result += `🚂 By Train – Connection Required\n`;
-            result += `No direct train. A connecting train via Dhaka Kamalapur may be available.  \n\n`;
+            result += `No direct train from **${from}** to **${to}**. Travel to the nearest major junction (Dhaka Kamalapur, Chattogram, or Rajshahi) and take a connecting train.  \n`;
+            result += `**Alternative:** Search on eticket.railway.gov.bd or call Railway Helpline: 131.  \n\n`;
         }
 
         // ── 3. Flight ──

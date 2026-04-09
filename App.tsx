@@ -46,7 +46,7 @@ import {
   formatChatTimestamp
 } from './services/chatHistoryManager';
 
-import NotificationBell from './components/NotificationBell';
+// NotificationBell removed - replaced with language toggle for header consistency
 import BusImageViewer from './components/BusImageViewer';
 
 import SettingsPage from './components/SettingsPage';
@@ -430,7 +430,7 @@ const checkIfInDhaka = (loc: UserLocation | null): boolean => {
 
 const App: React.FC = () => {
   // Multi-language support
-  const { t, formatNumber, language } = useLanguage();
+  const { t, formatNumber, language, setLanguage } = useLanguage();
 
   // Polyfill for requestIdleCallback (Safari support)
   const requestIdleCallback = window.requestIdleCallback || ((cb: IdleRequestCallback) => {
@@ -3391,7 +3391,13 @@ const App: React.FC = () => {
               <AnimatedLogo size="small" />
             </div>
             <div className="flex items-center gap-1">
-              <NotificationBell />
+              <button
+                onClick={() => setLanguage(language === 'bn' ? 'en' : 'bn')}
+                className="px-2.5 py-1 text-xs font-semibold rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 transition-colors"
+                aria-label="Toggle language"
+              >
+                {language === 'bn' ? 'EN' : 'বাং'}
+              </button>
               <button onClick={() => setShowLiveMap(true)} className="p-2 hover:bg-blue-50 bg-white border-2 border-blue-100 rounded-full text-blue-600 transition-colors shadow-lg shadow-blue-100 active:scale-95 animate-pulse flex items-center justify-center" aria-label="Live Location">
                 <Navigation className="w-4 h-4" />
               </button>
