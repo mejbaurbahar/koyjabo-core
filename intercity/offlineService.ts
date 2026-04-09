@@ -555,6 +555,73 @@ const TRAIN_ROUTES: TrainRouteEntry[] = [
         fare: "3000+", time: "~18h",
         shovan: "—", snigdha: "3000", acSeat: "4000", acBerth: "5500"
     },
+    // ── REGIONAL & LOCAL COMMUTER TRAINS ──
+    {
+        from: "Khulna", to: "Benapole",
+        trains: ["Benapole Commuter (9:00AM, 6:30PM)", "Betna Express"],
+        fare: "30-60", time: "2.5-3h",
+        shovan: "30", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Benapole", to: "Jashore",
+        trains: ["Benapole Commuter", "Betna Express"],
+        fare: "20-40", time: "1h",
+        shovan: "20", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Dhaka", to: "Narayanganj",
+        trains: ["Narayanganj Commuter (Hourly Service)"],
+        fare: "15-20", time: "45m-1h",
+        shovan: "15", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Dhaka", to: "Gazipur",
+        trains: ["Turag Express", "Kaliakoir Commuter", "Tangail Commuter"],
+        fare: "20-45", time: "1h",
+        shovan: "20", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Chattogram", to: "Feni",
+        trains: ["Feni Commuter", "Jalalabad Express"],
+        fare: "45-80", time: "1.5h",
+        shovan: "45", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Rajshahi", to: "Chapainawabganj",
+        trains: ["Ishwardi-Chapainawabganj Local", "Commuter Train"],
+        fare: "25-50", time: "1.5h",
+        shovan: "25", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Sylhet", to: "Akhaura",
+        trains: ["Jalalabad Express", "Surma Mail", "Kushiara Express"],
+        fare: "60-120", time: "3h",
+        shovan: "60", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Mymensingh", to: "Jamalpur",
+        trains: ["Mymensingh-Jamalpur Local", "Brahmaputra Commuter"],
+        fare: "30-60", time: "1.5h",
+        shovan: "30", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Mymensingh", to: "Bhairab",
+        trains: ["Isha Khan Express", "Local Train"],
+        fare: "40-80", time: "2h",
+        shovan: "40", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Parbatipur", to: "Panchagarh",
+        trains: ["Kanchan Express", "Ramsagor Express"],
+        fare: "50-100", time: "2h",
+        shovan: "50", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
+    {
+        from: "Ishwardi", to: "Khulna",
+        trains: ["Ishwardi-Khulna Commuter", "Mahananda Express"],
+        fare: "60-120", time: "3.5h",
+        shovan: "60", snigdha: "—", acSeat: "—", acBerth: "—"
+    },
 ];
 
 const AIR_ROUTES = [
