@@ -728,89 +728,93 @@ const TRAIN_ROUTES: TrainRouteEntry[] = [
 ];
 
 const AIR_ROUTES = [
-    { from: "Dhaka", to: "Chattogram", airlines: ["Biman", "US-Bangla", "Novoair", "Air Astra"], time: "45m", fare: "3500-8000" },
-    { from: "Dhaka", to: "Cox's Bazar", airlines: ["Biman", "US-Bangla", "Novoair", "Air Astra"], time: "1h", fare: "4500-12000" },
+    { from: "Dhaka", to: "Chattogram", airlines: ["Biman", "US-Bangla", "Novoair", "Air Astra"], time: "45-50m", fare: "3500-8500" },
+    { from: "Dhaka", to: "Cox's Bazar", airlines: ["Biman", "US-Bangla", "Novoair", "Air Astra"], time: "1h", fare: "4500-12500" },
     { from: "Dhaka", to: "Sylhet", airlines: ["Biman", "US-Bangla", "Novoair", "Air Astra"], time: "45m", fare: "3500-7500" },
-    { from: "Dhaka", to: "Saidpur", airlines: ["Biman", "US-Bangla", "Novoair", "Air Astra"], time: "50m", fare: "3800-8500" },
-    { from: "Dhaka", to: "Jashore", airlines: ["Biman", "US-Bangla", "Novoair"], time: "40m", fare: "3200-7000" },
-    { from: "Dhaka", to: "Barishal", airlines: ["Biman", "US-Bangla", "Novoair"], time: "30m", fare: "3000-6000" },
-    { from: "Dhaka", to: "Rajshahi", airlines: ["Biman", "US-Bangla", "Novoair"], time: "40m", fare: "3500-7500" },
-    { from: "Chattogram", to: "Dhaka", airlines: ["Biman", "US-Bangla", "Novoair"], time: "45m", fare: "3500-8000" },
-    { from: "Sylhet", to: "Dhaka", airlines: ["Biman", "US-Bangla", "Novoair"], time: "45m", fare: "3500-7500" },
-    { from: "Cox's Bazar", to: "Dhaka", airlines: ["Biman", "US-Bangla", "Novoair"], time: "1h", fare: "4500-12000" }
+    { from: "Dhaka", to: "Saidpur", airlines: ["Biman", "US-Bangla", "Novoair", "Air Astra"], time: "50-55m", fare: "3800-8800" },
+    { from: "Dhaka", to: "Jashore", airlines: ["Biman", "US-Bangla", "Novoair", "Air Astra"], time: "40-45m", fare: "3200-7500" },
+    { from: "Dhaka", to: "Barishal", airlines: ["Biman", "US-Bangla", "Novoair"], time: "30-40m", fare: "3000-6500" },
+    { from: "Dhaka", to: "Rajshahi", airlines: ["Biman", "US-Bangla", "Novoair"], time: "40m", fare: "3500-7800" },
+    { from: "Chattogram", to: "Sylhet", airlines: ["Biman (Direct)"], time: "1h", fare: "5000-9000" },
+    { from: "Chattogram", to: "Cox's Bazar", airlines: ["Biman (Seasonal)"], time: "30m", fare: "3000-5000" },
 ];
 
 const LAUNCH_ROUTES = [
-    { from: "Dhaka", to: "Barishal", operators: ["Sundarban", "Surovi", "Parabat", "Manami", "Kirtonkhola"], time: "Overnight/6-8h", fare: "300 (Deck) - 5000 (VIP Room)" },
-    { from: "Dhaka", to: "Bhola", operators: ["Karnaphuli", "Crystal", "Prince Awlad", "Green Line (Water Bus)"], time: "5-6h", fare: "300-1500" },
-    { from: "Dhaka", to: "Patuakhali", operators: ["Sundarban", "Kamal Khan", "Sattar Khan"], time: "10-12h", fare: "400-3000" },
-    { from: "Dhaka", to: "Chandpur", operators: ["Mayur", "Sonartori", "Bogdad", "Imam Hasan"], time: "3-4h", fare: "150-500" },
-    { from: "Dhaka", to: "Hatiya", operators: ["Farhan", "Tasrif"], time: "12h+", fare: "500-3000" },
-    { from: "Dhaka", to: "Shariatpur", operators: ["Sureshwar Launch"], time: "4-5h", fare: "150-400" },
-    { from: "Dhaka", to: "Kuakata", operators: ["Sundarban (Direct) - Seasonal"], time: "12-14h", fare: "500-3000" },
+    { from: "Dhaka", to: "Barishal", operators: ["Manami (Premium)", "Adventure", "Kuakata", "Sundarban", "Surovi", "Parabat", "Kirtonkhola", "Green Line (Water Bus)"], time: "Overnight (6-8h) / 5h (Water Bus)", fare: "300 (Deck) - 6000 (VIP/Family Room)" },
+    { from: "Dhaka", to: "Bhola", operators: ["Karnaphuli", "Crystal", "Prince Awlad", "Green Line (Water Bus)", "Tasrif", "Adventure"], time: "5-6h", fare: "300-4500" },
+    { from: "Dhaka", to: "Patuakhali", operators: ["Sundarban", "Sattar Khan", "AR Khan", "Jamal", "Surovi"], time: "10-12h", fare: "400-5000" },
+    { from: "Dhaka", to: "Chandpur", operators: ["Mayur", "Sonartori", "Bogdad", "Imam Hasan", "Green Line (Water Bus)"], time: "3-4h", fare: "150-800" },
+    { from: "Dhaka", to: "Hatiya", operators: ["Farhan", "Tasrif"], time: "12h+", fare: "500-4000" },
+    { from: "Dhaka", to: "Shariatpur", operators: ["Sureshwar", "Noyontara"], time: "4-5h", fare: "150-600" },
+    { from: "Dhaka", to: "Kuakata", operators: ["Sundarban (Direct via Patuakhali)"], time: "12-14h", fare: "500-4500" },
+    { from: "Dhaka", to: "Bhandaria", operators: ["Surovi", "Farhan", "Bishakha"], time: "8-10h", fare: "350-3000" },
+    { from: "Dhaka", to: "Hularhat", operators: ["Adventure", "Surovi", "Parabat"], time: "8-10h (Pirojpur)", fare: "300-4000" },
 ];
 
 const BUS_ROUTES_MAJOR = [
-    // --- FROM DHAKA ---
-    { from: "Dhaka", to: "Cox's Bazar", buses: ["Green Line (Scania/Double Decker)", "Shohagh", "Hanif", "Shyamoli", "Desh Travels", "Saintmartin Paribahan", "Relax Transport"], fare: "900-2500" },
-    { from: "Dhaka", to: "Chattogram", buses: ["Green Line", "Saudia", "Hanif", "Shyamoli", "Ena", "Shohagh", "Tisha"], fare: "680-1500" },
-    { from: "Dhaka", to: "Sylhet", buses: ["Green Line", "Ena", "London Express", "Hanif", "Shyamoli", "Al-Mobaraka"], fare: "570-1400" },
-    { from: "Dhaka", to: "Khulna", buses: ["Shohagh", "Hanif", "Green Line", "Tungipara Express", "Falguni"], fare: "700-1400" },
-    { from: "Dhaka", to: "Rajshahi", buses: ["Desh Travels", "National Travels", "Hanif", "Shyamoli", "Grameen Travels"], fare: "600-1300" },
-    { from: "Dhaka", to: "Barishal", buses: ["Sakura", "Hanif", "Shyamoli", "Drutish"], fare: "500-1000" },
-    { from: "Dhaka", to: "Rangpur", buses: ["Nabil", "SR Travels", "Hanif", "Agomony", "Dipjol"], fare: "700-1400" },
-    { from: "Dhaka", to: "Benapole", buses: ["Green Line", "Shohagh", "Hanif", "Shyamoli", "Royal"], fare: "600-1400" },
-    { from: "Dhaka", to: "Kolkata", buses: ["Green Line", "Shohagh", "Shyamoli", "Maitree (BRTC)"], fare: "1800-2400 (Direct)" },
-    { from: "Dhaka", to: "Bandarban", buses: ["Hanif", "Shyamoli", "Saintmartin Paribahan", "Dolphin"], fare: "900-1800" },
-    { from: "Dhaka", to: "Rangamati", buses: ["Hanif", "Shyamoli", "Dolphin", "S.Alam"], fare: "900-1800" },
-    { from: "Dhaka", to: "Khagrachari", buses: ["Shanti Paribahan", "S.Alam", "Shyamoli", "Hanif"], fare: "850-1600" },
-    { from: "Dhaka", to: "Kushtia", buses: ["SB Super Deluxe", "Hanif", "Shyamoli"], fare: "600-1000" },
-    { from: "Dhaka", to: "Bogura", buses: ["Hanif", "SR Travels", "Shyamoli", "Nabil", "National Travels"], fare: "500-1000" },
-    { from: "Dhaka", to: "Dinajpur", buses: ["Hanif", "Nabil", "SR Travels", "Dipjol"], fare: "600-1200" },
-    { from: "Dhaka", to: "Faridpur", buses: ["Shohagh", "Hanif", "Local buses (Gulistan)"], fare: "300-600" },
-    { from: "Dhaka", to: "Cumilla", buses: ["Hanif", "Shyamoli", "Ena", "Tisha", "Sonar Bangla"], fare: "250-500" },
-    { from: "Dhaka", to: "Noakhali", buses: ["Hanif", "Shyamoli", "Ena"], fare: "350-600" },
-    { from: "Dhaka", to: "Feni", buses: ["Hanif", "Shyamoli", "Ena", "Green Line"], fare: "300-550" },
-    { from: "Dhaka", to: "Jashore", buses: ["Shohagh", "Hanif", "Green Line", "Shyamoli"], fare: "600-1200" },
-    { from: "Dhaka", to: "Mymensingh", buses: ["Shohagh", "Ena", "Local buses (Mohakhali)"], fare: "200-400" },
-    { from: "Dhaka", to: "Tangail", buses: ["Shohagh", "Local buses (Mohakhali/Kalyanpur)"], fare: "150-300" },
-    { from: "Dhaka", to: "Narayanganj", buses: ["Local buses (Gulistan)"], fare: "50-100" },
+    // --- FROM DHAKA (EASTERN/SYLHET/CHITTAGONG) ---
+    { from: "Dhaka", to: "Cox's Bazar", buses: ["Green Line (Scania/Double Decker)", "Shohagh", "Hanif", "Shyamoli", "Desh Travels", "Saintmartin Paribahan", "Relax Transport", "London Express"], fare: "900-2800" },
+    { from: "Dhaka", to: "Chattogram", buses: ["Green Line", "Saudia", "Hanif", "Shyamoli", "Ena", "Shohagh", "Tisha Blue", "Star Line"], fare: "680-1800" },
+    { from: "Dhaka", to: "Sylhet", buses: ["Green Line", "Ena", "London Express", "Hanif", "Shyamoli", "Al-Mobaraka", "Saudia"], fare: "570-1600" },
+    
+    // --- FROM DHAKA (NORTHERN/RAJSHAHI/RANGPUR) ---
+    { from: "Dhaka", to: "Rajshahi", buses: ["Desh Travels", "National Travels", "Hanif", "Shyamoli", "Grameen Travels", "Ena"], fare: "600-1400" },
+    { from: "Dhaka", to: "Rangpur", buses: ["Nabil", "SR Travels", "Hanif", "Agomony", "Dipjol", "Ena"], fare: "700-1500" },
+    { from: "Dhaka", to: "Dinajpur", buses: ["Hanif", "Nabil", "SR Travels", "Dipjol", "Ena"], fare: "600-1400" },
+    { from: "Dhaka", to: "Bogura", buses: ["Hanif", "SR Travels", "Shyamoli", "Nabil", "National Travels", "Ena"], fare: "500-1200" },
+    { from: "Dhaka", to: "Panchagarh", buses: ["Hanif", "Nabil", "SR Travels", "Ena"], fare: "800-1800" },
+
+    // --- FROM DHAKA (SOUTHERN/KHULNA/BARISHAL via PADMA BRIDGE) ---
+    { from: "Dhaka", to: "Khulna", buses: ["Shohagh (Premium)", "Hanif", "Green Line", "Tungipara Express", "Falguni", "Emad Paribahan"], fare: "700-1600" },
+    { from: "Dhaka", to: "Barishal", buses: ["Sakura", "Hanif", "Shyamoli", "Drutish", "Green Line", "Shohagh"], fare: "500-1200" },
+    { from: "Dhaka", to: "Jashore", buses: ["Shohagh", "Hanif", "Green Line", "Shyamoli", "Desh Travels"], fare: "600-1400" },
+    { from: "Dhaka", to: "Benapole", buses: ["Green Line", "Shohagh", "Hanif", "Shyamoli", "Royal", "London Express"], fare: "600-1600" },
+    { from: "Dhaka", to: "Kolkata", buses: ["Green Line", "Shohagh", "Shyamoli", "Desh Travels", "Maitree (BRTC)"], fare: "2000-2800 (Direct)" },
+    { from: "Dhaka", to: "Gopalganj", buses: ["Tungipara Express", "Emad Paribahan", "Comfort"], fare: "350-700" },
+    { from: "Dhaka", to: "Patuakhali", buses: ["Sakura", "Hanif", "Surovi"], fare: "600-1200" },
+    { from: "Dhaka", to: "Kuakata", buses: ["Sakura", "Hanif", "Green Line"], fare: "800-1500" },
+
+    // --- FROM DHAKA (OTHERS) ---
+    { from: "Dhaka", to: "Bandarban", buses: ["Hanif", "Shyamoli", "Saintmartin Paribahan", "Dolphin", "S.Alam"], fare: "900-2000" },
+    { from: "Dhaka", to: "Rangamati", buses: ["Hanif", "Shyamoli", "Dolphin", "S.Alam"], fare: "900-2000" },
+    { from: "Dhaka", to: "Khagrachari", buses: ["Shanti Paribahan", "S.Alam", "Shyamoli", "Hanif", "Ena"], fare: "850-1800" },
+    { from: "Dhaka", to: "Kushtia", buses: ["SB Super Deluxe", "Hanif", "Shyamoli", "JR Paribahan"], fare: "600-1200" },
+    { from: "Dhaka", to: "Faridpur", buses: ["Shohagh", "Hanif", "Local buses (Gulistan/Jatrabari)"], fare: "300-600" },
+    { from: "Dhaka", to: "Cumilla", buses: ["Hanif", "Shyamoli", "Ena", "Tisha Blue", "Sonar Bangla", "Asia Line"], fare: "250-600" },
+    { from: "Dhaka", to: "Noakhali", buses: ["Hanif", "Shyamoli", "Ena", "Dreamline"], fare: "350-750" },
+    { from: "Dhaka", to: "Feni", buses: ["Hanif", "Shyamoli", "Ena", "Green Line", "Star Line"], fare: "300-600" },
+    { from: "Dhaka", to: "Mymensingh", buses: ["Shohagh", "Ena", "Al-Mobaraka", "Local (Mohakhali)"], fare: "220-500" },
+    { from: "Dhaka", to: "Tangail", buses: ["Shohagh", "Sakal-Sondha", "Local (Mohakhali)"], fare: "150-400" },
+    { from: "Dhaka", to: "Narayanganj", buses: ["Bandhan", "Utsab", "Local (Gulistan)"], fare: "50-120" },
+
     // --- FROM CHATTOGRAM ---
-    { from: "Chattogram", to: "Cox's Bazar", buses: ["S.Alam", "Shohagh", "Green Line", "Desh Travels", "Hanif", "Modern Line", "Soudia"], fare: "300-700" },
-    { from: "Chattogram", to: "Bandarban", buses: ["Purbani", "Purabi", "Dolphin", "Local buses (Dampara Terminal)"], fare: "180-350" },
-    { from: "Chattogram", to: "Rangamati", buses: ["BRTC", "Local buses (New Bridge Terminal)", "Dolphin"], fare: "200-400" },
-    { from: "Chattogram", to: "Khagrachari", buses: ["Shanti Paribahan", "Local buses (New Bridge Terminal)"], fare: "150-300" },
-    { from: "Chattogram", to: "Cumilla", buses: ["Hanif", "Shyamoli", "Green Line", "Ena", "Tisha"], fare: "200-400" },
-    { from: "Chattogram", to: "Feni", buses: ["Hanif", "Shyamoli", "Local buses"], fare: "100-200" },
+    { from: "Chattogram", to: "Cox's Bazar", buses: ["S.Alam", "Shohagh", "Green Line", "Desh Travels", "Hanif", "Modern Line", "Soudia"], fare: "300-900" },
+    { from: "Chattogram", to: "Bandarban", buses: ["Purbani", "Purabi", "Dolphin", "S.Alam"], fare: "180-450" },
+    { from: "Chattogram", to: "Rangamati", buses: ["BRTC", "Paharika", "Dolphin", "S.Alam"], fare: "200-500" },
+    { from: "Chattogram", to: "Khagrachari", buses: ["Shanti Paribahan", "Local buses"], fare: "150-400" },
+    { from: "Chattogram", to: "Cumilla", buses: ["Hanif", "Shyamoli", "Green Line", "Ena", "Tisha Blue"], fare: "200-500" },
+    { from: "Chattogram", to: "Feni", buses: ["Hanif", "Shyamoli", "Star Line"], fare: "120-250" },
+    { from: "Chattogram", to: "Sylhet", buses: ["Hanif", "Shyamoli", "Green Line", "Ena", "London Express"], fare: "500-1400" },
     { from: "Chattogram", to: "Noakhali", buses: ["Local buses", "BRTC"], fare: "120-250" },
-    { from: "Chattogram", to: "Sylhet", buses: ["Hanif", "Shyamoli", "Green Line", "Ena"], fare: "500-1000" },
+
     // --- CHITTAGONG HILL TRACTS INTERNAL ---
-    { from: "Bandarban", to: "Cox's Bazar", buses: ["Local buses (via Chokoria)", "Shared Jeep/Microbus (চাঁদের গাড়ি)"], fare: "150-300" },
-    { from: "Bandarban", to: "Chattogram", buses: ["Purbani", "Purabi", "Dolphin", "Local buses"], fare: "180-350" },
-    { from: "Rangamati", to: "Chattogram", buses: ["BRTC", "Local buses (New Bridge Terminal)"], fare: "200-400" },
-    { from: "Khagrachari", to: "Chattogram", buses: ["Shanti Paribahan", "Local buses"], fare: "150-300" },
-    // --- COX'S BAZAR AREA ---
-    { from: "Cox's Bazar", to: "Teknaf", buses: ["Local buses", "Shared transport"], fare: "80-150" },
-    { from: "Cox's Bazar", to: "Chattogram", buses: ["S.Alam", "Shohagh", "Green Line", "Hanif", "Modern Line"], fare: "300-700" },
-    // --- KHULNA DIVISION ---
-    { from: "Khulna", to: "Barishal", buses: ["Shohagh", "Hanif", "Local buses"], fare: "300-500" },
+    { from: "Bandarban", to: "Cox's Bazar", buses: ["Local buses (via Chokoria)", "Shared Jeep (Chander Gari)"], fare: "150-350" },
+    { from: "Bandarban", to: "Chattogram", buses: ["Purbani", "Purabi", "Dolphin", "Local buses"], fare: "180-450" },
+    { from: "Rangamati", to: "Chattogram", buses: ["BRTC", "Local buses"], fare: "200-500" },
+    { from: "Khagrachari", to: "Chattogram", buses: ["Shanti Paribahan", "Local buses"], fare: "150-400" },
+    
+    // --- OTHERS ---
+    { from: "Khulna", to: "Barishal", buses: ["Shohagh", "Hanif", "Sakura", "Local buses"], fare: "300-600" },
     { from: "Khulna", to: "Satkhira", buses: ["Shohagh", "Local buses"], fare: "150-300" },
-    { from: "Khulna", to: "Jashore", buses: ["Shohagh", "Hanif", "Local buses"], fare: "100-200" },
-    { from: "Jashore", to: "Benapole", buses: ["Local buses", "BRTC"], fare: "50-100" },
-    // --- SYLHET DIVISION ---
-    { from: "Sylhet", to: "Sunamganj", buses: ["Local buses"], fare: "80-180" },
-    { from: "Sylhet", to: "Habiganj", buses: ["Local buses", "Hanif"], fare: "100-200" },
-    { from: "Sylhet", to: "Moulvibazar", buses: ["Local buses", "Hanif"], fare: "100-200" },
-    { from: "Sylhet", to: "Brahmanbaria", buses: ["Hanif", "Shyamoli", "Local buses"], fare: "250-450" },
-    // --- RAJSHAHI DIVISION ---
-    { from: "Rajshahi", to: "Chapainawabganj", buses: ["Local buses", "BRTC"], fare: "80-150" },
-    { from: "Rajshahi", to: "Naogaon", buses: ["Local buses"], fare: "100-200" },
-    { from: "Rajshahi", to: "Bogura", buses: ["Hanif", "Local buses"], fare: "200-400" },
-    { from: "Rajshahi", to: "Pabna", buses: ["Local buses"], fare: "150-250" },
-    // --- RANGPUR DIVISION ---
-    { from: "Rangpur", to: "Dinajpur", buses: ["Hanif", "Local buses"], fare: "150-250" },
-    { from: "Rangpur", to: "Bogura", buses: ["Nabil", "SR Travels", "Local buses"], fare: "200-350" },
-    { from: "Bogura", to: "Dinajpur", buses: ["Local buses", "Hanif"], fare: "200-350" },
+    { from: "Khulna", to: "Jashore", buses: ["Shohagh", "Hanif", "Local buses"], fare: "100-250" },
+    { from: "Jashore", to: "Benapole", buses: ["Local buses", "BRTC"], fare: "50-120" },
+    { from: "Sylhet", to: "Sunamganj", buses: ["Local buses"], fare: "80-200" },
+    { from: "Sylhet", to: "Habiganj", buses: ["Local buses", "Hanif", "Shyamoli"], fare: "100-250" },
+    { from: "Sylhet", to: "Moulvibazar", buses: ["Local buses", "Hanif", "Shyamoli"], fare: "100-250" },
+    { from: "Rajshahi", to: "Chapainawabganj", buses: ["Local buses", "BRTC"], fare: "80-180" },
+    { from: "Rajshahi", to: "Naogaon", buses: ["Local buses"], fare: "100-250" },
+    { from: "Rajshahi", to: "Bogura", buses: ["Hanif", "Shyamoli", "Local buses"], fare: "200-450" },
+    { from: "Rangpur", to: "Dinajpur", buses: ["Hanif", "Nabil", "Local buses"], fare: "150-300" },
 ];
 
 // --- HELPERS ---
