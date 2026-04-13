@@ -180,6 +180,12 @@ export const BUS_OPERATORS: IntercityBusOperator[] = [
     { name: "SR Travels", primaryRoute: "North Bengal", mainCounterLocation: "Gabtoli / Kalyanpur", contactNumber: "01716-560641, 01711-356616" },
     { name: "Desh Travels", primaryRoute: "Rajshahi/Chapai", mainCounterLocation: "Kalyanpur / Arambagh", contactNumber: "01762-684433, 01762-684405" },
     { name: "Eagle Paribahan", primaryRoute: "Jashore/Khulna", mainCounterLocation: "Gabtoli / Kalyanpur", contactNumber: "01711-300898" },
+    { name: "Soudia (Saudia)", primaryRoute: "Chattogram/Cox's Bazar/Teknaf", mainCounterLocation: "Arambagh / Kalyanpur", contactNumber: "01711-629960" },
+    { name: "Agomoni Express", primaryRoute: "North Bengal (Rangpur/Dinajpur)", mainCounterLocation: "Gabtoli / Kalyanpur", contactNumber: "01985-555553" },
+    { name: "Tisha Paribahan", primaryRoute: "Chattogram/Brahmanbaria", mainCounterLocation: "Sayedabad / Arambagh", contactNumber: "01711-386408" },
+    { name: "Dolphin Paribahan", primaryRoute: "CHT (Rangamati/Bandarban)", mainCounterLocation: "Sayedabad", contactNumber: "01716-964648" },
+    { name: "Tungipara Express", primaryRoute: "Khulna/Bagerhat/Faridpur", mainCounterLocation: "Gabtoli / Gulistan", contactNumber: "01711-266512" },
+    { name: "Saintmartin Paribahan", primaryRoute: "Cox's Bazar/Teknaf/CHT", mainCounterLocation: "Fakirapool / Sayedabad", contactNumber: "01762-691341" },
 ];
 
 // Helper functions to search intercity data

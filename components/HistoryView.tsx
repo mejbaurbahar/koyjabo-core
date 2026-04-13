@@ -19,6 +19,7 @@ import {
 import { BUS_DATA, STATIONS } from '../constants';
 import { BusRoute } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
+import AdSenseAd from './AdSenseAd';
 
 interface HistoryViewProps {
     onBack: () => void;
@@ -222,6 +223,8 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onViewJo
                                 </div>
                             </div>
                         </div>
+
+                        <AdSenseAd adSlot="auto" className="my-6" />
 
 
                         {/* Most Used Buses */}

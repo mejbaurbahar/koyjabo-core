@@ -3399,6 +3399,87 @@ export const BUS_DATA: BusRoute[] = [
     stops: ['bosila', 'mohammadpur', 'kallyanpur', 'bangla_college', 'ansar_camp', 'mirpur1', 'sony_cinema', 'mirpur2', 'mirpur10'],
     type: 'Local',
     hours: '6:00 AM - 9:30 PM'
+  },
+  {
+    id: 'victor_classic',
+    name: 'Victor Classic',
+    bnName: 'ভিক্টর ক্লাসিক',
+    routeString: 'Gabtoli ⇄ Narayanganj',
+    stops: ['gabtoli', 'mazar_road', 'technical', 'kallyanpur', 'shyamoli', 'asad_gate', 'dhanmondi32', 'kalabagan', 'science_lab', 'shahbag', 'matsya_bhaban', 'high_court', 'press_club', 'paltan', 'gpo', 'gulistan', 'motijheel', 'kamalapur', 'narayanganj'],
+    type: 'Semi-Sitting',
+    hours: '6:00 AM - 10:00 PM'
+  },
+  {
+    id: 'ruposhi_bangla',
+    name: 'Ruposhi Bangla',
+    bnName: 'রূপসী বাংলা',
+    routeString: 'Mirpur 14 ⇄ Jatrabari',
+    stops: ['mirpur14', 'mirpur13', 'mirpur11', 'mirpur10', 'mirpur2', 'sony_cinema', 'mirpur1', 'ansar_camp', 'technical', 'kallyanpur', 'shyamoli', 'farmgate', 'kawran_bazar', 'bangla_motor', 'shahbag', 'paltan', 'gulistan', 'tikatuli', 'jatrabari'],
+    type: 'Semi-Sitting',
+    hours: '6:00 AM - 10:00 PM'
+  },
+  {
+    id: 'modhumita',
+    name: 'Modhumita',
+    bnName: 'মধুমিতা',
+    routeString: 'Mirpur 10 ⇄ Demra',
+    stops: ['mirpur10', 'mirpur2', 'sony_cinema', 'mirpur1', 'ansar_camp', 'technical', 'kallyanpur', 'shyamoli', 'farmgate', 'kawran_bazar', 'bangla_motor', 'shahbag', 'gulistan', 'tikatuli', 'sayedabad', 'jatrabari', 'shanir_akhra', 'signboard', 'demra'],
+    type: 'Local',
+    hours: '6:00 AM - 10:00 PM'
+  },
+  {
+    id: 'jhilik',
+    name: 'Jhilik Paribahan',
+    bnName: 'ঝিলিক পরিবহন',
+    routeString: 'Savar ⇄ Sadarghat',
+    stops: ['savar', 'hemayetpur', 'boliarpur', 'modhumoti', 'amin_bazar', 'parbat', 'gabtoli', 'mazar_road', 'technical', 'kallyanpur', 'shyamoli', 'asad_gate', 'katabon', 'shahbag', 'paltan', 'gulistan', 'naya_bazar', 'ray_saheb_bazar', 'sadarghat'],
+    type: 'Local',
+    hours: '6:00 AM - 9:30 PM'
+  },
+  {
+    id: 'shahin',
+    name: 'Shahin Paribahan',
+    bnName: 'শাহীন পরিবহন',
+    routeString: 'Gabtoli ⇄ Sayedabad',
+    stops: ['gabtoli', 'mazar_road', 'technical', 'kallyanpur', 'shyamoli', 'college_gate', 'asad_gate', 'farmgate', 'kawran_bazar', 'bangla_motor', 'shahbag', 'paltan', 'gulistan', 'tikatuli', 'jatrabari', 'sayedabad'],
+    type: 'Local',
+    hours: '6:00 AM - 10:00 PM'
+  },
+  {
+    id: 'bonolata',
+    name: 'Bonolata',
+    bnName: 'বনলতা',
+    routeString: 'Mirpur 10 ⇄ Sadarghat',
+    stops: ['mirpur10', 'kallyanpur', 'shyamoli', 'asad_gate', 'dhanmondi32', 'kalabagan', 'science_lab', 'shahbag', 'bangla_motor', 'press_club', 'gulistan', 'naya_bazar', 'sadarghat'],
+    type: 'Local',
+    hours: '6:00 AM - 9:30 PM'
+  },
+  {
+    id: 'nabin',
+    name: 'Nabin Paribahan',
+    bnName: 'নবীন পরিবহন',
+    routeString: 'Uttara ⇄ Motijheel',
+    stops: ['uttara', 'azampur', 'airport', 'khilkhet', 'kuril', 'kuril_chourasta', 'mohakhali', 'jahangir_gate', 'farmgate', 'kawran_bazar', 'bangla_motor', 'shahbag', 'paltan', 'motijheel'],
+    type: 'Local',
+    hours: '6:00 AM - 10:00 PM'
+  },
+  {
+    id: 'sonar_tori',
+    name: 'Sonar Tori',
+    bnName: 'সোনার তরী',
+    routeString: 'Savar ⇄ Jatrabari',
+    stops: ['savar', 'hemayetpur', 'boliarpur', 'modhumoti', 'amin_bazar', 'parbat', 'gabtoli', 'mazar_road', 'technical', 'kallyanpur', 'shyamoli', 'farmgate', 'kawran_bazar', 'bangla_motor', 'gulistan', 'tikatuli', 'jatrabari'],
+    type: 'Semi-Sitting',
+    hours: '6:00 AM - 10:00 PM'
+  },
+  {
+    id: 'probashi',
+    name: 'Probashi',
+    bnName: 'প্রবাসী',
+    routeString: 'Mirpur 10 ⇄ Narayanganj',
+    stops: ['mirpur10', 'kallyanpur', 'shyamoli', 'farmgate', 'kawran_bazar', 'bangla_motor', 'shahbag', 'paltan', 'gulistan', 'motijheel', 'kamalapur', 'narayanganj'],
+    type: 'Semi-Sitting',
+    hours: '6:00 AM - 9:30 PM'
   }
 ];
 
