@@ -44,29 +44,48 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onViewJo
 
     // Subscribe to real-time updates
     useEffect(() => {
-        // Initial fetch from API
+        // Immediate refresh on mount so data is always current
         fetchGlobalStats();
+        refreshHistoryData();
 
         // Subscribe to custom events from same tab
         const unsubscribe = subscribeToGlobalStats((stats) => {
             setGlobalStats(stats);
         });
 
-        // Listen for storage changes from other tabs
+        // Listen for storage changes from other tabs / same-tab writes
         const unsubscribeStorage = initStorageListener(() => {
             setGlobalStats(getGlobalStats());
             refreshHistoryData();
         });
 
-        // Refresh stats every 2 seconds (aggressive polling for real-time sync)
-        const interval = setInterval(() => {
-            fetchGlobalStats(); // Poll API for latest backend data
+        // Refresh when the page becomes visible again (user switches back to this tab/page)
+        const handleVisibilityChange = () => {
+            if (!document.hidden) {
+                fetchGlobalStats();
+                refreshHistoryData();
+            }
+        };
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        // Also refresh on focus (covers app switching on mobile)
+        const handleFocus = () => {
+            fetchGlobalStats();
             refreshHistoryData();
-        }, 15000); // 15s interval to reduce network load
+        };
+        window.addEventListener('focus', handleFocus);
+
+        // Poll every 10s for live global stats
+        const interval = setInterval(() => {
+            fetchGlobalStats();
+            refreshHistoryData();
+        }, 10000);
 
         return () => {
             unsubscribe();
             unsubscribeStorage();
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            window.removeEventListener('focus', handleFocus);
             clearInterval(interval);
         };
     }, []);

@@ -1867,7 +1867,7 @@ const App: React.FC = () => {
   );
 
   const renderWhyUse = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-24 md:pt-24 pt-safe overflow-y-auto w-full">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-24 md:pt-24 pb-28 md:pb-12 pt-safe overflow-y-auto w-full">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100 leading-tight">{t('whyUse.title')}</h1>
         <p className="text-gray-500 dark:text-gray-400 mb-8">{t('whyUse.subtitle')}</p>
@@ -2043,7 +2043,7 @@ const App: React.FC = () => {
   );
 
   const renderFAQ = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-24 md:pt-24 pt-safe overflow-y-auto w-full">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-24 md:pt-24 pb-28 md:pb-12 pt-safe overflow-y-auto w-full">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100 leading-tight">{t('faq.title')}</h1>
         <p className="text-gray-500 dark:text-gray-400 mb-8">{t('faq.subtitle')}</p>
@@ -2203,7 +2203,7 @@ const App: React.FC = () => {
   );
 
   const renderForAi = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-20 md:pt-24 overflow-y-auto w-full">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-20 md:pt-24 pb-28 md:pb-12 overflow-y-auto w-full">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl md:text-5xl font-bold mb-6 text-gray-900 leading-tight">AI Dataset & Integration</h1>
         <div className="flex items-center gap-2 text-sm text-gray-500 mb-8">
@@ -2431,7 +2431,7 @@ const App: React.FC = () => {
         </div>
 
         {/* Scrollable Container for everything else */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden w-full overscroll-contain">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden w-full pb-24 md:pb-4">
 
         {/* Pinned Trip Info */}
         {selectedTrip && (
