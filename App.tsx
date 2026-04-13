@@ -90,33 +90,51 @@ const getStoredView = (): AppView => {
     const params = new URLSearchParams(window.location.search);
     const viewParam = params.get('view');
     const hash = window.location.hash.substring(1);
-    const path = window.location.pathname.substring(1);
+    const path = window.location.pathname.substring(1).replace(/\/$/, '');
 
+    // Priority: Query Param > Hash > Path
     const target = viewParam || hash || path;
 
     if (target) {
       if (viewParam) window.history.replaceState({}, '', window.location.pathname);
 
-      switch (target) {
-        case 'ai':
-        case 'ai-assistant': return AppView.AI_ASSISTANT;
-        case 'about':
-        case 'about.html': return AppView.ABOUT;
-        case 'why-use': return AppView.WHY_USE;
-        case 'faq': return AppView.FAQ;
-        case 'blog': return AppView.BLOG;
-        case 'history': return AppView.HISTORY;
-        case 'install': return AppView.INSTALL_APP;
-        case 'privacy':
-        case 'privacy-policy':
-        case 'privacy-policy.html': return AppView.PRIVACY;
-        case 'terms':
-        case 'terms-of-service':
-        case 'terms-of-service.html': return AppView.TERMS;
-        case 'contact':
-        case 'contact.html': return AppView.CONTACT;
-        case 'for-ai': return AppView.FOR_AI;
-        case 'daily-journey': return AppView.DAILY_JOURNEY;
+      // Simple mapping for primary views
+      const viewMap: Record<string, AppView> = {
+        'ai': AppView.AI_ASSISTANT,
+        'ai-assistant': AppView.AI_ASSISTANT,
+        'about': AppView.ABOUT,
+        'about.html': AppView.ABOUT,
+        'why-use': AppView.WHY_USE,
+        'faq': AppView.FAQ,
+        'faq.html': AppView.FAQ,
+        'history': AppView.HISTORY,
+        'settings': AppView.SETTINGS,
+        'privacy': AppView.PRIVACY,
+        'privacy-policy': AppView.PRIVACY,
+        'privacy-policy.html': AppView.PRIVACY,
+        'terms': AppView.TERMS,
+        'terms-of-service': AppView.TERMS,
+        'terms-of-service.html': AppView.TERMS,
+        'contact': AppView.CONTACT,
+        'contact.html': AppView.CONTACT,
+        'install': AppView.INSTALL_APP,
+        '404': AppView.NOT_FOUND,
+        '500': AppView.SERVER_ERROR,
+        'for-ai': AppView.FOR_AI,
+        'daily-journey': AppView.DAILY_JOURNEY,
+        'blog': AppView.BLOG
+      };
+
+      if (viewMap[target]) return viewMap[target];
+
+      // Special handling for blog sub-paths
+      if (target.startsWith('blog/')) {
+        return AppView.BLOG;
+      }
+      
+      // If we have a path but it's not recognized, return NOT_FOUND
+      if (path && path !== '') {
+        return AppView.NOT_FOUND;
       }
     }
 
@@ -453,7 +471,15 @@ const App: React.FC = () => {
 
   const [view, setView] = useState<AppView>(getStoredView);
   const [selectedBus, setSelectedBus] = useState<BusRoute | null>(getStoredBus);
-  const [selectedBlogPost, setSelectedBlogPost] = useState<string | null>(null);
+  const [selectedBlogPost, setSelectedBlogPost] = useState<string | null>(() => {
+    const path = window.location.pathname.substring(1).replace(/\/$/, '');
+    const hash = window.location.hash.slice(1);
+    const target = hash || path;
+    if (target?.startsWith('blog/')) {
+      return target.replace('blog/', '');
+    }
+    return null;
+  });
   const [initialLocationChecked, setInitialLocationChecked] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -826,28 +852,32 @@ const App: React.FC = () => {
     [AppView.BLOG_METRO_VS_BUS]: 'blog/metro-rail-vs-bus',
   };
 
-  // Push state when view changes (for browser history)
   useEffect(() => {
-    // Don't push hash if view was just set from hash
+    // Don't push state if view was just set from URL on mount
     if (viewSetFromHash.current) {
       viewSetFromHash.current = false;
       return;
     }
 
-    // Check if we are already at the clean URL path, so we don't dirty it with a hash
-    // e.g. if we are at /for-ai, don't add #for-ai
-    const hash = viewToPath[view];
-    const currentPath = window.location.pathname.substring(1).replace(/\/$/, ''); // Remove trailing slash
+    const path = viewToPath[view];
+    const currentPath = window.location.pathname.substring(1).replace(/\/$/, '');
 
-    // Simple check: if current path matches the intended view slug
-    if (hash && currentPath === hash) {
+    // Special handling for blog posts
+    if (view === AppView.BLOG && selectedBlogPost) {
+      const blogPath = `blog/${selectedBlogPost}`;
+      if (currentPath !== blogPath) {
+        window.history.pushState({ view, selectedBlogPost }, '', `/${blogPath}`);
+      }
       return;
     }
 
-    if (view !== AppView.HOME && hash) {
-      window.history.pushState({ view }, '', `#${hash}`);
+    // Standard view routing
+    if (path && currentPath !== path) {
+      window.history.pushState({ view }, '', `/${path}`);
+    } else if (view === AppView.HOME && window.location.pathname !== '/') {
+      window.history.pushState({ view }, '', '/');
     }
-  }, [view]);
+  }, [view, selectedBlogPost]);
 
   // Check for hash on mount (e.g., #ai-assistant from intercity page)
   useEffect(() => {
@@ -930,10 +960,14 @@ const App: React.FC = () => {
     incrementVisitCount();
   }, []);
 
+  // Clean up legacy hash-based URLs on mount
   useEffect(() => {
-    const path = window.location.pathname;
-    if (path !== '/' && path !== '') {
-      setView(AppView.NOT_FOUND);
+    if (window.location.hash) {
+      // If we have a hash, it was likely handled by getStoredView already
+      // but we want to clean the URL for the user
+      setTimeout(() => {
+        window.history.replaceState(null, '', window.location.pathname);
+      }, 500);
     }
   }, []);
 

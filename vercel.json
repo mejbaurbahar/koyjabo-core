@@ -1,4 +1,31 @@
 {
+    "redirects": [
+        {
+            "source": "/about.html",
+            "destination": "/about",
+            "permanent": true
+        },
+        {
+            "source": "/contact.html",
+            "destination": "/contact",
+            "permanent": true
+        },
+        {
+            "source": "/privacy-policy.html",
+            "destination": "/privacy",
+            "permanent": true
+        },
+        {
+            "source": "/terms-of-service.html",
+            "destination": "/terms",
+            "permanent": true
+        },
+        {
+            "source": "/faq.html",
+            "destination": "/faq",
+            "permanent": true
+        }
+    ],
     "rewrites": [
         {
             "source": "/api/ai/:path*",

@@ -161,3 +161,6 @@ Crawl-delay: 10
 
 # Cache Instructions
 # Cache: max-age=86400 (24 hours)
+
+# Sitemap
+Sitemap: https://koyjabo.com/sitemap.xml

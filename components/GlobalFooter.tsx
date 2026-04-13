@@ -22,47 +22,52 @@ const GlobalFooter: React.FC<GlobalFooterProps> = ({ setView }) => {
                     </div>
 
                     <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-                        <button
-                            onClick={() => setView(AppView.HOME)}
+                        <a
+                            href="/"
+                            onClick={(e) => { e.preventDefault(); setView(AppView.HOME); }}
                             className="text-sm font-medium text-gray-500 hover:text-dhaka-green dark:text-gray-400 dark:hover:text-emerald-400 transition-colors"
                         >
                             {t('nav.home') || 'Home'}
-                        </button>
+                        </a>
                         <span className="text-gray-300 dark:text-gray-700">|</span>
-                        <button
-                            onClick={() => window.location.href = '/intercity'}
+                        <a
+                            href="/intercity"
                             className="text-sm font-medium text-gray-500 hover:text-dhaka-green dark:text-gray-400 dark:hover:text-emerald-400 transition-colors"
                         >
                             {t('intercity.title') || 'Intercity'}
-                        </button>
+                        </a>
                         <span className="text-gray-300 dark:text-gray-700">|</span>
-                        <button
-                            onClick={() => setView(AppView.ABOUT)}
+                        <a
+                            href="/about"
+                            onClick={(e) => { e.preventDefault(); setView(AppView.ABOUT); }}
                             className="text-sm font-medium text-gray-500 hover:text-dhaka-green dark:text-gray-400 dark:hover:text-emerald-400 transition-colors"
                         >
                             {t('nav.about') || 'About'}
-                        </button>
+                        </a>
                         <span className="text-gray-300 dark:text-gray-700">|</span>
-                        <button
-                            onClick={() => setView(AppView.CONTACT)}
+                        <a
+                            href="/contact"
+                            onClick={(e) => { e.preventDefault(); setView(AppView.CONTACT); }}
                             className="text-sm font-medium text-gray-500 hover:text-dhaka-green dark:text-gray-400 dark:hover:text-emerald-400 transition-colors"
                         >
                             {t('nav.contact') || 'Contact'}
-                        </button>
+                        </a>
                         <span className="text-gray-300 dark:text-gray-700">|</span>
-                        <button
-                            onClick={() => setView(AppView.PRIVACY)}
+                        <a
+                            href="/privacy"
+                            onClick={(e) => { e.preventDefault(); setView(AppView.PRIVACY); }}
                             className="text-sm font-medium text-gray-500 hover:text-dhaka-green dark:text-gray-400 dark:hover:text-emerald-400 transition-colors"
                         >
                             {t('nav.privacy') || 'Privacy'}
-                        </button>
+                        </a>
                         <span className="text-gray-300 dark:text-gray-700">|</span>
-                        <button
-                            onClick={() => setView(AppView.TERMS)}
+                        <a
+                            href="/terms"
+                            onClick={(e) => { e.preventDefault(); setView(AppView.TERMS); }}
                             className="text-sm font-medium text-gray-500 hover:text-dhaka-green dark:text-gray-400 dark:hover:text-emerald-400 transition-colors"
                         >
                             {t('nav.terms') || 'Terms'}
-                        </button>
+                        </a>
                     </nav>
 
                     <div className="text-xs text-gray-400 dark:text-gray-500">
