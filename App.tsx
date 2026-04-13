@@ -545,27 +545,8 @@ const App: React.FC = () => {
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
 
-    // Stale Data Check (3 days)
-    const checkStaleData = () => {
-      const lastOpenedStr = localStorage.getItem('last_app_opened_timestamp');
-      const now = Date.now();
-      const STALE_THRESHOLD = 3 * 24 * 60 * 60 * 1000; // 3 days
-
-      if (lastOpenedStr) {
-        const lastOpened = parseInt(lastOpenedStr, 10);
-        const diff = now - lastOpened;
-
-        // Condition: Stale (>3 days) AND Offline
-        if (diff > STALE_THRESHOLD && !navigator.onLine) {
-          setShowStaleOfflineWarning(true);
-        }
-      }
-
-      // Update timestamp
-      localStorage.setItem('last_app_opened_timestamp', now.toString());
-    };
-
-    checkStaleData();
+    // Update last opened timestamp (no blocking modal — app works fully offline)
+    localStorage.setItem('last_app_opened_timestamp', Date.now().toString());
 
     // Initialize Offline Support
     initializeOfflineSupport().then(() => {

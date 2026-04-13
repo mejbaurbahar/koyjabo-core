@@ -122,23 +122,21 @@ export default defineConfig(({ mode }) => {
           mode: 'production',
           sourcemap: false,
           // Cache versioning for proper updates
-          cacheId: 'dhaka-commute-v3',
+          cacheId: 'dhaka-commute-v4',
           // Precache intercity index.html for offline access
           additionalManifestEntries: [
             { url: '/intercity/', revision: 'v4' },
             { url: '/intercity/index.html', revision: 'v4' }
           ],
           runtimeCaching: [
-            // Cache Intercity App - NetworkFirst with fast fallback to cache
+            // Cache Intercity App - StaleWhileRevalidate: serve from cache instantly, update in background
             {
               urlPattern: ({ request, url }) => {
-                // Match HTML navigation requests to /intercity
                 return request.destination === 'document' && url.pathname.startsWith('/intercity');
               },
-              handler: 'NetworkFirst',
+              handler: 'StaleWhileRevalidate',
               options: {
                 cacheName: 'intercity-pages',
-                networkTimeoutSeconds: 2,  // Quick timeout to fall back to cache
                 expiration: {
                   maxEntries: 10,
                   maxAgeSeconds: 30 * 24 * 60 * 60
@@ -148,20 +146,19 @@ export default defineConfig(({ mode }) => {
                 }
               }
             },
-            // Main App - Handle all other HTML navigation requests
+            // Main App - StaleWhileRevalidate: serve from cache instantly, update in background
             {
               urlPattern: ({ request, url }) => {
                 const isIntercity = url.pathname.startsWith('/intercity');
                 const isApi = url.pathname.startsWith('/api');
                 return request.destination === 'document' && !isIntercity && !isApi;
               },
-              handler: 'NetworkFirst',
+              handler: 'StaleWhileRevalidate',
               options: {
                 cacheName: 'main-pages',
-                networkTimeoutSeconds: 2,
                 expiration: {
                   maxEntries: 50,
-                  maxAgeSeconds: 24 * 60 * 60
+                  maxAgeSeconds: 7 * 24 * 60 * 60
                 },
                 cacheableResponse: {
                   statuses: [0, 200]
@@ -255,17 +252,16 @@ export default defineConfig(({ mode }) => {
                 }
               }
             },
-            // Local Assets (Styles, Scripts, Manifest) - Support Offline usage
+            // Local Assets (Styles, Scripts, Data JSON) - CacheFirst for instant offline
+            // Hashed filenames change on content change, so CacheFirst is safe
             {
-              // Match commonly used development file extensions, allowing for query parameters (e.g., ?t=123)
-              urlPattern: /\.(?:js|jsx|ts|tsx|css|json)(?:\?.*)?$/i,
-              handler: 'NetworkFirst',
+              urlPattern: /\.(?:js|css|json)(?:\?.*)?$/i,
+              handler: 'CacheFirst',
               options: {
                 cacheName: 'local-assets-cache',
-                networkTimeoutSeconds: 2, // Fast timeout for dev
                 expiration: {
                   maxEntries: 200,
-                  maxAgeSeconds: 24 * 60 * 60 // 1 day
+                  maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
                 },
                 cacheableResponse: {
                   statuses: [0, 200]
