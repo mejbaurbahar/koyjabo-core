@@ -821,10 +821,10 @@ const App: React.FC = () => {
 
   // Reverse mapping:  // Map views to URL paths
   const viewToPath: Record<AppView, string> = {
-    [AppView.HOME]: '/',
-    [AppView.BUS_DETAILS]: '/bus',
-    [AppView.LIVE_NAV]: '/navigate',
-    [AppView.AI_ASSISTANT]: '/ai',
+    [AppView.HOME]: '',
+    [AppView.BUS_DETAILS]: 'bus',
+    [AppView.LIVE_NAV]: 'navigate',
+    [AppView.AI_ASSISTANT]: 'ai',
     [AppView.ABOUT]: 'about',
     [AppView.WHY_USE]: 'why-use',
     [AppView.FAQ]: 'faq',
@@ -872,10 +872,12 @@ const App: React.FC = () => {
     }
 
     // Standard view routing
-    if (path && currentPath !== path) {
+    if (view === AppView.HOME) {
+      if (window.location.pathname !== '/') {
+        window.history.pushState({ view }, '', '/');
+      }
+    } else if (path && currentPath !== path) {
       window.history.pushState({ view }, '', `/${path}`);
-    } else if (view === AppView.HOME && window.location.pathname !== '/') {
-      window.history.pushState({ view }, '', '/');
     }
   }, [view, selectedBlogPost]);
 
