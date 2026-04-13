@@ -465,7 +465,7 @@ const App: React.FC = () => {
   const formatBusName = (name: string) => {
     let formatted = name.replace(/Paribahan/i, '').trim();
     if (language === 'bn') {
-      formatted = formatted.replace(/No\.?/i, 'নং').replace(/Route/i, 'রুট');
+      formatted = formatted.replace(/\bNo\.?\b/i, 'নং').replace(/\bRoute\b/i, 'রুট');
     }
     return formatNumber(formatted);
   };
