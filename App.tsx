@@ -1436,8 +1436,8 @@ const App: React.FC = () => {
 
     return (
       <div className="flex flex-col h-full bg-white dark:bg-slate-900 md:rounded-l-3xl md:border-l md:border-gray-200 dark:md:border-gray-800 overflow-hidden relative w-full">
-        {/* Mobile Header */}
-        <div className="block md:hidden flex items-center gap-3 p-4 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-slate-900 z-20 shrink-0 fixed top-0 left-0 right-0 pt-safe">
+        {/* Mobile Header (Non-fixed flex child) */}
+        <div className="block md:hidden flex items-center gap-3 p-4 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-slate-900 z-20 shrink-0 pt-safe">
           <button onClick={() => setView(AppView.BUS_DETAILS)} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors">
             <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
           </button>
@@ -1450,7 +1450,7 @@ const App: React.FC = () => {
           </div>
         </div>
         {/* Desktop Header */}
-        <div className="hidden md:flex items-center gap-3 p-4 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-slate-900 z-50 shrink-0 md:relative fixed top-0 left-0 right-0 md:top-0 pt-safe-top md:pt-4">
+        <div className="hidden md:flex items-center gap-3 p-4 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-slate-900 z-50 shrink-0 relative pt-4">
           <button onClick={() => setView(AppView.BUS_DETAILS)} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors">
             <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
           </button>
@@ -1462,7 +1462,7 @@ const App: React.FC = () => {
             <p className="text-xs text-gray-500 dark:text-gray-400">{formatBusName(selectedBus.name)}</p>
           </div>
         </div>
-        <div className="flex-1 relative min-h-0 pt-[80px] md:pt-0">
+        <div className="flex-1 relative min-h-0">
           <LiveTracker
             bus={selectedBus}
             highlightStartIdx={fareStartIndex}
@@ -2373,10 +2373,10 @@ const App: React.FC = () => {
 
     const generalFareInfo = calculateFare(selectedBus);
     return (
-      <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-y-auto overflow-x-hidden w-full max-w-full">
-        {/* Mobile Header */}
-        <div className="block md:hidden fixed top-0 left-0 right-0 w-full z-40 pt-safe bg-white dark:bg-slate-900">
-          <div className="px-5 py-4 shadow-sm border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+      <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-hidden w-full max-w-full">
+        {/* Mobile Header (Non-fixed, but at the top of the flex container) */}
+        <div className="block md:hidden w-full z-40 bg-white dark:bg-slate-900 shadow-sm border-b border-gray-100 dark:border-gray-800 shrink-0">
+          <div className="px-5 py-4 pt-safe flex items-center justify-between">
             <button onClick={() => setView(AppView.HOME)} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors" aria-label="Go back to home">
               <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
             </button>
@@ -2430,9 +2430,12 @@ const App: React.FC = () => {
           </button>
         </div>
 
+        {/* Scrollable Container for everything else */}
+        <div className="flex-1 overflow-y-auto overflow-x-hidden w-full overscroll-contain">
+
         {/* Pinned Trip Info */}
         {selectedTrip && (
-          <div className="bg-slate-50 dark:bg-slate-900 px-4 pb-0 pt-[80px] md:pt-20 shrink-0 z-30">
+          <div className="bg-slate-50 dark:bg-slate-900 px-4 pb-0 pt-4 shrink-0 z-30">
             <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-2xl border border-blue-100 dark:border-blue-800 shadow-sm relative overflow-hidden">
               <h3 className="font-bold text-blue-900 dark:text-blue-200 text-sm uppercase tracking-wider mb-3 relative z-10 flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></div>
@@ -2477,7 +2480,7 @@ const App: React.FC = () => {
         )}
 
         {/* Scrollable Content */}
-        <div className={`flex-1 p-4 space-y-4 bg-slate-50 dark:bg-slate-900 ${selectedTrip ? 'pt-4 md:pt-20' : 'pt-[90px] md:pt-20'} pb-4`}>
+        <div className={`p-4 space-y-4 bg-slate-50 dark:bg-slate-900 pt-4 pb-4`}>
 
           {/* Stats Grid */}
           <div className="grid grid-cols-3 gap-3">
@@ -3429,7 +3432,7 @@ const App: React.FC = () => {
         )}
 
         {/* Mobile Header */}
-        <header className={`fixed left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-5 py-3 shadow-sm z-[100] md:hidden transition-transform duration-300 ${!isOnline ? 'top-7' : 'top-0 pt-safe'} ${(view === AppView.BUS_DETAILS || view === AppView.LIVE_NAV) ? '-translate-y-full' : 'translate-y-0'} `}>
+        <header className={`sticky top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-5 py-3 shadow-sm z-[100] md:hidden transition-transform duration-300 ${!isOnline ? 'top-7' : 'top-0 pt-safe'} ${(view === AppView.BUS_DETAILS || view === AppView.LIVE_NAV) ? '-translate-y-full h-0 overflow-hidden py-0 border-none' : 'translate-y-0 h-auto'} `}>
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2 outline-none cursor-pointer" onClick={() => setView(AppView.HOME)}>
               <AnimatedLogo size="small" />
@@ -3479,7 +3482,7 @@ const App: React.FC = () => {
             ${'w-full md:w-1/3 md:min-w-[320px] md:max-w-md md:flex md:flex-col border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900 z-0 h-full overflow-y-auto'}
             ${view !== AppView.HOME && 'hidden md:flex'}
 `}>
-            <div className={`h-full md:pt-0 ${!isOnline ? 'pt-24' : 'pt-16'}`}>
+            <div className={`h-full md:pt-0`}>
               {renderHomeContent()}
             </div>
           </div>
