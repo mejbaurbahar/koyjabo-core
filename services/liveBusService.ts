@@ -21,6 +21,17 @@ let currentBusName: string | null = null;
 let lastLocation: { lat: number, lng: number, speed: number } | null = null;
 let watchId: number | null = null;
 
+// Stable device ID so server can identify this client across reconnects
+const DEVICE_ID_KEY = 'koyjabo_device_id';
+const getDeviceId = (): string => {
+    let id = localStorage.getItem(DEVICE_ID_KEY);
+    if (!id) {
+        id = `dev_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+        localStorage.setItem(DEVICE_ID_KEY, id);
+    }
+    return id;
+};
+
 // Store latest state of all buses
 let liveBuses: Map<string, LiveBus> = new Map();
 
@@ -61,8 +72,9 @@ export const liveBusService = {
         }
 
         // Remove self from local map immediately
-        if (liveBuses.has('SELF_DEVICE')) {
-            liveBuses.delete('SELF_DEVICE');
+        const selfId = getDeviceId();
+        if (liveBuses.has(selfId)) {
+            liveBuses.delete(selfId);
             subscribers.forEach(cb => cb(Array.from(liveBuses.values())));
         }
 
@@ -83,7 +95,8 @@ export const liveBusService = {
         lastLocation = { lat, lng, speed };
 
         // 1. IMMEDIATE LOCAL UPDATE (So user sees themselves instantly)
-        const selfId = 'SELF_DEVICE'; // Special ID for local reflection
+        // Use the same device ID as sent to server to avoid duplicate marker
+        const selfId = getDeviceId();
         const selfBus: LiveBus = {
             id: selfId,
             busName: currentBusName,
@@ -107,9 +120,10 @@ export const liveBusService = {
             return;
         }
 
-        // Send update to server
+        // Send update to server — include device ID so server tracks this broadcaster
         ws.send(JSON.stringify({
             type: 'bus_location_update',
+            id: getDeviceId(),
             busName: currentBusName,
             lat,
             lng,
