@@ -64,12 +64,14 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
     }, []);
 
     return (
-        <div className={`adsense-container ${className}`}>
+        <div className={`adsense-container ${className}`} style={{ maxHeight: '280px', overflow: 'hidden' }}>
             <ins
                 className="adsbygoogle"
                 style={{
                     display: 'block',
-                    textAlign: 'center'
+                    textAlign: 'center',
+                    maxHeight: '280px',
+                    overflow: 'hidden'
                 }}
                 data-ad-client="ca-pub-6933713424631305"
                 data-ad-slot={adSlot}

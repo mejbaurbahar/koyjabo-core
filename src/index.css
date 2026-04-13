@@ -730,29 +730,23 @@ ins.adsbygoogle {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
-/* Prevent layout shift when ads load */
-.adsense-container::before {
-  content: '';
-  display: block;
-  width: 100%;
-  min-height: 50px;
-}
-
 /* Mobile-specific ad optimizations */
 @media (max-width: 768px) {
   .adsense-container {
-    margin: 1rem auto;
-    padding: 0.5rem;
+    margin: 0.5rem auto;
+    padding: 0.25rem;
     border-radius: 8px;
+    max-height: 130px;
+    overflow: hidden;
   }
 
   /* Prevent ads from being too close to content */
   .adsense-container+* {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
   }
 
   *+.adsense-container {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
   }
 
   /* Mobile anchor ad adjustments */
@@ -805,13 +799,20 @@ footer {
   .adsbygoogle {
     min-height: 50px;
     max-height: 100px;
+    overflow: hidden;
+  }
+
+  .adsense-container {
+    max-height: 110px;
+    overflow: hidden;
   }
 }
 
 @media (min-width: 481px) and (max-width: 768px) {
   .adsbygoogle {
-    min-height: 90px;
-    max-height: 250px;
+    min-height: 50px;
+    max-height: 130px;
+    overflow: hidden;
   }
 }
 

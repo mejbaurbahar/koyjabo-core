@@ -3186,7 +3186,6 @@ const App: React.FC = () => {
                 <ArrowLeft className="w-4 h-4 text-white rotate-180" />
               </div>
             </button>
-            <AdSenseAd adSlot="auto" className="my-4 px-2" />
             {/* List Filter Tabs */}
             <div className="flex p-1 bg-gray-100 dark:bg-slate-800 rounded-xl">
               <button
@@ -3212,6 +3211,9 @@ const App: React.FC = () => {
 
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto px-4 pb-24 md:pb-4 space-y-3">
+
+          {/* Ad Banner - in scrollable area so it doesn't shrink bus list */}
+          <AdSenseAd adSlot="auto" className="mb-2" />
 
           {/* Intelligent Route Suggestions - Hide in Favorites Mode */}
           {(suggestedRoutes.length > 0 && listFilter !== 'FAVORITES') && (
