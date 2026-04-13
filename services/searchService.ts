@@ -332,13 +332,27 @@ export const enhancedBusSearch = (query: string): SearchResult => {
     }
 
     // STEP 1: Search for bus by name/number/ID
+    // STEP 1: Search for exact bus name matches first
+    const exactNameMatch = BUS_DATA.filter(bus => 
+        bus.name.toLowerCase() === lowerQuery || 
+        bus.bnName === queryTrimmed ||
+        bus.id.toLowerCase() === lowerQuery
+    );
+
+    if (exactNameMatch.length > 0) {
+        return {
+            buses: exactNameMatch,
+            matchType: 'bus_name',
+            searchContext: `Exact match for "${query}"`
+        };
+    }
+
     const busByName = BUS_DATA.filter(bus => {
         const nameMatch = bus.name.toLowerCase().includes(lowerQuery);
         const bnNameMatch = bus.bnName?.includes(queryTrimmed);
-        const idMatch = bus.id.toLowerCase().includes(lowerQuery);
         const routeMatch = bus.routeString?.toLowerCase().includes(lowerQuery);
 
-        return nameMatch || bnNameMatch || idMatch || routeMatch;
+        return nameMatch || bnNameMatch || routeMatch;
     });
 
     if (busByName.length > 0) {

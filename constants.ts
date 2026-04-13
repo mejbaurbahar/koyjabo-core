@@ -3401,7 +3401,7 @@ export const BUS_DATA: BusRoute[] = [
     hours: '6:00 AM - 9:30 PM'
   },
   {
-    id: 'victor_classic',
+    id: 'victor_classic_narayanganj',
     name: 'Victor Classic',
     bnName: 'ভিক্টর ক্লাসিক',
     routeString: 'Gabtoli ⇄ Narayanganj',

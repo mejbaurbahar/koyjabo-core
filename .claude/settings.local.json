@@ -14,7 +14,14 @@
       "WebFetch(domain:bangladesh-railways.com)",
       "WebFetch(domain:amadertrain.com)",
       "WebFetch(domain:www.bdrailwayinfo.org)",
-      "Bash(xargs grep:*)"
+      "Bash(xargs grep:*)",
+      "Bash(grep -n \"^  {$\" H:/Dhaka-Commute/constants.ts)",
+      "Bash(grep -v \"bnName\\\\|^$\")",
+      "WebFetch(domain:rakibulislamnayon.com)",
+      "WebFetch(domain:wikiofinfo.com)",
+      "WebFetch(domain:brta.gov.bd)",
+      "WebFetch(domain:dhakabusroute.com)",
+      "WebFetch(domain:www.lrbtravelteam.com)"
     ]
   }
 }
