@@ -2,11 +2,17 @@
 # Robots.txt for SEO Optimization
 # Updated: December 28, 2025
 
+# Google AdSense Crawlers - MUST be explicitly allowed for AdSense approval
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: AdsBot-Google
+Allow: /
+
 # Allow all good bots
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /*.json$
 Disallow: /*?q=*
 Disallow: /404.html
 

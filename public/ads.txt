@@ -1,22 +1,2 @@
-# AdSense Entry
-google.com, pub-9650038259132247, DIRECT, f08c47fec0942fa0
-
-# Ezoic Ads.txt - Managed by AdsTxtManager.com
-# Last Updated: February 12, 2026
-# Source: https://srv.adstxtmanager.com/19390/koyjabo.com
-
-#Ads.txt koyjabo.com
-#Ads.txt managed by AdsTxtManager.com - the free ads.txt management tool for publishers
-ownerdomain=koyjabo.com
-contact=directsales@ezoic.com
-managerdomain=ezoic.ai
-
-ezoic.ai, 8bf03985d3db49fe428e9edfd0bcc9fa, DIRECT
-# 35
-themediagrid.com, Q19AKF, DIRECT, 35d5010d7789b49d
-sonobi.com, 192ecdea01, RESELLER, d1a215d9eb5aee9e
-google.com, pub-6644558441501035, DIRECT, f08c47fec0942fa0
-google.com, pub-1175987143200523, RESELLER, f08c47fec0942fa0
-risecodes.com, 608fee2f84a3a300011acd3f, DIRECT
-ssp.cadent.com, 45, DIRECT, 1e1d41537f7cad7f
-yahoo.com, 100028, DIRECT, e1a5b5b6e3255540
+# Google AdSense
+google.com, pub-6933713424631305, DIRECT, f08c47fec0942fa0
