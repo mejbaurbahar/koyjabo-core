@@ -422,18 +422,20 @@ async function main() {
 
   console.log(`Auth action: ${action} | requestId: ${requestId}`);
 
-  if (!requestId || !action) {
-    console.error('Missing requestId or action');
-    process.exit(1);
-  }
-
-  if (!DATA_TOKEN) {
-    console.error('DATA_GITHUB_TOKEN secret is not set. Cannot access private data repo.');
+  if (!requestId) {
+    console.error('Fatal: Missing requestId. Cannot report results back to frontend.');
     process.exit(1);
   }
 
   let result;
   try {
+    if (!DATA_TOKEN) {
+      throw new Error('DATA_GITHUB_TOKEN secret is not set in GitHub repository secrets.');
+    }
+    if (!action) {
+      throw new Error('Missing action in workflow input.');
+    }
+
     switch (action) {
       case 'signup':
         result = await handleSignup({ email, passwordHash, username: data.username, displayName: data.displayName });
@@ -464,14 +466,20 @@ async function main() {
     }
   } catch (err) {
     console.error('Handler error:', err.message);
-    result = { success: false, error: 'An internal error occurred. Please try again.' };
+    result = { success: false, error: err.message || 'An internal error occurred. Please try again.' };
   }
 
-  await writeResult(requestId, result);
-  console.log(`Completed: ${action} → ${result.success ? 'OK' : 'FAIL: ' + result.error}`);
+  // Final step: Always write the result so the frontend stops polling
+  try {
+    await writeResult(requestId, result);
+    console.log(`Result written for ${requestId}: ${result.success ? 'OK' : 'FAIL'}`);
+  } catch (writeErr) {
+    console.error('CRITICAL: Failed to write result file to repository:', writeErr.message);
+    process.exit(1);
+  }
 }
 
 main().catch(err => {
-  console.error('Fatal error in auth-handler:', err);
+  console.error('Unexpected fatal crash:', err);
   process.exit(1);
 });
