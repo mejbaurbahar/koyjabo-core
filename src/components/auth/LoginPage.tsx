@@ -11,18 +11,30 @@ interface LoginPageProps {
   onSuccess: () => void;
 }
 
+function isValidEmail(v: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+}
+
 export default function LoginPage({ onSignup, onForgotPassword, onSuccess }: LoginPageProps) {
   const { login } = useAuth();
   const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailTouched, setEmailTouched] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const emailError = emailTouched && !isValidEmail(email) ? 'সঠিক ইমেইল দিন।' : undefined;
+  const passwordError = passwordTouched && !password ? 'পাসওয়ার্ড দিন।' : undefined;
+  const canSubmit = isValidEmail(email) && password.length > 0;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim() || !password) return;
+    setEmailTouched(true);
+    setPasswordTouched(true);
+    if (!canSubmit) return;
     setError('');
     setLoading(true);
 
@@ -70,7 +82,7 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess }: Log
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-5" noValidate>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 {t('auth.email')}
@@ -79,11 +91,18 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess }: Log
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
+                onBlur={() => setEmailTouched(true)}
                 placeholder="your@email.com"
-                required
                 autoComplete="email"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                className={`w-full px-4 py-3 rounded-xl border bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition ${
+                  emailError ? 'border-red-400 dark:border-red-500' : 'border-gray-200 dark:border-slate-600'
+                }`}
               />
+              {emailError && (
+                <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
+                  <AlertCircle size={12} /> {emailError}
+                </p>
+              )}
             </div>
 
             <div>
@@ -95,10 +114,12 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess }: Log
                   type={showPass ? 'text' : 'password'}
                   value={password}
                   onChange={e => setPassword(e.target.value)}
+                  onBlur={() => setPasswordTouched(true)}
                   placeholder="••••••••"
-                  required
                   autoComplete="current-password"
-                  className="w-full px-4 py-3 pr-12 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  className={`w-full px-4 py-3 pr-12 rounded-xl border bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition ${
+                    passwordError ? 'border-red-400 dark:border-red-500' : 'border-gray-200 dark:border-slate-600'
+                  }`}
                 />
                 <button
                   type="button"
@@ -108,7 +129,11 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess }: Log
                   {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
-              <div className="flex justify-end mt-1.5">
+              <div className="flex justify-between items-center mt-1.5">
+                {passwordError
+                  ? <p className="text-xs text-red-500 flex items-center gap-1"><AlertCircle size={12} /> {passwordError}</p>
+                  : <span />
+                }
                 <button
                   type="button"
                   onClick={onForgotPassword}
@@ -121,7 +146,7 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess }: Log
 
             <button
               type="submit"
-              disabled={loading || !email.trim() || !password}
+              disabled={loading || !canSubmit}
               className="w-full py-3 px-6 rounded-xl font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 dark:disabled:bg-slate-600 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 shadow-sm"
             >
               {loading ? (

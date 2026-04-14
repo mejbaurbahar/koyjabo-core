@@ -66,6 +66,10 @@ export const translations: Record<Language, Translations> = {
             online: 'অনলাইন',
             ready: 'প্রস্তুত',
             tagline: 'বাংলাদেশে গণপরিবহন নেভিগেশনে বিপ্লব নিয়ে আসছে',
+            logout: 'লগআউট',
+            loginRequired: 'এই ফিচারটি ব্যবহার করতে লগইন করুন',
+            loginBtn: 'লগইন করুন',
+            signupBtn: 'সাইনআপ করুন',
         },
 
         // Settings
@@ -719,6 +723,10 @@ export const translations: Record<Language, Translations> = {
             online: 'Online',
             ready: 'Ready',
             tagline: 'Revolutionizing Public Transport Navigation in Bangladesh',
+            logout: 'Logout',
+            loginRequired: 'Please log in to use this feature',
+            loginBtn: 'Log In',
+            signupBtn: 'Sign Up',
         },
 
         // Settings

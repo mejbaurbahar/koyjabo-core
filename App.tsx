@@ -3138,12 +3138,15 @@ const App: React.FC = () => {
     // Intercity Search Handler with Offline Check
     // Intercity Search Handler with Offline Check
     const handleIntercitySearch = (from: string, to: string) => {
+      if (!user) {
+        setView(AppView.LOGIN);
+        return;
+      }
+
       // Check for offline data first
       if (!navigator.onLine) {
         const offlineData = getIntercityRoutesOffline(from, to);
         if (offlineData.routes.length > 0) {
-          // If we found cached data, we can still redirect or just alert
-          // Redirecting to intercity app is preferred as it's designed for it
           console.log(`Found ${offlineData.routes.length} intercity routes offline`);
         }
       }
@@ -3503,9 +3506,9 @@ const App: React.FC = () => {
             ${view === AppView.HOME && 'hidden md:block'}
 `}>
             {view === AppView.HOME && <div className="hidden md:block h-full"><DhakaAlive /></div>}
-            {view === AppView.BUS_DETAILS && renderBusDetails()}
+            {view === AppView.BUS_DETAILS && (user ? renderBusDetails() : <LoginWall setView={setView} />)}
             {view === AppView.LIVE_NAV && renderLiveNav()}
-            {view === AppView.AI_ASSISTANT && renderAiAssistant()}
+            {view === AppView.AI_ASSISTANT && (user ? renderAiAssistant() : <LoginWall setView={setView} />)}
 
             {view === AppView.ABOUT && renderAbout()}
             {view === AppView.WHY_USE && renderWhyUse()}
@@ -3535,14 +3538,16 @@ const App: React.FC = () => {
               )
             )}
             {view === AppView.HISTORY && (
-              <HistoryView
-                onBack={() => setView(AppView.HOME)}
-                onBusSelect={handleBusSelect}
-                onViewJourney={() => {
-                  setPreviousView(AppView.HISTORY);
-                  setView(AppView.DAILY_JOURNEY);
-                }}
-              />
+              user ? (
+                <HistoryView
+                  onBack={() => setView(AppView.HOME)}
+                  onBusSelect={handleBusSelect}
+                  onViewJourney={() => {
+                    setPreviousView(AppView.HISTORY);
+                    setView(AppView.DAILY_JOURNEY);
+                  }}
+                />
+              ) : <LoginWall setView={setView} />
             )}
             {view === AppView.SETTINGS && (
               <SettingsPage
@@ -3562,7 +3567,7 @@ const App: React.FC = () => {
             {view === AppView.SIGNUP && (
               <SignupPage
                 onLogin={() => setView(AppView.LOGIN)}
-                onSuccess={() => setView(AppView.HOME)}
+                onSuccess={() => setView(AppView.PROFILE)}
               />
             )}
             {view === AppView.FORGOT_PASSWORD && (
@@ -4087,6 +4092,40 @@ function AuthHeaderButton({ setView }: { setView: (v: AppView) => void }) {
     >
       <User className="w-5 h-5" />
     </button>
+  );
+}
+
+// ── LoginWall — shown instead of protected content when not logged in ─────────
+function LoginWall({ setView, message }: { setView: (v: AppView) => void; message?: string }) {
+  const { t } = useLanguage();
+  return (
+    <div className="flex flex-col items-center justify-center h-full min-h-[60vh] gap-6 p-8 text-center">
+      <div className="w-20 h-20 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+        <User className="w-10 h-10 text-blue-600 dark:text-blue-400" />
+      </div>
+      <div>
+        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">
+          {message || t('common.loginRequired')}
+        </h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          {t('auth.hasAccount')} {t('common.loginBtn')}
+        </p>
+      </div>
+      <div className="flex gap-3">
+        <button
+          onClick={() => setView(AppView.LOGIN)}
+          className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-colors shadow-sm"
+        >
+          {t('common.loginBtn')}
+        </button>
+        <button
+          onClick={() => setView(AppView.SIGNUP)}
+          className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm transition-colors shadow-sm"
+        >
+          {t('common.signupBtn')}
+        </button>
+      </div>
+    </div>
   );
 }
 
