@@ -468,4 +468,3 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
     </div>
   );
 }
-}
