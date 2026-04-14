@@ -233,7 +233,7 @@ export default function SignupPage({ onLogin, onSuccess }: SignupPageProps) {
                   value={form.username}
                   onChange={update('username')}
                   onBlur={touch('username')}
-                  placeholder="username"
+                  placeholder={t('auth.usernamePlaceholder')}
                   maxLength={20}
                   className={`w-full pl-8 pr-4 py-3 rounded-xl border bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition ${
                     showError('username') ? 'border-red-400 dark:border-red-500' : 'border-gray-200 dark:border-slate-600'
@@ -255,7 +255,7 @@ export default function SignupPage({ onLogin, onSuccess }: SignupPageProps) {
                 value={form.email}
                 onChange={update('email')}
                 onBlur={touch('email')}
-                placeholder="your@email.com"
+                placeholder={t('auth.emailPlaceholder')}
                 autoComplete="email"
                 className={`w-full px-4 py-3 rounded-xl border bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition ${
                   showError('email') ? 'border-red-400 dark:border-red-500' : 'border-gray-200 dark:border-slate-600'

@@ -3798,13 +3798,13 @@ const App: React.FC = () => {
                         onClick={() => { setView(AppView.PROFILE); setIsMenuOpen(false); }}
                         className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-colors"
                       >
-                        <User className="w-3.5 h-3.5" /> প্রোফাইল
+                        <User className="w-3.5 h-3.5" /> {t('nav.profile') || t('profile.title')}
                       </button>
                       <button
                         onClick={() => { logout(); setIsMenuOpen(false); }}
                         className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-gray-700 dark:text-gray-200 text-xs font-semibold transition-colors"
                       >
-                        <LogOut className="w-3.5 h-3.5" /> {t('common.logout') || 'লগআউট'}
+                        <LogOut className="w-3.5 h-3.5" /> {t('common.logout')}
                       </button>
                     </div>
                   </div>

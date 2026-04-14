@@ -147,7 +147,7 @@ export default function ForgotPasswordPage({ onBack, onResetPassword }: ForgotPa
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                placeholder="your@email.com"
+                placeholder={t('auth.emailPlaceholder')}
                 required
                 autoComplete="email"
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"

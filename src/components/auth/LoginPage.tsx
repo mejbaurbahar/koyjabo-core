@@ -92,7 +92,7 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess }: Log
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 onBlur={() => setEmailTouched(true)}
-                placeholder="your@email.com"
+                placeholder={t('auth.emailPlaceholder')}
                 autoComplete="email"
                 className={`w-full px-4 py-3 rounded-xl border bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition ${
                   emailError ? 'border-red-400 dark:border-red-500' : 'border-gray-200 dark:border-slate-600'

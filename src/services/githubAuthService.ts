@@ -38,20 +38,20 @@ function getHeaders(): Record<string, string> {
 function friendlyHttpError(status: number, context: 'workflow' | 'read' = 'workflow'): string {
   if (status === 401 || status === 403) {
     if (context === 'workflow') {
-      return 'অ্যাকাউন্ট সার্ভিস সংযোগ ব্যর্থ (401/403)। আপনার GitHub Token সম্ভবত ইনভ্যালিড বা এক্সপায়ার হয়েছে। অনুগ্রহ করে VITE_GITHUB_TOKEN চেক করুন।';
+      return 'Account service connection failed (401/403). Your GitHub Token might be invalid or expired.';
     }
-    return 'তথ্য পড়তে সমস্যা হয়েছে (401/403)। কানেকশন বা টোকেন চেক করুন।';
+    return 'Failed to read data (401/403). Check connection or token.';
   }
   if (status === 404) {
-    return 'সার্ভিস পাওয়া যাচ্ছে না। অনুগ্রহ করে একটু পরে আবার চেষ্টা করুন।';
+    return 'Service not found. Please try again later.';
   }
   if (status === 422) {
-    return 'অনুরোধটি প্রক্রিয়া করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।';
+    return 'Request could not be processed. Please try again.';
   }
   if (status >= 500) {
-    return 'সার্ভারে সমস্যা হচ্ছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।';
+    return 'Server error. Please try again in a moment.';
   }
-  return 'একটি অপ্রত্যাশিত সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।';
+  return 'An unexpected error occurred. Please try again.';
 }
 
 // ── SHA-256 helper (Web Crypto — no extra package needed) ─────────────────────
@@ -140,7 +140,7 @@ async function pollForResult(requestId: string, timeoutMs = 120_000): Promise<Au
     if (result) return result;
   }
 
-  throw new Error('অনুরোধটি সম্পন্ন হতে বেশি সময় লাগছে। ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।');
+  throw new Error('Request is taking too long. Please check your connection and try again.');
 }
 
 async function triggerAndWait(
@@ -168,7 +168,7 @@ export async function loginUser(
   // 1. Find userId from email hash index (reads from private koyjabo repo)
   const index = await fetchDataFile<Record<string, string>>('data/users/index.json');
   if (!index || !index[emailHashKey]) {
-    throw new Error('ইমেইল বা পাসওয়ার্ড সঠিক নয়।');
+    throw new Error('Invalid email or password.');
   }
 
   const userId = index[emailHashKey];
@@ -176,12 +176,12 @@ export async function loginUser(
   // 2. Fetch user profile
   interface UserProfile { bcryptHash: string; username: string; displayName: string; }
   const user = await fetchDataFile<UserProfile>(`data/users/${userId}.json`);
-  if (!user) throw new Error('অ্যাকাউন্ট খুঁজে পাওয়া যায়নি। সাপোর্টে যোগাযোগ করুন।');
+  if (!user) throw new Error('Account not found. Please contact support.');
 
   // 3. Verify: SHA-256(password) vs stored bcrypt hash
   const passwordSha = await sha256(password);
   const valid = await bcrypt.compare(passwordSha, user.bcryptHash);
-  if (!valid) throw new Error('ইমেইল বা পাসওয়ার্ড সঠিক নয়।');
+  if (!valid) throw new Error('Invalid email or password.');
 
   return { userId, username: user.username, displayName: user.displayName, email: normalizedEmail };
 }
