@@ -167,9 +167,9 @@ const DhakaAlive: React.FC = () => {
                 )}
 
                 {/* Clouds - Less opaque at night */}
-                <Cloud className={`top-16 left-[10%] scale-150 cloud-anim-1 ${isNight ? 'opacity-10' : 'opacity-80'}`} />
-                <Cloud className={`top-32 left-[60%] scale-100 cloud-anim-2 ${isNight ? 'opacity-10' : 'opacity-80'}`} />
-                <Cloud className={`top-8 right-[10%] scale-75 cloud-anim-1 delay-700 ${isNight ? 'opacity-5' : 'opacity-60'}`} />
+                <Cloud className={`top-16 left-[10%] cloud-anim-1 ${isNight ? 'opacity-10' : 'opacity-80'}`} scale="scale-150" />
+                <Cloud className={`top-32 left-[60%] cloud-anim-2 ${isNight ? 'opacity-10' : 'opacity-80'}`} scale="scale-100" />
+                <Cloud className={`top-8 right-[10%] cloud-anim-1 delay-700 ${isNight ? 'opacity-5' : 'opacity-60'}`} scale="scale-75" />
 
                 <Airplane />
             </div>

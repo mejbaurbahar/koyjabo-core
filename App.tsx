@@ -3505,7 +3505,7 @@ const App: React.FC = () => {
             ${'w-full md:flex-1 bg-slate-50 dark:bg-slate-950 md:bg-white dark:md:bg-slate-900 relative h-full overflow-hidden'}
             ${view === AppView.HOME && 'hidden md:block'}
 `}>
-            {view === AppView.HOME && <div className="hidden md:block h-full"><DhakaAlive /></div>}
+            {view === AppView.HOME && <div className="hidden md:block absolute inset-0 w-full h-full"><DhakaAlive /></div>}
             {view === AppView.BUS_DETAILS && (user ? renderBusDetails() : <LoginWall setView={setView} />)}
             {view === AppView.LIVE_NAV && renderLiveNav()}
             {view === AppView.AI_ASSISTANT && (user ? renderAiAssistant() : <LoginWall setView={setView} />)}

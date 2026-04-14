@@ -148,15 +148,21 @@ export const Skyline = ({ isNight }: { isNight?: boolean }) => {
   );
 };
 
-export const Cloud = ({ className }: { className: string }) => (
-  <div className={`absolute ${className} transition-opacity duration-1000`} style={{ willChange: 'transform' }}>
-    <div className="relative">
-      <div className="w-20 h-8 bg-white rounded-full"></div>
-      <div className="absolute -top-4 left-3 w-10 h-10 bg-white rounded-full"></div>
-      <div className="absolute -top-6 left-8 w-12 h-12 bg-white rounded-full"></div>
+interface CloudProps { className: string; scale?: string }
+export const Cloud = ({ className, scale = 'scale-100' }: CloudProps) => {
+  // Separate position/opacity/animation classes from scale — CSS keyframe transforms
+  // override class-level transforms, so scale must live on a child element.
+  const nonScaleClass = className.replace(/scale-\S+/g, '').trim();
+  return (
+    <div className={`absolute ${nonScaleClass} transition-opacity duration-1000`} style={{ willChange: 'transform' }}>
+      <div className={`relative ${scale}`}>
+        <div className="w-20 h-8 bg-white rounded-full"></div>
+        <div className="absolute -top-4 left-3 w-10 h-10 bg-white rounded-full"></div>
+        <div className="absolute -top-6 left-8 w-12 h-12 bg-white rounded-full"></div>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export const Rain = () => {
   // Memoize random drop values
