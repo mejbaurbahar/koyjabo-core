@@ -9,6 +9,32 @@ interface Translations {
 export const translations: Record<Language, Translations> = {
     bn: {
         // Common
+        auth: {
+            login: 'লগইন',
+            signup: 'সাইনআপ',
+            welcome: 'স্বাগতম!',
+            loginToAccount: 'আপনার অ্যাকাউন্টে লগইন করুন',
+            email: 'ইমেইল',
+            password: 'পাসওয়ার্ড',
+            forgotPassword: 'পাসওয়ার্ড ভুলে গেছেন?',
+            loginButton: 'লগইন করুন',
+            noAccount: 'অ্যাকাউন্ট নেই?',
+            register: 'রেজিস্ট্রেশন করুন',
+            verifying: 'যাচাই করা হচ্ছে...',
+            createAccount: 'অ্যাকাউন্ট খুলুন',
+            startJourney: 'কই যাবো — আপনার যাত্রা শুরু করুন',
+            fullName: 'পুরো নাম',
+            username: 'ইউজারনেম',
+            namePlaceholder: 'আপনার নাম',
+            passPlaceholder: 'কমপক্ষে ৮ অক্ষর',
+            confirmPass: 'পাসওয়ার্ড নিশ্চিত করুন',
+            confirmPassPlaceholder: 'পাসওয়ার্ড আবার লিখুন',
+            signupButton: 'অ্যাকাউন্ট তৈরি করুন',
+            hasAccount: 'ইতিমধ্যে অ্যাকাউন্ট আছে?',
+            creatingAccount: 'অ্যাকাউন্ট তৈরি করা হচ্ছে...',
+            creatingAccountTitle: 'অ্যাকাউন্ট তৈরি হচ্ছে',
+            processingWait: 'সুরক্ষিতভাবে প্রক্রিয়া করা হচ্ছে।\nসর্বোচ্চ ৯০ সেকেন্ড লাগতে পারে।\nদয়া করে অপেক্ষা করুন…',
+        },
         common: {
             appName: 'কই যাবো',
             search: 'খুঁজুন',
@@ -81,6 +107,8 @@ export const translations: Record<Language, Translations> = {
             blog: 'ব্লগ',
             contact: 'যোগাযোগ',
             forAI: 'এআই এর জন্য',
+            login: 'লগইন',
+            signup: 'সাইনআপ',
         },
 
         // Home/Search
@@ -634,6 +662,32 @@ export const translations: Record<Language, Translations> = {
 
     en: {
         // Common
+        auth: {
+            login: 'Login',
+            signup: 'Signup',
+            welcome: 'Welcome Back!',
+            loginToAccount: 'Login to your account',
+            email: 'Email',
+            password: 'Password',
+            forgotPassword: 'Forgot Password?',
+            loginButton: 'Login Now',
+            noAccount: "Don't have an account?",
+            register: 'Register Now',
+            verifying: 'Verifying...',
+            createAccount: 'Create Account',
+            startJourney: 'KoyJabo — Start your journey',
+            fullName: 'Full Name',
+            username: 'Username',
+            namePlaceholder: 'Your name',
+            passPlaceholder: 'Min. 8 characters',
+            confirmPass: 'Confirm Password',
+            confirmPassPlaceholder: 'Re-type password',
+            signupButton: 'Create Account',
+            hasAccount: 'Already have an account?',
+            creatingAccount: 'Creating account...',
+            creatingAccountTitle: 'Creating Account',
+            processingWait: 'Processing securely.\nMay take up to 90 seconds.\nPlease wait...',
+        },
         common: {
             appName: 'Koi Jabo',
             search: 'Search',
@@ -706,6 +760,8 @@ export const translations: Record<Language, Translations> = {
             blog: 'Blog',
             contact: 'Contact',
             forAI: 'For AI',
+            login: 'Login',
+            signup: 'Signup',
         },
 
         // Home/Search

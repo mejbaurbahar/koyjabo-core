@@ -27,3 +27,4 @@ dist-ssr
 *.sw?
 
 dev-dist/
+.claude/

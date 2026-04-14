@@ -3,6 +3,7 @@ import { Eye, EyeOff, LogIn, Loader2, AlertCircle } from 'lucide-react';
 import { loginUser } from '../../services/githubAuthService';
 import { useAuth } from '../../contexts/AuthContext';
 import { fetchAvatar } from '../../services/githubAuthService';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface LoginPageProps {
   onSignup: () => void;
@@ -12,6 +13,7 @@ interface LoginPageProps {
 
 export default function LoginPage({ onSignup, onForgotPassword, onSuccess }: LoginPageProps) {
   const { login } = useAuth();
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPass, setShowPass] = useState(false);
@@ -48,15 +50,15 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess }: Log
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen h-screen overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-center p-4 pt-safe pb-safe">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 shadow-lg shadow-blue-200 dark:shadow-blue-900 mb-4">
             <LogIn className="text-white" size={28} />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">স্বাগতম!</h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">আপনার অ্যাকাউন্টে লগইন করুন</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('auth.welcome')}</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">{t('auth.loginToAccount')}</p>
         </div>
 
         {/* Card */}
@@ -71,7 +73,7 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess }: Log
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                ইমেইল
+                {t('auth.email')}
               </label>
               <input
                 type="email"
@@ -86,7 +88,7 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess }: Log
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                পাসওয়ার্ড
+                {t('auth.password')}
               </label>
               <div className="relative">
                 <input
@@ -112,7 +114,7 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess }: Log
                   onClick={onForgotPassword}
                   className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
                 >
-                  পাসওয়ার্ড ভুলে গেছেন?
+                  {t('auth.forgotPassword')}
                 </button>
               </div>
             </div>
@@ -125,24 +127,24 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess }: Log
               {loading ? (
                 <>
                   <Loader2 size={18} className="animate-spin" />
-                  যাচাই করা হচ্ছে...
+                  {t('auth.verifying')}
                 </>
               ) : (
                 <>
                   <LogIn size={18} />
-                  লগইন করুন
+                  {t('auth.loginButton')}
                 </>
               )}
             </button>
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
-            অ্যাকাউন্ট নেই?{' '}
+            {t('auth.noAccount')}{' '}
             <button
               onClick={onSignup}
               className="text-blue-600 dark:text-blue-400 font-semibold hover:underline"
             >
-              রেজিস্ট্রেশন করুন
+              {t('auth.register')}
             </button>
           </div>
         </div>

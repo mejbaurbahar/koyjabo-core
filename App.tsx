@@ -1484,8 +1484,8 @@ const App: React.FC = () => {
   };
 
   const renderAiAssistant = () => (
-    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 md:rounded-l-3xl md:border-l md:border-gray-200 dark:md:border-gray-800 overflow-hidden w-full max-w-full pt-[65px] md:pt-24 pt-safe relative">
-      <div className="md:hidden flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shadow-sm z-20 absolute top-0 left-0 right-0 h-[65px] pt-safe">
+    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 md:rounded-l-3xl md:border-l md:border-gray-200 dark:md:border-gray-800 overflow-hidden w-full max-w-full pt-[75px] md:pt-24 pt-safe relative">
+      <div className="md:hidden flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shadow-sm z-20 absolute top-0 left-0 right-0 h-[75px] pt-safe">
         <button onClick={() => setView(AppView.HOME)} className="p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors">
           <ArrowLeft className="w-5 h-5 text-gray-600" />
         </button>
@@ -3219,7 +3219,7 @@ const App: React.FC = () => {
         <div className="flex-1 overflow-y-auto px-4 pb-24 md:pb-4 space-y-3">
 
           {/* Ad Banner - in scrollable area so it doesn't shrink bus list */}
-          <AdSenseAd adSlot="auto" className="mb-2" />
+
 
           {/* Intelligent Route Suggestions - Hide in Favorites Mode */}
           {(suggestedRoutes.length > 0 && listFilter !== 'FAVORITES') && (
@@ -3800,7 +3800,7 @@ const App: React.FC = () => {
                         onClick={() => { logout(); setIsMenuOpen(false); }}
                         className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-gray-700 dark:text-gray-200 text-xs font-semibold transition-colors"
                       >
-                        <LogOut className="w-3.5 h-3.5" /> লগআউট
+                        <LogOut className="w-3.5 h-3.5" /> {t('common.logout') || 'লগআউট'}
                       </button>
                     </div>
                   </div>
@@ -3810,13 +3810,13 @@ const App: React.FC = () => {
                       onClick={() => { setView(AppView.LOGIN); setIsMenuOpen(false); }}
                       className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-colors"
                     >
-                      <LogIn className="w-4 h-4" /> লগইন
+                      <LogIn className="w-4 h-4" /> {t('nav.login')}
                     </button>
                     <button
                       onClick={() => { setView(AppView.SIGNUP); setIsMenuOpen(false); }}
                       className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-colors"
                     >
-                      <UserPlus className="w-4 h-4" /> সাইনআপ
+                      <UserPlus className="w-4 h-4" /> {t('nav.signup')}
                     </button>
                   </div>
                 )}

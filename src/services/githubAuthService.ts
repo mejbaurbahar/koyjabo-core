@@ -12,42 +12,27 @@
 import bcrypt from 'bcryptjs';
 import type { AuthResult, Device } from '../types/auth';
 
-// ── Environment config ────────────────────────────────────────────────────────
-// App repo (public) — workflow dispatch + polling results
-const APP_OWNER = import.meta.env.VITE_GITHUB_OWNER as string | undefined;
-const APP_REPO  = import.meta.env.VITE_GITHUB_REPO  as string | undefined;
-const TOKEN     = import.meta.env.VITE_GITHUB_TOKEN  as string | undefined;
+// ── Config (hardcoded — token is read-only actions:write + contents:read scope) ─
+// App repo (public): workflow dispatch lives here, temp results written here
+const APP_OWNER = 'mejbaurbahar';
+const APP_REPO  = 'Dhaka-Commute';
+const TOKEN     = (import.meta.env.VITE_GITHUB_TOKEN as string | undefined);
 
-// Data repo (private) — all user data lives here, unreadable by the public
+// Data repo (private): ALL user data stored here — invisible to the public
 const DATA_OWNER = 'mejbaurbahar';
 const DATA_REPO  = 'koyjabo';
 
 const WORKFLOW_FILE = 'auth.yml';
 
-function getAppBase(): string {
-  if (!APP_OWNER || !APP_REPO) throw new AuthConfigError();
-  return `https://api.github.com/repos/${APP_OWNER}/${APP_REPO}`;
-}
-
-function getDataBase(): string {
-  return `https://api.github.com/repos/${DATA_OWNER}/${DATA_REPO}`;
-}
+const APP_BASE  = `https://api.github.com/repos/${APP_OWNER}/${APP_REPO}`;
+const DATA_BASE = `https://api.github.com/repos/${DATA_OWNER}/${DATA_REPO}`;
 
 function getHeaders(): Record<string, string> {
-  if (!TOKEN) throw new AuthConfigError();
   return {
     Authorization: `Bearer ${TOKEN}`,
     Accept: 'application/vnd.github.v3+json',
     'Content-Type': 'application/json'
   };
-}
-
-// ── Friendly error class ──────────────────────────────────────────────────────
-class AuthConfigError extends Error {
-  constructor() {
-    super('Auth service is not configured. Please contact support.');
-    this.name = 'AuthConfigError';
-  }
 }
 
 function friendlyHttpError(status: number, context: 'workflow' | 'read' = 'workflow'): string {
@@ -98,7 +83,7 @@ async function getClientIP(): Promise<string> {
 
 // Read user data from private koyjabo repo
 async function fetchDataFile<T = unknown>(path: string): Promise<T | null> {
-  const res = await fetch(`${getDataBase()}/contents/${path}`, { headers: getHeaders() });
+  const res = await fetch(`${DATA_BASE}/contents/${path}`, { headers: getHeaders() });
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(friendlyHttpError(res.status, 'read'));
   const data = await res.json();
@@ -107,7 +92,7 @@ async function fetchDataFile<T = unknown>(path: string): Promise<T | null> {
 
 // Read result files from public Dhaka-Commute repo
 async function fetchAppFile<T = unknown>(path: string): Promise<T | null> {
-  const res = await fetch(`${getAppBase()}/contents/${path}`, { headers: getHeaders() });
+  const res = await fetch(`${APP_BASE}/contents/${path}`, { headers: getHeaders() });
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(friendlyHttpError(res.status, 'read'));
   const data = await res.json();
@@ -132,7 +117,7 @@ async function triggerWorkflow(
     }
   };
 
-  const res = await fetch(`${getAppBase()}/actions/workflows/${WORKFLOW_FILE}/dispatches`, {
+  const res = await fetch(`${APP_BASE}/actions/workflows/${WORKFLOW_FILE}/dispatches`, {
     method: 'POST',
     headers: getHeaders(),
     body: JSON.stringify(body)

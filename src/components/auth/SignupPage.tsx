@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Eye, EyeOff, UserPlus, Loader2, AlertCircle, CheckCircle2, Clock } from 'lucide-react';
 import { signupUser } from '../../services/githubAuthService';
 import { useAuth } from '../../contexts/AuthContext';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface SignupPageProps {
   onLogin: () => void;
@@ -10,6 +11,7 @@ interface SignupPageProps {
 
 export default function SignupPage({ onLogin, onSuccess }: SignupPageProps) {
   const { login } = useAuth();
+  const { t } = useLanguage();
   const [form, setForm] = useState({
     displayName: '',
     username: '',
@@ -71,17 +73,15 @@ export default function SignupPage({ onLogin, onSuccess }: SignupPageProps) {
 
   if (step === 'processing') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen h-screen overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-center p-4 pt-safe pb-safe">
         <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 max-w-sm w-full text-center">
           <div className="relative w-16 h-16 mx-auto mb-4">
             <div className="w-16 h-16 rounded-full border-4 border-blue-100 dark:border-slate-600 animate-spin border-t-blue-600" />
             <Clock className="absolute inset-0 m-auto text-blue-600" size={20} />
           </div>
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-2">অ্যাকাউন্ট তৈরি হচ্ছে</h2>
-          <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
-            সুরক্ষিতভাবে প্রক্রিয়া করা হচ্ছে।<br />
-            সর্বোচ্চ <strong>৯০ সেকেন্ড</strong> লাগতে পারে।<br />
-            দয়া করে অপেক্ষা করুন…
+          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{t('auth.creatingAccountTitle')}</h2>
+          <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed whitespace-pre-line">
+            {t('auth.processingWait')}
           </p>
           {error && (
             <div className="mt-4 p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 flex items-center gap-2">
@@ -95,14 +95,14 @@ export default function SignupPage({ onLogin, onSuccess }: SignupPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen h-screen overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-center p-4 pt-safe pb-safe">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 shadow-lg shadow-blue-200 dark:shadow-blue-900 mb-4">
             <UserPlus className="text-white" size={28} />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">অ্যাকাউন্ট খুলুন</h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">কই যাবো — আপনার যাত্রা শুরু করুন</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('auth.createAccount')}</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">{t('auth.startJourney')}</p>
         </div>
 
         <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-slate-700">
@@ -115,19 +115,19 @@ export default function SignupPage({ onLogin, onSuccess }: SignupPageProps) {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">পুরো নাম</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{t('auth.fullName')}</label>
               <input
                 type="text"
                 value={form.displayName}
                 onChange={update('displayName')}
-                placeholder="আপনার নাম"
+                placeholder={t('auth.namePlaceholder')}
                 required
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">ইউজারনেম</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{t('auth.username')}</label>
               <div className="relative">
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 select-none">@</span>
                 <input
@@ -144,7 +144,7 @@ export default function SignupPage({ onLogin, onSuccess }: SignupPageProps) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">ইমেইল</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{t('auth.email')}</label>
               <input
                 type="email"
                 value={form.email}
@@ -157,13 +157,13 @@ export default function SignupPage({ onLogin, onSuccess }: SignupPageProps) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">পাসওয়ার্ড</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{t('auth.password')}</label>
               <div className="relative">
                 <input
                   type={showPass ? 'text' : 'password'}
                   value={form.password}
                   onChange={update('password')}
-                  placeholder="কমপক্ষে ৮ অক্ষর"
+                  placeholder={t('auth.passPlaceholder')}
                   required
                   minLength={8}
                   autoComplete="new-password"
@@ -180,13 +180,13 @@ export default function SignupPage({ onLogin, onSuccess }: SignupPageProps) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">পাসওয়ার্ড নিশ্চিত করুন</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{t('auth.confirmPass')}</label>
               <div className="relative">
                 <input
                   type={showPass ? 'text' : 'password'}
                   value={form.confirmPassword}
                   onChange={update('confirmPassword')}
-                  placeholder="পাসওয়ার্ড আবার লিখুন"
+                  placeholder={t('auth.confirmPassPlaceholder')}
                   required
                   autoComplete="new-password"
                   className="w-full px-4 py-3 pr-12 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
@@ -208,14 +208,14 @@ export default function SignupPage({ onLogin, onSuccess }: SignupPageProps) {
               className="w-full py-3 px-6 rounded-xl font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 dark:disabled:bg-slate-600 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 shadow-sm mt-2"
             >
               <UserPlus size={18} />
-              অ্যাকাউন্ট তৈরি করুন
+              {t('auth.signupButton')}
             </button>
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
-            ইতিমধ্যে অ্যাকাউন্ট আছে?{' '}
+            {t('auth.hasAccount')}{' '}
             <button onClick={onLogin} className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">
-              লগইন করুন
+              {t('auth.loginButton')}
             </button>
           </div>
         </div>
