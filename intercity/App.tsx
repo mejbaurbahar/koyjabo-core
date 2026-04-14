@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from './contexts/LanguageContext';
-import { Search, ArrowRightLeft, AlertCircle, PlayCircle, WifiOff, Activity, Home, Train, Sparkles, Clock, Info, Sun, Moon, Menu, Navigation, Map, X, Bot, FileText, Settings, Shield, Download, Calendar, HelpCircle, BookOpen } from 'lucide-react';
+import { Search, ArrowRightLeft, AlertCircle, PlayCircle, WifiOff, Activity, Home, Train, Sparkles, Clock, Info, Sun, Moon, Menu, Navigation, Map, X, Bot, FileText, Settings, Shield, Download, Calendar, HelpCircle, BookOpen, LogIn, UserPlus, LogOut, User, Phone } from 'lucide-react';
 import { AnimatedLogo } from './components/AnimatedLogo';
 import ThemeToggle from './components/ThemeToggle';
 import DistrictSelect from './components/DistrictSelect';
@@ -12,6 +12,20 @@ import { getOfflineIntercityData } from './offlineService';
 import { RouteResponse, ErrorResponse } from './types';
 import GlobalFooter from './components/GlobalFooter';
 
+// Read auth session from localStorage (written by main app's AuthContext)
+interface StoredUser { id: string; email: string; username: string; displayName: string; avatarUrl?: string; }
+function getStoredUser(): StoredUser | null {
+  try {
+    const raw = localStorage.getItem('koyjabo_auth_session');
+    if (!raw) return null;
+    const session = JSON.parse(raw) as { user: StoredUser; expiresAt: number };
+    if (session.expiresAt && Date.now() > session.expiresAt) return null;
+    return session.user ?? null;
+  } catch {
+    return null;
+  }
+}
+
 function App() {
   const { t, language, setLanguage, formatNumber } = useLanguage();
   const [from, setFrom] = useState('');
@@ -21,6 +35,9 @@ function App() {
 
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<RouteResponse | null>(null);
+
+  // Auth state from localStorage
+  const [authUser, setAuthUser] = useState<StoredUser | null>(() => getStoredUser());
 
   const [error, setError] = useState<string | null>(null);
 
@@ -76,6 +93,13 @@ function App() {
     };
   }, []);
 
+  // Sync auth state when localStorage changes (e.g. user logs in/out in main app tab)
+  useEffect(() => {
+    const handleStorage = () => setAuthUser(getStoredUser());
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
+
   // Handle URL parameters for redirection from main app
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -86,14 +110,16 @@ function App() {
       setFrom(fromParam);
       setTo(toParam);
 
-      // Automatic search if params are provided
+      // Only auto-search if user is signed in
+      if (!getStoredUser()) return;
+
       setLoading(true);
       setTimeout(() => {
         try {
           const resultData = getOfflineIntercityData(fromParam, toParam, language as 'en' | 'bn');
           setResult(resultData);
         } catch (err) {
-          console.error("Search failed", err);
+          // silently ignore
         } finally {
           setLoading(false);
         }
@@ -129,6 +155,11 @@ function App() {
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!authUser) {
+      setError(language === 'bn' ? 'ফলাফল দেখতে প্রথমে সাইন ইন করুন।' : 'Please sign in to view search results.');
+      return;
+    }
 
     if (!from || !to) {
       setError(t('intercity.selectStartEnd'));
@@ -184,7 +215,7 @@ function App() {
       )}
 
       {/* Fixed Header - Desktop */}
-      <header className="hidden md:flex fixed top-0 left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-[100] px-8 items-center justify-between transition-all duration-300" style={{ height: isOnline ? '5rem' : 'calc(5rem + 1.75rem)', paddingTop: isOnline ? 0 : '1.75rem' }}>
+      <header className={`hidden md:flex fixed top-0 left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-[100] px-8 items-center justify-between transition-all duration-300 h-20 ${isOnline ? '' : 'pt-7'}`}>
         {/* Logo Section */}
         <a
           href="/"
@@ -275,7 +306,7 @@ function App() {
       </header>
 
       {/* Fixed Header - Mobile */}
-      <header className="md:hidden fixed top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-[100] px-4 flex items-center justify-between transition-all duration-300 pt-safe" style={{ height: isOnline ? '4rem' : 'calc(4rem + 1.75rem)', paddingTop: isOnline ? undefined : '1.75rem' }}>
+      <header className={`md:hidden fixed top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-[100] px-4 flex items-center justify-between transition-all duration-300 h-16 ${isOnline ? 'pt-safe' : 'pt-7'}`}>
         <a
           href="/"
           onClick={(e) => {
@@ -464,8 +495,30 @@ function App() {
           <div className="max-w-7xl mx-auto min-h-[500px]">
             {loading && <LoadingState />}
 
-            {!loading && result && (
+            {!loading && result && authUser && (
               <ResultCard data={result} />
+            )}
+
+            {!loading && result && !authUser && (
+              <div className="max-w-md mx-auto mt-8 bg-white dark:bg-slate-800 rounded-3xl p-8 border border-gray-100 dark:border-slate-700 shadow-sm text-center animate-fade-in">
+                <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <LogIn className="w-8 h-8 text-blue-500" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+                  {language === 'bn' ? 'সাইন ইন প্রয়োজন' : 'Sign in Required'}
+                </h3>
+                <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
+                  {language === 'bn' ? 'রুটের ফলাফল দেখতে আপনার অ্যাকাউন্টে সাইন ইন করুন।' : 'Sign in to your account to view route results.'}
+                </p>
+                <a
+                  href="/"
+                  onClick={(e) => { e.preventDefault(); window.location.href = '/#login'; }}
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors shadow-sm"
+                >
+                  <LogIn className="w-4 h-4" />
+                  {language === 'bn' ? 'সাইন ইন করুন' : 'Sign In'}
+                </a>
+              </div>
             )}
 
             {/* Empty State / Popular Routes */}
@@ -506,6 +559,58 @@ function App() {
             </div>
 
             <div className="space-y-2 flex-1 overflow-y-auto hidden-scrollbar">
+              {/* Auth Section */}
+              {authUser ? (
+                <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 mb-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold shrink-0">
+                      {authUser.avatarUrl
+                        ? <img src={authUser.avatarUrl} alt={authUser.displayName} className="w-full h-full object-cover" />
+                        : authUser.displayName.charAt(0).toUpperCase()
+                      }
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-gray-800 dark:text-gray-100 truncate">{authUser.displayName}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{authUser.email}</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 mt-3">
+                    <button
+                      onClick={() => { window.location.href = '/#profile'; setIsMenuOpen(false); }}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-colors"
+                    >
+                      <User className="w-3.5 h-3.5" /> {t('nav.profile') || 'Profile'}
+                    </button>
+                    <button
+                      onClick={() => {
+                        localStorage.removeItem('koyjabo_auth_session');
+                        setAuthUser(null);
+                        setResult(null);
+                        setIsMenuOpen(false);
+                      }}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-gray-700 dark:text-gray-200 text-xs font-semibold transition-colors"
+                    >
+                      <LogOut className="w-3.5 h-3.5" /> {t('common.logout') || 'Logout'}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex gap-2 mb-2">
+                  <button
+                    onClick={() => { window.location.href = '/#login'; setIsMenuOpen(false); }}
+                    className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-colors"
+                  >
+                    <LogIn className="w-4 h-4" /> {t('nav.login')}
+                  </button>
+                  <button
+                    onClick={() => { window.location.href = '/#signup'; setIsMenuOpen(false); }}
+                    className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-colors"
+                  >
+                    <UserPlus className="w-4 h-4" /> {t('nav.signup')}
+                  </button>
+                </div>
+              )}
+
               <button
                 onClick={() => window.location.href = '/'}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
@@ -537,31 +642,30 @@ function App() {
                 <HelpCircle className="w-5 h-5 text-cyan-600 dark:text-cyan-400" /> {t('nav.faq')}
               </button>
               <button
-                onClick={() => window.location.href = '/#history'}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
-              >
-                <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400" /> {t('nav.history')}
-              </button>
-              <button
                 onClick={() => window.location.href = '/#blog'}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
               >
                 <BookOpen className="w-5 h-5 text-teal-600 dark:text-teal-400" /> {t('nav.blog')}
               </button>
-              <div className="p-3 rounded-xl bg-gray-50 dark:bg-slate-800">
-                <div className="flex items-center gap-3 mb-3 text-gray-700 dark:text-gray-200 font-medium">
-                  <Settings className="w-5 h-5 text-purple-600 dark:text-purple-400" /> {t('nav.settings')}
-                </div>
+              <button
+                onClick={() => window.location.href = '/#history'}
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+              >
+                <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400" /> {t('nav.history')}
+              </button>
+              <div className="p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">{t('settings.language')}</span>
+                  <div className="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                    <Settings className="w-4 h-4 text-purple-600 dark:text-purple-400" /> {t('settings.language')}
+                  </div>
                   <div className="flex gap-1">
                     <button
                       onClick={() => { setLanguage('bn'); setIsMenuOpen(false); }}
-                      className={`px-3 py-1 text-sm font-semibold rounded-full transition-colors ${language === 'bn' ? 'bg-blue-600 text-white' : 'border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700'}`}
+                      className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${language === 'bn' ? 'bg-red-600 text-white shadow-sm' : 'bg-white dark:bg-slate-700 text-gray-500 border border-gray-200 dark:border-slate-600'}`}
                     >বাং</button>
                     <button
                       onClick={() => { setLanguage('en'); setIsMenuOpen(false); }}
-                      className={`px-3 py-1 text-sm font-semibold rounded-full transition-colors ${language === 'en' ? 'bg-blue-600 text-white' : 'border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700'}`}
+                      className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${language === 'en' ? 'bg-red-600 text-white shadow-sm' : 'bg-white dark:bg-slate-700 text-gray-500 border border-gray-200 dark:border-slate-600'}`}
                     >EN</button>
                   </div>
                 </div>
@@ -583,6 +687,12 @@ function App() {
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
               >
                 <FileText className="w-5 h-5 text-orange-600 dark:text-orange-400" /> {t('nav.terms')}
+              </button>
+              <button
+                onClick={() => window.location.href = '/#contact'}
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+              >
+                <Phone className="w-5 h-5 text-red-600 dark:text-red-400" /> {t('nav.contact') || 'Contact Us'}
               </button>
             </div>
 

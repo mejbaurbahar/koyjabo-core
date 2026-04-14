@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, LogIn, Loader2, AlertCircle } from 'lucide-react';
+import { Eye, EyeOff, LogIn, Loader2, AlertCircle, X } from 'lucide-react';
 import { loginUser } from '../../services/githubAuthService';
 import { useAuth } from '../../contexts/AuthContext';
 import { fetchAvatar } from '../../services/githubAuthService';
@@ -9,13 +9,14 @@ interface LoginPageProps {
   onSignup: () => void;
   onForgotPassword: () => void;
   onSuccess: () => void;
+  onClose?: () => void;
 }
 
 function isValidEmail(v: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
 }
 
-export default function LoginPage({ onSignup, onForgotPassword, onSuccess }: LoginPageProps) {
+export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClose }: LoginPageProps) {
   const { login } = useAuth();
   const { t } = useLanguage();
   const [email, setEmail] = useState('');
@@ -62,7 +63,16 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess }: Log
   };
 
   return (
-    <div className="h-full overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-28 md:pt-safe md:pb-safe">
+    <div className="h-full overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-28 md:pt-safe md:pb-safe relative">
+      {onClose && (
+        <button
+          onClick={onClose}
+          className="md:hidden absolute top-4 right-4 p-2 rounded-full bg-white/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-700 text-gray-500 dark:text-gray-400 shadow-sm transition-colors z-10"
+          aria-label="Close"
+        >
+          <X size={20} />
+        </button>
+      )}
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">

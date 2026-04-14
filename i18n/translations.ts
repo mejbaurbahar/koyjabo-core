@@ -990,7 +990,7 @@ export const translations: Record<Language, Translations> = {
             selectDestination: 'Select Destination',
             noResults: 'No results found',
             noBusesBetweenStations: 'No buses found between selected stations',
-            noBusesInFavorites: 'No buses found in favorites',
+            noBusesInFavorites: 'No favorite buses found',
             noBusesMatching: 'No buses found matching ',
             tryDifferentSearch: 'Try a different search',
             recentSearches: 'Recent Searches',

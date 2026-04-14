@@ -775,7 +775,7 @@ const App: React.FC = () => {
 
     if (view === AppView.BUS_DETAILS && selectedBus) {
       const busName = formatBusName(selectedBus.name);
-      title = `${busName} ${t('nav.busDetails')} | কই যাবো`;
+      title = `${busName} | কই যাবো`;
       description = `${busName} bus route details, stops, and fare calculator. ${selectedBus.stops.length} stops covered. Find where ${busName} goes in Dhaka.`;
     } else if (view === AppView.LIVE_NAV && selectedBus) {
       const busName = formatBusName(selectedBus.name);
@@ -1265,6 +1265,12 @@ const App: React.FC = () => {
   };
 
   const handleBusSelect = useCallback((bus: BusRoute, fromHistory: boolean = false, trip?: SuggestedRoute) => {
+    // Require sign-in to view bus details
+    if (!user) {
+      setView(AppView.LOGIN);
+      return;
+    }
+
     // Track bus search only if not from history
     if (!fromHistory) {
       trackBusSearch(bus.id, bus.name);
@@ -2410,8 +2416,9 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Desktop Header */}
-        <div className="hidden md:flex items-center gap-3 p-4 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-slate-900 z-50 shrink-0 sticky top-16">
+        {/* Desktop Header + Stats Bar — sticky together so stats bar never hides under header */}
+        <div className="hidden md:block sticky top-16 z-50 shrink-0">
+        <div className="flex items-center gap-3 p-4 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-slate-900">
           <button onClick={() => setView(AppView.HOME)} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors" aria-label="Go back to home">
             <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
           </button>
@@ -2437,7 +2444,7 @@ const App: React.FC = () => {
         </div>
 
         {/* Stats Bar — Sleek & Integrated */}
-        <div className="shrink-0 grid grid-cols-3 gap-2 px-4 py-3 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-gray-800 z-30">
+        <div className="shrink-0 grid grid-cols-3 gap-2 px-4 py-3 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-gray-800">
           <div className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl px-3 py-3 border border-gray-50 dark:border-gray-700/50 flex flex-col items-center text-center transition-all hover:bg-white dark:hover:bg-slate-800 hover:shadow-sm">
             <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 mb-2">
               <Info className="w-5 h-5" />
@@ -2471,6 +2478,7 @@ const App: React.FC = () => {
             </p>
           </div>
         </div>
+        </div>{/* end sticky desktop header+stats wrapper */}
 
         {/* Scrollable Container for everything else */}
         <div className="flex-1 overflow-y-auto w-full pb-24 md:pb-4">
@@ -3408,10 +3416,10 @@ const App: React.FC = () => {
                 <Bus className="w-8 h-8 opacity-40" />
               </div>
               <p>
-                {searchMode === 'ROUTE'
-                  ? t('home.noBusesBetweenStations')
-                  : listFilter === 'FAVORITES'
-                    ? t('home.noBusesInFavorites')
+                {listFilter === 'FAVORITES'
+                  ? t('home.noBusesInFavorites')
+                  : searchMode === 'ROUTE'
+                    ? t('home.noBusesBetweenStations')
                     : `${t('home.noBusesMatching')}"${searchQuery}"`}
               </p>
               {inputValue && inputValue !== searchQuery && searchMode === 'TEXT' && (
@@ -3561,12 +3569,14 @@ const App: React.FC = () => {
                 onSignup={() => setView(AppView.SIGNUP)}
                 onForgotPassword={() => setView(AppView.FORGOT_PASSWORD)}
                 onSuccess={() => setView(AppView.HOME)}
+                onClose={() => setView(AppView.HOME)}
               />
             )}
             {view === AppView.SIGNUP && (
               <SignupPage
                 onLogin={() => setView(AppView.LOGIN)}
                 onSuccess={() => setView(AppView.PROFILE)}
+                onClose={() => setView(AppView.HOME)}
               />
             )}
             {view === AppView.FORGOT_PASSWORD && (

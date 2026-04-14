@@ -7,6 +7,7 @@ import { useLanguage } from '../../../contexts/LanguageContext';
 interface SignupPageProps {
   onLogin: () => void;
   onSuccess: () => void;
+  onClose?: () => void;
 }
 
 interface FieldErrors {
@@ -22,7 +23,7 @@ interface PasswordRule {
   met: boolean;
 }
 
-export default function SignupPage({ onLogin, onSuccess }: SignupPageProps) {
+export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPageProps) {
   const { login } = useAuth();
   const { t } = useLanguage();
 
@@ -173,7 +174,16 @@ export default function SignupPage({ onLogin, onSuccess }: SignupPageProps) {
   }
 
   return (
-    <div className="h-full overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-36 md:pt-safe md:pb-safe">
+    <div className="h-full overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-36 md:pt-safe md:pb-safe relative">
+      {onClose && (
+        <button
+          onClick={onClose}
+          className="md:hidden absolute top-4 right-4 p-2 rounded-full bg-white/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-700 text-gray-500 dark:text-gray-400 shadow-sm transition-colors z-10"
+          aria-label="Close"
+        >
+          <X size={20} />
+        </button>
+      )}
       <div className="w-full max-w-md">
         <div className="text-center mb-6">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 shadow-lg shadow-blue-200 dark:shadow-blue-900 mb-4">

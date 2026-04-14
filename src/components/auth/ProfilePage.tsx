@@ -86,7 +86,7 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
 
   // Password change
   const [pwForm, setPwForm] = useState({ current: '', newPass: '', confirm: '' });
-  const [showPw, setShowPw] = useState(false);
+  const [showPw, setShowPw] = useState({ current: false, newPass: false, confirm: false });
   const passwordOp = useAsyncOp();
 
   // Avatar
@@ -366,18 +366,20 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{label}</label>
                   <div className="relative">
                     <input
-                      type={showPw ? 'text' : 'password'}
+                      type={showPw[key as keyof typeof showPw] ? 'text' : 'password'}
                       value={pwForm[key as keyof typeof pwForm]}
                       onChange={e => setPwForm(prev => ({ ...prev, [key]: e.target.value }))}
                       placeholder={placeholder}
                       autoComplete={autoComplete}
                       className="w-full px-4 py-3 pr-12 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                     />
-                    {key === 'current' && (
-                      <button type="button" onClick={() => setShowPw(p => !p)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 p-1">
-                        {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
-                      </button>
-                    )}
+                    <button
+                      type="button"
+                      onClick={() => setShowPw(prev => ({ ...prev, [key]: !prev[key as keyof typeof prev] }))}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 p-1"
+                    >
+                      {showPw[key as keyof typeof showPw] ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
                   </div>
                 </div>
               ))}

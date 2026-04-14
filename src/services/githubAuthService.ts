@@ -82,22 +82,26 @@ async function getClientIP(): Promise<string> {
 
 // ── GitHub API read helpers ───────────────────────────────────────────────────
 
-// Read user data from private koyjabo repo
+// Read user data from private koyjabo repo — raw URL returns only file content, no metadata exposed
 async function fetchDataFile<T = unknown>(path: string): Promise<T | null> {
-  const res = await fetch(`${DATA_BASE}/contents/${path}`, { headers: getHeaders() });
+  const res = await fetch(
+    `https://raw.githubusercontent.com/${DATA_OWNER}/${DATA_REPO}/main/${path}`,
+    { headers: getHeaders() }
+  );
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(friendlyHttpError(res.status, 'read'));
-  const data = await res.json();
-  return JSON.parse(atob(data.content)) as T;
+  return await res.json() as T;
 }
 
-// Read result files from public Dhaka-Commute repo
+// Read result files from Dhaka-Commute repo — raw URL returns only file content, no metadata exposed
 async function fetchAppFile<T = unknown>(path: string): Promise<T | null> {
-  const res = await fetch(`${APP_BASE}/contents/${path}`, { headers: getHeaders() });
+  const res = await fetch(
+    `https://raw.githubusercontent.com/${APP_OWNER}/${APP_REPO}/main/${path}`,
+    { headers: getHeaders() }
+  );
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(friendlyHttpError(res.status, 'read'));
-  const data = await res.json();
-  return JSON.parse(atob(data.content)) as T;
+  return await res.json() as T;
 }
 
 // ── GitHub Actions trigger & poll ─────────────────────────────────────────────
