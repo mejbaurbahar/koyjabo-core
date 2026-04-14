@@ -13,17 +13,54 @@ import bcrypt from 'bcryptjs';
 import type { AuthResult, Device } from '../types/auth';
 
 // ── Environment config ────────────────────────────────────────────────────────
-const OWNER = import.meta.env.VITE_GITHUB_OWNER as string;
-const REPO = import.meta.env.VITE_GITHUB_REPO as string;
-const TOKEN = import.meta.env.VITE_GITHUB_TOKEN as string;
+const OWNER = import.meta.env.VITE_GITHUB_OWNER as string | undefined;
+const REPO = import.meta.env.VITE_GITHUB_REPO as string | undefined;
+const TOKEN = import.meta.env.VITE_GITHUB_TOKEN as string | undefined;
 const WORKFLOW_FILE = 'auth.yml';
 
-const BASE = `https://api.github.com/repos/${OWNER}/${REPO}`;
-const HEADERS = {
-  Authorization: `Bearer ${TOKEN}`,
-  Accept: 'application/vnd.github.v3+json',
-  'Content-Type': 'application/json'
-};
+function getBase(): string {
+  if (!OWNER || !REPO) {
+    throw new AuthConfigError();
+  }
+  return `https://api.github.com/repos/${OWNER}/${REPO}`;
+}
+
+function getHeaders(): Record<string, string> {
+  if (!TOKEN) {
+    throw new AuthConfigError();
+  }
+  return {
+    Authorization: `Bearer ${TOKEN}`,
+    Accept: 'application/vnd.github.v3+json',
+    'Content-Type': 'application/json'
+  };
+}
+
+// ── Friendly error class ──────────────────────────────────────────────────────
+class AuthConfigError extends Error {
+  constructor() {
+    super('Auth service is not configured. Please contact support.');
+    this.name = 'AuthConfigError';
+  }
+}
+
+function friendlyHttpError(status: number, context: 'workflow' | 'read' = 'workflow'): string {
+  if (status === 401 || status === 403) {
+    return context === 'workflow'
+      ? 'অ্যাকাউন্ট সার্ভিস সংযোগ ব্যর্থ হয়েছে। অনুগ্রহ করে একটু পরে আবার চেষ্টা করুন।'
+      : 'তথ্য পড়তে সমস্যা হয়েছে। সংযোগ পরীক্ষা করুন।';
+  }
+  if (status === 404) {
+    return 'সার্ভিস পাওয়া যাচ্ছে না। অনুগ্রহ করে একটু পরে আবার চেষ্টা করুন।';
+  }
+  if (status === 422) {
+    return 'অনুরোধটি প্রক্রিয়া করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।';
+  }
+  if (status >= 500) {
+    return 'সার্ভারে সমস্যা হচ্ছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।';
+  }
+  return 'একটি অপ্রত্যাশিত সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।';
+}
 
 // ── SHA-256 helper (Web Crypto — no extra package needed) ─────────────────────
 export async function sha256(message: string): Promise<string> {
@@ -53,9 +90,9 @@ async function getClientIP(): Promise<string> {
 
 // ── GitHub API read helpers ───────────────────────────────────────────────────
 async function fetchRepoFile<T = unknown>(path: string): Promise<T | null> {
-  const res = await fetch(`${BASE}/contents/${path}`, { headers: HEADERS });
+  const res = await fetch(`${getBase()}/contents/${path}`, { headers: getHeaders() });
   if (res.status === 404) return null;
-  if (!res.ok) throw new Error(`GitHub API error ${res.status} reading ${path}`);
+  if (!res.ok) throw new Error(friendlyHttpError(res.status, 'read'));
   const data = await res.json();
   return JSON.parse(atob(data.content)) as T;
 }
@@ -78,15 +115,14 @@ async function triggerWorkflow(
     }
   };
 
-  const res = await fetch(`${BASE}/actions/workflows/${WORKFLOW_FILE}/dispatches`, {
+  const res = await fetch(`${getBase()}/actions/workflows/${WORKFLOW_FILE}/dispatches`, {
     method: 'POST',
-    headers: HEADERS,
+    headers: getHeaders(),
     body: JSON.stringify(body)
   });
 
   if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`Failed to trigger auth workflow: ${res.status} — ${err}`);
+    throw new Error(friendlyHttpError(res.status, 'workflow'));
   }
 }
 
@@ -101,7 +137,7 @@ async function pollForResult(requestId: string, timeoutMs = 120_000): Promise<Au
     if (result) return result;
   }
 
-  throw new Error('Auth operation timed out. Please check your connection and try again.');
+  throw new Error('অনুরোধটি সম্পন্ন হতে বেশি সময় লাগছে। ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।');
 }
 
 async function triggerAndWait(
@@ -129,7 +165,7 @@ export async function loginUser(
   // 1. Find userId from email hash index
   const index = await fetchRepoFile<Record<string, string>>('data/users/index.json');
   if (!index || !index[emailHashKey]) {
-    throw new Error('Invalid email or password.');
+    throw new Error('ইমেইল বা পাসওয়ার্ড সঠিক নয়।');
   }
 
   const userId = index[emailHashKey];
@@ -137,12 +173,12 @@ export async function loginUser(
   // 2. Fetch user profile
   interface UserProfile { bcryptHash: string; username: string; displayName: string; }
   const user = await fetchRepoFile<UserProfile>(`data/users/${userId}.json`);
-  if (!user) throw new Error('User account not found. Please contact support.');
+  if (!user) throw new Error('অ্যাকাউন্ট খুঁজে পাওয়া যায়নি। সাপোর্টে যোগাযোগ করুন।');
 
   // 3. Verify: SHA-256(password) vs stored bcrypt hash
   const passwordSha = await sha256(password);
   const valid = await bcrypt.compare(passwordSha, user.bcryptHash);
-  if (!valid) throw new Error('Invalid email or password.');
+  if (!valid) throw new Error('ইমেইল বা পাসওয়ার্ড সঠিক নয়।');
 
   return { userId, username: user.username, displayName: user.displayName, email: normalizedEmail };
 }
@@ -233,7 +269,7 @@ export async function recordDeviceLogin(userId: string): Promise<void> {
         ip
       }
     })
-  }).catch(err => console.warn('Device recording failed (non-critical):', err.message));
+  }).catch(() => { /* non-critical, ignore silently */ });
 }
 
 /**

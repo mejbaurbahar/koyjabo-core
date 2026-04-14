@@ -346,7 +346,11 @@ export default defineConfig(({ mode }) => {
       'process.env.GEMINI_API_KEY_5': JSON.stringify(env.GEMINI_API_KEY_5 || ''),
       // TomTom API keys for real-time traffic data
       'import.meta.env.VITE_TOMTOM_API_KEY_1': JSON.stringify(env.VITE_TOMTOM_API_KEY_1 || ''),
-      'import.meta.env.VITE_TOMTOM_API_KEY_2': JSON.stringify(env.VITE_TOMTOM_API_KEY_2 || '')
+      'import.meta.env.VITE_TOMTOM_API_KEY_2': JSON.stringify(env.VITE_TOMTOM_API_KEY_2 || ''),
+      // GitHub Auth storage config
+      'import.meta.env.VITE_GITHUB_OWNER': JSON.stringify(env.VITE_GITHUB_OWNER || ''),
+      'import.meta.env.VITE_GITHUB_REPO': JSON.stringify(env.VITE_GITHUB_REPO || ''),
+      'import.meta.env.VITE_GITHUB_TOKEN': JSON.stringify(env.VITE_GITHUB_TOKEN || '')
     },
     resolve: {
       alias: {
