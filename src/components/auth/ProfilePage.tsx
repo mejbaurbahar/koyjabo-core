@@ -5,6 +5,7 @@ import {
   ArrowLeft, Trash2, Key, Edit3, Save, X
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useLanguage } from '../../contexts/LanguageContext';
 import {
   updateProfile, changePassword, uploadAvatar,
   fetchDevices, logoutDevice, getOrCreateDeviceId
@@ -20,6 +21,7 @@ interface ProfilePageProps {
 type OpState = 'idle' | 'loading' | 'success' | 'error';
 
 function useAsyncOp() {
+  const { t } = useLanguage();
   const [state, setState] = useState<OpState>('idle');
   const [message, setMessage] = useState('');
   const run = async (fn: () => Promise<void>) => {
@@ -30,7 +32,7 @@ function useAsyncOp() {
       setState('success');
     } catch (err) {
       setState('error');
-      setMessage(err instanceof Error ? err.message : 'কিছু সমস্যা হয়েছে।');
+      setMessage(err instanceof Error ? err.message : t('auth.validation.somethingWentWrong'));
     }
     setTimeout(() => setState('idle'), 3000);
   };
@@ -45,12 +47,13 @@ function DeviceIcon({ type }: { type: Device['deviceType'] }) {
   return <Monitor size={20} className={cls} />;
 }
 
-function formatDate(ts: number) {
-  return new Date(ts).toLocaleDateString('bn-BD', { year: 'numeric', month: 'short', day: 'numeric' });
+function formatDate(ts: number, language: string) {
+  return new Date(ts).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 }
 
 // ── Processing overlay ────────────────────────────────────────────────────────
 function ProcessingOverlay({ message }: { message: string }) {
+  const { t } = useLanguage();
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center">
@@ -59,7 +62,7 @@ function ProcessingOverlay({ message }: { message: string }) {
           <Clock className="absolute inset-0 m-auto text-blue-600" size={18} />
         </div>
         <p className="text-gray-700 dark:text-gray-300 font-medium">{message}</p>
-        <p className="text-gray-500 dark:text-gray-500 text-sm mt-1">সর্বোচ্চ ৯০ সেকেন্ড…</p>
+        <p className="text-gray-500 dark:text-gray-500 text-sm mt-1">{t('auth.forgotPasswordPage.maxWait')}</p>
       </div>
     </div>
   );
@@ -68,6 +71,7 @@ function ProcessingOverlay({ message }: { message: string }) {
 // ── Main component ────────────────────────────────────────────────────────────
 export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
   const { user, updateUser, logout } = useAuth();
+  const { t, language } = useLanguage();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [devices, setDevices] = useState<Device[]>([]);
@@ -115,8 +119,8 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
 
   const handleChangePassword = () =>
     passwordOp.run(async () => {
-      if (pwForm.newPass.length < 8) throw new Error('নতুন পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।');
-      if (pwForm.newPass !== pwForm.confirm) throw new Error('পাসওয়ার্ড মিলছে না।');
+      if (pwForm.newPass.length < 8) throw new Error(t('auth.passPlaceholder'));
+      if (pwForm.newPass !== pwForm.confirm) throw new Error(t('auth.validation.passwordsDoNotMatch'));
       const result = await changePassword(user.id, user.email, pwForm.current, pwForm.newPass);
       if (!result.success) throw new Error(result.error);
       setPwForm({ current: '', newPass: '', confirm: '' });
@@ -134,7 +138,7 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
       const newUrl = await fetchAvatar(user.id);
       if (newUrl) updateUser({ avatarUrl: newUrl });
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'আপলোড ব্যর্থ হয়েছে।');
+      alert(err instanceof Error ? err.message : t('profile.uploadFailed'));
     } finally {
       setAvatarProcessing(false);
     }
@@ -151,7 +155,7 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
         onLogout();
       }
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'ডিভাইস লগআউট ব্যর্থ হয়েছে।');
+      alert(err instanceof Error ? err.message : t('profile.logoutFailed'));
     } finally {
       setLoggingOutDevice(null);
     }
@@ -166,10 +170,10 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-slate-900">
       {/* Processing overlays */}
-      {profileOp.state === 'loading' && <ProcessingOverlay message="প্রোফাইল আপডেট হচ্ছে…" />}
-      {passwordOp.state === 'loading' && <ProcessingOverlay message="পাসওয়ার্ড পরিবর্তন হচ্ছে…" />}
-      {avatarProcessing && <ProcessingOverlay message="ছবি আপলোড হচ্ছে…" />}
-      {loggingOutDevice && <ProcessingOverlay message="ডিভাইস লগআউট হচ্ছে…" />}
+      {profileOp.state === 'loading' && <ProcessingOverlay message={t('profile.updatingProfile')} />}
+      {passwordOp.state === 'loading' && <ProcessingOverlay message={t('profile.changingPassword')} />}
+      {avatarProcessing && <ProcessingOverlay message={t('profile.uploadingAvatar')} />}
+      {loggingOutDevice && <ProcessingOverlay message={t('profile.loggingOutDevice')} />}
 
       {/* Header */}
       <div className="bg-white dark:bg-slate-800 border-b border-gray-100 dark:border-slate-700 sticky top-0 z-10">
@@ -177,13 +181,13 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
           <button onClick={onBack} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700 transition">
             <ArrowLeft size={20} className="text-gray-600 dark:text-gray-400" />
           </button>
-          <h1 className="text-lg font-bold text-gray-900 dark:text-white flex-1">আমার প্রোফাইল</h1>
+          <h1 className="text-lg font-bold text-gray-900 dark:text-white flex-1">{t('profile.title')}</h1>
           <button
             onClick={handleLogout}
             className="flex items-center gap-1.5 text-sm text-red-500 hover:text-red-700 dark:hover:text-red-400 font-medium px-3 py-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition"
           >
             <LogOut size={16} />
-            লগআউট
+            {t('common.logout')}
           </button>
         </div>
       </div>
@@ -222,9 +226,9 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
         {/* Section tabs */}
         <div className="flex gap-2 bg-white dark:bg-slate-800 rounded-2xl p-2 shadow-sm border border-gray-100 dark:border-slate-700">
           {[
-            { key: 'profile', label: 'প্রোফাইল', Icon: User },
-            { key: 'security', label: 'পাসওয়ার্ড', Icon: Shield },
-            { key: 'devices', label: 'ডিভাইস', Icon: Monitor }
+            { key: 'profile', label: t('profile.tabs.profile'), Icon: User },
+            { key: 'security', label: t('profile.tabs.password'), Icon: Shield },
+            { key: 'devices', label: t('profile.tabs.devices'), Icon: Monitor }
           ].map(({ key, label, Icon }) => (
             <button
               key={key}
@@ -245,10 +249,10 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
         {activeSection === 'profile' && (
           <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-50 dark:border-slate-700">
-              <h3 className="font-semibold text-gray-900 dark:text-white">প্রোফাইল তথ্য</h3>
+              <h3 className="font-semibold text-gray-900 dark:text-white">{t('profile.profileInfo')}</h3>
               {!editMode ? (
                 <button onClick={() => setEditMode(true)} className="flex items-center gap-1.5 text-blue-600 dark:text-blue-400 text-sm font-medium">
-                  <Edit3 size={15} /> সম্পাদনা
+                  <Edit3 size={15} /> {t('profile.edit')}
                 </button>
               ) : (
                 <button onClick={() => setEditMode(false)} className="text-gray-400 hover:text-gray-600 p-1">
@@ -262,7 +266,7 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
               {profileOp.state === 'success' && (
                 <div className="p-3 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-200 flex items-center gap-2">
                   <CheckCircle2 size={16} className="text-green-500" />
-                  <p className="text-sm text-green-700 dark:text-green-400">প্রোফাইল আপডেট হয়েছে!</p>
+                  <p className="text-sm text-green-700 dark:text-green-400">{t('profile.profileUpdated')}</p>
                 </div>
               )}
               {profileOp.state === 'error' && (
@@ -275,7 +279,7 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
               {/* Display Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1.5 flex items-center gap-1.5">
-                  <User size={14} /> পুরো নাম
+                  <User size={14} /> {t('profile.fullName')}
                 </label>
                 {editMode ? (
                   <input
@@ -292,7 +296,7 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
               {/* Username */}
               <div>
                 <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1.5 flex items-center gap-1.5">
-                  <AtSign size={14} /> ইউজারনেম
+                  <AtSign size={14} /> {t('profile.username')}
                 </label>
                 {editMode ? (
                   <div className="relative">
@@ -312,7 +316,7 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
               {/* Email (read-only) */}
               <div>
                 <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1.5 flex items-center gap-1.5">
-                  <Mail size={14} /> ইমেইল <span className="text-xs text-gray-400">(পরিবর্তনযোগ্য নয়)</span>
+                  <Mail size={14} /> {t('profile.email')} <span className="text-xs text-gray-400">{t('profile.notChangeable')}</span>
                 </label>
                 <p className="text-gray-700 dark:text-gray-300 px-4 py-3 bg-gray-50 dark:bg-slate-700 rounded-xl">{user.email}</p>
               </div>
@@ -324,7 +328,7 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
                   className="w-full py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 disabled:opacity-50 transition flex items-center justify-center gap-2"
                 >
                   <Save size={16} />
-                  সংরক্ষণ করুন
+                  {t('profile.save')}
                 </button>
               )}
             </div>
@@ -336,14 +340,14 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
           <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-50 dark:border-slate-700">
               <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                <Key size={18} className="text-blue-600" /> পাসওয়ার্ড পরিবর্তন
+                <Key size={18} className="text-blue-600" /> {t('profile.passwordChange')}
               </h3>
             </div>
             <div className="p-6 space-y-4">
               {passwordOp.state === 'success' && (
                 <div className="p-3 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-200 flex items-center gap-2">
                   <CheckCircle2 size={16} className="text-green-500" />
-                  <p className="text-sm text-green-700 dark:text-green-400">পাসওয়ার্ড পরিবর্তন হয়েছে!</p>
+                  <p className="text-sm text-green-700 dark:text-green-400">{t('profile.passwordChanged')}</p>
                 </div>
               )}
               {passwordOp.state === 'error' && (
@@ -354,9 +358,9 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
               )}
 
               {[
-                { key: 'current', label: 'বর্তমান পাসওয়ার্ড', placeholder: '••••••••', autoComplete: 'current-password' },
-                { key: 'newPass', label: 'নতুন পাসওয়ার্ড', placeholder: 'কমপক্ষে ৮ অক্ষর', autoComplete: 'new-password' },
-                { key: 'confirm', label: 'নতুন পাসওয়ার্ড নিশ্চিত করুন', placeholder: '••••••••', autoComplete: 'new-password' }
+                { key: 'current', label: t('profile.currentPassword'), placeholder: '••••••••', autoComplete: 'current-password' },
+                { key: 'newPass', label: t('profile.newPassword'), placeholder: t('auth.passPlaceholder'), autoComplete: 'new-password' },
+                { key: 'confirm', label: t('profile.confirmNewPassword'), placeholder: '••••••••', autoComplete: 'new-password' }
               ].map(({ key, label, placeholder, autoComplete }) => (
                 <div key={key}>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{label}</label>
@@ -384,7 +388,7 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
                 className="w-full py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 disabled:opacity-50 transition flex items-center justify-center gap-2 mt-2"
               >
                 <Shield size={16} />
-                পাসওয়ার্ড পরিবর্তন করুন
+                {t('profile.updatePasswordBtn')}
               </button>
             </div>
           </div>
@@ -395,21 +399,21 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
           <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-50 dark:border-slate-700">
               <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                <Monitor size={18} className="text-blue-600" /> লগইন ডিভাইস সমূহ
+                <Monitor size={18} className="text-blue-600" /> {t('profile.loginDevices')}
               </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">আপনার অ্যাকাউন্টে সক্রিয় ডিভাইসের তালিকা</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{t('profile.activeDevicesList')}</p>
             </div>
 
             <div className="divide-y divide-gray-50 dark:divide-slate-700">
               {devicesLoading ? (
                 <div className="p-8 text-center">
                   <Loader2 size={24} className="animate-spin text-blue-500 mx-auto mb-2" />
-                  <p className="text-gray-500 dark:text-gray-400 text-sm">ডিভাইস তালিকা লোড হচ্ছে…</p>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm">{t('profile.loadingDevices')}</p>
                 </div>
               ) : devices.length === 0 ? (
                 <div className="p-8 text-center text-gray-400 dark:text-gray-500">
                   <Monitor size={32} className="mx-auto mb-2 opacity-30" />
-                  <p className="text-sm">এখনো কোনো ডিভাইস রেকর্ড নেই।<br />পরবর্তী লগইনের পর এখানে দেখা যাবে।</p>
+                  <p className="text-sm">{t('profile.noDevices')}<br />{t('profile.nextLoginInstruction')}</p>
                 </div>
               ) : (
                 devices.map(device => (
@@ -422,27 +426,27 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
                         <span className="font-medium text-gray-900 dark:text-white text-sm">{device.name}</span>
                         {device.isCurrent && (
                           <span className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-0.5 rounded-full font-medium">
-                            এই ডিভাইস
+                            {t('profile.thisDevice')}
                           </span>
                         )}
                       </div>
                       <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{device.os} • {device.browser}</p>
                       <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
-                        IP: {device.ip} • সর্বশেষ: {formatDate(device.lastLogin)}
+                        {t('profile.ip')}: {device.ip || t('profile.unknown')} • {t('profile.lastLogin')}: {formatDate(device.lastLogin, language)}
                       </p>
                       <p className="text-xs text-gray-400 dark:text-gray-500">
-                        প্রথম লগইন: {formatDate(device.firstLogin)}
+                        {t('profile.firstLogin')}: {formatDate(device.firstLogin, language)}
                       </p>
                     </div>
                     <button
                       onClick={() => {
                         const msg = device.isCurrent
-                          ? 'এই ডিভাইস থেকে লগআউট করবেন? আপনাকে আবার লগইন করতে হবে।'
-                          : 'এই ডিভাইস থেকে লগআউট করতে চান?';
+                          ? t('profile.logoutConfirmCurrent')
+                          : t('profile.logoutConfirmOther');
                         if (window.confirm(msg)) handleLogoutDevice(device.id);
                       }}
                       className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-gray-400 hover:text-red-500 transition shrink-0"
-                      title="এই ডিভাইস থেকে লগআউট"
+                      title={t('profile.logoutDeviceTooltip')}
                     >
                       <LogOut size={16} />
                     </button>
@@ -454,7 +458,7 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
             {devices.length > 0 && (
               <div className="px-6 py-4 bg-gray-50 dark:bg-slate-700/50">
                 <p className="text-xs text-gray-500 dark:text-gray-400">
-                  ⚠️ অপরিচিত ডিভাইস দেখলে সেটি থেকে লগআউট করুন এবং পাসওয়ার্ড পরিবর্তন করুন।
+                  {t('profile.securityWarning')}
                 </p>
               </div>
             )}
@@ -463,4 +467,5 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
       </div>
     </div>
   );
+}
 }

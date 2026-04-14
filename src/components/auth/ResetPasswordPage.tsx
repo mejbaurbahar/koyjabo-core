@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { KeyRound, Eye, EyeOff, CheckCircle2, AlertCircle, Loader2, Clock } from 'lucide-react';
 import { resetPassword } from '../../services/githubAuthService';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface ResetPasswordPageProps {
   token: string;
@@ -8,6 +9,7 @@ interface ResetPasswordPageProps {
 }
 
 export default function ResetPasswordPage({ token, onSuccess }: ResetPasswordPageProps) {
+  const { t } = useLanguage();
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [showPass, setShowPass] = useState(false);
@@ -24,9 +26,9 @@ export default function ResetPasswordPage({ token, onSuccess }: ResetPasswordPag
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password.length < 8) { setError('পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।'); return; }
-    if (password !== confirm) { setError('পাসওয়ার্ড মিলছে না।'); return; }
-    if (!token) { setError('রিসেট টোকেন পাওয়া যায়নি।'); return; }
+    if (password.length < 8) { setError(t('auth.passPlaceholder')); return; }
+    if (password !== confirm) { setError(t('auth.validation.passwordsDoNotMatch')); return; }
+    if (!token) { setError(t('auth.tokenNotFound')); return; }
 
     setError('');
     setStage('processing');
@@ -34,27 +36,27 @@ export default function ResetPasswordPage({ token, onSuccess }: ResetPasswordPag
     try {
       const result = await resetPassword(token, password);
       if (!result.success) {
-        setError(result.error || 'পাসওয়ার্ড রিসেট ব্যর্থ হয়েছে।');
+        setError(result.error || t('auth.validation.somethingWentWrong'));
         setStage('form');
         return;
       }
       setStage('done');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'পাসওয়ার্ড রিসেট ব্যর্থ হয়েছে।');
+      setError(err instanceof Error ? err.message : t('auth.validation.somethingWentWrong'));
       setStage('form');
     }
   };
 
   if (stage === 'processing') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-4">
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 max-w-sm w-full text-center">
+      <div className="h-full overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 max-w-sm w-full text-center mt-12 md:mt-0">
           <div className="relative w-16 h-16 mx-auto mb-4">
             <div className="w-16 h-16 rounded-full border-4 border-blue-100 dark:border-slate-600 animate-spin border-t-blue-600" />
             <Clock className="absolute inset-0 m-auto text-blue-600" size={20} />
           </div>
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-2">পাসওয়ার্ড আপডেট হচ্ছে</h2>
-          <p className="text-gray-500 dark:text-gray-400 text-sm">সর্বোচ্চ ৯০ সেকেন্ড লাগতে পারে…</p>
+          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{t('auth.resettingPassword')}</h2>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">{t('auth.forgotPasswordPage.maxWait')}</p>
         </div>
       </div>
     );
@@ -62,24 +64,24 @@ export default function ResetPasswordPage({ token, onSuccess }: ResetPasswordPag
 
   if (stage === 'done') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-4">
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 max-w-sm w-full text-center">
+      <div className="h-full overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 max-w-sm w-full text-center mt-12 md:mt-0">
           <CheckCircle2 size={48} className="text-green-500 mx-auto mb-4" />
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">পাসওয়ার্ড পরিবর্তন হয়েছে!</h2>
-          <p className="text-gray-500 dark:text-gray-400 text-sm">লগইন পেজে নিয়ে যাওয়া হচ্ছে…</p>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{t('profile.passwordChanged')}</h2>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">{t('auth.redirectingToLogin')}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-4">
+    <div className="h-full overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-28 md:pt-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 shadow-lg shadow-blue-200 dark:shadow-blue-900 mb-4">
             <KeyRound className="text-white" size={28} />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">নতুন পাসওয়ার্ড সেট করুন</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('auth.resetPasswordTitle')}</h1>
         </div>
 
         <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-slate-700">
@@ -92,13 +94,13 @@ export default function ResetPasswordPage({ token, onSuccess }: ResetPasswordPag
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">নতুন পাসওয়ার্ড</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{t('profile.newPassword')}</label>
               <div className="relative">
                 <input
                   type={showPass ? 'text' : 'password'}
                   value={password}
                   onChange={e => setPassword(e.target.value)}
-                  placeholder="কমপক্ষে ৮ অক্ষর"
+                  placeholder={t('auth.passPlaceholder')}
                   required
                   minLength={8}
                   autoComplete="new-password"
@@ -111,13 +113,13 @@ export default function ResetPasswordPage({ token, onSuccess }: ResetPasswordPag
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">পাসওয়ার্ড নিশ্চিত করুন</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{t('profile.confirmNewPassword')}</label>
               <div className="relative">
                 <input
                   type={showPass ? 'text' : 'password'}
                   value={confirm}
                   onChange={e => setConfirm(e.target.value)}
-                  placeholder="পাসওয়ার্ড আবার লিখুন"
+                  placeholder={t('auth.confirmPassPlaceholder')}
                   required
                   autoComplete="new-password"
                   className="w-full px-4 py-3 pr-12 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
@@ -137,7 +139,7 @@ export default function ResetPasswordPage({ token, onSuccess }: ResetPasswordPag
               className="w-full py-3 px-6 rounded-xl font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-sm"
             >
               <KeyRound size={18} />
-              পাসওয়ার্ড সেট করুন
+              {t('auth.setPasswordBtn')}
             </button>
           </form>
         </div>

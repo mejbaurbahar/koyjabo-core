@@ -22,61 +22,60 @@ interface PasswordRule {
   met: boolean;
 }
 
-function getPasswordRules(password: string): PasswordRule[] {
-  return [
-    { label: 'কমপক্ষে ৮ অক্ষর', met: password.length >= 8 },
-    { label: 'একটি বড় হাতের অক্ষর (A-Z)', met: /[A-Z]/.test(password) },
-    { label: 'একটি ছোট হাতের অক্ষর (a-z)', met: /[a-z]/.test(password) },
-    { label: 'একটি সংখ্যা (0-9)', met: /[0-9]/.test(password) },
-    { label: 'একটি বিশেষ চিহ্ন (!@#$%...)', met: /[^a-zA-Z0-9]/.test(password) },
-  ];
-}
-
-function passwordStrength(password: string): { score: number; label: string; color: string } {
-  if (!password) return { score: 0, label: '', color: '' };
-  const rules = getPasswordRules(password);
-  const met = rules.filter(r => r.met).length;
-  if (met <= 2) return { score: met, label: 'দুর্বল', color: 'bg-red-500' };
-  if (met === 3) return { score: met, label: 'মাঝারি', color: 'bg-yellow-500' };
-  if (met === 4) return { score: met, label: 'ভালো', color: 'bg-blue-500' };
-  return { score: met, label: 'শক্তিশালী', color: 'bg-green-500' };
-}
-
-function validateField(name: keyof FieldErrors, value: string, form: Record<string, string>): string {
-  switch (name) {
-    case 'displayName':
-      if (!value.trim()) return 'পুরো নাম লিখুন।';
-      if (value.trim().length < 2) return 'নাম কমপক্ষে ২ অক্ষরের হতে হবে।';
-      if (value.length > 50) return 'নাম সর্বোচ্চ ৫০ অক্ষরের হতে পারে।';
-      return '';
-    case 'username':
-      if (!value.trim()) return 'ইউজারনেম লিখুন।';
-      if (value.length < 3) return 'ইউজারনেম কমপক্ষে ৩ অক্ষরের হতে হবে।';
-      if (value.length > 20) return 'ইউজারনেম সর্বোচ্চ ২০ অক্ষরের হতে পারে।';
-      if (!/^[a-zA-Z0-9_.]+$/.test(value)) return 'শুধু অক্ষর, সংখ্যা, _ ও . ব্যবহার করুন।';
-      return '';
-    case 'email':
-      if (!value.trim()) return 'ইমেইল লিখুন।';
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'সঠিক ইমেইল দিন।';
-      return '';
-    case 'password': {
-      const rules = getPasswordRules(value);
-      const unmet = rules.filter(r => !r.met);
-      if (unmet.length > 0) return 'পাসওয়ার্ড শক্তিশালী করুন (নিচের শর্তগুলো পূরণ করুন)।';
-      return '';
-    }
-    case 'confirmPassword':
-      if (!value) return 'পাসওয়ার্ড নিশ্চিত করুন।';
-      if (value !== form.password) return 'পাসওয়ার্ড মিলছে না।';
-      return '';
-    default:
-      return '';
-  }
-}
-
 export default function SignupPage({ onLogin, onSuccess }: SignupPageProps) {
   const { login } = useAuth();
   const { t } = useLanguage();
+
+  const getPasswordRules = (password: string): PasswordRule[] => [
+    { label: t('auth.passwordRules.minChars'), met: password.length >= 8 },
+    { label: t('auth.passwordRules.uppercase'), met: /[A-Z]/.test(password) },
+    { label: t('auth.passwordRules.lowercase'), met: /[a-z]/.test(password) },
+    { label: t('auth.passwordRules.number'), met: /[0-9]/.test(password) },
+    { label: t('auth.passwordRules.specialChar'), met: /[^a-zA-Z0-9]/.test(password) },
+  ];
+
+  const passwordStrength = (password: string): { score: number; label: string; color: string } => {
+    if (!password) return { score: 0, label: '', color: '' };
+    const rules = getPasswordRules(password);
+    const met = rules.filter(r => r.met).length;
+    if (met <= 2) return { score: met, label: t('auth.passwordStrength.weak'), color: 'bg-red-500' };
+    if (met === 3) return { score: met, label: t('auth.passwordStrength.average'), color: 'bg-yellow-500' };
+    if (met === 4) return { score: met, label: t('auth.passwordStrength.good'), color: 'bg-blue-500' };
+    return { score: met, label: t('auth.passwordStrength.strong'), color: 'bg-green-500' };
+  };
+
+  const validateField = (name: keyof FieldErrors, value: string, form: Record<string, string>): string => {
+    switch (name) {
+      case 'displayName':
+        if (!value.trim()) return t('auth.validation.fullNameRequired');
+        if (value.trim().length < 2) return t('auth.validation.nameTooShort');
+        if (value.length > 50) return t('auth.validation.nameTooLong');
+        return '';
+      case 'username':
+        if (!value.trim()) return t('auth.validation.usernameRequired');
+        if (value.length < 3) return t('auth.validation.usernameTooShort');
+        if (value.length > 20) return t('auth.validation.usernameTooLong');
+        if (!/^[a-zA-Z0-9_.]+$/.test(value)) return t('auth.validation.usernameInvalid');
+        return '';
+      case 'email':
+        if (!value.trim()) return t('auth.validation.emailRequired');
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return t('auth.validation.invalidEmail');
+        return '';
+      case 'password': {
+        const rules = getPasswordRules(value);
+        const unmet = rules.filter(r => !r.met);
+        if (unmet.length > 0) return t('auth.validation.passwordTooWeak');
+        return '';
+      }
+      case 'confirmPassword':
+        if (!value) return t('auth.validation.confirmPasswordRequired');
+        if (value !== form.password) return t('auth.validation.passwordsDoNotMatch');
+        return '';
+      default:
+        return '';
+    }
+  };
+
   const [form, setForm] = useState({
     displayName: '',
     username: '',
@@ -97,7 +96,7 @@ export default function SignupPage({ onLogin, onSuccess }: SignupPageProps) {
     email: validateField('email', form.email, form),
     password: validateField('password', form.password, form),
     confirmPassword: validateField('confirmPassword', form.confirmPassword, form),
-  }), [form]);
+  }), [form, t]);
 
   const isFormValid = Object.values(errors).every(e => !e);
 
@@ -128,7 +127,7 @@ export default function SignupPage({ onLogin, onSuccess }: SignupPageProps) {
     try {
       const result = await signupUser(form.email, form.password, form.username, form.displayName);
       if (!result.success) {
-        setServerError(result.error || 'রেজিস্ট্রেশন ব্যর্থ হয়েছে।');
+        setServerError(result.error || t('auth.validation.signupFailed'));
         setStep('form');
         return;
       }
@@ -143,7 +142,7 @@ export default function SignupPage({ onLogin, onSuccess }: SignupPageProps) {
       });
       onSuccess();
     } catch (err) {
-      setServerError(err instanceof Error ? err.message : 'রেজিস্ট্রেশন ব্যর্থ হয়েছে। আবার চেষ্টা করুন।');
+      setServerError(err instanceof Error ? err.message : t('auth.validation.signupFailed'));
       setStep('form');
     } finally {
       setLoading(false);
@@ -152,7 +151,7 @@ export default function SignupPage({ onLogin, onSuccess }: SignupPageProps) {
 
   if (step === 'processing') {
     return (
-      <div className="min-h-screen overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-24 md:pt-safe md:pb-safe">
+      <div className="h-full overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-24 md:pt-safe md:pb-safe">
         <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 max-w-sm w-full text-center">
           <div className="relative w-16 h-16 mx-auto mb-4">
             <div className="w-16 h-16 rounded-full border-4 border-blue-100 dark:border-slate-600 animate-spin border-t-blue-600" />
@@ -174,7 +173,7 @@ export default function SignupPage({ onLogin, onSuccess }: SignupPageProps) {
   }
 
   return (
-    <div className="min-h-screen overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-16 pb-36 md:pt-safe md:pb-safe">
+    <div className="h-full overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-36 md:pt-safe md:pb-safe">
       <div className="w-full max-w-md">
         <div className="text-center mb-6">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 shadow-lg shadow-blue-200 dark:shadow-blue-900 mb-4">
@@ -312,7 +311,7 @@ export default function SignupPage({ onLogin, onSuccess }: SignupPageProps) {
                       strength.score <= 2 ? 'text-red-500' :
                       strength.score === 3 ? 'text-yellow-600' :
                       strength.score === 4 ? 'text-blue-600' : 'text-green-600'
-                    }`}>পাসওয়ার্ড: {strength.label}</p>
+                    }`}>{t('auth.passwordStrength.label')} {strength.label}</p>
                   )}
                 </div>
               )}

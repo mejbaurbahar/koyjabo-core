@@ -159,7 +159,7 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
                         className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-colors shadow-sm"
                     >
                         <LogIn className="w-4 h-4" />
-                        লগইন
+                        {t('nav.login')}
                     </button>
                 )}
                 <button

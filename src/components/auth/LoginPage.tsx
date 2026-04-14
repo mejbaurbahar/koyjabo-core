@@ -26,8 +26,8 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess }: Log
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const emailError = emailTouched && !isValidEmail(email) ? 'সঠিক ইমেইল দিন।' : undefined;
-  const passwordError = passwordTouched && !password ? 'পাসওয়ার্ড দিন।' : undefined;
+  const emailError = emailTouched && !isValidEmail(email) ? t('auth.validation.invalidEmail') : undefined;
+  const passwordError = passwordTouched && !password ? t('auth.validation.passwordRequired') : undefined;
   const canSubmit = isValidEmail(email) && password.length > 0;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -55,14 +55,14 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess }: Log
 
       onSuccess();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed. Please try again.');
+      setError(err instanceof Error ? err.message : t('auth.validation.loginFailed'));
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-20 pb-28 md:pt-safe md:pb-safe">
+    <div className="h-full overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-28 md:pt-safe md:pb-safe">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">

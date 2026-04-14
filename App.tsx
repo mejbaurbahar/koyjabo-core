@@ -3438,13 +3438,12 @@ const App: React.FC = () => {
         {!isOnline && (
           <div className="fixed top-0 left-0 right-0 z-[9998] bg-amber-500 text-white text-xs font-bold flex items-center justify-center gap-2 py-1.5 px-4 animate-in slide-in-from-top duration-300">
             <WifiOff className="w-3.5 h-3.5 shrink-0" />
-            <span>অফলাইন মোড — বাস রুট ও মেট্রো তথ্য সম্পূর্ণ উপলব্ধ</span>
-            <span className="opacity-60 hidden sm:inline">| Offline — Bus routes &amp; metro fully available</span>
+            <span>{t('offline.statusBarMessage')}</span>
           </div>
         )}
 
         {/* Mobile Header */}
-        <header className={`sticky top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-5 py-3 shadow-sm z-[100] md:hidden transition-transform duration-300 ${!isOnline ? 'top-7' : 'top-0 pt-safe'} ${(view === AppView.BUS_DETAILS || view === AppView.LIVE_NAV) ? '-translate-y-full h-0 overflow-hidden py-0 border-none' : 'translate-y-0 h-auto'} `}>
+        <header className={`sticky top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-5 py-3 shadow-sm z-[100] md:hidden transition-transform duration-300 ${!isOnline ? 'top-7' : 'top-0 pt-safe'} ${(view === AppView.BUS_DETAILS || view === AppView.LIVE_NAV || view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? '-translate-y-full h-0 overflow-hidden py-0 border-none' : 'translate-y-0 h-auto'} `}>
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2 outline-none cursor-pointer" onClick={() => setView(AppView.HOME)}>
               <AnimatedLogo size="small" />
@@ -4068,12 +4067,13 @@ const App: React.FC = () => {
 // ── Auth Header Button (mobile header — always shows, no idle blank) ──────────
 function AuthHeaderButton({ setView }: { setView: (v: AppView) => void }) {
   const { user } = useAuth();
+  const { t } = useLanguage();
   if (user) {
     return (
       <button
         onClick={() => setView(AppView.PROFILE)}
         className="w-8 h-8 rounded-full overflow-hidden bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold hover:ring-2 hover:ring-blue-400 transition shrink-0"
-        aria-label="My profile"
+        aria-label={t('nav.settings')}
         title={user.displayName}
       >
         {user.avatarUrl
@@ -4087,8 +4087,8 @@ function AuthHeaderButton({ setView }: { setView: (v: AppView) => void }) {
     <button
       onClick={() => setView(AppView.LOGIN)}
       className="p-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full text-blue-600 dark:text-blue-400 transition-colors flex items-center justify-center shrink-0"
-      aria-label="Login"
-      title="লগইন করুন"
+      aria-label={t('nav.login')}
+      title={t('nav.login')}
     >
       <User className="w-5 h-5" />
     </button>
