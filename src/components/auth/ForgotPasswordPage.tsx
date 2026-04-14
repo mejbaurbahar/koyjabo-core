@@ -47,8 +47,8 @@ export default function ForgotPasswordPage({ onBack, onResetPassword }: ForgotPa
 
   if (stage === 'processing') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-4">
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 max-w-sm w-full text-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-16 pb-24 md:pt-4">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 max-w-sm w-full text-center mt-12 md:mt-0">
           <div className="relative w-16 h-16 mx-auto mb-4">
             <div className="w-16 h-16 rounded-full border-4 border-blue-100 dark:border-slate-600 animate-spin border-t-blue-600" />
             <Clock className="absolute inset-0 m-auto text-blue-600" size={20} />
@@ -62,8 +62,8 @@ export default function ForgotPasswordPage({ onBack, onResetPassword }: ForgotPa
 
   if (stage === 'done') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-4">
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 max-w-sm w-full text-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-16 pb-24 md:pt-4">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 max-w-sm w-full text-center mt-8 md:mt-0">
           <CheckCircle2 size={48} className="text-green-500 mx-auto mb-4" />
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">রিসেট লিংক তৈরি!</h2>
 
@@ -111,7 +111,7 @@ export default function ForgotPasswordPage({ onBack, onResetPassword }: ForgotPa
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-12 pb-28 md:pt-4">
       <div className="w-full max-w-md">
         <button
           onClick={onBack}

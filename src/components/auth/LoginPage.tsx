@@ -62,7 +62,7 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess }: Log
   };
 
   return (
-    <div className="min-h-screen h-screen overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-center p-4 pt-safe pb-safe">
+    <div className="min-h-screen overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-20 pb-28 md:pt-safe md:pb-safe">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
