@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { KeyRound, Eye, EyeOff, CheckCircle2, AlertCircle, Loader2, Clock } from 'lucide-react';
 import { resetPassword } from '../../services/githubAuthService';
-import { useLanguage } from '../../contexts/LanguageContext';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface ResetPasswordPageProps {
   token: string;

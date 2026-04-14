@@ -5,7 +5,7 @@ import {
   ArrowLeft, Trash2, Key, Edit3, Save, X
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { useLanguage } from '../../contexts/LanguageContext';
+import { useLanguage } from '../../../contexts/LanguageContext';
 import {
   updateProfile, changePassword, uploadAvatar,
   fetchDevices, logoutDevice, getOrCreateDeviceId
