@@ -6,6 +6,7 @@ import SignupPage from './src/components/auth/SignupPage';
 import ForgotPasswordPage from './src/components/auth/ForgotPasswordPage';
 import ResetPasswordPage from './src/components/auth/ResetPasswordPage';
 import ProfilePage from './src/components/auth/ProfilePage';
+import AdminPage from './src/components/admin/AdminPage';
 import { Search, Map as MapIcon, Navigation, Info, Bus, ArrowLeft, ArrowRight, Bot, ExternalLink, MapPin, Heart, Shield, Zap, Users, FileText, AlertTriangle, Home, ChevronRight, CheckCircle2, User, Linkedin, Github, Facebook, ArrowRightLeft, Settings, Save, Eye, EyeOff, Trash2, Key, Calculator, Coins, Train, Sparkles, X, Gauge, Flag, Clock, Menu, WifiOff, Plane, Phone, Download, TramFront, Sun, Moon, Calendar, Plus, Mail, HelpCircle, BookOpen, LogIn, LogOut, UserPlus } from 'lucide-react';
 import { Analytics } from "@vercel/analytics/react";
 import { BusRoute, AppView, UserLocation, ChatMessage } from './types';
@@ -3600,6 +3601,9 @@ const App: React.FC = () => {
                 onLogout={() => setView(AppView.HOME)}
               />
             )}
+            {view === AppView.ADMIN && (
+              <AdminPage onBack={() => setView(AppView.HOME)} />
+            )}
             {view === AppView.DAILY_JOURNEY && (
               <DailyJourneyView onBack={() => setView(previousView)} />
             )}
@@ -3817,6 +3821,14 @@ const App: React.FC = () => {
                         <LogOut className="w-3.5 h-3.5" /> {t('common.logout')}
                       </button>
                     </div>
+                    {user.username === 'mejbaurbahar' && (
+                      <button
+                        onClick={() => { setView(AppView.ADMIN); setIsMenuOpen(false); }}
+                        className="mt-2 w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-amber-100 dark:bg-amber-900/30 hover:bg-amber-200 dark:hover:bg-amber-900/50 text-amber-700 dark:text-amber-300 text-xs font-semibold transition-colors"
+                      >
+                        <Shield className="w-3.5 h-3.5" /> Admin Dashboard
+                      </button>
+                    )}
                   </div>
                 ) : (
                   <div className="flex gap-2 mb-2">
