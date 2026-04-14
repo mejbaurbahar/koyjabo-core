@@ -49,8 +49,8 @@ export default function ForgotPasswordPage({ onBack, onResetPassword }: ForgotPa
 
   if (stage === 'processing') {
     return (
-      <div className="h-full overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-16 pb-24 md:pt-4">
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 max-w-sm w-full text-center mt-12 md:mt-0">
+      <div className="h-full overflow-y-auto bg-white dark:bg-slate-900 md:bg-gradient-to-br md:from-blue-50 md:via-white md:to-indigo-50 md:dark:from-slate-900 md:dark:via-slate-800 md:dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-16 pb-24 md:pt-4">
+        <div className="md:bg-white md:dark:bg-slate-800 md:rounded-2xl md:shadow-xl p-10 max-w-sm w-full text-center mt-12 md:mt-0">
           <div className="relative w-16 h-16 mx-auto mb-4">
             <div className="w-16 h-16 rounded-full border-4 border-blue-100 dark:border-slate-600 animate-spin border-t-blue-600" />
             <Clock className="absolute inset-0 m-auto text-blue-600" size={20} />
@@ -64,8 +64,8 @@ export default function ForgotPasswordPage({ onBack, onResetPassword }: ForgotPa
 
   if (stage === 'done') {
     return (
-      <div className="h-full overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-16 pb-24 md:pt-4">
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 max-w-sm w-full text-center mt-8 md:mt-0">
+      <div className="h-full overflow-y-auto bg-white dark:bg-slate-900 md:bg-gradient-to-br md:from-blue-50 md:via-white md:to-indigo-50 md:dark:from-slate-900 md:dark:via-slate-800 md:dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-16 pb-24 md:pt-4">
+        <div className="md:bg-white md:dark:bg-slate-800 md:rounded-2xl md:shadow-xl p-8 max-w-sm w-full text-center mt-8 md:mt-0">
           <CheckCircle2 size={48} className="text-green-500 mx-auto mb-4" />
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{t('auth.forgotPasswordPage.resetLinkCreated')}</h2>
 
@@ -112,11 +112,12 @@ export default function ForgotPasswordPage({ onBack, onResetPassword }: ForgotPa
   }
 
   return (
-    <div className="h-full overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-28 md:pt-4">
+    <div className="h-full overflow-y-auto bg-white dark:bg-slate-900 md:bg-gradient-to-br md:from-blue-50 md:via-white md:to-indigo-50 md:dark:from-slate-900 md:dark:via-slate-800 md:dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-28 md:pt-4">
       <div className="w-full max-w-md">
+        {/* Back button — phone only */}
         <button
           onClick={onBack}
-          className="flex items-center gap-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mb-6 transition"
+          className="md:hidden flex items-center gap-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mb-6 transition"
         >
           <ArrowLeft size={18} />
           {t('auth.forgotPasswordPage.returnToLogin')}
@@ -130,15 +131,15 @@ export default function ForgotPasswordPage({ onBack, onResetPassword }: ForgotPa
           <p className="text-gray-500 dark:text-gray-400 mt-1">{t('auth.forgotPasswordPage.getResetLink')}</p>
         </div>
 
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-slate-700">
+        <div className="md:bg-white md:dark:bg-slate-800 md:rounded-2xl md:shadow-xl md:p-8 md:border md:border-gray-100 md:dark:border-slate-700">
           {error && (
-            <div className="mb-5 p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 flex items-start gap-2">
+            <div className="mx-6 md:mx-0 mb-5 p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 flex items-start gap-2">
               <AlertCircle size={16} className="text-red-500 mt-0.5 shrink-0" />
               <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-5 p-6 md:p-0">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 {t('auth.forgotPasswordPage.registeredEmail')}

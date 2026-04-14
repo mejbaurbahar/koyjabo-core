@@ -168,7 +168,7 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
 
   // ── Render ──────────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-900">
+    <div className="h-full overflow-y-auto bg-gray-50 dark:bg-slate-900">
       {/* Processing overlays */}
       {profileOp.state === 'loading' && <ProcessingOverlay message={t('profile.updatingProfile')} />}
       {passwordOp.state === 'loading' && <ProcessingOverlay message={t('profile.changingPassword')} />}
