@@ -76,7 +76,7 @@ async function main() {
   console.log('\n KoyJabo Auth — Secrets Setup');
   console.log('==============================\n');
 
-  const pk = await request('GET', `/repos/${OWNER}/${REPO}/actions/public-key`);
+  const pk = await request('GET', `/repos/${OWNER}/${REPO}/actions/secrets/public-key`);
 
   if (pk.status === 401) { console.error('Token invalid or expired.'); process.exit(1); }
   if (pk.status === 404) {
