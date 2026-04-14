@@ -6,7 +6,7 @@ import SignupPage from './src/components/auth/SignupPage';
 import ForgotPasswordPage from './src/components/auth/ForgotPasswordPage';
 import ResetPasswordPage from './src/components/auth/ResetPasswordPage';
 import ProfilePage from './src/components/auth/ProfilePage';
-import { Search, Map as MapIcon, Navigation, Info, Bus, ArrowLeft, ArrowRight, Bot, ExternalLink, MapPin, Heart, Shield, Zap, Users, FileText, AlertTriangle, Home, ChevronRight, CheckCircle2, User, Linkedin, Github, Facebook, ArrowRightLeft, Settings, Save, Eye, EyeOff, Trash2, Key, Calculator, Coins, Train, Sparkles, X, Gauge, Flag, Clock, Menu, WifiOff, Plane, Phone, Download, TramFront, Sun, Moon, Calendar, Plus, Mail, HelpCircle, BookOpen } from 'lucide-react';
+import { Search, Map as MapIcon, Navigation, Info, Bus, ArrowLeft, ArrowRight, Bot, ExternalLink, MapPin, Heart, Shield, Zap, Users, FileText, AlertTriangle, Home, ChevronRight, CheckCircle2, User, Linkedin, Github, Facebook, ArrowRightLeft, Settings, Save, Eye, EyeOff, Trash2, Key, Calculator, Coins, Train, Sparkles, X, Gauge, Flag, Clock, Menu, WifiOff, Plane, Phone, Download, TramFront, Sun, Moon, Calendar, Plus, Mail, HelpCircle, BookOpen, LogIn, LogOut, UserPlus } from 'lucide-react';
 import { Analytics } from "@vercel/analytics/react";
 import { BusRoute, AppView, UserLocation, ChatMessage } from './types';
 import { STATIONS, BUS_DATA, METRO_STATIONS, METRO_LINES, RAILWAY_STATIONS, AIRPORTS } from './constants';
@@ -462,6 +462,7 @@ const checkIfInDhaka = (loc: UserLocation | null): boolean => {
 const App: React.FC = () => {
   // Multi-language support
   const { t, formatNumber, language, setLanguage } = useLanguage();
+  const { user, logout } = useAuth();
 
   // Polyfill for requestIdleCallback (Safari support)
   const requestIdleCallback = window.requestIdleCallback || ((cb: IdleRequestCallback) => {
@@ -3773,6 +3774,53 @@ const App: React.FC = () => {
               </div>
 
               <div className="space-y-2 flex-1 overflow-y-auto hidden-scrollbar">
+                {/* Auth Section */}
+                {user ? (
+                  <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 mb-2">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold shrink-0">
+                        {user.avatarUrl
+                          ? <img src={user.avatarUrl} alt={user.displayName} className="w-full h-full object-cover" />
+                          : user.displayName.charAt(0).toUpperCase()
+                        }
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-gray-800 dark:text-gray-100 truncate">{user.displayName}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 mt-3">
+                      <button
+                        onClick={() => { setView(AppView.PROFILE); setIsMenuOpen(false); }}
+                        className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-colors"
+                      >
+                        <User className="w-3.5 h-3.5" /> প্রোফাইল
+                      </button>
+                      <button
+                        onClick={() => { logout(); setIsMenuOpen(false); }}
+                        className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-gray-700 dark:text-gray-200 text-xs font-semibold transition-colors"
+                      >
+                        <LogOut className="w-3.5 h-3.5" /> লগআউট
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex gap-2 mb-2">
+                    <button
+                      onClick={() => { setView(AppView.LOGIN); setIsMenuOpen(false); }}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-colors"
+                    >
+                      <LogIn className="w-4 h-4" /> লগইন
+                    </button>
+                    <button
+                      onClick={() => { setView(AppView.SIGNUP); setIsMenuOpen(false); }}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-colors"
+                    >
+                      <UserPlus className="w-4 h-4" /> সাইনআপ
+                    </button>
+                  </div>
+                )}
+
                 <button
                   onClick={() => { setView(AppView.AI_ASSISTANT); setIsMenuOpen(false); }}
                   className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.AI_ASSISTANT ? 'bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800' : ''} `}
@@ -4012,15 +4060,14 @@ const App: React.FC = () => {
   );
 };
 
-// ── Auth Header Button (mini component using useAuth hook) ────────────────────
+// ── Auth Header Button (mobile header — always shows, no idle blank) ──────────
 function AuthHeaderButton({ setView }: { setView: (v: AppView) => void }) {
-  const { user, status } = useAuth();
-  if (status === 'idle') return null;
+  const { user } = useAuth();
   if (user) {
     return (
       <button
         onClick={() => setView(AppView.PROFILE)}
-        className="w-8 h-8 rounded-full overflow-hidden bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold hover:ring-2 hover:ring-blue-400 transition"
+        className="w-8 h-8 rounded-full overflow-hidden bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold hover:ring-2 hover:ring-blue-400 transition shrink-0"
         aria-label="My profile"
         title={user.displayName}
       >
@@ -4034,7 +4081,7 @@ function AuthHeaderButton({ setView }: { setView: (v: AppView) => void }) {
   return (
     <button
       onClick={() => setView(AppView.LOGIN)}
-      className="p-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full text-blue-600 dark:text-blue-400 transition-colors flex items-center justify-center"
+      className="p-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full text-blue-600 dark:text-blue-400 transition-colors flex items-center justify-center shrink-0"
       aria-label="Login"
       title="লগইন করুন"
     >

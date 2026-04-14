@@ -1,9 +1,10 @@
 import React from 'react';
-import { Home, Map, Bot, Heart, Info, Train, Menu, Sparkles, Navigation, Clock, MapPin } from 'lucide-react';
+import { Home, Map, Bot, Heart, Info, Train, Menu, Sparkles, Navigation, Clock, MapPin, User, LogIn } from 'lucide-react';
 import { AppView } from '../types';
 import ThemeToggle from './ThemeToggle';
 import { AnimatedLogo } from './AnimatedLogo';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useAuth } from '../src/contexts/AuthContext';
 
 interface DesktopNavbarProps {
     view: AppView;
@@ -34,6 +35,7 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
     isInDhaka
 }) => {
     const { t, language, setLanguage } = useLanguage();
+    const { user } = useAuth();
 
     // Navbar should be visible on all views for desktop now
     // if (view === AppView.BUS_DETAILS || view === AppView.LIVE_NAV) {
@@ -139,6 +141,27 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
                 >
                     {language === 'bn' ? 'EN' : 'বাং'}
                 </button>
+                {/* Auth button — avatar if logged in, login if not */}
+                {user ? (
+                    <button
+                        onClick={() => setView(AppView.PROFILE)}
+                        title={user.displayName}
+                        className="w-9 h-9 rounded-full overflow-hidden bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold hover:ring-2 hover:ring-blue-400 hover:scale-105 transition-all shadow-sm"
+                    >
+                        {user.avatarUrl
+                            ? <img src={user.avatarUrl} alt={user.displayName} className="w-full h-full object-cover" />
+                            : user.displayName.charAt(0).toUpperCase()
+                        }
+                    </button>
+                ) : (
+                    <button
+                        onClick={() => setView(AppView.LOGIN)}
+                        className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-colors shadow-sm"
+                    >
+                        <LogIn className="w-4 h-4" />
+                        লগইন
+                    </button>
+                )}
                 <button
                     onClick={onOpenMenu}
                     className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors text-gray-600 dark:text-gray-300"
