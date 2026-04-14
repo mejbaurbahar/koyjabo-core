@@ -65,7 +65,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.AUTH_GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
@@ -79,8 +79,8 @@ jobs:
       - name: Run auth handler
         working-directory: .github/scripts
         env:
-          # Write-capable PAT (stored ONLY in GitHub Secrets, never in frontend)
-          AUTH_GITHUB_TOKEN: ${{ secrets.AUTH_GITHUB_TOKEN }}
+          # GitHub's automatic token — no extra secret needed
+          AUTH_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # JWT signing secret (64+ random chars)
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           # AES-256 encryption key for emails at rest (32+ random chars)
