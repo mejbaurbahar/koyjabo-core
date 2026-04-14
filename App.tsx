@@ -1,4 +1,11 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, useTransition } from 'react';
+// Auth system
+import { AuthProvider, useAuth } from './src/contexts/AuthContext';
+import LoginPage from './src/components/auth/LoginPage';
+import SignupPage from './src/components/auth/SignupPage';
+import ForgotPasswordPage from './src/components/auth/ForgotPasswordPage';
+import ResetPasswordPage from './src/components/auth/ResetPasswordPage';
+import ProfilePage from './src/components/auth/ProfilePage';
 import { Search, Map as MapIcon, Navigation, Info, Bus, ArrowLeft, ArrowRight, Bot, ExternalLink, MapPin, Heart, Shield, Zap, Users, FileText, AlertTriangle, Home, ChevronRight, CheckCircle2, User, Linkedin, Github, Facebook, ArrowRightLeft, Settings, Save, Eye, EyeOff, Trash2, Key, Calculator, Coins, Train, Sparkles, X, Gauge, Flag, Clock, Menu, WifiOff, Plane, Phone, Download, TramFront, Sun, Moon, Calendar, Plus, Mail, HelpCircle, BookOpen } from 'lucide-react';
 import { Analytics } from "@vercel/analytics/react";
 import { BusRoute, AppView, UserLocation, ChatMessage } from './types';
@@ -123,7 +130,12 @@ const getStoredView = (): AppView => {
         '500': AppView.SERVER_ERROR,
         'for-ai': AppView.FOR_AI,
         'daily-journey': AppView.DAILY_JOURNEY,
-        'blog': AppView.BLOG
+        'blog': AppView.BLOG,
+        'login': AppView.LOGIN,
+        'signup': AppView.SIGNUP,
+        'forgot-password': AppView.FORGOT_PASSWORD,
+        'reset-password': AppView.RESET_PASSWORD,
+        'profile': AppView.PROFILE
       };
 
       if (viewMap[target]) return viewMap[target];
@@ -471,6 +483,11 @@ const App: React.FC = () => {
   };
 
   const [view, setView] = useState<AppView>(getStoredView);
+  // Extract reset password token from URL if present
+  const [resetPasswordToken] = useState<string>(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('token') || '';
+  });
   const [selectedBus, setSelectedBus] = useState<BusRoute | null>(getStoredBus);
   const [selectedBlogPost, setSelectedBlogPost] = useState<string | null>(() => {
     const path = window.location.pathname.substring(1).replace(/\/$/, '');
@@ -832,6 +849,13 @@ const App: React.FC = () => {
     [AppView.BLOG_TRAFFIC_TIPS]: 'blog/dhaka-traffic-tips',
     [AppView.BLOG_BRTC_VS_PRIVATE]: 'blog/brtc-vs-private-buses',
     [AppView.BLOG_METRO_VS_BUS]: 'blog/metro-rail-vs-bus',
+    [AppView.BLOG_UTTARA_MOTIJHEEL]: 'blog/uttara-motijheel-guide',
+    // Auth views
+    [AppView.LOGIN]: 'login',
+    [AppView.SIGNUP]: 'signup',
+    [AppView.FORGOT_PASSWORD]: 'forgot-password',
+    [AppView.RESET_PASSWORD]: 'reset-password',
+    [AppView.PROFILE]: 'profile',
   };
 
   useEffect(() => {
@@ -2411,12 +2435,48 @@ const App: React.FC = () => {
           </button>
         </div>
 
+        {/* Stats Bar — always visible, never scrolled away */}
+        <div className="shrink-0 grid grid-cols-3 gap-2 px-3 py-3 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-gray-800">
+          <div className="bg-slate-50 dark:bg-slate-800 rounded-xl px-2 py-2.5 flex flex-col items-center text-center">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white mb-1.5 shadow-sm">
+              <Info className="w-4 h-4" />
+            </div>
+            <span className="text-[9px] text-gray-500 dark:text-gray-400 uppercase font-bold tracking-wide leading-tight">{t('common.type')}</span>
+            <span className="font-bold text-gray-800 dark:text-gray-100 text-xs mt-0.5 leading-tight">
+              {selectedBus.type === 'Local' ? t('common.local') :
+                selectedBus.type === 'Sitting' ? t('common.sitting') :
+                  selectedBus.type === 'Semi-Sitting' ? t('common.semiSitting') :
+                    selectedBus.type === 'AC' ? t('common.ac') : selectedBus.type}
+            </span>
+          </div>
+          <div className="bg-slate-50 dark:bg-slate-800 rounded-xl px-2 py-2.5 flex flex-col items-center text-center">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-dhaka-green to-emerald-600 flex items-center justify-center text-white mb-1.5 shadow-sm">
+              <Bus className="w-4 h-4" />
+            </div>
+            <span className="text-[9px] text-gray-500 dark:text-gray-400 uppercase font-bold tracking-wide leading-tight">{t('busDetails.totalStops')}</span>
+            <span className="font-bold text-gray-800 dark:text-gray-100 text-xs mt-0.5">{formatNumber(selectedBus.stops.length)}</span>
+          </div>
+          <div className="bg-slate-50 dark:bg-slate-800 rounded-xl px-2 py-2.5 flex flex-col items-center text-center">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-yellow-600 flex items-center justify-center text-white mb-1.5 shadow-sm">
+              <Coins className="w-4 h-4" />
+            </div>
+            <span className="text-[9px] text-gray-500 dark:text-gray-400 uppercase font-bold tracking-wide leading-tight">{fareStart && fareEnd ? t('home.fare') : t('busDetails.maxFare')}</span>
+            <span className="font-bold text-gray-800 dark:text-gray-100 text-xs mt-0.5">
+              {fareStart && fareEnd && fareInfo ? (
+                `৳${formatNumber(fareInfo.min)}${fareInfo.max !== fareInfo.min ? `-${formatNumber(fareInfo.max)}` : ''}`
+              ) : (
+                `~৳${formatNumber(generalFareInfo.max)}`
+              )}
+            </span>
+          </div>
+        </div>
+
         {/* Scrollable Container for everything else */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden w-full pb-24 md:pb-4">
+        <div className="flex-1 overflow-y-auto w-full pb-24 md:pb-4">
 
         {/* Pinned Trip Info */}
         {selectedTrip && (
-          <div className="bg-slate-50 dark:bg-slate-900 px-4 pb-0 pt-4 shrink-0 z-30">
+          <div className="bg-slate-50 dark:bg-slate-900 px-4 pb-0 pt-4">
             <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-2xl border border-blue-100 dark:border-blue-800 shadow-sm relative overflow-hidden">
               <h3 className="font-bold text-blue-900 dark:text-blue-200 text-sm uppercase tracking-wider mb-3 relative z-10 flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></div>
@@ -2461,43 +2521,7 @@ const App: React.FC = () => {
         )}
 
         {/* Scrollable Content */}
-        <div className={`p-4 space-y-4 bg-slate-50 dark:bg-slate-900 pt-4 pb-4`}>
-
-          {/* Stats Grid */}
-          <div className="grid grid-cols-3 gap-3">
-            <div className="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-[0_2px_8px_rgba(0,0,0,0.02)] flex flex-col items-center text-center justify-center">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white mb-2 shadow-lg shadow-blue-500/30">
-                <Info className="w-5 h-5" />
-              </div>
-              <span className="text-[10px] text-gray-600 dark:text-gray-400 uppercase font-bold tracking-wider">{t('common.type')}</span>
-              <span className="font-bold text-gray-800 dark:text-gray-200 text-sm mt-0.5">
-                {selectedBus.type === 'Local' ? t('common.local') :
-                  selectedBus.type === 'Sitting' ? t('common.sitting') :
-                    selectedBus.type === 'Semi-Sitting' ? t('common.semiSitting') :
-                      selectedBus.type === 'AC' ? t('common.ac') : selectedBus.type}
-              </span>
-            </div>
-            <div className="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-[0_2px_8px_rgba(0,0,0,0.02)] flex flex-col items-center text-center justify-center">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-dhaka-green to-emerald-600 flex items-center justify-center text-white mb-2 shadow-lg shadow-green-500/30">
-                <Bus className="w-5 h-5" />
-              </div>
-              <span className="text-[10px] text-gray-600 dark:text-gray-400 uppercase font-bold tracking-wider">{t('busDetails.totalStops')}</span>
-              <span className="font-bold text-gray-800 dark:text-gray-200 text-sm mt-0.5">{formatNumber(selectedBus.stops.length)}</span>
-            </div>
-            <div className="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-[0_2px_8px_rgba(0,0,0,0.02)] flex flex-col items-center text-center justify-center">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-yellow-600 flex items-center justify-center text-white mb-2 shadow-lg shadow-amber-500/30">
-                <Coins className="w-5 h-5" />
-              </div>
-              <span className="text-[10px] text-gray-600 dark:text-gray-400 uppercase font-bold tracking-wider">{fareStart && fareEnd ? t('home.fare') : t('busDetails.maxFare')}</span>
-              <span className="font-bold text-gray-800 dark:text-gray-200 text-sm mt-0.5">
-                {fareStart && fareEnd && fareInfo ? (
-                  `৳${formatNumber(fareInfo.min)}${fareInfo.max !== fareInfo.min ? ` - ${formatNumber(fareInfo.max)}` : ''} `
-                ) : (
-                  `~৳${formatNumber(generalFareInfo.max)} `
-                )}
-              </span>
-            </div>
-          </div>
+        <div className="p-4 space-y-4 bg-slate-50 dark:bg-slate-900 pb-4">
 
 
 
@@ -3432,6 +3456,7 @@ const App: React.FC = () => {
               <button onClick={() => setShowLiveMap(true)} className="p-2 hover:bg-blue-50 bg-white border-2 border-blue-100 rounded-full text-blue-600 transition-colors shadow-lg shadow-blue-100 active:scale-95 animate-pulse flex items-center justify-center" aria-label="Live Location">
                 <Navigation className="w-4 h-4" />
               </button>
+              <AuthHeaderButton setView={setView} />
               <button onClick={() => setIsMenuOpen(true)} className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full text-gray-600 dark:text-gray-300 transition-colors flex items-center justify-center" aria-label="Open menu">
                 <Menu className="w-5 h-5 text-gray-600 dark:text-gray-300" />
               </button>
@@ -3523,6 +3548,41 @@ const App: React.FC = () => {
                 isDarkMode={isDarkMode}
                 toggleTheme={() => setIsDarkMode(!isDarkMode)}
                 onContactClick={() => setView(AppView.CONTACT)}
+              />
+            )}
+            {/* ── Auth Views ── */}
+            {view === AppView.LOGIN && (
+              <LoginPage
+                onSignup={() => setView(AppView.SIGNUP)}
+                onForgotPassword={() => setView(AppView.FORGOT_PASSWORD)}
+                onSuccess={() => setView(AppView.HOME)}
+              />
+            )}
+            {view === AppView.SIGNUP && (
+              <SignupPage
+                onLogin={() => setView(AppView.LOGIN)}
+                onSuccess={() => setView(AppView.HOME)}
+              />
+            )}
+            {view === AppView.FORGOT_PASSWORD && (
+              <ForgotPasswordPage
+                onBack={() => setView(AppView.LOGIN)}
+                onResetPassword={(token) => {
+                  window.history.replaceState({}, '', `?token=${token}&view=reset-password`);
+                  setView(AppView.RESET_PASSWORD);
+                }}
+              />
+            )}
+            {view === AppView.RESET_PASSWORD && (
+              <ResetPasswordPage
+                token={resetPasswordToken}
+                onSuccess={() => setView(AppView.LOGIN)}
+              />
+            )}
+            {view === AppView.PROFILE && (
+              <ProfilePage
+                onBack={() => setView(AppView.HOME)}
+                onLogout={() => setView(AppView.HOME)}
               />
             )}
             {view === AppView.DAILY_JOURNEY && (
@@ -3952,4 +4012,42 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+// ── Auth Header Button (mini component using useAuth hook) ────────────────────
+function AuthHeaderButton({ setView }: { setView: (v: AppView) => void }) {
+  const { user, status } = useAuth();
+  if (status === 'idle') return null;
+  if (user) {
+    return (
+      <button
+        onClick={() => setView(AppView.PROFILE)}
+        className="w-8 h-8 rounded-full overflow-hidden bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold hover:ring-2 hover:ring-blue-400 transition"
+        aria-label="My profile"
+        title={user.displayName}
+      >
+        {user.avatarUrl
+          ? <img src={user.avatarUrl} alt={user.displayName} className="w-full h-full object-cover" />
+          : user.displayName.charAt(0).toUpperCase()
+        }
+      </button>
+    );
+  }
+  return (
+    <button
+      onClick={() => setView(AppView.LOGIN)}
+      className="p-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full text-blue-600 dark:text-blue-400 transition-colors flex items-center justify-center"
+      aria-label="Login"
+      title="লগইন করুন"
+    >
+      <User className="w-5 h-5" />
+    </button>
+  );
+}
+
+// ── Wrap App with AuthProvider ────────────────────────────────────────────────
+const AppWithAuth = () => (
+  <AuthProvider>
+    <App />
+  </AuthProvider>
+);
+
+export default AppWithAuth;

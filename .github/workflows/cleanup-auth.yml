@@ -1,0 +1,38 @@
+name: Cleanup Auth Temp Files
+
+on:
+  # Run every hour to clean up expired results and used reset tokens
+  schedule:
+    - cron: '30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    name: Cleanup expired auth files
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.AUTH_GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        working-directory: .github/scripts
+        run: npm install --production
+
+      - name: Run cleanup
+        working-directory: .github/scripts
+        env:
+          AUTH_GITHUB_TOKEN: ${{ secrets.AUTH_GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node cleanup-results.js

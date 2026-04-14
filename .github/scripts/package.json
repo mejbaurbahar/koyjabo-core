@@ -1,0 +1,11 @@
+{
+  "name": "koyjabo-auth-scripts",
+  "version": "1.0.0",
+  "description": "Server-side auth handler for KoyJabo running inside GitHub Actions",
+  "type": "commonjs",
+  "dependencies": {
+    "@octokit/rest": "^21.0.0",
+    "bcryptjs": "^2.4.3",
+    "nodemailer": "^6.9.0"
+  }
+}

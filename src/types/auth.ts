@@ -1,0 +1,42 @@
+export interface AuthUser {
+  id: string;
+  email: string;
+  username: string;
+  displayName: string;
+  avatarUrl?: string;
+  createdAt: number;
+}
+
+export interface AuthSession {
+  user: AuthUser;
+  deviceId: string;
+  expiresAt: number;
+}
+
+export type AuthStatus = 'idle' | 'loading' | 'authenticated' | 'unauthenticated';
+
+export interface Device {
+  id: string;
+  name: string;
+  os: string;
+  browser: string;
+  deviceType: 'mobile' | 'tablet' | 'desktop';
+  ip: string;
+  firstLogin: number;
+  lastLogin: number;
+  isCurrent: boolean;
+}
+
+export interface AuthResult {
+  success: boolean;
+  error?: string;
+  userId?: string;
+  username?: string;
+  displayName?: string;
+  email?: string;
+  hasAvatar?: boolean;
+  resetToken?: string;
+  resetUrl?: string;
+  message?: string;
+  completedAt?: number;
+}
