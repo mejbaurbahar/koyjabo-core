@@ -37,9 +37,10 @@ function getHeaders(): Record<string, string> {
 
 function friendlyHttpError(status: number, context: 'workflow' | 'read' = 'workflow'): string {
   if (status === 401 || status === 403) {
-    return context === 'workflow'
-      ? 'অ্যাকাউন্ট সার্ভিস সংযোগ ব্যর্থ হয়েছে। অনুগ্রহ করে একটু পরে আবার চেষ্টা করুন।'
-      : 'তথ্য পড়তে সমস্যা হয়েছে। সংযোগ পরীক্ষা করুন।';
+    if (context === 'workflow') {
+      return 'অ্যাকাউন্ট সার্ভিস সংযোগ ব্যর্থ (401/403)। আপনার GitHub Token সম্ভবত ইনভ্যালিড বা এক্সপায়ার হয়েছে। অনুগ্রহ করে VITE_GITHUB_TOKEN চেক করুন।';
+    }
+    return 'তথ্য পড়তে সমস্যা হয়েছে (401/403)। কানেকশন বা টোকেন চেক করুন।';
   }
   if (status === 404) {
     return 'সার্ভিস পাওয়া যাচ্ছে না। অনুগ্রহ করে একটু পরে আবার চেষ্টা করুন।';

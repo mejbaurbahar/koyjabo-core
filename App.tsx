@@ -2436,39 +2436,39 @@ const App: React.FC = () => {
           </button>
         </div>
 
-        {/* Stats Bar — always visible, never scrolled away */}
-        <div className="shrink-0 grid grid-cols-3 gap-2 px-3 py-3 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-gray-800">
-          <div className="bg-slate-50 dark:bg-slate-800 rounded-xl px-2 py-2.5 flex flex-col items-center text-center">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white mb-1.5 shadow-sm">
-              <Info className="w-4 h-4" />
+        {/* Stats Bar — Sleek & Integrated */}
+        <div className="shrink-0 grid grid-cols-3 gap-2 px-4 py-3 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-gray-800 z-30">
+          <div className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl px-3 py-3 border border-gray-50 dark:border-gray-700/50 flex flex-col items-center text-center transition-all hover:bg-white dark:hover:bg-slate-800 hover:shadow-sm">
+            <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 mb-2">
+              <Info className="w-5 h-5" />
             </div>
-            <span className="text-[9px] text-gray-500 dark:text-gray-400 uppercase font-bold tracking-wide leading-tight">{t('common.type')}</span>
-            <span className="font-bold text-gray-800 dark:text-gray-100 text-xs mt-0.5 leading-tight">
+            <span className="text-[10px] text-gray-400 dark:text-gray-500 uppercase font-black tracking-widest leading-none mb-1">{t('common.type')}</span>
+            <p className="font-extrabold text-gray-900 dark:text-gray-100 text-sm leading-none">
               {selectedBus.type === 'Local' ? t('common.local') :
                 selectedBus.type === 'Sitting' ? t('common.sitting') :
                   selectedBus.type === 'Semi-Sitting' ? t('common.semiSitting') :
                     selectedBus.type === 'AC' ? t('common.ac') : selectedBus.type}
-            </span>
+            </p>
           </div>
-          <div className="bg-slate-50 dark:bg-slate-800 rounded-xl px-2 py-2.5 flex flex-col items-center text-center">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-dhaka-green to-emerald-600 flex items-center justify-center text-white mb-1.5 shadow-sm">
-              <Bus className="w-4 h-4" />
+          <div className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl px-3 py-3 border border-gray-50 dark:border-gray-700/50 flex flex-col items-center text-center transition-all hover:bg-white dark:hover:bg-slate-800 hover:shadow-sm">
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-2">
+              <Bus className="w-5 h-5" />
             </div>
-            <span className="text-[9px] text-gray-500 dark:text-gray-400 uppercase font-bold tracking-wide leading-tight">{t('busDetails.totalStops')}</span>
-            <span className="font-bold text-gray-800 dark:text-gray-100 text-xs mt-0.5">{formatNumber(selectedBus.stops.length)}</span>
+            <span className="text-[10px] text-gray-400 dark:text-gray-500 uppercase font-black tracking-widest leading-none mb-1">{t('busDetails.totalStops')}</span>
+            <p className="font-extrabold text-gray-900 dark:text-gray-100 text-sm leading-none">{formatNumber(selectedBus.stops.length)}</p>
           </div>
-          <div className="bg-slate-50 dark:bg-slate-800 rounded-xl px-2 py-2.5 flex flex-col items-center text-center">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-yellow-600 flex items-center justify-center text-white mb-1.5 shadow-sm">
-              <Coins className="w-4 h-4" />
+          <div className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl px-3 py-3 border border-gray-50 dark:border-gray-700/50 flex flex-col items-center text-center transition-all hover:bg-white dark:hover:bg-slate-800 hover:shadow-sm">
+            <div className="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center text-amber-600 dark:text-amber-400 mb-2">
+              <Coins className="w-5 h-5" />
             </div>
-            <span className="text-[9px] text-gray-500 dark:text-gray-400 uppercase font-bold tracking-wide leading-tight">{fareStart && fareEnd ? t('home.fare') : t('busDetails.maxFare')}</span>
-            <span className="font-bold text-gray-800 dark:text-gray-100 text-xs mt-0.5">
+            <span className="text-[10px] text-gray-400 dark:text-gray-500 uppercase font-black tracking-widest leading-none mb-1">{fareStart && fareEnd ? t('home.fare') : t('busDetails.maxFare')}</span>
+            <p className="font-extrabold text-gray-900 dark:text-gray-100 text-sm leading-none">
               {fareStart && fareEnd && fareInfo ? (
                 `৳${formatNumber(fareInfo.min)}${fareInfo.max !== fareInfo.min ? `-${formatNumber(fareInfo.max)}` : ''}`
               ) : (
                 `~৳${formatNumber(generalFareInfo.max)}`
               )}
-            </span>
+            </p>
           </div>
         </div>
 
