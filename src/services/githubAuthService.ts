@@ -13,22 +13,28 @@ import bcrypt from 'bcryptjs';
 import type { AuthResult, Device } from '../types/auth';
 
 // ── Environment config ────────────────────────────────────────────────────────
-const OWNER = import.meta.env.VITE_GITHUB_OWNER as string | undefined;
-const REPO = import.meta.env.VITE_GITHUB_REPO as string | undefined;
-const TOKEN = import.meta.env.VITE_GITHUB_TOKEN as string | undefined;
+// App repo (public) — workflow dispatch + polling results
+const APP_OWNER = import.meta.env.VITE_GITHUB_OWNER as string | undefined;
+const APP_REPO  = import.meta.env.VITE_GITHUB_REPO  as string | undefined;
+const TOKEN     = import.meta.env.VITE_GITHUB_TOKEN  as string | undefined;
+
+// Data repo (private) — all user data lives here, unreadable by the public
+const DATA_OWNER = 'mejbaurbahar';
+const DATA_REPO  = 'koyjabo';
+
 const WORKFLOW_FILE = 'auth.yml';
 
-function getBase(): string {
-  if (!OWNER || !REPO) {
-    throw new AuthConfigError();
-  }
-  return `https://api.github.com/repos/${OWNER}/${REPO}`;
+function getAppBase(): string {
+  if (!APP_OWNER || !APP_REPO) throw new AuthConfigError();
+  return `https://api.github.com/repos/${APP_OWNER}/${APP_REPO}`;
+}
+
+function getDataBase(): string {
+  return `https://api.github.com/repos/${DATA_OWNER}/${DATA_REPO}`;
 }
 
 function getHeaders(): Record<string, string> {
-  if (!TOKEN) {
-    throw new AuthConfigError();
-  }
+  if (!TOKEN) throw new AuthConfigError();
   return {
     Authorization: `Bearer ${TOKEN}`,
     Accept: 'application/vnd.github.v3+json',
@@ -89,8 +95,19 @@ async function getClientIP(): Promise<string> {
 }
 
 // ── GitHub API read helpers ───────────────────────────────────────────────────
-async function fetchRepoFile<T = unknown>(path: string): Promise<T | null> {
-  const res = await fetch(`${getBase()}/contents/${path}`, { headers: getHeaders() });
+
+// Read user data from private koyjabo repo
+async function fetchDataFile<T = unknown>(path: string): Promise<T | null> {
+  const res = await fetch(`${getDataBase()}/contents/${path}`, { headers: getHeaders() });
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(friendlyHttpError(res.status, 'read'));
+  const data = await res.json();
+  return JSON.parse(atob(data.content)) as T;
+}
+
+// Read result files from public Dhaka-Commute repo
+async function fetchAppFile<T = unknown>(path: string): Promise<T | null> {
+  const res = await fetch(`${getAppBase()}/contents/${path}`, { headers: getHeaders() });
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(friendlyHttpError(res.status, 'read'));
   const data = await res.json();
@@ -115,7 +132,7 @@ async function triggerWorkflow(
     }
   };
 
-  const res = await fetch(`${getBase()}/actions/workflows/${WORKFLOW_FILE}/dispatches`, {
+  const res = await fetch(`${getAppBase()}/actions/workflows/${WORKFLOW_FILE}/dispatches`, {
     method: 'POST',
     headers: getHeaders(),
     body: JSON.stringify(body)
@@ -133,7 +150,7 @@ async function pollForResult(requestId: string, timeoutMs = 120_000): Promise<Au
 
   while (Date.now() < deadline) {
     await new Promise(r => setTimeout(r, INTERVAL));
-    const result = await fetchRepoFile<AuthResult>(path).catch(() => null);
+    const result = await fetchAppFile<AuthResult>(path).catch(() => null);
     if (result) return result;
   }
 
@@ -162,8 +179,8 @@ export async function loginUser(
   const normalizedEmail = email.toLowerCase().trim();
   const emailHashKey = await sha256(normalizedEmail);
 
-  // 1. Find userId from email hash index
-  const index = await fetchRepoFile<Record<string, string>>('data/users/index.json');
+  // 1. Find userId from email hash index (reads from private koyjabo repo)
+  const index = await fetchDataFile<Record<string, string>>('data/users/index.json');
   if (!index || !index[emailHashKey]) {
     throw new Error('ইমেইল বা পাসওয়ার্ড সঠিক নয়।');
   }
@@ -172,7 +189,7 @@ export async function loginUser(
 
   // 2. Fetch user profile
   interface UserProfile { bcryptHash: string; username: string; displayName: string; }
-  const user = await fetchRepoFile<UserProfile>(`data/users/${userId}.json`);
+  const user = await fetchDataFile<UserProfile>(`data/users/${userId}.json`);
   if (!user) throw new Error('অ্যাকাউন্ট খুঁজে পাওয়া যায়নি। সাপোর্টে যোগাযোগ করুন।');
 
   // 3. Verify: SHA-256(password) vs stored bcrypt hash
@@ -277,7 +294,7 @@ export async function recordDeviceLogin(userId: string): Promise<void> {
  */
 export async function fetchDevices(userId: string): Promise<Device[]> {
   const currentDeviceId = getOrCreateDeviceId();
-  const devices = await fetchRepoFile<Omit<Device, 'isCurrent'>[]>(`data/devices/${userId}.json`);
+  const devices = await fetchDataFile<Omit<Device, 'isCurrent'>[]>(`data/devices/${userId}.json`);
   if (!devices || !Array.isArray(devices)) return [];
   return devices.map(d => ({ ...d, isCurrent: d.id === currentDeviceId }));
 }
@@ -309,7 +326,7 @@ export async function uploadAvatar(userId: string, file: File): Promise<AuthResu
  */
 export async function fetchAvatar(userId: string): Promise<string | null> {
   interface AvatarFile { imageData: string }
-  const avatar = await fetchRepoFile<AvatarFile>(`data/avatars/${userId}.json`).catch(() => null);
+  const avatar = await fetchDataFile<AvatarFile>(`data/avatars/${userId}.json`).catch(() => null);
   return avatar?.imageData ?? null;
 }
 

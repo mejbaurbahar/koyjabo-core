@@ -1,9 +1,8 @@
 name: Auth Handler
 
-# This workflow acts as the secure backend for KoyJabo authentication.
-# It is triggered by the frontend via workflow_dispatch through the GitHub API.
-# All sensitive operations (bcrypt hashing, encryption, JWT) happen here,
-# keeping secrets OUT of the browser.
+# Secure backend for KoyJabo authentication.
+# User data is written to the PRIVATE repo (mejbaurbahar/koyjabo) via DATA_GITHUB_TOKEN.
+# Temp results are written to this public repo via the automatic GITHUB_TOKEN.
 
 on:
   workflow_dispatch:
@@ -46,11 +45,9 @@ on:
         type: string
         default: '{}'
 
-# Only write to contents; no other permissions needed
 permissions:
   contents: write
 
-# Prevent race conditions on shared data files
 concurrency:
   group: auth-${{ github.event.inputs.userId || github.event.inputs.email || 'global' }}
   cancel-in-progress: false
@@ -79,20 +76,14 @@ jobs:
       - name: Run auth handler
         working-directory: .github/scripts
         env:
-          # GitHub's automatic token — no extra secret needed
           AUTH_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # JWT signing secret (64+ random chars)
+          DATA_GITHUB_TOKEN: ${{ secrets.DATA_GITHUB_TOKEN }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          # AES-256 encryption key for emails at rest (32+ random chars)
           ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
-          # Optional: Gmail SMTP for password reset emails
           SMTP_EMAIL: ${{ secrets.SMTP_EMAIL }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-          # Your deployed app URL (for password reset links)
           APP_URL: ${{ secrets.APP_URL }}
-          # GitHub provides this automatically
           GITHUB_REPOSITORY: ${{ github.repository }}
-          # Auth inputs
           INPUT_REQUESTID: ${{ inputs.requestId }}
           INPUT_ACTION: ${{ inputs.action }}
           INPUT_EMAIL: ${{ inputs.email }}

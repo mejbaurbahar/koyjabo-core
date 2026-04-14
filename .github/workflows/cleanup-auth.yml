@@ -1,7 +1,6 @@
 name: Cleanup Auth Temp Files
 
 on:
-  # Run every hour to clean up expired results and used reset tokens
   schedule:
     - cron: '30 * * * *'
   workflow_dispatch:
@@ -34,5 +33,6 @@ jobs:
         working-directory: .github/scripts
         env:
           AUTH_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DATA_GITHUB_TOKEN: ${{ secrets.DATA_GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: node cleanup-results.js
