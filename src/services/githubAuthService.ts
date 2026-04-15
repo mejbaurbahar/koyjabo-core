@@ -82,21 +82,37 @@ async function getClientIP(): Promise<string> {
 
 // ── GitHub API read helpers ───────────────────────────────────────────────────
 
-// Read user data from private koyjabo repo — raw URL returns only file content, no metadata exposed
+function friendlyNetworkError(err: unknown): string {
+  if (err instanceof TypeError && err.message === 'Failed to fetch') {
+    return 'Connection failed. Please check your internet and try again.';
+  }
+  if (err instanceof Error) return err.message;
+  return 'An unexpected error occurred. Please try again.';
+}
+
+// Read user data from private koyjabo repo via Contents API (CORS-safe for private repos).
 async function fetchDataFile<T = unknown>(path: string): Promise<T | null> {
-  const res = await fetch(
-    `https://raw.githubusercontent.com/${DATA_OWNER}/${DATA_REPO}/main/${path}`,
-    { headers: getHeaders() }
-  );
+  let res: Response;
+  try {
+    res = await fetch(`${DATA_BASE}/contents/${path}`, { headers: getHeaders() });
+  } catch (err) {
+    throw new Error(friendlyNetworkError(err));
+  }
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(friendlyHttpError(res.status, 'read'));
-  return await res.json() as T;
+  const data = await res.json();
+  return JSON.parse(atob(data.content)) as T;
 }
 
 // Read result files from Dhaka-Commute repo via Contents API (required for polling — raw.githubusercontent.com
 // is CDN-cached and can return stale 404 for minutes after a file is written by GitHub Actions).
 async function fetchAppFile<T = unknown>(path: string): Promise<T | null> {
-  const res = await fetch(`${APP_BASE}/contents/${path}`, { headers: getHeaders() });
+  let res: Response;
+  try {
+    res = await fetch(`${APP_BASE}/contents/${path}`, { headers: getHeaders() });
+  } catch (err) {
+    throw new Error(friendlyNetworkError(err));
+  }
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(friendlyHttpError(res.status, 'read'));
   const data = await res.json();
@@ -121,11 +137,16 @@ async function triggerWorkflow(
     }
   };
 
-  const res = await fetch(`${APP_BASE}/actions/workflows/${WORKFLOW_FILE}/dispatches`, {
-    method: 'POST',
-    headers: getHeaders(),
-    body: JSON.stringify(body)
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${APP_BASE}/actions/workflows/${WORKFLOW_FILE}/dispatches`, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify(body)
+    });
+  } catch (err) {
+    throw new Error(friendlyNetworkError(err));
+  }
 
   if (!res.ok) {
     throw new Error(friendlyHttpError(res.status, 'workflow'));
