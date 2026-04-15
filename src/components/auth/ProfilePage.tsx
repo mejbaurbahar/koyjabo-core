@@ -192,7 +192,7 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-4 py-6 space-y-4">
+      <div className="max-w-2xl mx-auto px-4 pt-6 pb-28 md:pb-8 space-y-4">
         {/* Avatar + name card */}
         <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-slate-700">
           <div className="flex items-center gap-5">

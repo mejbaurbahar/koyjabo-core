@@ -24,6 +24,7 @@ on:
           - record-device
           - logout-device
           - upload-avatar
+          - save-history
       email:
         description: 'User email (masked in logs immediately)'
         required: false

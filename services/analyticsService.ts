@@ -46,9 +46,40 @@ export interface GlobalStats {
     lastUpdated?: number;
 }
 
-const HISTORY_KEY = 'dhaka_commute_user_history';
+const ANON_HISTORY_KEY = 'dhaka_commute_user_history';
 const GLOBAL_STATS_KEY = 'dhaka_commute_global_stats';
 const VISITOR_ID_KEY = 'dhaka_commute_visitor_id';
+
+// Current logged-in user ID — set by AuthContext on login/logout
+let _currentUserId: string | null = null;
+
+/** Call this when a user logs in or out so history uses their own storage key. */
+export const setHistoryUser = (userId: string | null): void => {
+    _currentUserId = userId;
+};
+
+const getHistoryKey = (): string =>
+    _currentUserId ? `koyjabo_history_${_currentUserId}` : ANON_HISTORY_KEY;
+
+/** Load externally-fetched history into the current user's localStorage slot. */
+export const loadHistoryData = (data: Partial<UserHistory>): void => {
+    try {
+        const key = getHistoryKey();
+        const current = getUserHistory();
+        const merged: UserHistory = {
+            ...current,
+            busSearches: data.busSearches ?? current.busSearches,
+            routeSearches: data.routeSearches ?? current.routeSearches,
+            intercitySearches: data.intercitySearches ?? current.intercitySearches,
+            mostUsedBuses: data.mostUsedBuses ?? current.mostUsedBuses,
+            mostUsedRoutes: data.mostUsedRoutes ?? current.mostUsedRoutes,
+            mostUsedIntercity: data.mostUsedIntercity ?? current.mostUsedIntercity,
+        };
+        localStorage.setItem(key, JSON.stringify(merged));
+    } catch (e) {
+        // best-effort
+    }
+};
 
 // API Configuration for Real Global Stats
 const API_BASE_URL = 'https://koyjabo-backend.onrender.com';
@@ -73,7 +104,7 @@ const getVisitorId = (): string => {
 // Initialize or get user history
 export const getUserHistory = (): UserHistory => {
     try {
-        const stored = localStorage.getItem(HISTORY_KEY);
+        const stored = localStorage.getItem(getHistoryKey());
         if (!stored) {
             return {
                 busSearches: [],
@@ -98,7 +129,7 @@ export const getUserHistory = (): UserHistory => {
             history.todayRoutes = [];
             history.todayIntercity = [];
             history.lastResetDate = today;
-            localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+            localStorage.setItem(getHistoryKey(), JSON.stringify(history));
         }
 
         // Ensure all required fields exist (safety for older data)
@@ -133,7 +164,7 @@ export const getUserHistory = (): UserHistory => {
 // Save user history
 const saveUserHistory = (history: UserHistory): void => {
     try {
-        localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+        localStorage.setItem(getHistoryKey(), JSON.stringify(history));
     } catch (e) {
         console.error('Error saving user history:', e);
     }
@@ -485,7 +516,7 @@ export const getTodayRouteSearches = (): Array<{ from: string; to: string }> => 
 
 // Clear all user history (does NOT clear global stats)
 export const clearUserHistory = (): void => {
-    localStorage.removeItem(HISTORY_KEY);
+    localStorage.removeItem(getHistoryKey());
     // IMPORTANT: This intentionally does NOT remove global stats
 };
 

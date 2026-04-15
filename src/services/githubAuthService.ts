@@ -340,6 +340,48 @@ export async function fetchAvatar(userId: string): Promise<string | null> {
   return avatar?.imageData ?? null;
 }
 
+/**
+ * FETCH USER HISTORY — direct GitHub API read from private koyjabo repo.
+ */
+export interface StoredHistory {
+  busSearches?: unknown[];
+  routeSearches?: unknown[];
+  intercitySearches?: unknown[];
+  mostUsedBuses?: Record<string, number>;
+  mostUsedRoutes?: Record<string, number>;
+  mostUsedIntercity?: Record<string, number>;
+}
+
+export async function fetchUserHistoryFromGitHub(userId: string): Promise<StoredHistory | null> {
+  return fetchDataFile<StoredHistory>(`data/history/${userId}.json`).catch(() => null);
+}
+
+/**
+ * SYNC HISTORY TO GITHUB — fire-and-forget via GitHub Actions.
+ * Trims to last 50 entries per category to stay within input size limits.
+ */
+export function syncHistoryToGitHub(userId: string, history: {
+  busSearches: unknown[];
+  routeSearches: unknown[];
+  intercitySearches: unknown[];
+  mostUsedBuses: Record<string, number>;
+  mostUsedRoutes: Record<string, number>;
+  mostUsedIntercity: Record<string, number>;
+}): void {
+  const trimmed = {
+    busSearches: history.busSearches.slice(-50),
+    routeSearches: history.routeSearches.slice(-50),
+    intercitySearches: history.intercitySearches.slice(-50),
+    mostUsedBuses: history.mostUsedBuses,
+    mostUsedRoutes: history.mostUsedRoutes,
+    mostUsedIntercity: history.mostUsedIntercity,
+  };
+  triggerAndWait('save-history', {
+    userId,
+    data: JSON.stringify(trimmed)
+  }).catch(() => { /* non-critical, ignore silently */ });
+}
+
 // ── Image resize helper ───────────────────────────────────────────────────────
 function resizeAndEncodeImage(file: File, maxDimension: number): Promise<string> {
   return new Promise((resolve, reject) => {

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import type { AuthUser, AuthSession, AuthStatus } from '../types/auth';
-import { fetchAvatar, getOrCreateDeviceId, recordDeviceLogin } from '../services/githubAuthService';
+import { fetchAvatar, getOrCreateDeviceId, recordDeviceLogin, fetchUserHistoryFromGitHub, syncHistoryToGitHub } from '../services/githubAuthService';
+import { setHistoryUser, getUserHistory, loadHistoryData } from '../../services/analyticsService';
 
 // ── Session storage keys ──────────────────────────────────────────────────────
 const SESSION_KEY = 'koyjabo_auth_session';
@@ -51,7 +52,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (session) {
       setUser(session.user);
       setStatus('authenticated');
-
+      // Activate user-specific history slot immediately
+      setHistoryUser(session.user.id);
       // Lazily refresh avatar (non-blocking)
       fetchAvatar(session.user.id)
         .then(avatarUrl => {
@@ -62,6 +64,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           }
         })
         .catch(() => { /* avatar fetch is best-effort */ });
+      // Refresh history from GitHub in background
+      fetchUserHistoryFromGitHub(session.user.id)
+        .then(data => { if (data) loadHistoryData(data); })
+        .catch(() => {});
     } else {
       setStatus('unauthenticated');
     }
@@ -71,12 +77,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     saveSession(newUser);
     setUser(newUser);
     setStatus('authenticated');
-    // Record device login in background (non-blocking, ~30-90s to complete)
+    // Switch to user-specific history slot
+    setHistoryUser(newUser.id);
+    // Record device login in background
     recordDeviceLogin(newUser.id);
+    // Load history from GitHub in background (overwrites any stale local data)
+    fetchUserHistoryFromGitHub(newUser.id)
+      .then(data => { if (data) loadHistoryData(data); })
+      .catch(() => {});
   }, []);
 
   const logout = useCallback(() => {
+    // Sync current history to GitHub before clearing (fire-and-forget)
+    const currentUser = loadSession()?.user;
+    if (currentUser) {
+      const h = getUserHistory();
+      syncHistoryToGitHub(currentUser.id, {
+        busSearches: h.busSearches,
+        routeSearches: h.routeSearches,
+        intercitySearches: h.intercitySearches,
+        mostUsedBuses: h.mostUsedBuses,
+        mostUsedRoutes: h.mostUsedRoutes,
+        mostUsedIntercity: h.mostUsedIntercity,
+      });
+    }
     localStorage.removeItem(SESSION_KEY);
+    setHistoryUser(null);
     setUser(null);
     setStatus('unauthenticated');
   }, []);

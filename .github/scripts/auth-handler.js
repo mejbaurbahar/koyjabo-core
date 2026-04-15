@@ -346,6 +346,25 @@ async function handleResetPassword({ token, newPasswordHash }) {
   return { success: true, userId };
 }
 
+async function handleSaveHistory({ userId, historyData }) {
+  if (!userId) return { success: false, error: 'User ID required.' };
+
+  // historyData is the parsed JSON from INPUT_DATA
+  const safe = {
+    busSearches:       Array.isArray(historyData.busSearches)       ? historyData.busSearches.slice(-50)       : [],
+    routeSearches:     Array.isArray(historyData.routeSearches)     ? historyData.routeSearches.slice(-50)     : [],
+    intercitySearches: Array.isArray(historyData.intercitySearches) ? historyData.intercitySearches.slice(-50) : [],
+    mostUsedBuses:     (typeof historyData.mostUsedBuses === 'object' && historyData.mostUsedBuses)     ? historyData.mostUsedBuses     : {},
+    mostUsedRoutes:    (typeof historyData.mostUsedRoutes === 'object' && historyData.mostUsedRoutes)    ? historyData.mostUsedRoutes    : {},
+    mostUsedIntercity: (typeof historyData.mostUsedIntercity === 'object' && historyData.mostUsedIntercity) ? historyData.mostUsedIntercity : {},
+    updatedAt: Date.now()
+  };
+
+  const existing = await readDataFile(`data/history/${userId}.json`);
+  await writeDataFile(`data/history/${userId}.json`, safe, existing?.sha, `History sync: ${userId}`);
+  return { success: true };
+}
+
 async function handleRecordDevice({ userId, deviceInfo }) {
   if (!userId || !deviceInfo) return { success: false, error: 'User ID and device info required.' };
 
@@ -451,6 +470,9 @@ async function main() {
         break;
       case 'reset-password':
         result = await handleResetPassword({ token: data.token, newPasswordHash: passwordHash });
+        break;
+      case 'save-history':
+        result = await handleSaveHistory({ userId, historyData: data });
         break;
       case 'record-device':
         result = await handleRecordDevice({ userId, deviceInfo: data.deviceInfo });
