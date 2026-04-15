@@ -365,6 +365,25 @@ async function handleSaveHistory({ userId, historyData }) {
   return { success: true };
 }
 
+async function handleRecordVisit({ visitorId }) {
+  const today = new Date().toISOString().split('T')[0];
+  const statsFile = await readDataFile('data/stats/global.json');
+  let stats = statsFile?.content || { totalVisits: 0, todayVisits: 0, todayDate: today, lastUpdated: 0 };
+
+  // Reset today's count if it's a new day
+  if (stats.todayDate !== today) {
+    stats.todayVisits = 0;
+    stats.todayDate = today;
+  }
+
+  stats.totalVisits = (stats.totalVisits || 0) + 1;
+  stats.todayVisits = (stats.todayVisits || 0) + 1;
+  stats.lastUpdated = Date.now();
+
+  await writeDataFile('data/stats/global.json', stats, statsFile?.sha, `Visit: ${visitorId?.slice(0, 8) || 'anon'}`);
+  return { success: true, totalVisits: stats.totalVisits, todayVisits: stats.todayVisits };
+}
+
 async function handleRecordDevice({ userId, deviceInfo }) {
   if (!userId || !deviceInfo) return { success: false, error: 'User ID and device info required.' };
 
@@ -473,6 +492,9 @@ async function main() {
         break;
       case 'save-history':
         result = await handleSaveHistory({ userId, historyData: data });
+        break;
+      case 'record-visit':
+        result = await handleRecordVisit({ visitorId: data.visitorId });
         break;
       case 'record-device':
         result = await handleRecordDevice({ userId, deviceInfo: data.deviceInfo });

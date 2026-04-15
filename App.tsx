@@ -626,6 +626,7 @@ const App: React.FC = () => {
   const [isInstalling, setIsInstalling] = useState(false);
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
   const [previousView, setPreviousView] = useState<AppView>(AppView.HOME); // Track previous view for back navigation
+  const [profileSection, setProfileSection] = useState<'profile' | 'security' | 'devices' | 'history' | 'settings'>('profile');
   const [showClearChatConfirm, setShowClearChatConfirm] = useState(false);
   const [showHistoryManager, setShowHistoryManager] = useState(false);
   const [showLiveMap, setShowLiveMap] = useState(false);
@@ -3601,8 +3602,14 @@ const App: React.FC = () => {
             )}
             {view === AppView.PROFILE && (
               <ProfilePage
+                key={profileSection}
                 onBack={() => setView(AppView.HOME)}
                 onLogout={() => setView(AppView.HOME)}
+                initialSection={profileSection}
+                isDarkMode={isDarkMode}
+                toggleTheme={() => setIsDarkMode(!isDarkMode)}
+                onContactClick={() => setView(AppView.CONTACT)}
+                onBusSelect={handleBusSelect}
               />
             )}
             {view === AppView.DAILY_JOURNEY && (
@@ -3810,7 +3817,7 @@ const App: React.FC = () => {
                     </div>
                     <div className="flex gap-2 mt-3">
                       <button
-                        onClick={() => { setView(AppView.PROFILE); setIsMenuOpen(false); }}
+                        onClick={() => { setProfileSection('profile'); setView(AppView.PROFILE); setIsMenuOpen(false); }}
                         className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-colors"
                       >
                         <User className="w-3.5 h-3.5" /> {t('nav.profile') || t('profile.title')}
@@ -3874,14 +3881,14 @@ const App: React.FC = () => {
                 </button>
 
                 <button
-                  onClick={() => { setView(AppView.HISTORY); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.HISTORY ? 'bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800' : ''}`}
+                  onClick={() => { setProfileSection('history'); setView(AppView.PROFILE); setIsMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.PROFILE && profileSection === 'history' ? 'bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800' : ''}`}
                 >
                   <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400" /> {t('nav.history')}
                 </button>
                 <button
-                  onClick={() => { setView(AppView.SETTINGS); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.SETTINGS ? 'bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800' : ''}`}
+                  onClick={() => { setProfileSection('settings'); setView(AppView.PROFILE); setIsMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.PROFILE && profileSection === 'settings' ? 'bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800' : ''}`}
                 >
                   <Settings className="w-5 h-5 text-purple-600 dark:text-purple-400" /> {t('nav.settings')}
                 </button>

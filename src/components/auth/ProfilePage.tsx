@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   User, Mail, AtSign, Shield, Camera, Loader2, AlertCircle, CheckCircle2,
   Clock, Monitor, Smartphone, Tablet, LogOut, Eye, EyeOff, ChevronRight,
-  ArrowLeft, Trash2, Key, Edit3, Save, X
+  ArrowLeft, Trash2, Key, Edit3, Save, X, History, Settings
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../../contexts/LanguageContext';
@@ -11,10 +11,20 @@ import {
   fetchDevices, logoutDevice, getOrCreateDeviceId
 } from '../../services/githubAuthService';
 import type { Device } from '../../types/auth';
+import type { BusRoute } from '../../../types';
+import HistoryView from '../../../components/HistoryView';
+import SettingsPage from '../../../components/SettingsPage';
+
+type ProfileSection = 'profile' | 'security' | 'devices' | 'history' | 'settings';
 
 interface ProfilePageProps {
   onBack: () => void;
   onLogout: () => void;
+  initialSection?: ProfileSection;
+  isDarkMode?: boolean;
+  toggleTheme?: () => void;
+  onContactClick?: () => void;
+  onBusSelect?: (bus: BusRoute, fromHistory?: boolean) => void;
 }
 
 // ── Async operation UI states ─────────────────────────────────────────────────
@@ -69,14 +79,21 @@ function ProcessingOverlay({ message }: { message: string }) {
 }
 
 // ── Main component ────────────────────────────────────────────────────────────
-export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
+export default function ProfilePage({
+  onBack, onLogout,
+  initialSection = 'profile',
+  isDarkMode = false,
+  toggleTheme = () => {},
+  onContactClick = () => {},
+  onBusSelect = () => {}
+}: ProfilePageProps) {
   const { user, updateUser, logout } = useAuth();
   const { t, language } = useLanguage();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [devices, setDevices] = useState<Device[]>([]);
   const [devicesLoading, setDevicesLoading] = useState(false);
-  const [activeSection, setActiveSection] = useState<'profile' | 'security' | 'devices'>('profile');
+  const [activeSection, setActiveSection] = useState<ProfileSection>(initialSection);
 
   // Profile edit
   const [editMode, setEditMode] = useState(false);
@@ -224,22 +241,24 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
         </div>
 
         {/* Section tabs */}
-        <div className="flex gap-2 bg-white dark:bg-slate-800 rounded-2xl p-2 shadow-sm border border-gray-100 dark:border-slate-700">
-          {[
-            { key: 'profile', label: t('profile.tabs.profile'), Icon: User },
-            { key: 'security', label: t('profile.tabs.password'), Icon: Shield },
-            { key: 'devices', label: t('profile.tabs.devices'), Icon: Monitor }
-          ].map(({ key, label, Icon }) => (
+        <div className="flex gap-1 bg-white dark:bg-slate-800 rounded-2xl p-1.5 shadow-sm border border-gray-100 dark:border-slate-700 overflow-x-auto">
+          {([
+            { key: 'profile',  label: t('profile.tabs.profile'),  Icon: User    },
+            { key: 'security', label: t('profile.tabs.password'),  Icon: Shield  },
+            { key: 'devices',  label: t('profile.tabs.devices'),   Icon: Monitor },
+            { key: 'history',  label: t('nav.history'),            Icon: History },
+            { key: 'settings', label: t('settings.title'),         Icon: Settings },
+          ] as { key: ProfileSection; label: string; Icon: React.ElementType }[]).map(({ key, label, Icon }) => (
             <button
               key={key}
-              onClick={() => setActiveSection(key as typeof activeSection)}
-              className={`flex-1 py-2.5 rounded-xl text-sm font-medium flex items-center justify-center gap-1.5 transition ${
+              onClick={() => setActiveSection(key)}
+              className={`flex-shrink-0 px-3 py-2 rounded-xl text-xs font-medium flex items-center gap-1.5 transition whitespace-nowrap ${
                 activeSection === key
                   ? 'bg-blue-600 text-white shadow-sm'
                   : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-700'
               }`}
             >
-              <Icon size={15} />
+              <Icon size={14} />
               {label}
             </button>
           ))}
@@ -464,6 +483,33 @@ export default function ProfilePage({ onBack, onLogout }: ProfilePageProps) {
                 </p>
               </div>
             )}
+          </div>
+        )}
+
+        {/* ── HISTORY SECTION ── */}
+        {activeSection === 'history' && (
+          <div className="-mx-4 -mb-28 md:mb-0">
+            <HistoryView
+              onBack={() => setActiveSection('profile')}
+              onBusSelect={(bus, fromHistory) => {
+                onBusSelect(bus, fromHistory);
+                onBack();
+              }}
+            />
+          </div>
+        )}
+
+        {/* ── SETTINGS SECTION ── */}
+        {activeSection === 'settings' && (
+          <div className="-mx-4 -mb-28 md:mb-0">
+            <SettingsPage
+              isDarkMode={isDarkMode}
+              toggleTheme={toggleTheme}
+              onContactClick={() => {
+                onContactClick();
+                onBack();
+              }}
+            />
           </div>
         )}
       </div>

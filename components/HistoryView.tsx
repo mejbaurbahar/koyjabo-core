@@ -440,58 +440,37 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onViewJo
                             <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
                                 <Users className="w-5 h-5 text-green-600 dark:text-green-400" />
                                 {t('history.communityStats')}
-                                <span className="ml-auto text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full flex items-center gap-1">
+                                <span className="ml-auto text-xs text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded-full flex items-center gap-1">
                                     <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                                    {globalStats.activeUsers > 0 ? `${formatNumber(globalStats.activeUsers)} ${t('history.online')}` : t('history.live')}
+                                    {t('history.live')}
                                 </span>
                             </h2>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="bg-white dark:bg-slate-700 p-6 rounded-xl">
-                                    <div className="flex items-center gap-3 mb-2">
-                                        <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                                            <Eye className="w-5 h-5 text-green-600" />
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="bg-white dark:bg-slate-700 p-5 rounded-xl">
+                                    <div className="flex items-center gap-3 mb-1">
+                                        <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center shrink-0">
+                                            <Eye className="w-5 h-5 text-green-600 dark:text-green-400" />
                                         </div>
                                         <div>
-                                            <div className="text-3xl font-bold text-green-600 dark:text-green-400">
-                                                {formatNumber(globalStats.totalVisits.toLocaleString())}
+                                            <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+                                                {formatNumber(globalStats.totalVisits)}
                                             </div>
-                                            <div className="text-sm text-gray-600 dark:text-gray-300">{t('history.totalVisits')}</div>
+                                            <div className="text-xs text-gray-500 dark:text-gray-400">{t('history.totalVisits')}</div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="bg-white dark:bg-slate-700 p-6 rounded-xl">
-                                    <div className="flex items-center gap-3 mb-2">
-                                        <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                                            <Calendar className="w-5 h-5 text-blue-600" />
+                                <div className="bg-white dark:bg-slate-700 p-5 rounded-xl">
+                                    <div className="flex items-center gap-3 mb-1">
+                                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center shrink-0">
+                                            <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                                         </div>
                                         <div>
-                                            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-                                                {formatNumber(globalStats.todayVisits.toLocaleString())}
+                                            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                                                {formatNumber(globalStats.todayVisits)}
                                             </div>
-                                            <div className="text-sm text-gray-600 dark:text-gray-300">{t('history.todayVisits')}</div>
-                                        </div>
-                                    </div>
-                                    <div className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                                        {t('history.updatedRealtime')}
-                                    </div>
-                                </div>
-
-                                <div className="bg-white dark:bg-slate-700 p-6 rounded-xl md:col-span-2">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
-                                            <Activity className="w-5 h-5 text-emerald-600" />
-                                        </div>
-                                        <div>
-                                            <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
-                                                {formatNumber(globalStats.activeUsers.toLocaleString())}
-                                                <span className="flex h-3 w-3 relative">
-                                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                                    <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-                                                </span>
-                                            </div>
-                                            <div className="text-sm text-gray-600 dark:text-gray-300">{t('history.liveActiveUsers')}</div>
+                                            <div className="text-xs text-gray-500 dark:text-gray-400">{t('history.todayVisits')}</div>
                                         </div>
                                     </div>
                                 </div>
