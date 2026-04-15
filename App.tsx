@@ -1328,7 +1328,7 @@ const App: React.FC = () => {
         }
       }).catch(console.error);
     }, { timeout: 2000 });
-  }, []);
+  }, [user]);
 
   const toggleFavorite = useCallback((e: React.MouseEvent, busId: string) => {
     e.stopPropagation();

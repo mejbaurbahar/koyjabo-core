@@ -297,6 +297,38 @@ function App() {
           >
             {language === 'bn' ? 'EN' : 'বাং'}
           </button>
+          {/* Auth buttons - desktop header */}
+          {authUser ? (
+            <button
+              onClick={() => { window.location.href = '/#profile'; }}
+              className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 font-semibold text-sm transition-all border border-blue-200 dark:border-blue-700"
+            >
+              <div className="w-6 h-6 rounded-full overflow-hidden bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
+                {authUser.avatarUrl
+                  ? <img src={authUser.avatarUrl} alt={authUser.displayName} className="w-full h-full object-cover" />
+                  : authUser.displayName.charAt(0).toUpperCase()
+                }
+              </div>
+              <span className="max-w-[100px] truncate">{authUser.displayName}</span>
+            </button>
+          ) : (
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => { window.location.href = '/#login'; }}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-semibold text-sm transition-colors"
+              >
+                <LogIn size={15} />
+                {t('nav.login')}
+              </button>
+              <button
+                onClick={() => { window.location.href = '/#signup'; }}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm transition-colors shadow-sm"
+              >
+                <UserPlus size={15} />
+                {t('nav.signup')}
+              </button>
+            </div>
+          )}
           <button
             onClick={() => setIsMenuOpen(true)}
             className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors text-gray-600 dark:text-gray-300">
@@ -331,6 +363,27 @@ function App() {
             className="p-2 hover:bg-blue-50 bg-white border-2 border-blue-100 rounded-full text-blue-600 transition-colors shadow-lg shadow-blue-100 active:scale-95 animate-pulse flex items-center justify-center" aria-label="Live Location">
             <Navigation className="w-4 h-4" />
           </button>
+          {/* Auth button - mobile header */}
+          {authUser ? (
+            <button
+              onClick={() => { window.location.href = '/#profile'; }}
+              className="w-8 h-8 rounded-full overflow-hidden bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold shrink-0 border-2 border-blue-200 dark:border-blue-700"
+              aria-label="Profile"
+            >
+              {authUser.avatarUrl
+                ? <img src={authUser.avatarUrl} alt={authUser.displayName} className="w-full h-full object-cover" />
+                : authUser.displayName.charAt(0).toUpperCase()
+              }
+            </button>
+          ) : (
+            <button
+              onClick={() => { window.location.href = '/#login'; }}
+              className="p-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-full text-blue-600 dark:text-blue-400 transition-colors flex items-center justify-center"
+              aria-label="Sign in"
+            >
+              <LogIn className="w-4 h-4" />
+            </button>
+          )}
           <button
             onClick={() => setIsMenuOpen(true)}
             className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full text-gray-600 dark:text-gray-300 transition-colors flex items-center justify-center" aria-label="Open menu">
