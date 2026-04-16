@@ -73,20 +73,26 @@ function decrypt(ciphertext) {
 
 // ── Email helper ──────────────────────────────────────────────────────────────
 async function sendEmail({ to, subject, html }) {
-  if (!SMTP_EMAIL || !SMTP_PASSWORD) return false;
+  if (!SMTP_EMAIL || !SMTP_PASSWORD) {
+    console.log('Email skipped: SMTP_EMAIL or SMTP_PASSWORD not configured.');
+    return false;
+  }
   try {
     const nodemailer = require('nodemailer');
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
       auth: { user: SMTP_EMAIL, pass: SMTP_PASSWORD }
     });
     await transporter.sendMail({
       from: `"কই যাবো KoyJabo" <${SMTP_EMAIL}>`,
       to, subject, html
     });
+    console.log(`Email sent OK → ${to} | ${subject}`);
     return true;
   } catch (err) {
-    console.log('Email send failed:', err.message);
+    console.error(`Email send failed → ${to} | ${err.message}`);
     return false;
   }
 }
@@ -402,46 +408,44 @@ async function handleForgotPassword({ email }) {
 
   const resetUrl = `${APP_URL}?view=reset-password&token=${token}`;
 
-  if (SMTP_EMAIL && SMTP_PASSWORD) {
-    try {
-      const nodemailer = require('nodemailer');
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: { user: SMTP_EMAIL, pass: SMTP_PASSWORD }
-      });
+  const userFile = await readDataFile(`data/users/${userId}.json`);
+  const displayName = userFile?.content?.displayName || 'User';
 
-      const userFile = await readDataFile(`data/users/${userId}.json`);
-      const displayName = userFile?.content?.displayName || 'User';
-
-      await transporter.sendMail({
-        from: `"KoyJabo কই যাবো" <${SMTP_EMAIL}>`,
-        to: normalizedEmail,
-        subject: 'Reset Your KoyJabo Password',
-        html: `
-<!DOCTYPE html>
+  const sent = await sendEmail({
+    to: normalizedEmail,
+    subject: '🔑 Reset Your KoyJabo Password',
+    html: `<!DOCTYPE html>
 <html>
-<body style="font-family:sans-serif;background:#f3f4f6;padding:24px">
-  <div style="max-width:480px;margin:0 auto;background:#fff;border-radius:12px;padding:32px">
-    <h2 style="color:#1e40af;margin-top:0">Password Reset</h2>
-    <p>Hello <strong>${displayName}</strong>,</p>
-    <p>We received a request to reset your KoyJabo password. Click the button below:</p>
-    <a href="${resetUrl}"
-       style="display:inline-block;background:#2563eb;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:bold;margin:16px 0">
-      Reset Password
-    </a>
-    <p style="color:#6b7280;font-size:14px">This link expires in <strong>1 hour</strong>.</p>
-    <p style="color:#6b7280;font-size:14px">If you didn't request a reset, ignore this email.</p>
-    <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0">
-    <p style="color:#9ca3af;font-size:12px">KoyJabo — Smart Transport Finder, Dhaka</p>
+<body style="font-family:sans-serif;background:#f0f9ff;padding:24px;margin:0">
+  <div style="max-width:500px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
+    <div style="background:linear-gradient(135deg,#0284c7,#7c3aed);padding:32px 24px;text-align:center">
+      <h1 style="color:#fff;margin:0;font-size:24px">🔑 Password Reset</h1>
+      <p style="color:#bae6fd;margin:6px 0 0;font-size:14px">কই যাবো KoyJabo</p>
+    </div>
+    <div style="padding:32px 24px">
+      <p style="color:#111827;font-size:15px;line-height:1.6;margin:0 0 20px">
+        Hello <strong>${displayName}</strong>,<br><br>
+        We received a request to reset your KoyJabo password. Click the button below to set a new one.
+      </p>
+      <a href="${resetUrl}"
+         style="display:block;text-align:center;background:linear-gradient(135deg,#0284c7,#7c3aed);color:#fff;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px;margin-bottom:24px">
+        Reset Password →
+      </a>
+      <p style="color:#6b7280;font-size:13px;text-align:center">This link expires in <strong>1 hour</strong>.</p>
+      <p style="color:#9ca3af;font-size:12px;text-align:center;margin-top:16px">
+        If you didn't request a reset, you can safely ignore this email.
+      </p>
+    </div>
+    <div style="background:#f9fafb;padding:16px 24px;text-align:center;border-top:1px solid #f3f4f6">
+      <p style="color:#9ca3af;font-size:11px;margin:0">কই যাবো KoyJabo — Dhaka Transport Guide</p>
+    </div>
   </div>
 </body>
 </html>`
-      });
+  });
 
-      return { success: true, message: 'Password reset email sent. Check your inbox.' };
-    } catch (emailErr) {
-      console.log('Email send failed:', emailErr.message);
-    }
+  if (sent) {
+    return { success: true, message: 'Password reset email sent. Check your inbox.' };
   }
 
   return {
@@ -521,6 +525,9 @@ async function handleRecordDevice({ userId, deviceInfo }) {
   const now = Date.now();
   const existingIdx = devices.findIndex(d => d.id === deviceInfo.deviceId);
 
+  let isNewDevice = false;
+  let newDeviceInfo = null;
+
   if (existingIdx >= 0) {
     devices[existingIdx] = { ...devices[existingIdx], lastLogin: now, ip: deviceInfo.ip || devices[existingIdx].ip };
   } else {
@@ -533,9 +540,65 @@ async function handleRecordDevice({ userId, deviceInfo }) {
     };
     if (devices.length >= 10) devices.splice(0, 1);
     devices.push(newDevice);
+    isNewDevice = true;
+    newDeviceInfo = { ...parsed, ip: newDevice.ip };
   }
 
   await writeDataFile(`data/devices/${userId}.json`, devices, devicesFile?.sha, `Device recorded: ${userId}`);
+
+  // Send new device login alert (non-blocking)
+  if (isNewDevice && newDeviceInfo) {
+    const userFile = await readDataFile(`data/users/${userId}.json`).catch(() => null);
+    if (userFile?.content?.encryptedEmail) {
+      const userEmail = decrypt(userFile.content.encryptedEmail);
+      if (userEmail) {
+        const loginAt = new Date().toLocaleString('en-US', { timeZone: 'Asia/Dhaka', dateStyle: 'medium', timeStyle: 'short' });
+        sendEmail({
+          to: userEmail,
+          subject: '🔔 New device logged into your KoyJabo account',
+          html: `<!DOCTYPE html>
+<html>
+<body style="font-family:sans-serif;background:#eff6ff;padding:24px;margin:0">
+  <div style="max-width:500px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
+    <div style="background:linear-gradient(135deg,#1d4ed8,#7c3aed);padding:32px 24px;text-align:center">
+      <h1 style="color:#fff;margin:0;font-size:24px">🔔 New Device Login</h1>
+      <p style="color:#bfdbfe;margin:6px 0 0;font-size:14px">Security Alert — কই যাবো KoyJabo</p>
+    </div>
+    <div style="padding:32px 24px">
+      <p style="color:#111827;font-size:15px;line-height:1.6;margin:0 0 16px">
+        Hello <strong>${userFile.content.displayName || 'User'}</strong>,<br><br>
+        A <strong>new device</strong> just signed in to your KoyJabo account.
+      </p>
+      <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:16px 20px;margin:0 0 20px">
+        <p style="margin:0;color:#1e40af;font-size:14px;font-weight:600">New device details</p>
+        <p style="margin:8px 0 0;color:#1d4ed8;font-size:13px">🕐 Time: <strong>${loginAt} (Dhaka)</strong></p>
+        <p style="margin:4px 0 0;color:#1d4ed8;font-size:13px">💻 Device: <strong>${newDeviceInfo.name}</strong></p>
+        <p style="margin:4px 0 0;color:#1d4ed8;font-size:13px">🖥️ OS: <strong>${newDeviceInfo.os}</strong></p>
+        <p style="margin:4px 0 0;color:#1d4ed8;font-size:13px">🌐 Browser: <strong>${newDeviceInfo.browser}</strong></p>
+        <p style="margin:4px 0 0;color:#1d4ed8;font-size:13px">📍 IP: <strong>${newDeviceInfo.ip}</strong></p>
+      </div>
+      <div style="background:#fefce8;border:1px solid #fde68a;border-radius:12px;padding:16px 20px;margin:0 0 24px">
+        <p style="margin:0;color:#92400e;font-size:14px;font-weight:600">⚠️ Wasn't you?</p>
+        <p style="margin:8px 0 0;color:#b45309;font-size:13px;line-height:1.5">
+          If you didn't sign in from this device, change your password immediately and review your active devices.
+        </p>
+      </div>
+      <a href="${APP_URL}?view=profile&section=devices"
+         style="display:block;text-align:center;background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:#fff;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px;margin-bottom:24px">
+        Review Active Devices →
+      </a>
+    </div>
+    <div style="background:#f9fafb;padding:16px 24px;text-align:center;border-top:1px solid #f3f4f6">
+      <p style="color:#9ca3af;font-size:11px;margin:0">কই যাবো KoyJabo — Dhaka Transport Guide</p>
+    </div>
+  </div>
+</body>
+</html>`
+        }).catch(() => {});
+      }
+    }
+  }
+
   return { success: true };
 }
 
