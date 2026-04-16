@@ -624,6 +624,8 @@ const App: React.FC = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showInstallPrompt, setShowInstallPrompt] = useState(false);
   const [isInstalling, setIsInstalling] = useState(false);
+  const [showPwaUpdate, setShowPwaUpdate] = useState(false);
+  const pwaUpdateSWRef = useRef<((reloadPage?: boolean) => Promise<void>) | null>(null);
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
   const [previousView, setPreviousView] = useState<AppView>(AppView.HOME); // Track previous view for back navigation
   const [profileSection, setProfileSection] = useState<'profile' | 'security' | 'devices' | 'history' | 'settings'>('profile');
@@ -941,6 +943,26 @@ const App: React.FC = () => {
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
   }, []);
+
+  // PWA Update Banner
+  useEffect(() => {
+    const handleUpdateAvailable = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      if (detail?.updateSW) pwaUpdateSWRef.current = detail.updateSW;
+      setShowPwaUpdate(true);
+    };
+    window.addEventListener('pwa-update-available', handleUpdateAvailable);
+    return () => window.removeEventListener('pwa-update-available', handleUpdateAvailable);
+  }, []);
+
+  const handlePwaUpdate = () => {
+    setShowPwaUpdate(false);
+    if (pwaUpdateSWRef.current) {
+      pwaUpdateSWRef.current(true);
+    } else {
+      window.location.reload();
+    }
+  };
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;
@@ -3444,6 +3466,23 @@ const App: React.FC = () => {
     <NotificationProvider>
       <div className="flex flex-col h-screen supports-[height:100dvh]:h-[100dvh] bg-slate-50 dark:bg-slate-900 font-sans text-gray-800 dark:text-gray-100 overflow-hidden max-w-full">
         <NotificationBanner />
+
+        {/* PWA Update Banner */}
+        {showPwaUpdate && (
+          <div className="fixed bottom-20 left-4 right-4 md:left-auto md:right-6 md:w-80 z-[9999] bg-slate-800 dark:bg-slate-700 text-white rounded-2xl shadow-2xl p-4 flex items-center gap-3 animate-in slide-in-from-bottom duration-300">
+            <div className="w-9 h-9 rounded-xl bg-emerald-500/20 flex items-center justify-center shrink-0">
+              <Download className="w-5 h-5 text-emerald-400" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold">নতুন আপডেট আছে!</p>
+              <p className="text-xs text-slate-300">নতুন ফিচার পেতে আপডেট করুন।</p>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <button onClick={handlePwaUpdate} className="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold rounded-lg transition-colors">আপডেট</button>
+              <button onClick={() => setShowPwaUpdate(false)} className="p-1 text-slate-400 hover:text-white transition-colors"><X className="w-4 h-4" /></button>
+            </div>
+          </div>
+        )}
 
         {/* Offline Status Bar */}
         {!isOnline && (

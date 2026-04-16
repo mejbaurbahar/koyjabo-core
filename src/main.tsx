@@ -87,9 +87,9 @@ import { registerSW } from 'virtual:pwa-register';
 const updateSW = registerSW({
   immediate: false,
   onNeedRefresh() {
-    // Don't auto-reload — user stays on current version until next visit
+    window.dispatchEvent(new CustomEvent('pwa-update-available', { detail: { updateSW } }));
   },
   onOfflineReady() {
-    // App ready for offline use
+    window.dispatchEvent(new CustomEvent('pwa-offline-ready'));
   },
 });

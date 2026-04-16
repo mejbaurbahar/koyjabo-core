@@ -120,11 +120,11 @@ export default defineConfig(({ mode }) => {
           mode: 'production',
           sourcemap: false,
           // Cache versioning for proper updates
-          cacheId: 'dhaka-commute-v4',
+          cacheId: 'dhaka-commute-v5',
           // Precache intercity index.html for offline access
           additionalManifestEntries: [
-            { url: '/intercity/', revision: 'v4' },
-            { url: '/intercity/index.html', revision: 'v4' }
+            { url: '/intercity/', revision: 'v5' },
+            { url: '/intercity/index.html', revision: 'v5' }
           ],
           runtimeCaching: [
             // Cache Intercity App - StaleWhileRevalidate: serve from cache instantly, update in background
@@ -288,6 +288,53 @@ export default defineConfig(({ mode }) => {
                 expiration: {
                   maxEntries: 50,
                   maxAgeSeconds: 5 * 60, // 5 minutes
+                },
+                cacheableResponse: {
+                  statuses: [0, 200],
+                },
+              }
+            },
+            // GitHub API (user data reads) - NetworkFirst with long fallback cache
+            {
+              urlPattern: /^https:\/\/api\.github\.com\/.*/i,
+              handler: 'NetworkFirst',
+              options: {
+                cacheName: 'github-api-cache',
+                networkTimeoutSeconds: 8,
+                expiration: {
+                  maxEntries: 100,
+                  maxAgeSeconds: 24 * 60 * 60, // 24 hours fallback
+                },
+                cacheableResponse: {
+                  statuses: [0, 200],
+                },
+              }
+            },
+            // Raw GitHub content (CDN) - StaleWhileRevalidate
+            {
+              urlPattern: /^https:\/\/raw\.githubusercontent\.com\/.*/i,
+              handler: 'StaleWhileRevalidate',
+              options: {
+                cacheName: 'github-raw-cache',
+                expiration: {
+                  maxEntries: 50,
+                  maxAgeSeconds: 60 * 60, // 1 hour
+                },
+                cacheableResponse: {
+                  statuses: [0, 200],
+                },
+              }
+            },
+            // ipify (IP detection for device login) - NetworkFirst, short cache
+            {
+              urlPattern: /^https:\/\/api\.ipify\.org\/.*/i,
+              handler: 'NetworkFirst',
+              options: {
+                cacheName: 'ipify-cache',
+                networkTimeoutSeconds: 3,
+                expiration: {
+                  maxEntries: 5,
+                  maxAgeSeconds: 5 * 60,
                 },
                 cacheableResponse: {
                   statuses: [0, 200],

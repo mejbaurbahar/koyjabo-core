@@ -1,13 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { X, Layers, Navigation, Map as MapIcon, Globe, Wifi, WifiOff, Lock } from 'lucide-react';
+import {
+    X, Layers, Navigation, Map as MapIcon, Globe, Wifi, WifiOff,
+    Lock, ChevronUp, ChevronDown, Bus, MapPin, Zap, Target,
+    Compass, AlertTriangle, CheckCircle2
+} from 'lucide-react';
 import { UserLocation, BusRoute, Station } from '../types';
+import { STATIONS } from '../constants';
 import { useLanguage } from '../contexts/LanguageContext';
 import { liveBusService, LiveBus } from '../services/liveBusService';
-import { Bus } from 'lucide-react';
 
-// Fix for default marker icons using local assets for offline support
+// Fix default marker icons
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: '/images/leaflet/marker-icon-2x.png',
@@ -23,422 +27,655 @@ interface LiveLocationMapProps {
     currentStation?: Station | null;
     tripPlan?: any;
 }
-// ... (rest of imports/interfaces same)
 
-// ...
+// Deterministic color per route
+const ROUTE_COLORS = [
+    '#ef4444', '#f97316', '#eab308', '#22c55e',
+    '#06b6d4', '#3b82f6', '#8b5cf6', '#ec4899', '#14b8a6', '#f59e0b'
+];
+function getRouteColor(routeId: string): string {
+    const hash = routeId.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+    return ROUTE_COLORS[hash % ROUTE_COLORS.length];
+}
 
+type MapLayer = 'standard' | 'satellite' | 'terrain' | 'traffic' | 'dark';
+
+const LAYERS: { id: MapLayer; label: string; icon: React.ElementType; online?: boolean }[] = [
+    { id: 'standard',  label: 'Standard',  icon: MapIcon },
+    { id: 'dark',      label: 'Dark',      icon: MapIcon },
+    { id: 'satellite', label: 'Satellite', icon: Globe, online: true },
+    { id: 'terrain',   label: 'Terrain',   icon: MapIcon, online: true },
+    { id: 'traffic',   label: 'Traffic',   icon: Zap, online: true },
+];
 
 const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
-    isOpen,
-    onClose,
-    userLocation,
-    selectedRoute,
+    isOpen, onClose, userLocation, selectedRoute,
 }) => {
     const { t } = useLanguage();
     const mapContainerRef = useRef<HTMLDivElement>(null);
-    const mapInstanceRef = useRef<L.Map | null>(null);
+    const mapRef = useRef<L.Map | null>(null);
     const userMarkerRef = useRef<L.Marker | null>(null);
     const accuracyCircleRef = useRef<L.Circle | null>(null);
-    const routeLayerRef = useRef<L.LayerGroup | null>(null);
+    const routePolylineRef = useRef<L.Polyline | null>(null);
+    const stopMarkersRef = useRef<L.LayerGroup | null>(null);
     const busMarkersRef = useRef<Map<string, L.Marker>>(new Map());
+    const headingRef = useRef<number | null>(null);
+    const hasCenteredRef = useRef(false);
+    const followModeRef = useRef(true);
 
-    const [activeLayer, setActiveLayer] = useState<string>('standard');
+    const [activeLayer, setActiveLayer] = useState<MapLayer>('standard');
     const [showLayerMenu, setShowLayerMenu] = useState(false);
     const [isOffline, setIsOffline] = useState(!navigator.onLine);
     const [liveBuses, setLiveBuses] = useState<LiveBus[]>([]);
+    const [followMode, setFollowMode] = useState(true);
+    const [gpsSpeed, setGpsSpeed] = useState<number | null>(null);
+    const [gpsAccuracy, setGpsAccuracy] = useState<number | null>(null);
+    const [sheetExpanded, setSheetExpanded] = useState(false);
+    const [nearestStopIdx, setNearestStopIdx] = useState<number>(-1);
 
-    // Monitor online status
+    // ── Online/Offline ──────────────────────────────────────────────────────────
     useEffect(() => {
-        const handleOnline = () => setIsOffline(false);
-        const handleOffline = () => {
-            setIsOffline(true);
-            // Revert to standard layer immediately when going offline to prevent blank map
-            setActiveLayer('standard');
-        };
-        window.addEventListener('online', handleOnline);
-        window.addEventListener('offline', handleOffline);
-        return () => {
-            window.removeEventListener('online', handleOnline);
-            window.removeEventListener('offline', handleOffline);
-        };
+        const online = () => setIsOffline(false);
+        const offline = () => { setIsOffline(true); setActiveLayer('standard'); };
+        window.addEventListener('online', online);
+        window.addEventListener('offline', offline);
+        return () => { window.removeEventListener('online', online); window.removeEventListener('offline', offline); };
     }, []);
 
-    // Initialize Map
+    // ── Map init ────────────────────────────────────────────────────────────────
     useEffect(() => {
         if (!isOpen || !mapContainerRef.current) return;
 
-        if (!mapInstanceRef.current) {
-            // Default center: Dhaka
-            const dhakaCenter: [number, number] = [23.8103, 90.4125];
-            const initialCenter = userLocation
-                ? [userLocation.lat, userLocation.lng] as [number, number]
-                : dhakaCenter;
+        const dhakaCenter: [number, number] = [23.8103, 90.4125];
+        const center: [number, number] = userLocation
+            ? [userLocation.lat, userLocation.lng]
+            : dhakaCenter;
 
-            const map = L.map(mapContainerRef.current, {
-                zoomControl: false,
-                attributionControl: false,
-                minZoom: 10, // Prevent zooming out too far where tiles might be missing
-                maxZoom: 18
-            }).setView(initialCenter, 13);
+        const map = L.map(mapContainerRef.current, {
+            zoomControl: false,
+            attributionControl: false,
+            minZoom: 10,
+            maxZoom: 19,
+        }).setView(center, 14);
 
-            mapInstanceRef.current = map;
+        mapRef.current = map;
+        hasCenteredRef.current = false;
+        stopMarkersRef.current = L.layerGroup().addTo(map);
 
-            // Add Zoom Control at bottom right
-            L.control.zoom({ position: 'bottomright' }).addTo(map);
+        // Controls
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+        L.control.scale({ imperial: false, position: 'bottomleft' }).addTo(map);
+        L.control.attribution({ position: 'bottomright', prefix: '© OSM' }).addTo(map);
 
-            // Add Attribution
-            L.control.attribution({ position: 'bottomright' }).addTo(map);
+        // Tap on map → turn off follow mode
+        map.on('dragstart', () => {
+            followModeRef.current = false;
+            setFollowMode(false);
+        });
 
-            // Fix: Invalidate size after modal animation to ensure correct rendering
-            setTimeout(() => {
-                map.invalidateSize();
-            }, 300);
-        }
-
-        // Cleanup on unmount (only if complete unmount, but here we usually keep instance if modal toggles? 
-        // No, better to remove if modal closes to save resources, or keep hidden)
-        // For now, we'll keep it simple and just init. 
-        // If we want to destroy: 
-        // return () => { mapInstanceRef.current?.remove(); mapInstanceRef.current = null; };
-        // But tearing down Leaflet can be buggy with React strict mode. Let's see.
-        // Given the modal nature, destroying might be safer for memory.
+        setTimeout(() => map.invalidateSize(), 300);
 
         return () => {
-            if (mapInstanceRef.current) {
-                mapInstanceRef.current.remove();
-                mapInstanceRef.current = null;
-            }
-            // Clear marker references
+            map.remove();
+            mapRef.current = null;
             userMarkerRef.current = null;
             accuracyCircleRef.current = null;
+            routePolylineRef.current = null;
+            stopMarkersRef.current = null;
+            busMarkersRef.current.clear();
         };
     }, [isOpen]);
 
-
-    // Update Layers
+    // ── Tile layer ──────────────────────────────────────────────────────────────
     useEffect(() => {
-        if (!mapInstanceRef.current) return;
+        const map = mapRef.current;
+        if (!map) return;
 
-        const map = mapInstanceRef.current;
+        map.eachLayer(l => { if (l instanceof L.TileLayer) map.removeLayer(l); });
 
-        // Clear existing tile layers
-        map.eachLayer((layer) => {
-            if (layer instanceof L.TileLayer) {
-                map.removeLayer(layer);
-            }
-        });
+        const layer = isOffline ? 'standard' : activeLayer;
 
-        let tileUrl = '';
-        let attribution = '';
-        let maxZoom = 19;
+        const configs: Record<MapLayer, { url: string; sub?: string[]; maxZoom?: number; attr?: string }> = {
+            standard: {
+                url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                sub: ['a', 'b', 'c'],
+                attr: '© OpenStreetMap'
+            },
+            dark: {
+                url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+                sub: ['a', 'b', 'c', 'd'],
+                attr: '© CARTO'
+            },
+            satellite: {
+                url: 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',
+                sub: ['mt0', 'mt1', 'mt2', 'mt3'],
+                attr: '© Google'
+            },
+            terrain: {
+                url: 'http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',
+                sub: ['mt0', 'mt1', 'mt2', 'mt3'],
+                attr: '© Google'
+            },
+            traffic: {
+                url: 'https://mt1.google.com/vt/lyrs=m@221097413,traffic&x={x}&y={y}&z={z}',
+                attr: '© Google'
+            },
+        };
 
-        // If offline, FORCE Standard layer as others are likely not cached
-        const layerToUse = isOffline ? 'standard' : activeLayer;
-
-        switch (layerToUse) {
-            case 'satellite':
-                // Google Hybrid
-                tileUrl = 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}';
-                attribution = '&copy; Google Maps';
-                // Subdomains for Google
-                (L.TileLayer.prototype as any).options.subdomains = ['mt0', 'mt1', 'mt2', 'mt3'];
-                break;
-            case 'terrain':
-                // Google Terrain
-                tileUrl = 'http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}';
-                attribution = '&copy; Google Maps';
-                (L.TileLayer.prototype as any).options.subdomains = ['mt0', 'mt1', 'mt2', 'mt3'];
-                break;
-            case 'traffic':
-                // Google Traffic
-                tileUrl = 'https://mt1.google.com/vt/lyrs=m@221097413,traffic&x={x}&y={y}&z={z}';
-                attribution = '&copy; Google Maps';
-                break;
-            case 'dark':
-                // CartoDB Dark Matter
-                tileUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
-                attribution = '&copy; OpenStreetMap &copy; CARTO';
-                (L.TileLayer.prototype as any).options.subdomains = ['a', 'b', 'c', 'd'];
-                break;
-            case 'standard':
-            default:
-                // OSM
-                tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-                attribution = '&copy; OpenStreetMap contributors';
-                (L.TileLayer.prototype as any).options.subdomains = ['a', 'b', 'c'];
-                break;
-        }
-
-        L.tileLayer(tileUrl, {
-            maxZoom,
-            attribution,
-            subdomains: (L.TileLayer.prototype as any).options.subdomains || ['a', 'b', 'c']
+        const cfg = configs[layer];
+        L.tileLayer(cfg.url, {
+            maxZoom: cfg.maxZoom ?? 19,
+            attribution: cfg.attr,
+            subdomains: cfg.sub ?? ['a', 'b', 'c'],
         }).addTo(map);
-
     }, [activeLayer, isOffline, isOpen]);
 
-    const [hasCentered, setHasCentered] = useState(false);
-
-    // Reset hasCentered when modal opens
+    // ── Route polyline + stop markers ───────────────────────────────────────────
     useEffect(() => {
-        if (isOpen) {
-            setHasCentered(false);
+        const map = mapRef.current;
+        const stopGroup = stopMarkersRef.current;
+        if (!map) return;
+
+        // Clear previous route
+        if (routePolylineRef.current) {
+            map.removeLayer(routePolylineRef.current);
+            routePolylineRef.current = null;
         }
-    }, [isOpen]);
+        stopGroup?.clearLayers();
 
-    // Update User Location
-    useEffect(() => {
-        if (!mapInstanceRef.current) return;
-        const map = mapInstanceRef.current;
+        if (!selectedRoute?.stops?.length) return;
 
-        if (userLocation) {
-            const latLng: [number, number] = [userLocation.lat, userLocation.lng];
+        const color = getRouteColor(selectedRoute.id);
+        const coords: [number, number][] = [];
 
-            // Initial Center on User
-            if (!hasCentered) {
-                map.setView(latLng, 15);
-                setHasCentered(true);
-            }
+        selectedRoute.stops.forEach((stopId, idx) => {
+            const station = STATIONS[stopId];
+            if (!station) return;
+            const latLng: [number, number] = [station.lat, station.lng];
+            coords.push(latLng);
 
-            // User Marker Icon
-            const userIcon = L.divIcon({
+            // Stop marker — filled circle with stop number
+            const isFirst = idx === 0;
+            const isLast = idx === selectedRoute.stops.length - 1;
+            const size = isFirst || isLast ? 36 : 26;
+            const stopIcon = L.divIcon({
                 className: 'bg-transparent border-none',
-                html: `<div class="relative w-6 h-6 flex items-center justify-center">
-                 <div class="absolute w-full h-full bg-blue-500/50 rounded-full animate-ping"></div>
-                 <div class="relative w-4 h-4 bg-blue-600 border-[3px] border-white rounded-full shadow-lg"></div>
-               </div>`,
-                iconSize: [24, 24],
-                iconAnchor: [12, 12]
+                html: `<div style="
+                    width:${size}px;height:${size}px;
+                    background:${isFirst || isLast ? color : '#fff'};
+                    border:3px solid ${color};
+                    border-radius:50%;
+                    display:flex;align-items:center;justify-content:center;
+                    box-shadow:0 2px 8px rgba(0,0,0,0.25);
+                    font-weight:700;
+                    font-size:${isFirst || isLast ? 12 : 10}px;
+                    color:${isFirst || isLast ? '#fff' : color};
+                    font-family:sans-serif;
+                    margin-left:-${size / 2}px;margin-top:-${size / 2}px;
+                ">${isFirst ? 'A' : isLast ? 'B' : idx}</div>`,
+                iconSize: [size, size],
+                iconAnchor: [size / 2, size / 2],
             });
 
-            if (userMarkerRef.current) {
-                userMarkerRef.current.setLatLng(latLng);
-                userMarkerRef.current.setIcon(userIcon);
-            } else {
-                userMarkerRef.current = L.marker(latLng, { icon: userIcon, zIndexOffset: 1000 }).addTo(map);
-            }
+            const marker = L.marker(latLng, { icon: stopIcon, zIndexOffset: isFirst || isLast ? 100 : 0 })
+                .bindPopup(`
+                    <div style="font-family:sans-serif;padding:2px 4px;min-width:120px">
+                        <div style="font-weight:700;font-size:13px;color:#1e293b">${station.name}</div>
+                        <div style="font-size:11px;color:#64748b;margin-top:2px">${station.bnName || ''}</div>
+                        <div style="margin-top:6px;padding:4px 8px;background:${color}20;border-radius:6px;font-size:11px;font-weight:600;color:${color}">
+                            Stop ${idx + 1} of ${selectedRoute.stops.length}
+                        </div>
+                    </div>
+                `);
 
-            // Accuracy Circle
-            const accuracy = (userLocation as any).accuracy || 50; // meters
+            stopGroup?.addLayer(marker);
+        });
 
-            if (accuracyCircleRef.current) {
-                accuracyCircleRef.current.setLatLng(latLng);
-                accuracyCircleRef.current.setRadius(accuracy);
-            } else {
-                accuracyCircleRef.current = L.circle(latLng, {
-                    radius: accuracy,
-                    color: '#3b82f6',
-                    fillColor: '#3b82f6',
-                    fillOpacity: 0.15,
-                    weight: 1
-                }).addTo(map);
-            }
+        // Draw animated route polyline (outer glow + inner line)
+        if (coords.length > 1) {
+            // Glow effect
+            L.polyline(coords, {
+                color: color,
+                weight: 10,
+                opacity: 0.15,
+            }).addTo(map);
 
+            const poly = L.polyline(coords, {
+                color: color,
+                weight: 4,
+                opacity: 0.9,
+                dashArray: '12 6',
+                lineJoin: 'round',
+            }).addTo(map);
+
+            routePolylineRef.current = poly;
+
+            // Fit map to route bounds
+            const bounds = L.latLngBounds(coords);
+            map.fitBounds(bounds, { padding: [40, 40], maxZoom: 15 });
         }
-    }, [userLocation, isOpen, hasCentered]);
 
+        // Find nearest stop to user
+        if (userLocation && selectedRoute.stops.length) {
+            let minDist = Infinity;
+            let nearestIdx = 0;
+            selectedRoute.stops.forEach((stopId, idx) => {
+                const s = STATIONS[stopId];
+                if (!s) return;
+                const dist = Math.hypot(s.lat - userLocation.lat, s.lng - userLocation.lng);
+                if (dist < minDist) { minDist = dist; nearestIdx = idx; }
+            });
+            setNearestStopIdx(nearestIdx);
+        }
 
-    // Handle Geolocation Watch
+    }, [selectedRoute, isOpen]);
+
+    // ── User location marker ────────────────────────────────────────────────────
+    useEffect(() => {
+        const map = mapRef.current;
+        if (!map || !userLocation) return;
+
+        const latLng: [number, number] = [userLocation.lat, userLocation.lng];
+        const heading = headingRef.current;
+
+        const userIcon = L.divIcon({
+            className: 'bg-transparent border-none',
+            html: `<div style="position:relative;width:28px;height:28px;margin-left:-14px;margin-top:-14px">
+                <div style="position:absolute;inset:0;background:#3b82f6;opacity:0.2;border-radius:50%;animation:ping 1.5s cubic-bezier(0,0,0.2,1) infinite"></div>
+                <div style="position:absolute;inset:4px;background:#3b82f6;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(59,130,246,0.5)"></div>
+                ${heading !== null ? `<div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%) rotate(${heading}deg);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:10px solid #3b82f6"></div>` : ''}
+            </div>`,
+            iconSize: [28, 28],
+            iconAnchor: [14, 14],
+        });
+
+        if (userMarkerRef.current) {
+            userMarkerRef.current.setLatLng(latLng);
+            userMarkerRef.current.setIcon(userIcon);
+        } else {
+            userMarkerRef.current = L.marker(latLng, { icon: userIcon, zIndexOffset: 1000 })
+                .bindPopup('<div style="font-family:sans-serif;font-weight:700;font-size:13px">📍 You are here</div>')
+                .addTo(map);
+        }
+
+        const acc = (userLocation as any).accuracy ?? 50;
+        setGpsAccuracy(Math.round(acc));
+
+        if (accuracyCircleRef.current) {
+            accuracyCircleRef.current.setLatLng(latLng).setRadius(acc);
+        } else {
+            accuracyCircleRef.current = L.circle(latLng, {
+                radius: acc, color: '#3b82f6', fillColor: '#3b82f6', fillOpacity: 0.1, weight: 1,
+            }).addTo(map);
+        }
+
+        if (followModeRef.current && !hasCenteredRef.current) {
+            map.setView(latLng, 15);
+            hasCenteredRef.current = true;
+        } else if (followModeRef.current) {
+            map.panTo(latLng, { animate: true, duration: 0.5 });
+        }
+    }, [userLocation]);
+
+    // ── GPS watch ───────────────────────────────────────────────────────────────
     useEffect(() => {
         if (!isOpen || !navigator.geolocation) return;
 
-        // Offline Optimization: Accept older cached positions when offline
-        const geoOptions: PositionOptions = {
-            enableHighAccuracy: true,
-            maximumAge: isOffline ? Infinity : 2000,
-            timeout: 15000
-        };
-
         const watchId = navigator.geolocation.watchPosition(
             (pos) => {
-                if (mapInstanceRef.current) {
-                    const { latitude, longitude, accuracy } = pos.coords;
-                    const latLng: [number, number] = [latitude, longitude];
+                const { latitude, longitude, accuracy, speed, heading } = pos.coords;
+                const latLng: [number, number] = [latitude, longitude];
+                setGpsAccuracy(Math.round(accuracy));
+                if (speed !== null) setGpsSpeed(Math.round(speed * 3.6));
+                if (heading !== null) headingRef.current = heading;
 
-                    if (userMarkerRef.current) userMarkerRef.current.setLatLng(latLng);
-                    if (accuracyCircleRef.current) {
-                        accuracyCircleRef.current.setLatLng(latLng);
-                        accuracyCircleRef.current.setRadius(accuracy);
-                    }
+                if (userMarkerRef.current) userMarkerRef.current.setLatLng(latLng);
+                if (accuracyCircleRef.current) {
+                    accuracyCircleRef.current.setLatLng(latLng).setRadius(accuracy);
+                }
+                if (followModeRef.current && mapRef.current) {
+                    mapRef.current.panTo(latLng, { animate: true, duration: 0.5 });
                 }
             },
-            (err) => console.error("Watch Position Error", err),
-            geoOptions
+            (err) => console.warn('GPS watch error', err.message),
+            { enableHighAccuracy: true, maximumAge: isOffline ? 30000 : 2000, timeout: 15000 }
         );
 
         return () => navigator.geolocation.clearWatch(watchId);
-
     }, [isOpen, isOffline]);
 
-    // Subscribe to Live Buses
+    // ── Device orientation (compass heading) ────────────────────────────────────
     useEffect(() => {
         if (!isOpen) return;
-        return liveBusService.subscribe(setLiveBuses);
+        const handler = (e: DeviceOrientationEvent) => {
+            if (e.alpha !== null) headingRef.current = 360 - e.alpha;
+        };
+        window.addEventListener('deviceorientationabsolute', handler as EventListener, true);
+        window.addEventListener('deviceorientation', handler as EventListener, true);
+        return () => {
+            window.removeEventListener('deviceorientationabsolute', handler as EventListener, true);
+            window.removeEventListener('deviceorientation', handler as EventListener, true);
+        };
     }, [isOpen]);
 
-    // Render Bus Markers
+    // ── Live bus markers ────────────────────────────────────────────────────────
+    useEffect(() => { if (!isOpen) return; return liveBusService.subscribe(setLiveBuses); }, [isOpen]);
+
     useEffect(() => {
-        if (!mapInstanceRef.current) return;
-        const map = mapInstanceRef.current;
+        const map = mapRef.current;
+        if (!map) return;
         const markers = busMarkersRef.current;
 
         liveBuses.forEach(bus => {
             const latLng: [number, number] = [bus.lat, bus.lng];
-
             if (markers.has(bus.id)) {
-                const marker = markers.get(bus.id)!;
-                marker.setLatLng(latLng);
+                markers.get(bus.id)!.setLatLng(latLng);
             } else {
                 const busIcon = L.divIcon({
                     className: 'bg-transparent border-none',
-                    html: `<div class="relative w-8 h-8 flex items-center justify-center -ml-1 -mt-1">
-                             <div class="absolute w-full h-full bg-green-500/30 rounded-full animate-pulse"></div>
-                             <div class="relative w-6 h-6 bg-white border-2 border-green-600 rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" class="text-green-700" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6v6"/><path d="M15 6v6"/><path d="M2 12h19.6"/><path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3"/><circle cx="7" cy="18" r="2"/><path d="M9 18h5"/><circle cx="16" cy="18" r="2"/></svg>
-                             </div>
-                           </div>`,
-                    iconSize: [24, 24],
-                    iconAnchor: [12, 12]
-                });
-
-                const marker = L.marker(latLng, { icon: busIcon })
-                    .bindPopup(`
-                        <div class="p-2 min-w-[120px]">
-                            <h3 class="font-bold text-sm text-gray-800">${bus.busName}</h3>
-                            <p class="text-xs text-gray-500">Speed: ${Math.round(bus.speed)} km/h</p>
-                            <span class="inline-block mt-1 px-1.5 py-0.5 bg-green-100 text-green-700 text-[10px] rounded font-bold uppercase">Live</span>
+                    html: `<div style="position:relative;width:36px;height:36px;margin:-18px 0 0 -18px">
+                        <div style="position:absolute;inset:0;background:#22c55e;opacity:0.2;border-radius:50%;animation:ping 2s cubic-bezier(0,0,0.2,1) infinite"></div>
+                        <div style="position:absolute;inset:4px;background:#fff;border:2.5px solid #16a34a;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.2)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M8 6v6"/><path d="M15 6v6"/><path d="M2 12h19.6"/>
+                                <path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3"/>
+                                <circle cx="7" cy="18" r="2"/><path d="M9 18h5"/><circle cx="16" cy="18" r="2"/>
+                            </svg>
                         </div>
-                    `)
-                    .addTo(map);
-
-                markers.set(bus.id, marker);
+                    </div>`,
+                    iconSize: [36, 36], iconAnchor: [18, 18],
+                });
+                markers.set(bus.id,
+                    L.marker(latLng, { icon: busIcon })
+                        .bindPopup(`<div style="font-family:sans-serif;padding:4px">
+                            <div style="font-weight:700;font-size:13px">${bus.busName}</div>
+                            <div style="font-size:11px;color:#64748b;margin-top:2px">Speed: ${Math.round(bus.speed)} km/h</div>
+                            <span style="display:inline-block;margin-top:4px;padding:2px 6px;background:#dcfce7;color:#16a34a;font-size:10px;font-weight:700;border-radius:4px">LIVE</span>
+                        </div>`)
+                        .addTo(map)
+                );
             }
         });
 
-        // Cleanup removed buses
-        const currentIds = new Set(liveBuses.map(b => b.id));
+        const ids = new Set(liveBuses.map(b => b.id));
         markers.forEach((marker, id) => {
-            if (!currentIds.has(id)) {
-                marker.remove();
-                markers.delete(id);
-            }
+            if (!ids.has(id)) { marker.remove(); markers.delete(id); }
         });
+    }, [liveBuses]);
 
-    }, [liveBuses, isOpen]);
+    // ── Recenter ────────────────────────────────────────────────────────────────
+    const recenter = useCallback(() => {
+        if (!mapRef.current || !userLocation) return;
+        mapRef.current.flyTo([userLocation.lat, userLocation.lng], 16, { duration: 1.2 });
+        followModeRef.current = true;
+        setFollowMode(true);
+    }, [userLocation]);
+
+    const toggleFollowMode = useCallback(() => {
+        const next = !followModeRef.current;
+        followModeRef.current = next;
+        setFollowMode(next);
+        if (next) recenter();
+    }, [recenter]);
 
     if (!isOpen) return null;
 
+    const routeColor = selectedRoute ? getRouteColor(selectedRoute.id) : '#3b82f6';
+    const routeStops = selectedRoute?.stops
+        ?.map(id => STATIONS[id])
+        .filter(Boolean) ?? [];
+
     return (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-            <div className="bg-white dark:bg-slate-900 w-full max-w-5xl h-[80vh] rounded-3xl shadow-2xl overflow-hidden relative flex flex-col md:flex-row">
+        <div className="fixed inset-0 z-[200] flex flex-col bg-black">
+            {/* Map fills everything */}
+            <div ref={mapContainerRef} className="absolute inset-0 z-0" />
 
-                {/* Map Container - Works offline with cached tiles! */}
-                <div ref={mapContainerRef} className="flex-1 w-full h-full relative z-0 bg-gray-200" />
-
-                {/* Floating Controls */}
-                <div className="absolute top-4 left-4 z-[400] flex flex-col gap-2">
-                    <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-3 rounded-2xl shadow-lg border border-gray-200/50 dark:border-gray-700/50">
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 relative">
-                                {isOffline ? <WifiOff className="w-5 h-5 text-gray-400" /> : <Wifi className="w-5 h-5" />}
-                                {userLocation && <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-slate-900 rounded-full animate-bounce"></div>}
-                            </div>
-                            <div>
-                                <h3 className="font-bold text-gray-800 dark:text-gray-200 text-sm">{t('map.liveLocation')}</h3>
-                                <p className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">
-                                    {userLocation ? t('map.gpsSignalActive') : t('map.acquiringSignal')}
+            {/* ── Top status bar ── */}
+            <div className="absolute top-0 left-0 right-0 z-[400] pointer-events-none px-3 pt-3 flex items-start justify-between gap-2">
+                {/* GPS + route info */}
+                <div className="pointer-events-auto bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl px-3 py-2.5 shadow-lg border border-white/30 dark:border-slate-700/50 flex items-center gap-2.5 max-w-[60vw]">
+                    <div className="relative shrink-0">
+                        {isOffline
+                            ? <WifiOff className="w-4 h-4 text-red-500" />
+                            : <Wifi className="w-4 h-4 text-emerald-500" />
+                        }
+                        {userLocation && (
+                            <span className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-500 rounded-full border border-white animate-pulse" />
+                        )}
+                    </div>
+                    <div className="min-w-0">
+                        {selectedRoute ? (
+                            <>
+                                <p className="text-xs font-bold text-gray-900 dark:text-white leading-tight truncate"
+                                   style={{ color: routeColor }}>
+                                    {selectedRoute.name}
                                 </p>
-                            </div>
-                        </div>
+                                <p className="text-[10px] text-gray-500 dark:text-gray-400 leading-tight">
+                                    {routeStops.length} stops
+                                    {gpsAccuracy ? ` · GPS ±${gpsAccuracy}m` : ''}
+                                </p>
+                            </>
+                        ) : (
+                            <>
+                                <p className="text-xs font-bold text-gray-900 dark:text-white leading-tight">
+                                    {isOffline ? t('map.offlineMode') : t('map.liveLocation')}
+                                </p>
+                                <p className="text-[10px] text-gray-500 dark:text-gray-400 leading-tight">
+                                    {userLocation
+                                        ? `GPS ±${gpsAccuracy ?? '?'}m${gpsSpeed !== null && gpsSpeed > 0 ? ` · ${gpsSpeed} km/h` : ''}`
+                                        : t('map.acquiringSignal')}
+                                </p>
+                            </>
+                        )}
                     </div>
                 </div>
 
-                {/* Layer Switcher */}
-                <div className="absolute top-4 right-16 z-[400]">
-                    <button
-                        onClick={() => setShowLayerMenu(!showLayerMenu)}
-                        className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2.5 rounded-xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 transition-all active:scale-95 relative"
-                    >
-                        <Layers className="w-6 h-6" />
-                        {isOffline && (
-                            <div className="absolute -top-1 -right-1 bg-gray-500 text-white rounded-full p-0.5 border-2 border-white dark:border-slate-900">
-                                <Lock className="w-2.5 h-2.5" />
+                {/* Right side: Layer + Close */}
+                <div className="pointer-events-auto flex items-center gap-2">
+                    {/* Layer switcher */}
+                    <div className="relative">
+                        <button
+                            onClick={() => setShowLayerMenu(v => !v)}
+                            className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2.5 rounded-xl shadow-lg border border-white/30 dark:border-slate-700/50 text-gray-700 dark:text-gray-200 active:scale-95 transition-all relative"
+                        >
+                            <Layers className="w-5 h-5" />
+                            {isOffline && (
+                                <span className="absolute -top-1 -right-1 bg-amber-500 rounded-full p-0.5 border border-white">
+                                    <Lock className="w-2 h-2 text-white" />
+                                </span>
+                            )}
+                        </button>
+
+                        {showLayerMenu && (
+                            <div className="absolute top-12 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-200/50 dark:border-slate-700/50 p-2 w-40 flex flex-col gap-1 animate-in slide-in-from-top-2 duration-150">
+                                {isOffline && (
+                                    <div className="flex items-center gap-1.5 px-2 py-1.5 text-[10px] font-bold text-amber-700 bg-amber-50 dark:bg-amber-900/20 rounded-lg mb-1">
+                                        <WifiOff className="w-3 h-3" /> Offline Mode
+                                    </div>
+                                )}
+                                {LAYERS.map(layer => (
+                                    <button
+                                        key={layer.id}
+                                        onClick={() => { if (!isOffline || !layer.online) { setActiveLayer(layer.id); setShowLayerMenu(false); } }}
+                                        disabled={isOffline && !!layer.online}
+                                        className={`text-xs font-semibold px-3 py-2 rounded-xl text-left flex items-center gap-2 justify-between transition-all ${
+                                            activeLayer === layer.id
+                                                ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
+                                                : isOffline && layer.online
+                                                    ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed'
+                                                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'
+                                        }`}
+                                    >
+                                        <span className="flex items-center gap-2">
+                                            <layer.icon className="w-3.5 h-3.5" />
+                                            {layer.label}
+                                        </span>
+                                        {isOffline && layer.online && <Lock className="w-3 h-3" />}
+                                        {activeLayer === layer.id && <CheckCircle2 className="w-3 h-3 text-blue-500" />}
+                                    </button>
+                                ))}
                             </div>
                         )}
+                    </div>
+
+                    {/* Close */}
+                    <button
+                        onClick={onClose}
+                        className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2.5 rounded-xl shadow-lg border border-white/30 dark:border-slate-700/50 text-gray-700 dark:text-gray-200 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-500 active:scale-95 transition-all"
+                    >
+                        <X className="w-5 h-5" />
                     </button>
-
-                    {showLayerMenu && (
-                        <div className="absolute top-14 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2 rounded-2xl shadow-xl border border-gray-200/50 dark:border-gray-700/50 w-44 flex flex-col gap-1 animate-in slide-in-from-top-2">
-                            {isOffline && (
-                                <div className="px-3 py-2 text-[10px] text-red-500 font-bold bg-red-50 dark:bg-red-900/30 rounded-lg mb-1 flex items-center gap-2">
-                                    <WifiOff className="w-3 h-3" /> {t('map.offlineMode')}
-                                </div>
-                            )}
-
-                            <button onClick={() => setActiveLayer('standard')} className={`text-xs font-bold px-3 py-2 rounded-lg text-left flex items-center gap-2 ${activeLayer === 'standard' ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'}`}>
-                                <MapIcon className="w-4 h-4" /> {t('map.standard')}
-                            </button>
-
-                            <button
-                                onClick={() => !isOffline && setActiveLayer('satellite')}
-                                disabled={isOffline}
-                                className={`text-xs font-bold px-3 py-2 rounded-lg text-left flex items-center gap-2 justify-between ${activeLayer === 'satellite' ? 'bg-blue-50 text-blue-600' : isOffline ? 'text-gray-400 cursor-not-allowed opacity-60' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'}`}
-                            >
-                                <div className="flex items-center gap-2"><Globe className="w-4 h-4" /> {t('map.satellite')}</div>
-                                {isOffline && <Lock className="w-3 h-3" />}
-                            </button>
-
-                            <button
-                                onClick={() => !isOffline && setActiveLayer('terrain')}
-                                disabled={isOffline}
-                                className={`text-xs font-bold px-3 py-2 rounded-lg text-left flex items-center gap-2 justify-between ${activeLayer === 'terrain' ? 'bg-blue-50 text-blue-600' : isOffline ? 'text-gray-400 cursor-not-allowed opacity-60' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'}`}
-                            >
-                                <div className="flex items-center gap-2"><MapIcon className="w-4 h-4" /> {t('map.terrain')}</div>
-                                {isOffline && <Lock className="w-3 h-3" />}
-                            </button>
-
-                            <button
-                                onClick={() => !isOffline && setActiveLayer('traffic')}
-                                disabled={isOffline}
-                                className={`text-xs font-bold px-3 py-2 rounded-lg text-left flex items-center gap-2 justify-between ${activeLayer === 'traffic' ? 'bg-blue-50 text-blue-600' : isOffline ? 'text-gray-400 cursor-not-allowed opacity-60' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'}`}
-                            >
-                                <div className="flex items-center gap-2"><Navigation className="w-4 h-4" /> {t('map.traffic')}</div>
-                                {isOffline && <Lock className="w-3 h-3" />}
-                            </button>
-
-                            <button
-                                onClick={() => !isOffline && setActiveLayer('dark')}
-                                disabled={isOffline}
-                                className={`text-xs font-bold px-3 py-2 rounded-lg text-left flex items-center gap-2 justify-between ${activeLayer === 'dark' ? 'bg-blue-50 text-blue-600' : isOffline ? 'text-gray-400 cursor-not-allowed opacity-60' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'}`}
-                            >
-                                <div className="flex items-center  gap-2"><MapIcon className="w-4 h-4" /> {t('map.darkMode')}</div>
-                                {isOffline && <Lock className="w-3 h-3" />}
-                            </button>
-                        </div>
-                    )}
                 </div>
+            </div>
 
-                {/* Close Button */}
+            {/* ── Right side controls ── */}
+            <div className="absolute right-3 bottom-[calc(var(--sheet-h,90px)+20px)] z-[400] flex flex-col gap-2 pointer-events-auto">
+                {/* Follow mode */}
                 <button
-                    onClick={onClose}
-                    className="absolute top-4 right-4 z-[400] bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2.5 rounded-full shadow-lg border border-gray-200/50 dark:border-gray-700/50 hover:bg-red-50 dark:hover:bg-red-900/30 text-gray-700 dark:text-gray-200 hover:text-red-500 transition-all active:scale-95"
+                    onClick={toggleFollowMode}
+                    title={followMode ? 'Following you' : 'Click to follow'}
+                    className={`p-2.5 rounded-xl shadow-lg border backdrop-blur-md active:scale-95 transition-all ${
+                        followMode
+                            ? 'bg-blue-600 border-blue-500 text-white shadow-blue-500/30'
+                            : 'bg-white/90 dark:bg-slate-900/90 border-white/30 dark:border-slate-700/50 text-gray-600 dark:text-gray-300'
+                    }`}
                 >
-                    <X className="w-6 h-6" />
+                    <Navigation className={`w-5 h-5 ${followMode ? 'animate-pulse' : ''}`} />
                 </button>
 
-                {/* Recenter Button */}
+                {/* Recenter */}
                 <button
-                    onClick={() => {
-                        if (userLocation && mapInstanceRef.current) {
-                            mapInstanceRef.current.flyTo([userLocation.lat, userLocation.lng], 16, { duration: 1.5 });
-                        }
-                    }}
-                    className="absolute bottom-8 right-4 z-[400] bg-blue-600 text-white p-3 rounded-full shadow-lg shadow-blue-500/30 hover:bg-blue-700 transition-all active:scale-95 flex items-center justify-center"
+                    onClick={recenter}
+                    disabled={!userLocation}
+                    className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2.5 rounded-xl shadow-lg border border-white/30 dark:border-slate-700/50 text-gray-600 dark:text-gray-300 disabled:opacity-40 active:scale-95 transition-all"
+                >
+                    <Target className="w-5 h-5" />
+                </button>
+
+                {/* Live buses count */}
+                {liveBuses.length > 0 && (
+                    <div className="bg-emerald-600 text-white px-2.5 py-2 rounded-xl shadow-lg flex items-center gap-1.5 text-xs font-bold">
+                        <Bus className="w-3.5 h-3.5" />
+                        {liveBuses.length}
+                    </div>
+                )}
+            </div>
+
+            {/* ── Bottom sheet — stops list ── */}
+            {selectedRoute && routeStops.length > 0 && (
+                <div
+                    className="absolute left-0 right-0 bottom-0 z-[400] pointer-events-auto"
+                    style={{ '--sheet-h': sheetExpanded ? '60vh' : '90px' } as React.CSSProperties}
+                >
+                    <div
+                        className={`bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl rounded-t-3xl shadow-2xl border-t border-white/30 dark:border-slate-700 transition-all duration-300 ease-in-out overflow-hidden ${sheetExpanded ? 'h-[60vh]' : 'h-[90px]'}`}
+                    >
+                        {/* Handle + header */}
+                        <button
+                            onClick={() => setSheetExpanded(v => !v)}
+                            className="w-full flex flex-col items-center pt-2 pb-3 px-4 cursor-pointer"
+                        >
+                            <div className="w-10 h-1 bg-gray-300 dark:bg-slate-600 rounded-full mb-2" />
+                            <div className="w-full flex items-center justify-between">
+                                <div className="flex items-center gap-2.5">
+                                    <div
+                                        className="w-8 h-8 rounded-xl flex items-center justify-center text-white font-bold text-xs"
+                                        style={{ background: routeColor }}
+                                    >
+                                        <Bus className="w-4 h-4" />
+                                    </div>
+                                    <div className="text-left">
+                                        <p className="text-sm font-bold text-gray-900 dark:text-white leading-tight">{selectedRoute.name}</p>
+                                        <p className="text-[10px] text-gray-500 dark:text-gray-400">
+                                            {routeStops[0]?.name} → {routeStops[routeStops.length - 1]?.name}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{routeStops.length} stops</span>
+                                    {sheetExpanded ? <ChevronDown className="w-4 h-4 text-gray-400" /> : <ChevronUp className="w-4 h-4 text-gray-400" />}
+                                </div>
+                            </div>
+                        </button>
+
+                        {/* Stops list */}
+                        {sheetExpanded && (
+                            <div className="overflow-y-auto px-4 pb-8" style={{ maxHeight: 'calc(60vh - 80px)' }}>
+                                {routeStops.map((stop, idx) => {
+                                    const isFirst = idx === 0;
+                                    const isLast = idx === routeStops.length - 1;
+                                    const isNearest = idx === nearestStopIdx;
+
+                                    return (
+                                        <div
+                                            key={stop.id}
+                                            className={`flex items-center gap-3 py-2.5 cursor-pointer rounded-xl px-2 -mx-2 transition-colors ${isNearest ? 'bg-blue-50 dark:bg-blue-900/20' : 'hover:bg-gray-50 dark:hover:bg-slate-800'}`}
+                                            onClick={() => {
+                                                mapRef.current?.flyTo([stop.lat, stop.lng], 16, { duration: 0.8 });
+                                                followModeRef.current = false;
+                                                setFollowMode(false);
+                                            }}
+                                        >
+                                            {/* Line + dot */}
+                                            <div className="flex flex-col items-center shrink-0" style={{ width: 28 }}>
+                                                {!isFirst && <div className="w-0.5 h-3 -mb-1" style={{ background: routeColor }} />}
+                                                <div
+                                                    className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold border-2 shrink-0"
+                                                    style={{
+                                                        borderColor: routeColor,
+                                                        background: isFirst || isLast ? routeColor : '#fff',
+                                                        color: isFirst || isLast ? '#fff' : routeColor,
+                                                    }}
+                                                >
+                                                    {isFirst ? 'A' : isLast ? 'B' : idx}
+                                                </div>
+                                                {!isLast && <div className="w-0.5 h-3 -mt-1" style={{ background: routeColor }} />}
+                                            </div>
+
+                                            {/* Name */}
+                                            <div className="flex-1 min-w-0">
+                                                <p className={`text-sm font-semibold leading-tight truncate ${isNearest ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>
+                                                    {stop.name}
+                                                    {isNearest && <span className="ml-1.5 text-[10px] bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded-full font-bold">Nearest</span>}
+                                                </p>
+                                                <p className="text-[10px] text-gray-400 dark:text-gray-500">{stop.bnName}</p>
+                                            </div>
+
+                                            <MapPin className="w-3.5 h-3.5 text-gray-300 dark:text-gray-600 shrink-0" />
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+
+            {/* ── No route: recenter button at bottom ── */}
+            {!selectedRoute && (
+                <button
+                    onClick={recenter}
+                    disabled={!userLocation}
+                    className="absolute bottom-6 right-4 z-[400] bg-blue-600 text-white p-3.5 rounded-full shadow-xl shadow-blue-500/30 hover:bg-blue-700 disabled:opacity-40 active:scale-95 transition-all flex items-center justify-center"
                 >
                     <Navigation className="w-6 h-6" />
                 </button>
+            )}
 
-            </div>
+            {/* Click-away to close layer menu */}
+            {showLayerMenu && (
+                <div className="absolute inset-0 z-[399]" onClick={() => setShowLayerMenu(false)} />
+            )}
+
+            {/* Inject ping keyframe for user/bus markers */}
+            <style>{`
+                @keyframes ping {
+                    75%, 100% { transform: scale(2); opacity: 0; }
+                }
+                .leaflet-control-scale { margin-bottom: 100px !important; }
+                .leaflet-control-zoom { margin-bottom: 8px !important; }
+                .leaflet-bottom.leaflet-right { bottom: 100px !important; }
+            `}</style>
         </div>
     );
 };
