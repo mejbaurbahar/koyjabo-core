@@ -14,6 +14,14 @@ interface BusRouteMapProps {
   onOpenFullMap?: () => void;
 }
 
+function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
 function getRouteColor(id: string): string {
   const palette = ['#10b981','#3b82f6','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#f97316','#84cc16','#ec4899','#14b8a6'];
   let h = 0;
@@ -84,6 +92,16 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
     }
   }
 
+  // Nearest stop to user's current location
+  let nearestStopIdx = -1;
+  let nearestStopDistKm = Infinity;
+  if (userLocation && stopCoords.length > 0) {
+    stopCoords.forEach(([lat, lng], idx) => {
+      const d = haversineKm(userLocation.lat, userLocation.lng, lat, lng);
+      if (d < nearestStopDistKm) { nearestStopDistKm = d; nearestStopIdx = idx; }
+    });
+  }
+
   // Build and draw the map
   useEffect(() => {
     if (!mapRef.current || stopCoords.length === 0) return;
@@ -132,9 +150,11 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
       routeLayerRef.current = L.layerGroup().addTo(map);
       overlayLayerRef.current = L.layerGroup().addTo(map);
 
-      // Fit to straight-line bounds first, then try to snap to roads
-      const bounds = L.latLngBounds(stopCoords);
-      map.fitBounds(bounds, { padding: [28, 28] });
+      // Fit to straight-line bounds; include user location so walking line is visible
+      const allPoints: [number, number][] = [...stopCoords];
+      if (userLocation) allPoints.push([userLocation.lat, userLocation.lng]);
+      const bounds = L.latLngBounds(allPoints);
+      map.fitBounds(bounds, { padding: [32, 32] });
 
       // Draw straight-line route immediately (fallback)
       drawRoute(L, stopCoords, null, false);
@@ -237,9 +257,52 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
         .addTo(routeLayerRef.current);
     });
 
-    // User location
+    // User location + walk-to-nearest-stop line
     if (userLocation) {
       if (userMarkerRef.current) { userMarkerRef.current.remove(); }
+
+      // Dashed walking line: user → nearest bus stop
+      if (nearestStopIdx >= 0) {
+        const nearestCoord = coords[nearestStopIdx];
+        const distM = Math.round(nearestStopDistKm * 1000);
+        const distLabel = distM >= 1000 ? `${(distM / 1000).toFixed(1)} km` : `${distM} m`;
+
+        // Dashed line
+        L.polyline(
+          [[userLocation.lat, userLocation.lng], nearestCoord],
+          { color: '#6366f1', weight: 2.5, opacity: 0.85, dashArray: '6 5', lineCap: 'round' }
+        ).addTo(routeLayerRef.current);
+
+        // Nearest stop special marker (overrides the regular dot drawn above)
+        const nearestStation = STATIONS[drawableStops[nearestStopIdx]];
+        if (nearestStation) {
+          const nearestIcon = L.divIcon({
+            className: '',
+            iconSize: [72, 24],
+            iconAnchor: [36, 12],
+            html: `<div style="width:72px;height:24px;border-radius:12px;background:#6366f1;border:2px solid #4f46e5;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;box-shadow:0 2px 8px rgba(99,102,241,0.5);white-space:nowrap;padding:0 8px;font-family:sans-serif;">📍 Nearest</div>`,
+          });
+          L.marker(nearestCoord, { icon: nearestIcon, zIndexOffset: 900 })
+            .bindTooltip(
+              `<b>📍 ${nearestStation.name}</b><br><small>নিকটতম বাস স্টপ · ${distLabel} দূরে</small>`,
+              { direction: 'top', offset: [0, -16], className: 'leaflet-tooltip-bus' }
+            )
+            .addTo(routeLayerRef.current);
+        }
+
+        // Walking distance badge midpoint label
+        const midLat = (userLocation.lat + nearestCoord[0]) / 2;
+        const midLng = (userLocation.lng + nearestCoord[1]) / 2;
+        const midIcon = L.divIcon({
+          className: '',
+          iconSize: [60, 18],
+          iconAnchor: [30, 9],
+          html: `<div style="background:rgba(99,102,241,0.9);color:#fff;border-radius:8px;font-size:9px;font-weight:700;padding:2px 7px;white-space:nowrap;font-family:sans-serif;">🚶 ${distLabel}</div>`,
+        });
+        L.marker([midLat, midLng], { icon: midIcon, interactive: false }).addTo(routeLayerRef.current);
+      }
+
+      // Blue pulsing dot for user position
       const userIcon = L.divIcon({
         className: '',
         iconSize: [20, 20],
@@ -247,10 +310,10 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
         html: `<div style="width:20px;height:20px;border-radius:50%;background:#3b82f6;border:3px solid #fff;box-shadow:0 0 0 2px #3b82f6,0 2px 6px rgba(0,0,0,0.3);"></div>`,
       });
       userMarkerRef.current = L.marker([userLocation.lat, userLocation.lng], { icon: userIcon, zIndexOffset: 1000 })
-        .bindTooltip('আপনি এখানে', { direction: 'top', className: 'leaflet-tooltip-bus' })
+        .bindTooltip('📍 আপনি এখানে', { direction: 'top', className: 'leaflet-tooltip-bus' })
         .addTo(routeLayerRef.current);
     }
-  }, [route.id, isReversed, highlightStartIdx, highlightEndIdx, userLocation, routeColor]);
+  }, [route.id, isReversed, highlightStartIdx, highlightEndIdx, userLocation, routeColor, nearestStopIdx, nearestStopDistKm]);
 
   // Redraw markers+segment whenever fare selection changes (highlight indices change)
   useEffect(() => {
