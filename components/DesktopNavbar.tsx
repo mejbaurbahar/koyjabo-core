@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Map, Bot, Heart, Info, Train, Menu, Sparkles, Navigation, Clock, MapPin, User, LogIn, TramFront } from 'lucide-react';
+import { Home, Map, Bot, Heart, Info, Train, Menu, Sparkles, Navigation, Clock, MapPin, User, LogIn, Bus } from 'lucide-react';
 import { AppView } from '../types';
 import ThemeToggle from './ThemeToggle';
 import { AnimatedLogo } from './AnimatedLogo';
@@ -55,7 +55,7 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
         },
         {
             label: t('intercity.title'),
-            icon: TramFront,
+            icon: Bus,
             // Active when outside Dhaka and in intercity search mode (main app intercity view)
             isActive: !isInDhaka && view === AppView.HOME && primarySearch === 'INTERCITY',
             onClick: () => {

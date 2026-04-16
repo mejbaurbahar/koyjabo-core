@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from './contexts/LanguageContext';
-import { Search, ArrowRightLeft, AlertCircle, PlayCircle, WifiOff, Activity, Home, Train, Sparkles, Clock, Info, Sun, Moon, Menu, Navigation, Map, X, Bot, FileText, Settings, Shield, Download, Calendar, HelpCircle, LogIn, UserPlus, LogOut, User, Phone } from 'lucide-react';
+import { Search, ArrowRightLeft, AlertCircle, PlayCircle, WifiOff, Activity, Home, Train, Sparkles, Clock, Info, Sun, Moon, Menu, Navigation, Map, X, Bot, FileText, Settings, Shield, Download, Calendar, HelpCircle, LogIn, UserPlus, LogOut, User, Phone, Bus } from 'lucide-react';
 import { AnimatedLogo } from './components/AnimatedLogo';
 import ThemeToggle from './components/ThemeToggle';
 import DistrictSelect from './components/DistrictSelect';
@@ -244,9 +244,17 @@ function App() {
           <button
             className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 bg-white dark:bg-slate-700 text-emerald-600 dark:text-emerald-400 shadow-sm transform scale-100"
           >
-            <Train size={16} className="animate-pulse" />
+            <Bus size={16} className="animate-pulse" />
             {t('nav.intercity')}
           </button>
+          <a
+            href="/train"
+            onClick={(e) => { e.preventDefault(); window.location.href = '/#train'; }}
+            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-slate-700/50"
+          >
+            <Train size={16} />
+            {t('nav.train') || 'Train'}
+          </a>
           <a
             href="/#ai-assistant"
             onClick={(e) => { e.preventDefault(); window.location.href = '/#ai-assistant'; }}
@@ -703,37 +711,40 @@ function App() {
 
       {/* Mobile Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 pb-safe z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] md:hidden">
-        <div className="grid grid-cols-4 h-16">
+        <div className="grid grid-cols-5 h-16">
           <button
             onClick={() => window.location.href = '/'}
-            className="flex flex-col items-center justify-center gap-1 border-t-2 transition-all border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+            className="flex items-center justify-center border-t-2 transition-all border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
           >
-            <Home className="w-6 h-6 text-gray-400 dark:text-gray-500" />
-            <span className="text-[10px] font-bold uppercase tracking-wide">{t('nav.home')}</span>
-          </button>
-
-          <button
-            onClick={() => window.location.href = '/#ai-assistant'}
-            className="flex flex-col items-center justify-center gap-1 border-t-2 transition-all border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
-          >
-            <Sparkles className="w-6 h-6 text-gray-400 dark:text-gray-500" />
-            <span className="text-[10px] font-bold uppercase tracking-wide">{t('nav.aiAssistant')}</span>
+            <Home className="w-6 h-6" />
           </button>
 
           <button
             onClick={() => window.location.href = '/intercity/'}
-            className="flex flex-col items-center justify-center gap-1 border-t-2 transition-all border-blue-500 text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-900/20"
+            className="flex items-center justify-center border-t-2 transition-all border-emerald-500 text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-900/20"
           >
-            <Train className="w-6 h-6 text-blue-600 dark:text-blue-400 fill-blue-100 dark:fill-blue-900" />
-            <span className="text-[10px] font-bold uppercase tracking-wide">{t('nav.intercity')}</span>
+            <Bus className="w-6 h-6 fill-emerald-100 dark:fill-emerald-900" />
+          </button>
+
+          <button
+            onClick={() => window.location.href = '/#train'}
+            className="flex items-center justify-center border-t-2 transition-all border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+          >
+            <Train className="w-6 h-6" />
+          </button>
+
+          <button
+            onClick={() => window.location.href = '/#ai-assistant'}
+            className="flex items-center justify-center border-t-2 transition-all border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+          >
+            <Sparkles className="w-6 h-6" />
           </button>
 
           <button
             onClick={() => window.location.href = '/#about'}
-            className="flex flex-col items-center justify-center gap-1 border-t-2 transition-all border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+            className="flex items-center justify-center border-t-2 transition-all border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
           >
-            <Info className="w-6 h-6 text-gray-400 dark:text-gray-500" />
-            <span className="text-[10px] font-bold uppercase tracking-wide">{t('nav.about')}</span>
+            <Info className="w-6 h-6" />
           </button>
         </div>
       </nav>

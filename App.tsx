@@ -3234,15 +3234,19 @@ const App: React.FC = () => {
       }, 500);
     };
 
-    // Train view: show TrainListPage inline in the home sidebar
+    // Train view: show TrainListPage inline in the home sidebar (login required)
     if (view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) {
       return (
         <div className="flex flex-col h-full w-full md:pt-20">
-          <TrainListPage
-            userLocation={userLocation}
-            onBack={() => setView(AppView.HOME)}
-            embedded={false}
-          />
+          {user ? (
+            <TrainListPage
+              userLocation={userLocation}
+              onBack={() => setView(AppView.HOME)}
+              embedded={false}
+            />
+          ) : (
+            <LoginWall setView={setView} />
+          )}
         </div>
       );
     }
@@ -3849,7 +3853,7 @@ const App: React.FC = () => {
                 }}
                 className={`flex items-center justify-center border-t-2 transition-all duration-300 transform ${!isInDhaka && view === AppView.HOME && primarySearch === 'INTERCITY' ? 'border-teal-500 text-teal-600 dark:text-teal-400 bg-teal-50/50 dark:bg-teal-900/20 scale-105' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:scale-105'} `}
               >
-                <TramFront className={`w-6 h-6 transition-all duration-300 ${!isInDhaka && view === AppView.HOME && primarySearch === 'INTERCITY' ? 'text-teal-600 dark:text-teal-400 fill-teal-100 dark:fill-teal-900 animate-pulse' : 'text-gray-400 dark:text-gray-500'} `} />
+                <Bus className={`w-6 h-6 transition-all duration-300 ${!isInDhaka && view === AppView.HOME && primarySearch === 'INTERCITY' ? 'text-teal-600 dark:text-teal-400 fill-teal-100 dark:fill-teal-900 animate-pulse' : 'text-gray-400 dark:text-gray-500'} `} />
               </button>
               <button
                 onClick={() => setView(AppView.TRAIN_LIST)}
