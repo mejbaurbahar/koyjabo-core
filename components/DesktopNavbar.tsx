@@ -34,7 +34,7 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
     toggleTheme,
     isInDhaka
 }) => {
-    const { t, language, setLanguage } = useLanguage();
+    const { t } = useLanguage();
     const { user } = useAuth();
 
     // Navbar should be visible on all views for desktop now
@@ -129,13 +129,6 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
                     <span>{t('busDetails.liveView')}</span>
                 </button>
                 <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-                <button
-                    onClick={() => setLanguage(language === 'bn' ? 'en' : 'bn')}
-                    className="px-3 py-1.5 text-sm font-semibold rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 transition-colors"
-                    title={language === 'bn' ? 'Switch to English' : 'বাংলায় পরিবর্তন করুন'}
-                >
-                    {language === 'bn' ? 'EN' : 'বাং'}
-                </button>
                 {/* Auth button — avatar if logged in, login if not */}
                 {user ? (
                     <button

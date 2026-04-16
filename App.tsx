@@ -461,7 +461,7 @@ const checkIfInDhaka = (loc: UserLocation | null): boolean => {
 
 const App: React.FC = () => {
   // Multi-language support
-  const { t, formatNumber, language, setLanguage } = useLanguage();
+  const { t, formatNumber, language } = useLanguage();
   const { user, logout } = useAuth();
 
   // Polyfill for requestIdleCallback (Safari support)
@@ -3460,13 +3460,6 @@ const App: React.FC = () => {
               <AnimatedLogo size="small" />
             </div>
             <div className="flex items-center gap-1">
-              <button
-                onClick={() => setLanguage(language === 'bn' ? 'en' : 'bn')}
-                className="px-2.5 py-1 text-xs font-semibold rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 transition-colors"
-                aria-label="Toggle language"
-              >
-                {language === 'bn' ? 'EN' : 'বাং'}
-              </button>
               <button onClick={() => setShowLiveMap(true)} className="p-2 hover:bg-blue-50 bg-white border-2 border-blue-100 rounded-full text-blue-600 transition-colors shadow-lg shadow-blue-100 active:scale-95 animate-pulse flex items-center justify-center" aria-label="Live Location">
                 <Navigation className="w-4 h-4" />
               </button>
@@ -3876,21 +3869,6 @@ const App: React.FC = () => {
                   <BookOpen className="w-5 h-5 text-teal-600 dark:text-teal-400" /> {t('nav.blog')}
                 </button>
 
-                <div className="p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-600 dark:text-gray-400">{t('settings.language')}</span>
-                    <div className="flex gap-1">
-                      <button
-                        onClick={() => { setLanguage('bn'); setIsMenuOpen(false); }}
-                        className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${language === 'bn' ? 'bg-dhaka-red text-white shadow-sm' : 'bg-white dark:bg-slate-700 text-gray-500 border border-gray-200 dark:border-slate-600'}`}
-                      >বাং</button>
-                      <button
-                        onClick={() => { setLanguage('en'); setIsMenuOpen(false); }}
-                        className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${language === 'en' ? 'bg-dhaka-red text-white shadow-sm' : 'bg-white dark:bg-slate-700 text-gray-500 border border-gray-200 dark:border-slate-600'}`}
-                      >EN</button>
-                    </div>
-                  </div>
-                </div>
 
 
 

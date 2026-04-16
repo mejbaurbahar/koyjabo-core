@@ -36,6 +36,7 @@ export const translations: Record<Language, Translations> = {
             ac: 'এসি',
             online: 'অনলাইন',
             mode: 'মোড',
+            logout: 'লগআউট',
         },
 
         // Settings
@@ -78,6 +79,9 @@ export const translations: Record<Language, Translations> = {
             blog: 'ব্লগ',
             contact: 'যোগাযোগ',
             intercity: 'আন্তঃনগর',
+            login: 'লগইন',
+            signup: 'সাইনআপ',
+            profile: 'প্রোফাইল',
         },
 
         // Home/Search
@@ -646,6 +650,7 @@ export const translations: Record<Language, Translations> = {
             ac: 'AC',
             online: 'Online',
             mode: 'Mode',
+            logout: 'Logout',
         },
 
         // Settings
@@ -688,6 +693,9 @@ export const translations: Record<Language, Translations> = {
             blog: 'Blog',
             contact: 'Contact',
             intercity: 'Intercity',
+            login: 'Login',
+            signup: 'Signup',
+            profile: 'Profile',
         },
 
         // Home/Search

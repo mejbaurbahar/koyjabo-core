@@ -53,6 +53,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                                     src={featuredPost.coverImage}
                                     alt={language === 'bn' ? featuredPost.bnTitle : featuredPost.title}
                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                    onError={(e) => { (e.target as HTMLImageElement).src = '/og-image.png'; }}
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                             </div>
@@ -118,6 +119,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                                         src={post.coverImage}
                                         alt={language === 'bn' ? post.bnTitle : post.title}
                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                        onError={(e) => { (e.target as HTMLImageElement).src = '/og-image.png'; }}
                                     />
                                     <div className="absolute top-3 left-3">
                                         <span className="inline-flex items-center gap-1 px-3 py-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm text-teal-600 dark:text-teal-400 rounded-lg text-xs font-medium shadow-lg">

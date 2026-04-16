@@ -27,7 +27,7 @@ function getStoredUser(): StoredUser | null {
 }
 
 function App() {
-  const { t, language, setLanguage, formatNumber } = useLanguage();
+  const { t, language, formatNumber } = useLanguage();
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   // Default to today's date for API, but removed from UI
@@ -283,13 +283,6 @@ function App() {
             <span>{t('busDetails.liveView')}</span>
           </button>
           <ThemeToggle isDarkMode={isDarkMode} toggleTheme={() => setIsDarkMode(!isDarkMode)} />
-          <button
-            onClick={() => setLanguage(language === 'bn' ? 'en' : 'bn')}
-            className="px-3 py-1.5 text-sm font-semibold rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 transition-colors"
-            title={language === 'bn' ? 'Switch to English' : 'বাংলায় পরিবর্তন করুন'}
-          >
-            {language === 'bn' ? 'EN' : 'বাং'}
-          </button>
           {/* Auth buttons - desktop header */}
           {authUser ? (
             <button
@@ -343,13 +336,6 @@ function App() {
         </a>
 
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => setLanguage(language === 'bn' ? 'en' : 'bn')}
-            className="px-2.5 py-1 text-xs font-semibold rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 transition-colors"
-            aria-label="Toggle language"
-          >
-            {language === 'bn' ? 'EN' : 'বাং'}
-          </button>
           <button
             onClick={() => setShowLiveMap(true)}
             className="p-2 hover:bg-blue-50 bg-white border-2 border-blue-100 rounded-full text-blue-600 transition-colors shadow-lg shadow-blue-100 active:scale-95 animate-pulse flex items-center justify-center" aria-label="Live Location">
@@ -689,23 +675,6 @@ function App() {
                 <BookOpen className="w-5 h-5 text-teal-600 dark:text-teal-400" /> {t('nav.blog')}
               </button>
 
-              <div className="p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400">
-                    {t('settings.language')}
-                  </div>
-                  <div className="flex gap-1">
-                    <button
-                      onClick={() => { setLanguage('bn'); setIsMenuOpen(false); }}
-                      className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${language === 'bn' ? 'bg-red-600 text-white shadow-sm' : 'bg-white dark:bg-slate-700 text-gray-500 border border-gray-200 dark:border-slate-600'}`}
-                    >বাং</button>
-                    <button
-                      onClick={() => { setLanguage('en'); setIsMenuOpen(false); }}
-                      className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${language === 'en' ? 'bg-red-600 text-white shadow-sm' : 'bg-white dark:bg-slate-700 text-gray-500 border border-gray-200 dark:border-slate-600'}`}
-                    >EN</button>
-                  </div>
-                </div>
-              </div>
               <button
                 onClick={() => window.location.href = '/#install-app'}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"

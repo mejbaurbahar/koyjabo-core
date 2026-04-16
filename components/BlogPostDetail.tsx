@@ -149,11 +149,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                         src={post.coverImage}
                         alt={language === 'bn' ? post.bnTitle : post.title}
                         className="w-full h-64 sm:h-80 md:h-96 object-cover"
-                        onError={(e) => {
-                            // Fallback if image fails to load
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = 'none';
-                        }}
+                        onError={(e) => { (e.target as HTMLImageElement).src = '/og-image.png'; }}
                     />
                 </div>
             </div>
@@ -318,6 +314,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                                             src={relatedPost.coverImage}
                                             alt={language === 'bn' ? relatedPost.bnTitle : relatedPost.title}
                                             className="w-24 h-24 object-cover rounded-xl shadow-md"
+                                            onError={(e) => { (e.target as HTMLImageElement).src = '/og-image.png'; }}
                                         />
                                         <div className="flex-1">
                                             <span className="inline-block px-3 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full text-xs font-semibold mb-3">
