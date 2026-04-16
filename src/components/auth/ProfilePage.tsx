@@ -128,7 +128,8 @@ export default function ProfilePage({
   // ── Handlers ────────────────────────────────────────────────────────────────
   const handleSaveProfile = () =>
     profileOp.run(async () => {
-      const result = await updateProfile(user.id, editName, editUsername);
+      // username is never changed — always pass the current one
+      const result = await updateProfile(user.id, editName, user.username);
       if (!result.success) throw new Error(result.error);
       updateUser({ displayName: result.displayName!, username: result.username! });
       setEditMode(false);
@@ -379,24 +380,19 @@ export default function ProfilePage({
                 )}
               </div>
 
-              {/* Username */}
+              {/* Username — permanently locked after signup */}
               <div>
                 <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1.5 flex items-center gap-1.5">
                   <AtSign size={14} /> {t('profile.username')}
+                  <span className="ml-1 text-xs bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 px-1.5 py-0.5 rounded-full">
+                    {t('profile.usernameFixed')}
+                  </span>
                 </label>
-                {editMode ? (
-                  <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">@</span>
-                    <input
-                      type="text"
-                      value={editUsername}
-                      onChange={e => setEditUsername(e.target.value)}
-                      className="w-full pl-8 pr-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                    />
-                  </div>
-                ) : (
-                  <p className="text-gray-900 dark:text-white font-medium px-4 py-3 bg-gray-50 dark:bg-slate-700 rounded-xl">@{user.username}</p>
-                )}
+                <div className="flex items-center gap-2 px-4 py-3 bg-gray-100 dark:bg-slate-700/60 rounded-xl border border-dashed border-gray-300 dark:border-slate-600 cursor-not-allowed">
+                  <AtSign size={14} className="text-gray-400 shrink-0" />
+                  <span className="text-gray-700 dark:text-gray-300 font-medium">{user.username}</span>
+                  <span className="ml-auto text-[10px] text-gray-400 dark:text-gray-500 italic">{t('profile.notChangeable')}</span>
+                </div>
               </div>
 
               {/* Email (read-only) */}
@@ -410,7 +406,7 @@ export default function ProfilePage({
               {editMode && (
                 <button
                   onClick={handleSaveProfile}
-                  disabled={!editName.trim() || !editUsername.trim()}
+                  disabled={!editName.trim()}
                   className="w-full py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 disabled:opacity-50 transition flex items-center justify-center gap-2"
                 >
                   <Save size={16} />

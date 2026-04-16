@@ -123,8 +123,8 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
       case 'username':
         if (!value.trim()) return t('auth.validation.usernameRequired');
         if (value.length < 3) return t('auth.validation.usernameTooShort');
-        if (value.length > 20) return t('auth.validation.usernameTooLong');
-        if (!/^[a-zA-Z0-9_.]+$/.test(value)) return t('auth.validation.usernameInvalid');
+        if (value.length > 30) return t('auth.validation.usernameTooLong');
+        if (!/^[a-z0-9_]+$/.test(value)) return t('auth.validation.usernameInvalid');
         return '';
       case 'email':
         if (!value.trim()) return t('auth.validation.emailRequired');
@@ -284,9 +284,12 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
             {/* Username */}
             <div>
               <div className="flex justify-between items-center mb-1.5">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('auth.username')}</label>
-                <span className={`text-xs ${form.username.length > 17 ? 'text-orange-500' : 'text-gray-400'}`}>
-                  {form.username.length}/20
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  {t('auth.username')}
+                  <span className="ml-1.5 text-xs text-amber-600 dark:text-amber-400 font-normal">({t('auth.usernameCannotChange')})</span>
+                </label>
+                <span className={`text-xs ${form.username.length > 27 ? 'text-orange-500' : 'text-gray-400'}`}>
+                  {form.username.length}/30
                 </span>
               </div>
               <div className="relative">
@@ -294,19 +297,29 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
                 <input
                   type="text"
                   value={form.username}
-                  onChange={update('username')}
+                  onChange={e => {
+                    // Auto-lowercase, strip disallowed chars
+                    const cleaned = e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, '');
+                    setForm(prev => ({ ...prev, username: cleaned }));
+                  }}
                   onBlur={touch('username')}
                   placeholder={t('auth.usernamePlaceholder')}
-                  maxLength={20}
+                  maxLength={30}
+                  autoComplete="username"
                   className={`w-full pl-8 pr-4 py-3 rounded-xl border bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition ${
-                    showError('username') ? 'border-red-400 dark:border-red-500' : 'border-gray-200 dark:border-slate-600'
+                    showError('username') ? 'border-red-400 dark:border-red-500' : touched.username && !errors.username ? 'border-green-400 dark:border-green-500' : 'border-gray-200 dark:border-slate-600'
                   }`}
                 />
+                {touched.username && !errors.username && form.username.length >= 3 && (
+                  <CheckCircle2 size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500" />
+                )}
               </div>
-              {showError('username') && (
+              {showError('username') ? (
                 <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
                   <AlertCircle size={12} /> {showError('username')}
                 </p>
+              ) : (
+                <p className="mt-1 text-xs text-gray-400">{t('auth.usernameHint')}</p>
               )}
             </div>
 

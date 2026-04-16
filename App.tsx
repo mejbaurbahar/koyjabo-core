@@ -69,6 +69,7 @@ import ContactUs from './components/ContactUs';
 import GlobalFooter from './components/GlobalFooter';
 import OfflineIndicator from './components/OfflineIndicator';
 import AdSenseAd from './components/AdSenseAd';
+import TrainListPage from './components/TrainListPage';
 
 
 
@@ -134,7 +135,8 @@ const getStoredView = (): AppView => {
         'signup': AppView.SIGNUP,
         'forgot-password': AppView.FORGOT_PASSWORD,
         'reset-password': AppView.RESET_PASSWORD,
-        'profile': AppView.PROFILE
+        'profile': AppView.PROFILE,
+        'train': AppView.TRAIN_LIST
       };
 
       if (viewMap[target]) {
@@ -591,13 +593,16 @@ const App: React.FC = () => {
     window.addEventListener('offline', handleOffline);
 
     // iOS PWA doesn't always fire offline/online events. Use periodic ping to confirm.
+    // Only mark offline when navigator.onLine is ALSO false — avoids false positives from DNS/CORS blips.
     const pingCheck = async () => {
       if (!navigator.onLine) { setIsOnline(false); return; }
+      // navigator.onLine says we're online — trust it optimistically, confirm with a ping
       try {
         await fetch(`https://www.gstatic.com/generate_204`, { method: 'HEAD', cache: 'no-store', signal: AbortSignal.timeout(3000) });
         setIsOnline(true);
       } catch {
-        setIsOnline(false);
+        // Ping failed but navigator.onLine is true — transient network blip, stay online
+        if (!navigator.onLine) setIsOnline(false);
       }
     };
     const pingInterval = setInterval(pingCheck, 15000); // every 15s
@@ -904,6 +909,9 @@ const App: React.FC = () => {
     [AppView.FORGOT_PASSWORD]: 'forgot-password',
     [AppView.RESET_PASSWORD]: 'reset-password',
     [AppView.PROFILE]: 'profile',
+    // Train views
+    [AppView.TRAIN_LIST]: 'train',
+    [AppView.TRAIN_DETAILS]: 'train',
   };
 
   useEffect(() => {
@@ -3683,6 +3691,12 @@ const App: React.FC = () => {
             {view === AppView.DAILY_JOURNEY && (
               <DailyJourneyView onBack={() => setView(previousView)} />
             )}
+            {(view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) && (
+              <TrainListPage
+                onBack={() => setView(AppView.HOME)}
+                userLocation={userLocation}
+              />
+            )}
             {view === AppView.PRIVACY && <PrivacyPolicy view={view} setView={setView} />}
             {view === AppView.TERMS && <TermsOfService view={view} setView={setView} />}
             {view === AppView.CONTACT && <ContactUs view={view} setView={setView} />}
@@ -3807,46 +3821,46 @@ const App: React.FC = () => {
         {/* Mobile Bottom Navigation - Always show except on BUS_DETAILS and LIVE_NAV */}
         {view !== AppView.BUS_DETAILS && view !== AppView.LIVE_NAV && (
           <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] md:hidden pb-safe">
-            <div className="grid grid-cols-4 h-16">
+            <div className="grid grid-cols-5 h-16">
               <button
                 onClick={() => {
                   setView(AppView.HOME);
                   setPrimarySearch('LOCAL');
                 }}
-                className={`flex flex-col items-center justify-center gap-1 border-t-2 transition-all duration-300 transform ${view === AppView.HOME && primarySearch === 'LOCAL' ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-900/20 scale-105' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:scale-105'} `}
+                className={`flex items-center justify-center border-t-2 transition-all duration-300 transform ${view === AppView.HOME && primarySearch === 'LOCAL' ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-900/20 scale-105' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:scale-105'} `}
               >
                 <MapIcon className={`w-6 h-6 transition-all duration-300 ${view === AppView.HOME && primarySearch === 'LOCAL' ? 'text-emerald-600 dark:text-emerald-400 fill-emerald-100 dark:fill-emerald-900 animate-pulse' : 'text-gray-400 dark:text-gray-500'} `} />
-                <span className="text-[10px] font-bold uppercase tracking-wide">{t('nav.home')}</span>
-              </button>
-              <button
-                onClick={() => setView(AppView.AI_ASSISTANT)}
-                className={`flex flex-col items-center justify-center gap-1 border-t-2 transition-all ${view === AppView.AI_ASSISTANT ? 'border-purple-500 text-purple-600 dark:text-purple-400 bg-purple-50/50 dark:bg-purple-900/20' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'} `}
-              >
-                <Sparkles className={`w-6 h-6 ${view === AppView.AI_ASSISTANT ? 'text-purple-600 dark:text-purple-400 fill-purple-100 dark:fill-purple-900' : 'text-gray-400 dark:text-gray-500'} `} />
-                <span className="text-[10px] font-bold uppercase tracking-wide">{t('ai.title')}</span>
               </button>
               <button
                 onClick={() => {
                   if (!isInDhaka) {
-                    // For users outside Dhaka, this is their main/active tab
                     setView(AppView.HOME);
                     setPrimarySearch('INTERCITY');
                   } else {
-                    // For users inside Dhaka, navigate to intercity page
                     window.location.href = '/intercity/';
                   }
                 }}
-                className={`flex flex-col items-center justify-center gap-1 border-t-2 transition-all duration-300 transform ${!isInDhaka && view === AppView.HOME && primarySearch === 'INTERCITY' ? 'border-teal-500 text-teal-600 dark:text-teal-400 bg-teal-50/50 dark:bg-teal-900/20 scale-105' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:scale-105'} `}
+                className={`flex items-center justify-center border-t-2 transition-all duration-300 transform ${!isInDhaka && view === AppView.HOME && primarySearch === 'INTERCITY' ? 'border-teal-500 text-teal-600 dark:text-teal-400 bg-teal-50/50 dark:bg-teal-900/20 scale-105' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:scale-105'} `}
               >
-                <Train className={`w-6 h-6 transition-all duration-300 ${!isInDhaka && view === AppView.HOME && primarySearch === 'INTERCITY' ? 'text-teal-600 dark:text-teal-400 fill-teal-100 dark:fill-teal-900 animate-pulse' : 'text-gray-400 dark:text-gray-500'} `} />
-                <span className="text-[10px] font-bold uppercase tracking-wide">{t('intercity.title')}</span>
+                <TramFront className={`w-6 h-6 transition-all duration-300 ${!isInDhaka && view === AppView.HOME && primarySearch === 'INTERCITY' ? 'text-teal-600 dark:text-teal-400 fill-teal-100 dark:fill-teal-900 animate-pulse' : 'text-gray-400 dark:text-gray-500'} `} />
+              </button>
+              <button
+                onClick={() => setView(AppView.TRAIN_LIST)}
+                className={`flex items-center justify-center border-t-2 transition-all duration-300 transform ${view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS ? 'border-blue-500 text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-900/20 scale-105' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:scale-105'} `}
+              >
+                <Train className={`w-6 h-6 transition-all duration-300 ${view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS ? 'text-blue-600 dark:text-blue-400 fill-blue-100 dark:fill-blue-900 animate-pulse' : 'text-gray-400 dark:text-gray-500'} `} />
+              </button>
+              <button
+                onClick={() => setView(AppView.AI_ASSISTANT)}
+                className={`flex items-center justify-center border-t-2 transition-all ${view === AppView.AI_ASSISTANT ? 'border-purple-500 text-purple-600 dark:text-purple-400 bg-purple-50/50 dark:bg-purple-900/20' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'} `}
+              >
+                <Sparkles className={`w-6 h-6 ${view === AppView.AI_ASSISTANT ? 'text-purple-600 dark:text-purple-400 fill-purple-100 dark:fill-purple-900' : 'text-gray-400 dark:text-gray-500'} `} />
               </button>
               <button
                 onClick={() => setView(AppView.ABOUT)}
-                className={`flex flex-col items-center justify-center gap-1 border-t-2 transition-all ${view === AppView.ABOUT ? 'border-orange-500 text-orange-600 dark:text-orange-400 bg-orange-50/50 dark:bg-orange-900/20' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'} `}
+                className={`flex items-center justify-center border-t-2 transition-all ${view === AppView.ABOUT ? 'border-orange-500 text-orange-600 dark:text-orange-400 bg-orange-50/50 dark:bg-orange-900/20' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'} `}
               >
                 <Info className={`w-6 h-6 ${view === AppView.ABOUT ? 'text-orange-600 dark:text-orange-400 fill-orange-100 dark:fill-orange-900' : 'text-gray-400 dark:text-gray-500'} `} />
-                <span className="text-[10px] font-bold uppercase tracking-wide">{t('nav.about')}</span>
               </button>
             </div>
           </nav>

@@ -1,0 +1,672 @@
+// Bangladesh Railway - Intercity Train Data (Phase 1 MVP)
+// Source: Bangladesh Railway official schedules, eticket.railway.gov.bd
+// Last updated: 2026
+
+export interface BDTrainStation {
+  id: string;
+  name: string;
+  bnName: string;
+  lat: number;
+  lng: number;
+}
+
+export interface BDTrainFare {
+  shuvan: number;
+  shuvanChair: number;
+  snigdha: number;
+  firstClassBerth?: number;
+  acBerth?: number;
+}
+
+export interface BDTrainRoute {
+  id: string;
+  name: string;
+  bnName: string;
+  number: string;
+  type: 'Express' | 'Mail' | 'Intercity' | 'Local';
+  from: string;
+  to: string;
+  stops: string[];
+  dhakaDepart: string;
+  destinationArrive: string;
+  returnDepart: string;
+  dhakaArrive: string;
+  offDay: string;
+  distanceKm: number;
+  fare: BDTrainFare;
+  color: string;
+  division: string;
+}
+
+// ── Train Stations (Nationwide) ─────────────────────────────────────────────
+export const TRAIN_STATIONS: Record<string, BDTrainStation> = {
+  // Dhaka
+  kamalapur:     { id: 'kamalapur',     name: 'Dhaka (Kamalapur)',      bnName: 'ঢাকা (কমলাপুর)',     lat: 23.7284, lng: 90.4226 },
+  tejgaon:       { id: 'tejgaon',       name: 'Tejgaon',                bnName: 'তেজগাঁও',            lat: 23.7570, lng: 90.3942 },
+  cantonment:    { id: 'cantonment',    name: 'Dhaka Cantonment',       bnName: 'ঢাকা ক্যান্টনমেন্ট', lat: 23.8242, lng: 90.4101 },
+  airport_r:     { id: 'airport_r',     name: 'Biman Bandar (Airport)', bnName: 'বিমান বন্দর',        lat: 23.8511, lng: 90.4087 },
+  tongi:         { id: 'tongi',         name: 'Tongi',                  bnName: 'টঙ্গী',              lat: 23.8955, lng: 90.3971 },
+  joydebpur:     { id: 'joydebpur',     name: 'Joydebpur',              bnName: 'জয়দেবপুর',          lat: 24.0036, lng: 90.3780 },
+
+  // Mymensingh Division
+  narsingdi:     { id: 'narsingdi',     name: 'Narsingdi',              bnName: 'নরসিংদী',           lat: 23.9247, lng: 90.7153 },
+  bhairab:       { id: 'bhairab',       name: 'Bhairab Bazar',          bnName: 'ভৈরব বাজার',        lat: 24.0564, lng: 90.9723 },
+  kishoreganj:   { id: 'kishoreganj',   name: 'Kishoreganj',            bnName: 'কিশোরগঞ্জ',         lat: 24.4443, lng: 90.7786 },
+  mymensingh:    { id: 'mymensingh',    name: 'Mymensingh',             bnName: 'ময়মনসিংহ',          lat: 24.7471, lng: 90.4203 },
+  netrokona:     { id: 'netrokona',     name: 'Netrokona',              bnName: 'নেত্রকোণা',          lat: 24.8810, lng: 90.7265 },
+  mohanganj:     { id: 'mohanganj',     name: 'Mohanganj',              bnName: 'মোহনগঞ্জ',           lat: 24.8600, lng: 90.9800 },
+  jamalpur:      { id: 'jamalpur',      name: 'Jamalpur',               bnName: 'জামালপুর',          lat: 24.8987, lng: 89.9417 },
+  dewanganj:     { id: 'dewanganj',     name: 'Dewanganj Bazar',        bnName: 'দেওয়ানগঞ্জ বাজার',  lat: 25.0400, lng: 89.7781 },
+  tarakandi:     { id: 'tarakandi',     name: 'Tarakandi',              bnName: 'তারাকান্দি',         lat: 24.9800, lng: 89.8800 },
+
+  // Chattogram Division
+  brahmanbaria:  { id: 'brahmanbaria',  name: 'Brahmanbaria',           bnName: 'ব্রাহ্মণবাড়িয়া',   lat: 23.9599, lng: 91.1113 },
+  akhaura:       { id: 'akhaura',       name: 'Akhaura',                bnName: 'আখাউড়া',           lat: 23.8718, lng: 91.1583 },
+  comilla:       { id: 'comilla',       name: 'Comilla',                bnName: 'কুমিল্লা',          lat: 23.4607, lng: 91.1809 },
+  laksam:        { id: 'laksam',        name: 'Laksam',                 bnName: 'লাকসাম',            lat: 23.2378, lng: 91.1213 },
+  feni:          { id: 'feni',          name: 'Feni',                   bnName: 'ফেনী',              lat: 23.0153, lng: 91.3997 },
+  chattogram:    { id: 'chattogram',    name: 'Chattogram',             bnName: 'চট্টগ্রাম',         lat: 22.3569, lng: 91.8220 },
+  noakhali:      { id: 'noakhali',      name: 'Noakhali',               bnName: 'নোয়াখালী',          lat: 22.8696, lng: 91.0991 },
+  coxsbazar:     { id: 'coxsbazar',     name: "Cox's Bazar",            bnName: "কক্সবাজার",         lat: 21.4272, lng: 92.0058 },
+
+  // Sylhet Division
+  shahbazpur:    { id: 'shahbazpur',    name: 'Shahbazpur',             bnName: 'শাহবাজপুর',         lat: 24.1750, lng: 91.4500 },
+  srimangal:     { id: 'srimangal',     name: 'Srimangal',              bnName: 'শ্রীমঙ্গল',          lat: 24.3060, lng: 91.7301 },
+  sylhet:        { id: 'sylhet',        name: 'Sylhet',                 bnName: 'সিলেট',             lat: 24.8949, lng: 91.8687 },
+
+  // Dhaka → Rajshahi corridor
+  tangail:       { id: 'tangail',       name: 'Tangail',                bnName: 'টাঙ্গাইল',          lat: 24.2513, lng: 89.9171 },
+  sirajganj:     { id: 'sirajganj',     name: 'Sirajganj Bazar',        bnName: 'সিরাজগঞ্জ বাজার',   lat: 24.4536, lng: 89.7006 },
+  ullapara:      { id: 'ullapara',      name: 'Ullapara',               bnName: 'উল্লাপাড়া',         lat: 24.3349, lng: 89.6052 },
+  ishwardi:      { id: 'ishwardi',      name: 'Ishwardi',               bnName: 'ঈশ্বরদী',           lat: 24.1352, lng: 89.0556 },
+  natore:        { id: 'natore',        name: 'Natore',                 bnName: 'নাটোর',             lat: 24.4147, lng: 88.9872 },
+  rajshahi:      { id: 'rajshahi',      name: 'Rajshahi',               bnName: 'রাজশাহী',           lat: 24.3636, lng: 88.6241 },
+
+  // North Bengal
+  santahar:      { id: 'santahar',      name: 'Santahar',               bnName: 'সান্তাহার',          lat: 24.7500, lng: 89.0417 },
+  bogra:         { id: 'bogra',         name: 'Bogra',                  bnName: 'বগুড়া',             lat: 24.8537, lng: 89.3725 },
+  parbatipur:    { id: 'parbatipur',    name: 'Parbatipur',             bnName: 'পার্বতীপুর',         lat: 25.6452, lng: 88.9108 },
+  dinajpur:      { id: 'dinajpur',      name: 'Dinajpur',               bnName: 'দিনাজপুর',          lat: 25.6279, lng: 88.6338 },
+  saidpur:       { id: 'saidpur',       name: 'Saidpur',                bnName: 'সৈয়দপুর',           lat: 25.7757, lng: 88.8943 },
+  nilphamari:    { id: 'nilphamari',    name: 'Nilphamari',             bnName: 'নীলফামারী',          lat: 25.9308, lng: 88.8563 },
+  rangpur:       { id: 'rangpur',       name: 'Rangpur',                bnName: 'রংপুর',             lat: 25.7439, lng: 89.2752 },
+  lalmonirhat:   { id: 'lalmonirhat',   name: 'Lalmonirhat',            bnName: 'লালমনিরহাট',         lat: 25.9223, lng: 89.4520 },
+  kurigram:      { id: 'kurigram',      name: 'Kurigram',               bnName: 'কুড়িগ্রাম',          lat: 25.8046, lng: 89.6360 },
+  panchagarh:    { id: 'panchagarh',    name: 'Panchagarh',             bnName: 'পঞ্চগড়',            lat: 26.3392, lng: 88.5583 },
+
+  // Khulna Division
+  rajbari:       { id: 'rajbari',       name: 'Rajbari',                bnName: 'রাজবাড়ী',           lat: 23.7574, lng: 89.6437 },
+  faridpur:      { id: 'faridpur',      name: 'Faridpur',               bnName: 'ফরিদপুর',           lat: 23.6070, lng: 89.8429 },
+  poradah:       { id: 'poradah',       name: 'Poradah',                bnName: 'পোড়াদহ',            lat: 23.8917, lng: 89.2917 },
+  chuadanga:     { id: 'chuadanga',     name: 'Chuadanga',              bnName: 'চুয়াডাঙ্গা',         lat: 23.6399, lng: 88.8411 },
+  darshana:      { id: 'darshana',      name: 'Darshana',               bnName: 'দর্শনা',             lat: 23.6667, lng: 88.7833 },
+  jessore:       { id: 'jessore',       name: 'Jessore (Jashore)',       bnName: 'যশোর',              lat: 23.1670, lng: 89.2083 },
+  benapole:      { id: 'benapole',      name: 'Benapole',               bnName: 'বেনাপোল',            lat: 23.0188, lng: 88.9361 },
+  khulna:        { id: 'khulna',        name: 'Khulna',                 bnName: 'খুলনা',             lat: 22.8456, lng: 89.5403 },
+};
+
+// ── Bangladesh Railway Fare Rates (Official, 2024) ───────────────────────────
+// Rate per km in BDT
+const FARE_RATE = {
+  shuvan: 0.56,
+  shuvanChair: 0.89,
+  snigdha: 1.75,
+  firstClassBerth: 1.35,
+  acBerth: 2.60,
+};
+
+const MIN_FARE = { shuvan: 20, shuvanChair: 30, snigdha: 80, firstClassBerth: 60, acBerth: 150 };
+
+export function calcTrainFare(distKm: number): BDTrainFare {
+  const calc = (rate: number, min: number) => Math.max(min, Math.round(distKm * rate / 5) * 5);
+  return {
+    shuvan:          calc(FARE_RATE.shuvan,         MIN_FARE.shuvan),
+    shuvanChair:     calc(FARE_RATE.shuvanChair,    MIN_FARE.shuvanChair),
+    snigdha:         calc(FARE_RATE.snigdha,        MIN_FARE.snigdha),
+    firstClassBerth: calc(FARE_RATE.firstClassBerth, MIN_FARE.firstClassBerth),
+    acBerth:         calc(FARE_RATE.acBerth,        MIN_FARE.acBerth),
+  };
+}
+
+// ── Train Route Data ─────────────────────────────────────────────────────────
+export const BD_TRAIN_ROUTES: BDTrainRoute[] = [
+
+  // ═══════════════════════════ CHATTOGRAM DIVISION ═══════════════════════════
+  {
+    id: 'subarna-express',
+    name: 'Subarna Express',
+    bnName: 'সোনার বাংলা এক্সপ্রেস',
+    number: '701/702',
+    type: 'Express',
+    division: 'Chattogram',
+    from: 'kamalapur',
+    to: 'chattogram',
+    stops: ['kamalapur', 'airport_r', 'brahmanbaria', 'akhaura', 'comilla', 'laksam', 'feni', 'chattogram'],
+    dhakaDepart: '16:30',
+    destinationArrive: '22:00',
+    returnDepart: '07:00',
+    dhakaArrive: '12:30',
+    offDay: 'Mon (from Ctg), Fri (from Dhk)',
+    distanceKm: 321,
+    fare: { shuvan: 365, shuvanChair: 545, snigdha: 1090, firstClassBerth: 840, acBerth: 1645 },
+    color: '#ef4444',
+  },
+  {
+    id: 'sonar-bangla',
+    name: 'Sonar Bangla Express',
+    bnName: 'সোনার বাংলা এক্সপ্রেস',
+    number: '787/788',
+    type: 'Express',
+    division: 'Chattogram',
+    from: 'kamalapur',
+    to: 'chattogram',
+    stops: ['kamalapur', 'airport_r', 'brahmanbaria', 'akhaura', 'comilla', 'laksam', 'feni', 'chattogram'],
+    dhakaDepart: '07:00',
+    destinationArrive: '12:00',
+    returnDepart: '16:45',
+    dhakaArrive: '22:00',
+    offDay: 'Tue (from Ctg), Wed (from Dhk)',
+    distanceKm: 321,
+    fare: { shuvan: 365, shuvanChair: 545, snigdha: 1090, firstClassBerth: 840, acBerth: 1645 },
+    color: '#f97316',
+  },
+  {
+    id: 'mahanagar-provati',
+    name: 'Mahanagar Provati',
+    bnName: 'মহানগর প্রভাতী',
+    number: '703/704',
+    type: 'Intercity',
+    division: 'Chattogram',
+    from: 'kamalapur',
+    to: 'chattogram',
+    stops: ['kamalapur', 'tejgaon', 'airport_r', 'tongi', 'narsingdi', 'bhairab', 'brahmanbaria', 'akhaura', 'comilla', 'laksam', 'feni', 'chattogram'],
+    dhakaDepart: '07:45',
+    destinationArrive: '14:00',
+    returnDepart: '12:30',
+    dhakaArrive: '19:00',
+    offDay: 'No Off Day',
+    distanceKm: 321,
+    fare: { shuvan: 340, shuvanChair: 510, snigdha: 1000, firstClassBerth: 780, acBerth: 1580 },
+    color: '#8b5cf6',
+  },
+  {
+    id: 'turna-express',
+    name: 'Turna Nishita Express',
+    bnName: 'তূর্ণা নিশিথা এক্সপ্রেস',
+    number: '741/742',
+    type: 'Express',
+    division: 'Chattogram',
+    from: 'kamalapur',
+    to: 'chattogram',
+    stops: ['kamalapur', 'brahmanbaria', 'akhaura', 'comilla', 'laksam', 'feni', 'chattogram'],
+    dhakaDepart: '23:30',
+    destinationArrive: '05:30',
+    returnDepart: '23:00',
+    dhakaArrive: '05:00',
+    offDay: 'No Off Day',
+    distanceKm: 321,
+    fare: { shuvan: 340, shuvanChair: 510, snigdha: 1000, firstClassBerth: 780, acBerth: 1580 },
+    color: '#06b6d4',
+  },
+  {
+    id: 'coxsbazar-express',
+    name: "Cox's Bazar Express",
+    bnName: "কক্সবাজার এক্সপ্রেস",
+    number: '813/814',
+    type: 'Express',
+    division: 'Chattogram',
+    from: 'kamalapur',
+    to: 'coxsbazar',
+    stops: ['kamalapur', 'brahmanbaria', 'akhaura', 'comilla', 'laksam', 'feni', 'chattogram', 'coxsbazar'],
+    dhakaDepart: '22:30',
+    destinationArrive: '09:00',
+    returnDepart: '12:30',
+    dhakaArrive: '23:00',
+    offDay: 'Mon (from Dhk), Tue (from CXB)',
+    distanceKm: 420,
+    fare: { shuvan: 505, shuvanChair: 755, snigdha: 1400, firstClassBerth: 1100, acBerth: 2100 },
+    color: '#14b8a6',
+  },
+  {
+    id: 'upakul-express',
+    name: 'Upakul Express',
+    bnName: 'উপকূল এক্সপ্রেস',
+    number: '711/712',
+    type: 'Express',
+    division: 'Chattogram',
+    from: 'kamalapur',
+    to: 'noakhali',
+    stops: ['kamalapur', 'narsingdi', 'bhairab', 'brahmanbaria', 'akhaura', 'comilla', 'laksam', 'noakhali'],
+    dhakaDepart: '15:20',
+    destinationArrive: '22:30',
+    returnDepart: '06:00',
+    dhakaArrive: '12:30',
+    offDay: 'Tue (from Dhk), Wed (from Noakhali)',
+    distanceKm: 250,
+    fare: { shuvan: 250, shuvanChair: 375, snigdha: 730, firstClassBerth: 580, acBerth: 1090 },
+    color: '#84cc16',
+  },
+
+  // ═══════════════════════════ SYLHET DIVISION ════════════════════════════
+  {
+    id: 'parabat-express',
+    name: 'Parabat Express',
+    bnName: 'পারাবত এক্সপ্রেস',
+    number: '709/710',
+    type: 'Express',
+    division: 'Sylhet',
+    from: 'kamalapur',
+    to: 'sylhet',
+    stops: ['kamalapur', 'narsingdi', 'bhairab', 'brahmanbaria', 'akhaura', 'shahbazpur', 'srimangal', 'sylhet'],
+    dhakaDepart: '06:20',
+    destinationArrive: '12:30',
+    returnDepart: '15:00',
+    dhakaArrive: '21:30',
+    offDay: 'Tue',
+    distanceKm: 258,
+    fare: { shuvan: 270, shuvanChair: 405, snigdha: 795, firstClassBerth: 615, acBerth: 1195 },
+    color: '#10b981',
+  },
+  {
+    id: 'joyantika-express',
+    name: 'Joyantika Express',
+    bnName: 'জয়ন্তিকা এক্সপ্রেস',
+    number: '717/718',
+    type: 'Express',
+    division: 'Sylhet',
+    from: 'kamalapur',
+    to: 'sylhet',
+    stops: ['kamalapur', 'narsingdi', 'bhairab', 'brahmanbaria', 'akhaura', 'shahbazpur', 'srimangal', 'sylhet'],
+    dhakaDepart: '11:15',
+    destinationArrive: '17:30',
+    returnDepart: '11:15',
+    dhakaArrive: '17:30',
+    offDay: 'Tue (from Sylhet)',
+    distanceKm: 258,
+    fare: { shuvan: 270, shuvanChair: 405, snigdha: 795, firstClassBerth: 615, acBerth: 1195 },
+    color: '#3b82f6',
+  },
+  {
+    id: 'kalni-express',
+    name: 'Kalni Express',
+    bnName: 'কালনী এক্সপ্রেস',
+    number: '773/774',
+    type: 'Express',
+    division: 'Sylhet',
+    from: 'kamalapur',
+    to: 'sylhet',
+    stops: ['kamalapur', 'narsingdi', 'bhairab', 'brahmanbaria', 'akhaura', 'shahbazpur', 'srimangal', 'sylhet'],
+    dhakaDepart: '13:00',
+    destinationArrive: '19:30',
+    returnDepart: '06:15',
+    dhakaArrive: '12:30',
+    offDay: 'Fri',
+    distanceKm: 258,
+    fare: { shuvan: 270, shuvanChair: 405, snigdha: 795, firstClassBerth: 615, acBerth: 1195 },
+    color: '#ec4899',
+  },
+  {
+    id: 'upaban-express',
+    name: 'Upaban Express',
+    bnName: 'উপবন এক্সপ্রেস',
+    number: '739/740',
+    type: 'Express',
+    division: 'Sylhet',
+    from: 'kamalapur',
+    to: 'sylhet',
+    stops: ['kamalapur', 'brahmanbaria', 'akhaura', 'shahbazpur', 'srimangal', 'sylhet'],
+    dhakaDepart: '20:30',
+    destinationArrive: '03:30',
+    returnDepart: '23:30',
+    dhakaArrive: '06:30',
+    offDay: 'Wed (from Sylhet), Thu (from Dhk)',
+    distanceKm: 258,
+    fare: { shuvan: 270, shuvanChair: 405, snigdha: 795, firstClassBerth: 615, acBerth: 1195 },
+    color: '#f59e0b',
+  },
+
+  // ═══════════════════════════ RAJSHAHI DIVISION ══════════════════════════
+  {
+    id: 'banalata-express',
+    name: 'Banalata Express',
+    bnName: 'বনলতা এক্সপ্রেস',
+    number: '791/792',
+    type: 'Express',
+    division: 'Rajshahi',
+    from: 'kamalapur',
+    to: 'rajshahi',
+    stops: ['kamalapur', 'airport_r', 'tongi', 'joydebpur', 'tangail', 'sirajganj', 'ullapara', 'ishwardi', 'natore', 'rajshahi'],
+    dhakaDepart: '13:30',
+    destinationArrive: '19:30',
+    returnDepart: '07:00',
+    dhakaArrive: '13:00',
+    offDay: 'Fri',
+    distanceKm: 256,
+    fare: { shuvan: 265, shuvanChair: 395, snigdha: 770, firstClassBerth: 600, acBerth: 1160 },
+    color: '#f97316',
+  },
+  {
+    id: 'silk-city-express',
+    name: 'Silk City Express',
+    bnName: 'সিল্ক সিটি এক্সপ্রেস',
+    number: '753/754',
+    type: 'Express',
+    division: 'Rajshahi',
+    from: 'kamalapur',
+    to: 'rajshahi',
+    stops: ['kamalapur', 'airport_r', 'tongi', 'joydebpur', 'tangail', 'sirajganj', 'ullapara', 'ishwardi', 'natore', 'rajshahi'],
+    dhakaDepart: '14:45',
+    destinationArrive: '21:00',
+    returnDepart: '07:40',
+    dhakaArrive: '13:30',
+    offDay: 'Sun',
+    distanceKm: 256,
+    fare: { shuvan: 265, shuvanChair: 395, snigdha: 770, firstClassBerth: 600, acBerth: 1160 },
+    color: '#8b5cf6',
+  },
+  {
+    id: 'padma-express',
+    name: 'Padma Express',
+    bnName: 'পদ্মা এক্সপ্রেস',
+    number: '759/760',
+    type: 'Express',
+    division: 'Rajshahi',
+    from: 'kamalapur',
+    to: 'rajshahi',
+    stops: ['kamalapur', 'airport_r', 'tongi', 'joydebpur', 'tangail', 'sirajganj', 'ullapara', 'ishwardi', 'natore', 'rajshahi'],
+    dhakaDepart: '23:00',
+    destinationArrive: '05:30',
+    returnDepart: '16:00',
+    dhakaArrive: '22:30',
+    offDay: 'Tue',
+    distanceKm: 256,
+    fare: { shuvan: 265, shuvanChair: 395, snigdha: 770, firstClassBerth: 600, acBerth: 1160 },
+    color: '#14b8a6',
+  },
+  {
+    id: 'dhumketu-express',
+    name: 'Dhumketu Express',
+    bnName: 'ধূমকেতু এক্সপ্রেস',
+    number: '769/770',
+    type: 'Express',
+    division: 'Rajshahi',
+    from: 'kamalapur',
+    to: 'rajshahi',
+    stops: ['kamalapur', 'airport_r', 'tongi', 'joydebpur', 'tangail', 'ullapara', 'ishwardi', 'natore', 'rajshahi'],
+    dhakaDepart: '06:00',
+    destinationArrive: '12:00',
+    returnDepart: '23:20',
+    dhakaArrive: '05:00',
+    offDay: 'Thu (from Raj), Sat (from Dhk)',
+    distanceKm: 256,
+    fare: { shuvan: 265, shuvanChair: 395, snigdha: 770, firstClassBerth: 600, acBerth: 1160 },
+    color: '#ef4444',
+  },
+
+  // ═══════════════════════════ KHULNA DIVISION ════════════════════════════
+  {
+    id: 'chitra-express',
+    name: 'Chitra Express',
+    bnName: 'চিত্রা এক্সপ্রেস',
+    number: '763/764',
+    type: 'Express',
+    division: 'Khulna',
+    from: 'kamalapur',
+    to: 'khulna',
+    stops: ['kamalapur', 'rajbari', 'faridpur', 'poradah', 'chuadanga', 'jessore', 'khulna'],
+    dhakaDepart: '19:00',
+    destinationArrive: '03:00',
+    returnDepart: '09:00',
+    dhakaArrive: '17:00',
+    offDay: 'Mon',
+    distanceKm: 272,
+    fare: { shuvan: 290, shuvanChair: 430, snigdha: 840, firstClassBerth: 655, acBerth: 1270 },
+    color: '#06b6d4',
+  },
+  {
+    id: 'sundarban-express',
+    name: 'Sundarban Express',
+    bnName: 'সুন্দরবন এক্সপ্রেস',
+    number: '725/726',
+    type: 'Express',
+    division: 'Khulna',
+    from: 'kamalapur',
+    to: 'khulna',
+    stops: ['kamalapur', 'airport_r', 'tongi', 'joydebpur', 'rajbari', 'faridpur', 'poradah', 'chuadanga', 'jessore', 'khulna'],
+    dhakaDepart: '08:15',
+    destinationArrive: '17:00',
+    returnDepart: '22:15',
+    dhakaArrive: '07:00',
+    offDay: 'Tue (from Dhk), Wed (from Khulna)',
+    distanceKm: 272,
+    fare: { shuvan: 290, shuvanChair: 430, snigdha: 840, firstClassBerth: 655, acBerth: 1270 },
+    color: '#84cc16',
+  },
+  {
+    id: 'benapole-express',
+    name: 'Benapole Express',
+    bnName: 'বেনাপোল এক্সপ্রেস',
+    number: '795/796',
+    type: 'Express',
+    division: 'Khulna',
+    from: 'kamalapur',
+    to: 'benapole',
+    stops: ['kamalapur', 'rajbari', 'faridpur', 'poradah', 'chuadanga', 'darshana', 'benapole'],
+    dhakaDepart: '23:45',
+    destinationArrive: '08:00',
+    returnDepart: '13:00',
+    dhakaArrive: '20:30',
+    offDay: 'Wed',
+    distanceKm: 298,
+    fare: { shuvan: 310, shuvanChair: 465, snigdha: 910, firstClassBerth: 710, acBerth: 1370 },
+    color: '#ec4899',
+  },
+
+  // ═══════════════════════════ RANGPUR / NORTH DIVISION ═══════════════════════════
+  {
+    id: 'rangpur-express',
+    name: 'Rangpur Express',
+    bnName: 'রংপুর এক্সপ্রেস',
+    number: '771/772',
+    type: 'Express',
+    division: 'Rangpur',
+    from: 'kamalapur',
+    to: 'rangpur',
+    stops: ['kamalapur', 'airport_r', 'tongi', 'joydebpur', 'mymensingh', 'jamalpur', 'bogra', 'santahar', 'natore', 'rangpur'],
+    dhakaDepart: '09:10',
+    destinationArrive: '17:30',
+    returnDepart: '20:10',
+    dhakaArrive: '05:00',
+    offDay: 'Sun (from Dhk), Mon (from Rng)',
+    distanceKm: 350,
+    fare: { shuvan: 375, shuvanChair: 565, snigdha: 1110, firstClassBerth: 860, acBerth: 1660 },
+    color: '#3b82f6',
+  },
+  {
+    id: 'ekota-express',
+    name: 'Ekota Express',
+    bnName: 'একতা এক্সপ্রেস',
+    number: '705/706',
+    type: 'Express',
+    division: 'Rangpur',
+    from: 'kamalapur',
+    to: 'panchagarh',
+    stops: ['kamalapur', 'airport_r', 'tongi', 'joydebpur', 'mymensingh', 'jamalpur', 'bogra', 'santahar', 'parbatipur', 'saidpur', 'rangpur', 'lalmonirhat', 'panchagarh'],
+    dhakaDepart: '10:10',
+    destinationArrive: '22:30',
+    returnDepart: '21:10',
+    dhakaArrive: '09:30',
+    offDay: 'Tue (from Dhk), Mon (from Panchagarh)',
+    distanceKm: 510,
+    fare: { shuvan: 545, shuvanChair: 815, snigdha: 1600, firstClassBerth: 1240, acBerth: 2400 },
+    color: '#10b981',
+  },
+  {
+    id: 'lalmoni-express',
+    name: 'Lalmoni Express',
+    bnName: 'লালমণি এক্সপ্রেস',
+    number: '751/752',
+    type: 'Express',
+    division: 'Rangpur',
+    from: 'kamalapur',
+    to: 'lalmonirhat',
+    stops: ['kamalapur', 'airport_r', 'tongi', 'joydebpur', 'mymensingh', 'jamalpur', 'bogra', 'santahar', 'parbatipur', 'saidpur', 'rangpur', 'lalmonirhat'],
+    dhakaDepart: '21:45',
+    destinationArrive: '09:30',
+    returnDepart: '10:20',
+    dhakaArrive: '22:30',
+    offDay: 'Fri',
+    distanceKm: 475,
+    fare: { shuvan: 510, shuvanChair: 760, snigdha: 1490, firstClassBerth: 1155, acBerth: 2235 },
+    color: '#f59e0b',
+  },
+  {
+    id: 'kurigram-express',
+    name: 'Kurigram Express',
+    bnName: 'কুড়িগ্রাম এক্সপ্রেস',
+    number: '797/798',
+    type: 'Express',
+    division: 'Rangpur',
+    from: 'kamalapur',
+    to: 'kurigram',
+    stops: ['kamalapur', 'airport_r', 'tongi', 'joydebpur', 'mymensingh', 'jamalpur', 'bogra', 'santahar', 'parbatipur', 'saidpur', 'rangpur', 'kurigram'],
+    dhakaDepart: '20:45',
+    destinationArrive: '08:30',
+    returnDepart: '06:15',
+    dhakaArrive: '17:30',
+    offDay: 'Wed',
+    distanceKm: 460,
+    fare: { shuvan: 490, shuvanChair: 735, snigdha: 1440, firstClassBerth: 1115, acBerth: 2155 },
+    color: '#8b5cf6',
+  },
+  {
+    id: 'panchagarh-express',
+    name: 'Panchagarh Express',
+    bnName: 'পঞ্চগড় এক্সপ্রেস',
+    number: '793/794',
+    type: 'Express',
+    division: 'Rangpur',
+    from: 'kamalapur',
+    to: 'panchagarh',
+    stops: ['kamalapur', 'airport_r', 'tongi', 'joydebpur', 'mymensingh', 'jamalpur', 'bogra', 'santahar', 'parbatipur', 'dinajpur', 'saidpur', 'nilphamari', 'panchagarh'],
+    dhakaDepart: '22:45',
+    destinationArrive: '11:00',
+    returnDepart: '08:30',
+    dhakaArrive: '20:30',
+    offDay: 'No Off',
+    distanceKm: 510,
+    fare: { shuvan: 545, shuvanChair: 815, snigdha: 1600, firstClassBerth: 1240, acBerth: 2400 },
+    color: '#ef4444',
+  },
+
+  // ═══════════════════════════ MYMENSINGH DIVISION ════════════════════════════
+  {
+    id: 'tista-express',
+    name: 'Tista Express',
+    bnName: 'তিস্তা এক্সপ্রেস',
+    number: '707/708',
+    type: 'Intercity',
+    division: 'Mymensingh',
+    from: 'kamalapur',
+    to: 'dewanganj',
+    stops: ['kamalapur', 'tongi', 'joydebpur', 'mymensingh', 'jamalpur', 'dewanganj'],
+    dhakaDepart: '07:30',
+    destinationArrive: '13:00',
+    returnDepart: '15:00',
+    dhakaArrive: '20:30',
+    offDay: 'Mon',
+    distanceKm: 210,
+    fare: { shuvan: 220, shuvanChair: 330, snigdha: 640, firstClassBerth: 500, acBerth: 970 },
+    color: '#06b6d4',
+  },
+  {
+    id: 'agnibina-express',
+    name: 'Agnibina Express',
+    bnName: 'অগ্নিবীণা এক্সপ্রেস',
+    number: '735/736',
+    type: 'Intercity',
+    division: 'Mymensingh',
+    from: 'kamalapur',
+    to: 'tarakandi',
+    stops: ['kamalapur', 'tongi', 'joydebpur', 'mymensingh', 'jamalpur', 'tarakandi'],
+    dhakaDepart: '11:00',
+    destinationArrive: '16:30',
+    returnDepart: '16:50',
+    dhakaArrive: '22:30',
+    offDay: 'No Off',
+    distanceKm: 200,
+    fare: { shuvan: 215, shuvanChair: 320, snigdha: 625, firstClassBerth: 485, acBerth: 940 },
+    color: '#84cc16',
+  },
+  {
+    id: 'kishoreganj-express',
+    name: 'Kishoreganj Express',
+    bnName: 'কিশোরগঞ্জ এক্সপ্রেস',
+    number: '781/782',
+    type: 'Intercity',
+    division: 'Mymensingh',
+    from: 'kamalapur',
+    to: 'kishoreganj',
+    stops: ['kamalapur', 'narsingdi', 'bhairab', 'kishoreganj'],
+    dhakaDepart: '10:45',
+    destinationArrive: '13:30',
+    returnDepart: '16:00',
+    dhakaArrive: '19:00',
+    offDay: 'Fri',
+    distanceKm: 120,
+    fare: { shuvan: 130, shuvanChair: 195, snigdha: 380, firstClassBerth: 295, acBerth: 570 },
+    color: '#10b981',
+  },
+  {
+    id: 'mohanganj-express',
+    name: 'Mohanganj Express',
+    bnName: 'মোহনগঞ্জ এক্সপ্রেস',
+    number: '789/790',
+    type: 'Intercity',
+    division: 'Mymensingh',
+    from: 'kamalapur',
+    to: 'mohanganj',
+    stops: ['kamalapur', 'tongi', 'joydebpur', 'mymensingh', 'netrokona', 'mohanganj'],
+    dhakaDepart: '13:15',
+    destinationArrive: '19:00',
+    returnDepart: '23:00',
+    dhakaArrive: '05:30',
+    offDay: 'Mon (from Dhk), Tue (from Mohanganj)',
+    distanceKm: 195,
+    fare: { shuvan: 210, shuvanChair: 315, snigdha: 615, firstClassBerth: 475, acBerth: 920 },
+    color: '#f97316',
+  },
+];
+
+// Helper: get station name
+export function getTrainStationName(id: string, lang: 'en' | 'bn' = 'en'): string {
+  const s = TRAIN_STATIONS[id];
+  if (!s) return id;
+  return lang === 'bn' ? s.bnName : s.name;
+}
+
+// Helper: haversine distance between two train stations
+export function trainStationDistance(a: string, b: string): number {
+  const s1 = TRAIN_STATIONS[a];
+  const s2 = TRAIN_STATIONS[b];
+  if (!s1 || !s2) return 0;
+  const R = 6371;
+  const dLat = (s2.lat - s1.lat) * Math.PI / 180;
+  const dLng = (s2.lng - s1.lng) * Math.PI / 180;
+  const x = Math.sin(dLat / 2) ** 2 + Math.cos(s1.lat * Math.PI / 180) * Math.cos(s2.lat * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
+}
+
+// Helper: total distance between two stops on a route
+export function routeDistanceBetween(route: BDTrainRoute, fromId: string, toId: string): number {
+  const si = route.stops.indexOf(fromId);
+  const ei = route.stops.indexOf(toId);
+  if (si === -1 || ei === -1 || si === ei) return 0;
+  const [start, end] = si < ei ? [si, ei] : [ei, si];
+  let dist = 0;
+  for (let i = start; i < end; i++) {
+    dist += trainStationDistance(route.stops[i], route.stops[i + 1]);
+  }
+  // Scale to match official distance
+  return dist * (route.distanceKm / trainStationDistance(route.stops[0], route.stops[route.stops.length - 1]) || 1);
+}
