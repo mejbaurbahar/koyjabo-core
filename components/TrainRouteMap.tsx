@@ -141,7 +141,7 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
         routeLayerRef.current.addTo(mapInstanceRef.current);
       }
 
-      // Station markers
+      // Station markers — bus-style pill for start/end, dot+label for intermediates
       overlayLayerRef.current = L.layerGroup();
       drawableStops.forEach((id, idx) => {
         const st = TRAIN_STATIONS[id];
@@ -151,31 +151,44 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
         const isHlEnd = idx === hlEndIdx;
         const isNearest = idx === nearestStopIdx;
 
-        let color = '#94a3b8';
-        let size = 8;
-        if (isFirst || isLast) { color = route.color; size = 14; }
-        if (isHlStart || isHlEnd) { color = route.color; size = 14; }
-        if (isNearest) { color = '#f97316'; size = 13; }
+        let iconHtml: string;
+        let iconW: number;
+        let iconH: number;
+        let anchorX: number;
+        let anchorY: number;
 
-        const circle = L.circleMarker([st.lat, st.lng], {
-          radius: size / 2,
-          color: '#fff',
-          weight: 2,
-          fillColor: color,
-          fillOpacity: 1,
-        });
-        circle.bindPopup(`<b>${st.name}</b><br/><span style="font-size:11px;color:#64748b">${st.bnName}</span>`);
-        circle.addTo(overlayLayerRef.current);
-
-        // Label for terminals and highlighted stops
-        if (isFirst || isLast || isHlStart || isHlEnd || isNearest) {
-          const label = L.divIcon({
-            html: `<div style="background:${isNearest ? '#f97316' : route.color};color:#fff;padding:2px 6px;border-radius:6px;font-size:10px;font-weight:700;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,0.3)">${st.name}</div>`,
-            className: '',
-            iconAnchor: [-6, 6],
-          });
-          L.marker([st.lat, st.lng], { icon: label, interactive: false }).addTo(overlayLayerRef.current);
+        if (isFirst) {
+          // Green pill — Start
+          iconW = 52; iconH = 24; anchorX = 26; anchorY = 12;
+          iconHtml = `<div style="width:52px;height:24px;border-radius:12px;background:#10b981;border:2px solid #059669;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.35);white-space:nowrap;font-family:sans-serif;">Start</div>`;
+        } else if (isLast) {
+          // Dark pill — Destination
+          iconW = 76; iconH = 24; anchorX = 38; anchorY = 12;
+          iconHtml = `<div style="width:76px;height:24px;border-radius:12px;background:#1e293b;border:2px solid #0f172a;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.35);white-space:nowrap;font-family:sans-serif;">Destination</div>`;
+        } else {
+          // Intermediate: dot with always-visible name label
+          const dotColor = isNearest ? '#f97316' : (isHlStart || isHlEnd ? route.color : '#94a3b8');
+          const dotBorder = isNearest ? '#ea580c' : (isHlStart || isHlEnd ? route.color : '#cbd5e1');
+          const dotSize = isHlStart || isHlEnd || isNearest ? 12 : 9;
+          const label = st.name;
+          iconW = 120; iconH = dotSize + 20;
+          anchorX = dotSize / 2; anchorY = dotSize / 2;
+          iconHtml = `<div style="display:flex;flex-direction:column;align-items:flex-start;gap:2px;pointer-events:none">` +
+            `<div style="width:${dotSize}px;height:${dotSize}px;border-radius:50%;background:${dotColor};border:2px solid ${dotBorder};box-shadow:0 1px 4px rgba(0,0,0,0.3);flex-shrink:0"></div>` +
+            `<div style="background:rgba(255,255,255,0.93);color:#1e293b;padding:1px 5px;border-radius:4px;font-size:9px;font-weight:600;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.22);line-height:1.5;max-width:110px;overflow:hidden;text-overflow:ellipsis">${label}</div>` +
+            `</div>`;
         }
+
+        const icon = L.divIcon({
+          className: '',
+          iconSize: [iconW, iconH],
+          iconAnchor: [anchorX, anchorY],
+          html: iconHtml,
+        });
+
+        const marker = L.marker([st.lat, st.lng], { icon, zIndexOffset: isFirst || isLast ? 1000 : 0 });
+        marker.bindPopup(`<b>${st.name}</b><br/><span style="font-size:11px;color:#64748b">${st.bnName}</span>`);
+        marker.addTo(overlayLayerRef.current);
       });
       overlayLayerRef.current.addTo(mapInstanceRef.current);
 

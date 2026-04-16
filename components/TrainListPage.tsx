@@ -66,27 +66,27 @@ function TrainDetail({
   const bn = language === 'bn';
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-hidden">
+    <div className="flex flex-col h-full bg-gradient-to-b from-[#0f2027] via-[#203a43] to-[#2c5364] overflow-hidden">
       {/* Sub-header */}
-      <div className="shrink-0 flex items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900">
+      <div className="shrink-0 flex items-center gap-3 px-4 py-3 border-b border-white/10 bg-white/5">
         <button
           onClick={onBack}
-          className="p-2 -ml-1 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors"
+          className="p-2 -ml-1 hover:bg-white/10 rounded-full transition-colors"
           aria-label="Back"
         >
-          <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+          <ArrowLeft className="w-5 h-5 text-white/80" />
         </button>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <h2 className="font-bold text-gray-900 dark:text-gray-100 truncate">{route.name}</h2>
-            <span className="text-xs font-bold px-2 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-full">
+            <h2 className="font-bold text-white truncate">{route.name}</h2>
+            <span className="text-xs font-bold px-2 py-0.5 bg-white/15 text-white/80 rounded-full">
               #{route.number}
             </span>
-            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${TYPE_COLORS[route.type] || TYPE_COLORS.Local}`}>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-300">
               {route.type}
             </span>
           </div>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+          <p className="text-xs text-white/55 mt-0.5">
             {TRAIN_STATIONS[route.from]?.name} → {TRAIN_STATIONS[route.to]?.name}
           </p>
         </div>
@@ -94,7 +94,7 @@ function TrainDetail({
 
       <div className="flex-1 overflow-y-auto">
         {/* Map */}
-        <div className="h-[280px] md:h-[340px] bg-slate-100 dark:bg-slate-800 relative">
+        <div className="h-[280px] md:h-[340px] bg-slate-900 relative">
           <TrainRouteMap
             route={route}
             userLocation={userLocation}
@@ -105,53 +105,53 @@ function TrainDetail({
 
         <div className="p-4 space-y-4">
           {/* Schedule Info */}
-          <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-slate-800 dark:to-slate-800 rounded-2xl p-4 border border-emerald-100 dark:border-slate-700">
-            <h3 className="text-sm font-bold text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+          <div className="bg-white/10 rounded-2xl p-4 border border-white/15">
+            <h3 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
+              <Clock className="w-4 h-4 text-emerald-400" />
               {bn ? 'সময়সূচি' : 'Schedule'}
             </h3>
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div className="space-y-1">
-                <p className="text-xs text-gray-500 dark:text-gray-400">{bn ? 'ঢাকা ছাড়ে' : 'Departs Dhaka'}</p>
-                <p className="font-bold text-gray-900 dark:text-white text-base">{route.dhakaDepart}</p>
+                <p className="text-xs text-white/55">{bn ? 'ঢাকা ছাড়ে' : 'Departs Dhaka'}</p>
+                <p className="font-bold text-white text-base">{route.dhakaDepart}</p>
               </div>
               <div className="space-y-1">
-                <p className="text-xs text-gray-500 dark:text-gray-400">{bn ? 'গন্তব্যে পৌঁছায়' : 'Arrives Destination'}</p>
-                <p className="font-bold text-gray-900 dark:text-white text-base">{route.destinationArrive}</p>
+                <p className="text-xs text-white/55">{bn ? 'গন্তব্যে পৌঁছায়' : 'Arrives Destination'}</p>
+                <p className="font-bold text-white text-base">{route.destinationArrive}</p>
               </div>
               <div className="space-y-1">
-                <p className="text-xs text-gray-500 dark:text-gray-400">{bn ? 'ফিরতি ছাড়ে' : 'Return Departs'}</p>
-                <p className="font-bold text-gray-900 dark:text-white text-base">{route.returnDepart}</p>
+                <p className="text-xs text-white/55">{bn ? 'ফিরতি ছাড়ে' : 'Return Departs'}</p>
+                <p className="font-bold text-white text-base">{route.returnDepart}</p>
               </div>
               <div className="space-y-1">
-                <p className="text-xs text-gray-500 dark:text-gray-400">{bn ? 'ঢাকায় ফেরে' : 'Returns Dhaka'}</p>
-                <p className="font-bold text-gray-900 dark:text-white text-base">{route.dhakaArrive}</p>
+                <p className="text-xs text-white/55">{bn ? 'ঢাকায় ফেরে' : 'Returns Dhaka'}</p>
+                <p className="font-bold text-white text-base">{route.dhakaArrive}</p>
               </div>
             </div>
             {route.offDay !== 'No Off Day' && route.offDay !== 'No Off' && (
-              <div className="mt-3 flex items-center gap-2 p-2 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
-                <CalendarX className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
-                <span className="text-xs text-amber-700 dark:text-amber-300">
+              <div className="mt-3 flex items-center gap-2 p-2 bg-amber-400/15 rounded-lg border border-amber-400/25">
+                <CalendarX className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                <span className="text-xs text-amber-300">
                   <span className="font-bold">{bn ? 'সাপ্তাহিক ছুটি:' : 'Off Day:'}</span> {route.offDay}
                 </span>
               </div>
             )}
-            <div className="mt-3 flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+            <div className="mt-3 flex items-center gap-2 text-xs text-white/55">
               <Navigation className="w-3.5 h-3.5 shrink-0" />
               <span>{bn ? `মোট দূরত্ব: ~${route.distanceKm} কিমি` : `Total distance: ~${route.distanceKm} km`}</span>
             </div>
           </div>
 
           {/* Stops list */}
-          <div className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-            <div className="px-4 py-3 border-b border-gray-100 dark:border-slate-700">
-              <h3 className="text-sm font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-emerald-600" />
+          <div className="bg-white/10 rounded-2xl border border-white/15 overflow-hidden">
+            <div className="px-4 py-3 border-b border-white/10">
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-emerald-400" />
                 {bn ? `স্টেশন (${route.stops.length}টি)` : `Stations (${route.stops.length})`}
               </h3>
             </div>
             <div className="relative px-4 py-3">
-              <div className="absolute left-6 top-4 bottom-4 w-0.5 bg-gradient-to-b from-emerald-400 via-teal-300 to-gray-300 dark:from-emerald-600 dark:via-teal-600 dark:to-gray-600 opacity-40" />
+              <div className="absolute left-6 top-4 bottom-4 w-0.5 bg-gradient-to-b from-emerald-400 via-teal-400 to-white/20 opacity-40" />
               <div className="space-y-2.5">
                 {route.stops.map((id, idx) => {
                   const st = TRAIN_STATIONS[id];
@@ -163,12 +163,12 @@ function TrainDetail({
                       <div
                         className={`w-3 h-3 rounded-full border-2 shrink-0 z-10 ${
                           isFirst || isLast
-                            ? 'bg-emerald-500 border-emerald-600 dark:bg-emerald-400 dark:border-emerald-500'
-                            : 'bg-white dark:bg-slate-700 border-gray-400 dark:border-gray-500'
+                            ? 'bg-emerald-400 border-emerald-500'
+                            : 'bg-white/20 border-white/40'
                         }`}
                         style={{ marginLeft: '-2px' }}
                       />
-                      <span className={`text-sm ${isFirst || isLast ? 'font-bold text-gray-900 dark:text-gray-100' : 'text-gray-600 dark:text-gray-400'}`}>
+                      <span className={`text-sm ${isFirst || isLast ? 'font-bold text-white' : 'text-white/65'}`}>
                         {bn ? st.bnName : st.name}
                       </span>
                     </div>
@@ -179,10 +179,10 @@ function TrainDetail({
           </div>
 
           {/* Fare Calculator — no overflow-hidden so dropdowns aren't clipped */}
-          <div className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700">
-            <div className="px-4 py-3 border-b border-gray-100 dark:border-slate-700 rounded-t-2xl">
-              <h3 className="text-sm font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                <Coins className="w-4 h-4 text-amber-500" />
+          <div className="bg-white/10 rounded-2xl border border-white/15">
+            <div className="px-4 py-3 border-b border-white/10 rounded-t-2xl">
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <Coins className="w-4 h-4 text-amber-400" />
                 {bn ? 'ভাড়া ও সময় ক্যালকুলেটর' : 'Fare & Time Calculator'}
               </h3>
             </div>
@@ -190,7 +190,7 @@ function TrainDetail({
               {/* From / To stacked for more dropdown space */}
               <div className="space-y-3">
                 <div>
-                  <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 block">
+                  <label className="text-xs font-medium text-white/60 mb-1 block">
                     {bn ? 'কোথায় থেকে' : 'From Station'}
                   </label>
                   <SearchableSelect
@@ -201,7 +201,7 @@ function TrainDetail({
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 block">
+                  <label className="text-xs font-medium text-white/60 mb-1 block">
                     {bn ? 'কোথায় যাবেন' : 'To Station'}
                   </label>
                   <SearchableSelect
@@ -216,29 +216,29 @@ function TrainDetail({
               {journeyInfo ? (
                 <div className="mt-2 space-y-3 animate-in fade-in duration-200">
                   {/* Journey summary */}
-                  <div className="flex items-center justify-between p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl">
+                  <div className="flex items-center justify-between p-3 bg-emerald-400/15 rounded-xl border border-emerald-400/20">
                     <div className="flex items-center gap-2 text-sm">
-                      <Navigation className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                      <span className="font-medium text-gray-700 dark:text-gray-300">
+                      <Navigation className="w-4 h-4 text-emerald-400" />
+                      <span className="font-medium text-white/80">
                         ~{Math.round(journeyInfo.distKm)} km
                       </span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
-                      <Clock className="w-4 h-4 text-teal-600 dark:text-teal-400" />
-                      <span className="font-medium text-gray-700 dark:text-gray-300">{journeyInfo.travelTime}</span>
+                      <Clock className="w-4 h-4 text-teal-400" />
+                      <span className="font-medium text-white/80">{journeyInfo.travelTime}</span>
                     </div>
                   </div>
 
                   {/* Fare table */}
-                  <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-slate-700">
+                  <div className="overflow-hidden rounded-xl border border-white/15">
                     <table className="w-full text-sm">
                       <thead>
-                        <tr className="bg-emerald-50 dark:bg-slate-700/50 text-xs text-gray-500 dark:text-gray-400">
+                        <tr className="bg-white/10 text-xs text-white/60">
                           <th className="text-left px-3 py-2 font-medium">{bn ? 'শ্রেণী' : 'Class'}</th>
                           <th className="text-right px-3 py-2 font-medium">{bn ? 'ভাড়া' : 'Fare'}</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-gray-100 dark:divide-slate-700">
+                      <tbody className="divide-y divide-white/10">
                         {[
                           { label: bn ? 'শুভন' : 'Shuvan', val: journeyInfo.fare.shuvan },
                           { label: bn ? 'শুভন চেয়ার' : 'Shuvan Chair', val: journeyInfo.fare.shuvanChair },
@@ -246,9 +246,9 @@ function TrainDetail({
                           { label: bn ? '১ম শ্রেণী বার্থ' : '1st Class Berth', val: journeyInfo.fare.firstClassBerth! },
                           { label: bn ? 'এসি বার্থ' : 'AC Berth', val: journeyInfo.fare.acBerth! },
                         ].map(row => (
-                          <tr key={row.label} className="hover:bg-gray-50 dark:hover:bg-slate-700/30 transition-colors">
-                            <td className="px-3 py-2.5 text-gray-700 dark:text-gray-300">{row.label}</td>
-                            <td className="px-3 py-2.5 text-right font-bold text-emerald-700 dark:text-emerald-400">
+                          <tr key={row.label} className="hover:bg-white/5 transition-colors">
+                            <td className="px-3 py-2.5 text-white/75">{row.label}</td>
+                            <td className="px-3 py-2.5 text-right font-bold text-emerald-400">
                               ৳{formatNumber(row.val)}
                             </td>
                           </tr>
@@ -256,7 +256,7 @@ function TrainDetail({
                       </tbody>
                     </table>
                   </div>
-                  <p className="text-[10px] text-gray-400 dark:text-gray-500 flex items-start gap-1">
+                  <p className="text-[10px] text-white/40 flex items-start gap-1">
                     <AlertCircle className="w-3 h-3 mt-0.5 shrink-0" />
                     {bn
                       ? 'ভাড়া আনুমানিক। সঠিক ভাড়ার জন্য বাংলাদেশ রেলওয়ে ওয়েবসাইট দেখুন।'
@@ -264,7 +264,7 @@ function TrainDetail({
                   </p>
                 </div>
               ) : (
-                <p className="text-xs text-gray-400 dark:text-gray-500 text-center py-2">
+                <p className="text-xs text-white/40 text-center py-2">
                   {bn ? 'দুটি স্টেশন সিলেক্ট করুন' : 'Select two stations to calculate fare'}
                 </p>
               )}
@@ -398,17 +398,6 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
         </div>
 
         <div className="relative z-10 px-4 pt-4 pb-4">
-          {/* Back button */}
-          {onBack && !embedded && (
-            <button
-              onClick={onBack}
-              className="flex items-center gap-1.5 text-white/80 hover:text-white text-sm mb-3 transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              {bn ? 'ফিরুন' : 'Back'}
-            </button>
-          )}
-
           {/* Title row */}
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
@@ -441,23 +430,6 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
             )}
           </div>
         </div>
-      </div>
-
-      {/* Division filter tabs */}
-      <div className="shrink-0 flex gap-2 px-4 py-3 overflow-x-auto hidden-scrollbar border-b border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900">
-        {DIVISIONS.map(div => (
-          <button
-            key={div}
-            onClick={() => setActiveDivision(div)}
-            className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
-              activeDivision === div
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-slate-700'
-            }`}
-          >
-            {div === 'All' ? (bn ? 'সব' : 'All') : div}
-          </button>
-        ))}
       </div>
 
       {/* Count row */}
