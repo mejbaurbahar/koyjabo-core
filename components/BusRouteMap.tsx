@@ -57,6 +57,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
   const routeLayerRef = useRef<any>(null);
   const overlayLayerRef = useRef<any>(null);
   const userMarkerRef = useRef<any>(null);
+  const roadCoordsRef = useRef<[number, number][] | null>(null);
   const [mapReady, setMapReady] = useState(false);
   const [showLayers, setShowLayers] = useState(false);
   const [showMetro, setShowMetro] = useState(false);
@@ -144,8 +145,11 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
       const snapped = await fetchRoadRoute(stopCoords);
       if (cancelled || !mapInstanceRef.current) return;
       if (snapped && snapped.length > 1) {
+        roadCoordsRef.current = snapped;
         drawRoute(L, stopCoords, snapped, true);
         setRouteSnapped(true);
+      } else {
+        roadCoordsRef.current = null;
       }
     });
 
@@ -154,6 +158,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
+        roadCoordsRef.current = null;
         setMapReady(false);
         setRouteSnapped(false);
       }
@@ -181,12 +186,17 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
     }
 
     // Stop markers
+    // When a fare segment is selected, Start/Destination labels go on the
+    // selected from/to stops; otherwise they go on the route's first/last stops.
+    const hasFare = highlightStartIdx >= 0 && highlightEndIdx >= 0;
+    const startMarkerIdx = hasFare ? highlightStartIdx : 0;
+    const endMarkerIdx   = hasFare ? highlightEndIdx   : coords.length - 1;
+
     coords.forEach((coord, idx) => {
       const station = STATIONS[drawableStops[idx]];
       if (!station) return;
-      const isFirst = idx === 0;
-      const isLast = idx === coords.length - 1;
-      const isHighlighted = idx === highlightStartIdx || idx === highlightEndIdx;
+      const isStart = idx === startMarkerIdx;
+      const isEnd   = idx === endMarkerIdx;
 
       let bg = '#fff';
       let border = routeColor;
@@ -195,28 +205,25 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
       let size = 14;
       let fontSize = 8;
 
-      if (isFirst) {
+      if (isStart) {
         bg = '#10b981'; border = '#059669'; textColor = '#fff';
         label = 'Start'; size = 52; fontSize = 10;
-      } else if (isLast) {
+      } else if (isEnd) {
         bg = '#1e293b'; border = '#0f172a'; textColor = '#fff';
         label = 'Destination'; size = 76; fontSize = 10;
-      } else if (isHighlighted) {
-        bg = '#f59e0b'; border = '#d97706'; textColor = '#fff';
-        label = '●'; size = 18; fontSize = 10;
       } else {
         label = '●'; size = 12; fontSize = 8;
       }
 
-      const h = isFirst || isLast ? 24 : 14;
-      const w = isFirst || isLast ? size : 14;
-      const br = isFirst || isLast ? 12 : '50%';
+      const h = isStart || isEnd ? 24 : 14;
+      const w = isStart || isEnd ? size : 14;
+      const br = isStart || isEnd ? 12 : '50%';
 
       const icon = L.divIcon({
         className: '',
         iconSize: [w, h],
         iconAnchor: [w / 2, h / 2],
-        html: isFirst || isLast
+        html: isStart || isEnd
           ? `<div style="width:${w}px;height:${h}px;border-radius:${br}px;background:${bg};border:2px solid ${border};display:flex;align-items:center;justify-content:center;font-size:${fontSize}px;font-weight:700;color:${textColor};box-shadow:0 2px 6px rgba(0,0,0,0.3);white-space:nowrap;padding:0 8px;font-family:sans-serif;">${label}</div>`
           : `<div style="width:${w}px;height:${h}px;border-radius:50%;background:${bg};border:2px solid ${border};display:flex;align-items:center;justify-content:center;font-size:${fontSize}px;font-weight:700;color:${textColor};box-shadow:0 1px 4px rgba(0,0,0,0.2);"></div>`,
       });
@@ -244,6 +251,17 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
         .addTo(routeLayerRef.current);
     }
   }, [route.id, isReversed, highlightStartIdx, highlightEndIdx, userLocation, routeColor]);
+
+  // Redraw markers+segment whenever fare selection changes (highlight indices change)
+  useEffect(() => {
+    if (!mapReady || !mapInstanceRef.current) return;
+    import('leaflet').then(L => {
+      if (!routeLayerRef.current) return;
+      drawRoute(L, stopCoords, roadCoordsRef.current, roadCoordsRef.current !== null);
+    });
+  // drawRoute reference changes when highlightStartIdx/EndIdx change (useCallback dep)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [drawRoute, mapReady]);
 
   // Update overlay layers (metro/railway/airport)
   useEffect(() => {
