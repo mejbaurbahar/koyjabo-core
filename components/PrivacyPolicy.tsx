@@ -14,7 +14,7 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
 
     return (
         <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-y-auto overflow-x-hidden w-full relative max-w-full">
-            <div className="max-w-4xl mx-auto p-6 md:p-12 pt-20 md:pt-28 pb-32 md:pb-12">
+            <div className="max-w-4xl mx-auto p-6 md:p-12 pt-6 md:pt-28 pb-32 md:pb-12">
 
                 <div className="text-center mb-12">
                     <div className="w-16 h-16 bg-dhaka-green/10 text-dhaka-green rounded-2xl flex items-center justify-center mx-auto mb-4 border border-dhaka-green/20">

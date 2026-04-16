@@ -380,7 +380,7 @@ const SettingsView: React.FC<{
   };
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-20 md:pt-12 pt-safe overflow-y-auto w-full">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-6 md:pt-12 overflow-y-auto w-full">
 
       <h1 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
         <Settings className="w-6 h-6 text-gray-600" /> Settings
@@ -1604,7 +1604,7 @@ const App: React.FC = () => {
   );
 
   const renderAbout = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-20 md:pt-24 pb-32 md:pb-12 pt-safe overflow-y-auto overflow-x-hidden w-full max-w-full">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-6 md:pt-24 pb-32 md:pb-12 overflow-y-auto overflow-x-hidden w-full max-w-full">
       <div className="max-w-5xl mx-auto text-center">
         <div className="w-20 h-20 bg-dhaka-red rounded-3xl flex items-center justify-center text-white mx-auto mb-6 shadow-xl shadow-red-200 rotate-3 hover:rotate-6 transition-transform">
           <Bus className="w-10 h-10" />
@@ -1905,7 +1905,7 @@ const App: React.FC = () => {
   );
 
   const renderWhyUse = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-24 md:pt-24 pb-28 md:pb-12 pt-safe overflow-y-auto w-full">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-6 md:pt-24 pb-28 md:pb-12 overflow-y-auto w-full">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100 leading-tight">{t('whyUse.title')}</h1>
         <p className="text-gray-500 dark:text-gray-400 mb-8">{t('whyUse.subtitle')}</p>
@@ -2081,7 +2081,7 @@ const App: React.FC = () => {
   );
 
   const renderFAQ = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-24 md:pt-24 pb-28 md:pb-12 pt-safe overflow-y-auto w-full">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-6 md:pt-24 pb-28 md:pb-12 overflow-y-auto w-full">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100 leading-tight">{t('faq.title')}</h1>
         <p className="text-gray-500 dark:text-gray-400 mb-8">{t('faq.subtitle')}</p>
@@ -2241,7 +2241,7 @@ const App: React.FC = () => {
   );
 
   const renderForAi = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-20 md:pt-24 pb-28 md:pb-12 overflow-y-auto w-full">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-6 md:pt-24 pb-28 md:pb-12 overflow-y-auto w-full">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl md:text-5xl font-bold mb-6 text-gray-900 leading-tight">AI Dataset & Integration</h1>
         <div className="flex items-center gap-2 text-sm text-gray-500 mb-8">
@@ -3479,16 +3479,16 @@ const App: React.FC = () => {
           </div>
         )}
 
-        {/* Offline Status Bar */}
+        {/* Offline Status Bar — sticky inside the flex column so it's always visible */}
         {!isOnline && (
-          <div className="fixed top-0 left-0 right-0 z-[9998] bg-amber-500 text-white text-xs font-bold flex items-center justify-center gap-2 py-1.5 px-4 animate-in slide-in-from-top duration-300">
+          <div className="sticky top-0 left-0 right-0 z-[9999] bg-amber-500 text-white text-xs font-bold flex items-center justify-center gap-2 py-1.5 px-4 shrink-0 animate-in slide-in-from-top duration-300">
             <WifiOff className="w-3.5 h-3.5 shrink-0" />
-            <span>{t('offline.statusBarMessage')}</span>
+            <span className="text-center leading-tight">{t('offline.statusBarMessage')}</span>
           </div>
         )}
 
         {/* Mobile Header */}
-        <header className={`sticky top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-5 py-3 shadow-sm z-[100] md:hidden transition-transform duration-300 ${!isOnline ? 'top-7' : 'top-0 pt-safe'} ${(view === AppView.BUS_DETAILS || view === AppView.LIVE_NAV || view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? '-translate-y-full h-0 overflow-hidden py-0 border-none' : 'translate-y-0 h-auto'} `}>
+        <header className={`sticky top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-5 py-3 shadow-sm z-[100] md:hidden transition-transform duration-300 pt-safe ${(view === AppView.BUS_DETAILS || view === AppView.LIVE_NAV || view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD || view === AppView.PROFILE) ? '-translate-y-full h-0 overflow-hidden py-0 border-none' : 'translate-y-0 h-auto'} `}>
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2 outline-none cursor-pointer" onClick={() => setView(AppView.HOME)}>
               <AnimatedLogo size="small" />
@@ -3647,7 +3647,7 @@ const App: React.FC = () => {
             {view === AppView.CONTACT && <ContactUs view={view} setView={setView} />}
             {view === AppView.FOR_AI && renderForAi()}
             {view === AppView.INSTALL_APP && (
-              <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-20 md:pt-12 pt-safe overflow-y-auto w-full">
+              <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-6 md:pt-12 overflow-y-auto w-full">
                 <div className="max-w-2xl mx-auto text-center">
                   {/* App Icon */}
                   <div className="w-24 h-24 bg-dhaka-red rounded-3xl flex items-center justify-center text-white mx-auto mb-6 shadow-xl shadow-red-200">
@@ -3899,13 +3899,6 @@ const App: React.FC = () => {
                   <HelpCircle className="w-5 h-5 text-cyan-600 dark:text-cyan-400" /> {t('nav.faq')}
                 </button>
 
-                {/* Blog Button */}
-                <button
-                  onClick={() => { setView(AppView.BLOG); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.BLOG ? 'bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800' : ''} `}
-                >
-                  <BookOpen className="w-5 h-5 text-teal-600 dark:text-teal-400" /> {t('nav.blog')}
-                </button>
 
 
 

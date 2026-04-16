@@ -14,7 +14,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
 
     return (
         <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-y-auto w-full relative">
-            <div className="max-w-4xl mx-auto p-6 md:p-12 pt-24 md:pt-32 pb-32 md:pb-12 w-full">
+            <div className="max-w-4xl mx-auto p-6 md:p-12 pt-6 md:pt-32 pb-32 md:pb-12 w-full">
 
                 {/* Header Section */}
                 <div className="text-center mb-16">
