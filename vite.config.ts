@@ -116,8 +116,6 @@ export default defineConfig(({ mode }) => {
           navigateFallback: 'index.html',  // Enable automatic fallback to index.html for SPA offline support
           navigateFallbackDenylist: [/^\/api/],
           cleanupOutdatedCaches: true,
-          clientsClaim: true,
-          skipWaiting: true,
           // Inline the workbox runtime instead of loading from CDN
           mode: 'production',
           sourcemap: false,

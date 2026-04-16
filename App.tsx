@@ -3810,10 +3810,6 @@ const App: React.FC = () => {
                           : user.displayName.charAt(0).toUpperCase()
                         }
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-gray-800 dark:text-gray-100 truncate">{user.displayName}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
-                      </div>
                     </div>
                     <div className="flex gap-2 mt-3">
                       <button
@@ -3878,19 +3874,6 @@ const App: React.FC = () => {
                   className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.BLOG ? 'bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800' : ''} `}
                 >
                   <BookOpen className="w-5 h-5 text-teal-600 dark:text-teal-400" /> {t('nav.blog')}
-                </button>
-
-                <button
-                  onClick={() => { setProfileSection('history'); setView(AppView.PROFILE); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.PROFILE && profileSection === 'history' ? 'bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800' : ''}`}
-                >
-                  <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400" /> {t('nav.history')}
-                </button>
-                <button
-                  onClick={() => { setProfileSection('settings'); setView(AppView.PROFILE); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.PROFILE && profileSection === 'settings' ? 'bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800' : ''}`}
-                >
-                  <Settings className="w-5 h-5 text-purple-600 dark:text-purple-400" /> {t('nav.settings')}
                 </button>
 
                 <div className="p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800">

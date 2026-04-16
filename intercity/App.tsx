@@ -255,14 +255,7 @@ function App() {
             <Sparkles size={16} />
             {t('nav.aiAssistant')}
           </a>
-          <a
-            href="/#history"
-            onClick={(e) => { e.preventDefault(); window.location.href = '/#history'; }}
-            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-slate-700/50"
-          >
-            <Clock size={16} />
-            {t('nav.history')}
-          </a>
+
           <a
             href="/#blog"
             onClick={(e) => { e.preventDefault(); window.location.href = '/#blog'; }}
@@ -309,7 +302,6 @@ function App() {
                   : authUser.displayName.charAt(0).toUpperCase()
                 }
               </div>
-              <span className="max-w-[100px] truncate">{authUser.displayName}</span>
             </button>
           ) : (
             <div className="flex items-center gap-2">
@@ -622,10 +614,6 @@ function App() {
                         : authUser.displayName.charAt(0).toUpperCase()
                       }
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-gray-800 dark:text-gray-100 truncate">{authUser.displayName}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{authUser.email}</p>
-                    </div>
                   </div>
                   <div className="flex gap-2 mt-3">
                     <button
@@ -700,16 +688,11 @@ function App() {
               >
                 <BookOpen className="w-5 h-5 text-teal-600 dark:text-teal-400" /> {t('nav.blog')}
               </button>
-              <button
-                onClick={() => window.location.href = '/#history'}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
-              >
-                <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400" /> {t('nav.history')}
-              </button>
+
               <div className="p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400">
-                    <Settings className="w-4 h-4 text-purple-600 dark:text-purple-400" /> {t('settings.language')}
+                    {t('settings.language')}
                   </div>
                   <div className="flex gap-1">
                     <button

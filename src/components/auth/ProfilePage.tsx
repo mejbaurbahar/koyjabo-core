@@ -184,8 +184,36 @@ export default function ProfilePage({
   };
 
   // ── Render ──────────────────────────────────────────────────────────────────
+  const isEmbedded = activeSection === 'history' || activeSection === 'settings';
+
+  // Shared tab list used in both layout modes
+  const tabList = (
+    <div className="flex gap-1 bg-white dark:bg-slate-800 rounded-2xl p-1.5 shadow-sm border border-gray-100 dark:border-slate-700 overflow-x-auto">
+      {([
+        { key: 'profile',  label: t('profile.tabs.profile'),  Icon: User    },
+        { key: 'security', label: t('profile.tabs.password'),  Icon: Shield  },
+        { key: 'devices',  label: t('profile.tabs.devices'),   Icon: Monitor },
+        { key: 'history',  label: t('nav.history'),            Icon: History },
+        { key: 'settings', label: t('settings.title'),         Icon: Settings },
+      ] as { key: ProfileSection; label: string; Icon: React.ElementType }[]).map(({ key, label, Icon }) => (
+        <button
+          key={key}
+          onClick={() => setActiveSection(key)}
+          className={`flex-shrink-0 px-3 py-2 rounded-xl text-xs font-medium flex items-center gap-1.5 transition whitespace-nowrap ${
+            activeSection === key
+              ? 'bg-blue-600 text-white shadow-sm'
+              : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-700'
+          }`}
+        >
+          <Icon size={14} />
+          {label}
+        </button>
+      ))}
+    </div>
+  );
+
   return (
-    <div className="h-full overflow-y-auto bg-gray-50 dark:bg-slate-900">
+    <div className="flex flex-col h-full bg-gray-50 dark:bg-slate-900">
       {/* Processing overlays */}
       {profileOp.state === 'loading' && <ProcessingOverlay message={t('profile.updatingProfile')} />}
       {passwordOp.state === 'loading' && <ProcessingOverlay message={t('profile.changingPassword')} />}
@@ -193,7 +221,7 @@ export default function ProfilePage({
       {loggingOutDevice && <ProcessingOverlay message={t('profile.loggingOutDevice')} />}
 
       {/* Header */}
-      <div className="bg-white dark:bg-slate-800 border-b border-gray-100 dark:border-slate-700 sticky top-0 z-10">
+      <div className="shrink-0 bg-white dark:bg-slate-800 border-b border-gray-100 dark:border-slate-700 z-10">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center gap-3">
           <button onClick={onBack} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700 transition">
             <ArrowLeft size={20} className="text-gray-600 dark:text-gray-400" />
@@ -209,60 +237,97 @@ export default function ProfilePage({
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-4 pt-6 pb-28 md:pb-8 space-y-4">
-        {/* Avatar + name card */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-slate-700">
-          <div className="flex items-center gap-5">
-            {/* Avatar */}
-            <div className="relative">
-              <div className="w-20 h-20 rounded-2xl overflow-hidden bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center">
-                {user.avatarUrl ? (
-                  <img src={user.avatarUrl} alt={user.displayName} className="w-full h-full object-cover" />
-                ) : (
-                  <span className="text-white text-2xl font-bold">{user.displayName.charAt(0).toUpperCase()}</span>
-                )}
+      {isEmbedded ? (
+        /* ── History / Settings: pinned top area + full-height inner component ── */
+        <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
+          {/* Compact avatar + tabs – always visible, non-scrolling */}
+          <div className="shrink-0 px-4 py-3 bg-gray-50 dark:bg-slate-900 space-y-3">
+            <div className="max-w-2xl mx-auto space-y-3">
+              <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-slate-700">
+                <div className="flex items-center gap-4">
+                  <div className="relative shrink-0">
+                    <div className="w-12 h-12 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center">
+                      {user.avatarUrl ? (
+                        <img src={user.avatarUrl} alt={user.displayName} className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-white text-lg font-bold">{user.displayName.charAt(0).toUpperCase()}</span>
+                      )}
+                    </div>
+                    <button
+                      onClick={() => fileInputRef.current?.click()}
+                      className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center shadow-md hover:bg-blue-700 transition"
+                    >
+                      <Camera size={10} className="text-white" />
+                    </button>
+                    <input ref={fileInputRef} type="file" accept="image/*" onChange={handleAvatarChange} className="hidden" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-bold text-gray-900 dark:text-white truncate">{user.displayName}</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-xs">@{user.username}</p>
+                  </div>
+                </div>
               </div>
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center shadow-md hover:bg-blue-700 transition"
-              >
-                <Camera size={13} className="text-white" />
-              </button>
-              <input ref={fileInputRef} type="file" accept="image/*" onChange={handleAvatarChange} className="hidden" />
-            </div>
-
-            {/* Info */}
-            <div className="flex-1 min-w-0">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white truncate">{user.displayName}</h2>
-              <p className="text-gray-500 dark:text-gray-400 text-sm">@{user.username}</p>
-              <p className="text-gray-400 dark:text-gray-500 text-xs mt-0.5 truncate">{user.email}</p>
+              {tabList}
             </div>
           </div>
+          {/* Full-height section */}
+          <div className="flex-1 min-h-0 overflow-hidden">
+            {activeSection === 'history' && (
+              <HistoryView
+                onBack={() => setActiveSection('profile')}
+                onBusSelect={(bus, fromHistory) => {
+                  onBusSelect(bus, fromHistory);
+                  onBack();
+                }}
+              />
+            )}
+            {activeSection === 'settings' && (
+              <SettingsPage
+                isDarkMode={isDarkMode}
+                toggleTheme={toggleTheme}
+                onContactClick={() => {
+                  onContactClick();
+                  onBack();
+                }}
+              />
+            )}
+          </div>
         </div>
+      ) : (
+        /* ── Profile / Security / Devices: normal scrollable layout ── */
+        <div className="flex-1 overflow-y-auto">
+          <div className="max-w-2xl mx-auto px-4 pt-6 pb-28 md:pb-8 space-y-4">
+            {/* Avatar + name card */}
+            <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-slate-700">
+              <div className="flex items-center gap-5">
+                {/* Avatar */}
+                <div className="relative">
+                  <div className="w-20 h-20 rounded-2xl overflow-hidden bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center">
+                    {user.avatarUrl ? (
+                      <img src={user.avatarUrl} alt={user.displayName} className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="text-white text-2xl font-bold">{user.displayName.charAt(0).toUpperCase()}</span>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center shadow-md hover:bg-blue-700 transition"
+                  >
+                    <Camera size={13} className="text-white" />
+                  </button>
+                  <input ref={fileInputRef} type="file" accept="image/*" onChange={handleAvatarChange} className="hidden" />
+                </div>
+                {/* Info */}
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white truncate">{user.displayName}</h2>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm">@{user.username}</p>
+                  <p className="text-gray-400 dark:text-gray-500 text-xs mt-0.5 truncate">{user.email}</p>
+                </div>
+              </div>
+            </div>
 
-        {/* Section tabs */}
-        <div className="flex gap-1 bg-white dark:bg-slate-800 rounded-2xl p-1.5 shadow-sm border border-gray-100 dark:border-slate-700 overflow-x-auto">
-          {([
-            { key: 'profile',  label: t('profile.tabs.profile'),  Icon: User    },
-            { key: 'security', label: t('profile.tabs.password'),  Icon: Shield  },
-            { key: 'devices',  label: t('profile.tabs.devices'),   Icon: Monitor },
-            { key: 'history',  label: t('nav.history'),            Icon: History },
-            { key: 'settings', label: t('settings.title'),         Icon: Settings },
-          ] as { key: ProfileSection; label: string; Icon: React.ElementType }[]).map(({ key, label, Icon }) => (
-            <button
-              key={key}
-              onClick={() => setActiveSection(key)}
-              className={`flex-shrink-0 px-3 py-2 rounded-xl text-xs font-medium flex items-center gap-1.5 transition whitespace-nowrap ${
-                activeSection === key
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-700'
-              }`}
-            >
-              <Icon size={14} />
-              {label}
-            </button>
-          ))}
-        </div>
+            {/* Section tabs */}
+            {tabList}
 
         {/* ── PROFILE SECTION ── */}
         {activeSection === 'profile' && (
@@ -486,33 +551,9 @@ export default function ProfilePage({
           </div>
         )}
 
-        {/* ── HISTORY SECTION ── */}
-        {activeSection === 'history' && (
-          <div className="-mx-4 -mb-28 md:mb-0">
-            <HistoryView
-              onBack={() => setActiveSection('profile')}
-              onBusSelect={(bus, fromHistory) => {
-                onBusSelect(bus, fromHistory);
-                onBack();
-              }}
-            />
           </div>
-        )}
-
-        {/* ── SETTINGS SECTION ── */}
-        {activeSection === 'settings' && (
-          <div className="-mx-4 -mb-28 md:mb-0">
-            <SettingsPage
-              isDarkMode={isDarkMode}
-              toggleTheme={toggleTheme}
-              onContactClick={() => {
-                onContactClick();
-                onBack();
-              }}
-            />
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

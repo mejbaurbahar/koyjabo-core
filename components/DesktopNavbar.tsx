@@ -75,12 +75,7 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
             isActive: view === AppView.AI_ASSISTANT,
             onClick: () => setView(AppView.AI_ASSISTANT)
         },
-        {
-            label: t('nav.history'),
-            icon: Clock,
-            isActive: view === AppView.HISTORY,
-            onClick: () => setView(AppView.HISTORY)
-        },
+
         {
             label: t('nav.about'),
             icon: Info,
