@@ -55,6 +55,14 @@ export const translations: Record<Language, Translations> = {
                 somethingWentWrong: 'কিছু সমস্যা হয়েছে।',
                 resetLinkSent: 'রিসেট লিংক পাঠানো হয়েছে।',
                 resetLinkFailed: 'রিসেট লিংক পাঠাতে ব্যর্থ হয়েছে।',
+                invalidCredentials: 'ইমেইল বা পাসওয়ার্ড সঠিক নয়।',
+                accountNotFound: 'অ্যাকাউন্ট পাওয়া যায়নি। সাপোর্টে যোগাযোগ করুন।',
+                emailAlreadyRegistered: 'এই ইমেইলটি ইতিমধ্যে রেজিস্ট্রেশন করা হয়েছে। লগইন করুন।',
+                usernameTaken: 'ইউজারনেমটি ইতিমধ্যে নেওয়া হয়েছে। অন্য নাম বেছে নিন।',
+                connectionFailed: 'সংযোগ ব্যর্থ হয়েছে। ইন্টারনেট সংযোগ পরীক্ষা করুন।',
+                requestTimedOut: 'অনুরোধ বেশি সময় নিচ্ছে। একটু পরে আবার চেষ্টা করুন।',
+                currentPasswordIncorrect: 'বর্তমান পাসওয়ার্ড সঠিক নয়।',
+                userNotFound: 'ব্যবহারকারী পাওয়া যায়নি।',
             },
             passwordStrength: {
                 label: 'পাসওয়ার্ড:',
@@ -90,7 +98,7 @@ export const translations: Record<Language, Translations> = {
             resettingPassword: 'পাসওয়ার্ড আপডেট হচ্ছে',
             redirectingToLogin: 'লগইন পেজে নিয়ে যাওয়া হচ্ছে…',
             setPasswordBtn: 'পাসওয়ার্ড সেট করুন',
-            tokenNotFound: 'রিসেট টোকেন পাওয়া যায়নি।',
+            tokenNotFound: 'পাসওয়ার্ড রিসেট লিংকটি মেয়াদোত্তীর্ণ বা ভুল। ইমেইলে আসা লিংকে আবার ক্লিক করুন, অথবা নতুন রিসেট লিংকের জন্য "পাসওয়ার্ড ভুলে গেছি" আবার চেষ্টা করুন।',
         },
         common: {
             appName: 'কই যাবো',
@@ -817,6 +825,14 @@ export const translations: Record<Language, Translations> = {
                 resetLinkSent: 'Reset link sent.',
                 resetLinkFailed: 'Failed to send reset link.',
                 authRequired: 'Please login to continue.',
+                invalidCredentials: 'Invalid email or password.',
+                accountNotFound: 'Account not found. Please contact support.',
+                emailAlreadyRegistered: 'This email is already registered. Please log in.',
+                usernameTaken: 'This username is already taken. Please choose a different one.',
+                connectionFailed: 'Connection failed. Please check your internet and try again.',
+                requestTimedOut: 'Request is taking too long. Please try again.',
+                currentPasswordIncorrect: 'Current password is incorrect.',
+                userNotFound: 'User not found.',
             },
             passwordStrength: {
                 label: 'Password:',
@@ -852,7 +868,7 @@ export const translations: Record<Language, Translations> = {
             resettingPassword: 'Updating password',
             redirectingToLogin: 'Redirecting to login page...',
             setPasswordBtn: 'Set Password',
-            tokenNotFound: 'Reset token not found.',
+            tokenNotFound: 'Your password reset link has expired or is invalid. Please click the link from your email again, or request a new reset link by clicking "Forgot Password".',
         },
         // Profile Page
         profile: {

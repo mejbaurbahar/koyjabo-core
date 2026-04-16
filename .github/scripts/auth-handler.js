@@ -208,6 +208,15 @@ async function ensureIndexExists() {
   return f;
 }
 
+async function ensureUsernameIndexExists() {
+  const f = await readDataFile('data/users/username_index.json');
+  if (!f) {
+    await writeDataFile('data/users/username_index.json', {}, null, 'Initialize username index');
+    return { content: {}, sha: null };
+  }
+  return f;
+}
+
 // ── Auth Handlers ─────────────────────────────────────────────────────────────
 async function handleSignup({ email, passwordHash, username, displayName }) {
   if (!email || !passwordHash || !username || !displayName) {
@@ -218,11 +227,23 @@ async function handleSignup({ email, passwordHash, username, displayName }) {
   const normalizedUsername = username.toLowerCase().trim();
   const emailHashKey = sha256hex(normalizedEmail);
 
-  const indexFile = await ensureIndexExists();
+  // Check username format (3-30 chars, letters/numbers/underscores only)
+  if (!/^[a-z0-9_]{3,30}$/.test(normalizedUsername)) {
+    return { success: false, error: 'Username must be 3–30 characters and contain only letters, numbers, or underscores.' };
+  }
+
+  const [indexFile, usernameIndexFile] = await Promise.all([
+    ensureIndexExists(),
+    ensureUsernameIndexExists()
+  ]);
   const index = indexFile.content || {};
+  const usernameIndex = usernameIndexFile.content || {};
 
   if (index[emailHashKey]) {
     return { success: false, error: 'This email is already registered. Please log in.' };
+  }
+  if (usernameIndex[normalizedUsername]) {
+    return { success: false, error: `The username "@${normalizedUsername}" is already taken. Please choose a different one.` };
   }
 
   const userId = crypto.randomUUID();
@@ -242,9 +263,14 @@ async function handleSignup({ email, passwordHash, username, displayName }) {
   };
 
   await writeDataFile(`data/users/${userId}.json`, user, null, `New user: ${userId}`);
+  // Update email index
   const freshIndex = await readDataFile('data/users/index.json');
   const updatedIndex = { ...(freshIndex?.content || {}), [emailHashKey]: userId };
   await writeDataFile('data/users/index.json', updatedIndex, freshIndex?.sha, 'Update user index');
+  // Update username index
+  const freshUsernameIndex = await readDataFile('data/users/username_index.json');
+  const updatedUsernameIndex = { ...(freshUsernameIndex?.content || {}), [normalizedUsername]: userId };
+  await writeDataFile('data/users/username_index.json', updatedUsernameIndex, freshUsernameIndex?.sha, 'Update username index');
 
   // Send welcome email (non-blocking)
   sendEmail({
@@ -255,14 +281,15 @@ async function handleSignup({ email, passwordHash, username, displayName }) {
 <body style="font-family:sans-serif;background:#f0fdf4;padding:24px;margin:0">
   <div style="max-width:500px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
     <div style="background:linear-gradient(135deg,#059669,#0284c7);padding:32px 24px;text-align:center">
-      <h1 style="color:#fff;margin:0;font-size:28px;letter-spacing:-0.5px">কই যাবো 🚌</h1>
-      <p style="color:#d1fae5;margin:6px 0 0;font-size:14px">Smart Transport Finder, Dhaka</p>
+      <img src="https://koyjabo.com/logo.png" alt="KoyJabo" style="width:64px;height:64px;border-radius:16px;margin-bottom:12px;display:block;margin-left:auto;margin-right:auto;">
+      <h1 style="color:#fff;margin:0;font-size:28px;letter-spacing:-0.5px">কই যাবো KoyJabo</h1>
+      <p style="color:#d1fae5;margin:6px 0 0;font-size:14px">Bangladesh's Smart Transport Finder</p>
     </div>
     <div style="padding:32px 24px">
       <h2 style="color:#111827;margin:0 0 8px">Welcome, ${displayName.trim()}! 🎉</h2>
       <p style="color:#4b5563;font-size:15px;line-height:1.6;margin:0 0 20px">
         Your account has been created successfully. You're now part of the KoyJabo community —
-        Dhaka's smartest way to find bus routes, metro schedules, and intercity travel.
+        BANGLADESH's smartest way to find Dhaka city local bus routes, metro schedules, and intercity travel.
       </p>
       <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:16px 20px;margin:0 0 24px">
         <p style="margin:0;color:#065f46;font-size:14px;font-weight:600">Your account details</p>
@@ -296,10 +323,41 @@ async function handleUpdateProfile({ userId, displayName, username }) {
   const userFile = await readDataFile(`data/users/${userId}.json`);
   if (!userFile) return { success: false, error: 'User not found.' };
 
+  let newUsername = userFile.content.username;
+
+  if (username) {
+    newUsername = username.toLowerCase().trim();
+
+    if (!/^[a-z0-9_]{3,30}$/.test(newUsername)) {
+      return { success: false, error: 'Username must be 3–30 characters and contain only letters, numbers, or underscores.' };
+    }
+
+    // Check uniqueness only if username is changing
+    if (newUsername !== userFile.content.username) {
+      const usernameIndexFile = await readDataFile('data/users/username_index.json');
+      const usernameIndex = usernameIndexFile?.content || {};
+      const existingUserId = usernameIndex[newUsername];
+      if (existingUserId && existingUserId !== userId) {
+        return { success: false, error: `The username "@${newUsername}" is already taken. Please choose a different one.` };
+      }
+
+      // Update username index: remove old, add new (single atomic write)
+      const oldUsername = userFile.content.username;
+      const freshUsernameIndex = await readDataFile('data/users/username_index.json');
+      const baseIndex = freshUsernameIndex?.content || {};
+      const cleanIndex = {};
+      for (const [k, v] of Object.entries(baseIndex)) {
+        if (k !== oldUsername) cleanIndex[k] = v;
+      }
+      cleanIndex[newUsername] = userId;
+      await writeDataFile('data/users/username_index.json', cleanIndex, freshUsernameIndex?.sha, 'Update username index');
+    }
+  }
+
   const updated = {
     ...userFile.content,
     ...(displayName ? { displayName: displayName.trim() } : {}),
-    ...(username ? { username: username.toLowerCase().trim() } : {}),
+    username: newUsername,
     updatedAt: Date.now()
   };
 
@@ -336,6 +394,7 @@ async function handleChangePassword({ userId, newPasswordHash, oldPasswordHash, 
 <body style="font-family:sans-serif;background:#fef2f2;padding:24px;margin:0">
   <div style="max-width:500px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
     <div style="background:linear-gradient(135deg,#dc2626,#9333ea);padding:32px 24px;text-align:center">
+      <img src="https://koyjabo.com/logo.png" alt="KoyJabo" style="width:48px;height:48px;border-radius:12px;margin-bottom:10px;display:block;margin-left:auto;margin-right:auto;">
       <h1 style="color:#fff;margin:0;font-size:24px">🔐 Password Changed</h1>
       <p style="color:#fecaca;margin:6px 0 0;font-size:14px">Security Alert — কই যাবো KoyJabo</p>
     </div>
@@ -419,6 +478,7 @@ async function handleForgotPassword({ email }) {
 <body style="font-family:sans-serif;background:#f0f9ff;padding:24px;margin:0">
   <div style="max-width:500px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
     <div style="background:linear-gradient(135deg,#0284c7,#7c3aed);padding:32px 24px;text-align:center">
+      <img src="https://koyjabo.com/logo.png" alt="KoyJabo" style="width:48px;height:48px;border-radius:12px;margin-bottom:10px;display:block;margin-left:auto;margin-right:auto;">
       <h1 style="color:#fff;margin:0;font-size:24px">🔑 Password Reset</h1>
       <p style="color:#bae6fd;margin:6px 0 0;font-size:14px">কই যাবো KoyJabo</p>
     </div>
@@ -561,6 +621,7 @@ async function handleRecordDevice({ userId, deviceInfo }) {
 <body style="font-family:sans-serif;background:#eff6ff;padding:24px;margin:0">
   <div style="max-width:500px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
     <div style="background:linear-gradient(135deg,#1d4ed8,#7c3aed);padding:32px 24px;text-align:center">
+      <img src="https://koyjabo.com/logo.png" alt="KoyJabo" style="width:48px;height:48px;border-radius:12px;margin-bottom:10px;display:block;margin-left:auto;margin-right:auto;">
       <h1 style="color:#fff;margin:0;font-size:24px">🔔 New Device Login</h1>
       <p style="color:#bfdbfe;margin:6px 0 0;font-size:14px">Security Alert — কই যাবো KoyJabo</p>
     </div>

@@ -105,8 +105,6 @@ const getStoredView = (): AppView => {
     const target = viewParam || hash || path;
 
     if (target) {
-      if (viewParam) window.history.replaceState({}, '', window.location.pathname);
-
       // Simple mapping for primary views
       const viewMap: Record<string, AppView> = {
         'ai': AppView.AI_ASSISTANT,
@@ -139,13 +137,22 @@ const getStoredView = (): AppView => {
         'profile': AppView.PROFILE
       };
 
-      if (viewMap[target]) return viewMap[target];
+      if (viewMap[target]) {
+        // Only strip the 'view' param; keep token, section, and any other params
+        if (viewParam) {
+          const remaining = new URLSearchParams(window.location.search);
+          remaining.delete('view');
+          const qs = remaining.toString();
+          window.history.replaceState({}, '', window.location.pathname + (qs ? '?' + qs : ''));
+        }
+        return viewMap[target];
+      }
 
       // Special handling for blog sub-paths
       if (target.startsWith('blog/')) {
         return AppView.BLOG;
       }
-      
+
       // If we have a path but it's not recognized, return NOT_FOUND
       if (path && path !== '') {
         return AppView.NOT_FOUND;
@@ -527,6 +534,23 @@ const App: React.FC = () => {
     }
   }, [isDarkMode]);
 
+  // Disable right-click and browser inspection shortcuts
+  useEffect(() => {
+    const noContext = (e: MouseEvent) => e.preventDefault();
+    const noInspect = (e: KeyboardEvent) => {
+      if (e.key === 'F12') { e.preventDefault(); return; }
+      if (e.ctrlKey && e.shiftKey && ['I','J','C','c','i','j'].includes(e.key)) { e.preventDefault(); return; }
+      if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) { e.preventDefault(); return; }
+      if (e.ctrlKey && e.shiftKey && e.key === 'K') { e.preventDefault(); return; } // Firefox console
+    };
+    document.addEventListener('contextmenu', noContext);
+    document.addEventListener('keydown', noInspect);
+    return () => {
+      document.removeEventListener('contextmenu', noContext);
+      document.removeEventListener('keydown', noInspect);
+    };
+  }, []);
+
   const [searchMode, setSearchMode] = useState<'TEXT' | 'ROUTE'>(() =>
     (localStorage.getItem('dhaka_commute_search_mode') as 'TEXT' | 'ROUTE') || 'ROUTE'
   );
@@ -629,7 +653,11 @@ const App: React.FC = () => {
   const pwaUpdateSWRef = useRef<((reloadPage?: boolean) => Promise<void>) | null>(null);
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
   const [previousView, setPreviousView] = useState<AppView>(AppView.HOME); // Track previous view for back navigation
-  const [profileSection, setProfileSection] = useState<'profile' | 'security' | 'devices' | 'history' | 'settings'>('profile');
+  const [profileSection, setProfileSection] = useState<'profile' | 'security' | 'devices' | 'history' | 'settings'>(() => {
+    const s = new URLSearchParams(window.location.search).get('section');
+    const valid = ['profile', 'security', 'devices', 'history', 'settings'];
+    return (valid.includes(s || '') ? s : 'profile') as 'profile' | 'security' | 'devices' | 'history' | 'settings';
+  });
   const [showClearChatConfirm, setShowClearChatConfirm] = useState(false);
   const [showHistoryManager, setShowHistoryManager] = useState(false);
   const [showLiveMap, setShowLiveMap] = useState(false);
@@ -2412,9 +2440,9 @@ const App: React.FC = () => {
     const generalFareInfo = calculateFare(selectedBus);
     return (
       <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-hidden w-full max-w-full">
-        {/* Mobile Header (Non-fixed, but at the top of the flex container) */}
-        <div className="block md:hidden w-full z-40 bg-white dark:bg-slate-900 shadow-sm border-b border-gray-100 dark:border-gray-800 shrink-0">
-          <div className="px-5 py-4 pt-safe flex items-center justify-between">
+        {/* Mobile sub-header — back + bus name (main app header above handles logo/avatar/menu) */}
+        <div className="block md:hidden w-full z-40 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-gray-800 shrink-0">
+          <div className="px-4 py-2 flex items-center justify-between">
             <button onClick={() => setView(AppView.HOME)} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors" aria-label="Go back to home">
               <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
             </button>
@@ -3488,7 +3516,7 @@ const App: React.FC = () => {
         )}
 
         {/* Mobile Header */}
-        <header className={`sticky top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-5 py-3 shadow-sm z-[100] md:hidden transition-transform duration-300 pt-safe ${(view === AppView.BUS_DETAILS || view === AppView.LIVE_NAV || view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD || view === AppView.PROFILE) ? '-translate-y-full h-0 overflow-hidden py-0 border-none' : 'translate-y-0 h-auto'} `}>
+        <header className={`sticky top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-5 py-3 shadow-sm z-[100] md:hidden transition-transform duration-300 pt-safe ${(view === AppView.LIVE_NAV || view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? '-translate-y-full h-0 overflow-hidden py-0 border-none' : 'translate-y-0 h-auto'} `}>
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2 outline-none cursor-pointer" onClick={() => setView(AppView.HOME)}>
               <AnimatedLogo size="small" />

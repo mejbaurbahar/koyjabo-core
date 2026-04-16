@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Eye, EyeOff, UserPlus, AlertCircle, CheckCircle2, Clock, X, Check } from 'lucide-react';
-import { signupUser } from '../../services/githubAuthService';
+import { signupUser, getAuthErrorKey } from '../../services/githubAuthService';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../../contexts/LanguageContext';
 
@@ -23,9 +23,77 @@ interface PasswordRule {
   met: boolean;
 }
 
+// ── Animated processing screen shown during 30-90s signup wait ───────────────
+function SignupProcessingScreen({
+  serverError, t, language
+}: { serverError: string; t: (k: string) => string; language: string }) {
+  const bnMessages = [
+    'সুরক্ষিতভাবে অ্যাকাউন্ট তৈরি হচ্ছে…',
+    'আপনার তথ্য এনক্রিপ্ট করা হচ্ছে…',
+    'অ্যাকাউন্ট সক্রিয় করা হচ্ছে…',
+    'প্রায় শেষ, একটু অপেক্ষা করুন…',
+    'স্বাগত ইমেইল পাঠানো হচ্ছে…',
+  ];
+  const enMessages = [
+    'Creating your account securely…',
+    'Encrypting your information…',
+    'Activating your account…',
+    'Almost done, please wait…',
+    'Sending welcome email…',
+  ];
+  const messages = language === 'bn' ? bnMessages : enMessages;
+  const [msgIdx, setMsgIdx] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => setMsgIdx(i => (i + 1) % messages.length), 3500);
+    return () => clearInterval(id);
+  }, [messages.length]);
+
+  return (
+    <div className="h-full flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 p-4">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 max-w-sm w-full text-center">
+        {/* Outer ring + inner ring animation */}
+        <div className="relative w-20 h-20 mx-auto mb-6">
+          <div className="absolute inset-0 rounded-full border-4 border-blue-100 dark:border-slate-600 animate-spin border-t-blue-500" />
+          <div className="absolute inset-2 rounded-full border-4 border-indigo-100 dark:border-slate-700 animate-spin border-b-indigo-500 [animation-direction:reverse] [animation-duration:1.4s]" />
+          <Clock className="absolute inset-0 m-auto text-blue-600 dark:text-blue-400" size={22} />
+        </div>
+
+        <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-1">{t('auth.creatingAccountTitle')}</h2>
+
+        {/* Cycling status message */}
+        <p key={msgIdx} className="text-sm text-blue-600 dark:text-blue-400 font-medium mb-4 animate-in fade-in duration-500">
+          {messages[msgIdx]}
+        </p>
+
+        {/* Animated dots progress */}
+        <div className="flex justify-center gap-2 mb-4">
+          {messages.map((_, i) => (
+            <div
+              key={i}
+              className={`w-2 h-2 rounded-full transition-all duration-500 ${
+                i === msgIdx ? 'bg-blue-600 scale-125' : i < msgIdx ? 'bg-blue-300' : 'bg-gray-200 dark:bg-slate-600'
+              }`}
+            />
+          ))}
+        </div>
+
+        <p className="text-gray-400 dark:text-gray-500 text-xs">{t('auth.forgotPasswordPage.maxWait')}</p>
+
+        {serverError && (
+          <div className="mt-4 p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 flex items-center gap-2">
+            <AlertCircle size={16} className="text-red-500 shrink-0" />
+            <p className="text-sm text-red-700 dark:text-red-400">{serverError}</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPageProps) {
   const { login } = useAuth();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const getPasswordRules = (password: string): PasswordRule[] => [
     { label: t('auth.passwordRules.minChars'), met: password.length >= 8 },
@@ -128,7 +196,9 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
     try {
       const result = await signupUser(form.email, form.password, form.username, form.displayName);
       if (!result.success) {
-        setServerError(result.error || t('auth.validation.signupFailed'));
+        const errMsg = result.error || '';
+        const errKey = getAuthErrorKey(errMsg);
+        setServerError(errKey ? t(errKey) : errMsg || t('auth.validation.signupFailed'));
         setStep('form');
         return;
       }
@@ -143,7 +213,9 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
       });
       onSuccess();
     } catch (err) {
-      setServerError(err instanceof Error ? err.message : t('auth.validation.signupFailed'));
+      const msg = err instanceof Error ? err.message : '';
+      const key = getAuthErrorKey(msg);
+      setServerError(key ? t(key) : msg || t('auth.validation.signupFailed'));
       setStep('form');
     } finally {
       setLoading(false);
@@ -151,26 +223,7 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
   };
 
   if (step === 'processing') {
-    return (
-      <div className="h-full overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-24 md:pt-safe md:pb-safe">
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 max-w-sm w-full text-center">
-          <div className="relative w-16 h-16 mx-auto mb-4">
-            <div className="w-16 h-16 rounded-full border-4 border-blue-100 dark:border-slate-600 animate-spin border-t-blue-600" />
-            <Clock className="absolute inset-0 m-auto text-blue-600" size={20} />
-          </div>
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{t('auth.creatingAccountTitle')}</h2>
-          <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed whitespace-pre-line">
-            {t('auth.processingWait')}
-          </p>
-          {serverError && (
-            <div className="mt-4 p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 flex items-center gap-2">
-              <AlertCircle size={16} className="text-red-500 shrink-0" />
-              <p className="text-sm text-red-700 dark:text-red-400">{serverError}</p>
-            </div>
-          )}
-        </div>
-      </div>
-    );
+    return <SignupProcessingScreen serverError={serverError} t={t} language={language} />;
   }
 
   return (

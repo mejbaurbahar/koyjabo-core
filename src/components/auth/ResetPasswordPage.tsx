@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { KeyRound, Eye, EyeOff, CheckCircle2, AlertCircle, Loader2, Clock } from 'lucide-react';
-import { resetPassword } from '../../services/githubAuthService';
+import { resetPassword, getAuthErrorKey } from '../../services/githubAuthService';
 import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface ResetPasswordPageProps {
@@ -36,13 +36,17 @@ export default function ResetPasswordPage({ token, onSuccess }: ResetPasswordPag
     try {
       const result = await resetPassword(token, password);
       if (!result.success) {
-        setError(result.error || t('auth.validation.somethingWentWrong'));
+        const errMsg = result.error || '';
+        const errKey = getAuthErrorKey(errMsg);
+        setError(errKey ? t(errKey) : errMsg || t('auth.validation.somethingWentWrong'));
         setStage('form');
         return;
       }
       setStage('done');
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('auth.validation.somethingWentWrong'));
+      const msg = err instanceof Error ? err.message : '';
+      const key = getAuthErrorKey(msg);
+      setError(key ? t(key) : msg || t('auth.validation.somethingWentWrong'));
       setStage('form');
     }
   };

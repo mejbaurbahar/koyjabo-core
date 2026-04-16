@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Mail, ArrowLeft, Loader2, AlertCircle, CheckCircle2, Clock, Copy, ExternalLink } from 'lucide-react';
-import { forgotPassword } from '../../services/githubAuthService';
+import React, { useState, useEffect } from 'react';
+import { Mail, ArrowLeft, AlertCircle, CheckCircle2, Clock, Copy, ExternalLink } from 'lucide-react';
+import { forgotPassword, getAuthErrorKey } from '../../services/githubAuthService';
 import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface ForgotPasswordPageProps {
@@ -8,8 +8,51 @@ interface ForgotPasswordPageProps {
   onResetPassword: (token: string) => void;
 }
 
+function ForgotProcessingScreen({ t, language }: { t: (k: string) => string; language: string }) {
+  const bnMessages = [
+    'আপনার ইমেইল যাচাই করা হচ্ছে…',
+    'রিসেট লিংক তৈরি হচ্ছে…',
+    'ইমেইল পাঠানো হচ্ছে…',
+    'প্রায় হয়ে গেছে…',
+  ];
+  const enMessages = [
+    'Verifying your email…',
+    'Generating reset link…',
+    'Sending email…',
+    'Almost done…',
+  ];
+  const messages = language === 'bn' ? bnMessages : enMessages;
+  const [msgIdx, setMsgIdx] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => setMsgIdx(i => (i + 1) % messages.length), 3500);
+    return () => clearInterval(id);
+  }, [messages.length]);
+
+  return (
+    <div className="h-full flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 p-4">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 max-w-xs w-full text-center">
+        <div className="relative w-16 h-16 mx-auto mb-5">
+          <div className="absolute inset-0 rounded-full border-4 border-blue-100 dark:border-slate-600 animate-spin border-t-blue-600" />
+          <div className="absolute inset-2 rounded-full border-4 border-indigo-100 dark:border-slate-700 animate-spin border-b-indigo-500 [animation-direction:reverse] [animation-duration:1.4s]" />
+          <Clock className="absolute inset-0 m-auto text-blue-600 dark:text-blue-400" size={18} />
+        </div>
+        <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{t('auth.forgotPasswordPage.processing')}</h2>
+        <p key={msgIdx} className="text-sm text-blue-600 dark:text-blue-400 font-medium mb-3 animate-in fade-in duration-500">
+          {messages[msgIdx]}
+        </p>
+        <div className="flex justify-center gap-2">
+          {messages.map((_, i) => (
+            <div key={i} className={`w-2 h-2 rounded-full transition-all duration-500 ${i === msgIdx ? 'bg-blue-600 scale-125' : i < msgIdx ? 'bg-blue-300' : 'bg-gray-200 dark:bg-slate-600'}`} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ForgotPasswordPage({ onBack, onResetPassword }: ForgotPasswordPageProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [email, setEmail] = useState('');
   const [stage, setStage] = useState<'form' | 'processing' | 'done'>('form');
   const [error, setError] = useState('');
@@ -36,7 +79,9 @@ export default function ForgotPasswordPage({ onBack, onResetPassword }: ForgotPa
       }
       setStage('done');
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('auth.validation.somethingWentWrong'));
+      const msg = err instanceof Error ? err.message : '';
+      const key = getAuthErrorKey(msg);
+      setError(key ? t(key) : msg || t('auth.validation.somethingWentWrong'));
       setStage('form');
     }
   };
@@ -48,18 +93,7 @@ export default function ForgotPasswordPage({ onBack, onResetPassword }: ForgotPa
   };
 
   if (stage === 'processing') {
-    return (
-      <div className="h-full overflow-y-auto bg-white dark:bg-slate-900 md:bg-gradient-to-br md:from-blue-50 md:via-white md:to-indigo-50 md:dark:from-slate-900 md:dark:via-slate-800 md:dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-16 pb-24 md:pt-4">
-        <div className="md:bg-white md:dark:bg-slate-800 md:rounded-2xl md:shadow-xl p-10 max-w-sm w-full text-center mt-12 md:mt-0">
-          <div className="relative w-16 h-16 mx-auto mb-4">
-            <div className="w-16 h-16 rounded-full border-4 border-blue-100 dark:border-slate-600 animate-spin border-t-blue-600" />
-            <Clock className="absolute inset-0 m-auto text-blue-600" size={20} />
-          </div>
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{t('auth.forgotPasswordPage.processing')}</h2>
-          <p className="text-gray-500 dark:text-gray-400 text-sm">{t('auth.forgotPasswordPage.maxWait')}</p>
-        </div>
-      </div>
-    );
+    return <ForgotProcessingScreen t={t} language={language} />;
   }
 
   if (stage === 'done') {
@@ -159,7 +193,7 @@ export default function ForgotPasswordPage({ onBack, onResetPassword }: ForgotPa
               type="submit"
               className="w-full py-3 px-6 rounded-xl font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-sm"
             >
-              {stage === 'processing' ? <Loader2 size={18} className="animate-spin" /> : <Mail size={18} />}
+              <Mail size={18} />
               {t('auth.forgotPasswordPage.sendResetLink')}
             </button>
           </form>

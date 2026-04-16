@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, LogIn, Loader2, AlertCircle, X } from 'lucide-react';
-import { loginUser } from '../../services/githubAuthService';
+import { Eye, EyeOff, LogIn, Loader2, AlertCircle, X, Lock } from 'lucide-react';
+import { loginUser, getAuthErrorKey, fetchAvatar } from '../../services/githubAuthService';
 import { useAuth } from '../../contexts/AuthContext';
-import { fetchAvatar } from '../../services/githubAuthService';
 import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface LoginPageProps {
@@ -56,11 +55,28 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
 
       onSuccess();
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('auth.validation.loginFailed'));
+      const msg = err instanceof Error ? err.message : '';
+      const key = getAuthErrorKey(msg);
+      setError(key ? t(key) : msg || t('auth.validation.loginFailed'));
     } finally {
       setLoading(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="h-full flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 p-4">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 max-w-xs w-full text-center">
+          <div className="relative w-16 h-16 mx-auto mb-5">
+            <div className="w-16 h-16 rounded-full border-4 border-blue-100 dark:border-slate-600 animate-spin border-t-blue-600" />
+            <Lock className="absolute inset-0 m-auto text-blue-600" size={20} />
+          </div>
+          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-1">{t('auth.verifying')}</h2>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">{t('auth.processingWait')}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-full overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-28 md:pt-safe md:pb-safe relative">

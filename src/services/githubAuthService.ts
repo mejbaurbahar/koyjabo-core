@@ -382,6 +382,39 @@ export function syncHistoryToGitHub(userId: string, history: {
   }).catch(() => { /* non-critical, ignore silently */ });
 }
 
+// ── Auth error → i18n key mapping ────────────────────────────────────────────
+// Maps known backend/network error messages to translation keys so auth pages
+// can display errors in the user's chosen language.
+const AUTH_ERROR_KEY_MAP: Record<string, string> = {
+  'Invalid email or password.':                                       'auth.validation.invalidCredentials',
+  'Account not found. Please contact support.':                       'auth.validation.accountNotFound',
+  'This email is already registered. Please log in.':                 'auth.validation.emailAlreadyRegistered',
+  'Connection failed. Please check your internet and try again.':     'auth.validation.connectionFailed',
+  'Request is taking too long. Please check your connection and try again.': 'auth.validation.requestTimedOut',
+  'Current password is incorrect.':                                   'auth.validation.currentPasswordIncorrect',
+  'User not found.':                                                  'auth.validation.userNotFound',
+};
+
+// Partial-match patterns for dynamic messages (e.g. username taken includes the username)
+const AUTH_ERROR_PATTERNS: Array<[RegExp, string]> = [
+  [/username.*already taken/i,   'auth.validation.usernameTaken'],
+  [/email.*already registered/i, 'auth.validation.emailAlreadyRegistered'],
+  [/taking too long/i,           'auth.validation.requestTimedOut'],
+  [/connection failed/i,         'auth.validation.connectionFailed'],
+];
+
+/**
+ * Returns the i18n translation key for a known auth error message, or null if unknown.
+ * Usage: const key = getAuthErrorKey(err.message); setError(key ? t(key) : err.message);
+ */
+export function getAuthErrorKey(message: string): string | null {
+  if (AUTH_ERROR_KEY_MAP[message]) return AUTH_ERROR_KEY_MAP[message];
+  for (const [pattern, key] of AUTH_ERROR_PATTERNS) {
+    if (pattern.test(message)) return key;
+  }
+  return null;
+}
+
 // ── Image resize helper ───────────────────────────────────────────────────────
 function resizeAndEncodeImage(file: File, maxDimension: number): Promise<string> {
   return new Promise((resolve, reject) => {
