@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import type { BusRoute, UserLocation } from '../types';
-import { STATIONS } from '../constants';
-import { Maximize2, MapPin, Navigation } from 'lucide-react';
+import { STATIONS, METRO_STATIONS, RAILWAY_STATIONS, AIRPORTS } from '../constants';
+import { Navigation, Layers, Train, Plane, X } from 'lucide-react';
 
 interface BusRouteMapProps {
   route: BusRoute;
@@ -12,12 +12,34 @@ interface BusRouteMapProps {
   onOpenFullMap?: () => void;
 }
 
-// Deterministic color from route id
 function getRouteColor(id: string): string {
   const palette = ['#10b981','#3b82f6','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#f97316','#84cc16','#ec4899','#14b8a6'];
   let h = 0;
   for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
   return palette[h % palette.length];
+}
+
+// Fetch road-snapped route from OSRM (free, no API key)
+async function fetchRoadRoute(coords: [number, number][]): Promise<[number, number][] | null> {
+  if (coords.length < 2) return null;
+  try {
+    // OSRM only accepts up to 25 waypoints reliably; sample if more
+    const MAX_WP = 20;
+    let waypoints = coords;
+    if (coords.length > MAX_WP) {
+      const step = (coords.length - 1) / (MAX_WP - 1);
+      waypoints = Array.from({ length: MAX_WP }, (_, i) => coords[Math.round(i * step)]);
+    }
+    const coordStr = waypoints.map(([lat, lng]) => `${lng},${lat}`).join(';');
+    const url = `https://router.project-osrm.org/route/v1/driving/${coordStr}?overview=full&geometries=geojson`;
+    const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (data.code !== 'Ok' || !data.routes?.[0]) return null;
+    return (data.routes[0].geometry.coordinates as [number, number][]).map(([lng, lat]) => [lat, lng]);
+  } catch {
+    return null;
+  }
 }
 
 const BusRouteMap: React.FC<BusRouteMapProps> = ({
@@ -30,24 +52,28 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
 }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
-  const layerGroupRef = useRef<any>(null);
+  const routeLayerRef = useRef<any>(null);
+  const overlayLayerRef = useRef<any>(null);
+  const userMarkerRef = useRef<any>(null);
   const [mapReady, setMapReady] = useState(false);
+  const [showLayers, setShowLayers] = useState(false);
+  const [showMetro, setShowMetro] = useState(false);
+  const [showRailway, setShowRailway] = useState(false);
+  const [showAirport, setShowAirport] = useState(false);
+  const [routeSnapped, setRouteSnapped] = useState(false);
+
   const routeColor = getRouteColor(route.id);
-
   const stops = isReversed ? [...route.stops].reverse() : route.stops;
+  const stopCoords: [number, number][] = stops.map(id => STATIONS[id]).filter(Boolean).map(s => [s.lat, s.lng]);
 
-  // Compute stop coords
-  const stopCoords: [number, number][] = stops
-    .map(id => STATIONS[id])
-    .filter(Boolean)
-    .map(s => [s.lat, s.lng]);
-
+  // Build and draw the map
   useEffect(() => {
     if (!mapRef.current || stopCoords.length === 0) return;
+    let cancelled = false;
 
-    // Lazy-load Leaflet
-    import('leaflet').then(L => {
-      // Inject Leaflet CSS once
+    import('leaflet').then(async L => {
+      if (cancelled) return;
+
       if (!document.getElementById('leaflet-css')) {
         const link = document.createElement('link');
         link.id = 'leaflet-css';
@@ -56,7 +82,6 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
         document.head.appendChild(link);
       }
 
-      // Fix default icon paths
       delete (L.Icon.Default.prototype as any)._getIconUrl;
       L.Icon.Default.mergeOptions({
         iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
@@ -77,178 +102,287 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
         touchZoom: true,
       });
 
-      // OSM tile layer (free, offline-cacheable)
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OSM</a>',
         maxZoom: 19,
         crossOrigin: true,
       }).addTo(map);
 
-      // Zoom control bottom-right
       L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-      const group = L.layerGroup().addTo(map);
-      layerGroupRef.current = group;
-
-      // Glow polyline (wider, semi-transparent)
-      L.polyline(stopCoords, {
-        color: routeColor,
-        weight: 8,
-        opacity: 0.18,
-        lineCap: 'round',
-        lineJoin: 'round',
-      }).addTo(group);
-
-      // Main polyline
-      L.polyline(stopCoords, {
-        color: routeColor,
-        weight: 3.5,
-        opacity: 0.95,
-        lineCap: 'round',
-        lineJoin: 'round',
-      }).addTo(group);
-
-      // Highlighted segment
-      if (highlightStartIdx >= 0 && highlightEndIdx >= 0 && highlightEndIdx > highlightStartIdx) {
-        const hiCoords = stopCoords.slice(highlightStartIdx, highlightEndIdx + 1);
-        if (hiCoords.length >= 2) {
-          L.polyline(hiCoords, {
-            color: '#f59e0b',
-            weight: 4.5,
-            opacity: 1,
-            lineCap: 'round',
-            lineJoin: 'round',
-          }).addTo(group);
-        }
-      }
-
-      // Stop markers
-      stops.forEach((id, idx) => {
-        const station = STATIONS[id];
-        if (!station) return;
-        const isFirst = idx === 0;
-        const isLast = idx === stops.length - 1;
-        const isHighlighted = idx === highlightStartIdx || idx === highlightEndIdx;
-
-        let bg = '#fff';
-        let border = routeColor;
-        let textColor = routeColor;
-        let label = String(idx + 1);
-
-        if (isFirst) { bg = routeColor; border = routeColor; textColor = '#fff'; label = 'A'; }
-        else if (isLast) { bg = '#1e293b'; border = '#1e293b'; textColor = '#fff'; label = 'B'; }
-        else if (isHighlighted) { bg = '#f59e0b'; border = '#f59e0b'; textColor = '#fff'; }
-
-        const size = isFirst || isLast ? 26 : isHighlighted ? 22 : 16;
-        const fontSize = isFirst || isLast ? 10 : 8;
-
-        const icon = L.divIcon({
-          className: '',
-          iconSize: [size, size],
-          iconAnchor: [size / 2, size / 2],
-          html: `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${bg};border:2.5px solid ${border};display:flex;align-items:center;justify-content:center;font-size:${fontSize}px;font-weight:700;color:${textColor};box-shadow:0 1px 4px rgba(0,0,0,0.25);font-family:sans-serif;">${label}</div>`,
-        });
-
-        L.marker([station.lat, station.lng], { icon })
-          .bindTooltip(`<b>${station.name}</b><br><small>${station.bnName}</small>`, {
-            direction: 'top',
-            offset: [0, -size / 2 - 4],
-            className: 'leaflet-tooltip-bus',
-          })
-          .addTo(group);
-      });
-
-      // User location marker
-      if (userLocation) {
-        const userIcon = L.divIcon({
-          className: '',
-          iconSize: [18, 18],
-          iconAnchor: [9, 9],
-          html: `<div style="width:18px;height:18px;border-radius:50%;background:#3b82f6;border:3px solid #fff;box-shadow:0 0 0 2px #3b82f6,0 2px 6px rgba(0,0,0,0.3);"></div>`,
-        });
-        L.marker([userLocation.lat, userLocation.lng], { icon: userIcon })
-          .bindTooltip('আপনি এখানে', { direction: 'top' })
-          .addTo(group);
-      }
-
-      // Fit map to route bounds with padding
-      if (stopCoords.length > 0) {
-        const bounds = L.latLngBounds(stopCoords);
-        map.fitBounds(bounds, { padding: [24, 24] });
-      }
-
       mapInstanceRef.current = map;
+      routeLayerRef.current = L.layerGroup().addTo(map);
+      overlayLayerRef.current = L.layerGroup().addTo(map);
+
+      // Fit to straight-line bounds first, then try to snap to roads
+      const bounds = L.latLngBounds(stopCoords);
+      map.fitBounds(bounds, { padding: [28, 28] });
+
+      // Draw straight-line route immediately (fallback)
+      drawRoute(L, stopCoords, null, false);
+
       setMapReady(true);
+
+      // Try to fetch road-snapped route
+      const snapped = await fetchRoadRoute(stopCoords);
+      if (cancelled || !mapInstanceRef.current) return;
+      if (snapped && snapped.length > 1) {
+        drawRoute(L, stopCoords, snapped, true);
+        setRouteSnapped(true);
+      }
     });
 
     return () => {
+      cancelled = true;
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
         setMapReady(false);
+        setRouteSnapped(false);
       }
     };
-  // Only re-create on route change
   }, [route.id, isReversed]);
 
-  // Update highlighted segment without full recreate
-  useEffect(() => {
-    if (!mapInstanceRef.current || !layerGroupRef.current || !mapReady) return;
-    import('leaflet').then(L => {
-      // Remove only the highlight layer (last added polyline)
-      layerGroupRef.current.eachLayer((layer: any) => {
-        if (layer._highlightLayer) layerGroupRef.current.removeLayer(layer);
+  // Draw route lines + stop markers
+  const drawRoute = useCallback((L: any, coords: [number, number][], roadCoords: [number, number][] | null, snapped: boolean) => {
+    if (!routeLayerRef.current) return;
+    routeLayerRef.current.clearLayers();
+
+    const linePath = roadCoords ?? coords;
+
+    // Glow
+    L.polyline(linePath, { color: routeColor, weight: 10, opacity: 0.15, lineCap: 'round', lineJoin: 'round' }).addTo(routeLayerRef.current);
+    // Main line
+    L.polyline(linePath, { color: routeColor, weight: 4, opacity: 0.95, lineCap: 'round', lineJoin: 'round' }).addTo(routeLayerRef.current);
+
+    // Highlight segment
+    if (highlightStartIdx >= 0 && highlightEndIdx >= 0 && highlightEndIdx > highlightStartIdx) {
+      const hi = coords.slice(highlightStartIdx, highlightEndIdx + 1);
+      if (hi.length >= 2) {
+        L.polyline(hi, { color: '#f59e0b', weight: 5, opacity: 1, lineCap: 'round', lineJoin: 'round' }).addTo(routeLayerRef.current);
+      }
+    }
+
+    // Stop markers
+    coords.forEach((coord, idx) => {
+      const station = STATIONS[stops[idx]];
+      if (!station) return;
+      const isFirst = idx === 0;
+      const isLast = idx === coords.length - 1;
+      const isHighlighted = idx === highlightStartIdx || idx === highlightEndIdx;
+
+      let bg = '#fff';
+      let border = routeColor;
+      let textColor = routeColor;
+      let label = '';
+      let size = 14;
+      let fontSize = 8;
+
+      if (isFirst) {
+        bg = '#10b981'; border = '#059669'; textColor = '#fff';
+        label = 'Start'; size = 52; fontSize = 10;
+      } else if (isLast) {
+        bg = '#1e293b'; border = '#0f172a'; textColor = '#fff';
+        label = 'Destination'; size = 76; fontSize = 10;
+      } else if (isHighlighted) {
+        bg = '#f59e0b'; border = '#d97706'; textColor = '#fff';
+        label = '●'; size = 18; fontSize = 10;
+      } else {
+        label = '●'; size = 12; fontSize = 8;
+      }
+
+      const h = isFirst || isLast ? 24 : 14;
+      const w = isFirst || isLast ? size : 14;
+      const br = isFirst || isLast ? 12 : '50%';
+
+      const icon = L.divIcon({
+        className: '',
+        iconSize: [w, h],
+        iconAnchor: [w / 2, h / 2],
+        html: isFirst || isLast
+          ? `<div style="width:${w}px;height:${h}px;border-radius:${br}px;background:${bg};border:2px solid ${border};display:flex;align-items:center;justify-content:center;font-size:${fontSize}px;font-weight:700;color:${textColor};box-shadow:0 2px 6px rgba(0,0,0,0.3);white-space:nowrap;padding:0 8px;font-family:sans-serif;">${label}</div>`
+          : `<div style="width:${w}px;height:${h}px;border-radius:50%;background:${bg};border:2px solid ${border};display:flex;align-items:center;justify-content:center;font-size:${fontSize}px;font-weight:700;color:${textColor};box-shadow:0 1px 4px rgba(0,0,0,0.2);"></div>`,
       });
-      if (highlightStartIdx >= 0 && highlightEndIdx >= 0 && highlightEndIdx > highlightStartIdx) {
-        const hiCoords = stopCoords.slice(highlightStartIdx, highlightEndIdx + 1);
-        if (hiCoords.length >= 2) {
-          const hl = L.polyline(hiCoords, {
-            color: '#f59e0b',
-            weight: 4.5,
-            opacity: 1,
-            lineCap: 'round',
-            lineJoin: 'round',
+
+      L.marker(coord, { icon })
+        .bindTooltip(`<b>${station.name}</b><br><small>${station.bnName}</small>`, {
+          direction: 'top',
+          offset: [0, -h / 2 - 4],
+          className: 'leaflet-tooltip-bus',
+        })
+        .addTo(routeLayerRef.current);
+    });
+
+    // User location
+    if (userLocation) {
+      if (userMarkerRef.current) { userMarkerRef.current.remove(); }
+      const userIcon = L.divIcon({
+        className: '',
+        iconSize: [20, 20],
+        iconAnchor: [10, 10],
+        html: `<div style="width:20px;height:20px;border-radius:50%;background:#3b82f6;border:3px solid #fff;box-shadow:0 0 0 2px #3b82f6,0 2px 6px rgba(0,0,0,0.3);"></div>`,
+      });
+      userMarkerRef.current = L.marker([userLocation.lat, userLocation.lng], { icon: userIcon, zIndexOffset: 1000 })
+        .bindTooltip('আপনি এখানে', { direction: 'top', className: 'leaflet-tooltip-bus' })
+        .addTo(routeLayerRef.current);
+    }
+  }, [route.id, isReversed, highlightStartIdx, highlightEndIdx, userLocation, routeColor]);
+
+  // Update overlay layers (metro/railway/airport)
+  useEffect(() => {
+    if (!mapReady || !mapInstanceRef.current) return;
+    import('leaflet').then(L => {
+      if (!overlayLayerRef.current) return;
+      overlayLayerRef.current.clearLayers();
+
+      if (showMetro) {
+        Object.values(METRO_STATIONS).forEach((station: any) => {
+          const icon = L.divIcon({
+            className: '',
+            iconSize: [26, 26],
+            iconAnchor: [13, 13],
+            html: `<div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#6366f1);border:2.5px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(59,130,246,0.5);" title="${station.name}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="9" y1="6" x2="15" y2="6"/><circle cx="9" cy="14" r="1.5" fill="white"/><circle cx="15" cy="14" r="1.5" fill="white"/></svg></div>`,
           });
-          (hl as any)._highlightLayer = true;
-          hl.addTo(layerGroupRef.current);
-        }
+          L.marker([station.lat, station.lng], { icon })
+            .bindTooltip(`<b>🚇 ${station.name}</b><br><small>${station.bnName || ''}</small>`, { direction: 'top', className: 'leaflet-tooltip-bus' })
+            .addTo(overlayLayerRef.current);
+        });
+      }
+
+      if (showRailway) {
+        Object.values(RAILWAY_STATIONS).forEach((station: any) => {
+          const icon = L.divIcon({
+            className: '',
+            iconSize: [26, 26],
+            iconAnchor: [13, 13],
+            html: `<div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);border:2.5px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(16,185,129,0.5);" title="${station.name}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="4" y="3" width="16" height="15" rx="3"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="7" y2="21"/><line x1="15" y1="18" x2="17" y2="21"/></svg></div>`,
+          });
+          L.marker([station.lat, station.lng], { icon })
+            .bindTooltip(`<b>🚂 ${station.name}</b><br><small>${station.bnName || ''}</small>`, { direction: 'top', className: 'leaflet-tooltip-bus' })
+            .addTo(overlayLayerRef.current);
+        });
+      }
+
+      if (showAirport) {
+        Object.values(AIRPORTS).forEach((airport: any) => {
+          const icon = L.divIcon({
+            className: '',
+            iconSize: [28, 28],
+            iconAnchor: [14, 14],
+            html: `<div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#f97316,#ef4444);border:2.5px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(249,115,22,0.5);" title="${airport.name}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21 4 19.5 2.5S18 1 16.5 2.5L13 6 4.8 4.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 5.7 5.3c.3.4.8.5 1.3.3l.5-.3c.4-.2.6-.6.5-1.1z"/></svg></div>`,
+          });
+          L.marker([airport.lat, airport.lng], { icon })
+            .bindTooltip(`<b>✈️ ${airport.name}</b><br><small>${airport.bnName || ''}</small>`, { direction: 'top', className: 'leaflet-tooltip-bus' })
+            .addTo(overlayLayerRef.current);
+        });
       }
     });
-  }, [highlightStartIdx, highlightEndIdx, mapReady]);
+  }, [showMetro, showRailway, showAirport, mapReady]);
+
+  // Update user location marker live
+  useEffect(() => {
+    if (!mapReady || !mapInstanceRef.current || !userLocation) return;
+    import('leaflet').then(L => {
+      if (!routeLayerRef.current) return;
+      if (userMarkerRef.current) {
+        userMarkerRef.current.setLatLng([userLocation.lat, userLocation.lng]);
+      } else {
+        const userIcon = L.divIcon({
+          className: '',
+          iconSize: [20, 20],
+          iconAnchor: [10, 10],
+          html: `<div style="width:20px;height:20px;border-radius:50%;background:#3b82f6;border:3px solid #fff;box-shadow:0 0 0 2px #3b82f6,0 2px 6px rgba(0,0,0,0.3);"></div>`,
+        });
+        userMarkerRef.current = L.marker([userLocation.lat, userLocation.lng], { icon: userIcon, zIndexOffset: 1000 })
+          .bindTooltip('আপনি এখানে', { direction: 'top', className: 'leaflet-tooltip-bus' })
+          .addTo(routeLayerRef.current);
+      }
+    });
+  }, [userLocation, mapReady]);
 
   return (
-    <div className="relative w-full rounded-b-2xl overflow-hidden" style={{ height: 300 }}>
-      {/* Leaflet map container */}
+    <div className="relative w-full rounded-b-2xl overflow-hidden" style={{ height: 310 }}>
       <div ref={mapRef} className="w-full h-full" />
 
-      {/* Route label badge */}
-      <div className="absolute top-3 left-3 z-[500] flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-white text-xs font-bold shadow-lg" style={{ background: routeColor }}>
-        <MapPin className="w-3.5 h-3.5" />
+      {/* Route badge */}
+      <div
+        className="absolute top-3 left-3 z-[500] flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-white text-xs font-bold shadow-lg"
+        style={{ background: routeColor }}
+      >
+        <span className="w-1.5 h-1.5 rounded-full bg-white opacity-80 inline-block" />
         {route.name}
       </div>
 
-      {/* Stop count badge */}
-      <div className="absolute top-3 right-3 z-[500] bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm px-2.5 py-1.5 rounded-xl text-xs font-semibold text-gray-700 dark:text-gray-200 shadow-lg border border-gray-100 dark:border-gray-700">
+      {/* Road-snapped badge */}
+      <div className="absolute top-3 right-[90px] z-[500]">
+        {routeSnapped ? (
+          <div className="bg-emerald-500/90 text-white text-[10px] font-bold px-2 py-1 rounded-lg shadow-sm">
+            🛣 Road route
+          </div>
+        ) : mapReady ? (
+          <div className="bg-amber-400/80 text-white text-[10px] font-bold px-2 py-1 rounded-lg shadow-sm">
+            Straight line
+          </div>
+        ) : null}
+      </div>
+
+      {/* Stop count */}
+      <div className="absolute top-3 right-3 z-[500] bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm px-2 py-1 rounded-lg text-[10px] font-semibold text-gray-600 dark:text-gray-300 shadow border border-gray-100 dark:border-gray-700">
         {stops.length} stops
       </div>
 
-      {/* Open full map button */}
+      {/* Layer toggle panel */}
+      <div className="absolute bottom-10 left-3 z-[500] flex flex-col items-start gap-1.5">
+        {showLayers && (
+          <div className="bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm rounded-xl border border-gray-200 dark:border-slate-600 shadow-xl p-3 w-44 mb-1 animate-in slide-in-from-bottom-2 fade-in duration-150">
+            <div className="flex justify-between items-center mb-2 pb-1.5 border-b border-gray-100 dark:border-slate-600">
+              <span className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Layers</span>
+              <button onClick={() => setShowLayers(false)} className="p-0.5 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-full transition-colors">
+                <X className="w-3 h-3 text-gray-400" />
+              </button>
+            </div>
+            <div className="space-y-1.5">
+              {[
+                { key: 'metro', label: 'Metro Rail', active: showMetro, set: setShowMetro, color: 'from-blue-500 to-indigo-600', Icon: Train },
+                { key: 'railway', label: 'Railway', active: showRailway, set: setShowRailway, color: 'from-green-500 to-emerald-600', Icon: Train },
+                { key: 'airport', label: 'Airport', active: showAirport, set: setShowAirport, color: 'from-orange-500 to-red-500', Icon: Plane },
+              ].map(({ key, label, active, set, color, Icon }) => (
+                <label key={key} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700 p-1.5 rounded-lg transition-colors">
+                  <div className={`w-5 h-5 rounded-md flex items-center justify-center border-2 transition-all ${active ? `bg-gradient-to-br ${color} border-transparent shadow-sm` : 'border-gray-300 dark:border-slate-500 bg-white dark:bg-slate-700'}`}>
+                    {active && <Icon className="w-3 h-3 text-white" />}
+                  </div>
+                  <input type="checkbox" checked={active} onChange={e => set(e.target.checked)} className="hidden" />
+                  <span className="text-xs font-semibold text-gray-700 dark:text-gray-200">{label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        )}
+        <button
+          onClick={() => setShowLayers(v => !v)}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border transition-all ${showLayers ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 border-slate-900 dark:border-white' : 'bg-white/90 dark:bg-slate-800/90 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-slate-600 backdrop-blur-sm hover:bg-white dark:hover:bg-slate-700'}`}
+        >
+          <Layers className="w-3.5 h-3.5" />
+          Layers
+        </button>
+      </div>
+
+      {/* Live navigate button */}
       {onOpenFullMap && (
         <button
           onClick={onOpenFullMap}
-          className="absolute bottom-10 right-3 z-[500] flex items-center gap-1.5 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-200 text-xs font-semibold px-2.5 py-1.5 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 hover:bg-white dark:hover:bg-slate-700 transition-colors"
-          title="Full screen map"
+          className="absolute bottom-10 right-3 z-[500] flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg transition-colors"
         >
           <Navigation className="w-3.5 h-3.5" />
-          Live Navigate
+          Live Nav
         </button>
       )}
 
-      {/* Offline-ready note */}
+      {/* Loading state */}
       {!mapReady && (
         <div className="absolute inset-0 flex items-center justify-center bg-slate-100 dark:bg-slate-800">
           <div className="flex flex-col items-center gap-2 text-gray-400">
-            <MapPin className="w-8 h-8 animate-pulse" />
+            <div className="w-8 h-8 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin" />
             <span className="text-xs">Loading map…</span>
           </div>
         </div>

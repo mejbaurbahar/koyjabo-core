@@ -294,6 +294,22 @@ export default defineConfig(({ mode }) => {
                 },
               }
             },
+            // OSRM road routing - NetworkFirst, cache responses for offline fallback
+            {
+              urlPattern: /^https:\/\/router\.project-osrm\.org\/.*/i,
+              handler: 'NetworkFirst',
+              options: {
+                cacheName: 'osrm-route-cache',
+                networkTimeoutSeconds: 8,
+                expiration: {
+                  maxEntries: 200,
+                  maxAgeSeconds: 7 * 24 * 60 * 60, // 7 days
+                },
+                cacheableResponse: {
+                  statuses: [0, 200],
+                },
+              }
+            },
             // GitHub API (user data reads) - NetworkFirst with long fallback cache
             {
               urlPattern: /^https:\/\/api\.github\.com\/.*/i,
