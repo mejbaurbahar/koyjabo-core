@@ -35,7 +35,8 @@ export const translations: Record<Language, Translations> = {
             hasAccount: 'ইতিমধ্যে অ্যাকাউন্ট আছে?',
             creatingAccount: 'অ্যাকাউন্ট তৈরি করা হচ্ছে...',
             creatingAccountTitle: 'অ্যাকাউন্ট তৈরি হচ্ছে',
-            processingWait: 'সুরক্ষিতভাবে প্রক্রিয়া করা হচ্ছে।\nসর্বোচ্চ ৯০ সেকেন্ড লাগতে পারে।\nদয়া করে অপেক্ষা করুন…',
+            processingWait: 'সুরক্ষিতভাবে প্রক্রিয়া করা হচ্ছে।
+দয়া করে অপেক্ষা করুন…',
             validation: {
                 invalidEmail: 'সঠিক ইমেইল দিন।',
                 passwordRequired: 'পাসওয়ার্ড দিন।',
@@ -72,7 +73,7 @@ export const translations: Record<Language, Translations> = {
             },
             forgotPasswordPage: {
                 processing: 'প্রক্রিয়া করা হচ্ছে',
-                maxWait: 'সর্বোচ্চ ৯০ সেকেন্ড লাগতে পারে…',
+                maxWait: 'অনুগ্রহ করে অপেক্ষা করুন…',
                 resetLinkCreated: 'রিসেট লিংক তৈরি!',
                 useLinkBelow: 'ইমেইল সেবা সেট না থাকায় নিচের লিংক ব্যবহার করুন। এটি ১ ঘন্টা পর মেয়াদোত্তীর্ণ হবে।',
                 copyLink: 'কপি করুন',
@@ -757,7 +758,7 @@ export const translations: Record<Language, Translations> = {
             changingPassword: 'পাসওয়ার্ড পরিবর্তন হচ্ছে…',
             uploadingAvatar: 'ছবি আপলোড হচ্ছে…',
             loggingOutDevice: 'ডিভাইস লগআউট হচ্ছে…',
-            maxWait: 'সর্বোচ্চ ৯০ সেকেন্ড…',
+            maxWait: 'একটু অপেক্ষা করুন…',
             uploadFailed: 'আপলোড ব্যর্থ হয়েছে।',
             logoutFailed: 'ডিভাইস লগআউট ব্যর্থ হয়েছে।',
             tabs: {
@@ -796,7 +797,8 @@ export const translations: Record<Language, Translations> = {
             hasAccount: 'Already have an account?',
             creatingAccount: 'Creating account...',
             creatingAccountTitle: 'Creating Account',
-            processingWait: 'Processing securely.\nMay take up to 90 seconds.\nPlease wait...',
+            processingWait: 'Processing securely.
+Please wait...',
             validation: {
                 invalidEmail: 'Enter a valid email address.',
                 passwordRequired: 'Password is required.',
@@ -834,7 +836,7 @@ export const translations: Record<Language, Translations> = {
             },
             forgotPasswordPage: {
                 processing: 'Processing',
-                maxWait: 'May take up to 90 seconds…',
+                maxWait: 'Please wait…',
                 resetLinkCreated: 'Reset Link Created!',
                 useLinkBelow: 'Email service not configured. Use the link below (valid for 1 hour).',
                 copyLink: 'Copy Link',
@@ -889,7 +891,7 @@ export const translations: Record<Language, Translations> = {
             changingPassword: 'Changing password...',
             uploadingAvatar: 'Uploading picture...',
             loggingOutDevice: 'Logging out device...',
-            maxWait: 'Max 90 seconds...',
+            maxWait: 'Please wait...',
             uploadFailed: 'Upload failed.',
             logoutFailed: 'Device logout failed.',
             tabs: {

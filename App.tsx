@@ -11,6 +11,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { BusRoute, AppView, UserLocation, ChatMessage } from './types';
 import { STATIONS, BUS_DATA, METRO_STATIONS, METRO_LINES, RAILWAY_STATIONS, AIRPORTS } from './constants';
 import MapVisualizer from './components/MapVisualizer';
+import BusRouteMap from './components/BusRouteMap';
 import { SearchableSelect } from './components/SearchableSelect';
 import LiveTracker from './components/LiveTracker';
 import DhakaAlive from './components/DhakaAlive';
@@ -2598,28 +2599,22 @@ const App: React.FC = () => {
             )
           }
 
-          {/* Map Visualizer */}
+          {/* Real OSM Route Map */}
           <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-gray-100 dark:border-gray-700 overflow-hidden w-full">
             <div className="px-4 py-3 border-b border-gray-50 dark:border-gray-700 flex justify-between items-center bg-gray-50/30 dark:bg-slate-700/30">
               <h3 className="font-bold text-gray-700 dark:text-gray-200 text-sm flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div> {t('busDetails.liveView')}
               </h3>
-              <span className="text-[10px] bg-white border border-gray-200 px-2 py-0.5 rounded text-gray-500 font-medium hidden md:block">{t('busDetails.clickDragPan')}</span>
-              <span className="text-[10px] bg-white border border-gray-200 px-2 py-0.5 rounded text-gray-500 font-medium md:hidden">{t('busDetails.scrollToPan')}</span>
+              <span className="text-[10px] bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded text-emerald-600 font-medium">OpenStreetMap</span>
             </div>
-            <div className="w-full">
-              <MapVisualizer
-                route={selectedBus}
-                userStationIndex={nearestStopIndex}
-                userDistance={nearestStopDistance}
-                highlightStartIdx={fareStartIndex}
-                highlightEndIdx={fareEndIndex}
-                isReversed={isReversed}
-                userLocation={userLocation}
-                tripDestination={toStation}
-                tripTransferPoint={selectedTrip?.steps.find(s => s.type === 'walk' && s.instruction.includes('Transfer'))?.fromId || selectedTrip?.steps.find((s, i) => i > 0 && s.type === 'bus')?.fromId}
-              />
-            </div>
+            <BusRouteMap
+              route={selectedBus}
+              userLocation={userLocation}
+              highlightStartIdx={fareStartIndex}
+              highlightEndIdx={fareEndIndex}
+              isReversed={isReversed}
+              onOpenFullMap={() => setView(AppView.LIVE_NAV)}
+            />
           </div>
 
           {/* Fare Calculator */}
