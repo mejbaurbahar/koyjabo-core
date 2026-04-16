@@ -35,8 +35,7 @@ export const translations: Record<Language, Translations> = {
             hasAccount: 'ইতিমধ্যে অ্যাকাউন্ট আছে?',
             creatingAccount: 'অ্যাকাউন্ট তৈরি করা হচ্ছে...',
             creatingAccountTitle: 'অ্যাকাউন্ট তৈরি হচ্ছে',
-            processingWait: 'সুরক্ষিতভাবে প্রক্রিয়া করা হচ্ছে।
-দয়া করে অপেক্ষা করুন…',
+            processingWait: 'সুরক্ষিতভাবে প্রক্রিয়া করা হচ্ছে। দয়া করে অপেক্ষা করুন…',
             validation: {
                 invalidEmail: 'সঠিক ইমেইল দিন।',
                 passwordRequired: 'পাসওয়ার্ড দিন।',
@@ -797,8 +796,7 @@ export const translations: Record<Language, Translations> = {
             hasAccount: 'Already have an account?',
             creatingAccount: 'Creating account...',
             creatingAccountTitle: 'Creating Account',
-            processingWait: 'Processing securely.
-Please wait...',
+            processingWait: 'Processing securely. Please wait...',
             validation: {
                 invalidEmail: 'Enter a valid email address.',
                 passwordRequired: 'Password is required.',
