@@ -411,7 +411,6 @@ textarea {
   /* iOS-specific: use position fixed to properly contain the layout */
   @supports (-webkit-touch-callout: none) {
     html, body {
-      /* iOS Safari needs fixed positioning to prevent rubber-band scroll */
       position: fixed;
       width: 100%;
       top: 0;
@@ -428,6 +427,12 @@ textarea {
       bottom: 0;
       height: 100%;
       overflow: hidden;
+    }
+
+    /* iOS: enable momentum scrolling on all overflow-y containers */
+    [class*="overflow-y-auto"],
+    [class*="overflow-y-scroll"] {
+      -webkit-overflow-scrolling: touch;
     }
   }
 }

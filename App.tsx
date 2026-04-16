@@ -590,6 +590,18 @@ const App: React.FC = () => {
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
 
+    // iOS PWA doesn't always fire offline/online events. Use periodic ping to confirm.
+    const pingCheck = async () => {
+      if (!navigator.onLine) { setIsOnline(false); return; }
+      try {
+        await fetch(`https://www.gstatic.com/generate_204`, { method: 'HEAD', cache: 'no-store', signal: AbortSignal.timeout(3000) });
+        setIsOnline(true);
+      } catch {
+        setIsOnline(false);
+      }
+    };
+    const pingInterval = setInterval(pingCheck, 15000); // every 15s
+
     // Update last opened timestamp (no blocking modal — app works fully offline)
     localStorage.setItem('last_app_opened_timestamp', Date.now().toString());
 
@@ -601,6 +613,7 @@ const App: React.FC = () => {
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
+      clearInterval(pingInterval);
     };
   }, []);
 
@@ -1544,8 +1557,8 @@ const App: React.FC = () => {
   };
 
   const renderAiAssistant = () => (
-    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 md:rounded-l-3xl md:border-l md:border-gray-200 dark:md:border-gray-800 overflow-hidden w-full max-w-full pt-[75px] md:pt-24 pt-safe relative">
-      <div className="md:hidden flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shadow-sm z-20 absolute top-0 left-0 right-0 h-[75px] pt-safe">
+    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 md:rounded-l-3xl md:border-l md:border-gray-200 dark:md:border-gray-800 overflow-hidden w-full max-w-full">
+      <div className="md:hidden flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shadow-sm z-20 shrink-0">
         <button onClick={() => setView(AppView.HOME)} className="p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors">
           <ArrowLeft className="w-5 h-5 text-gray-600" />
         </button>

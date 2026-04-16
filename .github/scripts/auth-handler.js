@@ -281,7 +281,7 @@ async function handleSignup({ email, passwordHash, username, displayName }) {
 <body style="font-family:sans-serif;background:#f0fdf4;padding:24px;margin:0">
   <div style="max-width:500px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
     <div style="background:linear-gradient(135deg,#059669,#0284c7);padding:32px 24px;text-align:center">
-      <img src="https://koyjabo.com/logo.png" alt="KoyJabo" style="width:64px;height:64px;border-radius:16px;margin-bottom:12px;display:block;margin-left:auto;margin-right:auto;">
+      <img src="${APP_URL}/logo.png" alt="KoyJabo" style="width:64px;height:64px;border-radius:16px;margin-bottom:12px;display:block;margin-left:auto;margin-right:auto;">
       <h1 style="color:#fff;margin:0;font-size:28px;letter-spacing:-0.5px">কই যাবো KoyJabo</h1>
       <p style="color:#d1fae5;margin:6px 0 0;font-size:14px">Bangladesh's Smart Transport Finder</p>
     </div>
@@ -394,7 +394,7 @@ async function handleChangePassword({ userId, newPasswordHash, oldPasswordHash, 
 <body style="font-family:sans-serif;background:#fef2f2;padding:24px;margin:0">
   <div style="max-width:500px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
     <div style="background:linear-gradient(135deg,#dc2626,#9333ea);padding:32px 24px;text-align:center">
-      <img src="https://koyjabo.com/logo.png" alt="KoyJabo" style="width:48px;height:48px;border-radius:12px;margin-bottom:10px;display:block;margin-left:auto;margin-right:auto;">
+      <img src="${APP_URL}/logo.png" alt="KoyJabo" style="width:48px;height:48px;border-radius:12px;margin-bottom:10px;display:block;margin-left:auto;margin-right:auto;">
       <h1 style="color:#fff;margin:0;font-size:24px">🔐 Password Changed</h1>
       <p style="color:#fecaca;margin:6px 0 0;font-size:14px">Security Alert — কই যাবো KoyJabo</p>
     </div>
@@ -478,7 +478,7 @@ async function handleForgotPassword({ email }) {
 <body style="font-family:sans-serif;background:#f0f9ff;padding:24px;margin:0">
   <div style="max-width:500px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
     <div style="background:linear-gradient(135deg,#0284c7,#7c3aed);padding:32px 24px;text-align:center">
-      <img src="https://koyjabo.com/logo.png" alt="KoyJabo" style="width:48px;height:48px;border-radius:12px;margin-bottom:10px;display:block;margin-left:auto;margin-right:auto;">
+      <img src="${APP_URL}/logo.png" alt="KoyJabo" style="width:48px;height:48px;border-radius:12px;margin-bottom:10px;display:block;margin-left:auto;margin-right:auto;">
       <h1 style="color:#fff;margin:0;font-size:24px">🔑 Password Reset</h1>
       <p style="color:#bae6fd;margin:6px 0 0;font-size:14px">কই যাবো KoyJabo</p>
     </div>
@@ -621,7 +621,7 @@ async function handleRecordDevice({ userId, deviceInfo }) {
 <body style="font-family:sans-serif;background:#eff6ff;padding:24px;margin:0">
   <div style="max-width:500px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
     <div style="background:linear-gradient(135deg,#1d4ed8,#7c3aed);padding:32px 24px;text-align:center">
-      <img src="https://koyjabo.com/logo.png" alt="KoyJabo" style="width:48px;height:48px;border-radius:12px;margin-bottom:10px;display:block;margin-left:auto;margin-right:auto;">
+      <img src="${APP_URL}/logo.png" alt="KoyJabo" style="width:48px;height:48px;border-radius:12px;margin-bottom:10px;display:block;margin-left:auto;margin-right:auto;">
       <h1 style="color:#fff;margin:0;font-size:24px">🔔 New Device Login</h1>
       <p style="color:#bfdbfe;margin:6px 0 0;font-size:14px">Security Alert — কই যাবো KoyJabo</p>
     </div>
