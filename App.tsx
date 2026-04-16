@@ -2610,8 +2610,8 @@ const App: React.FC = () => {
             <BusRouteMap
               route={selectedBus}
               userLocation={userLocation}
-              highlightStartIdx={fareStartIndex}
-              highlightEndIdx={fareEndIndex}
+              highlightStartId={fareStart || undefined}
+              highlightEndId={fareEnd || undefined}
               isReversed={isReversed}
               onOpenFullMap={() => setView(AppView.LIVE_NAV)}
             />

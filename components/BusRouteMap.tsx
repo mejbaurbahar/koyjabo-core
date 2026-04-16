@@ -6,8 +6,10 @@ import { Navigation, Layers, Train, Plane, X } from 'lucide-react';
 interface BusRouteMapProps {
   route: BusRoute;
   userLocation?: UserLocation | null;
-  highlightStartIdx?: number;
-  highlightEndIdx?: number;
+  /** Station ID of the fare-start stop (e.g. 'jigatola') */
+  highlightStartId?: string;
+  /** Station ID of the fare-end stop (e.g. 'azimpur') */
+  highlightEndId?: string;
   isReversed?: boolean;
   onOpenFullMap?: () => void;
 }
@@ -45,8 +47,8 @@ async function fetchRoadRoute(coords: [number, number][]): Promise<[number, numb
 const BusRouteMap: React.FC<BusRouteMapProps> = ({
   route,
   userLocation,
-  highlightStartIdx = -1,
-  highlightEndIdx = -1,
+  highlightStartId,
+  highlightEndId,
   isReversed = false,
   onOpenFullMap,
 }) => {
@@ -63,8 +65,23 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
   const [routeSnapped, setRouteSnapped] = useState(false);
 
   const routeColor = getRouteColor(route.id);
+
+  // Only use stops that exist in STATIONS (drawable on map)
   const stops = isReversed ? [...route.stops].reverse() : route.stops;
-  const stopCoords: [number, number][] = stops.map(id => STATIONS[id]).filter(Boolean).map(s => [s.lat, s.lng]);
+  const drawableStops = stops.filter(id => !!STATIONS[id]);
+  const stopCoords: [number, number][] = drawableStops.map(id => [STATIONS[id].lat, STATIONS[id].lng]);
+
+  // Compute highlight indices against the drawable stops array (not validStopIds)
+  let highlightStartIdx = -1;
+  let highlightEndIdx = -1;
+  if (highlightStartId && highlightEndId) {
+    const si = drawableStops.indexOf(highlightStartId);
+    const ei = drawableStops.indexOf(highlightEndId);
+    if (si !== -1 && ei !== -1) {
+      highlightStartIdx = Math.min(si, ei);
+      highlightEndIdx = Math.max(si, ei);
+    }
+  }
 
   // Build and draw the map
   useEffect(() => {
@@ -165,7 +182,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
 
     // Stop markers
     coords.forEach((coord, idx) => {
-      const station = STATIONS[stops[idx]];
+      const station = STATIONS[drawableStops[idx]];
       if (!station) return;
       const isFirst = idx === 0;
       const isLast = idx === coords.length - 1;
