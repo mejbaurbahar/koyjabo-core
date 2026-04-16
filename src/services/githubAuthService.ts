@@ -276,7 +276,7 @@ export async function changePassword(
   return triggerAndWait('change-password', {
     userId,
     passwordHash: newPasswordHash,
-    data: JSON.stringify({ oldPasswordHash })
+    data: JSON.stringify({ oldPasswordHash, userAgent: navigator.userAgent })
   });
 }
 

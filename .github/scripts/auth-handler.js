@@ -59,6 +59,38 @@ function generateSecureToken() {
   return crypto.randomBytes(32).toString('hex');
 }
 
+function decrypt(ciphertext) {
+  try {
+    const [ivHex, authTagHex, encryptedHex] = ciphertext.split(':');
+    const iv = Buffer.from(ivHex, 'hex');
+    const authTag = Buffer.from(authTagHex, 'hex');
+    const encrypted = Buffer.from(encryptedHex, 'hex');
+    const decipher = crypto.createDecipheriv('aes-256-gcm', getEncKey(), iv);
+    decipher.setAuthTag(authTag);
+    return Buffer.concat([decipher.update(encrypted), decipher.final()]).toString('utf8');
+  } catch { return null; }
+}
+
+// ── Email helper ──────────────────────────────────────────────────────────────
+async function sendEmail({ to, subject, html }) {
+  if (!SMTP_EMAIL || !SMTP_PASSWORD) return false;
+  try {
+    const nodemailer = require('nodemailer');
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: { user: SMTP_EMAIL, pass: SMTP_PASSWORD }
+    });
+    await transporter.sendMail({
+      from: `"কই যাবো KoyJabo" <${SMTP_EMAIL}>`,
+      to, subject, html
+    });
+    return true;
+  } catch (err) {
+    console.log('Email send failed:', err.message);
+    return false;
+  }
+}
+
 // ── User-Agent Parser ─────────────────────────────────────────────────────────
 function parseUserAgent(ua = '') {
   let os = 'Unknown OS';
@@ -208,6 +240,47 @@ async function handleSignup({ email, passwordHash, username, displayName }) {
   const updatedIndex = { ...(freshIndex?.content || {}), [emailHashKey]: userId };
   await writeDataFile('data/users/index.json', updatedIndex, freshIndex?.sha, 'Update user index');
 
+  // Send welcome email (non-blocking)
+  sendEmail({
+    to: normalizedEmail,
+    subject: '🎉 Welcome to কই যাবো KoyJabo!',
+    html: `<!DOCTYPE html>
+<html>
+<body style="font-family:sans-serif;background:#f0fdf4;padding:24px;margin:0">
+  <div style="max-width:500px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
+    <div style="background:linear-gradient(135deg,#059669,#0284c7);padding:32px 24px;text-align:center">
+      <h1 style="color:#fff;margin:0;font-size:28px;letter-spacing:-0.5px">কই যাবো 🚌</h1>
+      <p style="color:#d1fae5;margin:6px 0 0;font-size:14px">Smart Transport Finder, Dhaka</p>
+    </div>
+    <div style="padding:32px 24px">
+      <h2 style="color:#111827;margin:0 0 8px">Welcome, ${displayName.trim()}! 🎉</h2>
+      <p style="color:#4b5563;font-size:15px;line-height:1.6;margin:0 0 20px">
+        Your account has been created successfully. You're now part of the KoyJabo community —
+        Dhaka's smartest way to find bus routes, metro schedules, and intercity travel.
+      </p>
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:16px 20px;margin:0 0 24px">
+        <p style="margin:0;color:#065f46;font-size:14px;font-weight:600">Your account details</p>
+        <p style="margin:8px 0 0;color:#047857;font-size:13px">👤 Name: <strong>${displayName.trim()}</strong></p>
+        <p style="margin:4px 0 0;color:#047857;font-size:13px">🔖 Username: <strong>@${normalizedUsername}</strong></p>
+        <p style="margin:4px 0 0;color:#047857;font-size:13px">📧 Email: <strong>${normalizedEmail}</strong></p>
+      </div>
+      <a href="${APP_URL}"
+         style="display:block;text-align:center;background:linear-gradient(135deg,#059669,#0284c7);color:#fff;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px;margin-bottom:24px">
+        Open KoyJabo →
+      </a>
+      <p style="color:#9ca3af;font-size:12px;text-align:center;margin:0">
+        If you didn't create this account, please ignore this email or
+        <a href="mailto:${SMTP_EMAIL}" style="color:#059669">contact us</a>.
+      </p>
+    </div>
+    <div style="background:#f9fafb;padding:16px 24px;text-align:center;border-top:1px solid #f3f4f6">
+      <p style="color:#9ca3af;font-size:11px;margin:0">কই যাবো KoyJabo — Dhaka Transport Guide</p>
+    </div>
+  </div>
+</body>
+</html>`
+  }).catch(() => {});
+
   return { success: true, userId, username: user.username, displayName: user.displayName, email: normalizedEmail };
 }
 
@@ -228,7 +301,7 @@ async function handleUpdateProfile({ userId, displayName, username }) {
   return { success: true, userId, displayName: updated.displayName, username: updated.username };
 }
 
-async function handleChangePassword({ userId, newPasswordHash, oldPasswordHash }) {
+async function handleChangePassword({ userId, newPasswordHash, oldPasswordHash, userAgent }) {
   if (!userId || !newPasswordHash) return { success: false, error: 'User ID and new password required.' };
 
   const userFile = await readDataFile(`data/users/${userId}.json`);
@@ -242,6 +315,61 @@ async function handleChangePassword({ userId, newPasswordHash, oldPasswordHash }
   const newBcryptHash = await bcrypt.hash(newPasswordHash, 12);
   const updated = { ...userFile.content, bcryptHash: newBcryptHash, updatedAt: Date.now() };
   await writeDataFile(`data/users/${userId}.json`, updated, userFile.sha, `Password changed: ${userId}`);
+
+  // Send security alert email (non-blocking)
+  if (userFile.content.encryptedEmail) {
+    const userEmail = decrypt(userFile.content.encryptedEmail);
+    if (userEmail) {
+      const deviceInfo = parseUserAgent(userAgent || '');
+      const changedAt = new Date().toLocaleString('en-US', { timeZone: 'Asia/Dhaka', dateStyle: 'medium', timeStyle: 'short' });
+      sendEmail({
+        to: userEmail,
+        subject: '🔐 Your KoyJabo password was changed',
+        html: `<!DOCTYPE html>
+<html>
+<body style="font-family:sans-serif;background:#fef2f2;padding:24px;margin:0">
+  <div style="max-width:500px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
+    <div style="background:linear-gradient(135deg,#dc2626,#9333ea);padding:32px 24px;text-align:center">
+      <h1 style="color:#fff;margin:0;font-size:24px">🔐 Password Changed</h1>
+      <p style="color:#fecaca;margin:6px 0 0;font-size:14px">Security Alert — কই যাবো KoyJabo</p>
+    </div>
+    <div style="padding:32px 24px">
+      <p style="color:#111827;font-size:15px;line-height:1.6;margin:0 0 16px">
+        Hello <strong>${userFile.content.displayName || 'User'}</strong>,<br><br>
+        Your KoyJabo account password was <strong>successfully changed</strong>.
+      </p>
+      <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:12px;padding:16px 20px;margin:0 0 20px">
+        <p style="margin:0;color:#991b1b;font-size:14px;font-weight:600">Change details</p>
+        <p style="margin:8px 0 0;color:#b91c1c;font-size:13px">🕐 Time: <strong>${changedAt} (Dhaka)</strong></p>
+        <p style="margin:4px 0 0;color:#b91c1c;font-size:13px">💻 Device: <strong>${deviceInfo.name}</strong></p>
+        <p style="margin:4px 0 0;color:#b91c1c;font-size:13px">🖥️ OS: <strong>${deviceInfo.os}</strong></p>
+        <p style="margin:4px 0 0;color:#b91c1c;font-size:13px">🌐 Browser: <strong>${deviceInfo.browser}</strong></p>
+      </div>
+      <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:16px 20px;margin:0 0 24px">
+        <p style="margin:0;color:#92400e;font-size:14px;font-weight:600">⚠️ Wasn't you?</p>
+        <p style="margin:8px 0 0;color:#b45309;font-size:13px;line-height:1.5">
+          If you didn't make this change, your account may be compromised.
+          Log in immediately and change your password, or check your active devices.
+        </p>
+      </div>
+      <a href="${APP_URL}?view=profile&section=devices"
+         style="display:block;text-align:center;background:linear-gradient(135deg,#dc2626,#9333ea);color:#fff;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px;margin-bottom:24px">
+        Review Active Devices →
+      </a>
+      <p style="color:#9ca3af;font-size:12px;text-align:center;margin:0">
+        This is an automated security notification from KoyJabo.
+      </p>
+    </div>
+    <div style="background:#f9fafb;padding:16px 24px;text-align:center;border-top:1px solid #f3f4f6">
+      <p style="color:#9ca3af;font-size:11px;margin:0">কই যাবো KoyJabo — Dhaka Transport Guide</p>
+    </div>
+  </div>
+</body>
+</html>`
+      }).catch(() => {});
+    }
+  }
+
   return { success: true };
 }
 
@@ -482,7 +610,7 @@ async function main() {
         result = await handleUpdateProfile({ userId, displayName: data.displayName, username: data.username });
         break;
       case 'change-password':
-        result = await handleChangePassword({ userId, newPasswordHash: passwordHash, oldPasswordHash: data.oldPasswordHash });
+        result = await handleChangePassword({ userId, newPasswordHash: passwordHash, oldPasswordHash: data.oldPasswordHash, userAgent: data.userAgent });
         break;
       case 'forgot-password':
         result = await handleForgotPassword({ email });

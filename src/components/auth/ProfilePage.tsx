@@ -506,8 +506,13 @@ export default function ProfilePage({
               ) : (
                 devices.map(device => (
                   <div key={device.id} className="px-6 py-4 flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-slate-700 flex items-center justify-center shrink-0">
-                      <DeviceIcon type={device.deviceType} />
+                    <div className="relative w-10 h-10 shrink-0">
+                      <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-slate-700 flex items-center justify-center">
+                        <DeviceIcon type={device.deviceType} />
+                      </div>
+                      {device.isCurrent && (
+                        <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-white dark:border-slate-800 animate-pulse" title="Active now" />
+                      )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
