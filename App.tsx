@@ -3803,6 +3803,10 @@ const App: React.FC = () => {
                           : user.displayName.charAt(0).toUpperCase()
                         }
                       </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{user.displayName}</p>
+                        {user.username && <p className="text-xs text-gray-500 dark:text-gray-400 truncate">@{user.username}</p>}
+                      </div>
                     </div>
                     <div className="flex gap-2 mt-3">
                       <button

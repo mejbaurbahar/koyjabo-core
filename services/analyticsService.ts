@@ -158,12 +158,17 @@ export const fetchGlobalStats = async (): Promise<void> => {
         if (ghStats.todayDate && ghStats.todayDate !== getTodayDate()) {
             ghStats.todayVisits = 0;
         }
+        const today = getTodayDate();
+        // Only reset todayVisits if todayDate is explicitly set AND differs from today
+        // If todayDate is missing, trust the stored todayVisits value
+        const todayVisitsValue =
+            ghStats.todayDate && ghStats.todayDate !== today
+                ? 0
+                : (ghStats.todayVisits || 0);
         const merged: GlobalStats = {
-            totalVisits:    Math.max(ghStats.totalVisits || 0,   getGlobalStats().totalVisits || 0),
-            todayVisits:    ghStats.todayDate === getTodayDate()
-                              ? (ghStats.todayVisits || 0)
-                              : 0,
-            activeUsers:    0, // Not tracked without a real-time server
+            totalVisits:    Math.max(ghStats.totalVisits || 0, getGlobalStats().totalVisits || 0),
+            todayVisits:    todayVisitsValue,
+            activeUsers:    0,
             uniqueVisitors: ghStats.uniqueVisitors || 0,
             lastUpdated:    Date.now()
         };

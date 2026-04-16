@@ -274,6 +274,7 @@ export default function ProfilePage({
           <div className="flex-1 min-h-0 overflow-hidden">
             {activeSection === 'history' && (
               <HistoryView
+                embedded
                 onBack={() => setActiveSection('profile')}
                 onBusSelect={(bus, fromHistory) => {
                   onBusSelect(bus, fromHistory);
@@ -283,6 +284,7 @@ export default function ProfilePage({
             )}
             {activeSection === 'settings' && (
               <SettingsPage
+                embedded
                 isDarkMode={isDarkMode}
                 toggleTheme={toggleTheme}
                 onContactClick={() => {

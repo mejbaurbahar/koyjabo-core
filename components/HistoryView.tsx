@@ -25,9 +25,10 @@ interface HistoryViewProps {
     onBack: () => void;
     onBusSelect: (bus: BusRoute, fromHistory?: boolean) => void;
     onViewJourney?: () => void;
+    embedded?: boolean;
 }
 
-const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onViewJourney }) => {
+const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onViewJourney, embedded = false }) => {
     const { t, formatNumber } = useLanguage();
     const [activeTab, setActiveTab] = useState<'personal' | 'global'>('personal');
     const [globalStats, setGlobalStats] = useState<GlobalStats>(getGlobalStats());
@@ -168,7 +169,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onViewJo
             )}
 
             {/* Header */}
-            <div className="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 px-4 md:px-6 pt-20 md:pt-24 pb-4">
+            <div className={`bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 px-4 md:px-6 pb-4 ${embedded ? 'pt-4' : 'pt-20 md:pt-24'}`}>
                 <div>
                     <div className="flex items-center gap-3 mb-4">
 

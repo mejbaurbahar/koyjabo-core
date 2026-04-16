@@ -16,6 +16,7 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
     layoutKey
 }) => {
     const [isOnline, setIsOnline] = useState(navigator.onLine);
+    const [adBlocked, setAdBlocked] = useState(false);
 
     useEffect(() => {
         const handleOnline = () => setIsOnline(true);
@@ -30,20 +31,24 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
 
     useEffect(() => {
         if (!isOnline) return;
+        // Check if AdSense script was blocked by ad blocker
+        const adScript = document.querySelector('script[src*="adsbygoogle.js"]');
+        const adsbygoogle = (window as any).adsbygoogle;
+        if (!adScript && !adsbygoogle) {
+            setAdBlocked(true);
+            return;
+        }
         try {
-            if (typeof window !== 'undefined') {
-                const adScript = document.querySelector('script[src*="adsbygoogle.js"]');
-                if (adScript || (window as any).adsbygoogle) {
-                    ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
-                }
+            if (typeof window !== 'undefined' && (adScript || adsbygoogle)) {
+                ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
             }
-        } catch (error) {
-            console.debug('AdSense initialization suppressed:', error);
+        } catch {
+            // Silently handle AdSense init errors (e.g., ad blocker interference)
         }
     }, [isOnline]);
 
-    // Don't render ads when offline — no network = no ad content
-    if (!isOnline) return null;
+    // Don't render when offline or ad blocked
+    if (!isOnline || adBlocked) return null;
 
     return (
         <div className={`adsense-container ${className}`} style={{ maxHeight: '280px', overflow: 'hidden' }}>
