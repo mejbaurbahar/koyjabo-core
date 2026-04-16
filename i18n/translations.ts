@@ -181,6 +181,7 @@ export const translations: Record<Language, Translations> = {
             login: 'লগইন',
             signup: 'সাইনআপ',
             profile: 'প্রোফাইল',
+            train: 'ট্রেন',
         },
 
         // Home/Search
@@ -999,6 +1000,7 @@ export const translations: Record<Language, Translations> = {
             login: 'Login',
             signup: 'Signup',
             profile: 'Profile',
+            train: 'Train',
         },
 
         // Home/Search

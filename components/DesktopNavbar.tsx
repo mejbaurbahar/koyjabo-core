@@ -70,7 +70,7 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
             }
         },
         {
-            label: 'Train',
+            label: t('nav.train'),
             icon: Train,
             isActive: view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS,
             onClick: () => setView(AppView.TRAIN_LIST)

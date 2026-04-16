@@ -3234,6 +3234,19 @@ const App: React.FC = () => {
       }, 500);
     };
 
+    // Train view: show TrainListPage inline in the home sidebar
+    if (view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) {
+      return (
+        <div className="flex flex-col h-full w-full md:pt-20">
+          <TrainListPage
+            userLocation={userLocation}
+            onBack={() => setView(AppView.HOME)}
+            embedded={false}
+          />
+        </div>
+      );
+    }
+
     return (
       <div className="flex flex-col h-full w-full">
         {/* Sticky Top Section */}
@@ -3579,7 +3592,7 @@ const App: React.FC = () => {
           {/* Left Sidebar (Desktop) / Main View (Mobile Home) */}
           <div className={`
             ${'w-full md:w-1/3 md:min-w-[320px] md:max-w-md md:flex md:flex-col border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900 z-0 h-full overflow-hidden'}
-            ${view !== AppView.HOME && 'hidden md:flex'}
+            ${view !== AppView.HOME && view !== AppView.TRAIN_LIST && view !== AppView.TRAIN_DETAILS && 'hidden md:flex'}
 `}>
             <div className="h-full flex flex-col md:pt-0">
               {renderHomeContent()}
@@ -3589,9 +3602,9 @@ const App: React.FC = () => {
           {/* Right Content Area (Desktop) / Views (Mobile) */}
           <div className={`
             ${'w-full md:flex-1 bg-slate-50 dark:bg-slate-950 md:bg-white dark:md:bg-slate-900 relative h-full overflow-hidden'}
-            ${view === AppView.HOME && 'hidden md:block'}
+            ${(view === AppView.HOME || view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) && 'hidden md:block'}
 `}>
-            {view === AppView.HOME && <div className="hidden md:block absolute inset-0 w-full h-full"><DhakaAlive /></div>}
+            {(view === AppView.HOME || view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) && <div className="hidden md:block absolute inset-0 w-full h-full"><DhakaAlive /></div>}
             {view === AppView.BUS_DETAILS && (user ? renderBusDetails() : <LoginWall setView={setView} />)}
             {view === AppView.LIVE_NAV && renderLiveNav()}
             {view === AppView.AI_ASSISTANT && (user ? renderAiAssistant() : <LoginWall setView={setView} />)}
@@ -3690,12 +3703,6 @@ const App: React.FC = () => {
             )}
             {view === AppView.DAILY_JOURNEY && (
               <DailyJourneyView onBack={() => setView(previousView)} />
-            )}
-            {(view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) && (
-              <TrainListPage
-                onBack={() => setView(AppView.HOME)}
-                userLocation={userLocation}
-              />
             )}
             {view === AppView.PRIVACY && <PrivacyPolicy view={view} setView={setView} />}
             {view === AppView.TERMS && <TermsOfService view={view} setView={setView} />}
