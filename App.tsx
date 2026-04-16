@@ -2563,7 +2563,7 @@ const App: React.FC = () => {
           {/* Additional Stats when fare is selected */}
           {
             fareStart && fareEnd && (
-              <div className="grid grid-cols-3 gap-3 animate-in fade-in slide-in-from-top-4">
+              <div className="grid grid-cols-3 gap-3 animate-in fade-in slide-in-from-bottom-2">
                 <div className="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-[0_2px_8px_rgba(0,0,0,0.02)] flex flex-col items-center text-center justify-center">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white mb-2 shadow-lg shadow-indigo-500/30">
                     <Gauge className="w-5 h-5" />

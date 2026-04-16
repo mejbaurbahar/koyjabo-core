@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from './contexts/LanguageContext';
-import { Search, ArrowRightLeft, AlertCircle, PlayCircle, WifiOff, Activity, Home, Train, Sparkles, Clock, Info, Sun, Moon, Menu, Navigation, Map, X, Bot, FileText, Settings, Shield, Download, Calendar, HelpCircle, BookOpen, LogIn, UserPlus, LogOut, User, Phone } from 'lucide-react';
+import { Search, ArrowRightLeft, AlertCircle, PlayCircle, WifiOff, Activity, Home, Train, Sparkles, Clock, Info, Sun, Moon, Menu, Navigation, Map, X, Bot, FileText, Settings, Shield, Download, Calendar, HelpCircle, LogIn, UserPlus, LogOut, User, Phone } from 'lucide-react';
 import { AnimatedLogo } from './components/AnimatedLogo';
 import ThemeToggle from './components/ThemeToggle';
 import DistrictSelect from './components/DistrictSelect';
@@ -256,14 +256,6 @@ function App() {
             {t('nav.aiAssistant')}
           </a>
 
-          <a
-            href="/#blog"
-            onClick={(e) => { e.preventDefault(); window.location.href = '/#blog'; }}
-            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-slate-700/50"
-          >
-            <BookOpen size={16} />
-            {t('nav.blog')}
-          </a>
           <a
             href="/#about"
             onClick={(e) => { e.preventDefault(); window.location.href = '/#about'; }}
@@ -668,13 +660,6 @@ function App() {
               >
                 <HelpCircle className="w-5 h-5 text-cyan-600 dark:text-cyan-400" /> {t('nav.faq')}
               </button>
-              <button
-                onClick={() => window.location.href = '/#blog'}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
-              >
-                <BookOpen className="w-5 h-5 text-teal-600 dark:text-teal-400" /> {t('nav.blog')}
-              </button>
-
               <button
                 onClick={() => window.location.href = '/#install-app'}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"

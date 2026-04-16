@@ -125,7 +125,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
         crossOrigin: true,
       }).addTo(map);
 
-      L.control.zoom({ position: 'bottomright' }).addTo(map);
+      // Zoom control handled by custom React buttons below
 
       mapInstanceRef.current = map;
       routeLayerRef.current = L.layerGroup().addTo(map);
@@ -383,6 +383,22 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
           Layers
         </button>
       </div>
+
+      {/* Custom zoom buttons — positioned above Live Nav to avoid overlap */}
+      {mapReady && (
+        <div className="absolute bottom-[72px] right-3 z-[600] flex flex-col gap-1">
+          <button
+            onClick={() => mapInstanceRef.current?.zoomIn()}
+            className="w-7 h-7 bg-white/95 dark:bg-slate-800/95 border border-gray-200 dark:border-slate-600 rounded-lg shadow-md flex items-center justify-center text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-700 text-base font-bold leading-none transition-colors"
+            aria-label="Zoom in"
+          >+</button>
+          <button
+            onClick={() => mapInstanceRef.current?.zoomOut()}
+            className="w-7 h-7 bg-white/95 dark:bg-slate-800/95 border border-gray-200 dark:border-slate-600 rounded-lg shadow-md flex items-center justify-center text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-700 text-base font-bold leading-none transition-colors"
+            aria-label="Zoom out"
+          >−</button>
+        </div>
+      )}
 
       {/* Live navigate button */}
       {onOpenFullMap && (
