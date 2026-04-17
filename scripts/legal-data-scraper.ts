@@ -196,7 +196,7 @@ async function collectAllData() {
 }
 
 // Run if executed directly
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
     collectAllData().catch(console.error);
 }
 
