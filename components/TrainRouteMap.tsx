@@ -9,6 +9,7 @@ interface TrainRouteMapProps {
   highlightFromId?: string;
   highlightToId?: string;
   language?: string;
+  currentStopId?: string;
 }
 
 function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
@@ -46,6 +47,7 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
   highlightFromId,
   highlightToId,
   language,
+  currentStopId,
 }) => {
   const bn = language === 'bn';
   const mapRef = useRef<HTMLDivElement>(null);
@@ -126,11 +128,20 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
         const st = TRAIN_STATIONS[id];
         const isFirst = idx === 0;
         const isLast = idx === drawableStops.length - 1;
+        const isCurrent = id === currentStopId;
 
         let html: string;
         let w: number, h: number, ax: number, ay: number;
 
-        if (isFirst) {
+        if (isCurrent) {
+          // "You are here" pulsing blue marker
+          const hereLabel = bn ? 'আপনি এখানে' : 'You are here';
+          w = 90; h = 36; ax = 45; ay = 18;
+          html = `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">` +
+            `<div style="width:90px;padding:3px 6px;border-radius:12px;background:#3b82f6;border:2px solid #2563eb;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;box-shadow:0 2px 8px rgba(59,130,246,0.5);font-family:sans-serif;box-sizing:border-box;gap:4px;">` +
+            `<span style="width:6px;height:6px;border-radius:50%;background:#fff;display:inline-block;animation:ping 1s cubic-bezier(0,0,0.2,1) infinite;"></span>${hereLabel}</div>` +
+            `</div>`;
+        } else if (isFirst) {
           // Green pill — Start (matches BusRouteMap)
           const startLabel = bn ? 'শুরু' : 'Start';
           w = 52; h = 24; ax = 26; ay = 12;
@@ -161,7 +172,7 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
 
         const marker = L.marker([st.lat, st.lng], {
           icon,
-          zIndexOffset: isFirst || isLast ? 1000 : 0,
+          zIndexOffset: isCurrent ? 2000 : (isFirst || isLast ? 1000 : 0),
         });
         marker.bindPopup(`<b>${st.name}</b><br/><span style="font-size:11px;color:#64748b">${st.bnName}</span>`);
         marker.addTo(overlayLayerRef.current);
@@ -173,7 +184,7 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
 
     return () => { cancelled = true; };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [route.id]);
+  }, [route.id, currentStopId]);
 
   // ── Effect 2: Highlight segment (fare calc) ──────────────────────────────────
   useEffect(() => {
@@ -249,7 +260,7 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
         <div className="absolute inset-0 flex items-center justify-center bg-slate-900/80 z-10">
           <div className="flex flex-col items-center gap-3">
             <div className="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-            <p className="text-sm text-white/70">ম্যাপ লোড হচ্ছে...</p>
+            <p className="text-sm text-white/70">{bn ? 'ম্যাপ লোড হচ্ছে...' : 'Loading map...'}</p>
           </div>
         </div>
       )}
@@ -257,7 +268,7 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
       {routeSnapped && (
         <div className="absolute top-2 left-2 bg-white/90 dark:bg-slate-800/90 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 px-2 py-1 rounded-full shadow flex items-center gap-1 z-[500]">
           <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse inline-block" />
-          Road-Snapped
+          {bn ? 'রোড-স্ন্যাপড' : 'Road-Snapped'}
         </div>
       )}
 
@@ -271,10 +282,10 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
         <div className="absolute top-12 right-2 z-[500] bg-white dark:bg-slate-800 rounded-xl shadow-lg p-3 w-40 text-xs font-medium text-gray-700 dark:text-gray-300">
           <div className="flex items-center gap-2 mb-1">
             <Train className="w-3.5 h-3.5 text-blue-500" />
-            <span>Rail Route Map</span>
+            <span>{bn ? 'রেল রুট ম্যাপ' : 'Rail Route Map'}</span>
           </div>
           <p className="text-gray-400 dark:text-gray-500 text-[10px] leading-tight mt-1">
-            Showing {drawableStops.length} stations on this route
+            {bn ? `এই রুটে ${drawableStops.length}টি স্টেশন` : `Showing ${drawableStops.length} stations on this route`}
           </p>
           <button onClick={() => setShowLayers(false)} className="absolute top-1 right-1 p-0.5 text-gray-400 hover:text-gray-600">
             <X className="w-3 h-3" />

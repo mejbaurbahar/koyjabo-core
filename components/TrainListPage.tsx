@@ -2,8 +2,16 @@ import React, { useState, useMemo } from 'react';
 import {
   Train, Search, ArrowRight, Clock, CalendarX, Info,
   ArrowLeft, MapPin, Navigation,
-  Coins, AlertCircle, X
+  Coins, AlertCircle, X, CheckCircle2
 } from 'lucide-react';
+
+function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
 import {
   BD_TRAIN_ROUTES, TRAIN_STATIONS, BDTrainRoute,
   calcTrainFare, routeDistanceBetween
@@ -75,6 +83,20 @@ export function TrainDetail({
   const fromSt = TRAIN_STATIONS[route.from];
   const toSt   = TRAIN_STATIONS[route.to];
 
+  // Nearest stop to user's current location (for progress display)
+  const nearestStopIdx = useMemo(() => {
+    if (!userLocation) return -1;
+    let minDist = Infinity;
+    let idx = -1;
+    route.stops.forEach((id, i) => {
+      const st = TRAIN_STATIONS[id];
+      if (!st) return;
+      const d = haversineKm(userLocation.lat, userLocation.lng, st.lat, st.lng);
+      if (d < minDist) { minDist = d; idx = i; }
+    });
+    return minDist <= 35 ? idx : -1; // within 35 km
+  }, [userLocation, route.stops]);
+
   return (
     /* Light: white bg — Dark: deep navy gradient */
     <div className="flex flex-col h-full bg-white dark:bg-gradient-to-b dark:from-[#0f2027] dark:via-[#203a43] dark:to-[#2c5364] overflow-hidden">
@@ -117,6 +139,7 @@ export function TrainDetail({
             highlightFromId={fromId || undefined}
             highlightToId={toId || undefined}
             language={language}
+            currentStopId={nearestStopIdx >= 0 ? route.stops[nearestStopIdx] : undefined}
           />
         </div>
 
@@ -165,6 +188,12 @@ export function TrainDetail({
               <h3 className="text-sm font-bold text-gray-800 dark:text-white flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                 {bn ? `স্টেশন (${route.stops.length}টি)` : `Stations (${route.stops.length})`}
+                {nearestStopIdx >= 0 && (
+                  <span className="ml-auto text-[10px] font-semibold text-blue-600 dark:text-blue-400 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse inline-block" />
+                    {bn ? 'লাইভ অবস্থান' : 'Live location'}
+                  </span>
+                )}
               </h3>
             </div>
             <div className="px-4 py-4">
@@ -174,31 +203,64 @@ export function TrainDetail({
                 const isFirst = idx === 0;
                 const isLast  = idx === route.stops.length - 1;
                 const isMid   = !isFirst && !isLast;
+                const isNearUser = nearestStopIdx === idx;
+                const isPassed   = nearestStopIdx >= 0 && idx < nearestStopIdx;
+
                 return (
                   <div key={id} className="flex gap-3">
                     {/* Timeline column */}
                     <div className="flex flex-col items-center" style={{ width: 20 }}>
-                      {/* Top gap / connector above dot */}
-                      <div className={`w-px flex-none h-2 ${isFirst ? 'bg-transparent' : isLast ? 'bg-gradient-to-b from-gray-300 dark:from-white/25 to-transparent' : 'bg-gray-300 dark:bg-white/25'}`} />
+                      {/* Top connector */}
+                      <div className={`w-px flex-none h-2 ${
+                        isFirst ? 'bg-transparent'
+                        : isPassed ? 'bg-emerald-400 dark:bg-emerald-500'
+                        : isLast ? 'bg-gradient-to-b from-gray-300 dark:from-white/25 to-transparent'
+                        : 'bg-gray-300 dark:bg-white/25'
+                      }`} />
                       {/* Dot */}
-                      {isFirst ? (
+                      {isNearUser ? (
+                        <div className="relative shrink-0 z-10">
+                          <div className="w-4 h-4 rounded-full bg-blue-500 border-2 border-blue-300 shadow-lg shadow-blue-500/40" />
+                          <div className="absolute inset-0 rounded-full bg-blue-400 animate-ping opacity-60" />
+                        </div>
+                      ) : isPassed ? (
+                        <div className="w-4 h-4 rounded-full bg-emerald-500 dark:bg-emerald-400 border-2 border-emerald-300 flex items-center justify-center shrink-0 z-10">
+                          <CheckCircle2 className="w-2.5 h-2.5 text-white" />
+                        </div>
+                      ) : isFirst ? (
                         <div className="w-4 h-4 rounded-full bg-emerald-500 dark:bg-emerald-400 border-2 border-emerald-400 dark:border-emerald-300 shadow-lg shadow-emerald-500/30 shrink-0 z-10" />
                       ) : isLast ? (
                         <div className="w-4 h-4 rounded-full bg-slate-500 dark:bg-white/80 border-2 border-slate-400 dark:border-white/50 shadow shrink-0 z-10" />
                       ) : (
                         <div className="w-2.5 h-2.5 rounded-full bg-gray-300 dark:bg-white/20 border border-gray-400 dark:border-white/35 shrink-0 z-10 mt-0.5" />
                       )}
-                      {/* Connector below dot */}
+                      {/* Bottom connector */}
                       {!isLast && (
-                        <div className={`w-px flex-1 min-h-[20px] ${isFirst ? 'bg-gradient-to-b from-emerald-500/70 dark:from-emerald-400/80 to-gray-300 dark:to-white/25' : 'bg-gray-300 dark:bg-white/25'}`} />
+                        <div className={`w-px flex-1 min-h-[20px] ${
+                          isPassed ? 'bg-emerald-400 dark:bg-emerald-500'
+                          : isNearUser ? 'bg-gradient-to-b from-blue-400 to-gray-300 dark:from-blue-500 dark:to-white/25'
+                          : isFirst ? 'bg-gradient-to-b from-emerald-500/70 dark:from-emerald-400/80 to-gray-300 dark:to-white/25'
+                          : 'bg-gray-300 dark:bg-white/25'
+                        }`} />
                       )}
                     </div>
                     {/* Stop name */}
                     <div className={`pb-3 flex-1 min-w-0 ${isMid ? 'pt-0.5' : 'pt-0'}`}>
-                      <span className={`leading-snug ${isFirst || isLast ? 'text-sm font-bold text-gray-900 dark:text-white' : 'text-xs text-gray-500 dark:text-white/60'}`}>
+                      <span className={`leading-snug ${
+                        isNearUser ? 'text-sm font-bold text-blue-600 dark:text-blue-400'
+                        : isPassed ? 'text-xs text-emerald-600 dark:text-emerald-400 line-through opacity-60'
+                        : isFirst || isLast ? 'text-sm font-bold text-gray-900 dark:text-white'
+                        : 'text-xs text-gray-500 dark:text-white/60'
+                      }`}>
                         {bn ? st.bnName : st.name}
                       </span>
-                      {(isFirst || isLast) && (
+                      {isNearUser && (
+                        <p className="text-[10px] text-blue-500 dark:text-blue-400 font-semibold mt-0.5 flex items-center gap-1">
+                          <span className="w-1 h-1 bg-blue-500 rounded-full animate-pulse inline-block" />
+                          {bn ? 'আপনি এখানে আছেন' : 'You are here'}
+                        </p>
+                      )}
+                      {!isNearUser && (isFirst || isLast) && (
                         <p className="text-[10px] text-gray-400 dark:text-white/40 mt-0.5">
                           {isFirst ? (bn ? 'যাত্রা শুরু' : 'Departure') : (bn ? 'চূড়ান্ত গন্তব্য' : 'Final Destination')}
                         </p>
@@ -301,7 +363,8 @@ export function TrainDetail({
             </div>
           </div>
 
-          <div className="h-4" />
+          {/* Spacer for mobile bottom nav */}
+          <div className="h-24 md:h-4" />
         </div>
       </div>
     </div>
@@ -381,6 +444,12 @@ function TrainCard({ route, onClick, language }: { route: BDTrainRoute; onClick:
   );
 }
 
+// Deduplicated total (computed once)
+const UNIQUE_TRAIN_COUNT = (() => {
+  const seen = new Set<string>();
+  return BD_TRAIN_ROUTES.filter(r => { if (seen.has(r.id)) return false; seen.add(r.id); return true; }).length;
+})();
+
 // ── Main Export ───────────────────────────────────────────────────────────────
 const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, embedded = false, onSelectTrain }) => {
   const { language } = useLanguage();
@@ -389,15 +458,27 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
   const bn = language === 'bn';
 
   const filtered = useMemo(() => {
-    if (!searchQuery.trim()) return BD_TRAIN_ROUTES;
-    const q = searchQuery.toLowerCase();
-    return BD_TRAIN_ROUTES.filter(r =>
-      r.name.toLowerCase().includes(q) ||
-      r.bnName.includes(q) ||
-      r.number.includes(q) ||
-      TRAIN_STATIONS[r.from]?.name.toLowerCase().includes(q) ||
-      TRAIN_STATIONS[r.to]?.name.toLowerCase().includes(q)
-    );
+    // Deduplicate by id (keep first occurrence)
+    const seen = new Set<string>();
+    const unique = BD_TRAIN_ROUTES.filter(r => {
+      if (seen.has(r.id)) return false;
+      seen.add(r.id);
+      return true;
+    });
+
+    const q = searchQuery.toLowerCase().trim();
+    const results = q
+      ? unique.filter(r =>
+          r.name.toLowerCase().includes(q) ||
+          r.bnName.includes(q) ||
+          r.number.includes(q) ||
+          TRAIN_STATIONS[r.from]?.name.toLowerCase().includes(q) ||
+          TRAIN_STATIONS[r.to]?.name.toLowerCase().includes(q)
+        )
+      : unique;
+
+    // A → Z by English name
+    return [...results].sort((a, b) => a.name.localeCompare(b.name));
   }, [searchQuery]);
 
   // Inline detail fallback (when no external handler)
@@ -432,7 +513,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
                 {bn ? 'বাংলাদেশ রেলওয়ে' : 'Bangladesh Railway'}
               </h1>
               <p className="text-white/80 text-xs">
-                {bn ? `${BD_TRAIN_ROUTES.length}টি ট্রেন` : `${BD_TRAIN_ROUTES.length} Trains`}
+                {bn ? `${UNIQUE_TRAIN_COUNT}টি ট্রেন` : `${UNIQUE_TRAIN_COUNT} Trains`}
               </p>
             </div>
           </div>
