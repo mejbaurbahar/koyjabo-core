@@ -1657,7 +1657,7 @@ const App: React.FC = () => {
         </div>
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">🚍 {t('about.title')}</h1>
         <h2 className="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-200">কই<span className="text-dhaka-red ml-2">যাবো</span> <span className="text-gray-600 dark:text-gray-400 text-lg">(KoyJabo)</span></h2>
-        <p className="text-gray-500 dark:text-gray-400 mb-8">{t('settings.version')} 1.0.0 • {t('common.tagline') || 'Revolutionizing Public Transport Navigation in Bangladesh'}</p>
+        <p className="text-gray-500 dark:text-gray-400 mb-8">{t('settings.version')} 2.0.0 • {t('common.tagline') || 'Bangladesh\'s Smart Transport Route Finder — Bus, Train, Metro, AI & More'}</p>
 
         <AdSenseAd adSlot="auto" className="my-6" />
         <div className="text-left space-y-8 bg-slate-50 dark:bg-slate-800 p-6 md:p-10 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm">
@@ -1742,6 +1742,25 @@ const App: React.FC = () => {
                   <li>• {t('about.offlineItem2')}</li>
                   <li>• {t('about.offlineItem3')}</li>
                 </ul>
+              </div>
+              <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center mb-4">
+                  <Users className="w-6 h-6" />
+                </div>
+                <h4 className="font-bold text-xl text-gray-900 dark:text-gray-100 mb-2">👤 User Accounts</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Sign in with GitHub to save your search history, manage devices, and personalize your experience.</p>
+                <ul className="mt-4 space-y-2 text-xs text-gray-500">
+                  <li>• GitHub OAuth — no password needed</li>
+                  <li>• Search history saved locally on device</li>
+                  <li>• Profile, security & device management</li>
+                </ul>
+              </div>
+              <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow md:col-span-2">
+                <div className="w-12 h-12 bg-rose-100 dark:bg-rose-900/40 text-rose-600 dark:text-rose-400 rounded-xl flex items-center justify-center mb-4">
+                  <MapPin className="w-6 h-6" />
+                </div>
+                <h4 className="font-bold text-xl text-gray-900 dark:text-gray-100 mb-2">🗺️ Daily Journey Tracker</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Log your daily commute stops, track journey history, and get route suggestions based on your travel patterns — all stored privately on your device.</p>
               </div>
             </div>
           </section>

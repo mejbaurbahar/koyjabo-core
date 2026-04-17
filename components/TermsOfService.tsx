@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { FileText, CheckCircle2, AlertTriangle, ShieldCheck, ExternalLink } from 'lucide-react';
+import { FileText, CheckCircle2, AlertTriangle, ShieldCheck, ExternalLink, UserCheck, Train, Bot } from 'lucide-react';
 import GlobalFooter from './GlobalFooter';
 import { AppView } from '../types';
 
@@ -29,7 +29,7 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ view, setView }) => {
                         <CheckCircle2 className="w-5 h-5" />
                         <span>Effective Date: January 1, 2024</span>
                     </div>
-                    <p className="text-sm text-blue-700 dark:text-blue-300">{t('terms.lastUpdated')}: January 26, 2026</p>
+                    <p className="text-sm text-blue-700 dark:text-blue-300">{t('terms.lastUpdated')}: April 17, 2026</p>
                 </div>
 
                 <div className="space-y-12 text-gray-700 dark:text-gray-300 leading-relaxed text-lg text-left">
@@ -48,6 +48,10 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ view, setView }) => {
                                 t('terms.metroRailInfo'),
                                 t('terms.intercityInfo'),
                                 t('terms.aiAssistance'),
+                                'User accounts with saved history and profile management',
+                                'Daily Journey Tracker for logging your commute stops',
+                                'Live route maps and train stop timelines',
+                                'Push notifications for transport alerts',
                             ].map((item, idx) => (
                                 <li key={idx} className="flex items-start gap-2 bg-white dark:bg-slate-900 p-4 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm text-sm">
                                     <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 shrink-0" />
@@ -55,6 +59,33 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ view, setView }) => {
                                 </li>
                             ))}
                         </ul>
+                    </section>
+
+                    <section className="grid md:grid-cols-3 gap-6">
+                        <div className="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700">
+                            <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
+                                <UserCheck className="w-5 h-5 text-emerald-500" /> User Accounts
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                Registration is optional. If you create an account, you are responsible for maintaining the security of your credentials. You may delete your account at any time from the Profile settings.
+                            </p>
+                        </div>
+                        <div className="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700">
+                            <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
+                                <Train className="w-5 h-5 text-blue-500" /> Train & Schedule Data
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                Train schedule and fare data is sourced from publicly available Bangladesh Railway information. Always verify departure times with official Bangladesh Railway sources before travel.
+                            </p>
+                        </div>
+                        <div className="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700">
+                            <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
+                                <Bot className="w-5 h-5 text-purple-500" /> AI Assistant
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                The AI assistant operates fully offline using local transport data. It supports English, Bengali, and Banglish. Responses are informational only and not a substitute for official sources.
+                            </p>
+                        </div>
                     </section>
 
                     <section className="bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/20 p-8 rounded-3xl">

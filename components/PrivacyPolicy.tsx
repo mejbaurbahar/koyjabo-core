@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { Shield, Lock, Eye, Clock, Mail, ExternalLink } from 'lucide-react';
+import { Shield, Lock, Eye, Clock, ExternalLink, UserCheck, WifiOff } from 'lucide-react';
 import GlobalFooter from './GlobalFooter';
 import { AppView } from '../types';
 
@@ -29,7 +29,7 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
                         <Clock className="w-5 h-5" />
                         <span>{t('privacy.effectiveDate')}: January 1, 2024</span>
                     </div>
-                    <p className="text-sm text-amber-700 dark:text-amber-300">{t('privacy.lastUpdated')}: January 26, 2026</p>
+                    <p className="text-sm text-amber-700 dark:text-amber-300">{t('privacy.lastUpdated')}: April 17, 2026</p>
                 </div>
 
                 <div className="space-y-12 text-gray-700 dark:text-gray-300 leading-relaxed text-lg">
@@ -75,6 +75,35 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
                             <li>{t('privacy.howWeUse2')}</li>
                             <li>{t('privacy.howWeUse3')}</li>
                         </ol>
+                    </section>
+
+                    <section className="bg-slate-50 dark:bg-slate-800/50 p-6 md:p-8 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm">
+                        <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100 flex items-center gap-3">
+                            <UserCheck className="w-6 h-6 text-emerald-500" /> User Accounts & Authentication
+                        </h2>
+                        <div className="space-y-3 text-sm text-gray-700 dark:text-gray-300">
+                            <p>KoyJabo offers optional user accounts. When you sign up or sign in via GitHub OAuth, we store:</p>
+                            <ul className="list-disc list-inside ml-4 space-y-2">
+                                <li>Your GitHub username and profile picture (for display purposes only)</li>
+                                <li>Your email address (used for account identification, never shared with third parties)</li>
+                                <li>Your search history and saved routes (stored locally on your device, not on our servers)</li>
+                                <li>Device sessions for security — you can view and revoke these from your Profile page</li>
+                            </ul>
+                            <p className="mt-3">You may use KoyJabo without creating an account. All core transport features (bus routes, trains, metro, AI assistant) are fully available without login.</p>
+                        </div>
+                    </section>
+
+                    <section className="bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/20 p-8 rounded-3xl">
+                        <h2 className="text-2xl font-bold mb-4 text-emerald-700 dark:text-emerald-400 flex items-center gap-2">
+                            <WifiOff className="w-6 h-6" /> What We Don't Do
+                        </h2>
+                        <ul className="list-none space-y-3 text-sm text-gray-700 dark:text-gray-300">
+                            <li className="flex items-start gap-2"><span className="text-emerald-500 font-bold mt-0.5">✓</span> We do NOT send your search queries to any external AI service. The AI assistant runs entirely offline on local transport data.</li>
+                            <li className="flex items-start gap-2"><span className="text-emerald-500 font-bold mt-0.5">✓</span> We do NOT sell your data to third parties.</li>
+                            <li className="flex items-start gap-2"><span className="text-emerald-500 font-bold mt-0.5">✓</span> We do NOT track your precise GPS location without explicit consent.</li>
+                            <li className="flex items-start gap-2"><span className="text-emerald-500 font-bold mt-0.5">✓</span> We do NOT require account registration to use the app.</li>
+                            <li className="flex items-start gap-2"><span className="text-emerald-500 font-bold mt-0.5">✓</span> We do NOT store your daily journey or route history on any server — all history is device-local only.</li>
+                        </ul>
                     </section>
 
                     <section className="grid md:grid-cols-2 gap-6">
