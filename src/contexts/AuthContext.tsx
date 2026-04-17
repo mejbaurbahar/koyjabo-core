@@ -66,7 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .catch(() => { /* avatar fetch is best-effort */ });
       // Refresh history from GitHub in background
       fetchUserHistoryFromGitHub(session.user.id)
-        .then(data => { if (data) loadHistoryData(data); })
+        .then(data => { if (data) loadHistoryData(data as any); })
         .catch(() => {});
     } else {
       setStatus('unauthenticated');
@@ -83,7 +83,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     recordDeviceLogin(newUser.id);
     // Load history from GitHub in background (overwrites any stale local data)
     fetchUserHistoryFromGitHub(newUser.id)
-      .then(data => { if (data) loadHistoryData(data); })
+      .then(data => { if (data) loadHistoryData(data as any); })
       .catch(() => {});
   }, []);
 
