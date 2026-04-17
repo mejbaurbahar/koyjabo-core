@@ -643,7 +643,7 @@ function extractFromTo(text: string): { from: string | null; to: string | null }
   const m = text.match(/([a-z0-9'\s-]{2,25})\s+from\s+([a-z0-9'\s-]{2,25})/i);
   if (m) return { from: m[1].trim(), to: m[2].trim() };
   // "from [place]... go to [place]"
-  const fromM = text.match(/\bfrom\s+([a-z0-9'\s-]{2,25?))/i);
+  const fromM = text.match(/\bfrom\s+([a-z0-9'\s-]{2,25})/i);
   const toM = text.match(/\b(?:go to|want to go|to)\s+([a-z0-9'\s-]{2,25})/i);
   return { from: fromM?.[1]?.trim() ?? null, to: toM?.[1]?.trim() ?? null };
 }
@@ -1158,8 +1158,10 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   const [actualQueryPart, contextPart] = userQuery.split('[Context:');
   const isOffline = userQuery.includes('[OfflineMode]');
   const query = actualQueryPart.trim();
-  const lowerQuery = normalize(query);
   const isBn = /[\u0980-\u09FF]/.test(query);
+  const isBanglishQuery = detectBanglish(query);
+  const searchQuery = isBanglishQuery ? query + ' ' + normalizeBanglish(query) : query;
+  const lowerQuery = normalize(searchQuery);
 
   // === FAQ Database Check ===
   const faqChecks = {
@@ -1171,7 +1173,7 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   for (const [key, condition] of Object.entries(faqChecks)) {
     if (condition && FAQ_DATABASE[key as keyof typeof FAQ_DATABASE]) {
       const faqResponse = FAQ_DATABASE[key as keyof typeof FAQ_DATABASE][isBn ? 'bn' : 'en'];
-      return await enhanceResponseWithOnlineData(faqResponse, query, isBn ? 'bn' : 'en');
+      return faqResponse;
     }
   }
 
@@ -1286,11 +1288,11 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   }
 
   // 0. Greeting / General
-  if (lowerQuery.match(/^(hi|hello|hey|salam|help|হাই|হেলো|সাহায্য)/)) {
+  if (lowerQuery.match(/^(hi|hello|hey|salam|help|assalamu|হাই|হেলো|সাহায্য|কি|কী)/)) {
     const isBn = /[\u0980-\u09FF]/.test(query);
     return isBn
       ? "👋 হ্যালো! আমি আপনার কই যাবো (Koy Jabo) এআই সহায়ক। আমি আপনাকে সাহায্য করতে পারি:\n- 🚌 **ঢাকার স্থানীয় বাস রুট** (যেমন: 'ফার্মগেট থেকে মিরপুর যেতে বাস')\n- 🚇 **মেট্রো রেল তথ্য** (যেমন: 'উত্তরা থেকে মতিঝিল মেট্রো')\n- 🚂 **আন্তঃজেলা (বাস/ট্রেন/বিমান/লঞ্চ)** (যেমন: 'ঢাকা থেকে বরিশাল')\n- 🗺️ **পর্যটন গাইড** (যেমন: 'কক্সবাজার কিভাবে যাব')\n\nআজ আপনাকে কিভাবে সাহায্য করতে পারি?"
-      : "👋 Hello! I am your Koy Jabo Assistant. I can help you with:\n- 🚌 **Local Bus Routes** (e.g., 'Bus from Farmgate to Mirpur')\n- 🚇 **Metro Rail Info** (e.g., 'Metro from Uttara to Motijheel')\n- 🚂 **Intercity (Bus/Train/Air/Launch)** (e.g., 'Dhaka to Barishal')\n- 🗺️ **Tourist Guide** (e.g., 'How to reach Cox's Bazar')\n\nHow can I help you today?";
+      : "👋 Hello! I am your Koy Jabo Assistant. I can help you with:\n- 🚌 **Local Bus Routes** (e.g., 'Bus from Farmgate to Mirpur')\n- 🚇 **Metro Rail Info** (e.g., 'Metro from Uttara to Motijheel')\n- 🚂 **Intercity (Bus/Train/Air/Launch)** (e.g., 'Dhaka to Barishal')\n- 🗺️ **Tourist Guide** (e.g., 'How to reach Cox's Bazar')\n- 🗣️ **Banglish OK!** (e.g., 'farmgate theke mirpur bus ache?', 'ami gulshan jabo kivabe')\n\nHow can I help you today?";
   }
 
   // Priority checks for specific info types
@@ -1498,15 +1500,6 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   // Add random travel tip (33% chance)
   if (Math.random() < 0.33) {
     finalResponse += addTravelTips(query, isBn);
-  }
-
-  // Final enhancement with online data
-  if (navigator.onLine && !isOffline) {
-    try {
-      finalResponse = await enhanceResponseWithOnlineData(finalResponse, query, isBn ? 'bn' : 'en');
-    } catch (e) {
-      // Ignored
-    }
   }
 
   // === NEW: Smart Response Filtering ===

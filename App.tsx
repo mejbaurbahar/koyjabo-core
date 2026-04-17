@@ -680,10 +680,10 @@ const App: React.FC = () => {
   const pwaUpdateSWRef = useRef<((reloadPage?: boolean) => Promise<void>) | null>(null);
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
   const [previousView, setPreviousView] = useState<AppView>(AppView.HOME); // Track previous view for back navigation
-  const [profileSection, setProfileSection] = useState<'profile' | 'security' | 'devices' | 'history' | 'settings'>(() => {
+  const [profileSection, setProfileSection] = useState<'profile' | 'security' | 'devices'>(() => {
     const s = new URLSearchParams(window.location.search).get('section');
-    const valid = ['profile', 'security', 'devices', 'history', 'settings'];
-    return (valid.includes(s || '') ? s : 'profile') as 'profile' | 'security' | 'devices' | 'history' | 'settings';
+    const valid = ['profile', 'security', 'devices'];
+    return (valid.includes(s || '') ? s : 'profile') as 'profile' | 'security' | 'devices';
   });
   const [showClearChatConfirm, setShowClearChatConfirm] = useState(false);
   const [showHistoryManager, setShowHistoryManager] = useState(false);
