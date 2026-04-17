@@ -11,7 +11,7 @@ const GlobalFooter: React.FC<GlobalFooterProps> = ({ setView }) => {
     const { t } = useLanguage();
 
     return (
-        <footer className="hidden md:block py-10 px-6 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-slate-900 text-center">
+        <footer className="py-10 px-6 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-slate-900 text-center">
             <div className="max-w-6xl mx-auto">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-6">
                     <div className="flex items-center gap-3">

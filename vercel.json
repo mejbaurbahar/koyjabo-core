@@ -48,7 +48,7 @@
             "destination": "https://koyjabo-backend.onrender.com/api/stats"
         },
         {
-            "source": "/ads.txt",
+            "source": "/api/ads-proxy",
             "destination": "https://srv.adstxtmanager.com/19390/koyjabo.com"
         }
     ],
