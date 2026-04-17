@@ -3848,7 +3848,7 @@ const App: React.FC = () => {
         {/* Mobile Bottom Navigation - Always show except on BUS_DETAILS and LIVE_NAV */}
         {view !== AppView.BUS_DETAILS && view !== AppView.LIVE_NAV && (
           <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] md:hidden pb-safe">
-            <div className="grid grid-cols-5 h-16">
+            <div className="grid grid-cols-5 h-16 pt-1">
               <button
                 onClick={() => {
                   setView(AppView.HOME);

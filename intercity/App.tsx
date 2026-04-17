@@ -323,7 +323,7 @@ function App() {
       </header>
 
       {/* Fixed Header - Mobile */}
-      <header className={`md:hidden fixed top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-[100] px-4 flex items-center justify-between transition-all duration-300 h-16 ${isOnline ? 'pt-safe' : 'pt-7'}`}>
+      <header className={`md:hidden fixed top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-[100] px-4 flex items-center justify-between transition-all duration-300 pb-3 ${isOnline ? 'pt-safe' : 'pt-7'}`}>
         <a
           href="/"
           onClick={(e) => {
@@ -371,7 +371,7 @@ function App() {
       </header>
 
       {/* FIXED TOP SECTION (Title + Search) - Add padding for fixed header */}
-      <div className="flex-none relative overflow-visible bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 z-50 shadow-sm transition-colors duration-300 mt-16 md:mt-20">
+      <div className="flex-none relative overflow-visible bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 z-50 shadow-sm transition-colors duration-300 md:mt-20" style={{ marginTop: 'calc(env(safe-area-inset-top, 0px) + 3.5rem)' }}>
 
         {/* Push content below offline bar when offline (bar overlaps top of header, header paddingTop pushes its content clear) */}
         {!isOnline && <div className="h-7" />}

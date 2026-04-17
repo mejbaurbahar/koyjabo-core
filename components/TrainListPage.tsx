@@ -543,6 +543,17 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
 
   const activeFilterCount = [filterType, filterDivision, filterFrom, filterTo].filter(Boolean).length;
 
+  const nearestStation = useMemo(() => {
+    if (!userLocation) return null;
+    let minDist = Infinity;
+    let nearest: { station: (typeof TRAIN_STATIONS)[string]; distKm: number } | null = null;
+    Object.values(TRAIN_STATIONS).forEach(st => {
+      const d = haversineKm(userLocation.lat, userLocation.lng, st.lat, st.lng);
+      if (d < minDist) { minDist = d; nearest = { station: st, distKm: d }; }
+    });
+    return nearest;
+  }, [userLocation]);
+
   const clearAllFilters = () => {
     setFilterType(''); setFilterDivision(''); setFilterFrom(''); setFilterTo(''); setSearchQuery('');
   };
@@ -704,6 +715,38 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
           )}
         </div>
       </div>
+
+      {/* Nearest station banner */}
+      {nearestStation && (
+        <div className="shrink-0 px-4 py-2.5 bg-blue-50 dark:bg-blue-950/30 border-b border-blue-100 dark:border-blue-900/40">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1 shrink-0">
+              <div className="w-2.5 h-2.5 rounded-full bg-blue-500 border-2 border-white dark:border-slate-900 shadow-sm" />
+              <div className="flex gap-0.5">
+                {[0,1,2,3].map(i => (
+                  <div key={i} className="w-1.5 h-px bg-blue-300 dark:bg-blue-600 rounded" />
+                ))}
+              </div>
+              <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center shadow-sm">
+                <Train className="w-3 h-3 text-white" />
+              </div>
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-bold text-gray-800 dark:text-gray-200 truncate leading-tight">
+                {bn ? nearestStation.station.bnName : nearestStation.station.name}
+              </p>
+              <p className="text-[10px] text-blue-600 dark:text-blue-400 leading-tight">
+                {bn ? 'নিকটতম রেল স্টেশন' : 'Nearest train station'}
+              </p>
+            </div>
+            <span className="text-[11px] font-bold text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/50 px-2 py-0.5 rounded-full shrink-0">
+              {nearestStation.distKm < 1
+                ? `${Math.round(nearestStation.distKm * 1000)} m`
+                : `${nearestStation.distKm.toFixed(1)} km`}
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Count row */}
       <div className="shrink-0 flex items-center justify-between px-5 py-2 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-slate-800">
