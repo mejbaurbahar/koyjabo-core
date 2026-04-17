@@ -347,9 +347,11 @@ export interface StoredHistory {
   busSearches?: unknown[];
   routeSearches?: unknown[];
   intercitySearches?: unknown[];
+  trainSearches?: unknown[];
   mostUsedBuses?: Record<string, number>;
   mostUsedRoutes?: Record<string, number>;
   mostUsedIntercity?: Record<string, number>;
+  mostUsedTrains?: Record<string, number>;
 }
 
 export async function fetchUserHistoryFromGitHub(userId: string): Promise<StoredHistory | null> {
@@ -364,17 +366,21 @@ export function syncHistoryToGitHub(userId: string, history: {
   busSearches: unknown[];
   routeSearches: unknown[];
   intercitySearches: unknown[];
+  trainSearches?: unknown[];
   mostUsedBuses: Record<string, number>;
   mostUsedRoutes: Record<string, number>;
   mostUsedIntercity: Record<string, number>;
+  mostUsedTrains?: Record<string, number>;
 }): void {
   const trimmed = {
     busSearches: history.busSearches.slice(-50),
     routeSearches: history.routeSearches.slice(-50),
     intercitySearches: history.intercitySearches.slice(-50),
+    trainSearches: (history.trainSearches || []).slice(-50),
     mostUsedBuses: history.mostUsedBuses,
     mostUsedRoutes: history.mostUsedRoutes,
     mostUsedIntercity: history.mostUsedIntercity,
+    mostUsedTrains: history.mostUsedTrains || {},
   };
   triggerAndWait('save-history', {
     userId,
