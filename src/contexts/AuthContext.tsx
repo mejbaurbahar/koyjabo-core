@@ -96,9 +96,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         busSearches: h.busSearches,
         routeSearches: h.routeSearches,
         intercitySearches: h.intercitySearches,
+        trainSearches: h.trainSearches,
         mostUsedBuses: h.mostUsedBuses,
         mostUsedRoutes: h.mostUsedRoutes,
         mostUsedIntercity: h.mostUsedIntercity,
+        mostUsedTrains: h.mostUsedTrains,
       });
     }
     localStorage.removeItem(SESSION_KEY);

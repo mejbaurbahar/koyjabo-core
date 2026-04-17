@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Clock, TrendingUp, Calendar, Users, Eye, Trash2, Bus, MapPin, ArrowRight, Activity } from 'lucide-react';
+import { ArrowLeft, Clock, TrendingUp, Calendar, Users, Eye, Trash2, Bus, MapPin, ArrowRight, Activity, Train } from 'lucide-react';
 import {
     getUserHistory,
     getGlobalStats,
     getMostUsedBuses,
     getMostUsedRoutes,
+    getMostUsedTrains,
     getTodayBusSearches,
     getTodayRouteSearches,
     getRecentBusSearches,
     getRecentRouteSearches,
     getRecentIntercitySearches,
+    getRecentTrainSearches,
     clearUserHistory,
     subscribeToGlobalStats,
     initStorageListener,
@@ -37,11 +39,13 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onViewJo
     const [history, setHistory] = useState(getUserHistory());
     const [mostUsedBuses, setMostUsedBuses] = useState(getMostUsedBuses(50));
     const [mostUsedRoutes, setMostUsedRoutes] = useState(getMostUsedRoutes(50));
+    const [mostUsedTrains, setMostUsedTrains] = useState(getMostUsedTrains(50));
     const [todayBuses, setTodayBuses] = useState(getTodayBusSearches());
     const [todayRoutes, setTodayRoutes] = useState(getTodayRouteSearches());
     const [recentBusSearches, setRecentBusSearches] = useState(getRecentBusSearches(50));
     const [recentRouteSearches, setRecentRouteSearches] = useState(getRecentRouteSearches(50));
     const [recentIntercitySearches, setRecentIntercitySearches] = useState(getRecentIntercitySearches(50));
+    const [recentTrainSearches, setRecentTrainSearches] = useState(getRecentTrainSearches(50));
 
     // Subscribe to real-time updates
     useEffect(() => {
@@ -95,11 +99,13 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onViewJo
         setHistory(getUserHistory());
         setMostUsedBuses(getMostUsedBuses(50));
         setMostUsedRoutes(getMostUsedRoutes(50));
+        setMostUsedTrains(getMostUsedTrains(50));
         setTodayBuses(getTodayBusSearches());
         setTodayRoutes(getTodayRouteSearches());
         setRecentBusSearches(getRecentBusSearches(50));
         setRecentRouteSearches(getRecentRouteSearches(50));
         setRecentIntercitySearches(getRecentIntercitySearches(50));
+        setRecentTrainSearches(getRecentTrainSearches(50));
         setRefreshKey(prev => prev + 1);
     };
 
@@ -214,7 +220,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onViewJo
                 {activeTab === 'personal' ? (
                     <>
                         {/* Clear History Button */}
-                        {(recentBusSearches.length > 0 || recentRouteSearches.length > 0 || recentIntercitySearches.length > 0) && (
+                        {(recentBusSearches.length > 0 || recentRouteSearches.length > 0 || recentIntercitySearches.length > 0 || recentTrainSearches.length > 0) && (
                             <div className="flex justify-end">
                                 <button
                                     onClick={handleClearHistory}
@@ -232,7 +238,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onViewJo
                                 <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                                 {t('history.todayActivity')}
                             </h2>
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-3 gap-3">
                                 <div className="bg-white dark:bg-slate-700 p-4 rounded-xl">
                                     <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{formatNumber(todayBuses.length)}</div>
                                     <div className="text-sm text-gray-600 dark:text-gray-300 mt-1">{t('history.busesSearched')}</div>
@@ -240,6 +246,10 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onViewJo
                                 <div className="bg-white dark:bg-slate-700 p-4 rounded-xl">
                                     <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">{formatNumber(todayRoutes.length)}</div>
                                     <div className="text-sm text-gray-600 dark:text-gray-300 mt-1">{t('history.routesSearched')}</div>
+                                </div>
+                                <div className="bg-white dark:bg-slate-700 p-4 rounded-xl">
+                                    <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">{formatNumber((history.todayTrains || []).length)}</div>
+                                    <div className="text-sm text-gray-600 dark:text-gray-300 mt-1">{t('history.trainsViewed') || 'Trains'}</div>
                                 </div>
                             </div>
                         </div>
@@ -423,8 +433,64 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onViewJo
                             </div>
                         )}
 
+                        {/* Most Used Trains */}
+                        {mostUsedTrains.length > 0 && (
+                            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
+                                <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+                                    <TrendingUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                                    {t('history.mostUsedTrains') || 'Most Viewed Trains'}
+                                </h2>
+                                <div className="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                                    {mostUsedTrains.map((item, idx) => (
+                                        <div key={idx} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700/50 rounded-xl">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center">
+                                                    <Train className="w-5 h-5 text-white" />
+                                                </div>
+                                                <div>
+                                                    <div className="font-bold text-gray-900 dark:text-gray-100 text-sm">{item.trainName}</div>
+                                                </div>
+                                            </div>
+                                            <span className="px-3 py-1 bg-emerald-600/10 text-emerald-600 dark:text-emerald-400 rounded-full text-sm font-bold">
+                                                {formatNumber(item.count)}x
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Recent Train Views */}
+                        {recentTrainSearches.length > 0 && (
+                            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
+                                <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+                                    <Train className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                                    {t('history.recentTrainViews') || 'Recent Train Views'}
+                                </h2>
+                                <div className="space-y-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                                    {recentTrainSearches.map((record, index) => (
+                                        <div
+                                            key={index}
+                                            className="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-slate-700/50 rounded-lg transition-colors"
+                                        >
+                                            <div className="flex items-center gap-3 flex-1 min-w-0">
+                                                <Train className="w-4 h-4 text-emerald-500 shrink-0" />
+                                                <div className="min-w-0">
+                                                    <div className="font-bold text-sm text-gray-900 dark:text-gray-100 truncate">
+                                                        {record.trainName}
+                                                    </div>
+                                                    <div className="text-xs text-gray-400 dark:text-gray-500">#{record.trainNumber}</div>
+                                                </div>
+                                            </div>
+                                            <span className="text-xs text-gray-500 dark:text-gray-400 ml-2 shrink-0">{formatDate(record.timestamp)}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
                         {/* Empty State */}
-                        {recentBusSearches.length === 0 && recentRouteSearches.length === 0 && recentIntercitySearches.length === 0 && (
+                        {recentBusSearches.length === 0 && recentRouteSearches.length === 0 && recentIntercitySearches.length === 0 && recentTrainSearches.length === 0 && (
                             <div className="text-center py-12">
                                 <Clock className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
                                 <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">{t('history.noHistoryYet')}</h3>

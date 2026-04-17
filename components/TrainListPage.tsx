@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import {
   Train, Search, ArrowRight, Clock, CalendarX, Info,
   ArrowLeft, MapPin, Navigation,
-  Coins, AlertCircle, X, CheckCircle2
+  Coins, AlertCircle, X, CheckCircle2, SlidersHorizontal, ChevronDown
 } from 'lucide-react';
 
 function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
@@ -450,11 +450,42 @@ const UNIQUE_TRAIN_COUNT = (() => {
   return BD_TRAIN_ROUTES.filter(r => { if (seen.has(r.id)) return false; seen.add(r.id); return true; }).length;
 })();
 
+// Unique divisions derived from data
+const ALL_DIVISIONS = (() => {
+  const seen = new Set<string>();
+  const result: string[] = [];
+  BD_TRAIN_ROUTES.forEach(r => {
+    if (r.division && !seen.has(r.division)) { seen.add(r.division); result.push(r.division); }
+  });
+  return result.sort();
+})();
+
+// All unique station options for from/to selectors
+const ALL_STATION_OPTIONS = (() => {
+  const seen = new Set<string>();
+  const result: { id: string; name: string; bnName: string }[] = [];
+  BD_TRAIN_ROUTES.forEach(r => {
+    r.stops.forEach(id => {
+      const st = TRAIN_STATIONS[id];
+      if (st && !seen.has(id)) { seen.add(id); result.push({ id, name: st.name, bnName: st.bnName }); }
+    });
+  });
+  return result.sort((a, b) => a.name.localeCompare(b.name));
+})();
+
+type SortOption = 'name' | 'depart' | 'distance';
+
 // ── Main Export ───────────────────────────────────────────────────────────────
 const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, embedded = false, onSelectTrain }) => {
   const { language } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTrain, setSelectedTrain] = useState<BDTrainRoute | null>(null);
+  const [filterType, setFilterType] = useState<string>('');
+  const [filterDivision, setFilterDivision] = useState<string>('');
+  const [filterFrom, setFilterFrom] = useState<string>('');
+  const [filterTo, setFilterTo] = useState<string>('');
+  const [sortBy, setSortBy] = useState<SortOption>('name');
+  const [showFilters, setShowFilters] = useState(false);
   const bn = language === 'bn';
 
   const filtered = useMemo(() => {
@@ -466,20 +497,55 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
       return true;
     });
 
-    const q = searchQuery.toLowerCase().trim();
-    const results = q
-      ? unique.filter(r =>
-          r.name.toLowerCase().includes(q) ||
-          r.bnName.includes(q) ||
-          r.number.includes(q) ||
-          TRAIN_STATIONS[r.from]?.name.toLowerCase().includes(q) ||
-          TRAIN_STATIONS[r.to]?.name.toLowerCase().includes(q)
-        )
-      : unique;
+    let results = unique;
 
-    // A → Z by English name
-    return [...results].sort((a, b) => a.name.localeCompare(b.name));
-  }, [searchQuery]);
+    // Text search across name, number, bnName, all stop names
+    const q = searchQuery.toLowerCase().trim();
+    if (q) {
+      results = results.filter(r =>
+        r.name.toLowerCase().includes(q) ||
+        r.bnName.includes(q) ||
+        r.number.includes(q) ||
+        r.stops.some(id => {
+          const st = TRAIN_STATIONS[id];
+          return st && (st.name.toLowerCase().includes(q) || st.bnName.includes(q));
+        })
+      );
+    }
+
+    // Type filter
+    if (filterType) results = results.filter(r => r.type === filterType);
+
+    // Division filter
+    if (filterDivision) results = results.filter(r => r.division === filterDivision);
+
+    // From station filter — train must stop at this station
+    if (filterFrom) results = results.filter(r => r.stops.includes(filterFrom));
+
+    // To station filter — train must stop at this station AND after filterFrom if both set
+    if (filterTo) {
+      results = results.filter(r => {
+        if (!r.stops.includes(filterTo)) return false;
+        if (filterFrom && r.stops.includes(filterFrom)) {
+          return r.stops.indexOf(filterFrom) < r.stops.indexOf(filterTo);
+        }
+        return true;
+      });
+    }
+
+    // Sort
+    return [...results].sort((a, b) => {
+      if (sortBy === 'depart') return a.dhakaDepart.localeCompare(b.dhakaDepart);
+      if (sortBy === 'distance') return a.distanceKm - b.distanceKm;
+      return a.name.localeCompare(b.name);
+    });
+  }, [searchQuery, filterType, filterDivision, filterFrom, filterTo, sortBy]);
+
+  const activeFilterCount = [filterType, filterDivision, filterFrom, filterTo].filter(Boolean).length;
+
+  const clearAllFilters = () => {
+    setFilterType(''); setFilterDivision(''); setFilterFrom(''); setFilterTo(''); setSearchQuery('');
+  };
 
   // Inline detail fallback (when no external handler)
   if (!onSelectTrain && selectedTrain) {
@@ -518,22 +584,124 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
             </div>
           </div>
 
-          {/* Search */}
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              placeholder={bn ? 'ট্রেন বা গন্তব্য খুঁজুন...' : 'Search train or destination...'}
-              className="w-full pl-9 pr-9 py-2.5 rounded-xl bg-white/15 text-white placeholder-white/60 text-sm focus:outline-none focus:ring-2 focus:ring-white/30 border border-white/10"
-            />
-            {searchQuery && (
-              <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white">
-                <X className="w-4 h-4" />
-              </button>
-            )}
+          {/* Search + filter toggle row */}
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder={bn ? 'ট্রেন বা স্টেশন খুঁজুন...' : 'Search train, station, number...'}
+                className="w-full pl-9 pr-9 py-2.5 rounded-xl bg-white/15 text-white placeholder-white/60 text-sm focus:outline-none focus:ring-2 focus:ring-white/30 border border-white/10"
+              />
+              {searchQuery && (
+                <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white">
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+            <button
+              onClick={() => setShowFilters(v => !v)}
+              className={`relative px-3 py-2.5 rounded-xl border text-sm font-bold flex items-center gap-1.5 transition-all ${showFilters ? 'bg-white text-emerald-700 border-white' : 'bg-white/15 text-white border-white/20 hover:bg-white/25'}`}
+            >
+              <SlidersHorizontal className="w-4 h-4" />
+              {bn ? 'ফিল্টার' : 'Filter'}
+              {activeFilterCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                  {activeFilterCount}
+                </span>
+              )}
+            </button>
           </div>
+
+          {/* Expandable filter panel */}
+          {showFilters && (
+            <div className="mt-3 p-3 bg-white/15 rounded-xl border border-white/20 space-y-2 animate-in slide-in-from-top-2 duration-200">
+              {/* Row 1: From → To */}
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="text-[10px] font-bold text-white/70 block mb-1">{bn ? 'কোথায় থেকে' : 'From'}</label>
+                  <select
+                    value={filterFrom}
+                    onChange={e => setFilterFrom(e.target.value)}
+                    className="w-full text-xs px-2 py-1.5 rounded-lg bg-white/20 text-white border border-white/20 focus:outline-none"
+                  >
+                    <option value="" className="text-gray-800">{bn ? 'সব স্টেশন' : 'Any station'}</option>
+                    {ALL_STATION_OPTIONS.map(st => (
+                      <option key={st.id} value={st.id} className="text-gray-800">{bn ? st.bnName : st.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-white/70 block mb-1">{bn ? 'কোথায় যাবেন' : 'To'}</label>
+                  <select
+                    value={filterTo}
+                    onChange={e => setFilterTo(e.target.value)}
+                    className="w-full text-xs px-2 py-1.5 rounded-lg bg-white/20 text-white border border-white/20 focus:outline-none"
+                  >
+                    <option value="" className="text-gray-800">{bn ? 'সব স্টেশন' : 'Any station'}</option>
+                    {ALL_STATION_OPTIONS.map(st => (
+                      <option key={st.id} value={st.id} className="text-gray-800">{bn ? st.bnName : st.name}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              {/* Row 2: Type + Division */}
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="text-[10px] font-bold text-white/70 block mb-1">{bn ? 'ট্রেনের ধরন' : 'Type'}</label>
+                  <select
+                    value={filterType}
+                    onChange={e => setFilterType(e.target.value)}
+                    className="w-full text-xs px-2 py-1.5 rounded-lg bg-white/20 text-white border border-white/20 focus:outline-none"
+                  >
+                    <option value="" className="text-gray-800">{bn ? 'সব ধরন' : 'All types'}</option>
+                    {(['Express', 'Intercity', 'Mail', 'Local'] as const).map(t => (
+                      <option key={t} value={t} className="text-gray-800">{bn ? (TYPE_BN[t] ?? t) : t}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-white/70 block mb-1">{bn ? 'বিভাগ' : 'Division'}</label>
+                  <select
+                    value={filterDivision}
+                    onChange={e => setFilterDivision(e.target.value)}
+                    className="w-full text-xs px-2 py-1.5 rounded-lg bg-white/20 text-white border border-white/20 focus:outline-none"
+                  >
+                    <option value="" className="text-gray-800">{bn ? 'সব বিভাগ' : 'All divisions'}</option>
+                    {ALL_DIVISIONS.map(d => (
+                      <option key={d} value={d} className="text-gray-800">{d}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              {/* Row 3: Sort */}
+              <div>
+                <label className="text-[10px] font-bold text-white/70 block mb-1">{bn ? 'সাজানো' : 'Sort by'}</label>
+                <div className="flex gap-1.5">
+                  {([['name', bn ? 'নাম' : 'Name'], ['depart', bn ? 'সময়' : 'Depart'], ['distance', bn ? 'দূরত্ব' : 'Distance']] as [SortOption, string][]).map(([val, label]) => (
+                    <button
+                      key={val}
+                      onClick={() => setSortBy(val)}
+                      className={`flex-1 text-xs py-1 rounded-lg font-bold transition-colors ${sortBy === val ? 'bg-white text-emerald-700' : 'bg-white/20 text-white'}`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              {/* Clear */}
+              {activeFilterCount > 0 && (
+                <button
+                  onClick={clearAllFilters}
+                  className="w-full text-xs py-1.5 rounded-lg text-white/80 hover:text-white font-bold border border-white/20 hover:border-white/40 transition-colors"
+                >
+                  {bn ? 'সব ফিল্টার মুছুন' : 'Clear all filters'}
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -542,9 +710,16 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
         <h3 className="font-bold text-gray-800 dark:text-gray-200 text-sm">
           {bn ? 'ট্রেনের তালিকা' : 'Train List'}
         </h3>
-        <span className="text-[10px] bg-gray-200 dark:bg-slate-700 px-2 py-0.5 rounded-full text-gray-600 dark:text-gray-300 font-bold">
-          {filtered.length}
-        </span>
+        <div className="flex items-center gap-2">
+          {activeFilterCount > 0 && (
+            <button onClick={clearAllFilters} className="text-[10px] text-red-500 font-bold hover:underline">
+              {bn ? 'ক্লিয়ার' : 'Clear'}
+            </button>
+          )}
+          <span className="text-[10px] bg-gray-200 dark:bg-slate-700 px-2 py-0.5 rounded-full text-gray-600 dark:text-gray-300 font-bold">
+            {filtered.length}
+          </span>
+        </div>
       </div>
 
       {/* Train list */}

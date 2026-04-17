@@ -275,7 +275,11 @@ function App() {
       </header>
 
       {/* Fixed Header - Mobile */}
-      <header className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-[100] px-4 flex items-center justify-between transition-all duration-300 pt-safe">
+      <header
+        className="md:hidden fixed top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-[100] flex flex-col transition-all duration-300"
+        style={{ paddingTop: 'env(safe-area-inset-top)' }}
+      >
+        <div className="h-16 px-4 flex items-center justify-between">
         <a
           href="/"
           onClick={(e) => {
@@ -300,10 +304,14 @@ function App() {
             <Menu className="w-5 h-5 text-gray-600 dark:text-gray-300" />
           </button>
         </div>
+        </div>
       </header>
 
       {/* FIXED TOP SECTION (Title + Search) - Add padding for fixed header */}
-      <div className="flex-none relative overflow-visible bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 z-50 shadow-sm transition-colors duration-300 mt-16 md:mt-20">
+      <div
+        className="flex-none relative overflow-visible bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 z-50 shadow-sm transition-colors duration-300 md:mt-20"
+        style={{ marginTop: 'calc(4rem + env(safe-area-inset-top))' }}
+      >
 
         {/* === BACKGROUND ANIMATION LAYER === */}
         <div className="absolute inset-0 z-0">

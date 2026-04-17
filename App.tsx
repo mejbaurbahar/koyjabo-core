@@ -23,7 +23,7 @@ import { getCurrentLocation, getLocationByIP, findNearestStation, getDistance } 
 import { findNearestMetroStation } from './services/metroService';
 import { planRoutes, findRoutesBetweenStations, SuggestedRoute } from './services/routePlanner';
 import RouteSuggestions from './components/RouteSuggestions';
-import { incrementVisitCount, trackBusSearch, trackRouteSearch } from './services/analyticsService';
+import { incrementVisitCount, trackBusSearch, trackRouteSearch, trackTrainSearch } from './services/analyticsService';
 import ThemeToggle from './components/ThemeToggle';
 import LiveLocationMap from './components/LiveLocationMap';
 
@@ -168,6 +168,11 @@ const getStoredView = (): AppView => {
 
     if (view === AppView.BUS_DETAILS || view === AppView.LIVE_NAV) {
       return getStoredBus() ? view : AppView.HOME;
+    }
+
+    // Train details require a selected train (not stored) — restore to list
+    if (view === AppView.TRAIN_DETAILS) {
+      return AppView.TRAIN_LIST;
     }
 
     return view;
@@ -1603,7 +1608,7 @@ const App: React.FC = () => {
 
 
 
-      <div className="flex-1 p-4 space-y-4 bg-slate-50 dark:bg-slate-900 pb-[140px] md:pb-4 overflow-y-auto">
+      <div className="flex-1 p-4 space-y-4 bg-slate-50 dark:bg-slate-900 pb-[140px] md:pb-4 overflow-y-auto" style={{ paddingBottom: 'calc(140px + env(safe-area-inset-bottom))' }}>
         {chatHistory.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center p-8 opacity-50">
             <Bot className="w-16 h-16 text-gray-300 dark:text-gray-600 mb-4" />
@@ -1645,7 +1650,7 @@ const App: React.FC = () => {
   );
 
   const renderAbout = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-6 md:pt-24 pb-32 md:pb-12 overflow-y-auto overflow-x-hidden w-full max-w-full">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-6 md:pt-24 md:pb-12 overflow-y-auto overflow-x-hidden w-full max-w-full pb-nav-safe">
       <div className="max-w-5xl mx-auto text-center">
         <div className="w-20 h-20 bg-dhaka-red rounded-3xl flex items-center justify-center text-white mx-auto mb-6 shadow-xl shadow-red-200 rotate-3 hover:rotate-6 transition-transform">
           <Bus className="w-10 h-10" />
@@ -1946,7 +1951,7 @@ const App: React.FC = () => {
   );
 
   const renderWhyUse = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-6 md:pt-24 pb-28 md:pb-12 overflow-y-auto w-full">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-6 md:pt-24 md:pb-12 overflow-y-auto w-full pb-nav-safe">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100 leading-tight">{t('whyUse.title')}</h1>
         <p className="text-gray-500 dark:text-gray-400 mb-8">{t('whyUse.subtitle')}</p>
@@ -2122,7 +2127,7 @@ const App: React.FC = () => {
   );
 
   const renderFAQ = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-6 md:pt-24 pb-28 md:pb-12 overflow-y-auto w-full">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-6 md:pt-24 md:pb-12 overflow-y-auto w-full pb-nav-safe">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100 leading-tight">{t('faq.title')}</h1>
         <p className="text-gray-500 dark:text-gray-400 mb-8">{t('faq.subtitle')}</p>
@@ -2282,7 +2287,7 @@ const App: React.FC = () => {
   );
 
   const renderForAi = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-6 md:pt-24 pb-28 md:pb-12 overflow-y-auto w-full">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-6 md:pt-24 md:pb-12 overflow-y-auto w-full pb-nav-safe">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl md:text-5xl font-bold mb-6 text-gray-900 leading-tight">AI Dataset & Integration</h1>
         <div className="flex items-center gap-2 text-sm text-gray-500 mb-8">
@@ -2548,7 +2553,7 @@ const App: React.FC = () => {
         </div>{/* end sticky desktop header+stats wrapper */}
 
         {/* Scrollable Container for everything else */}
-        <div className="flex-1 overflow-y-auto w-full pb-24 md:pb-4">
+        <div className="flex-1 overflow-y-auto w-full pb-nav-safe md:pb-4">
 
         {/* Pinned Trip Info */}
         {selectedTrip && (
@@ -3238,6 +3243,11 @@ const App: React.FC = () => {
               if (user) {
                 setSelectedTrain(route);
                 setView(AppView.TRAIN_DETAILS);
+                const fromSt = route.stops[0];
+                const toSt   = route.stops[route.stops.length - 1];
+                requestIdleCallback(() => trackTrainSearch(
+                  route.id, route.name, route.number, fromSt, toSt
+                ));
               } else {
                 setView(AppView.LOGIN);
               }
@@ -3309,7 +3319,7 @@ const App: React.FC = () => {
         </div>
 
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto px-4 pb-24 md:pb-4 space-y-3">
+        <div className="flex-1 overflow-y-auto px-4 pb-nav-safe md:pb-4 space-y-3">
 
           {/* Ad Banner - in scrollable area so it doesn't shrink bus list */}
 
@@ -3844,9 +3854,10 @@ const App: React.FC = () => {
                   setView(AppView.HOME);
                   setPrimarySearch('LOCAL');
                 }}
-                className={`flex items-center justify-center border-t-2 transition-all duration-300 transform ${view === AppView.HOME && primarySearch === 'LOCAL' ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-900/20 scale-105' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:scale-105'} `}
+                className={`flex flex-col items-center justify-center gap-0.5 border-t-2 transition-all duration-300 transform ${view === AppView.HOME && primarySearch === 'LOCAL' ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-900/20 scale-105' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:scale-105'} `}
               >
-                <MapIcon className={`w-6 h-6 transition-all duration-300 ${view === AppView.HOME && primarySearch === 'LOCAL' ? 'text-emerald-600 dark:text-emerald-400 fill-emerald-100 dark:fill-emerald-900 animate-pulse' : 'text-gray-400 dark:text-gray-500'} `} />
+                <MapIcon className={`w-5 h-5 transition-all duration-300 ${view === AppView.HOME && primarySearch === 'LOCAL' ? 'text-emerald-600 dark:text-emerald-400 fill-emerald-100 dark:fill-emerald-900' : 'text-gray-400 dark:text-gray-500'} `} />
+                <span className="text-[9px] font-bold uppercase tracking-wide">{t('nav.local') || 'Local'}</span>
               </button>
               <button
                 onClick={() => {
@@ -3857,27 +3868,31 @@ const App: React.FC = () => {
                     window.location.href = '/intercity/';
                   }
                 }}
-                className={`flex items-center justify-center border-t-2 transition-all duration-300 transform ${!isInDhaka && view === AppView.HOME && primarySearch === 'INTERCITY' ? 'border-teal-500 text-teal-600 dark:text-teal-400 bg-teal-50/50 dark:bg-teal-900/20 scale-105' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:scale-105'} `}
+                className={`flex flex-col items-center justify-center gap-0.5 border-t-2 transition-all duration-300 transform ${!isInDhaka && view === AppView.HOME && primarySearch === 'INTERCITY' ? 'border-teal-500 text-teal-600 dark:text-teal-400 bg-teal-50/50 dark:bg-teal-900/20 scale-105' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:scale-105'} `}
               >
-                <Bus className={`w-6 h-6 transition-all duration-300 ${!isInDhaka && view === AppView.HOME && primarySearch === 'INTERCITY' ? 'text-teal-600 dark:text-teal-400 fill-teal-100 dark:fill-teal-900 animate-pulse' : 'text-gray-400 dark:text-gray-500'} `} />
+                <Bus className={`w-5 h-5 transition-all duration-300 ${!isInDhaka && view === AppView.HOME && primarySearch === 'INTERCITY' ? 'text-teal-600 dark:text-teal-400 fill-teal-100 dark:fill-teal-900' : 'text-gray-400 dark:text-gray-500'} `} />
+                <span className="text-[9px] font-bold uppercase tracking-wide">{t('nav.intercity') || 'Intercity'}</span>
               </button>
               <button
                 onClick={() => setView(AppView.TRAIN_LIST)}
-                className={`flex items-center justify-center border-t-2 transition-all duration-300 transform ${view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS ? 'border-blue-500 text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-900/20 scale-105' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:scale-105'} `}
+                className={`flex flex-col items-center justify-center gap-0.5 border-t-2 transition-all duration-300 transform ${view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS ? 'border-blue-500 text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-900/20 scale-105' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:scale-105'} `}
               >
-                <Train className={`w-6 h-6 transition-all duration-300 ${view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS ? 'text-blue-600 dark:text-blue-400 fill-blue-100 dark:fill-blue-900 animate-pulse' : 'text-gray-400 dark:text-gray-500'} `} />
+                <Train className={`w-5 h-5 transition-all duration-300 ${view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS ? 'text-blue-600 dark:text-blue-400 fill-blue-100 dark:fill-blue-900' : 'text-gray-400 dark:text-gray-500'} `} />
+                <span className="text-[9px] font-bold uppercase tracking-wide">{t('nav.train') || 'Train'}</span>
               </button>
               <button
                 onClick={() => setView(AppView.AI_ASSISTANT)}
-                className={`flex items-center justify-center border-t-2 transition-all ${view === AppView.AI_ASSISTANT ? 'border-purple-500 text-purple-600 dark:text-purple-400 bg-purple-50/50 dark:bg-purple-900/20' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'} `}
+                className={`flex flex-col items-center justify-center gap-0.5 border-t-2 transition-all ${view === AppView.AI_ASSISTANT ? 'border-purple-500 text-purple-600 dark:text-purple-400 bg-purple-50/50 dark:bg-purple-900/20' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'} `}
               >
-                <Sparkles className={`w-6 h-6 ${view === AppView.AI_ASSISTANT ? 'text-purple-600 dark:text-purple-400 fill-purple-100 dark:fill-purple-900' : 'text-gray-400 dark:text-gray-500'} `} />
+                <Sparkles className={`w-5 h-5 ${view === AppView.AI_ASSISTANT ? 'text-purple-600 dark:text-purple-400 fill-purple-100 dark:fill-purple-900' : 'text-gray-400 dark:text-gray-500'} `} />
+                <span className="text-[9px] font-bold uppercase tracking-wide">{t('nav.aiAssistant') || 'AI'}</span>
               </button>
               <button
                 onClick={() => setView(AppView.ABOUT)}
-                className={`flex items-center justify-center border-t-2 transition-all ${view === AppView.ABOUT ? 'border-orange-500 text-orange-600 dark:text-orange-400 bg-orange-50/50 dark:bg-orange-900/20' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'} `}
+                className={`flex flex-col items-center justify-center gap-0.5 border-t-2 transition-all ${view === AppView.ABOUT ? 'border-orange-500 text-orange-600 dark:text-orange-400 bg-orange-50/50 dark:bg-orange-900/20' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'} `}
               >
-                <Info className={`w-6 h-6 ${view === AppView.ABOUT ? 'text-orange-600 dark:text-orange-400 fill-orange-100 dark:fill-orange-900' : 'text-gray-400 dark:text-gray-500'} `} />
+                <Info className={`w-5 h-5 ${view === AppView.ABOUT ? 'text-orange-600 dark:text-orange-400 fill-orange-100 dark:fill-orange-900' : 'text-gray-400 dark:text-gray-500'} `} />
+                <span className="text-[9px] font-bold uppercase tracking-wide">{t('nav.about') || 'About'}</span>
               </button>
             </div>
           </nav>

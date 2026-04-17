@@ -167,11 +167,11 @@ export const translations: Record<Language, Translations> = {
         // Navigation
         nav: {
             home: 'হোম',
-            aiAssistant: 'এআই সহায়ক',
+            aiAssistant: 'এআই',
             history: 'ইতিহাস',
             favorites: 'প্রিয়',
             settings: 'সেটিংস',
-            about: 'সম্পর্কে',
+            about: 'পরিচয়',
             privacy: 'গোপনীয়তা নীতি',
             terms: 'শর্তাবলী',
             faq: 'প্রশ্ন ও উত্তর',
@@ -182,6 +182,8 @@ export const translations: Record<Language, Translations> = {
             signup: 'সাইনআপ',
             profile: 'প্রোফাইল',
             train: 'ট্রেন',
+            local: 'লোকাল',
+            intercity: 'আন্তঃশহর',
         },
 
         // Home/Search
@@ -986,7 +988,7 @@ export const translations: Record<Language, Translations> = {
         // Navigation
         nav: {
             home: 'Home',
-            aiAssistant: 'AI Assistant',
+            aiAssistant: 'AI',
             history: 'History',
             favorites: 'Favorites',
             settings: 'Settings',
@@ -1001,6 +1003,8 @@ export const translations: Record<Language, Translations> = {
             signup: 'Signup',
             profile: 'Profile',
             train: 'Train',
+            local: 'Local',
+            intercity: 'Intercity',
         },
 
         // Home/Search

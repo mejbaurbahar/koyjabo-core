@@ -387,6 +387,11 @@ textarea {
 }
 
 
+/* Content scrollable area bottom padding: nav height (4rem) + safe area inset */
+.pb-nav-safe {
+  padding-bottom: calc(4rem + env(safe-area-inset-bottom));
+}
+
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
 

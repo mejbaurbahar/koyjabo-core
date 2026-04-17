@@ -130,14 +130,21 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
         mapInstanceRef.current = null;
       }
 
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       const map = L.map(mapRef.current!, {
         zoomControl: false,
         attributionControl: true,
-        scrollWheelZoom: true,
-        dragging: !L.Browser.mobile,
-        touchZoom: !L.Browser.mobile,
-        tap: !L.Browser.mobile, // Disable tap on mobile as it can interfere
+        scrollWheelZoom: !isMobile,
+        dragging: !isMobile,
+        touchZoom: true,  // Always allow pinch-to-zoom
+        tap: false,       // Disable Leaflet tap to avoid interfering with page scroll
       });
+
+      // On mobile: allow single-finger page scroll over the map
+      // touchZoom (pinch) still works; dragging is off
+      if (isMobile && mapRef.current) {
+        mapRef.current.style.touchAction = 'pan-y';
+      }
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© <a href="https://www.openstreetmap.org/copyright">OSM</a>',
@@ -400,7 +407,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
   }, [userLocation, mapReady]);
 
   return (
-    <div className="relative w-full rounded-b-2xl overflow-hidden" style={{ height: 310, touchAction: 'pan-y' }}>
+    <div className="relative w-full rounded-b-2xl overflow-hidden" style={{ height: 310 }}>
       <div ref={mapRef} className="w-full h-full" />
 
       {/* Route badge */}

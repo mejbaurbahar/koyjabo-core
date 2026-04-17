@@ -6,12 +6,15 @@ export interface UserHistory {
     busSearches: BusSearchRecord[];
     routeSearches: RouteSearchRecord[];
     intercitySearches: IntercitySearchRecord[];
+    trainSearches: TrainSearchRecord[];
     mostUsedBuses: Record<string, number>; // busId -> count
     mostUsedRoutes: Record<string, number>; // "from-to" -> count
     mostUsedIntercity: Record<string, number>; // "from-to" -> count
+    mostUsedTrains: Record<string, number>; // trainId -> count
     todayBuses: string[]; // busIds searched today
     todayRoutes: string[]; // routes searched today
     todayIntercity: string[]; // intercity routes searched today
+    todayTrains: string[]; // trainIds viewed today
     lastResetDate: string; // ISO date string for daily reset
 }
 
@@ -33,6 +36,16 @@ export interface IntercitySearchRecord {
     from: string;
     to: string;
     transportType: string; // 'bus', 'train', 'flight', 'combined'
+    timestamp: number;
+    date: string; // YYYY-MM-DD
+}
+
+export interface TrainSearchRecord {
+    trainId: string;
+    trainName: string;
+    trainNumber: string;
+    from: string; // station name
+    to: string;   // station name
     timestamp: number;
     date: string; // YYYY-MM-DD
 }
@@ -220,9 +233,9 @@ export const getUserHistory = (): UserHistory => {
         const stored = localStorage.getItem(getHistoryKey());
         if (!stored) {
             return {
-                busSearches: [], routeSearches: [], intercitySearches: [],
-                mostUsedBuses: {}, mostUsedRoutes: {}, mostUsedIntercity: {},
-                todayBuses: [], todayRoutes: [], todayIntercity: [],
+                busSearches: [], routeSearches: [], intercitySearches: [], trainSearches: [],
+                mostUsedBuses: {}, mostUsedRoutes: {}, mostUsedIntercity: {}, mostUsedTrains: {},
+                todayBuses: [], todayRoutes: [], todayIntercity: [], todayTrains: [],
                 lastResetDate: getTodayDate()
             };
         }
@@ -235,6 +248,7 @@ export const getUserHistory = (): UserHistory => {
             history.todayBuses = [];
             history.todayRoutes = [];
             history.todayIntercity = [];
+            history.todayTrains = [];
             history.lastResetDate = today;
             localStorage.setItem(getHistoryKey(), JSON.stringify(history));
         }
@@ -243,19 +257,22 @@ export const getUserHistory = (): UserHistory => {
         if (!history.mostUsedBuses)     history.mostUsedBuses = {};
         if (!history.mostUsedRoutes)    history.mostUsedRoutes = {};
         if (!history.mostUsedIntercity) history.mostUsedIntercity = {};
+        if (!history.mostUsedTrains)    history.mostUsedTrains = {};
         if (!history.busSearches)       history.busSearches = [];
         if (!history.routeSearches)     history.routeSearches = [];
         if (!history.intercitySearches) history.intercitySearches = [];
+        if (!history.trainSearches)     history.trainSearches = [];
         if (!history.todayBuses)        history.todayBuses = [];
         if (!history.todayRoutes)       history.todayRoutes = [];
         if (!history.todayIntercity)    history.todayIntercity = [];
+        if (!history.todayTrains)       history.todayTrains = [];
 
         return history;
     } catch {
         return {
-            busSearches: [], routeSearches: [], intercitySearches: [],
-            mostUsedBuses: {}, mostUsedRoutes: {}, mostUsedIntercity: {},
-            todayBuses: [], todayRoutes: [], todayIntercity: [],
+            busSearches: [], routeSearches: [], intercitySearches: [], trainSearches: [],
+            mostUsedBuses: {}, mostUsedRoutes: {}, mostUsedIntercity: {}, mostUsedTrains: {},
+            todayBuses: [], todayRoutes: [], todayIntercity: [], todayTrains: [],
             lastResetDate: getTodayDate()
         };
     }
@@ -304,6 +321,22 @@ export const trackIntercitySearch = (from: string, to: string, transportType: st
     saveUserHistory(history);
 };
 
+export const trackTrainSearch = (
+    trainId: string, trainName: string, trainNumber: string,
+    from: string, to: string
+): void => {
+    const history = getUserHistory();
+    const today = getTodayDate();
+    history.trainSearches = history.trainSearches || [];
+    history.mostUsedTrains = history.mostUsedTrains || {};
+    history.todayTrains = history.todayTrains || [];
+    history.trainSearches.push({ trainId, trainName, trainNumber, from, to, timestamp: Date.now(), date: today });
+    history.mostUsedTrains[trainId] = (history.mostUsedTrains[trainId] || 0) + 1;
+    if (!history.todayTrains.includes(trainId)) history.todayTrains.push(trainId);
+    if (history.trainSearches.length > 100) history.trainSearches = history.trainSearches.slice(-100);
+    saveUserHistory(history);
+};
+
 export const getMostUsedBuses = (limit: number = 5): Array<{ busId: string; count: number }> => {
     const history = getUserHistory();
     return Object.entries(history.mostUsedBuses || {})
@@ -344,6 +377,22 @@ export const getRecentRouteSearches = (limit: number = 10): RouteSearchRecord[] 
 export const getRecentIntercitySearches = (limit: number = 10): IntercitySearchRecord[] => {
     const history = getUserHistory();
     return (history.intercitySearches || []).slice(-limit).reverse();
+};
+
+export const getRecentTrainSearches = (limit: number = 10): TrainSearchRecord[] => {
+    const history = getUserHistory();
+    return (history.trainSearches || []).slice(-limit).reverse();
+};
+
+export const getMostUsedTrains = (limit: number = 5): Array<{ trainId: string; trainName: string; count: number }> => {
+    const history = getUserHistory();
+    return Object.entries(history.mostUsedTrains || {})
+        .map(([trainId, count]) => {
+            const record = (history.trainSearches || []).find(r => r.trainId === trainId);
+            return { trainId, trainName: record?.trainName || trainId, count };
+        })
+        .sort((a, b) => b.count - a.count)
+        .slice(0, limit);
 };
 
 // ── Cross-tab / cross-component stat sync ─────────────────────────────────────
