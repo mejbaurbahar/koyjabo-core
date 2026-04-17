@@ -1,4 +1,5 @@
 import { BUS_DATA, METRO_STATIONS, STATIONS } from '../constants';
+import { BD_TRAIN_ROUTES, TRAIN_STATIONS } from '../data/bangladeshTrainData';
 import { getOfflineIntercityData } from '../intercity/offlineService';
 import { findRoutesBetweenStations, SuggestedRoute } from './routePlanner';
 import {
@@ -584,6 +585,113 @@ const findLocalBusInfo = (query: string): string => {
   return "";
 };
 
+// ── Train lookup using live BD_TRAIN_ROUTES data ────────────────────────────
+const findTrainInfo = (query: string): string => {
+  const lowerQuery = normalize(query);
+  const isBn = /[\u0980-\u09FF]/.test(query);
+
+  // Deduplicate routes (same logic as TrainListPage)
+  const seen = new Set<string>();
+  const uniqueRoutes = BD_TRAIN_ROUTES.filter(r => {
+    if (seen.has(r.id)) return false;
+    seen.add(r.id);
+    return true;
+  });
+
+  // 1. Search by train name or number
+  const byName = uniqueRoutes.filter(r =>
+    lowerQuery.includes(normalize(r.name)) ||
+    lowerQuery.includes(r.number.toLowerCase()) ||
+    (r.bnName && lowerQuery.includes(normalize(r.bnName)))
+  );
+  if (byName.length > 0) {
+    const r = byName[0];
+    const from = TRAIN_STATIONS[r.from];
+    const to = TRAIN_STATIONS[r.to];
+    const fromName = isBn ? from?.bnName : from?.name;
+    const toName = isBn ? to?.bnName : to?.name;
+    const name = isBn ? r.bnName : r.name;
+    const stopNames = r.stops.map(id => {
+      const st = TRAIN_STATIONS[id];
+      return st ? (isBn ? st.bnName : st.name) : id;
+    }).join(' → ');
+    return isBn
+      ? `🚂 **${name}** (${r.number})\n📍 **রুট:** ${fromName} → ${toName}\n🛑 **স্টপ:** ${stopNames}\n🕐 **ঢাকা ছাড়ে:** ${r.dhakaDepart} | **ফেরার সময়:** ${r.returnDepart}\n💰 **ভাড়া:** শুভন ৳${r.fare.shuvan} | স্নিগ্ধা ৳${r.fare.snigdha}${r.fare.acBerth ? ` | এসি বার্থ ৳${r.fare.acBerth}` : ''}\n📏 **দূরত্ব:** ${r.distanceKm} কিমি | **বন্ধের দিন:** ${r.offDay}`
+      : `🚂 **${name}** (${r.number})\n📍 **Route:** ${fromName} → ${toName}\n🛑 **Stops:** ${stopNames}\n🕐 **Depart:** ${r.dhakaDepart} | **Return:** ${r.returnDepart}\n💰 **Fare:** Shuvan ৳${r.fare.shuvan} | Snigdha ৳${r.fare.snigdha}${r.fare.acBerth ? ` | AC Berth ৳${r.fare.acBerth}` : ''}\n📏 **Distance:** ${r.distanceKm} km | **Off Day:** ${r.offDay}`;
+  }
+
+  // 2. Search by from/to station names
+  const stationEntries = Object.values(TRAIN_STATIONS);
+  const mentionedStations = stationEntries.filter(st =>
+    lowerQuery.includes(normalize(st.name)) || lowerQuery.includes(normalize(st.bnName))
+  );
+
+  if (mentionedStations.length >= 2) {
+    const fromSt = mentionedStations[0];
+    const toSt = mentionedStations[1];
+    const matchingRoutes = uniqueRoutes.filter(r => {
+      const fi = r.stops.indexOf(fromSt.id);
+      const ti = r.stops.indexOf(toSt.id);
+      return fi !== -1 && ti !== -1 && fi < ti;
+    });
+    if (matchingRoutes.length > 0) {
+      const header = isBn
+        ? `🚂 **${isBn ? fromSt.bnName : fromSt.name} → ${isBn ? toSt.bnName : toSt.name}** রুটের ট্রেন:\n\n`
+        : `🚂 **Trains from ${fromSt.name} → ${toSt.name}:**\n\n`;
+      const lines = matchingRoutes.slice(0, 5).map(r => {
+        const name = isBn ? r.bnName : r.name;
+        return `• **${name}** (${r.number}) — ছাড়ে ${r.dhakaDepart} | ভাড়া ৳${r.fare.shuvan}+`;
+      });
+      return header + lines.join('\n');
+    }
+  } else if (mentionedStations.length === 1) {
+    const st = mentionedStations[0];
+    const isNavIntent = lowerQuery.match(/(jabo|train|ticket|যাব|ট্রেন|টিকিট|কিভাবে|route|রুট|কোন|which)/);
+    if (isNavIntent) {
+      const routes = uniqueRoutes.filter(r => r.stops.includes(st.id)).slice(0, 5);
+      if (routes.length > 0) {
+        const header = isBn
+          ? `🚂 **${st.bnName}** স্টেশনে থামে এমন ট্রেন:\n\n`
+          : `🚂 **Trains stopping at ${st.name}:**\n\n`;
+        const lines = routes.map(r => {
+          const from = TRAIN_STATIONS[r.from];
+          const to = TRAIN_STATIONS[r.to];
+          const name = isBn ? r.bnName : r.name;
+          return `• **${name}** (${r.number}) — ${isBn ? from?.bnName : from?.name} → ${isBn ? to?.bnName : to?.name}`;
+        });
+        return header + lines.join('\n');
+      }
+    }
+  }
+
+  // 3. General train listing for a division/region
+  const regionMap: Record<string, string> = {
+    'sylhet': 'Sylhet', 'সিলেট': 'Sylhet',
+    'chittagong': 'Chattogram', 'চট্টগ্রাম': 'Chattogram', 'chattogram': 'Chattogram',
+    'rajshahi': 'Rajshahi', 'রাজশাহী': 'Rajshahi',
+    'khulna': 'Khulna', 'খুলনা': 'Khulna',
+    'mymensingh': 'Mymensingh', 'ময়মনসিংহ': 'Mymensingh',
+    'rangpur': 'Rajshahi', 'রংপুর': 'Rajshahi',
+  };
+  for (const [keyword, division] of Object.entries(regionMap)) {
+    if (lowerQuery.includes(keyword)) {
+      const divRoutes = uniqueRoutes.filter(r => r.division === division).slice(0, 5);
+      if (divRoutes.length > 0) {
+        const header = isBn
+          ? `🚂 **${division} বিভাগের ট্রেনসমূহ:**\n\n`
+          : `🚂 **Trains for ${division} Division:**\n\n`;
+        const lines = divRoutes.map(r => {
+          const name = isBn ? r.bnName : r.name;
+          return `• **${name}** (${r.number}) — ছাড়ে ${r.dhakaDepart}`;
+        });
+        return header + lines.join('\n') + (isBn ? '\n\n_Train অ্যাপে সব ট্রেনের বিস্তারিত দেখুন_' : '\n\n_See full details in the Train section_');
+      }
+    }
+  }
+
+  return '';
+};
+
 // Check for tourist destination queries
 const findTouristInfo = (query: string): string => {
   const lowerQuery = normalize(query);
@@ -1035,6 +1143,19 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   // 3. Check Specific Bus Details
   const busInfo = findLocalBusInfo(query);
   if (busInfo) responseParts.push(busInfo);
+
+  // 4. Check Train Info (Bangladesh Railway)
+  const isTrainQuery = lowerQuery.includes('train') || lowerQuery.includes('ট্রেন') ||
+    lowerQuery.includes('railway') || lowerQuery.includes('রেলওয়ে') ||
+    lowerQuery.includes('express') || lowerQuery.includes('intercity') ||
+    lowerQuery.includes('kamalapur') || lowerQuery.includes('কমলাপুর') ||
+    Object.values(TRAIN_STATIONS).some(st =>
+      lowerQuery.includes(normalize(st.name)) || lowerQuery.includes(normalize(st.bnName))
+    );
+  if (isTrainQuery) {
+    const trainInfo = findTrainInfo(query);
+    if (trainInfo) responseParts.push(trainInfo);
+  }
 
   // 5. Check for Nearby / Current Location intent
   if (lowerQuery.includes("near me") || lowerQuery.includes("কাছে") || lowerQuery.includes("আশেপাশে") || lowerQuery.includes("nearby") || lowerQuery.includes("where am i")) {

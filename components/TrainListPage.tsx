@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Train, Search, ArrowRight, Clock, CalendarX, Info,
   ArrowLeft, MapPin, Navigation,
@@ -543,6 +543,13 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
 
   const activeFilterCount = [filterType, filterDivision, filterFrom, filterTo].filter(Boolean).length;
 
+  useEffect(() => {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+    } catch { /* AdSense not loaded */ }
+  }, []);
+
   const nearestStation = useMemo(() => {
     if (!userLocation) return null;
     let minDist = Infinity;
@@ -747,6 +754,18 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
           </div>
         </div>
       )}
+
+      {/* AdSense banner */}
+      <div className="shrink-0 px-3 py-2 bg-gray-50 dark:bg-slate-800/50">
+        <ins
+          className="adsbygoogle"
+          style={{ display: 'block', textAlign: 'center' }}
+          data-ad-client="ca-pub-6933713424631305"
+          data-ad-slot="auto"
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        />
+      </div>
 
       {/* Count row */}
       <div className="shrink-0 flex items-center justify-between px-5 py-2 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-slate-800">

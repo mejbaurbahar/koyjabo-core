@@ -3961,6 +3961,24 @@ const App: React.FC = () => {
                   </div>
                 )}
 
+                {/* History & Settings — only for logged-in users */}
+                {user && (
+                  <>
+                    <button
+                      onClick={() => { setView(AppView.HISTORY); setIsMenuOpen(false); }}
+                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.HISTORY ? 'bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800' : ''}`}
+                    >
+                      <Clock className="w-5 h-5 text-emerald-600 dark:text-emerald-400" /> {t('nav.history') || 'History'}
+                    </button>
+                    <button
+                      onClick={() => { setView(AppView.SETTINGS); setIsMenuOpen(false); }}
+                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.SETTINGS ? 'bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700' : ''}`}
+                    >
+                      <Settings className="w-5 h-5 text-gray-600 dark:text-gray-400" /> {t('nav.settings') || 'Settings'}
+                    </button>
+                  </>
+                )}
+
                 <button
                   onClick={() => { setView(AppView.AI_ASSISTANT); setIsMenuOpen(false); }}
                   className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.AI_ASSISTANT ? 'bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800' : ''} `}

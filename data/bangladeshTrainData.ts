@@ -1214,27 +1214,6 @@ export const BD_TRAIN_ROUTES: BDTrainRoute[] = [
     color: '#7f1d1d',
   },
 
-  // Benapole Express (Dhaka–Benapole/Jessore)
-  {
-    id: 'benapole-express',
-    name: 'Benapole Express',
-    bnName: 'বেনাপোল এক্সপ্রেস',
-    number: '795/796',
-    type: 'Intercity',
-    division: 'Khulna',
-    from: 'kamalapur',
-    to: 'benapole',
-    stops: ['kamalapur', 'tejgaon', 'rajbari', 'faridpur', 'darshana', 'chuadanga', 'jessore', 'benapole'],
-    dhakaDepart: '22:15',
-    destinationArrive: '07:30',
-    returnDepart: '21:30',
-    dhakaArrive: '06:30',
-    offDay: 'No Off Day',
-    distanceKm: 361,
-    fare: { shuvan: 200, shuvanChair: 320, snigdha: 625, firstClassBerth: 485, acBerth: 935 },
-    color: '#4d7c0f',
-  },
-
   // Paharika Express (Dhaka–Sylhet via Akhaura)
   {
     id: 'paharika-express',
@@ -1254,48 +1233,6 @@ export const BD_TRAIN_ROUTES: BDTrainRoute[] = [
     distanceKm: 317,
     fare: { shuvan: 355, shuvanChair: 530, snigdha: 1045, firstClassBerth: 810, acBerth: 1555 },
     color: '#166534',
-  },
-
-  // Upaban Express (Dhaka–Sylhet via Comilla–Akhaura)
-  {
-    id: 'upaban-express',
-    name: 'Upaban Express',
-    bnName: 'উপবন এক্সপ্রেস',
-    number: '735/736',
-    type: 'Intercity',
-    division: 'Sylhet',
-    from: 'kamalapur',
-    to: 'sylhet',
-    stops: ['kamalapur', 'narsingdi', 'bhairab', 'brahmanbaria', 'akhaura', 'shahbazpur', 'habiganj', 'srimangal', 'moulvibazar', 'sylhet'],
-    dhakaDepart: '22:00',
-    destinationArrive: '06:00',
-    returnDepart: '21:00',
-    dhakaArrive: '05:30',
-    offDay: 'No Off Day',
-    distanceKm: 317,
-    fare: { shuvan: 355, shuvanChair: 530, snigdha: 1045, firstClassBerth: 810, acBerth: 1555 },
-    color: '#15803d',
-  },
-
-  // Kalni Express (Dhaka–Sylhet)
-  {
-    id: 'kalni-express',
-    name: 'Kalni Express',
-    bnName: 'কালনী এক্সপ্রেস',
-    number: '773/774',
-    type: 'Intercity',
-    division: 'Sylhet',
-    from: 'kamalapur',
-    to: 'sylhet',
-    stops: ['kamalapur', 'bhairab', 'brahmanbaria', 'akhaura', 'shahbazpur', 'habiganj', 'srimangal', 'sylhet'],
-    dhakaDepart: '14:00',
-    destinationArrive: '19:45',
-    returnDepart: '08:00',
-    dhakaArrive: '14:00',
-    offDay: 'No Off Day',
-    distanceKm: 317,
-    fare: { shuvan: 355, shuvanChair: 530, snigdha: 1045, firstClassBerth: 810, acBerth: 1555 },
-    color: '#16a34a',
   },
 
   // Dhaka–Chandpur Launch/Ferry alternative (train)
@@ -1361,27 +1298,6 @@ export const BD_TRAIN_ROUTES: BDTrainRoute[] = [
     color: '#9333ea',
   },
 
-  // Cox's Bazar Express
-  {
-    id: 'coxsbazar-express',
-    name: "Cox's Bazar Express",
-    bnName: "কক্সবাজার এক্সপ্রেস",
-    number: '821/822',
-    type: 'Intercity',
-    division: 'Chattogram',
-    from: 'kamalapur',
-    to: 'coxsbazar',
-    stops: ['kamalapur', 'airport_r', 'brahmanbaria', 'akhaura', 'comilla', 'laksam', 'feni', 'mirsarai', 'sitakunda', 'chattogram', 'coxsbazar'],
-    dhakaDepart: '07:00',
-    destinationArrive: '16:00',
-    returnDepart: '08:00',
-    dhakaArrive: '17:30',
-    offDay: 'No Off Day',
-    distanceKm: 465,
-    fare: { shuvan: 530, shuvanChair: 790, snigdha: 1565, firstClassBerth: 1210, acBerth: 2330 },
-    color: '#b91c1c',
-  },
-
   // Lalmonirhat Express
   {
     id: 'lalmonirhat-express',
@@ -1401,27 +1317,6 @@ export const BD_TRAIN_ROUTES: BDTrainRoute[] = [
     distanceKm: 386,
     fare: { shuvan: 215, shuvanChair: 340, snigdha: 670, firstClassBerth: 520, acBerth: 1000 },
     color: '#7e22ce',
-  },
-
-  // Panchagarh Express
-  {
-    id: 'panchagarh-express',
-    name: 'Panchagarh Express',
-    bnName: 'পঞ্চগড় এক্সপ্রেস',
-    number: '791/792',
-    type: 'Intercity',
-    division: 'Rangpur',
-    from: 'kamalapur',
-    to: 'panchagarh',
-    stops: ['kamalapur', 'cantonment', 'airport_r', 'tongi', 'joydebpur', 'tangail', 'sirajganj', 'santahar', 'bogra', 'parbatipur', 'saidpur', 'nilphamari', 'panchagarh'],
-    dhakaDepart: '11:00',
-    destinationArrive: '22:00',
-    returnDepart: '07:30',
-    dhakaArrive: '18:45',
-    offDay: 'Sun',
-    distanceKm: 503,
-    fare: { shuvan: 285, shuvanChair: 450, snigdha: 880, firstClassBerth: 680, acBerth: 1310 },
-    color: '#581c87',
   },
 
   // Sagar Express (Dhaka–Dinajpur via Rangpur)
@@ -1446,153 +1341,6 @@ export const BD_TRAIN_ROUTES: BDTrainRoute[] = [
   },
 
   // ═══════════════════════════ MORE INTERCITY (KEY MISSING) ═════════════════════
-
-  // Jayantika Express (Dhaka–Sylhet via Sylhet corridor — morning)
-  {
-    id: 'jayantika-express',
-    name: 'Jayantika Express',
-    bnName: 'জয়ন্তিকা এক্সপ্রেস',
-    number: '717/718',
-    type: 'Intercity',
-    division: 'Sylhet',
-    from: 'kamalapur',
-    to: 'sylhet',
-    stops: ['kamalapur', 'tejgaon', 'narsingdi', 'bhairab', 'brahmanbaria', 'akhaura', 'shahbazpur', 'habiganj', 'bahubal', 'srimangal', 'moulvibazar', 'sylhet'],
-    dhakaDepart: '12:00',
-    destinationArrive: '17:50',
-    returnDepart: '07:45',
-    dhakaArrive: '13:30',
-    offDay: 'No Off Day',
-    distanceKm: 317,
-    fare: { shuvan: 355, shuvanChair: 530, snigdha: 1045, firstClassBerth: 810, acBerth: 1555 },
-    color: '#22c55e',
-  },
-
-  // Sundarban Express (Dhaka–Khulna — premier)
-  {
-    id: 'sundarban-express',
-    name: 'Sundarban Express',
-    bnName: 'সুন্দরবন এক্সপ্রেস',
-    number: '725/726',
-    type: 'Intercity',
-    division: 'Khulna',
-    from: 'kamalapur',
-    to: 'khulna',
-    stops: ['kamalapur', 'tejgaon', 'cantonment', 'rajbari', 'faridpur', 'poradah', 'chuadanga', 'darshana', 'jessore', 'khulna'],
-    dhakaDepart: '07:15',
-    destinationArrive: '16:40',
-    returnDepart: '07:20',
-    dhakaArrive: '16:45',
-    offDay: 'No Off Day',
-    distanceKm: 395,
-    fare: { shuvan: 220, shuvanChair: 350, snigdha: 690, firstClassBerth: 535, acBerth: 1025 },
-    color: '#0d9488',
-  },
-
-  // Chitra Express (Dhaka–Khulna — afternoon)
-  {
-    id: 'chitra-express',
-    name: 'Chitra Express',
-    bnName: 'চিত্রা এক্সপ্রেস',
-    number: '763/764',
-    type: 'Intercity',
-    division: 'Khulna',
-    from: 'kamalapur',
-    to: 'khulna',
-    stops: ['kamalapur', 'tejgaon', 'rajbari', 'faridpur', 'poradah', 'chuadanga', 'jessore', 'khulna'],
-    dhakaDepart: '19:00',
-    destinationArrive: '04:30',
-    returnDepart: '19:00',
-    dhakaArrive: '04:30',
-    offDay: 'Mon',
-    distanceKm: 395,
-    fare: { shuvan: 220, shuvanChair: 350, snigdha: 690, firstClassBerth: 535, acBerth: 1025 },
-    color: '#0f766e',
-  },
-
-  // Padma Express (Dhaka–Rajshahi — premium day)
-  {
-    id: 'padma-express',
-    name: 'Padma Express',
-    bnName: 'পদ্মা এক্সপ্রেস',
-    number: '715/716',
-    type: 'Intercity',
-    division: 'Rajshahi',
-    from: 'kamalapur',
-    to: 'rajshahi',
-    stops: ['kamalapur', 'tejgaon', 'cantonment', 'airport_r', 'tongi', 'joydebpur', 'tangail', 'sirajganj', 'ullapara', 'ishwardi', 'abdulpur', 'natore', 'rajshahi'],
-    dhakaDepart: '10:30',
-    destinationArrive: '17:30',
-    returnDepart: '07:00',
-    dhakaArrive: '14:00',
-    offDay: 'Fri',
-    distanceKm: 344,
-    fare: { shuvan: 190, shuvanChair: 305, snigdha: 600, firstClassBerth: 465, acBerth: 895 },
-    color: '#c2410c',
-  },
-
-  // Silk City Express (Dhaka–Rajshahi — evening)
-  {
-    id: 'silk-city-express',
-    name: 'Silk City Express',
-    bnName: 'সিল্ক সিটি এক্সপ্রেস',
-    number: '721/722',
-    type: 'Intercity',
-    division: 'Rajshahi',
-    from: 'kamalapur',
-    to: 'rajshahi',
-    stops: ['kamalapur', 'tejgaon', 'cantonment', 'airport_r', 'tongi', 'joydebpur', 'tangail', 'sirajganj', 'ullapara', 'ishwardi', 'natore', 'rajshahi'],
-    dhakaDepart: '14:40',
-    destinationArrive: '21:30',
-    returnDepart: '22:30',
-    dhakaArrive: '05:30',
-    offDay: 'No Off Day',
-    distanceKm: 344,
-    fare: { shuvan: 190, shuvanChair: 305, snigdha: 600, firstClassBerth: 465, acBerth: 895 },
-    color: '#ea580c',
-  },
-
-  // Ekota Express (Dhaka–Chapainawabganj via Rajshahi)
-  {
-    id: 'ekota-express',
-    name: 'Ekota Express',
-    bnName: 'একতা এক্সপ্রেস',
-    number: '705/706',
-    type: 'Intercity',
-    division: 'Rajshahi',
-    from: 'kamalapur',
-    to: 'chapainawabganj',
-    stops: ['kamalapur', 'tejgaon', 'cantonment', 'airport_r', 'tongi', 'joydebpur', 'tangail', 'sirajganj', 'ullapara', 'ishwardi', 'natore', 'rajshahi', 'amnotali', 'chapainawabganj'],
-    dhakaDepart: '22:15',
-    destinationArrive: '07:30',
-    returnDepart: '21:00',
-    dhakaArrive: '06:30',
-    offDay: 'No Off Day',
-    distanceKm: 393,
-    fare: { shuvan: 220, shuvanChair: 350, snigdha: 690, firstClassBerth: 535, acBerth: 1025 },
-    color: '#b45309',
-  },
-
-  // Tista Express (Dhaka–Lalmonirhat — day service)
-  {
-    id: 'tista-express',
-    name: 'Tista Express',
-    bnName: 'তিস্তা এক্সপ্রেস',
-    number: '751/752',
-    type: 'Intercity',
-    division: 'Rangpur',
-    from: 'kamalapur',
-    to: 'lalmonirhat',
-    stops: ['kamalapur', 'cantonment', 'airport_r', 'tongi', 'joydebpur', 'tangail', 'sirajganj', 'santahar', 'bogra', 'gaibandha', 'rangpur', 'lalmonirhat'],
-    dhakaDepart: '07:30',
-    destinationArrive: '17:30',
-    returnDepart: '20:00',
-    dhakaArrive: '06:30',
-    offDay: 'Tue',
-    distanceKm: 386,
-    fare: { shuvan: 215, shuvanChair: 340, snigdha: 670, firstClassBerth: 520, acBerth: 1000 },
-    color: '#7c3aed',
-  },
 
   // Bijoy Express (Dhaka–Mymensingh — intercity)
   {
@@ -1655,27 +1403,6 @@ export const BD_TRAIN_ROUTES: BDTrainRoute[] = [
     distanceKm: 178,
     fare: { shuvan: 120, shuvanChair: 190, snigdha: 370, firstClassBerth: 285 },
     color: '#0891b2',
-  },
-
-  // Kurigram Express (Dhaka–Kurigram)
-  {
-    id: 'kurigram-express',
-    name: 'Kurigram Express',
-    bnName: 'কুড়িগ্রাম এক্সপ্রেস',
-    number: '793/794',
-    type: 'Intercity',
-    division: 'Rangpur',
-    from: 'kamalapur',
-    to: 'kurigram',
-    stops: ['kamalapur', 'cantonment', 'airport_r', 'tongi', 'joydebpur', 'tangail', 'sirajganj', 'santahar', 'bogra', 'gaibandha', 'rangpur', 'kurigram'],
-    dhakaDepart: '23:15',
-    destinationArrive: '09:00',
-    returnDepart: '20:00',
-    dhakaArrive: '05:45',
-    offDay: 'Thu',
-    distanceKm: 418,
-    fare: { shuvan: 235, shuvanChair: 370, snigdha: 730, firstClassBerth: 565, acBerth: 1085 },
-    color: '#4f46e5',
   },
 
   // Nilsagar Express (Dhaka–Saidpur/Nilphamari)
@@ -1856,9 +1583,9 @@ export const BD_TRAIN_ROUTES: BDTrainRoute[] = [
     number: '799/800',
     type: 'Local',
     division: 'Khulna',
-    from: 'khulna',
+    from: 'benapole',
     to: 'mongla',
-    stops: ['khulna', 'mongla'],
+    stops: ['benapole', 'jessore', 'khulna', 'mongla'],
     dhakaDepart: '09:00',
     destinationArrive: '10:30',
     returnDepart: '11:00',
@@ -2480,27 +2207,6 @@ export const BD_TRAIN_ROUTES: BDTrainRoute[] = [
     color: '#0d9488',
   },
 
-  // Koshi Express (কোশি এক্সপ্রেস) — Khulna → Chittagong via Dhaka (long-distance)
-  {
-    id: 'koshi-express',
-    name: 'Koshi Express',
-    bnName: 'কোশি এক্সপ্রেস',
-    number: '709/710',
-    type: 'Express',
-    division: 'Khulna',
-    from: 'khulna',
-    to: 'chattogram',
-    stops: ['khulna', 'jessore', 'poradah', 'ishwardi', 'tangail', 'kamalapur', 'brahmanbaria', 'comilla', 'laksam', 'feni', 'chattogram'],
-    dhakaDepart: '16:30',
-    destinationArrive: '06:00',
-    returnDepart: '18:00',
-    dhakaArrive: '07:30',
-    offDay: 'Thu',
-    distanceKm: 628,
-    fare: calcTrainFare(628),
-    color: '#dc2626',
-  },
-
   // Padatik Express 2 (পদাতিক এক্সপ্রেস ২) — Dhaka → Rajshahi night (different schedule)
   {
     id: 'rajshahi-night-express',
@@ -2585,27 +2291,6 @@ export const BD_TRAIN_ROUTES: BDTrainRoute[] = [
     color: '#78716c',
   },
 
-  // Rajshahi-Chattogram Express via Dhaka
-  {
-    id: 'rajshahi-chattogram-express',
-    name: 'Rajshahi–Chattogram Express',
-    bnName: 'রাজশাহী-চট্টগ্রাম এক্সপ্রেস',
-    number: '721/722',
-    type: 'Express',
-    division: 'Rajshahi',
-    from: 'rajshahi',
-    to: 'chattogram',
-    stops: ['rajshahi', 'natore', 'ishwardi', 'tangail', 'kamalapur', 'brahmanbaria', 'comilla', 'feni', 'chattogram'],
-    dhakaDepart: '10:00',
-    destinationArrive: '20:00',
-    returnDepart: '09:00',
-    dhakaArrive: '19:00',
-    offDay: 'Sat',
-    distanceKm: 582,
-    fare: calcTrainFare(582),
-    color: '#ef4444',
-  },
-
   // Gaibandha Local (গাইবান্ধা লোকাল) — Rangpur → Bogra local
   {
     id: 'gaibandha-express',
@@ -2615,7 +2300,7 @@ export const BD_TRAIN_ROUTES: BDTrainRoute[] = [
     type: 'Local',
     division: 'Rajshahi',
     from: 'bogra',
-    to: 'gaibandha',
+    to: 'rangpur',
     stops: ['bogra', 'gaibandha', 'rangpur'],
     dhakaDepart: '08:00',
     destinationArrive: '10:00',
