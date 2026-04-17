@@ -84,8 +84,8 @@ export function TrainDetail({
   const toSt   = TRAIN_STATIONS[route.to];
 
   // Nearest stop to user's current location (for progress display)
-  const nearestStopIdx = useMemo(() => {
-    if (!userLocation) return -1;
+  const nearestStopResult = useMemo(() => {
+    if (!userLocation) return { idx: -1, distKm: Infinity };
     let minDist = Infinity;
     let idx = -1;
     route.stops.forEach((id, i) => {
@@ -94,8 +94,10 @@ export function TrainDetail({
       const d = haversineKm(userLocation.lat, userLocation.lng, st.lat, st.lng);
       if (d < minDist) { minDist = d; idx = i; }
     });
-    return minDist <= 35 ? idx : -1; // within 35 km
+    return minDist <= 35 ? { idx, distKm: minDist } : { idx: -1, distKm: Infinity };
   }, [userLocation, route.stops]);
+  const nearestStopIdx = nearestStopResult.idx;
+  const nearestStopDistKm = nearestStopResult.distKm;
 
   return (
     /* Light: white bg — Dark: deep navy gradient */
@@ -200,73 +202,108 @@ export function TrainDetail({
               {route.stops.map((id, idx) => {
                 const st = TRAIN_STATIONS[id];
                 if (!st) return null;
-                const isFirst = idx === 0;
-                const isLast  = idx === route.stops.length - 1;
-                const isMid   = !isFirst && !isLast;
+                const isFirst    = idx === 0;
+                const isLast     = idx === route.stops.length - 1;
+                const isMid      = !isFirst && !isLast;
                 const isNearUser = nearestStopIdx === idx;
                 const isPassed   = nearestStopIdx >= 0 && idx < nearestStopIdx;
+                const distLabel  = nearestStopDistKm < 1
+                  ? `${Math.round(nearestStopDistKm * 1000)} m`
+                  : `${nearestStopDistKm.toFixed(1)} km`;
 
                 return (
-                  <div key={id} className="flex gap-3">
-                    {/* Timeline column */}
-                    <div className="flex flex-col items-center" style={{ width: 20 }}>
-                      {/* Top connector */}
-                      <div className={`w-px flex-none h-2 ${
-                        isFirst ? 'bg-transparent'
-                        : isPassed ? 'bg-emerald-400 dark:bg-emerald-500'
-                        : isLast ? 'bg-gradient-to-b from-gray-300 dark:from-white/25 to-transparent'
-                        : 'bg-gray-300 dark:bg-white/25'
-                      }`} />
-                      {/* Dot */}
-                      {isNearUser ? (
-                        <div className="relative shrink-0 z-10">
-                          <div className="w-4 h-4 rounded-full bg-blue-500 border-2 border-blue-300 shadow-lg shadow-blue-500/40" />
-                          <div className="absolute inset-0 rounded-full bg-blue-400 animate-ping opacity-60" />
+                  <React.Fragment key={id}>
+                    {/* ── Virtual "You are here" row injected before nearest station ── */}
+                    {isNearUser && userLocation && (
+                      <div className="flex gap-3">
+                        <div className="flex flex-col items-center" style={{ width: 20 }}>
+                          {/* Top connector into this virtual row (solid from above if passed, else gray) */}
+                          <div className={`w-px flex-none h-2 ${isPassed ? 'bg-emerald-400 dark:bg-emerald-500' : 'bg-gray-300 dark:bg-white/25'}`} />
+                          {/* Pulsing blue user dot */}
+                          <div className="relative shrink-0 z-10">
+                            <div className="w-4 h-4 rounded-full bg-blue-500 border-2 border-white dark:border-slate-900 shadow-lg shadow-blue-500/50" />
+                            <div className="absolute inset-0 rounded-full bg-blue-400 animate-ping opacity-60" />
+                          </div>
+                          {/* Dashed connector from user-dot down to nearest station */}
+                          <div className="flex-1 min-h-[24px] flex flex-col items-center gap-0.5 py-0.5">
+                            {[0,1,2,3].map(i => (
+                              <div key={i} className="w-px h-1.5 bg-blue-400 dark:bg-blue-500 rounded" />
+                            ))}
+                          </div>
                         </div>
-                      ) : isPassed ? (
-                        <div className="w-4 h-4 rounded-full bg-emerald-500 dark:bg-emerald-400 border-2 border-emerald-300 flex items-center justify-center shrink-0 z-10">
-                          <CheckCircle2 className="w-2.5 h-2.5 text-white" />
+                        <div className="pb-1 flex-1 min-w-0 pt-0">
+                          <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
+                            {bn ? 'আপনার বর্তমান অবস্থান' : 'Your current location'}
+                          </span>
+                          <p className="text-[10px] text-blue-500 dark:text-blue-400 font-semibold mt-0.5 flex items-center gap-1">
+                            <span className="w-1 h-1 bg-blue-500 rounded-full animate-pulse inline-block" />
+                            {bn ? 'আপনি এখানে আছেন' : 'You are here'}
+                          </p>
                         </div>
-                      ) : isFirst ? (
-                        <div className="w-4 h-4 rounded-full bg-emerald-500 dark:bg-emerald-400 border-2 border-emerald-400 dark:border-emerald-300 shadow-lg shadow-emerald-500/30 shrink-0 z-10" />
-                      ) : isLast ? (
-                        <div className="w-4 h-4 rounded-full bg-slate-500 dark:bg-white/80 border-2 border-slate-400 dark:border-white/50 shadow shrink-0 z-10" />
-                      ) : (
-                        <div className="w-2.5 h-2.5 rounded-full bg-gray-300 dark:bg-white/20 border border-gray-400 dark:border-white/35 shrink-0 z-10 mt-0.5" />
-                      )}
-                      {/* Bottom connector */}
-                      {!isLast && (
-                        <div className={`w-px flex-1 min-h-[20px] ${
-                          isPassed ? 'bg-emerald-400 dark:bg-emerald-500'
-                          : isNearUser ? 'bg-gradient-to-b from-blue-400 to-gray-300 dark:from-blue-500 dark:to-white/25'
-                          : isFirst ? 'bg-gradient-to-b from-emerald-500/70 dark:from-emerald-400/80 to-gray-300 dark:to-white/25'
-                          : 'bg-gray-300 dark:bg-white/25'
-                        }`} />
-                      )}
+                      </div>
+                    )}
+
+                    {/* ── Actual stop row ── */}
+                    <div className="flex gap-3">
+                      {/* Timeline column */}
+                      <div className="flex flex-col items-center" style={{ width: 20 }}>
+                        {/* Top connector — hide it when the virtual row already drew the dashed line */}
+                        {!(isNearUser && userLocation) && (
+                          <div className={`w-px flex-none h-2 ${
+                            isFirst ? 'bg-transparent'
+                            : isPassed ? 'bg-emerald-400 dark:bg-emerald-500'
+                            : 'bg-gray-300 dark:bg-white/25'
+                          }`} />
+                        )}
+                        {isNearUser && userLocation && <div className="flex-none h-0" />}
+                        {/* Dot */}
+                        {isNearUser ? (
+                          /* Nearest station: orange pin dot */
+                          <div className="w-4 h-4 rounded-full bg-orange-500 border-2 border-orange-300 shadow-md shadow-orange-500/40 shrink-0 z-10" />
+                        ) : isPassed ? (
+                          <div className="w-4 h-4 rounded-full bg-emerald-500 dark:bg-emerald-400 border-2 border-emerald-300 flex items-center justify-center shrink-0 z-10">
+                            <CheckCircle2 className="w-2.5 h-2.5 text-white" />
+                          </div>
+                        ) : isFirst ? (
+                          <div className="w-4 h-4 rounded-full bg-emerald-500 dark:bg-emerald-400 border-2 border-emerald-400 dark:border-emerald-300 shadow-lg shadow-emerald-500/30 shrink-0 z-10" />
+                        ) : isLast ? (
+                          <div className="w-4 h-4 rounded-full bg-slate-500 dark:bg-white/80 border-2 border-slate-400 dark:border-white/50 shadow shrink-0 z-10" />
+                        ) : (
+                          <div className="w-2.5 h-2.5 rounded-full bg-gray-300 dark:bg-white/20 border border-gray-400 dark:border-white/35 shrink-0 z-10 mt-0.5" />
+                        )}
+                        {/* Bottom connector */}
+                        {!isLast && (
+                          <div className={`w-px flex-1 min-h-[20px] ${
+                            isPassed ? 'bg-emerald-400 dark:bg-emerald-500'
+                            : isFirst ? 'bg-gradient-to-b from-emerald-500/70 dark:from-emerald-400/80 to-gray-300 dark:to-white/25'
+                            : 'bg-gray-300 dark:bg-white/25'
+                          }`} />
+                        )}
+                      </div>
+                      {/* Stop name */}
+                      <div className={`pb-3 flex-1 min-w-0 ${isMid && !isNearUser ? 'pt-0.5' : 'pt-0'}`}>
+                        <span className={`leading-snug ${
+                          isNearUser ? 'text-sm font-bold text-orange-600 dark:text-orange-400'
+                          : isPassed ? 'text-xs text-emerald-600 dark:text-emerald-400 line-through opacity-60'
+                          : isFirst || isLast ? 'text-sm font-bold text-gray-900 dark:text-white'
+                          : 'text-xs text-gray-500 dark:text-white/60'
+                        }`}>
+                          {bn ? st.bnName : st.name}
+                        </span>
+                        {isNearUser && (
+                          <p className="text-[10px] text-orange-500 dark:text-orange-400 font-semibold mt-0.5 flex items-center gap-1">
+                            <MapPin className="w-2.5 h-2.5 shrink-0" />
+                            {bn ? `নিকটতম স্টেশন • ${distLabel} দূরে` : `Nearest station • ${distLabel} away`}
+                          </p>
+                        )}
+                        {!isNearUser && (isFirst || isLast) && (
+                          <p className="text-[10px] text-gray-400 dark:text-white/40 mt-0.5">
+                            {isFirst ? (bn ? 'যাত্রা শুরু' : 'Departure') : (bn ? 'চূড়ান্ত গন্তব্য' : 'Final Destination')}
+                          </p>
+                        )}
+                      </div>
                     </div>
-                    {/* Stop name */}
-                    <div className={`pb-3 flex-1 min-w-0 ${isMid ? 'pt-0.5' : 'pt-0'}`}>
-                      <span className={`leading-snug ${
-                        isNearUser ? 'text-sm font-bold text-blue-600 dark:text-blue-400'
-                        : isPassed ? 'text-xs text-emerald-600 dark:text-emerald-400 line-through opacity-60'
-                        : isFirst || isLast ? 'text-sm font-bold text-gray-900 dark:text-white'
-                        : 'text-xs text-gray-500 dark:text-white/60'
-                      }`}>
-                        {bn ? st.bnName : st.name}
-                      </span>
-                      {isNearUser && (
-                        <p className="text-[10px] text-blue-500 dark:text-blue-400 font-semibold mt-0.5 flex items-center gap-1">
-                          <span className="w-1 h-1 bg-blue-500 rounded-full animate-pulse inline-block" />
-                          {bn ? 'আপনি এখানে আছেন' : 'You are here'}
-                        </p>
-                      )}
-                      {!isNearUser && (isFirst || isLast) && (
-                        <p className="text-[10px] text-gray-400 dark:text-white/40 mt-0.5">
-                          {isFirst ? (bn ? 'যাত্রা শুরু' : 'Departure') : (bn ? 'চূড়ান্ত গন্তব্য' : 'Final Destination')}
-                        </p>
-                      )}
-                    </div>
-                  </div>
+                  </React.Fragment>
                 );
               })}
             </div>
