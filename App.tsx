@@ -3236,23 +3236,23 @@ const App: React.FC = () => {
       }, 500);
     };
 
-    // Train view: list in left sidebar, detail in right panel
+    // Train view: list always visible, details require login
     if (view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) {
       return (
         <div className="flex flex-col h-full w-full md:pt-20">
-          {user ? (
-            <TrainListPage
-              userLocation={userLocation}
-              onBack={() => setView(AppView.HOME)}
-              embedded={false}
-              onSelectTrain={(route) => {
+          <TrainListPage
+            userLocation={userLocation}
+            onBack={() => setView(AppView.HOME)}
+            embedded={false}
+            onSelectTrain={(route) => {
+              if (user) {
                 setSelectedTrain(route);
                 setView(AppView.TRAIN_DETAILS);
-              }}
-            />
-          ) : (
-            <LoginWall setView={setView} />
-          )}
+              } else {
+                setView(AppView.LOGIN);
+              }
+            }}
+          />
         </div>
       );
     }

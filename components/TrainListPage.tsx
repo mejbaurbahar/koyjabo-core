@@ -143,7 +143,7 @@ export function TrainDetail({
             </div>
           </div>
 
-          {/* Stops list */}
+          {/* Stops list — improved timeline */}
           <div className="bg-white/10 rounded-2xl border border-white/15 overflow-hidden">
             <div className="px-4 py-3 border-b border-white/10">
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
@@ -151,31 +151,46 @@ export function TrainDetail({
                 {bn ? `স্টেশন (${route.stops.length}টি)` : `Stations (${route.stops.length})`}
               </h3>
             </div>
-            <div className="relative px-4 py-3">
-              <div className="absolute left-6 top-4 bottom-4 w-0.5 bg-gradient-to-b from-emerald-400 via-teal-400 to-white/20 opacity-40" />
-              <div className="space-y-2.5">
-                {route.stops.map((id, idx) => {
-                  const st = TRAIN_STATIONS[id];
-                  if (!st) return null;
-                  const isFirst = idx === 0;
-                  const isLast = idx === route.stops.length - 1;
-                  return (
-                    <div key={id} className="flex items-center gap-3 relative">
-                      <div
-                        className={`w-3 h-3 rounded-full border-2 shrink-0 z-10 ${
-                          isFirst || isLast
-                            ? 'bg-emerald-400 border-emerald-500'
-                            : 'bg-white/20 border-white/40'
-                        }`}
-                        style={{ marginLeft: '-2px' }}
-                      />
-                      <span className={`text-sm ${isFirst || isLast ? 'font-bold text-white' : 'text-white/65'}`}>
+            <div className="px-4 py-4">
+              {route.stops.map((id, idx) => {
+                const st = TRAIN_STATIONS[id];
+                if (!st) return null;
+                const isFirst = idx === 0;
+                const isLast = idx === route.stops.length - 1;
+                const isMid = !isFirst && !isLast;
+                return (
+                  <div key={id} className="flex gap-3">
+                    {/* Timeline column */}
+                    <div className="flex flex-col items-center" style={{ width: 20 }}>
+                      {/* Top connector */}
+                      <div className={`w-px flex-none ${isFirst ? 'h-2 bg-transparent' : 'h-2'} ${!isFirst ? (isLast ? 'bg-gradient-to-b from-white/25 to-transparent' : 'bg-white/25') : ''}`} />
+                      {/* Dot */}
+                      {isFirst ? (
+                        <div className="w-4 h-4 rounded-full bg-emerald-400 border-2 border-emerald-300 shadow-lg shadow-emerald-500/40 shrink-0 z-10" />
+                      ) : isLast ? (
+                        <div className="w-4 h-4 rounded-full bg-white/80 border-2 border-white/50 shadow shrink-0 z-10" />
+                      ) : (
+                        <div className="w-2.5 h-2.5 rounded-full bg-white/20 border border-white/35 shrink-0 z-10 mt-0.5" />
+                      )}
+                      {/* Bottom connector */}
+                      {!isLast && (
+                        <div className={`w-px flex-1 min-h-[18px] ${isFirst ? 'bg-gradient-to-b from-emerald-400/80 to-white/25' : 'bg-white/25'}`} />
+                      )}
+                    </div>
+                    {/* Stop name */}
+                    <div className={`pb-3 flex-1 min-w-0 ${isFirst ? 'pt-0' : isMid ? 'pt-0.5' : 'pt-0'}`}>
+                      <span className={`${isFirst || isLast ? 'text-sm font-bold text-white' : 'text-xs text-white/60'}`}>
                         {bn ? st.bnName : st.name}
                       </span>
+                      {(isFirst || isLast) && (
+                        <p className="text-[10px] text-white/40 mt-0.5">
+                          {isFirst ? (bn ? 'যাত্রা শুরু' : 'Departure') : (bn ? 'চূড়ান্ত গন্তব্য' : 'Final Destination')}
+                        </p>
+                      )}
                     </div>
-                  );
-                })}
-              </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
