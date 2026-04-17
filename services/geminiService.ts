@@ -456,6 +456,198 @@ const TOUR_PLANS: Record<string, { en: string; bn: string }> = {
 // Normalize text for search
 const normalize = (text: string) => text.toLowerCase().replace(/[^\w\s\u0980-\u09FF]/g, '').trim();
 
+// ─────────────────────────────────────────────────────────────────────────────
+// MULTI-LANGUAGE SUPPORT: English · বাংলা · Banglish
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Comprehensive Banglish → English keyword map (longest first matching)
+const BANGLISH_MAP: Array<[string, string]> = [
+  // Multi-word navigation phrases — matched before single words
+  ['ki vabe jabo', 'how to go to'], ['kivabe jabo', 'how to go to'],
+  ['kibhabe jabo', 'how to go to'], ['kemne jabo', 'how to go to'],
+  ['kemon kore jabo', 'how to go to'], ['koi vabe jabo', 'how to go to'],
+  ['ki kore jabo', 'how to go to'],
+  ['jete chai', 'want to go'], ['jete hobe', 'need to go'],
+  ['jete parbo', 'can go to'], ['jete pari', 'can go to'],
+  ['ami jabo', 'i want to go'], ['ami jete chai', 'i want to go'],
+  ['apni jaben', 'you want to go'],
+  ['koi jabo', 'where go'], ['kothay jabo', 'where go'],
+  ['kothay jaben', 'where go'], ['kothay jai', 'where go'],
+  ['koto shomoy lage', 'how long travel time'],
+  ['koto shomoy lagbe', 'how long travel time'],
+  ['koto taka lage', 'how much fare'], ['koto poisha lage', 'how much fare'],
+  ['koto taka', 'how much fare'], ['koto pora', 'how much fare'],
+  ['ticket dam koto', 'how much ticket price'], ['ticket price koto', 'how much ticket price'],
+  ['bhara koto', 'how much fare'], ['pora koto', 'how much fare'],
+  ['bus ache ki', 'bus available'], ['bus pabo ki', 'bus available'],
+  ['train ache ki', 'train available'], ['train pabo ki', 'train available'],
+  ['metro ache ki', 'metro available'],
+  ['launch ache ki', 'launch available'],
+  ['bus ache', 'bus available'], ['bus pabo', 'bus available'],
+  ['train ache', 'train available'], ['train pabo', 'train available'],
+  ['metro ache', 'metro available'],
+  ['kono bus ache', 'any bus available'], ['kono train ache', 'any train available'],
+  ['shoja rasta', 'direct route'], ['shoja poth', 'direct route'],
+  ['theke shuru', 'starting from'], ['theke jabo', 'from go to'],
+  ['theke jete', 'from going to'],
+  // Prepositions / connectors
+  ['theke', 'from'], ['thekay', 'from'], ['thekey', 'from'],
+  ['porjonto', 'to'], ['porzonto', 'to'], ['obodhi', 'to'],
+  ['te jabo', 'go to'], ['e jabo', 'go to'], ['te jaben', 'go to'],
+  ['e jaben', 'go to'], ['te jete', 'go to'], ['e jete', 'go to'],
+  // How/where/what
+  ['ki vabe', 'how'], ['kivabe', 'how'], ['kibhabe', 'how'],
+  ['kemne', 'how'], ['kemon kore', 'how'],
+  ['kothay', 'where'], ['kothai', 'where'], ['kothae', 'where'], ['koi', 'where'],
+  ['ki', 'what'], ['kon', 'which'], ['konta', 'which'], ['kono', 'any'],
+  ['koto', 'how much'], ['kotokhon', 'how long'],
+  // Availability
+  ['ache', 'available'], ['achhe', 'available'], ['nai', 'not available'],
+  ['pabo', 'will find'], ['paben', 'will find'], ['pawa jabe', 'available'],
+  // People
+  ['ami', 'i'], ['amake', 'me'], ['amar', 'my'], ['amra', 'we'], ['amader', 'our'],
+  ['apni', 'you'], ['apnar', 'your'], ['apnara', 'you all'],
+  ['se', 'he she'], ['tara', 'they'],
+  // Instructions
+  ['bolo', 'tell me'], ['bolun', 'tell me'], ['bolen', 'tell me'],
+  ['dekhao', 'show me'], ['dekhun', 'show me'], ['janao', 'let me know'],
+  ['janun', 'let me know'], ['doro', 'show me'],
+  // Transport modes
+  ['bas', 'bus'], ['gari', 'vehicle'], ['cng', 'auto cng'],
+  ['riksha', 'rickshaw'], ['ubhar', 'uber ride'],
+  ['pathao', 'pathao ride'], ['shohor', 'city'],
+  // Time
+  ['sokale', 'morning'], ['shokale', 'morning'],
+  ['bikel', 'afternoon'], ['bikele', 'afternoon'],
+  ['raat', 'night'], ['raate', 'night'], ['ratey', 'night'],
+  ['dupure', 'noon'], ['dupur', 'noon'],
+  ['aaj', 'today'], ['kal', 'tomorrow'], ['poroshhu', 'day after tomorrow'],
+  // Journey-related
+  ['jawa', 'going'], ['asha', 'coming'],
+  ['porjonto', 'up to'], ['pothe', 'on the way'], ['rasta', 'route road'],
+  ['shomoy', 'time'], ['lagbe', 'will take'], ['lage', 'takes'],
+  ['dur', 'distance far'], ['dure', 'far away'], ['kache', 'near'], ['kachhe', 'near'],
+  ['direct', 'direct'], ['shoja', 'direct straight'],
+  // Location common Banglish spellings
+  ['dhaka', 'dhaka'], ['dhakay', 'dhaka'], ['dhakar', 'dhaka'],
+  ['chittagong', 'chattogram'], ['ctg', 'chattogram'], ['chottogram', 'chattogram'],
+  ['sylhet', 'sylhet'], ['sylhete', 'sylhet'], ['sylheter', 'sylhet'],
+  ['rajshahi', 'rajshahi'], ['khulna', 'khulna'], ['khulnay', 'khulna'],
+  ['barishal', 'barishal'], ['barisal', 'barishal'], ['barshale', 'barishal'],
+  ['rangpur', 'rangpur'], ['mymensingh', 'mymensingh'], ['mymensing', 'mymensingh'],
+  ['coxsbazar', "cox's bazar"], ['coxs bazar', "cox's bazar"], ['coxbazar', "cox's bazar"],
+  ['cox bazar', "cox's bazar"], ['koksbajar', "cox's bazar"], ['coxbajar', "cox's bazar"],
+  ['comilla', 'cumilla'], ['comila', 'cumilla'], ['komilla', 'cumilla'],
+  ['feni', 'feni'], ['noakhali', 'noakhali'], ['lakshmipur', 'lakshmipur'],
+  ['laxmipur', 'lakshmipur'], ['chandpur', 'chandpur'],
+  ['brahmanbaria', 'brahmanbaria'], ['b baria', 'brahmanbaria'],
+  ['habiganj', 'habiganj'], ['moulvibazar', 'moulvibazar'], ['moulvi bazar', 'moulvibazar'],
+  ['sunamganj', 'sunamganj'], ['kishoreganj', 'kishoreganj'],
+  ['netrokona', 'netrokona'], ['sherpur', 'sherpur'], ['jamalpur', 'jamalpur'],
+  ['tangail', 'tangail'], ['gazipur', 'gazipur'], ['gajipur', 'gazipur'],
+  ['narayanganj', 'narayanganj'], ['narsingdi', 'narsingdi'],
+  ['munshiganj', 'munshiganj'], ['manikganj', 'manikganj'], ['faridpur', 'faridpur'],
+  ['gopalganj', 'gopalganj'], ['madaripur', 'madaripur'], ['shariatpur', 'shariatpur'],
+  ['rajbari', 'rajbari'], ['bogura', 'bogura'], ['bogra', 'bogura'],
+  ['joypurhat', 'joypurhat'], ['naogaon', 'naogaon'], ['natore', 'natore'],
+  ['chapai', 'chapainawabganj'], ['chapainawabganj', 'chapainawabganj'],
+  ['pabna', 'pabna'], ['sirajganj', 'sirajganj'],
+  ['dinajpur', 'dinajpur'], ['thakurgaon', 'thakurgaon'],
+  ['panchagarh', 'panchagarh'], ['nilphamari', 'nilphamari'],
+  ['lalmonirhat', 'lalmonirhat'], ['kurigram', 'kurigram'], ['gaibandha', 'gaibandha'],
+  ['jashore', 'jashore'], ['jessore', 'jashore'], ['narail', 'narail'],
+  ['kushtia', 'kushtia'], ['meherpur', 'meherpur'], ['chuadanga', 'chuadanga'],
+  ['jhenaidah', 'jhenaidah'], ['magura', 'magura'], ['satkhira', 'satkhira'],
+  ['bagerhat', 'bagerhat'], ['khulnay', 'khulna'],
+  ['pirojpur', 'pirojpur'], ['barguna', 'barguna'], ['patuakhali', 'patuakhali'],
+  ['bhola', 'bhola'], ['jhalokati', 'jhalokati'],
+  ['bandarban', 'bandarban'], ['rangamati', 'rangamati'], ['khagrachhari', 'khagrachari'],
+  // Dhaka area Banglish names
+  ['farmgate', 'farmgate'], ['farmget', 'farmgate'], ['farm gate', 'farmgate'],
+  ['mohakhali', 'mohakhali'], ['mohakkhali', 'mohakhali'],
+  ['gulshan', 'gulshan'], ['banani', 'banani'],
+  ['dhanmondi', 'dhanmondi'], ['dhানmondi', 'dhanmondi'],
+  ['mirpur', 'mirpur'], ['mirpure', 'mirpur'], ['mirpoor', 'mirpur'],
+  ['uttara', 'uttara'], ['uttora', 'uttara'], ['uttra', 'uttara'],
+  ['motijheel', 'motijheel'], ['motizheel', 'motijheel'],
+  ['shahbag', 'shahbagh'], ['shabag', 'shahbagh'],
+  ['kamalapur', 'kamalapur'], ['kamlapur', 'kamalapur'],
+  ['savar', 'savar'], ['shawar', 'savar'],
+  ['tongi', 'tongi'], ['gabtoli', 'gabtoli'], ['sadarghat', 'sadarghat'],
+  ['kallyanpur', 'kallyanpur'], ['kalyanpur', 'kallyanpur'],
+  ['badda', 'badda'], ['rampura', 'rampura'], ['khilgaon', 'khilgaon'],
+  ['demra', 'demra'], ['jatrabari', 'jatrabari'], ['postogola', 'postogola'],
+  ['azimpur', 'azimpur'], ['nilkhet', 'nilkhet'], ['paltan', 'paltan'],
+  ['press club', 'press club'], ['mouchak', 'mouchak'],
+  ['malibagh', 'malibagh'], ['khilkhet', 'khilkhet'],
+  // Train station Banglish names
+  ['comilla', 'cumilla'], ['akhaura', 'akhaura'], ['laksham', 'laksham'],
+  ['feni', 'feni'], ['chittagong', 'chattogram'],
+  ['tongi', 'tongi'], ['joydebpur', 'joydebpur'], ['ghorashal', 'ghorashal'],
+  ['bhairab', 'bhairab'], ['kishoreganj', 'kishoreganj'],
+  ['mymensingh', 'mymensingh'], ['jamalpur', 'jamalpur'],
+  ['dewanganj', 'dewanganj'], ['bahadurabad', 'bahadurabad'],
+  ['rajshahi', 'rajshahi'], ['ishwardi', 'ishwardi'], ['parbatipur', 'parbatipur'],
+  ['chilahati', 'chilahati'], ['santahar', 'santahar'],
+  ['benapole', 'benapole'], ['jessore', 'jashore'], ['khulna', 'khulna'],
+  ['mongla', 'mongla'], ['rupsha', 'rupsha'],
+  ['upaban', 'upaban'], ['jayantika', 'jayantika'], ['parabat', 'parabat'],
+  ['surma', 'surma'], ['kalni', 'kalni'], ['jalalabad', 'jalalabad'],
+  ['subarna', 'subarna'], ['sonar bangla', 'sonar bangla'], ['turna', 'turna'],
+  ['mohanagar', 'mohanagar'], ['chattala', 'chattala'],
+  ['silk city', 'silk city'], ['padma', 'padma'], ['dhumketu', 'dhumketu'],
+  ['banalata', 'banalata'], ['sundarban', 'sundarban'],
+  ['tista', 'tista'], ['rangpur express', 'rangpur express'],
+  ['ekota', 'ekota'], ['panchagarh', 'panchagarh'],
+  ['drutojan', 'drutojan'], ['nilsagar', 'nilsagar'],
+];
+
+// Detect Banglish: romanized Bengali (not Bangla script, but has Bengali-style words)
+function detectBanglish(q: string): boolean {
+  if (/[\u0980-\u09FF]/.test(q)) return false; // Real Bengali script
+  return /\b(jabo|theke|kivabe|ki vabe|kemne|koto|ache|jete|ami|apni|bas|bhara|pora|lage|lagbe|pabo|kothay|koi|bolo|bolun|shoja|shomoy|theke|porjonto|mirpure|uttora|farmget|gulshan|banani|mohakhali|kamalapur|ctg|barishal|barisal|coxs|sylhete|kemon kore|jawa|asha|dur|kache)\b/i.test(q);
+}
+
+// Normalize Banglish query: inject English equivalents for all known Banglish words
+function normalizeBanglish(query: string): string {
+  let q = ' ' + query.toLowerCase() + ' ';
+  // Sort by source length descending (longest first to prevent partial overrides)
+  const sorted = [...BANGLISH_MAP].sort((a, b) => b[0].length - a[0].length);
+  for (const [bl, en] of sorted) {
+    const escaped = bl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    q = q.replace(new RegExp(`(?<![a-z])${escaped}(?![a-z])`, 'gi'), ` ${en} `);
+  }
+  return q.replace(/\s+/g, ' ').trim();
+}
+
+// Detect response language: Bangla script → bn, Banglish → en (they can read English)
+function detectLang(query: string): 'bn' | 'en' | 'banglish' {
+  if (/[\u0980-\u09FF]/.test(query)) return 'bn';
+  if (detectBanglish(query)) return 'banglish';
+  return 'en';
+}
+
+// Fuzzy station search: matches partial names (e.g. "gulshan" matches "Gulshan 1", "Gulshan 2")
+function fuzzyFindStations(term: string): typeof Object extends never ? never : any[] {
+  const t = normalize(term);
+  return Object.values(STATIONS).filter(s =>
+    normalize(s.name).includes(t) ||
+    t.includes(normalize(s.name)) ||
+    (s.bnName && (normalize(s.bnName).includes(t) || t.includes(normalize(s.bnName))))
+  );
+}
+
+// Extract (from, to) pair from a banglish-normalized query string
+function extractFromTo(text: string): { from: string | null; to: string | null } {
+  // "[place] from [place]" after normalization of "theke"
+  const m = text.match(/([a-z0-9'\s-]{2,25})\s+from\s+([a-z0-9'\s-]{2,25})/i);
+  if (m) return { from: m[1].trim(), to: m[2].trim() };
+  // "from [place]... go to [place]"
+  const fromM = text.match(/\bfrom\s+([a-z0-9'\s-]{2,25?))/i);
+  const toM = text.match(/\b(?:go to|want to go|to)\s+([a-z0-9'\s-]{2,25})/i);
+  return { from: fromM?.[1]?.trim() ?? null, to: toM?.[1]?.trim() ?? null };
+}
+
 const findBusRoute = (start: string, end: string, isBn: boolean): string => {
   const sMatches = Object.values(STATIONS).filter(st =>
     normalize(st.name).includes(normalize(start)) || (st.bnName && normalize(st.bnName).includes(normalize(start)))
