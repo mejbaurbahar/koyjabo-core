@@ -1747,20 +1747,20 @@ const App: React.FC = () => {
                 <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center mb-4">
                   <Users className="w-6 h-6" />
                 </div>
-                <h4 className="font-bold text-xl text-gray-900 dark:text-gray-100 mb-2">👤 User Accounts</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Sign in with GitHub to save your search history, manage devices, and personalize your experience.</p>
+                <h4 className="font-bold text-xl text-gray-900 dark:text-gray-100 mb-2">👤 {t('features.userAccountsTitle')}</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{t('features.userAccountsDesc')}</p>
                 <ul className="mt-4 space-y-2 text-xs text-gray-500">
-                  <li>• GitHub OAuth — no password needed</li>
-                  <li>• Search history saved locally on device</li>
-                  <li>• Profile, security & device management</li>
+                  <li>• {t('features.githubOAuth')}</li>
+                  <li>• {t('features.localHistory')}</li>
+                  <li>• {t('features.profileManagement')}</li>
                 </ul>
               </div>
               <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow md:col-span-2">
                 <div className="w-12 h-12 bg-rose-100 dark:bg-rose-900/40 text-rose-600 dark:text-rose-400 rounded-xl flex items-center justify-center mb-4">
                   <MapPin className="w-6 h-6" />
                 </div>
-                <h4 className="font-bold text-xl text-gray-900 dark:text-gray-100 mb-2">🗺️ Daily Journey Tracker</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Log your daily commute stops, track journey history, and get route suggestions based on your travel patterns — all stored privately on your device.</p>
+                <h4 className="font-bold text-xl text-gray-900 dark:text-gray-100 mb-2">🗺️ {t('features.journeyTrackerTitle')}</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{t('features.journeyTrackerDesc')}</p>
               </div>
             </div>
           </section>
