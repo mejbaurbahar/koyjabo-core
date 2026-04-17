@@ -248,12 +248,14 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                 lineJoin: 'round',
             }).addTo(map);
 
+            // Store route polyline
             routePolylineRef.current = poly;
-
-            // Fit map to route bounds
-            const bounds = L.latLngBounds(coords);
-            map.fitBounds(bounds, { padding: [40, 40], maxZoom: 15 });
-        }
+            
+            // Only fit bounds if we don't have user location (fallback)
+            if (!userLocation) {
+                const bounds = L.latLngBounds(coords);
+                map.fitBounds(bounds, { padding: [40, 40], maxZoom: 15 });
+            }
 
         // Find nearest stop to user
         if (userLocation && selectedRoute.stops.length) {
@@ -426,9 +428,13 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
         .filter(Boolean) ?? [];
 
     return (
-        <div className="fixed inset-0 z-[200] flex flex-col bg-black">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200" onClick={onClose}>
+            <div 
+                className="relative w-full max-w-5xl h-[90vh] sm:h-[85vh] bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-gray-200/20 dark:border-slate-700/50 animate-in zoom-in-95 duration-200"
+                onClick={(e) => e.stopPropagation()}
+            >
             {/* Map fills everything */}
-            <div ref={mapContainerRef} className="absolute inset-0 z-0" />
+            <div ref={mapContainerRef} className="absolute inset-0 z-0 bg-slate-100 dark:bg-slate-800" />
 
             {/* ── Top status bar ── */}
             <div className="absolute top-0 left-0 right-0 z-[400] pointer-events-none px-3 pt-3 flex items-start justify-between gap-2">
@@ -667,15 +673,15 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                 <div className="absolute inset-0 z-[399]" onClick={() => setShowLayerMenu(false)} />
             )}
 
-            {/* Inject ping keyframe for user/bus markers */}
             <style>{`
                 @keyframes ping {
                     75%, 100% { transform: scale(2); opacity: 0; }
                 }
-                .leaflet-control-scale { margin-bottom: 100px !important; }
-                .leaflet-control-zoom { margin-bottom: 8px !important; }
-                .leaflet-bottom.leaflet-right { bottom: 100px !important; }
+                .leaflet-control-scale { margin-bottom: 24px !important; }
+                .leaflet-control-zoom { margin-bottom: 24px !important; margin-right: 12px !important; }
+                .leaflet-bottom.leaflet-right { bottom: 24px !important; }
             `}</style>
+            </div>
         </div>
     );
 };

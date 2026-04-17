@@ -4167,7 +4167,7 @@ const App: React.FC = () => {
           isOpen={showLiveMap}
           onClose={() => setShowLiveMap(false)}
           userLocation={userLocation}
-          selectedRoute={selectedBus}
+          selectedRoute={(view === AppView.BUS_DETAILS || view === AppView.LIVE_NAV) ? selectedBus : null}
         />
 
 
