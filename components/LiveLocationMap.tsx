@@ -256,6 +256,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                 const bounds = L.latLngBounds(coords);
                 map.fitBounds(bounds, { padding: [40, 40], maxZoom: 15 });
             }
+        }
 
         // Find nearest stop to user
         if (userLocation && selectedRoute.stops.length) {
