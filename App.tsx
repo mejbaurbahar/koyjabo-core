@@ -69,7 +69,8 @@ import ContactUs from './components/ContactUs';
 import GlobalFooter from './components/GlobalFooter';
 import OfflineIndicator from './components/OfflineIndicator';
 import AdSenseAd from './components/AdSenseAd';
-import TrainListPage from './components/TrainListPage';
+import TrainListPage, { TrainDetail } from './components/TrainListPage';
+import { BDTrainRoute } from './data/bangladeshTrainData';
 
 
 
@@ -502,6 +503,7 @@ const App: React.FC = () => {
   // Token passed directly from the in-app forgot-password flow
   const [activeResetToken, setActiveResetToken] = useState<string>('');
   const [selectedBus, setSelectedBus] = useState<BusRoute | null>(getStoredBus);
+  const [selectedTrain, setSelectedTrain] = useState<BDTrainRoute | null>(null);
   const [selectedBlogPost, setSelectedBlogPost] = useState<string | null>(() => {
     const path = window.location.pathname.substring(1).replace(/\/$/, '');
     const hash = window.location.hash.slice(1);
@@ -3234,7 +3236,7 @@ const App: React.FC = () => {
       }, 500);
     };
 
-    // Train view: show TrainListPage inline in the home sidebar (login required)
+    // Train view: list in left sidebar, detail in right panel
     if (view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) {
       return (
         <div className="flex flex-col h-full w-full md:pt-20">
@@ -3243,6 +3245,10 @@ const App: React.FC = () => {
               userLocation={userLocation}
               onBack={() => setView(AppView.HOME)}
               embedded={false}
+              onSelectTrain={(route) => {
+                setSelectedTrain(route);
+                setView(AppView.TRAIN_DETAILS);
+              }}
             />
           ) : (
             <LoginWall setView={setView} />
@@ -3596,7 +3602,7 @@ const App: React.FC = () => {
           {/* Left Sidebar (Desktop) / Main View (Mobile Home) */}
           <div className={`
             ${'w-full md:w-1/3 md:min-w-[320px] md:max-w-md md:flex md:flex-col border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900 z-0 h-full overflow-hidden'}
-            ${view !== AppView.HOME && view !== AppView.TRAIN_LIST && view !== AppView.TRAIN_DETAILS && 'hidden md:flex'}
+            ${view !== AppView.HOME && view !== AppView.TRAIN_LIST && 'hidden md:flex'}
 `}>
             <div className="h-full flex flex-col md:pt-0">
               {renderHomeContent()}
@@ -3606,9 +3612,19 @@ const App: React.FC = () => {
           {/* Right Content Area (Desktop) / Views (Mobile) */}
           <div className={`
             ${'w-full md:flex-1 bg-slate-50 dark:bg-slate-950 md:bg-white dark:md:bg-slate-900 relative h-full overflow-hidden'}
-            ${(view === AppView.HOME || view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) && 'hidden md:block'}
+            ${(view === AppView.HOME || view === AppView.TRAIN_LIST) && 'hidden md:block'}
 `}>
-            {(view === AppView.HOME || view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) && <div className="hidden md:block absolute inset-0 w-full h-full"><DhakaAlive /></div>}
+            {(view === AppView.HOME || view === AppView.TRAIN_LIST) && <div className="hidden md:block absolute inset-0 w-full h-full"><DhakaAlive /></div>}
+            {view === AppView.TRAIN_DETAILS && (
+              user && selectedTrain ? (
+                <TrainDetail
+                  route={selectedTrain}
+                  userLocation={userLocation}
+                  onBack={() => { setSelectedTrain(null); setView(AppView.TRAIN_LIST); }}
+                  language={language}
+                />
+              ) : <LoginWall setView={setView} />
+            )}
             {view === AppView.BUS_DETAILS && (user ? renderBusDetails() : <LoginWall setView={setView} />)}
             {view === AppView.LIVE_NAV && renderLiveNav()}
             {view === AppView.AI_ASSISTANT && (user ? renderAiAssistant() : <LoginWall setView={setView} />)}

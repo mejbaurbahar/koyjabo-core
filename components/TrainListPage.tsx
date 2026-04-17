@@ -17,6 +17,7 @@ interface TrainListPageProps {
   userLocation?: UserLocation | null;
   onBack?: () => void;
   embedded?: boolean;
+  onSelectTrain?: (route: BDTrainRoute) => void;
 }
 
 const DIVISIONS = ['All', 'Chattogram', 'Sylhet', 'Rajshahi', 'Khulna', 'Rangpur', 'Mymensingh'];
@@ -33,7 +34,7 @@ function formatNumber(n: number): string {
 }
 
 // ── Train Detail View ─────────────────────────────────────────────────────────
-function TrainDetail({
+export function TrainDetail({
   route,
   userLocation,
   onBack,
@@ -352,15 +353,13 @@ function TrainCard({ route, onClick, language }: { route: BDTrainRoute; onClick:
 }
 
 // ── Main Export ───────────────────────────────────────────────────────────────
-const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, embedded = false }) => {
+const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, embedded = false, onSelectTrain }) => {
   const { language } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeDivision, setActiveDivision] = useState('All');
   const [selectedTrain, setSelectedTrain] = useState<BDTrainRoute | null>(null);
 
   const filtered = useMemo(() => {
     let list = BD_TRAIN_ROUTES;
-    if (activeDivision !== 'All') list = list.filter(r => r.division === activeDivision);
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       list = list.filter(r =>
@@ -372,9 +371,10 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
       );
     }
     return list;
-  }, [searchQuery, activeDivision]);
+  }, [searchQuery]);
 
-  if (selectedTrain) {
+  // If no external handler, render detail inline (fallback)
+  if (!onSelectTrain && selectedTrain) {
     return (
       <TrainDetail
         route={selectedTrain}
@@ -465,7 +465,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
             <TrainCard
               key={route.id}
               route={route}
-              onClick={() => setSelectedTrain(route)}
+              onClick={() => onSelectTrain ? onSelectTrain(route) : setSelectedTrain(route)}
               language={language}
             />
           ))
