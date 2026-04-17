@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   User, Mail, AtSign, Shield, Camera, Loader2, AlertCircle, CheckCircle2,
   Clock, Monitor, Smartphone, Tablet, LogOut, Eye, EyeOff, ChevronRight,
-  ArrowLeft, Trash2, Key, Edit3, Save, X, History, Settings
+  ArrowLeft, Trash2, Key, Edit3, Save, X
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../../contexts/LanguageContext';
@@ -12,10 +12,8 @@ import {
 } from '../../services/githubAuthService';
 import type { Device } from '../../types/auth';
 import type { BusRoute } from '../../../types';
-import HistoryView from '../../../components/HistoryView';
-import SettingsPage from '../../../components/SettingsPage';
 
-type ProfileSection = 'profile' | 'security' | 'devices' | 'history' | 'settings';
+type ProfileSection = 'profile' | 'security' | 'devices';
 
 interface ProfilePageProps {
   onBack: () => void;
@@ -185,7 +183,6 @@ export default function ProfilePage({
   };
 
   // ── Render ──────────────────────────────────────────────────────────────────
-  const isEmbedded = activeSection === 'history' || activeSection === 'settings';
 
   // Shared tab list used in both layout modes
   const tabList = (
@@ -194,8 +191,6 @@ export default function ProfilePage({
         { key: 'profile',  label: t('profile.tabs.profile'),  Icon: User    },
         { key: 'security', label: t('profile.tabs.password'),  Icon: Shield  },
         { key: 'devices',  label: t('profile.tabs.devices'),   Icon: Monitor },
-        { key: 'history',  label: t('nav.history'),            Icon: History },
-        { key: 'settings', label: t('settings.title'),         Icon: Settings },
       ] as { key: ProfileSection; label: string; Icon: React.ElementType }[]).map(({ key, label, Icon }) => (
         <button
           key={key}
@@ -238,67 +233,7 @@ export default function ProfilePage({
         </div>
       </div>
 
-      {isEmbedded ? (
-        /* ── History / Settings: pinned top area + full-height inner component ── */
-        <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
-          {/* Compact avatar + tabs – always visible, non-scrolling */}
-          <div className="shrink-0 px-4 py-3 bg-gray-50 dark:bg-slate-900 space-y-3">
-            <div className="max-w-2xl mx-auto space-y-3">
-              <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-slate-700">
-                <div className="flex items-center gap-4">
-                  <div className="relative shrink-0">
-                    <div className="w-12 h-12 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center">
-                      {user.avatarUrl ? (
-                        <img src={user.avatarUrl} alt={user.displayName} className="w-full h-full object-cover" />
-                      ) : (
-                        <span className="text-white text-lg font-bold">{user.displayName.charAt(0).toUpperCase()}</span>
-                      )}
-                    </div>
-                    <button
-                      onClick={() => fileInputRef.current?.click()}
-                      className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center shadow-md hover:bg-blue-700 transition"
-                    >
-                      <Camera size={10} className="text-white" />
-                    </button>
-                    <input ref={fileInputRef} type="file" accept="image/*" onChange={handleAvatarChange} className="hidden" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="font-bold text-gray-900 dark:text-white truncate">{user.displayName}</p>
-                    <p className="text-gray-500 dark:text-gray-400 text-xs">@{user.username}</p>
-                  </div>
-                </div>
-              </div>
-              {tabList}
-            </div>
-          </div>
-          {/* Full-height section */}
-          <div className="flex-1 min-h-0 overflow-hidden">
-            {activeSection === 'history' && (
-              <HistoryView
-                embedded
-                onBack={() => setActiveSection('profile')}
-                onBusSelect={(bus, fromHistory) => {
-                  onBusSelect(bus, fromHistory);
-                  onBack();
-                }}
-              />
-            )}
-            {activeSection === 'settings' && (
-              <SettingsPage
-                embedded
-                isDarkMode={isDarkMode}
-                toggleTheme={toggleTheme}
-                onContactClick={() => {
-                  onContactClick();
-                  onBack();
-                }}
-              />
-            )}
-          </div>
-        </div>
-      ) : (
-        /* ── Profile / Security / Devices: normal scrollable layout ── */
-        <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto">
           <div className="max-w-2xl mx-auto px-4 pt-6 pb-28 md:pb-8 space-y-4">
             {/* Avatar + name card */}
             <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-slate-700">
@@ -556,7 +491,6 @@ export default function ProfilePage({
 
           </div>
         </div>
-      )}
     </div>
   );
 }
