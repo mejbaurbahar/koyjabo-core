@@ -123,13 +123,13 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
         return (
             <div className="flex flex-col items-center justify-center h-full p-8">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-                    {language === 'bn' ? 'পোস্ট পাওয়া যায়নি' : 'Post Not Found'}
+                    {t('blog.postNotFound')}
                 </h2>
                 <button
                     onClick={onBack}
                     className="px-6 py-3 bg-teal-600 text-white rounded-xl font-medium hover:bg-teal-700 transition-colors"
                 >
-                    {language === 'bn' ? 'ব্লগে ফিরে যান' : 'Back to Blog'}
+                    {t('blog.backToBlog')}
                 </button>
             </div>
         );
@@ -161,7 +161,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                     className="inline-flex items-center gap-2 px-4 py-2 mb-8 text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 font-semibold transition-all bg-teal-50 dark:bg-teal-900/20 hover:bg-teal-100 dark:hover:bg-teal-900/30 rounded-xl group"
                 >
                     <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-                    <span>{language === 'bn' ? 'ব্লগে ফিরে যান' : 'Back to Blog'}</span>
+                    <span>{t('blog.backToBlog')}</span>
                 </button>
 
                 {/* Post Header */}
@@ -205,7 +205,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                             <div>
                                 <p className="font-bold text-gray-900 dark:text-gray-100 text-lg">{post.author}</p>
                                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                                    {language === 'bn' ? 'লেখক' : 'Author'}
+                                    {t('blog.author')}
                                 </p>
                             </div>
                         </div>
@@ -214,17 +214,17 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                         <button
                             onClick={handleShare}
                             className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                            aria-label={language === 'bn' ? 'শেয়ার করুন' : 'Share'}
+                            aria-label={t('blog.share')}
                         >
                             {copied ? (
                                 <>
                                     <Check className="w-5 h-5" />
-                                    <span>{language === 'bn' ? 'কপি হয়েছে!' : 'Copied!'}</span>
+                                    <span>{t('blog.copied')}</span>
                                 </>
                             ) : (
                                 <>
                                     <Copy className="w-5 h-5" />
-                                    <span>{language === 'bn' ? 'লিংক কপি করুন' : 'Copy Link'}</span>
+                                    <span>{t('blog.copyLink')}</span>
                                 </>
                             )}
                         </button>

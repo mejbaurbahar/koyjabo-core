@@ -71,7 +71,7 @@ const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ isOnline }) => {
                                     className={`text-xs px-3 py-1 rounded-full ${getTextColor()} hover:bg-white dark:hover:bg-gray-800 transition-colors flex items-center gap-1`}
                                 >
                                     <Info className="w-3 h-3" />
-                                    {language === 'bn' ? 'বিস্তারিত' : 'Details'}
+                                    {t('offline.details')}
                                 </button>
                             )}
 
@@ -100,10 +100,10 @@ const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ isOnline }) => {
                                     </div>
                                     <div>
                                         <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                                            {language === 'bn' ? 'অফলাইন মোড' : 'Offline Mode'}
+                                            {t('offline.offlineMode')}
                                         </h3>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                                            {language === 'bn' ? 'ইন্টারনেট সংযোগ নেই' : 'No Internet Connection'}
+                                            {t('offline.noInternet')}
                                         </p>
                                     </div>
                                 </div>
@@ -121,19 +121,15 @@ const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ isOnline }) => {
                                     <div className="flex items-center gap-2 mb-2">
                                         <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                                         <span className="text-sm font-semibold text-blue-900 dark:text-blue-100">
-                                            {language === 'bn' ? 'ক্যাশ তথ্য' : 'Cached Data'}
+                                            {t('offline.cachedData')}
                                         </span>
                                     </div>
                                     <p className="text-xs text-blue-700 dark:text-blue-300">
-                                        {language === 'bn'
-                                            ? `ডেটা ক্যাশ করা হয়েছে ${cacheAge} দিন আগে`
-                                            : `Data cached ${cacheAge} days ago`}
+                                        {t('offline.dataCached')?.replace('{days}', cacheAge.toString())}
                                     </p>
                                     {cacheAge > 7 && (
                                         <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
-                                            {language === 'bn'
-                                                ? '⚠️ আপডেটের জন্য অনলাইনে সংযুক্ত হন'
-                                                : '⚠️ Connect online to update data'}
+                                            {t('offline.connectToUpdate')}
                                         </p>
                                     )}
                                 </div>
@@ -143,7 +139,7 @@ const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ isOnline }) => {
                             <div>
                                 <h4 className="text-sm font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
                                     <Zap className="w-4 h-4 text-yellow-500" />
-                                    {language === 'bn' ? 'উপলব্ধ ফিচার' : 'Available Features'}
+                                    {t('offline.availableFeatures')}
                                 </h4>
 
                                 <ul className="space-y-2">
@@ -163,17 +159,17 @@ const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ isOnline }) => {
                             <div className="mt-6">
                                 <h4 className="text-sm font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
                                     <X className="w-4 h-4 text-red-500" />
-                                    {language === 'bn' ? 'অনলাইন প্রয়োজন' : 'Requires Online'}
+                                    {t('offline.requiresOnline')}
                                 </h4>
 
                                 <ul className="space-y-2">
                                     <li className="flex items-start gap-2 text-sm text-gray-500 dark:text-gray-400">
                                         <X className="w-4 h-4 text-red-400 mt-0.5 shrink-0" />
-                                        <span>{language === 'bn' ? '🚦 লাইভ ট্র্যাকিং' : '🚦 Live Tracking'}</span>
+                                        <span>🚦 {t('offline.liveTracking')}</span>
                                     </li>
                                     <li className="flex items-start gap-2 text-sm text-gray-500 dark:text-gray-400">
                                         <X className="w-4 h-4 text-red-400 mt-0.5 shrink-0" />
-                                        <span>{language === 'bn' ? '🌐 রিয়েল-টাইম আপডেট' : '🌐 Real-time Updates'}</span>
+                                        <span>🌐 {t('offline.realTimeUpdates')}</span>
                                     </li>
                                 </ul>
                             </div>
@@ -181,9 +177,7 @@ const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ isOnline }) => {
                             {/* Reassurance Message */}
                             <div className="mt-6 p-4 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-xl border border-emerald-200 dark:border-emerald-800">
                                 <p className="text-sm text-emerald-800 dark:text-emerald-200 leading-relaxed">
-                                    {language === 'bn'
-                                        ? '💚 চিন্তা করবেন না! কই যাবো সম্পূর্ণভাবে অফলাইনে কাজ করার জন্য ডিজাইন করা হয়েছে। আপনি সকল মূল ফিচার ব্যবহার করতে পারবেন।'
-                                        : '💚 No worries! Koy Jabo is designed to work fully offline. You can use all core features without internet.'}
+                                    {t('offline.dontWorry')}
                                 </p>
                             </div>
 
@@ -192,7 +186,7 @@ const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ isOnline }) => {
                                 onClick={() => setShowDetails(false)}
                                 className="w-full mt-4 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-medium py-3 px-4 rounded-xl transition-all duration-200"
                             >
-                                {language === 'bn' ? 'বুঝেছি' : 'Got it'}
+                                {t('offline.gotIt')}
                             </button>
                         </div>
                     </div>

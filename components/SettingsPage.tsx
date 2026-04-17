@@ -178,7 +178,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ isDarkMode, toggleTheme, on
                     {/* Support & Contact */}
                     <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
                         <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">
-                            Support & Feedback
+                            {t('settings.supportFeedback')}
                         </h2>
 
                         <button
@@ -189,8 +189,8 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ isDarkMode, toggleTheme, on
                                 <Mail className="w-6 h-6" />
                             </div>
                             <div className="flex-1">
-                                <h3 className="font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Contact Us</h3>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">Get help or report an issue</p>
+                                <h3 className="font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{t('settings.contactUsBtn')}</h3>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">{t('settings.contactUsDesc')}</p>
                             </div>
                             <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
                         </button>

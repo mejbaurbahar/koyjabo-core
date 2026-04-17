@@ -48,10 +48,7 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ view, setView }) => {
                                 t('terms.metroRailInfo'),
                                 t('terms.intercityInfo'),
                                 t('terms.aiAssistance'),
-                                'User accounts with saved history and profile management',
-                                'Daily Journey Tracker for logging your commute stops',
-                                'Live route maps and train stop timelines',
-                                'Push notifications for transport alerts',
+                                t('about.whoIsItForDesc'),
                             ].map((item, idx) => (
                                 <li key={idx} className="flex items-start gap-2 bg-white dark:bg-slate-900 p-4 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm text-sm">
                                     <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 shrink-0" />
@@ -64,26 +61,26 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ view, setView }) => {
                     <section className="grid md:grid-cols-3 gap-6">
                         <div className="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700">
                             <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
-                                <UserCheck className="w-5 h-5 text-emerald-500" /> User Accounts
+                                <UserCheck className="w-5 h-5 text-emerald-500" /> {t('terms.userAccountsTitle')}
                             </h3>
                             <p className="text-sm text-gray-600 dark:text-gray-400">
-                                Registration is optional. If you create an account, you are responsible for maintaining the security of your credentials. You may delete your account at any time from the Profile settings.
+                                {t('terms.userAccountsDesc')}
                             </p>
                         </div>
                         <div className="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700">
                             <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
-                                <Train className="w-5 h-5 text-blue-500" /> Train & Schedule Data
+                                <Train className="w-5 h-5 text-blue-500" /> {t('terms.trainDataTitle')}
                             </h3>
                             <p className="text-sm text-gray-600 dark:text-gray-400">
-                                Train schedule and fare data is sourced from publicly available Bangladesh Railway information. Always verify departure times with official Bangladesh Railway sources before travel.
+                                {t('terms.trainDataDesc')}
                             </p>
                         </div>
                         <div className="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700">
                             <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
-                                <Bot className="w-5 h-5 text-purple-500" /> AI Assistant
+                                <Bot className="w-5 h-5 text-purple-500" /> {t('terms.aiAssistantTitle')}
                             </h3>
                             <p className="text-sm text-gray-600 dark:text-gray-400">
-                                The AI assistant operates fully offline using local transport data. It supports English, Bengali, and Banglish. Responses are informational only and not a substitute for official sources.
+                                {t('terms.aiAssistantDesc')}
                             </p>
                         </div>
                     </section>
@@ -99,24 +96,24 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ view, setView }) => {
 
                     <section>
                         <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100 border-b border-gray-100 dark:border-gray-800 pb-2">{t('terms.liability')}</h2>
-                        <p className="text-sm mb-4">TO THE FULLEST EXTENT PERMITTED BY LAW, KOYJABO SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES.</p>
+                        <p className="text-sm mb-4">{t('terms.liabilityDesc')}</p>
                     </section>
 
                     <section className="grid md:grid-cols-2 gap-6">
                         <div className="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700">
                             <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
-                                <ShieldCheck className="w-5 h-5 text-emerald-500" /> Privacy
+                                <ShieldCheck className="w-5 h-5 text-emerald-500" /> {t('terms.privacyTitle')}
                             </h3>
                             <p className="text-sm text-gray-600 dark:text-gray-400">
-                                Your use is also governed by our Privacy Policy.
+                                {t('terms.privacyDesc')}
                             </p>
                         </div>
                         <div className="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700">
                             <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
-                                <ExternalLink className="w-5 h-5 text-blue-500" /> Modifications
+                                <ExternalLink className="w-5 h-5 text-blue-500" /> {t('terms.modificationsTitle')}
                             </h3>
                             <p className="text-sm text-gray-600 dark:text-gray-400">
-                                We reserve the right to modify or discontinue any aspect of the Service at any time.
+                                {t('terms.modificationsDesc')}
                             </p>
                         </div>
                     </section>

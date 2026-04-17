@@ -157,7 +157,7 @@ function App() {
     e.preventDefault();
 
     if (!authUser) {
-      setError(language === 'bn' ? 'ফলাফল দেখতে প্রথমে সাইন ইন করুন।' : 'Please sign in to view search results.');
+      setError(t('intercity.signInPrefixError'));
       return;
     }
 
@@ -536,10 +536,10 @@ function App() {
                   <LogIn className="w-8 h-8 text-blue-500" />
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-                  {language === 'bn' ? 'সাইন ইন প্রয়োজন' : 'Sign in Required'}
+                  {t('intercity.signInRequired')}
                 </h3>
                 <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
-                  {language === 'bn' ? 'রুটের ফলাফল দেখতে আপনার অ্যাকাউন্টে সাইন ইন করুন।' : 'Sign in to your account to view route results.'}
+                  {t('intercity.signInToViewResults')}
                 </p>
                 <a
                   href="/"
@@ -547,7 +547,7 @@ function App() {
                   className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors shadow-sm"
                 >
                   <LogIn className="w-4 h-4" />
-                  {language === 'bn' ? 'সাইন ইন করুন' : 'Sign In'}
+                  {t('common.loginBtn')}
                 </a>
               </div>
             )}
