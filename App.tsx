@@ -527,14 +527,16 @@ const App: React.FC = () => {
     return true; // Default true for SSR/initial render
   });
 
-  // Dark Mode Effect
   useEffect(() => {
+    const root = document.documentElement;
     if (isDarkMode) {
-      document.documentElement.classList.add('dark');
+      root.classList.add('dark');
       localStorage.setItem('theme', 'dark');
+      document.body.style.backgroundColor = '#0f172a'; // slate-900
     } else {
-      document.documentElement.classList.remove('dark');
+      root.classList.remove('dark');
       localStorage.setItem('theme', 'light');
+      document.body.style.backgroundColor = '#f8fafc'; // slate-50
     }
   }, [isDarkMode]);
 
@@ -1581,13 +1583,7 @@ const App: React.FC = () => {
             <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> {t('common.ready')}
           </p>
         </div>
-        <button
-          onClick={() => setShowHistoryManager(true)}
-          className="p-2 rounded-xl bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
-          title="Chat History"
-        >
-          <Clock className="w-5 h-5" />
-        </button>
+
       </div>
 
 
@@ -1602,13 +1598,7 @@ const App: React.FC = () => {
             <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> {t('common.ready')}
           </p>
         </div>
-        <button
-          onClick={() => setShowHistoryManager(true)}
-          className="p-2 rounded-xl bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
-          title="Chat History"
-        >
-          <Clock className="w-5 h-5" />
-        </button>
+
       </div>
 
 
@@ -1633,7 +1623,7 @@ const App: React.FC = () => {
         <div ref={chatEndRef}></div>
       </div>
 
-      <div className="p-4 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 z-30 fixed md:relative bottom-16 md:bottom-0 left-0 right-0">
+      <div className="p-4 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 z-30 fixed md:relative bottom-[calc(4rem+env(safe-area-inset-bottom))] md:bottom-0 left-0 right-0">
         <form onSubmit={handleAiSubmit} className="flex gap-2 relative">
           <input
             type="text"

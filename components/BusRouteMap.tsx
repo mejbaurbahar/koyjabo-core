@@ -134,8 +134,9 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
         zoomControl: false,
         attributionControl: true,
         scrollWheelZoom: true,
-        dragging: true,
-        touchZoom: true,
+        dragging: !L.Browser.mobile,
+        touchZoom: !L.Browser.mobile,
+        tap: !L.Browser.mobile, // Disable tap on mobile as it can interfere
       });
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -399,7 +400,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
   }, [userLocation, mapReady]);
 
   return (
-    <div className="relative w-full rounded-b-2xl overflow-hidden" style={{ height: 310 }}>
+    <div className="relative w-full rounded-b-2xl overflow-hidden" style={{ height: 310, touchAction: 'pan-y' }}>
       <div ref={mapRef} className="w-full h-full" />
 
       {/* Route badge */}
