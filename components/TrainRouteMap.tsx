@@ -55,6 +55,7 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
   const routeLayerRef = useRef<any>(null);
   const overlayLayerRef = useRef<any>(null);
   const userMarkerRef = useRef<any>(null);
+  const userToStationLayerRef = useRef<any>(null);
   const leafletRef = useRef<any>(null);
   const [mapReady, setMapReady] = useState(false);
   const [showLayers, setShowLayers] = useState(false);
@@ -134,23 +135,30 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
         let w: number, h: number, ax: number, ay: number;
 
         if (isCurrent) {
-          // "You are here" pulsing blue marker
-          const hereLabel = bn ? 'আপনি এখানে' : 'You are here';
-          w = 90; h = 36; ax = 45; ay = 18;
+          // "Nearest Station" pulsing indicator
+          const nearestLabel = bn ? 'নিকটস্থ স্টেশন' : 'Nearest Station';
+          w = 110; h = 42; ax = 55; ay = 38;
           html = `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">` +
-            `<div style="width:90px;padding:3px 6px;border-radius:12px;background:#3b82f6;border:2px solid #2563eb;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;box-shadow:0 2px 8px rgba(59,130,246,0.5);font-family:sans-serif;box-sizing:border-box;gap:4px;">` +
-            `<span style="width:6px;height:6px;border-radius:50%;background:#fff;display:inline-block;animation:ping 1s cubic-bezier(0,0,0.2,1) infinite;"></span>${hereLabel}</div>` +
+            `<div style="width:110px;padding:3px 6px;border-radius:12px;background:#f59e0b;border:2px solid #d97706;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;box-shadow:0 2px 8px rgba(245,158,11,0.5);font-family:sans-serif;box-sizing:border-box;gap:4px;">` +
+            `<span style="width:6px;height:6px;border-radius:50%;background:#fff;display:inline-block;animation:ping 1s cubic-bezier(0,0,0.2,1) infinite;"></span>${nearestLabel}</div>` +
+            `<div style="width:8px;height:8px;border-radius:50%;background:#f59e0b;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.25);box-sizing:border-box;"></div>` +
             `</div>`;
         } else if (isFirst) {
           // Green pill — Start (matches BusRouteMap)
           const startLabel = bn ? 'শুরু' : 'Start';
-          w = 52; h = 24; ax = 26; ay = 12;
-          html = `<div style="width:52px;height:24px;border-radius:12px;background:#10b981;border:2px solid #059669;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.35);font-family:sans-serif;box-sizing:border-box;">${startLabel}</div>`;
+          w = 52; h = 34; ax = 26; ay = 30;
+          html = `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">` +
+            `<div style="width:52px;height:24px;border-radius:12px;background:#10b981;border:2px solid #059669;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.35);font-family:sans-serif;box-sizing:border-box;">${startLabel}</div>` +
+            `<div style="width:8px;height:8px;border-radius:50%;background:#10b981;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.25);box-sizing:border-box;"></div>` +
+            `</div>`;
         } else if (isLast) {
           // Dark pill — Destination (matches BusRouteMap)
           const destLabel = bn ? 'গন্তব্য' : 'Destination';
-          w = 76; h = 24; ax = 38; ay = 12;
-          html = `<div style="width:76px;height:24px;border-radius:12px;background:#1e293b;border:2px solid #0f172a;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.35);font-family:sans-serif;box-sizing:border-box;">${destLabel}</div>`;
+          w = 76; h = 34; ax = 38; ay = 30;
+          html = `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">` +
+            `<div style="width:76px;height:24px;border-radius:12px;background:#1e293b;border:2px solid #0f172a;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.35);font-family:sans-serif;box-sizing:border-box;">${destLabel}</div>` +
+            `<div style="width:8px;height:8px;border-radius:50%;background:#1e293b;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.25);box-sizing:border-box;"></div>` +
+            `</div>`;
         } else {
           // Intermediate: small dot + name label floating below
           // iconSize matches ONLY the dot so anchor is stable on mobile
@@ -224,19 +232,37 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
     if (!L || !map) return;
 
     if (userMarkerRef.current) { map.removeLayer(userMarkerRef.current); userMarkerRef.current = null; }
+    if (userToStationLayerRef.current) { map.removeLayer(userToStationLayerRef.current); userToStationLayerRef.current = null; }
 
     if (userLocation) {
+      const hereLabel = bn ? 'আপনি এখানে' : 'You are here';
       const userIcon = L.divIcon({
-        html: `<div style="width:14px;height:14px;background:#3b82f6;border:3px solid #fff;border-radius:50%;box-shadow:0 0 0 4px rgba(59,130,246,0.25);box-sizing:border-box;"></div>`,
         className: '',
-        iconSize: [14, 14],
-        iconAnchor: [7, 7],
+        iconSize: [90, 42],
+        iconAnchor: [45, 38],
+        html: `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">` +
+          `<div style="width:90px;padding:3px 6px;border-radius:12px;background:#3b82f6;border:2px solid #2563eb;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;box-shadow:0 2px 8px rgba(59,130,246,0.5);font-family:sans-serif;box-sizing:border-box;gap:4px;">` +
+          `<span style="width:6px;height:6px;border-radius:50%;background:#fff;display:inline-block;animation:ping 1s cubic-bezier(0,0,0.2,1) infinite;"></span>${hereLabel}</div>` +
+          `<div style="width:8px;height:8px;border-radius:50%;background:#3b82f6;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.25);box-sizing:border-box;"></div>` +
+          `</div>`
       });
-      userMarkerRef.current = L.marker([userLocation.lat, userLocation.lng], { icon: userIcon })
+      userMarkerRef.current = L.marker([userLocation.lat, userLocation.lng], { 
+        icon: userIcon,
+        zIndexOffset: 3000
+      })
         .bindPopup('<b>আপনার অবস্থান</b><br/>Your Location')
         .addTo(map);
+
+      // Draw red dashed line to nearest station
+      if (currentStopId && TRAIN_STATIONS[currentStopId]) {
+        const st = TRAIN_STATIONS[currentStopId];
+        userToStationLayerRef.current = L.polyline(
+          [[userLocation.lat, userLocation.lng], [st.lat, st.lng]],
+          { color: '#ef4444', weight: 2, dashArray: '5, 5', opacity: 1 }
+        ).addTo(map);
+      }
     }
-  }, [userLocation]);
+  }, [userLocation, currentStopId]);
 
   // ── Cleanup on unmount ───────────────────────────────────────────────────────
   useEffect(() => {
@@ -248,6 +274,7 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
       routeLayerRef.current = null;
       overlayLayerRef.current = null;
       userMarkerRef.current = null;
+      userToStationLayerRef.current = null;
       leafletRef.current = null;
     };
   }, []);

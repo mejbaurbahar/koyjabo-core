@@ -797,7 +797,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
       )}
 
       {/* AdSense banner */}
-      <div className="shrink-0 w-full overflow-hidden bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-slate-800 empty:hidden">
+      <div className="shrink-0 w-full overflow-hidden bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-slate-800 empty:hidden hidden md:block">
         <ins
           className="adsbygoogle"
           style={{ display: 'block', textAlign: 'center', margin: '0' }}

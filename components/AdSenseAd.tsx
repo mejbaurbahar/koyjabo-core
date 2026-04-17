@@ -51,7 +51,7 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
     if (!isOnline || adBlocked) return null;
 
     return (
-        <div className={`adsense-container ${className}`} style={{ maxHeight: '280px', overflow: 'hidden' }}>
+        <div className={`adsense-container hidden md:block ${className}`} style={{ maxHeight: '280px', overflow: 'hidden' }}>
             <ins
                 className="adsbygoogle"
                 style={{ display: 'block', textAlign: 'center', maxHeight: '280px', overflow: 'hidden' }}

@@ -20,17 +20,19 @@ import {
 } from '../services/analyticsService';
 import { BUS_DATA, STATIONS } from '../constants';
 import { BusRoute } from '../types';
+import { BD_TRAIN_ROUTES, BDTrainRoute } from '../data/bangladeshTrainData';
 import { useLanguage } from '../contexts/LanguageContext';
 import AdSenseAd from './AdSenseAd';
 
 interface HistoryViewProps {
     onBack: () => void;
     onBusSelect: (bus: BusRoute, fromHistory?: boolean) => void;
+    onTrainSelect?: (train: BDTrainRoute) => void;
     onViewJourney?: () => void;
     embedded?: boolean;
 }
 
-const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onViewJourney, embedded = false }) => {
+const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainSelect, onViewJourney, embedded = false }) => {
     const { t, formatNumber } = useLanguage();
     const [activeTab, setActiveTab] = useState<'personal' | 'global'>('personal');
     const [globalStats, setGlobalStats] = useState<GlobalStats>(getGlobalStats());
@@ -125,6 +127,10 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onViewJo
 
     const getStationName = (stationId: string): string => {
         return STATIONS[stationId]?.name || stationId;
+    };
+
+    const getTrainById = (trainId: string): BDTrainRoute | undefined => {
+        return BD_TRAIN_ROUTES.find(t => t.id === trainId);
     };
 
     const formatDate = (timestamp: number): string => {
@@ -254,7 +260,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onViewJo
                             </div>
                         </div>
 
-                        <AdSenseAd adSlot="auto" className="my-6" />
+                        <AdSenseAd adSlot="auto" className="my-6 hidden md:block" />
 
 
                         {/* Most Used Buses */}
@@ -441,21 +447,32 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onViewJo
                                     {t('history.mostUsedTrains') || 'Most Viewed Trains'}
                                 </h2>
                                 <div className="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                                    {mostUsedTrains.map((item, idx) => (
-                                        <div key={idx} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700/50 rounded-xl">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center">
-                                                    <Train className="w-5 h-5 text-white" />
+                                    {(mostUsedTrains || []).map((item, idx) => {
+                                        const train = getTrainById(item.trainId);
+                                        return (
+                                            <div
+                                                key={idx}
+                                                onClick={() => train && onTrainSelect && onTrainSelect(train)}
+                                                className={`flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700/50 rounded-xl transition-colors group ${train && onTrainSelect ? 'cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700' : ''}`}
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center">
+                                                        <Train className="w-5 h-5 text-white" />
+                                                    </div>
+                                                    <div>
+                                                        <div className={`font-bold text-gray-900 dark:text-gray-100 text-sm group-hover:text-emerald-500 transition-colors`}>{item.trainName}</div>
+                                                        {train && <div className="text-[10px] text-gray-500 dark:text-gray-400">#{train.number}</div>}
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <div className="font-bold text-gray-900 dark:text-gray-100 text-sm">{item.trainName}</div>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="px-3 py-1 bg-emerald-600/10 text-emerald-600 dark:text-emerald-400 rounded-full text-sm font-bold">
+                                                        {formatNumber(item.count)}x
+                                                    </span>
+                                                    {train && onTrainSelect && <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-emerald-500 transition-colors" />}
                                                 </div>
                                             </div>
-                                            <span className="px-3 py-1 bg-emerald-600/10 text-emerald-600 dark:text-emerald-400 rounded-full text-sm font-bold">
-                                                {formatNumber(item.count)}x
-                                            </span>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                                 </div>
                             </div>
                         )}
@@ -468,23 +485,30 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onViewJo
                                     {t('history.recentTrainViews') || 'Recent Train Views'}
                                 </h2>
                                 <div className="space-y-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                                    {recentTrainSearches.map((record, index) => (
-                                        <div
-                                            key={index}
-                                            className="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-slate-700/50 rounded-lg transition-colors"
-                                        >
-                                            <div className="flex items-center gap-3 flex-1 min-w-0">
-                                                <Train className="w-4 h-4 text-emerald-500 shrink-0" />
-                                                <div className="min-w-0">
-                                                    <div className="font-bold text-sm text-gray-900 dark:text-gray-100 truncate">
-                                                        {record.trainName}
+                                    {recentTrainSearches.map((record, index) => {
+                                        const train = getTrainById(record.trainId);
+                                        return (
+                                            <div
+                                                key={index}
+                                                onClick={() => train && onTrainSelect && onTrainSelect(train)}
+                                                className={`flex items-center justify-between p-3 rounded-lg transition-colors group ${train && onTrainSelect ? 'cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700/50' : ''}`}
+                                            >
+                                                <div className="flex items-center gap-3 flex-1 min-w-0">
+                                                    <Train className="w-4 h-4 text-emerald-500 shrink-0" />
+                                                    <div className="min-w-0">
+                                                        <div className="font-bold text-sm text-gray-900 dark:text-gray-100 truncate group-hover:text-emerald-500 transition-colors">
+                                                            {record.trainName}
+                                                        </div>
+                                                        <div className="text-xs text-gray-400 dark:text-gray-500">#{record.trainNumber}</div>
                                                     </div>
-                                                    <div className="text-xs text-gray-400 dark:text-gray-500">#{record.trainNumber}</div>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-xs text-gray-500 dark:text-gray-400 ml-2 shrink-0">{formatDate(record.timestamp)}</span>
+                                                    {train && onTrainSelect && <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-emerald-500 transition-colors" />}
                                                 </div>
                                             </div>
-                                            <span className="text-xs text-gray-500 dark:text-gray-400 ml-2 shrink-0">{formatDate(record.timestamp)}</span>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                                 </div>
                             </div>
                         )}

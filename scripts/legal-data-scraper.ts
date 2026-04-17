@@ -82,32 +82,72 @@ async function scrapeBangladeshRailway() {
     try {
         await sleep(config.rateLimitMs);
 
-        // Note: The eticket portal requires POST requests with specific form data
-        // For demonstration, here's the structure:
-        const response = await axios.get(baseUrl, {
+        // Fetch stations (existing)
+        const homeResponse = await axios.get(baseUrl, {
             headers: { 'User-Agent': config.userAgent },
             timeout: config.timeout,
         });
-
-        const $ = cheerio.load(response.data);
-
-        // Extract station list
+        const $home = cheerio.load(homeResponse.data);
         const stations: string[] = [];
-        $('select[name="from_station"] option').each((i, elem) => {
-            const station = $(elem).text().trim();
-            if (station && station !== 'Select Station') {
-                stations.push(station);
-            }
+        $home('select[name="from_station"] option').each((i, elem) => {
+            const station = $home(elem).text().trim();
+            if (station && station !== 'Select Station') stations.push(station);
         });
 
         console.log(`✓ Found ${stations.length} railway stations`);
+
+        // Added: Route search logic based on user input
+        // Pattern: https://eticket.railway.gov.bd/booking/train/search?fromcity=Dhaka&tocity=Panchagarh&doj=25-Apr-2026&class=F_SEAT
+        const searchRoutes = async (from: string, to: string, date: string) => {
+            console.log(`   🔍 Searching routes from ${from} to ${to} on ${date}...`);
+            await sleep(config.rateLimitMs);
+            try {
+                const searchUrl = `${baseUrl}/booking/train/search?fromcity=${from}&tocity=${to}&doj=${date}&class=F_SEAT`;
+                const res = await axios.get(searchUrl, {
+                    headers: { 
+                        'User-Agent': config.userAgent,
+                        'Accept': 'application/json' 
+                    },
+                    timeout: config.timeout,
+                });
+                
+                if (res.data && res.data.data && res.data.data.trains) {
+                    return res.data.data.trains.map((t: any) => ({
+                        name: t.trip_number,
+                        departure: t.departure_date_time,
+                        arrival: t.arrival_date_time,
+                        duration: t.travel_time,
+                        from: t.origin_city_name,
+                        to: t.destination_city_name,
+                        fare_types: t.seat_types?.map((s: any) => s.type)
+                    }));
+                }
+            } catch (e) {
+                console.warn(`   ⚠ Failed to search route ${from}->${to}:`, e.message);
+            }
+            return [];
+        };
+
+        // Example popular searches to populate database
+        const sampleRoutes = [
+            { from: 'Dhaka', to: 'Panchagarh', date: '25-Apr-2026' },
+            { from: 'Dhaka', to: 'Chittagong', date: '25-Apr-2026' },
+            { from: 'Dhaka', to: 'Sylhet', date: '25-Apr-2026' }
+        ];
+
+        const collectedRoutes = [];
+        for (const sr of sampleRoutes) {
+            const routes = await searchRoutes(sr.from, sr.to, sr.date);
+            collectedRoutes.push(...routes);
+        }
 
         return {
             source: 'Bangladesh Railway Official',
             url: baseUrl,
             lastUpdated: new Date().toISOString(),
             stations,
-            notes: 'To get route details, users should use the official eticket.railway.gov.bd site',
+            routes: collectedRoutes,
+            notes: 'Data collected using the official API endpoint for route search',
         };
     } catch (error) {
         console.error('❌ Error scraping Bangladesh Railway:', error.message);

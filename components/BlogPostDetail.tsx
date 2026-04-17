@@ -232,7 +232,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                 </header>
 
                 {/* AdSense - Top of Post */}
-                <div className="adsense-container my-10">
+                <div className="adsense-container my-10 hidden md:block">
                     <ins
                         className="adsbygoogle"
                         style={{ display: 'block', textAlign: 'center' }}
@@ -266,7 +266,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                 </div>
 
                 {/* AdSense - Middle of Post */}
-                <div className="adsense-container my-16">
+                <div className="adsense-container my-16 hidden md:block">
                     <ins
                         className="adsbygoogle"
                         style={{ display: 'block' }}
@@ -334,7 +334,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                 </div>
 
                 {/* AdSense - Bottom of Post */}
-                <div className="adsense-container my-16">
+                <div className="adsense-container my-16 hidden md:block">
                     <ins
                         className="adsbygoogle"
                         style={{ display: 'block' }}
