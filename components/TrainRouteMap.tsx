@@ -8,6 +8,7 @@ interface TrainRouteMapProps {
   userLocation?: UserLocation | null;
   highlightFromId?: string;
   highlightToId?: string;
+  language?: string;
 }
 
 function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
@@ -44,7 +45,9 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
   userLocation,
   highlightFromId,
   highlightToId,
+  language,
 }) => {
+  const bn = language === 'bn';
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const routeLayerRef = useRef<any>(null);
@@ -129,20 +132,23 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
 
         if (isFirst) {
           // Green pill — Start (matches BusRouteMap)
+          const startLabel = bn ? 'শুরু' : 'Start';
           w = 52; h = 24; ax = 26; ay = 12;
-          html = `<div style="width:52px;height:24px;border-radius:12px;background:#10b981;border:2px solid #059669;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.35);font-family:sans-serif;box-sizing:border-box;">Start</div>`;
+          html = `<div style="width:52px;height:24px;border-radius:12px;background:#10b981;border:2px solid #059669;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.35);font-family:sans-serif;box-sizing:border-box;">${startLabel}</div>`;
         } else if (isLast) {
           // Dark pill — Destination (matches BusRouteMap)
+          const destLabel = bn ? 'গন্তব্য' : 'Destination';
           w = 76; h = 24; ax = 38; ay = 12;
-          html = `<div style="width:76px;height:24px;border-radius:12px;background:#1e293b;border:2px solid #0f172a;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.35);font-family:sans-serif;box-sizing:border-box;">Destination</div>`;
+          html = `<div style="width:76px;height:24px;border-radius:12px;background:#1e293b;border:2px solid #0f172a;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.35);font-family:sans-serif;box-sizing:border-box;">${destLabel}</div>`;
         } else {
           // Intermediate: small dot + name label floating below
           // iconSize matches ONLY the dot so anchor is stable on mobile
           const dot = 10;
           w = dot; h = dot; ax = dot / 2; ay = dot / 2;
+          const stLabel = bn ? st.bnName : st.name;
           html = `<div style="position:relative;width:${dot}px;height:${dot}px;">` +
             `<div style="width:${dot}px;height:${dot}px;border-radius:50%;background:#fff;border:2px solid ${route.color};box-shadow:0 1px 4px rgba(0,0,0,0.25);box-sizing:border-box;"></div>` +
-            `<div style="position:absolute;top:${dot + 2}px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.95);color:#1e293b;padding:1px 5px;border-radius:4px;font-size:9px;font-weight:600;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.2);line-height:1.5;pointer-events:none;">${st.name}</div>` +
+            `<div style="position:absolute;top:${dot + 2}px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.95);color:#1e293b;padding:1px 5px;border-radius:4px;font-size:9px;font-weight:600;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.2);line-height:1.5;pointer-events:none;">${stLabel}</div>` +
             `</div>`;
         }
 
