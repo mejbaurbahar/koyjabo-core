@@ -69,7 +69,7 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({ options, val
                     }}
                     placeholder={placeholder}
                     disabled={disabled}
-                    className="w-full pl-3 pr-14 py-3.5 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-green-400/30 disabled:bg-gray-100 dark:disabled:bg-slate-900 disabled:text-gray-400 dark:disabled:text-gray-600 border border-transparent focus:border-green-400/30 transition-all shadow-sm"
+                    className="w-full pl-2 md:pl-3 pr-10 md:pr-14 py-2 md:py-3.5 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 rounded-xl text-xs md:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-green-400/30 disabled:bg-gray-100 dark:disabled:bg-slate-900 disabled:text-gray-400 dark:disabled:text-gray-600 border border-transparent focus:border-green-400/30 transition-all shadow-sm"
                 />
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
                     {searchTerm && !disabled && (

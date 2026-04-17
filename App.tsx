@@ -2938,15 +2938,15 @@ const App: React.FC = () => {
         <div className="relative z-10 text-white rounded-2xl md:rounded-[2rem]">
 
           {/* Text Content */}
-          <div className="px-4 md:px-6 pt-4 md:pt-6 pb-2 md:pb-4 relative z-10">
+          <div className="px-4 md:px-6 pt-3 md:pt-6 pb-1 md:pb-4 relative z-10">
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold mb-1 md:mb-2 font-bengali drop-shadow-lg text-white">{isInDhaka ? t('home.whereToGo') : t('home.whereToGoInDhaka')}</h2>
-              <p className="text-white/90 text-xs md:text-sm font-medium">{t('home.findPerfectRoute')}</p>
+              <h2 className="text-xl md:text-3xl font-bold mb-0.5 md:mb-2 font-bengali drop-shadow-lg text-white">{isInDhaka ? t('home.whereToGo') : t('home.whereToGoInDhaka')}</h2>
+              <p className="text-white/90 text-[10px] md:text-sm font-medium">{t('home.findPerfectRoute')}</p>
             </div>
           </div>
 
           {/* Mode Toggle */}
-          <div className="flex px-4 md:px-6 pb-2 md:pb-4 gap-3 md:gap-4">
+          <div className="flex px-4 md:px-6 pb-1.5 md:pb-4 gap-2 md:gap-4">
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -2954,9 +2954,9 @@ const App: React.FC = () => {
                 setSearchMode('TEXT');
                 setSuggestedRoutes([]);
               }}
-              className={`flex-1 max-w-[50%] py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer relative z-50 ${searchMode === 'TEXT' ? 'bg-white text-dhaka-green shadow-sm ring-1 ring-white' : 'bg-black/10 text-white/70 hover:bg-black/20'} `}
+              className={`flex-1 max-w-[50%] py-1.5 md:py-2.5 rounded-xl text-[11px] md:text-sm font-bold flex items-center justify-center gap-1 transition-all cursor-pointer relative z-50 ${searchMode === 'TEXT' ? 'bg-white text-dhaka-green shadow-sm ring-1 ring-white' : 'bg-black/10 text-white/70 hover:bg-black/20'} `}
             >
-              <Search className="w-4 h-4 shrink-0 ml-2" /> {t('home.localBusSearch')}
+              <Search className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" /> {t('home.localBusSearch')}
             </button>
             <button
               onClick={(e) => {
@@ -2965,9 +2965,9 @@ const App: React.FC = () => {
                 setSearchMode('ROUTE');
                 setSuggestedRoutes([]);
               }}
-              className={`flex-1 max-w-[50%] py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer relative z-50 ${searchMode === 'ROUTE' ? 'bg-white text-dhaka-green shadow-sm ring-1 ring-white' : 'bg-black/10 text-white/70 hover:bg-black/20'} `}
+              className={`flex-1 max-w-[50%] py-1.5 md:py-2.5 rounded-xl text-[11px] md:text-sm font-bold flex items-center justify-center gap-1 transition-all cursor-pointer relative z-50 ${searchMode === 'ROUTE' ? 'bg-white text-dhaka-green shadow-sm ring-1 ring-white' : 'bg-black/10 text-white/70 hover:bg-black/20'} `}
             >
-              <MapPin className="w-4 h-4 shrink-0 ml-2" /> {t('home.routeFinder')}
+              <MapPin className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" /> {t('home.routeFinder')}
             </button>
           </div>
 
@@ -2981,7 +2981,7 @@ const App: React.FC = () => {
                   <input
                     type="text"
                     placeholder={t('home.searchPlaceholder')}
-                    className="w-full pl-12 pr-12 py-3.5 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 rounded-xl focus:outline-none focus:ring-4 focus:ring-green-400/30 dark:focus:ring-green-500/30 transition-all text-base shadow-sm font-medium placeholder:text-gray-400 dark:placeholder-gray-500"
+                    className="w-full pl-10 md:pl-12 pr-10 md:pr-12 py-2.5 md:py-3.5 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 rounded-xl focus:outline-none focus:ring-4 focus:ring-green-400/30 dark:focus:ring-green-500/30 transition-all text-sm md:text-base shadow-sm font-medium placeholder:text-gray-400 dark:placeholder-gray-500"
                     value={inputValue}
                     onChange={(e) => {
                       setInputValue(e.target.value);
