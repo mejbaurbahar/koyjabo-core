@@ -1,9 +1,7 @@
 export type Language = 'bn' | 'en';
 
 interface Translations {
-    [key: string]: {
-        [key: string]: string | Translations;
-    };
+    [key: string]: string | Translations;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -735,6 +733,45 @@ export const translations: Record<Language, Translations> = {
             location: "অবস্থান",
             locationDesc: "ঢাকা, বাংলাদেশ",
             socialPage: "ফেসবুক পেজ",
+        },
+        legal: {
+            userAccounts: 'ইউজার অ্যাকাউন্টস',
+            registrationOptional: 'রেজিস্ট্রেশন ঐচ্ছিক। আপনি যদি অ্যাকাউন্ট তৈরি করেন, তবে আপনার ক্রেডেনশিয়ালগুলোর নিরাপত্তার দায়িত্ব আপনার। আপনি যেকোনো সময় প্রোফাইল সেটিংস থেকে আপনার অ্যাকাউন্ট ডিলিট করতে পারেন।',
+            trainData: 'ট্রেইন এবং শিডিউল ডেটা',
+            trainDataDesc: 'ট্রেইন শিডিউল এবং ভাড়ার তথ্যসমূহ বাংলাদেশ রেলওয়ের পাবলিক তথ্য থেকে সংগৃহীত। ভ্রমণের আগে সবসময় বাংলাদেশ রেলওয়ের অফিসিয়াল উৎস থেকে ছাড়ার সময় যাচাই করে নিন।',
+            aiAssistant: 'এআই অ্যাসিস্ট্যান্ট',
+            aiAssistantDesc: 'এআই অ্যাসিস্ট্যান্ট পুরোপুরি অফলাইনে স্থানীয় পরিবহন তথ্যের ওপর ভিত্তি করে কাজ করে। এটি ইংরেজি, বাংলা এবং বাংলিশ সমর্থন করে। প্রাপ্ত উত্তরগুলো শুধুমাত্র তথ্যের জন্য এবং অফিসিয়াল উৎসের বিকল্প নয়।',
+            liabilityFootnote: 'আইনের সর্বোচ্চ সীমা অনুযায়ী, কোনো পরোক্ষ, আনুষঙ্গিক বা পরিণামস্বরূপ ক্ষতির জন্য কইযাবো দায়বদ্ধ থাকবে না।',
+            privacy: 'প্রাইভেসী',
+            privacyDesc: 'আপনার ব্যবহার আমাদের প্রাইভেসী পলিসি দ্বারাও পরিচালিত।',
+            modifications: 'পরিবর্তনসমূহ',
+            modificationsDesc: 'আমরা যেকোনো সময় পরিষেবার যেকোনো অংশ পরিবর্তন বা বন্ধ করার অধিকার সংরক্ষণ করি।',
+        },
+        authInfo: {
+            title: 'ইউজার অ্যাকাউন্টস এবং অথেন্টিকেশন',
+            offersOptional: 'কইযাবো ঐচ্ছিক ইউজার অ্যাকাউন্ট অফার করে। যখন আপনি সাইন আপ করবেন বা গিটহাব অথ (GitHub OAuth)-এর মাধ্যমে সাইন ইন করবেন, আমরা সংরক্ষণ করি:',
+            githubProfile: 'আপনার গিটহাব ইউজারনেম এবং প্রোফাইল পিকচার (শুধুমাত্র প্রদর্শনের উদ্দেশ্যে)',
+            emailIdentification: 'আপনার ইমেইল ঠিকানা (অ্যাকাউন্ট শনাক্তকরণের জন্য ব্যবহৃত, কখনো তৃতীয় পক্ষের সাথে শেয়ার করা হয় না)',
+            localSearchHistory: 'আপনার সার্চ হিস্ট্রি এবং সেভ করা রুট (আপনার ডিভাইসে লোকালি সংরক্ষণ করা হয়, আমাদের সার্ভারে নয়)',
+            deviceSessions: 'ডিভাইস সেশনসমূহ নিরাপত্তার জন্য — আপনি প্রোফাইল পেজ থেকে এগুলো দেখতে এবং বাতিল করতে পারেন',
+            useWithoutAccount: 'আপনি অ্যাকাউন্ট তৈরি করা ছাড়াই কইযাবো ব্যবহার করতে পারেন। সমস্ত পরিবহন ফিচার (বাস রুট, ট্রেন, মেট্রো, এআই অ্যাসিস্ট্যান্ট) লগইন ছাড়াই পুরোপুরি ব্যবহারযোগ্য।',
+        },
+        donts: {
+            title: 'আমরা যা করি না',
+            noExternalAI: 'আমরা আপনার সার্চ কুয়েরি কোনো এক্সটার্নাল এআই সার্ভিস-এ পাঠাই না। এআই অ্যাসিস্ট্যান্ট পুরোপুরি অফলাইনে স্থানীয় পরিবহন তথ্যের ওপর চলে।',
+            noDataSelling: 'আমরা আপনার ডেটা তৃতীয় পক্ষের কাছে বিক্রি করি না।',
+            noGPSTracking: 'আপনার সুনির্দিষ্ট জিপিএস লোকেশন আমরা আপনার অনুমতি ছাড়া ট্র্যাক করি না।',
+            noRequiredRegistration: 'অ্যাপ ব্যবহারের জন্য অ্যাকাউন্ট রেজিস্ট্রেশন বাধ্যতামূলক করি না।',
+            noServerHistory: 'আমরা আপনার দৈনিক যাত্রা বা রুট হিস্ট্রি কোনো সার্ভারে সংরক্ষণ করি না — সমস্ত হিস্ট্রি শুধুমাত্র ডিভাইস-লোকাল।',
+        },
+        features: {
+            userAccountsTitle: 'ইউজার অ্যাকাউন্টস',
+            userAccountsDesc: 'গিটহাব দিয়ে সাইন ইন করুন আপনার সার্চ হিস্ট্রি সেভ করতে, ডিভাইস ম্যানেজ করতে এবং আপনার অভিজ্ঞতা ব্যক্তিগত করতে।',
+            githubOAuth: 'গিটহাব অথ (GitHub OAuth) — কোনো পাসওয়ার্ডের প্রয়োজন নেই',
+            localHistory: 'সার্চ হিস্ট্রি ডিভাইসের লোকালি সেভ হয়',
+            profileManagement: 'প্রোফাইল, সিকিউরিটি এবং ডিভাইস ম্যানেজমেন্ট',
+            journeyTrackerTitle: 'ডেইলি জার্নি ট্র্যাকার',
+            journeyTrackerDesc: 'আপনার দৈনিক যাতায়াতের স্টপেজগুলো লগ করুন, যাত্রার হিস্ট্রি ট্র্যাক করুন এবং আপনার যাতায়াতের ধরন অনুযায়ী রুটের সাজেশন পান — যা ব্যক্তিগতভাবে শুধুমাত্র আপনার ডিভাইসে সেভ থাকে।',
         },
 
         // Profile Page
@@ -1556,6 +1593,45 @@ export const translations: Record<Language, Translations> = {
             location: "Location",
             locationDesc: "Dhaka, Bangladesh",
             socialPage: "Facebook Page",
+        },
+        legal: {
+            userAccounts: 'User Accounts',
+            registrationOptional: 'Registration is optional. If you create an account, you are responsible for maintaining the security of your credentials. You may delete your account at any time from the Profile settings.',
+            trainData: 'Train & Schedule Data',
+            trainDataDesc: 'Train schedule and fare data is sourced from publicly available Bangladesh Railway information. Always verify departure times with official Bangladesh Railway sources before travel.',
+            aiAssistant: 'AI Assistant',
+            aiAssistantDesc: 'The AI assistant operates fully offline using local transport data. It supports English, Bengali, and Banglish. Responses are informational only and not a substitute for official sources.',
+            liabilityFootnote: 'TO THE FULLEST EXTENT PERMITTED BY LAW, KOYJABO SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES.',
+            privacy: 'Privacy',
+            privacyDesc: 'Your use is also governed by our Privacy Policy.',
+            modifications: 'Modifications',
+            modificationsDesc: 'We reserve the right to modify or discontinue any aspect of the Service at any time.',
+        },
+        authInfo: {
+            title: 'User Accounts & Authentication',
+            offersOptional: 'KoyJabo offers optional user accounts. When you sign up or sign in via GitHub OAuth, we store:',
+            githubProfile: 'Your GitHub username and profile picture (for display purposes only)',
+            emailIdentification: 'Your email address (used for account identification, never shared with third parties)',
+            localSearchHistory: 'Your search history and saved routes (stored locally on your device, not on our servers)',
+            deviceSessions: 'Device sessions for security — you can view and revoke these from your Profile page',
+            useWithoutAccount: 'You may use KoyJabo without creating an account. All core transport features (bus routes, trains, metro, AI assistant) are fully available without login.',
+        },
+        donts: {
+            title: 'What We Don\'t Do',
+            noExternalAI: 'We do NOT send your search queries to any external AI service. The AI assistant runs entirely offline on local transport data.',
+            noDataSelling: 'We do NOT sell your data to third parties.',
+            noGPSTracking: 'We do NOT track your precise GPS location without explicit consent.',
+            noRequiredRegistration: 'We do NOT require account registration to use the app.',
+            noServerHistory: 'We do NOT store your daily journey or route history on any server — all history is device-local only.',
+        },
+        features: {
+            userAccountsTitle: 'User Accounts',
+            userAccountsDesc: 'Sign in with GitHub to save your search history, manage devices, and personalize your experience.',
+            githubOAuth: 'GitHub OAuth — no password needed',
+            localHistory: 'Search history saved locally on device',
+            profileManagement: 'Profile, security & device management',
+            journeyTrackerTitle: 'Daily Journey Tracker',
+            journeyTrackerDesc: 'Log your daily commute stops, track journey history, and get route suggestions based on your travel patterns — all stored privately on your device.',
         },
 
     },
