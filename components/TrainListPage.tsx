@@ -154,7 +154,9 @@ export function TrainDetail({
             </h3>
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div className="space-y-1">
-                <p className="text-xs text-gray-500 dark:text-white/55">{bn ? 'ঢাকা ছাড়ে' : 'Departs Dhaka'}</p>
+                <p className="text-xs text-gray-500 dark:text-white/55">
+                  {bn ? `${fromSt?.bnName || 'শুরু'} ছাড়ে` : `Departs ${fromSt?.name || 'Start'}`}
+                </p>
                 <p className="font-bold text-gray-900 dark:text-white text-base">{route.dhakaDepart}</p>
               </div>
               <div className="space-y-1">
@@ -166,7 +168,9 @@ export function TrainDetail({
                 <p className="font-bold text-gray-900 dark:text-white text-base">{route.returnDepart}</p>
               </div>
               <div className="space-y-1">
-                <p className="text-xs text-gray-500 dark:text-white/55">{bn ? 'ঢাকায় ফেরে' : 'Returns Dhaka'}</p>
+                <p className="text-xs text-gray-500 dark:text-white/55">
+                  {bn ? `${fromSt?.bnName || 'ঢাকা'} ফেরে` : `Returns ${fromSt?.name || 'Dhaka'}`}
+                </p>
                 <p className="font-bold text-gray-900 dark:text-white text-base">{route.dhakaArrive}</p>
               </div>
             </div>

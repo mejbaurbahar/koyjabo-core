@@ -1671,13 +1671,13 @@ export const BD_TRAIN_ROUTES: BDTrainRoute[] = [
     number: '95/96',
     type: 'Local',
     division: 'Khulna',
-    from: 'khulna',
-    to: 'benapole',
-    stops: ['khulna', 'daulatpur', 'phultala', 'bejerdanga', 'noapara', 'chengutia', 'singia', 'rupdia', 'jessore', 'jhikargacha', 'navaran', 'benapole'],
-    dhakaDepart: '07:00', // Time from Khulna
-    destinationArrive: '09:15',
-    returnDepart: '17:00',
-    dhakaArrive: '19:30',
+    from: 'benapole',
+    to: 'khulna',
+    stops: ['benapole', 'navaran', 'jhikargacha', 'jessore', 'rupdia', 'singia', 'chengutia', 'noapara', 'bejerdanga', 'phultala', 'daulatpur', 'khulna'],
+    dhakaDepart: '09:30', // Time from Benapole
+    destinationArrive: '11:45',
+    returnDepart: '17:00', // Time from Khulna
+    dhakaArrive: '19:15',
     offDay: 'No Off Day',
     distanceKm: 60,
     fare: { shuvan: 35, shuvanChair: 55, snigdha: 150 },
