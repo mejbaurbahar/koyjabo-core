@@ -3,6 +3,7 @@ import { Eye, EyeOff, UserPlus, AlertCircle, CheckCircle2, Clock, X, Check } fro
 import { signupUser, getAuthErrorKey } from '../../services/githubAuthService';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../../contexts/LanguageContext';
+import { isTempMailEmail } from '../../utils/tempMailDomains';
 
 interface SignupPageProps {
   onLogin: () => void;
@@ -129,6 +130,7 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
       case 'email':
         if (!value.trim()) return t('auth.validation.emailRequired');
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return t('auth.validation.invalidEmail');
+        if (isTempMailEmail(value)) return t('auth.validation.tempMailBlocked');
         return '';
       case 'password': {
         const rules = getPasswordRules(value);

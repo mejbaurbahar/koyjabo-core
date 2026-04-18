@@ -38,6 +38,77 @@ const APP_URL        = process.env.APP_URL        || 'https://mejbaurbahar.githu
 const octokitApp  = new Octokit({ auth: APP_TOKEN });   // writes results to public Dhaka-Commute
 const octokitData = new Octokit({ auth: DATA_TOKEN });  // reads/writes all user data in private koyjabo
 
+// ── Disposable / temp-mail domain blocklist ───────────────────────────────────
+const TEMP_MAIL_DOMAINS = new Set([
+  '10minutemail.com','10minutemail.net','10minutemail.org','10minutemail.de',
+  '10minutemail.co.uk','10minutemail.cf','10minutemail.ga','10minutemail.gq',
+  '10minutemail.ml','10minutemail.tk','10minemail.com','10mails.net',
+  'minutemailbox.com','20minutemail.com','20minutemail.it','throwam.com',
+  'throwam.net','trashmail.com','trashmail.at','trashmail.io','trashmail.me',
+  'trashmail.net','trashmail.org','trashmail.xyz','trashmail.de','trashmail.eu',
+  'trashmail.app','trashmailer.com','trash-mail.at','tempinbox.com',
+  'tempr.email','tempmail.com','tempmail.net','tempmail.org','tempmail.de',
+  'tempmail.us','tempmail.eu','tempmail.it','tempmail.co','tempmail.biz',
+  'tempmail.io','temp-mail.org','temp-mail.ru','temp-mail.io','tempm.com',
+  'temp-inbox.com','temporary-mail.com','temporaryemail.com','temporaryemail.net',
+  'temporaryinbox.com','mytemp.email','mytempemail.com','mytempmail.com',
+  'tempe.email','tempsky.com',
+  'mailinator.com','mailinator.net','mailinator.org','mailinator2.com',
+  'mailinater.com','mailinator.gq','suremail.info','tradermail.info',
+  'dispostable.com','tempan.com','spam4.me','sharklasers.com',
+  'guerrillamail.com','guerrillamail.net','guerrillamail.org','guerrillamail.biz',
+  'guerrillamail.de','guerrillamail.info','guerrillamailblock.com','grr.la',
+  'spam.la','spam.org.es',
+  'yopmail.com','yopmail.fr','cool.fr.nf','jetable.fr.nf','nospam.ze.tc',
+  'nomail.xl.cx','mega.zik.dj','speed.1s.fr','courriel.fr.nf',
+  'moncourrier.fr.nf','monemail.fr.nf','monmail.fr.nf',
+  'jetable.org','jetable.net','jetable.pp.ua','jetable.com',
+  'spamgourmet.com','spamgourmet.net','spamgourmet.org',
+  'spamfree24.org','spamfree.eu','spam.su',
+  'maildrop.cc','mailnull.com','discard.email','discardmail.com',
+  'discardmail.de','spamcorpse.com','nospam4.us','nospamfor.us',
+  'nospammail.net','no-spam.ws','nobulk.com',
+  'fakeinbox.com','fakeinbox.net','fakeinbox.org','fakeinboxemail.com',
+  'fake-email.pp.ua','spamex.com','spamevader.net','mailnesia.com','mailnew.com',
+  'throwaway.email','filzmail.com','filzmail.de',
+  'getairmail.com','getnada.com','getnada.co','nada.email',
+  'mohmal.com','owlymail.com','einrot.com',
+  'dispostable.com','incognitomail.com','incognitomail.net','incognitomail.org',
+  'inboxalias.com','inboxclean.com','inboxclean.org',
+  'spamhole.com','anonymbox.com','mailexpire.com','killmail.com','killmail.net',
+  'wegwerfmail.de','wegwerfmail.net','wegwerfmail.org',
+  'mailbucket.org','mailcat.biz','mailcatch.com','mailfall.com',
+  'mailforspam.com','maileater.com','mailsucker.net','mailzilla.com','mailzilla.org',
+  'deadaddress.com','sneakemail.com','bouncr.com','emailondeck.com',
+  'mintemail.com','gishpuppy.com','hatespam.org','h8s.org','herp.in',
+  'mailtemp.net','mailrock.biz','trashdevil.com','trashdevil.de',
+  'ihateyoualot.info','iheartspam.org','fleckens.hu','meltmail.com',
+  'netmails.com','netmails.net','hmamail.com','destroyemailaddress.com',
+  'e4ward.com','kaspop.com','kasmail.com','nowmymail.com',
+  'lortemail.dk','lovemeleaveme.com','lroid.com',
+  'spamab.com','spamcon.org','spam.care','spamdecoy.net',
+  'spamfree24.com','spamfree24.de','spamfree24.eu','spamfree24.info',
+  'spamfree24.net','tempalias.com','tempail.com','tempinbox.me',
+  'trashcanmail.com','trashinbox.com','trashinbox.net',
+  'mt2014.com','mt2015.com','mt2016.com','mailnull.com','mailpick.biz',
+  'mailtothis.com','mailtrash.net','mailtv.net','mailtv.tv','mailworks.org',
+  'zehnminutenmail.de','zoemail.com','zoemail.net','zoemail.org',
+  'bugmenot.com','shiftmail.com','willhackforfood.biz','willselfdestruct.com',
+  'ieh-mail.de','ieatspam.eu','ieatspam.info','insorg.org',
+  'notmailinator.com','noref.in','nowhere.org','nullbox.info',
+  'spamgob.com','spamslicer.com','spamspot.com','spamstack.net',
+  'spamthis.co.uk','spamthisplease.com','spamtroll.net',
+  'receivemail.com','safetypost.de','secure-mail.biz',
+  'uroid.com','veryrealemail.com','whyspam.me','wuzupmail.net',
+  'xagloo.co','xagloo.com','xemaps.com','xents.com',
+  'yep.it','yomail.info','yopweb.com','zc.com',
+]);
+
+function isTempMail(email) {
+  const domain = (email.split('@')[1] || '').toLowerCase().trim();
+  return TEMP_MAIL_DOMAINS.has(domain);
+}
+
 // ── Crypto Utilities ──────────────────────────────────────────────────────────
 function getEncKey() {
   return crypto.createHash('sha256').update(ENCRYPTION_KEY).digest();
@@ -331,6 +402,10 @@ async function handleSignup({ email, passwordHash, username, displayName }) {
   }
 
   const normalizedEmail = email.toLowerCase().trim();
+
+  if (isTempMail(normalizedEmail)) {
+    return { success: false, error: 'Temporary or disposable email addresses are not allowed. Please use a real email address (Gmail, Yahoo, Outlook, etc.).' };
+  }
   const normalizedUsername = username.toLowerCase().trim();
   const emailHashKey = sha256hex(normalizedEmail);
 
