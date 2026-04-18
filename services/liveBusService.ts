@@ -12,7 +12,9 @@ export interface LiveBus {
     isUser?: boolean; // Is this the current user?
 }
 
-const WS_URL = 'wss://koyjabo-backend.onrender.com';
+// Live-bus backend was decommissioned. WS_URL intentionally empty —
+// local tracking still works but cross-device broadcast is disabled.
+const WS_URL = '';
 let ws: WebSocket | null = null;
 let reconnectTimer: ReturnType<typeof setTimeout> | null = null;
 let subscribers: ((buses: LiveBus[]) => void)[] = [];
@@ -160,6 +162,7 @@ export const liveBusService = {
 
 // Internal: Connect to WebSocket
 const connect = () => {
+    if (!WS_URL) return; // Backend decommissioned — local-only mode
     if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) return;
 
     try {
@@ -206,7 +209,7 @@ const connect = () => {
 
         ws.onclose = () => {
             ws = null;
-            // Auto reconnect if we have active subscribers OR broadcasting
+            if (!WS_URL) return; // No backend — don't reconnect
             if ((activeBroadcasting || subscribers.length > 0) && !reconnectTimer) {
                 reconnectTimer = setTimeout(() => {
                     reconnectTimer = null;

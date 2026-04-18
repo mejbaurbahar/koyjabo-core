@@ -1,7 +1,6 @@
 import { NotificationResponse } from '../types/notification';
 
-// Support both local development and production
-const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'https://koyjabo-backend.onrender.com/api';
+// Backend decommissioned — notifications are served from localStorage cache only.
 
 /**
  * Save notifications to localStorage for offline access
@@ -34,37 +33,13 @@ export const getCachedNotifications = (): NotificationResponse => {
 };
 
 /**
- * Fetch active notifications from backend
+ * Returns cached notifications (backend decommissioned).
  */
 export const fetchActiveNotifications = async (): Promise<NotificationResponse> => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/notifications/active`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch notifications: ${response.statusText}`);
-        }
-
-        const data: NotificationResponse = await response.json();
-
-        // Cache the notifications for offline use
-        cacheNotifications(data);
-
-        return data;
-    } catch (error) {
-        // Silence errors for cleaner console, as we have a graceful cache fallback
-        if (import.meta.env.DEV) {
-            console.debug('Notification fetch failed (expected if backend is blocking):', error);
-        }
-
-        // If offline or error, try to return cached notifications
+    {
+        // Return cached notifications or empty list
         const cached = getCachedNotifications();
         if (cached.notifications.length > 0) {
-            console.log('📴 Offline: Loading cached notifications');
             return cached;
         }
 

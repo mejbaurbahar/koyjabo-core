@@ -28,26 +28,6 @@
     ],
     "rewrites": [
         {
-            "source": "/api/ai/:path*",
-            "destination": "https://koyjabo-backend.onrender.com/api/ai/:path*"
-        },
-        {
-            "source": "/api/routes/:path*",
-            "destination": "https://koyjabo-backend.onrender.com/api/routes/:path*"
-        },
-        {
-            "source": "/api/trains/:path*",
-            "destination": "https://koyjabo-backend.onrender.com/api/trains/:path*"
-        },
-        {
-            "source": "/api/notifications/:path*",
-            "destination": "https://koyjabo-backend.onrender.com/api/notifications/:path*"
-        },
-        {
-            "source": "/api/stats",
-            "destination": "https://koyjabo-backend.onrender.com/api/stats"
-        },
-        {
             "source": "/api/ads-proxy",
             "destination": "https://srv.adstxtmanager.com/19390/koyjabo.com"
         }
@@ -140,24 +120,12 @@
                 },
                 {
                     "key": "Content-Security-Policy",
-                    "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://partner.googleadservices.com https://tpc.googlesyndication.com https://*.doubleclick.net https://*.google.com https://*.googletagmanager.com https://*.googletagservices.com https://www.google-analytics.com https://ezoic.net https://*.ezoic.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://api.ipify.org https://*.onrender.com; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com; object-src 'none'; base-uri 'self';"
+                    "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://partner.googleadservices.com https://tpc.googlesyndication.com https://*.doubleclick.net https://*.google.com https://*.googletagmanager.com https://*.googletagservices.com https://www.google-analytics.com https://ezoic.net https://*.ezoic.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://api.ipify.org; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com; object-src 'none'; base-uri 'self';"
                 }
             ]
         }
     ],
     "routes": [
-        {
-            "src": "/api/shohoz-proxy",
-            "dest": "https://webapi.shohoz.com/v1.0/web/booking/bus/search-trips"
-        },
-        {
-            "src": "/api/ai/(.*)",
-            "dest": "https://koyjabo-backend.onrender.com/api/ai/$1"
-        },
-        {
-            "src": "/api/routes/(.*)",
-            "dest": "https://koyjabo-backend.onrender.com/api/routes/$1"
-        },
         {
             "src": "/intercity$",
             "dest": "/intercity/index.html"
