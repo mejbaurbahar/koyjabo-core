@@ -18,6 +18,14 @@ export interface IntercityBusOperator {
     contactNumber: string;
 }
 
+export interface TrainFare {
+    shuvan?: number;
+    shuvanChair?: number;
+    snigdha?: number;
+    firstClassBerth?: number;
+    acBerth?: number;
+}
+
 export interface TrainRoute {
     trainName: string;
     trainNo: string;
@@ -26,6 +34,10 @@ export interface TrainRoute {
     destinationDepart: string;
     route: string;
     routeNotes?: string;
+    destinationArrive?: string;
+    dhakaArrive?: string;
+    distanceKm?: number;
+    fare?: TrainFare;
 }
 
 // Inter-City Bus Data for all 64 Districts
@@ -121,51 +133,364 @@ export const MAJOR_TRANSPORT_HUBS: IntercityBusRoute[] = [
 ];
 
 // Train Routes from Dhaka (Kamalapur) to Major Stations
+// Data sourced from eticket.railway.gov.bd — updated 2026
 export const TRAIN_ROUTES: TrainRoute[] = [
-    // Chattogram Division
-    { trainName: "Subarna Express", trainNo: "701/702", offDay: "Mon (from Ctg), Fri (from Dhk)", dhakaDepart: "16:30", destinationDepart: "07:00", route: "Dhaka ⇄ Chattogram", routeNotes: "Non-stop (Stops only at Airport)" },
-    { trainName: "Sonar Bangla", trainNo: "787/788", offDay: "Tue (from Ctg), Wed (from Dhk)", dhakaDepart: "07:00", destinationDepart: "16:45", route: "Dhaka ⇄ Chattogram", routeNotes: "Non-stop (Stops only at Airport)" },
-    { trainName: "Mahanagar Provati", trainNo: "703/722", offDay: "No Off Day", dhakaDepart: "07:45", destinationDepart: "12:30", route: "Dhaka ⇄ Chattogram", routeNotes: "Stops at Feni, Cumilla, B.Baria, Bhairab" },
-    { trainName: "Turna Express", trainNo: "741/742", offDay: "No Off Day", dhakaDepart: "23:30", destinationDepart: "23:00", route: "Dhaka ⇄ Chattogram", routeNotes: "Stops at Feni, Cumilla, B.Baria" },
-    { trainName: "Cox's Bazar Express", trainNo: "813/814", offDay: "Mon (from Dhk), Tue (from CXB)", dhakaDepart: "22:30", destinationDepart: "12:30", route: "Dhaka ⇄ Cox's Bazar" },
-    { trainName: "Upakul Express", trainNo: "711/712", offDay: "Tue (from Dhk), Wed (from Noakhali)", dhakaDepart: "15:20", destinationDepart: "06:00", route: "Dhaka ⇄ Noakhali" },
+    // ── Chattogram Division ──────────────────────────────────────────────────
+    {
+        trainName: "Suborna Express", trainNo: "701/702",
+        offDay: "Mon (from Ctg), Fri (from Dhk)",
+        dhakaDepart: "16:30", destinationDepart: "07:00",
+        destinationArrive: "21:25", dhakaArrive: "12:30",
+        route: "Dhaka ⇄ Chattogram", distanceKm: 321,
+        routeNotes: "Premium express — stops at Airport only",
+        fare: { shuvan: 340, shuvanChair: 495, snigdha: 820, firstClassBerth: 655, acBerth: 985 },
+    },
+    {
+        trainName: "Sonar Bangla Express", trainNo: "787/788",
+        offDay: "Tue (from Ctg), Wed (from Dhk)",
+        dhakaDepart: "07:00", destinationDepart: "16:45",
+        destinationArrive: "11:55", dhakaArrive: "22:00",
+        route: "Dhaka ⇄ Chattogram", distanceKm: 321,
+        routeNotes: "Premium express — stops at Airport only",
+        fare: { shuvan: 365, shuvanChair: 545, snigdha: 1090, firstClassBerth: 840, acBerth: 1645 },
+    },
+    {
+        trainName: "Mahanagar Provati", trainNo: "703/704",
+        offDay: "No Off Day",
+        dhakaDepart: "07:45", destinationDepart: "12:30",
+        destinationArrive: "13:35", dhakaArrive: "19:00",
+        route: "Dhaka ⇄ Chattogram", distanceKm: 321,
+        routeNotes: "Stops at Bhairab, B.Baria, Cumilla, Feni",
+        fare: { shuvan: 340, shuvanChair: 510, snigdha: 1000, firstClassBerth: 780, acBerth: 1580 },
+    },
+    {
+        trainName: "Turna Nishita Express", trainNo: "741/742",
+        offDay: "No Off Day",
+        dhakaDepart: "23:15", destinationDepart: "23:00",
+        destinationArrive: "05:15", dhakaArrive: "05:00",
+        route: "Dhaka ⇄ Chattogram", distanceKm: 321,
+        routeNotes: "Night express — stops at B.Baria, Cumilla, Feni",
+        fare: { shuvan: 340, shuvanChair: 510, snigdha: 1000, firstClassBerth: 780, acBerth: 1580 },
+    },
+    {
+        trainName: "Mahanagar Godhuli", trainNo: "705/706",
+        offDay: "No Off Day",
+        dhakaDepart: "14:40", destinationDepart: "06:30",
+        destinationArrive: "21:00", dhakaArrive: "12:30",
+        route: "Dhaka ⇄ Chattogram", distanceKm: 321,
+        routeNotes: "Evening intercity — stops at B.Baria, Cumilla, Feni",
+        fare: { shuvan: 340, shuvanChair: 510, snigdha: 1000, firstClassBerth: 780, acBerth: 1580 },
+    },
+    {
+        trainName: "Mahanagar Express", trainNo: "721/722",
+        offDay: "Sun",
+        dhakaDepart: "21:20", destinationDepart: "12:30",
+        destinationArrive: "03:30", dhakaArrive: "19:10",
+        route: "Dhaka ⇄ Chattogram", distanceKm: 321,
+        fare: { shuvan: 345, shuvanChair: 520, snigdha: 1040, firstClassBerth: 800, acBerth: 1560 },
+    },
+    {
+        trainName: "Chattala Express", trainNo: "801/802",
+        offDay: "Tue",
+        dhakaDepart: "14:15", destinationDepart: "08:30",
+        destinationArrive: "20:30", dhakaArrive: "15:15",
+        route: "Dhaka ⇄ Chattogram", distanceKm: 321,
+        fare: { shuvan: 265, shuvanChair: 400, snigdha: 800 },
+    },
+    {
+        trainName: "Karnaphuli Express", trainNo: "799/800",
+        offDay: "Wed (from Dhk), Thu (from Ctg)",
+        dhakaDepart: "22:00", destinationDepart: "21:30",
+        destinationArrive: "04:00", dhakaArrive: "03:30",
+        route: "Dhaka ⇄ Chattogram", distanceKm: 321,
+        fare: { shuvan: 340, shuvanChair: 510, snigdha: 1000, firstClassBerth: 780, acBerth: 1580 },
+    },
+    {
+        trainName: "Cox's Bazar Express", trainNo: "813/814",
+        offDay: "Mon (from Dhk), Tue (from CXB)",
+        dhakaDepart: "23:00", destinationDepart: "12:30",
+        destinationArrive: "07:20", dhakaArrive: "23:00",
+        route: "Dhaka ⇄ Cox's Bazar", distanceKm: 420,
+        fare: { shuvan: 505, shuvanChair: 755, snigdha: 1400, firstClassBerth: 1100, acBerth: 2100 },
+    },
+    {
+        trainName: "Parjotak Express", trainNo: "815/816",
+        offDay: "Wed",
+        dhakaDepart: "06:15", destinationDepart: "19:45",
+        destinationArrive: "14:40", dhakaArrive: "04:20",
+        route: "Dhaka ⇄ Cox's Bazar", distanceKm: 420,
+        fare: { shuvan: 505, shuvanChair: 755, snigdha: 1400, firstClassBerth: 1100, acBerth: 2100 },
+    },
+    {
+        trainName: "Upakul Express", trainNo: "711/712",
+        offDay: "Tue (from Dhk), Wed (from Noakhali)",
+        dhakaDepart: "15:20", destinationDepart: "06:00",
+        destinationArrive: "22:30", dhakaArrive: "12:30",
+        route: "Dhaka ⇄ Noakhali", distanceKm: 250,
+        fare: { shuvan: 250, shuvanChair: 375, snigdha: 730, firstClassBerth: 580, acBerth: 1090 },
+    },
+    {
+        trainName: "Noakhali Express", trainNo: "785/786",
+        offDay: "Fri (from Dhk), Sat (from Noakhali)",
+        dhakaDepart: "09:00", destinationDepart: "16:30",
+        destinationArrive: "15:30", dhakaArrive: "23:00",
+        route: "Dhaka ⇄ Noakhali", distanceKm: 250,
+        fare: { shuvan: 250, shuvanChair: 375, snigdha: 730, firstClassBerth: 580, acBerth: 1090 },
+    },
 
-    // Sylhet Division
-    { trainName: "Parabat Express", trainNo: "709/710", offDay: "Tue", dhakaDepart: "06:20", destinationDepart: "15:00", route: "Dhaka ⇄ Sylhet" },
-    { trainName: "Jayantika Express", trainNo: "717/718", offDay: "Tue (from Sylhet)", dhakaDepart: "11:15", destinationDepart: "11:15", route: "Dhaka ⇄ Sylhet" },
-    { trainName: "Kalni Express", trainNo: "773/774", offDay: "Fri", dhakaDepart: "13:00", destinationDepart: "06:15", route: "Dhaka ⇄ Sylhet" },
-    { trainName: "Upaban Express", trainNo: "739/740", offDay: "Wed (from Sylhet), Thu (from Dhk)", dhakaDepart: "20:30", destinationDepart: "23:30", route: "Dhaka ⇄ Sylhet" },
+    // ── Sylhet Division ──────────────────────────────────────────────────────
+    {
+        trainName: "Parabat Express", trainNo: "709/710",
+        offDay: "Tue",
+        dhakaDepart: "06:20", destinationDepart: "15:00",
+        destinationArrive: "12:30", dhakaArrive: "21:30",
+        route: "Dhaka ⇄ Sylhet", distanceKm: 258,
+        fare: { shuvan: 270, shuvanChair: 405, snigdha: 795, firstClassBerth: 615, acBerth: 1195 },
+    },
+    {
+        trainName: "Joyantika Express", trainNo: "717/718",
+        offDay: "Tue (from Sylhet)",
+        dhakaDepart: "11:15", destinationDepart: "11:15",
+        destinationArrive: "17:30", dhakaArrive: "17:30",
+        route: "Dhaka ⇄ Sylhet", distanceKm: 258,
+        fare: { shuvan: 270, shuvanChair: 405, snigdha: 795, firstClassBerth: 615, acBerth: 1195 },
+    },
+    {
+        trainName: "Kalni Express", trainNo: "773/774",
+        offDay: "Fri",
+        dhakaDepart: "13:00", destinationDepart: "06:15",
+        destinationArrive: "19:30", dhakaArrive: "12:30",
+        route: "Dhaka ⇄ Sylhet", distanceKm: 258,
+        fare: { shuvan: 270, shuvanChair: 405, snigdha: 795, firstClassBerth: 615, acBerth: 1195 },
+    },
+    {
+        trainName: "Upaban Express", trainNo: "739/740",
+        offDay: "Wed (from Sylhet), Thu (from Dhk)",
+        dhakaDepart: "20:30", destinationDepart: "23:30",
+        destinationArrive: "03:30", dhakaArrive: "06:30",
+        route: "Dhaka ⇄ Sylhet", distanceKm: 258,
+        fare: { shuvan: 270, shuvanChair: 405, snigdha: 795, firstClassBerth: 615, acBerth: 1195 },
+    },
+    {
+        trainName: "Udayan Express", trainNo: "719/720",
+        offDay: "Tue (from Dhk), Wed (from Sylhet)",
+        dhakaDepart: "21:30", destinationDepart: "21:30",
+        destinationArrive: "06:30", dhakaArrive: "06:30",
+        route: "Dhaka ⇄ Sylhet", distanceKm: 317,
+        fare: { shuvan: 330, shuvanChair: 495, snigdha: 975, firstClassBerth: 750, acBerth: 1450 },
+    },
 
-    // Rajshahi Division
-    { trainName: "Banalata Express", trainNo: "791/792", offDay: "Fri", dhakaDepart: "13:30", destinationDepart: "07:00", route: "Dhaka ⇄ Rajshahi" },
-    { trainName: "Silk City Express", trainNo: "753/754", offDay: "Sun", dhakaDepart: "14:45", destinationDepart: "07:40", route: "Dhaka ⇄ Rajshahi" },
-    { trainName: "Padma Express", trainNo: "759/760", offDay: "Tue", dhakaDepart: "23:00", destinationDepart: "16:00", route: "Dhaka ⇄ Rajshahi" },
-    { trainName: "Dhumketu Express", trainNo: "769/770", offDay: "Thu (from Raj), Sat (from Dhk)", dhakaDepart: "06:00", destinationDepart: "23:20", route: "Dhaka ⇄ Rajshahi" },
+    // ── Rajshahi Division ────────────────────────────────────────────────────
+    {
+        trainName: "Banalata Express", trainNo: "791/792",
+        offDay: "Fri",
+        dhakaDepart: "13:30", destinationDepart: "07:00",
+        destinationArrive: "19:15", dhakaArrive: "13:00",
+        route: "Dhaka ⇄ Chapainawabganj", distanceKm: 256,
+        routeNotes: "Via Rajshahi",
+        fare: { shuvan: 265, shuvanChair: 395, snigdha: 770, firstClassBerth: 600, acBerth: 1160 },
+    },
+    {
+        trainName: "Silk City Express", trainNo: "753/754",
+        offDay: "Sun",
+        dhakaDepart: "14:30", destinationDepart: "07:40",
+        destinationArrive: "20:20", dhakaArrive: "13:30",
+        route: "Dhaka ⇄ Rajshahi", distanceKm: 256,
+        fare: { shuvan: 265, shuvanChair: 395, snigdha: 770, firstClassBerth: 600, acBerth: 1160 },
+    },
+    {
+        trainName: "Padma Express", trainNo: "759/760",
+        offDay: "Tue",
+        dhakaDepart: "23:00", destinationDepart: "16:00",
+        destinationArrive: "05:30", dhakaArrive: "22:30",
+        route: "Dhaka ⇄ Rajshahi", distanceKm: 256,
+        fare: { shuvan: 265, shuvanChair: 395, snigdha: 770, firstClassBerth: 600, acBerth: 1160 },
+    },
+    {
+        trainName: "Dhumketu Express", trainNo: "769/770",
+        offDay: "Thu (from Raj), Sat (from Dhk)",
+        dhakaDepart: "06:00", destinationDepart: "23:20",
+        destinationArrive: "11:40", dhakaArrive: "05:00",
+        route: "Dhaka ⇄ Rajshahi", distanceKm: 256,
+        fare: { shuvan: 265, shuvanChair: 395, snigdha: 770, firstClassBerth: 600, acBerth: 1160 },
+    },
+    {
+        trainName: "Mohananda Express", trainNo: "777/778",
+        offDay: "Tue (from Dhk), Wed (from Chapai)",
+        dhakaDepart: "07:40", destinationDepart: "16:30",
+        destinationArrive: "15:30", dhakaArrive: "00:15",
+        route: "Dhaka ⇄ Chapainawabganj", distanceKm: 310,
+        fare: { shuvan: 325, shuvanChair: 485, snigdha: 955, firstClassBerth: 735, acBerth: 1430 },
+    },
 
-    // Khulna Division
-    { trainName: "Chitra Express", trainNo: "763/764", offDay: "Mon", dhakaDepart: "19:00", destinationDepart: "09:00", route: "Dhaka ⇄ Khulna" },
-    { trainName: "Sundarban Express", trainNo: "725/726", offDay: "Tue (from Dhk), Wed (from Khulna)", dhakaDepart: "08:15", destinationDepart: "22:15", route: "Dhaka ⇄ Khulna" },
-    { trainName: "Benapole Express", trainNo: "795/796", offDay: "Wed", dhakaDepart: "23:45", destinationDepart: "13:00", route: "Dhaka ⇄ Benapole" },
+    // ── Khulna Division ──────────────────────────────────────────────────────
+    {
+        trainName: "Chitra Express", trainNo: "763/764",
+        offDay: "Mon",
+        dhakaDepart: "19:30", destinationDepart: "09:00",
+        destinationArrive: "04:40", dhakaArrive: "17:00",
+        route: "Dhaka ⇄ Khulna", distanceKm: 272,
+        fare: { shuvan: 290, shuvanChair: 430, snigdha: 840, firstClassBerth: 655, acBerth: 1270 },
+    },
+    {
+        trainName: "Sundarban Express", trainNo: "725/726",
+        offDay: "Tue (from Dhk), Wed (from Khulna)",
+        dhakaDepart: "08:00", destinationDepart: "21:45",
+        destinationArrive: "15:40", dhakaArrive: "05:15",
+        route: "Dhaka ⇄ Khulna", distanceKm: 272,
+        fare: { shuvan: 290, shuvanChair: 430, snigdha: 840, firstClassBerth: 655, acBerth: 1270 },
+    },
+    {
+        trainName: "Rupsha Express", trainNo: "747/748",
+        offDay: "Sun (from Dhk), Mon (from Khulna)",
+        dhakaDepart: "09:00", destinationDepart: "08:00",
+        destinationArrive: "16:30", dhakaArrive: "16:00",
+        route: "Dhaka ⇄ Khulna", distanceKm: 305,
+        fare: { shuvan: 320, shuvanChair: 480, snigdha: 940, firstClassBerth: 725, acBerth: 1410 },
+    },
+    {
+        trainName: "Jahanabad Express", trainNo: "825/826",
+        offDay: "Mon",
+        dhakaDepart: "20:00", destinationDepart: "06:00",
+        destinationArrive: "23:45", dhakaArrive: "09:45",
+        route: "Dhaka ⇄ Khulna", distanceKm: 210,
+        routeNotes: "Via Padma Bridge (Bhanga–Narail)",
+        fare: { shuvan: 220, shuvanChair: 330, snigdha: 650, firstClassBerth: 450, acBerth: 1050 },
+    },
+    {
+        trainName: "Benapole Express", trainNo: "795/796",
+        offDay: "Wed",
+        dhakaDepart: "23:45", destinationDepart: "13:00",
+        destinationArrive: "07:20", dhakaArrive: "20:45",
+        route: "Dhaka ⇄ Benapole", distanceKm: 298,
+        fare: { shuvan: 310, shuvanChair: 465, snigdha: 910, firstClassBerth: 710, acBerth: 1370 },
+    },
 
-    // Rangpur Division
-    { trainName: "Panchagarh Express", trainNo: "793/794", offDay: "No Off", dhakaDepart: "22:45", destinationDepart: "08:30", route: "Dhaka ⇄ Panchagarh" },
-    { trainName: "Ekota Express", trainNo: "705/706", offDay: "Tue (from Dhk), Mon (from Pan)", dhakaDepart: "10:10", destinationDepart: "21:10", route: "Dhaka ⇄ Panchagarh" },
-    { trainName: "Drutojan Express", trainNo: "757/758", offDay: "No Off", dhakaDepart: "20:00", destinationDepart: "08:10", route: "Dhaka ⇄ Panchagarh" },
-    { trainName: "Rangpur Express", trainNo: "771/772", offDay: "Sun (from Dhk), Mon (from Rng)", dhakaDepart: "09:10", destinationDepart: "20:10", route: "Dhaka ⇄ Rangpur" },
-    { trainName: "Kurigram Express", trainNo: "797/798", offDay: "Wed", dhakaDepart: "20:45", destinationDepart: "06:15", route: "Dhaka ⇄ Kurigram" },
-    { trainName: "Lalmoni Express", trainNo: "751/752", offDay: "Fri", dhakaDepart: "21:45", destinationDepart: "10:20", route: "Dhaka ⇄ Lalmonirhat" },
+    // ── Rangpur Division ─────────────────────────────────────────────────────
+    {
+        trainName: "Rangpur Express", trainNo: "771/772",
+        offDay: "Sun (from Dhk), Mon (from Rng)",
+        dhakaDepart: "09:10", destinationDepart: "20:10",
+        destinationArrive: "17:30", dhakaArrive: "05:00",
+        route: "Dhaka ⇄ Rangpur", distanceKm: 350,
+        fare: { shuvan: 375, shuvanChair: 565, snigdha: 1110, firstClassBerth: 860, acBerth: 1660 },
+    },
+    {
+        trainName: "Ekota Express", trainNo: "705/706",
+        offDay: "Tue",
+        dhakaDepart: "10:15", destinationDepart: "21:00",
+        destinationArrive: "21:00", dhakaArrive: "08:10",
+        route: "Dhaka ⇄ Panchagarh", distanceKm: 510,
+        fare: { shuvan: 440, shuvanChair: 740, snigdha: 1421, firstClassBerth: 1100, acBerth: 2548 },
+    },
+    {
+        trainName: "Drutojan Express", trainNo: "757/758",
+        offDay: "Wed",
+        dhakaDepart: "20:45", destinationDepart: "08:10",
+        destinationArrive: "07:10", dhakaArrive: "18:50",
+        route: "Dhaka ⇄ Panchagarh", distanceKm: 510,
+        fare: { shuvan: 440, shuvanChair: 740, snigdha: 1421, firstClassBerth: 1100, acBerth: 2548 },
+    },
+    {
+        trainName: "Panchagarh Express", trainNo: "793/794",
+        offDay: "No Off",
+        dhakaDepart: "23:30", destinationDepart: "13:00",
+        destinationArrive: "09:50", dhakaArrive: "23:30",
+        route: "Dhaka ⇄ Panchagarh", distanceKm: 510,
+        fare: { shuvan: 440, shuvanChair: 740, snigdha: 1421, firstClassBerth: 1100, acBerth: 2548 },
+    },
+    {
+        trainName: "Lalmoni Express", trainNo: "751/752",
+        offDay: "Fri",
+        dhakaDepart: "21:45", destinationDepart: "10:20",
+        destinationArrive: "09:30", dhakaArrive: "22:30",
+        route: "Dhaka ⇄ Lalmonirhat", distanceKm: 475,
+        fare: { shuvan: 510, shuvanChair: 760, snigdha: 1490, firstClassBerth: 1155, acBerth: 2235 },
+    },
+    {
+        trainName: "Kurigram Express", trainNo: "797/798",
+        offDay: "Wed",
+        dhakaDepart: "20:45", destinationDepart: "06:15",
+        destinationArrive: "08:30", dhakaArrive: "17:30",
+        route: "Dhaka ⇄ Kurigram", distanceKm: 460,
+        fare: { shuvan: 490, shuvanChair: 735, snigdha: 1440, firstClassBerth: 1115, acBerth: 2155 },
+    },
+    {
+        trainName: "Burimari Express", trainNo: "809/810",
+        offDay: "Wed (to Burimari), Tue (to Dhaka)",
+        dhakaDepart: "08:30", destinationDepart: "19:30",
+        destinationArrive: "21:45", dhakaArrive: "08:50",
+        route: "Dhaka ⇄ Burimari (India Border)", distanceKm: 450,
+        fare: { shuvan: 480, shuvanChair: 720, snigdha: 1350, firstClassBerth: 1050, acBerth: 1950 },
+    },
 
-    // Mymensingh Division
-    { trainName: "Teesta Express", trainNo: "707/708", offDay: "Mon", dhakaDepart: "07:30", destinationDepart: "15:00", route: "Dhaka ⇄ Dewanganj" },
-    { trainName: "Agnibina Express", trainNo: "735/736", offDay: "No Off", dhakaDepart: "11:00", destinationDepart: "16:50", route: "Dhaka ⇄ Tarakandi" },
-    { trainName: "Jamuna Express", trainNo: "745/746", offDay: "No Off", dhakaDepart: "16:45", destinationDepart: "02:00", route: "Dhaka ⇄ Tarakandi" },
-    { trainName: "Brahmaputra Express", trainNo: "743/744", offDay: "No Off", dhakaDepart: "18:15", destinationDepart: "06:40", route: "Dhaka ⇄ Dewanganj" },
-    { trainName: "Mohanganj Express", trainNo: "789/790", offDay: "Mon (from Dhk), Tue (from Moh)", dhakaDepart: "13:15", destinationDepart: "23:00", route: "Dhaka ⇄ Mohanganj" },
+    // ── Mymensingh Division ──────────────────────────────────────────────────
+    {
+        trainName: "Tista Express", trainNo: "707/708",
+        offDay: "Mon",
+        dhakaDepart: "07:30", destinationDepart: "15:00",
+        destinationArrive: "13:00", dhakaArrive: "20:30",
+        route: "Dhaka ⇄ Dewanganj", distanceKm: 210,
+        fare: { shuvan: 220, shuvanChair: 330, snigdha: 640, firstClassBerth: 500, acBerth: 970 },
+    },
+    {
+        trainName: "Agnibina Express", trainNo: "735/736",
+        offDay: "No Off",
+        dhakaDepart: "11:00", destinationDepart: "16:50",
+        destinationArrive: "16:30", dhakaArrive: "22:30",
+        route: "Dhaka ⇄ Tarakandi", distanceKm: 200,
+        fare: { shuvan: 215, shuvanChair: 320, snigdha: 625, firstClassBerth: 485, acBerth: 940 },
+    },
+    {
+        trainName: "Jamuna Express", trainNo: "745/746",
+        offDay: "No Off",
+        dhakaDepart: "19:30", destinationDepart: "06:00",
+        destinationArrive: "00:00", dhakaArrive: "10:30",
+        route: "Dhaka ⇄ Jamalpur", distanceKm: 190,
+        fare: { shuvan: 200, shuvanChair: 300, snigdha: 585, firstClassBerth: 450, acBerth: 880 },
+    },
+    {
+        trainName: "Brahmaputra Express", trainNo: "245/246",
+        offDay: "Wed (from Dhk), Thu (from Dewanganj)",
+        dhakaDepart: "07:30", destinationDepart: "15:30",
+        destinationArrive: "14:00", dhakaArrive: "22:00",
+        route: "Dhaka ⇄ Dewanganj", distanceKm: 220,
+        fare: { shuvan: 230, shuvanChair: 345, snigdha: 675, firstClassBerth: 520, acBerth: 1010 },
+    },
+    {
+        trainName: "Mohanganj Express", trainNo: "789/790",
+        offDay: "Mon (from Dhk), Tue (from Mohanganj)",
+        dhakaDepart: "13:15", destinationDepart: "23:00",
+        destinationArrive: "19:00", dhakaArrive: "05:30",
+        route: "Dhaka ⇄ Mohanganj", distanceKm: 195,
+        fare: { shuvan: 210, shuvanChair: 315, snigdha: 615, firstClassBerth: 475, acBerth: 920 },
+    },
 
-    // Kishoreganj & Haor Region
-    { trainName: "Egarosindhur Provati", trainNo: "737/738", offDay: "Wed", dhakaDepart: "07:15", destinationDepart: "06:30", route: "Dhaka ⇄ Kishoreganj" },
-    { trainName: "Egarosindhur Godhuli", trainNo: "749/750", offDay: "No Off", dhakaDepart: "18:40", destinationDepart: "12:50", route: "Dhaka ⇄ Kishoreganj" },
-    { trainName: "Kishoreganj Express", trainNo: "781/782", offDay: "Fri", dhakaDepart: "10:45", destinationDepart: "16:00", route: "Dhaka ⇄ Kishoreganj" },
+    // ── Kishoreganj & Haor Region ────────────────────────────────────────────
+    {
+        trainName: "Egarosindhur Provati", trainNo: "737/738",
+        offDay: "Wed",
+        dhakaDepart: "07:15", destinationDepart: "06:30",
+        destinationArrive: "10:00", dhakaArrive: "10:00",
+        route: "Dhaka ⇄ Kishoreganj", distanceKm: 99,
+        fare: { shuvan: 130, shuvanChair: 195, snigdha: 380 },
+    },
+    {
+        trainName: "Egarosindhur Godhuli", trainNo: "749/750",
+        offDay: "No Off",
+        dhakaDepart: "18:40", destinationDepart: "12:50",
+        destinationArrive: "21:30", dhakaArrive: "15:30",
+        route: "Dhaka ⇄ Kishoreganj", distanceKm: 99,
+        fare: { shuvan: 130, shuvanChair: 195, snigdha: 380 },
+    },
+    {
+        trainName: "Kishoreganj Express", trainNo: "781/782",
+        offDay: "Fri",
+        dhakaDepart: "10:45", destinationDepart: "16:00",
+        destinationArrive: "13:30", dhakaArrive: "19:00",
+        route: "Dhaka ⇄ Kishoreganj", distanceKm: 120,
+        fare: { shuvan: 130, shuvanChair: 195, snigdha: 380, firstClassBerth: 295, acBerth: 570 },
+    },
 ];
 
 // Bus Operator Details
