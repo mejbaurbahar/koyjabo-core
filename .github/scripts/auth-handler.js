@@ -187,7 +187,7 @@ async function sendEmail({ to, subject, html }) {
 }
 
 // ── Admin: send full user list as PDF after every new signup ─────────────────
-const ADMIN_EMAIL = 'koyjabo.bd@gmail.com';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || '';
 
 async function fetchAllUsers() {
   const indexFile = await readDataFile('data/users/index.json');
@@ -576,15 +576,15 @@ async function handleUpdateProfile({ userId, displayName, username }) {
 }
 
 async function handleChangePassword({ userId, newPasswordHash, oldPasswordHash, userAgent }) {
-  if (!userId || !newPasswordHash) return { success: false, error: 'User ID and new password required.' };
+  if (!userId || !newPasswordHash || !oldPasswordHash) {
+    return { success: false, error: 'Current password is required to change your password.' };
+  }
 
   const userFile = await readDataFile(`data/users/${userId}.json`);
   if (!userFile) return { success: false, error: 'User not found.' };
 
-  if (oldPasswordHash) {
-    const valid = await bcrypt.compare(oldPasswordHash, userFile.content.bcryptHash);
-    if (!valid) return { success: false, error: 'Current password is incorrect.' };
-  }
+  const valid = await bcrypt.compare(oldPasswordHash, userFile.content.bcryptHash);
+  if (!valid) return { success: false, error: 'Current password is incorrect.' };
 
   const newBcryptHash = await bcrypt.hash(newPasswordHash, 12);
   const updated = { ...userFile.content, bcryptHash: newBcryptHash, updatedAt: Date.now() };
@@ -718,11 +718,11 @@ async function handleForgotPassword({ email }) {
     return { success: true, message: 'Password reset email sent. Check your inbox.' };
   }
 
+  // Never expose reset tokens in workflow results — they'd be written to the public repo.
+  console.log(`[forgot-password] SMTP not configured. Reset URL (server log only): ${resetUrl}`);
   return {
-    success: true,
-    resetToken: token,
-    resetUrl,
-    message: 'Password reset link generated. (Email service not configured — copy the link below.)'
+    success: false,
+    error: 'Password reset email could not be sent. Please contact support.'
   };
 }
 

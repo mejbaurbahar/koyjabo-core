@@ -94,25 +94,9 @@ export const loadHistoryData = (data: Partial<UserHistory>): void => {
     }
 };
 
-// ── GitHub API (for global stats) ─────────────────────────────────────────────
-const APP_OWNER = 'mejbaurbahar';
-const APP_REPO  = 'Dhaka-Commute';
-const DATA_OWNER = 'mejbaurbahar';
-const DATA_REPO  = 'koyjabo';
-const WORKFLOW_FILE = 'auth.yml';
+// ── Server proxy endpoints (token/repo never in browser) ─────────────────────
+const PROXY = '/api/gh';
 const STATS_PATH = 'data/stats/global.json';
-
-// Token assembled from fragments — same pattern as githubAuthService.ts
-const _a='Z2hwX2dmR2JFV3Vz',_b='SmU0OWFGUGlUS3lY',_c='ZGROYm54c210YzJr',_d='QkNUeA==';
-const GITHUB_TOKEN = (import.meta.env.VITE_GITHUB_TOKEN as string | undefined) || atob(_a+_b+_c+_d);
-
-function ghHeaders(): Record<string, string> {
-    return {
-        Authorization: `Bearer ${GITHUB_TOKEN}`,
-        Accept: 'application/vnd.github.v3+json',
-        'Content-Type': 'application/json'
-    };
-}
 
 // ── Date helper ───────────────────────────────────────────────────────────────
 const getTodayDate = (): string => new Date().toISOString().split('T')[0];
@@ -157,16 +141,15 @@ const saveGlobalStats = (stats: GlobalStats): void => {
 
 // ── GitHub reads ──────────────────────────────────────────────────────────────
 
-/** Fetch global stats from GitHub koyjabo repo (persisted across server restarts). */
+/** Fetch global stats via server-side proxy (token/repo names stay on server). */
 export const fetchGlobalStats = async (): Promise<void> => {
     try {
         const res = await fetch(
-            `https://api.github.com/repos/${DATA_OWNER}/${DATA_REPO}/contents/${STATS_PATH}`,
-            { headers: ghHeaders(), signal: AbortSignal.timeout(6000) }
+            `${PROXY}?r=d&p=${encodeURIComponent(STATS_PATH)}`,
+            { credentials: 'same-origin', signal: AbortSignal.timeout(6000) }
         );
         if (!res.ok) return;
-        const raw = await res.json();
-        const ghStats = JSON.parse(atob(raw.content)) as GlobalStats & { todayDate?: string };
+        const ghStats = await res.json() as GlobalStats & { todayDate?: string };
         // Reset todayVisits if the date has changed
         if (ghStats.todayDate && ghStats.todayDate !== getTodayDate()) {
             ghStats.todayVisits = 0;
@@ -204,26 +187,21 @@ export const incrementVisitCount = async (): Promise<void> => {
     // Fetch current stats from GitHub first (non-blocking)
     fetchGlobalStats().catch(() => {});
 
-    // Fire-and-forget: trigger GitHub Actions workflow to increment counts
+    // Fire-and-forget via proxy (no token in browser)
     const visitorId = getVisitorId();
-    fetch(
-        `https://api.github.com/repos/${APP_OWNER}/${APP_REPO}/actions/workflows/${WORKFLOW_FILE}/dispatches`,
-        {
-            method: 'POST',
-            headers: ghHeaders(),
-            body: JSON.stringify({
-                ref: 'main',
-                inputs: {
-                    requestId: crypto.randomUUID(),
-                    action: 'record-visit',
-                    email: '',
-                    passwordHash: '',
-                    userId: '',
-                    data: JSON.stringify({ visitorId })
-                }
-            })
-        }
-    ).catch(() => {}); // Non-critical, ignore errors
+    fetch(PROXY, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            requestId: crypto.randomUUID(),
+            action: 'record-visit',
+            email: '',
+            passwordHash: '',
+            userId: '',
+            data: JSON.stringify({ visitorId }),
+        }),
+    }).catch(() => {}); // Non-critical, ignore errors
 };
 
 // ── User history ──────────────────────────────────────────────────────────────

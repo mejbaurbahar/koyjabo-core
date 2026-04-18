@@ -35,8 +35,6 @@ export interface AuthResult {
   displayName?: string;
   email?: string;
   hasAvatar?: boolean;
-  resetToken?: string;
-  resetUrl?: string;
   message?: string;
   completedAt?: number;
 }

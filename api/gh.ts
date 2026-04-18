@@ -63,6 +63,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const repo = REPOS[r];
     if (!repo || !p) return res.status(400).json({ error: 'Bad request' });
 
+    // Validate path: only allow safe JSON file paths, no traversal
+    if (!/^[\w/.-]+\.json$/.test(p) || p.includes('..')) {
+      return res.status(400).json({ error: 'Invalid path' });
+    }
+
     const url = `https://api.github.com/repos/${repo.owner}/${repo.repo}/contents/${p}`;
     const upstream = await fetch(url, { headers: ghHeaders() });
 
@@ -84,6 +89,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // ── POST /api/gh  (trigger workflow dispatch) ────────────────────────────
   if (req.method === 'POST') {
+    // Require JSON body
+    if (!req.headers['content-type']?.includes('application/json')) {
+      return res.status(415).json({ error: 'Content-Type must be application/json' });
+    }
+
+    const ALLOWED_ACTIONS = new Set([
+      'signup', 'login', 'change-password', 'forgot-password', 'reset-password',
+      'update-profile', 'save-history', 'record-device', 'logout-device',
+      'upload-avatar', 'record-visit',
+    ]);
+
     const body = req.body as {
       requestId?: string;
       action?: string;
@@ -95,6 +111,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!body?.requestId || !body?.action) {
       return res.status(400).json({ error: 'Bad request' });
+    }
+
+    if (!ALLOWED_ACTIONS.has(body.action)) {
+      return res.status(400).json({ error: 'Invalid action' });
+    }
+
+    // Validate requestId is a UUID to prevent injection
+    if (!/^[0-9a-f-]{36}$/.test(body.requestId)) {
+      return res.status(400).json({ error: 'Invalid requestId' });
     }
 
     const repo = REPOS['a'];

@@ -84,6 +84,7 @@ jobs:
           ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
           SMTP_EMAIL: ${{ secrets.SMTP_EMAIL }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
           APP_URL: ${{ secrets.APP_URL }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           INPUT_REQUESTID: ${{ inputs.requestId }}

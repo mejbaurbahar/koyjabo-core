@@ -192,7 +192,7 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
     setEmailChecking(true);
     setEmailApiError('');
     try {
-      const res = await fetch(`https://open.kickbox.com/v1/disposable/${encodeURIComponent(domain)}`);
+      const res = await fetch(`/api/check-email?domain=${encodeURIComponent(domain)}`, { credentials: 'same-origin' });
       if (res.ok) {
         const data = await res.json();
         if (data.disposable === true) {
