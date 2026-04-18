@@ -20,9 +20,9 @@ const WORKFLOW_FILE = 'auth.yml';
 
 // All requests go through the Cloudflare Worker proxy — repo names, token,
 // and raw GitHub metadata never appear in the browser's Network tab.
-// VITE_API_PROXY overrides the default worker URL (useful for custom domain).
+// Use || not ?? so empty string env vars also fall back to the worker URL.
 const PROXY = (import.meta.env.VITE_API_PROXY as string | undefined)
-  ?? 'https://koyjabo-auth-proxy.mejbaur-bahar.workers.dev';
+  || 'https://koyjabo-auth-proxy.mejbaur-bahar.workers.dev';
 const TOKEN = (import.meta.env.VITE_GITHUB_TOKEN as string | undefined) ?? '';
 
 const APP_BASE  = `https://api.github.com/repos/${APP_OWNER}/${APP_REPO}`;
@@ -157,14 +157,23 @@ async function triggerWorkflow(
 }
 
 async function pollForResult(requestId: string, timeoutMs = 120_000): Promise<AuthResult> {
-  const path = `data/results/${requestId}.json`;
+  // Use raw.githubusercontent.com for polling — public repo, no auth needed,
+  // returns plain JSON with no GitHub API metadata visible in DevTools.
+  const rawUrl = `https://raw.githubusercontent.com/${APP_OWNER}/${APP_REPO}/main/data/results/${requestId}.json`;
   const deadline = Date.now() + timeoutMs;
   const INTERVAL = 4000;
 
   while (Date.now() < deadline) {
     await new Promise(r => setTimeout(r, INTERVAL));
-    const result = await fetchAppFile<AuthResult>(path).catch(() => null);
-    if (result) return result;
+    try {
+      const res = await fetch(rawUrl);
+      if (res.ok) {
+        const result = await res.json() as AuthResult;
+        if (result) return result;
+      }
+    } catch {
+      // network hiccup — keep polling
+    }
   }
 
   throw new Error('Request is taking too long. Please check your connection and try again.');

@@ -35,7 +35,6 @@ jobs:
         run: npm run build
         env:
           VITE_GITHUB_TOKEN: ${{ secrets.VITE_GITHUB_TOKEN }}
-          VITE_API_PROXY: ${{ secrets.VITE_API_PROXY }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
