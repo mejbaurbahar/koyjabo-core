@@ -1,12 +1,12 @@
 /**
  * KoyJabo Auth Service
  *
- * Architecture:
- *  - READ  operations → direct GitHub API (fast, ~1s)
- *  - WRITE operations → GitHub Actions workflow dispatch, poll for result (~30-90s)
+ * Architecture (with VITE_API_PROXY set — Cloudflare Worker):
+ *  - ALL operations → proxy at api.koyjabo.com (token + repo names hidden from browser)
  *
- * VITE_GITHUB_TOKEN has minimal scopes: actions:write + contents:read
- * Even if extracted from the bundle, attackers cannot modify user data directly.
+ * Architecture (fallback — direct GitHub API):
+ *  - READ  operations → api.github.com directly (~1s)
+ *  - WRITE operations → GitHub Actions workflow dispatch, poll for result (~30-90s)
  */
 
 import bcrypt from 'bcryptjs';
@@ -18,6 +18,10 @@ const DATA_OWNER    = 'mejbaurbahar';
 const DATA_REPO     = 'koyjabo';
 const WORKFLOW_FILE = 'auth.yml';
 
+// When VITE_API_PROXY is set (e.g. https://api.koyjabo.com), all requests go
+// through the Cloudflare Worker proxy — repo names, token, and metadata never
+// appear in the browser's Network tab.
+const PROXY = (import.meta.env.VITE_API_PROXY as string | undefined) ?? '';
 const TOKEN = (import.meta.env.VITE_GITHUB_TOKEN as string | undefined) ?? '';
 
 const APP_BASE  = `https://api.github.com/repos/${APP_OWNER}/${APP_REPO}`;
@@ -76,32 +80,38 @@ async function getClientIP(): Promise<string> {
 
 // ── GitHub Contents API helpers ───────────────────────────────────────────────
 
-async function fetchDataFile<T = unknown>(path: string): Promise<T | null> {
+async function fetchRepo<T = unknown>(repo: 'd' | 'a', path: string): Promise<T | null> {
   let res: Response;
   try {
-    res = await fetch(`${DATA_BASE}/contents/${path}`, { headers: ghHeaders() });
+    if (PROXY) {
+      // Proxy path: Worker returns only decoded JSON, hiding all GitHub metadata
+      res = await fetch(`${PROXY}/gh?r=${repo}&p=${encodeURIComponent(path)}`, {
+        credentials: 'omit',
+      });
+    } else {
+      // Direct path: full GitHub API response visible in DevTools
+      const base = repo === 'd' ? DATA_BASE : APP_BASE;
+      res = await fetch(`${base}/contents/${path}`, { headers: ghHeaders() });
+    }
   } catch (err) {
     throw new Error(friendlyNetworkError(err));
   }
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(friendlyHttpError(res.status));
+  if (PROXY) {
+    return res.json() as Promise<T>;
+  }
   const data = await res.json() as { content?: string };
   if (!data.content) return null;
   return JSON.parse(atob(data.content.replace(/\n/g, ''))) as T;
 }
 
-async function fetchAppFile<T = unknown>(path: string): Promise<T | null> {
-  let res: Response;
-  try {
-    res = await fetch(`${APP_BASE}/contents/${path}`, { headers: ghHeaders() });
-  } catch (err) {
-    throw new Error(friendlyNetworkError(err));
-  }
-  if (res.status === 404) return null;
-  if (!res.ok) throw new Error(friendlyHttpError(res.status));
-  const data = await res.json() as { content?: string };
-  if (!data.content) return null;
-  return JSON.parse(atob(data.content.replace(/\n/g, ''))) as T;
+function fetchDataFile<T = unknown>(path: string): Promise<T | null> {
+  return fetchRepo<T>('d', path);
+}
+
+function fetchAppFile<T = unknown>(path: string): Promise<T | null> {
+  return fetchRepo<T>('a', path);
 }
 
 // ── Workflow trigger via GitHub Actions dispatch ──────────────────────────────
@@ -111,22 +121,34 @@ async function triggerWorkflow(
   inputs: Record<string, string>
 ): Promise<void> {
   let res: Response;
+  const body = {
+    requestId,
+    action,
+    email:        inputs.email        || '',
+    passwordHash: inputs.passwordHash || '',
+    userId:       inputs.userId       || '',
+    data:         inputs.data         || '{}',
+  };
   try {
-    res = await fetch(`${APP_BASE}/actions/workflows/${WORKFLOW_FILE}/dispatches`, {
-      method: 'POST',
-      headers: ghHeaders(),
-      body: JSON.stringify({
-        ref: 'main',
-        inputs: {
-          requestId,
-          action,
-          email:        inputs.email        || '',
-          passwordHash: inputs.passwordHash || '',
-          userId:       inputs.userId       || '',
-          data:         inputs.data         || '{}',
-        },
-      }),
-    });
+    if (PROXY) {
+      // Proxy path: Worker triggers dispatch server-side, token never in browser
+      res = await fetch(`${PROXY}/gh`, {
+        method: 'POST',
+        credentials: 'omit',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+    } else {
+      // Direct path: token visible in Authorization header in DevTools
+      res = await fetch(`${APP_BASE}/actions/workflows/${WORKFLOW_FILE}/dispatches`, {
+        method: 'POST',
+        headers: ghHeaders(),
+        body: JSON.stringify({
+          ref: 'main',
+          inputs: body,
+        }),
+      });
+    }
   } catch (err) {
     throw new Error(friendlyNetworkError(err));
   }
