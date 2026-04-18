@@ -18,10 +18,11 @@ const DATA_OWNER    = 'mejbaurbahar';
 const DATA_REPO     = 'koyjabo';
 const WORKFLOW_FILE = 'auth.yml';
 
-// When VITE_API_PROXY is set (e.g. https://api.koyjabo.com), all requests go
-// through the Cloudflare Worker proxy — repo names, token, and metadata never
-// appear in the browser's Network tab.
-const PROXY = (import.meta.env.VITE_API_PROXY as string | undefined) ?? '';
+// All requests go through the Cloudflare Worker proxy — repo names, token,
+// and raw GitHub metadata never appear in the browser's Network tab.
+// VITE_API_PROXY overrides the default worker URL (useful for custom domain).
+const PROXY = (import.meta.env.VITE_API_PROXY as string | undefined)
+  ?? 'https://koyjabo-auth-proxy.mejbaur-bahar.workers.dev';
 const TOKEN = (import.meta.env.VITE_GITHUB_TOKEN as string | undefined) ?? '';
 
 const APP_BASE  = `https://api.github.com/repos/${APP_OWNER}/${APP_REPO}`;
