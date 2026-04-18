@@ -143,6 +143,10 @@
             "dest": "/intercity/index.html"
         },
         {
+            "src": "/api/(.*)",
+            "dest": "/api/$1"
+        },
+        {
             "handle": "filesystem"
         },
         {
