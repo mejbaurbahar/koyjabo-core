@@ -2,28 +2,50 @@
  * KoyJabo Auth Service
  *
  * Architecture:
- *  - READ  operations → /api/gh proxy (server-side token, hides repo names)
- *  - WRITE operations → /api/gh POST triggers GitHub Actions workflow, poll for result (~30-90s)
+ *  - READ  operations → direct GitHub API (fast, ~1s)
+ *  - WRITE operations → GitHub Actions workflow dispatch, poll for result (~30-90s)
+ *
+ * VITE_GITHUB_TOKEN has minimal scopes: actions:write + contents:read
+ * Even if extracted from the bundle, attackers cannot modify user data directly.
  */
 
 import bcrypt from 'bcryptjs';
 import type { AuthResult, Device } from '../types/auth';
 
-// All GitHub calls go through our server-side proxy.
-// Token and repo names never reach the browser.
-const PROXY = '/api/gh';
+const APP_OWNER     = 'mejbaurbahar';
+const APP_REPO      = 'Dhaka-Commute';
+const DATA_OWNER    = 'mejbaurbahar';
+const DATA_REPO     = 'koyjabo';
+const WORKFLOW_FILE = 'auth.yml';
 
-function friendlyHttpError(status: number, context: 'workflow' | 'read' = 'workflow'): string {
-  if (status === 401 || status === 403) {
-    if (context === 'workflow') return 'Account service connection failed.';
-    return 'Connection failed. Please check your internet and try again.';
-  }
-  if (status === 404 && context === 'workflow') return 'Account service connection failed.';
+const TOKEN = (import.meta.env.VITE_GITHUB_TOKEN as string | undefined) ?? '';
+
+const APP_BASE  = `https://api.github.com/repos/${APP_OWNER}/${APP_REPO}`;
+const DATA_BASE = `https://api.github.com/repos/${DATA_OWNER}/${DATA_REPO}`;
+
+function ghHeaders(): Record<string, string> {
+  return {
+    Authorization: `Bearer ${TOKEN}`,
+    Accept: 'application/vnd.github.v3+json',
+    'Content-Type': 'application/json',
+  };
+}
+
+function friendlyHttpError(status: number): string {
+  if (status === 401 || status === 403) return 'Account service connection failed.';
+  if (status === 404) return 'Account service connection failed.';
   if (status === 422) return 'Request could not be processed. Please try again.';
   if (status === 429) return 'Too many requests. Please wait a moment and try again.';
   if (status >= 500) return 'Account service connection failed.';
-  if (status === 405) return 'Account service connection failed.';
   return 'Account service connection failed.';
+}
+
+function friendlyNetworkError(err: unknown): string {
+  if (err instanceof TypeError && err.message === 'Failed to fetch') {
+    return 'Connection failed. Please check your internet and try again.';
+  }
+  if (err instanceof Error) return err.message;
+  return 'Connection failed. Please check your internet and try again.';
 }
 
 // ── SHA-256 helper (Web Crypto — no extra package needed) ─────────────────────
@@ -52,40 +74,37 @@ async function getClientIP(): Promise<string> {
   }
 }
 
-// ── GitHub API read helpers ───────────────────────────────────────────────────
+// ── GitHub Contents API helpers ───────────────────────────────────────────────
 
-function friendlyNetworkError(err: unknown): string {
-  if (err instanceof TypeError && err.message === 'Failed to fetch') {
-    return 'Connection failed. Please check your internet and try again.';
-  }
-  if (err instanceof Error) return err.message;
-  return 'Connection failed. Please check your internet and try again.';
-}
-
-// Read from data repo (r=d) or app repo (r=a) via server-side proxy.
-async function fetchFile<T = unknown>(repo: 'd' | 'a', path: string): Promise<T | null> {
+async function fetchDataFile<T = unknown>(path: string): Promise<T | null> {
   let res: Response;
   try {
-    res = await fetch(`${PROXY}?r=${repo}&p=${encodeURIComponent(path)}`, {
-      credentials: 'same-origin',
-    });
+    res = await fetch(`${DATA_BASE}/contents/${path}`, { headers: ghHeaders() });
   } catch (err) {
     throw new Error(friendlyNetworkError(err));
   }
   if (res.status === 404) return null;
-  if (!res.ok) throw new Error(friendlyHttpError(res.status, 'read'));
-  return res.json() as Promise<T>;
+  if (!res.ok) throw new Error(friendlyHttpError(res.status));
+  const data = await res.json() as { content?: string };
+  if (!data.content) return null;
+  return JSON.parse(atob(data.content.replace(/\n/g, ''))) as T;
 }
 
-function fetchDataFile<T = unknown>(path: string): Promise<T | null> {
-  return fetchFile<T>('d', path);
+async function fetchAppFile<T = unknown>(path: string): Promise<T | null> {
+  let res: Response;
+  try {
+    res = await fetch(`${APP_BASE}/contents/${path}`, { headers: ghHeaders() });
+  } catch (err) {
+    throw new Error(friendlyNetworkError(err));
+  }
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(friendlyHttpError(res.status));
+  const data = await res.json() as { content?: string };
+  if (!data.content) return null;
+  return JSON.parse(atob(data.content.replace(/\n/g, ''))) as T;
 }
 
-function fetchAppFile<T = unknown>(path: string): Promise<T | null> {
-  return fetchFile<T>('a', path);
-}
-
-// ── Workflow trigger via proxy ────────────────────────────────────────────────
+// ── Workflow trigger via GitHub Actions dispatch ──────────────────────────────
 async function triggerWorkflow(
   requestId: string,
   action: string,
@@ -93,26 +112,25 @@ async function triggerWorkflow(
 ): Promise<void> {
   let res: Response;
   try {
-    res = await fetch(PROXY, {
+    res = await fetch(`${APP_BASE}/actions/workflows/${WORKFLOW_FILE}/dispatches`, {
       method: 'POST',
-      credentials: 'same-origin',
-      headers: { 'Content-Type': 'application/json' },
+      headers: ghHeaders(),
       body: JSON.stringify({
-        requestId,
-        action,
-        email:        inputs.email        || '',
-        passwordHash: inputs.passwordHash || '',
-        userId:       inputs.userId       || '',
-        data:         inputs.data         || '{}',
+        ref: 'main',
+        inputs: {
+          requestId,
+          action,
+          email:        inputs.email        || '',
+          passwordHash: inputs.passwordHash || '',
+          userId:       inputs.userId       || '',
+          data:         inputs.data         || '{}',
+        },
       }),
     });
   } catch (err) {
     throw new Error(friendlyNetworkError(err));
   }
-
-  if (!res.ok) {
-    throw new Error(friendlyHttpError(res.status, 'workflow'));
-  }
+  if (!res.ok) throw new Error(friendlyHttpError(res.status));
 }
 
 async function pollForResult(requestId: string, timeoutMs = 120_000): Promise<AuthResult> {
@@ -151,7 +169,6 @@ export async function loginUser(
   const normalizedEmail = email.toLowerCase().trim();
   const emailHashKey = await sha256(normalizedEmail);
 
-  // 1. Find userId from email hash index (reads from private koyjabo repo)
   const index = await fetchDataFile<Record<string, string>>('data/users/index.json');
   if (!index || !index[emailHashKey]) {
     throw new Error('Invalid email or password.');
@@ -159,12 +176,10 @@ export async function loginUser(
 
   const userId = index[emailHashKey];
 
-  // 2. Fetch user profile
   interface UserProfile { bcryptHash: string; username: string; displayName: string; }
   const user = await fetchDataFile<UserProfile>(`data/users/${userId}.json`);
   if (!user) throw new Error('Account not found. Please contact support.');
 
-  // 3. Verify: SHA-256(password) vs stored bcrypt hash
   const passwordSha = await sha256(password);
   const valid = await bcrypt.compare(passwordSha, user.bcryptHash);
   if (!valid) throw new Error('Invalid email or password.');
@@ -190,14 +205,14 @@ export async function signupUser(
 }
 
 /**
- * FORGOT PASSWORD — triggers workflow. User gets reset link via email or in result.
+ * FORGOT PASSWORD — triggers workflow.
  */
 export async function forgotPassword(email: string): Promise<AuthResult> {
   return triggerAndWait('forgot-password', { email: email.toLowerCase().trim() });
 }
 
 /**
- * RESET PASSWORD — triggers workflow with the reset token from email/UI.
+ * RESET PASSWORD — triggers workflow with the reset token.
  */
 export async function resetPassword(token: string, newPassword: string): Promise<AuthResult> {
   const passwordHash = await sha256(newPassword);
@@ -230,7 +245,6 @@ export async function changePassword(
   currentPassword: string,
   newPassword: string
 ): Promise<AuthResult> {
-  // Verify current password before hitting the Action (saves time on failure)
   await loginUser(email, currentPassword);
 
   const oldPasswordHash = await sha256(currentPassword);
@@ -252,13 +266,9 @@ export async function recordDeviceLogin(userId: string): Promise<void> {
   triggerAndWait('record-device', {
     userId,
     data: JSON.stringify({
-      deviceInfo: {
-        deviceId,
-        userAgent: navigator.userAgent,
-        ip
-      }
+      deviceInfo: { deviceId, userAgent: navigator.userAgent, ip }
     })
-  }).catch(() => { /* non-critical, ignore silently */ });
+  }).catch(() => { /* non-critical */ });
 }
 
 /**
@@ -283,7 +293,6 @@ export async function logoutDevice(userId: string, deviceId: string): Promise<Au
 
 /**
  * UPLOAD AVATAR — resizes image in browser, then triggers workflow.
- * Max upload: ~150 KB image.
  */
 export async function uploadAvatar(userId: string, file: File): Promise<AuthResult> {
   const imageData = await resizeAndEncodeImage(file, 200);
@@ -335,58 +344,51 @@ export function syncHistoryToGitHub(userId: string, history: {
   mostUsedTrains?: Record<string, number>;
 }): void {
   const trimmed = {
-    busSearches: history.busSearches.slice(-50),
-    routeSearches: history.routeSearches.slice(-50),
+    busSearches:       history.busSearches.slice(-50),
+    routeSearches:     history.routeSearches.slice(-50),
     intercitySearches: history.intercitySearches.slice(-50),
-    trainSearches: (history.trainSearches || []).slice(-50),
-    mostUsedBuses: history.mostUsedBuses,
-    mostUsedRoutes: history.mostUsedRoutes,
+    trainSearches:     (history.trainSearches || []).slice(-50),
+    mostUsedBuses:     history.mostUsedBuses,
+    mostUsedRoutes:    history.mostUsedRoutes,
     mostUsedIntercity: history.mostUsedIntercity,
-    mostUsedTrains: history.mostUsedTrains || {},
+    mostUsedTrains:    history.mostUsedTrains || {},
   };
   triggerAndWait('save-history', {
     userId,
     data: JSON.stringify(trimmed)
-  }).catch(() => { /* non-critical, ignore silently */ });
+  }).catch(() => { /* non-critical */ });
 }
 
 // ── Auth error → i18n key mapping ────────────────────────────────────────────
-// Maps known backend/network error messages to translation keys so auth pages
-// can display errors in the user's chosen language.
 const AUTH_ERROR_KEY_MAP: Record<string, string> = {
-  'Invalid email or password.':                                       'auth.validation.invalidCredentials',
-  'Account not found. Please contact support.':                       'auth.validation.accountNotFound',
-  'This email is already registered. Please log in.':                 'auth.validation.emailAlreadyRegistered',
-  'Connection failed. Please check your internet and try again.':     'auth.validation.connectionFailed',
+  'Invalid email or password.':                                        'auth.validation.invalidCredentials',
+  'Account not found. Please contact support.':                        'auth.validation.accountNotFound',
+  'This email is already registered. Please log in.':                  'auth.validation.emailAlreadyRegistered',
+  'Connection failed. Please check your internet and try again.':      'auth.validation.connectionFailed',
   'Request is taking too long. Please check your connection and try again.': 'auth.validation.requestTimedOut',
-  'Current password is incorrect.':                                   'auth.validation.currentPasswordIncorrect',
-  'User not found.':                                                  'auth.validation.userNotFound',
-  'Account service connection failed.':                               'auth.validation.connectionFailed',
-  'Request could not be processed. Please try again.':                'auth.validation.somethingWentWrong',
-  'Too many requests. Please wait a moment and try again.':           'auth.validation.requestTimedOut',
-  'Server error. Please try again in a moment.':                      'auth.validation.somethingWentWrong',
-  'An unexpected error occurred. Please try again.':                  'auth.validation.somethingWentWrong',
-  'Service not found. Please try again later.':                       'auth.validation.connectionFailed',
-  'Failed to read data. Please check your connection and try again.': 'auth.validation.connectionFailed',
+  'Current password is incorrect.':                                    'auth.validation.currentPasswordIncorrect',
+  'User not found.':                                                   'auth.validation.userNotFound',
+  'Account service connection failed.':                                'auth.validation.connectionFailed',
+  'Request could not be processed. Please try again.':                 'auth.validation.somethingWentWrong',
+  'Too many requests. Please wait a moment and try again.':            'auth.validation.requestTimedOut',
+  'Server error. Please try again in a moment.':                       'auth.validation.somethingWentWrong',
+  'An unexpected error occurred. Please try again.':                   'auth.validation.somethingWentWrong',
+  'Service not found. Please try again later.':                        'auth.validation.connectionFailed',
+  'Failed to read data. Please check your connection and try again.':  'auth.validation.connectionFailed',
 };
 
-// Partial-match patterns for dynamic messages (e.g. username taken includes the username)
 const AUTH_ERROR_PATTERNS: Array<[RegExp, string]> = [
-  [/username.*already taken/i,           'auth.validation.usernameTaken'],
-  [/email.*already registered/i,         'auth.validation.emailAlreadyRegistered'],
-  [/taking too long/i,                   'auth.validation.requestTimedOut'],
-  [/connection failed/i,                 'auth.validation.connectionFailed'],
-  [/account service/i,                   'auth.validation.connectionFailed'],
-  [/service unavailable/i,               'auth.validation.connectionFailed'],
-  [/unexpected error/i,                  'auth.validation.somethingWentWrong'],
-  [/server error/i,                      'auth.validation.somethingWentWrong'],
-  [/too many requests/i,                 'auth.validation.requestTimedOut'],
+  [/username.*already taken/i,  'auth.validation.usernameTaken'],
+  [/email.*already registered/i,'auth.validation.emailAlreadyRegistered'],
+  [/taking too long/i,          'auth.validation.requestTimedOut'],
+  [/connection failed/i,        'auth.validation.connectionFailed'],
+  [/account service/i,          'auth.validation.connectionFailed'],
+  [/service unavailable/i,      'auth.validation.connectionFailed'],
+  [/unexpected error/i,         'auth.validation.somethingWentWrong'],
+  [/server error/i,             'auth.validation.somethingWentWrong'],
+  [/too many requests/i,        'auth.validation.requestTimedOut'],
 ];
 
-/**
- * Returns the i18n translation key for a known auth error message, or null if unknown.
- * Usage: const key = getAuthErrorKey(err.message); setError(key ? t(key) : err.message);
- */
 export function getAuthErrorKey(message: string): string | null {
   if (AUTH_ERROR_KEY_MAP[message]) return AUTH_ERROR_KEY_MAP[message];
   for (const [pattern, key] of AUTH_ERROR_PATTERNS) {
@@ -404,7 +406,7 @@ function resizeAndEncodeImage(file: File, maxDimension: number): Promise<string>
       img.onload = () => {
         const canvas = document.createElement('canvas');
         const scale = Math.min(1, maxDimension / Math.max(img.width, img.height));
-        canvas.width = Math.round(img.width * scale);
+        canvas.width  = Math.round(img.width  * scale);
         canvas.height = Math.round(img.height * scale);
         const ctx = canvas.getContext('2d')!;
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
