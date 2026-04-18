@@ -104,6 +104,14 @@
             ]
         },
         {
+            "source": "/api/gh",
+            "headers": [
+                { "key": "Cache-Control", "value": "no-store, no-cache" },
+                { "key": "X-Content-Type-Options", "value": "nosniff" },
+                { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+            ]
+        },
+        {
             "source": "/(.*)",
             "headers": [
                 {
@@ -129,6 +137,14 @@
                 {
                     "key": "Permissions-Policy",
                     "value": "camera=(), microphone=(), geolocation=(self)"
+                },
+                {
+                    "key": "Strict-Transport-Security",
+                    "value": "max-age=31536000; includeSubDomains; preload"
+                },
+                {
+                    "key": "Content-Security-Policy",
+                    "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://partner.googleadservices.com https://tpc.googlesyndication.com https://*.doubleclick.net https://*.google.com https://*.googletagmanager.com https://*.googletagservices.com https://www.google-analytics.com https://ezoic.net https://*.ezoic.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://api.ipify.org https://open.kickbox.com https://*.onrender.com; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com; object-src 'none'; base-uri 'self';"
                 }
             ]
         }

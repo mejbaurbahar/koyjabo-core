@@ -1,56 +1,27 @@
 /**
- * KoyJabo GitHub Auth Service
+ * KoyJabo Auth Service
  *
  * Architecture:
- *  - READ  operations (login check, profile fetch, device list) → direct GitHub API calls (fast, ~1s)
- *  - WRITE operations (signup, password change, etc.) → trigger GitHub Actions workflow, poll for result (~30-90s)
- *
- * The VITE_GITHUB_TOKEN env var has minimal scopes: actions:write + contents:read
- * on this specific private repo. Even if leaked, attackers cannot write data directly.
+ *  - READ  operations → /api/gh proxy (server-side token, hides repo names)
+ *  - WRITE operations → /api/gh POST triggers GitHub Actions workflow, poll for result (~30-90s)
  */
 
 import bcrypt from 'bcryptjs';
 import type { AuthResult, Device } from '../types/auth';
 
-// ── Config ────────────────────────────────────────────────────────────────────
-const APP_OWNER = 'mejbaurbahar';
-const APP_REPO  = 'Dhaka-Commute';
-const DATA_OWNER = 'mejbaurbahar';
-const DATA_REPO  = 'koyjabo';
-const WORKFLOW_FILE = 'auth.yml';
-
-// Token: env var takes priority; fallback assembled from 4 fragments at runtime
-// so no single string literal matches any secret-scanning pattern.
-const _a='Z2hwX2dmR2JFV3Vz',_b='SmU0OWFGUGlUS3lY',_c='ZGROYm54c210YzJr',_d='QkNUeA==';
-const TOKEN=(import.meta.env.VITE_GITHUB_TOKEN as string|undefined)||atob(_a+_b+_c+_d);
-
-const APP_BASE  = `https://api.github.com/repos/${APP_OWNER}/${APP_REPO}`;
-const DATA_BASE = `https://api.github.com/repos/${DATA_OWNER}/${DATA_REPO}`;
-
-function getHeaders(): Record<string, string> {
-  return {
-    Authorization: `Bearer ${TOKEN}`,
-    Accept: 'application/vnd.github.v3+json',
-    'Content-Type': 'application/json'
-  };
-}
+// All GitHub calls go through our server-side proxy.
+// Token and repo names never reach the browser.
+const PROXY = '/api/gh';
 
 function friendlyHttpError(status: number, context: 'workflow' | 'read' = 'workflow'): string {
   if (status === 401 || status === 403) {
-    if (context === 'workflow') {
-      return 'Account service connection failed (401/403). Your GitHub Token might be invalid or expired.';
-    }
-    return 'Failed to read data (401/403). Check connection or token.';
+    if (context === 'workflow') return 'Account service connection failed. Please try again later.';
+    return 'Failed to read data. Please check your connection and try again.';
   }
-  if (status === 404) {
-    return 'Service not found. Please try again later.';
-  }
-  if (status === 422) {
-    return 'Request could not be processed. Please try again.';
-  }
-  if (status >= 500) {
-    return 'Server error. Please try again in a moment.';
-  }
+  if (status === 404) return 'Service not found. Please try again later.';
+  if (status === 422) return 'Request could not be processed. Please try again.';
+  if (status === 429) return 'Too many requests. Please wait a moment and try again.';
+  if (status >= 500) return 'Server error. Please try again in a moment.';
   return 'An unexpected error occurred. Please try again.';
 }
 
@@ -90,59 +61,49 @@ function friendlyNetworkError(err: unknown): string {
   return 'An unexpected error occurred. Please try again.';
 }
 
-// Read user data from private koyjabo repo via Contents API (CORS-safe for private repos).
-async function fetchDataFile<T = unknown>(path: string): Promise<T | null> {
+// Read from data repo (r=d) or app repo (r=a) via server-side proxy.
+async function fetchFile<T = unknown>(repo: 'd' | 'a', path: string): Promise<T | null> {
   let res: Response;
   try {
-    res = await fetch(`${DATA_BASE}/contents/${path}`, { headers: getHeaders() });
+    res = await fetch(`${PROXY}?r=${repo}&p=${encodeURIComponent(path)}`, {
+      credentials: 'same-origin',
+    });
   } catch (err) {
     throw new Error(friendlyNetworkError(err));
   }
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(friendlyHttpError(res.status, 'read'));
-  const data = await res.json();
-  return JSON.parse(atob(data.content)) as T;
+  return res.json() as Promise<T>;
 }
 
-// Read result files from Dhaka-Commute repo via Contents API (required for polling — raw.githubusercontent.com
-// is CDN-cached and can return stale 404 for minutes after a file is written by GitHub Actions).
-async function fetchAppFile<T = unknown>(path: string): Promise<T | null> {
-  let res: Response;
-  try {
-    res = await fetch(`${APP_BASE}/contents/${path}`, { headers: getHeaders() });
-  } catch (err) {
-    throw new Error(friendlyNetworkError(err));
-  }
-  if (res.status === 404) return null;
-  if (!res.ok) throw new Error(friendlyHttpError(res.status, 'read'));
-  const data = await res.json();
-  return JSON.parse(atob(data.content)) as T;
+function fetchDataFile<T = unknown>(path: string): Promise<T | null> {
+  return fetchFile<T>('d', path);
 }
 
-// ── GitHub Actions trigger & poll ─────────────────────────────────────────────
+function fetchAppFile<T = unknown>(path: string): Promise<T | null> {
+  return fetchFile<T>('a', path);
+}
+
+// ── Workflow trigger via proxy ────────────────────────────────────────────────
 async function triggerWorkflow(
   requestId: string,
   action: string,
   inputs: Record<string, string>
 ): Promise<void> {
-  const body = {
-    ref: 'main',
-    inputs: {
-      requestId,
-      action,
-      email: inputs.email || '',
-      passwordHash: inputs.passwordHash || '',
-      userId: inputs.userId || '',
-      data: inputs.data || '{}'
-    }
-  };
-
   let res: Response;
   try {
-    res = await fetch(`${APP_BASE}/actions/workflows/${WORKFLOW_FILE}/dispatches`, {
+    res = await fetch(PROXY, {
       method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify(body)
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        requestId,
+        action,
+        email:        inputs.email        || '',
+        passwordHash: inputs.passwordHash || '',
+        userId:       inputs.userId       || '',
+        data:         inputs.data         || '{}',
+      }),
     });
   } catch (err) {
     throw new Error(friendlyNetworkError(err));

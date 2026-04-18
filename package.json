@@ -30,6 +30,7 @@
   "devDependencies": {
     "@types/cheerio": "^0.22.35",
     "@types/node": "^22.14.0",
+    "@vercel/node": "^5.7.11",
     "@vitejs/plugin-react": "^5.0.0",
     "autoprefixer": "^10.4.22",
     "axios": "^1.13.2",
