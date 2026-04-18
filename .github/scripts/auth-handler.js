@@ -122,83 +122,6 @@ async function fetchAllUsers() {
   return users;
 }
 
-function buildUserListPdf(users) {
-  return new Promise((resolve, reject) => {
-    try {
-      const PDFDocument = require('pdfkit');
-      const chunks = [];
-      const doc = new PDFDocument({ margin: 40, size: 'A4' });
-
-      doc.on('data', chunk => chunks.push(chunk));
-      doc.on('end', () => resolve(Buffer.concat(chunks)));
-      doc.on('error', reject);
-
-      const now = new Date();
-      const generatedAt = now.toLocaleString('en-US', {
-        timeZone: 'Asia/Dhaka', dateStyle: 'long', timeStyle: 'short'
-      });
-
-      // ── Header ─────────────────────────────────────────────────────────────
-      doc.rect(0, 0, doc.page.width, 70).fill('#059669');
-      doc.fillColor('#ffffff')
-         .fontSize(20).font('Helvetica-Bold')
-         .text('KoyJabo - User Report', 40, 20, { align: 'center' });
-      doc.fontSize(10).font('Helvetica')
-         .text(`Generated: ${generatedAt} (Dhaka)  |  Total users: ${users.length}`, 40, 46, { align: 'center' });
-
-      doc.moveDown(3);
-      doc.fillColor('#000000');
-
-      // ── Table header ───────────────────────────────────────────────────────
-      const colX  = [40, 80, 220, 340, 460];  // Serial | Full Name | Username | Joined
-      const rowH  = 22;
-      const tableTop = doc.y;
-
-      doc.rect(colX[0], tableTop, doc.page.width - 80, rowH).fill('#065f46');
-      doc.fillColor('#ffffff').fontSize(9).font('Helvetica-Bold');
-      doc.text('#',           colX[0] + 4, tableTop + 6, { width: 36,  align: 'center' });
-      doc.text('Full Name',   colX[1] + 4, tableTop + 6, { width: 136, align: 'left' });
-      doc.text('Username',    colX[2] + 4, tableTop + 6, { width: 116, align: 'left' });
-      doc.text('Joined',      colX[3] + 4, tableTop + 6, { width: 116, align: 'left' });
-
-      doc.fillColor('#000000').font('Helvetica').fontSize(8);
-
-      let y = tableTop + rowH;
-      for (let i = 0; i < users.length; i++) {
-        const u = users[i];
-        const bg = i % 2 === 0 ? '#f0fdf4' : '#ffffff';
-        doc.rect(colX[0], y, doc.page.width - 80, rowH).fill(bg);
-
-        const joined = u.createdAt
-          ? new Date(u.createdAt).toLocaleDateString('en-US', { timeZone: 'Asia/Dhaka', dateStyle: 'medium' })
-          : 'N/A';
-
-        doc.fillColor('#374151');
-        doc.text(String(i + 1),          colX[0] + 4, y + 6, { width: 36,  align: 'center' });
-        doc.text(u.displayName || '—',   colX[1] + 4, y + 6, { width: 136, align: 'left' });
-        doc.text(`@${u.username || '—'}`, colX[2] + 4, y + 6, { width: 116, align: 'left' });
-        doc.text(joined,                  colX[3] + 4, y + 6, { width: 116, align: 'left' });
-
-        y += rowH;
-
-        // Page break if near bottom
-        if (y > doc.page.height - 60) {
-          doc.addPage();
-          y = 40;
-        }
-      }
-
-      // ── Footer line ────────────────────────────────────────────────────────
-      doc.moveTo(40, y + 10).lineTo(doc.page.width - 40, y + 10).strokeColor('#d1fae5').stroke();
-      doc.fillColor('#9ca3af').fontSize(8)
-         .text('KoyJabo — Dhaka Transport Guide  |  Confidential admin report', 40, y + 16, { align: 'center' });
-
-      doc.end();
-    } catch (err) {
-      reject(err);
-    }
-  });
-}
 
 async function sendAdminUserListEmail(triggeringUser) {
   if (!SMTP_EMAIL || !SMTP_PASSWORD) {
@@ -206,8 +129,9 @@ async function sendAdminUserListEmail(triggeringUser) {
     return;
   }
   try {
+    console.log('Admin email: fetching all users...');
     const users = await fetchAllUsers();
-    const pdfBuffer = await buildUserListPdf(users);
+    console.log(`Admin email: fetched ${users.length} users, building email...`);
 
     const joinedAt = triggeringUser.createdAt
       ? new Date(triggeringUser.createdAt).toLocaleString('en-US', {
@@ -215,56 +139,68 @@ async function sendAdminUserListEmail(triggeringUser) {
         })
       : 'just now';
 
-    const nodemailer = require('nodemailer');
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com', port: 465, secure: true,
-      auth: { user: SMTP_EMAIL, pass: SMTP_PASSWORD }
+    const generatedAt = new Date().toLocaleString('en-US', {
+      timeZone: 'Asia/Dhaka', dateStyle: 'long', timeStyle: 'short'
     });
 
-    await transporter.sendMail({
-      from: `"কই যাবো KoyJabo" <${SMTP_EMAIL}>`,
-      to: ADMIN_EMAIL,
-      subject: `📋 New signup — ${triggeringUser.displayName} (@${triggeringUser.username}) | Total: ${users.length} users`,
-      html: `<!DOCTYPE html>
+    const tableRows = users.map((u, i) => {
+      const joined = u.createdAt
+        ? new Date(u.createdAt).toLocaleDateString('en-US', { timeZone: 'Asia/Dhaka', dateStyle: 'medium' })
+        : 'N/A';
+      const bg = i % 2 === 0 ? '#f0fdf4' : '#ffffff';
+      return `<tr style="background:${bg}">
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;text-align:center;color:#6b7280;font-size:12px">${i + 1}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;color:#111827;font-size:13px">${u.displayName || '—'}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;color:#059669;font-size:13px;font-family:monospace">@${u.username || '—'}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;color:#6b7280;font-size:12px">${joined}</td>
+      </tr>`;
+    }).join('');
+
+    const html = `<!DOCTYPE html>
 <html>
 <body style="font-family:sans-serif;background:#f0fdf4;padding:24px;margin:0">
-  <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
+  <div style="max-width:680px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
     <div style="background:linear-gradient(135deg,#059669,#0284c7);padding:28px 24px;text-align:center">
-      <h1 style="color:#fff;margin:0;font-size:22px">👤 New User Signup</h1>
+      <h1 style="color:#fff;margin:0;font-size:22px">&#128100; New User Signup</h1>
       <p style="color:#d1fae5;margin:6px 0 0;font-size:13px">KoyJabo Admin Notification</p>
     </div>
     <div style="padding:28px 24px">
       <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:16px 20px;margin:0 0 20px">
         <p style="margin:0;color:#065f46;font-size:14px;font-weight:600">New user details</p>
-        <p style="margin:8px 0 0;color:#047857;font-size:13px">👤 Name: <strong>${triggeringUser.displayName}</strong></p>
-        <p style="margin:4px 0 0;color:#047857;font-size:13px">🔖 Username: <strong>@${triggeringUser.username}</strong></p>
-        <p style="margin:4px 0 0;color:#047857;font-size:13px">🕐 Joined: <strong>${joinedAt} (Dhaka)</strong></p>
+        <p style="margin:8px 0 0;color:#047857;font-size:13px">Name: <strong>${triggeringUser.displayName}</strong></p>
+        <p style="margin:4px 0 0;color:#047857;font-size:13px">Username: <strong>@${triggeringUser.username}</strong></p>
+        <p style="margin:4px 0 0;color:#047857;font-size:13px">Joined: <strong>${joinedAt} (Dhaka)</strong></p>
       </div>
-      <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:14px 20px;margin:0 0 20px">
+      <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:14px 20px;margin:0 0 24px">
         <p style="margin:0;color:#1e40af;font-size:13px">
-          📊 Total registered users: <strong>${users.length}</strong><br>
-          The full user list is attached as a PDF.
+          Total registered users: <strong>${users.length}</strong> &nbsp;|&nbsp; Report generated: ${generatedAt}
         </p>
       </div>
-      <p style="color:#9ca3af;font-size:11px;text-align:center;margin:0">
-        This is an automated admin report from কই যাবো KoyJabo.
+      <h3 style="margin:0 0 12px;color:#111827;font-size:15px">All Users</h3>
+      <table style="width:100%;border-collapse:collapse;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
+        <thead>
+          <tr style="background:#065f46">
+            <th style="padding:10px;color:#fff;font-size:12px;text-align:center;width:40px">#</th>
+            <th style="padding:10px;color:#fff;font-size:12px;text-align:left">Full Name</th>
+            <th style="padding:10px;color:#fff;font-size:12px;text-align:left">Username</th>
+            <th style="padding:10px;color:#fff;font-size:12px;text-align:left">Joined</th>
+          </tr>
+        </thead>
+        <tbody>${tableRows}</tbody>
+      </table>
+      <p style="color:#9ca3af;font-size:11px;text-align:center;margin:20px 0 0">
+        Automated admin report — KoyJabo Dhaka Transport Guide
       </p>
     </div>
   </div>
 </body>
-</html>`,
-      attachments: [
-        {
-          filename: `koyjabo-users-${new Date().toISOString().split('T')[0]}.pdf`,
-          content: pdfBuffer,
-          contentType: 'application/pdf'
-        }
-      ]
-    });
+</html>`;
 
-    console.log(`Admin user-list email sent → ${ADMIN_EMAIL} | ${users.length} users`);
+    await sendEmail({ to: ADMIN_EMAIL, subject: `New signup: ${triggeringUser.displayName} (@${triggeringUser.username}) | Total: ${users.length} users`, html });
+    console.log(`Admin user-list email sent OK → ${ADMIN_EMAIL} | ${users.length} users`);
   } catch (err) {
-    console.error(`Admin user-list email failed: ${err.message}`);
+    console.error(`Admin user-list email FAILED: ${err.message}`);
+    console.error(err.stack);
   }
 }
 
@@ -443,8 +379,9 @@ async function handleSignup({ email, passwordHash, username, displayName }) {
   const updatedUsernameIndex = { ...(freshUsernameIndex?.content || {}), [normalizedUsername]: userId };
   await writeDataFile('data/users/username_index.json', updatedUsernameIndex, freshUsernameIndex?.sha, 'Update username index');
 
-  // Send admin user-list PDF email (non-blocking, fires after user is saved)
-  sendAdminUserListEmail({ displayName: user.displayName, username: user.username, createdAt: now }).catch(() => {});
+  // Send admin user-list email (non-blocking, fires after user is saved)
+  sendAdminUserListEmail({ displayName: user.displayName, username: user.username, createdAt: now })
+    .catch(err => console.error('sendAdminUserListEmail unexpected error:', err.message));
 
   // Send welcome email (non-blocking)
   sendEmail({
