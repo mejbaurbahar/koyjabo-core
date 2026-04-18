@@ -160,6 +160,8 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState('');
   const [step, setStep] = useState<'form' | 'processing'>('form');
+  const [emailApiError, setEmailApiError] = useState('');
+  const [emailChecking, setEmailChecking] = useState(false);
 
   const errors = useMemo<FieldErrors>(() => ({
     displayName: validateField('displayName', form.displayName, form),
@@ -169,15 +171,40 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
     confirmPassword: validateField('confirmPassword', form.confirmPassword, form),
   }), [form, t]);
 
-  const isFormValid = Object.values(errors).every(e => !e);
+  const isFormValid = Object.values(errors).every(e => !e) && !emailApiError && !emailChecking;
 
   const update = (field: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setForm(prev => ({ ...prev, [field]: val }));
+    if (field === 'email') setEmailApiError('');
   };
 
   const touch = (field: keyof FieldErrors) => () =>
     setTouched(prev => ({ ...prev, [field]: true }));
+
+  const handleEmailBlur = async () => {
+    touch('email')();
+    const email = form.email.trim();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+    if (isTempMailEmail(email)) return; // already caught by static list
+    const domain = email.split('@')[1]?.toLowerCase();
+    if (!domain) return;
+    setEmailChecking(true);
+    setEmailApiError('');
+    try {
+      const res = await fetch(`https://open.kickbox.com/v1/disposable/${encodeURIComponent(domain)}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.disposable === true) {
+          setEmailApiError(t('auth.validation.tempMailBlocked'));
+        }
+      }
+    } catch {
+      // fail open — never block signup due to API error
+    } finally {
+      setEmailChecking(false);
+    }
+  };
 
   const showError = (field: keyof FieldErrors) =>
     touched[field] && errors[field] ? errors[field] : undefined;
@@ -187,8 +214,9 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Touch all fields to show errors
     setTouched({ displayName: true, username: true, email: true, password: true, confirmPassword: true });
+    if (emailChecking) return;
+    if (emailApiError) return;
     if (!isFormValid) return;
 
     setServerError('');
@@ -328,21 +356,35 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
             {/* Email */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{t('auth.email')}</label>
-              <input
-                type="email"
-                value={form.email}
-                onChange={update('email')}
-                onBlur={touch('email')}
-                placeholder={t('auth.emailPlaceholder')}
-                autoComplete="email"
-                className={`w-full px-4 py-3 rounded-xl border bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition ${
-                  showError('email') ? 'border-red-400 dark:border-red-500' : 'border-gray-200 dark:border-slate-600'
-                }`}
-              />
-              {showError('email') && (
-                <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
-                  <AlertCircle size={12} /> {showError('email')}
+              <div className="relative">
+                <input
+                  type="email"
+                  value={form.email}
+                  onChange={update('email')}
+                  onBlur={handleEmailBlur}
+                  placeholder={t('auth.emailPlaceholder')}
+                  autoComplete="email"
+                  className={`w-full px-4 py-3 pr-10 rounded-xl border bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition ${
+                    (showError('email') || emailApiError) ? 'border-red-400 dark:border-red-500' :
+                    touched.email && !errors.email && !emailApiError && !emailChecking && form.email ? 'border-green-400 dark:border-green-500' :
+                    'border-gray-200 dark:border-slate-600'
+                  }`}
+                />
+                {emailChecking && (
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                )}
+                {!emailChecking && touched.email && !errors.email && !emailApiError && form.email && (
+                  <CheckCircle2 size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500" />
+                )}
+              </div>
+              {(showError('email') || emailApiError) && (
+                <p className="mt-1 text-xs text-red-500 flex items-start gap-1">
+                  <AlertCircle size={12} className="shrink-0 mt-0.5" />
+                  {showError('email') || emailApiError}
                 </p>
+              )}
+              {emailChecking && (
+                <p className="mt-1 text-xs text-blue-500">{language === 'bn' ? 'ইমেইল যাচাই করা হচ্ছে…' : 'Verifying email…'}</p>
               )}
             </div>
 

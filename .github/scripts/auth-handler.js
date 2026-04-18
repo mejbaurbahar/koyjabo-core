@@ -109,6 +109,24 @@ function isTempMail(email) {
   return TEMP_MAIL_DOMAINS.has(domain);
 }
 
+async function isTempMailApi(domain) {
+  return new Promise((resolve) => {
+    const https = require('https');
+    const url = `https://open.kickbox.com/v1/disposable/${encodeURIComponent(domain)}`;
+    const req = https.get(url, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        try {
+          resolve(JSON.parse(data).disposable === true);
+        } catch { resolve(false); }
+      });
+    });
+    req.on('error', () => resolve(false));
+    req.setTimeout(4000, () => { req.destroy(); resolve(false); });
+  });
+}
+
 // ── Crypto Utilities ──────────────────────────────────────────────────────────
 function getEncKey() {
   return crypto.createHash('sha256').update(ENCRYPTION_KEY).digest();
@@ -404,6 +422,12 @@ async function handleSignup({ email, passwordHash, username, displayName }) {
   const normalizedEmail = email.toLowerCase().trim();
 
   if (isTempMail(normalizedEmail)) {
+    return { success: false, error: 'Temporary or disposable email addresses are not allowed. Please use a real email address (Gmail, Yahoo, Outlook, etc.).' };
+  }
+
+  const emailDomain = normalizedEmail.split('@')[1] || '';
+  const disposableViaApi = await isTempMailApi(emailDomain);
+  if (disposableViaApi) {
     return { success: false, error: 'Temporary or disposable email addresses are not allowed. Please use a real email address (Gmail, Yahoo, Outlook, etc.).' };
   }
   const normalizedUsername = username.toLowerCase().trim();

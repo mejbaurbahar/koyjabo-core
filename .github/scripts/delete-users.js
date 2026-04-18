@@ -15,7 +15,7 @@ const DATA_TOKEN = process.env.DATA_GITHUB_TOKEN;
 const octokitData = new Octokit({ auth: DATA_TOKEN });
 
 // ── Usernames to delete ────────────────────────────────────────────────────────
-const USERNAMES_TO_DELETE = ['tester', 'fguntest', 'wivabe1697sixopluscom', 'kepoj'];
+const USERNAMES_TO_DELETE = ['tester', 'fguntest', 'wivabe1697sixopluscom', 'kepoj', 'ralak81779'];
 
 // ── File helpers ───────────────────────────────────────────────────────────────
 async function readFile(path) {
