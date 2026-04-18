@@ -157,23 +157,16 @@ async function triggerWorkflow(
 }
 
 async function pollForResult(requestId: string, timeoutMs = 120_000): Promise<AuthResult> {
-  // Use raw.githubusercontent.com for polling — public repo, no auth needed,
-  // returns plain JSON with no GitHub API metadata visible in DevTools.
-  const rawUrl = `https://raw.githubusercontent.com/${APP_OWNER}/${APP_REPO}/main/data/results/${requestId}.json`;
+  // Poll via the Cloudflare Worker proxy — always fresh (no CDN cache),
+  // returns only decoded JSON with no GitHub metadata visible in DevTools.
+  const path = `data/results/${requestId}.json`;
   const deadline = Date.now() + timeoutMs;
   const INTERVAL = 4000;
 
   while (Date.now() < deadline) {
     await new Promise(r => setTimeout(r, INTERVAL));
-    try {
-      const res = await fetch(rawUrl);
-      if (res.ok) {
-        const result = await res.json() as AuthResult;
-        if (result) return result;
-      }
-    } catch {
-      // network hiccup — keep polling
-    }
+    const result = await fetchAppFile<AuthResult>(path).catch(() => null);
+    if (result) return result;
   }
 
   throw new Error('Request is taking too long. Please check your connection and try again.');
