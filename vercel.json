@@ -30,6 +30,18 @@
         {
             "source": "/api/ads-proxy",
             "destination": "https://srv.adstxtmanager.com/19390/koyjabo.com"
+        },
+        {
+            "source": "/intercity",
+            "destination": "/intercity/index.html"
+        },
+        {
+            "source": "/intercity/:path*",
+            "destination": "/intercity/index.html"
+        },
+        {
+            "source": "/((?!api/).*)",
+            "destination": "/index.html"
         }
     ],
     "buildCommand": "npm run build",
@@ -123,35 +135,6 @@
                     "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://partner.googleadservices.com https://tpc.googlesyndication.com https://*.doubleclick.net https://*.google.com https://*.googletagmanager.com https://*.googletagservices.com https://www.google-analytics.com https://ezoic.net https://*.ezoic.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://api.ipify.org; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com; object-src 'none'; base-uri 'self';"
                 }
             ]
-        }
-    ],
-    "routes": [
-        {
-            "src": "/intercity$",
-            "dest": "/intercity/index.html"
-        },
-        {
-            "src": "/intercity/assets/(.*)",
-            "dest": "/intercity/assets/$1"
-        },
-        {
-            "src": "/intercity/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf))",
-            "dest": "/intercity/$1"
-        },
-        {
-            "src": "/intercity/(.*)",
-            "dest": "/intercity/index.html"
-        },
-        {
-            "src": "/api/(.*)",
-            "dest": "/api/$1"
-        },
-        {
-            "handle": "filesystem"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/index.html"
         }
     ],
     "git": {

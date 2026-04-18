@@ -15,14 +15,15 @@ const PROXY = '/api/gh';
 
 function friendlyHttpError(status: number, context: 'workflow' | 'read' = 'workflow'): string {
   if (status === 401 || status === 403) {
-    if (context === 'workflow') return 'Account service connection failed. Please try again later.';
-    return 'Failed to read data. Please check your connection and try again.';
+    if (context === 'workflow') return 'Account service connection failed.';
+    return 'Connection failed. Please check your internet and try again.';
   }
-  if (status === 404) return 'Service not found. Please try again later.';
+  if (status === 404 && context === 'workflow') return 'Account service connection failed.';
   if (status === 422) return 'Request could not be processed. Please try again.';
   if (status === 429) return 'Too many requests. Please wait a moment and try again.';
-  if (status >= 500) return 'Server error. Please try again in a moment.';
-  return 'An unexpected error occurred. Please try again.';
+  if (status >= 500) return 'Account service connection failed.';
+  if (status === 405) return 'Account service connection failed.';
+  return 'Account service connection failed.';
 }
 
 // ── SHA-256 helper (Web Crypto — no extra package needed) ─────────────────────
@@ -58,7 +59,7 @@ function friendlyNetworkError(err: unknown): string {
     return 'Connection failed. Please check your internet and try again.';
   }
   if (err instanceof Error) return err.message;
-  return 'An unexpected error occurred. Please try again.';
+  return 'Connection failed. Please check your internet and try again.';
 }
 
 // Read from data repo (r=d) or app repo (r=a) via server-side proxy.
@@ -360,14 +361,26 @@ const AUTH_ERROR_KEY_MAP: Record<string, string> = {
   'Request is taking too long. Please check your connection and try again.': 'auth.validation.requestTimedOut',
   'Current password is incorrect.':                                   'auth.validation.currentPasswordIncorrect',
   'User not found.':                                                  'auth.validation.userNotFound',
+  'Account service connection failed.':                               'auth.validation.connectionFailed',
+  'Request could not be processed. Please try again.':                'auth.validation.somethingWentWrong',
+  'Too many requests. Please wait a moment and try again.':           'auth.validation.requestTimedOut',
+  'Server error. Please try again in a moment.':                      'auth.validation.somethingWentWrong',
+  'An unexpected error occurred. Please try again.':                  'auth.validation.somethingWentWrong',
+  'Service not found. Please try again later.':                       'auth.validation.connectionFailed',
+  'Failed to read data. Please check your connection and try again.': 'auth.validation.connectionFailed',
 };
 
 // Partial-match patterns for dynamic messages (e.g. username taken includes the username)
 const AUTH_ERROR_PATTERNS: Array<[RegExp, string]> = [
-  [/username.*already taken/i,   'auth.validation.usernameTaken'],
-  [/email.*already registered/i, 'auth.validation.emailAlreadyRegistered'],
-  [/taking too long/i,           'auth.validation.requestTimedOut'],
-  [/connection failed/i,         'auth.validation.connectionFailed'],
+  [/username.*already taken/i,           'auth.validation.usernameTaken'],
+  [/email.*already registered/i,         'auth.validation.emailAlreadyRegistered'],
+  [/taking too long/i,                   'auth.validation.requestTimedOut'],
+  [/connection failed/i,                 'auth.validation.connectionFailed'],
+  [/account service/i,                   'auth.validation.connectionFailed'],
+  [/service unavailable/i,               'auth.validation.connectionFailed'],
+  [/unexpected error/i,                  'auth.validation.somethingWentWrong'],
+  [/server error/i,                      'auth.validation.somethingWentWrong'],
+  [/too many requests/i,                 'auth.validation.requestTimedOut'],
 ];
 
 /**
