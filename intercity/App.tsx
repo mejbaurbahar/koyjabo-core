@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from './contexts/LanguageContext';
 import { Search, ArrowRightLeft, AlertCircle, PlayCircle, WifiOff, Activity, Home, Train, Sparkles, Clock, Info, Sun, Moon, Menu, Navigation, Map, X, Bot, FileText, Settings, Shield, Download, Calendar, HelpCircle, LogIn, LogOut, User, Phone, Bus, Plane, ChevronRight } from 'lucide-react';
 import { AnimatedLogo } from './components/AnimatedLogo';
@@ -51,6 +51,7 @@ function App() {
   // Removed usage limit as requested
 
   const [selectedMode, setSelectedMode] = useState<'bus' | 'train' | 'plane' | 'launch' | null>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   // Dark Mode State
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -151,6 +152,13 @@ function App() {
       }, 500);
     }
   }, []);
+
+  // Auto-scroll to top when result appears on mobile
+  useEffect(() => {
+    if (result && scrollAreaRef.current) {
+      scrollAreaRef.current.scrollTop = 0;
+    }
+  }, [result]);
 
   const handleSwap = () => {
     setFrom(to);
@@ -434,7 +442,7 @@ function App() {
           </div>
 
           {/* ── Scrollable list area ── */}
-          <div className="flex-1 overflow-y-auto px-3 pb-nav-safe md:pb-4 space-y-2 min-h-0">
+          <div ref={scrollAreaRef} className="flex-1 overflow-y-auto px-3 pb-nav-safe md:pb-4 space-y-2 min-h-0">
 
             {/* Error (mobile only) */}
             {error && (
@@ -484,34 +492,93 @@ function App() {
               </div>
             )}
 
-            {/* Transport mode list — shown when logged in */}
-            {authUser && (
+            {/* Transport mode list — shown when logged in and no result */}
+            {authUser && !result && !loading && (
               <div className="pt-2 space-y-2">
                 <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-1 pt-1">
                   {language === 'bn' ? 'যাতায়াত মাধ্যম' : 'Travel Modes'}
                 </h3>
                 {([
-                  { id: 'bus', icon: <Bus size={18} />, label: t('intercity.byBus'), desc: language === 'bn' ? 'আন্তঃজেলা বাস রুট ও শিডিউল' : 'Intercity bus routes & schedules', sel: 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400' },
-                  { id: 'train', icon: <Train size={18} />, label: t('intercity.byTrain'), desc: language === 'bn' ? 'বাংলাদেশ রেলওয়ে ট্রেন শিডিউল' : 'Bangladesh Railway schedules', sel: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400' },
-                  { id: 'plane', icon: <Plane size={18} />, label: t('intercity.byAir'), desc: language === 'bn' ? 'অভ্যন্তরীণ ফ্লাইট তথ্য' : 'Domestic flight info', sel: 'bg-sky-50 dark:bg-sky-900/20 border-sky-200 dark:border-sky-800 text-sky-600 dark:text-sky-400' },
-                  { id: 'launch', icon: <span className="text-base">🛥️</span>, label: language === 'bn' ? 'লঞ্চে' : 'By Launch', desc: language === 'bn' ? 'নদীপথে লঞ্চ সার্ভিস' : 'River launch services', sel: 'bg-teal-50 dark:bg-teal-900/20 border-teal-200 dark:border-teal-800 text-teal-600 dark:text-teal-400' },
-                ] as const).map(mode => {
+                  {
+                    id: 'bus' as const, icon: <Bus size={18} />, label: t('intercity.byBus'),
+                    desc: language === 'bn' ? 'আন্তঃজেলা বাস রুট ও শিডিউল' : 'Intercity bus routes & schedules',
+                    sel: 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400',
+                    details: [
+                      { l: language === 'bn' ? 'এসি বাস' : 'AC Bus', d: language === 'bn' ? 'আরামদায়ক, শীতাতপ' : 'Air conditioned comfort', color: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' },
+                      { l: language === 'bn' ? 'নন-এসি বাস' : 'Non-AC Bus', d: language === 'bn' ? 'সাশ্রয়ী মূল্যে' : 'Budget friendly', color: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' },
+                      { l: language === 'bn' ? 'চেয়ার কোচ' : 'Chair Coach', d: language === 'bn' ? 'নির্ধারিত আসন' : 'Reserved seating', color: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' },
+                      { l: language === 'bn' ? 'স্লিপার কোচ' : 'Sleeper Coach', d: language === 'bn' ? 'রাতের দীর্ঘ যাত্রা' : 'Overnight journeys', color: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' },
+                    ],
+                    info: language === 'bn' ? 'সকল জেলায় আন্তঃজেলা বাস সার্ভিস পাওয়া যায়। AC ও Non-AC উভয় পরিষেবা উপলব্ধ।' : 'Intercity buses connect all districts. Both AC and Non-AC available.',
+                  },
+                  {
+                    id: 'train' as const, icon: <Train size={18} />, label: t('intercity.byTrain'),
+                    desc: language === 'bn' ? 'বাংলাদেশ রেলওয়ে ট্রেন শিডিউল' : 'Bangladesh Railway schedules',
+                    sel: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400',
+                    details: [
+                      { l: 'শোভন', d: language === 'bn' ? 'সাধারণ আসন' : 'Regular seats', color: 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400' },
+                      { l: 'শোভন চেয়ার', d: language === 'bn' ? 'আরামদায়ক চেয়ার' : 'Comfortable chairs', color: 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400' },
+                      { l: 'AC চেয়ার', d: language === 'bn' ? 'শীতাতপ নিয়ন্ত্রিত' : 'Air conditioned', color: 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400' },
+                      { l: 'AC বার্থ', d: language === 'bn' ? 'রাতের ঘুমের যাত্রা' : 'Overnight sleeper', color: 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400' },
+                    ],
+                    info: language === 'bn' ? 'বাংলাদেশ রেলওয়ে প্রধান শহরগুলি সংযুক্ত করে। ট্রেনে ভ্রমণ নিরাপদ ও সুবিধাজনক।' : 'Bangladesh Railway connects major cities. Train travel is safe and comfortable.',
+                  },
+                  {
+                    id: 'plane' as const, icon: <Plane size={18} />, label: t('intercity.byAir'),
+                    desc: language === 'bn' ? 'অভ্যন্তরীণ ফ্লাইট তথ্য' : 'Domestic flight info',
+                    sel: 'bg-sky-50 dark:bg-sky-900/20 border-sky-200 dark:border-sky-800 text-sky-600 dark:text-sky-400',
+                    details: [
+                      { l: 'ঢাকা–চট্টগ্রাম', d: '~45 min', color: 'bg-sky-50 dark:bg-sky-900/20 text-sky-700 dark:text-sky-400' },
+                      { l: 'ঢাকা–সিলেট', d: '~40 min', color: 'bg-sky-50 dark:bg-sky-900/20 text-sky-700 dark:text-sky-400' },
+                      { l: 'ঢাকা–কক্সবাজার', d: '~1 hr', color: 'bg-sky-50 dark:bg-sky-900/20 text-sky-700 dark:text-sky-400' },
+                      { l: 'ঢাকা–যশোর', d: '~45 min', color: 'bg-sky-50 dark:bg-sky-900/20 text-sky-700 dark:text-sky-400' },
+                    ],
+                    info: language === 'bn' ? 'বিমান বাংলাদেশ ও নভো এয়ার অভ্যন্তরীণ ফ্লাইট পরিষেবা প্রদান করে।' : 'Biman Bangladesh & Novo Air operate domestic flights.',
+                  },
+                  {
+                    id: 'launch' as const, icon: <span className="text-base">🛥️</span>, label: language === 'bn' ? 'লঞ্চে' : 'By Launch',
+                    desc: language === 'bn' ? 'নদীপথে লঞ্চ সার্ভিস' : 'River launch services',
+                    sel: 'bg-teal-50 dark:bg-teal-900/20 border-teal-200 dark:border-teal-800 text-teal-600 dark:text-teal-400',
+                    details: [
+                      { l: 'ঢাকা–বরিশাল', d: '~8-10 hrs', color: 'bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-400' },
+                      { l: 'ঢাকা–পটুয়াখালী', d: '~10-12 hrs', color: 'bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-400' },
+                      { l: 'ঢাকা–ভোলা', d: '~8-9 hrs', color: 'bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-400' },
+                      { l: 'ঢাকা–ঝালকাঠি', d: '~9-10 hrs', color: 'bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-400' },
+                    ],
+                    info: language === 'bn' ? 'সদরঘাট থেকে বিভিন্ন রুটে লঞ্চ সার্ভিস পাওয়া যায়।' : 'Launch services depart from Sadarghat to various destinations.',
+                  },
+                ]).map(mode => {
                   const isSelected = selectedMode === mode.id;
                   return (
-                    <button
-                      key={mode.id}
-                      onClick={() => setSelectedMode(isSelected ? null : mode.id)}
-                      className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all text-left ${isSelected ? mode.sel : 'bg-white dark:bg-slate-800 border-gray-100 dark:border-slate-700 hover:border-gray-200 dark:hover:border-slate-600'}`}
-                    >
-                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${isSelected ? mode.sel : 'bg-gray-50 dark:bg-slate-700 text-gray-500 dark:text-gray-400'}`}>
-                        {mode.icon}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-bold text-gray-900 dark:text-white text-sm">{mode.label}</p>
-                        <p className="text-gray-500 dark:text-gray-400 text-xs truncate">{mode.desc}</p>
-                      </div>
-                      <ChevronRight size={15} className={`shrink-0 text-gray-400 transition-transform ${isSelected ? 'rotate-90' : ''}`} />
-                    </button>
+                    <div key={mode.id}>
+                      <button
+                        onClick={() => setSelectedMode(isSelected ? null : mode.id)}
+                        className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all text-left ${isSelected ? mode.sel : 'bg-white dark:bg-slate-800 border-gray-100 dark:border-slate-700 hover:border-gray-200 dark:hover:border-slate-600'}`}
+                      >
+                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${isSelected ? mode.sel : 'bg-gray-50 dark:bg-slate-700 text-gray-500 dark:text-gray-400'}`}>
+                          {mode.icon}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-bold text-gray-900 dark:text-white text-sm">{mode.label}</p>
+                          <p className="text-gray-500 dark:text-gray-400 text-xs truncate">{mode.desc}</p>
+                        </div>
+                        <ChevronRight size={15} className={`shrink-0 text-gray-400 transition-transform duration-200 ${isSelected ? 'rotate-90' : ''}`} />
+                      </button>
+                      {/* Mobile expandable detail panel */}
+                      {isSelected && (
+                        <div className="md:hidden mx-1 -mt-1 bg-white dark:bg-slate-800 border border-t-0 border-gray-100 dark:border-slate-700 rounded-b-xl p-4 shadow-sm">
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mb-3 leading-relaxed">{mode.info}</p>
+                          <div className="grid grid-cols-2 gap-2">
+                            {mode.details.map(item => (
+                              <div key={item.l} className={`${item.color} rounded-xl p-2.5`}>
+                                <p className="font-bold text-xs leading-tight">{item.l}</p>
+                                <p className="text-gray-500 dark:text-gray-400 text-[10px] mt-0.5">{item.d}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   );
                 })}
               </div>

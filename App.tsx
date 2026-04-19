@@ -3623,6 +3623,12 @@ const App: React.FC = () => {
             ${'w-full md:w-1/3 md:min-w-[320px] md:max-w-md md:flex md:flex-col border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900 z-0 h-full overflow-hidden'}
             ${view !== AppView.HOME && view !== AppView.TRAIN_LIST && 'hidden md:flex'}
 `}>
+            {/* Mobile animation strip for train page */}
+            {view === AppView.TRAIN_LIST && (
+              <div className="md:hidden h-44 relative flex-none overflow-hidden">
+                <DhakaAlive hideIndicator />
+              </div>
+            )}
             <div className="h-full flex flex-col md:pt-0">
               {renderHomeContent()}
             </div>

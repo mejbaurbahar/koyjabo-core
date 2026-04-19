@@ -16,7 +16,7 @@ const landmarkData: Record<string, string> = {
 };
 
 const DhakaAlive: React.FC<{ hideIndicator?: boolean }> = ({ hideIndicator = false }) => {
-    const { t } = useLanguage();
+    useLanguage(); // ensures component is within LanguageProvider context
     const [selectedLandmark, setSelectedLandmark] = useState<string | null>(null);
     const [description, setDescription] = useState<string>("");
     const [isNight, setIsNight] = useState(false);
