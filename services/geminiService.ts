@@ -6,6 +6,7 @@ import {
   generateFareResponse, generateDurationResponse, generateDistanceResponse,
   estimateDistanceKm, fuzzyMatchLocation,
 } from './travelAI';
+import { checkLearnedAnswer, recordAndLearn, warmUpCache } from './aiLearning';
 import { findRoutesBetweenStations, SuggestedRoute } from './routePlanner';
 import {
   FARE_DATA,
@@ -1157,6 +1158,8 @@ function addTravelTips(query: string, isBn: boolean): string {
 
 // --- MAIN AI LOGIC ---
 learningSystem.loadFromStorage();
+// Warm up learned-answer cache from previous session's fallback patterns
+setTimeout(warmUpCache, 0);
 
 export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, chatHistory: ChatMessage[] = []): Promise<string> => {
 
@@ -1167,6 +1170,10 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   const isBanglishQuery = detectBanglish(query);
   const searchQuery = isBanglishQuery ? query + ' ' + normalizeBanglish(query) : query;
   const lowerQuery = normalize(searchQuery);
+
+  // === Learned Answer Cache — check before all heavy processing ===
+  const learnedAnswer = checkLearnedAnswer(query);
+  if (learnedAnswer) return learnedAnswer;
 
   // === FAQ Database Check ===
   const faqChecks = {
@@ -1524,8 +1531,9 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   // === NEW: Smart Response Filtering ===
   finalResponse = filterSmartResponse(finalResponse, query, isBn);
 
-  // Log query for learning
+  // Log query + response for learning (non-blocking)
   learningSystem.logQuery(query, true);
+  recordAndLearn(query, finalResponse);
 
   return finalResponse;
 };
