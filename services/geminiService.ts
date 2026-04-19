@@ -1,6 +1,11 @@
 import { BUS_DATA, METRO_STATIONS, STATIONS } from '../constants';
 import { BD_TRAIN_ROUTES, TRAIN_STATIONS } from '../data/bangladeshTrainData';
 import { getOfflineIntercityData } from '../intercity/offlineService';
+import {
+  classifyIntent, buildSmartResponse, generateComparisonResponse,
+  generateFareResponse, generateDurationResponse, generateDistanceResponse,
+  estimateDistanceKm, fuzzyMatchLocation,
+} from './travelAI';
 import { findRoutesBetweenStations, SuggestedRoute } from './routePlanner';
 import {
   FARE_DATA,
@@ -1394,6 +1399,20 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   if (isIntercityQuery) {
     const intercityRes = findIntercityRoute(query);
     if (intercityRes) responseParts.push(intercityRes);
+  }
+
+  // ── Smart AI enhancement ────────────────────────────────────────────────────
+  // Provides distance/fare/duration/comparison responses the base engine lacks.
+  const travelIntent = classifyIntent(query);
+  const needsSmartAI = responseParts.length === 0
+    || travelIntent.type === 'comparison'
+    || travelIntent.type === 'distance'
+    || travelIntent.type === 'duration';
+  if (needsSmartAI && (travelIntent.from || travelIntent.to)) {
+    const smartResult = buildSmartResponse(query);
+    if (smartResult && !responseParts.some(p => p.includes(smartResult.substring(0, 20)))) {
+      responseParts.push(smartResult);
+    }
   }
 
   // Fallback if no specific match but query exists
