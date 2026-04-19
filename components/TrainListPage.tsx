@@ -101,7 +101,7 @@ export function TrainDetail({
 
   return (
     /* Light: white bg — Dark: deep navy gradient */
-    <div className="flex flex-col h-full bg-white dark:bg-gradient-to-b dark:from-[#0f2027] dark:via-[#203a43] dark:to-[#2c5364] overflow-hidden">
+    <div className="flex flex-col h-full bg-transparent dark:bg-transparent overflow-hidden">
 
       {/* Sub-header */}
       <div className="shrink-0 flex items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5">
@@ -619,7 +619,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
   }
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-hidden">
+    <div className="flex flex-col h-full bg-transparent dark:bg-transparent overflow-hidden">
       {/* Header */}
       <div className="shrink-0 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 shadow-xl shadow-emerald-500/30">
@@ -797,7 +797,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
       )}
 
       {/* AdSense banner */}
-      <div className="shrink-0 w-full overflow-hidden bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-slate-800 empty:hidden hidden md:block">
+      <div className="shrink-0 w-full overflow-hidden bg-white/90 dark:bg-slate-900/90 border-b border-gray-100 dark:border-slate-800 empty:hidden hidden md:block">
         <ins
           className="adsbygoogle"
           style={{ display: 'block', textAlign: 'center', margin: '0' }}
@@ -809,7 +809,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
       </div>
 
       {/* Count row */}
-      <div className="shrink-0 flex items-center justify-between px-5 py-2 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-slate-800">
+      <div className="shrink-0 flex items-center justify-between px-5 py-2 bg-white/90 dark:bg-slate-900/90 border-b border-gray-100 dark:border-slate-800">
         <h3 className="font-bold text-gray-800 dark:text-gray-200 text-sm">
           {bn ? 'ট্রেনের তালিকা' : 'Train List'}
         </h3>
@@ -826,7 +826,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
       </div>
 
       {/* Train list */}
-      <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3 pb-28 md:pb-4">
+      <div className="relative z-10 flex-1 overflow-y-auto px-4 py-3 space-y-3 pb-28 md:pb-4">
         <div className="flex items-start gap-2 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800 text-xs text-emerald-700 dark:text-emerald-300">
           <Info className="w-4 h-4 shrink-0 mt-0.5 text-emerald-500" />
           <span>

@@ -3253,25 +3253,30 @@ const App: React.FC = () => {
     // Train view: list always visible, details require login
     if (view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) {
       return (
-        <div className="flex flex-col h-full w-full md:pt-20">
-          <TrainListPage
-            userLocation={userLocation}
-            onBack={() => setView(AppView.HOME)}
-            embedded={false}
-            onSelectTrain={(route) => {
-              if (user) {
-                setSelectedTrain(route);
-                setView(AppView.TRAIN_DETAILS);
-                const fromSt = route.stops[0];
-                const toSt   = route.stops[route.stops.length - 1];
-                requestIdleCallback(() => trackTrainSearch(
-                  route.id, route.name, route.number, fromSt, toSt
-                ));
-              } else {
-                setView(AppView.LOGIN);
-              }
-            }}
-          />
+        <div className="relative flex flex-col h-full w-full md:pt-20">
+          <div className="absolute inset-0 z-0">
+            <DhakaAlive hideIndicator />
+          </div>
+          <div className="relative z-10 flex flex-col h-full w-full overflow-hidden">
+            <TrainListPage
+              userLocation={userLocation}
+              onBack={() => setView(AppView.HOME)}
+              embedded={false}
+              onSelectTrain={(route) => {
+                if (user) {
+                  setSelectedTrain(route);
+                  setView(AppView.TRAIN_DETAILS);
+                  const fromSt = route.stops[0];
+                  const toSt   = route.stops[route.stops.length - 1];
+                  requestIdleCallback(() => trackTrainSearch(
+                    route.id, route.name, route.number, fromSt, toSt
+                  ));
+                } else {
+                  setView(AppView.LOGIN);
+                }
+              }}
+            />
+          </div>
         </div>
       );
     }
@@ -3623,12 +3628,6 @@ const App: React.FC = () => {
             ${'w-full md:w-1/3 md:min-w-[320px] md:max-w-md md:flex md:flex-col border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900 z-0 h-full overflow-hidden'}
             ${view !== AppView.HOME && view !== AppView.TRAIN_LIST && 'hidden md:flex'}
 `}>
-            {/* Mobile animation strip for train page */}
-            {view === AppView.TRAIN_LIST && (
-              <div className="md:hidden h-44 relative flex-none overflow-hidden">
-                <DhakaAlive hideIndicator />
-              </div>
-            )}
             <div className="h-full flex flex-col md:pt-0">
               {renderHomeContent()}
             </div>
