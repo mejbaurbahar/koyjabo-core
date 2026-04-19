@@ -114,7 +114,7 @@ export default defineConfig(({ mode }) => {
             'data/**/*.json'  // Include all JSON data files for offline
           ],
           navigateFallback: 'index.html',  // Enable automatic fallback to index.html for SPA offline support
-          navigateFallbackDenylist: [/^\/api/],
+          navigateFallbackDenylist: [/^\/api/, /^\/intercity/],
           cleanupOutdatedCaches: true,
           // Inline the workbox runtime instead of loading from CDN
           mode: 'production',
