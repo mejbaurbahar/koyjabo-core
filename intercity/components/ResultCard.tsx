@@ -220,19 +220,6 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
           modeTitle={selectedMode?.title || 'Route'}
         />
 
-        {/* Floating Map Label */}
-        <div className="absolute top-10 right-10 z-[1000]">
-          <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl p-6 rounded-[32px] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] border border-white/20 dark:border-slate-700/30 flex items-center gap-5 transition-transform hover:scale-105 active:scale-95 cursor-default group/map">
-            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-3xl shadow-xl transition-all duration-500 ${selectedModeId ? 'bg-blue-600 text-white shadow-blue-500/30' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}`}>
-              {selectedMode?.icon || <Locate size={24} />}
-            </div>
-            <div>
-              <p className="text-[10px] uppercase font-black text-slate-400 tracking-[0.2em] mb-1 leading-none">Interactive Path</p>
-              <h6 className="text-lg font-black text-slate-800 dark:text-white leading-none tracking-tight">{selectedMode?.title || 'Map Overview'}</h6>
-            </div>
-          </div>
-        </div>
-
         {/* Floating Map Bottom Tip */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[1000] opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
           <div className="px-6 py-3 bg-slate-900/80 dark:bg-slate-800/80 backdrop-blur-md rounded-full text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-3 border border-white/10 shadow-2xl">

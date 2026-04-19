@@ -104,6 +104,32 @@ function App() {
     return () => window.removeEventListener('storage', handleStorage);
   }, []);
 
+  // Record visit so global stats stay accurate when users land on /intercity/ directly
+  useEffect(() => {
+    const SESSION_KEY = 'dhaka_commute_session_init';
+    if (sessionStorage.getItem(SESSION_KEY)) return;
+    sessionStorage.setItem(SESSION_KEY, 'true');
+    const visitorKey = 'dhaka_commute_visitor_id';
+    let visitorId = localStorage.getItem(visitorKey);
+    if (!visitorId) {
+      visitorId = `visitor_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      localStorage.setItem(visitorKey, visitorId);
+    }
+    fetch('/api/gh', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        requestId: crypto.randomUUID(),
+        action: 'record-visit',
+        email: '',
+        passwordHash: '',
+        userId: authUser?.id ?? '',
+        data: JSON.stringify({ visitorId }),
+      }),
+    }).catch(() => {});
+  }, []);
+
   // Disable right-click and devtools keyboard shortcuts
   useEffect(() => {
     const blockContextMenu = (e: MouseEvent) => e.preventDefault();
@@ -186,6 +212,35 @@ function App() {
     }, 1500);
   };
 
+  // Write intercity search into the shared analytics localStorage key
+  // (mirrors trackIntercitySearch in main app's analyticsService.ts)
+  const trackSearchInHistory = (fromVal: string, toVal: string, transportType: string) => {
+    try {
+      const session = localStorage.getItem('koyjabo_auth_session');
+      const userId = session ? (JSON.parse(session) as { user: { id: string } }).user?.id : null;
+      const historyKey = userId ? `koyjabo_history_${userId}` : 'dhaka_commute_user_history';
+      const today = new Date().toISOString().split('T')[0];
+      const raw = localStorage.getItem(historyKey);
+      const history = raw ? JSON.parse(raw) : {
+        busSearches: [], routeSearches: [], intercitySearches: [], trainSearches: [],
+        mostUsedBuses: {}, mostUsedRoutes: {}, mostUsedIntercity: {}, mostUsedTrains: {},
+        todayBuses: [], todayRoutes: [], todayIntercity: [], todayTrains: [],
+        lastResetDate: today
+      };
+      if (!history.intercitySearches) history.intercitySearches = [];
+      if (!history.mostUsedIntercity) history.mostUsedIntercity = {};
+      if (!history.todayIntercity) history.todayIntercity = [];
+      const routeKey = `${fromVal}-${toVal}`;
+      history.intercitySearches.push({ from: fromVal, to: toVal, transportType, timestamp: Date.now(), date: today });
+      history.mostUsedIntercity[routeKey] = (history.mostUsedIntercity[routeKey] || 0) + 1;
+      if (!history.todayIntercity.includes(routeKey)) history.todayIntercity.push(routeKey);
+      if (history.intercitySearches.length > 100) history.intercitySearches = history.intercitySearches.slice(-100);
+      localStorage.setItem(historyKey, JSON.stringify(history));
+    } catch {
+      // best-effort
+    }
+  };
+
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -210,8 +265,9 @@ function App() {
 
         setResult(resultData);
         localStorage.setItem('intercity_last_result', JSON.stringify(resultData));
+        trackSearchInHistory(from, to, 'combined');
       } catch (err: any) {
-        setError(t('intercity.loadFailed'));
+        setError(isOnline ? t('intercity.loadFailed') : t('intercity.offlineCheck'));
       } finally {
         setLoading(false);
       }
@@ -242,8 +298,7 @@ function App() {
       {!isOnline && (
         <div className="fixed top-0 left-0 right-0 z-[9999] bg-amber-500 text-white text-xs font-bold flex items-center justify-center gap-2 py-1.5 px-4 animate-in slide-in-from-top duration-300">
           <WifiOff className="w-3.5 h-3.5 shrink-0" />
-          <span>অফলাইন মোড — আন্তঃজেলা রুট সম্পূর্ণ উপলব্ধ</span>
-          <span className="opacity-60 hidden sm:inline">| Offline — Intercity routes fully available</span>
+          <span>{language === 'bn' ? 'অফলাইন মোড — আন্তঃজেলা রুট সম্পূর্ণ উপলব্ধ' : 'Offline — Intercity routes fully available'}</span>
         </div>
       )}
 
@@ -496,36 +551,36 @@ function App() {
             {authUser && !result && !loading && (
               <div className="pt-2 space-y-2">
                 <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-1 pt-1">
-                  {language === 'bn' ? 'যাতায়াত মাধ্যম' : 'Travel Modes'}
+                  {t('intercity.travelModes')}
                 </h3>
                 {([
                   {
                     id: 'bus' as const, icon: <Bus size={18} />, label: t('intercity.byBus'),
-                    desc: language === 'bn' ? 'আন্তঃজেলা বাস রুট ও শিডিউল' : 'Intercity bus routes & schedules',
+                    desc: t('intercity.busDesc'),
                     sel: 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400',
                     details: [
-                      { l: language === 'bn' ? 'এসি বাস' : 'AC Bus', d: language === 'bn' ? 'আরামদায়ক, শীতাতপ' : 'Air conditioned comfort', color: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' },
-                      { l: language === 'bn' ? 'নন-এসি বাস' : 'Non-AC Bus', d: language === 'bn' ? 'সাশ্রয়ী মূল্যে' : 'Budget friendly', color: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' },
-                      { l: language === 'bn' ? 'চেয়ার কোচ' : 'Chair Coach', d: language === 'bn' ? 'নির্ধারিত আসন' : 'Reserved seating', color: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' },
-                      { l: language === 'bn' ? 'স্লিপার কোচ' : 'Sleeper Coach', d: language === 'bn' ? 'রাতের দীর্ঘ যাত্রা' : 'Overnight journeys', color: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' },
+                      { l: t('intercity.acBus'), d: t('intercity.acBusDesc'), color: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' },
+                      { l: t('intercity.nonAcBus'), d: t('intercity.nonAcBusDesc'), color: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' },
+                      { l: t('intercity.chairCoach'), d: t('intercity.chairCoachDesc'), color: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' },
+                      { l: t('intercity.sleeperCoach'), d: t('intercity.sleeperCoachDesc'), color: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' },
                     ],
-                    info: language === 'bn' ? 'সকল জেলায় আন্তঃজেলা বাস সার্ভিস পাওয়া যায়। AC ও Non-AC উভয় পরিষেবা উপলব্ধ।' : 'Intercity buses connect all districts. Both AC and Non-AC available.',
+                    info: t('intercity.busInfo'),
                   },
                   {
                     id: 'train' as const, icon: <Train size={18} />, label: t('intercity.byTrain'),
-                    desc: language === 'bn' ? 'বাংলাদেশ রেলওয়ে ট্রেন শিডিউল' : 'Bangladesh Railway schedules',
+                    desc: t('intercity.trainDesc'),
                     sel: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400',
                     details: [
-                      { l: 'শোভন', d: language === 'bn' ? 'সাধারণ আসন' : 'Regular seats', color: 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400' },
-                      { l: 'শোভন চেয়ার', d: language === 'bn' ? 'আরামদায়ক চেয়ার' : 'Comfortable chairs', color: 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400' },
-                      { l: 'AC চেয়ার', d: language === 'bn' ? 'শীতাতপ নিয়ন্ত্রিত' : 'Air conditioned', color: 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400' },
-                      { l: 'AC বার্থ', d: language === 'bn' ? 'রাতের ঘুমের যাত্রা' : 'Overnight sleeper', color: 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400' },
+                      { l: t('intercity.shovon'), d: t('intercity.shovonDesc'), color: 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400' },
+                      { l: t('intercity.shovonChair'), d: t('intercity.shovonChairDesc'), color: 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400' },
+                      { l: t('intercity.acChair'), d: t('intercity.acChairDesc'), color: 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400' },
+                      { l: t('intercity.acBerth'), d: t('intercity.acBerthDesc'), color: 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400' },
                     ],
-                    info: language === 'bn' ? 'বাংলাদেশ রেলওয়ে প্রধান শহরগুলি সংযুক্ত করে। ট্রেনে ভ্রমণ নিরাপদ ও সুবিধাজনক।' : 'Bangladesh Railway connects major cities. Train travel is safe and comfortable.',
+                    info: t('intercity.trainInfo'),
                   },
                   {
                     id: 'plane' as const, icon: <Plane size={18} />, label: t('intercity.byAir'),
-                    desc: language === 'bn' ? 'অভ্যন্তরীণ ফ্লাইট তথ্য' : 'Domestic flight info',
+                    desc: t('intercity.airDesc'),
                     sel: 'bg-sky-50 dark:bg-sky-900/20 border-sky-200 dark:border-sky-800 text-sky-600 dark:text-sky-400',
                     details: [
                       { l: 'ঢাকা–চট্টগ্রাম', d: '~45 min', color: 'bg-sky-50 dark:bg-sky-900/20 text-sky-700 dark:text-sky-400' },
@@ -533,11 +588,11 @@ function App() {
                       { l: 'ঢাকা–কক্সবাজার', d: '~1 hr', color: 'bg-sky-50 dark:bg-sky-900/20 text-sky-700 dark:text-sky-400' },
                       { l: 'ঢাকা–যশোর', d: '~45 min', color: 'bg-sky-50 dark:bg-sky-900/20 text-sky-700 dark:text-sky-400' },
                     ],
-                    info: language === 'bn' ? 'বিমান বাংলাদেশ ও নভো এয়ার অভ্যন্তরীণ ফ্লাইট পরিষেবা প্রদান করে।' : 'Biman Bangladesh & Novo Air operate domestic flights.',
+                    info: t('intercity.airInfo'),
                   },
                   {
-                    id: 'launch' as const, icon: <span className="text-base">🛥️</span>, label: language === 'bn' ? 'লঞ্চে' : 'By Launch',
-                    desc: language === 'bn' ? 'নদীপথে লঞ্চ সার্ভিস' : 'River launch services',
+                    id: 'launch' as const, icon: <span className="text-base">🛥️</span>, label: t('intercity.byLaunch'),
+                    desc: t('intercity.launchDesc'),
                     sel: 'bg-teal-50 dark:bg-teal-900/20 border-teal-200 dark:border-teal-800 text-teal-600 dark:text-teal-400',
                     details: [
                       { l: 'ঢাকা–বরিশাল', d: '~8-10 hrs', color: 'bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-400' },
@@ -545,7 +600,7 @@ function App() {
                       { l: 'ঢাকা–ভোলা', d: '~8-9 hrs', color: 'bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-400' },
                       { l: 'ঢাকা–ঝালকাঠি', d: '~9-10 hrs', color: 'bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-400' },
                     ],
-                    info: language === 'bn' ? 'সদরঘাট থেকে বিভিন্ন রুটে লঞ্চ সার্ভিস পাওয়া যায়।' : 'Launch services depart from Sadarghat to various destinations.',
+                    info: t('intercity.launchInfo'),
                   },
                 ]).map(mode => {
                   const isSelected = selectedMode === mode.id;
@@ -641,9 +696,9 @@ function App() {
                   <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
                     <div className="text-4xl mb-4 text-center">🚌</div>
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 text-center">{t('intercity.byBus')}</h3>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5 text-center">{language === 'bn' ? 'বাংলাদেশের সকল জেলায় আন্তঃজেলা বাস সার্ভিস পাওয়া যায়। AC ও Non-AC উভয় পরিষেবা উপলব্ধ।' : 'Intercity bus services connect all districts of Bangladesh. Both AC and Non-AC services available.'}</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5 text-center">{t('intercity.busInfo')}</p>
                     <div className="grid grid-cols-2 gap-3">
-                      {[{ l: language === 'bn' ? 'এসি বাস' : 'AC Bus', d: language === 'bn' ? 'আরামদায়ক, শীতাতপ' : 'Air conditioned comfort' }, { l: language === 'bn' ? 'নন-এসি বাস' : 'Non-AC Bus', d: language === 'bn' ? 'সাশ্রয়ী মূল্যে' : 'Budget friendly' }, { l: language === 'bn' ? 'চেয়ার কোচ' : 'Chair Coach', d: language === 'bn' ? 'নির্ধারিত আসন' : 'Reserved seating' }, { l: language === 'bn' ? 'স্লিপার কোচ' : 'Sleeper Coach', d: language === 'bn' ? 'রাতের দীর্ঘ যাত্রা' : 'Overnight journeys' }].map(i => (
+                      {[{ l: t('intercity.acBus'), d: t('intercity.acBusDesc') }, { l: t('intercity.nonAcBus'), d: t('intercity.nonAcBusDesc') }, { l: t('intercity.chairCoach'), d: t('intercity.chairCoachDesc') }, { l: t('intercity.sleeperCoach'), d: t('intercity.sleeperCoachDesc') }].map(i => (
                         <div key={i.l} className="bg-emerald-50 dark:bg-emerald-900/20 rounded-xl p-3"><p className="font-bold text-emerald-700 dark:text-emerald-400 text-sm">{i.l}</p><p className="text-gray-500 dark:text-gray-400 text-xs">{i.d}</p></div>
                       ))}
                     </div>
@@ -653,9 +708,9 @@ function App() {
                   <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
                     <div className="text-4xl mb-4 text-center">🚂</div>
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 text-center">{t('intercity.byTrain')}</h3>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5 text-center">{language === 'bn' ? 'বাংলাদেশ রেলওয়ে দেশের প্রধান শহরগুলি সংযুক্ত করে। ট্রেনে ভ্রমণ নিরাপদ ও সুবিধাজনক।' : 'Bangladesh Railway connects major cities. Train travel is safe and comfortable.'}</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5 text-center">{t('intercity.trainInfo')}</p>
                     <div className="grid grid-cols-2 gap-3">
-                      {[{ l: 'শোভন', d: language === 'bn' ? 'সাধারণ আসন' : 'Regular seats' }, { l: 'শোভন চেয়ার', d: language === 'bn' ? 'আরামদায়ক চেয়ার' : 'Comfortable chairs' }, { l: 'AC চেয়ার', d: language === 'bn' ? 'শীতাতপ নিয়ন্ত্রিত' : 'Air conditioned' }, { l: 'AC বার্থ', d: language === 'bn' ? 'রাতের ঘুমের যাত্রা' : 'Overnight sleeper' }].map(i => (
+                      {[{ l: t('intercity.shovon'), d: t('intercity.shovonDesc') }, { l: t('intercity.shovonChair'), d: t('intercity.shovonChairDesc') }, { l: t('intercity.acChair'), d: t('intercity.acChairDesc') }, { l: t('intercity.acBerth'), d: t('intercity.acBerthDesc') }].map(i => (
                         <div key={i.l} className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-3"><p className="font-bold text-blue-700 dark:text-blue-400 text-sm">{i.l}</p><p className="text-gray-500 dark:text-gray-400 text-xs">{i.d}</p></div>
                       ))}
                     </div>
@@ -665,7 +720,7 @@ function App() {
                   <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
                     <div className="text-4xl mb-4 text-center">✈️</div>
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 text-center">{t('intercity.byAir')}</h3>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5 text-center">{language === 'bn' ? 'বিমান বাংলাদেশ ও নভো এয়ার অভ্যন্তরীণ ফ্লাইট পরিষেবা প্রদান করে।' : 'Biman Bangladesh & Novo Air operate domestic flights.'}</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5 text-center">{t('intercity.airInfo')}</p>
                     <div className="grid grid-cols-2 gap-3">
                       {[{ l: 'ঢাকা–চট্টগ্রাম', d: '~45 min' }, { l: 'ঢাকা–সিলেট', d: '~40 min' }, { l: 'ঢাকা–কক্সবাজার', d: '~1 hr' }, { l: 'ঢাকা–যশোর', d: '~45 min' }].map(i => (
                         <div key={i.l} className="bg-sky-50 dark:bg-sky-900/20 rounded-xl p-3"><p className="font-bold text-sky-700 dark:text-sky-400 text-sm">{i.l}</p><p className="text-gray-500 dark:text-gray-400 text-xs">{i.d}</p></div>
@@ -676,8 +731,8 @@ function App() {
                 {selectedMode === 'launch' && authUser && (
                   <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
                     <div className="text-4xl mb-4 text-center">🛥️</div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 text-center">{language === 'bn' ? 'লঞ্চে যাত্রা' : 'By Launch/Ferry'}</h3>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5 text-center">{language === 'bn' ? 'সদরঘাট থেকে বিভিন্ন রুটে লঞ্চ সার্ভিস পাওয়া যায়।' : 'Launch services depart from Sadarghat to various destinations.'}</p>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 text-center">{t('intercity.launchTitle')}</h3>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5 text-center">{t('intercity.launchInfo')}</p>
                     <div className="grid grid-cols-2 gap-3">
                       {[{ l: 'ঢাকা–বরিশাল', d: '~8-10 hrs' }, { l: 'ঢাকা–পটুয়াখালী', d: '~10-12 hrs' }, { l: 'ঢাকা–ভোলা', d: '~8-9 hrs' }, { l: 'ঢাকা–ঝালকাঠি', d: '~9-10 hrs' }].map(i => (
                         <div key={i.l} className="bg-teal-50 dark:bg-teal-900/20 rounded-xl p-3"><p className="font-bold text-teal-700 dark:text-teal-400 text-sm">{i.l}</p><p className="text-gray-500 dark:text-gray-400 text-xs">{i.d}</p></div>
