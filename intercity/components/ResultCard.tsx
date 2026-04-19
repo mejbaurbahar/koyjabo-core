@@ -94,10 +94,10 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
   if (!data.result) return null;
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-[40px] shadow-2xl border border-slate-100 dark:border-slate-800 overflow-hidden transition-all duration-700">
+    <div className="bg-white dark:bg-slate-900 rounded-[40px] shadow-2xl border border-slate-100 dark:border-slate-800 overflow-clip transition-all duration-700">
 
       {/* 1. TOP HEADER - GLASS OVERLAY STYLE */}
-      <div className="p-8 md:p-12 relative overflow-hidden bg-gradient-to-br from-white via-slate-50 to-blue-50/20 dark:from-slate-900 dark:via-slate-800/80 dark:to-blue-900/10">
+      <div className="sticky top-0 z-20 p-8 md:p-12 relative overflow-hidden bg-gradient-to-br from-white via-slate-50 to-blue-50/20 dark:from-slate-900 dark:via-slate-800/80 dark:to-blue-900/10 backdrop-blur-md">
         <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400/10 dark:bg-blue-600/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-400/10 dark:bg-emerald-600/5 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2"></div>
 

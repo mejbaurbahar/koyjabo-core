@@ -621,10 +621,8 @@ function App() {
                   </div>
                 )}
                 {(!selectedMode || !authUser) && (
-                  <div className="bg-white/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-3xl p-10 shadow-xl max-w-sm w-full flex items-center justify-center">
-                    <div className="pointer-events-none select-none">
-                      <AnimatedLogo size="large" />
-                    </div>
+                  <div className="pointer-events-none select-none">
+                    <AnimatedLogo size="large" />
                   </div>
                 )}
               </div>
