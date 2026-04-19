@@ -375,15 +375,14 @@ function App() {
           {authUser ? (
             <button
               onClick={() => { window.location.href = '/#profile'; }}
-              className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 font-semibold text-sm transition-all border border-blue-200 dark:border-blue-700"
+              className="w-9 h-9 rounded-full overflow-hidden bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold shrink-0 border-2 border-blue-200 dark:border-blue-700 hover:ring-2 hover:ring-blue-400 transition"
+              title={authUser.displayName}
+              aria-label="Profile"
             >
-              <div className="w-6 h-6 rounded-full overflow-hidden bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
-                {authUser.avatarUrl
-                  ? <img src={authUser.avatarUrl} alt={authUser.displayName} className="w-full h-full object-cover" />
-                  : authUser.displayName.charAt(0).toUpperCase()
-                }
-              </div>
-            </button>
+              {authUser.avatarUrl
+                ? <img src={authUser.avatarUrl} alt={authUser.displayName} className="w-full h-full object-cover" />
+                : authUser.displayName.charAt(0).toUpperCase()
+              }</button>
           ) : (
             <button
               onClick={() => { window.location.href = '/#login'; }}

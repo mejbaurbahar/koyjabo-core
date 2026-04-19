@@ -75,18 +75,48 @@ export const setHistoryUser = (userId: string | null): void => {
 const getHistoryKey = (): string =>
     _currentUserId ? `koyjabo_history_${_currentUserId}` : ANON_HISTORY_KEY;
 
-/** Load externally-fetched history into the current user's localStorage slot. */
+/** Load externally-fetched history into the current user's localStorage slot.
+ *  Merges remote arrays with local ones so locally-written entries (e.g. from
+ *  the intercity sub-app) are never overwritten by a stale GitHub snapshot. */
 export const loadHistoryData = (data: Partial<UserHistory>): void => {
     try {
         const current = getUserHistory();
+
+        // Union merge: combine local + remote, dedup by timestamp, keep newest 100
+        const mergeArr = <T extends { timestamp: number }>(
+            local: T[],
+            remote: T[] | undefined
+        ): T[] => {
+            if (!remote || remote.length === 0) return local;
+            const seen = new Set(local.map(x => x.timestamp));
+            const combined = [...local, ...remote.filter(x => !seen.has(x.timestamp))];
+            combined.sort((a, b) => a.timestamp - b.timestamp);
+            return combined.slice(-100);
+        };
+
+        // For count maps: take the max count per key so both sides contribute
+        const mergeCounts = (
+            local: Record<string, number>,
+            remote: Record<string, number> | undefined
+        ): Record<string, number> => {
+            if (!remote) return local;
+            const result = { ...local };
+            for (const [key, count] of Object.entries(remote)) {
+                result[key] = Math.max(result[key] || 0, count);
+            }
+            return result;
+        };
+
         const merged: UserHistory = {
             ...current,
-            busSearches:       data.busSearches       ?? current.busSearches,
-            routeSearches:     data.routeSearches     ?? current.routeSearches,
-            intercitySearches: data.intercitySearches ?? current.intercitySearches,
-            mostUsedBuses:     data.mostUsedBuses     ?? current.mostUsedBuses,
-            mostUsedRoutes:    data.mostUsedRoutes    ?? current.mostUsedRoutes,
-            mostUsedIntercity: data.mostUsedIntercity ?? current.mostUsedIntercity,
+            busSearches:       mergeArr(current.busSearches,       data.busSearches as BusSearchRecord[]),
+            routeSearches:     mergeArr(current.routeSearches,     data.routeSearches as RouteSearchRecord[]),
+            intercitySearches: mergeArr(current.intercitySearches, data.intercitySearches as IntercitySearchRecord[]),
+            trainSearches:     mergeArr(current.trainSearches,     data.trainSearches as TrainSearchRecord[]),
+            mostUsedBuses:     mergeCounts(current.mostUsedBuses,     data.mostUsedBuses),
+            mostUsedRoutes:    mergeCounts(current.mostUsedRoutes,    data.mostUsedRoutes),
+            mostUsedIntercity: mergeCounts(current.mostUsedIntercity, data.mostUsedIntercity),
+            mostUsedTrains:    mergeCounts(current.mostUsedTrains,    data.mostUsedTrains),
         };
         localStorage.setItem(getHistoryKey(), JSON.stringify(merged));
     } catch {
