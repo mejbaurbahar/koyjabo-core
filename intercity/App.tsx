@@ -410,12 +410,14 @@ function App() {
                   </h2>
                   <p className="text-white/75 text-xs md:text-sm mt-0.5">{t('intercity.onYourRoute')}</p>
                 </div>
-                <form onSubmit={handleSearch} className="space-y-2">
+                <form onSubmit={handleSearch} className="space-y-1.5">
                   <DistrictSelect label={t('intercity.from')} name="from" value={from} onChange={setFrom} placeholder={t('intercity.startLocationPlaceholder')} />
-                  <div className="flex justify-center -my-0.5 relative z-20">
-                    <button type="button" onClick={handleSwap} className="bg-white/20 hover:bg-white/30 text-white p-1.5 rounded-full border border-white/30 transition-all transform hover:rotate-180 hover:scale-110 active:scale-95 backdrop-blur-sm shadow-sm">
+                  <div className="flex items-center gap-2 -my-2 relative z-20">
+                    <div className="flex-1 h-px bg-white/25" />
+                    <button type="button" onClick={handleSwap} className="bg-white/20 hover:bg-white/35 text-white p-1.5 rounded-full border border-white/30 transition-all transform hover:rotate-180 hover:scale-110 active:scale-95 backdrop-blur-sm shadow-sm shrink-0">
                       <ArrowRightLeft size={14} />
                     </button>
+                    <div className="flex-1 h-px bg-white/25" />
                   </div>
                   <DistrictSelect label={t('intercity.to')} name="to" value={to} onChange={setTo} placeholder={t('intercity.destinationPlaceholder')} />
                   <button
@@ -436,9 +438,23 @@ function App() {
             {/* Error (mobile only) */}
             {error && (
               <div className="md:hidden pt-2">
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-3 rounded-2xl flex items-center gap-3 text-sm shadow-sm">
-                  <AlertCircle size={18} className="flex-shrink-0" />
-                  <p className="font-medium">{error}</p>
+                <div className="bg-white dark:bg-slate-800 border border-red-200 dark:border-red-800 rounded-2xl overflow-hidden shadow-sm">
+                  <div className="bg-red-50 dark:bg-red-900/20 px-4 py-3 flex items-center gap-3 border-b border-red-100 dark:border-red-800/50">
+                    <AlertCircle size={18} className="text-red-500 flex-shrink-0" />
+                    <p className="font-bold text-red-600 dark:text-red-400 text-sm">{language === 'bn' ? 'ত্রুটি' : 'Error'}</p>
+                  </div>
+                  <div className="px-4 py-3 space-y-3">
+                    <p className="text-gray-600 dark:text-gray-300 text-sm">{error}</p>
+                    {!authUser && (
+                      <button
+                        onClick={() => { window.location.href = '/#login'; }}
+                        className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#006a4e] to-emerald-600 text-white font-semibold rounded-xl text-sm transition-all hover:shadow-md hover:-translate-y-0.5 active:scale-95"
+                      >
+                        <LogIn size={14} />
+                        {language === 'bn' ? 'সাইন ইন করুন' : 'Sign In'}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
@@ -529,9 +545,21 @@ function App() {
             {/* Error */}
             {error && !loading && (
               <div className="flex items-center justify-center h-full min-h-[400px] p-8">
-                <div className="max-w-md w-full bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-red-100 dark:border-red-900/30">
-                  <div className="flex items-center gap-3 text-red-600 dark:text-red-400 mb-2"><AlertCircle size={22} /><h3 className="font-bold text-lg">{language === 'bn' ? 'ত্রুটি' : 'Error'}</h3></div>
-                  <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+                <div className="max-w-sm w-full bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-red-100 dark:border-red-900/30 text-center">
+                  <div className="w-16 h-16 bg-red-50 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-red-100 dark:ring-red-900/20">
+                    <AlertCircle size={30} className="text-red-500" />
+                  </div>
+                  <h3 className="font-extrabold text-xl text-gray-900 dark:text-white mb-2">{language === 'bn' ? 'ত্রুটি' : 'Error'}</h3>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm mb-5 leading-relaxed">{error}</p>
+                  {!authUser && (
+                    <button
+                      onClick={() => { window.location.href = '/#login'; }}
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#006a4e] to-emerald-600 hover:from-[#005a3e] hover:to-emerald-700 text-white font-bold rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95 transition-all"
+                    >
+                      <LogIn size={18} />
+                      {language === 'bn' ? 'সাইন ইন করুন' : 'Sign In'}
+                    </button>
+                  )}
                 </div>
               </div>
             )}
@@ -593,15 +621,25 @@ function App() {
                   </div>
                 )}
                 {(!selectedMode || !authUser) && (
-                  <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-md w-full">
-                    <div className="flex items-center justify-center mb-5">
-                      <div className="relative">
-                        <Bus size={52} className="text-blue-500/70" />
-                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full animate-pulse" />
-                      </div>
+                  <div className="bg-white/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-sm w-full text-center">
+                    <div className="flex justify-center mb-5 pointer-events-none select-none">
+                      <AnimatedLogo size="large" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">{language === 'bn' ? 'আন্তঃজেলা যাত্রা পরিকল্পনা' : 'Plan Your Intercity Journey'}</h3>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">{language === 'bn' ? 'বামে থেকে ও গন্তব্য নির্বাচন করে সার্চ করুন। বাস, ট্রেন, বিমান ও লঞ্চ রুটের তুলনামূলক তথ্য পাবেন।' : 'Select your departure and destination on the left to find routes. Compare bus, train, flight, and launch options.'}</p>
+                    <h3 className="text-xl font-extrabold text-gray-800 dark:text-white mb-2">
+                      {language === 'bn' ? 'আন্তঃজেলা যাত্রা পরিকল্পনা' : 'Plan Your Intercity Journey'}
+                    </h3>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5">
+                      {language === 'bn' ? 'বামে থেকে ও গন্তব্য নির্বাচন করে সার্চ করুন। বাস, ট্রেন, বিমান ও লঞ্চ রুটের তুলনামূলক তথ্য পাবেন।' : 'Select your departure and destination on the left to find routes. Compare bus, train, flight, and launch options.'}
+                    </p>
+                    {!authUser && (
+                      <button
+                        onClick={() => { window.location.href = '/#login'; }}
+                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#006a4e] to-emerald-600 hover:from-[#005a3e] hover:to-emerald-700 text-white font-bold rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95 transition-all text-sm"
+                      >
+                        <LogIn size={16} />
+                        {language === 'bn' ? 'সাইন ইন করুন' : 'Sign In'}
+                      </button>
+                    )}
                   </div>
                 )}
               </div>
