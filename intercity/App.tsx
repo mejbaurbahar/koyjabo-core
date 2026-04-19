@@ -590,10 +590,12 @@ function App() {
 
         {/* ═══ RIGHT PANEL (desktop only) ═══ */}
         <div className="hidden md:flex flex-1 flex-col relative overflow-hidden">
-          {/* DhakaAlive full animated city scene */}
-          <div className="absolute inset-0 z-0">
-            <DhakaAlive hideIndicator />
-          </div>
+          {/* DhakaAlive full animated city scene — hidden when result is showing */}
+          {!result && !loading && (
+            <div className="absolute inset-0 z-0">
+              <DhakaAlive hideIndicator />
+            </div>
+          )}
 
           {/* Right panel content overlay */}
           <div className="relative z-10 flex-1 overflow-y-auto">
