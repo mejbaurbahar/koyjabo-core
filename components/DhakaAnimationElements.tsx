@@ -173,7 +173,7 @@ export const Rain = () => {
   })), []);
 
   return (
-    <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden">
+    <div className="absolute inset-0 pointer-events-none z-[60] overflow-hidden">
       {drops.map((d, i) => (
         <div
           key={i}
@@ -190,7 +190,7 @@ export const Rain = () => {
 };
 
 export const Fog = () => (
-  <div className="absolute bottom-0 w-full h-1/2 z-20 pointer-events-none overflow-hidden">
+  <div className="absolute inset-0 w-full h-full z-[60] pointer-events-none overflow-hidden">
     {/* Fog Layer 1 */}
     <div className="absolute bottom-0 w-[120%] -left-[10%] h-full bg-gradient-to-t from-white/30 via-white/10 to-transparent blur-xl fog-anim"></div>
     {/* Fog Layer 2 */}

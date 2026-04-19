@@ -152,9 +152,6 @@ const DhakaAlive: React.FC<{ hideIndicator?: boolean }> = ({ hideIndicator = fal
     return (
         <div className={`h-full w-full relative overflow-hidden ${bgGradient} font-sans transition-colors duration-1000 ease-in-out`}>
 
-            {/* --- Weather Layers --- */}
-            {weather === 'rain' && <Rain />}
-
             {/* --- Sky Layer (Z-0) --- */}
             <div className="absolute inset-0 z-0 pointer-events-none">
                 {isNight ? (
@@ -177,13 +174,13 @@ const DhakaAlive: React.FC<{ hideIndicator?: boolean }> = ({ hideIndicator = fal
             {/* --- Far Background Layer (Skyline & Far Landmarks) (Z-5) --- */}
             <div className={`absolute bottom-32 w-full h-64 md:h-96 z-0 flex items-end justify-center pointer-events-none ${isNight ? 'opacity-60' : 'opacity-80'}`}>
                 <Skyline isNight={isNight} />
-                <div className={`absolute bottom-0 transform scale-75 origin-bottom ${isNight ? 'brightness-50' : 'opacity-60'}`}>
+                <div className={`absolute bottom-0 transform scale-75 origin-bottom ${isNight ? 'brightness-75' : 'opacity-60'}`}>
                     <NationalMemorial onClick={() => handleLandmarkClick("National Martyrs' Memorial")} className="pointer-events-auto" />
                 </div>
             </div>
 
             {/* --- Mid-Ground: Metro Infrastructure (Z-10) --- */}
-            <div className={`absolute bottom-24 w-full h-[50vh] z-10 pointer-events-none ${isNight ? 'brightness-50' : ''}`}>
+            <div className={`absolute bottom-24 w-full h-[50vh] z-10 pointer-events-none ${isNight ? 'brightness-75' : ''}`}>
                 <MetroTrack />
                 <MetroTrain isNight={isNight} />
             </div>
@@ -224,7 +221,7 @@ const DhakaAlive: React.FC<{ hideIndicator?: boolean }> = ({ hideIndicator = fal
 
             {/* --- Ground Layer (Road Surface) (Z-30) --- */}
             {/* Darker road at night */}
-            <div className={`absolute bottom-16 w-full h-24 bg-[#3a3a3a] border-t-[6px] border-[#5a5a5a] z-30 flex items-center overflow-hidden shadow-[0_-5px_15px_rgba(0,0,0,0.3)] ${isNight ? 'brightness-50' : ''}`}>
+            <div className={`absolute bottom-16 w-full h-24 bg-[#3a3a3a] border-t-[6px] border-[#5a5a5a] z-30 flex items-center overflow-hidden shadow-[0_-5px_15px_rgba(0,0,0,0.3)] ${isNight ? 'brightness-75' : ''}`}>
                 {/* Asphalt Texture */}
                 <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#fff_1.5px,transparent_1.5px)] [background-size:12px_12px]"></div>
                 {/* Road Markings */}
@@ -237,18 +234,19 @@ const DhakaAlive: React.FC<{ hideIndicator?: boolean }> = ({ hideIndicator = fal
                 <TrafficPolice isNight={isNight} isStopped={isTrafficStopped} />
             </div>
 
-            {/* --- Weather Layer: Fog (Z-38) --- */}
-            {weather === 'fog' && <Fog />}
+
 
             {/* --- River Layer (Surface) (Z-40) --- */}
-            <div className="z-[40] relative">
-                <RiverWaves isNight={isNight} />
-            </div>
+            <RiverWaves isNight={isNight} />
 
             {/* --- River Layer (Traffic) (Z-45) --- */}
             <div className="absolute bottom-0 w-full h-16 z-[45] pointer-events-none">
                 <RiverBoat isNight={isNight} />
             </div>
+
+            {/* --- Weather Layers (Foreground) (Z-60) --- */}
+            {weather === 'rain' && <Rain />}
+            {weather === 'fog' && <Fog />}
 
             {/* --- Info Modal (Z-50) --- */}
             {selectedLandmark && (
