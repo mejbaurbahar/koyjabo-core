@@ -1,7 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { FileText, CheckCircle2, AlertTriangle, ShieldCheck, ExternalLink, UserCheck, Train, Bot } from 'lucide-react';
-import GlobalFooter from './GlobalFooter';
 import { AppView } from '../types';
 
 interface TermsOfServiceProps {
@@ -144,7 +143,6 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ view, setView }) => {
                         </div>
                     </section>
 
-                    <GlobalFooter view={view} setView={setView} />
                 </div>
 
                 <div className="h-24 md:hidden"></div>

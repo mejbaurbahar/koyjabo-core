@@ -1,7 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Shield, Lock, Eye, Clock, ExternalLink, UserCheck, WifiOff } from 'lucide-react';
-import GlobalFooter from './GlobalFooter';
 import { AppView } from '../types';
 
 interface PrivacyPolicyProps {
@@ -145,7 +144,6 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
                         </div>
                     </section>
 
-                    <GlobalFooter view={view} setView={setView} />
                 </div>
 
                 {/* Bottom padding for mobile footer */}

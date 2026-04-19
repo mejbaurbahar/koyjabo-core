@@ -66,7 +66,6 @@ import BlogPostDetail from './components/BlogPostDetail';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
 import ContactUs from './components/ContactUs';
-import GlobalFooter from './components/GlobalFooter';
 import OfflineIndicator from './components/OfflineIndicator';
 import AdSenseAd from './components/AdSenseAd';
 import TrainListPage, { TrainDetail } from './components/TrainListPage';
@@ -1817,7 +1816,6 @@ const App: React.FC = () => {
             </div>
           </section>
 
-          <GlobalFooter view={view} setView={setView} />
         </div>
       </div>
       {/* Spacer for bottom nav on mobile */}
@@ -3543,7 +3541,6 @@ const App: React.FC = () => {
               )}
             </div>
           )}
-          <GlobalFooter view={view} setView={setView} />
         </div>
 
 

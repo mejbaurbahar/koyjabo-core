@@ -1,7 +1,6 @@
 import React from 'react';
 import { Mail, Linkedin, Facebook, MapPin, Send, MessageSquare, Bug, Lightbulb, Share2 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import GlobalFooter from './GlobalFooter';
 import { AppView } from '../types';
 
 interface ContactUsProps {
@@ -102,8 +101,6 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
                         </div>
                     </div>
                 </div>
-
-                <GlobalFooter view={view} setView={setView} />
 
                 {/* Mobile Bottom Spacer */}
                 <div className="h-24 md:hidden"></div>

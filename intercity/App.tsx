@@ -11,7 +11,6 @@ import LiveLocationMap from './components/LiveLocationMap';
 import { POPULAR_ROUTES, DEMO_RESPONSE, DEMO_RESPONSE_BN } from './constants';
 import { getOfflineIntercityData } from './offlineService';
 import { RouteResponse, ErrorResponse } from './types';
-import GlobalFooter from './components/GlobalFooter';
 
 // Read auth session from localStorage (written by main app's AuthContext)
 interface StoredUser { id: string; email: string; username: string; displayName: string; avatarUrl?: string; }
@@ -638,7 +637,6 @@ function App() {
               </div>
             )}
 
-            <div className="pt-4"><GlobalFooter /></div>
           </div>
         </div>
 
