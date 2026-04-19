@@ -797,16 +797,6 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
       )}
 
       {/* AdSense banner */}
-      <div className="shrink-0 w-full overflow-hidden bg-white/90 dark:bg-slate-900/90 border-b border-gray-100 dark:border-slate-800 empty:hidden hidden md:block">
-        <ins
-          className="adsbygoogle"
-          style={{ display: 'block', textAlign: 'center', margin: '0' }}
-          data-ad-client="ca-pub-6933713424631305"
-          data-ad-slot="auto"
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        />
-      </div>
 
       {/* Count row */}
       <div className="shrink-0 flex items-center justify-between px-5 py-2 bg-white/90 dark:bg-slate-900/90 border-b border-gray-100 dark:border-slate-800">

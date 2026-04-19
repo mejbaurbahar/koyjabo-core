@@ -3254,7 +3254,7 @@ const App: React.FC = () => {
     if (view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) {
       return (
         <div className="relative flex flex-col h-full w-full md:pt-20">
-          <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 z-0 pointer-events-none">
             <DhakaAlive hideIndicator />
           </div>
           <div className="relative z-10 flex flex-col h-full w-full overflow-hidden">
@@ -3263,16 +3263,14 @@ const App: React.FC = () => {
               onBack={() => setView(AppView.HOME)}
               embedded={false}
               onSelectTrain={(route) => {
+                setSelectedTrain(route);
+                setView(AppView.TRAIN_DETAILS);
                 if (user) {
-                  setSelectedTrain(route);
-                  setView(AppView.TRAIN_DETAILS);
                   const fromSt = route.stops[0];
                   const toSt   = route.stops[route.stops.length - 1];
                   requestIdleCallback(() => trackTrainSearch(
                     route.id, route.name, route.number, fromSt, toSt
                   ));
-                } else {
-                  setView(AppView.LOGIN);
                 }
               }}
             />
@@ -3635,7 +3633,7 @@ const App: React.FC = () => {
 
           {/* Right Content Area (Desktop) / Views (Mobile) */}
           <div className={`
-            ${'w-full md:flex-1 bg-slate-50 dark:bg-slate-950 md:bg-white dark:md:bg-slate-900 relative h-full overflow-hidden'}
+            ${'w-full md:flex-1 bg-slate-50 dark:bg-slate-950 relative h-full overflow-hidden'}
             ${(view === AppView.HOME || view === AppView.TRAIN_LIST) && 'hidden md:block'}
 `}>
             {(view === AppView.HOME || view === AppView.TRAIN_LIST) && <div className="hidden md:block absolute inset-0 w-full h-full"><DhakaAlive /></div>}
