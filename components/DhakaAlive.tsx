@@ -14,7 +14,7 @@ const landmarkData: Record<string, string> = {
     "Jatiya Sangsad Bhaban": "বাংলাদেশের জাতীয় সংসদ ভবন, যা প্রখ্যাত স্থপতি লুই আই কান নকশা করেছিলেন। এটি বিশ্বের অন্যতম বৃহত্তম আইনসভা কমপ্লেক্স, যা এর বিশাল কংক্রিটের নান্দনিকতা এবং জ্যামিতিক আকৃতির ব্যবহারের জন্য বিখ্যাত।"
 };
 
-const DhakaAlive: React.FC = () => {
+const DhakaAlive: React.FC<{ hideIndicator?: boolean }> = ({ hideIndicator = false }) => {
     const [selectedLandmark, setSelectedLandmark] = useState<string | null>(null);
     const [description, setDescription] = useState<string>("");
     const [isNight, setIsNight] = useState(false);
@@ -278,6 +278,7 @@ const DhakaAlive: React.FC = () => {
             )}
 
             {/* --- Location Indicator (Bottom Right) --- */}
+            {!hideIndicator && (
             <div className="fixed bottom-4 right-4 z-50 text-xs text-white/50 bg-black/30 px-2 py-1 rounded flex items-center gap-1">
                 {usingLiveWeather ? (
                     <>
@@ -288,6 +289,7 @@ const DhakaAlive: React.FC = () => {
                     <span>Simulated Weather</span>
                 )}
             </div>
+            )}
 
         </div>
     );

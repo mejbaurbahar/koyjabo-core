@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from './contexts/LanguageContext';
 import { Search, ArrowRightLeft, AlertCircle, PlayCircle, WifiOff, Activity, Home, Train, Sparkles, Clock, Info, Sun, Moon, Menu, Navigation, Map, X, Bot, FileText, Settings, Shield, Download, Calendar, HelpCircle, LogIn, LogOut, User, Phone, Bus, Plane, ChevronRight } from 'lucide-react';
 import { AnimatedLogo } from './components/AnimatedLogo';
+import DhakaAlive from '../components/DhakaAlive';
 import ThemeToggle from './components/ThemeToggle';
 import DistrictSelect from './components/DistrictSelect';
 import ResultCard from './components/ResultCard';
@@ -522,14 +523,9 @@ function App() {
 
         {/* ═══ RIGHT PANEL (desktop only) ═══ */}
         <div className="hidden md:flex flex-1 flex-col relative overflow-hidden">
-          {/* Bangladesh sky/landscape background */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#4ca1af] via-[#a8edea] to-[#E0F6FF] dark:from-[#0f2027] dark:via-[#203a43] dark:to-[#2c5364] transition-colors duration-1000">
-            <div className="absolute top-10 right-16 w-14 h-14 bg-yellow-300/80 dark:bg-yellow-200/20 rounded-full shadow-[0_0_40px_20px_rgba(253,224,71,0.25)]" />
-            <div className="absolute top-6 left-1/4 w-36 h-10 bg-white/70 dark:bg-white/10 rounded-full blur-sm" />
-            <div className="absolute top-14 left-1/3 w-28 h-8 bg-white/50 dark:bg-white/5 rounded-full blur-sm" />
-            <div className="absolute top-20 right-1/4 w-20 h-7 bg-white/60 dark:bg-white/8 rounded-full blur-sm" />
-            <div className="absolute bottom-0 left-0 right-0 h-2/5 bg-gradient-to-t from-emerald-600/25 via-emerald-400/10 to-transparent dark:from-emerald-900/20" />
-            <div className="absolute bottom-[18%] left-[-10%] right-[-10%] h-14 bg-gradient-to-r from-blue-400/30 via-cyan-300/25 to-blue-400/30 dark:from-blue-900/20 blur-sm" style={{ borderRadius: '50%' }} />
+          {/* DhakaAlive full animated city scene */}
+          <div className="absolute inset-0 z-0">
+            <DhakaAlive hideIndicator />
           </div>
 
           {/* Right panel content overlay */}
@@ -620,11 +616,7 @@ function App() {
                     </div>
                   </div>
                 )}
-                {(!selectedMode || !authUser) && (
-                  <div className="pointer-events-none select-none">
-                    <AnimatedLogo size="large" />
-                  </div>
-                )}
+                {(!selectedMode || !authUser) && null}
               </div>
             )}
           </div>
