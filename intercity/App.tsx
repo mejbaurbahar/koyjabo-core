@@ -395,9 +395,9 @@ function App() {
 
           {/* ── Search Card with gradient background ── */}
           <div className="flex-none px-3 pt-2 pb-2 md:px-4 md:pt-3 md:pb-2 relative z-50">
-            <div className="relative group isolate">
+            <div className="relative group">
               {/* Gradient background layer */}
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-700 rounded-2xl md:rounded-[2rem] shadow-xl shadow-blue-500/30 overflow-hidden transition-all duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0F788F] via-[#219E91] to-[#11B084] rounded-2xl md:rounded-[2rem] shadow-xl shadow-[#0F788F]/30 overflow-hidden transition-all duration-300">
                 <div className="absolute top-0 right-0 -mr-12 -mt-12 w-40 h-40 rounded-full bg-white/10 blur-2xl" />
                 <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-32 h-32 rounded-full bg-white/10 blur-2xl" />
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-white/5 blur-3xl" />
@@ -621,25 +621,10 @@ function App() {
                   </div>
                 )}
                 {(!selectedMode || !authUser) && (
-                  <div className="bg-white/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-sm w-full text-center">
-                    <div className="flex justify-center mb-5 pointer-events-none select-none">
+                  <div className="bg-white/85 dark:bg-slate-800/85 backdrop-blur-sm rounded-3xl p-10 shadow-xl max-w-sm w-full flex items-center justify-center">
+                    <div className="pointer-events-none select-none">
                       <AnimatedLogo size="large" />
                     </div>
-                    <h3 className="text-xl font-extrabold text-gray-800 dark:text-white mb-2">
-                      {language === 'bn' ? 'আন্তঃজেলা যাত্রা পরিকল্পনা' : 'Plan Your Intercity Journey'}
-                    </h3>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5">
-                      {language === 'bn' ? 'বামে থেকে ও গন্তব্য নির্বাচন করে সার্চ করুন। বাস, ট্রেন, বিমান ও লঞ্চ রুটের তুলনামূলক তথ্য পাবেন।' : 'Select your departure and destination on the left to find routes. Compare bus, train, flight, and launch options.'}
-                    </p>
-                    {!authUser && (
-                      <button
-                        onClick={() => { window.location.href = '/#login'; }}
-                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#006a4e] to-emerald-600 hover:from-[#005a3e] hover:to-emerald-700 text-white font-bold rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95 transition-all text-sm"
-                      >
-                        <LogIn size={16} />
-                        {language === 'bn' ? 'সাইন ইন করুন' : 'Sign In'}
-                      </button>
-                    )}
                   </div>
                 )}
               </div>

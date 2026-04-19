@@ -74,7 +74,7 @@ const DistrictSelect: React.FC<DistrictSelectProps> = ({ label, value, onChange,
         </div>
 
         {isOpen && (
-          <div className="absolute z-[100] w-full mt-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 rounded-xl shadow-lg max-h-[300px] md:max-h-[350px] overflow-hidden flex flex-col">
+          <div className="absolute z-[999] w-full mt-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 rounded-xl shadow-lg max-h-[300px] md:max-h-[350px] overflow-hidden flex flex-col">
             {/* Search Input In Dropdown */}
             <div className="p-2 border-b border-gray-100 dark:border-slate-700 bg-white dark:bg-slate-800 sticky top-0">
               <input

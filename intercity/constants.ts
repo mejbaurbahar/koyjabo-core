@@ -307,46 +307,79 @@ export const DEMO_RESPONSE: RouteResponse = {
   to: "Saint Martin's Island",
   date: new Date().toISOString().split('T')[0],
   source: "memory_cache",
-  result: `**Route: Dhaka to Saint Martin's Island**  
-**Approximate Distance:** ~350 km (Road) + 9 km (Sea)
+  result: `**Route: Dhaka to Saint Martin's Island** — Distance: ~350 km
 
-**Recommended Modes:**
+🚌 By Bus – 10-12h | ৳1800-4500
+**Boarding Point:** Dhaka (Saidabad / Syedabad Bus Terminal)
+**Non-AC Fare:** ৳1800
+**AC Fare:** ৳4500
+**Operators:** Hanif Enterprise · Shyamoli NR · Saint Martin Paribahan · Desh Travels
+**Note:** Buses go to Teknaf, then a 2h ship ride to Saint Martin's Island (9 km).
+**Tickets:** Book online at shohoz.com or buy directly at the counter.
 
-🚌 **By Bus + Ship** – Time: 10-12 hours | Price: 1800-4500 BDT  
-Most popular option. Direct buses go to Teknaf, then you catch a ship.  
-**Operators:** Hanif, Shyamoli, Saint Martin Paribahan, Desh Travels.  
-**Ships:** Keari Sindbad, Atlantic Cruise, Bay One (from Chattogram).
+🚂 By Train – Connection Required
+No direct train from **Dhaka** to **Saint Martin's Island**. Take the Cox's Bazar Express to Cox's Bazar, then bus to Teknaf, then ship to the island.
+**Trains:** Cox's Bazar Express (10:30PM, off Mon) · Parjotak Express (6:15AM, off Sun)
+**Shovon Chair:** ৳695
+**Snigdha (AC Chair):** ৳1449
+**AC Berth:** ৳2656
+**Online Booking:** eticket.railway.gov.bd
+**Tip:** Book 3–5 days ahead, especially for weekends and holidays.
 
-✈️ **By Air + Road + Ship** – Time: 4-5 hours | Price: 4500-8000 BDT  
-Fly to Cox's Bazar (45 min), then taxi/bus to Teknaf (2 hrs), then ship to island (2 hrs).  
-**Airlines:** US-Bangla, Biman, Novoair.
+🛫 By Air – 4-5h total | ৳4500-8000
+**Direction:** Fly to Cox's Bazar Airport (~45 min), then taxi/bus to Teknaf (~2h), then ship to Saint Martin's Island (~2h).
+**Airlines:** US-Bangla · Biman Bangladesh · Novoair
+**Min Fare:** ৳3500 (one-way, basic)
+**Booking:** biman.com.bd · us-bangla.com · novoair.com · airastra.com
+**Tips:** Book 1–2 weeks in advance for cheaper fares.
 
-🚂 **By Train + Bus + Ship** – Time: 14+ hours | Price: 800-2500 BDT  
-Train (Cox's Bazar Express) to Cox's Bazar, then bus to Teknaf, then ship.  
-**Train:** Dhaka to Cox's Bazar (Non-stop).
+🚢 By Launch – 10-14h | ৳1500-4500
+**Terminal:** Chattogram Port or Teknaf Ghat
+**Launches:** Keari Sindbad · Atlantic Cruise · Bay One
+**Deck Fare:** ৳1500
+**Cabin / VIP Fare:** ৳4500
+**Departure:** Ship sails from Teknaf to Saint Martin's Island (9 km, ~2h). Seasonal — Oct to Mar only.
+**Tips:** Book AC cabin in advance, especially during Eid and peak season.
 `
 };
+
 export const DEMO_RESPONSE_BN: RouteResponse = {
   from: "ঢাকা",
   to: "সেন্টমার্টিন",
   date: new Date().toISOString().split('T')[0],
   source: "memory_cache",
-  result: `**রুট: ঢাকা থেকে সেন্টমার্টিন**  
-**আনুমানিক দূরত্ব:** ~৩৫০ কিমি (সড়ক) + ৯ কিমি (নদী)
+  result: `**রুট: ঢাকা থেকে সেন্টমার্টিন** — দূরত্ব: ~৩৫০ কিমি
 
-**প্রস্তাবিত যাতায়াত মাধ্যম:**
+🚌 বাস – ১০-১২h | ৳১৮০০-৪৫০০
+**বোর্ডিং পয়েন্ট:** ঢাকা (সায়েদাবাদ বাস টার্মিনাল)
+**নন-এসি ভাড়া:** ৳১৮০০
+**এসি ভাড়া:** ৳৪৫০০
+**অপারেটর:** হানিফ এন্টারপ্রাইজ · শ্যামলী এনআর · সেন্টমার্টিন পরিবহন · দেশ ট্রাভেলস
+**নোট:** টেকনাফ পর্যন্ত বাস, তারপর ২ঘণ্টার জাহাজে সেন্টমার্টিন (৯ কিমি)।
+**টিকেট:** shohoz.com থেকে অনলাইনে বুক করুন বা সরাসরি কাউন্টার থেকে সংগ্রহ করুন।
 
-🚌 **বাস + জাহাজ** – সময়: ১০-১২ ঘণ্টা | ভাড়া: ১৮০০-৪৫০০ টাকা  
-সবচেয়ে জনপ্রিয় উপায়। টেকনাফ পর্যন্ত সরাসরি বাস, তারপর জাহাজ।  
-**অপারেটর:** হানিফ, শ্যামলী, সেন্টমার্টিন পরিবহন, দেশ ট্রাভেলস।  
-**জাহাজ:** কেয়ারি সিন্দবাদ, আটলান্টিক ক্রুজ, বে ওয়ান (চট্টগ্রাম থেকে)।
+🚂 ট্রেন – সংযোগ প্রয়োজন
+এই রুটে ঢাকা থেকে সেন্টমার্টিন পর্যন্ত সরাসরি ট্রেন নেই। কক্সবাজার এক্সপ্রেসে কক্সবাজার, তারপর বাসে টেকনাফ, তারপর জাহাজে সেন্টমার্টিন।
+**ট্রেনসমূহ:** কক্সবাজার এক্সপ্রেস (রাত ১০:৩০, সোম বন্ধ) · পর্যটক এক্সপ্রেস (সকাল ৬:১৫, রবি বন্ধ)
+**শোভন চেয়ার:** ৳৬৯৫
+**স্নিগ্ধা (এসি চেয়ার):** ৳১৪৪৯
+**এসি বার্থ:** ৳২৬৫৬
+**অনলাইন টিকেট:** eticket.railway.gov.bd
+**টিপস:** ৩-৫ দিন আগে টিকেট কেটে নিন, বিশেষত শুক্র-শনিবার ও ছুটির সময়।
 
-✈️ **বিমান + সড়ক + জাহাজ** – সময়: ৪-৫ ঘণ্টা | ভাড়া: ৪৫০০-৮০০০ টাকা  
-কক্সবাজার পর্যন্ত বিমান (৪৫ মিনিট), তারপর টেকনাফ পর্যন্ত ট্যাক্সি/বাস (২ ঘণ্টা), তারপর জাহাজ (২ ঘণ্টা)।  
-**এয়ারলাইন্স:** ইউএস-বাংলা, বিমান, নভোএয়ার।
+🛫 বিমান – মোট ৪-৫h | ৳৪৫০০-৮০০০
+**নির্দেশনা:** কক্সবাজার বিমানবন্দরে উড়ে যান (~৪৫ মিনিট), তারপর ট্যাক্সি/বাসে টেকনাফ (~২ঘণ্টা), তারপর জাহাজে সেন্টমার্টিন (~২ঘণ্টা)।
+**এয়ারলাইন্স:** ইউএস-বাংলা · বিমান বাংলাদেশ · নভোএয়ার
+**সর্বনিম্ন ভাড়া:** ৳৩৫০০ (একমুখী, বেসিক)
+**বুকিং:** biman.com.bd · us-bangla.com · novoair.com · airastra.com
+**টিপস:** ১-২ সপ্তাহ আগে বুক করলে সস্তায় পাওয়া যায়।
 
-🚂 **ট্রেন + বাস + জাহাজ** – সময়: ১৪+ ঘণ্টা | ভাড়া: ৮০০-২৫০০ টাকা  
-কক্সবাজার পর্যন্ত ট্রেন (কক্সবাজার এক্সপ্রেস), তারপর টেকনাফ পর্যন্ত বাস, তারপর জাহাজ।  
-**ট্রেন:** ঢাকা থেকে কক্সবাজার (বিরতিহীন)।
+🚢 লঞ্চ – ১০-১৪h | ৳১৫০০-৪৫০০
+**টার্মিনাল:** চট্টগ্রাম বন্দর বা টেকনাফ ঘাট
+**লঞ্চসমূহ:** কেয়ারি সিন্দবাদ · আটলান্টিক ক্রুজ · বে ওয়ান
+**ডেক ভাড়া:** ৳১৫০০
+**কেবিন / ভিআইপি ভাড়া:** ৳৪৫০০
+**ছাড়ার সময়:** টেকনাফ থেকে জাহাজ সেন্টমার্টিন (৯ কিমি, ~২ঘণ্টা)। অক্টোবর-মার্চ মৌসুমে চলে।
+**টিপস:** এসি কেবিন আগেই বুক করুন, বিশেষত ঈদ ও ছুটির মৌসুমে।
 `
 };
