@@ -187,7 +187,7 @@ async function sendEmail({ to, subject, html }) {
 }
 
 // ── Admin: send full user list as PDF after every new signup ─────────────────
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || '';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'koyjabo.bd@gmail.com';
 
 async function fetchAllUsers() {
   const indexFile = await readDataFile('data/users/index.json');
@@ -215,6 +215,10 @@ async function fetchAllUsers() {
 async function sendAdminUserListEmail(triggeringUser) {
   if (!SMTP_EMAIL || !SMTP_PASSWORD) {
     console.log('Admin email skipped: SMTP not configured.');
+    return;
+  }
+  if (!ADMIN_EMAIL) {
+    console.log('Admin email skipped: ADMIN_EMAIL secret not set.');
     return;
   }
   try {

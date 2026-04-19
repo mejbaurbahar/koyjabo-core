@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from './contexts/LanguageContext';
-import { Search, ArrowRightLeft, AlertCircle, PlayCircle, WifiOff, Activity, Home, Train, Sparkles, Clock, Info, Sun, Moon, Menu, Navigation, Map, X, Bot, FileText, Settings, Shield, Download, Calendar, HelpCircle, LogIn, UserPlus, LogOut, User, Phone, Bus } from 'lucide-react';
+import { Search, ArrowRightLeft, AlertCircle, PlayCircle, WifiOff, Activity, Home, Train, Sparkles, Clock, Info, Sun, Moon, Menu, Navigation, Map, X, Bot, FileText, Settings, Shield, Download, Calendar, HelpCircle, LogIn, LogOut, User, Phone, Bus } from 'lucide-react';
 import { AnimatedLogo } from './components/AnimatedLogo';
 import ThemeToggle from './components/ThemeToggle';
 import DistrictSelect from './components/DistrictSelect';
@@ -297,22 +297,13 @@ function App() {
               </div>
             </button>
           ) : (
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => { window.location.href = '/#login'; }}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-semibold text-sm transition-colors"
-              >
-                <LogIn size={15} />
-                {t('nav.login')}
-              </button>
-              <button
-                onClick={() => { window.location.href = '/#signup'; }}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm transition-colors shadow-sm"
-              >
-                <UserPlus size={15} />
-                {t('nav.signup')}
-              </button>
-            </div>
+            <button
+              onClick={() => { window.location.href = '/#login'; }}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-semibold text-sm transition-colors"
+            >
+              <LogIn size={15} />
+              {t('nav.login')}
+            </button>
           )}
           <button
             onClick={() => setIsMenuOpen(true)}
@@ -628,12 +619,6 @@ function App() {
                     className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-colors"
                   >
                     <LogIn className="w-4 h-4" /> {t('nav.login')}
-                  </button>
-                  <button
-                    onClick={() => { window.location.href = '/#signup'; setIsMenuOpen(false); }}
-                    className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-colors"
-                  >
-                    <UserPlus className="w-4 h-4" /> {t('nav.signup')}
                   </button>
                 </div>
               )}
