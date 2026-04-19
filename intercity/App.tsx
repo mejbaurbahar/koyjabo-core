@@ -100,6 +100,28 @@ function App() {
     return () => window.removeEventListener('storage', handleStorage);
   }, []);
 
+  // Disable right-click and devtools keyboard shortcuts
+  useEffect(() => {
+    const blockContextMenu = (e: MouseEvent) => e.preventDefault();
+    const blockKeys = (e: KeyboardEvent) => {
+      // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C, Ctrl+U
+      if (
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && ['I', 'i', 'J', 'j', 'C', 'c'].includes(e.key)) ||
+        (e.ctrlKey && ['U', 'u'].includes(e.key))
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+    document.addEventListener('contextmenu', blockContextMenu);
+    document.addEventListener('keydown', blockKeys);
+    return () => {
+      document.removeEventListener('contextmenu', blockContextMenu);
+      document.removeEventListener('keydown', blockKeys);
+    };
+  }, []);
+
   // Handle URL parameters for redirection from main app
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -517,30 +539,8 @@ function App() {
           <div className="max-w-7xl mx-auto min-h-[500px]">
             {loading && <LoadingState />}
 
-            {!loading && result && authUser && (
+            {!loading && result && (
               <ResultCard data={result} />
-            )}
-
-            {!loading && result && !authUser && (
-              <div className="max-w-md mx-auto mt-8 bg-white dark:bg-slate-800 rounded-3xl p-8 border border-gray-100 dark:border-slate-700 shadow-sm text-center animate-fade-in">
-                <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <LogIn className="w-8 h-8 text-blue-500" />
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-                  {t('intercity.signInRequired')}
-                </h3>
-                <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
-                  {t('intercity.signInToViewResults')}
-                </p>
-                <a
-                  href="/"
-                  onClick={(e) => { e.preventDefault(); window.location.href = '/#login'; }}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors shadow-sm"
-                >
-                  <LogIn className="w-4 h-4" />
-                  {t('common.loginBtn')}
-                </a>
-              </div>
             )}
 
             {/* Empty State / Popular Routes */}
