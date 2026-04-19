@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from './contexts/LanguageContext';
 import { Search, ArrowRightLeft, AlertCircle, PlayCircle, WifiOff, Activity, Home, Train, Sparkles, Clock, Info, Sun, Moon, Menu, Navigation, Map, X, Bot, FileText, Settings, Shield, Download, Calendar, HelpCircle, LogIn, LogOut, User, Phone, Bus, Plane, ChevronRight } from 'lucide-react';
 import { AnimatedLogo } from './components/AnimatedLogo';
-import DhakaAlive from '../components/DhakaAlive';
+import DhakaAlive from './components/DhakaAlive';
 import ThemeToggle from './components/ThemeToggle';
 import DistrictSelect from './components/DistrictSelect';
 import ResultCard from './components/ResultCard';

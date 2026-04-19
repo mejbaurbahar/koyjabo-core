@@ -121,11 +121,7 @@ export default defineConfig(({ mode }) => {
           sourcemap: false,
           // Cache versioning for proper updates
           cacheId: 'dhaka-commute-v5',
-          // Precache intercity index.html for offline access
-          additionalManifestEntries: [
-            { url: '/intercity/', revision: 'v5' },
-            { url: '/intercity/index.html', revision: 'v5' }
-          ],
+
           runtimeCaching: [
             // Cache Intercity App - StaleWhileRevalidate: serve from cache instantly, update in background
             {
