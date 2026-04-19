@@ -101,7 +101,7 @@ export function TrainDetail({
 
   return (
     /* Light: white bg — Dark: deep navy gradient */
-    <div className="flex flex-col h-full bg-transparent dark:bg-transparent overflow-hidden">
+    <div className="flex flex-col h-full bg-[#0F172A] dark:bg-[#0F172A] overflow-hidden">
 
       {/* Sub-header */}
       <div className="shrink-0 flex items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5">
@@ -619,7 +619,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
   }
 
   return (
-    <div className="flex flex-col h-full bg-transparent dark:bg-transparent overflow-hidden">
+    <div className="flex flex-col h-full bg-[#0F172A] dark:bg-[#0F172A] overflow-hidden">
       {/* Header */}
       <div className="shrink-0 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 shadow-xl shadow-emerald-500/30">
@@ -799,7 +799,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
       {/* AdSense banner */}
 
       {/* Count row */}
-      <div className="shrink-0 flex items-center justify-between px-5 py-2 bg-white/90 dark:bg-slate-900/90 border-b border-gray-100 dark:border-slate-800">
+      <div className="shrink-0 flex items-center justify-between px-5 py-2 bg-[#0F172A] border-b border-white/10">
         <h3 className="font-bold text-gray-800 dark:text-gray-200 text-sm">
           {bn ? 'ট্রেনের তালিকা' : 'Train List'}
         </h3>
