@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from './contexts/LanguageContext';
-import { Search, ArrowRightLeft, AlertCircle, PlayCircle, WifiOff, Activity, Home, Train, Sparkles, Clock, Info, Sun, Moon, Menu, Navigation, Map, X, Bot, FileText, Settings, Shield, Download, Calendar, HelpCircle, LogIn, LogOut, User, Phone, Bus } from 'lucide-react';
+import { Search, ArrowRightLeft, AlertCircle, PlayCircle, WifiOff, Activity, Home, Train, Sparkles, Clock, Info, Sun, Moon, Menu, Navigation, Map, X, Bot, FileText, Settings, Shield, Download, Calendar, HelpCircle, LogIn, LogOut, User, Phone, Bus, Plane, ChevronRight } from 'lucide-react';
 import { AnimatedLogo } from './components/AnimatedLogo';
 import ThemeToggle from './components/ThemeToggle';
 import DistrictSelect from './components/DistrictSelect';
@@ -48,6 +48,8 @@ function App() {
   // New States for Offline and Usage
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   // Removed usage limit as requested
+
+  const [selectedMode, setSelectedMode] = useState<'bus' | 'train' | 'plane' | 'launch' | null>(null);
 
   // Dark Mode State
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -275,7 +277,7 @@ function App() {
             className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-slate-700/50"
           >
             <Train size={16} />
-            {t('nav.train') || 'Train'}
+            {t('nav.train')}
           </a>
           <a
             href="/#ai-assistant"
@@ -383,191 +385,231 @@ function App() {
         </div>
       </header>
 
-      {/* FIXED TOP SECTION (Title + Search) - Add padding for fixed header */}
-      <div className="flex-none relative overflow-visible bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 z-50 shadow-sm transition-colors duration-300 md:mt-20" style={{ marginTop: 'calc(env(safe-area-inset-top, 0px) + 3.5rem)' }}>
+      {/* MAIN CONTENT: Desktop two-panel, Mobile single-column */}
+      <div className="flex flex-1 min-h-0 md:pt-20" style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 3.5rem)' }}>
 
-        {/* Push content below offline bar when offline (bar overlaps top of header, header paddingTop pushes its content clear) */}
-        {!isOnline && <div className="h-7" />}
+        {/* ═══ LEFT PANEL: Search card + list ═══ */}
+        <div className="w-full flex flex-col min-h-0 md:w-[380px] md:min-w-[340px] md:max-w-md md:border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900">
+          {/* Offline bar spacer */}
+          {!isOnline && <div className="h-7 shrink-0" />}
 
-        {/* === BACKGROUND ANIMATION LAYER === */}
-        <div className="absolute inset-0 z-0">
-          {/* 1. The Image (Beautiful Bangladesh - River/Greenery) */}
-          {/* INCREASED OPACITY: from 30/20 to 60/40 */}
-          {/* Background image only when online — degrades to gradient offline */}
-          {isOnline && (
-            <div
-              className="absolute inset-0 bg-cover bg-center animate-kenburns opacity-60 dark:opacity-40"
-              style={{
-                backgroundImage: "url('https://images.unsplash.com/photo-1596799468498-842247b98d34?q=80&w=2000&auto=format&fit=crop')"
-              }}
-            ></div>
-          )}
-
-          {/* 2. Gradient Overlay */}
-          {/* REDUCED OPACITY at top: from-white/90 to from-white/40 */}
-          <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/80 to-white dark:from-slate-900/50 dark:via-slate-900/80 dark:to-slate-900"></div>
-
-          {/* 3. Subtle Dot Pattern for AI/Tech feel */}
-          <div className="absolute inset-0 opacity-10 dark:opacity-5 bg-[radial-gradient(#444cf7_1px,transparent_1px)] [background-size:20px_20px]"></div>
-        </div>
-
-        {/* Removed Usage Badge */}
-
-        {/* Container - Content sits relative above background */}
-        <div className="py-2 md:py-8 px-4 relative z-10">
-
-          <div className="text-center mb-3 md:mb-6 animate-fade-in">
-            <h1 className="text-2xl md:text-5xl font-extrabold mb-2 tracking-tight drop-shadow-sm flex flex-col items-center gap-1.5">
-              <span className="text-xs md:text-lg text-gray-400 dark:text-gray-500 font-bold tracking-[0.2em] uppercase">
-                {t('intercity.exploreMini')}
-              </span>
-              <span className="text-3xl md:text-6xl text-slate-900 dark:text-white leading-tight">
-                {language === 'bn' ? (
-                  <>
-                    <span className="text-dhaka-red">বাংলা</span>
-                    <span className="text-dhaka-green">দেশ</span>
-                    <span> ঘুরে দেখুন</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Whole </span>
-                    <span className="text-dhaka-red">Bangla</span>
-                    <span className="text-dhaka-green">desh</span>
-                  </>
-                )}
-              </span>
-              <span className="text-lg md:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 font-bold mt-1">
-                {t('intercity.onYourRoute')}
-              </span>
-            </h1>
-          </div>
-
-          {/* Search Box */}
-          <div className="max-w-4xl mx-auto bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm rounded-2xl shadow-xl shadow-blue-900/5 border border-gray-100 dark:border-slate-700 p-1.5 md:p-2 relative z-10 transition-colors duration-300">
-            {/* Removed Offline Banner as requested */}
-
-            <form onSubmit={handleSearch} className="flex flex-col md:flex-row md:items-end gap-1.5 md:gap-2 relative">
-
-              {/* FROM */}
-              <div className="flex-1 min-w-[140px]">
-                <DistrictSelect
-                  label={t('intercity.from')}
-                  name="from"
-                  value={from}
-                  onChange={setFrom}
-                  placeholder={t('intercity.startLocationPlaceholder')}
-                />
+          {/* ── Search Card with gradient background ── */}
+          <div className="flex-none px-3 pt-2 pb-2 md:px-4 md:pt-3 md:pb-2 relative z-50">
+            <div className="relative group isolate">
+              {/* Gradient background layer */}
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-700 rounded-2xl md:rounded-[2rem] shadow-xl shadow-blue-500/30 overflow-hidden transition-all duration-300">
+                <div className="absolute top-0 right-0 -mr-12 -mt-12 w-40 h-40 rounded-full bg-white/10 blur-2xl" />
+                <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-32 h-32 rounded-full bg-white/10 blur-2xl" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-white/5 blur-3xl" />
               </div>
-
-              {/* SWAP BUTTON - Absolutely positioned to center between inputs */}
-              <div className="flex md:hidden items-center justify-center absolute left-1/2 -translate-x-1/2 top-[50%] -translate-y-1/2 z-30">
-                <button
-                  type="button"
-                  onClick={handleSwap}
-                  className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-700 dark:to-slate-600 hover:from-blue-100 hover:to-indigo-100 dark:hover:from-slate-600 dark:hover:to-slate-500 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 p-3 rounded-full border-2 border-blue-200 dark:border-slate-600 ring-4 ring-white dark:ring-slate-800 transition-all transform hover:rotate-180 hover:scale-110 shadow-lg hover:shadow-xl active:scale-95"
-                  title="অবস্থান পরিবর্তন করুন"
-                >
-                  <ArrowRightLeft size={18} />
-                </button>
-              </div>
-
-              {/* SWAP BUTTON - Desktop version */}
-              <div className="hidden md:flex items-center justify-center mb-2 relative z-20">
-                <button
-                  type="button"
-                  onClick={handleSwap}
-                  className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-700 dark:to-slate-600 hover:from-blue-100 hover:to-indigo-100 dark:hover:from-slate-600 dark:hover:to-slate-500 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 p-2.5 rounded-full border-2 border-blue-200 dark:border-slate-600 transition-all transform hover:rotate-180 hover:scale-110 shadow-md hover:shadow-lg active:scale-95"
-                  title="অবস্থান পরিবর্তন করুন"
-                >
-                  <ArrowRightLeft size={20} />
-                </button>
-              </div>
-
-              {/* TO */}
-              <div className="flex-1 min-w-[140px]">
-                <DistrictSelect
-                  label={t('intercity.to')}
-                  name="to"
-                  value={to}
-                  onChange={setTo}
-                  placeholder={t('intercity.destinationPlaceholder')}
-                />
-              </div>
-
-              <div className="w-full md:w-auto mt-1 md:mt-0">
-                <button
-                  type="submit"
-                  disabled={loading || !from || !to}
-                  className={`
-                     w-full h-14 md:h-[50px] px-8 md:px-10 font-black rounded-2xl transition-all flex items-center justify-center gap-3 transform active:scale-95 text-base md:text-base uppercase tracking-widest
-                     ${loading || !from || !to
-                      ? 'bg-slate-200 dark:bg-slate-700 text-slate-400 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-[0_10px_20px_-10px_rgba(37,99,235,0.4)] hover:shadow-[0_15px_30px_-10px_rgba(37,99,235,0.5)] hover:-translate-y-0.5 group'
-                    }
-                   `}
-                >
-                  {loading ? (
-                    <div className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />
-                  ) : (
-                    <>
-                      <Search size={22} className="transition-transform group-hover:scale-110" />
-                      <span className="font-black">{t('intercity.search')}</span>
-                    </>
-                  )}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      {/* SCROLLABLE BOTTOM SECTION (Results) */}
-      <div className="flex-1 overflow-y-auto bg-slate-50/50 dark:bg-slate-900/50 relative z-0">
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 md:py-8">
-
-          {/* Error Message */}
-          {error && (
-            <div className="max-w-3xl mx-auto mb-6 md:mb-8 animate-fade-in">
-              <div className="bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-900/50 text-red-600 dark:text-red-400 px-4 md:px-6 py-3 md:py-4 rounded-2xl flex items-center gap-3 shadow-sm text-sm md:text-base">
-                <AlertCircle size={20} className="flex-shrink-0" />
-                <p className="font-medium">{error}</p>
+              {/* Content layer */}
+              <div className="relative z-10 text-white rounded-2xl md:rounded-[2rem] px-4 pt-4 pb-3 md:px-6 md:pt-5 md:pb-4">
+                <div className="mb-3 md:mb-4">
+                  <h2 className="text-lg md:text-2xl font-extrabold leading-tight drop-shadow-sm">
+                    {language === 'bn' ? <><span className="text-yellow-300">বাংলা</span>দেশ ভ্রমণ</> : <>Bangladesh <span className="text-yellow-300">Travel</span></>}
+                  </h2>
+                  <p className="text-white/75 text-xs md:text-sm mt-0.5">{t('intercity.onYourRoute')}</p>
+                </div>
+                <form onSubmit={handleSearch} className="space-y-2">
+                  <DistrictSelect label={t('intercity.from')} name="from" value={from} onChange={setFrom} placeholder={t('intercity.startLocationPlaceholder')} />
+                  <div className="flex justify-center -my-0.5 relative z-20">
+                    <button type="button" onClick={handleSwap} className="bg-white/20 hover:bg-white/30 text-white p-1.5 rounded-full border border-white/30 transition-all transform hover:rotate-180 hover:scale-110 active:scale-95 backdrop-blur-sm shadow-sm">
+                      <ArrowRightLeft size={14} />
+                    </button>
+                  </div>
+                  <DistrictSelect label={t('intercity.to')} name="to" value={to} onChange={setTo} placeholder={t('intercity.destinationPlaceholder')} />
+                  <button
+                    type="submit"
+                    disabled={loading || !from || !to}
+                    className={`w-full h-11 px-6 font-black rounded-xl transition-all flex items-center justify-center gap-2 transform active:scale-95 text-sm uppercase tracking-wider ${loading || !from || !to ? 'bg-white/20 text-white/50 cursor-not-allowed' : 'bg-white text-blue-700 hover:bg-blue-50 shadow-lg hover:shadow-xl hover:-translate-y-0.5'}`}
+                  >
+                    {loading ? <div className="w-4 h-4 border-2 border-blue-400/30 border-t-blue-400 rounded-full animate-spin" /> : <><Search size={16} /><span>{t('intercity.search')}</span></>}
+                  </button>
+                </form>
               </div>
             </div>
-          )}
+          </div>
 
-          {/* Results Area */}
-          <div className="max-w-7xl mx-auto min-h-[500px]">
-            {loading && <LoadingState />}
+          {/* ── Scrollable list area ── */}
+          <div className="flex-1 overflow-y-auto px-3 pb-nav-safe md:pb-4 space-y-2 min-h-0">
 
-            {!loading && result && (
-              <ResultCard data={result} />
+            {/* Error (mobile only) */}
+            {error && (
+              <div className="md:hidden pt-2">
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-3 rounded-2xl flex items-center gap-3 text-sm shadow-sm">
+                  <AlertCircle size={18} className="flex-shrink-0" />
+                  <p className="font-medium">{error}</p>
+                </div>
+              </div>
             )}
 
-            {/* Empty State / Popular Routes */}
-            {!loading && !result && !error && (
-              <div className="mt-2 md:mt-12 animate-slide-up max-w-4xl mx-auto">
-                <div className="mt-8 md:mt-12 bg-white dark:bg-slate-800 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 max-w-2xl mx-auto border border-gray-100 dark:border-slate-700 shadow-sm text-center md:text-left transition-colors duration-300">
-                  <div className="bg-blue-50 dark:bg-slate-700 p-4 rounded-full text-blue-500 dark:text-blue-400 animate-pulse">
-                    <PlayCircle size={32} />
-                  </div>
-                  <div>
-                    <h4 className="text-gray-900 dark:text-white font-bold text-lg mb-2">{t('intercity.demoTitle')}</h4>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">{t('intercity.demoDesc')}</p>
-                    <button
-                      onClick={handleDemoSearch}
-                      // disabled={!isOnline} // Demo works offline now
-                      className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-sm font-black rounded-xl transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wider"
-                    >
-                      {t('intercity.viewDemo')}
-                    </button>
+            {/* Loading (mobile only) */}
+            {loading && <div className="md:hidden pt-2"><LoadingState /></div>}
+
+            {/* Result card — mobile only, desktop shows in right panel */}
+            {!loading && result && <div className="md:hidden pt-2"><ResultCard data={result} /></div>}
+
+            {/* Demo option — shown when not logged in and no result */}
+            {!authUser && !loading && !result && (
+              <div className="pt-2">
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-5 border border-blue-100 dark:border-blue-800/50">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-blue-100 dark:bg-blue-900/40 p-3 rounded-xl text-blue-500 shrink-0"><PlayCircle size={24} /></div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-bold text-gray-900 dark:text-white text-sm mb-1">{t('intercity.demoTitle')}</h4>
+                      <p className="text-gray-500 dark:text-gray-400 text-xs mb-3 leading-relaxed">{t('intercity.demoDesc')}</p>
+                      <button onClick={handleDemoSearch} className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-black rounded-xl transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95 uppercase tracking-wider">
+                        {t('intercity.viewDemo')}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             )}
+
+            {/* Transport mode list — shown when logged in */}
+            {authUser && (
+              <div className="pt-2 space-y-2">
+                <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-1 pt-1">
+                  {language === 'bn' ? 'যাতায়াত মাধ্যম' : 'Travel Modes'}
+                </h3>
+                {([
+                  { id: 'bus', icon: <Bus size={18} />, label: t('intercity.byBus'), desc: language === 'bn' ? 'আন্তঃজেলা বাস রুট ও শিডিউল' : 'Intercity bus routes & schedules', sel: 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400' },
+                  { id: 'train', icon: <Train size={18} />, label: t('intercity.byTrain'), desc: language === 'bn' ? 'বাংলাদেশ রেলওয়ে ট্রেন শিডিউল' : 'Bangladesh Railway schedules', sel: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400' },
+                  { id: 'plane', icon: <Plane size={18} />, label: t('intercity.byAir'), desc: language === 'bn' ? 'অভ্যন্তরীণ ফ্লাইট তথ্য' : 'Domestic flight info', sel: 'bg-sky-50 dark:bg-sky-900/20 border-sky-200 dark:border-sky-800 text-sky-600 dark:text-sky-400' },
+                  { id: 'launch', icon: <span className="text-base">🛥️</span>, label: language === 'bn' ? 'লঞ্চে' : 'By Launch', desc: language === 'bn' ? 'নদীপথে লঞ্চ সার্ভিস' : 'River launch services', sel: 'bg-teal-50 dark:bg-teal-900/20 border-teal-200 dark:border-teal-800 text-teal-600 dark:text-teal-400' },
+                ] as const).map(mode => {
+                  const isSelected = selectedMode === mode.id;
+                  return (
+                    <button
+                      key={mode.id}
+                      onClick={() => setSelectedMode(isSelected ? null : mode.id)}
+                      className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all text-left ${isSelected ? mode.sel : 'bg-white dark:bg-slate-800 border-gray-100 dark:border-slate-700 hover:border-gray-200 dark:hover:border-slate-600'}`}
+                    >
+                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${isSelected ? mode.sel : 'bg-gray-50 dark:bg-slate-700 text-gray-500 dark:text-gray-400'}`}>
+                        {mode.icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-bold text-gray-900 dark:text-white text-sm">{mode.label}</p>
+                        <p className="text-gray-500 dark:text-gray-400 text-xs truncate">{mode.desc}</p>
+                      </div>
+                      <ChevronRight size={15} className={`shrink-0 text-gray-400 transition-transform ${isSelected ? 'rotate-90' : ''}`} />
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
+            <div className="pt-4"><GlobalFooter /></div>
           </div>
-          <GlobalFooter />
-        </main>
-      </div>
+        </div>
+
+        {/* ═══ RIGHT PANEL (desktop only) ═══ */}
+        <div className="hidden md:flex flex-1 flex-col relative overflow-hidden">
+          {/* Bangladesh sky/landscape background */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#4ca1af] via-[#a8edea] to-[#E0F6FF] dark:from-[#0f2027] dark:via-[#203a43] dark:to-[#2c5364] transition-colors duration-1000">
+            <div className="absolute top-10 right-16 w-14 h-14 bg-yellow-300/80 dark:bg-yellow-200/20 rounded-full shadow-[0_0_40px_20px_rgba(253,224,71,0.25)]" />
+            <div className="absolute top-6 left-1/4 w-36 h-10 bg-white/70 dark:bg-white/10 rounded-full blur-sm" />
+            <div className="absolute top-14 left-1/3 w-28 h-8 bg-white/50 dark:bg-white/5 rounded-full blur-sm" />
+            <div className="absolute top-20 right-1/4 w-20 h-7 bg-white/60 dark:bg-white/8 rounded-full blur-sm" />
+            <div className="absolute bottom-0 left-0 right-0 h-2/5 bg-gradient-to-t from-emerald-600/25 via-emerald-400/10 to-transparent dark:from-emerald-900/20" />
+            <div className="absolute bottom-[18%] left-[-10%] right-[-10%] h-14 bg-gradient-to-r from-blue-400/30 via-cyan-300/25 to-blue-400/30 dark:from-blue-900/20 blur-sm" style={{ borderRadius: '50%' }} />
+          </div>
+
+          {/* Right panel content overlay */}
+          <div className="relative z-10 flex-1 overflow-y-auto">
+
+            {/* Loading */}
+            {loading && (
+              <div className="flex items-center justify-center h-full min-h-[400px]">
+                <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl"><LoadingState /></div>
+              </div>
+            )}
+
+            {/* Error */}
+            {error && !loading && (
+              <div className="flex items-center justify-center h-full min-h-[400px] p-8">
+                <div className="max-w-md w-full bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-red-100 dark:border-red-900/30">
+                  <div className="flex items-center gap-3 text-red-600 dark:text-red-400 mb-2"><AlertCircle size={22} /><h3 className="font-bold text-lg">{language === 'bn' ? 'ত্রুটি' : 'Error'}</h3></div>
+                  <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Search result */}
+            {!loading && result && (
+              <div className="p-6 max-w-5xl mx-auto"><ResultCard data={result} /></div>
+            )}
+
+            {/* Empty state: transport mode detail or welcome */}
+            {!loading && !result && !error && (
+              <div className="flex flex-col items-center justify-center h-full min-h-[400px] p-8 text-center">
+                {selectedMode === 'bus' && authUser && (
+                  <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
+                    <div className="text-4xl mb-4 text-center">🚌</div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 text-center">{t('intercity.byBus')}</h3>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5 text-center">{language === 'bn' ? 'বাংলাদেশের সকল জেলায় আন্তঃজেলা বাস সার্ভিস পাওয়া যায়। AC ও Non-AC উভয় পরিষেবা উপলব্ধ।' : 'Intercity bus services connect all districts of Bangladesh. Both AC and Non-AC services available.'}</p>
+                    <div className="grid grid-cols-2 gap-3">
+                      {[{ l: language === 'bn' ? 'এসি বাস' : 'AC Bus', d: language === 'bn' ? 'আরামদায়ক, শীতাতপ' : 'Air conditioned comfort' }, { l: language === 'bn' ? 'নন-এসি বাস' : 'Non-AC Bus', d: language === 'bn' ? 'সাশ্রয়ী মূল্যে' : 'Budget friendly' }, { l: language === 'bn' ? 'চেয়ার কোচ' : 'Chair Coach', d: language === 'bn' ? 'নির্ধারিত আসন' : 'Reserved seating' }, { l: language === 'bn' ? 'স্লিপার কোচ' : 'Sleeper Coach', d: language === 'bn' ? 'রাতের দীর্ঘ যাত্রা' : 'Overnight journeys' }].map(i => (
+                        <div key={i.l} className="bg-emerald-50 dark:bg-emerald-900/20 rounded-xl p-3"><p className="font-bold text-emerald-700 dark:text-emerald-400 text-sm">{i.l}</p><p className="text-gray-500 dark:text-gray-400 text-xs">{i.d}</p></div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {selectedMode === 'train' && authUser && (
+                  <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
+                    <div className="text-4xl mb-4 text-center">🚂</div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 text-center">{t('intercity.byTrain')}</h3>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5 text-center">{language === 'bn' ? 'বাংলাদেশ রেলওয়ে দেশের প্রধান শহরগুলি সংযুক্ত করে। ট্রেনে ভ্রমণ নিরাপদ ও সুবিধাজনক।' : 'Bangladesh Railway connects major cities. Train travel is safe and comfortable.'}</p>
+                    <div className="grid grid-cols-2 gap-3">
+                      {[{ l: 'শোভন', d: language === 'bn' ? 'সাধারণ আসন' : 'Regular seats' }, { l: 'শোভন চেয়ার', d: language === 'bn' ? 'আরামদায়ক চেয়ার' : 'Comfortable chairs' }, { l: 'AC চেয়ার', d: language === 'bn' ? 'শীতাতপ নিয়ন্ত্রিত' : 'Air conditioned' }, { l: 'AC বার্থ', d: language === 'bn' ? 'রাতের ঘুমের যাত্রা' : 'Overnight sleeper' }].map(i => (
+                        <div key={i.l} className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-3"><p className="font-bold text-blue-700 dark:text-blue-400 text-sm">{i.l}</p><p className="text-gray-500 dark:text-gray-400 text-xs">{i.d}</p></div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {selectedMode === 'plane' && authUser && (
+                  <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
+                    <div className="text-4xl mb-4 text-center">✈️</div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 text-center">{t('intercity.byAir')}</h3>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5 text-center">{language === 'bn' ? 'বিমান বাংলাদেশ ও নভো এয়ার অভ্যন্তরীণ ফ্লাইট পরিষেবা প্রদান করে।' : 'Biman Bangladesh & Novo Air operate domestic flights.'}</p>
+                    <div className="grid grid-cols-2 gap-3">
+                      {[{ l: 'ঢাকা–চট্টগ্রাম', d: '~45 min' }, { l: 'ঢাকা–সিলেট', d: '~40 min' }, { l: 'ঢাকা–কক্সবাজার', d: '~1 hr' }, { l: 'ঢাকা–যশোর', d: '~45 min' }].map(i => (
+                        <div key={i.l} className="bg-sky-50 dark:bg-sky-900/20 rounded-xl p-3"><p className="font-bold text-sky-700 dark:text-sky-400 text-sm">{i.l}</p><p className="text-gray-500 dark:text-gray-400 text-xs">{i.d}</p></div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {selectedMode === 'launch' && authUser && (
+                  <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
+                    <div className="text-4xl mb-4 text-center">🛥️</div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 text-center">{language === 'bn' ? 'লঞ্চে যাত্রা' : 'By Launch/Ferry'}</h3>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5 text-center">{language === 'bn' ? 'সদরঘাট থেকে বিভিন্ন রুটে লঞ্চ সার্ভিস পাওয়া যায়।' : 'Launch services depart from Sadarghat to various destinations.'}</p>
+                    <div className="grid grid-cols-2 gap-3">
+                      {[{ l: 'ঢাকা–বরিশাল', d: '~8-10 hrs' }, { l: 'ঢাকা–পটুয়াখালী', d: '~10-12 hrs' }, { l: 'ঢাকা–ভোলা', d: '~8-9 hrs' }, { l: 'ঢাকা–ঝালকাঠি', d: '~9-10 hrs' }].map(i => (
+                        <div key={i.l} className="bg-teal-50 dark:bg-teal-900/20 rounded-xl p-3"><p className="font-bold text-teal-700 dark:text-teal-400 text-sm">{i.l}</p><p className="text-gray-500 dark:text-gray-400 text-xs">{i.d}</p></div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {(!selectedMode || !authUser) && (
+                  <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-md w-full">
+                    <div className="flex items-center justify-center mb-5">
+                      <div className="relative">
+                        <Bus size={52} className="text-blue-500/70" />
+                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full animate-pulse" />
+                      </div>
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">{language === 'bn' ? 'আন্তঃজেলা যাত্রা পরিকল্পনা' : 'Plan Your Intercity Journey'}</h3>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">{language === 'bn' ? 'বামে থেকে ও গন্তব্য নির্বাচন করে সার্চ করুন। বাস, ট্রেন, বিমান ও লঞ্চ রুটের তুলনামূলক তথ্য পাবেন।' : 'Select your departure and destination on the left to find routes. Compare bus, train, flight, and launch options.'}</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+
+      </div>{/* END MAIN CONTENT */}
       {/* Menu Overlay */}
       {isMenuOpen && (
         <div className="fixed inset-0 z-[200]">
