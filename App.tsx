@@ -42,6 +42,7 @@ import {
   type SearchSuggestion
 } from './services/searchService';
 import { sortBusesByLocation } from './services/locationBasedSortService';
+import { initDataSync, triggerChatSync, triggerAISync } from './services/fullDataSync';
 import { DesktopNavbar } from './components/DesktopNavbar';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { useLanguage } from './contexts/LanguageContext';
@@ -622,6 +623,11 @@ const App: React.FC = () => {
     initializeOfflineSupport().then(() => {
       console.log('Offline support initialized');
     });
+
+    // Initialize full data sync (pull from repo → start periodic push)
+    const authSession = localStorage.getItem('koyjabo_auth_session');
+    const userId = authSession ? (() => { try { return JSON.parse(authSession)?.user?.id; } catch { return undefined; } })() : undefined;
+    initDataSync(userId).catch(() => { /* silent — works offline */ });
 
     return () => {
       window.removeEventListener('online', handleOnline);
@@ -1499,6 +1505,11 @@ const App: React.FC = () => {
 
     setChatHistory(prev => [...prev, assistantMessage]);
     setAiLoading(false);
+
+    // Sync chat + AI learning data to private repo (debounced)
+    const _uid = (() => { try { return JSON.parse(localStorage.getItem('koyjabo_auth_session') ?? '{}')?.user?.id; } catch { return undefined; } })();
+    triggerChatSync(_uid);
+    triggerAISync();
   };
 
   const handleStartNavigation = useCallback(() => {

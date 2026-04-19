@@ -55,9 +55,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: 'Missing path or content' });
   }
 
-  // Restrict to data/transport/ prefix only — prevent arbitrary writes
-  if (!/^data\/transport\/[\w-]+\.json$/.test(body.path) || body.path.includes('..')) {
-    return res.status(400).json({ error: 'Invalid path — only data/transport/*.json allowed' });
+  // Restrict to safe subdirectories only — prevent arbitrary writes
+  const ALLOWED_PATH = /^data\/(transport|ai)\/[\w-]+\.json$|^data\/chat\/[\w-]{3,64}\/[\w-]+\.json$/;
+  if (!ALLOWED_PATH.test(body.path) || body.path.includes('..')) {
+    return res.status(400).json({ error: 'Invalid path — allowed: data/transport/, data/ai/, data/chat/{userId}/' });
   }
 
   const encoded = Buffer.from(JSON.stringify(body.content, null, 2)).toString('base64');
