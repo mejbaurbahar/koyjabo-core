@@ -194,26 +194,42 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
     viaWithCoords.forEach(v => addMarker(v.coords, `Via: ${v.name}`, '#3b82f6')); // Blue
     addMarker(endCoords, `Destination: ${to}`, '#ef4444'); // Red
 
-    // Draw Polyline - Enhanced Visibility
-    const polyline = window.L.polyline(routePoints, {
-      color: '#2563eb', // Brighter Blue (Tailwind blue-600)
-      weight: 5,        // Thicker
-      opacity: 0.9,     // More visible
-      lineCap: 'round',
-      lineJoin: 'round'
-    }).addTo(layers);
+    // Fetch road-following route from OSRM, fall back to straight lines
+    const drawRoute = async () => {
+      let roadPoints: [number, number][] = routePoints;
+      try {
+        const coordStr = routePoints.map(p => `${p[1]},${p[0]}`).join(';');
+        const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${coordStr}?overview=full&geometries=geojson`;
+        const resp = await fetch(osrmUrl, { signal: AbortSignal.timeout(6000) });
+        if (resp.ok) {
+          const data = await resp.json() as { routes?: { geometry?: { coordinates?: [number, number][] } }[] };
+          const coords = data?.routes?.[0]?.geometry?.coordinates;
+          if (coords && coords.length > 1) {
+            // OSRM returns [lng, lat], Leaflet needs [lat, lng]
+            roadPoints = coords.map(c => [c[1], c[0]] as [number, number]);
+          }
+        }
+      } catch { /* use straight lines if OSRM unavailable */ }
 
-    // Initial Bounds Fit with Padding
-    // Increased padding to [80, 80] to handle "zoom out" request and mobile layouts
-    mapInstance.current.fitBounds(polyline.getBounds(), { padding: [80, 80] });
+      const polyline = window.L.polyline(roadPoints, {
+        color: '#2563eb',
+        weight: 5,
+        opacity: 0.9,
+        lineCap: 'round',
+        lineJoin: 'round'
+      }).addTo(layers);
 
-    // Fix for Mobile Rendering: Force invalidateSize after transition
-    setTimeout(() => {
-      if (mapInstance.current) {
-        mapInstance.current.invalidateSize();
-        mapInstance.current.fitBounds(polyline.getBounds(), { padding: [80, 80] });
-      }
-    }, 400);
+      mapInstance.current.fitBounds(polyline.getBounds(), { padding: [80, 80] });
+
+      setTimeout(() => {
+        if (mapInstance.current) {
+          mapInstance.current.invalidateSize();
+          mapInstance.current.fitBounds(polyline.getBounds(), { padding: [80, 80] });
+        }
+      }, 400);
+    };
+
+    drawRoute();
 
     // --- 4. Animation ---
     const vehicleIconDiv = window.L.divIcon({

@@ -318,7 +318,7 @@ export const translations: Record<Language, Translations> = {
         ai: {
             title: 'এআই সহায়ক',
             subtitle: 'আমি আপনাকে রুট খুঁজে পেতে সাহায্য করতে পারি',
-            placeholder: 'আপনার প্রশ্ন টাইপ করুন...',
+            placeholder: 'যেকোনো কিছু জিজ্ঞেস করুন, আমি আপনার ভ্রমণ সহায়তায় আছি',
             send: 'পাঠান',
             thinking: 'চিন্তা করছি...',
             thinkingStep1: 'অনুরোধ বোঝার চেষ্টা করছি...',
@@ -1217,7 +1217,7 @@ export const translations: Record<Language, Translations> = {
         ai: {
             title: 'AI Assistant',
             subtitle: 'I can help you find routes',
-            placeholder: 'Type your question...',
+            placeholder: 'Ask me anything, I am here for your Travel assistance',
             send: 'Send',
             thinking: 'Thinking...',
             thinkingStep1: 'Understanding request...',

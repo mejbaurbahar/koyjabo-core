@@ -235,6 +235,33 @@ function App() {
       if (!history.todayIntercity.includes(routeKey)) history.todayIntercity.push(routeKey);
       if (history.intercitySearches.length > 100) history.intercitySearches = history.intercitySearches.slice(-100);
       localStorage.setItem(historyKey, JSON.stringify(history));
+
+      // Push history to GitHub repo (fire-and-forget)
+      if (userId) {
+        const trimmed = {
+          busSearches: (history.busSearches || []).slice(-50),
+          routeSearches: (history.routeSearches || []).slice(-50),
+          intercitySearches: history.intercitySearches.slice(-50),
+          trainSearches: (history.trainSearches || []).slice(-50),
+          mostUsedBuses: history.mostUsedBuses || {},
+          mostUsedRoutes: history.mostUsedRoutes || {},
+          mostUsedIntercity: history.mostUsedIntercity,
+          mostUsedTrains: history.mostUsedTrains || {},
+        };
+        fetch('/api/gh', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            requestId: crypto.randomUUID(),
+            action: 'save-history',
+            email: '',
+            passwordHash: '',
+            userId,
+            data: JSON.stringify(trimmed),
+          }),
+        }).catch(() => {});
+      }
     } catch {
       // best-effort
     }
@@ -456,28 +483,27 @@ function App() {
           {!isOnline && <div className="h-7 shrink-0" />}
 
           {/* ── Search Card with gradient background ── */}
-          <div className="flex-none px-3 pt-2 pb-2 md:px-4 md:pt-3 md:pb-2 relative z-50">
+          <div className="flex-none px-2 pt-1.5 pb-1.5 md:px-4 md:pt-3 md:pb-2 relative z-50">
             <div className="relative group">
               {/* Gradient background layer */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0F788F] via-[#219E91] to-[#11B084] rounded-2xl md:rounded-[2rem] shadow-xl shadow-[#0F788F]/30 overflow-hidden transition-all duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0F788F] via-[#219E91] to-[#11B084] rounded-xl md:rounded-[2rem] shadow-lg shadow-[#0F788F]/20 overflow-hidden transition-all duration-300">
                 <div className="absolute top-0 right-0 -mr-12 -mt-12 w-40 h-40 rounded-full bg-white/10 blur-2xl" />
                 <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-32 h-32 rounded-full bg-white/10 blur-2xl" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-white/5 blur-3xl" />
               </div>
               {/* Content layer */}
-              <div className="relative z-10 text-white rounded-2xl md:rounded-[2rem] px-4 pt-4 pb-3 md:px-6 md:pt-5 md:pb-4">
-                <div className="mb-3 md:mb-4">
-                  <h2 className="text-lg md:text-2xl font-extrabold leading-tight drop-shadow-sm">
+              <div className="relative z-10 text-white rounded-xl md:rounded-[2rem] px-3 pt-2.5 pb-2 md:px-6 md:pt-5 md:pb-4">
+                <div className="mb-1.5 md:mb-4">
+                  <h2 className="text-base md:text-2xl font-extrabold leading-tight drop-shadow-sm">
                     {language === 'bn' ? <><span className="text-yellow-300">বাংলা</span>দেশ ভ্রমণ</> : <>Bangladesh <span className="text-yellow-300">Travel</span></>}
                   </h2>
-                  <p className="text-white/75 text-xs md:text-sm mt-0.5">{t('intercity.onYourRoute')}</p>
+                  <p className="text-white/75 text-[10px] md:text-sm mt-0">{t('intercity.onYourRoute')}</p>
                 </div>
-                <form onSubmit={handleSearch} className="space-y-1.5">
+                <form onSubmit={handleSearch} className="space-y-1">
                   <DistrictSelect label={t('intercity.from')} name="from" value={from} onChange={setFrom} placeholder={t('intercity.startLocationPlaceholder')} />
-                  <div className="flex items-center gap-2 -my-2 relative z-20">
+                  <div className="flex items-center gap-2 -my-1 relative z-20">
                     <div className="flex-1 h-px bg-white/25" />
-                    <button type="button" onClick={handleSwap} className="bg-white/20 hover:bg-white/35 text-white p-1.5 rounded-full border border-white/30 transition-all transform hover:rotate-180 hover:scale-110 active:scale-95 backdrop-blur-sm shadow-sm shrink-0">
-                      <ArrowRightLeft size={14} />
+                    <button type="button" onClick={handleSwap} className="bg-white/20 hover:bg-white/35 text-white p-1 md:p-1.5 rounded-full border border-white/30 transition-all transform hover:rotate-180 hover:scale-110 active:scale-95 backdrop-blur-sm shadow-sm shrink-0">
+                      <ArrowRightLeft size={12} />
                     </button>
                     <div className="flex-1 h-px bg-white/25" />
                   </div>
@@ -485,7 +511,7 @@ function App() {
                   <button
                     type="submit"
                     disabled={loading || !from || !to}
-                    className={`w-full h-11 px-6 font-black rounded-xl transition-all flex items-center justify-center gap-2 transform active:scale-95 text-sm uppercase tracking-wider ${loading || !from || !to ? 'bg-white/20 text-white/50 cursor-not-allowed' : 'bg-white text-blue-700 hover:bg-blue-50 shadow-lg hover:shadow-xl hover:-translate-y-0.5'}`}
+                    className={`w-full h-9 md:h-11 px-6 font-black rounded-xl transition-all flex items-center justify-center gap-2 transform active:scale-95 text-sm uppercase tracking-wider ${loading || !from || !to ? 'bg-white/20 text-white/50 cursor-not-allowed' : 'bg-white text-blue-700 hover:bg-blue-50 shadow-lg hover:shadow-xl hover:-translate-y-0.5'}`}
                   >
                     {loading ? <div className="w-4 h-4 border-2 border-blue-400/30 border-t-blue-400 rounded-full animate-spin" /> : <><Search size={16} /><span>{t('intercity.search')}</span></>}
                   </button>

@@ -755,19 +755,29 @@ async function handleResetPassword({ token, newPasswordHash }) {
 async function handleSaveHistory({ userId, historyData }) {
   if (!userId) return { success: false, error: 'User ID required.' };
 
+  // Fetch user profile for identity tagging
+  const userFile = await readDataFile(`data/users/${userId}.json`).catch(() => null);
+  const userDisplayName = userFile?.content?.displayName || '';
+  const userUsername = userFile?.content?.username || '';
+
   // historyData is the parsed JSON from INPUT_DATA
   const safe = {
+    userId,
+    displayName: userDisplayName,
+    username: userUsername,
     busSearches:       Array.isArray(historyData.busSearches)       ? historyData.busSearches.slice(-50)       : [],
     routeSearches:     Array.isArray(historyData.routeSearches)     ? historyData.routeSearches.slice(-50)     : [],
     intercitySearches: Array.isArray(historyData.intercitySearches) ? historyData.intercitySearches.slice(-50) : [],
+    trainSearches:     Array.isArray(historyData.trainSearches)     ? historyData.trainSearches.slice(-50)     : [],
     mostUsedBuses:     (typeof historyData.mostUsedBuses === 'object' && historyData.mostUsedBuses)     ? historyData.mostUsedBuses     : {},
     mostUsedRoutes:    (typeof historyData.mostUsedRoutes === 'object' && historyData.mostUsedRoutes)    ? historyData.mostUsedRoutes    : {},
     mostUsedIntercity: (typeof historyData.mostUsedIntercity === 'object' && historyData.mostUsedIntercity) ? historyData.mostUsedIntercity : {},
+    mostUsedTrains:    (typeof historyData.mostUsedTrains === 'object' && historyData.mostUsedTrains)    ? historyData.mostUsedTrains    : {},
     updatedAt: Date.now()
   };
 
   const existing = await readDataFile(`data/history/${userId}.json`);
-  await writeDataFile(`data/history/${userId}.json`, safe, existing?.sha, `History sync: ${userId}`);
+  await writeDataFile(`data/history/${userId}.json`, safe, existing?.sha, `History sync: ${userDisplayName || userId}`);
   return { success: true };
 }
 
@@ -793,6 +803,11 @@ async function handleRecordVisit({ visitorId }) {
 async function handleRecordDevice({ userId, deviceInfo }) {
   if (!userId || !deviceInfo) return { success: false, error: 'User ID and device info required.' };
 
+  // Fetch user profile to include displayName and username in device record
+  const userFile = await readDataFile(`data/users/${userId}.json`).catch(() => null);
+  const userDisplayName = userFile?.content?.displayName || '';
+  const userUsername = userFile?.content?.username || '';
+
   const devicesFile = await readDataFile(`data/devices/${userId}.json`);
   const devices = Array.isArray(devicesFile?.content) ? devicesFile.content : [];
 
@@ -803,11 +818,20 @@ async function handleRecordDevice({ userId, deviceInfo }) {
   let newDeviceInfo = null;
 
   if (existingIdx >= 0) {
-    devices[existingIdx] = { ...devices[existingIdx], lastLogin: now, ip: deviceInfo.ip || devices[existingIdx].ip };
+    devices[existingIdx] = {
+      ...devices[existingIdx],
+      lastLogin: now,
+      ip: deviceInfo.ip || devices[existingIdx].ip,
+      displayName: userDisplayName || devices[existingIdx].displayName,
+      username: userUsername || devices[existingIdx].username,
+    };
   } else {
     const parsed = parseUserAgent(deviceInfo.userAgent || '');
     const newDevice = {
       id: deviceInfo.deviceId || crypto.randomUUID(),
+      userId,
+      displayName: userDisplayName,
+      username: userUsername,
       name: parsed.name, os: parsed.os, browser: parsed.browser,
       deviceType: parsed.deviceType, ip: deviceInfo.ip || 'Unknown',
       firstLogin: now, lastLogin: now
@@ -818,7 +842,7 @@ async function handleRecordDevice({ userId, deviceInfo }) {
     newDeviceInfo = { ...parsed, ip: newDevice.ip };
   }
 
-  await writeDataFile(`data/devices/${userId}.json`, devices, devicesFile?.sha, `Device recorded: ${userId}`);
+  await writeDataFile(`data/devices/${userId}.json`, devices, devicesFile?.sha, `Device recorded: ${userDisplayName || userId}`);
 
   // Send new device login alert (non-blocking)
   if (isNewDevice && newDeviceInfo) {
@@ -894,8 +918,18 @@ async function handleUploadAvatar({ userId, imageData }) {
   const sizeBytes = Math.round((imageData.length * 3) / 4);
   if (sizeBytes > 150000) return { success: false, error: 'Image too large. Maximum size is 150 KB.' };
 
+  // Fetch user profile to include displayName and username in avatar record
+  const userFile = await readDataFile(`data/users/${userId}.json`).catch(() => null);
+  const userDisplayName = userFile?.content?.displayName || '';
+  const userUsername = userFile?.content?.username || '';
+
   const avatarFile = await readDataFile(`data/avatars/${userId}.json`);
-  await writeDataFile(`data/avatars/${userId}.json`, { userId, imageData, updatedAt: Date.now() }, avatarFile?.sha, `Avatar update: ${userId}`);
+  await writeDataFile(
+    `data/avatars/${userId}.json`,
+    { userId, displayName: userDisplayName, username: userUsername, imageData, updatedAt: Date.now() },
+    avatarFile?.sha,
+    `Avatar update: ${userDisplayName || userId}`
+  );
   return { success: true, hasAvatar: true };
 }
 

@@ -61,11 +61,20 @@ function writeMeta(patch: Partial<SyncMeta>): void {
   try { localStorage.setItem(SYNC_META_KEY, JSON.stringify({ ...readMeta(), ...patch })); } catch { /* quota */ }
 }
 
-function getAuthUserId(): string | null {
+interface AuthUserInfo { id: string; username: string; displayName: string; email: string; }
+
+function getAuthUser(): AuthUserInfo | null {
   try {
     const s = localStorage.getItem('koyjabo_auth_session');
-    return s ? JSON.parse(s)?.user?.id ?? null : null;
+    if (!s) return null;
+    const u = JSON.parse(s)?.user;
+    if (!u?.id) return null;
+    return { id: u.id, username: u.username ?? '', displayName: u.displayName ?? '', email: u.email ?? '' };
   } catch { return null; }
+}
+
+function getAuthUserId(): string | null {
+  return getAuthUser()?.id ?? null;
 }
 
 // ── Transport data export ─────────────────────────────────────────────────────
@@ -148,8 +157,10 @@ function buildManifest(files: string[]) {
 // ── AI learning data ──────────────────────────────────────────────────────────
 
 function buildAILearningExport() {
+  const u = getAuthUser();
   return {
     version: new Date().toISOString(),
+    user: u ? { id: u.id, username: u.username, displayName: u.displayName } : null,
     learnedAnswers: responseCache.getAll(),
     aliases: aliasLearner.getAll(),
     stats: getLearningStats(),
@@ -160,8 +171,10 @@ function buildAILearningExport() {
 
 function buildChatExport() {
   const sessions = getAllSessions();
+  const u = getAuthUser();
   return {
     version: new Date().toISOString(),
+    user: u ? { id: u.id, username: u.username, displayName: u.displayName } : null,
     sessionCount: sessions.length,
     sessions: sessions.map(s => ({
       id: s.id,
@@ -171,6 +184,20 @@ function buildChatExport() {
       messages: s.messages,
     })),
   };
+}
+
+// ── User profile ──────────────────────────────────────────────────────────────
+
+export async function pushUserProfile(): Promise<boolean> {
+  const u = getAuthUser();
+  if (!u) return false;
+  return repoPut(`data/users/${u.id}.json`, {
+    id: u.id,
+    username: u.username,
+    displayName: u.displayName,
+    email: u.email,
+    updatedAt: new Date().toISOString(),
+  });
 }
 
 // ── Pull: repo → localStorage ─────────────────────────────────────────────────

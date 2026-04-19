@@ -885,6 +885,55 @@ const getAirInfo = (from: string, to: string) => {
 const getLaunchInfo = (from: string, to: string) => LAUNCH_ROUTES.find(r => (r.from === from && r.to === to) || (r.from === to && r.to === from));
 const getBusInfo = (from: string, to: string) => BUS_ROUTES_MAJOR.find(r => (r.from === from && r.to === to) || (r.from === to && r.to === from));
 
+// Returns up to 3 hubs that provide a viable connection for from→to
+const buildViaHubSuggestions = (from: string, to: string): Array<{
+    hub: string;
+    leg1Modes: string[];  // modes available from→hub
+    leg2Modes: string[];  // modes available hub→to
+    leg1Time: string;
+    leg2Time: string;
+}> => {
+    const candidates: Array<{ hub: string; leg1Modes: string[]; leg2Modes: string[]; leg1Time: string; leg2Time: string; score: number }> = [];
+
+    for (const hub of MAJOR_HUBS) {
+        if (hub === from || hub === to) continue;
+
+        const leg1Modes: string[] = [];
+        const leg2Modes: string[] = [];
+        let leg1Time = '';
+        let leg2Time = '';
+        let score = 0;
+
+        const t1 = getTrainInfo(from, hub);
+        const a1 = getAirInfo(from, hub);
+        const b1 = getBusInfo(from, hub);
+        const conn1 = getConnectivity(from);
+        const connH = getConnectivity(hub);
+
+        const t2 = getTrainInfo(hub, to);
+        const a2 = getAirInfo(hub, to);
+        const b2 = getBusInfo(hub, to);
+        const connTo = getConnectivity(to);
+
+        if (t1) { leg1Modes.push('Train'); leg1Time = t1.time || ''; score += 3; }
+        if (a1 && !(a1 as any).isIndirect) { leg1Modes.push('Flight'); score += 2; }
+        if (b1 || conn1.bus) { leg1Modes.push('Bus'); if (!leg1Time) leg1Time = 'varies'; score += 1; }
+
+        if (t2) { leg2Modes.push('Train'); leg2Time = t2.time || ''; score += 3; }
+        if (a2 && !(a2 as any).isIndirect) { leg2Modes.push('Flight'); score += 2; }
+        if (b2 || connTo.bus) { leg2Modes.push('Bus'); if (!leg2Time) leg2Time = 'varies'; score += 1; }
+
+        // Only suggest if both legs have at least one confirmed mode and hub improves options
+        const hasLeg1 = leg1Modes.length > 0 && (t1 || a1 || b1);
+        const hasLeg2 = leg2Modes.length > 0 && (t2 || a2 || b2);
+        if (hasLeg1 && hasLeg2) {
+            candidates.push({ hub, leg1Modes, leg2Modes, leg1Time, leg2Time, score });
+        }
+    }
+
+    return candidates.sort((a, b) => b.score - a.score).slice(0, 3).map(({ score: _s, ...rest }) => rest);
+};
+
 export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | 'bn' = 'en'): RouteResponse => {
     const connFrom = getConnectivity(from);
     const connTo = getConnectivity(to);
@@ -1075,7 +1124,22 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
             result += `এই রুটে নৌযান চলাচল করতে পারে। সদরঘাট টার্মিনালে খোঁজ নিন।  \n\n`;
         }
 
-        if (!busInfo && !trainInfo && distance > 200 && from !== 'Dhaka' && to !== 'Dhaka') {
+        // ── Via-hub suggestions (Bengali) ──
+        const viaHubs = buildViaHubSuggestions(from, to);
+        if (viaHubs.length > 0) {
+            const modeNameBn: Record<string, string> = { Train: 'ট্রেন', Flight: 'বিমান', Bus: 'বাস', Launch: 'লঞ্চ' };
+            result += `\n🔄 **বিকল্প পথ (সংযোগ রুট):**  \n`;
+            for (const { hub, leg1Modes, leg2Modes, leg1Time, leg2Time } of viaHubs) {
+                const l1 = leg1Modes.map(m => modeNameBn[m] ?? m).join('/');
+                const l2 = leg2Modes.map(m => modeNameBn[m] ?? m).join('/');
+                const t1str = leg1Time ? ` (~${leg1Time})` : '';
+                const t2str = leg2Time ? ` (~${leg2Time})` : '';
+                result += `- **${from} → ${hub}** (${l1}${t1str}) তারপর **${hub} → ${to}** (${l2}${t2str})  \n`;
+            }
+            result += `  \n`;
+        }
+
+        if (!busInfo && !trainInfo && distance > 200 && from !== 'Dhaka' && to !== 'Dhaka' && viaHubs.length === 0) {
             result += `💡 **পরামর্শ:** সরাসরি সার্ভিস কম থাকলে **ঢাকা** হয়ে যাওয়া সুবিধাজনক (${modesStr} পাওয়া যায়)।  \n`;
         }
         if (from === 'Gazipur' || to === 'Gazipur') {
@@ -1211,7 +1275,19 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
             result += `Waterway service may be available. Check at Sadarghat Terminal, Dhaka.  \n\n`;
         }
 
-        if (!busInfo && !trainInfo && distance > 200 && from !== 'Dhaka' && to !== 'Dhaka') {
+        // ── Via-hub suggestions (English) ──
+        const viaHubsEn = buildViaHubSuggestions(from, to);
+        if (viaHubsEn.length > 0) {
+            result += `\n🔄 **Alternative Routes (Via Hub):**  \n`;
+            for (const { hub, leg1Modes, leg2Modes, leg1Time, leg2Time } of viaHubsEn) {
+                const t1str = leg1Time ? ` (~${leg1Time})` : '';
+                const t2str = leg2Time ? ` (~${leg2Time})` : '';
+                result += `- **${from} → ${hub}** (${leg1Modes.join('/')}${t1str}), then **${hub} → ${to}** (${leg2Modes.join('/')}${t2str})  \n`;
+            }
+            result += `  \n`;
+        }
+
+        if (!busInfo && !trainInfo && distance > 200 && from !== 'Dhaka' && to !== 'Dhaka' && viaHubsEn.length === 0) {
             result += `💡 **Tip:** If direct transport is limited, traveling via **Dhaka** is often the most reliable route (${modesStr} available).  \n`;
         }
         if (from === 'Gazipur' || to === 'Gazipur') {

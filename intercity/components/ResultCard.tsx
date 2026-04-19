@@ -97,22 +97,22 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
     <div className="bg-white dark:bg-slate-900 rounded-[40px] shadow-2xl border border-slate-100 dark:border-slate-800 overflow-clip transition-all duration-700">
 
       {/* 1. TOP HEADER - GLASS OVERLAY STYLE */}
-      <div className="sticky top-0 z-20 p-8 md:p-12 relative overflow-hidden bg-gradient-to-br from-white via-slate-50 to-blue-50/20 dark:from-slate-900 dark:via-slate-800/80 dark:to-blue-900/10 backdrop-blur-md">
+      <div className="sticky top-0 z-20 p-3 md:p-12 relative overflow-hidden bg-gradient-to-br from-white via-slate-50 to-blue-50/20 dark:from-slate-900 dark:via-slate-800/80 dark:to-blue-900/10 backdrop-blur-md">
         <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400/10 dark:bg-blue-600/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-400/10 dark:bg-emerald-600/5 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2"></div>
 
-        <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-10">
-          <div className="space-y-4">
+        <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-2 md:gap-8 mb-3 md:mb-10">
+          <div className="space-y-1 md:space-y-4">
             <div className="flex items-center gap-3">
-              <span className="px-4 py-1.5 bg-blue-600 dark:bg-blue-500 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2 shadow-lg shadow-blue-500/20">
-                <Calendar size={14} strokeWidth={3} /> {new Date(data.date).toLocaleDateString('bn-BD', { day: 'numeric', month: 'short', year: 'numeric' })}
+              <span className="px-3 py-1 md:px-4 md:py-1.5 bg-blue-600 dark:bg-blue-500 text-white rounded-2xl text-[9px] md:text-[10px] font-black uppercase tracking-widest flex items-center gap-1 md:gap-2 shadow-lg shadow-blue-500/20">
+                <Calendar size={12} strokeWidth={3} /> {new Date(data.date).toLocaleDateString('bn-BD', { day: 'numeric', month: 'short', year: 'numeric' })}
               </span>
             </div>
 
-            <h2 className="text-4xl md:text-6xl font-[1000] tracking-tighter text-slate-900 dark:text-white flex items-center gap-6 flex-wrap">
+            <h2 className="text-xl md:text-6xl font-[1000] tracking-tighter text-slate-900 dark:text-white flex items-center gap-2 md:gap-6 flex-wrap">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400">{data.from}</span>
-              <div className="w-14 h-14 rounded-full bg-blue-50 dark:bg-blue-900/40 flex items-center justify-center border-2 border-blue-200 dark:border-blue-800 shadow-inner group">
-                <Navigation className="text-blue-600 dark:text-blue-400 rotate-90 md:rotate-0 transition-transform group-hover:scale-110" size={28} strokeWidth={3} />
+              <div className="w-7 h-7 md:w-14 md:h-14 rounded-full bg-blue-50 dark:bg-blue-900/40 flex items-center justify-center border-2 border-blue-200 dark:border-blue-800 shadow-inner group">
+                <Navigation className="text-blue-600 dark:text-blue-400 rotate-90 md:rotate-0 transition-transform group-hover:scale-110" size={14} strokeWidth={3} />
               </div>
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400">{data.to}</span>
             </h2>
@@ -121,23 +121,23 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
 
         {/* 2. MODE SELECTOR - PREMIUM CHIPS */}
         {parsedData.modes.length > 0 && (
-          <div className="flex flex-wrap gap-4 relative z-10 px-1 py-1">
+          <div className="flex flex-wrap gap-2 md:gap-4 relative z-10 px-0.5 py-0.5 md:px-1 md:py-1">
             {parsedData.modes.map((mode) => (
               <button
                 key={mode.id}
                 onClick={() => setSelectedModeId(mode.id)}
-                className={`flex items-center gap-4 px-8 py-5 rounded-[28px] font-black transition-all duration-500 border-2 group
+                className={`flex items-center gap-2 md:gap-4 px-3 py-2 md:px-8 md:py-5 rounded-[20px] md:rounded-[28px] font-black transition-all duration-500 border-2 group
                   ${selectedModeId === mode.id
-                    ? 'bg-blue-600 border-blue-500 text-white shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] translate-y-[-4px] scale-105'
+                    ? 'bg-blue-600 border-blue-500 text-white shadow-[0_10px_20px_-5px_rgba(37,99,235,0.4)] md:shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] translate-y-[-2px] md:translate-y-[-4px] scale-105'
                     : 'bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-transparent text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-700 hover:border-blue-200 dark:hover:border-blue-800 hover:translate-y-[-2px]'
                   }`}
               >
-                <div className={`text-3xl transition-transform duration-500 ${selectedModeId === mode.id ? 'scale-125' : 'group-hover:scale-110 opacity-70 group-hover:opacity-100'}`}>
+                <div className={`text-xl md:text-3xl transition-transform duration-500 ${selectedModeId === mode.id ? 'scale-125' : 'group-hover:scale-110 opacity-70 group-hover:opacity-100'}`}>
                   {mode.icon}
                 </div>
                 <div className="flex flex-col items-start leading-none">
-                  <span className="text-[10px] uppercase tracking-widest opacity-60 mb-1">{t('common.mode')}</span>
-                  <span className="text-sm md:text-base whitespace-nowrap">{mode.title}</span>
+                  <span className="text-[9px] md:text-[10px] uppercase tracking-widest opacity-60 mb-0.5 md:mb-1">{t('common.mode')}</span>
+                  <span className="text-xs md:text-base whitespace-nowrap">{mode.title}</span>
                 </div>
               </button>
             ))}
