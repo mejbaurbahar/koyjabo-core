@@ -1,53 +1,104 @@
-name: Deploy to GitHub Pages
+name: Build & Deploy to koyjabo.com
 
+# Triggers ONLY when code merges to main (after PR is approved)
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
+  workflow_dispatch: # Allow manual trigger from Actions tab
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
 
 jobs:
-  build:
+  build-and-deploy:
+    name: Build → Push to Dhaka-Commute
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+
     steps:
-      - name: Checkout
+      - name: Checkout koyjabo-core
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install root dependencies
         run: npm ci
 
-      - name: Build
+      - name: Build project
         run: npm run build
         env:
           VITE_GITHUB_TOKEN: ${{ secrets.VITE_GITHUB_TOKEN }}
+          NODE_ENV: production
+          GENERATE_SOURCEMAP: false
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist
+      - name: Verify build output
+        run: |
+          if [ ! -f dist/index.html ]; then
+            echo "ERROR: dist/index.html not found. Build may have failed."
+            exit 1
+          fi
+          echo "Build OK — $(find dist -type f | wc -l) files"
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Clone Dhaka-Commute (deploy target)
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+        run: |
+          git clone \
+            "https://x-access-token:${DEPLOY_TOKEN}@github.com/mejbaurbahar/Dhaka-Commute.git" \
+            deploy-repo
+
+      - name: Swap dist content (preserve .github workflows)
+        run: |
+          cd deploy-repo
+
+          # Remove all git-tracked files EXCEPT .github/ (auth workflows must stay)
+          git ls-files | grep -v '^\.github/' | xargs rm -f 2>/dev/null || true
+
+          # Remove leftover empty directories (skip .git and .github)
+          find . \
+            -not -path './.git*' \
+            -not -path './.github*' \
+            -type d -empty -delete 2>/dev/null || true
+
+          # Copy new build output
+          cp -r ../dist/. .
+
+          # Ensure domain and Jekyll bypass are always present
+          echo "koyjabo.com" > CNAME
+          touch .nojekyll
+
+      - name: Commit and push
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+        run: |
+          cd deploy-repo
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin \
+            "https://x-access-token:${DEPLOY_TOKEN}@github.com/mejbaurbahar/Dhaka-Commute.git"
+
+          git add -A
+
+          # Skip commit if nothing changed
+          if git diff --cached --quiet; then
+            echo "Nothing changed — skipping deploy"
+            exit 0
+          fi
+
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          git commit -m "deploy: $(date -u '+%Y-%m-%d %H:%M UTC') | core@${SHORT_SHA}"
+          git push origin main
+
+      - name: Deploy summary
+        if: success()
+        run: |
+          echo "### Deployed to koyjabo.com" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Time: $(date -u '+%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "- URL: https://koyjabo.com" >> $GITHUB_STEP_SUMMARY

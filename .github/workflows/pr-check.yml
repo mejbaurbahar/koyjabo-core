@@ -1,0 +1,47 @@
+name: PR Build Check
+
+# Validates every PR targeting main — must pass before merge
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  build-check:
+    name: Build validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build (production mode)
+        run: npm run build
+        env:
+          VITE_GITHUB_TOKEN: ${{ secrets.VITE_GITHUB_TOKEN }}
+          NODE_ENV: production
+          GENERATE_SOURCEMAP: false
+
+      - name: Check dist output
+        run: |
+          if [ ! -f dist/index.html ]; then
+            echo "ERROR: dist/index.html missing"
+            exit 1
+          fi
+          FILE_COUNT=$(find dist -type f | wc -l)
+          SIZE=$(du -sh dist | cut -f1)
+          echo "Build passed — ${FILE_COUNT} files, ${SIZE} total"
