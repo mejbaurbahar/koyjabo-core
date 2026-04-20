@@ -31,24 +31,79 @@ interface SyncMeta {
   transportVersion: string;
 }
 
+// ── GitHub API direct access ──────────────────────────────────────────────────
+
+const GH_API = 'https://api.github.com';
+const DATA_OWNER = 'mejbaurbahar';
+const DATA_REPO = 'koyjabo';
+const GH_TOKEN: string = (import.meta as unknown as { env: Record<string, string> }).env.VITE_GITHUB_TOKEN ?? '';
+
+const GH_HEADERS = {
+  Authorization: `Bearer ${GH_TOKEN}`,
+  Accept: 'application/vnd.github.v3+json',
+  'User-Agent': 'koyjabo-app/1.0',
+};
+
+function encodeBase64(str: string): string {
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  for (const b of bytes) binary += String.fromCharCode(b);
+  return btoa(binary);
+}
+
+function decodeBase64(b64: string): string {
+  const binary = atob(b64.replace(/\n/g, ''));
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+
 // ── Low-level helpers ─────────────────────────────────────────────────────────
 
 async function repoGet<T>(path: string): Promise<T | null> {
+  if (!GH_TOKEN) return null;
   try {
-    const r = await fetch(`/api/gh?r=d&p=${encodeURIComponent(path)}`, { signal: AbortSignal.timeout(8000) });
+    const r = await fetch(
+      `${GH_API}/repos/${DATA_OWNER}/${DATA_REPO}/contents/${path}`,
+      { headers: GH_HEADERS, signal: AbortSignal.timeout(8000) }
+    );
     if (!r.ok) return null;
-    return r.json() as Promise<T>;
+    const { content } = await r.json() as { content: string };
+    return JSON.parse(decodeBase64(content)) as T;
   } catch { return null; }
 }
 
-async function repoPut(path: string, content: unknown): Promise<boolean> {
+async function repoGetSha(path: string): Promise<string | undefined> {
+  if (!GH_TOKEN) return undefined;
   try {
-    const r = await fetch('/api/gh-data', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ path, content }),
-      signal: AbortSignal.timeout(12000),
-    });
+    const r = await fetch(
+      `${GH_API}/repos/${DATA_OWNER}/${DATA_REPO}/contents/${path}`,
+      { headers: GH_HEADERS, signal: AbortSignal.timeout(5000) }
+    );
+    if (!r.ok) return undefined;
+    const { sha } = await r.json() as { sha: string };
+    return sha;
+  } catch { return undefined; }
+}
+
+async function repoPut(path: string, content: unknown): Promise<boolean> {
+  if (!GH_TOKEN) return false;
+  try {
+    const sha = await repoGetSha(path);
+    const body: Record<string, string> = {
+      message: `sync: ${path.split('/').pop()}`,
+      content: encodeBase64(JSON.stringify(content, null, 2)),
+    };
+    if (sha) body.sha = sha;
+    const r = await fetch(
+      `${GH_API}/repos/${DATA_OWNER}/${DATA_REPO}/contents/${path}`,
+      {
+        method: 'PUT',
+        headers: { ...GH_HEADERS, 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(12000),
+      }
+    );
     return r.ok;
   } catch { return false; }
 }

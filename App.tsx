@@ -605,9 +605,9 @@ const App: React.FC = () => {
     // Only mark offline when navigator.onLine is ALSO false — avoids false positives from DNS/CORS blips.
     const pingCheck = async () => {
       if (!navigator.onLine) { setIsOnline(false); return; }
-      // navigator.onLine says we're online — trust it optimistically, confirm with a ping
+      // navigator.onLine says we're online — confirm with a no-cors ping (avoids CORS console error)
       try {
-        await fetch(`https://www.gstatic.com/generate_204`, { method: 'HEAD', cache: 'no-store', signal: AbortSignal.timeout(3000) });
+        await fetch(`https://www.gstatic.com/generate_204`, { method: 'HEAD', mode: 'no-cors', cache: 'no-store', signal: AbortSignal.timeout(3000) });
         setIsOnline(true);
       } catch {
         // Ping failed but navigator.onLine is true — transient network blip, stay online
@@ -620,9 +620,7 @@ const App: React.FC = () => {
     localStorage.setItem('last_app_opened_timestamp', Date.now().toString());
 
     // Initialize Offline Support
-    initializeOfflineSupport().then(() => {
-      console.log('Offline support initialized');
-    });
+    initializeOfflineSupport();
 
     // Initialize full data sync (pull from repo → start periodic push)
     const authSession = localStorage.getItem('koyjabo_auth_session');
@@ -1191,27 +1189,13 @@ const App: React.FC = () => {
       // setFareStart(''); 
       // setFareEnd(''); 
 
-      // Start Watching Location
-      if ('geolocation' in navigator) {
+      // Start watching location only in live nav view (requires user gesture per browser policy)
+      if ('geolocation' in navigator && view === AppView.LIVE_NAV) {
         watchIdRef.current = navigator.geolocation.watchPosition(
           (position) => {
             const { latitude, longitude, speed: rawSpeed, accuracy } = position.coords;
             const loc = { lat: latitude, lng: longitude };
             const speedKmh = rawSpeed ? rawSpeed * 3.6 : 0;
-
-            // Log accuracy for debugging desktop vs mobile differences
-            console.log('📍 Location update:', {
-              lat: latitude.toFixed(6),
-              lng: longitude.toFixed(6),
-              accuracy: accuracy ? `${accuracy.toFixed(0)}m` : 'unknown',
-              isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-            });
-
-            // Warn if accuracy is poor (common on desktop/laptop)
-            if (accuracy && accuracy > 100) {
-              console.warn('⚠️ Low location accuracy detected:', accuracy.toFixed(0) + 'm',
-                'This is common on PC/laptop. For best accuracy, use a mobile device with GPS.');
-            }
 
             // Only update if accuracy is reasonable OR if we don't have a location yet
             // Desktop often gives accuracy of ~1000-5000m (IP-based)
@@ -1243,7 +1227,7 @@ const App: React.FC = () => {
             }
 
           },
-          (err) => console.error("Watch Error", err),
+          () => { /* geolocation error — user may have denied permission */ },
           {
             enableHighAccuracy: true, // Request GPS/high accuracy
             maximumAge: 0,            // Don't use cached position
@@ -1264,7 +1248,7 @@ const App: React.FC = () => {
         navigator.geolocation.clearWatch(watchIdRef.current);
       }
     };
-  }, [selectedBus]);
+  }, [selectedBus, view]);
 
   const filteredBuses = useMemo(() => {
     // Favorites tab: show ONLY favorites, ignore search
