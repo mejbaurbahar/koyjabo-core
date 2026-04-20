@@ -32,7 +32,6 @@ jobs:
       - name: Build project
         run: npm run build
         env:
-          VITE_GITHUB_TOKEN: ${{ secrets.VITE_GITHUB_TOKEN }}
           NODE_ENV: production
           GENERATE_SOURCEMAP: false
 
