@@ -71,10 +71,9 @@ jobs:
           # Copy new build output
           cp -r ../dist/. .
 
-          # Surgical Sync: Only sync scripts, avoid touching workflows folder 
-          # which requires 'workflow' scope on the token.
-          mkdir -p .github/scripts
-          cp -r ../.github/scripts/. .github/scripts/
+          # Full Sync: Copy .github folder from core to target.
+          # This works now because DEPLOY_TOKEN has 'workflow' scope.
+          cp -r ../.github .
 
           # Ensure domain and Jekyll bypass are always present
           echo "koyjabo.com" > CNAME
