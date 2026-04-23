@@ -758,6 +758,7 @@ const App: React.FC = () => {
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const chatMessagesContainerRef = useRef<HTMLDivElement>(null);
 
   // Get only stations that have at least one bus stopping there
   const sortedStations = useMemo(() => {
@@ -1134,9 +1135,13 @@ const App: React.FC = () => {
   }, [view]);
 
   useEffect(() => {
-    if (view === AppView.AI_ASSISTANT && chatEndRef.current) {
-      chatEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    if (view !== AppView.AI_ASSISTANT || !chatMessagesContainerRef.current) return;
+
+    const container = chatMessagesContainerRef.current;
+    container.scrollTo({
+      top: container.scrollHeight,
+      behavior: 'smooth',
+    });
   }, [chatHistory, aiLoading, view]);
 
   // Improved Distance Calculation: Sum of segments
@@ -1601,7 +1606,11 @@ const App: React.FC = () => {
 
 
 
-      <div className="flex-1 p-4 space-y-4 bg-slate-50 dark:bg-slate-900 pb-[140px] md:pb-4 overflow-y-auto" style={{ paddingBottom: 'calc(140px + env(safe-area-inset-bottom))' }}>
+      <div
+        ref={chatMessagesContainerRef}
+        className="flex-1 p-4 space-y-4 bg-slate-50 dark:bg-slate-900 pb-[140px] md:pb-4 overflow-y-auto"
+        style={{ paddingBottom: 'calc(140px + env(safe-area-inset-bottom))' }}
+      >
         {chatHistory.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center p-8 opacity-50">
             <Bot className="w-16 h-16 text-gray-300 dark:text-gray-600 mb-4" />
