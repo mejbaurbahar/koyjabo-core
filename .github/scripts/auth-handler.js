@@ -22,13 +22,13 @@ const APP_OWNER = process.env.GITHUB_REPOSITORY ? process.env.GITHUB_REPOSITORY.
 const APP_REPO  = 'Dhaka-Commute';
 
 // Private data repo — all user data stored here, invisible to public
-const DATA_OWNER = 'mejbaurbahar';
-const DATA_REPO  = 'koyjabo';
+const DATA_OWNER = process.env.GITHUB_REPOSITORY ? process.env.GITHUB_REPOSITORY.split('/')[0] : 'mejbaurbahar';
+const DATA_REPO  = process.env.GITHUB_REPOSITORY ? process.env.GITHUB_REPOSITORY.split('/')[1] : 'koyjabo-core';
 
 // GITHUB_TOKEN: automatic per-run token, has write access to the app repo (Dhaka-Commute)
 const APP_TOKEN  = process.env.AUTH_GITHUB_TOKEN;
 // DATA_GITHUB_TOKEN: classic PAT with repo access to koyjabo (set as a repo secret)
-const DATA_TOKEN = process.env.DATA_GITHUB_TOKEN;
+const DATA_TOKEN = process.env.DATA_GITHUB_TOKEN || APP_TOKEN;
 
 const JWT_SECRET     = process.env.JWT_SECRET     || '';
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || '';
@@ -38,8 +38,8 @@ const APP_URL        = process.env.APP_URL        || 'https://mejbaurbahar.githu
 
 // Two separate API clients
 // If running in koyjabo-core, octokitApp needs DATA_TOKEN to write results to Dhaka-Commute
-const octokitApp  = new Octokit({ auth: DATA_TOKEN || APP_TOKEN }); 
-const octokitData = new Octokit({ auth: DATA_TOKEN });  // reads/writes all user data in private koyjabo
+const octokitApp  = new Octokit({ auth: DATA_TOKEN }); 
+const octokitData = new Octokit({ auth: APP_TOKEN });  // reads/writes all user data in private koyjabo-core
 
 // ── Disposable / temp-mail domain blocklist ───────────────────────────────────
 const TEMP_MAIL_DOMAINS = new Set([
@@ -977,13 +977,25 @@ async function handleUploadAvatar({ userId, imageData }) {
 
 // ── Result Writer (writes to public app repo — temp UUID file, auto-deleted) ──
 async function writeResult(requestId, result) {
-  const existing = await readAppFile(`data/results/${requestId}.json`);
-  await writeAppFile(
-    `data/results/${requestId}.json`,
-    { ...result, completedAt: Date.now() },
-    existing?.sha,
-    `Auth result: ${requestId}`
-  );
+  const content = { ...result, completedAt: Date.now() };
+  try {
+    const existing = await readAppFile(`data/results/${requestId}.json`);
+    await writeAppFile(
+      `data/results/${requestId}.json`,
+      content,
+      existing?.sha,
+      `Auth result: ${requestId}`
+    );
+  } catch (err) {
+    console.warn(`Failed to write result to ${APP_REPO}, falling back to ${DATA_REPO}:`, err.message);
+    const existing = await readDataFile(`data/results/${requestId}.json`);
+    await writeDataFile(
+      `data/results/${requestId}.json`,
+      content,
+      existing?.sha,
+      `Auth result: ${requestId}`
+    );
+  }
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────

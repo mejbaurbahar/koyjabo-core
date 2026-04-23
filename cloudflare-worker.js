@@ -98,9 +98,10 @@ export default {
 
     const TOKEN = env.GH_TOKEN;
     const APP_OWNER = env.APP_OWNER || 'mejbaurbahar';
-    const APP_REPO  = env.APP_REPO  || 'koyjabo-core';
+    const APP_REPO  = env.APP_REPO  || 'Dhaka-Commute';
     const DATA_OWNER = env.DATA_OWNER || 'mejbaurbahar';
-    const DATA_REPO  = env.DATA_REPO  || 'koyjabo';
+    const DATA_REPO  = env.DATA_REPO  || 'koyjabo-core';
+    const CORE_REPO = 'koyjabo-core';
 
     if (!TOKEN) {
       return new Response(
@@ -135,8 +136,13 @@ export default {
         );
       }
 
-      const ghUrl = `https://api.github.com/repos/${repo.owner}/${repo.repo}/contents/${p}`;
-      const upstream = await fetch(ghUrl, { headers: ghHeaders(TOKEN) });
+      let upstream = await fetch(ghUrl, { headers: ghHeaders(TOKEN) });
+
+      // Fallback: If r=a (results) and not found in APP_REPO (Dhaka-Commute), try CORE_REPO (koyjabo-core)
+      if (upstream.status === 404 && r === 'a') {
+        const fallbackUrl = `https://api.github.com/repos/${APP_OWNER}/${CORE_REPO}/contents/${p}`;
+        upstream = await fetch(fallbackUrl, { headers: ghHeaders(TOKEN) });
+      }
 
       if (upstream.status === 404) {
         return new Response('null', {
