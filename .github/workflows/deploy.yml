@@ -1,6 +1,7 @@
 name: Build & Deploy to koyjabo.com
 
 # Runs from koyjabo-core (private repo) → deploys built dist to Dhaka-Commute.
+# Triggering fresh run to verify surgical sync.
 on:
   push:
     branches:
