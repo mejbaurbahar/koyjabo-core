@@ -98,7 +98,7 @@ export default {
 
     const TOKEN = env.GH_TOKEN;
     const APP_OWNER = env.APP_OWNER || 'mejbaurbahar';
-    const APP_REPO  = env.APP_REPO  || 'Dhaka-Commute';
+    const APP_REPO  = env.APP_REPO  || 'koyjabo-core';
     const DATA_OWNER = env.DATA_OWNER || 'mejbaurbahar';
     const DATA_REPO  = env.DATA_REPO  || 'koyjabo';
 

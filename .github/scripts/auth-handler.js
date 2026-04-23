@@ -35,7 +35,8 @@ const SMTP_PASSWORD  = process.env.SMTP_PASSWORD  || '';
 const APP_URL        = process.env.APP_URL        || 'https://mejbaurbahar.github.io/Dhaka-Commute';
 
 // Two separate API clients
-const octokitApp  = new Octokit({ auth: APP_TOKEN });   // writes results to public Dhaka-Commute
+// If running in koyjabo-core, octokitApp needs DATA_TOKEN to write results to Dhaka-Commute
+const octokitApp  = new Octokit({ auth: DATA_TOKEN || APP_TOKEN }); 
 const octokitData = new Octokit({ auth: DATA_TOKEN });  // reads/writes all user data in private koyjabo
 
 // ── Disposable / temp-mail domain blocklist ───────────────────────────────────
