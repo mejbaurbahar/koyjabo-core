@@ -17,7 +17,9 @@ const crypto = require('crypto');
 const { Octokit } = require('@octokit/rest');
 
 // ── Config ────────────────────────────────────────────────────────────────────
-const [APP_OWNER, APP_REPO] = (process.env.GITHUB_REPOSITORY || '/').split('/');
+// Results must always go to the public frontend repo so they can be polled by the worker
+const APP_OWNER = process.env.GITHUB_REPOSITORY ? process.env.GITHUB_REPOSITORY.split('/')[0] : 'mejbaurbahar';
+const APP_REPO  = 'Dhaka-Commute';
 
 // Private data repo — all user data stored here, invisible to public
 const DATA_OWNER = 'mejbaurbahar';

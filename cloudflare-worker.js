@@ -224,7 +224,8 @@ export default {
         );
       }
 
-      const ghUrl = `https://api.github.com/repos/${APP_OWNER}/${APP_REPO}/actions/workflows/auth.yml/dispatches`;
+      // Workflow dispatches MUST go to koyjabo-core where the actions are running
+      const ghUrl = `https://api.github.com/repos/${APP_OWNER}/koyjabo-core/actions/workflows/auth.yml/dispatches`;
       const upstream = await fetch(ghUrl, {
         method: 'POST',
         headers: ghHeaders(TOKEN),

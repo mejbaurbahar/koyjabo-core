@@ -4,7 +4,7 @@ compatibility_date = "2024-01-01"
 
 [vars]
 APP_OWNER = "mejbaurbahar"
-APP_REPO = "koyjabo-core"
+APP_REPO = "Dhaka-Commute"
 DATA_OWNER = "mejbaurbahar"
 DATA_REPO = "koyjabo"
 
