@@ -21,9 +21,12 @@ interface SyncResult {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
+const PROXY = (import.meta.env.VITE_API_PROXY as string | undefined)
+  || 'https://koyjabo-auth-proxy.mejbaur-bahar.workers.dev';
+
 async function ghGet<T>(path: string): Promise<T | null> {
   try {
-    const res = await fetch(`/api/gh?r=d&p=${encodeURIComponent(path)}`);
+    const res = await fetch(`${PROXY}/gh?r=d&p=${encodeURIComponent(path)}`);
     if (!res.ok) return null;
     return res.json() as Promise<T>;
   } catch {

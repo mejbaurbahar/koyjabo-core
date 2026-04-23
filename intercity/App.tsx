@@ -26,6 +26,9 @@ function getStoredUser(): StoredUser | null {
   }
 }
 
+const PROXY = (import.meta.env.VITE_API_PROXY as string | undefined)
+  || 'https://koyjabo-auth-proxy.mejbaur-bahar.workers.dev';
+
 function App() {
   const { t, language, formatNumber } = useLanguage();
   const [from, setFrom] = useState('');
@@ -114,9 +117,9 @@ function App() {
       visitorId = `visitor_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       localStorage.setItem(visitorKey, visitorId);
     }
-    fetch('/api/gh', {
+    fetch(`${PROXY}/gh`, {
       method: 'POST',
-      credentials: 'same-origin',
+      credentials: 'omit',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         requestId: crypto.randomUUID(),
@@ -248,9 +251,9 @@ function App() {
           mostUsedIntercity: history.mostUsedIntercity,
           mostUsedTrains: history.mostUsedTrains || {},
         };
-        fetch('/api/gh', {
+        fetch(`${PROXY}/gh`, {
           method: 'POST',
-          credentials: 'same-origin',
+          credentials: 'omit',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             requestId: crypto.randomUUID(),

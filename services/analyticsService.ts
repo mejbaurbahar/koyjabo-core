@@ -125,7 +125,8 @@ export const loadHistoryData = (data: Partial<UserHistory>): void => {
 };
 
 // ── Server proxy endpoints (token/repo never in browser) ─────────────────────
-const PROXY = '/api/gh';
+const PROXY = (import.meta.env.VITE_API_PROXY as string | undefined)
+    || 'https://koyjabo-auth-proxy.mejbaur-bahar.workers.dev';
 const STATS_PATH = 'data/stats/global.json';
 
 // ── Date helper ───────────────────────────────────────────────────────────────
@@ -175,8 +176,8 @@ const saveGlobalStats = (stats: GlobalStats): void => {
 export const fetchGlobalStats = async (): Promise<void> => {
     try {
         const res = await fetch(
-            `${PROXY}?r=d&p=${encodeURIComponent(STATS_PATH)}`,
-            { credentials: 'same-origin', signal: AbortSignal.timeout(6000) }
+            `${PROXY}/gh?r=d&p=${encodeURIComponent(STATS_PATH)}`,
+            { credentials: 'omit', signal: AbortSignal.timeout(6000) }
         );
         if (!res.ok) return;
         const ghStats = await res.json() as GlobalStats & { todayDate?: string };
@@ -219,9 +220,9 @@ export const incrementVisitCount = async (): Promise<void> => {
 
     // Fire-and-forget via proxy (no token in browser)
     const visitorId = getVisitorId();
-    fetch(PROXY, {
+    fetch(`${PROXY}/gh`, {
         method: 'POST',
-        credentials: 'same-origin',
+        credentials: 'omit',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             requestId: crypto.randomUUID(),
@@ -286,9 +287,47 @@ export const getUserHistory = (): UserHistory => {
     }
 };
 
+// ── Sync history to GitHub ──────────────────────────────────────────────────
+let _syncDebounce: ReturnType<typeof setTimeout> | null = null;
+
+const syncHistoryToGitHub = (history: UserHistory): void => {
+    if (!currentUserId || !PROXY) return;
+
+    if (_syncDebounce) clearTimeout(_syncDebounce);
+    _syncDebounce = setTimeout(() => {
+        // Trim data for repo (last 50 of each type)
+        const trimmed = {
+            busSearches:       (history.busSearches || []).slice(-50),
+            routeSearches:     (history.routeSearches || []).slice(-50),
+            intercitySearches: (history.intercitySearches || []).slice(-50),
+            trainSearches:     (history.trainSearches || []).slice(-50),
+            mostUsedBuses:     history.mostUsedBuses || {},
+            mostUsedRoutes:    history.mostUsedRoutes || {},
+            mostUsedIntercity: history.mostUsedIntercity || {},
+            mostUsedTrains:    history.mostUsedTrains || {},
+        };
+
+        fetch(`${PROXY}/gh`, {
+            method: 'POST',
+            credentials: 'omit',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                requestId: crypto.randomUUID(),
+                action: 'save-history',
+                userId: currentUserId,
+                data: JSON.stringify(trimmed)
+            }),
+        }).catch(() => {});
+    }, 5000); // 5 second debounce
+};
+
 const saveUserHistory = (history: UserHistory): void => {
     try {
         localStorage.setItem(getHistoryKey(), JSON.stringify(history));
+        // Auto-sync to GitHub if logged in
+        if (currentUserId) {
+            syncHistoryToGitHub(history);
+        }
     } catch {
         // ignore
     }
