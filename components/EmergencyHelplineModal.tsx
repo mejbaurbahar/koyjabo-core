@@ -92,13 +92,17 @@ const EmergencyHelplineModal: React.FC<EmergencyHelplineModalProps> = ({
     };
 
     return (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999 }} className="flex items-end md:items-center justify-center bg-black/50 backdrop-blur-sm animate-in fade-in">
+        <div
+            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999 }}
+            className="flex items-end md:items-center justify-center bg-black/50 backdrop-blur-sm animate-in fade-in"
+            onClick={onClose}
+        >
             <div
-                className="bg-white dark:bg-slate-900 w-full md:max-w-2xl md:rounded-2xl rounded-t-3xl max-h-[90vh] flex flex-col shadow-2xl animate-in slide-in-from-bottom md:slide-in-from-bottom-0"
+                className="bg-white dark:bg-slate-900 w-full md:max-w-2xl md:rounded-2xl rounded-t-3xl h-[100dvh] md:h-auto md:max-h-[90vh] flex flex-col shadow-2xl animate-in slide-in-from-bottom md:slide-in-from-bottom-0"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
-                <div className="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-800 shrink-0">
+                <div className="sticky top-0 z-10 flex items-center justify-between px-5 py-4 pt-[max(env(safe-area-inset-top),1rem)] border-b border-gray-200 dark:border-gray-800 shrink-0 bg-white dark:bg-slate-900">
                     <div>
                         <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
                             <Phone className="w-5 h-5 text-dhaka-red" />
@@ -205,7 +209,7 @@ const EmergencyHelplineModal: React.FC<EmergencyHelplineModalProps> = ({
                 </div>
 
                 {/* Footer */}
-                <div className="p-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-slate-800 shrink-0 rounded-b-3xl md:rounded-b-2xl">
+                <div className="p-4 pb-[max(env(safe-area-inset-bottom),1rem)] border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-slate-800 shrink-0 rounded-b-3xl md:rounded-b-2xl">
                     <p className="text-xs text-center text-gray-500 dark:text-gray-400">
                         {t('emergency.emergencyFooter')} <span className="font-bold text-dhaka-red">{formatNumber(999)}</span> {t('emergency.immediately')}
                     </p>
