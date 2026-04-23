@@ -494,10 +494,10 @@ async function handleSignup({ email, passwordHash, username, displayName }) {
 <html>
 <body style="font-family:sans-serif;background:#f0fdf4;padding:24px;margin:0">
   <div style="max-width:500px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
-    <div style="background:linear-gradient(135deg,#059669,#0284c7);padding:32px 24px;text-align:center">
+    <div style="background:#ffffff;padding:32px 24px;text-align:center;border-bottom:1px solid #e5e7eb">
       <img src="${APP_URL}/logo.png" alt="KoyJabo" style="width:64px;height:64px;border-radius:16px;background:#ffffff;padding:8px;margin-bottom:12px;display:block;margin-left:auto;margin-right:auto;">
-      <h1 style="color:#fff;margin:0;font-size:28px;letter-spacing:-0.5px">কই যাবো KoyJabo</h1>
-      <p style="color:#d1fae5;margin:6px 0 0;font-size:14px">Bangladesh's Smart Transport Finder</p>
+      <h1 style="color:#111827;margin:0;font-size:28px;letter-spacing:-0.5px">কই যাবো KoyJabo</h1>
+      <p style="color:#4b5563;margin:6px 0 0;font-size:14px">Bangladesh's Smart Transport Finder</p>
     </div>
     <div style="padding:32px 24px">
       <h2 style="color:#111827;margin:0 0 8px">Welcome, ${displayName.trim()}! 🎉</h2>
@@ -607,10 +607,10 @@ async function handleChangePassword({ userId, newPasswordHash, oldPasswordHash, 
 <html>
 <body style="font-family:sans-serif;background:#fef2f2;padding:24px;margin:0">
   <div style="max-width:500px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
-    <div style="background:linear-gradient(135deg,#dc2626,#9333ea);padding:32px 24px;text-align:center">
+    <div style="background:#ffffff;padding:32px 24px;text-align:center;border-bottom:1px solid #e5e7eb">
       <img src="${APP_URL}/logo.png" alt="KoyJabo" style="width:48px;height:48px;border-radius:12px;background:#ffffff;padding:6px;margin-bottom:10px;display:block;margin-left:auto;margin-right:auto;">
-      <h1 style="color:#fff;margin:0;font-size:24px">🔐 Password Changed</h1>
-      <p style="color:#fecaca;margin:6px 0 0;font-size:14px">Security Alert — কই যাবো KoyJabo</p>
+      <h1 style="color:#111827;margin:0;font-size:24px">🔐 Password Changed</h1>
+      <p style="color:#4b5563;margin:6px 0 0;font-size:14px">Security Alert — কই যাবো KoyJabo</p>
     </div>
     <div style="padding:32px 24px">
       <p style="color:#111827;font-size:15px;line-height:1.6;margin:0 0 16px">
@@ -691,10 +691,10 @@ async function handleForgotPassword({ email }) {
 <html>
 <body style="font-family:sans-serif;background:#f0f9ff;padding:24px;margin:0">
   <div style="max-width:500px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
-    <div style="background:linear-gradient(135deg,#0284c7,#7c3aed);padding:32px 24px;text-align:center">
+    <div style="background:#ffffff;padding:32px 24px;text-align:center;border-bottom:1px solid #e5e7eb">
       <img src="${APP_URL}/logo.png" alt="KoyJabo" style="width:48px;height:48px;border-radius:12px;background:#ffffff;padding:6px;margin-bottom:10px;display:block;margin-left:auto;margin-right:auto;">
-      <h1 style="color:#fff;margin:0;font-size:24px">🔑 Password Reset</h1>
-      <p style="color:#bae6fd;margin:6px 0 0;font-size:14px">কই যাবো KoyJabo</p>
+      <h1 style="color:#111827;margin:0;font-size:24px">🔑 Password Reset</h1>
+      <p style="color:#4b5563;margin:6px 0 0;font-size:14px">কই যাবো KoyJabo</p>
     </div>
     <div style="padding:32px 24px">
       <p style="color:#111827;font-size:15px;line-height:1.6;margin:0 0 20px">
@@ -858,10 +858,10 @@ async function handleRecordDevice({ userId, deviceInfo }) {
 <html>
 <body style="font-family:sans-serif;background:#eff6ff;padding:24px;margin:0">
   <div style="max-width:500px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
-    <div style="background:linear-gradient(135deg,#1d4ed8,#7c3aed);padding:32px 24px;text-align:center">
+    <div style="background:#ffffff;padding:32px 24px;text-align:center;border-bottom:1px solid #e5e7eb">
       <img src="${APP_URL}/logo.png" alt="KoyJabo" style="width:48px;height:48px;border-radius:12px;background:#ffffff;padding:6px;margin-bottom:10px;display:block;margin-left:auto;margin-right:auto;">
-      <h1 style="color:#fff;margin:0;font-size:24px">🔔 New Device Login</h1>
-      <p style="color:#bfdbfe;margin:6px 0 0;font-size:14px">Security Alert — কই যাবো KoyJabo</p>
+      <h1 style="color:#111827;margin:0;font-size:24px">🔔 New Device Login</h1>
+      <p style="color:#4b5563;margin:6px 0 0;font-size:14px">Security Alert — কই যাবো KoyJabo</p>
     </div>
     <div style="padding:32px 24px">
       <p style="color:#111827;font-size:15px;line-height:1.6;margin:0 0 16px">
