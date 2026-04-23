@@ -12,6 +12,7 @@
 
 import { classifyIntent, estimateDistanceKm, buildRouteOptions, estimateDuration, estimateFares, fuzzyMatchLocation } from './travelAI';
 import { getOfflineIntercityData } from '../intercity/offlineService';
+import { triggerQuerySync } from './fullDataSync';
 
 // ── Storage keys ──────────────────────────────────────────────────────────────
 
@@ -408,7 +409,11 @@ export function recordAndLearn(query: string, response: string): void {
   }
 
   // Mine patterns asynchronously (don't block response path)
-  setTimeout(() => mineAndLearn(record), 0);
+  setTimeout(() => {
+    mineAndLearn(record);
+    // Sync to GitHub for cloud learning
+    triggerQuerySync(query, response, intent, record.quality, record.lang);
+  }, 0);
 }
 
 // ── Stats / diagnostics ───────────────────────────────────────────────────────

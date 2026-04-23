@@ -800,6 +800,32 @@ async function handleRecordVisit({ visitorId }) {
   return { success: true, totalVisits: stats.totalVisits, todayVisits: stats.todayVisits };
 }
 
+async function handleRecordQuery({ query, response, intent, quality, lang, userId }) {
+  const today = new Date().toISOString().split('T')[0];
+  const path = `data/learning/queries/${today}.json`;
+  
+  const file = await readDataFile(path);
+  const data = file?.content || { date: today, queries: [] };
+  
+  data.queries.push({
+    query,
+    responseLen: response?.length || 0,
+    intent,
+    quality,
+    lang,
+    userId: userId || 'anonymous',
+    timestamp: Date.now()
+  });
+  
+  // Keep daily file manageable (last 500 queries per day)
+  if (data.queries.length > 500) {
+    data.queries = data.queries.slice(-500);
+  }
+  
+  await writeDataFile(path, data, file?.sha, `Query record: ${query.slice(0, 30)}...`);
+  return { success: true };
+}
+
 async function handleRecordDevice({ userId, deviceInfo }) {
   if (!userId || !deviceInfo) return { success: false, error: 'User ID and device info required.' };
 
@@ -1004,6 +1030,16 @@ async function main() {
         break;
       case 'upload-avatar':
         result = await handleUploadAvatar({ userId, imageData: data.imageData });
+        break;
+      case 'record-query':
+        result = await handleRecordQuery({ 
+          query: data.query, 
+          response: data.response, 
+          intent: data.intent, 
+          quality: data.quality, 
+          lang: data.lang, 
+          userId 
+        });
         break;
       default:
         result = { success: false, error: `Unknown action: ${action}` };

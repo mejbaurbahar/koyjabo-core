@@ -35,14 +35,37 @@ interface SyncMeta {
 // Remote sync requires a server-side token proxy (not available on GitHub Pages).
 // All functions return null/false gracefully — localStorage handles local persistence.
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-async function repoGet<T>(_path: string): Promise<T | null> {
-  return null;
+const PROXY = (import.meta.env.VITE_API_PROXY as string | undefined)
+  || 'https://koyjabo-auth-proxy.mejbaur-bahar.workers.dev';
+
+async function repoGet<T>(path: string): Promise<T | null> {
+  try {
+    const res = await fetch(`${PROXY}/gh?r=d&p=${encodeURIComponent(path)}`);
+    if (!res.ok) return null;
+    return res.json() as Promise<T>;
+  } catch {
+    return null;
+  }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-async function repoPut(_path: string, _content: unknown): Promise<boolean> {
-  return false;
+async function repoPut(path: string, content: unknown): Promise<boolean> {
+  // Use 'save-history' action for general data storage if no specific action exists
+  // but for prompts we use 'record-query'
+  try {
+    const res = await fetch(`${PROXY}/gh`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        requestId: crypto.randomUUID(),
+        action: 'save-history', // reused for generic file persistence
+        userId: getAuthUserId() || 'anonymous',
+        data: JSON.stringify({ path, content })
+      }),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
 }
 
 function readMeta(): SyncMeta {
@@ -357,6 +380,20 @@ export function triggerAISync(): void {
   _aiDebounce = setTimeout(() => {
     pushAILearning().catch(() => { /* silent */ });
   }, 3000);
+}
+
+/** Call to record a single query for learning */
+export function triggerQuerySync(query: string, response: string, intent: any, quality: string, lang: string): void {
+  fetch(`${PROXY}/gh`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      requestId: crypto.randomUUID(),
+      action: 'record-query',
+      userId: getAuthUserId() || 'anonymous',
+      data: JSON.stringify({ query, response, intent: intent.type, quality, lang })
+    }),
+  }).catch(() => {});
 }
 
 // ── Init (call once on app startup) ──────────────────────────────────────────

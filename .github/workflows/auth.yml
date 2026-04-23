@@ -26,6 +26,7 @@ on:
           - upload-avatar
           - save-history
           - record-visit
+          - record-query
       email:
         description: 'User email (masked in logs immediately)'
         required: false
