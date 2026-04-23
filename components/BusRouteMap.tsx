@@ -407,7 +407,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
   }, [userLocation, mapReady]);
 
   return (
-    <div className="relative w-full rounded-b-2xl overflow-hidden" style={{ height: 310 }}>
+    <div className="relative z-0 isolate w-full rounded-b-2xl overflow-hidden" style={{ height: 310 }}>
       <div ref={mapRef} className="w-full h-full" />
 
       {/* Route badge */}
