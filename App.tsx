@@ -3612,20 +3612,20 @@ const App: React.FC = () => {
 
 
 
-        <main className="flex flex-1 overflow-hidden relative w-full max-w-full mx-auto bg-slate-50 dark:bg-slate-900">
+        <main className="flex flex-1 min-h-0 overflow-hidden relative w-full max-w-full mx-auto bg-slate-50 dark:bg-slate-900">
           {/* Left Sidebar (Desktop) / Main View (Mobile Home) */}
           <div className={`
-            ${'w-full md:w-1/3 md:min-w-[320px] md:max-w-md md:flex md:flex-col border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900 z-0 h-full overflow-hidden'}
+            ${'w-full md:w-1/3 md:min-w-[320px] md:max-w-md md:flex md:flex-col border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900 z-0 h-full min-h-0 overflow-hidden'}
             ${view !== AppView.HOME && view !== AppView.TRAIN_LIST && 'hidden md:flex'}
 `}>
-            <div className="h-full flex flex-col md:pt-0">
+            <div className="h-full min-h-0 flex flex-col md:pt-0">
               {renderHomeContent()}
             </div>
           </div>
 
           {/* Right Content Area (Desktop) / Views (Mobile) */}
           <div className={`
-            ${'w-full md:flex-1 bg-slate-50 dark:bg-slate-950 relative h-full overflow-hidden'}
+            ${'w-full md:flex-1 bg-slate-50 dark:bg-slate-950 relative h-full min-h-0 overflow-hidden'}
             ${(view === AppView.HOME || view === AppView.TRAIN_LIST) && 'hidden md:block'}
 `}>
             {(view === AppView.HOME || view === AppView.TRAIN_LIST) && <div className="hidden md:block absolute inset-0 w-full h-full"><DhakaAlive /></div>}
