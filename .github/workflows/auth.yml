@@ -68,7 +68,7 @@ jobs:
         working-directory: .github/scripts
         env:
           AUTH_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DATA_GITHUB_TOKEN: ${{ secrets.DATA_GITHUB_TOKEN }}
+          DATA_GITHUB_TOKEN: ${{ secrets.DATA_GITHUB_TOKEN || secrets.DEPLOY_TOKEN }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
           SMTP_EMAIL: ${{ secrets.SMTP_EMAIL }}

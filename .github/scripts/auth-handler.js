@@ -1008,7 +1008,7 @@ async function main() {
   let result;
   try {
     if (!DATA_TOKEN) {
-      throw new Error('DATA_GITHUB_TOKEN secret is not set in GitHub repository secrets.');
+      throw new Error('Account service configuration error. Please contact support.');
     }
     if (!action) {
       throw new Error('Missing action in workflow input.');
