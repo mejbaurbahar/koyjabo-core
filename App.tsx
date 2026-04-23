@@ -2469,7 +2469,7 @@ const App: React.FC = () => {
 
     const generalFareInfo = calculateFare(selectedBus);
     return (
-      <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-hidden w-full max-w-full">
+      <div className="flex flex-col h-full min-h-0 bg-slate-50 dark:bg-slate-900 overflow-hidden w-full max-w-full">
         {/* Mobile sub-header — back + bus name (main app header above handles logo/avatar/menu) */}
         <div className="block md:hidden w-full z-40 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-gray-800 shrink-0">
           <div className="px-4 py-2 flex items-center justify-between">
@@ -2565,7 +2565,7 @@ const App: React.FC = () => {
         </div>{/* end sticky desktop header+stats wrapper */}
 
         {/* Scrollable Container for everything else */}
-        <div className="flex-1 overflow-y-auto w-full pb-nav-safe md:pb-4">
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain w-full pb-nav-safe md:pb-4" style={{ WebkitOverflowScrolling: 'touch' }}>
 
         {/* Pinned Trip Info */}
         {selectedTrip && (
