@@ -31,7 +31,7 @@ All HTML files now include Ezoic scripts:
 ```
 
 ### 3. **ads.txt Configuration** ✓
-- ✅ Vercel redirect configured in `vercel.json`
+- ✅ Primary domain configured for koyjabo.com
 - ✅ Apache configuration in `.htaccess`
 - ✅ Redirects to: `https://srv.adstxtmanager.com/19390/koyjabo.com`
 

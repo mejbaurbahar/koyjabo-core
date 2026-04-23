@@ -18,11 +18,11 @@
   <meta name="bingbot" content="index, follow" />
 
   <!-- Canonical URL -->
-  <link rel="canonical" href="https://koyjabo.vercel.app/" />
+  <link rel="canonical" href="https://koyjabo.com/" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://koyjabo.vercel.app/" />
+  <meta property="og:url" content="https://koyjabo.com/" />
   <meta property="og:title" content="কই যাবো" />
   <meta property="og:description"
     content="Find Dhaka bus routes instantly! 200+ buses, real-time tracking, metro rail guide (MRT Line 6), AI assistant, fare calculator. Best bus route finder for Dhaka, Bangladesh. ঢাকা বাস রুট খুঁজুন।" />
@@ -30,8 +30,8 @@
   <meta property="og:locale" content="en_US" />
 
   <!-- Social Media Preview Image -->
-  <meta property="og:image" content="https://koyjabo.vercel.app/og-image.png" />
-  <meta property="og:image:secure_url" content="https://koyjabo.vercel.app/og-image.png" />
+  <meta property="og:image" content="https://koyjabo.com/og-image.png" />
+  <meta property="og:image:secure_url" content="https://koyjabo.com/og-image.png" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -42,7 +42,7 @@
   <meta name="twitter:title" content="কই যাবো" />
   <meta name="twitter:description"
     content="Find Dhaka bus routes instantly! 200+ buses, real-time tracking, metro rail guide (MRT Line 6), AI assistant, fare calculator. Best bus route finder for Dhaka, Bangladesh. ঢাকা বাস রুট খুঁজুন।" />
-  <meta name="twitter:image" content="https://koyjabo.vercel.app/og-image.png" />
+  <meta name="twitter:image" content="https://koyjabo.com/og-image.png" />
 
   <!-- Structured Data (JSON-LD) -->
   <script type="application/ld+json">
@@ -50,7 +50,7 @@
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": "কই যাবো",
-      "url": "https://koyjabo.vercel.app/",
+      "url": "https://koyjabo.com/",
       "description": "Find Dhaka bus routes instantly! 200+ buses, real-time tracking, metro rail guide (MRT Line 6), AI assistant, fare calculator. Best bus route finder for Dhaka, Bangladesh. ঢাকা বাস রুট খুঁজুন。",
       "applicationCategory": "TravelApplication",
       "operatingSystem": "Any",
@@ -60,7 +60,7 @@
         "priceCurrency": "BDT"
       },
       "featureList": "Bus Route Finder, Metro Rail Guide, Fare Calculator, Live Navigation",
-      "screenshot": "https://koyjabo.vercel.app/og-image.png",
+      "screenshot": "https://koyjabo.com/og-image.png",
       "author": {
         "@type": "Person",
         "name": "Mejbaur Bahar Fagun",

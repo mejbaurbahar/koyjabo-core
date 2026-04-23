@@ -1,11 +1,3 @@
-# REDIRECT ALL NETLIFY TRAFFIC TO VERCEL (PRIMARY DEPLOYMENT)
-# This fixes SEO issues with duplicate URLs
-[[redirects]]
-  from = "/*"
-  to = "https://koyjabo.vercel.app/:splat"
-  status = 301
-  force = true
-
 [build]
   command = "npm run build"
   publish = "dist"

@@ -109,7 +109,7 @@ git push origin main
 
 Since you're using GitHub Pages (not Vercel), you can ignore:
 
-- ❌ `vercel.json` - Not needed for GitHub Pages
+- ✅ `vercel.json` removed (Not using Vercel)
 - ❌ `.htaccess` - Not used by GitHub Pages (uses Nginx)
 
 These files won't cause issues; they'll just be ignored by GitHub Pages.
