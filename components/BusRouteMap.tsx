@@ -130,20 +130,26 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
         mapInstanceRef.current = null;
       }
 
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      const isTouchDevice =
+        typeof window !== 'undefined' &&
+        (
+          ('ontouchstart' in window) ||
+          navigator.maxTouchPoints > 0 ||
+          window.matchMedia('(pointer: coarse)').matches
+        );
       const map = L.map(mapRef.current!, {
         zoomControl: false,
         attributionControl: true,
-        scrollWheelZoom: !isMobile,
-        dragging: !isMobile,
+        scrollWheelZoom: !isTouchDevice,
+        dragging: !isTouchDevice,
         touchZoom: true,  // Always allow pinch-to-zoom
         tap: false,       // Disable Leaflet tap to avoid interfering with page scroll
       });
 
       // On mobile: allow single-finger page scroll over the map
       // touchZoom (pinch) still works; dragging is off
-      if (isMobile && mapRef.current) {
-        mapRef.current.style.touchAction = 'pan-y';
+      if (isTouchDevice && mapRef.current) {
+        mapRef.current.style.touchAction = 'pan-y pinch-zoom';
       }
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
