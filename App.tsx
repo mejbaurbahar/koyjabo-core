@@ -2737,7 +2737,7 @@ const App: React.FC = () => {
               </div>
             )}
           </div>
-          <AdSenseAd adSlot="auto" className="my-6 hidden md:block" />
+          <AdSenseAd adSlot="auto" className="my-6 hidden md:block pointer-events-none" />
 
           {/* Full Route List */}
           <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-gray-100 dark:border-gray-700 overflow-hidden">
