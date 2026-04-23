@@ -1065,7 +1065,14 @@ async function main() {
     }
   } catch (err) {
     console.error('Handler error:', err.message);
-    result = { success: false, error: err.message || 'An internal error occurred. Please try again.' };
+    
+    // Mask technical GitHub API errors from the end user
+    let userFriendlyError = err.message || 'An internal error occurred. Please try again.';
+    if (userFriendlyError.includes('docs.github.com/rest') || userFriendlyError.includes('Not Found') || userFriendlyError.includes('Bad credentials')) {
+      userFriendlyError = 'Service configuration error or missing permissions. Please contact support.';
+    }
+    
+    result = { success: false, error: userFriendlyError };
   }
 
   // Final step: Always write the result so the frontend stops polling
