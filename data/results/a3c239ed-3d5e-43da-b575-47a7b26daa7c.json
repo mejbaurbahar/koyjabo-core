@@ -1,0 +1,5 @@
+{
+  "success": false,
+  "error": "DATA_GITHUB_TOKEN secret is not set in GitHub repository secrets.",
+  "completedAt": 1776961974147
+}
