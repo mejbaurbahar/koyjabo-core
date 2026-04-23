@@ -24,6 +24,8 @@ import {
   getSmartSuggestions,
   getWeatherRecommendations
 } from './onlineLearningService';
+import { ADVANCED_QA_DATA } from '../data/advancedQaData';
+import { getAdvancedKnowledgeAnswer, setExtraKnowledgeData } from './advancedQaKnowledge';
 
 export interface ChatMessage {
   role: 'user' | 'assistant';
@@ -1168,6 +1170,7 @@ function addTravelTips(query: string, isBn: boolean): string {
 learningSystem.loadFromStorage();
 // Warm up learned-answer cache from previous session's fallback patterns
 setTimeout(warmUpCache, 0);
+setExtraKnowledgeData(ADVANCED_QA_DATA);
 
 export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, chatHistory: ChatMessage[] = []): Promise<string> => {
 
@@ -1178,6 +1181,12 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   const isBanglishQuery = detectBanglish(query);
   const searchQuery = isBanglishQuery ? query + ' ' + normalizeBanglish(query) : query;
   const lowerQuery = normalize(searchQuery);
+
+  // Advanced bilingual Q&A retrieval (RAG-lite) from curated knowledge base.
+  const advancedMatch = getAdvancedKnowledgeAnswer(query);
+  if (advancedMatch && advancedMatch.confidence >= 0.62) {
+    return advancedMatch.answer;
+  }
 
   // === Learned Answer Cache — check before all heavy processing ===
   const learnedAnswer = checkLearnedAnswer(query);

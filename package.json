@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "cd intercity && npm install && npm run build && cd .. && vite build && node copy-intercity.mjs",
+    "build:qa": "node scripts/build-advanced-qa.mjs",
     "preview": "vite preview",
     "deploy": "gh-pages -d dist"
   },

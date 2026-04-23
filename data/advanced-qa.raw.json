@@ -1,0 +1,2747 @@
+[
+    {
+      "category": "Metro Rail",
+      "id": 1,
+      "question_en": "What is the difference between MRT Pass and Rapid Pass?",
+      "question_bn": "MRT Pass এবং Rapid Pass এর মধ্যে পার্থক্য কি?",
+      "answer_en": "Both offer 10% discount. MRT is Metro-only; Rapid is multi-modal. Both cost 400 TK.",
+      "answer_bn": "উভয় কার্ডেই ১০% ডিসকাউন্ট পাওয়া যায়। MRT শুধু মেট্রোর জন্য, Rapid Pass অন্যগুলোতেও চলে। দাম ৪০০ টাকা।"
+    },
+    {
+      "category": "Inter-City",
+      "id": 71,
+      "question_en": "How to reach Narayanganj quickly?",
+      "question_bn": "নারায়ণগঞ্জ যাওয়ার দ্রুত উপায়?",
+      "answer_en": "Bandhan or Utsab bus from Gulistan, or train from Kamalapur.",
+      "answer_bn": "গুলিস্তান থেকে বন্ধন বা উৎসব বাস অথবা কমলাপুর থেকে ট্রেন।"
+    },
+    {
+      "category": "Business",
+      "id": 125,
+      "question_en": "Shortest path to Dilkusha from Motijheel?",
+      "question_bn": "মতিঝিল থেকে দিলকুশা যাওয়ার সংক্ষিপ্ত পথ কি?",
+      "answer_en": "Within walking distance or short rickshaw.",
+      "answer_bn": "হাঁটা পথেই যাওয়া যায়, অথবা রিকশায়।"
+    },
+    {
+      "category": "Services",
+      "id": 151,
+      "question_en": "Where to find public washrooms in Metro stations?",
+      "question_bn": "মেট্রো স্টেশনে পাবলিক ওয়াশরুম কোথায় আছে?",
+      "answer_en": "Every Metro station is equipped with high-quality public washrooms for passengers inside the paid area.",
+      "answer_bn": "প্রতিটি মেট্রো স্টেশনেই পেইড জোনের ভিতরে উন্নত মানের পাবলিক ওয়াশরুমের ব্যবস্থা আছে।"
+    },
+    {
+      "category": "Services",
+      "id": 152,
+      "question_en": "Are there ATMs at the Airport Railway station?",
+      "question_bn": "এয়ারপোর্ট রেলওয়ে স্টেশনে কি এটিএম বুথ আছে?",
+      "answer_en": "Yes, several banks like DBBL and any-bank ATMs are available just outside the main entrance.",
+      "answer_bn": "হ্যাঁ, স্টেশনের মেইন গেটের বাইরে ডাচ বাংলাসহ আরও কিছু ব্যাংকের এটিএম বুথ আছে।"
+    },
+    {
+      "category": "Weather",
+      "id": 153,
+      "question_en": "What to do if it starts raining heavily while in an open rickshaw?",
+      "question_bn": "খোলা রিকশায় থাকা অবস্থায় হঠাৎ বৃষ্টি শুরু হলে কি করবো?",
+      "answer_en": "Ask the driver to pull over at a shaded spot or use the rickshaw's hood. If it's a 'battery rickshaw', be careful of water logging.",
+      "answer_bn": "শেড আছে এমন জায়গায় নামুন অথবা রিকশার হুড তুলে দিন। ব্যাটারি রিকশা হলে পানির জ্যাম এড়িয়ে চলুন।"
+    },
+    {
+      "category": "Weather",
+      "id": 154,
+      "question_en": "Is the Metro Rail safe during heavy thunderstorms?",
+      "question_bn": "প্রবল বজ্রবৃষ্টির সময় কি মেট্রো রেল নিরাপদ?",
+      "answer_en": "Yes, the Metro system is designed with advanced lightning protection and is completely safe during heavy rain or storms.",
+      "answer_bn": "হ্যাঁ, মেট্রো রেলে উন্নত বজ্রপাত নিরোধক ব্যবস্থা আছে, এটি বৃষ্টির সময় পুরোপুরি নিরাপদ।"
+    },
+    {
+      "category": "Shopping",
+      "id": 155,
+      "question_en": "How to reach Gausia/Chandni Chowk from Mirpur?",
+      "question_bn": "মিরপুর থেকে গাউছিয়া বা চন্দনী চকে কিভাবে যাবো?",
+      "answer_en": "Take any bus going towards New Market/Azimpur. Get down at Science Lab or New Market gate.",
+      "answer_bn": "নিউ মার্কেট বা আজিমপুরগামী যেকোনো বাসে উঠে সায়েন্স ল্যাব বা নীলক্ষেতে নামতে হবে।"
+    },
+    {
+      "category": "Shopping",
+      "id": 156,
+      "question_en": "Bus to Shimanto Square (Dhanmondi)?",
+      "question_bn": "সীমান্ত স্কয়ারে (ধানমন্ডি) যাওয়ার বাস কোনটি?",
+      "answer_en": "Take any bus to Dhanmondi 2/Science lab and then a short rickshaw to the Jigatola area.",
+      "answer_bn": "ধানমন্ডি ২ নম্বর বা সায়েন্স ল্যাবে এসে সেখান থেকে রিকশায় জিগাতলায় যেতে হবে।"
+    },
+    {
+      "category": "Entertainment",
+      "id": 157,
+      "question_en": "How to reach Star Cineplex at Bashundhara City?",
+      "question_bn": "বসুন্ধরা সিটির স্টার সিনেপ্লেক্সে কিভাবে যাবো?",
+      "answer_en": "Located in Panthapath. Take a bus to Farmgate or Panthapath. The mall is hard to miss.",
+      "answer_bn": "পান্থপথে অবস্থিত। ফার্মগেট বা পান্থপথগামী বাসে গেলেই এটি দেখতে পাবেন।"
+    },
+    {
+      "category": "Entertainment",
+      "id": 158,
+      "question_en": "Where is Blockbuster Cinemas located?",
+      "question_bn": "ব্লকবাস্টার সিনেমাস কোথায় অবস্থিত?",
+      "answer_en": "Inside Jamuna Future Park on the top floor. Take a bus to Kuril/Bashundhara gate.",
+      "answer_bn": "যমুনা ফিউচার পার্কের উপরের তলায়। কুড়িল বা বসুন্ধরা গেটগামী বাসে যেতে পারেন।"
+    },
+    {
+      "category": "Festivals",
+      "id": 159,
+      "question_en": "When should I book bus tickets for Eid?",
+      "question_bn": "ঈদের জন্য বাসের টিকিট কখন কাটা উচিত?",
+      "answer_en": "Usually 10-15 days before the journey. Tickets for popular routes sell out within hours of release.",
+      "answer_bn": "সাধারণত যাত্রার ১০-১৫ দিন আগে। নামী পরিবহনের টিকিট ছাড়ার কয়েক ঘণ্টার মধ্যেই শেষ হয়ে যায়।"
+    },
+    {
+      "category": "Festivals",
+      "id": 160,
+      "question_en": "Is the Metro Rail very crowded during Eid holidays?",
+      "question_bn": "ঈদের ছুটিতে কি মেট্রো রেলে অনেক ভিড় থাকে?",
+      "answer_en": "It can be crowded if one-day travelers use it for sightseeing, but office commuters are fewer.",
+      "answer_bn": "দর্শনার্থীদের জন্য ভিড় হতে পারে, তবে অফিস যাত্রীদের চাপ কম থাকে।"
+    },
+    {
+      "category": "Stay",
+      "id": 161,
+      "question_en": "Are there hotels near Gabtoli bus terminal?",
+      "question_bn": "গাবতলী বাস টার্মিনালের আশেপাশে কি হোটেল আছে?",
+      "answer_en": "Yes, plenty of budget boarding hotels are available right next to the terminal for inter-city travelers.",
+      "answer_bn": "হ্যাঁ, দূরপাল্লার যাত্রীদের জন্য টার্মিনালের পাশেই অনেক কম দামি হোটেল আছে।"
+    },
+    {
+      "category": "Stay",
+      "id": 162,
+      "question_en": "Where to stay near Dhaka Airport for a short layover?",
+      "question_bn": "এয়ারপোর্টের কাছে অল্প সময়ের জন্য থাকার ভালো জায়গা কোনটি?",
+      "answer_en": "Uttara Sector 1 and 3 have many high-quality hotels and guest houses within 10-mins of the airport.",
+      "answer_bn": "উত্তরা ১ ও ৩ নম্বর সেক্টরে এয়ারপোর্টের কাছেই অনেক ভালো হোটেল ও গেস্ট হাউস আছে।"
+    },
+    {
+      "category": "Weather",
+      "id": 163,
+      "question_en": "Which areas in Dhaka get waterlogged easily?",
+      "question_bn": "ঢাকার কোন এলাকাগুলোতে বৃষ্টির পর বেশি পানি জমে?",
+      "answer_en": "Areas like Green Road, Shantinagar, Malibagh, and parts of Mirpur 13 are prone to waterlogging after heavy rain.",
+      "answer_bn": "গ্রিন রোড, শান্তিনগর, মালিবাগ এবং মিরপুর ১৩-এর কিছু এলাকায় বৃষ্টির পর পানি জমে যায়।"
+    },
+    {
+      "category": "Services",
+      "id": 164,
+      "question_en": "Can I charge my phone at the Metro station?",
+      "question_bn": "মেট্রো স্টেশনে কি ফোন চার্জ দেওয়ার জায়গা আছে?",
+      "answer_en": "Not yet standard, but some modern cafes or kiosks inside the station area may have points.",
+      "answer_bn": "এখনো সব জায়গায় নেই, তবে স্টেশনের ভেতরের শপে চার্জ দেওয়ার সুবিধা থাকতে পারে।"
+    },
+    {
+      "category": "Special",
+      "id": 165,
+      "question_en": "How to go to the National Museum of Science and Technology?",
+      "question_bn": "জাতীয় বিজ্ঞান ও প্রযুক্তি জাদুঘর কিভাবে যাবো?",
+      "answer_en": "Located in Agargaon. Take the Metro Rail to Agargaon station. It's a short rickshaw ride.",
+      "answer_bn": "আগারগাঁওয়ে অবস্থিত। মেট্রো রেলে আগারগাঁও স্টেশনে নামলে সেখান থেকে রিকশায় খুব কাছে।"
+    },
+    {
+      "category": "Special",
+      "id": 166,
+      "question_en": "How to reach Bangabandhu Military Museum?",
+      "question_bn": "বঙ্গবন্ধু সামরিক জাদুঘর কিভাবে যাবো?",
+      "answer_en": "Take any bus to Farmgate or Bijoy Sarani. It's located near the Novo Theatre.",
+      "answer_bn": "ফার্মগেট বা বিজয় সরণিগামী যেকোনো বাসে যান। এটি নভোথিয়েটারের পাশেই অবস্থিত।"
+    },
+    {
+      "category": "Historic",
+      "id": 167,
+      "question_en": "Route to Dhakeshwari National Temple?",
+      "question_bn": "ঢাকেশ্বরী জাতীয় মন্দিরে যাওয়ার রাস্তা কোনটি?",
+      "answer_en": "Best reached by rickshaw from Shahbag or Bakshibazar area.",
+      "answer_bn": "শাহবাগ বা বক্সীবাজার এলাকা থেকে রিকশায় যাওয়া সবচেয়ে সহজ।"
+    },
+    {
+      "category": "Religious",
+      "id": 168,
+      "question_en": "How to reach Armenian Church in Old Dhaka?",
+      "question_bn": "পুরান ঢাকার আরমানি গির্জায় কিভাবে যাবো?",
+      "answer_en": "Take a rickshaw from Mitford Hospital or Gulistan to reach the Armanitola area.",
+      "answer_bn": "মিটফোর্ড হাসপাতাল বা গুলিস্তান থেকে রিকশায় আরমানিটোলা গেলেই হবে।"
+    },
+    {
+      "category": "Business",
+      "id": 169,
+      "question_en": "How to reach the DSE (Dhaka Stock Exchange) building?",
+      "question_bn": "ঢাকা স্টক এক্সচেঞ্জ (DSE) ভবনে কিভাবে যাবো?",
+      "answer_en": "The main building is in Motijheel. You can walk there from the Motijheel Metro station.",
+      "answer_bn": "এর মেইন ভবনটি মতিঝিলে। মেট্রো স্টেশনে নেমে পায়ে হেঁটেই যাওয়া যায়।"
+    },
+    {
+      "category": "Safety",
+      "id": 170,
+      "question_en": "Is it safe to share a CNG with strangers in Dhaka?",
+      "question_bn": "অপরিচিত মানুষের সাথে সিএনজি শেয়ার করা কি নিরাপদ?",
+      "answer_en": "It is not recommended. Shared CNGs are rare and can be unsafe unless it's a known 'shuttle' route.",
+      "answer_bn": "অপরিচিতদের সাথে সিএনজি শেয়ার না করাই ভালো, এটি অনিরাপদ হতে পারে।"
+    },
+    {
+      "category": "Buses",
+      "id": 171,
+      "question_en": "Which bus goes to North South University (NSU) from Uttara?",
+      "question_bn": "উত্তরা থেকে নর্থ সাউথ (NSU) কোন বাসে যায়?",
+      "answer_en": "Raida or Akash. Get down at the Bashundhara gate.",
+      "answer_bn": "রাইদা বা আকাশ বাস। বসুন্ধরা গেটে নামলেই হবে।"
+    },
+    {
+      "category": "Metro Rail",
+      "id": 172,
+      "question_en": "Can I bring a bicycle inside the Metro?",
+      "question_bn": "মেট্রোর ভিতর কি সাইকেল নেওয়া যায়?",
+      "answer_en": "Only foldable bicycles are allowed if they fit comfortably without bothering others.",
+      "answer_bn": "ভাজ করা যায় এমন সাইকেল নেওয়া যায়, যাতে অন্য কারো সমস্যা না হয়।"
+    },
+    {
+      "category": "Food Hubs",
+      "id": 173,
+      "question_en": "How to reach Khilgaon for pizza/pasta?",
+      "question_bn": "পিৎজা বা পাস্তা খাওয়ার জন্য খিলগাঁও কিভাবে যাবো?",
+      "answer_en": "Go to Malibagh rail gate first, then take a rickshaw to Khilgaon chowrasta.",
+      "answer_bn": "প্রথমে মালিবাগ রেলগেট আসুন, সেখান থেকে রিকশায় খিলগাঁও চৌরাস্তায়।"
+    },
+    {
+      "category": "Weather",
+      "id": 174,
+      "question_en": "Is there a threat of lightning while waiting at Metro platform?",
+      "question_bn": "মেট্রো প্লাটফর্মে দাঁড়িয়ে থাকার সময় কি বজ্রপাতের ভয় আছে?",
+      "answer_en": "No, the entire station is a Faraday cage and grounded properly against lightning strikes.",
+      "answer_bn": "না, পুরো স্টেশন সিস্টেম এবং প্লাটফর্ম বজ্রপাত নিরোধক দিয়ে সুরক্ষিত।"
+    },
+    {
+      "category": "Stay",
+      "id": 175,
+      "question_en": "Good low-cost hotels near Kamalapur Railway station?",
+      "question_bn": "কমলাপুর রেলস্টেশনের কাছে সস্তা হোটেল কোথায় পাবো?",
+      "answer_en": "Motijheel and Arambagh areas have several budget-friendly options within 5-mins of the station.",
+      "answer_bn": "মতিঝিল ও আরামবাগ এলাকায় স্টেশনের একদম কাছেই অনেক বাজেটে হোটেল আছে।"
+    },
+    {
+      "category": "Special",
+      "id": 176,
+      "question_en": "How to reach the Bangabandhu Sheikh Mujibur Rahman Novo Theatre?",
+      "question_bn": "নভোথিয়েটারে কিভাবে যাবো?",
+      "answer_en": "Take any bus to Farmgate or Bijoy Sarani. It's located on VIP road, very easy to find.",
+      "answer_bn": "ফার্মগেট বা বিজয় সরণিগামী যেকোনো বাসে চড়ে গেলেই হবে, ভিআইপি রোডের পাশেই এটি।"
+    },
+    {
+      "category": "Special",
+      "id": 177,
+      "question_en": "Route to the National Museum of Archaeology?",
+      "question_bn": "জাতীয় প্রত্নতাত্ত্বিক জাদুঘরে কিভাবে যাবো?",
+      "answer_en": "Located in Agargaon near the Passport Office. Access via the Agargaon Metro station.",
+      "answer_bn": "আগারগাঁওয়ে পাসপোর্ট অফিসের কাছেই। মেট্রো রেলে আগারগাঁও স্টেশনে নামা সবচেয়ে ভালো।"
+    },
+    {
+      "category": "Buses",
+      "id": 178,
+      "question_en": "Does the 'Thikana' bus go to Dhanmondi 2?",
+      "question_bn": "ঠিকানা বাস কি ধানমন্ডি ২ নম্বর যায়?",
+      "answer_en": "Yes, Thikana service covers the route from Farmgate via Science lab to Jigatola.",
+      "answer_bn": "হ্যাঁ, ঠিকানা বাসটি ফার্মগেট থেকে সায়েন্স ল্যাব হয়ে জিগাতলা পর্যন্ত যায়।"
+    },
+    {
+      "category": "Safety",
+      "id": 179,
+      "question_en": "Is it safe to travel during a protest/movement?",
+      "question_bn": "আন্দোলন বা ধর্মঘটের সময় যাতায়াত কি নিরাপদ?",
+      "answer_en": "It is safer to avoid public transport during unrest. Use the Metro Rail if available, as it is generally well-guarded.",
+      "answer_bn": "আন্দোলনের সময় যাতায়াত এড়িয়ে চলাই ভালো। তবে মেট্রো রেল চলাকালীন সেটি নিরাপদ থাকতে পারে।"
+    },
+    {
+      "category": "Metro Rail",
+      "id": 180,
+      "question_en": "Is there a first-aid kid inside every Metro train?",
+      "question_bn": "মেট্রো ট্রেনের ভিতর কি ফাস্ট এইড কিট থাকে?",
+      "answer_en": "Yes, every train has an emergency kit and a communication system with the driver.",
+      "answer_bn": "হ্যাঁ, প্রতিটি মেট্রো ট্রেনেই ফার্স্ট এইড কিট এবং ড্রাইভারের সাথে কথা বলার ইমার্জেন্সি বাটন আছে।"
+    },
+    {
+      "category": "Special",
+      "id": 181,
+      "question_en": "How to go to Bashundhara Eye Hospital?",
+      "question_bn": "বসুন্ধরা আই (eye) হাসপাতালে কিভাবে যাবো?",
+      "answer_en": "Take a rickshaw from Bashundhara R/A main gate. It is located near the Appollo/Evercare area.",
+      "answer_bn": "বসুন্ধরা গেট থেকে রিকশায় সরাসরি যাওয়া যায়, এটি এভারকেয়ারের কাছেই।"
+    },
+    {
+      "category": "Buses",
+      "id": 182,
+      "question_en": "Which bus goes to Bashundhara City (Panthapath) from Mirpur?",
+      "question_bn": "মিরপুর থকে বসুন্ধরা সিটি কোন বাসে যায়?",
+      "answer_en": "Bihongo or Alif or Wave. Get down at Science Lab or Panthapath sign.",
+      "answer_bn": "বিহঙ্গ, আলিফ অথবা ওয়েভ বাস। সায়েন্স ল্যাব বা পান্থপথ সিগন্যালে নামতে হবে।"
+    },
+    {
+      "category": "Weather",
+      "id": 183,
+      "question_en": "What to do if fog leads to low visibility while on a bus?",
+      "question_bn": "কুয়াশায় বাসের ড্রাইভার রাস্তা দেখতে না পেলে কি করা উচিত?",
+      "answer_en": "Ask the driver to drive slowly and keep the fog lamps on. Avoid traveling during extreme fog at night.",
+      "answer_bn": "ড্রাইভারকে সাবধানে গাড়ি চালাতে বলুন। বেশি কুয়াশা হলে যাত্রা বিরত রাখা ভালো।"
+    },
+    {
+      "category": "Religious",
+      "id": 184,
+      "question_en": "Route to Dhakeshwari National Temple?",
+      "question_bn": "ঢাকেশ্বরী মন্দিরে যাওয়ার রাস্তা কোনটি?",
+      "answer_en": "Shortest way is by rickshaw from Shahbag or Guli-para area.",
+      "answer_bn": "শাহবাগ বা গুলিস্তান এলাকা থেকে রিকশায় যাওয়া সবচেয়ে দ্রুত।"
+    },
+    {
+      "category": "Services",
+      "id": 185,
+      "question_en": "Where to find mobile balance recharge shops near terminals?",
+      "question_bn": "বাস টার্মিনালের কাছে মোবাইলে টাকা ভরার দোকান কোথায় পাবো?",
+      "answer_en": "Almost every local grocery store next to the terminal counters provides recharge services.",
+      "answer_bn": "বাস কাউন্টারগুলোর পাশ্ববর্তী প্রায় সব মুদি দোকানেই রিচার্জ করা যায়।"
+    },
+    {
+      "category": "Safety",
+      "id": 186,
+      "question_en": "Is it safe to keep a laptop in the bus back-seat pocket?",
+      "question_bn": "ল্যাপটপ বাসের পেছনের সিট পকেটে রাখা কি ঠিক হবে?",
+      "answer_en": "No, never leave valuable electronics like laptops in seat pockets. Always keep it in your bag and with you.",
+      "answer_bn": "না, ল্যাপটপ বা দামী জিনিস সিট পকেটে রাখবেন না। সবসময় ব্যাগে নিজের কাছে রাখুন।"
+    },
+    {
+      "category": "Metro Rail",
+      "id": 187,
+      "question_en": "Wait time for next Metro train in the morning?",
+      "question_bn": "সকালে মেট্রো রেলের জন্য কতক্ষণ অপেক্ষা করতে হয়?",
+      "answer_en": "Usually between 8 to 10 minutes during the morning rush hours.",
+      "answer_bn": "ব্যস্ত সময়ে সাধারণত ৮ থেকে ১০ মিনিট পরপর ট্রেন আসে।"
+    },
+    {
+      "category": "Festivals",
+      "id": 188,
+      "question_en": "How to reach Ramna Batamul for Pohela Boishakh?",
+      "question_bn": "পহেলা বৈশাখে রমনা বটমূলে কিভাবে যাবো?",
+      "answer_en": "Avoid buses on that day near Shahbag. Take the Metro Rail to Dhaka University station and walk to the park.",
+      "answer_bn": "সেদিন বাসে না গিয়ে মেট্রো রেলে আসা ভালো, ঢাকা ইউনিভার্সিটি স্টেশনে নেমে ৫ মিনিট হাঁটা পথ।"
+    },
+    {
+      "category": "Buses",
+      "id": 189,
+      "question_en": "Direct bus from Airport to Gulshan?",
+      "question_bn": "এয়ারপোর্ট থেকে গুলশানে সরাসরি বাস কোনটি?",
+      "answer_en": "Akash, Raida, or Victor Class.",
+      "answer_bn": "আকাশ, রাইদা অথবা ভিক্টর ক্লাসিক।"
+    },
+    {
+      "category": "Stay",
+      "id": 190,
+      "question_en": "Best motels near the Dhaka-Chittagong highway entry?",
+      "question_bn": "ঢাকা-চট্টগ্রাম মহাসড়কের প্রবেশমুখে থাকার ভালো জায়গা কোনটি?",
+      "answer_en": "Jatrabari area has many budget motels, but it can be noisy. Stay in Motijheel for better quality.",
+      "answer_bn": "যাত্রাবাড়ী এলাকায় অনেক সাধারণ হোটেল আছে, তবে মতিঝিলে থাকা বেশি আরামদায়ক হবে।"
+    },
+    {
+      "category": "Special",
+      "id": 191,
+      "question_en": "Route to the National Library of Bangladesh?",
+      "question_bn": "জাতীয় গ্রন্থাগারে যাওয়ার রুট কি?",
+      "answer_en": "Located in Agargaon. Take the Metro to Agargaon station. It's walking distance from there.",
+      "answer_bn": "আগারগাঁওয়ে অবস্থিত। মেট্রো রেলে আগারগাঁও স্টেশনে নামলেই পায়ে হেঁটে যাওয়া যায়।"
+    },
+    {
+      "category": "Roads",
+      "id": 192,
+      "question_en": "Traffic condition on Mohakhali Flyover?",
+      "question_bn": "মহাখালী ফ্লাইওভারে কি জ্যাম থাকে?",
+      "answer_en": "The flyover is usually smooth, but the entry and exits can have heavy jams during peak hours.",
+      "answer_bn": "ফ্লাইওভার দিয়ে দ্রুত যাওয়া যায়, তবে প্রবেশ এবং বাহিরের মুখে জ্যাম হতে পারে।"
+    },
+    {
+      "category": "Religious",
+      "id": 193,
+      "question_en": "How to go to Star Mosque (Tara Masjid)?",
+      "question_bn": "তারা মসজিদে কিভাবে যাবো?",
+      "answer_en": "Located in Armanitola, Old Dhaka. Take a rickshaw from Gulistan or Chawkbazar.",
+      "answer_bn": "এটি পুরান ঢাকার আরমানিটোলায়। গুলিস্তান বা চকবাজার থেকে রিকশায় যাওয়া যায়।"
+    },
+    {
+      "category": "Business",
+      "id": 194,
+      "question_en": "Which bus goes to Dilkusha from Mirpur?",
+      "question_bn": "মিরপুর থেকে দিলকুশা যাওয়ার বাস কোনটি?",
+      "answer_en": "Take any bus going to Motijheel. Dilkusha is right next to the Motijheel circle.",
+      "answer_bn": "মতিঝিলগামী যেকোনো বাসে এসে নামলেই দিলকুশা হাঁটা দূরত্বে।"
+    },
+    {
+      "category": "Medical",
+      "id": 195,
+      "question_en": "How to reach the National Institute of Mental Health?",
+      "question_bn": "জাতীয় মানসিক স্বাস্থ্য ইনস্টিটিউট কিভাবে যাবো?",
+      "answer_en": "Located in Agargaon. Take the Metro Rail to Agargaon station for the fastest transit.",
+      "answer_bn": "আগারগাঁওয়ে অবস্থিত। মেট্রো রেল ব্যবহার করে আগারগাঁও স্টেশনে নামা সবচেয়ে সহজ।"
+    },
+    {
+      "category": "Buses",
+      "id": 196,
+      "question_en": "Which bus goes to Gabtoli from Uttara?",
+      "question_bn": "উত্তরা থেকে গাবতলী যাওয়ার বাস কোনটি?",
+      "answer_en": "Prachesta or the BRTC buses crossing Ashulia.",
+      "answer_bn": "প্রচেষ্টা অথবা আশুলিয়া হয়ে আসা বিআরটিসি বাস।"
+    },
+    {
+      "category": "Metro Rail",
+      "id": 197,
+      "question_en": "Is the Metro card valid for the Water Bus?",
+      "question_bn": "মেট্রো কার্ড কি ওয়াটার বাসে চলে?",
+      "answer_en": "Not yet. Only Rapid Pass is being tested for multi-modal integration.",
+      "answer_bn": "এখনো শুরু হয়নি। তবে র‍্যাপিড পাস দিয়ে এটি ভবিষ্যতে সম্ভব হতে পারে।"
+    },
+    {
+      "category": "Roads",
+      "id": 198,
+      "question_en": "Is the Dhaka Elevated Expressway fully open?",
+      "question_bn": "ঢাকা এলিভেটেড এক্সপ্রেসওয়ে কি পুরোপুরি চালু?",
+      "answer_en": "Partially open. It covers sections like Airport to Farmgate/Tejgaon currently.",
+      "answer_bn": "আংশিক চালু। বর্তমানে এয়ারপোর্ট থেকে ফার্মগেট/তেজগাঁও পর্যন্ত ব্যবহারের উপযোগী।"
+    },
+    {
+      "category": "Safety",
+      "id": 199,
+      "question_en": "What to do if you leave a bag in a CNG?",
+      "question_bn": "সিএনজিতে ব্যাগ ফেলে গেলে কি করবো?",
+      "answer_en": "If you booked via Uber, report it in the app immediately. Otherwise, report to the nearest police station with the CNG serial number.",
+      "answer_bn": "উবারে হলে দ্রুত অ্যাপে জানান। অন্যথায় সিএনজির নাম্বারসহ থানায় জিডি করুন।"
+    },
+    {
+      "category": "Metro Rail",
+      "id": 200,
+      "question_en": "Congratulations! Is the Metro Rail the best way to travel in Dhaka?",
+      "question_bn": "অভিনন্দন! মেট্রো রেল কি ঢাকার সেরা যানবাহন?",
+      "answer_en": "Yes, for the routes it covers, it is by far the fastest, cleanest, and most reliable option.",
+      "answer_bn": "হ্যাঁ, যেই রুটে এটি চলে তাতে এটিই বর্তমানে সবচেয়ে দ্রুত এবং নির্ভরযোগ্য মাধ্যম।"
+    },
+    {
+      "category": "Rickshaw",
+      "id": 201,
+      "question_en": "How much does a rickshaw cost from Shahbag to Nilkhet?",
+      "question_bn": "শাহবাগ থেকে নীলক্ষেত রিকশা ভাড়া কত?",
+      "answer_en": "Typically 20–30 TK for this short distance. Always negotiate before boarding.",
+      "answer_bn": "সাধারণত ২০-৩০ টাকা। উঠার আগেই ভাড়া ঠিক করে নিন।"
+    },
+    {
+      "category": "Rickshaw",
+      "id": 202,
+      "question_en": "Are battery-powered rickshaws (easy bikes) allowed on main roads?",
+      "question_bn": "ব্যাটারি চালিত রিকশা (ইজিবাইক) কি মেইন রোডে চলতে পারে?",
+      "answer_en": "No, easy bikes are restricted from major city roads and highways in Dhaka.",
+      "answer_bn": "না, ঢাকার প্রধান সড়কে ইজিবাইক চলা নিষিদ্ধ।"
+    },
+    {
+      "category": "CNG",
+      "id": 203,
+      "question_en": "What is the CNG meter starting fare in Dhaka?",
+      "question_bn": "ঢাকায় সিএনজির মিটারে শুরুর ভাড়া কত?",
+      "answer_en": "The meter starts at 40 TK for the first 2 km, then 12.50 TK per km after.",
+      "answer_bn": "প্রথম ২ কিলোমিটারের জন্য ৪০ টাকা, এরপর প্রতি কিলোমিটার ১২.৫০ টাকা।"
+    },
+    {
+      "category": "CNG",
+      "id": 204,
+      "question_en": "How do I find a CNG near Farmgate at night?",
+      "question_bn": "রাতে ফার্মগেটে সিএনজি কোথায় পাবো?",
+      "answer_en": "There are always CNGs near the Farmgate foot overbridge and Bijoy Sarani intersection.",
+      "answer_bn": "ফার্মগেটের ফুট ওভারব্রিজ এবং বিজয় সরণি মোড়ে সবসময় সিএনজি পাওয়া যায়।"
+    },
+    {
+      "category": "Ride Share",
+      "id": 205,
+      "question_en": "Which ride-sharing apps work in Dhaka?",
+      "question_bn": "ঢাকায় কোন রাইড শেয়ারিং অ্যাপগুলো কাজ করে?",
+      "answer_en": "Uber, Pathao, and Shohoz are the most popular ride-sharing apps in Dhaka.",
+      "answer_bn": "উবার, পাঠাও এবং সহজ - এই তিনটি অ্যাপ ঢাকায় সবচেয়ে বেশি ব্যবহৃত হয়।"
+    },
+    {
+      "category": "Ride Share",
+      "id": 206,
+      "question_en": "Is Pathao bike cheaper than Uber in Dhaka?",
+      "question_bn": "ঢাকায় পাঠাও বাইক কি উবারের চেয়ে সস্তা?",
+      "answer_en": "Yes, Pathao bike is generally cheaper for short distances. Uber is more comfortable for cars.",
+      "answer_bn": "হ্যাঁ, স্বল্প দূরত্বে পাঠাও বাইক সাধারণত সস্তা। গাড়ির জন্য উবার বেশি আরামদায়ক।"
+    },
+    {
+      "category": "Metro Rail",
+      "id": 207,
+      "question_en": "Which Metro station is closest to Dhaka University?",
+      "question_bn": "ঢাকা বিশ্ববিদ্যালয়ের সবচেয়ে কাছের মেট্রো স্টেশন কোনটি?",
+      "answer_en": "Dhaka University station on MRT Line-6 is the closest stop.",
+      "answer_bn": "এমআরটি লাইন-৬-এর ঢাকা বিশ্ববিদ্যালয় স্টেশনটি সবচেয়ে কাছে।"
+    },
+    {
+      "category": "Metro Rail",
+      "id": 208,
+      "question_en": "What is the last Metro train time from Motijheel?",
+      "question_bn": "মতিঝিল থেকে শেষ মেট্রো ট্রেন কখন ছাড়ে?",
+      "answer_en": "The last train from Motijheel departs around 10:00 PM. Check DMTCL app for updates.",
+      "answer_bn": "মতিঝিল থেকে সর্বশেষ ট্রেন রাত প্রায় ১০:০০টায় ছাড়ে। আপডেটের জন্য DMTCL অ্যাপ দেখুন।"
+    },
+    {
+      "category": "Metro Rail",
+      "id": 209,
+      "question_en": "Can I buy a Metro ticket using bKash?",
+      "question_bn": "বিকাশ দিয়ে কি মেট্রোর টিকেট কেনা যায়?",
+      "answer_en": "Yes, the TVM machines at Metro stations accept bKash and other mobile banking payments.",
+      "answer_bn": "হ্যাঁ, মেট্রো স্টেশনের টিভিএম মেশিনে বিকাশ ও অন্যান্য মোবাইল ব্যাংকিং দিয়ে টিকেট কেনা যায়।"
+    },
+    {
+      "category": "Buses",
+      "id": 210,
+      "question_en": "Which bus goes from Motijheel to Uttara?",
+      "question_bn": "মতিঝিল থেকে উত্তরায় কোন বাসে যাওয়া যায়?",
+      "answer_en": "Turag, Bihongo, or Alif buses run this route regularly.",
+      "answer_bn": "তুরাগ, বিহঙ্গ বা আলিফ বাস এই রুটে নিয়মিত চলে।"
+    },
+    {
+      "category": "Buses",
+      "id": 211,
+      "question_en": "Is there an AC bus service in Dhaka?",
+      "question_bn": "ঢাকায় কি এসি বাস সার্ভিস আছে?",
+      "answer_en": "Yes, BRTC and some private operators run AC buses on select routes like Uttara to Motijheel.",
+      "answer_bn": "হ্যাঁ, বিআরটিসি ও কিছু বেসরকারি পরিবহন উত্তরা-মতিঝিলসহ কিছু রুটে এসি বাস চালায়।"
+    },
+    {
+      "category": "Train",
+      "id": 212,
+      "question_en": "How to buy train tickets online in Bangladesh?",
+      "question_bn": "বাংলাদেশে অনলাইনে ট্রেনের টিকিট কিভাবে কিনবো?",
+      "answer_en": "Use the Bangladesh Railway e-ticketing website (eticket.railway.gov.bd) or the Rail Sheba app.",
+      "answer_bn": "বাংলাদেশ রেলওয়ের ই-টিকেটিং সাইট (eticket.railway.gov.bd) বা রেল সেবা অ্যাপ ব্যবহার করুন।"
+    },
+    {
+      "category": "Train",
+      "id": 213,
+      "question_en": "Which train goes from Dhaka to Sylhet?",
+      "question_bn": "ঢাকা থেকে সিলেটে কোন ট্রেন যায়?",
+      "answer_en": "Parabat Express, Upaban Express, and Jayantika Express run between Dhaka and Sylhet.",
+      "answer_bn": "পারাবত, উপবন এবং জয়ন্তিকা এক্সপ্রেস ঢাকা-সিলেট রুটে চলে।"
+    },
+    {
+      "category": "Train",
+      "id": 214,
+      "question_en": "How long does the Dhaka to Chittagong train take?",
+      "question_bn": "ঢাকা থেকে চট্টগ্রাম ট্রেনে কতক্ষণ লাগে?",
+      "answer_en": "Subarna or Sonardip express takes about 5.5 to 6.5 hours depending on the service.",
+      "answer_bn": "সুবর্ণ বা সোনারদীপ এক্সপ্রেসে সাধারণত সাড়ে ৫ থেকে সাড়ে ৬ ঘণ্টা লাগে।"
+    },
+    {
+      "category": "Roads",
+      "id": 215,
+      "question_en": "What is the traffic condition on Mirpur Road during office hours?",
+      "question_bn": "অফিস সময়ে মিরপুর রোডে কেমন যানজট থাকে?",
+      "answer_en": "Mirpur Road is one of Dhaka's most congested roads during 8–10 AM and 5–8 PM.",
+      "answer_bn": "মিরপুর রোড ঢাকার অন্যতম ব্যস্ত সড়ক, সকাল ৮-১০ এবং বিকাল ৫-৮টায় তীব্র জ্যাম থাকে।"
+    },
+    {
+      "category": "Safety",
+      "id": 216,
+      "question_en": "What should women do if they feel unsafe on a bus?",
+      "question_bn": "বাসে নারীরা অনিরাপদ বোধ করলে কী করবেন?",
+      "answer_en": "Sit in the reserved women's seats at the front. Alert other passengers or call 999 if needed.",
+      "answer_bn": "সামনের সংরক্ষিত মহিলা আসনে বসুন। প্রয়োজনে অন্য যাত্রীদের সতর্ক করুন বা ৯৯৯-এ কল করুন।"
+    },
+    {
+      "category": "Medical",
+      "id": 217,
+      "question_en": "How to reach Birdem Hospital from Farmgate?",
+      "question_bn": "ফার্মগেট থেকে বারডেম হাসপাতালে কিভাবে যাবো?",
+      "answer_en": "Birdem is in Shahbag. Take any bus or rickshaw towards Shahbag — about 10 minutes.",
+      "answer_bn": "বারডেম শাহবাগে। ফার্মগেট থেকে শাহবাগমুখী বাস বা রিকশায় প্রায় ১০ মিনিট।"
+    },
+    {
+      "category": "Medical",
+      "id": 218,
+      "question_en": "Which hospital is nearest to Uttara Sector 7?",
+      "question_bn": "উত্তরা ৭ নম্বর সেক্টরের কাছে কোন হাসপাতাল আছে?",
+      "answer_en": "Ibn Sina Hospital in Uttara Sector 6 and Kuwait Bangladesh Friendship Hospital are both nearby.",
+      "answer_bn": "উত্তরা ৬ নম্বর সেক্টরের ইবনে সিনা এবং কুয়েত বাংলাদেশ ফ্রেন্ডশিপ হাসপাতাল কাছে।"
+    },
+    {
+      "category": "Food Hubs",
+      "id": 219,
+      "question_en": "Best area for biriyani in Old Dhaka?",
+      "question_bn": "পুরান ঢাকায় বিরিয়ানির জন্য সেরা জায়গা কোনটি?",
+      "answer_en": "Nazira Bazar and Nannos near Chawkbazar are famous for authentic Dhaka-style biriyani.",
+      "answer_bn": "নাজিরা বাজার এবং চকবাজারের কাছের নান্নাস ঢাকাই বিরিয়ানির জন্য বিখ্যাত।"
+    },
+    {
+      "category": "Food Hubs",
+      "id": 220,
+      "question_en": "Where to eat good street food near Dhaka University?",
+      "question_bn": "ঢাকা বিশ্ববিদ্যালয়ের কাছে ভালো স্ট্রিট ফুড কোথায় পাবো?",
+      "answer_en": "TSC and Madhur Canteen are iconic spots near DU for affordable and tasty street food.",
+      "answer_bn": "টিএসসি ও মধুর ক্যান্টিন ঢাবির কাছে সাশ্রয়ী ও সুস্বাদু স্ট্রিট ফুডের জন্য আইকনিক।"
+    },
+    {
+      "category": "Travel Planning",
+      "id": 221,
+      "question_en": "How do I plan a one-day trip from Dhaka to Cox's Bazar?",
+      "question_bn": "ঢাকা থেকে কক্সবাজারে একদিনের ট্রিপ কিভাবে প্ল্যান করবো?",
+      "answer_en": "Take a night bus or flight. Buses (Shyamoli, Hanif, Green Line) depart Kalyanpur/Arambagh in the evening and arrive early morning, giving you a full day at the beach.",
+      "answer_bn": "রাতের বাস (শ্যামলী, হানিফ, গ্রিন লাইন) কল্যাণপুর বা আরামবাগ থেকে সন্ধ্যায় ছাড়ে এবং ভোরে পৌঁছায়, পুরো দিন বিচে কাটানো যায়।"
+    },
+    {
+      "category": "Travel Planning",
+      "id": 222,
+      "question_en": "What is the best time to visit Sundarbans from Dhaka?",
+      "question_bn": "ঢাকা থেকে সুন্দরবন যাওয়ার সেরা সময় কখন?",
+      "answer_en": "October to March is ideal. Avoid monsoon season (June–September) due to rough river conditions.",
+      "answer_bn": "অক্টোবর থেকে মার্চ সেরা সময়। বর্ষায় (জুন–সেপ্টেম্বর) নদীর পরিস্থিতি খারাপ থাকায় এড়িয়ে চলুন।"
+    },
+    {
+      "category": "Travel Planning",
+      "id": 223,
+      "question_en": "How to plan a 3-day tour of Sylhet from Dhaka?",
+      "question_bn": "ঢাকা থেকে সিলেটে ৩ দিনের ট্যুর কিভাবে প্ল্যান করবো?",
+      "answer_en": "Day 1: Travel by train/bus, check in. Day 2: Ratargul, Jaflong. Day 3: Tea gardens, Shahjalal Dargah, return.",
+      "answer_bn": "দিন ১: ট্রেন বা বাসে যাওয়া ও চেক-ইন। দিন ২: রাতারগুল, জাফলং। দিন ৩: চা বাগান, দরগাহ, ফেরা।"
+    },
+    {
+      "category": "Travel Planning",
+      "id": 224,
+      "question_en": "What documents should I carry for domestic travel in Bangladesh?",
+      "question_bn": "বাংলাদেশে অভ্যন্তরীণ ভ্রমণে কি কি কাগজপত্র লাগে?",
+      "answer_en": "National ID card or birth certificate is usually sufficient. Keep a photo ID for hotel check-in.",
+      "answer_bn": "জাতীয় পরিচয়পত্র বা জন্মনিবন্ধন সনদ যথেষ্ট। হোটেলে চেক-ইনের জন্য একটি ফটো আইডি রাখুন।"
+    },
+    {
+      "category": "Budget",
+      "id": 225,
+      "question_en": "What is the average daily travel budget in Dhaka?",
+      "question_bn": "ঢাকায় একদিনের গড় যাতায়াত খরচ কত?",
+      "answer_en": "For metro/bus commuters, 50–150 TK/day is typical. With CNG or ride-share, expect 200–500 TK/day.",
+      "answer_bn": "মেট্রো বা বাসে সাধারণত দিনে ৫০-১৫০ টাকা লাগে। সিএনজি বা রাইড শেয়ারে ২০০-৫০০ টাকা পর্যন্ত হতে পারে।"
+    },
+    {
+      "category": "Budget",
+      "id": 226,
+      "question_en": "How much does a Dhaka to Cox's Bazar bus ticket cost?",
+      "question_bn": "ঢাকা থেকে কক্সবাজার বাসের টিকিটের দাম কত?",
+      "answer_en": "Non-AC: 700–900 TK. AC sleeper: 1,200–2,000 TK. Prices vary by operator and season.",
+      "answer_bn": "নন-এসি: ৭০০-৯০০ টাকা। এসি স্লিপার: ১,২০০-২,০০০ টাকা। পরিবহন ও মৌসুম ভেদে দাম পরিবর্তিত হয়।"
+    },
+    {
+      "category": "Budget",
+      "id": 227,
+      "question_en": "What is the cheapest way to travel from Dhaka to Khulna?",
+      "question_bn": "ঢাকা থেকে খুলনা সবচেয়ে সস্তায় কিভাবে যাবো?",
+      "answer_en": "The cheapest is by train (Sundarban Express) in Shuvon class — around 300–400 TK. Bus is slightly more.",
+      "answer_bn": "সবচেয়ে সস্তা হলো ট্রেনে (সুন্দরবন এক্সপ্রেস) শোভন ক্লাসে, প্রায় ৩০০-৪০০ টাকা। বাসে কিছুটা বেশি।"
+    },
+    {
+      "category": "Budget",
+      "id": 228,
+      "question_en": "How much should I budget for a 2-day trip to Bandarban?",
+      "question_bn": "বান্দরবানে ২ দিনের ট্রিপে কত টাকা বাজেট রাখা উচিত?",
+      "answer_en": "Budget around 3,000–5,000 TK per person including bus, accommodation, local jeep, and food.",
+      "answer_bn": "বাস, থাকা, লোকাল জিপ ও খাওয়াসহ জনপ্রতি ৩,০০০-৫,০০০ টাকা বাজেট রাখুন।"
+    },
+    {
+      "category": "Fare",
+      "id": 229,
+      "question_en": "What is the Metro Rail fare from Uttara North to Motijheel?",
+      "question_bn": "উত্তরা নর্থ থেকে মতিঝিল পর্যন্ত মেট্রো ভাড়া কত?",
+      "answer_en": "The fare is 100 TK for the full MRT Line-6 journey from Uttara North to Motijheel.",
+      "answer_bn": "উত্তরা নর্থ থেকে মতিঝিল পর্যন্ত সম্পূর্ণ রুটে মেট্রো ভাড়া ১০০ টাকা।"
+    },
+    {
+      "category": "Fare",
+      "id": 230,
+      "question_en": "How much is the Dhaka to Chittagong bus fare?",
+      "question_bn": "ঢাকা থেকে চট্টগ্রাম বাসের ভাড়া কত?",
+      "answer_en": "Non-AC: 450–600 TK. AC: 900–1,400 TK depending on operator (Shyamoli, Ena, Green Line).",
+      "answer_bn": "নন-এসি: ৪৫০-৬০০ টাকা। এসি: ৯০০-১,৪০০ টাকা (শ্যামলী, এনা, গ্রিন লাইন ভেদে)।"
+    },
+    {
+      "category": "Fare",
+      "id": 231,
+      "question_en": "What is the Uber fare from Dhaka Airport to Gulshan?",
+      "question_bn": "ঢাকা এয়ারপোর্ট থেকে গুলশানে উবার ভাড়া কত?",
+      "answer_en": "Typically 300–500 TK depending on traffic and surge pricing. UberX is cheapest.",
+      "answer_bn": "সাধারণত ৩০০-৫০০ টাকা, ট্রাফিক ও সার্জ প্রাইসিং ভেদে। UberX সবচেয়ে সস্তা।"
+    },
+    {
+      "category": "Fare",
+      "id": 232,
+      "question_en": "How much is the launch (ferry) fare from Dhaka to Barishal?",
+      "question_bn": "ঢাকা থেকে বরিশালে লঞ্চের ভাড়া কত?",
+      "answer_en": "Deck class: 150–200 TK. Single cabin: 500–700 TK. Double cabin: 800–1,200 TK.",
+      "answer_bn": "ডেক: ১৫০-২০০ টাকা। সিঙ্গেল কেবিন: ৫০০-৭০০ টাকা। ডাবল কেবিন: ৮০০-১,২০০ টাকা।"
+    },
+    {
+      "category": "Fare",
+      "id": 233,
+      "question_en": "How much is Pathao bike fare per km in Dhaka?",
+      "question_bn": "ঢাকায় পাঠাও বাইকের প্রতি কিলোমিটার ভাড়া কত?",
+      "answer_en": "Base fare is around 25 TK, then approximately 12–15 TK per km. Minimum fare is 30–35 TK.",
+      "answer_bn": "বেস ভাড়া প্রায় ২৫ টাকা, তারপর প্রতি কিলোমিটার ১২-১৫ টাকা। সর্বনিম্ন ভাড়া ৩০-৩৫ টাকা।"
+    },
+    {
+      "category": "Tour",
+      "id": 234,
+      "question_en": "Which travel agency is best for Cox's Bazar tour packages?",
+      "question_bn": "কক্সবাজার ট্যুর প্যাকেজের জন্য কোন ট্রাভেল এজেন্সি ভালো?",
+      "answer_en": "Guide Tour, Bengal Tours, and Nijhoom Tours are popular for affordable Cox's Bazar packages.",
+      "answer_bn": "গাইড ট্যুর, বেঙ্গল ট্যুরস ও নিঝুম ট্যুরস কক্সবাজার প্যাকেজের জন্য জনপ্রিয়।"
+    },
+    {
+      "category": "Tour",
+      "id": 235,
+      "question_en": "What are must-visit places in a Dhaka city tour?",
+      "question_bn": "ঢাকা সিটি ট্যুরে কোন জায়গাগুলো অবশ্যই দেখতে হবে?",
+      "answer_en": "Lalbagh Fort, Ahsan Manzil, Star Mosque, National Museum, Hatirjheel, and Sadarghat.",
+      "answer_bn": "লালবাগ কেল্লা, আহসান মঞ্জিল, তারা মসজিদ, জাতীয় জাদুঘর, হাতিরঝিল ও সদরঘাট।"
+    },
+    {
+      "category": "Tour",
+      "id": 236,
+      "question_en": "How to reach Sajek Valley from Dhaka?",
+      "question_bn": "ঢাকা থেকে সাজেক ভ্যালিতে কিভাবে যাবো?",
+      "answer_en": "Take a bus or train to Khagrachhari, then a local jeep/CNG to Sajek. Total journey is 8–10 hours.",
+      "answer_bn": "বাস বা ট্রেনে খাগড়াছড়ি, তারপর লোকাল জিপ বা সিএনজিতে সাজেক। মোট ৮-১০ ঘণ্টার পথ।"
+    },
+    {
+      "category": "Tour",
+      "id": 237,
+      "question_en": "Is it possible to visit Srimangal as a day trip from Dhaka?",
+      "question_bn": "ঢাকা থেকে দিনে গিয়ে শ্রীমঙ্গল ঘুরে আসা কি সম্ভব?",
+      "answer_en": "Yes, take the early morning Parabat or Upaban express, spend the day at tea gardens, return by evening train.",
+      "answer_bn": "হ্যাঁ, ভোরের পারাবত বা উপবন এক্সপ্রেসে গিয়ে চা বাগান ঘুরে সন্ধ্যার ট্রেনে ফেরা সম্ভব।"
+    },
+    {
+      "category": "Tour",
+      "id": 238,
+      "question_en": "What is the best route for a Dhaka to Rangamati tour?",
+      "question_bn": "ঢাকা থেকে রাঙামাটি ভ্রমণের সেরা রুট কোনটি?",
+      "answer_en": "Travel to Chittagong by train/bus, then a local bus from Chittagong to Rangamati (1.5 hrs).",
+      "answer_bn": "ট্রেন বা বাসে চট্টগ্রাম, তারপর চট্টগ্রাম থেকে লোকাল বাসে রাঙামাটি, প্রায় দেড় ঘণ্টার পথ।"
+    },
+    {
+      "category": "Transport Tips",
+      "id": 239,
+      "question_en": "How to avoid traffic jams in Dhaka?",
+      "question_bn": "ঢাকায় যানজট এড়ানোর উপায় কি?",
+      "answer_en": "Use Metro Rail, travel before 8 AM or after 9 PM, avoid Mirpur Road and Mohakhali during peak hours.",
+      "answer_bn": "মেট্রো রেল ব্যবহার করুন, সকাল ৮টার আগে বা রাত ৯টার পরে চলাচল করুন, পিক আওয়ারে মিরপুর রোড এড়িয়ে চলুন।"
+    },
+    {
+      "category": "Transport Tips",
+      "id": 240,
+      "question_en": "Is it safe to travel by launch (ferry) at night in Bangladesh?",
+      "question_bn": "বাংলাদেশে রাতে লঞ্চে ভ্রমণ কি নিরাপদ?",
+      "answer_en": "Reputable launches like BIWTC, Abulazam are generally safe. Avoid unknown/smaller launches and travel during storms.",
+      "answer_bn": "বিআইডব্লিউটিসি বা আবুলাজামের মতো পরিচিত লঞ্চ সাধারণত নিরাপদ। অজানা ছোট লঞ্চ ও ঝড়ের সময় এড়িয়ে চলুন।"
+    },
+    {
+      "category": "Transport Tips",
+      "id": 241,
+      "question_en": "What is the best transport for traveling with heavy luggage in Dhaka?",
+      "question_bn": "ঢাকায় ভারী মালপত্র নিয়ে চলাচলের সেরা মাধ্যম কি?",
+      "answer_en": "CNG auto-rickshaw or Uber/Pathao car is best for heavy luggage. Avoid rickshaws for more than one bag.",
+      "answer_bn": "ভারী মালপত্রের জন্য সিএনজি বা উবার/পাঠাও কার সবচেয়ে ভালো। একের বেশি ব্যাগ হলে রিকশা এড়িয়ে চলুন।"
+    },
+    {
+      "category": "Transport Tips",
+      "id": 242,
+      "question_en": "How early should I reach Sadarghat for a launch to Barishal?",
+      "question_bn": "বরিশালের লঞ্চে যেতে কতক্ষণ আগে সদরঘাটে পৌঁছাতে হবে?",
+      "answer_en": "Arrive at least 1 hour early on normal days and 2 hours early during Eid season to secure a cabin.",
+      "answer_bn": "সাধারণ দিনে ১ ঘণ্টা এবং ঈদ মৌসুমে কেবিন নিশ্চিত করতে ২ ঘণ্টা আগে পৌঁছানো উচিত।"
+    },
+    {
+      "category": "Transport Tips",
+      "id": 243,
+      "question_en": "Can I use Google Maps for navigation in Dhaka?",
+      "question_bn": "ঢাকায় নেভিগেশনের জন্য কি গুগল ম্যাপ ব্যবহার করা যাবে?",
+      "answer_en": "Yes, Google Maps works well in Dhaka. For real-time traffic, it is very reliable in the city.",
+      "answer_bn": "হ্যাঁ, ঢাকায় গুগল ম্যাপ ভালো কাজ করে। রিয়েল-টাইম ট্রাফিকের জন্য এটি শহরে বেশ নির্ভরযোগ্য।"
+    },
+    {
+      "category": "Water Transport",
+      "id": 244,
+      "question_en": "Where is Sadarghat Launch Terminal located?",
+      "question_bn": "সদরঘাট লঞ্চ টার্মিনাল কোথায় অবস্থিত?",
+      "answer_en": "Sadarghat is in Old Dhaka near Mitford Hospital. Accessible by rickshaw from Gulistan.",
+      "answer_bn": "সদরঘাট পুরান ঢাকায় মিটফোর্ড হাসপাতালের কাছে। গুলিস্তান থেকে রিকশায় যাওয়া যায়।"
+    },
+    {
+      "category": "Water Transport",
+      "id": 245,
+      "question_en": "Which launches go from Dhaka to Patuakhali?",
+      "question_bn": "ঢাকা থেকে পটুয়াখালীতে কোন লঞ্চ যায়?",
+      "answer_en": "MV Sundarban and MV Kirtankhola operate on the Dhaka–Barishal–Patuakhali route.",
+      "answer_bn": "এমভি সুন্দরবন ও এমভি কীর্তনখোলা ঢাকা-বরিশাল-পটুয়াখালী রুটে চলে।"
+    },
+    {
+      "category": "Water Transport",
+      "id": 246,
+      "question_en": "Is there a water bus service in Dhaka city?",
+      "question_bn": "ঢাকা শহরে কি ওয়াটার বাস সার্ভিস আছে?",
+      "answer_en": "Yes, BIWTC operates water bus routes on the Buriganga river. Routes include Sadarghat to Gabtoli.",
+      "answer_bn": "হ্যাঁ, বিআইডব্লিউটিসি বুড়িগঙ্গায় ওয়াটার বাস চালায়। সদরঘাট থেকে গাবতলী রুট রয়েছে।"
+    },
+    {
+      "category": "Air Travel",
+      "id": 247,
+      "question_en": "How to reach Hazrat Shahjalal Airport from Motijheel?",
+      "question_bn": "মতিঝিল থেকে হযরত শাহজালাল বিমানবন্দরে কিভাবে যাবো?",
+      "answer_en": "Take the Metro Rail to Uttara North, then a CNG or Uber to the airport. Total journey is about 45–60 minutes.",
+      "answer_bn": "মেট্রো রেলে উত্তরা নর্থ স্টেশনে এসে সিএনজি বা উবারে বিমানবন্দর, মোট ৪৫-৬০ মিনিট।"
+    },
+    {
+      "category": "Air Travel",
+      "id": 248,
+      "question_en": "Which domestic airlines fly from Dhaka to Cox's Bazar?",
+      "question_bn": "ঢাকা থেকে কক্সবাজারে কোন দেশীয় বিমান সংস্থা উড়ে?",
+      "answer_en": "Biman Bangladesh, US-Bangla, Novoair, and Air Astra all operate flights on this route.",
+      "answer_bn": "বিমান বাংলাদেশ, ইউএস-বাংলা, নভোএয়ার এবং এয়ার অ্যাস্ট্রা এই রুটে ফ্লাইট চালায়।"
+    },
+    {
+      "category": "Air Travel",
+      "id": 249,
+      "question_en": "How much is a Dhaka to Cox's Bazar flight ticket?",
+      "question_bn": "ঢাকা থেকে কক্সবাজার বিমানের টিকিটের দাম কত?",
+      "answer_en": "Prices range from 3,000 to 8,000 TK one-way depending on airline and booking time.",
+      "answer_bn": "এক পথে ৩,০০০ থেকে ৮,০০০ টাকা পর্যন্ত, এয়ারলাইন ও বুকিং সময় অনুযায়ী দাম পরিবর্তিত হয়।"
+    },
+    {
+      "category": "Budget",
+      "id": 250,
+      "question_en": "What is the minimum budget for a 3-day trip from Dhaka to Cox's Bazar?",
+      "question_bn": "ঢাকা থেকে কক্সবাজার ৩ দিনের ট্রিপে সর্বনিম্ন বাজেট কত?",
+      "answer_en": "Budget around 5,000–8,000 TK per person for a basic 3-day trip including bus, accommodation, and food.",
+      "answer_bn": "বাস, থাকা ও খাওয়াসহ সাধারণ ৩ দিনের ট্রিপে জনপ্রতি ৫,০০০-৮,০০০ টাকা বাজেট ধরুন।"
+    },
+    {
+      "category": "Parking",
+      "id": 251,
+      "question_en": "Where can I park my car near Gulshan 1 circle?",
+      "question_bn": "গুলশান ১ সার্কেলের কাছে গাড়ি পার্ক করার জায়গা কোথায়?",
+      "answer_en": "There are paid parking lots behind Gulshan 1 DCC market and near Gulshan Avenue. Street parking is also available but limited.",
+      "answer_bn": "গুলশান ১ ডিসিসি মার্কেটের পেছনে এবং গুলশান অ্যাভিনিউতে পেইড পার্কিং আছে। রাস্তার পার্কিংও কিছুটা পাওয়া যায়।"
+    },
+    {
+      "category": "Parking",
+      "id": 252,
+      "question_en": "Is there free parking at Jamuna Future Park?",
+      "question_bn": "যমুনা ফিউচার পার্কে কি বিনামূল্যে পার্কিং পাওয়া যায়?",
+      "answer_en": "Yes, Jamuna Future Park has a large free multi-storey parking facility for shoppers.",
+      "answer_bn": "হ্যাঁ, যমুনা ফিউচার পার্কে ক্রেতাদের জন্য বড় বহুতল বিনামূল্যে পার্কিং সুবিধা আছে।"
+    },
+    {
+      "category": "Parking",
+      "id": 253,
+      "question_en": "Are there parking facilities at Metro Rail stations?",
+      "question_bn": "মেট্রো রেল স্টেশনে কি পার্কিং সুবিধা আছে?",
+      "answer_en": "Limited paid parking is available at some terminal stations like Uttara North and Motijheel.",
+      "answer_bn": "উত্তরা নর্থ ও মতিঝিলের মতো টার্মিনাল স্টেশনে সীমিত পেইড পার্কিং সুবিধা আছে।"
+    },
+    {
+      "category": "Student Travel",
+      "id": 254,
+      "question_en": "Do students get discounts on Metro Rail tickets?",
+      "question_bn": "শিক্ষার্থীরা কি মেট্রো রেলে ছাড় পান?",
+      "answer_en": "Currently no official student discount exists on Metro Rail. However, the MRT Pass provides a 10% discount for all.",
+      "answer_bn": "বর্তমানে মেট্রোতে আলাদা ছাত্র ছাড় নেই। তবে এমআরটি পাস দিয়ে সবাই ১০% ছাড় পাবেন।"
+    },
+    {
+      "category": "Student Travel",
+      "id": 255,
+      "question_en": "What is the cheapest way for students to commute in Dhaka?",
+      "question_bn": "ঢাকায় শিক্ষার্থীদের জন্য সবচেয়ে সাশ্রয়ী যাতায়াতের পথ কোনটি?",
+      "answer_en": "Local buses are cheapest (10–30 TK per trip). Metro is fast and affordable for longer routes.",
+      "answer_bn": "লোকাল বাস সবচেয়ে সস্তা (১০-৩০ টাকা/যাত্রা)। দীর্ঘ রুটে মেট্রো দ্রুত ও সাশ্রয়ী।"
+    },
+    {
+      "category": "Student Travel",
+      "id": 256,
+      "question_en": "Is there a bus from BUET to Mirpur?",
+      "question_bn": "বুয়েট থেকে মিরপুরে কোন বাস যায়?",
+      "answer_en": "Take any bus from Palashi towards Farmgate and then change to a Mirpur-bound bus at Farmgate.",
+      "answer_bn": "পলাশী থেকে ফার্মগেটগামী বাসে উঠুন এবং ফার্মগেটে মিরপুরগামী বাসে পরিবর্তন করুন।"
+    },
+    {
+      "category": "Inter-District",
+      "id": 257,
+      "question_en": "How to travel from Dhaka to Rajshahi by bus?",
+      "question_bn": "ঢাকা থেকে রাজশাহী বাসে কিভাবে যাবো?",
+      "answer_en": "Hanif, Shyamoli, and Green Line run AC/non-AC buses from Gabtoli or Kalyanpur to Rajshahi.",
+      "answer_bn": "হানিফ, শ্যামলী ও গ্রিন লাইন গাবতলী বা কল্যাণপুর থেকে রাজশাহীতে এসি/নন-এসি বাস চালায়।"
+    },
+    {
+      "category": "Inter-District",
+      "id": 258,
+      "question_en": "Which bus goes from Dhaka to Mymensingh?",
+      "question_bn": "ঢাকা থেকে ময়মনসিংহ কোন বাসে যায়?",
+      "answer_en": "Ena, National, and Shohag buses run from Mohakhali bus terminal to Mymensingh every 30 minutes.",
+      "answer_bn": "এনা, ন্যাশনাল ও সোহাগ বাস মহাখালী বাস টার্মিনাল থেকে প্রতি ৩০ মিনিটে ময়মনসিংহ যায়।"
+    },
+    {
+      "category": "Inter-District",
+      "id": 259,
+      "question_en": "How long does it take to travel from Dhaka to Jessore?",
+      "question_bn": "ঢাকা থেকে যশোর পৌঁছাতে কতক্ষণ লাগে?",
+      "answer_en": "By bus it takes about 5–6 hours. By train (Sundarban Express), it takes around 6–7 hours.",
+      "answer_bn": "বাসে প্রায় ৫-৬ ঘণ্টা। ট্রেনে (সুন্দরবন এক্সপ্রেস) প্রায় ৬-৭ ঘণ্টা লাগে।"
+    },
+    {
+      "category": "Inter-District",
+      "id": 260,
+      "question_en": "Is there a direct bus from Dhaka to Kuakata?",
+      "question_bn": "ঢাকা থেকে কুয়াকাটায় কি সরাসরি বাস আছে?",
+      "answer_en": "Yes, Sakura and Desh Travels run AC buses directly from Dhaka to Kuakata. Journey is about 8–9 hours.",
+      "answer_bn": "হ্যাঁ, সাকুরা ও দেশ ট্রাভেলস ঢাকা থেকে কুয়াকাটায় সরাসরি এসি বাস চালায়। যাত্রা ৮-৯ ঘণ্টার।"
+    },
+    {
+      "category": "Seasonal Travel",
+      "id": 261,
+      "question_en": "Which areas of Dhaka get flooded during monsoon?",
+      "question_bn": "বর্ষায় ঢাকার কোন কোন এলাকা বন্যায় ডুবে যায়?",
+      "answer_en": "Low-lying areas like Demra, Jatrabari, Rayer Bazar, and parts of Mirpur are prone to seasonal flooding.",
+      "answer_bn": "ডেমরা, যাত্রাবাড়ী, রায়েরবাজার এবং মিরপুরের কিছু নিচু এলাকা বর্ষায় বন্যাপ্রবণ।"
+    },
+    {
+      "category": "Seasonal Travel",
+      "id": 262,
+      "question_en": "What is the best season to visit Saint Martin's Island?",
+      "question_bn": "সেন্ট মার্টিন দ্বীপে যাওয়ার সেরা সময় কখন?",
+      "answer_en": "November to February is ideal. The island is closed to tourists from April to September.",
+      "answer_bn": "নভেম্বর থেকে ফেব্রুয়ারি সেরা সময়। এপ্রিল থেকে সেপ্টেম্বর পর্যটকদের জন্য দ্বীপ বন্ধ থাকে।"
+    },
+    {
+      "category": "Seasonal Travel",
+      "id": 263,
+      "question_en": "How to reach Kuakata beach and when is the best time to visit?",
+      "question_bn": "কুয়াকাটায় কিভাবে যাবো এবং সেরা সময় কখন?",
+      "answer_en": "Best from October to March. Take a bus from Dhaka to Patuakhali or Kuakata directly.",
+      "answer_bn": "অক্টোবর থেকে মার্চ সেরা। ঢাকা থেকে সরাসরি পটুয়াখালী বা কুয়াকাটায় বাসে যান।"
+    },
+    {
+      "category": "Seasonal Travel",
+      "id": 264,
+      "question_en": "Is Dhaka traffic worse in winter or summer?",
+      "question_bn": "ঢাকায় শীতে না গরমে যানজট বেশি থাকে?",
+      "answer_en": "Traffic is generally worse in winter (Oct–Jan) due to fog, slower driving, and more road events.",
+      "answer_bn": "শীতকালে (অক্টোবর–জানুয়ারি) কুয়াশা ও অনুষ্ঠানের কারণে সাধারণত যানজট বেশি থাকে।"
+    },
+    {
+      "category": "Accessibility",
+      "id": 265,
+      "question_en": "Are Metro Rail stations wheelchair accessible?",
+      "question_bn": "মেট্রো রেল স্টেশন কি হুইলচেয়ার ব্যবহারকারীদের জন্য উপযুক্ত?",
+      "answer_en": "Yes, all MRT Line-6 stations have elevators, ramps, and dedicated spaces for wheelchair users.",
+      "answer_bn": "হ্যাঁ, এমআরটি লাইন-৬-এর সব স্টেশনে লিফট, র‍্যাম্প এবং হুইলচেয়ারের জন্য নির্ধারিত জায়গা আছে।"
+    },
+    {
+      "category": "Accessibility",
+      "id": 266,
+      "question_en": "Is there priority seating for elderly passengers on buses?",
+      "question_bn": "বাসে কি বয়স্ক যাত্রীদের জন্য আসন সংরক্ষিত থাকে?",
+      "answer_en": "By law, the first two seats in every bus are reserved for elderly, disabled, and pregnant passengers.",
+      "answer_bn": "আইন অনুযায়ী প্রতিটি বাসের প্রথম দুটি আসন বয়স্ক, প্রতিবন্ধী ও গর্ভবতী যাত্রীদের জন্য সংরক্ষিত।"
+    },
+    {
+      "category": "Cycling",
+      "id": 267,
+      "question_en": "Are there dedicated cycling lanes in Dhaka?",
+      "question_bn": "ঢাকায় কি সাইকেলের জন্য নির্দিষ্ট লেন আছে?",
+      "answer_en": "Hatirjheel has a dedicated cycling track. Some roads in Gulshan and Bashundhara are cyclist-friendly.",
+      "answer_bn": "হাতিরঝিলে ডেডিকেটেড সাইক্লিং ট্র্যাক আছে। গুলশান ও বসুন্ধরার কিছু রাস্তা সাইক্লিস্টবান্ধব।"
+    },
+    {
+      "category": "Cycling",
+      "id": 268,
+      "question_en": "Can I rent a bicycle in Dhaka?",
+      "question_bn": "ঢাকায় কি সাইকেল ভাড়া নেওয়া যায়?",
+      "answer_en": "Yes, Shohoz and some local shops near Hatirjheel and Bashundhara offer bicycle rentals.",
+      "answer_bn": "হ্যাঁ, সহজ এবং হাতিরঝিল ও বসুন্ধরার কাছের কিছু দোকানে সাইকেল ভাড়া পাওয়া যায়।"
+    },
+    {
+      "category": "Night Travel",
+      "id": 269,
+      "question_en": "Is it safe to travel by CNG at night in Dhaka?",
+      "question_bn": "রাতে ঢাকায় সিএনজিতে চলাচল কি নিরাপদ?",
+      "answer_en": "Use apps like Uber or Pathao at night instead of flagging down a CNG for better safety.",
+      "answer_bn": "রাতে রাস্তা থেকে সিএনজি ধরার চেয়ে উবার বা পাঠাও অ্যাপ ব্যবহার করা বেশি নিরাপদ।"
+    },
+    {
+      "category": "Night Travel",
+      "id": 270,
+      "question_en": "Which buses run after midnight in Dhaka?",
+      "question_bn": "ঢাকায় মধ্যরাতের পরে কোন বাস চলে?",
+      "answer_en": "Very few city buses run after midnight. Ride-share apps and CNGs are the best options after 12 AM.",
+      "answer_bn": "মধ্যরাতের পরে খুব কম সিটি বাস চলে। রাত ১২টার পর রাইড শেয়ার অ্যাপ ও সিএনজি সেরা বিকল্প।"
+    },
+    {
+      "category": "Night Travel",
+      "id": 271,
+      "question_en": "Are there overnight buses from Dhaka to Sylhet?",
+      "question_bn": "ঢাকা থেকে সিলেটে কি রাতের বাস আছে?",
+      "answer_en": "Yes, Shyamoli, Hanif, and Green Line run overnight AC buses from Sayedabad terminal to Sylhet.",
+      "answer_bn": "হ্যাঁ, শ্যামলী, হানিফ ও গ্রিন লাইন সায়েদাবাদ থেকে সিলেটে রাতের এসি বাস চালায়।"
+    },
+    {
+      "category": "Fare",
+      "id": 272,
+      "question_en": "What is the bus fare from Dhaka to Sylhet?",
+      "question_bn": "ঢাকা থেকে সিলেট বাসের ভাড়া কত?",
+      "answer_en": "Non-AC: 400–550 TK. AC: 800–1,200 TK. Prices vary by operator.",
+      "answer_bn": "নন-এসি: ৪০০-৫৫০ টাকা। এসি: ৮০০-১,২০০ টাকা। পরিবহনভেদে দাম পরিবর্তিত হয়।"
+    },
+    {
+      "category": "Fare",
+      "id": 273,
+      "question_en": "How much does a Dhaka to Rajshahi train ticket cost?",
+      "question_bn": "ঢাকা থেকে রাজশাহী ট্রেনের টিকিটের দাম কত?",
+      "answer_en": "Shuvon class: 300–350 TK. AC seat: 550–700 TK. AC berth: 800–1,100 TK.",
+      "answer_bn": "শোভন: ৩০০-৩৫০ টাকা। এসি সিট: ৫৫০-৭০০ টাকা। এসি বার্থ: ৮০০-১,১০০ টাকা।"
+    },
+    {
+      "category": "Fare",
+      "id": 274,
+      "question_en": "What is the rickshaw fare per km in Dhaka?",
+      "question_bn": "ঢাকায় রিকশার প্রতি কিলোমিটার ভাড়া কত?",
+      "answer_en": "There is no fixed meter. Fares are negotiated; typically 30–60 TK per km based on area.",
+      "answer_bn": "রিকশায় নির্দিষ্ট মিটার নেই। এলাকাভেদে সাধারণত প্রতি কিলোমিটারে ৩০-৬০ টাকা দরদাম করে নিন।"
+    },
+    {
+      "category": "Tour",
+      "id": 275,
+      "question_en": "How to reach Lawachara National Park from Dhaka?",
+      "question_bn": "ঢাকা থেকে লাউয়াছড়া জাতীয় উদ্যানে কিভাবে যাবো?",
+      "answer_en": "Take a train to Srimangal, then a CNG or auto-rickshaw to Lawachara — about 10–15 minutes from the station.",
+      "answer_bn": "ট্রেনে শ্রীমঙ্গল, তারপর সিএনজি বা অটোরিকশায় লাউয়াছড়া, স্টেশন থেকে মাত্র ১০-১৫ মিনিট।"
+    },
+    {
+      "category": "Tour",
+      "id": 276,
+      "question_en": "Best way to visit Ahsan Manzil from Dhanmondi?",
+      "question_bn": "ধানমন্ডি থেকে আহসান মঞ্জিলে যাওয়ার সেরা উপায় কি?",
+      "answer_en": "Take a bus or Uber to Gulistan, then a rickshaw to Sadarghat — Ahsan Manzil is right there.",
+      "answer_bn": "বাস বা উবারে গুলিস্তান, তারপর রিকশায় সদরঘাট — আহসান মঞ্জিল ঠিক সেখানেই।"
+    },
+    {
+      "category": "Travel Planning",
+      "id": 277,
+      "question_en": "How to book a hotel in Cox's Bazar in advance?",
+      "question_bn": "আগে থেকে কক্সবাজারে হোটেল কিভাবে বুক করবো?",
+      "answer_en": "Use Booking.com, Agoda, or local apps like Shajgoj. Always book 2–3 weeks ahead during peak season.",
+      "answer_bn": "Booking.com, Agoda বা শাজগোজ ব্যবহার করুন। পিক সিজনে ২-৩ সপ্তাহ আগে বুক করুন।"
+    },
+    {
+      "category": "Travel Planning",
+      "id": 278,
+      "question_en": "What should I pack for a Bangladesh hill-tract tour?",
+      "question_bn": "বাংলাদেশের পার্বত্য অঞ্চল ভ্রমণে কি কি নিয়ে যাবো?",
+      "answer_en": "Pack light clothes, rain gear, sunscreen, insect repellent, a first-aid kit, and sufficient cash as ATMs are scarce.",
+      "answer_bn": "হালকা পোশাক, রেইনকোট, সানস্ক্রিন, মশার স্প্রে, প্রাথমিক চিকিৎসার কিট ও পর্যাপ্ত নগদ টাকা নিন।"
+    },
+    {
+      "category": "Budget",
+      "id": 279,
+      "question_en": "How much does a Dhaka to Sylhet group tour package cost?",
+      "question_bn": "ঢাকা থেকে সিলেট গ্রুপ ট্যুর প্যাকেজের খরচ কত?",
+      "answer_en": "Group packages (4–6 persons) typically cost 3,500–6,000 TK per head for 2 nights including transport and hotel.",
+      "answer_bn": "৪-৬ জনের গ্রুপ প্যাকেজে সাধারণত ২ রাতের জন্য পরিবহন ও হোটেলসহ জনপ্রতি ৩,৫০০-৬,০০০ টাকা।"
+    },
+    {
+      "category": "Budget",
+      "id": 280,
+      "question_en": "What is the average cost of a one-day Sundarbans tour from Khulna?",
+      "question_bn": "খুলনা থেকে একদিনের সুন্দরবন ট্যুরের গড় খরচ কত?",
+      "answer_en": "A one-day boat tour from Khulna costs around 1,500–3,000 TK per person depending on the package.",
+      "answer_bn": "খুলনা থেকে একদিনের বোট ট্যুরে প্যাকেজভেদে জনপ্রতি প্রায় ১,৫০০-৩,০০০ টাকা লাগে।"
+    },
+    {
+      "category": "Electric Vehicles",
+      "id": 281,
+      "question_en": "Are electric buses available in Dhaka?",
+      "question_bn": "ঢাকায় কি বৈদ্যুতিক বাস চলে?",
+      "answer_en": "Yes, BRTC has introduced electric buses on select routes including Dhaka city corridors as a pilot project.",
+      "answer_bn": "হ্যাঁ, বিআরটিসি পাইলট প্রকল্পের অংশ হিসেবে ঢাকার কিছু রুটে বৈদ্যুতিক বাস চালু করেছে।"
+    },
+    {
+      "category": "Electric Vehicles",
+      "id": 282,
+      "question_en": "Where can I charge an electric car in Dhaka?",
+      "question_bn": "ঢাকায় ইলেকট্রিক গাড়ি চার্জ দেওয়ার জায়গা কোথায়?",
+      "answer_en": "EV charging stations are available at select Padma Oil and some private petrol stations in Gulshan, Banani, and Uttara.",
+      "answer_bn": "পদ্মা অয়েলের কিছু পাম্পে এবং গুলশান, বনানী ও উত্তরার কিছু বেসরকারি স্টেশনে ইভি চার্জিং পয়েন্ট আছে।"
+    },
+    {
+      "category": "Gazipur Corridor",
+      "id": 283,
+      "question_en": "What is the best way to travel from Dhaka to Gazipur?",
+      "question_bn": "ঢাকা থেকে গাজীপুর যাওয়ার সেরা উপায় কি?",
+      "answer_en": "BRT (Bus Rapid Transit) is now operational on the Gazipur–Airport corridor. It is fast and affordable.",
+      "answer_bn": "গাজীপুর–এয়ারপোর্ট করিডোরে বিআরটি (বাস র‍্যাপিড ট্রানজিট) চালু হয়েছে। এটি দ্রুত ও সাশ্রয়ী।"
+    },
+    {
+      "category": "Gazipur Corridor",
+      "id": 284,
+      "question_en": "How long does it take from Abdullahpur to Gazipur Chowrasta by BRT?",
+      "question_bn": "বিআরটিতে আব্দুল্লাহপুর থেকে গাজীপুর চৌরাস্তায় কতক্ষণ লাগে?",
+      "answer_en": "Approximately 30–40 minutes on the dedicated BRT lane, compared to 60–90 minutes in regular traffic.",
+      "answer_bn": "বিআরটি লেনে প্রায় ৩০-৪০ মিনিট, যেখানে সাধারণ ট্রাফিকে ৬০-৯০ মিনিট লাগতো।"
+    },
+    {
+      "category": "Women Transport",
+      "id": 285,
+      "question_en": "Is there a women-only compartment in Metro Rail?",
+      "question_bn": "মেট্রো রেলে কি মহিলাদের জন্য আলাদা কামরা আছে?",
+      "answer_en": "Yes, the first and last coaches of every MRT Line-6 train are reserved exclusively for women passengers.",
+      "answer_bn": "হ্যাঁ, এমআরটি লাইন-৬-এর প্রতিটি ট্রেনের প্রথম ও শেষ কামরা শুধুমাত্র মহিলাদের জন্য সংরক্ষিত।"
+    },
+    {
+      "category": "Women Transport",
+      "id": 286,
+      "question_en": "Is there a Pathao Women ride option in Dhaka?",
+      "question_bn": "ঢাকায় কি পাঠাও উইমেন রাইড অপশন আছে?",
+      "answer_en": "Yes, Pathao offers a women-only ride option where female passengers can request female drivers.",
+      "answer_bn": "হ্যাঁ, পাঠাওয়ে মহিলা-বিশেষ রাইড অপশন আছে যেখানে মহিলা যাত্রীরা মহিলা চালক অনুরোধ করতে পারেন।"
+    },
+    {
+      "category": "Women Transport",
+      "id": 287,
+      "question_en": "Are there women-only buses in Dhaka?",
+      "question_bn": "ঢাকায় কি মহিলাদের জন্য আলাদা বাস আছে?",
+      "answer_en": "BRTC operates some women-only AC buses on routes like Mirpur–Motijheel during morning and evening hours.",
+      "answer_bn": "বিআরটিসি সকাল ও সন্ধ্যায় মিরপুর–মতিঝিল রুটে কিছু মহিলা-বিশেষ এসি বাস চালায়।"
+    },
+    {
+      "category": "Padma Bridge",
+      "id": 288,
+      "question_en": "How does the Padma Bridge help travel to southern Bangladesh?",
+      "question_bn": "পদ্মা সেতু দক্ষিণবঙ্গে যাতায়াতে কিভাবে সাহায্য করেছে?",
+      "answer_en": "Padma Bridge connects Dhaka to Faridpur, Barishal, Khulna, and further south directly by road, cutting travel time by 3–4 hours.",
+      "answer_bn": "পদ্মা সেতু ঢাকার সাথে ফরিদপুর, বরিশাল, খুলনা ও দক্ষিণাঞ্চলকে সরাসরি সড়কপথে যুক্ত করেছে, যাত্রার সময় ৩-৪ ঘণ্টা কমেছে।"
+    },
+    {
+      "category": "Padma Bridge",
+      "id": 289,
+      "question_en": "What is the toll charge to cross Padma Bridge by car?",
+      "question_bn": "গাড়িতে পদ্মা সেতু পার হতে টোল কত লাগে?",
+      "answer_en": "For a private car, the toll is 750 TK one-way. Bus: 2,400 TK. Motorcycle: 100 TK.",
+      "answer_bn": "প্রাইভেট কারে এক পথে ৭৫০ টাকা। বাস: ২,৪০০ টাকা। মোটরসাইকেল: ১০০ টাকা।"
+    },
+    {
+      "category": "Padma Bridge",
+      "id": 290,
+      "question_en": "How long does it take to cross Padma Bridge?",
+      "question_bn": "পদ্মা সেতু পার হতে কতক্ষণ লাগে?",
+      "answer_en": "The bridge crossing itself takes about 6–8 minutes. With toll plaza queues, allow 15–20 minutes.",
+      "answer_bn": "সেতু পার হতে মাত্র ৬-৮ মিনিট। টোল প্লাজার অপেক্ষাসহ ১৫-২০ মিনিট ধরে রাখুন।"
+    },
+    {
+      "category": "Highway Food",
+      "id": 291,
+      "question_en": "Which highway rest stops are good for food on the Dhaka–Chittagong route?",
+      "question_bn": "ঢাকা-চট্টগ্রাম রুটে ভালো খাবারের রেস্ট স্টপ কোথায়?",
+      "answer_en": "Meghna bridge area (Comilla), Hotel Motel Zone in Feni, and Sitakundu roadside restaurants are popular stops.",
+      "answer_bn": "মেঘনা ব্রিজ এলাকা (কুমিল্লা), ফেনীর হোটেল-মোটেল জোন এবং সীতাকুণ্ডের রাস্তার ধারের রেস্তোরাঁ জনপ্রিয়।"
+    },
+    {
+      "category": "Highway Food",
+      "id": 292,
+      "question_en": "Are there good food stops on the Dhaka–Sylhet highway?",
+      "question_bn": "ঢাকা-সিলেট মহাসড়কে ভালো খাবারের জায়গা কোথায়?",
+      "answer_en": "Narsingdi and Brahmanbaria have popular highway restaurants. 'Madina Hotel' near Bhairab is well known.",
+      "answer_bn": "নরসিংদী ও ব্রাহ্মণবাড়িয়ায় জনপ্রিয় হাইওয়ে রেস্তোরাঁ আছে। ভৈরবের কাছে 'মদিনা হোটেল' বেশ পরিচিত।"
+    },
+    {
+      "category": "Border Crossing",
+      "id": 293,
+      "question_en": "Which land border can I use to travel from Dhaka to India?",
+      "question_bn": "ঢাকা থেকে ভারতে স্থলপথে যেতে কোন বর্ডার ব্যবহার করবো?",
+      "answer_en": "Benapole (near Jessore) is the most popular land crossing. Bhomra, Hili, and Burimari are other options.",
+      "answer_bn": "বেনাপোল (যশোরের কাছে) সবচেয়ে জনপ্রিয় স্থলবন্দর। ভোমরা, হিলি ও বুড়িমারিও বিকল্প আছে।"
+    },
+    {
+      "category": "Border Crossing",
+      "id": 294,
+      "question_en": "How to reach Benapole from Dhaka?",
+      "question_bn": "ঢাকা থেকে বেনাপোলে কিভাবে যাবো?",
+      "answer_en": "Direct AC buses (Shyamoli, Hanif) run from Gabtoli/Kalyanpur to Benapole. Journey is about 6–7 hours.",
+      "answer_bn": "গাবতলী বা কল্যাণপুর থেকে শ্যামলী বা হানিফ বাসে সরাসরি বেনাপোল যায়। যাত্রা ৬-৭ ঘণ্টার।"
+    },
+    {
+      "category": "Travel Insurance",
+      "id": 295,
+      "question_en": "Should I get travel insurance for a domestic trip in Bangladesh?",
+      "question_bn": "বাংলাদেশে অভ্যন্তরীণ ভ্রমণে কি ট্রাভেল ইন্স্যুরেন্স নেওয়া উচিত?",
+      "answer_en": "It is not mandatory but advisable for adventure trips to hill tracts or sea. Some companies offer affordable short-trip plans.",
+      "answer_bn": "বাধ্যতামূলক নয়, তবে পার্বত্য বা সমুদ্র অ্যাডভেঞ্চারের জন্য ভালো। কিছু কোম্পানি সাশ্রয়ী শর্টট্রিপ প্ল্যান অফার করে।"
+    },
+    {
+      "category": "Travel Insurance",
+      "id": 296,
+      "question_en": "Which companies offer domestic travel insurance in Bangladesh?",
+      "question_bn": "বাংলাদেশে কোন কোম্পানি অভ্যন্তরীণ ট্রাভেল ইন্স্যুরেন্স দেয়?",
+      "answer_en": "Green Delta, Pragati, and Sadharan Bima Corporation offer travel and accident insurance plans in Bangladesh.",
+      "answer_bn": "গ্রিন ডেল্টা, প্রগতি এবং সাধারণ বীমা কর্পোরেশন বাংলাদেশে ট্রাভেল ও দুর্ঘটনা বীমা প্রদান করে।"
+    },
+    {
+      "category": "Boat Tour",
+      "id": 297,
+      "question_en": "How to book a boat tour to Ratargul Swamp Forest?",
+      "question_bn": "রাতারগুল সোয়াম্প ফরেস্টে বোট ট্যুর কিভাবে বুক করবো?",
+      "answer_en": "Hire a wooden boat from Gowainghat Ghat near Sylhet. Boats cost 300–500 TK per trip. Go early morning for best experience.",
+      "answer_bn": "সিলেটের কাছে গোয়াইনঘাট ঘাট থেকে কাঠের নৌকা ভাড়া নিন। প্রতি ট্রিপে ৩০০-৫০০ টাকা। সেরা অভিজ্ঞতার জন্য ভোরে যান।"
+    },
+    {
+      "category": "Boat Tour",
+      "id": 298,
+      "question_en": "Can I do a river cruise on the Buriganga in Dhaka?",
+      "question_bn": "ঢাকায় বুড়িগঙ্গায় কি রিভার ক্রুজ করা যায়?",
+      "answer_en": "Yes, short sunset cruises and heritage boat tours depart from Sadarghat and cost 200–500 TK per person.",
+      "answer_bn": "হ্যাঁ, সদরঘাট থেকে সানসেট ক্রুজ ও ঐতিহ্যবাহী নৌকা ট্যুর পাওয়া যায়, জনপ্রতি ২০০-৫০০ টাকা।"
+    },
+    {
+      "category": "Tour",
+      "id": 299,
+      "question_en": "How to reach Hakaluki Haor from Dhaka?",
+      "question_bn": "ঢাকা থেকে হাকালুকি হাওরে কিভাবে যাবো?",
+      "answer_en": "Travel to Sylhet or Moulvibazar by bus/train, then a local vehicle to Barlekha area where Hakaluki is located.",
+      "answer_bn": "বাস বা ট্রেনে সিলেট বা মৌলভীবাজার যান, তারপর লোকাল যানে বড়লেখা এলাকায় যেখানে হাকালুকি হাওর।"
+    },
+    {
+      "category": "Tour",
+      "id": 300,
+      "question_en": "Best way to visit Bhawal National Park from Dhaka?",
+      "question_bn": "ঢাকা থেকে ভাওয়াল জাতীয় উদ্যানে যাওয়ার সেরা উপায় কি?",
+      "answer_en": "Take a bus or BRT from Uttara to Gazipur, then a rickshaw to Bhawal National Park — about 1.5 hours total.",
+      "answer_bn": "উত্তরা থেকে বাস বা বিআরটিতে গাজীপুর, তারপর রিকশায় ভাওয়াল জাতীয় উদ্যান — মোট প্রায় দেড় ঘণ্টা।"
+    },
+    {
+      "category": "Fare",
+      "id": 301,
+      "question_en": "What is the Dhaka to Khulna bus fare?",
+      "question_bn": "ঢাকা থেকে খুলনা বাসের ভাড়া কত?",
+      "answer_en": "Non-AC: 500–650 TK. AC: 900–1,300 TK. Journey time is about 7–8 hours via Padma Bridge.",
+      "answer_bn": "নন-এসি: ৫০০-৬৫০ টাকা। এসি: ৯০০-১,৩০০ টাকা। পদ্মা সেতু হয়ে যাত্রা প্রায় ৭-৮ ঘণ্টা।"
+    },
+    {
+      "category": "Fare",
+      "id": 302,
+      "question_en": "What is the Shohoz ride fare compared to Uber in Dhaka?",
+      "question_bn": "ঢাকায় সহজ রাইডের ভাড়া উবারের তুলনায় কেমন?",
+      "answer_en": "Shohoz is generally 10–20% cheaper than Uber for similar routes. It's a good budget alternative.",
+      "answer_bn": "সহজ সাধারণত উবারের চেয়ে একই রুটে ১০-২০% সস্তা। বাজেট-সচেতনদের জন্য ভালো বিকল্প।"
+    },
+    {
+      "category": "Travel Planning",
+      "id": 303,
+      "question_en": "How to plan a weekend trip from Dhaka to Tangail?",
+      "question_bn": "ঢাকা থেকে টাঙ্গাইলে উইকেন্ড ট্রিপ কিভাবে প্ল্যান করবো?",
+      "answer_en": "Take a morning bus (2 hrs) from Mohakhali. Visit Jamuna Resort, Atia Mosque, and Madhupur forest. Return by evening.",
+      "answer_bn": "মহাখালী থেকে সকালের বাসে ২ ঘণ্টা। যমুনা রিসোর্ট, আটিয়া মসজিদ ও মধুপুর বন দেখে সন্ধ্যায় ফিরুন।"
+    },
+    {
+      "category": "Travel Planning",
+      "id": 304,
+      "question_en": "What is the best one-night trip from Dhaka?",
+      "question_bn": "ঢাকা থেকে এক রাতের ট্রিপের জন্য সেরা গন্তব্য কোনটি?",
+      "answer_en": "Srimangal (tea gardens), Comilla (Mainamati), or Manikganj (Paturia ferry ghat) are great one-night options.",
+      "answer_bn": "শ্রীমঙ্গল (চা বাগান), কুমিল্লা (ময়নামতি) বা মানিকগঞ্জ (পাটুরিয়া ঘাট) এক রাতের জন্য চমৎকার।"
+    },
+    {
+      "category": "Budget",
+      "id": 305,
+      "question_en": "What is the cheapest accommodation option in Cox's Bazar?",
+      "question_bn": "কক্সবাজারে সবচেয়ে সস্তা থাকার জায়গা কোথায় পাবো?",
+      "answer_en": "Budget guesthouses near Kolatoli and Sugandha beach area offer rooms for 500–1,200 TK per night.",
+      "answer_bn": "কলাতলী ও সুগন্ধা বিচের কাছে বাজেট গেস্টহাউসে ৫০০-১,২০০ টাকায় রাতের ঘর পাওয়া যায়।"
+    },
+    {
+      "category": "Budget",
+      "id": 306,
+      "question_en": "How much does a day trip to Sonargaon from Dhaka cost?",
+      "question_bn": "ঢাকা থেকে সোনারগাঁওয়ে একদিনের ট্রিপে খরচ কত?",
+      "answer_en": "Transport: 100–150 TK return by bus. Entry fee: 20–40 TK. Food: 200–300 TK. Total: under 600 TK.",
+      "answer_bn": "বাসে যাতায়াত: ১০০-১৫০ টাকা। প্রবেশ মূল্য: ২০-৪০ টাকা। খাবার: ২০০-৩০০ টাকা। মোট: ৬০০ টাকার মধ্যে।"
+    },
+    {
+      "category": "Tour",
+      "id": 307,
+      "question_en": "How to reach Sonargaon Folk Art Museum from Dhaka?",
+      "question_bn": "ঢাকা থেকে সোনারগাঁও লোক ও কারুশিল্প জাদুঘরে কিভাবে যাবো?",
+      "answer_en": "Take a bus from Gulistan towards Narayanganj/Sonargaon. Get off at Mograpara crossing and take a rickshaw.",
+      "answer_bn": "গুলিস্তান থেকে নারায়ণগঞ্জ বা সোনারগাঁওগামী বাসে মোগরাপাড়া মোড়ে নামুন, তারপর রিকশায়।"
+    },
+    {
+      "category": "Inter-District",
+      "id": 308,
+      "question_en": "How to travel from Dhaka to Comilla?",
+      "question_bn": "ঢাকা থেকে কুমিল্লায় কিভাবে যাবো?",
+      "answer_en": "Buses from Sayedabad (Titas, Comilla Express) run every 15–30 minutes. Journey is about 2–2.5 hours.",
+      "answer_bn": "সায়েদাবাদ থেকে তিতাস বা কুমিল্লা এক্সপ্রেস বাস প্রতি ১৫-৩০ মিনিটে ছাড়ে। যাত্রা ২-আড়াই ঘণ্টার।"
+    },
+    {
+      "category": "Inter-District",
+      "id": 309,
+      "question_en": "What is the fastest way to travel from Dhaka to Barishal?",
+      "question_bn": "ঢাকা থেকে বরিশালে সবচেয়ে দ্রুত কিভাবে যাবো?",
+      "answer_en": "By bus via Padma Bridge is now fastest — about 4–5 hours. Overnight launch is comfortable but takes 7–8 hours.",
+      "answer_bn": "পদ্মা সেতু হয়ে বাসে এখন সবচেয়ে দ্রুত — প্রায় ৪-৫ ঘণ্টা। লঞ্চে আরামদায়ক কিন্তু ৭-৮ ঘণ্টা লাগে।"
+    },
+    {
+      "category": "Transport Tips",
+      "id": 310,
+      "question_en": "What apps should I install before traveling in Bangladesh?",
+      "question_bn": "বাংলাদেশ ভ্রমণের আগে কোন অ্যাপগুলো ইনস্টল করা উচিত?",
+      "answer_en": "Install Pathao, Uber, Shohoz (ride share), Rail Sheba (train tickets), Shohoz Bus (tickets), bKash (payments), and Google Maps.",
+      "answer_bn": "পাঠাও, উবার, সহজ (রাইড শেয়ার), রেল সেবা (ট্রেন টিকিট), সহজ বাস (টিকিট), বিকাশ (পেমেন্ট) ও গুগল ম্যাপ ইনস্টল করুন।"
+    },
+    {
+      "category": "Motorbike Travel",
+      "id": 311,
+      "question_en": "Is it legal to ride a motorbike on Dhaka highways?",
+      "question_bn": "ঢাকার হাইওয়েতে মোটরসাইকেল চালানো কি বৈধ?",
+      "answer_en": "Motorbikes are restricted on some expressways like the Dhaka Elevated Expressway. Always check current BRTA regulations.",
+      "answer_bn": "ঢাকা এলিভেটেড এক্সপ্রেসওয়ের মতো কিছু সড়কে মোটরসাইকেল নিষিদ্ধ। সর্বদা বিআরটিএর নিয়ম দেখুন।"
+    },
+    {
+      "category": "Motorbike Travel",
+      "id": 312,
+      "question_en": "What is the best motorbike route from Dhaka to Cox's Bazar?",
+      "question_bn": "ঢাকা থেকে কক্সবাজার মোটরসাইকেলে যাওয়ার সেরা রুট কোনটি?",
+      "answer_en": "Dhaka → Comilla → Chittagong → Cox's Bazar via the Chittagong-Cox's Bazar highway. Total ~400 km, takes 8–10 hours.",
+      "answer_bn": "ঢাকা → কুমিল্লা → চট্টগ্রাম → কক্সবাজার, চট্টগ্রাম-কক্সবাজার মহাসড়ক হয়ে। মোট ~৪০০ কিমি, ৮-১০ ঘণ্টা।"
+    },
+    {
+      "category": "Motorbike Travel",
+      "id": 313,
+      "question_en": "Do I need a helmet to ride a motorbike in Bangladesh?",
+      "question_bn": "বাংলাদেশে মোটরসাইকেল চালাতে হেলমেট লাগে কি?",
+      "answer_en": "Yes, helmets are mandatory for both rider and pillion passenger by law. Violators face fines.",
+      "answer_bn": "হ্যাঁ, আইন অনুযায়ী চালক ও পিছনের আরোহী উভয়ের জন্য হেলমেট বাধ্যতামূলক। না পরলে জরিমানা।"
+    },
+    {
+      "category": "Luggage Services",
+      "id": 314,
+      "question_en": "Is there a parcel/courier service at Kamalapur Railway Station?",
+      "question_bn": "কমলাপুর রেলস্টেশনে কি পার্সেল বা কুরিয়ার সার্ভিস আছে?",
+      "answer_en": "Yes, Bangladesh Railway has an official parcel office at Kamalapur for sending goods by train across the country.",
+      "answer_bn": "হ্যাঁ, বাংলাদেশ রেলওয়ের কমলাপুরে অফিশিয়াল পার্সেল অফিস আছে যেখান থেকে সারাদেশে পণ্য পাঠানো যায়।"
+    },
+    {
+      "category": "Luggage Services",
+      "id": 315,
+      "question_en": "Can I send luggage ahead of me to Cox's Bazar?",
+      "question_bn": "কক্সবাজারে আগে আমার লাগেজ পাঠাতে পারবো?",
+      "answer_en": "Yes, courier services like Pathao Courier, Sundarban Courier, and SA Paribahan can send luggage ahead.",
+      "answer_bn": "হ্যাঁ, পাঠাও কুরিয়ার, সুন্দরবন কুরিয়ার ও এসএ পরিবহন দিয়ে আগেই লাগেজ পাঠানো যায়।"
+    },
+    {
+      "category": "Dhaka Suburbs",
+      "id": 316,
+      "question_en": "How to reach Savar from Dhaka?",
+      "question_bn": "ঢাকা থেকে সাভার কিভাবে যাবো?",
+      "answer_en": "Take a bus from Gabtoli or Mirpur 1 towards Savar. Journey takes about 30–45 minutes depending on traffic.",
+      "answer_bn": "গাবতলী বা মিরপুর ১ থেকে সাভারগামী বাসে চড়ুন। ট্রাফিক ভেদে ৩০-৪৫ মিনিট লাগে।"
+    },
+    {
+      "category": "Dhaka Suburbs",
+      "id": 317,
+      "question_en": "What is the best way to go to Narayanganj from Dhaka?",
+      "question_bn": "ঢাকা থেকে নারায়ণগঞ্জ যাওয়ার সেরা উপায় কি?",
+      "answer_en": "Take a train from Kamalapur (cheapest), or a bus from Gulistan. Both take about 45 minutes to 1 hour.",
+      "answer_bn": "কমলাপুর থেকে ট্রেনে (সবচেয়ে সস্তা) বা গুলিস্তান থেকে বাসে। দুটোতেই ৪৫ মিনিট থেকে ১ ঘণ্টা লাগে।"
+    },
+    {
+      "category": "Dhaka Suburbs",
+      "id": 318,
+      "question_en": "How to reach Keraniganj from Dhaka?",
+      "question_bn": "ঢাকা থেকে কেরানীগঞ্জে কিভাবে যাবো?",
+      "answer_en": "Take a bus from Gulistan or cross the Buriganga by boat from Sadarghat. Boat fare is only 5–10 TK.",
+      "answer_bn": "গুলিস্তান থেকে বাসে অথবা সদরঘাট থেকে নৌকায় বুড়িগঙ্গা পার হয়ে। নৌকা ভাড়া মাত্র ৫-১০ টাকা।"
+    },
+    {
+      "category": "Tourist Permits",
+      "id": 319,
+      "question_en": "Do I need a permit to visit Sundarbans?",
+      "question_bn": "সুন্দরবন পরিদর্শনে কি অনুমতির প্রয়োজন হয়?",
+      "answer_en": "Yes, a permit from the Bangladesh Forest Department is required. Most tour operators handle this for you.",
+      "answer_bn": "হ্যাঁ, বন বিভাগের অনুমতি লাগে। বেশিরভাগ ট্যুর অপারেটর এটি আপনার হয়ে ব্যবস্থা করে দেয়।"
+    },
+    {
+      "category": "Tourist Permits",
+      "id": 320,
+      "question_en": "Is a permit required to visit Bandarban hill tracts?",
+      "question_bn": "বান্দরবানের পার্বত্য অঞ্চলে যেতে কি পারমিট লাগে?",
+      "answer_en": "For inner areas like Thanchi, Remakri, or Nafakhum, a permit from the local army/police station is required.",
+      "answer_bn": "থানচি, রেমাক্রি বা নাফাখুমের মতো ভেতরের এলাকায় যেতে স্থানীয় সেনা বা থানা থেকে পারমিট নিতে হয়।"
+    },
+    {
+      "category": "River Routes",
+      "id": 321,
+      "question_en": "Which river route connects Dhaka to Khulna?",
+      "question_bn": "ঢাকা থেকে খুলনায় কোন নদীপথে যাওয়া যায়?",
+      "answer_en": "The Dhaka–Khulna launch service via the Buriganga, Meghna, and Pashur rivers operates from Sadarghat.",
+      "answer_bn": "সদরঘাট থেকে বুড়িগঙ্গা, মেঘনা ও পশুর নদী হয়ে ঢাকা-খুলনা লঞ্চ সার্ভিস চলে।"
+    },
+    {
+      "category": "River Routes",
+      "id": 322,
+      "question_en": "Is there a launch from Dhaka to Chandpur?",
+      "question_bn": "ঢাকা থেকে চাঁদপুরে কি লঞ্চ আছে?",
+      "answer_en": "Yes, regular launches run from Sadarghat to Chandpur daily. Journey takes about 4–5 hours.",
+      "answer_bn": "হ্যাঁ, সদরঘাট থেকে চাঁদপুরে প্রতিদিন নিয়মিত লঞ্চ চলে। যাত্রা ৪-৫ ঘণ্টার।"
+    },
+    {
+      "category": "Food Courts",
+      "id": 323,
+      "question_en": "Are there food courts at Dhaka bus terminals?",
+      "question_bn": "ঢাকার বাস টার্মিনালে কি ফুড কোর্ট আছে?",
+      "answer_en": "Gabtoli and Mohakhali terminals have small food stalls and tea shops. Sayedabad has more dining options nearby.",
+      "answer_bn": "গাবতলী ও মহাখালী টার্মিনালে ছোট খাবারের দোকান ও চায়ের দোকান আছে। সায়েদাবাদের কাছে বেশি খাওয়ার জায়গা আছে।"
+    },
+    {
+      "category": "Food Courts",
+      "id": 324,
+      "question_en": "Where to eat near Kamalapur Railway Station?",
+      "question_bn": "কমলাপুর রেলওয়ে স্টেশনের কাছে কোথায় খাবো?",
+      "answer_en": "The station has a canteen inside. Outside, Arambagh road has many affordable restaurants and fast food shops.",
+      "answer_bn": "স্টেশনের ভেতরে ক্যান্টিন আছে। বাইরে আরামবাগ রোডে অনেক সাশ্রয়ী রেস্তোরাঁ ও ফাস্ট ফুড দোকান আছে।"
+    },
+    {
+      "category": "Travel Planning",
+      "id": 325,
+      "question_en": "How to plan a trip to Mainamati from Dhaka?",
+      "question_bn": "ঢাকা থেকে ময়নামতি ভ্রমণ কিভাবে প্ল্যান করবো?",
+      "answer_en": "Take a bus to Comilla (2 hrs), then a CNG to Mainamati archaeological site. Entry fee is 20 TK. Best as a day trip.",
+      "answer_bn": "বাসে কুমিল্লা (২ ঘণ্টা), তারপর সিএনজিতে ময়নামতি প্রত্নস্থল। প্রবেশ মূল্য ২০ টাকা। দিনে গিয়ে ফেরার জন্য আদর্শ।"
+    },
+    {
+      "category": "Travel Planning",
+      "id": 326,
+      "question_en": "How to visit Paharpur from Dhaka?",
+      "question_bn": "ঢাকা থেকে পাহাড়পুর কিভাবে যাবো?",
+      "answer_en": "Take a bus or train to Rajshahi or Bogra, then a local vehicle to Paharpur Buddhist Vihara (UNESCO site).",
+      "answer_bn": "বাস বা ট্রেনে রাজশাহী বা বগুড়া, তারপর লোকাল যানে পাহাড়পুর বৌদ্ধ বিহার (ইউনেস্কো সাইট)।"
+    },
+    {
+      "category": "Fare",
+      "id": 327,
+      "question_en": "What is the Dhaka to Barishal bus fare via Padma Bridge?",
+      "question_bn": "পদ্মা সেতু হয়ে ঢাকা থেকে বরিশাল বাসের ভাড়া কত?",
+      "answer_en": "Non-AC: 400–550 TK. AC: 750–1,100 TK. Several operators like Sakura and Hanif serve this route.",
+      "answer_bn": "নন-এসি: ৪০০-৫৫০ টাকা। এসি: ৭৫০-১,১০০ টাকা। সাকুরা ও হানিফসহ বেশ কিছু পরিবহন এই রুটে চলে।"
+    },
+    {
+      "category": "Fare",
+      "id": 328,
+      "question_en": "How much does it cost to hire a microbus for a day in Dhaka?",
+      "question_bn": "ঢাকায় একদিনের জন্য মাইক্রোবাস ভাড়া কত?",
+      "answer_en": "A hired microbus costs approximately 3,500–6,000 TK per day within Dhaka city, depending on mileage.",
+      "answer_bn": "ঢাকা শহরে মাইক্রোবাস ভাড়া সাধারণত দিনে ৩,৫০০-৬,০০০ টাকা, মাইলেজ ভেদে।"
+    },
+    {
+      "category": "Budget",
+      "id": 329,
+      "question_en": "What is the cheapest way to travel from Dhaka to Rangpur?",
+      "question_bn": "ঢাকা থেকে রংপুর সবচেয়ে সস্তায় কিভাবে যাবো?",
+      "answer_en": "Train (Rangpur Express or Lalmonirhat Express) in Shuvon class is cheapest at around 350–450 TK.",
+      "answer_bn": "ট্রেনে (রংপুর এক্সপ্রেস বা লালমনিরহাট এক্সপ্রেস) শোভন ক্লাসে সবচেয়ে সস্তা, প্রায় ৩৫০-৪৫০ টাকা।"
+    },
+    {
+      "category": "Budget",
+      "id": 330,
+      "question_en": "How much does a student need per day for travel in Cox's Bazar?",
+      "question_bn": "কক্সবাজারে একজন শিক্ষার্থীর দৈনিক যাতায়াত খরচ কত?",
+      "answer_en": "Local transport (CNG/rickshaw): 100–200 TK/day. Add 300–500 TK for food. Total around 400–700 TK/day.",
+      "answer_bn": "লোকাল যাতায়াত (সিএনজি/রিকশা): ১০০-২০০ টাকা/দিন। খাবার: ৩০০-৫০০ টাকা। মোট প্রায় ৪০০-৭০০ টাকা/দিন।"
+    },
+    {
+      "category": "Inter-District",
+      "id": 331,
+      "question_en": "How to travel from Dhaka to Dinajpur?",
+      "question_bn": "ঢাকা থেকে দিনাজপুরে কিভাবে যাবো?",
+      "answer_en": "Hanif, SR, and Nabil buses run from Gabtoli/Kalyanpur. Train (Ekota Express) also serves this route.",
+      "answer_bn": "গাবতলী/কল্যাণপুর থেকে হানিফ, এসআর ও নাবিল বাস চলে। ট্রেনে (একতা এক্সপ্রেস) ও যাওয়া যায়।"
+    },
+    {
+      "category": "Inter-District",
+      "id": 332,
+      "question_en": "What is the fastest bus from Dhaka to Chittagong?",
+      "question_bn": "ঢাকা থেকে চট্টগ্রামের সবচেয়ে দ্রুত বাস কোনটি?",
+      "answer_en": "Green Line, Shyamoli, and Saudia AC buses are among the fastest and most comfortable options.",
+      "answer_bn": "গ্রিন লাইন, শ্যামলী ও সৌদিয়া এসি বাস সবচেয়ে দ্রুত ও আরামদায়ক বিকল্পের মধ্যে।"
+    },
+    {
+      "category": "Tour",
+      "id": 333,
+      "question_en": "How to visit Lalbagh Fort in Old Dhaka?",
+      "question_bn": "পুরান ঢাকার লালবাগ কেল্লায় কিভাবে যাবো?",
+      "answer_en": "Take a rickshaw from Gulistan or Chawkbazar. Entry fee is 20 TK for locals. Open 9 AM – 5 PM (closed Sundays).",
+      "answer_bn": "গুলিস্তান বা চকবাজার থেকে রিকশায় যান। স্থানীয়দের প্রবেশ মূল্য ২০ টাকা। সকাল ৯টা-বিকাল ৫টা খোলা (রবিবার বন্ধ)।"
+    },
+    {
+      "category": "Tour",
+      "id": 334,
+      "question_en": "How to reach Hatirjheel from Badda?",
+      "question_bn": "বাড্ডা থেকে হাতিরঝিলে কিভাবে যাবো?",
+      "answer_en": "Take a rickshaw or walk from Rampura/Badda. Hatirjheel's eastern entrance is just a few minutes from Badda.",
+      "answer_bn": "রামপুরা/বাড্ডা থেকে রিকশায় বা হেঁটেও যাওয়া যায়। হাতিরঝিলের পূর্ব প্রবেশদ্বার বাড্ডা থেকে কয়েক মিনিট।"
+    },
+    {
+      "category": "Safety",
+      "id": 335,
+      "question_en": "What to do if I miss the last Metro train at night?",
+      "question_bn": "রাতে শেষ মেট্রো ছুটে গেলে কি করবো?",
+      "answer_en": "Use Uber or Pathao for a safe ride home. Avoid unknown CNGs at night. Pathao bike is also a quick option.",
+      "answer_bn": "বাড়ি ফিরতে উবার বা পাঠাও ব্যবহার করুন। রাতে অপরিচিত সিএনজি এড়িয়ে চলুন। পাঠাও বাইকও দ্রুত বিকল্প।"
+    },
+    {
+      "category": "Safety",
+      "id": 336,
+      "question_en": "What emergency number should I call during a road accident in Bangladesh?",
+      "question_bn": "বাংলাদেশে সড়ক দুর্ঘটনায় কোন ইমার্জেন্সি নম্বরে কল করবো?",
+      "answer_en": "Call 999 (National Emergency), 199 (highway police), or 16430 (BRTA helpline) for road accident assistance.",
+      "answer_bn": "জাতীয় জরুরি নম্বর ৯৯৯, হাইওয়ে পুলিশ ১৯৯ বা বিআরটিএ হেল্পলাইন ১৬৪৩০-এ কল করুন।"
+    },
+    {
+      "category": "Transport Tips",
+      "id": 337,
+      "question_en": "Is it better to use cash or digital payment for transport in Dhaka?",
+      "question_bn": "ঢাকায় যাতায়াতে নগদ না ডিজিটাল পেমেন্ট কোনটি ভালো?",
+      "answer_en": "Keep both. Metro and app-based rides accept digital. Buses, rickshaws, and CNGs mostly require cash.",
+      "answer_bn": "দুটোই রাখুন। মেট্রো ও অ্যাপভিত্তিক রাইডে ডিজিটাল চলে। বাস, রিকশা ও সিএনজিতে সাধারণত নগদ লাগে।"
+    },
+    {
+      "category": "Transport Tips",
+      "id": 338,
+      "question_en": "How to complain about a bus driver behaving badly in Dhaka?",
+      "question_bn": "ঢাকায় বাস চালক খারাপ আচরণ করলে কোথায় অভিযোগ করবো?",
+      "answer_en": "Note the bus number and route, then call BRTA helpline 16430 or file a complaint via the BRTA app.",
+      "answer_bn": "বাসের নম্বর ও রুট লিখে রাখুন, তারপর বিআরটিএ হেল্পলাইন ১৬৪৩০-এ কল করুন বা বিআরটিএ অ্যাপে অভিযোগ করুন।"
+    },
+    {
+      "category": "Travel Planning",
+      "id": 339,
+      "question_en": "What is the best itinerary for a 5-day Bangladesh tour from Dhaka?",
+      "question_bn": "ঢাকা থেকে ৫ দিনের বাংলাদেশ ট্যুরের সেরা পরিকল্পনা কি?",
+      "answer_en": "Day 1: Dhaka city. Day 2: Cox's Bazar. Day 3: Inani/Saint Martin. Day 4: Chittagong. Day 5: Return to Dhaka.",
+      "answer_bn": "দিন ১: ঢাকা শহর। দিন ২: কক্সবাজার। দিন ৩: ইনানী/সেন্ট মার্টিন। দিন ৪: চট্টগ্রাম। দিন ৫: ঢাকায় ফেরা।"
+    },
+    {
+      "category": "Budget",
+      "id": 340,
+      "question_en": "What is the total cost of a 5-day Bangladesh tour for one person?",
+      "question_bn": "একজনের জন্য ৫ দিনের বাংলাদেশ ট্যুরের মোট খরচ কত?",
+      "answer_en": "A budget traveler can manage 8,000–15,000 TK for 5 days including transport, food, and budget accommodation.",
+      "answer_bn": "একজন বাজেট ভ্রমণকারী পরিবহন, খাবার ও বাজেট আবাসনসহ ৫ দিনে ৮,০০০-১৫,০০০ টাকায় ট্যুর করতে পারেন।"
+    },
+    {
+      "category": "Solo Travel",
+      "id": 341,
+      "question_en": "Is it safe for a woman to travel alone in Bangladesh?",
+      "question_bn": "বাংলাদেশে একা মহিলা ভ্রমণ করা কি নিরাপদ?",
+      "answer_en": "Generally safe in tourist areas. Use app-based rides, stay in reputable hotels, and share your location with family.",
+      "answer_bn": "পর্যটন এলাকায় সাধারণত নিরাপদ। অ্যাপভিত্তিক রাইড ব্যবহার করুন, ভালো হোটেলে থাকুন এবং পরিবারকে লোকেশন জানান।"
+    },
+    {
+      "category": "Solo Travel",
+      "id": 342,
+      "question_en": "What are the best solo travel destinations in Bangladesh?",
+      "question_bn": "বাংলাদেশে একা ভ্রমণের সেরা গন্তব্যগুলো কোনটি?",
+      "answer_en": "Cox's Bazar, Srimangal, Sylhet, Sajek, and Rangamati are ideal for solo travelers with good transport links.",
+      "answer_bn": "কক্সবাজার, শ্রীমঙ্গল, সিলেট, সাজেক ও রাঙামাটি ভালো যোগাযোগ ব্যবস্থাসহ একা ভ্রমণের জন্য আদর্শ।"
+    },
+    {
+      "category": "Solo Travel",
+      "id": 343,
+      "question_en": "How to find travel companions for a Bangladesh tour?",
+      "question_bn": "বাংলাদেশ ট্যুরে ট্রাভেল সঙ্গী কিভাবে খুঁজবো?",
+      "answer_en": "Join Facebook groups like 'Bangladesh Travel Community' or apps like Couchsurfing to find fellow travelers.",
+      "answer_bn": "'Bangladesh Travel Community'-এর মতো ফেসবুক গ্রুপে যোগ দিন বা কাউচসার্ফিং অ্যাপে ট্রাভেল পার্টনার খুঁজুন।"
+    },
+    {
+      "category": "Family Travel",
+      "id": 344,
+      "question_en": "What are the best family-friendly destinations near Dhaka?",
+      "question_bn": "ঢাকার কাছে পরিবার নিয়ে ঘুরতে যাওয়ার সেরা জায়গা কোনগুলো?",
+      "answer_en": "Bhawal National Park, Nuhash Polli, Fantasy Kingdom (Ashulia), and Jamuna Resort in Tangail are great for families.",
+      "answer_bn": "ভাওয়াল জাতীয় উদ্যান, নুহাশ পল্লী, ফ্যান্টাসি কিংডম (আশুলিয়া) ও টাঙ্গাইলের যমুনা রিসোর্ট পরিবারের জন্য দারুণ।"
+    },
+    {
+      "category": "Family Travel",
+      "id": 345,
+      "question_en": "Is there a children's discount for Metro Rail tickets?",
+      "question_bn": "মেট্রো রেলে কি শিশুদের জন্য টিকিট ছাড় আছে?",
+      "answer_en": "Children under 3 years ride free. Children 3–12 years pay half fare on MRT Line-6.",
+      "answer_bn": "৩ বছরের নিচের শিশুরা বিনামূল্যে ভ্রমণ করতে পারে। ৩-১২ বছরের শিশুরা এমআরটি লাইন-৬-এ অর্ধেক ভাড়া দেয়।"
+    },
+    {
+      "category": "Family Travel",
+      "id": 346,
+      "question_en": "How to reach Fantasy Kingdom in Ashulia from Dhaka?",
+      "question_bn": "ঢাকা থেকে আশুলিয়ার ফ্যান্টাসি কিংডমে কিভাবে যাবো?",
+      "answer_en": "Take a bus from Gabtoli or Mirpur towards Ashulia/Savar. Fantasy Kingdom is on the main Ashulia highway.",
+      "answer_bn": "গাবতলী বা মিরপুর থেকে আশুলিয়া/সাভারগামী বাসে যান। ফ্যান্টাসি কিংডম আশুলিয়া মহাসড়কের পাশে।"
+    },
+    {
+      "category": "Foreign Tourists",
+      "id": 347,
+      "question_en": "Do foreign tourists need a visa to visit Bangladesh?",
+      "question_bn": "বিদেশি পর্যটকদের বাংলাদেশ ভ্রমণে ভিসা লাগে কি?",
+      "answer_en": "Most nationalities need a visa. Visa on Arrival (VoA) is available at Dhaka airport for many countries.",
+      "answer_bn": "বেশিরভাগ দেশের নাগরিকদের ভিসা লাগে। ঢাকা বিমানবন্দরে অনেক দেশের জন্য অ্যারাইভাল ভিসা পাওয়া যায়।"
+    },
+    {
+      "category": "Foreign Tourists",
+      "id": 348,
+      "question_en": "Is English widely spoken at transport hubs in Dhaka?",
+      "question_bn": "ঢাকার পরিবহন কেন্দ্রগুলোতে কি ইংরেজি বলা হয়?",
+      "answer_en": "English is spoken at the airport, Metro stations, and major hotels. Bus terminals and local transport may require Bengali.",
+      "answer_bn": "বিমানবন্দর, মেট্রো স্টেশন ও বড় হোটেলে ইংরেজি চলে। বাস টার্মিনাল ও লোকাল যানবাহনে বাংলার প্রয়োজন হতে পারে।"
+    },
+    {
+      "category": "Foreign Tourists",
+      "id": 349,
+      "question_en": "What is the best SIM card for tourists visiting Bangladesh?",
+      "question_bn": "বাংলাদেশ ভ্রমণে পর্যটকদের জন্য কোন সিম কার্ড ভালো?",
+      "answer_en": "Grameenphone and Robi offer good coverage. Buy a tourist SIM at the airport with your passport. Data packs are affordable.",
+      "answer_bn": "গ্রামীণফোন ও রবির নেটওয়ার্ক ভালো। পাসপোর্ট দিয়ে বিমানবন্দরে ট্যুরিস্ট সিম কিনুন। ডেটা প্যাক সাশ্রয়ী।"
+    },
+    {
+      "category": "Eco-Tourism",
+      "id": 350,
+      "question_en": "What eco-tourism destinations are near Dhaka?",
+      "question_bn": "ঢাকার কাছে ইকো-ট্যুরিজম গন্তব্যগুলো কোনটি?",
+      "answer_en": "Bhawal National Park, Madhupur Forest, and Balda Garden are good eco-tourism spots within 2–3 hours of Dhaka.",
+      "answer_bn": "ভাওয়াল জাতীয় উদ্যান, মধুপুর বন ও বলদা গার্ডেন ঢাকার ২-৩ ঘণ্টার মধ্যে ভালো ইকো-ট্যুরিজম স্থান।"
+    },
+    {
+      "category": "Eco-Tourism",
+      "id": 351,
+      "question_en": "How to reach Madhupur Forest from Dhaka?",
+      "question_bn": "ঢাকা থেকে মধুপুর বনে কিভাবে যাবো?",
+      "answer_en": "Take a bus from Mohakhali to Tangail, then a local vehicle to Madhupur. Total journey is about 3 hours.",
+      "answer_bn": "মহাখালী থেকে টাঙ্গাইলের বাসে, তারপর লোকাল যানে মধুপুর। মোট যাত্রা প্রায় ৩ ঘণ্টা।"
+    },
+    {
+      "category": "Haor Region",
+      "id": 352,
+      "question_en": "How to reach Tanguar Haor from Dhaka?",
+      "question_bn": "ঢাকা থেকে টাঙ্গুয়ার হাওরে কিভাবে যাবো?",
+      "answer_en": "Travel to Sunamganj by bus (via Sylhet or direct). Then hire a boat from Sunamganj to Tanguar Haor.",
+      "answer_bn": "বাসে সুনামগঞ্জ যান (সিলেট হয়ে বা সরাসরি), তারপর সুনামগঞ্জ থেকে নৌকা ভাড়া করে টাঙ্গুয়ার হাওর।"
+    },
+    {
+      "category": "Haor Region",
+      "id": 353,
+      "question_en": "When is the best time to visit Haor regions in Bangladesh?",
+      "question_bn": "বাংলাদেশের হাওর অঞ্চলে যাওয়ার সেরা সময় কখন?",
+      "answer_en": "Monsoon (June–September) for the full water experience. Winter (Nov–Feb) for bird watching and calmer waters.",
+      "answer_bn": "বর্ষায় (জুন-সেপ্টেম্বর) পানির পূর্ণ অভিজ্ঞতার জন্য। শীতে (নভেম্বর-ফেব্রুয়ারি) পাখি দেখা ও শান্ত পানির জন্য।"
+    },
+    {
+      "category": "Travel Hacks",
+      "id": 354,
+      "question_en": "How to get the cheapest bus tickets in Bangladesh?",
+      "question_bn": "বাংলাদেশে সবচেয়ে সস্তায় বাসের টিকিট পাওয়ার উপায় কি?",
+      "answer_en": "Book online via Shohoz Bus app early in the morning. Counter tickets are available but may cost more during peak times.",
+      "answer_bn": "সকালে সহজ বাস অ্যাপে আগেভাগে বুক করুন। কাউন্টারে টিকিট পাওয়া যায় কিন্তু পিক টাইমে বেশি হতে পারে।"
+    },
+    {
+      "category": "Travel Hacks",
+      "id": 355,
+      "question_en": "How to avoid surge pricing on Uber and Pathao in Dhaka?",
+      "question_bn": "ঢাকায় উবার ও পাঠাওয়ের সার্জ প্রাইসিং কিভাবে এড়াবো?",
+      "answer_en": "Wait 5–10 minutes after peak hours, walk a block away from busy intersections, or schedule your ride in advance.",
+      "answer_bn": "পিক আওয়ারের ৫-১০ মিনিট পর চেষ্টা করুন, ব্যস্ত মোড় থেকে এক ব্লক দূরে যান বা আগেই রাইড শিডিউল করুন।"
+    },
+    {
+      "category": "Travel Hacks",
+      "id": 356,
+      "question_en": "What is the best time to travel on Dhaka roads to avoid traffic?",
+      "question_bn": "যানজট এড়াতে ঢাকার রাস্তায় ভ্রমণের সেরা সময় কখন?",
+      "answer_en": "Before 7:30 AM or after 9:30 PM on weekdays. Friday mornings are the least congested time of the week.",
+      "answer_bn": "সপ্তাহের দিনগুলোতে সকাল ৭:৩০-এর আগে বা রাত ৯:৩০-এর পরে। শুক্রবার সকাল সপ্তাহের সবচেয়ে কম যানজটের সময়।"
+    },
+    {
+      "category": "Travel Hacks",
+      "id": 357,
+      "question_en": "How to save money on accommodation during travel in Bangladesh?",
+      "question_bn": "বাংলাদেশ ভ্রমণে থাকার খরচ কমানোর উপায় কি?",
+      "answer_en": "Use government rest houses (Circuit Houses), YMCA, or university guesthouses. Book off-season for cheaper hotel rates.",
+      "answer_bn": "সরকারি রেস্ট হাউস (সার্কিট হাউস), ওয়াইএমসিএ বা বিশ্ববিদ্যালয় গেস্ট হাউস ব্যবহার করুন। অফ-সিজনে হোটেল সস্তা।"
+    },
+    {
+      "category": "Group Tours",
+      "id": 358,
+      "question_en": "How to organize a group bus charter from Dhaka?",
+      "question_bn": "ঢাকা থেকে গ্রুপ বাস চার্টার কিভাবে করবো?",
+      "answer_en": "Contact operators like Hanif, Shyamoli, or local charter companies directly. A full AC bus for a day costs 15,000–30,000 TK.",
+      "answer_bn": "হানিফ, শ্যামলী বা স্থানীয় চার্টার কোম্পানিতে সরাসরি যোগাযোগ করুন। পুরো এসি বাস দিনে ১৫,০০০-৩০,০০০ টাকা।"
+    },
+    {
+      "category": "Group Tours",
+      "id": 359,
+      "question_en": "What is the minimum group size for a tour package in Bangladesh?",
+      "question_bn": "বাংলাদেশে ট্যুর প্যাকেজের জন্য সর্বনিম্ন কতজন লাগে?",
+      "answer_en": "Most operators start group packages from 4–6 persons. Solo and couple packages are also available at higher rates.",
+      "answer_bn": "বেশিরভাগ অপারেটর ৪-৬ জন থেকে গ্রুপ প্যাকেজ শুরু করে। সোলো ও কাপল প্যাকেজও বেশি দামে পাওয়া যায়।"
+    },
+    {
+      "category": "Fare",
+      "id": 360,
+      "question_en": "How much does a private car rental cost per day in Bangladesh?",
+      "question_bn": "বাংলাদেশে ব্যক্তিগত গাড়ি ভাড়া দিনে কত?",
+      "answer_en": "A standard car with driver costs 3,000–5,000 TK/day in Dhaka. For intercity, add fuel costs on top.",
+      "answer_bn": "ঢাকায় চালকসহ স্ট্যান্ডার্ড গাড়ি দিনে ৩,০০০-৫,০০০ টাকা। আন্তঃজেলার জন্য জ্বালানি খরচ আলাদা।"
+    },
+    {
+      "category": "Fare",
+      "id": 361,
+      "question_en": "What is the toll fee for the Meghna Bridge?",
+      "question_bn": "মেঘনা সেতুতে টোল কত লাগে?",
+      "answer_en": "Private car: 100 TK. Bus: 280–400 TK. Truck: 350–800 TK depending on size.",
+      "answer_bn": "প্রাইভেট কার: ১০০ টাকা। বাস: ২৮০-৪০০ টাকা। ট্রাক: আকার ভেদে ৩৫০-৮০০ টাকা।"
+    },
+    {
+      "category": "Inter-District",
+      "id": 362,
+      "question_en": "How to reach Bogra from Dhaka?",
+      "question_bn": "ঢাকা থেকে বগুড়া কিভাবে যাবো?",
+      "answer_en": "Take Hanif, Shyamoli, or SR Travels bus from Gabtoli/Kalyanpur. Journey takes about 4–5 hours.",
+      "answer_bn": "গাবতলী/কল্যাণপুর থেকে হানিফ, শ্যামলী বা এসআর ট্রাভেলসের বাসে যান। যাত্রা ৪-৫ ঘণ্টার।"
+    },
+    {
+      "category": "Inter-District",
+      "id": 363,
+      "question_en": "Is there a direct train from Dhaka to Khulna?",
+      "question_bn": "ঢাকা থেকে খুলনায় কি সরাসরি ট্রেন আছে?",
+      "answer_en": "Yes, Sundarban Express and Chitra Express run between Dhaka (Kamalapur) and Khulna daily.",
+      "answer_bn": "হ্যাঁ, সুন্দরবন এক্সপ্রেস ও চিত্রা এক্সপ্রেস প্রতিদিন ঢাকা (কমলাপুর) থেকে খুলনায় চলে।"
+    },
+    {
+      "category": "Tour",
+      "id": 364,
+      "question_en": "How to visit Inani Beach from Cox's Bazar?",
+      "question_bn": "কক্সবাজার থেকে ইনানী বিচে কিভাবে যাবো?",
+      "answer_en": "Take a CNG or local jeep from Kolatoli beach area. Journey is about 30 minutes and costs 150–300 TK.",
+      "answer_bn": "কলাতলী বিচ এলাকা থেকে সিএনজি বা লোকাল জিপে যান। যাত্রা প্রায় ৩০ মিনিট, ভাড়া ১৫০-৩০০ টাকা।"
+    },
+    {
+      "category": "Tour",
+      "id": 365,
+      "question_en": "What is the entry fee for Cox's Bazar beach?",
+      "question_bn": "কক্সবাজার বিচের প্রবেশ মূল্য কত?",
+      "answer_en": "Cox's Bazar beach is free to enter. However, some beach sections or activities like parasailing have separate charges.",
+      "answer_bn": "কক্সবাজার বিচে প্রবেশ বিনামূল্যে। তবে প্যারাসেইলিং-এর মতো কিছু কার্যক্রমের আলাদা চার্জ আছে।"
+    },
+    {
+      "category": "Travel Planning",
+      "id": 366,
+      "question_en": "How to plan a budget-friendly Sundarbans tour from Dhaka?",
+      "question_bn": "ঢাকা থেকে বাজেট-বান্ধব সুন্দরবন ট্যুর কিভাবে প্ল্যান করবো?",
+      "answer_en": "Take a bus to Khulna (500 TK), join a group boat tour (1,500–2,500 TK), stay in Mongla. Total under 5,000 TK.",
+      "answer_bn": "বাসে খুলনা (৫০০ টাকা), গ্রুপ বোট ট্যুরে যোগ দিন (১,৫০০-২,৫০০ টাকা), মংলায় থাকুন। মোট ৫,০০০ টাকার মধ্যে।"
+    },
+    {
+      "category": "Travel Planning",
+      "id": 367,
+      "question_en": "What is the itinerary for a Chittagong Hill Tracts 3-day tour?",
+      "question_bn": "চট্টগ্রাম পার্বত্য অঞ্চলের ৩ দিনের ট্যুরের পরিকল্পনা কি?",
+      "answer_en": "Day 1: Dhaka to Bandarban. Day 2: Nilgiri, Meghla. Day 3: Chimbuk Hill, return to Dhaka.",
+      "answer_bn": "দিন ১: ঢাকা থেকে বান্দরবান। দিন ২: নীলগিরি, মেঘলা। দিন ৩: চিম্বুক পাহাড়, ঢাকায় ফেরা।"
+    },
+    {
+      "category": "Budget",
+      "id": 368,
+      "question_en": "How much does a 2-night stay cost at a mid-range hotel in Sylhet?",
+      "question_bn": "সিলেটে মিড-রেঞ্জ হোটেলে ২ রাত থাকলে কত খরচ হয়?",
+      "answer_en": "Mid-range hotels in Sylhet cost 1,500–3,000 TK per night. For 2 nights: 3,000–6,000 TK total.",
+      "answer_bn": "সিলেটে মিড-রেঞ্জ হোটেলে প্রতি রাতে ১,৫০০-৩,০০০ টাকা। ২ রাতে মোট ৩,০০০-৬,০০০ টাকা।"
+    },
+    {
+      "category": "Budget",
+      "id": 369,
+      "question_en": "How much does street food typically cost in Dhaka?",
+      "question_bn": "ঢাকায় স্ট্রিট ফুডের সাধারণ দাম কত?",
+      "answer_en": "A filling street meal (fuchka, chotpoti, rice plate) costs 30–100 TK. Restaurant meals start from 150 TK.",
+      "answer_bn": "পেট ভরা স্ট্রিট মিল (ফুচকা, চটপটি, ভাতের থালা) ৩০-১০০ টাকায় হয়। রেস্তোরাঁয় ১৫০ টাকা থেকে শুরু।"
+    },
+    {
+      "category": "Transport Tips",
+      "id": 370,
+      "question_en": "How to identify a licensed CNG auto-rickshaw in Dhaka?",
+      "question_bn": "ঢাকায় লাইসেন্সপ্রাপ্ত সিএনজি কিভাবে চেনা যাবে?",
+      "answer_en": "Licensed CNGs have green color, a yellow stripe, visible route permit, and a meter. Report unlicensed ones to 999.",
+      "answer_bn": "লাইসেন্সপ্রাপ্ত সিএনজি সবুজ রঙের, হলুদ ডোরা, রুট পারমিট ও মিটার থাকে। অবৈধ হলে ৯৯৯-এ জানান।"
+    },
+    {
+      "category": "Photography Tour",
+      "id": 371,
+      "question_en": "What are the best photography spots in Dhaka?",
+      "question_bn": "ঢাকায় ফটোগ্রাফির জন্য সেরা জায়গাগুলো কোনটি?",
+      "answer_en": "Sadarghat at dawn, Ahsan Manzil, Lalbagh Fort, Hatirjheel at sunset, and Old Dhaka alleyways are iconic spots.",
+      "answer_bn": "ভোরে সদরঘাট, আহসান মঞ্জিল, লালবাগ কেল্লা, সূর্যাস্তে হাতিরঝিল এবং পুরান ঢাকার গলিগুলো আইকনিক ফটো স্পট।"
+    },
+    {
+      "category": "Photography Tour",
+      "id": 372,
+      "question_en": "Best time to photograph the Buriganga River?",
+      "question_bn": "বুড়িগঙ্গা নদীর ছবি তোলার সেরা সময় কখন?",
+      "answer_en": "Early morning at 6–7 AM offers the best light with boats and mist. Take a boat from Sadarghat.",
+      "answer_bn": "সকাল ৬-৭টায় নৌকা ও কুয়াশাসহ সেরা আলো পাওয়া যায়। সদরঘাট থেকে নৌকায় যান।"
+    },
+    {
+      "category": "Religious Tourism",
+      "id": 373,
+      "question_en": "How to visit Bishwa Ijtema grounds at Tongi?",
+      "question_bn": "টঙ্গীর বিশ্ব ইজতেমা মাঠে কিভাবে যাবো?",
+      "answer_en": "Take a train from Kamalapur to Tongi station or a bus from Uttara. During Ijtema, special transport runs from Dhaka.",
+      "answer_bn": "কমলাপুর থেকে ট্রেনে টঙ্গী স্টেশন বা উত্তরা থেকে বাসে যান। ইজতেমার সময় ঢাকা থেকে বিশেষ পরিবহন চলে।"
+    },
+    {
+      "category": "Religious Tourism",
+      "id": 374,
+      "question_en": "How to reach Hazrat Shahjalal's Dargah in Sylhet?",
+      "question_bn": "সিলেটের হযরত শাহজালালের দরগায় কিভাবে যাবো?",
+      "answer_en": "Located in Sylhet city center. Take a CNG or rickshaw from Sylhet bus/railway station — about 10 minutes.",
+      "answer_bn": "সিলেট শহরের কেন্দ্রে অবস্থিত। সিলেট বাস বা রেলস্টেশন থেকে সিএনজি বা রিকশায় প্রায় ১০ মিনিট।"
+    },
+    {
+      "category": "Religious Tourism",
+      "id": 375,
+      "question_en": "How to visit Shat Gambuj Mosque in Bagerhat?",
+      "question_bn": "বাগেরহাটের ষাট গম্বুজ মসজিদে কিভাবে যাবো?",
+      "answer_en": "Take a bus from Dhaka to Khulna, then a local bus or CNG to Bagerhat. The mosque is 3 km from Bagerhat town.",
+      "answer_bn": "ঢাকা থেকে বাসে খুলনা, তারপর লোকাল বাস বা সিএনজিতে বাগেরহাট। মসজিদটি বাগেরহাট শহর থেকে ৩ কিমি।"
+    },
+    {
+      "category": "Heritage Sites",
+      "id": 376,
+      "question_en": "How to reach Wari-Bateshwar archaeological site from Dhaka?",
+      "question_bn": "ঢাকা থেকে ওয়ারী-বটেশ্বর প্রত্নস্থলে কিভাবে যাবো?",
+      "answer_en": "Take a bus to Narsingdi from Sayedabad, then a local vehicle to Belabo upazila. About 2–3 hours total.",
+      "answer_bn": "সায়েদাবাদ থেকে বাসে নরসিংদী, তারপর লোকাল যানে বেলাবো উপজেলা। মোট প্রায় ২-৩ ঘণ্টা।"
+    },
+    {
+      "category": "Heritage Sites",
+      "id": 377,
+      "question_en": "How to visit the Kantajew Temple in Dinajpur?",
+      "question_bn": "দিনাজপুরের কান্তজিউ মন্দিরে কিভাবে যাবো?",
+      "answer_en": "Travel to Dinajpur by bus/train, then a local auto-rickshaw to Kantanagar (12 km north of Dinajpur town).",
+      "answer_bn": "বাস বা ট্রেনে দিনাজপুর, তারপর অটোরিকশায় কান্তানগর (দিনাজপুর শহরের ১২ কিমি উত্তরে)।"
+    },
+    {
+      "category": "Student Discount",
+      "id": 378,
+      "question_en": "Do students get discounts on inter-city buses in Bangladesh?",
+      "question_bn": "বাংলাদেশে আন্তঃজেলা বাসে শিক্ষার্থীরা কি ছাড় পান?",
+      "answer_en": "Some operators offer 10–25% discount with a valid student ID. BRTC has official student concession rates.",
+      "answer_bn": "কিছু পরিবহন ছাত্র পরিচয়পত্র দেখালে ১০-২৫% ছাড় দেয়। বিআরটিসিতে আনুষ্ঠানিক ছাত্র রেয়াতি হার আছে।"
+    },
+    {
+      "category": "Student Discount",
+      "id": 379,
+      "question_en": "Do students get discounts on Bangladesh Railway?",
+      "question_bn": "বাংলাদেশ রেলওয়েতে কি শিক্ষার্থীরা ছাড় পান?",
+      "answer_en": "Yes, university students get a 50% concession on Shuvon class with a valid university ID card.",
+      "answer_bn": "হ্যাঁ, বিশ্ববিদ্যালয়ের শিক্ষার্থীরা বৈধ পরিচয়পত্র দেখালে শোভন ক্লাসে ৫০% রেয়াত পান।"
+    },
+    {
+      "category": "Senior Travel",
+      "id": 380,
+      "question_en": "Is there a senior citizen discount on Metro Rail?",
+      "question_bn": "মেট্রো রেলে কি প্রবীণ নাগরিকদের জন্য ছাড় আছে?",
+      "answer_en": "Currently, no specific senior discount exists. However, the MRT Pass 10% discount applies to all passengers.",
+      "answer_bn": "বর্তমানে নির্দিষ্ট প্রবীণ ছাড় নেই। তবে এমআরটি পাসে সবার জন্য ১০% ছাড় প্রযোজ্য।"
+    },
+    {
+      "category": "Senior Travel",
+      "id": 381,
+      "question_en": "What transport is most comfortable for elderly passengers in Dhaka?",
+      "question_bn": "ঢাকায় বয়স্ক যাত্রীদের জন্য কোন যানবাহন সবচেয়ে আরামদায়ক?",
+      "answer_en": "Metro Rail (elevator-equipped) and AC buses are most comfortable. Uber or Pathao car is ideal for door-to-door trips.",
+      "answer_bn": "মেট্রো রেল (লিফটসহ) ও এসি বাস সবচেয়ে আরামদায়ক। ঘরে দরজায় সার্ভিসের জন্য উবার বা পাঠাও কার আদর্শ।"
+    },
+    {
+      "category": "Monsoon Travel",
+      "id": 382,
+      "question_en": "What precautions should I take while traveling by road in monsoon?",
+      "question_bn": "বর্ষায় সড়কপথে ভ্রমণে কি সতর্কতা নেওয়া উচিত?",
+      "answer_en": "Check road conditions before travel, avoid low-lying roads prone to flooding, carry a raincoat, and allow extra travel time.",
+      "answer_bn": "ভ্রমণের আগে রাস্তার অবস্থা জানুন, বন্যাপ্রবণ নিচু রাস্তা এড়িয়ে চলুন, রেইনকোট রাখুন ও অতিরিক্ত সময় ধরুন।"
+    },
+    {
+      "category": "Monsoon Travel",
+      "id": 383,
+      "question_en": "Which districts in Bangladesh are most affected by floods during monsoon?",
+      "question_bn": "বর্ষায় বাংলাদেশের কোন জেলাগুলো বন্যায় বেশি ক্ষতিগ্রস্ত হয়?",
+      "answer_en": "Sylhet, Sunamganj, Netrokona, Jamalpur, and Sirajganj are the most flood-prone districts during monsoon.",
+      "answer_bn": "বর্ষায় সিলেট, সুনামগঞ্জ, নেত্রকোনা, জামালপুর ও সিরাজগঞ্জ সবচেয়ে বন্যাপ্রবণ জেলা।"
+    },
+    {
+      "category": "Ride Share",
+      "id": 384,
+      "question_en": "Can I book a Pathao ride for someone else in Dhaka?",
+      "question_bn": "ঢাকায় অন্যের জন্য পাঠাও রাইড বুক করা যায় কি?",
+      "answer_en": "Yes, Pathao allows you to book a ride for someone else by entering their pickup and drop-off location.",
+      "answer_bn": "হ্যাঁ, পাঠাওয়ে অন্যের পিকআপ ও গন্তব্য ঠিকানা দিয়ে তাদের জন্য রাইড বুক করা যায়।"
+    },
+    {
+      "category": "Ride Share",
+      "id": 385,
+      "question_en": "What is Uber Intercity in Bangladesh?",
+      "question_bn": "বাংলাদেশে উবার ইন্টারসিটি কি?",
+      "answer_en": "Uber Intercity allows booking a private car for travel between cities like Dhaka–Chittagong or Dhaka–Sylhet at a fixed price.",
+      "answer_bn": "উবার ইন্টারসিটি নির্ধারিত মূল্যে ঢাকা-চট্টগ্রাম বা ঢাকা-সিলেটের মতো শহরের মধ্যে প্রাইভেট কার বুক করার সুবিধা দেয়।"
+    },
+    {
+      "category": "Fare",
+      "id": 386,
+      "question_en": "How much does Uber Intercity cost from Dhaka to Sylhet?",
+      "question_bn": "ঢাকা থেকে সিলেটে উবার ইন্টারসিটির ভাড়া কত?",
+      "answer_en": "Typically 4,000–7,000 TK one-way for a sedan or SUV depending on the vehicle type and demand.",
+      "answer_bn": "সাধারণত এক পথে সেডান বা এসইউভিতে ৪,০০০-৭,০০০ টাকা, গাড়ির ধরন ও চাহিদা ভেদে।"
+    },
+    {
+      "category": "Fare",
+      "id": 387,
+      "question_en": "What is the boat fare from Teknaf to Saint Martin's Island?",
+      "question_bn": "টেকনাফ থেকে সেন্ট মার্টিন দ্বীপে নৌকা ভাড়া কত?",
+      "answer_en": "Ship tickets (MV Karnaphuli or similar) cost 500–800 TK per person one-way. Journey takes about 2.5–3 hours.",
+      "answer_bn": "জাহাজের টিকিট (এমভি কর্ণফুলী বা অনুরূপ) এক পথে জনপ্রতি ৫০০-৮০০ টাকা। যাত্রা আড়াই-তিন ঘণ্টা।"
+    },
+    {
+      "category": "Tour",
+      "id": 388,
+      "question_en": "How to reach Teknaf from Cox's Bazar to go to Saint Martin?",
+      "question_bn": "সেন্ট মার্টিন যেতে কক্সবাজার থেকে টেকনাফ কিভাবে যাবো?",
+      "answer_en": "Take a local bus or CNG from Cox's Bazar to Teknaf — about 1.5–2 hours. The ship departs from Teknaf Ghat.",
+      "answer_bn": "কক্সবাজার থেকে লোকাল বাস বা সিএনজিতে টেকনাফ, প্রায় দেড়-দুই ঘণ্টা। জাহাজ ছাড়ে টেকনাফ ঘাট থেকে।"
+    },
+    {
+      "category": "Tour",
+      "id": 389,
+      "question_en": "How to visit Jaflong from Sylhet?",
+      "question_bn": "সিলেট থেকে জাফলং কিভাবে যাবো?",
+      "answer_en": "Take a local bus or CNG from Sylhet bus station towards Tamabil. Jaflong is about 60 km from Sylhet city.",
+      "answer_bn": "সিলেট বাসস্ট্যান্ড থেকে তামাবিলগামী লোকাল বাস বা সিএনজিতে যান। জাফলং সিলেট শহর থেকে প্রায় ৬০ কিমি।"
+    },
+    {
+      "category": "Tour",
+      "id": 390,
+      "question_en": "How to reach Kaptai Lake from Chittagong?",
+      "question_bn": "চট্টগ্রাম থেকে কাপ্তাই হ্রদে কিভাবে যাবো?",
+      "answer_en": "Take a bus or CNG from Chittagong to Kaptai (about 60 km, 1.5–2 hours). Boat trips on the lake cost 500–1,500 TK.",
+      "answer_bn": "চট্টগ্রাম থেকে বাস বা সিএনজিতে কাপ্তাই (প্রায় ৬০ কিমি, দেড়-দুই ঘণ্টা)। হ্রদে নৌকা ভ্রমণ ৫০০-১,৫০০ টাকা।"
+    },
+    {
+      "category": "Inter-District",
+      "id": 391,
+      "question_en": "How long is the journey from Dhaka to Cox's Bazar by road?",
+      "question_bn": "ঢাকা থেকে কক্সবাজার সড়কপথে কতক্ষণ লাগে?",
+      "answer_en": "About 9–12 hours by bus depending on traffic. Non-stop AC buses are fastest at around 9–10 hours.",
+      "answer_bn": "ট্রাফিক ভেদে বাসে প্রায় ৯-১২ ঘণ্টা। নন-স্টপ এসি বাসে সবচেয়ে দ্রুত, প্রায় ৯-১০ ঘণ্টা।"
+    },
+    {
+      "category": "Inter-District",
+      "id": 392,
+      "question_en": "Is there a bus from Chittagong to Bandarban?",
+      "question_bn": "চট্টগ্রাম থেকে বান্দরবানে কি বাস আছে?",
+      "answer_en": "Yes, buses run from Chittagong (Bahaddarhat terminal) to Bandarban every hour. Journey is about 2.5–3 hours.",
+      "answer_bn": "হ্যাঁ, চট্টগ্রামের বহদ্দারহাট টার্মিনাল থেকে প্রতি ঘণ্টায় বান্দরবানের বাস ছাড়ে। যাত্রা আড়াই-তিন ঘণ্টা।"
+    },
+    {
+      "category": "Travel Planning",
+      "id": 393,
+      "question_en": "How many days are enough to explore Sylhet district?",
+      "question_bn": "সিলেট জেলা ঘুরতে কত দিন যথেষ্ট?",
+      "answer_en": "3–4 days is ideal to visit Ratargul, Jaflong, Bisnakandi, Lawachara, and the tea gardens comfortably.",
+      "answer_bn": "রাতারগুল, জাফলং, বিছনাকান্দি, লাউয়াছড়া ও চা বাগান আরামসে ঘুরতে ৩-৪ দিন যথেষ্ট।"
+    },
+    {
+      "category": "Travel Planning",
+      "id": 394,
+      "question_en": "What is the best month to visit Bangladesh overall?",
+      "question_bn": "সামগ্রিকভাবে বাংলাদেশ ভ্রমণের সেরা মাস কোনটি?",
+      "answer_en": "November to February is the best time: weather is cool and dry, all tourist spots are accessible.",
+      "answer_bn": "নভেম্বর থেকে ফেব্রুয়ারি সেরা সময়: আবহাওয়া শীতল ও শুষ্ক, সব পর্যটন স্থানে যাওয়া যায়।"
+    },
+    {
+      "category": "Budget",
+      "id": 395,
+      "question_en": "What is the average hotel cost per night in Bandarban?",
+      "question_bn": "বান্দরবানে প্রতি রাতে হোটেলের গড় খরচ কত?",
+      "answer_en": "Budget: 500–1,000 TK. Mid-range: 1,500–3,000 TK. Nilgiri resort: 5,000–10,000 TK per night.",
+      "answer_bn": "বাজেট: ৫০০-১,০০০ টাকা। মিড-রেঞ্জ: ১,৫০০-৩,০০০ টাকা। নীলগিরি রিসোর্ট: প্রতি রাতে ৫,০০০-১০,০০০ টাকা।"
+    },
+    {
+      "category": "Budget",
+      "id": 396,
+      "question_en": "How much does a round-trip domestic flight cost in Bangladesh?",
+      "question_bn": "বাংলাদেশে অভ্যন্তরীণ বিমানের রাউন্ড ট্রিপের খরচ কত?",
+      "answer_en": "Dhaka–Cox's Bazar round trip: 6,000–15,000 TK. Dhaka–Sylhet round trip: 5,000–12,000 TK.",
+      "answer_bn": "ঢাকা-কক্সবাজার রাউন্ড ট্রিপ: ৬,০০০-১৫,০০০ টাকা। ঢাকা-সিলেট রাউন্ড ট্রিপ: ৫,০০০-১২,০০০ টাকা।"
+    },
+    {
+      "category": "Safety",
+      "id": 397,
+      "question_en": "What to do if your wallet is stolen while traveling in Bangladesh?",
+      "question_bn": "বাংলাদেশে ভ্রমণকালে মানিব্যাগ চুরি হলে কি করবো?",
+      "answer_en": "File a GD (General Diary) at the nearest police station immediately. Call 999. Use bKash if you have no cash.",
+      "answer_bn": "নিকটস্থ থানায় দ্রুত জিডি করুন। ৯৯৯-এ কল করুন। নগদ না থাকলে বিকাশ ব্যবহার করুন।"
+    },
+    {
+      "category": "Safety",
+      "id": 398,
+      "question_en": "How to stay safe during Eid travel rush in Bangladesh?",
+      "question_bn": "ঈদের ভ্রমণ ভিড়ে কিভাবে নিরাপদ থাকবো?",
+      "answer_en": "Book tickets 2 weeks early. Avoid roof travel on buses. Keep valuables in a secure bag. Travel in daylight when possible.",
+      "answer_bn": "২ সপ্তাহ আগে টিকিট কাটুন। বাসের ছাদে ভ্রমণ এড়িয়ে চলুন। মূল্যবান জিনিস নিরাপদ ব্যাগে রাখুন। সম্ভব হলে দিনের বেলা ভ্রমণ করুন।"
+    },
+    {
+      "category": "Transport Tips",
+      "id": 399,
+      "question_en": "How do I know the correct bus fare to avoid being overcharged?",
+      "question_bn": "অতিরিক্ত ভাড়া এড়াতে সঠিক বাস ভাড়া কিভাবে জানবো?",
+      "answer_en": "Check the BRTA fare chart posted inside buses or use the Shohoz Bus app. You can also ask fellow passengers.",
+      "answer_bn": "বাসের ভেতরে টাঙানো বিআরটিএ ভাড়ার তালিকা দেখুন বা সহজ বাস অ্যাপ ব্যবহার করুন। অন্য যাত্রীদেরও জিজ্ঞেস করতে পারেন।"
+    },
+    {
+      "category": "Transport Tips",
+      "id": 400,
+      "question_en": "What is the best transport option to catch an early morning flight from Dhaka?",
+      "question_bn": "ঢাকা থেকে ভোরবেলার ফ্লাইট ধরতে সেরা যানবাহন কোনটি?",
+      "answer_en": "Pre-book an Uber or Pathao the night before. For budget travelers, BRTC airport bus runs from Motijheel at 3–4 AM.",
+      "answer_bn": "আগের রাতে উবার বা পাঠাও প্রি-বুক করুন। বাজেটের জন্য বিআরটিসির এয়ারপোর্ট বাস ভোর ৩-৪টায় মতিঝিল থেকে ছাড়ে।"
+    },
+    {
+      "category": "Adventure Tourism",
+      "id": 401,
+      "question_en": "What adventure activities are available in Bandarban?",
+      "question_bn": "বান্দরবানে কোন অ্যাডভেঞ্চার কার্যক্রম পাওয়া যায়?",
+      "answer_en": "Trekking to Keokradong, Tahjingdong, and Nafakhum waterfall, plus night camping and zip-lining in some resorts.",
+      "answer_bn": "কেওক্রাডং, তাজিংডং ও নাফাখুম ঝরনায় ট্রেকিং, এবং কিছু রিসোর্টে নাইট ক্যাম্পিং ও জিপ-লাইনিং।"
+    },
+    {
+      "category": "Adventure Tourism",
+      "id": 402,
+      "question_en": "Is paragliding available in Bangladesh?",
+      "question_bn": "বাংলাদেশে কি প্যারাগ্লাইডিং পাওয়া যায়?",
+      "answer_en": "Limited paragliding is available in Bandarban hills during events. Parasailing is common at Cox's Bazar beach.",
+      "answer_bn": "বান্দরবানে ইভেন্টের সময় সীমিত প্যারাগ্লাইডিং পাওয়া যায়। কক্সবাজার বিচে প্যারাসেইলিং সাধারণ।"
+    },
+    {
+      "category": "Adventure Tourism",
+      "id": 403,
+      "question_en": "How to trek to Keokradong, the highest peak in Bangladesh?",
+      "question_bn": "বাংলাদেশের সর্বোচ্চ চূড়া কেওক্রাডংয়ে ট্রেক কিভাবে করবো?",
+      "answer_en": "Start from Ruma Bazar in Bandarban. Hire a local guide (mandatory). Allow 2 days for the trek with camping overnight.",
+      "answer_bn": "বান্দরবানের রুমা বাজার থেকে শুরু করুন। স্থানীয় গাইড নেওয়া বাধ্যতামূলক। রাতে ক্যাম্পিংসহ ২ দিন সময় রাখুন।"
+    },
+    {
+      "category": "Corporate Travel",
+      "id": 404,
+      "question_en": "Which hotels in Dhaka have meeting facilities near the airport?",
+      "question_bn": "ঢাকায় বিমানবন্দরের কাছে মিটিং সুবিধা সহ কোন হোটেল আছে?",
+      "answer_en": "Le Méridien, Radisson Blu, and Amari Dhaka in Uttara all offer conference facilities near Hazrat Shahjalal Airport.",
+      "answer_bn": "উত্তরায় লে মেরিডিয়েন, র‍্যাডিসন ব্লু ও অমরি ঢাকায় হযরত শাহজালাল বিমানবন্দরের কাছে কনফারেন্স সুবিধা আছে।"
+    },
+    {
+      "category": "Corporate Travel",
+      "id": 405,
+      "question_en": "What is the best area to stay for business travelers in Dhaka?",
+      "question_bn": "ঢাকায় ব্যবসায়িক ভ্রমণকারীদের জন্য থাকার সেরা এলাকা কোনটি?",
+      "answer_en": "Gulshan, Banani, and Motijheel are best for business. They offer top hotels, banks, and corporate offices.",
+      "answer_bn": "গুলশান, বনানী ও মতিঝিল ব্যবসায়ীদের জন্য সেরা। এখানে উন্নত হোটেল, ব্যাংক ও কর্পোরেট অফিস আছে।"
+    },
+    {
+      "category": "Corporate Travel",
+      "id": 406,
+      "question_en": "Is there an airport lounge at Hazrat Shahjalal Airport?",
+      "question_bn": "হযরত শাহজালাল বিমানবন্দরে কি এয়ারপোর্ট লাউঞ্জ আছে?",
+      "answer_en": "Yes, there are VIP lounges and premium lounges accessible with priority boarding passes or credit card benefits.",
+      "answer_bn": "হ্যাঁ, ভিআইপি লাউঞ্জ ও প্রিমিয়াম লাউঞ্জ আছে, যেগুলো প্রায়রিটি বোর্ডিং পাস বা ক্রেডিট কার্ড সুবিধায় ব্যবহার করা যায়।"
+    },
+    {
+      "category": "Wildlife Tourism",
+      "id": 407,
+      "question_en": "Where can I spot Royal Bengal Tigers in Bangladesh?",
+      "question_bn": "বাংলাদেশে কোথায় রয়েল বেঙ্গল টাইগার দেখতে পাবো?",
+      "answer_en": "The Sundarbans is the only place in Bangladesh where Royal Bengal Tigers live in the wild.",
+      "answer_bn": "সুন্দরবনই বাংলাদেশের একমাত্র স্থান যেখানে বন্য রয়েল বেঙ্গল টাইগার বাস করে।"
+    },
+    {
+      "category": "Wildlife Tourism",
+      "id": 408,
+      "question_en": "Which national park has the most wildlife in Bangladesh?",
+      "question_bn": "বাংলাদেশে কোন জাতীয় উদ্যানে সবচেয়ে বেশি বন্যপ্রাণী আছে?",
+      "answer_en": "Lawachara National Park in Moulvibazar has hoolock gibbons, diverse birds, and rare wildlife.",
+      "answer_bn": "মৌলভীবাজারের লাউয়াছড়া জাতীয় উদ্যানে হুলক গিবন, বিভিন্ন পাখি ও দুর্লভ বন্যপ্রাণী আছে।"
+    },
+    {
+      "category": "Local Cuisine Travel",
+      "id": 409,
+      "question_en": "What local food should I try in Sylhet?",
+      "question_bn": "সিলেটে কোন স্থানীয় খাবার খাওয়া উচিত?",
+      "answer_en": "Seven Layer Tea, Hilsa from the Surma river, Shutki Bhorta (dried fish), and Pitha are Sylhet specialties.",
+      "answer_bn": "সাত রঙ চা, সুরমা নদীর ইলিশ, শুটকি ভর্তা এবং পিঠা সিলেটের বিশেষত্ব।"
+    },
+    {
+      "category": "Local Cuisine Travel",
+      "id": 410,
+      "question_en": "What food is Chittagong famous for?",
+      "question_bn": "চট্টগ্রাম কোন খাবারের জন্য বিখ্যাত?",
+      "answer_en": "Mezbani beef, Kala Bhuna, Chittagong-style Hilsa curry, and dry fish (Shutki) are iconic Chittagong dishes.",
+      "answer_bn": "মেজবানি গরুর মাংস, কালা ভুনা, চট্টগ্রামী ইলিশ রান্না ও শুটকি চট্টগ্রামের আইকনিক খাবার।"
+    },
+    {
+      "category": "Local Cuisine Travel",
+      "id": 411,
+      "question_en": "Where to eat the best Hilsa fish in Bangladesh?",
+      "question_bn": "বাংলাদেশে সেরা ইলিশ মাছ কোথায় খাবো?",
+      "answer_en": "Chandpur is known as the 'Hilsa Capital'. Padma river Hilsa from Rajshahi area is also highly prized.",
+      "answer_bn": "চাঁদপুরকে 'ইলিশের রাজধানী' বলা হয়। রাজশাহী এলাকার পদ্মার ইলিশও অত্যন্ত সুস্বাদু।"
+    },
+    {
+      "category": "Transport Infrastructure",
+      "id": 412,
+      "question_en": "How many Metro Rail stations are there in Dhaka?",
+      "question_bn": "ঢাকায় কতটি মেট্রো রেল স্টেশন আছে?",
+      "answer_en": "MRT Line-6 has 16 stations from Uttara North to Motijheel, covering 20.1 km.",
+      "answer_bn": "এমআরটি লাইন-৬-এ উত্তরা নর্থ থেকে মতিঝিল পর্যন্ত ১৬টি স্টেশন আছে, ২০.১ কিমি দীর্ঘ।"
+    },
+    {
+      "category": "Transport Infrastructure",
+      "id": 413,
+      "question_en": "What is the MRT Line-1 project in Dhaka?",
+      "question_bn": "ঢাকায় এমআরটি লাইন-১ প্রকল্প কি?",
+      "answer_en": "MRT Line-1 will connect Hazrat Shahjalal Airport to Kamalapur via an underground and elevated route.",
+      "answer_bn": "এমআরটি লাইন-১ হযরত শাহজালাল বিমানবন্দর থেকে ভূগর্ভস্থ ও উড়াল পথে কমলাপুর পর্যন্ত যুক্ত করবে।"
+    },
+    {
+      "category": "Transport Infrastructure",
+      "id": 414,
+      "question_en": "What is the BRTA helpline number?",
+      "question_bn": "বিআরটিএর হেল্পলাইন নম্বর কত?",
+      "answer_en": "BRTA helpline: 16430. You can report traffic violations, overcharging, and vehicle complaints.",
+      "answer_bn": "বিআরটিএ হেল্পলাইন: ১৬৪৩০। ট্রাফিক লঙ্ঘন, অতিরিক্ত ভাড়া ও যানবাহন সংক্রান্ত অভিযোগ জানাতে পারেন।"
+    },
+    {
+      "category": "Transport Infrastructure",
+      "id": 415,
+      "question_en": "How many international airports are there in Bangladesh?",
+      "question_bn": "বাংলাদেশে কতটি আন্তর্জাতিক বিমানবন্দর আছে?",
+      "answer_en": "Three international airports: Hazrat Shahjalal (Dhaka), Shah Amanat (Chittagong), and Osmani (Sylhet).",
+      "answer_bn": "তিনটি আন্তর্জাতিক বিমানবন্দর: হযরত শাহজালাল (ঢাকা), শাহ আমানত (চট্টগ্রাম) ও ওসমানী (সিলেট)।"
+    },
+    {
+      "category": "Fare",
+      "id": 416,
+      "question_en": "What is the taxi fare from Sylhet airport to city center?",
+      "question_bn": "সিলেট বিমানবন্দর থেকে শহরের কেন্দ্রে ট্যাক্সি ভাড়া কত?",
+      "answer_en": "Prepaid taxis at the airport cost around 200–400 TK to Sylhet city. CNG costs around 150–250 TK.",
+      "answer_bn": "বিমানবন্দরের প্রিপেইড ট্যাক্সিতে সিলেট শহরে যেতে ২০০-৪০০ টাকা। সিএনজিতে ১৫০-২৫০ টাকা।"
+    },
+    {
+      "category": "Fare",
+      "id": 417,
+      "question_en": "How much does a boat tour in Sundarbans cost for 2 days?",
+      "question_bn": "সুন্দরবনে ২ দিনের বোট ট্যুরের খরচ কত?",
+      "answer_en": "A 2-day boat tour from Mongla or Khulna costs 3,000–8,000 TK per person depending on the package and group size.",
+      "answer_bn": "মংলা বা খুলনা থেকে ২ দিনের বোট ট্যুরে প্যাকেজ ও গ্রুপের আকার ভেদে জনপ্রতি ৩,০০০-৮,০০০ টাকা।"
+    },
+    {
+      "category": "Tour",
+      "id": 418,
+      "question_en": "How to reach Bisnakandi from Sylhet?",
+      "question_bn": "সিলেট থেকে বিছনাকান্দিতে কিভাবে যাবো?",
+      "answer_en": "Take a CNG or local bus from Sylhet to Gowainghat (30 km), then hire a boat to Bisnakandi. Total 2–3 hours.",
+      "answer_bn": "সিলেট থেকে সিএনজি বা বাসে গোয়াইনঘাট (৩০ কিমি), তারপর নৌকায় বিছনাকান্দি। মোট ২-৩ ঘণ্টা।"
+    },
+    {
+      "category": "Tour",
+      "id": 419,
+      "question_en": "How to visit Maheshkhali island from Cox's Bazar?",
+      "question_bn": "কক্সবাজার থেকে মহেশখালী দ্বীপে কিভাবে যাবো?",
+      "answer_en": "Take a speedboat from Cox's Bazar Fishery Ghat — about 30 minutes. Fare is 50–80 TK per person.",
+      "answer_bn": "কক্সবাজার ফিশারি ঘাট থেকে স্পিডবোটে প্রায় ৩০ মিনিট। জনপ্রতি ভাড়া ৫০-৮০ টাকা।"
+    },
+    {
+      "category": "Tour",
+      "id": 420,
+      "question_en": "How to reach Nijhum Dwip from Dhaka?",
+      "question_bn": "ঢাকা থেকে নিঝুম দ্বীপে কিভাবে যাবো?",
+      "answer_en": "Take a launch from Sadarghat to Hatia, then a local boat to Nijhum Dwip. Total journey is about 12–14 hours.",
+      "answer_bn": "সদরঘাট থেকে লঞ্চে হাতিয়া, তারপর লোকাল নৌকায় নিঝুম দ্বীপ। মোট যাত্রা প্রায় ১২-১৪ ঘণ্টা।"
+    },
+    {
+      "category": "Travel Planning",
+      "id": 421,
+      "question_en": "What are the must-carry items for a trekking trip in CHT?",
+      "question_bn": "পার্বত্য চট্টগ্রামে ট্রেকিং ট্রিপে কি কি জিনিস অবশ্যই নিতে হবে?",
+      "answer_en": "Trekking shoes, raincoat, water purifier, power bank, insect repellent, first-aid kit, and enough cash.",
+      "answer_bn": "ট্রেকিং জুতা, রেইনকোট, পানি বিশুদ্ধকারী, পাওয়ার ব্যাংক, মশার স্প্রে, ফার্স্ট এইড কিট ও পর্যাপ্ত নগদ।"
+    },
+    {
+      "category": "Travel Planning",
+      "id": 422,
+      "question_en": "How to plan a Kuakata and Sundarbans combined tour from Dhaka?",
+      "question_bn": "ঢাকা থেকে কুয়াকাটা ও সুন্দরবন একসাথে ট্যুর কিভাবে প্ল্যান করবো?",
+      "answer_en": "Day 1–2: Bus to Kuakata. Day 3: Travel to Khulna. Day 4–5: Sundarbans boat tour. Day 6: Return to Dhaka.",
+      "answer_bn": "দিন ১-২: বাসে কুয়াকাটা। দিন ৩: খুলনায় যান। দিন ৪-৫: সুন্দরবন বোট ট্যুর। দিন ৬: ঢাকায় ফেরা।"
+    },
+    {
+      "category": "Budget",
+      "id": 423,
+      "question_en": "What is the average cost for food per day at Cox's Bazar?",
+      "question_bn": "কক্সবাজারে দৈনিক খাবারের গড় খরচ কত?",
+      "answer_en": "Budget meals: 200–400 TK/day. Mid-range restaurants: 500–1,000 TK/day. Seafood restaurants: 1,000–2,000 TK/day.",
+      "answer_bn": "বাজেট খাবার: ২০০-৪০০ টাকা/দিন। মিড-রেঞ্জ রেস্তোরাঁ: ৫০০-১,০০০ টাকা/দিন। সিফুড রেস্তোরাঁ: ১,০০০-২,০০০ টাকা/দিন।"
+    },
+    {
+      "category": "Budget",
+      "id": 424,
+      "question_en": "How much does a trip to Nijhum Dwip cost per person?",
+      "question_bn": "নিঝুম দ্বীপ ভ্রমণে জনপ্রতি কত খরচ হয়?",
+      "answer_en": "Budget around 2,500–4,000 TK per person for a 2-night trip including launch, local transport, and basic accommodation.",
+      "answer_bn": "লঞ্চ, লোকাল পরিবহন ও সাধারণ আবাসনসহ ২ রাতের ট্রিপে জনপ্রতি প্রায় ২,৫০০-৪,০০০ টাকা বাজেট রাখুন।"
+    },
+    {
+      "category": "Inter-District",
+      "id": 425,
+      "question_en": "Is there a direct bus from Dhaka to Sunamganj?",
+      "question_bn": "ঢাকা থেকে সুনামগঞ্জে কি সরাসরি বাস আছে?",
+      "answer_en": "Yes, buses run from Sayedabad terminal. Journey is about 5–6 hours. Alternatively go via Sylhet.",
+      "answer_bn": "হ্যাঁ, সায়েদাবাদ টার্মিনাল থেকে বাস চলে। যাত্রা প্রায় ৫-৬ ঘণ্টা। বিকল্পভাবে সিলেট হয়ে যাওয়া যায়।"
+    },
+    {
+      "category": "Inter-District",
+      "id": 426,
+      "question_en": "How to travel from Dhaka to Barisal by bus?",
+      "question_bn": "ঢাকা থেকে বরিশালে বাসে কিভাবে যাবো?",
+      "answer_en": "Take a bus from Gabtoli or Saidabad via Padma Bridge. Operators: Sakura, Hanif. Journey 4–5 hours.",
+      "answer_bn": "গাবতলী বা সায়েদাবাদ থেকে পদ্মা সেতু হয়ে বাসে যান। পরিবহন: সাকুরা, হানিফ। যাত্রা ৪-৫ ঘণ্টা।"
+    },
+    {
+      "category": "Fare",
+      "id": 427,
+      "question_en": "What is the average rickshaw fare for a 1 km trip in Dhaka?",
+      "question_bn": "ঢাকায় ১ কিলোমিটার রিকশা ভ্রমণের গড় ভাড়া কত?",
+      "answer_en": "Typically 30–50 TK for 1 km. Can vary by area — Gulshan/Banani is pricier than Mirpur or Old Dhaka.",
+      "answer_bn": "সাধারণত ১ কিমিতে ৩০-৫০ টাকা। এলাকা ভেদে পরিবর্তিত হয় — গুলশান/বনানীতে মিরপুর বা পুরান ঢাকার চেয়ে বেশি।"
+    },
+    {
+      "category": "Fare",
+      "id": 428,
+      "question_en": "What does a prepaid taxi from Dhaka Airport to Gulshan cost?",
+      "question_bn": "ঢাকা বিমানবন্দর থেকে গুলশানে প্রিপেইড ট্যাক্সির ভাড়া কত?",
+      "answer_en": "Prepaid airport taxis cost 700–1,200 TK to Gulshan depending on vehicle type. Meter taxis are cheaper.",
+      "answer_bn": "গাড়ির ধরন ভেদে প্রিপেইড এয়ারপোর্ট ট্যাক্সিতে গুলশানে ৭০০-১,২০০ টাকা। মিটার ট্যাক্সিতে কম।"
+    },
+    {
+      "category": "Safety",
+      "id": 429,
+      "question_en": "What should I do if I feel sick during a long bus journey in Bangladesh?",
+      "question_bn": "বাংলাদেশে দীর্ঘ বাস যাত্রায় অসুস্থ হলে কি করবো?",
+      "answer_en": "Ask the driver to stop at the next rest area. Keep ORS, motion sickness pills, and water handy for long trips.",
+      "answer_bn": "ড্রাইভারকে পরের রেস্ট এরিয়ায় থামতে বলুন। দীর্ঘ যাত্রায় ওআরএস, মোশন সিকনেসের ওষুধ ও পানি সাথে রাখুন।"
+    },
+    {
+      "category": "Transport Tips",
+      "id": 430,
+      "question_en": "How to find the right bus counter at Gabtoli Terminal in Dhaka?",
+      "question_bn": "ঢাকার গাবতলী টার্মিনালে সঠিক বাস কাউন্টার কিভাবে খুঁজবো?",
+      "answer_en": "Enter the terminal and look for destination boards above each counter. Ask security or guards for directions.",
+      "answer_bn": "টার্মিনালে প্রবেশ করে প্রতিটি কাউন্টারের উপরের গন্তব্য বোর্ড দেখুন। নিরাপত্তাকর্মী বা গার্ডদের সাহায্য নিন।"
+    },
+    {
+      "category": "River Islands",
+      "id": 431,
+      "question_en": "How to visit Char Kukri Mukri island from Dhaka?",
+      "question_bn": "ঢাকা থেকে চর কুকরি মুকরি দ্বীপে কিভাবে যাবো?",
+      "answer_en": "Take a bus to Bhola, then a local boat to Char Kukri Mukri. Journey is around 10–12 hours total.",
+      "answer_bn": "বাসে ভোলা, তারপর স্থানীয় নৌকায় চর কুকরি মুকরি। মোট যাত্রা প্রায় ১০-১২ ঘণ্টা।"
+    },
+    {
+      "category": "River Islands",
+      "id": 432,
+      "question_en": "What is the best way to reach Sandwip island from Chittagong?",
+      "question_bn": "চট্টগ্রাম থেকে সন্দ্বীপ দ্বীপে যাওয়ার সেরা উপায় কি?",
+      "answer_en": "Take a speed boat or ferry from Karnaphuli River Ghat in Chittagong. Journey takes about 1.5–2 hours.",
+      "answer_bn": "চট্টগ্রামের কর্ণফুলী নদী ঘাট থেকে স্পিডবোট বা ফেরিতে যান। যাত্রা প্রায় দেড়-দুই ঘণ্টা।"
+    },
+    {
+      "category": "Tea Tourism",
+      "id": 433,
+      "question_en": "How to visit a tea garden in Srimangal?",
+      "question_bn": "শ্রীমঙ্গলে চা বাগান কিভাবে পরিদর্শন করবো?",
+      "answer_en": "Hire a CNG or auto-rickshaw from Srimangal town. Famous gardens include Finlay Tea Estate and Lawachara area.",
+      "answer_bn": "শ্রীমঙ্গল শহর থেকে সিএনজি বা অটোরিকশা নিন। ফিনলে টি এস্টেট ও লাউয়াছড়া এলাকার বাগানগুলো বিখ্যাত।"
+    },
+    {
+      "category": "Tea Tourism",
+      "id": 434,
+      "question_en": "Where to try the famous 7-layer tea in Srimangal?",
+      "question_bn": "শ্রীমঙ্গলে বিখ্যাত ৭ স্তরের চা কোথায় পান করবো?",
+      "answer_en": "Nilkantha Tea Cabin in Srimangal town is the original place to taste the 7-layer tea.",
+      "answer_bn": "শ্রীমঙ্গল শহরের নীলকণ্ঠ টি ক্যাবিন ৭ স্তরের চায়ের আসল জায়গা।"
+    },
+    {
+      "category": "Cultural Events",
+      "id": 435,
+      "question_en": "How does transport change in Dhaka during Pohela Boishakh?",
+      "question_bn": "পহেলা বৈশাখে ঢাকায় যাতায়াত ব্যবস্থা কেমন হয়?",
+      "answer_en": "Many roads near Shahbag and Ramna are closed. Metro Rail is the best option. Expect massive crowds.",
+      "answer_bn": "শাহবাগ ও রমনার কাছে অনেক রাস্তা বন্ধ থাকে। মেট্রো রেল সেরা বিকল্প। বিশাল ভিড় থাকে।"
+    },
+    {
+      "category": "Cultural Events",
+      "id": 436,
+      "question_en": "How to reach Dhaka International Trade Fair (DITF) venue?",
+      "question_bn": "ঢাকা আন্তর্জাতিক বাণিজ্য মেলার ভেন্যুতে কিভাবে যাবো?",
+      "answer_en": "Located at Bangabandhu Bangladesh-China Friendship Exhibition Center in Purbachal. Take Metro or BRTC bus from Dhaka.",
+      "answer_bn": "পূর্বাচলের বঙ্গবন্ধু বাংলাদেশ-চীন মৈত্রী প্রদর্শনী কেন্দ্রে অবস্থিত। ঢাকা থেকে মেট্রো বা বিআরটিসি বাসে যান।"
+    },
+    {
+      "category": "Cultural Events",
+      "id": 437,
+      "question_en": "How to reach the Ekushey Book Fair in Dhaka?",
+      "question_bn": "ঢাকার একুশে বইমেলায় কিভাবে যাবো?",
+      "answer_en": "Located at Suhrawardy Udyan, Shahbag. Take Metro Rail to Dhaka University station or any bus to Shahbag.",
+      "answer_bn": "শাহবাগের সোহরাওয়ার্দী উদ্যানে। মেট্রোতে ঢাকা বিশ্ববিদ্যালয় স্টেশনে বা শাহবাগমুখী যেকোনো বাসে যান।"
+    },
+    {
+      "category": "Pets Transport",
+      "id": 438,
+      "question_en": "Can I travel with a pet on Bangladesh Railway?",
+      "question_bn": "বাংলাদেশ রেলওয়েতে পোষা প্রাণী নিয়ে ভ্রমণ করা যায় কি?",
+      "answer_en": "Pets must be kept in a carrier and travel in the luggage van. Prior permission from station master is required.",
+      "answer_bn": "পোষা প্রাণীকে ক্যারিয়ারে রেখে লাগেজ ভ্যানে নিতে হবে। আগে থেকে স্টেশনমাস্টারের অনুমতি নিতে হয়।"
+    },
+    {
+      "category": "Pets Transport",
+      "id": 439,
+      "question_en": "Are pets allowed on Metro Rail in Dhaka?",
+      "question_bn": "ঢাকার মেট্রো রেলে কি পোষা প্রাণী নেওয়া যায়?",
+      "answer_en": "Pets are not officially allowed on MRT Line-6 except service animals for the visually impaired.",
+      "answer_bn": "দৃষ্টিপ্রতিবন্ধীদের সেবা প্রাণী ছাড়া এমআরটি লাইন-৬-এ পোষা প্রাণী আনুষ্ঠানিকভাবে অনুমোদিত নয়।"
+    },
+    {
+      "category": "Dhaka Neighborhoods",
+      "id": 440,
+      "question_en": "What is the best way to explore Old Dhaka?",
+      "question_bn": "পুরান ঢাকা ঘুরে দেখার সেরা উপায় কি?",
+      "answer_en": "Rent a rickshaw by the hour (200–300 TK/hr) and ask the puller to guide you through Chawkbazar, Shyambazar, and Sadarghat.",
+      "answer_bn": "ঘণ্টা হিসেবে রিকশা ভাড়া নিন (২০০-৩০০ টাকা/ঘণ্টা) এবং চকবাজার, শ্যামবাজার ও সদরঘাট ঘুরে দেখতে বলুন।"
+    },
+    {
+      "category": "Dhaka Neighborhoods",
+      "id": 441,
+      "question_en": "How to reach Banani from Gulshan 1 by foot or rickshaw?",
+      "question_bn": "গুলশান ১ থেকে বনানীতে পায়ে হেঁটে বা রিকশায় কিভাবে যাবো?",
+      "answer_en": "Banani is adjacent to Gulshan. A 10–15 minute walk or a 20–30 TK rickshaw ride connects the two areas.",
+      "answer_bn": "বনানী গুলশানের পাশেই। ১০-১৫ মিনিটের হাঁটা বা ২০-৩০ টাকার রিকশায় দুই এলাকা সংযুক্ত।"
+    },
+    {
+      "category": "Dhaka Neighborhoods",
+      "id": 442,
+      "question_en": "Which is the most walkable area in Dhaka?",
+      "question_bn": "ঢাকার কোন এলাকা হাঁটার জন্য সবচেয়ে উপযুক্ত?",
+      "answer_en": "Gulshan 1–2 area, Dhanmondi Lake area, and Hatirjheel walkway are the most pedestrian-friendly zones.",
+      "answer_bn": "গুলশান ১-২ এলাকা, ধানমন্ডি লেক এলাকা ও হাতিরঝিল ওয়াকওয়ে সবচেয়ে পথচারীবান্ধব অঞ্চল।"
+    },
+    {
+      "category": "Smart Transport",
+      "id": 443,
+      "question_en": "Is there a real-time bus tracking app for Dhaka?",
+      "question_bn": "ঢাকার বাসের রিয়েল-টাইম ট্র্যাকিং অ্যাপ কি আছে?",
+      "answer_en": "The DSCC and some private operators have piloted GPS tracking. The Shohoz Bus app shows some real-time routes.",
+      "answer_bn": "ডিএসসিসি ও কিছু বেসরকারি পরিবহন জিপিএস ট্র্যাকিং পাইলট করেছে। সহজ বাস অ্যাপে কিছু রিয়েল-টাইম রুট দেখায়।"
+    },
+    {
+      "category": "Smart Transport",
+      "id": 444,
+      "question_en": "Does Dhaka Metro Rail have Wi-Fi?",
+      "question_bn": "ঢাকা মেট্রো রেলে কি ওয়াই-ফাই আছে?",
+      "answer_en": "Free Wi-Fi is available at some Metro stations. Inside the train, mobile data is generally sufficient.",
+      "answer_bn": "কিছু মেট্রো স্টেশনে বিনামূল্যে ওয়াই-ফাই পাওয়া যায়। ট্রেনের ভেতরে মোবাইল ডেটা সাধারণত যথেষ্ট।"
+    },
+    {
+      "category": "Smart Transport",
+      "id": 445,
+      "question_en": "Can I track my Pathao driver in real time?",
+      "question_bn": "আমি কি রিয়েল-টাইমে আমার পাঠাও ড্রাইভারকে ট্র্যাক করতে পারি?",
+      "answer_en": "Yes, Pathao app shows live GPS tracking of your driver from pickup to drop-off.",
+      "answer_bn": "হ্যাঁ, পাঠাও অ্যাপে পিকআপ থেকে গন্তব্য পর্যন্ত ড্রাইভারের লাইভ জিপিএস ট্র্যাকিং দেখা যায়।"
+    },
+    {
+      "category": "Tour",
+      "id": 446,
+      "question_en": "How to visit Foy's Lake in Chittagong?",
+      "question_bn": "চট্টগ্রামের ফয়'স লেকে কিভাবে যাবো?",
+      "answer_en": "Located 8 km from Chittagong city. Take a CNG or local bus from Chittagong station to Foy's Lake area.",
+      "answer_bn": "চট্টগ্রাম শহর থেকে ৮ কিমি দূরে। চট্টগ্রাম স্টেশন থেকে সিএনজি বা লোকাল বাসে ফয়'স লেক এলাকায় যান।"
+    },
+    {
+      "category": "Tour",
+      "id": 447,
+      "question_en": "How to visit Patenga Beach from Chittagong city?",
+      "question_bn": "চট্টগ্রাম শহর থেকে পতেঙ্গা বিচে কিভাবে যাবো?",
+      "answer_en": "Take a local bus from Chittagong (GEC or Agrabad area) to Patenga. Journey is about 30–45 minutes.",
+      "answer_bn": "চট্টগ্রামের জিইসি বা আগ্রাবাদ এলাকা থেকে পতেঙ্গাগামী লোকাল বাসে যান। যাত্রা প্রায় ৩০-৪৫ মিনিট।"
+    },
+    {
+      "category": "Tour",
+      "id": 448,
+      "question_en": "How to reach Madhabkunda Waterfall from Dhaka?",
+      "question_bn": "ঢাকা থেকে মাধবকুণ্ড জলপ্রপাতে কিভাবে যাবো?",
+      "answer_en": "Travel to Sylhet or Moulvibazar by train, then a local vehicle to Barlekha. The waterfall is 8 km from Barlekha.",
+      "answer_bn": "ট্রেনে সিলেট বা মৌলভীবাজার, তারপর লোকাল যানে বড়লেখা। জলপ্রপাতটি বড়লেখা থেকে ৮ কিমি দূরে।"
+    },
+    {
+      "category": "Travel Planning",
+      "id": 449,
+      "question_en": "What is the best budget hostel area in Dhaka for backpackers?",
+      "question_bn": "ব্যাকপ্যাকারদের জন্য ঢাকায় সেরা বাজেট হোস্টেল এলাকা কোনটি?",
+      "answer_en": "Fakirapool and Arambagh near Motijheel have many budget guesthouses. Bangshal also has affordable options.",
+      "answer_bn": "মতিঝিলের কাছে ফকিরাপুল ও আরামবাগে অনেক বাজেট গেস্টহাউস আছে। বংশালেও সাশ্রয়ী বিকল্প আছে।"
+    },
+    {
+      "category": "Travel Planning",
+      "id": 450,
+      "question_en": "How to plan a complete North Bengal tour from Dhaka?",
+      "question_bn": "ঢাকা থেকে উত্তরবঙ্গের সম্পূর্ণ ট্যুর কিভাবে প্ল্যান করবো?",
+      "answer_en": "Rajshahi, Bogra (Mahasthangarh), Rangpur, Paharpur, Kantajew. Plan 5–7 days. Travel by train or AC bus.",
+      "answer_bn": "রাজশাহী, বগুড়া (মহাস্থানগড়), রংপুর, পাহাড়পুর, কান্তজিউ। ৫-৭ দিন পরিকল্পনা করুন। ট্রেন বা এসি বাসে যান।"
+    },
+    {
+      "category": "Budget",
+      "id": 451,
+      "question_en": "What is the cheapest way to visit Srimangal from Dhaka?",
+      "question_bn": "ঢাকা থেকে শ্রীমঙ্গল সবচেয়ে সস্তায় কিভাবে যাবো?",
+      "answer_en": "Take the Parabat or Upaban Express in Shuvon class (~200–250 TK). Budget guesthouses cost 500–800 TK/night.",
+      "answer_bn": "পারাবত বা উপবন এক্সপ্রেসে শোভন ক্লাসে (~২০০-২৫০ টাকা)। বাজেট গেস্টহাউস ৫০০-৮০০ টাকা/রাত।"
+    },
+    {
+      "category": "Budget",
+      "id": 452,
+      "question_en": "How much does an inter-city bus ticket cost on average in Bangladesh?",
+      "question_bn": "বাংলাদেশে গড়ে আন্তঃজেলা বাসের টিকিটের দাম কত?",
+      "answer_en": "Non-AC: 300–700 TK for most routes. AC: 700–2,000 TK. Varies by distance and operator.",
+      "answer_bn": "বেশিরভাগ রুটে নন-এসি: ৩০০-৭০০ টাকা। এসি: ৭০০-২,০০০ টাকা। দূরত্ব ও পরিবহন ভেদে পরিবর্তিত।"
+    },
+    {
+      "category": "Inter-District",
+      "id": 453,
+      "question_en": "How to travel from Dhaka to Chandpur?",
+      "question_bn": "ঢাকা থেকে চাঁদপুরে কিভাবে যাবো?",
+      "answer_en": "By launch from Sadarghat (4–5 hrs, 150–300 TK) or by bus from Sayedabad (3 hrs, 200–350 TK).",
+      "answer_bn": "সদরঘাট থেকে লঞ্চে (৪-৫ ঘণ্টা, ১৫০-৩০০ টাকা) বা সায়েদাবাদ থেকে বাসে (৩ ঘণ্টা, ২০০-৩৫০ টাকা)।"
+    },
+    {
+      "category": "Inter-District",
+      "id": 454,
+      "question_en": "Which bus terminal in Dhaka serves northern Bangladesh routes?",
+      "question_bn": "ঢাকার কোন বাস টার্মিনাল থেকে উত্তরবঙ্গের বাস ছাড়ে?",
+      "answer_en": "Gabtoli terminal and Kalyanpur are the main hubs for buses to Rajshahi, Rangpur, Dinajpur, and other northern districts.",
+      "answer_bn": "গাবতলী টার্মিনাল ও কল্যাণপুর রাজশাহী, রংপুর, দিনাজপুর ও উত্তরের জেলাগুলোর বাসের প্রধান কেন্দ্র।"
+    },
+    {
+      "category": "Fare",
+      "id": 455,
+      "question_en": "How much does a Dhaka to Rangpur bus ticket cost?",
+      "question_bn": "ঢাকা থেকে রংপুর বাসের টিকিটের দাম কত?",
+      "answer_en": "Non-AC: 600–750 TK. AC: 1,100–1,600 TK. Journey takes about 6–7 hours.",
+      "answer_bn": "নন-এসি: ৬০০-৭৫০ টাকা। এসি: ১,১০০-১,৬০০ টাকা। যাত্রা প্রায় ৬-৭ ঘণ্টা।"
+    },
+    {
+      "category": "Fare",
+      "id": 456,
+      "question_en": "What is the water taxi fare in Dhaka city?",
+      "question_bn": "ঢাকা শহরে ওয়াটার ট্যাক্সির ভাড়া কত?",
+      "answer_en": "BIWTC water bus fare is 15–25 TK per trip on the Buriganga river city routes.",
+      "answer_bn": "বুড়িগঙ্গার শহর রুটে বিআইডব্লিউটিসি ওয়াটার বাসের ভাড়া প্রতি যাত্রায় ১৫-২৫ টাকা।"
+    },
+    {
+      "category": "Safety",
+      "id": 457,
+      "question_en": "How to keep money safe while traveling by bus in Bangladesh?",
+      "question_bn": "বাংলাদেশে বাস ভ্রমণে টাকাপয়সা নিরাপদ রাখার উপায় কি?",
+      "answer_en": "Use a money belt under your clothes. Split cash across pockets. Avoid showing large amounts of money in public.",
+      "answer_bn": "পোশাকের নিচে মানিবেল্ট ব্যবহার করুন। বিভিন্ন পকেটে নগদ ভাগ করুন। প্রকাশ্যে বেশি টাকা দেখাবেন না।"
+    },
+    {
+      "category": "Safety",
+      "id": 458,
+      "question_en": "Is it safe to drink tap water while traveling in Bangladesh?",
+      "question_bn": "বাংলাদেশে ভ্রমণকালে কল বা নলকূপের পানি পান করা কি নিরাপদ?",
+      "answer_en": "Tap water is not safe to drink. Buy bottled water or use a water purifier during travel.",
+      "answer_bn": "কলের পানি পান করা নিরাপদ নয়। ভ্রমণে বোতলজাত পানি কিনুন বা পানি বিশুদ্ধকারী ব্যবহার করুন।"
+    },
+    {
+      "category": "Transport Tips",
+      "id": 459,
+      "question_en": "How to negotiate CNG fare properly in Dhaka?",
+      "question_bn": "ঢাকায় সঠিকভাবে সিএনজি ভাড়া দরদাম করার উপায় কি?",
+      "answer_en": "State your destination clearly and ask 'meter-e jaben?' (Will you go by meter?). If no meter, agree on a price before boarding.",
+      "answer_bn": "'মিটারে যাবেন?' জিজ্ঞেস করুন। মিটার না হলে ওঠার আগেই দাম ঠিক করুন। Google Maps দিয়ে দূরত্ব দেখে নিন।"
+    },
+    {
+      "category": "Transport Tips",
+      "id": 460,
+      "question_en": "What is the etiquette for using Metro Rail in Dhaka?",
+      "question_bn": "ঢাকায় মেট্রো রেল ব্যবহারের শিষ্টাচার কি?",
+      "answer_en": "Queue at marked spots, let passengers exit first, avoid eating/drinking, give priority seats to elderly/disabled, no loud music.",
+      "answer_bn": "চিহ্নিত স্থানে লাইনে দাঁড়ান, আগে নামতে দিন, খাওয়া-পান করবেন না, বয়স্ক/প্রতিবন্ধীদের আসন ছেড়ে দিন, উচ্চস্বরে সংগীত বাজাবেন না।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 461,
+      "question_en": "How to visit Sajek Valley from Dhaka?",
+      "question_bn": "ঢাকা থেকে সাজেক ভ্যালিতে কিভাবে যাবো?",
+      "answer_en": "Take a bus to Khagrachhari, then a local jeep to Sajek (2.5 hrs). Total journey ~10 hrs. Permits needed.",
+      "answer_bn": "বাসে খাগড়াছড়ি, তারপর লোকাল জিপে সাজেক (আড়াই ঘণ্টা)। মোট ~১০ ঘণ্টা। পারমিট লাগে।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 462,
+      "question_en": "How to reach Nafakhum Waterfall in Bandarban?",
+      "question_bn": "বান্দরবানের নাফাখুম জলপ্রপাতে কিভাবে যাবো?",
+      "answer_en": "Travel Bandarban→Ruma Bazar by jeep (2 hrs), then boat+trek to Nafakhum (3 hrs). Guide mandatory.",
+      "answer_bn": "জিপে বান্দরবান→রুমা বাজার (২ ঘণ্টা), তারপর নৌকা+ট্রেক নাফাখুম (৩ ঘণ্টা)। গাইড বাধ্যতামূলক।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 463,
+      "question_en": "How to visit Nilgiri Hill Resort in Bandarban?",
+      "question_bn": "বান্দরবানের নীলগিরি পাহাড়ে কিভাবে যাবো?",
+      "answer_en": "Hire a jeep from Bandarban town (1.5 hrs, ~1,500 TK one-way). Army-managed resort. Book in advance.",
+      "answer_bn": "বান্দরবান শহর থেকে জিপ ভাড়া করুন (দেড় ঘণ্টা, ~১,৫০০ টাকা এক পথ)। সেনা পরিচালিত। আগে বুক করুন।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 464,
+      "question_en": "How to visit Meghla Eco Park in Bandarban?",
+      "question_bn": "বান্দরবানের মেঘলা ইকো পার্কে কিভাবে যাবো?",
+      "answer_en": "Located 4 km from Bandarban town. CNG or rickshaw from town costs 50–100 TK. Entry fee 30 TK.",
+      "answer_bn": "বান্দরবান শহর থেকে ৪ কিমি। সিএনজি বা রিকশায় ৫০-১০০ টাকা। প্রবেশ মূল্য ৩০ টাকা।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 465,
+      "question_en": "How to visit Boga Lake in Bandarban?",
+      "question_bn": "বান্দরবানের বগা লেকে কিভাবে যাবো?",
+      "answer_en": "From Ruma Bazar take a boat, then trek 3 hrs to Boga Lake. Overnight stay in local guesthouses.",
+      "answer_bn": "রুমা বাজার থেকে নৌকায়, তারপর ৩ ঘণ্টা ট্রেক করে বগা লেক। স্থানীয় গেস্টহাউসে রাত কাটান।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 466,
+      "question_en": "How to visit Rangamati Lake from Dhaka?",
+      "question_bn": "ঢাকা থেকে রাঙামাটি হ্রদে কিভাবে যাবো?",
+      "answer_en": "Bus from Dhaka to Rangamati (~7 hrs). Hire a local boat at Rangamati Ghat to explore Kaptai Lake.",
+      "answer_bn": "ঢাকা থেকে বাসে রাঙামাটি (~৭ ঘণ্টা)। রাঙামাটি ঘাট থেকে লোকাল নৌকায় কাপ্তাই হ্রদ ঘুরুন।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 467,
+      "question_en": "How to visit Hanging Bridge in Rangamati?",
+      "question_bn": "রাঙামাটির ঝুলন্ত সেতুতে কিভাবে যাবো?",
+      "answer_en": "Located 2 km from Rangamati bus stand. CNG costs 50–80 TK. Entry fee 10 TK. Iconic photo spot.",
+      "answer_bn": "রাঙামাটি বাসস্ট্যান্ড থেকে ২ কিমি। সিএনজিতে ৫০-৮০ টাকা। প্রবেশ মূল্য ১০ টাকা। আইকনিক ছবির স্থান।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 468,
+      "question_en": "How to visit Mahasthangarh from Dhaka?",
+      "question_bn": "ঢাকা থেকে মহাস্থানগড়ে কিভাবে যাবো?",
+      "answer_en": "Take a bus to Bogra (4–5 hrs), then a local bus/CNG to Mahasthangarh (13 km north). Entry free.",
+      "answer_bn": "বাসে বগুড়া (৪-৫ ঘণ্টা), তারপর লোকাল বাস/সিএনজিতে মহাস্থানগড় (১৩ কিমি উত্তর)। প্রবেশ বিনামূল্যে।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 469,
+      "question_en": "How to visit Sixty Dome Mosque (Shat Gambuj) in Bagerhat?",
+      "question_bn": "বাগেরহাটের ষাট গম্বুজ মসজিদে কিভাবে যাবো?",
+      "answer_en": "Bus from Khulna to Bagerhat (1 hr), then CNG/rickshaw 3 km to the mosque. Entry 20 TK.",
+      "answer_bn": "খুলনা থেকে বাসে বাগেরহাট (১ ঘণ্টা), তারপর সিএনজি/রিকশায় ৩ কিমি। প্রবেশ ২০ টাকা।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 470,
+      "question_en": "How to visit Kuakata beach from Dhaka?",
+      "question_bn": "ঢাকা থেকে কুয়াকাটা সমুদ্র সৈকতে কিভাবে যাবো?",
+      "answer_en": "Bus from Gabtoli to Kuakata (~8 hrs, 600–900 TK). Both sunrise and sunset visible from same beach.",
+      "answer_bn": "গাবতলী থেকে বাসে কুয়াকাটা (~৮ ঘণ্টা, ৬০০-৯০০ টাকা)। একই সৈকত থেকে সূর্যোদয় ও সূর্যাস্ত দেখা যায়।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 471,
+      "question_en": "How to visit Sreemangal Tea Gardens from Dhaka?",
+      "question_bn": "ঢাকা থেকে শ্রীমঙ্গল চা বাগানে কিভাবে যাবো?",
+      "answer_en": "Take Parabat/Upaban Express from Kamalapur (~3 hrs, 200–250 TK). Hire CNG to tour gardens.",
+      "answer_bn": "কমলাপুর থেকে পারাবত/উপবন এক্সপ্রেস (~৩ ঘণ্টা, ২০০-২৫০ টাকা)। বাগান ঘুরতে সিএনজি নিন।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 472,
+      "question_en": "How to visit Cox's Bazar from Dhaka by air?",
+      "question_bn": "ঢাকা থেকে বিমানে কক্সবাজার কিভাবে যাবো?",
+      "answer_en": "Biman, Novoair, and US-Bangla fly Dhaka–Cox's Bazar daily. Flight ~45 mins. Fares: 3,500–8,000 TK.",
+      "answer_bn": "বিমান, নোভোএয়ার ও ইউএস-বাংলা প্রতিদিন ঢাকা–কক্সবাজার উড়ে। ফ্লাইট ~৪৫ মিনিট। ভাড়া: ৩,৫০০-৮,০০০ টাকা।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 473,
+      "question_en": "How to visit Himchhari National Park near Cox's Bazar?",
+      "question_bn": "কক্সবাজারের কাছে হিমছড়ি জাতীয় উদ্যানে কিভাবে যাবো?",
+      "answer_en": "12 km from Cox's Bazar. Take a CNG or beach ride (bike) from Kolatoli. Entry 20 TK. Waterfall inside.",
+      "answer_bn": "কক্সবাজার থেকে ১২ কিমি। কলাতলী থেকে সিএনজি বা বিচ রাইডে। প্রবেশ ২০ টাকা। ভেতরে জলপ্রপাত আছে।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 474,
+      "question_en": "How to visit Saint Martin's Island from Cox's Bazar?",
+      "question_bn": "কক্সবাজার থেকে সেন্ট মার্টিন দ্বীপে কিভাবে যাবো?",
+      "answer_en": "Cox's Bazar→Teknaf by CNG/bus (1.5 hrs), then ship to Saint Martin (2.5 hrs, 500–800 TK).",
+      "answer_bn": "কক্সবাজার→টেকনাফ সিএনজি/বাসে (দেড় ঘণ্টা), তারপর জাহাজে সেন্ট মার্টিন (আড়াই ঘণ্টা, ৫০০-৮০০ টাকা)।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 475,
+      "question_en": "How to visit Sundarbans mangrove forest from Dhaka?",
+      "question_bn": "ঢাকা থেকে সুন্দরবন ম্যানগ্রোভ বনে কিভাবে যাবো?",
+      "answer_en": "Bus to Khulna (~7 hrs), then a guided boat tour from Mongla port. Forest permit required.",
+      "answer_bn": "বাসে খুলনা (~৭ ঘণ্টা), তারপর মংলা বন্দর থেকে গাইডসহ নৌকা ট্যুর। বনের অনুমতি লাগে।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 476,
+      "question_en": "How to visit Paharpur Buddhist Monastery from Dhaka?",
+      "question_bn": "ঢাকা থেকে পাহাড়পুর বৌদ্ধ বিহারে কিভাবে যাবো?",
+      "answer_en": "Bus/train to Bogra, then local bus to Badalgachhi (40 km). Entry 30 TK. UNESCO World Heritage Site.",
+      "answer_bn": "বাস/ট্রেনে বগুড়া, তারপর লোকাল বাসে বদলগাছী (৪০ কিমি)। প্রবেশ ৩০ টাকা। ইউনেস্কো বিশ্ব ঐতিহ্য।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 477,
+      "question_en": "How to visit Lawachara National Park from Dhaka?",
+      "question_bn": "ঢাকা থেকে লাউয়াছড়া জাতীয় উদ্যানে কিভাবে যাবো?",
+      "answer_en": "Train to Srimangal, then CNG to Lawachara (~10 km, 100 TK). Entry 50 TK. Best for gibbons and birds.",
+      "answer_bn": "ট্রেনে শ্রীমঙ্গল, তারপর সিএনজিতে লাউয়াছড়া (~১০ কিমি, ১০০ টাকা)। প্রবেশ ৫০ টাকা। গিবন ও পাখির জন্য সেরা।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 478,
+      "question_en": "How to visit Ahsan Manzil (Pink Palace) in Dhaka?",
+      "question_bn": "ঢাকার আহসান মঞ্জিলে (পিংক প্যালেস) কিভাবে যাবো?",
+      "answer_en": "Located in Old Dhaka near Sadarghat. CNG or bus from Gulistan. Entry 20 TK. Closed Thursdays.",
+      "answer_bn": "পুরান ঢাকার সদরঘাটের কাছে। গুলিস্তান থেকে সিএনজি বা বাসে। প্রবেশ ২০ টাকা। বৃহস্পতিবার বন্ধ।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 479,
+      "question_en": "How to visit the National Martyrs' Memorial (Smritisoudha) in Savar?",
+      "question_bn": "সাভারের জাতীয় স্মৃতিসৌধে কিভাবে যাবো?",
+      "answer_en": "Bus from Gabtoli to Savar, alight at Smritisoudha. Ride is about 1 hr. Entry is free.",
+      "answer_bn": "গাবতলী থেকে বাসে সাভার, স্মৃতিসৌধে নামুন। প্রায় ১ ঘণ্টা। প্রবেশ বিনামূল্যে।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 480,
+      "question_en": "How to visit Mujibnagar Memorial in Meherpur?",
+      "question_bn": "মেহেরপুরের মুজিবনগর স্মৃতিসৌধে কিভাবে যাবো?",
+      "answer_en": "Bus from Dhaka to Meherpur (~7 hrs), then local auto to Mujibnagar (18 km). Entry free.",
+      "answer_bn": "ঢাকা থেকে বাসে মেহেরপুর (~৭ ঘণ্টা), তারপর লোকাল অটোতে মুজিবনগর (১৮ কিমি)। প্রবেশ বিনামূল্যে।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 481,
+      "question_en": "How to visit Tagore Lodge (Shilaidaha Kuthibari) in Kushtia?",
+      "question_bn": "কুষ্টিয়ার শিলাইদহ কুঠিবাড়িতে (রবীন্দ্রনাথের বাড়ি) কিভাবে যাবো?",
+      "answer_en": "Bus to Kushtia, then CNG 12 km to Shilaidaha. Entry 20 TK. Tagore's Padma River retreat.",
+      "answer_bn": "বাসে কুষ্টিয়া, তারপর সিএনজিতে ১২ কিমি শিলাইদহ। প্রবেশ ২০ টাকা। রবীন্দ্রনাথের পদ্মা নদীর আশ্রয়।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 482,
+      "question_en": "How to visit Lalon Shah Mazar in Kushtia?",
+      "question_bn": "কুষ্টিয়ার লালন শাহের মাজারে কিভাবে যাবো?",
+      "answer_en": "Bus from Dhaka to Kushtia (4–5 hrs), then CNG to Chheuria village (7 km). Entry free.",
+      "answer_bn": "ঢাকা থেকে বাসে কুষ্টিয়া (৪-৫ ঘণ্টা), তারপর সিএনজিতে ছেউড়িয়া গ্রাম (৭ কিমি)। প্রবেশ বিনামূল্যে।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 483,
+      "question_en": "How to visit Varendra Research Museum in Rajshahi?",
+      "question_bn": "রাজশাহীর বরেন্দ্র গবেষণা জাদুঘরে কিভাবে যাবো?",
+      "answer_en": "Located in Rajshahi city centre. CNG from Rajshahi bus/rail station. Entry 10 TK.",
+      "answer_bn": "রাজশাহী শহর কেন্দ্রে অবস্থিত। রাজশাহী বাস/রেলস্টেশন থেকে সিএনজি। প্রবেশ ১০ টাকা।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 484,
+      "question_en": "How to visit Puthia Temple Complex in Rajshahi?",
+      "question_bn": "রাজশাহীর পুঠিয়া রাজবাড়ি ও মন্দির কমপ্লেক্সে কিভাবে যাবো?",
+      "answer_en": "Local bus from Rajshahi to Puthia (23 km, ~45 min, 30 TK). Entry free. Largest temple complex in BD.",
+      "answer_bn": "রাজশাহী থেকে লোকাল বাসে পুঠিয়া (২৩ কিমি, ~৪৫ মিনিট, ৩০ টাকা)। প্রবেশ বিনামূল্যে। দেশের বৃহত্তম মন্দির কমপ্লেক্স।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 485,
+      "question_en": "How to visit Mainamati War Cemetery in Comilla?",
+      "question_bn": "কুমিল্লার ময়নামতি যুদ্ধ সমাধিক্ষেত্রে কিভাবে যাবো?",
+      "answer_en": "Bus from Dhaka to Comilla (2 hrs), CNG to Mainamati area. Cemetery is free, museum entry 20 TK.",
+      "answer_bn": "ঢাকা থেকে বাসে কুমিল্লা (২ ঘণ্টা), সিএনজিতে ময়নামতি এলাকা। সমাধিক্ষেত্র বিনামূল্যে, জাদুঘর ২০ টাকা।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 486,
+      "question_en": "How to visit Nuhash Polli literary village in Gazipur?",
+      "question_bn": "গাজীপুরের নুহাশ পল্লীতে কিভাবে যাবো?",
+      "answer_en": "Bus/BRT from Dhaka to Gazipur, then CNG to Pirojali. Entry 200–500 TK. Advance booking needed.",
+      "answer_bn": "ঢাকা থেকে বাস/বিআরটিতে গাজীপুর, তারপর সিএনজিতে পিরোজালী। প্রবেশ ২০০-৫০০ টাকা। আগে বুক করুন।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 487,
+      "question_en": "How to visit Sylhet's Bisnakandi stone field?",
+      "question_bn": "সিলেটের বিছনাকান্দি পাথর মাঠে কিভাবে যাবো?",
+      "answer_en": "CNG from Sylhet to Gowainghat (30 km, 1 hr), then boat across to Bisnakandi. Go early morning.",
+      "answer_bn": "সিলেট থেকে সিএনজিতে গোয়াইনঘাট (৩০ কিমি, ১ ঘণ্টা), তারপর নৌকায় বিছনাকান্দি। ভোরে যান।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 488,
+      "question_en": "How to visit Tangail's Jamuna Resort?",
+      "question_bn": "টাঙ্গাইলের যমুনা রিসোর্টে কিভাবে যাবো?",
+      "answer_en": "Bus from Mohakhali to Tangail (2 hrs), then CNG to Kalihati Jamuna bank. Resort entry by booking.",
+      "answer_bn": "মহাখালী থেকে বাসে টাঙ্গাইল (২ ঘণ্টা), তারপর সিএনজিতে কালিহাতী যমুনা তীর। বুকিং করে প্রবেশ।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 489,
+      "question_en": "How to visit Jessore's Keranipara Hindu Temple?",
+      "question_bn": "যশোরের কেরানীপাড়া হিন্দু মন্দিরে কিভাবে যাবো?",
+      "answer_en": "Bus from Dhaka to Jessore (4–5 hrs), then CNG/rickshaw inside city. Entry free.",
+      "answer_bn": "ঢাকা থেকে বাসে যশোর (৪-৫ ঘণ্টা), তারপর শহরের ভেতরে সিএনজি/রিকশায়। প্রবেশ বিনামূল্যে।"
+    },
+    {
+      "category": "Tourist Place",
+      "id": 490,
+      "question_en": "How to visit Mymensingh's Shashi Lodge palace?",
+      "question_bn": "ময়মনসিংহের শশী লজ রাজবাড়িতে কিভাবে যাবো?",
+      "answer_en": "Bus/train from Dhaka to Mymensingh (~2.5 hrs). Shashi Lodge is 1 km from station — rickshaw 20 TK.",
+      "answer_bn": "ঢাকা থেকে বাস/ট্রেনে ময়মনসিংহ (~আড়াই ঘণ্টা)। শশী লজ স্টেশন থেকে ১ কিমি — রিকশায় ২০ টাকা।"
+    }
+    ]
+  

@@ -149,6 +149,21 @@ npm run dev
 npm run build
 ```
 
+### Advanced AI Knowledge Setup
+
+```bash
+# 1) Put your full bilingual Q&A array into:
+#    data/advanced-qa.raw.json
+
+# 2) Build cleaned + deduped AI knowledge dataset
+npm run build:qa
+
+# 3) Run app
+npm run dev
+```
+
+The chat service will automatically use this dataset first with confidence-based matching.
+
 ### Project Structure
 
 ```
