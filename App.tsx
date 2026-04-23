@@ -757,6 +757,7 @@ const App: React.FC = () => {
   }, [suggestedRoutes]);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const desktopLeftScrollTopRef = useRef(0);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const chatMessagesContainerRef = useRef<HTMLDivElement>(null);
 
@@ -1134,7 +1135,14 @@ const App: React.FC = () => {
     // Keep desktop sidebar scroll position stable when switching right-panel views
     // (e.g. Bus Details -> AI Chat). Mobile still resets for page-like navigation.
     const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
-    if (isDesktop) return;
+    if (isDesktop) {
+      requestAnimationFrame(() => {
+        if (scrollContainerRef.current) {
+          scrollContainerRef.current.scrollTop = desktopLeftScrollTopRef.current;
+        }
+      });
+      return;
+    }
 
     scrollContainerRef.current.scrollTop = 0;
   }, [view]);
@@ -3349,6 +3357,11 @@ const App: React.FC = () => {
         {/* Scrollable Content */}
         <div
           ref={scrollContainerRef}
+          onScroll={(e) => {
+            if (typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches) {
+              desktopLeftScrollTopRef.current = e.currentTarget.scrollTop;
+            }
+          }}
           className="flex-1 overflow-y-auto px-4 pb-nav-safe md:pb-4 space-y-3"
           style={{ overflowAnchor: 'none' }}
         >
