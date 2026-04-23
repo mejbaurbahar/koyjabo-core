@@ -58,17 +58,21 @@ jobs:
         run: |
           cd deploy-repo
 
-          # Remove all git-tracked files EXCEPT .github/ (auth workflows must stay)
-          git ls-files | grep -v '^\.github/' | xargs rm -f 2>/dev/null || true
+          # Remove all git-tracked files
+          # We will keep .github/workflows/deploy.yml in the target if it exists,
+          # but we need to sync auth.yml and scripts.
+          git ls-files | xargs rm -f 2>/dev/null || true
 
-          # Remove leftover empty directories (skip .git and .github)
+          # Remove leftover empty directories
           find . \
             -not -path './.git*' \
-            -not -path './.github*' \
             -type d -empty -delete 2>/dev/null || true
 
           # Copy new build output
           cp -r ../dist/. .
+
+          # Copy .github folder from core to target (this is the fix!)
+          cp -r ../.github .
 
           # Ensure domain and Jekyll bypass are always present
           echo "koyjabo.com" > CNAME
