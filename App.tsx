@@ -1129,9 +1129,14 @@ const App: React.FC = () => {
   }, [selectedBus]);
 
   useEffect(() => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop = 0;
-    }
+    if (!scrollContainerRef.current) return;
+
+    // Keep desktop sidebar scroll position stable when switching right-panel views
+    // (e.g. Bus Details -> AI Chat). Mobile still resets for page-like navigation.
+    const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
+    if (isDesktop) return;
+
+    scrollContainerRef.current.scrollTop = 0;
   }, [view]);
 
   useEffect(() => {
@@ -3342,7 +3347,11 @@ const App: React.FC = () => {
         </div>
 
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto px-4 pb-nav-safe md:pb-4 space-y-3">
+        <div
+          ref={scrollContainerRef}
+          className="flex-1 overflow-y-auto px-4 pb-nav-safe md:pb-4 space-y-3"
+          style={{ overflowAnchor: 'none' }}
+        >
 
           {/* Ad Banner - in scrollable area so it doesn't shrink bus list */}
 
