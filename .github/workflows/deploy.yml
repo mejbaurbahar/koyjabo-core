@@ -59,14 +59,13 @@ jobs:
         run: |
           cd deploy-repo
 
-          # Remove all git-tracked files
-          # We will keep .github/workflows/deploy.yml in the target if it exists,
-          # but we need to sync auth.yml and scripts.
-          git ls-files | xargs rm -f 2>/dev/null || true
+          # Remove all git-tracked files EXCEPT workflows
+          git ls-files | grep -v '^\.github/workflows/' | xargs rm -f 2>/dev/null || true
 
-          # Remove leftover empty directories
+          # Remove leftover empty directories (skip .git and .github/workflows)
           find . \
             -not -path './.git*' \
+            -not -path './.github/workflows*' \
             -type d -empty -delete 2>/dev/null || true
 
           # Copy new build output
