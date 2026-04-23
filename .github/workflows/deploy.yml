@@ -71,10 +71,12 @@ jobs:
           # Copy new build output
           cp -r ../dist/. .
 
-          # Zero-Touch Sync: Only sync backend scripts. 
-          # We leave .github/workflows alone to avoid PAT permission issues.
-          mkdir -p .github/scripts
+          # Zero-Touch Sync: Only sync backend scripts and auth workflows.
+          # We explicitly sync auth workflows so they stay updated in the target repo.
+          mkdir -p .github/scripts .github/workflows
           cp -r ../.github/scripts/. .github/scripts/
+          cp ../.github/workflows/auth.yml .github/workflows/
+          cp ../.github/workflows/cleanup-auth.yml .github/workflows/
 
           # Ensure domain and Jekyll bypass are always present
           echo "koyjabo.com" > CNAME

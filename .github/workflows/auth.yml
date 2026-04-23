@@ -76,10 +76,10 @@ jobs:
           ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
           APP_URL: ${{ secrets.APP_URL }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-          INPUT_REQUESTID: ${{ inputs.requestId }}
-          INPUT_ACTION: ${{ inputs.action }}
-          INPUT_EMAIL: ${{ inputs.email }}
-          INPUT_PASSWORDHASH: ${{ inputs.passwordHash }}
-          INPUT_USERID: ${{ inputs.userId }}
-          INPUT_DATA: ${{ inputs.data }}
+          INPUT_REQUESTID: "${{ github.event.inputs.requestId }}"
+          INPUT_ACTION: "${{ github.event.inputs.action }}"
+          INPUT_EMAIL: "${{ github.event.inputs.email }}"
+          INPUT_PASSWORDHASH: "${{ github.event.inputs.passwordHash }}"
+          INPUT_USERID: "${{ github.event.inputs.userId }}"
+          INPUT_DATA: "${{ github.event.inputs.data }}"
         run: node auth-handler.js
