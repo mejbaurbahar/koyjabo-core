@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback, useTransition } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback, useTransition, useLayoutEffect } from 'react';
 // Auth system
 import { AuthProvider, useAuth } from './src/contexts/AuthContext';
 import LoginPage from './src/components/auth/LoginPage';
@@ -758,6 +758,7 @@ const App: React.FC = () => {
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const desktopLeftScrollTopRef = useRef(0);
+  const isRestoringLeftScrollRef = useRef(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const chatMessagesContainerRef = useRef<HTMLDivElement>(null);
 
@@ -1129,23 +1130,61 @@ const App: React.FC = () => {
     }
   }, [selectedBus]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!scrollContainerRef.current) return;
 
     // Keep desktop sidebar scroll position stable when switching right-panel views
     // (e.g. Bus Details -> AI Chat). Mobile still resets for page-like navigation.
     const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
     if (isDesktop) {
-      requestAnimationFrame(() => {
-        if (scrollContainerRef.current) {
-          scrollContainerRef.current.scrollTop = desktopLeftScrollTopRef.current;
-        }
-      });
-      return;
+      const targetScrollTop = desktopLeftScrollTopRef.current;
+      const container = scrollContainerRef.current;
+      const restore = () => {
+        if (container) container.scrollTop = targetScrollTop;
+      };
+
+      isRestoringLeftScrollRef.current = true;
+      restore();
+      const raf1 = requestAnimationFrame(restore);
+      const raf2 = requestAnimationFrame(() => requestAnimationFrame(restore));
+      const timeoutId = window.setTimeout(() => {
+        restore();
+        isRestoringLeftScrollRef.current = false;
+      }, 180);
+
+      return () => {
+        cancelAnimationFrame(raf1);
+        cancelAnimationFrame(raf2);
+        clearTimeout(timeoutId);
+        isRestoringLeftScrollRef.current = false;
+      };
     }
 
+    // Mobile page-like behavior: reset to top on view switches.
     scrollContainerRef.current.scrollTop = 0;
   }, [view]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia('(min-width: 768px)').matches) return;
+    if (!scrollContainerRef.current) return;
+    if (!isRestoringLeftScrollRef.current) return;
+
+    const timeoutId = window.setTimeout(() => {
+      isRestoringLeftScrollRef.current = false;
+    }, 220);
+
+    return () => clearTimeout(timeoutId);
+  }, [view]);
+
+  useEffect(() => {
+    if (!scrollContainerRef.current) return;
+    const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
+    if (!isDesktop) return;
+    if (isRestoringLeftScrollRef.current) {
+      return;
+    }
+    desktopLeftScrollTopRef.current = scrollContainerRef.current.scrollTop;
+  }, [view, selectedBus, listFilter, searchMode, searchQuery, fromStation, toStation]);
 
   useEffect(() => {
     if (view !== AppView.AI_ASSISTANT || !chatMessagesContainerRef.current) return;
@@ -3359,6 +3398,7 @@ const App: React.FC = () => {
           ref={scrollContainerRef}
           onScroll={(e) => {
             if (typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches) {
+              if (isRestoringLeftScrollRef.current) return;
               desktopLeftScrollTopRef.current = e.currentTarget.scrollTop;
             }
           }}
