@@ -28,7 +28,7 @@ const ALLOWED_ORIGINS = [
 const ALLOWED_ACTIONS = new Set([
   'signup', 'login', 'change-password', 'forgot-password', 'reset-password',
   'update-profile', 'save-history', 'record-device', 'logout-device',
-  'upload-avatar', 'record-visit', 'record-query',
+  'upload-avatar', 'record-visit', 'save-data', 'record-query',
 ]);
 
 function corsHeaders(origin) {

@@ -800,6 +800,19 @@ async function handleRecordVisit({ visitorId }) {
   return { success: true, totalVisits: stats.totalVisits, todayVisits: stats.todayVisits };
 }
 
+async function handleSaveData({ path, content, message }) {
+  if (!path || !content) return { success: false, error: 'Path and content required.' };
+  
+  // Security: only allow writing to data/ directory
+  if (!path.startsWith('data/')) {
+    return { success: false, error: 'Access denied: can only write to data/ directory.' };
+  }
+
+  const file = await readDataFile(path);
+  await writeDataFile(path, content, file?.sha, message || `Data sync: ${path}`);
+  return { success: true };
+}
+
 async function handleRecordQuery({ query, response, intent, quality, lang, userId }) {
   const today = new Date().toISOString().split('T')[0];
   const path = `data/learning/queries/${today}.json`;
@@ -1030,6 +1043,9 @@ async function main() {
         break;
       case 'upload-avatar':
         result = await handleUploadAvatar({ userId, imageData: data.imageData });
+        break;
+      case 'save-data':
+        result = await handleSaveData({ path: data.path, content: data.content, message: data.message });
         break;
       case 'record-query':
         result = await handleRecordQuery({ 

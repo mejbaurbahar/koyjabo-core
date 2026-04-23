@@ -49,17 +49,16 @@ async function repoGet<T>(path: string): Promise<T | null> {
 }
 
 async function repoPut(path: string, content: unknown): Promise<boolean> {
-  // Use 'save-history' action for general data storage if no specific action exists
-  // but for prompts we use 'record-query'
   try {
     const res = await fetch(`${PROXY}/gh`, {
       method: 'POST',
+      credentials: 'omit',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         requestId: crypto.randomUUID(),
-        action: 'save-history', // reused for generic file persistence
+        action: 'save-data',
         userId: getAuthUserId() || 'anonymous',
-        data: JSON.stringify({ path, content })
+        data: JSON.stringify({ path, content, message: `Sync: ${path}` })
       }),
     });
     return res.ok;
@@ -386,6 +385,7 @@ export function triggerAISync(): void {
 export function triggerQuerySync(query: string, response: string, intent: any, quality: string, lang: string): void {
   fetch(`${PROXY}/gh`, {
     method: 'POST',
+    credentials: 'omit',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       requestId: crypto.randomUUID(),
