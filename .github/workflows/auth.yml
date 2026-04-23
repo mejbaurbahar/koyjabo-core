@@ -12,22 +12,9 @@ on:
         required: true
         type: string
       action:
-        description: 'Auth action'
+        description: 'Auth action (signup, save-data, record-query, etc.)'
         required: true
-        type: choice
-        options:
-          - signup
-          - update-profile
-          - change-password
-          - forgot-password
-          - reset-password
-          - record-device
-          - logout-device
-          - upload-avatar
-          - save-history
-          - record-visit
-          - save-data
-          - record-query
+        type: string
       email:
         description: 'User email (masked in logs immediately)'
         required: false

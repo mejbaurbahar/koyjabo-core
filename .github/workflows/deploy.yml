@@ -71,8 +71,10 @@ jobs:
           # Copy new build output
           cp -r ../dist/. .
 
-          # Copy .github folder from core to target (this is the fix!)
-          cp -r ../.github .
+          # Surgical Sync: Only sync scripts, avoid touching workflows folder 
+          # which requires 'workflow' scope on the token.
+          mkdir -p .github/scripts
+          cp -r ../.github/scripts/. .github/scripts/
 
           # Ensure domain and Jekyll bypass are always present
           echo "koyjabo.com" > CNAME
