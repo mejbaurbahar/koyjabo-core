@@ -727,52 +727,50 @@ async function handleForgotPassword({ email }) {
 
   // Always return success to prevent email enumeration attacks
   if (!userId) {
-    return { success: true, message: 'If this email is registered, a verification code has been sent.' };
+    return { success: true, message: 'If this email is registered, a reset link has been sent.' };
   }
 
-  // Generate 6-digit OTP and a UUID session token
-  const otp = String(Math.floor(100000 + Math.random() * 900000));
+  // Generate a UUID session token used as the one-time reset link
   const sessionToken = crypto.randomUUID();
-  const otpHash = sha256hex(otp);
   const tokenHash = sha256hex(sessionToken);
-  const expiresAt = Date.now() + 15 * 60 * 1000; // 15 minutes
+  const expiresAt = Date.now() + 60 * 60 * 1000; // 1 hour
 
   await writeDataFile(
     `data/password_resets/${tokenHash}.json`,
-    { userId, otpHash, expiresAt, used: false, verified: false, attempts: 0, createdAt: Date.now() },
+    { userId, expiresAt, used: false, createdAt: Date.now() },
     null,
-    'Create OTP reset session'
+    'Create password reset session'
   );
 
   const userFile = await readDataFile(`data/users/${userId}.json`);
   const displayName = userFile?.content?.displayName || 'User';
 
+  const resetLink = `${APP_URL}/reset-password?token=${sessionToken}`;
+
   const sent = await sendEmail({
     to: normalizedEmail,
-    subject: `${otp} is your KoyJabo verification code`,
+    subject: 'Reset your KoyJabo password',
     html: `<!DOCTYPE html>
 <html>
 <body style="font-family:sans-serif;background:#f0f9ff;padding:24px;margin:0">
   <div style="max-width:480px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
     <div style="background:#ffffff;padding:28px 24px;text-align:center;border-bottom:1px solid #e5e7eb">
       <img src="${APP_URL}/logo.png" alt="KoyJabo" style="width:48px;height:48px;border-radius:12px;background:#ffffff;padding:6px;margin-bottom:10px;display:block;margin-left:auto;margin-right:auto;">
-      <h1 style="color:#111827;margin:0;font-size:22px">🔑 Verification Code</h1>
-      <p style="color:#4b5563;margin:6px 0 0;font-size:13px">কই যাবো KoyJabo — Password Reset</p>
+      <h1 style="color:#111827;margin:0;font-size:22px">🔐 Password Reset</h1>
+      <p style="color:#4b5563;margin:6px 0 0;font-size:13px">কই যাবো KoyJabo</p>
     </div>
     <div style="padding:32px 24px;text-align:center">
       <p style="color:#374151;font-size:15px;line-height:1.6;margin:0 0 24px">
         Hello <strong>${displayName}</strong>,<br>
-        Use the code below to reset your password.
+        Click the button below to reset your password. This link is valid for <strong>1 hour</strong>.
       </p>
-      <div style="background:#f0f9ff;border:2px dashed #0284c7;border-radius:16px;padding:20px 32px;margin:0 0 24px;display:inline-block">
-        <p style="margin:0 0 4px;color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px">Your code</p>
-        <p style="margin:0;color:#0284c7;font-size:42px;font-weight:900;letter-spacing:12px;font-family:monospace">${otp}</p>
-      </div>
-      <p style="color:#6b7280;font-size:13px;margin:0 0 8px">This code expires in <strong>15 minutes</strong>.</p>
-      <p style="color:#9ca3af;font-size:12px;margin:0">Do not share this code with anyone.</p>
+      <a href="${resetLink}" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:12px;font-size:16px;font-weight:700;margin-bottom:24px">Reset Password</a>
+      <p style="color:#6b7280;font-size:13px;margin:16px 0 4px">Or copy this link:</p>
+      <p style="color:#2563eb;font-size:12px;word-break:break-all;margin:0 0 24px">${resetLink}</p>
+      <p style="color:#9ca3af;font-size:12px;margin:0">Do not share this link with anyone.</p>
     </div>
     <div style="background:#fef2f2;padding:16px 24px;text-align:center">
-      <p style="color:#b91c1c;font-size:12px;margin:0">If you didn't request this, please ignore this email. Your account is safe.</p>
+      <p style="color:#b91c1c;font-size:12px;margin:0">If you didn't request this, ignore this email. Your account is safe.</p>
     </div>
     <div style="background:#f9fafb;padding:12px 24px;text-align:center;border-top:1px solid #f3f4f6">
       <p style="color:#9ca3af;font-size:11px;margin:0">কই যাবো KoyJabo — Dhaka Transport Guide</p>
@@ -783,16 +781,16 @@ async function handleForgotPassword({ email }) {
   });
 
   if (sent) {
-    return { success: true, sessionToken, message: 'Verification code sent to your email. Check your inbox.' };
+    return { success: true, sessionToken, message: 'Password reset link sent to your email. Check your inbox.' };
   }
 
-  // SMTP not configured — return OTP directly so user can still reset in dev/fallback mode
-  console.log(`[forgot-password] SMTP not configured. Returning OTP in result (dev fallback).`);
+  // SMTP not configured — return the reset link directly (dev fallback)
+  console.log(`[forgot-password] SMTP not configured. Returning reset link in result (dev fallback).`);
   return {
     success: true,
     sessionToken,
-    otp,
-    message: `Email service not configured. Your verification code is: ${otp} (valid for 15 minutes).`
+    resetLink,
+    message: `Email service not configured. Reset link: ${resetLink}`
   };
 }
 
@@ -843,11 +841,9 @@ async function handleResetPassword({ token, newPasswordHash }) {
 
   if (!resetFile) return { success: false, error: 'Invalid or expired session. Please request a new code.' };
 
-  const { userId, expiresAt, used, verified, otpHash } = resetFile.content;
-  if (used)                    return { success: false, error: 'This session has already been used.' };
-  if (expiresAt < Date.now())  return { success: false, error: 'This code has expired. Please request a new one.' };
-  // OTP session must be verified before password reset is allowed
-  if (otpHash !== undefined && !verified) return { success: false, error: 'Please verify your code first.' };
+  const { userId, expiresAt, used } = resetFile.content;
+  if (used)                    return { success: false, error: 'This reset link has already been used.' };
+  if (expiresAt < Date.now())  return { success: false, error: 'This reset link has expired. Please request a new one.' };
 
   const userFile = await readDataFile(`data/users/${userId}.json`);
   if (!userFile) return { success: false, error: 'User account not found.' };

@@ -3804,10 +3804,6 @@ const App: React.FC = () => {
             {view === AppView.FORGOT_PASSWORD && (
               <ForgotPasswordPage
                 onBack={() => setView(AppView.LOGIN)}
-                onResetPassword={(token) => {
-                  setActiveResetToken(token);
-                  setView(AppView.RESET_PASSWORD);
-                }}
               />
             )}
             {view === AppView.RESET_PASSWORD && (

@@ -238,16 +238,26 @@ export async function forgotPassword(email: string): Promise<AuthResult> {
 }
 
 /**
- * VERIFY OTP — verifies the 6-digit code sent to user's email.
+ * CHECK RESET STATUS — polls whether a password reset link has been used.
+ * Reads the reset file directly from the private repo via the Worker (fast, no workflow needed).
  */
-export async function verifyOtp(sessionToken: string, otp: string): Promise<AuthResult> {
-  return triggerAndWait('verify-otp', {
-    data: JSON.stringify({ sessionToken, otp })
-  });
+export async function checkResetStatus(sessionToken: string): Promise<{ used: boolean; expired: boolean; notFound: boolean }> {
+  const tokenHash = await sha256(sessionToken);
+  try {
+    const resp = await fetch(`${PROXY}/gh?r=d&p=data/password_resets/${tokenHash}.json`, {
+      credentials: 'omit',
+    });
+    if (resp.status === 404) return { used: false, expired: false, notFound: true };
+    const data = await resp.json();
+    if (!data) return { used: false, expired: false, notFound: true };
+    return { used: data.used === true, expired: data.expiresAt < Date.now(), notFound: false };
+  } catch {
+    return { used: false, expired: false, notFound: false };
+  }
 }
 
 /**
- * RESET PASSWORD — resets password using the verified OTP session token.
+ * RESET PASSWORD — resets password using the reset link token.
  */
 export async function resetPassword(token: string, newPassword: string): Promise<AuthResult> {
   const passwordHash = await sha256(newPassword);
