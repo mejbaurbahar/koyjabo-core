@@ -3,7 +3,8 @@
  *
  * Deploy at: api.koyjabo.com
  * Environment variables (set in Cloudflare dashboard):
- *   GH_TOKEN    — fine-grained PAT: actions:write on Dhaka-Commute + contents:read on koyjabo
+ *   GH_TOKEN    — fine-grained PAT: actions:write on koyjabo-core + contents:read on koyjabo
+ *   DATA_TOKEN  — classic PAT with contents:write on koyjabo (used for direct data writes)
  *   APP_OWNER   — mejbaurbahar
  *   APP_REPO    — Dhaka-Commute
  *   DATA_OWNER  — mejbaurbahar
@@ -64,6 +65,39 @@ function isRateLimited(ip, limit = 60, windowMs = 60_000) {
   return entry.count > limit;
 }
 
+// ── GitHub direct read/write helpers ─────────────────────────────────────────
+
+async function readDataFile(token, owner, repo, path) {
+  try {
+    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github.v3+json', 'User-Agent': 'koyjabo-proxy/1.0' },
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!data.content) return null;
+    const clean = data.content.replace(/\n/g, '');
+    const bytes = Uint8Array.from(atob(clean), c => c.charCodeAt(0));
+    const text = new TextDecoder().decode(bytes);
+    return { content: JSON.parse(text), sha: data.sha };
+  } catch { return null; }
+}
+
+async function writeDataFile(token, owner, repo, path, content, message) {
+  try {
+    const existing = await readDataFile(token, owner, repo, path);
+    const json = JSON.stringify(content, null, 2);
+    const encoded = btoa(unescape(encodeURIComponent(json)));
+    const body = { message: message || `Sync: ${path}`, content: encoded };
+    if (existing?.sha) body.sha = existing.sha;
+    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+      method: 'PUT',
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json', 'User-Agent': 'koyjabo-proxy/1.0' },
+      body: JSON.stringify(body),
+    });
+    return res.ok || res.status === 201;
+  } catch { return false; }
+}
+
 export default {
   async fetch(request, env) {
     const origin = request.headers.get('Origin') || '';
@@ -99,6 +133,7 @@ export default {
     }
 
     const TOKEN = env.GH_TOKEN;
+    const DATA_TOKEN = env.DATA_TOKEN || TOKEN; // PAT with contents:write on koyjabo
     const APP_OWNER = env.APP_OWNER || 'mejbaurbahar';
     const APP_REPO  = env.APP_REPO  || 'Dhaka-Commute';
     const DATA_OWNER = env.DATA_OWNER || 'mejbaurbahar';
@@ -242,7 +277,52 @@ export default {
         );
       }
 
-      // Workflow dispatches MUST go to koyjabo-core where the actions are running
+      // ── Direct data writes (no GitHub Actions needed) ────────────────────────
+      // save-data and record-query write directly to the data repo via GitHub API.
+      // This is faster (instant vs 1-3 min) and doesn't require DATA_GITHUB_TOKEN secret.
+
+      if (body.action === 'save-data') {
+        let payload = {};
+        try { payload = JSON.parse(body.data || '{}'); } catch { /* ignore */ }
+        const { path, content, message } = payload;
+        if (!path || content === undefined || !String(path).startsWith('data/')) {
+          return new Response(
+            JSON.stringify({ error: 'Invalid path or content for save-data' }),
+            { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
+          );
+        }
+        const writeOk = await writeDataFile(DATA_TOKEN, DATA_OWNER, DATA_REPO, path, content, message);
+        return new Response(
+          JSON.stringify({ success: writeOk }),
+          { status: writeOk ? 200 : 500, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
+        );
+      }
+
+      if (body.action === 'record-query') {
+        let payload = {};
+        try { payload = JSON.parse(body.data || '{}'); } catch { /* ignore */ }
+        const today = new Date().toISOString().split('T')[0];
+        const path = `data/learning/queries/${today}.json`;
+        const existing = await readDataFile(TOKEN, DATA_OWNER, DATA_REPO, path);
+        const record = existing || { date: today, queries: [] };
+        record.queries.push({
+          query: (payload.query || '').slice(0, 300),
+          responseLen: (payload.response || '').length,
+          intent: payload.intent || 'unknown',
+          quality: payload.quality || 'unknown',
+          lang: payload.lang || 'en',
+          userId: body.userId || 'anonymous',
+          timestamp: Date.now(),
+        });
+        if (record.queries.length > 500) record.queries = record.queries.slice(-500);
+        const writeOk = await writeDataFile(DATA_TOKEN, DATA_OWNER, DATA_REPO, path, record, `Query record: ${(payload.query || '').slice(0, 30)}`);
+        return new Response(
+          JSON.stringify({ success: writeOk }),
+          { status: writeOk ? 200 : 500, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
+        );
+      }
+
+      // ── Auth actions → dispatch GitHub Actions workflow ───────────────────────
       const ghUrl = `https://api.github.com/repos/${APP_OWNER}/koyjabo-core/actions/workflows/auth.yml/dispatches`;
       const upstream = await fetch(ghUrl, {
         method: 'POST',
