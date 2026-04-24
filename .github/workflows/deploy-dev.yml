@@ -1,0 +1,122 @@
+name: Build & Deploy to dev.koyjabo.com
+
+# Runs from koyjabo-core dev branch → deploys built dist to koyjabo-dev repo.
+# dev.koyjabo.com is a staging environment — test here before merging to main.
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy-dev:
+    name: Build → Push to koyjabo-dev
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout koyjabo-core (dev branch)
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project (dev mode)
+        run: npm run build
+        env:
+          NODE_ENV: production
+          GENERATE_SOURCEMAP: false
+          VITE_API_PROXY: https://koyjabo-auth-proxy.mejbaur-bahar.workers.dev
+
+      - name: Verify build output
+        run: |
+          if [ ! -f dist/index.html ]; then
+            echo "ERROR: dist/index.html not found. Build failed."
+            exit 1
+          fi
+          echo "Build OK — $(find dist -type f | wc -l) files"
+
+      - name: Clone koyjabo-dev (deploy target)
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TOKEN="${DEPLOY_TOKEN:-$GH_TOKEN}"
+          git clone \
+            "https://x-access-token:${TOKEN}@github.com/mejbaurbahar/koyjabo-dev.git" \
+            deploy-dev-repo || \
+          git init deploy-dev-repo && \
+          cd deploy-dev-repo && \
+          git remote add origin \
+            "https://x-access-token:${TOKEN}@github.com/mejbaurbahar/koyjabo-dev.git" && \
+          cd ..
+
+      - name: Swap dist content
+        run: |
+          cd deploy-dev-repo
+
+          # Remove all git-tracked files EXCEPT workflows
+          git ls-files | grep -v '^\.github/workflows/' | xargs rm -f 2>/dev/null || true
+
+          # Remove leftover empty directories
+          find . \
+            -not -path './.git*' \
+            -not -path './.github/workflows*' \
+            -type d -empty -delete 2>/dev/null || true
+
+          # Copy new build output
+          cp -r ../dist/. .
+
+          # Sync backend auth scripts
+          mkdir -p .github/scripts
+          cp -r ../.github/scripts/. .github/scripts/
+
+          # Dev domain CNAME
+          echo "dev.koyjabo.com" > CNAME
+          touch .nojekyll
+
+      - name: Commit and push to koyjabo-dev
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd deploy-dev-repo
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          TOKEN="${DEPLOY_TOKEN:-$GH_TOKEN}"
+          git remote set-url origin \
+            "https://x-access-token:${TOKEN}@github.com/mejbaurbahar/koyjabo-dev.git"
+
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "Nothing changed — skipping deploy"
+            exit 0
+          fi
+
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          git commit -m "deploy(dev): $(date -u '+%Y-%m-%d %H:%M UTC') | core-dev@${SHORT_SHA}"
+
+          # Push to main (koyjabo-dev uses main branch for GitHub Pages)
+          git push origin HEAD:main --force
+
+      - name: Deploy summary
+        if: success()
+        run: |
+          echo "### Deployed to dev.koyjabo.com" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Time: $(date -u '+%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "- URL: https://dev.koyjabo.com" >> $GITHUB_STEP_SUMMARY
