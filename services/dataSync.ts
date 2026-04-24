@@ -1,6 +1,6 @@
 /**
  * Data Sync Service — backs up and restores transport data to/from
- * the private GitHub data repository via /api/gh.
+ * the private GitHub data repository via the Cloudflare Worker proxy.
  *
  * Data is always available offline from the bundled TypeScript files.
  * This service optionally syncs runtime-editable JSON overrides.
@@ -120,7 +120,6 @@ export async function loadDataOverride<T>(name: string): Promise<T | null> {
 /**
  * Export bundled transport data to the GitHub data repo.
  * Call this from an admin/dev action to seed or update the remote data.
- * Only succeeds if /api/gh-data endpoint is available.
  */
 export async function exportTransportDataToRepo(): Promise<SyncResult> {
   const results: boolean[] = [];

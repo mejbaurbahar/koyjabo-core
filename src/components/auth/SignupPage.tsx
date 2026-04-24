@@ -182,28 +182,8 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
   const touch = (field: keyof FieldErrors) => () =>
     setTouched(prev => ({ ...prev, [field]: true }));
 
-  const handleEmailBlur = async () => {
+  const handleEmailBlur = () => {
     touch('email')();
-    const email = form.email.trim();
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
-    if (isTempMailEmail(email)) return; // already caught by static list
-    const domain = email.split('@')[1]?.toLowerCase();
-    if (!domain) return;
-    setEmailChecking(true);
-    setEmailApiError('');
-    try {
-      const res = await fetch(`/api/check-email?domain=${encodeURIComponent(domain)}`, { credentials: 'same-origin' });
-      if (res.ok) {
-        const data = await res.json();
-        if (data.disposable === true) {
-          setEmailApiError(t('auth.validation.tempMailBlocked'));
-        }
-      }
-    } catch {
-      // fail open — never block signup due to API error
-    } finally {
-      setEmailChecking(false);
-    }
   };
 
   const showError = (field: keyof FieldErrors) =>
