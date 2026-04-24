@@ -49,18 +49,11 @@ jobs:
 
       - name: Clone koyjabo-dev (deploy target)
         env:
-          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DATA_GITHUB_TOKEN: ${{ secrets.DATA_GITHUB_TOKEN }}
         run: |
-          TOKEN="${DEPLOY_TOKEN:-$GH_TOKEN}"
           git clone \
-            "https://x-access-token:${TOKEN}@github.com/mejbaurbahar/koyjabo-dev.git" \
-            deploy-dev-repo || \
-          git init deploy-dev-repo && \
-          cd deploy-dev-repo && \
-          git remote add origin \
-            "https://x-access-token:${TOKEN}@github.com/mejbaurbahar/koyjabo-dev.git" && \
-          cd ..
+            "https://x-access-token:${DATA_GITHUB_TOKEN}@github.com/mejbaurbahar/koyjabo-dev.git" \
+            deploy-dev-repo
 
       - name: Swap dist content
         run: |
@@ -88,17 +81,15 @@ jobs:
 
       - name: Commit and push to koyjabo-dev
         env:
-          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DATA_GITHUB_TOKEN: ${{ secrets.DATA_GITHUB_TOKEN }}
         run: |
           cd deploy-dev-repo
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          TOKEN="${DEPLOY_TOKEN:-$GH_TOKEN}"
           git remote set-url origin \
-            "https://x-access-token:${TOKEN}@github.com/mejbaurbahar/koyjabo-dev.git"
+            "https://x-access-token:${DATA_GITHUB_TOKEN}@github.com/mejbaurbahar/koyjabo-dev.git"
 
           git add -A
 
