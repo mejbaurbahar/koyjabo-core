@@ -136,6 +136,7 @@ export default {
         );
       }
 
+      const ghUrl = `https://api.github.com/repos/${repo.owner}/${repo.repo}/contents/${p}`;
       let upstream = await fetch(ghUrl, { headers: ghHeaders(TOKEN) });
 
       // Fallback: If r=a (results) and not found in APP_REPO (Dhaka-Commute), try CORE_REPO (koyjabo-core)

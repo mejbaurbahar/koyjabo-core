@@ -69,7 +69,9 @@ export default function ForgotPasswordPage({ onBack, onResetPassword }: ForgotPa
     try {
       const result = await forgotPassword(email);
       if (!result.success) {
-        setError(result.error || t('auth.validation.somethingWentWrong'));
+        const errMsg = result.error || '';
+        const errKey = getAuthErrorKey(errMsg);
+        setError(errKey ? t(errKey) : errMsg || t('auth.validation.somethingWentWrong'));
         setStage('form');
         return;
       }

@@ -19,14 +19,14 @@ export default function ResetPasswordPage({ token, onSuccess }: ResetPasswordPag
   // Auto-clear success after 3s and redirect
   useEffect(() => {
     if (stage === 'done') {
-      const t = setTimeout(onSuccess, 3000);
-      return () => clearTimeout(t);
+      const timer = setTimeout(onSuccess, 3000);
+      return () => clearTimeout(timer);
     }
   }, [stage, onSuccess]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password.length < 8) { setError(t('auth.passPlaceholder')); return; }
+    if (password.length < 8) { setError(t('auth.validation.passwordTooWeak')); return; }
     if (password !== confirm) { setError(t('auth.validation.passwordsDoNotMatch')); return; }
     if (!token) { setError(t('auth.tokenNotFound')); return; }
 

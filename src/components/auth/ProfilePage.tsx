@@ -7,8 +7,8 @@ import {
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../../contexts/LanguageContext';
 import {
-  updateProfile, changePassword, uploadAvatar,
-  fetchDevices, logoutDevice, getOrCreateDeviceId
+  updateProfile, changePassword, uploadAvatar, fetchAvatar,
+  fetchDevices, logoutDevice, getOrCreateDeviceId, resizeAndEncodeImage
 } from '../../services/githubAuthService';
 import type { Device } from '../../types/auth';
 import type { BusRoute } from '../../../types';
@@ -135,7 +135,7 @@ export default function ProfilePage({
 
   const handleChangePassword = () =>
     passwordOp.run(async () => {
-      if (pwForm.newPass.length < 8) throw new Error(t('auth.passPlaceholder'));
+      if (pwForm.newPass.length < 8) throw new Error(t('auth.validation.passwordTooWeak'));
       if (pwForm.newPass !== pwForm.confirm) throw new Error(t('auth.validation.passwordsDoNotMatch'));
       const result = await changePassword(user.id, user.email, pwForm.current, pwForm.newPass);
       if (!result.success) throw new Error(result.error);
@@ -145,14 +145,20 @@ export default function ProfilePage({
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !file.type.startsWith('image/')) return;
+    // Reset input so the same file can be re-selected
+    e.target.value = '';
     setAvatarProcessing(true);
     try {
+      // Resize locally first — gives us the exact data that will be stored
+      const localDataUrl = await resizeAndEncodeImage(file, 200);
       const result = await uploadAvatar(user.id, file);
       if (!result.success) throw new Error(result.error);
-      // Re-fetch avatar URL
-      const { fetchAvatar } = await import('../../services/githubAuthService');
-      const newUrl = await fetchAvatar(user.id);
-      if (newUrl) updateUser({ avatarUrl: newUrl });
+      // Use the local resized image immediately — no need to re-fetch from GitHub
+      updateUser({ avatarUrl: localDataUrl });
+      // Refresh from GitHub in background so the stored canonical copy is used next login
+      fetchAvatar(user.id)
+        .then(remoteUrl => { if (remoteUrl) updateUser({ avatarUrl: remoteUrl }); })
+        .catch(() => { /* local preview remains until next reload */ });
     } catch (err) {
       alert(err instanceof Error ? err.message : t('profile.uploadFailed'));
     } finally {

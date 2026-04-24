@@ -423,7 +423,7 @@ export function getAuthErrorKey(message: string): string | null {
 }
 
 // ── Image resize helper ───────────────────────────────────────────────────────
-function resizeAndEncodeImage(file: File, maxDimension: number): Promise<string> {
+export function resizeAndEncodeImage(file: File, maxDimension: number): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = e => {
