@@ -1,0 +1,513 @@
+{
+  "userId": "bab8d73b-b539-4b48-ae19-7c3151983c93",
+  "displayName": "",
+  "username": "",
+  "busSearches": [
+    {
+      "busId": "baishakhi",
+      "busName": "Baishakhi Paribahan",
+      "timestamp": 1776335581305,
+      "date": "2026-04-16"
+    },
+    {
+      "busId": "13_no",
+      "busName": "13 No.",
+      "timestamp": 1776414030797,
+      "date": "2026-04-17"
+    },
+    {
+      "busId": "13_no",
+      "busName": "13 No.",
+      "timestamp": 1776622936278,
+      "date": "2026-04-19"
+    },
+    {
+      "busId": "baishakhi",
+      "busName": "Baishakhi Paribahan",
+      "timestamp": 1776673542222,
+      "date": "2026-04-20"
+    },
+    {
+      "busId": "baishakhi",
+      "busName": "Baishakhi Paribahan",
+      "timestamp": 1776673542222,
+      "date": "2026-04-20"
+    },
+    {
+      "busId": "baishakhi",
+      "busName": "Baishakhi Paribahan",
+      "timestamp": 1776673569259,
+      "date": "2026-04-20"
+    },
+    {
+      "busId": "baishakhi",
+      "busName": "Baishakhi Paribahan",
+      "timestamp": 1776673569259,
+      "date": "2026-04-20"
+    },
+    {
+      "busId": "9_no",
+      "busName": "9 No.",
+      "timestamp": 1776673581531,
+      "date": "2026-04-20"
+    },
+    {
+      "busId": "baishakhi",
+      "busName": "Baishakhi Paribahan",
+      "timestamp": 1776824574849,
+      "date": "2026-04-22"
+    },
+    {
+      "busId": "baishakhi",
+      "busName": "Baishakhi Paribahan",
+      "timestamp": 1776825815377,
+      "date": "2026-04-22"
+    },
+    {
+      "busId": "13_no",
+      "busName": "13 No.",
+      "timestamp": 1776825820654,
+      "date": "2026-04-22"
+    },
+    {
+      "busId": "baishakhi",
+      "busName": "Baishakhi Paribahan",
+      "timestamp": 1776825825479,
+      "date": "2026-04-22"
+    },
+    {
+      "busId": "baishakhi",
+      "busName": "Baishakhi Paribahan",
+      "timestamp": 1776825844293,
+      "date": "2026-04-22"
+    },
+    {
+      "busId": "13_no",
+      "busName": "13 No.",
+      "timestamp": 1776921551524,
+      "date": "2026-04-23"
+    },
+    {
+      "busId": "13_no",
+      "busName": "13 No.",
+      "timestamp": 1776923784333,
+      "date": "2026-04-23"
+    },
+    {
+      "busId": "13_no",
+      "busName": "13 No.",
+      "timestamp": 1776924896754,
+      "date": "2026-04-23"
+    }
+  ],
+  "routeSearches": [
+    {
+      "from": "star_kabab",
+      "to": "azimpur",
+      "timestamp": 1776335466044,
+      "date": "2026-04-16"
+    },
+    {
+      "from": "newmarket",
+      "to": "azimpur",
+      "timestamp": 1776335474580,
+      "date": "2026-04-16"
+    },
+    {
+      "from": "city_college",
+      "to": "azimpur",
+      "timestamp": 1776335477358,
+      "date": "2026-04-16"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776335601094,
+      "date": "2026-04-16"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673517330,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673517330,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673517330,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673519152,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673519152,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673519152,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673525167,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673525167,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673525167,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673531165,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673531165,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673531165,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673537403,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673537403,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673537403,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673542426,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673542427,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673542427,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673542427,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673542435,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673542435,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673542435,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673548407,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673548407,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673548407,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673556636,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673556636,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673556637,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673561099,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673561099,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673561099,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673569256,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673569256,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673569256,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673569439,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673569445,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673569445,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673569446,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673575274,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673575274,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "hemayetpur",
+      "to": "gulshan1",
+      "timestamp": 1776673575275,
+      "date": "2026-04-20"
+    },
+    {
+      "from": "gulshan1",
+      "to": "hemayetpur",
+      "timestamp": 1776857673133,
+      "date": "2026-04-22"
+    },
+    {
+      "from": "notun_bazar",
+      "to": "hemayetpur",
+      "timestamp": 1776861625934,
+      "date": "2026-04-22"
+    },
+    {
+      "from": "modhumoti",
+      "to": "hemayetpur",
+      "timestamp": 1776861634791,
+      "date": "2026-04-22"
+    },
+    {
+      "from": "parbat",
+      "to": "hemayetpur",
+      "timestamp": 1776861838146,
+      "date": "2026-04-22"
+    }
+  ],
+  "intercitySearches": [
+    {
+      "from": "Cox's Bazar",
+      "to": "Benapole",
+      "transportType": "combined",
+      "timestamp": 1776622992803,
+      "date": "2026-04-19"
+    },
+    {
+      "from": "Bandarban",
+      "to": "Cox's Bazar",
+      "transportType": "combined",
+      "timestamp": 1776782307241,
+      "date": "2026-04-21"
+    }
+  ],
+  "trainSearches": [
+    {
+      "trainId": "agnibina-express",
+      "trainName": "Agnibina Express",
+      "trainNumber": "735/736",
+      "from": "kamalapur",
+      "to": "tarakandi",
+      "timestamp": 1776577209051,
+      "date": "2026-04-19"
+    },
+    {
+      "trainId": "agnibina-express",
+      "trainName": "Agnibina Express",
+      "trainNumber": "735/736",
+      "from": "kamalapur",
+      "to": "tarakandi",
+      "timestamp": 1776577634669,
+      "date": "2026-04-19"
+    },
+    {
+      "trainId": "agnibina-express",
+      "trainName": "Agnibina Express",
+      "trainNumber": "735/736",
+      "from": "kamalapur",
+      "to": "tarakandi",
+      "timestamp": 1776588958159,
+      "date": "2026-04-19"
+    },
+    {
+      "trainId": "agnibina-express",
+      "trainName": "Agnibina Express",
+      "trainNumber": "735/736",
+      "from": "kamalapur",
+      "to": "tarakandi",
+      "timestamp": 1776590284555,
+      "date": "2026-04-19"
+    },
+    {
+      "trainId": "agnibina-express",
+      "trainName": "Agnibina Express",
+      "trainNumber": "735/736",
+      "from": "kamalapur",
+      "to": "tarakandi",
+      "timestamp": 1776623075493,
+      "date": "2026-04-19"
+    },
+    {
+      "trainId": "agnibina-express",
+      "trainName": "Agnibina Express",
+      "trainNumber": "735/736",
+      "from": "kamalapur",
+      "to": "tarakandi",
+      "timestamp": 1776673589614,
+      "date": "2026-04-20"
+    },
+    {
+      "trainId": "betna-express",
+      "trainName": "Betna Express",
+      "trainNumber": "95/96",
+      "from": "benapole",
+      "to": "khulna",
+      "timestamp": 1776673597061,
+      "date": "2026-04-20"
+    },
+    {
+      "trainId": "agnibina-express",
+      "trainName": "Agnibina Express",
+      "trainNumber": "735/736",
+      "from": "kamalapur",
+      "to": "tarakandi",
+      "timestamp": 1776782408602,
+      "date": "2026-04-21"
+    }
+  ],
+  "mostUsedBuses": {
+    "baishakhi": 9,
+    "13_no": 6,
+    "9_no": 1
+  },
+  "mostUsedRoutes": {
+    "star_kabab-azimpur": 1,
+    "newmarket-azimpur": 1,
+    "city_college-azimpur": 1,
+    "hemayetpur-gulshan1": 42,
+    "gulshan1-hemayetpur": 1,
+    "notun_bazar-hemayetpur": 1,
+    "modhumoti-hemayetpur": 1,
+    "parbat-hemayetpur": 1
+  },
+  "mostUsedIntercity": {
+    "Cox's Bazar-Benapole": 1,
+    "Bandarban-Cox's Bazar": 1
+  },
+  "mostUsedTrains": {
+    "agnibina-express": 7,
+    "betna-express": 1
+  },
+  "updatedAt": 1776997089930
+}
