@@ -888,15 +888,21 @@ async function handleSaveHistory({ userId, historyData }) {
   return { success: true };
 }
 
-async function handleRecordVisit({ visitorId }) {
+async function handleRecordVisit({ visitorId, userId }) {
   const today = new Date().toISOString().split('T')[0];
+  const isLoggedIn = !!(userId && userId !== 'anonymous');
   const updated = await updateDataFileWithRetry(
     'data/stats/global.json',
     (existing) => {
-      const s = existing || { totalVisits: 0, todayVisits: 0, totalUsers: 0, todayDate: today, lastUpdated: 0 };
+      const s = existing || { totalVisits: 0, todayVisits: 0, totalUsers: 0, loggedInVisits: 0, anonymousVisits: 0, todayDate: today, lastUpdated: 0 };
       if (s.todayDate !== today) { s.todayVisits = 0; s.todayDate = today; }
       s.totalVisits = (s.totalVisits || 0) + 1;
       s.todayVisits = (s.todayVisits || 0) + 1;
+      if (isLoggedIn) {
+        s.loggedInVisits = (s.loggedInVisits || 0) + 1;
+      } else {
+        s.anonymousVisits = (s.anonymousVisits || 0) + 1;
+      }
       s.lastUpdated = Date.now();
       return s;
     },

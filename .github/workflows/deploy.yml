@@ -46,13 +46,10 @@ jobs:
 
       - name: Clone Dhaka-Commute (deploy target)
         env:
-          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DATA_GITHUB_TOKEN: ${{ secrets.DATA_GITHUB_TOKEN }}
         run: |
-          # Use DEPLOY_TOKEN (koyjabo-core cross-repo) or fall back to GITHUB_TOKEN (Dhaka-Commute self-push)
-          TOKEN="${DEPLOY_TOKEN:-$GH_TOKEN}"
           git clone \
-            "https://x-access-token:${TOKEN}@github.com/mejbaurbahar/Dhaka-Commute.git" \
+            "https://x-access-token:${DATA_GITHUB_TOKEN}@github.com/mejbaurbahar/Dhaka-Commute.git" \
             deploy-repo
 
       - name: Swap dist content (preserve .github workflows)
@@ -82,16 +79,14 @@ jobs:
 
       - name: Commit and push
         env:
-          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DATA_GITHUB_TOKEN: ${{ secrets.DATA_GITHUB_TOKEN }}
         run: |
           cd deploy-repo
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          TOKEN="${DEPLOY_TOKEN:-$GH_TOKEN}"
           git remote set-url origin \
-            "https://x-access-token:${TOKEN}@github.com/mejbaurbahar/Dhaka-Commute.git"
+            "https://x-access-token:${DATA_GITHUB_TOKEN}@github.com/mejbaurbahar/Dhaka-Commute.git"
 
           git add -A
 

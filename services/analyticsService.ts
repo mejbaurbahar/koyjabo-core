@@ -208,7 +208,7 @@ export const fetchGlobalStats = async (): Promise<void> => {
 // ── Visit recording (fire-and-forget via GitHub Actions) ──────────────────────
 
 /** Record this browser session as a visit. Called once per session. */
-export const incrementVisitCount = async (): Promise<void> => {
+export const incrementVisitCount = async (userId?: string): Promise<void> => {
     const SESSION_KEY = 'dhaka_commute_session_init';
     if (sessionStorage.getItem(SESSION_KEY)) {
         return;
@@ -229,8 +229,8 @@ export const incrementVisitCount = async (): Promise<void> => {
             action: 'record-visit',
             email: '',
             passwordHash: '',
-            userId: '',
-            data: JSON.stringify({ visitorId }),
+            userId: userId || '',
+            data: JSON.stringify({ visitorId, userId: userId || 'anonymous' }),
         }),
     }).catch(() => {}); // Non-critical, ignore errors
 };

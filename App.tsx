@@ -1053,9 +1053,10 @@ const App: React.FC = () => {
     setShowInstallPrompt(false);
   };
 
-  // Track visit on mount
+  // Track visit on mount — pass userId so logged-in vs anonymous visits are counted separately
   useEffect(() => {
-    incrementVisitCount();
+    const uid = (() => { try { return JSON.parse(localStorage.getItem('koyjabo_auth_session') ?? '{}')?.user?.id; } catch { return undefined; } })();
+    incrementVisitCount(uid);
   }, []);
 
   // Clean up legacy hash-based URLs on mount
@@ -1550,6 +1551,27 @@ const App: React.FC = () => {
     const _uid = (() => { try { return JSON.parse(localStorage.getItem('koyjabo_auth_session') ?? '{}')?.user?.id; } catch { return undefined; } })();
     triggerChatSync(_uid);
     triggerAISync();
+
+    // Store AI query in private repo for learning (fire-and-forget)
+    const _proxy = (import.meta.env.VITE_API_PROXY as string) || 'https://koyjabo-auth-proxy.mejbaur-bahar.workers.dev';
+    const _lang = /[\u0980-\u09FF]/.test(queryToSend) ? 'bn' : 'en';
+    fetch(`${_proxy}/gh`, {
+      method: 'POST',
+      credentials: 'omit',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        requestId: crypto.randomUUID(),
+        action: 'record-query',
+        userId: _uid || '',
+        data: JSON.stringify({
+          query: queryToSend.slice(0, 300),
+          response: result.slice(0, 500),
+          intent: 'travel',
+          quality: result.length > 50 ? 'good' : 'short',
+          lang: _lang,
+        }),
+      }),
+    }).catch(() => {});
   };
 
   const handleStartNavigation = useCallback(() => {

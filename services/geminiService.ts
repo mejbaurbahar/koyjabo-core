@@ -1316,12 +1316,20 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
     }
   }
 
+  // 0a-i. Creator / builder questions
+  if (lowerQuery.match(/who made you|who built you|who created you|who developed you|who is your (creator|developer|maker|author)|who design|তোমাকে কে বানিয়েছে|কে বানিয়েছে|কে তৈরি করেছে|কে বানিয়েছেন|কে ডেভেলপ করেছে/)) {
+    const isBn = /[\u0980-\u09FF]/.test(query);
+    return isBn
+      ? "👨‍💻 আমাকে তৈরি করেছেন **মেজবাউর বাহার ফাগুন (Mejbaur Bahar Fagun)**, একজন **সফটওয়্যার ইঞ্জিনিয়ার**। তিনি বাংলাদেশের মানুষের যাতায়াত সহজ করার লক্ষ্যে **কই যাবো (KoyJabo)** প্ল্যাটফর্ম ও এই এআই তৈরি করেছেন। আমি প্রতিদিন ব্যবহারকারীদের প্রশ্ন থেকে শিখে আরও স্মার্ট হচ্ছি! 🚌"
+      : "👨‍💻 I was built by **Mejbaur Bahar Fagun**, a **Software Engineer** from Bangladesh. He created the **KoyJabo** platform and this AI assistant to help people navigate Bangladesh's transport system easily. I learn from user queries every day and keep improving! 🚌";
+  }
+
   // 0a. Identity / Introduction questions
   if (lowerQuery.match(/who are you|what are you|introduce yourself|what can you do|tell me about yourself|your name|are you ai|are you a bot|you are|আপনি কে|তুমি কে|আপনার নাম|আপনি কী|তোমার নাম|তুমি কি ai|তুমি কি বট/)) {
     const isBn = /[\u0980-\u09FF]/.test(query);
     return isBn
-      ? "🤖 আমি **কই যাবো (KoyJabo) AI Travel Assistant** — বাংলাদেশের যোগাযোগ ব্যবস্থার জন্য আপনার স্মার্ট ভ্রমণ সহায়ক!\n\n**আমি যা করতে পারি:**\n- 🚌 **ঢাকার স্থানীয় বাস রুট** — ফার্মগেট থেকে মিরপুর, গুলশান থেকে মতিঝিল সব রুট\n- 🚇 **মেট্রোরেল (MRT-6)** — উত্তরা থেকে মতিঝিল পর্যন্ত স্টেশন, ভাড়া ও সময়সূচি\n- 🚂 **আন্তঃজেলা ভ্রমণ** — বাস, ট্রেন, বিমান ও লঞ্চে ঢাকা থেকে যেকোনো জেলায়\n- ✈️ **বিমান ফ্লাইট** — ঘরোয়া রুট ও এয়ারপোর্ট তথ্য\n- 🚢 **লঞ্চ সার্ভিস** — ঢাকা সদরঘাট থেকে দক্ষিণ বাংলার নৌপথ\n- 🗺️ **পর্যটন গাইড** — কক্সবাজার, সুন্দরবন, সেন্টমার্টিন ভ্রমণ পরিকল্পনা\n- 🗣️ **বাংলিশ সাপোর্ট** — বাংলা, ইংরেজি ও বাংলিশে প্রশ্ন করুন\n\nআজ কোথায় যেতে চান? 😊"
-      : "🤖 I am **KoyJabo AI Travel Assistant** — your smart travel guide for Bangladesh!\n\n**What I can help with:**\n- 🚌 **Dhaka Local Buses** — routes, stops, fares across 200+ bus lines\n- 🚇 **Metro Rail (MRT-6)** — stations, fares, schedules from Uttara to Motijheel\n- 🚂 **Intercity Travel** — Bus, Train, Flight & Launch from Dhaka to any district\n- ✈️ **Domestic Flights** — airport info, routes & airlines\n- 🚢 **Launch Services** — Sadarghat to southern Bangladesh waterway routes\n- 🗺️ **Tourist Guide** — Cox's Bazar, Sundarbans, Saint Martin tour plans\n- 🗣️ **Banglish OK!** — ask in English, Bengali or Banglish\n\nWhere would you like to go today? 😊";
+      ? "🤖 আমি **কই যাবো (KoyJabo) AI Travel Assistant** — বাংলাদেশের যোগাযোগ ব্যবস্থার জন্য আপনার স্মার্ট ভ্রমণ সহায়ক!\n\n**আমি যা করতে পারি:**\n- 🚌 **ঢাকার স্থানীয় বাস রুট** — ফার্মগেট থেকে মিরপুর, গুলশান থেকে মতিঝিল সব রুট\n- 🚇 **মেট্রোরেল (MRT-6)** — উত্তরা থেকে মতিঝিল পর্যন্ত স্টেশন, ভাড়া ও সময়সূচি\n- 🚂 **আন্তঃজেলা ভ্রমণ** — বাস, ট্রেন, বিমান ও লঞ্চে ঢাকা থেকে যেকোনো জেলায়\n- ✈️ **বিমান ফ্লাইট** — ঘরোয়া রুট ও এয়ারপোর্ট তথ্য\n- 🚢 **লঞ্চ সার্ভিস** — ঢাকা সদরঘাট থেকে দক্ষিণ বাংলার নৌপথ\n- 🗺️ **পর্যটন গাইড** — কক্সবাজার, সুন্দরবন, সেন্টমার্টিন ভ্রমণ পরিকল্পনা\n- 🗣️ **বাংলিশ সাপোর্ট** — বাংলা, ইংরেজি ও বাংলিশে প্রশ্ন করুন\n\n*(নির্মাতা: Mejbaur Bahar Fagun, Software Engineer)*\n\nআজ কোথায় যেতে চান? 😊"
+      : "🤖 I am **KoyJabo AI Travel Assistant** — your smart travel guide for Bangladesh!\n\n**What I can help with:**\n- 🚌 **Dhaka Local Buses** — routes, stops, fares across 200+ bus lines\n- 🚇 **Metro Rail (MRT-6)** — stations, fares, schedules from Uttara to Motijheel\n- 🚂 **Intercity Travel** — Bus, Train, Flight & Launch from Dhaka to any district\n- ✈️ **Domestic Flights** — airport info, routes & airlines\n- 🚢 **Launch Services** — Sadarghat to southern Bangladesh waterway routes\n- 🗺️ **Tourist Guide** — Cox's Bazar, Sundarbans, Saint Martin tour plans\n- 🗣️ **Banglish OK!** — ask in English, Bengali or Banglish\n\n*(Built by Mejbaur Bahar Fagun, Software Engineer)*\n\nWhere would you like to go today? 😊";
   }
 
   // 0b. Greeting / General
