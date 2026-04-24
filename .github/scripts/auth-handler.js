@@ -21,17 +21,13 @@ const { Octokit } = require('@octokit/rest');
 const APP_OWNER  = 'mejbaurbahar';
 const APP_REPO   = 'Dhaka-Commute';
 
-// User data — written here, Cloudflare Worker reads r=d from this repo (default)
+// User data — all written here (users, avatars, devices, history, stats)
 const DATA_OWNER = 'mejbaurbahar';
-const DATA_REPO  = 'koyjabo-core';
+const DATA_REPO  = 'koyjabo';
 
-// Old private data repo — read-only, for including legacy users in admin emails
-const LEGACY_OWNER = 'mejbaurbahar';
-const LEGACY_REPO  = 'koyjabo';
-
-// GITHUB_TOKEN: auto per-run token — write access to koyjabo-core (this repo)
+// GITHUB_TOKEN: auto per-run token (write access to koyjabo-core only)
 const CORE_TOKEN = process.env.AUTH_GITHUB_TOKEN;
-// DATA_GITHUB_TOKEN: classic PAT — write access to Dhaka-Commute + read koyjabo legacy
+// DATA_GITHUB_TOKEN: classic PAT — write access to koyjabo + Dhaka-Commute
 const DATA_TOKEN = process.env.DATA_GITHUB_TOKEN || CORE_TOKEN;
 
 const JWT_SECRET     = process.env.JWT_SECRET     || '';
@@ -40,10 +36,9 @@ const SMTP_EMAIL     = process.env.SMTP_EMAIL     || '';
 const SMTP_PASSWORD  = process.env.SMTP_PASSWORD  || '';
 const APP_URL        = process.env.APP_URL        || 'https://koyjabo.com';
 
-// octokitData:   user data    → koyjabo-core   (GITHUB_TOKEN)
-// octokitApp:    result files → Dhaka-Commute  (DATA_TOKEN, public repo)
-// octokitLegacy: legacy reads → koyjabo        (DATA_TOKEN, read-only)
-const octokitData   = new Octokit({ auth: CORE_TOKEN });
+// octokitData: user data    → koyjabo (PAT has write access)
+// octokitApp:  result files → Dhaka-Commute (PAT has write access)
+const octokitData   = new Octokit({ auth: DATA_TOKEN });
 const octokitApp    = new Octokit({ auth: DATA_TOKEN });
 const octokitLegacy = new Octokit({ auth: DATA_TOKEN });
 

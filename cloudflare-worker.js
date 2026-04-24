@@ -145,6 +145,13 @@ export default {
         upstream = await fetch(fallbackUrl, { headers: ghHeaders(TOKEN) });
       }
 
+      // Fallback: If r=d (user data) and not found in DATA_REPO (koyjabo), try koyjabo-core
+      // This handles existing users stored in koyjabo-core during the repo migration
+      if (upstream.status === 404 && r === 'd') {
+        const fallbackUrl = `https://api.github.com/repos/${DATA_OWNER}/${CORE_REPO}/contents/${p}`;
+        upstream = await fetch(fallbackUrl, { headers: ghHeaders(TOKEN) });
+      }
+
       if (upstream.status === 404) {
         return new Response('null', {
           status: 404,
