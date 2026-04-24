@@ -1,41 +1,46 @@
 #!/usr/bin/env node
 'use strict';
 /**
- * Cleanup old auth result files and expired password reset tokens.
+ * Cleanup old auth result files (koyjabo-core) and expired OTP/reset tokens (koyjabo).
  *
- * Both results and user data live in koyjabo-core (this repo).
- * The GITHUB_TOKEN auto-credential has write access here — no second PAT needed.
+ * Uses two tokens:
+ *   AUTH_GITHUB_TOKEN  — GITHUB_TOKEN, write access to koyjabo-core (result files)
+ *   DATA_GITHUB_TOKEN  — classic PAT, write access to private koyjabo repo (reset tokens)
  */
 
 const { Octokit } = require('@octokit/rest');
 
-const [OWNER, REPO] = (process.env.GITHUB_REPOSITORY || '/').split('/');
-const octokit = new Octokit({ auth: process.env.AUTH_GITHUB_TOKEN });
+const [CORE_OWNER, CORE_REPO] = (process.env.GITHUB_REPOSITORY || 'mejbaurbahar/koyjabo-core').split('/');
+const DATA_OWNER = 'mejbaurbahar';
+const DATA_REPO  = 'koyjabo';
 
-async function listDir(path) {
+const octokitCore = new Octokit({ auth: process.env.AUTH_GITHUB_TOKEN });
+const octokitData = new Octokit({ auth: process.env.DATA_GITHUB_TOKEN || process.env.AUTH_GITHUB_TOKEN });
+
+async function listDir(octokit, owner, repo, path) {
   try {
-    const res = await octokit.repos.getContent({ owner: OWNER, repo: REPO, path });
+    const res = await octokit.repos.getContent({ owner, repo, path });
     return Array.isArray(res.data) ? res.data : [];
   } catch (_) { return []; }
 }
 
-async function readJSON(path) {
+async function readJSON(octokit, owner, repo, path) {
   try {
-    const res = await octokit.repos.getContent({ owner: OWNER, repo: REPO, path });
+    const res = await octokit.repos.getContent({ owner, repo, path });
     if (res.data.type !== 'file') return null;
     const content = JSON.parse(Buffer.from(res.data.content, 'base64').toString('utf8'));
     return { content, sha: res.data.sha };
   } catch (_) { return null; }
 }
 
-async function deleteFile(path, sha) {
+async function deleteFile(octokit, owner, repo, path, sha) {
   try {
     await octokit.repos.deleteFile({
-      owner: OWNER, repo: REPO, path, sha,
+      owner, repo, path, sha,
       message: 'Cleanup expired auth file',
       committer: { name: 'KoyJabo Auth Bot', email: 'noreply@koyjabo.com' }
     });
-    console.log(`Deleted: ${path}`);
+    console.log(`Deleted: ${owner}/${repo}/${path}`);
   } catch (err) {
     console.log(`Failed to delete ${path}: ${err.message}`);
   }
@@ -45,27 +50,27 @@ async function main() {
   const ONE_HOUR = 60 * 60 * 1000;
   const now = Date.now();
 
-  // Clean result files older than 1 hour
-  console.log('Cleaning result files...');
-  const resultFiles = await listDir('data/results');
+  // Clean result files older than 1 hour from koyjabo-core
+  console.log(`Cleaning result files from ${CORE_OWNER}/${CORE_REPO}...`);
+  const resultFiles = await listDir(octokitCore, CORE_OWNER, CORE_REPO, 'data/results');
   for (const file of resultFiles) {
     if (!file.name.endsWith('.json')) continue;
-    const data = await readJSON(file.path);
+    const data = await readJSON(octokitCore, CORE_OWNER, CORE_REPO, file.path);
     if (data && data.content.completedAt && (now - data.content.completedAt) > ONE_HOUR) {
-      await deleteFile(file.path, file.sha);
+      await deleteFile(octokitCore, CORE_OWNER, CORE_REPO, file.path, file.sha);
     }
   }
 
-  // Clean expired/used password reset tokens
-  console.log('Cleaning expired reset tokens...');
-  const resetFiles = await listDir('data/password_resets');
+  // Clean expired/used OTP reset tokens from private koyjabo repo
+  console.log(`Cleaning expired reset tokens from ${DATA_OWNER}/${DATA_REPO}...`);
+  const resetFiles = await listDir(octokitData, DATA_OWNER, DATA_REPO, 'data/password_resets');
   for (const file of resetFiles) {
     if (!file.name.endsWith('.json')) continue;
-    const data = await readJSON(file.path);
+    const data = await readJSON(octokitData, DATA_OWNER, DATA_REPO, file.path);
     if (data) {
       const { expiresAt, used } = data.content;
       if (used || (expiresAt && expiresAt < now)) {
-        await deleteFile(file.path, data.sha);
+        await deleteFile(octokitData, DATA_OWNER, DATA_REPO, file.path, data.sha);
       }
     }
   }

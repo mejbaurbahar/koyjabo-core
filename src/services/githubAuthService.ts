@@ -230,14 +230,24 @@ export async function signupUser(
 }
 
 /**
- * FORGOT PASSWORD — triggers workflow.
+ * FORGOT PASSWORD — triggers workflow, sends OTP to email.
+ * Returns sessionToken which is needed for verifyOtp + resetPassword.
  */
 export async function forgotPassword(email: string): Promise<AuthResult> {
   return triggerAndWait('forgot-password', { email: email.toLowerCase().trim() });
 }
 
 /**
- * RESET PASSWORD — triggers workflow with the reset token.
+ * VERIFY OTP — verifies the 6-digit code sent to user's email.
+ */
+export async function verifyOtp(sessionToken: string, otp: string): Promise<AuthResult> {
+  return triggerAndWait('verify-otp', {
+    data: JSON.stringify({ sessionToken, otp })
+  });
+}
+
+/**
+ * RESET PASSWORD — resets password using the verified OTP session token.
  */
 export async function resetPassword(token: string, newPassword: string): Promise<AuthResult> {
   const passwordHash = await sha256(newPassword);

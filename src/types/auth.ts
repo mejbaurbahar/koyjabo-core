@@ -39,4 +39,6 @@ export interface AuthResult {
   completedAt?: number;
   resetUrl?: string;
   resetToken?: string;
+  sessionToken?: string;
+  otp?: string;
 }

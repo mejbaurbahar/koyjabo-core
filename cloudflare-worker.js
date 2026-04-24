@@ -26,7 +26,7 @@ const ALLOWED_ORIGINS = [
 ];
 
 const ALLOWED_ACTIONS = new Set([
-  'signup', 'login', 'change-password', 'forgot-password', 'reset-password',
+  'signup', 'login', 'change-password', 'forgot-password', 'verify-otp', 'reset-password',
   'update-profile', 'save-history', 'record-device', 'logout-device',
   'upload-avatar', 'record-visit', 'save-data', 'record-query',
 ]);
@@ -100,8 +100,8 @@ export default {
     const APP_OWNER = env.APP_OWNER || 'mejbaurbahar';
     const APP_REPO  = env.APP_REPO  || 'Dhaka-Commute';
     const DATA_OWNER = env.DATA_OWNER || 'mejbaurbahar';
-    const DATA_REPO  = env.DATA_REPO  || 'koyjabo-core';
-    const CORE_REPO = 'koyjabo-core';
+    const DATA_REPO  = env.DATA_REPO  || 'koyjabo';   // private data repo
+    const CORE_REPO = 'koyjabo-core';                  // result files live here
 
     if (!TOKEN) {
       return new Response(

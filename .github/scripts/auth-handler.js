@@ -17,29 +17,29 @@ const crypto = require('crypto');
 const { Octokit } = require('@octokit/rest');
 
 // ── Config ────────────────────────────────────────────────────────────────────
-// Results must always go to the public frontend repo so they can be polled by the worker
-const APP_OWNER = process.env.GITHUB_REPOSITORY ? process.env.GITHUB_REPOSITORY.split('/')[0] : 'mejbaurbahar';
-const APP_REPO  = 'Dhaka-Commute';
+// This repo (koyjabo-core) — temp result files written here, polled by Cloudflare Worker
+const CORE_OWNER = 'mejbaurbahar';
+const CORE_REPO  = 'koyjabo-core';
 
-// Private data repo — all user data stored here, invisible to public
-const DATA_OWNER = process.env.GITHUB_REPOSITORY ? process.env.GITHUB_REPOSITORY.split('/')[0] : 'mejbaurbahar';
-const DATA_REPO  = process.env.GITHUB_REPOSITORY ? process.env.GITHUB_REPOSITORY.split('/')[1] : 'koyjabo-core';
+// Private data repo — all user data (users, devices, avatars, history, password_resets)
+const DATA_OWNER = 'mejbaurbahar';
+const DATA_REPO  = 'koyjabo';
 
-// GITHUB_TOKEN: automatic per-run token, has write access to the app repo (Dhaka-Commute)
-const APP_TOKEN  = process.env.AUTH_GITHUB_TOKEN;
-// DATA_GITHUB_TOKEN: classic PAT with repo access to koyjabo (set as a repo secret)
-const DATA_TOKEN = process.env.DATA_GITHUB_TOKEN || APP_TOKEN;
+// GITHUB_TOKEN: auto per-run token, write access to koyjabo-core only
+const CORE_TOKEN = process.env.AUTH_GITHUB_TOKEN;
+// DATA_GITHUB_TOKEN: classic PAT with repo access to private koyjabo data repo
+const DATA_TOKEN = process.env.DATA_GITHUB_TOKEN || CORE_TOKEN;
 
 const JWT_SECRET     = process.env.JWT_SECRET     || '';
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || '';
 const SMTP_EMAIL     = process.env.SMTP_EMAIL     || '';
 const SMTP_PASSWORD  = process.env.SMTP_PASSWORD  || '';
-const APP_URL        = process.env.APP_URL        || 'https://mejbaurbahar.github.io/Dhaka-Commute';
+const APP_URL        = process.env.APP_URL        || 'https://koyjabo.com';
 
-// Two separate API clients
-// If running in koyjabo-core, octokitApp needs DATA_TOKEN to write results to Dhaka-Commute
-const octokitApp  = new Octokit({ auth: DATA_TOKEN }); 
-const octokitData = new Octokit({ auth: APP_TOKEN });  // reads/writes all user data in private koyjabo-core
+// octokitCore: result files → koyjabo-core (GITHUB_TOKEN, automatic)
+// octokitData: user data   → koyjabo       (DATA_GITHUB_TOKEN, PAT)
+const octokitCore = new Octokit({ auth: CORE_TOKEN });
+const octokitData = new Octokit({ auth: DATA_TOKEN });
 
 // ── Disposable / temp-mail domain blocklist ───────────────────────────────────
 const TEMP_MAIL_DOMAINS = new Set([
@@ -378,10 +378,10 @@ async function deleteDataFile(path, sha) {
   } catch (_) { /* ignore */ }
 }
 
-// ── App Repo File Operations (public Dhaka-Commute, results only) ─────────────
-async function readAppFile(path) {
+// ── Core Repo File Operations (koyjabo-core, result files only) ───────────────
+async function readCoreFile(path) {
   try {
-    const res = await octokitApp.repos.getContent({ owner: APP_OWNER, repo: APP_REPO, path });
+    const res = await octokitCore.repos.getContent({ owner: CORE_OWNER, repo: CORE_REPO, path });
     if (res.data.type !== 'file') return null;
     const content = JSON.parse(Buffer.from(res.data.content, 'base64').toString('utf8'));
     return { content, sha: res.data.sha };
@@ -391,15 +391,15 @@ async function readAppFile(path) {
   }
 }
 
-async function writeAppFile(path, content, sha, message = 'Auth result') {
+async function writeCoreFile(path, content, sha, message = 'Auth result') {
   const encoded = Buffer.from(JSON.stringify(content, null, 2)).toString('base64');
   const params = {
-    owner: APP_OWNER, repo: APP_REPO, path, message,
+    owner: CORE_OWNER, repo: CORE_REPO, path, message,
     content: encoded,
     committer: { name: 'KoyJabo Auth Bot', email: 'noreply@koyjabo.com' }
   };
   if (sha) params.sha = sha;
-  await octokitApp.repos.createOrUpdateFileContents(params);
+  await octokitCore.repos.createOrUpdateFileContents(params);
 }
 
 async function ensureIndexExists() {
@@ -667,53 +667,54 @@ async function handleForgotPassword({ email }) {
 
   // Always return success to prevent email enumeration attacks
   if (!userId) {
-    return { success: true, message: 'If this email is registered, a reset link has been prepared.' };
+    return { success: true, message: 'If this email is registered, a verification code has been sent.' };
   }
 
-  const token = generateSecureToken();
-  const tokenHash = sha256hex(token);
-  const expiresAt = Date.now() + 60 * 60 * 1000; // 1 hour
+  // Generate 6-digit OTP and a UUID session token
+  const otp = String(Math.floor(100000 + Math.random() * 900000));
+  const sessionToken = crypto.randomUUID();
+  const otpHash = sha256hex(otp);
+  const tokenHash = sha256hex(sessionToken);
+  const expiresAt = Date.now() + 15 * 60 * 1000; // 15 minutes
 
-  const resetFile = await readDataFile(`data/password_resets/${tokenHash}.json`);
   await writeDataFile(
     `data/password_resets/${tokenHash}.json`,
-    { userId, expiresAt, used: false, createdAt: Date.now() },
-    resetFile?.sha,
-    'Create password reset token'
+    { userId, otpHash, expiresAt, used: false, verified: false, attempts: 0, createdAt: Date.now() },
+    null,
+    'Create OTP reset session'
   );
-
-  const resetUrl = `${APP_URL}?view=reset-password&token=${token}`;
 
   const userFile = await readDataFile(`data/users/${userId}.json`);
   const displayName = userFile?.content?.displayName || 'User';
 
   const sent = await sendEmail({
     to: normalizedEmail,
-    subject: '🔑 Reset Your KoyJabo Password',
+    subject: `${otp} is your KoyJabo verification code`,
     html: `<!DOCTYPE html>
 <html>
 <body style="font-family:sans-serif;background:#f0f9ff;padding:24px;margin:0">
-  <div style="max-width:500px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
-    <div style="background:#ffffff;padding:32px 24px;text-align:center;border-bottom:1px solid #e5e7eb">
+  <div style="max-width:480px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
+    <div style="background:#ffffff;padding:28px 24px;text-align:center;border-bottom:1px solid #e5e7eb">
       <img src="${APP_URL}/logo.png" alt="KoyJabo" style="width:48px;height:48px;border-radius:12px;background:#ffffff;padding:6px;margin-bottom:10px;display:block;margin-left:auto;margin-right:auto;">
-      <h1 style="color:#111827;margin:0;font-size:24px">🔑 Password Reset</h1>
-      <p style="color:#4b5563;margin:6px 0 0;font-size:14px">কই যাবো KoyJabo</p>
+      <h1 style="color:#111827;margin:0;font-size:22px">🔑 Verification Code</h1>
+      <p style="color:#4b5563;margin:6px 0 0;font-size:13px">কই যাবো KoyJabo — Password Reset</p>
     </div>
-    <div style="padding:32px 24px">
-      <p style="color:#111827;font-size:15px;line-height:1.6;margin:0 0 20px">
-        Hello <strong>${displayName}</strong>,<br><br>
-        We received a request to reset your KoyJabo password. Click the button below to set a new one.
+    <div style="padding:32px 24px;text-align:center">
+      <p style="color:#374151;font-size:15px;line-height:1.6;margin:0 0 24px">
+        Hello <strong>${displayName}</strong>,<br>
+        Use the code below to reset your password.
       </p>
-      <a href="${resetUrl}"
-         style="display:block;text-align:center;background:linear-gradient(135deg,#0284c7,#7c3aed);color:#fff;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px;margin-bottom:24px">
-        Reset Password →
-      </a>
-      <p style="color:#6b7280;font-size:13px;text-align:center">This link expires in <strong>1 hour</strong>.</p>
-      <p style="color:#9ca3af;font-size:12px;text-align:center;margin-top:16px">
-        If you didn't request a reset, you can safely ignore this email.
-      </p>
+      <div style="background:#f0f9ff;border:2px dashed #0284c7;border-radius:16px;padding:20px 32px;margin:0 0 24px;display:inline-block">
+        <p style="margin:0 0 4px;color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px">Your code</p>
+        <p style="margin:0;color:#0284c7;font-size:42px;font-weight:900;letter-spacing:12px;font-family:monospace">${otp}</p>
+      </div>
+      <p style="color:#6b7280;font-size:13px;margin:0 0 8px">This code expires in <strong>15 minutes</strong>.</p>
+      <p style="color:#9ca3af;font-size:12px;margin:0">Do not share this code with anyone.</p>
     </div>
-    <div style="background:#f9fafb;padding:16px 24px;text-align:center;border-top:1px solid #f3f4f6">
+    <div style="background:#fef2f2;padding:16px 24px;text-align:center">
+      <p style="color:#b91c1c;font-size:12px;margin:0">If you didn't request this, please ignore this email. Your account is safe.</p>
+    </div>
+    <div style="background:#f9fafb;padding:12px 24px;text-align:center;border-top:1px solid #f3f4f6">
       <p style="color:#9ca3af;font-size:11px;margin:0">কই যাবো KoyJabo — Dhaka Transport Guide</p>
     </div>
   </div>
@@ -722,32 +723,71 @@ async function handleForgotPassword({ email }) {
   });
 
   if (sent) {
-    return { success: true, message: 'Password reset email sent. Check your inbox.' };
+    return { success: true, sessionToken, message: 'Verification code sent to your email. Check your inbox.' };
   }
 
-  // SMTP not configured — return the reset URL directly so the user can still reset.
-  // The result file is identified only by a random UUID and is auto-deleted after 1 hour,
-  // so returning the token here is safe.
-  console.log(`[forgot-password] SMTP not configured. Returning reset URL in result.`);
+  // SMTP not configured — return OTP directly so user can still reset in dev/fallback mode
+  console.log(`[forgot-password] SMTP not configured. Returning OTP in result (dev fallback).`);
   return {
     success: true,
-    resetUrl,
-    resetToken: token,
-    message: 'Email service not configured. Use the link below to reset your password (valid for 1 hour).'
+    sessionToken,
+    otp,
+    message: `Email service not configured. Your verification code is: ${otp} (valid for 15 minutes).`
   };
 }
 
+async function handleVerifyOtp({ sessionToken, otp }) {
+  if (!sessionToken || !otp) return { success: false, error: 'Session token and verification code required.' };
+
+  const tokenHash = sha256hex(sessionToken);
+  const resetFile = await readDataFile(`data/password_resets/${tokenHash}.json`);
+
+  if (!resetFile) return { success: false, error: 'Invalid or expired session. Please request a new code.' };
+
+  const { otpHash, expiresAt, used, verified, attempts = 0 } = resetFile.content;
+
+  if (used)              return { success: false, error: 'This session has already been used.' };
+  if (expiresAt < Date.now()) return { success: false, error: 'This code has expired. Please request a new one.' };
+  if (attempts >= 3)     return { success: false, error: 'Too many incorrect attempts. Please request a new code.' };
+  if (verified)          return { success: true }; // already verified, idempotent
+
+  const inputOtpHash = sha256hex(String(otp).trim());
+  if (inputOtpHash !== otpHash) {
+    const newAttempts = attempts + 1;
+    await writeDataFile(
+      `data/password_resets/${tokenHash}.json`,
+      { ...resetFile.content, attempts: newAttempts },
+      resetFile.sha,
+      'OTP attempt failed'
+    );
+    const remaining = 3 - newAttempts;
+    if (remaining <= 0) return { success: false, error: 'Too many incorrect attempts. Please request a new code.' };
+    return { success: false, error: `Incorrect code. ${remaining} attempt${remaining !== 1 ? 's' : ''} remaining.` };
+  }
+
+  await writeDataFile(
+    `data/password_resets/${tokenHash}.json`,
+    { ...resetFile.content, verified: true, verifiedAt: Date.now() },
+    resetFile.sha,
+    'OTP verified'
+  );
+
+  return { success: true };
+}
+
 async function handleResetPassword({ token, newPasswordHash }) {
-  if (!token || !newPasswordHash) return { success: false, error: 'Reset token and new password required.' };
+  if (!token || !newPasswordHash) return { success: false, error: 'Session token and new password required.' };
 
   const tokenHash = sha256hex(token);
   const resetFile = await readDataFile(`data/password_resets/${tokenHash}.json`);
 
-  if (!resetFile) return { success: false, error: 'Invalid or expired reset link. Please request a new one.' };
+  if (!resetFile) return { success: false, error: 'Invalid or expired session. Please request a new code.' };
 
-  const { userId, expiresAt, used } = resetFile.content;
-  if (used) return { success: false, error: 'This reset link has already been used.' };
-  if (expiresAt < Date.now()) return { success: false, error: 'This reset link has expired. Please request a new one.' };
+  const { userId, expiresAt, used, verified, otpHash } = resetFile.content;
+  if (used)                    return { success: false, error: 'This session has already been used.' };
+  if (expiresAt < Date.now())  return { success: false, error: 'This code has expired. Please request a new one.' };
+  // OTP session must be verified before password reset is allowed
+  if (otpHash !== undefined && !verified) return { success: false, error: 'Please verify your code first.' };
 
   const userFile = await readDataFile(`data/users/${userId}.json`);
   if (!userFile) return { success: false, error: 'User account not found.' };
@@ -979,19 +1019,12 @@ async function handleUploadAvatar({ userId, imageData }) {
   return { success: true, hasAvatar: true };
 }
 
-// ── Result Writer (writes to current repo via GITHUB_TOKEN, polled by frontend) ──
+// ── Result Writer (writes to koyjabo-core via GITHUB_TOKEN, polled by Cloudflare Worker) ──
 async function writeResult(requestId, result) {
   const content = { ...result, completedAt: Date.now() };
-  // Always write to DATA_REPO (koyjabo-core) using octokitData (GITHUB_TOKEN).
-  // The Cloudflare Worker falls back to koyjabo-core when reading r=a results,
-  // so no second PAT (DATA_GITHUB_TOKEN) is needed.
-  const existing = await readDataFile(`data/results/${requestId}.json`);
-  await writeDataFile(
-    `data/results/${requestId}.json`,
-    content,
-    existing?.sha,
-    `Auth result: ${requestId}`
-  );
+  const path = `data/results/${requestId}.json`;
+  const existing = await readCoreFile(path);
+  await writeCoreFile(path, content, existing?.sha, `Auth result: ${requestId}`);
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
@@ -1036,6 +1069,9 @@ async function main() {
         break;
       case 'forgot-password':
         result = await handleForgotPassword({ email });
+        break;
+      case 'verify-otp':
+        result = await handleVerifyOtp({ sessionToken: data.sessionToken, otp: data.otp });
         break;
       case 'reset-password':
         result = await handleResetPassword({ token: data.token, newPasswordHash: passwordHash });
