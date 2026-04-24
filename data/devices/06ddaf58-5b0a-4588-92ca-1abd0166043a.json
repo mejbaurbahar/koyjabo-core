@@ -1,0 +1,15 @@
+[
+  {
+    "id": "bdfa243e-c2a5-4ba5-a894-93426d3adbe0",
+    "userId": "06ddaf58-5b0a-4588-92ca-1abd0166043a",
+    "displayName": "tester",
+    "username": "tester123",
+    "name": "Chrome on Windows",
+    "os": "Windows 10/11",
+    "browser": "Chrome 147.0.0.0",
+    "deviceType": "desktop",
+    "ip": "103.166.41.20",
+    "firstLogin": 1777004089689,
+    "lastLogin": 1777004089689
+  }
+]
