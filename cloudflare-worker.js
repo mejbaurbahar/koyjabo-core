@@ -21,6 +21,7 @@
 const ALLOWED_ORIGINS = [
   'https://koyjabo.com',
   'https://www.koyjabo.com',
+  'https://dev.koyjabo.com',
   'http://localhost:5173',
   'http://localhost:3000',
 ];
@@ -82,7 +83,8 @@ export default {
     const referer = request.headers.get('Referer') || '';
     const isLocalDev = origin.startsWith('http://localhost');
     const isOurSite = origin.startsWith('https://koyjabo.com') ||
-                      origin.startsWith('https://www.koyjabo.com');
+                      origin.startsWith('https://www.koyjabo.com') ||
+                      origin.startsWith('https://dev.koyjabo.com');
     if (!isLocalDev && !isOurSite && origin !== '') {
       return new Response('Forbidden', { status: 403, headers: corsHeaders(origin) });
     }
@@ -175,10 +177,12 @@ export default {
       }
 
       // Decode base64 content and return ONLY the parsed JSON — no sha, no URLs, no metadata
+      // TextDecoder handles UTF-8 multi-byte chars (Bangla, Arabic, etc.) that atob() can't
       let decoded;
       try {
         const clean = data.content.replace(/\n/g, '');
-        const text = atob(clean);
+        const bytes = Uint8Array.from(atob(clean), c => c.charCodeAt(0));
+        const text = new TextDecoder().decode(bytes);
         decoded = JSON.parse(text);
       } catch {
         return new Response(
