@@ -1182,6 +1182,38 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   const searchQuery = isBanglishQuery ? query + ' ' + normalizeBanglish(query) : query;
   const lowerQuery = normalize(searchQuery);
 
+  // ── Identity / creator / greeting — must run FIRST before any knowledge lookup ──
+
+  // Creator / builder questions
+  if (lowerQuery.match(/who made (you|this|koyjabo|koy jabo|this app|it)|who built (you|this|koyjabo|this app|it)|who created (you|this|koyjabo|this app|it)|who developed (you|this|koyjabo|this app)|who is (your|the) (creator|developer|maker|author|founder)|who design|তোমাকে কে বানিয়েছে|কে বানিয়েছে|কে তৈরি করেছে|কে বানিয়েছেন|কে ডেভেলপ করেছে/)) {
+    return isBn
+      ? "👨‍💻 আমাকে তৈরি করেছেন **মেজবাউর বাহার ফাগুন (Mejbaur Bahar Fagun)**, একজন **সফটওয়্যার ইঞ্জিনিয়ার**। তিনি বাংলাদেশের মানুষের যাতায়াত সহজ করার লক্ষ্যে **কই যাবো (KoyJabo)** প্ল্যাটফর্ম ও এই এআই তৈরি করেছেন। আমি প্রতিদিন ব্যবহারকারীদের প্রশ্ন থেকে শিখে আরও স্মার্ট হচ্ছি! 🚌"
+      : "👨‍💻 I was built by **Mejbaur Bahar Fagun**, a **Software Engineer** from Bangladesh. He created the **KoyJabo** platform and this AI to make travel across Bangladesh easy. I learn from every conversation and keep getting smarter! 🚌";
+  }
+
+  // Identity / introduction questions
+  if (lowerQuery.match(/who are you|what are you|introduce yourself|what can you do|tell me about yourself|your name|are you ai|are you a bot|what is koyjabo|what is koy jabo|আপনি কে|তুমি কে|আপনার নাম|আপনি কী|তোমার নাম|তুমি কি ai|তুমি কি বট|কই যাবো কী|কই যাবো কি/)) {
+    return isBn
+      ? "🤖 আমি **কই যাবো (KoyJabo) AI Travel Assistant** — বাংলাদেশের যোগাযোগ ব্যবস্থার জন্য আপনার স্মার্ট ভ্রমণ সহায়ক!\n\n**আমি যা করতে পারি:**\n- 🚌 **ঢাকার স্থানীয় বাস রুট** — ফার্মগেট থেকে মিরপুর, গুলশান থেকে মতিঝিল সব রুট\n- 🚇 **মেট্রোরেল (MRT-6)** — উত্তরা থেকে মতিঝিল পর্যন্ত স্টেশন, ভাড়া ও সময়সূচি\n- 🚂 **আন্তঃজেলা ভ্রমণ** — বাস, ট্রেন, বিমান ও লঞ্চে ঢাকা থেকে যেকোনো জেলায়\n- ✈️ **বিমান ফ্লাইট** — ঘরোয়া রুট ও এয়ারপোর্ট তথ্য\n- 🚢 **লঞ্চ সার্ভিস** — ঢাকা সদরঘাট থেকে দক্ষিণ বাংলার নৌপথ\n- 🗺️ **পর্যটন গাইড** — কক্সবাজার, সুন্দরবন, সেন্টমার্টিন ভ্রমণ পরিকল্পনা\n\n*(নির্মাতা: Mejbaur Bahar Fagun, Software Engineer)*\n\nআজ কোথায় যেতে চান? 😊"
+      : "🤖 I am **KoyJabo AI Travel Assistant** — your smart travel guide for Bangladesh!\n\n**What I can help with:**\n- 🚌 **Dhaka Local Buses** — routes, stops, fares across 200+ bus lines\n- 🚇 **Metro Rail (MRT-6)** — stations, fares, schedules from Uttara to Motijheel\n- 🚂 **Intercity Travel** — Bus, Train, Flight & Launch from Dhaka to any district\n- ✈️ **Domestic Flights** — airport info, routes & airlines\n- 🚢 **Launch Services** — Sadarghat to southern Bangladesh waterway routes\n- 🗺️ **Tourist Guide** — Cox's Bazar, Sundarbans, Saint Martin tour plans\n\n*(Built by Mejbaur Bahar Fagun, Software Engineer)*\n\nWhere would you like to go today? 😊";
+  }
+
+  // Greeting
+  if (lowerQuery.match(/^(hi|hello|hey|salam|assalamu|হাই|হেলো|হ্যালো)\b/) || lowerQuery === 'help' || lowerQuery === 'সাহায্য') {
+    return isBn
+      ? "👋 হ্যালো! আমি কই যাবো AI সহায়ক। বলুন কোথায় যেতে চান — বাস, ট্রেন, মেট্রো, বিমান বা লঞ্চ যেকোনো কিছুতে সাহায্য করব!"
+      : "👋 Hello! I'm KoyJabo AI assistant. Tell me where you want to go — I can help with buses, trains, metro, flights or launches!";
+  }
+
+  // General conversation fallback for non-travel queries
+  const isNonTravel = lowerQuery.match(/^(thanks|thank you|ok|okay|great|nice|wow|cool|good|bad|yes|no|sure|why|how|what|when|where)\s*$/)
+    || lowerQuery.match(/^(ধন্যবাদ|আচ্ছা|ঠিক আছে|হ্যাঁ|না|ভালো|খারাপ|কেন|কীভাবে|কখন)\s*$/);
+  if (isNonTravel) {
+    return isBn
+      ? "😊 আমি মূলত বাংলাদেশের পরিবহন বিষয়ে সাহায্য করি। আপনি কোথায় যেতে চান বলুন — বাস রুট, ট্রেন সময়সূচি, ভাড়া বা ভ্রমণ পরিকল্পনায় সাহায্য করতে পারব!"
+      : "😊 I specialize in Bangladesh travel — bus routes, train schedules, fares, metro, flights, and tour planning. Where would you like to go?";
+  }
+
   // Advanced bilingual Q&A retrieval (RAG-lite) from curated knowledge base.
   const advancedMatch = getAdvancedKnowledgeAnswer(query);
   if (advancedMatch && advancedMatch.confidence >= 0.62) {
@@ -1314,30 +1346,6 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
     if (plan) {
       return plan;
     }
-  }
-
-  // 0a-i. Creator / builder questions
-  if (lowerQuery.match(/who made you|who built you|who created you|who developed you|who is your (creator|developer|maker|author)|who design|তোমাকে কে বানিয়েছে|কে বানিয়েছে|কে তৈরি করেছে|কে বানিয়েছেন|কে ডেভেলপ করেছে/)) {
-    const isBn = /[\u0980-\u09FF]/.test(query);
-    return isBn
-      ? "👨‍💻 আমাকে তৈরি করেছেন **মেজবাউর বাহার ফাগুন (Mejbaur Bahar Fagun)**, একজন **সফটওয়্যার ইঞ্জিনিয়ার**। তিনি বাংলাদেশের মানুষের যাতায়াত সহজ করার লক্ষ্যে **কই যাবো (KoyJabo)** প্ল্যাটফর্ম ও এই এআই তৈরি করেছেন। আমি প্রতিদিন ব্যবহারকারীদের প্রশ্ন থেকে শিখে আরও স্মার্ট হচ্ছি! 🚌"
-      : "👨‍💻 I was built by **Mejbaur Bahar Fagun**, a **Software Engineer** from Bangladesh. He created the **KoyJabo** platform and this AI assistant to help people navigate Bangladesh's transport system easily. I learn from user queries every day and keep improving! 🚌";
-  }
-
-  // 0a. Identity / Introduction questions
-  if (lowerQuery.match(/who are you|what are you|introduce yourself|what can you do|tell me about yourself|your name|are you ai|are you a bot|you are|আপনি কে|তুমি কে|আপনার নাম|আপনি কী|তোমার নাম|তুমি কি ai|তুমি কি বট/)) {
-    const isBn = /[\u0980-\u09FF]/.test(query);
-    return isBn
-      ? "🤖 আমি **কই যাবো (KoyJabo) AI Travel Assistant** — বাংলাদেশের যোগাযোগ ব্যবস্থার জন্য আপনার স্মার্ট ভ্রমণ সহায়ক!\n\n**আমি যা করতে পারি:**\n- 🚌 **ঢাকার স্থানীয় বাস রুট** — ফার্মগেট থেকে মিরপুর, গুলশান থেকে মতিঝিল সব রুট\n- 🚇 **মেট্রোরেল (MRT-6)** — উত্তরা থেকে মতিঝিল পর্যন্ত স্টেশন, ভাড়া ও সময়সূচি\n- 🚂 **আন্তঃজেলা ভ্রমণ** — বাস, ট্রেন, বিমান ও লঞ্চে ঢাকা থেকে যেকোনো জেলায়\n- ✈️ **বিমান ফ্লাইট** — ঘরোয়া রুট ও এয়ারপোর্ট তথ্য\n- 🚢 **লঞ্চ সার্ভিস** — ঢাকা সদরঘাট থেকে দক্ষিণ বাংলার নৌপথ\n- 🗺️ **পর্যটন গাইড** — কক্সবাজার, সুন্দরবন, সেন্টমার্টিন ভ্রমণ পরিকল্পনা\n- 🗣️ **বাংলিশ সাপোর্ট** — বাংলা, ইংরেজি ও বাংলিশে প্রশ্ন করুন\n\n*(নির্মাতা: Mejbaur Bahar Fagun, Software Engineer)*\n\nআজ কোথায় যেতে চান? 😊"
-      : "🤖 I am **KoyJabo AI Travel Assistant** — your smart travel guide for Bangladesh!\n\n**What I can help with:**\n- 🚌 **Dhaka Local Buses** — routes, stops, fares across 200+ bus lines\n- 🚇 **Metro Rail (MRT-6)** — stations, fares, schedules from Uttara to Motijheel\n- 🚂 **Intercity Travel** — Bus, Train, Flight & Launch from Dhaka to any district\n- ✈️ **Domestic Flights** — airport info, routes & airlines\n- 🚢 **Launch Services** — Sadarghat to southern Bangladesh waterway routes\n- 🗺️ **Tourist Guide** — Cox's Bazar, Sundarbans, Saint Martin tour plans\n- 🗣️ **Banglish OK!** — ask in English, Bengali or Banglish\n\n*(Built by Mejbaur Bahar Fagun, Software Engineer)*\n\nWhere would you like to go today? 😊";
-  }
-
-  // 0b. Greeting / General
-  if (lowerQuery.match(/^(hi|hello|hey|salam|help|assalamu|হাই|হেলো|সাহায্য|কি|কী)/)) {
-    const isBn = /[\u0980-\u09FF]/.test(query);
-    return isBn
-      ? "👋 হ্যালো! আমি আপনার কই যাবো (Koy Jabo) এআই সহায়ক। আমি আপনাকে সাহায্য করতে পারি:\n- 🚌 **ঢাকার স্থানীয় বাস রুট** (যেমন: 'ফার্মগেট থেকে মিরপুর যেতে বাস')\n- 🚇 **মেট্রো রেল তথ্য** (যেমন: 'উত্তরা থেকে মতিঝিল মেট্রো')\n- 🚂 **আন্তঃজেলা (বাস/ট্রেন/বিমান/লঞ্চ)** (যেমন: 'ঢাকা থেকে বরিশাল')\n- 🗺️ **পর্যটন গাইড** (যেমন: 'কক্সবাজার কিভাবে যাব')\n\nআজ আপনাকে কিভাবে সাহায্য করতে পারি?"
-      : "👋 Hello! I am your Koy Jabo Assistant. I can help you with:\n- 🚌 **Local Bus Routes** (e.g., 'Bus from Farmgate to Mirpur')\n- 🚇 **Metro Rail Info** (e.g., 'Metro from Uttara to Motijheel')\n- 🚂 **Intercity (Bus/Train/Air/Launch)** (e.g., 'Dhaka to Barishal')\n- 🗺️ **Tourist Guide** (e.g., 'How to reach Cox's Bazar')\n- 🗣️ **Banglish OK!** (e.g., 'farmgate theke mirpur bus ache?', 'ami gulshan jabo kivabe')\n\nHow can I help you today?";
   }
 
   // Priority checks for specific info types
@@ -1539,7 +1547,7 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
 
       return isBnFinal
         ? "🤔 আমি আপনার উল্লেখিত স্থানটি বুঝতে পারছি না। দয়া করে নির্দিষ্ট স্টেশনের নাম (যেমন: ‘ফার্মগেট’, ‘মিরপুর’, ‘গুলশান’) অথবা আন্তঃজেলা ভ্রমণের জন্য জেলার নাম উল্লেখ করুন।"
-        : "🤔 I couldn't understand that location. Please try mentioning specific stations like 'Farmgate', 'Mirpur', 'Gulshan' or district names for intercity travel.";
+        : "🤔 I'm KoyJabo's travel assistant -- I help with bus routes, trains, metro, flights and tours across Bangladesh. Try: 'Bus from Farmgate to Mirpur', 'Dhaka to Sylhet train', or 'Metro fare'.";
     }
   }
 
