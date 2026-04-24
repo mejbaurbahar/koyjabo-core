@@ -18,85 +18,19 @@
     {
       "busId": "13_no",
       "busName": "13 No.",
-      "timestamp": 1776622936278,
-      "date": "2026-04-19"
-    },
-    {
-      "busId": "baishakhi",
-      "busName": "Baishakhi Paribahan",
-      "timestamp": 1776673542222,
+      "timestamp": 1776661133831,
       "date": "2026-04-20"
-    },
-    {
-      "busId": "baishakhi",
-      "busName": "Baishakhi Paribahan",
-      "timestamp": 1776673542222,
-      "date": "2026-04-20"
-    },
-    {
-      "busId": "baishakhi",
-      "busName": "Baishakhi Paribahan",
-      "timestamp": 1776673569259,
-      "date": "2026-04-20"
-    },
-    {
-      "busId": "baishakhi",
-      "busName": "Baishakhi Paribahan",
-      "timestamp": 1776673569259,
-      "date": "2026-04-20"
-    },
-    {
-      "busId": "9_no",
-      "busName": "9 No.",
-      "timestamp": 1776673581531,
-      "date": "2026-04-20"
-    },
-    {
-      "busId": "baishakhi",
-      "busName": "Baishakhi Paribahan",
-      "timestamp": 1776824574849,
-      "date": "2026-04-22"
-    },
-    {
-      "busId": "baishakhi",
-      "busName": "Baishakhi Paribahan",
-      "timestamp": 1776825815377,
-      "date": "2026-04-22"
     },
     {
       "busId": "13_no",
       "busName": "13 No.",
-      "timestamp": 1776825820654,
-      "date": "2026-04-22"
-    },
-    {
-      "busId": "baishakhi",
-      "busName": "Baishakhi Paribahan",
-      "timestamp": 1776825825479,
-      "date": "2026-04-22"
-    },
-    {
-      "busId": "baishakhi",
-      "busName": "Baishakhi Paribahan",
-      "timestamp": 1776825844293,
-      "date": "2026-04-22"
+      "timestamp": 1776763543016,
+      "date": "2026-04-21"
     },
     {
       "busId": "13_no",
       "busName": "13 No.",
-      "timestamp": 1776921551524,
-      "date": "2026-04-23"
-    },
-    {
-      "busId": "13_no",
-      "busName": "13 No.",
-      "timestamp": 1776923784333,
-      "date": "2026-04-23"
-    },
-    {
-      "busId": "13_no",
-      "busName": "13 No.",
-      "timestamp": 1776924896754,
+      "timestamp": 1776916601231,
       "date": "2026-04-23"
     }
   ],
@@ -124,291 +58,70 @@
       "to": "gulshan1",
       "timestamp": 1776335601094,
       "date": "2026-04-16"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673517330,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673517330,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673517330,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673519152,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673519152,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673519152,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673525167,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673525167,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673525167,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673531165,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673531165,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673531165,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673537403,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673537403,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673537403,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673542426,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673542427,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673542427,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673542427,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673542435,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673542435,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673542435,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673548407,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673548407,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673548407,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673556636,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673556636,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673556637,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673561099,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673561099,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673561099,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673569256,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673569256,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673569256,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673569439,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673569445,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673569445,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673569446,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673575274,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673575274,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "hemayetpur",
-      "to": "gulshan1",
-      "timestamp": 1776673575275,
-      "date": "2026-04-20"
-    },
-    {
-      "from": "gulshan1",
-      "to": "hemayetpur",
-      "timestamp": 1776857673133,
-      "date": "2026-04-22"
-    },
-    {
-      "from": "notun_bazar",
-      "to": "hemayetpur",
-      "timestamp": 1776861625934,
-      "date": "2026-04-22"
-    },
-    {
-      "from": "modhumoti",
-      "to": "hemayetpur",
-      "timestamp": 1776861634791,
-      "date": "2026-04-22"
-    },
-    {
-      "from": "parbat",
-      "to": "hemayetpur",
-      "timestamp": 1776861838146,
-      "date": "2026-04-22"
     }
   ],
   "intercitySearches": [
     {
-      "from": "Cox's Bazar",
-      "to": "Benapole",
+      "from": "Bandarban",
+      "to": "Himchari",
       "transportType": "combined",
-      "timestamp": 1776622992803,
+      "timestamp": 1776607328773,
+      "date": "2026-04-19"
+    },
+    {
+      "from": "Bandarban",
+      "to": "Bichnakandi",
+      "transportType": "combined",
+      "timestamp": 1776609704276,
+      "date": "2026-04-19"
+    },
+    {
+      "from": "Bandarban",
+      "to": "Chattogram",
+      "transportType": "combined",
+      "timestamp": 1776609796713,
       "date": "2026-04-19"
     },
     {
       "from": "Bandarban",
       "to": "Cox's Bazar",
       "transportType": "combined",
-      "timestamp": 1776782307241,
+      "timestamp": 1776618867352,
+      "date": "2026-04-19"
+    },
+    {
+      "from": "Bandarban",
+      "to": "Bichnakandi",
+      "transportType": "combined",
+      "timestamp": 1776618964836,
+      "date": "2026-04-19"
+    },
+    {
+      "from": "Bandarban",
+      "to": "Cox's Bazar",
+      "transportType": "combined",
+      "timestamp": 1776763555337,
+      "date": "2026-04-21"
+    },
+    {
+      "from": "Bandarban",
+      "to": "Cox's Bazar",
+      "transportType": "combined",
+      "timestamp": 1776769473334,
+      "date": "2026-04-21"
+    },
+    {
+      "from": "Bandarban",
+      "to": "Cox's Bazar",
+      "transportType": "combined",
+      "timestamp": 1776770424226,
+      "date": "2026-04-21"
+    },
+    {
+      "from": "Bandarban",
+      "to": "Cox's Bazar",
+      "transportType": "combined",
+      "timestamp": 1776771062076,
       "date": "2026-04-21"
     }
   ],
@@ -419,8 +132,8 @@
       "trainNumber": "735/736",
       "from": "kamalapur",
       "to": "tarakandi",
-      "timestamp": 1776577209051,
-      "date": "2026-04-19"
+      "timestamp": 1776406325703,
+      "date": "2026-04-17"
     },
     {
       "trainId": "agnibina-express",
@@ -428,8 +141,17 @@
       "trainNumber": "735/736",
       "from": "kamalapur",
       "to": "tarakandi",
-      "timestamp": 1776577634669,
-      "date": "2026-04-19"
+      "timestamp": 1776406325703,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "balaka-express",
+      "trainName": "Balaka Express",
+      "trainNumber": "803/804",
+      "from": "kamalapur",
+      "to": "rajshahi",
+      "timestamp": 1776406338607,
+      "date": "2026-04-17"
     },
     {
       "trainId": "agnibina-express",
@@ -437,8 +159,17 @@
       "trainNumber": "735/736",
       "from": "kamalapur",
       "to": "tarakandi",
-      "timestamp": 1776588958159,
-      "date": "2026-04-19"
+      "timestamp": 1776406354847,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "benapole-express",
+      "trainName": "Benapole Express",
+      "trainNumber": "795/796",
+      "from": "kamalapur",
+      "to": "benapole",
+      "timestamp": 1776406686248,
+      "date": "2026-04-17"
     },
     {
       "trainId": "agnibina-express",
@@ -446,8 +177,35 @@
       "trainNumber": "735/736",
       "from": "kamalapur",
       "to": "tarakandi",
-      "timestamp": 1776590284555,
-      "date": "2026-04-19"
+      "timestamp": 1776407729531,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "mongla-express",
+      "trainName": "Mongla Express",
+      "trainNumber": "799/800",
+      "from": "khulna",
+      "to": "mongla",
+      "timestamp": 1776408164573,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "ruposhi-bangla",
+      "trainName": "Ruposhi Bangla Express",
+      "trainNumber": "727/728",
+      "from": "kamalapur",
+      "to": "rajshahi",
+      "timestamp": 1776408354633,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "benapole-express",
+      "trainName": "Benapole Express",
+      "trainNumber": "795/796",
+      "from": "kamalapur",
+      "to": "benapole",
+      "timestamp": 1776408924083,
+      "date": "2026-04-17"
     },
     {
       "trainId": "agnibina-express",
@@ -455,8 +213,71 @@
       "trainNumber": "735/736",
       "from": "kamalapur",
       "to": "tarakandi",
-      "timestamp": 1776623075493,
-      "date": "2026-04-19"
+      "timestamp": 1776408973911,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "benapole-express",
+      "trainName": "Benapole Express",
+      "trainNumber": "795/796",
+      "from": "kamalapur",
+      "to": "benapole",
+      "timestamp": 1776413595205,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "betna-express",
+      "trainName": "Betna Express",
+      "trainNumber": "773/774",
+      "from": "kamalapur",
+      "to": "khulna",
+      "timestamp": 1776413624968,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "betna-express",
+      "trainName": "Betna Express",
+      "trainNumber": "773/774",
+      "from": "kamalapur",
+      "to": "khulna",
+      "timestamp": 1776413628020,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "betna-express",
+      "trainName": "Betna Express",
+      "trainNumber": "773/774",
+      "from": "kamalapur",
+      "to": "khulna",
+      "timestamp": 1776418744660,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "mongla-express",
+      "trainName": "Mongla Express",
+      "trainNumber": "799/800",
+      "from": "benapole",
+      "to": "mongla",
+      "timestamp": 1776418797236,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "mongla-express",
+      "trainName": "Mongla Express",
+      "trainNumber": "799/800",
+      "from": "benapole",
+      "to": "mongla",
+      "timestamp": 1776418806954,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "betna-express",
+      "trainName": "Betna Express",
+      "trainNumber": "773/774",
+      "from": "kamalapur",
+      "to": "khulna",
+      "timestamp": 1776427824017,
+      "date": "2026-04-17"
     },
     {
       "trainId": "agnibina-express",
@@ -464,8 +285,44 @@
       "trainNumber": "735/736",
       "from": "kamalapur",
       "to": "tarakandi",
-      "timestamp": 1776673589614,
-      "date": "2026-04-20"
+      "timestamp": 1776427836878,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "balaka-express",
+      "trainName": "Balaka Express",
+      "trainNumber": "803/804",
+      "from": "kamalapur",
+      "to": "rajshahi",
+      "timestamp": 1776427840619,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "betna-express",
+      "trainName": "Betna Express",
+      "trainNumber": "773/774",
+      "from": "kamalapur",
+      "to": "khulna",
+      "timestamp": 1776427856807,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "betna-express",
+      "trainName": "Betna Express",
+      "trainNumber": "773/774",
+      "from": "kamalapur",
+      "to": "khulna",
+      "timestamp": 1776427896084,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "betna-express",
+      "trainName": "Betna Express",
+      "trainNumber": "773/774",
+      "from": "kamalapur",
+      "to": "khulna",
+      "timestamp": 1776427900926,
+      "date": "2026-04-17"
     },
     {
       "trainId": "betna-express",
@@ -473,8 +330,53 @@
       "trainNumber": "95/96",
       "from": "benapole",
       "to": "khulna",
-      "timestamp": 1776673597061,
-      "date": "2026-04-20"
+      "timestamp": 1776428801464,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "mongla-commuter",
+      "trainName": "Mongla Commuter",
+      "trainNumber": "97/98",
+      "from": "khulna",
+      "to": "mongla",
+      "timestamp": 1776428893199,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "mongla-commuter",
+      "trainName": "Mongla Commuter",
+      "trainNumber": "97/98",
+      "from": "khulna",
+      "to": "mongla",
+      "timestamp": 1776428904575,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "betna-express",
+      "trainName": "Betna Express",
+      "trainNumber": "95/96",
+      "from": "benapole",
+      "to": "khulna",
+      "timestamp": 1776428926168,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "mitali-express",
+      "trainName": "Mitali Express",
+      "trainNumber": "3131/3132",
+      "from": "cantonment",
+      "to": "new_jalpaiguri",
+      "timestamp": 1776434471395,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "betna-express",
+      "trainName": "Betna Express",
+      "trainNumber": "95/96",
+      "from": "benapole",
+      "to": "khulna",
+      "timestamp": 1776434838281,
+      "date": "2026-04-17"
     },
     {
       "trainId": "agnibina-express",
@@ -482,32 +384,107 @@
       "trainNumber": "735/736",
       "from": "kamalapur",
       "to": "tarakandi",
-      "timestamp": 1776782408602,
-      "date": "2026-04-21"
+      "timestamp": 1776436016431,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "agnibina-express",
+      "trainName": "Agnibina Express",
+      "trainNumber": "735/736",
+      "from": "kamalapur",
+      "to": "tarakandi",
+      "timestamp": 1776436764749,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "agnibina-express",
+      "trainName": "Agnibina Express",
+      "trainNumber": "735/736",
+      "from": "kamalapur",
+      "to": "tarakandi",
+      "timestamp": 1776436795960,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "agnibina-express",
+      "trainName": "Agnibina Express",
+      "trainNumber": "735/736",
+      "from": "kamalapur",
+      "to": "tarakandi",
+      "timestamp": 1776436811379,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "agnibina-express",
+      "trainName": "Agnibina Express",
+      "trainNumber": "735/736",
+      "from": "kamalapur",
+      "to": "tarakandi",
+      "timestamp": 1776443387535,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "balaka-express",
+      "trainName": "Balaka Express",
+      "trainNumber": "803/804",
+      "from": "kamalapur",
+      "to": "rajshahi",
+      "timestamp": 1776443423997,
+      "date": "2026-04-17"
+    },
+    {
+      "trainId": "betna-express",
+      "trainName": "Betna Express",
+      "trainNumber": "95/96",
+      "from": "benapole",
+      "to": "khulna",
+      "timestamp": 1776592843987,
+      "date": "2026-04-19"
+    },
+    {
+      "trainId": "agnibina-express",
+      "trainName": "Agnibina Express",
+      "trainNumber": "735/736",
+      "from": "kamalapur",
+      "to": "tarakandi",
+      "timestamp": 1776612656189,
+      "date": "2026-04-19"
+    },
+    {
+      "trainId": "agnibina-express",
+      "trainName": "Agnibina Express",
+      "trainNumber": "735/736",
+      "from": "kamalapur",
+      "to": "tarakandi",
+      "timestamp": 1776661149711,
+      "date": "2026-04-20"
     }
   ],
   "mostUsedBuses": {
-    "baishakhi": 9,
-    "13_no": 6,
-    "9_no": 1
+    "baishakhi": 1,
+    "13_no": 4
   },
   "mostUsedRoutes": {
     "star_kabab-azimpur": 1,
     "newmarket-azimpur": 1,
     "city_college-azimpur": 1,
-    "hemayetpur-gulshan1": 42,
-    "gulshan1-hemayetpur": 1,
-    "notun_bazar-hemayetpur": 1,
-    "modhumoti-hemayetpur": 1,
-    "parbat-hemayetpur": 1
+    "hemayetpur-gulshan1": 1
   },
   "mostUsedIntercity": {
-    "Cox's Bazar-Benapole": 1,
-    "Bandarban-Cox's Bazar": 1
+    "Bandarban-Himchari": 1,
+    "Bandarban-Bichnakandi": 2,
+    "Bandarban-Chattogram": 1,
+    "Bandarban-Cox's Bazar": 5
   },
   "mostUsedTrains": {
-    "agnibina-express": 7,
-    "betna-express": 1
+    "agnibina-express": 13,
+    "balaka-express": 3,
+    "benapole-express": 3,
+    "mongla-express": 3,
+    "ruposhi-bangla": 1,
+    "betna-express": 11,
+    "mongla-commuter": 2,
+    "mitali-express": 1
   },
-  "updatedAt": 1776997089930
+  "updatedAt": 1777009484946
 }
