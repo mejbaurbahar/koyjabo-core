@@ -36,10 +36,16 @@ async function ghGet<T>(path: string): Promise<T | null> {
 
 async function ghPut(path: string, content: unknown): Promise<boolean> {
   try {
-    const res = await fetch('/api/gh-data', {
-      method: 'PUT',
+    const res = await fetch(`${PROXY}/gh`, {
+      method: 'POST',
+      credentials: 'omit',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ path, content }),
+      body: JSON.stringify({
+        requestId: crypto.randomUUID(),
+        action: 'save-data',
+        userId: 'system',
+        data: JSON.stringify({ path, content, message: `Data sync: ${path}` }),
+      }),
     });
     return res.ok;
   } catch {
