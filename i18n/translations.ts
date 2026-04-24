@@ -1,4 +1,4 @@
-export type Language = 'bn' | 'en';
+﻿export type Language = 'bn' | 'en';
 
 interface Translations {
     [key: string]: string | Translations;
@@ -82,18 +82,9 @@ export const translations: Record<Language, Translations> = {
             forgotPasswordPage: {
                 processing: 'প্রক্রিয়া করা হচ্ছে',
                 maxWait: 'অনুগ্রহ করে অপেক্ষা করুন…',
-                resetLinkCreated: 'রিসেট লিংক তৈরি!',
-                useLinkBelow: 'ইমেইল সেবা সেট না থাকায় নিচের লিংক ব্যবহার করুন। এটি ১ ঘন্টা পর মেয়াদোত্তীর্ণ হবে।',
-                copyLink: 'কপি করুন',
-                copied: 'কপি হয়েছে!',
-                resetNow: 'রিসেট করুন',
-                emailSentInfo: 'যদি ইমেইল রেজিস্টার্ড হয়ে থাকে, ইনবক্সে পাসওয়ার্ড রিসেট লিংক পাঠানো হয়েছে। স্প্যাম ফোল্ডারও চেক করুন।',
-                backToLogin: 'লগইন পেজে ফিরুন',
                 returnToLogin: 'লগইনে ফিরুন',
                 passwordReset: 'পাসওয়ার্ড রিসেট',
-                getResetLink: 'আপনার ইমেইল দিয়ে রিসেট লিংক পান',
                 registeredEmail: 'রেজিস্টার্ড ইমেইল',
-                sendResetLink: 'রিসেট লিংক পাঠান',
             },
             resetPasswordTitle: 'নতুন পাসওয়ার্ড সেট করুন',
             resettingPassword: 'পাসওয়ার্ড আপডেট হচ্ছে',
@@ -938,18 +929,9 @@ export const translations: Record<Language, Translations> = {
             forgotPasswordPage: {
                 processing: 'Processing',
                 maxWait: 'Please wait…',
-                resetLinkCreated: 'Reset Link Created!',
-                useLinkBelow: 'Email service not configured. Use the link below (valid for 1 hour).',
-                copyLink: 'Copy Link',
-                copied: 'Copied!',
-                resetNow: 'Reset Now',
-                emailSentInfo: 'If the email is registered, a reset link has been sent. Please check spam folder too.',
-                backToLogin: 'Back to Login',
                 returnToLogin: 'Return to Login',
                 passwordReset: 'Password Reset',
-                getResetLink: 'Get reset link via email',
                 registeredEmail: 'Registered Email',
-                sendResetLink: 'Send Reset Link',
             },
             resetPasswordTitle: 'Set New Password',
             resettingPassword: 'Updating password',
