@@ -17,17 +17,21 @@ const crypto = require('crypto');
 const { Octokit } = require('@octokit/rest');
 
 // ── Config ────────────────────────────────────────────────────────────────────
-// This repo (koyjabo-core) — temp result files written here, polled by Cloudflare Worker
-const CORE_OWNER = 'mejbaurbahar';
-const CORE_REPO  = 'koyjabo-core';
+// Result files — written here, Cloudflare Worker reads this repo FIRST (public)
+const APP_OWNER  = 'mejbaurbahar';
+const APP_REPO   = 'Dhaka-Commute';
 
-// Private data repo — all user data (users, devices, avatars, history, password_resets)
+// User data — written here, Cloudflare Worker reads r=d from this repo (default)
 const DATA_OWNER = 'mejbaurbahar';
-const DATA_REPO  = 'koyjabo';
+const DATA_REPO  = 'koyjabo-core';
 
-// GITHUB_TOKEN: auto per-run token, write access to koyjabo-core only
+// Old private data repo — read-only, for including legacy users in admin emails
+const LEGACY_OWNER = 'mejbaurbahar';
+const LEGACY_REPO  = 'koyjabo';
+
+// GITHUB_TOKEN: auto per-run token — write access to koyjabo-core (this repo)
 const CORE_TOKEN = process.env.AUTH_GITHUB_TOKEN;
-// DATA_GITHUB_TOKEN: classic PAT with repo access to private koyjabo data repo
+// DATA_GITHUB_TOKEN: classic PAT — write access to Dhaka-Commute + read koyjabo legacy
 const DATA_TOKEN = process.env.DATA_GITHUB_TOKEN || CORE_TOKEN;
 
 const JWT_SECRET     = process.env.JWT_SECRET     || '';
@@ -36,10 +40,12 @@ const SMTP_EMAIL     = process.env.SMTP_EMAIL     || '';
 const SMTP_PASSWORD  = process.env.SMTP_PASSWORD  || '';
 const APP_URL        = process.env.APP_URL        || 'https://koyjabo.com';
 
-// octokitCore: result files → koyjabo-core (GITHUB_TOKEN, automatic)
-// octokitData: user data   → koyjabo       (DATA_GITHUB_TOKEN, PAT)
-const octokitCore = new Octokit({ auth: CORE_TOKEN });
-const octokitData = new Octokit({ auth: DATA_TOKEN });
+// octokitData:   user data    → koyjabo-core   (GITHUB_TOKEN)
+// octokitApp:    result files → Dhaka-Commute  (DATA_TOKEN, public repo)
+// octokitLegacy: legacy reads → koyjabo        (DATA_TOKEN, read-only)
+const octokitData   = new Octokit({ auth: CORE_TOKEN });
+const octokitApp    = new Octokit({ auth: DATA_TOKEN });
+const octokitLegacy = new Octokit({ auth: DATA_TOKEN });
 
 // ── Disposable / temp-mail domain blocklist ───────────────────────────────────
 const TEMP_MAIL_DOMAINS = new Set([
@@ -193,16 +199,33 @@ async function sendEmail({ to, subject, html }) {
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'koyjabo.bd@gmail.com';
 
 async function fetchAllUsers() {
-  const indexFile = await readDataFile('data/users/index.json');
-  const index = indexFile?.content || {};
-  const userIds = [...new Set(Object.values(index))];
+  // Merge user IDs from current repo (koyjabo-core) + legacy repo (koyjabo)
+  const [indexFile, legacyIndexFile] = await Promise.all([
+    readDataFile('data/users/index.json'),
+    readLegacyFile('data/users/index.json'),
+  ]);
+  const index       = indexFile?.content       || {};
+  const legacyIndex = legacyIndexFile?.content || {};
+
+  // Build a map: userId → which repo has it (prefer current over legacy)
+  const userRepoMap = new Map();
+  for (const uid of Object.values(legacyIndex)) userRepoMap.set(uid, 'legacy');
+  for (const uid of Object.values(index))       userRepoMap.set(uid, 'current');
+
+  const userIds = [...userRepoMap.keys()];
 
   // Batch-fetch user files in groups of 10 to stay within rate limits
   const users = [];
   for (let i = 0; i < userIds.length; i += 10) {
     const batch = userIds.slice(i, i + 10);
     const results = await Promise.all(
-      batch.map(uid => readDataFile(`data/users/${uid}.json`).catch(() => null))
+      batch.map(uid => {
+        const repo = userRepoMap.get(uid);
+        const fn = repo === 'legacy'
+          ? readLegacyFile(`data/users/${uid}.json`)
+          : readDataFile(`data/users/${uid}.json`);
+        return fn.catch(() => null);
+      })
     );
     for (const r of results) {
       if (r?.content) users.push(r.content);
@@ -343,7 +366,7 @@ function parseUserAgent(ua = '') {
   return { os, browser, deviceType, name };
 }
 
-// ── Data Repo File Operations (private koyjabo) ───────────────────────────────
+// ── Data Repo File Operations (koyjabo-core — user data, Cloudflare Worker reads here) ──
 async function readDataFile(path) {
   try {
     const res = await octokitData.repos.getContent({ owner: DATA_OWNER, repo: DATA_REPO, path });
@@ -378,10 +401,10 @@ async function deleteDataFile(path, sha) {
   } catch (_) { /* ignore */ }
 }
 
-// ── Core Repo File Operations (koyjabo-core, result files only) ───────────────
-async function readCoreFile(path) {
+// ── App Repo File Operations (Dhaka-Commute — result files, Cloudflare Worker reads here first) ──
+async function readAppFile(path) {
   try {
-    const res = await octokitCore.repos.getContent({ owner: CORE_OWNER, repo: CORE_REPO, path });
+    const res = await octokitApp.repos.getContent({ owner: APP_OWNER, repo: APP_REPO, path });
     if (res.data.type !== 'file') return null;
     const content = JSON.parse(Buffer.from(res.data.content, 'base64').toString('utf8'));
     return { content, sha: res.data.sha };
@@ -391,15 +414,25 @@ async function readCoreFile(path) {
   }
 }
 
-async function writeCoreFile(path, content, sha, message = 'Auth result') {
+async function writeAppFile(path, content, sha, message = 'Auth result') {
   const encoded = Buffer.from(JSON.stringify(content, null, 2)).toString('base64');
   const params = {
-    owner: CORE_OWNER, repo: CORE_REPO, path, message,
+    owner: APP_OWNER, repo: APP_REPO, path, message,
     content: encoded,
     committer: { name: 'KoyJabo Auth Bot', email: 'noreply@koyjabo.com' }
   };
   if (sha) params.sha = sha;
-  await octokitCore.repos.createOrUpdateFileContents(params);
+  await octokitApp.repos.createOrUpdateFileContents(params);
+}
+
+// ── Legacy Repo File Operations (koyjabo — read old user data) ────────────────
+async function readLegacyFile(path) {
+  try {
+    const res = await octokitLegacy.repos.getContent({ owner: LEGACY_OWNER, repo: LEGACY_REPO, path });
+    if (res.data.type !== 'file') return null;
+    const content = JSON.parse(Buffer.from(res.data.content, 'base64').toString('utf8'));
+    return { content, sha: res.data.sha };
+  } catch (_) { return null; }
 }
 
 async function ensureIndexExists() {
@@ -1019,12 +1052,27 @@ async function handleUploadAvatar({ userId, imageData }) {
   return { success: true, hasAvatar: true };
 }
 
-// ── Result Writer (writes to koyjabo-core via GITHUB_TOKEN, polled by Cloudflare Worker) ──
+// ── Result Writer ─────────────────────────────────────────────────────────────
+// Primary: Dhaka-Commute (public repo — Cloudflare Worker reads this FIRST, no private-token needed)
+// Fallback: koyjabo-core (Cloudflare Worker has a fallback for this)
 async function writeResult(requestId, result) {
   const content = { ...result, completedAt: Date.now() };
   const path = `data/results/${requestId}.json`;
-  const existing = await readCoreFile(path);
-  await writeCoreFile(path, content, existing?.sha, `Auth result: ${requestId}`);
+
+  // Try Dhaka-Commute first (DATA_TOKEN has write access)
+  try {
+    const existing = await readAppFile(path);
+    await writeAppFile(path, content, existing?.sha, `Auth result: ${requestId}`);
+    console.log(`Result written to ${APP_REPO}/${path}`);
+    return;
+  } catch (err) {
+    console.warn(`[writeResult] ${APP_REPO} write failed (${err.message}), falling back to ${DATA_REPO}`);
+  }
+
+  // Fallback: koyjabo-core (GITHUB_TOKEN always has access here)
+  const existing = await readDataFile(path);
+  await writeDataFile(path, content, existing?.sha, `Auth result: ${requestId}`);
+  console.log(`Result written to ${DATA_REPO}/${path}`);
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────

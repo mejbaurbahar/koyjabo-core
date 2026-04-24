@@ -10,12 +10,15 @@
 
 const { Octokit } = require('@octokit/rest');
 
-const [CORE_OWNER, CORE_REPO] = (process.env.GITHUB_REPOSITORY || 'mejbaurbahar/koyjabo-core').split('/');
-const DATA_OWNER = 'mejbaurbahar';
-const DATA_REPO  = 'koyjabo';
+// Result files live in Dhaka-Commute (public, DATA_TOKEN can write/delete here)
+const APP_OWNER = 'mejbaurbahar';
+const APP_REPO  = 'Dhaka-Commute';
 
-const octokitCore = new Octokit({ auth: process.env.AUTH_GITHUB_TOKEN });
-const octokitData = new Octokit({ auth: process.env.DATA_GITHUB_TOKEN || process.env.AUTH_GITHUB_TOKEN });
+// User data + password_resets live in koyjabo-core (GITHUB_TOKEN can write here)
+const [DATA_OWNER, DATA_REPO] = (process.env.GITHUB_REPOSITORY || 'mejbaurbahar/koyjabo-core').split('/');
+
+const octokitApp  = new Octokit({ auth: process.env.DATA_GITHUB_TOKEN || process.env.AUTH_GITHUB_TOKEN });
+const octokitData = new Octokit({ auth: process.env.AUTH_GITHUB_TOKEN });
 
 async function listDir(octokit, owner, repo, path) {
   try {
@@ -50,18 +53,18 @@ async function main() {
   const ONE_HOUR = 60 * 60 * 1000;
   const now = Date.now();
 
-  // Clean result files older than 1 hour from koyjabo-core
-  console.log(`Cleaning result files from ${CORE_OWNER}/${CORE_REPO}...`);
-  const resultFiles = await listDir(octokitCore, CORE_OWNER, CORE_REPO, 'data/results');
+  // Clean result files older than 1 hour from Dhaka-Commute
+  console.log(`Cleaning result files from ${APP_OWNER}/${APP_REPO}...`);
+  const resultFiles = await listDir(octokitApp, APP_OWNER, APP_REPO, 'data/results');
   for (const file of resultFiles) {
     if (!file.name.endsWith('.json')) continue;
-    const data = await readJSON(octokitCore, CORE_OWNER, CORE_REPO, file.path);
+    const data = await readJSON(octokitApp, APP_OWNER, APP_REPO, file.path);
     if (data && data.content.completedAt && (now - data.content.completedAt) > ONE_HOUR) {
-      await deleteFile(octokitCore, CORE_OWNER, CORE_REPO, file.path, file.sha);
+      await deleteFile(octokitApp, APP_OWNER, APP_REPO, file.path, file.sha);
     }
   }
 
-  // Clean expired/used OTP reset tokens from private koyjabo repo
+  // Clean expired/used OTP reset tokens from koyjabo-core
   console.log(`Cleaning expired reset tokens from ${DATA_OWNER}/${DATA_REPO}...`);
   const resetFiles = await listDir(octokitData, DATA_OWNER, DATA_REPO, 'data/password_resets');
   for (const file of resetFiles) {

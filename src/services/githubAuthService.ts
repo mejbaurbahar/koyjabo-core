@@ -156,12 +156,12 @@ async function triggerWorkflow(
   if (!res.ok) throw new Error(friendlyHttpError(res.status));
 }
 
-async function pollForResult(requestId: string, timeoutMs = 120_000): Promise<AuthResult> {
+async function pollForResult(requestId: string, timeoutMs = 180_000): Promise<AuthResult> {
   // Poll via the Cloudflare Worker proxy — always fresh (no CDN cache),
   // returns only decoded JSON with no GitHub metadata visible in DevTools.
   const path = `data/results/${requestId}.json`;
   const deadline = Date.now() + timeoutMs;
-  const INTERVAL = 4000;
+  const INTERVAL = 3000;
 
   while (Date.now() < deadline) {
     await new Promise(r => setTimeout(r, INTERVAL));
