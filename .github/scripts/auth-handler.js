@@ -385,6 +385,25 @@ async function writeDataFile(path, content, sha, message = 'Auth system update')
   await octokitData.repos.createOrUpdateFileContents(params);
 }
 
+// Read → transform → write with up to 3 retries on SHA conflict (422).
+// Prevents concurrent workflow runs from silently dropping stats updates.
+async function updateDataFileWithRetry(path, updater, message, maxRetries = 3) {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    const file = await readDataFile(path);
+    const content = updater(file?.content ?? null);
+    try {
+      await writeDataFile(path, content, file?.sha, message);
+      return content;
+    } catch (err) {
+      if (err.status === 422 && attempt < maxRetries - 1) {
+        await new Promise(r => setTimeout(r, 150 * (attempt + 1)));
+        continue;
+      }
+      throw err;
+    }
+  }
+}
+
 async function deleteDataFile(path, sha) {
   try {
     await octokitData.repos.deleteFile({
@@ -558,6 +577,19 @@ async function handleSignup({ email, passwordHash, username, displayName }) {
 </body>
 </html>`
   }).catch(() => {});
+
+  // Update global stats: increment totalUsers (non-blocking, best-effort)
+  updateDataFileWithRetry(
+    'data/stats/global.json',
+    (existing) => {
+      const today = new Date().toISOString().split('T')[0];
+      const s = existing || { totalVisits: 0, todayVisits: 0, totalUsers: 0, todayDate: today, lastUpdated: 0 };
+      s.totalUsers = (s.totalUsers || 0) + 1;
+      s.lastUpdated = Date.now();
+      return s;
+    },
+    `New user: ${userId}`
+  ).catch(() => {});
 
   return { success: true, userId, username: user.username, displayName: user.displayName, email: normalizedEmail };
 }
@@ -858,21 +890,19 @@ async function handleSaveHistory({ userId, historyData }) {
 
 async function handleRecordVisit({ visitorId }) {
   const today = new Date().toISOString().split('T')[0];
-  const statsFile = await readDataFile('data/stats/global.json');
-  let stats = statsFile?.content || { totalVisits: 0, todayVisits: 0, todayDate: today, lastUpdated: 0 };
-
-  // Reset today's count if it's a new day
-  if (stats.todayDate !== today) {
-    stats.todayVisits = 0;
-    stats.todayDate = today;
-  }
-
-  stats.totalVisits = (stats.totalVisits || 0) + 1;
-  stats.todayVisits = (stats.todayVisits || 0) + 1;
-  stats.lastUpdated = Date.now();
-
-  await writeDataFile('data/stats/global.json', stats, statsFile?.sha, `Visit: ${visitorId?.slice(0, 8) || 'anon'}`);
-  return { success: true, totalVisits: stats.totalVisits, todayVisits: stats.todayVisits };
+  const updated = await updateDataFileWithRetry(
+    'data/stats/global.json',
+    (existing) => {
+      const s = existing || { totalVisits: 0, todayVisits: 0, totalUsers: 0, todayDate: today, lastUpdated: 0 };
+      if (s.todayDate !== today) { s.todayVisits = 0; s.todayDate = today; }
+      s.totalVisits = (s.totalVisits || 0) + 1;
+      s.todayVisits = (s.todayVisits || 0) + 1;
+      s.lastUpdated = Date.now();
+      return s;
+    },
+    `Visit: ${visitorId?.slice(0, 8) || 'anon'}`
+  );
+  return { success: true, totalVisits: updated.totalVisits, todayVisits: updated.todayVisits };
 }
 
 async function handleSaveData({ path, content, message }) {

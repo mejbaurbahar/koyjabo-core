@@ -291,11 +291,12 @@ export const getUserHistory = (): UserHistory => {
 let _syncDebounce: ReturnType<typeof setTimeout> | null = null;
 
 const syncHistoryToGitHub = (history: UserHistory): void => {
-    if (!currentUserId || !PROXY) return;
+    if (!_currentUserId || !PROXY) return;
 
     if (_syncDebounce) clearTimeout(_syncDebounce);
     _syncDebounce = setTimeout(() => {
-        // Trim data for repo (last 50 of each type)
+        const userId = _currentUserId;
+        if (!userId) return;
         const trimmed = {
             busSearches:       (history.busSearches || []).slice(-50),
             routeSearches:     (history.routeSearches || []).slice(-50),
@@ -314,18 +315,17 @@ const syncHistoryToGitHub = (history: UserHistory): void => {
             body: JSON.stringify({
                 requestId: crypto.randomUUID(),
                 action: 'save-history',
-                userId: currentUserId,
+                userId,
                 data: JSON.stringify(trimmed)
             }),
         }).catch(() => {});
-    }, 5000); // 5 second debounce
+    }, 5000);
 };
 
 const saveUserHistory = (history: UserHistory): void => {
     try {
         localStorage.setItem(getHistoryKey(), JSON.stringify(history));
-        // Auto-sync to GitHub if logged in
-        if (currentUserId) {
+        if (_currentUserId) {
             syncHistoryToGitHub(history);
         }
     } catch {
