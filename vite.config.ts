@@ -108,6 +108,7 @@ export default defineConfig(({ mode }) => {
           ]
         },
         workbox: {
+          maximumFileSizeToCacheInBytes: 4 * 1024 * 1024, // 4 MiB
           globPatterns: [
             '**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest,webp,jpg,jpeg,gif}',
             'intercity/**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest}',

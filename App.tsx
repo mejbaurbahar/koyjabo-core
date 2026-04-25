@@ -6,7 +6,7 @@ import SignupPage from './src/components/auth/SignupPage';
 import ForgotPasswordPage from './src/components/auth/ForgotPasswordPage';
 import ResetPasswordPage from './src/components/auth/ResetPasswordPage';
 import ProfilePage from './src/components/auth/ProfilePage';
-import { Search, Map as MapIcon, Navigation, Info, Bus, ArrowLeft, ArrowRight, Bot, ExternalLink, MapPin, Heart, Shield, Zap, Users, FileText, AlertTriangle, Home, ChevronRight, CheckCircle2, User, Linkedin, Github, Facebook, ArrowRightLeft, Settings, Save, Eye, EyeOff, Trash2, Key, Calculator, Coins, Train, Sparkles, X, Gauge, Flag, Clock, Menu, WifiOff, Plane, Phone, Download, TramFront, Sun, Moon, Calendar, Plus, Mail, HelpCircle, BookOpen, LogIn, LogOut, UserPlus } from 'lucide-react';
+import { Search, Map as MapIcon, Navigation, Info, Bus, ArrowLeft, ArrowRight, Bot, ExternalLink, MapPin, Heart, Shield, Zap, Users, FileText, AlertTriangle, Home, ChevronRight, CheckCircle2, User, Linkedin, Github, Facebook, ArrowRightLeft, Settings, Save, Eye, EyeOff, Trash2, Key, Calculator, Coins, Train, Sparkles, X, Gauge, Flag, Clock, Menu, WifiOff, Plane, Phone, Download, TramFront, Sun, Moon, Calendar, Plus, Mail, HelpCircle, BookOpen, LogIn, LogOut, UserPlus, Ticket } from 'lucide-react';
 import { BusRoute, AppView, UserLocation, ChatMessage } from './types';
 import { STATIONS, BUS_DATA, METRO_STATIONS, METRO_LINES, RAILWAY_STATIONS, AIRPORTS } from './constants';
 import MapVisualizer from './components/MapVisualizer';
@@ -70,6 +70,16 @@ import OfflineIndicator from './components/OfflineIndicator';
 import AdSenseAd from './components/AdSenseAd';
 import TrainListPage, { TrainDetail } from './components/TrainListPage';
 import { BDTrainRoute } from './data/bangladeshTrainData';
+import TripReminders from './components/TripReminders';
+import RoadAlerts from './components/RoadAlerts';
+import NeighbourhoodGuides from './components/NeighbourhoodGuides';
+import BusPassInfo from './components/BusPassInfo';
+import BusRating from './components/BusRating';
+import BusLiveTracking from './components/BusLiveTracking';
+import MultiStopPlanner from './components/MultiStopPlanner';
+import CommuteCostCalculator from './components/CommuteCostCalculator';
+import SeatAvailability from './components/SeatAvailability';
+import BusPhotoGallery from './components/BusPhotoGallery';
 
 
 
@@ -136,7 +146,17 @@ const getStoredView = (): AppView => {
         'forgot-password': AppView.FORGOT_PASSWORD,
         'reset-password': AppView.RESET_PASSWORD,
         'profile': AppView.PROFILE,
-        'train': AppView.TRAIN_LIST
+        'train': AppView.TRAIN_LIST,
+        'trip-reminders': AppView.TRIP_REMINDERS,
+        'multi-stop': AppView.MULTI_STOP_PLANNER,
+        'commute-cost': AppView.COMMUTE_COST,
+        'neighbourhood-guides': AppView.NEIGHBOURHOOD_GUIDES,
+        'bus-pass-info': AppView.BUS_PASS_INFO,
+        'road-alerts': AppView.ROAD_ALERTS,
+        'rate-bus': AppView.RATE_BUS,
+        'bus-photos': AppView.BUS_PHOTOS,
+        'bus-live-tracking': AppView.BUS_LIVE_TRACKING,
+        'seat-availability': AppView.SEAT_AVAILABILITY,
       };
 
       if (viewMap[target]) {
@@ -935,6 +955,17 @@ const App: React.FC = () => {
     // Train views
     [AppView.TRAIN_LIST]: 'train',
     [AppView.TRAIN_DETAILS]: 'train',
+    // Community / new features
+    [AppView.TRIP_REMINDERS]: 'trip-reminders',
+    [AppView.MULTI_STOP_PLANNER]: 'multi-stop',
+    [AppView.COMMUTE_COST]: 'commute-cost',
+    [AppView.NEIGHBOURHOOD_GUIDES]: 'neighbourhood-guides',
+    [AppView.BUS_PASS_INFO]: 'bus-pass-info',
+    [AppView.ROAD_ALERTS]: 'road-alerts',
+    [AppView.RATE_BUS]: 'rate-bus',
+    [AppView.BUS_PHOTOS]: 'bus-photos',
+    [AppView.BUS_LIVE_TRACKING]: 'bus-live-tracking',
+    [AppView.SEAT_AVAILABILITY]: 'seat-availability',
   };
 
   useEffect(() => {
@@ -2944,6 +2975,28 @@ const App: React.FC = () => {
           </div>
         </div>
 
+        {/* Community Actions */}
+        <div className="px-4 pb-4">
+          <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">কমিউনিটি</p>
+          <div className="grid grid-cols-3 gap-2">
+            <button onClick={() => setView(AppView.RATE_BUS)}
+              className="flex flex-col items-center gap-1 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-amber-300 dark:hover:border-amber-700 transition-colors active:scale-95">
+              <span className="text-xl">⭐</span>
+              <span className="text-xs font-semibold text-gray-700 dark:text-gray-300 text-center">রেটিং দিন</span>
+            </button>
+            <button onClick={() => setView(AppView.BUS_LIVE_TRACKING)}
+              className="flex flex-col items-center gap-1 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-700 transition-colors active:scale-95">
+              <span className="text-xl">📍</span>
+              <span className="text-xs font-semibold text-gray-700 dark:text-gray-300 text-center">লাইভ অবস্থান</span>
+            </button>
+            <button onClick={() => setView(AppView.BUS_PHOTOS)}
+              className="flex flex-col items-center gap-1 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-pink-300 dark:hover:border-pink-700 transition-colors active:scale-95">
+              <span className="text-xl">📷</span>
+              <span className="text-xs font-semibold text-gray-700 dark:text-gray-300 text-center">ছবি</span>
+            </button>
+          </div>
+        </div>
+
         {/* Emergency Helpline Modal */}
         <EmergencyHelplineModal
           isOpen={showEmergencyModal}
@@ -3814,6 +3867,19 @@ const App: React.FC = () => {
             {view === AppView.TERMS && <TermsOfService view={view} setView={setView} />}
             {view === AppView.CONTACT && <ContactUs view={view} setView={setView} />}
             {view === AppView.FOR_AI && renderForAi()}
+
+            {/* ── Community / New Features ── */}
+            {view === AppView.TRIP_REMINDERS && (user ? <TripReminders onBack={() => setView(AppView.HOME)} /> : <LoginWall setView={setView} />)}
+            {view === AppView.ROAD_ALERTS && (user ? <RoadAlerts onBack={() => setView(AppView.HOME)} /> : <LoginWall setView={setView} />)}
+            {view === AppView.NEIGHBOURHOOD_GUIDES && <NeighbourhoodGuides onBack={() => setView(AppView.HOME)} />}
+            {view === AppView.BUS_PASS_INFO && <BusPassInfo onBack={() => setView(AppView.HOME)} />}
+            {view === AppView.MULTI_STOP_PLANNER && (user ? <MultiStopPlanner onBack={() => setView(AppView.HOME)} /> : <LoginWall setView={setView} />)}
+            {view === AppView.COMMUTE_COST && (user ? <CommuteCostCalculator onBack={() => setView(AppView.HOME)} /> : <LoginWall setView={setView} />)}
+            {view === AppView.SEAT_AVAILABILITY && (user ? <SeatAvailability onBack={() => setView(AppView.HOME)} /> : <LoginWall setView={setView} />)}
+            {view === AppView.RATE_BUS && (user && selectedBus ? <BusRating busId={selectedBus.id} busName={selectedBus.displayName || selectedBus.name} onBack={() => setView(AppView.BUS_DETAILS)} /> : <LoginWall setView={setView} />)}
+            {view === AppView.BUS_PHOTOS && (user && selectedBus ? <BusPhotoGallery busId={selectedBus.id} busName={selectedBus.displayName || selectedBus.name} onBack={() => setView(AppView.BUS_DETAILS)} /> : <LoginWall setView={setView} />)}
+            {view === AppView.BUS_LIVE_TRACKING && (user && selectedBus ? <BusLiveTracking busId={selectedBus.id} busName={selectedBus.displayName || selectedBus.name} onBack={() => setView(AppView.BUS_DETAILS)} /> : <LoginWall setView={setView} />)}
+
             {view === AppView.INSTALL_APP && (
               <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-6 md:pt-12 overflow-y-auto w-full">
                 <div className="max-w-2xl mx-auto text-center">
@@ -4068,6 +4134,40 @@ const App: React.FC = () => {
                 >
                   <BookOpen className="w-5 h-5 text-orange-600 dark:text-orange-400" /> {t('nav.blog') || 'Blog'}
                 </button>
+
+                {/* ── Community Features ── */}
+                <div className="px-3 pt-2 pb-1">
+                  <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">কমিউনিটি ফিচার</p>
+                </div>
+                <button onClick={() => { setView(AppView.TRIP_REMINDERS); setIsMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.TRIP_REMINDERS ? 'bg-violet-50 dark:bg-violet-900/20 border border-violet-200 dark:border-violet-800' : ''}`}>
+                  <span className="w-5 h-5 text-center leading-5 text-violet-600">🔔</span> যাত্রা রিমাইন্ডার
+                </button>
+                <button onClick={() => { setView(AppView.ROAD_ALERTS); setIsMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.ROAD_ALERTS ? 'bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800' : ''}`}>
+                  <AlertTriangle className="w-5 h-5 text-orange-500" /> রাস্তা সতর্কতা
+                </button>
+                <button onClick={() => { setView(AppView.NEIGHBOURHOOD_GUIDES); setIsMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.NEIGHBOURHOOD_GUIDES ? 'bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800' : ''}`}>
+                  <MapPin className="w-5 h-5 text-purple-500" /> এলাকাভিত্তিক গাইড
+                </button>
+                <button onClick={() => { setView(AppView.BUS_PASS_INFO); setIsMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.BUS_PASS_INFO ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800' : ''}`}>
+                  <span className="w-5 h-5 text-center leading-5 text-blue-600">💳</span> বাস পাস তথ্য
+                </button>
+                <button onClick={() => { setView(AppView.MULTI_STOP_PLANNER); setIsMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.MULTI_STOP_PLANNER ? 'bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800' : ''}`}>
+                  <Navigation className="w-5 h-5 text-cyan-500" /> মাল্টি-স্টপ প্ল্যানার
+                </button>
+                <button onClick={() => { setView(AppView.COMMUTE_COST); setIsMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.COMMUTE_COST ? 'bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800' : ''}`}>
+                  <Calculator className="w-5 h-5 text-emerald-500" /> খরচ ক্যালকুলেটর
+                </button>
+                <button onClick={() => { setView(AppView.SEAT_AVAILABILITY); setIsMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.SEAT_AVAILABILITY ? 'bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800' : ''}`}>
+                  <Ticket className="w-5 h-5 text-indigo-500" /> সিট প্রাপ্যতা
+                </button>
+
                 <button
                   onClick={() => { setView(AppView.AI_ASSISTANT); setIsMenuOpen(false); }}
                   className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.AI_ASSISTANT ? 'bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800' : ''} `}
