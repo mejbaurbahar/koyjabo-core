@@ -12,7 +12,28 @@
 
 import { classifyIntent, estimateDistanceKm, buildRouteOptions, estimateDuration, estimateFares, fuzzyMatchLocation } from './travelAI';
 import { getOfflineIntercityData } from '../intercity/offlineService';
-import { triggerQuerySync } from './fullDataSync';
+
+const _PROXY = (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_API_PROXY)
+  || 'https://koyjabo-auth-proxy.mejbaur-bahar.workers.dev';
+
+function _getUid(): string {
+  try { return JSON.parse(localStorage.getItem('koyjabo_auth_session') ?? '{}')?.user?.id || 'anonymous'; }
+  catch { return 'anonymous'; }
+}
+
+function _sendQueryRecord(query: string, response: string, intentType: string, quality: string, lang: string): void {
+  fetch(`${_PROXY}/gh`, {
+    method: 'POST',
+    credentials: 'omit',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      requestId: crypto.randomUUID(),
+      action: 'record-query',
+      userId: _getUid(),
+      data: JSON.stringify({ query, response, intent: intentType, quality, lang }),
+    }),
+  }).catch(() => {});
+}
 
 // ── Storage keys ──────────────────────────────────────────────────────────────
 
@@ -411,8 +432,7 @@ export function recordAndLearn(query: string, response: string): void {
   // Mine patterns asynchronously (don't block response path)
   setTimeout(() => {
     mineAndLearn(record);
-    // Sync to GitHub for cloud learning
-    triggerQuerySync(query, response, intent, record.quality, record.lang);
+    _sendQueryRecord(query, response, intent.type || 'travel', record.quality, record.lang);
   }, 0);
 }
 
