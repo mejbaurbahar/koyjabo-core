@@ -19,7 +19,7 @@ import {
     type JourneyStop,
 } from '../services/journeyTrackerService';
 import { useLanguage } from '../contexts/LanguageContext';
-import AdSenseAd from './AdSenseAd';
+import EzoicAd from './EzoicAd';
 
 interface DailyJourneyViewProps {
     onBack: () => void;
@@ -147,7 +147,7 @@ const DailyJourneyView: React.FC<DailyJourneyViewProps> = ({ onBack }) => {
                                     </div>
                                 </div>
                             </div>
-                            <AdSenseAd adSlot="auto" className="my-6 hidden md:block" />
+                            <EzoicAd placeholderId={106} className="my-6 hidden md:block" />
 
                             {/* Journey Timeline */}
                             <div className="space-y-3">

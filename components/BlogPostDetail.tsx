@@ -3,12 +3,7 @@ import { ArrowLeft, Clock, Calendar, Tag, Share2, Check, Copy, ArrowUp } from 'l
 import { BLOG_POSTS, BlogPost as BlogPostType } from '../data/blogPosts';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-
-declare global {
-    interface Window {
-        adsbygoogle: any[];
-    }
-}
+import EzoicAd from './EzoicAd';
 
 interface BlogPostProps {
     postSlug: string;
@@ -73,20 +68,6 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                 "inLanguage": language === 'bn' ? 'bn-BD' : 'en-US'
             });
             document.head.appendChild(scriptTag);
-
-            // Initialize AdSense ads safely
-            try {
-                if (typeof window !== 'undefined' && window.adsbygoogle) {
-                    // We have 3 ad units in this component, so we need up to 3 pushes
-                    // It's safer to push sequentially as the ads are rendered
-                    const adsContainers = document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status])');
-                    adsContainers.forEach(() => {
-                        (window.adsbygoogle = window.adsbygoogle || []).push({});
-                    });
-                }
-            } catch (err) {
-                console.error('AdSense initialization error:', err);
-            }
 
             return () => {
                 document.head.removeChild(scriptTag);
@@ -231,17 +212,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                     </div>
                 </header>
 
-                {/* AdSense - Top of Post */}
-                <div className="adsense-container my-10 hidden md:block">
-                    <ins
-                        className="adsbygoogle"
-                        style={{ display: 'block', textAlign: 'center' }}
-                        data-ad-client="ca-pub-6933713424631305"
-                        data-ad-slot="auto"
-                        data-ad-format="auto"
-                        data-full-width-responsive="true"
-                    ></ins>
-                </div>
+                <EzoicAd placeholderId={108} className="my-10 hidden md:block" />
 
                 {/* Post Content with Better Formatting */}
                 <div className="prose prose-lg md:prose-xl dark:prose-invert max-w-none
@@ -265,17 +236,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>{language === 'bn' ? post.bnContent : post.content}</ReactMarkdown>
                 </div>
 
-                {/* AdSense - Middle of Post */}
-                <div className="adsense-container my-16 hidden md:block">
-                    <ins
-                        className="adsbygoogle"
-                        style={{ display: 'block' }}
-                        data-ad-format="fluid"
-                        data-ad-layout-key="-6t+ed+2i-1n-4w"
-                        data-ad-client="ca-pub-6933713424631305"
-                        data-ad-slot="auto"
-                    ></ins>
-                </div>
+                <EzoicAd placeholderId={109} className="my-16 hidden md:block" />
 
                 {/* Keywords/Tags Section */}
                 <div className="mt-16 pt-10 border-t-2 border-gray-200 dark:border-gray-700">
@@ -333,17 +294,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                     </div>
                 </div>
 
-                {/* AdSense - Bottom of Post */}
-                <div className="adsense-container my-16 hidden md:block">
-                    <ins
-                        className="adsbygoogle"
-                        style={{ display: 'block' }}
-                        data-ad-client="ca-pub-6933713424631305"
-                        data-ad-slot="auto"
-                        data-ad-format="auto"
-                        data-full-width-responsive="true"
-                    ></ins>
-                </div>
+                <EzoicAd placeholderId={110} className="my-16 hidden md:block" />
 
                 {/* CTA */}
                 <div className="mt-16 bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 rounded-3xl p-8 md:p-12 text-center shadow-2xl">

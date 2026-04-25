@@ -584,13 +584,6 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
 
   const activeFilterCount = [filterType, filterDivision, filterFrom, filterTo].filter(Boolean).length;
 
-  useEffect(() => {
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
-    } catch { /* AdSense not loaded */ }
-  }, []);
-
   const nearestStation = useMemo(() => {
     if (!userLocation) return null;
     let minDist = Infinity;
@@ -795,8 +788,6 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
           </div>
         </div>
       )}
-
-      {/* AdSense banner */}
 
       {/* Count row */}
       <div className="shrink-0 flex items-center justify-between px-5 py-2 bg-[#0F172A] border-b border-white/10">
