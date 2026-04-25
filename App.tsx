@@ -499,6 +499,15 @@ const App: React.FC = () => {
   };
 
   const [view, setView] = useState<AppView>(getStoredView);
+
+  // Auth guard: redirect logged-in users away from auth-only pages
+  useEffect(() => {
+    const AUTH_ONLY = new Set([AppView.LOGIN, AppView.SIGNUP, AppView.FORGOT_PASSWORD]);
+    if (user && AUTH_ONLY.has(view)) {
+      setView(AppView.HOME);
+    }
+  }, [user, view]);
+
   // Extract reset password token from URL if present (for email link flow)
   const [resetPasswordToken] = useState<string>(() => {
     const params = new URLSearchParams(window.location.search);
@@ -3802,9 +3811,7 @@ const App: React.FC = () => {
               />
             )}
             {view === AppView.FORGOT_PASSWORD && (
-              <ForgotPasswordPage
-                onBack={() => setView(AppView.LOGIN)}
-              />
+              <ForgotPasswordPage onBack={() => setView(AppView.LOGIN)} />
             )}
             {view === AppView.RESET_PASSWORD && (
               <ResetPasswordPage
