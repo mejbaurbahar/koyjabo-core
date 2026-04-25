@@ -88,7 +88,7 @@ export default function RoadAlerts({ onBack }: Props) {
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-3">
+      <div className="flex-1 min-h-0 overflow-y-auto p-4 space-y-3">
         {showForm && (
           <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 space-y-3">
             <h3 className="font-bold text-gray-900 dark:text-white text-sm">নতুন সমস্যা রিপোর্ট করুন</h3>

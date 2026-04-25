@@ -109,7 +109,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
               </span>
             </div>
 
-            <h2 className="text-xl md:text-6xl font-[1000] tracking-tighter text-slate-900 dark:text-white flex items-center gap-2 md:gap-6 flex-wrap">
+            <h2 className="text-lg md:text-4xl lg:text-6xl font-[1000] tracking-tighter text-slate-900 dark:text-white flex items-center gap-2 md:gap-6 flex-wrap">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400">{data.from}</span>
               <div className="w-7 h-7 md:w-14 md:h-14 rounded-full bg-blue-50 dark:bg-blue-900/40 flex items-center justify-center border-2 border-blue-200 dark:border-blue-800 shadow-inner group">
                 <Navigation className="text-blue-600 dark:text-blue-400 rotate-90 md:rotate-0 transition-transform group-hover:scale-110" size={14} strokeWidth={3} />
@@ -149,14 +149,14 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 border-t border-slate-100 dark:border-slate-800">
 
         {/* Detail Panel (Left) */}
-        <div className="lg:col-span-8 p-8 md:p-14 bg-white dark:bg-slate-900">
+        <div className="lg:col-span-8 p-4 md:p-8 lg:p-14 bg-white dark:bg-slate-900">
           {selectedMode ? (
-            <div className="max-w-3xl space-y-16 animate-in fade-in slide-in-from-bottom-6 duration-1000">
+            <div className="max-w-3xl space-y-6 md:space-y-16 animate-in fade-in slide-in-from-bottom-6 duration-1000">
 
               {/* Highlight Card */}
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 p-8 md:p-10 bg-gradient-to-br from-slate-50 to-blue-50/30 dark:from-slate-800/50 dark:to-slate-900 rounded-[40px] border border-slate-100 dark:border-slate-700/50 shadow-inner mb-8">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-8 p-4 md:p-8 lg:p-10 bg-gradient-to-br from-slate-50 to-blue-50/30 dark:from-slate-800/50 dark:to-slate-900 rounded-[24px] md:rounded-[40px] border border-slate-100 dark:border-slate-700/50 shadow-inner mb-4 md:mb-8">
                 <div className="flex items-center gap-6">
-                  <div className="w-20 h-20 bg-blue-600 dark:bg-blue-500 rounded-[28px] flex items-center justify-center text-4xl shadow-xl shadow-blue-500/20 text-white">
+                  <div className="w-12 h-12 md:w-20 md:h-20 bg-blue-600 dark:bg-blue-500 rounded-[16px] md:rounded-[28px] flex items-center justify-center text-2xl md:text-4xl shadow-xl shadow-blue-500/20 text-white">
                     {selectedMode.icon}
                   </div>
                   <div>
@@ -198,7 +198,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
         </div>
 
         {/* Sidebar (Right) */}
-        <div className="lg:col-span-4 bg-slate-50/50 dark:bg-slate-900/50 border-l border-slate-100 dark:border-slate-800 p-8 md:p-12 space-y-12">
+        <div className="lg:col-span-4 bg-slate-50/50 dark:bg-slate-900/50 border-t lg:border-t-0 lg:border-l border-slate-100 dark:border-slate-800 p-4 md:p-8 lg:p-12 space-y-6 md:space-y-12">
 
 
           {/* Quick Stats Overlay - Visual Flair */}

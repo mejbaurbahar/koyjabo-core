@@ -1,106 +1,109 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Ticket, ExternalLink, Train } from 'lucide-react';
-import { buildSeatAvailabilityLinks } from '../services/communityDataService';
+import React, { useState, useMemo } from 'react';
+import { ArrowLeft, Ticket, ExternalLink, Train, Search, ChevronLeft } from 'lucide-react';
+import { BD_TRAIN_ROUTES, BDTrainRoute } from '../data/bangladeshTrainData';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface Props { onBack: () => void; }
 
-interface TrainEntry {
-  name: string;
-  number: string;
-  from: string;
-  to: string;
-  departure: string;
-  arrival: string;
-  days: string;
-}
-
-const TRAINS: TrainEntry[] = [
-  { name: 'সোনার বাংলা এক্সপ্রেস', number: '787', from: 'ঢাকা', to: 'চট্টগ্রাম', departure: '07:00', arrival: '13:00', days: 'রোজ' },
-  { name: 'তূর্ণা-নিশীথা', number: '742', from: 'ঢাকা', to: 'চট্টগ্রাম', departure: '23:00', arrival: '05:00', days: 'রোজ' },
-  { name: 'সুবর্ণ এক্সপ্রেস', number: '723', from: 'ঢাকা', to: 'চট্টগ্রাম', departure: '06:40', arrival: '12:30', days: 'রোজ' },
-  { name: 'সুন্দরবন এক্সপ্রেস', number: '725', from: 'ঢাকা', to: 'খুলনা', departure: '06:20', arrival: '16:15', days: 'রোজ' },
-  { name: 'চিত্রা এক্সপ্রেস', number: '763', from: 'ঢাকা', to: 'খুলনা', departure: '19:00', arrival: '06:15', days: 'রোজ' },
-  { name: 'একতা এক্সপ্রেস', number: '705', from: 'ঢাকা', to: 'রাজশাহী', departure: '06:20', arrival: '13:05', days: 'রোজ' },
-  { name: 'সিল্কসিটি এক্সপ্রেস', number: '753', from: 'ঢাকা', to: 'রাজশাহী', departure: '14:40', arrival: '21:40', days: 'রোজ' },
-  { name: 'দ্রুতযান এক্সপ্রেস', number: '757', from: 'ঢাকা', to: 'দিনাজপুর', departure: '07:30', arrival: '17:40', days: 'রোজ' },
-  { name: 'পদ্মা এক্সপ্রেস', number: '767', from: 'ঢাকা', to: 'রাজশাহী', departure: '23:10', arrival: '06:35', days: 'রোজ' },
-  { name: 'তিস্তা এক্সপ্রেস', number: '709', from: 'ঢাকা', to: 'লালমনিরহাট', departure: '07:45', arrival: '19:40', days: 'রোজ' },
-  { name: 'মোহনগঞ্জ এক্সপ্রেস', number: '727', from: 'ঢাকা', to: 'মোহনগঞ্জ', departure: '07:30', arrival: '14:20', days: 'রোজ' },
-  { name: 'জয়ন্তিকা এক্সপ্রেস', number: '715', from: 'ঢাকা', to: 'সিলেট', departure: '10:30', arrival: '17:00', days: 'রোজ' },
-  { name: 'পারাবত এক্সপ্রেস', number: '709', from: 'ঢাকা', to: 'সিলেট', departure: '14:40', arrival: '21:00', days: 'রোজ' },
-];
-
 export default function SeatAvailability({ onBack }: Props) {
+  const { t, language } = useLanguage();
   const [search, setSearch] = useState('');
-  const [selected, setSelected] = useState<TrainEntry | null>(null);
+  const [selected, setSelected] = useState<BDTrainRoute | null>(null);
 
-  const filtered = TRAINS.filter(t =>
-    t.name.includes(search) || t.from.includes(search) || t.to.includes(search) ||
-    t.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = useMemo(() => {
+    const q = search.toLowerCase();
+    if (!q) return BD_TRAIN_ROUTES;
+    return BD_TRAIN_ROUTES.filter(r =>
+      r.name.toLowerCase().includes(q) ||
+      r.bnName.includes(q) ||
+      r.from.toLowerCase().includes(q) ||
+      r.to.toLowerCase().includes(q) ||
+      r.number.includes(q)
+    );
+  }, [search]);
+
+  const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
 
   if (selected) {
-    const links = buildSeatAvailabilityLinks(selected.name, selected.number);
+    const railwayLink = 'https://eticket.railway.gov.bd/';
     return (
       <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-hidden">
         <div className="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
           <button onClick={() => setSelected(null)} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full">
-            <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
           </button>
-          <Train className="w-5 h-5 text-blue-500" />
-          <div className="flex-1">
-            <h1 className="text-base font-bold text-gray-900 dark:text-white">{selected.name}</h1>
-            <p className="text-xs text-gray-500 dark:text-gray-400">ট্রেন নং {selected.number}</p>
+          <Train className="w-5 h-5 text-blue-500 shrink-0" />
+          <div className="flex-1 min-w-0">
+            <h1 className="text-base font-bold text-gray-900 dark:text-white truncate">{language === 'bn' ? selected.bnName : selected.name}</h1>
+            <p className="text-xs text-gray-500 dark:text-gray-400">{lbl('Train No.', 'ট্রেন নং')} {selected.number}</p>
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 min-h-0 overflow-y-auto p-4 space-y-4">
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700">
             <div className="flex items-center justify-between mb-3">
               <div className="text-center">
-                <p className="text-xs text-gray-500 dark:text-gray-400">ছাড়বে</p>
-                <p className="text-2xl font-black text-gray-900 dark:text-white">{selected.departure}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">{lbl('Departs', 'ছাড়বে')}</p>
+                <p className="text-2xl font-black text-gray-900 dark:text-white">{selected.dhakaDepart}</p>
                 <p className="text-sm font-semibold text-blue-600 dark:text-blue-400">{selected.from}</p>
               </div>
               <div className="flex-1 flex items-center px-4">
                 <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
-                <Train className="w-5 h-5 text-gray-400 mx-2" />
+                <Train className="w-5 h-5 text-gray-400 mx-2 shrink-0" />
                 <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
               </div>
               <div className="text-center">
-                <p className="text-xs text-gray-500 dark:text-gray-400">পৌঁছাবে</p>
-                <p className="text-2xl font-black text-gray-900 dark:text-white">{selected.arrival}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">{lbl('Arrives', 'পৌঁছাবে')}</p>
+                <p className="text-2xl font-black text-gray-900 dark:text-white">{selected.destinationArrive}</p>
                 <p className="text-sm font-semibold text-green-600 dark:text-green-400">{selected.to}</p>
               </div>
             </div>
-            <p className="text-xs text-center text-gray-400 dark:text-gray-500">{selected.days} চলে</p>
-          </div>
-
-          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-4">
-            <p className="text-xs font-bold text-amber-700 dark:text-amber-400 mb-2">সিট বুকিং ও প্রাপ্যতা</p>
-            <p className="text-xs text-amber-700 dark:text-amber-300 mb-3">রিয়েল-টাইম সিট প্রাপ্যতা দেখতে নিচের যেকোনো লিংকে যান:</p>
-            <div className="space-y-2">
-              <a href={links.railwayGov} target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-white dark:bg-slate-800 border border-amber-200 dark:border-amber-700 rounded-xl px-3 py-2.5 text-sm text-blue-600 dark:text-blue-400 hover:bg-amber-50 dark:hover:bg-amber-900/30">
-                <ExternalLink className="w-4 h-4 shrink-0" /> বাংলাদেশ রেলওয়ে e-Ticketing
-              </a>
-              <a href={links.shohoz} target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-white dark:bg-slate-800 border border-amber-200 dark:border-amber-700 rounded-xl px-3 py-2.5 text-sm text-blue-600 dark:text-blue-400 hover:bg-amber-50 dark:hover:bg-amber-900/30">
-                <ExternalLink className="w-4 h-4 shrink-0" /> Shohoz.com এ টিকিট কাটুন
-              </a>
-              <a href={links.seatplan} target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-white dark:bg-slate-800 border border-amber-200 dark:border-amber-700 rounded-xl px-3 py-2.5 text-sm text-blue-600 dark:text-blue-400 hover:bg-amber-50 dark:hover:bg-amber-900/30">
-                <ExternalLink className="w-4 h-4 shrink-0" /> Seatplan.net এ সিট দেখুন
-              </a>
+            <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
+              <div className="text-center">
+                <p className="text-xs text-gray-400 dark:text-gray-500">{lbl('Return Departs', 'ফেরত ছাড়বে')}</p>
+                <p className="text-sm font-bold text-gray-700 dark:text-gray-300">{selected.returnDepart}</p>
+              </div>
+              <div className="text-center">
+                <p className="text-xs text-gray-400 dark:text-gray-500">{lbl('Arrives Dhaka', 'ঢাকা পৌঁছাবে')}</p>
+                <p className="text-sm font-bold text-gray-700 dark:text-gray-300">{selected.dhakaArrive}</p>
+              </div>
             </div>
+            {selected.offDay && (
+              <p className="text-xs text-center text-amber-600 dark:text-amber-400 mt-2">
+                {lbl('Off day:', 'ছুটির দিন:')} {selected.offDay}
+              </p>
+            )}
           </div>
 
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700">
-            <h3 className="font-bold text-gray-900 dark:text-white text-sm mb-3">টিপস</h3>
+            <h3 className="font-bold text-gray-900 dark:text-white text-sm mb-2">{lbl('Fare (approx.)', 'আনুমানিক ভাড়া')}</h3>
+            <div className="grid grid-cols-3 gap-2">
+              {selected.fare.shuvoron && <div className="bg-gray-50 dark:bg-slate-700 rounded-xl p-2 text-center"><p className="text-xs text-gray-500 dark:text-gray-400">শুভ্রন</p><p className="text-sm font-bold text-gray-900 dark:text-white">৳{selected.fare.shuvoron}</p></div>}
+              {selected.fare.shovan && <div className="bg-gray-50 dark:bg-slate-700 rounded-xl p-2 text-center"><p className="text-xs text-gray-500 dark:text-gray-400">শোভন</p><p className="text-sm font-bold text-gray-900 dark:text-white">৳{selected.fare.shovan}</p></div>}
+              {selected.fare.shovanChair && <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-2 text-center"><p className="text-xs text-blue-600 dark:text-blue-400">শোভন চেয়ার</p><p className="text-sm font-bold text-blue-800 dark:text-blue-200">৳{selected.fare.shovanChair}</p></div>}
+              {selected.fare.firstClass && <div className="bg-amber-50 dark:bg-amber-900/20 rounded-xl p-2 text-center"><p className="text-xs text-amber-600 dark:text-amber-400">১ম শ্রেণী</p><p className="text-sm font-bold text-amber-800 dark:text-amber-200">৳{selected.fare.firstClass}</p></div>}
+              {selected.fare.acChair && <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-2 text-center"><p className="text-xs text-purple-600 dark:text-purple-400">এসি চেয়ার</p><p className="text-sm font-bold text-purple-800 dark:text-purple-200">৳{selected.fare.acChair}</p></div>}
+              {selected.fare.acBerth && <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-xl p-2 text-center"><p className="text-xs text-indigo-600 dark:text-indigo-400">এসি বার্থ</p><p className="text-sm font-bold text-indigo-800 dark:text-indigo-200">৳{selected.fare.acBerth}</p></div>}
+            </div>
+          </div>
+
+          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-4">
+            <p className="text-xs font-bold text-amber-700 dark:text-amber-400 mb-2">{lbl('Book Ticket', 'টিকিট বুকিং')}</p>
+            <p className="text-xs text-amber-700 dark:text-amber-300 mb-3">
+              {lbl('Book your seat on the official Bangladesh Railway portal:', 'বাংলাদেশ রেলওয়ের অফিসিয়াল পোর্টালে সিট বুক করুন:')}
+            </p>
+            <a href={railwayLink} target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-white dark:bg-slate-800 border border-amber-200 dark:border-amber-700 rounded-xl px-3 py-2.5 text-sm text-blue-600 dark:text-blue-400 hover:bg-amber-50 dark:hover:bg-amber-900/30">
+              <ExternalLink className="w-4 h-4 shrink-0" /> {lbl('Bangladesh Railway e-Ticketing', 'বাংলাদেশ রেলওয়ে ই-টিকেটিং')}
+            </a>
+          </div>
+
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700">
+            <h3 className="font-bold text-gray-900 dark:text-white text-sm mb-3">{lbl('Tips', 'টিপস')}</h3>
             <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
-              <li>• যাত্রার ১০ দিন আগে টিকিট কাটুন — জনপ্রিয় রুটে আসন দ্রুত শেষ হয়</li>
-              <li>• ঈদ বা ছুটির আগে ৩০ দিন আগে বুক করুন</li>
-              <li>• এসি বার্থ ও শোভন চেয়ার আগে শেষ হয়</li>
-              <li>• ই-টিকিটে NID লাগে — সাথে রাখুন</li>
+              <li>• {lbl('Book 10 days ahead — popular routes fill fast', 'যাত্রার ১০ দিন আগে টিকিট কাটুন — জনপ্রিয় রুটে আসন দ্রুত শেষ হয়')}</li>
+              <li>• {lbl('Book 30 days ahead for Eid/holidays', 'ঈদ বা ছুটির আগে ৩০ দিন আগে বুক করুন')}</li>
+              <li>• {lbl('AC Berth and Shuvoron Chair sell out first', 'এসি বার্থ ও শোভন চেয়ার আগে শেষ হয়')}</li>
+              <li>• {lbl('NID required for e-ticket — carry it', 'ই-টিকিটে NID লাগে — সাথে রাখুন')}</li>
             </ul>
           </div>
           <div className="h-4" />
@@ -115,37 +118,47 @@ export default function SeatAvailability({ onBack }: Props) {
         <button onClick={onBack} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full">
           <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
         </button>
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center">
+        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center shrink-0">
           <Ticket className="w-5 h-5 text-white" />
         </div>
         <div>
-          <h1 className="text-lg font-bold text-gray-900 dark:text-white">সিট প্রাপ্যতা</h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">Train Seat Availability & Booking</p>
+          <h1 className="text-lg font-bold text-gray-900 dark:text-white">{lbl('Seat Availability', 'সিট প্রাপ্যতা')}</h1>
+          <p className="text-xs text-gray-500 dark:text-gray-400">{BD_TRAIN_ROUTES.length} {lbl('trains', 'ট্রেন')}</p>
         </div>
       </div>
 
       <div className="p-4 shrink-0">
-        <input value={search} onChange={e => setSearch(e.target.value)}
-          placeholder="ট্রেনের নাম বা গন্তব্য খুঁজুন..."
-          className="w-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2.5 text-sm dark:text-white" />
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <input value={search} onChange={e => setSearch(e.target.value)}
+            placeholder={lbl('Search by train name, number, or destination...', 'ট্রেনের নাম, নম্বর বা গন্তব্য খুঁজুন...')}
+            className="w-full pl-9 pr-4 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl py-2.5 text-sm dark:text-white" />
+        </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-2">
+      <div className="flex-1 min-h-0 overflow-y-auto px-4 pb-4 space-y-2">
         {filtered.map(t => (
-          <button key={t.number + t.name} onClick={() => setSelected(t)}
-            className="w-full bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 text-left hover:border-blue-300 dark:hover:border-blue-700 transition-colors">
+          <button key={t.id} onClick={() => setSelected(t)}
+            className="w-full bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 text-left hover:border-blue-300 dark:hover:border-blue-700 transition-colors active:scale-[0.99]">
             <div className="flex items-start justify-between gap-2">
-              <div className="flex-1">
-                <p className="font-bold text-gray-900 dark:text-white text-sm">{t.name}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{t.from} → {t.to}</p>
+              <div className="flex-1 min-w-0">
+                <p className="font-bold text-gray-900 dark:text-white text-sm truncate">{language === 'bn' ? t.bnName : t.name}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{t.from} → {t.to} · #{t.number}</p>
+                {t.offDay && <p className="text-xs text-amber-600 dark:text-amber-400 mt-0.5">{lbl('Off:', 'ছুটি:')} {t.offDay}</p>}
               </div>
               <div className="text-right shrink-0">
-                <p className="text-sm font-semibold text-blue-600 dark:text-blue-400">{t.departure}</p>
-                <p className="text-xs text-gray-400 dark:text-gray-500">ছাড়বে</p>
+                <p className="text-sm font-semibold text-blue-600 dark:text-blue-400">{t.dhakaDepart}</p>
+                <p className="text-xs text-gray-400">{lbl('departs', 'ছাড়বে')}</p>
               </div>
             </div>
           </button>
         ))}
+        {filtered.length === 0 && (
+          <div className="text-center py-12">
+            <Train className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
+            <p className="text-gray-500 dark:text-gray-400">{lbl('No trains found', 'কোনো ট্রেন পাওয়া যায়নি')}</p>
+          </div>
+        )}
         <div className="h-4" />
       </div>
     </div>

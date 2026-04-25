@@ -1,116 +1,204 @@
-import React, { useState } from 'react';
-import { ArrowLeft, MapPin, Bus, Search } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { ArrowLeft, MapPin, Bus, Search, ChevronLeft } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface Props { onBack: () => void; }
 
 const GUIDES = [
+  // ─── Dhaka ──────────────────────────────────────────────────────────────────
   {
-    area: 'মিরপুর', areaEn: 'Mirpur',
-    description: 'ঢাকার উত্তর-পশ্চিমের ঘনবসতিপূর্ণ এলাকা। মেট্রো, অনেক লোকাল বাস সুবিধা আছে।',
-    metroAccess: ['মিরপুর-১', 'মিরপুর-১০', 'মিরপুর-১১', 'কাজীপাড়া', 'শেওড়াপাড়া'],
+    area: 'মিরপুর', areaEn: 'Mirpur', division: 'Dhaka',
+    description: 'ঢাকার উত্তর-পশ্চিমের ঘনবসতিপূর্ণ এলাকা। MRT-6 মেট্রো সুবিধা ও অনেক লোকাল বাস আছে।',
+    metroAccess: ['মিরপুর-১০ (MRT-6)', 'মিরপুর-১১ (MRT-6)', 'কাজীপাড়া (MRT-6)', 'শেওড়াপাড়া (MRT-6)', 'পল্লবী (MRT-6)'],
     buses: ['০১', '১৩', '৩৫', '৫৫', '৬০', 'ভার্সিটি এক্সপ্রেস'],
-    tips: ['মিরপুর-১০ থেকে মেট্রো নিন মতিঝিল যেতে', 'সকাল ৮-১০টা ভীষণ ভিড় থাকে', 'শাহবাগ বা ফার্মগেট যেতে বাস সুবিধাজনক'],
+    tips: ['মিরপুর-১০ বা মিরপুর-১১ থেকে MRT-6 মেট্রো নিন মতিঝিল বা উত্তরা যেতে', 'সকাল ৮-১০টা ভীষণ ভিড় থাকে', 'শাহবাগ বা ফার্মগেট যেতে বাস সুবিধাজনক'],
     landmarks: ['মিরপুর চিড়িয়াখানা', 'শহীদ বুদ্ধিজীবী স্মৃতিসৌধ', 'বাংলাদেশ ক্রিকেট স্টেডিয়াম'],
     icon: '🏘️',
   },
   {
-    area: 'ধানমন্ডি', areaEn: 'Dhanmondi',
+    area: 'ধানমন্ডি', areaEn: 'Dhanmondi', division: 'Dhaka',
     description: 'আবাসিক ও বাণিজ্যিক মিশ্রিত এলাকা। শিক্ষা প্রতিষ্ঠান ও শপিং মলে ভরপুর।',
-    metroAccess: ['বিজয় সরণি (কাছাকাছি)'],
+    metroAccess: ['বিজয় সরণি (MRT-6, কাছাকাছি)'],
     buses: ['সিটি বাস রুট ৮', '২৮', 'গুলিস্তান-ধানমন্ডি'],
     tips: ['ধানমন্ডি-২৭ থেকে বাস বেশি পাওয়া যায়', 'শুক্রবার রাস্তা অপেক্ষাকৃত ফাঁকা থাকে', 'রিকশা কম দূরত্বের জন্য ভালো'],
     landmarks: ['রবীন্দ্র সরোবর', '৩২ নম্বর বঙ্গবন্ধু জাদুঘর', 'ধানমন্ডি লেক'],
     icon: '🌳',
   },
   {
-    area: 'মতিঝিল', areaEn: 'Motijheel',
+    area: 'মতিঝিল', areaEn: 'Motijheel', division: 'Dhaka',
     description: 'ঢাকার প্রধান বাণিজ্যিক কেন্দ্র। ব্যাংক, সরকারি অফিস এখানে অবস্থিত।',
-    metroAccess: ['মতিঝিল', 'বাংলাদেশ সচিবালয়'],
+    metroAccess: ['মতিঝিল (MRT-6)', 'বাংলাদেশ সচিবালয় (MRT-6)'],
     buses: ['প্রায় সব রুটের টার্মিনাল এখানে'],
     tips: ['মেট্রো সবচেয়ে দ্রুত বিকল্প', 'অফিস সময়ে (৮-১০টা, ৫-৭টা) ভীষণ যানজট', 'শাপলা চত্বরে যানজট এড়াতে বিকল্প রাস্তা ব্যবহার করুন'],
     landmarks: ['শাপলা চত্বর', 'বাংলাদেশ ব্যাংক ভবন', 'জনতা ব্যাংক ভবন'],
     icon: '🏦',
   },
   {
-    area: 'উত্তরা', areaEn: 'Uttara',
-    description: 'ঢাকার উত্তরে আধুনিক আবাসিক এলাকা। এয়ারপোর্টের কাছে।',
-    metroAccess: ['উত্তরা উত্তর', 'উত্তরা সেন্টার', 'উত্তরা দক্ষিণ'],
+    area: 'উত্তরা', areaEn: 'Uttara', division: 'Dhaka',
+    description: 'ঢাকার উত্তরে আধুনিক আবাসিক এলাকা। এয়ারপোর্টের কাছে এবং MRT-6 শেষ প্রান্ত।',
+    metroAccess: ['উত্তরা উত্তর (MRT-6)', 'উত্তরা সেন্টার (MRT-6)', 'উত্তরা দক্ষিণ (MRT-6)'],
     buses: ['বিআরটিসি এয়ারপোর্ট বাস', 'গাজীপুর রুট'],
     tips: ['এয়ারপোর্ট যেতে মেট্রো + হাঁটা সুবিধাজনক', 'সেক্টর ৩, ৭, ১১ থেকে মেট্রো সহজ', 'গাজীপুর যেতে বিআরটিসি বাস ব্যবহার করুন'],
     landmarks: ['হযরত শাহজালাল আন্তর্জাতিক বিমানবন্দর', 'উত্তরা মডেল টাউন', 'জামে মসজিদ'],
     icon: '✈️',
   },
   {
-    area: 'গুলশান-বনানী', areaEn: 'Gulshan-Banani',
+    area: 'গুলশান-বনানী', areaEn: 'Gulshan-Banani', division: 'Dhaka',
     description: 'অভিজাত কূটনৈতিক এলাকা। দূতাবাস, আন্তর্জাতিক রেস্তোরাঁ ও অফিস।',
-    metroAccess: ['নিকটস্থ: বিজয় সরণি'],
+    metroAccess: ['নিকটস্থ: বিজয় সরণি (MRT-6)'],
     buses: ['গুলশান-মতিঝিল সার্ভিস', 'বিআরটিসি স্পেশাল'],
     tips: ['গুলশান ২ চত্বর থেকে বাস পাওয়া যায়', 'সিএনজি ও উবার সহজলভ্য', 'ভিড় কম কিন্তু ভাড়া বেশি'],
     landmarks: ['গুলশান লেক', 'বনানী কবরস্থান', 'ওয়েস্টিন হোটেল'],
     icon: '🏢',
   },
   {
-    area: 'পুরান ঢাকা', areaEn: 'Old Dhaka',
+    area: 'পুরান ঢাকা', areaEn: 'Old Dhaka', division: 'Dhaka',
     description: 'ঐতিহাসিক ঢাকার কেন্দ্র। সরু গলি, ঐতিহ্যবাহী ব্যবসা ও স্থাপত্য।',
-    metroAccess: ['বাংলাদেশ সচিবালয় (পায়ে হেঁটে)'],
+    metroAccess: ['বাংলাদেশ সচিবালয় (MRT-6, পায়ে হেঁটে)'],
     buses: ['গুলিস্তান-সদরঘাট', 'পুরান ঢাকা সার্ভিস'],
     tips: ['রিকশা ও ইজিবাইক মূল যান', 'সদরঘাট থেকে লঞ্চে বরিশাল যাওয়া যায়', 'সন্ধ্যায় ইফতার বাজারে ভিড় থাকে'],
     landmarks: ['আহসান মঞ্জিল', 'লালবাগ কেল্লা', 'বুড়িগঙ্গা নদী', 'সদরঘাট লঞ্চ টার্মিনাল'],
     icon: '🏛️',
   },
   {
-    area: 'ফার্মগেট-কারওয়ান বাজার', areaEn: 'Farmgate-Karwan Bazar',
+    area: 'ফার্মগেট-কারওয়ান বাজার', areaEn: 'Farmgate-Karwan Bazar', division: 'Dhaka',
     description: 'ঢাকার কেন্দ্রীয় সংযোগস্থল। মিডিয়া অফিস, কিচেন মার্কেট এখানে।',
-    metroAccess: ['ফার্মগেট'],
+    metroAccess: ['ফার্মগেট (MRT-6)', 'কারওয়ান বাজার (MRT-6)'],
     buses: ['প্রায় সব রুটের সংযোগস্থল'],
     tips: ['মেট্রো সবচেয়ে দ্রুত যাতায়াতের মাধ্যম', 'বাজার সময়ে প্রচুর ভিড় থাকে', 'রাত ১০টার পর বাস কম থাকে'],
     landmarks: ['সোনারগাঁও হোটেল', 'কারওয়ান বাজার', 'বিটিভি ভবন'],
     icon: '🔁',
   },
   {
-    area: 'যাত্রাবাড়ী-সায়েদাবাদ', areaEn: 'Jatrabari-Sayedabad',
+    area: 'যাত্রাবাড়ী-সায়েদাবাদ', areaEn: 'Jatrabari-Sayedabad', division: 'Dhaka',
     description: 'দক্ষিণ-পূর্ব ঢাকার ব্যস্ত প্রবেশদ্বার। দেশের প্রধান বাস টার্মিনাল।',
-    metroAccess: ['পরিকল্পনাধীন MRT-2'],
+    metroAccess: ['পরিকল্পনাধীন MRT-2 (ভবিষ্যতে)'],
     buses: ['সায়েদাবাদ থেকে সারা দেশে ইন্টারসিটি বাস'],
     tips: ['ইন্টারসিটি বাসের জন্য আগে টিকিট কাটুন', 'সায়েদাবাদ বাস টার্মিনাল থেকে ঢাকার বাইরে যান', 'ভোরে ও বিকালে সবচেয়ে বেশি বাস থাকে'],
     landmarks: ['সায়েদাবাদ বাস টার্মিনাল', 'যাত্রাবাড়ী চৌরাস্তা'],
     icon: '🚍',
   },
+  // ─── Chittagong ─────────────────────────────────────────────────────────────
+  {
+    area: 'চট্টগ্রাম নগর', areaEn: 'Chattogram City', division: 'Chittagong',
+    description: 'বন্দর নগরী চট্টগ্রাম। ব্যস্ত বাণিজ্যিক বন্দর ও ঐতিহাসিক এলাকা।',
+    metroAccess: ['কোনো মেট্রো নেই (পরিকল্পনাধীন)'],
+    buses: ['বিআরটিসি সিটি বাস', 'মিনিবাস', 'টেম্পো'],
+    tips: ['সিএনজি সহজলভ্য ও সাশ্রয়ী', 'বন্দর এলাকায় সকালে যানজট বেশি', 'আগ্রাবাদ থেকে সিটি সেন্টারে বাস পাওয়া যায়'],
+    landmarks: ['চট্টগ্রাম বন্দর', 'পতেঙ্গা সমুদ্র সৈকত', 'ফয়স লেক', 'জাতিতাত্ত্বিক জাদুঘর'],
+    icon: '⚓',
+  },
+  {
+    area: 'কক্সবাজার', areaEn: "Cox's Bazar", division: 'Chittagong',
+    description: 'বিশ্বের দীর্ঘতম সমুদ্র সৈকত। পর্যটন কেন্দ্র।',
+    metroAccess: ['কোনো মেট্রো নেই'],
+    buses: ['ঢাকা থেকে ইন্টারসিটি বাস', 'চট্টগ্রাম-কক্সবাজার লোকাল বাস'],
+    tips: ['ঢাকা থেকে সরাসরি রাতের বাস যায়', 'পিক সিজনে আগে বুকিং দিন', 'বিচে অটোরিকশা সহজলভ্য'],
+    landmarks: ['কক্সবাজার সমুদ্র সৈকত', 'ইনানী বিচ', 'হিমছড়ি', 'সেন্ট মার্টিন দ্বীপ'],
+    icon: '🏖️',
+  },
+  // ─── Sylhet ─────────────────────────────────────────────────────────────────
+  {
+    area: 'সিলেট', areaEn: 'Sylhet', division: 'Sylhet',
+    description: 'চা বাগান ও হজরত শাহজালাল (র.) মাজারের শহর।',
+    metroAccess: ['কোনো মেট্রো নেই'],
+    buses: ['ঢাকা-সিলেট ইন্টারসিটি বাস', 'লোকাল সিএনজি ও বাস'],
+    tips: ['সিলেট কেন্দ্র থেকে সিএনজিতে মাজার যাওয়া যায়', 'চা বাগান দেখতে শ্রীমঙ্গল যান', 'ট্রেনে সিলেট যাওয়াটা সুন্দর'],
+    landmarks: ['হযরত শাহজালাল (র.) মাজার', 'জাফলং', 'রাতারগুল', 'বিছানাকান্দি'],
+    icon: '🍃',
+  },
+  {
+    area: 'শ্রীমঙ্গল', areaEn: 'Srimangal', division: 'Sylhet',
+    description: 'চা বাগানের রাজধানী। সুন্দর প্রকৃতি ও পর্যটন।',
+    metroAccess: ['কোনো মেট্রো নেই'],
+    buses: ['ঢাকা থেকে ট্রেন বা বাস', 'সিলেট থেকে লোকাল বাস'],
+    tips: ['ট্রেনে যাওয়া সবচেয়ে সুন্দর', 'সিজন: অক্টোবর-মার্চ ভালো', 'সিএনজিতে চা বাগান ঘোরা যায়'],
+    landmarks: ['চা বাগান', 'নিসর্গ ইকো পার্ক', 'মাধবপুর লেক'],
+    icon: '🌿',
+  },
+  // ─── Rajshahi ───────────────────────────────────────────────────────────────
+  {
+    area: 'রাজশাহী', areaEn: 'Rajshahi', division: 'Rajshahi',
+    description: 'শিক্ষা ও আম নগরী। শান্ত ও পরিকল্পিত শহর।',
+    metroAccess: ['কোনো মেট্রো নেই'],
+    buses: ['ঢাকা-রাজশাহী ইন্টারসিটি বাস ও ট্রেন', 'শহরে সিএনজি ও রিকশা'],
+    tips: ['ট্রেন বা বিমানে যাওয়া ভালো', 'পদ্মা নদীর পাড়ে বিকালে হাঁটা যায়', 'সাতক্ষীরা-বগুড়ার রুটও সহজ'],
+    landmarks: ['বরেন্দ্র গবেষণা জাদুঘর', 'পদ্মা রিভার ফ্রন্ট', 'রাজশাহী বিশ্ববিদ্যালয়'],
+    icon: '🍋',
+  },
+  // ─── Khulna ─────────────────────────────────────────────────────────────────
+  {
+    area: 'খুলনা', areaEn: 'Khulna', division: 'Khulna',
+    description: 'শিল্প নগরী ও সুন্দরবনের প্রবেশদ্বার।',
+    metroAccess: ['কোনো মেট্রো নেই'],
+    buses: ['ঢাকা-খুলনা ইন্টারসিটি বাস ও ট্রেন', 'সুন্দরবন লঞ্চ'],
+    tips: ['সুন্দরবন যেতে মংলা থেকে লঞ্চ নিন', 'ট্রেন সবচেয়ে আরামদায়ক', 'শীতকালে সুন্দরবন ভ্রমণ সেরা'],
+    landmarks: ['সুন্দরবন', 'খুলনা শিপইয়ার্ড', 'রূপসা নদী'],
+    icon: '🌴',
+  },
+  // ─── Barisal ────────────────────────────────────────────────────────────────
+  {
+    area: 'বরিশাল', areaEn: 'Barisal', division: 'Barisal',
+    description: 'ভাটির দেশ। নদীপথে চলাচল বিখ্যাত।',
+    metroAccess: ['কোনো মেট্রো নেই'],
+    buses: ['ঢাকা-বরিশাল লঞ্চ ও বাস', 'লোকাল সিএনজি ও রিকশা'],
+    tips: ['রাতের লঞ্চে সদরঘাট থেকে বরিশাল যান', 'সকালের লঞ্চের দৃশ্য অসাধারণ', 'নৌকায় খালবিল দেখুন'],
+    landmarks: ['দুর্গাসাগর দিঘি', 'মুক্তিযোদ্ধা স্মৃতিসৌধ', 'অক্সফোর্ড মিশন চার্চ'],
+    icon: '🚢',
+  },
+  // ─── Mymensingh ─────────────────────────────────────────────────────────────
+  {
+    area: 'ময়মনসিংহ', areaEn: 'Mymensingh', division: 'Mymensingh',
+    description: 'কৃষি বিশ্ববিদ্যালয় ও ব্রহ্মপুত্র নদের শহর।',
+    metroAccess: ['কোনো মেট্রো নেই'],
+    buses: ['ঢাকা-ময়মনসিংহ ট্রেন ও বাস', 'শহরে সিএনজি ও রিকশা'],
+    tips: ['ট্রেনে ময়মনসিংহ যাওয়া ভালো', 'ব্রহ্মপুত্র নদের পাড়ে ঘুরুন', 'বাংলাদেশ কৃষি বিশ্ববিদ্যালয় ক্যাম্পাস সুন্দর'],
+    landmarks: ['বাংলাদেশ কৃষি বিশ্ববিদ্যালয়', 'শশী লজ', 'ব্রহ্মপুত্র নদ'],
+    icon: '🌾',
+  },
 ];
 
 export default function NeighbourhoodGuides({ onBack }: Props) {
-  const { t } = useLanguage();
+  const { language } = useLanguage();
+  const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState<typeof GUIDES[0] | null>(null);
 
-  const filtered = GUIDES.filter(g =>
-    g.area.includes(search) || g.areaEn.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = useMemo(() => {
+    const q = search.toLowerCase().trim();
+    if (!q) return GUIDES;
+    return GUIDES.filter(g =>
+      g.area.includes(q) || g.areaEn.toLowerCase().includes(q) ||
+      g.division.toLowerCase().includes(q) ||
+      g.description.includes(q)
+    );
+  }, [search]);
+
+  const divisions = [...new Set(GUIDES.map(g => g.division))];
 
   if (selected) {
     return (
       <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-hidden">
         <div className="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
           <button onClick={() => setSelected(null)} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full">
-            <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
           </button>
           <span className="text-2xl">{selected.icon}</span>
           <div>
             <h1 className="text-lg font-bold text-gray-900 dark:text-white">{selected.area}</h1>
-            <p className="text-xs text-gray-500 dark:text-gray-400">{selected.areaEn} Local Guide</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">{selected.areaEn} · {selected.division}</p>
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 min-h-0 overflow-y-auto p-4 space-y-4">
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700">
             <p className="text-sm text-gray-700 dark:text-gray-300">{selected.description}</p>
           </div>
           <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 border border-blue-100 dark:border-blue-800">
-            <h3 className="font-bold text-blue-900 dark:text-blue-300 mb-2 flex items-center gap-2"><span>🚇</span> মেট্রো স্টেশন</h3>
+            <h3 className="font-bold text-blue-900 dark:text-blue-300 mb-2 flex items-center gap-2"><span>🚇</span> {lbl('Metro / MRT Access', 'মেট্রো স্টেশন')}</h3>
             {selected.metroAccess.map(m => <p key={m} className="text-sm text-blue-800 dark:text-blue-200 py-0.5">• {m}</p>)}
           </div>
           <div className="bg-green-50 dark:bg-green-900/20 rounded-2xl p-4 border border-green-100 dark:border-green-800">
-            <h3 className="font-bold text-green-900 dark:text-green-300 mb-2 flex items-center gap-2"><Bus className="w-4 h-4" /> বাস রুট</h3>
+            <h3 className="font-bold text-green-900 dark:text-green-300 mb-2 flex items-center gap-2"><Bus className="w-4 h-4" /> {lbl('Bus Routes', 'বাস রুট')}</h3>
             <div className="flex flex-wrap gap-2">
               {selected.buses.map(b => (
                 <span key={b} className="bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300 text-xs px-2.5 py-1 rounded-full font-medium">{b}</span>
@@ -118,11 +206,11 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
             </div>
           </div>
           <div className="bg-amber-50 dark:bg-amber-900/20 rounded-2xl p-4 border border-amber-100 dark:border-amber-800">
-            <h3 className="font-bold text-amber-900 dark:text-amber-300 mb-2">💡 ট্রাভেল টিপস</h3>
+            <h3 className="font-bold text-amber-900 dark:text-amber-300 mb-2">💡 {lbl('Travel Tips', 'ট্রাভেল টিপস')}</h3>
             {selected.tips.map((tip, i) => <p key={i} className="text-sm text-amber-800 dark:text-amber-200 py-0.5">• {tip}</p>)}
           </div>
           <div className="bg-purple-50 dark:bg-purple-900/20 rounded-2xl p-4 border border-purple-100 dark:border-purple-800">
-            <h3 className="font-bold text-purple-900 dark:text-purple-300 mb-2 flex items-center gap-2"><MapPin className="w-4 h-4" /> দর্শনীয় স্থান</h3>
+            <h3 className="font-bold text-purple-900 dark:text-purple-300 mb-2 flex items-center gap-2"><MapPin className="w-4 h-4" /> {lbl('Landmarks', 'দর্শনীয় স্থান')}</h3>
             {selected.landmarks.map(l => <p key={l} className="text-sm text-purple-800 dark:text-purple-200 py-0.5">• {l}</p>)}
           </div>
           <div className="h-4" />
@@ -137,12 +225,12 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
         <button onClick={onBack} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full">
           <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
         </button>
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
+        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shrink-0">
           <MapPin className="w-5 h-5 text-white" />
         </div>
         <div>
-          <h1 className="text-lg font-bold text-gray-900 dark:text-white">এলাকাভিত্তিক গাইড</h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">Neighbourhood Transport Guides</p>
+          <h1 className="text-lg font-bold text-gray-900 dark:text-white">{lbl('Area Guides', 'এলাকাভিত্তিক গাইড')}</h1>
+          <p className="text-xs text-gray-500 dark:text-gray-400">{lbl('Bangladesh Transport Guides', 'বাংলাদেশ পরিবহন গাইড')} · {GUIDES.length}</p>
         </div>
       </div>
 
@@ -150,22 +238,50 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input value={search} onChange={e => setSearch(e.target.value)}
-            placeholder="এলাকা খুঁজুন..."
+            placeholder={lbl('Search area or district...', 'এলাকা বা জেলা খুঁজুন...')}
             className="w-full pl-9 pr-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm dark:text-white" />
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-4 pb-4 grid grid-cols-2 gap-3 content-start">
-        {filtered.map(g => (
-          <button key={g.area} onClick={() => setSelected(g)}
-            className="bg-white dark:bg-slate-800 rounded-2xl p-4 text-left shadow-sm border border-gray-100 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700 transition-colors active:scale-95">
-            <span className="text-3xl block mb-2">{g.icon}</span>
-            <h3 className="font-bold text-gray-900 dark:text-white text-sm">{g.area}</h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">{g.areaEn}</p>
-            <p className="text-xs text-purple-600 dark:text-purple-400 mt-1">{g.metroAccess.length} মেট্রো স্টেশন</p>
-          </button>
-        ))}
-        <div className="col-span-2 h-4" />
+      <div className="flex-1 min-h-0 overflow-y-auto px-4 pb-4">
+        {search ? (
+          <div className="grid grid-cols-2 gap-3 content-start">
+            {filtered.map(g => (
+              <button key={g.area} onClick={() => setSelected(g)}
+                className="bg-white dark:bg-slate-800 rounded-2xl p-4 text-left shadow-sm border border-gray-100 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700 transition-colors active:scale-95">
+                <span className="text-3xl block mb-2">{g.icon}</span>
+                <h3 className="font-bold text-gray-900 dark:text-white text-sm">{g.area}</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400">{g.areaEn}</p>
+                <p className="text-xs text-purple-600 dark:text-purple-400 mt-1">{g.division}</p>
+              </button>
+            ))}
+            {filtered.length === 0 && (
+              <div className="col-span-2 text-center py-12 text-gray-400">
+                <MapPin className="w-10 h-10 mx-auto mb-2 opacity-40" />
+                <p>{lbl('No area found', 'কোনো এলাকা পাওয়া যায়নি')}</p>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {divisions.map(div => (
+              <div key={div}>
+                <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">{div}</p>
+                <div className="grid grid-cols-2 gap-3">
+                  {GUIDES.filter(g => g.division === div).map(g => (
+                    <button key={g.area} onClick={() => setSelected(g)}
+                      className="bg-white dark:bg-slate-800 rounded-2xl p-4 text-left shadow-sm border border-gray-100 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700 transition-colors active:scale-95">
+                      <span className="text-3xl block mb-2">{g.icon}</span>
+                      <h3 className="font-bold text-gray-900 dark:text-white text-sm">{g.area}</h3>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">{g.areaEn}</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+            <div className="h-4" />
+          </div>
+        )}
       </div>
     </div>
   );

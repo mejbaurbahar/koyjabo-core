@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from './contexts/LanguageContext';
-import { Search, ArrowRightLeft, AlertCircle, PlayCircle, WifiOff, Activity, Home, Train, Sparkles, Clock, Info, Sun, Moon, Menu, Navigation, Map, X, Bot, FileText, Settings, Shield, Download, Calendar, HelpCircle, LogIn, LogOut, User, Phone, Bus, Plane, ChevronRight } from 'lucide-react';
+import { Search, ArrowRightLeft, AlertCircle, PlayCircle, WifiOff, Activity, Home, Train, Sparkles, Clock, Info, Sun, Moon, Menu, Navigation, Map, X, Bot, FileText, Settings, Shield, Download, Calendar, HelpCircle, LogIn, LogOut, User, Phone, Bus, Plane, ChevronRight, AlertTriangle, Calculator, Ticket, BookOpen, UserPlus, MapPin } from 'lucide-react';
 import { AnimatedLogo } from './components/AnimatedLogo';
 import DhakaAlive from './components/DhakaAlive';
 import ThemeToggle from './components/ThemeToggle';
@@ -524,7 +524,7 @@ function App() {
           </div>
 
           {/* ── Scrollable list area ── */}
-          <div ref={scrollAreaRef} className="flex-1 overflow-y-auto px-3 pb-nav-safe md:pb-4 space-y-2 min-h-0">
+          <div ref={scrollAreaRef} className="flex-1 overflow-y-auto px-3 pb-20 md:pb-4 space-y-2 min-h-0">
 
             {/* Error (mobile only) */}
             {error && (
@@ -796,6 +796,10 @@ function App() {
                         : authUser.displayName.charAt(0).toUpperCase()
                       }
                     </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{authUser.displayName}</p>
+                      {authUser.username && <p className="text-xs text-gray-500 dark:text-gray-400 truncate">@{authUser.username}</p>}
+                    </div>
                   </div>
                   <div className="flex gap-2 mt-3">
                     <button
@@ -825,59 +829,138 @@ function App() {
                   >
                     <LogIn className="w-4 h-4" /> {t('nav.login')}
                   </button>
+                  <button
+                    onClick={() => { window.location.href = '/#signup'; setIsMenuOpen(false); }}
+                    className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-colors"
+                  >
+                    <UserPlus className="w-4 h-4" /> {t('nav.signup') || 'Sign Up'}
+                  </button>
                 </div>
               )}
 
+              {/* History & Settings — only for logged-in users */}
+              {authUser && (
+                <>
+                  <button
+                    onClick={() => { window.location.href = '/#history'; setIsMenuOpen(false); }}
+                    className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                  >
+                    <Clock className="w-5 h-5 text-emerald-600 dark:text-emerald-400" /> {t('nav.history') || 'History'}
+                  </button>
+                  <button
+                    onClick={() => { window.location.href = '/#settings'; setIsMenuOpen(false); }}
+                    className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                  >
+                    <Settings className="w-5 h-5 text-gray-600 dark:text-gray-400" /> {t('nav.settings') || 'Settings'}
+                  </button>
+                </>
+              )}
+
               <button
-                onClick={() => window.location.href = '/'}
+                onClick={() => { window.location.href = '/'; setIsMenuOpen(false); }}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
               >
                 <Home className="w-5 h-5 text-emerald-600 dark:text-emerald-400" /> {t('nav.home')}
               </button>
+
               <button
-                onClick={() => window.location.href = '/#ai-assistant'}
+                onClick={() => { window.location.href = '/#blog'; setIsMenuOpen(false); }}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
               >
-                <Bot className="w-5 h-5 text-purple-600 dark:text-purple-400" /> {t('nav.aiAssistant')}
+                <BookOpen className="w-5 h-5 text-orange-600 dark:text-orange-400" /> {t('nav.blog') || 'Blog'}
+              </button>
+
+              {/* ── Community Features ── */}
+              <div className="px-3 pt-2 pb-1">
+                <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">কমিউনিটি ফিচার</p>
+              </div>
+              <button
+                onClick={() => { window.location.href = '/#trip-reminders'; setIsMenuOpen(false); }}
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+              >
+                <span className="w-5 h-5 text-center leading-5 text-violet-600">🔔</span> যাত্রা রিমাইন্ডার
               </button>
               <button
-                onClick={() => window.location.href = '/#about'}
+                onClick={() => { window.location.href = '/#road-alerts'; setIsMenuOpen(false); }}
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+              >
+                <AlertTriangle className="w-5 h-5 text-orange-500" /> রাস্তা সতর্কতা
+              </button>
+              <button
+                onClick={() => { window.location.href = '/#neighbourhood-guides'; setIsMenuOpen(false); }}
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+              >
+                <MapPin className="w-5 h-5 text-purple-500" /> এলাকাভিত্তিক গাইড
+              </button>
+              <button
+                onClick={() => { window.location.href = '/#bus-pass-info'; setIsMenuOpen(false); }}
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+              >
+                <span className="w-5 h-5 text-center leading-5 text-blue-600">💳</span> বাস পাস তথ্য
+              </button>
+              <button
+                onClick={() => { window.location.href = '/#multi-stop-planner'; setIsMenuOpen(false); }}
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+              >
+                <Navigation className="w-5 h-5 text-cyan-500" /> মাল্টি-স্টপ প্ল্যানার
+              </button>
+              <button
+                onClick={() => { window.location.href = '/#commute-cost'; setIsMenuOpen(false); }}
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+              >
+                <Calculator className="w-5 h-5 text-emerald-500" /> খরচ ক্যালকুলেটর
+              </button>
+              <button
+                onClick={() => { window.location.href = '/#seat-availability'; setIsMenuOpen(false); }}
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+              >
+                <Ticket className="w-5 h-5 text-indigo-500" /> সিট প্রাপ্যতা
+              </button>
+
+              <button
+                onClick={() => { window.location.href = '/#ai-assistant'; setIsMenuOpen(false); }}
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+              >
+                <Bot className="w-5 h-5 text-purple-600 dark:text-purple-400" /> {t('ai.title') || 'AI Assistant'}
+              </button>
+              <button
+                onClick={() => { window.location.href = '/#about'; setIsMenuOpen(false); }}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
               >
                 <Info className="w-5 h-5 text-blue-500" /> {t('nav.about')}
               </button>
               <button
-                onClick={() => window.location.href = '/#why-use'}
+                onClick={() => { window.location.href = '/#why-use'; setIsMenuOpen(false); }}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
               >
                 <Sparkles className="w-5 h-5 text-pink-600 dark:text-pink-400" /> {t('home.whyUse')}
               </button>
               <button
-                onClick={() => window.location.href = '/#faq'}
+                onClick={() => { window.location.href = '/#faq'; setIsMenuOpen(false); }}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
               >
                 <HelpCircle className="w-5 h-5 text-cyan-600 dark:text-cyan-400" /> {t('nav.faq')}
               </button>
               <button
-                onClick={() => window.location.href = '/#install-app'}
+                onClick={() => { window.location.href = '/#install-app'; setIsMenuOpen(false); }}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
               >
                 <Download className="w-5 h-5 text-emerald-600 dark:text-emerald-400" /> {t('home.installApp')}
               </button>
               <button
-                onClick={() => window.location.href = '/#privacy'}
+                onClick={() => { window.location.href = '/#privacy'; setIsMenuOpen(false); }}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
               >
                 <Shield className="w-5 h-5 text-indigo-600 dark:text-indigo-400" /> {t('nav.privacy')}
               </button>
               <button
-                onClick={() => window.location.href = '/#terms'}
+                onClick={() => { window.location.href = '/#terms'; setIsMenuOpen(false); }}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
               >
                 <FileText className="w-5 h-5 text-orange-600 dark:text-orange-400" /> {t('nav.terms')}
               </button>
               <button
-                onClick={() => window.location.href = '/#contact'}
+                onClick={() => { window.location.href = '/#contact'; setIsMenuOpen(false); }}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
               >
                 <Phone className="w-5 h-5 text-red-600 dark:text-red-400" /> {t('nav.contact') || 'Contact Us'}
