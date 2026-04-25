@@ -1143,47 +1143,21 @@ const App: React.FC = () => {
   useLayoutEffect(() => {
     if (!scrollContainerRef.current) return;
 
-    // Keep desktop sidebar scroll position stable when switching right-panel views
-    // (e.g. Bus Details -> AI Chat). Mobile still resets for page-like navigation.
     const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
     if (isDesktop) {
-      const targetScrollTop = desktopLeftScrollTopRef.current;
-      const container = scrollContainerRef.current;
-      const restore = () => {
-        if (container) container.scrollTop = targetScrollTop;
-      };
-
+      // On desktop the left sidebar always stays visible — just pin it to the saved position.
+      const target = desktopLeftScrollTopRef.current;
       isRestoringLeftScrollRef.current = true;
-      restore();
-      const raf1 = requestAnimationFrame(restore);
-      const raf2 = requestAnimationFrame(() => requestAnimationFrame(restore));
-      const timeoutId = window.setTimeout(() => {
-        restore();
+      scrollContainerRef.current.scrollTop = target;
+      const raf = requestAnimationFrame(() => {
+        if (scrollContainerRef.current) scrollContainerRef.current.scrollTop = target;
         isRestoringLeftScrollRef.current = false;
-      }, 180);
-
-      return () => {
-        cancelAnimationFrame(raf1);
-        cancelAnimationFrame(raf2);
-        clearTimeout(timeoutId);
-        isRestoringLeftScrollRef.current = false;
-      };
+      });
+      return () => { cancelAnimationFrame(raf); isRestoringLeftScrollRef.current = false; };
     }
 
-    // Mobile page-like behavior: reset to top on view switches.
+    // Mobile: reset bus list to top on every view switch (list is hidden anyway).
     scrollContainerRef.current.scrollTop = 0;
-  }, [view]);
-
-  useEffect(() => {
-    if (typeof window === 'undefined' || !window.matchMedia('(min-width: 768px)').matches) return;
-    if (!scrollContainerRef.current) return;
-    if (!isRestoringLeftScrollRef.current) return;
-
-    const timeoutId = window.setTimeout(() => {
-      isRestoringLeftScrollRef.current = false;
-    }, 220);
-
-    return () => clearTimeout(timeoutId);
   }, [view]);
 
   useEffect(() => {
@@ -1691,8 +1665,7 @@ const App: React.FC = () => {
 
       <div
         ref={chatMessagesContainerRef}
-        className="flex-1 p-4 space-y-4 bg-slate-50 dark:bg-slate-900 pb-[140px] md:pb-4 overflow-y-auto"
-        style={{ paddingBottom: 'calc(140px + env(safe-area-inset-bottom))' }}
+        className="flex-1 min-h-0 p-4 space-y-4 bg-slate-50 dark:bg-slate-900 overflow-y-auto"
       >
         {chatHistory.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center p-8 opacity-50">
@@ -1701,8 +1674,8 @@ const App: React.FC = () => {
           </div>
         ) : (
           chatHistory.map((msg, idx) => (
-            <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} `}>
-              <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-dhaka-dark dark:bg-emerald-700 text-white rounded-br-none' : 'bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-200 border border-gray-100 dark:border-gray-700 rounded-bl-none'} `}>
+            <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-dhaka-dark dark:bg-emerald-700 text-white rounded-br-none' : 'bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-200 border border-gray-100 dark:border-gray-700 rounded-bl-none'}`}>
                 <div className="whitespace-pre-wrap">{msg.text.replace(/\*\*/g, '')}</div>
               </div>
             </div>
@@ -1713,7 +1686,7 @@ const App: React.FC = () => {
         <div ref={chatEndRef}></div>
       </div>
 
-      <div className="p-4 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 z-30 fixed md:relative bottom-[calc(4rem+env(safe-area-inset-bottom))] md:bottom-0 left-0 right-0">
+      <div className="shrink-0 p-4 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 pb-safe">
         <form onSubmit={handleAiSubmit} className="flex gap-2 relative">
           <input
             type="text"
