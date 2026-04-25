@@ -3,7 +3,7 @@ import { ArrowLeft, Clock, Calendar, Tag, Share2, Check, Copy, ArrowUp } from 'l
 import { BLOG_POSTS, BlogPost as BlogPostType } from '../data/blogPosts';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import EzoicAd from './EzoicAd';
+import AdSenseAd from './AdSenseAd';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface BlogPostProps {
@@ -214,7 +214,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                     </div>
                 </header>
 
-                <EzoicAd placeholderId={108} className="my-10 hidden md:block" />
+                <AdSenseAd adSlot="auto" className="my-10 hidden md:block" />
 
                 {/* Post Content with Better Formatting */}
                 <div className="prose prose-lg md:prose-xl dark:prose-invert max-w-none
@@ -238,7 +238,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>{language === 'bn' ? post.bnContent : post.content}</ReactMarkdown>
                 </div>
 
-                <EzoicAd placeholderId={109} className="my-16 hidden md:block" />
+                <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-16 hidden md:block" />
 
                 {/* Keywords/Tags Section */}
                 <div className="mt-16 pt-10 border-t-2 border-gray-200 dark:border-gray-700">
@@ -296,7 +296,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                     </div>
                 </div>
 
-                <EzoicAd placeholderId={110} className="my-16 hidden md:block" />
+                <AdSenseAd adSlot="auto" className="my-16 hidden md:block" />
 
                 {/* CTA */}
                 <div className="mt-16 bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 rounded-3xl p-8 md:p-12 text-center shadow-2xl">

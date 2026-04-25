@@ -22,7 +22,7 @@ import { BUS_DATA, STATIONS } from '../constants';
 import { BusRoute } from '../types';
 import { BD_TRAIN_ROUTES, BDTrainRoute } from '../data/bangladeshTrainData';
 import { useLanguage } from '../contexts/LanguageContext';
-import EzoicAd from './EzoicAd';
+import AdSenseAd from './AdSenseAd';
 
 interface HistoryViewProps {
     onBack: () => void;
@@ -260,7 +260,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                             </div>
                         </div>
 
-                        <EzoicAd placeholderId={107} className="my-6 hidden md:block" />
+                        <AdSenseAd adSlot="auto" className="my-6 hidden md:block" />
 
 
                         {/* Most Used Buses */}
