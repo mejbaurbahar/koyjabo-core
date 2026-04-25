@@ -4001,11 +4001,11 @@ const App: React.FC = () => {
                 <span className="text-[9px] font-bold uppercase tracking-wide">{t('nav.aiAssistant') || 'AI'}</span>
               </button>
               <button
-                onClick={() => setView(AppView.BLOG)}
-                className={`flex flex-col items-center justify-center gap-0.5 border-t-2 transition-all ${view === AppView.BLOG ? 'border-orange-500 text-orange-600 dark:text-orange-400 bg-orange-50/50 dark:bg-orange-900/20' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'} `}
+                onClick={() => setView(AppView.ABOUT)}
+                className={`flex flex-col items-center justify-center gap-0.5 border-t-2 transition-all ${view === AppView.ABOUT ? 'border-orange-500 text-orange-600 dark:text-orange-400 bg-orange-50/50 dark:bg-orange-900/20' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'} `}
               >
-                <BookOpen className={`w-5 h-5 ${view === AppView.BLOG ? 'text-orange-600 dark:text-orange-400 fill-orange-100 dark:fill-orange-900' : 'text-gray-400 dark:text-gray-500'} `} />
-                <span className="text-[9px] font-bold uppercase tracking-wide">{t('nav.blog') || 'Blog'}</span>
+                <Info className={`w-5 h-5 ${view === AppView.ABOUT ? 'text-orange-600 dark:text-orange-400 fill-orange-100 dark:fill-orange-900' : 'text-gray-400 dark:text-gray-500'} `} />
+                <span className="text-[9px] font-bold uppercase tracking-wide">{t('nav.about') || 'About'}</span>
               </button>
             </div>
           </nav>
