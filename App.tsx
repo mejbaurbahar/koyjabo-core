@@ -4113,9 +4113,12 @@ const App: React.FC = () => {
                 >
                   <HelpCircle className="w-5 h-5 text-cyan-600 dark:text-cyan-400" /> {t('nav.faq')}
                 </button>
-
-
-
+                <button
+                  onClick={() => { setView(AppView.BLOG); setIsMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.BLOG ? 'bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800' : ''}`}
+                >
+                  <BookOpen className="w-5 h-5 text-orange-600 dark:text-orange-400" /> {t('nav.blog') || 'Blog'}
+                </button>
 
 
                 {/* Install/Uninstall App - Always show */}
