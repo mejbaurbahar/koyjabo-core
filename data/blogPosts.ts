@@ -1,739 +1,192 @@
-﻿export interface BlogPost {
-        id: string;
-        slug: string;
-        title: string;
-        bnTitle: string;
-        excerpt: string;
-        bnExcerpt: string;
-        content: string;
-        bnContent: string;
-        coverImage: string;
-        author: string;
-        publishDate: string;
-        readTime: string;
-        keywords: string[];
-        category: string;
+export interface BlogPost {
+	id: string;
+	slug: string;
+	title: string;
+	bnTitle: string;
+	excerpt: string;
+	bnExcerpt: string;
+	content: string;
+	bnContent: string;
+	coverImage: string;
+	author: string;
+	publishDate: string;
+	readTime: string;
+	keywords: string[];
+	category: string;
 }
 
 export const BLOG_POSTS: BlogPost[] = [
-        {
-                id: 'best-bus-routes-dhaka',
-                slug: 'best-bus-routes-dhaka',
-                title: 'Top 10 Best Bus Routes in Dhaka: Complete Guide & Fare Chart 2025',
-                bnTitle: 'ঢাকার সেরা ১০টি বাস রুট: সম্পূর্ণ গাইড ও ভাড়া তালিকা ২০২৫',
-                excerpt: 'Looking for the best bus routes in Dhaka? Check out our 2025 guide covering the most efficient routes, fare charts, and pro tips for commuting with the Koi Jabo app.',
-                bnExcerpt: '২০২৫ সালে ঢাকার সবচেয়ে সহজ এবং সাশ্রয়ী বাস রুট খুঁজছেন? ভাড়া তালিকা এবং প্রো-টিপস সহ সেরা ১০টি রুটের বিস্তারিত তথ্য জানুন আমাদের এই গাইডে।',
-                coverImage: '/blog-best-bus-routes.png',
-                content: `
-Dhaka's public transport system is the main lifeline for millions of people every day. However, not knowing the right bus route can lead to wasted time and suffering. Based on coverage, frequency, and user experience, here are the 10 most effective bus routes in Dhaka.
+	{
+		id: 'metro-transport-culture-dhaka',
+		slug: 'metro-transport-culture-dhaka',
+		title: 'Dhaka Metro Rail: Not Just Fast Travel — A New Transport Culture',
+		bnTitle: 'মেট্রোরেল: শুধু দ্রুত যাতায়াত নয়, এক নতুন ট্রান্সপোর্ট কালচার',
+		excerpt: 'Metro Rail brought more than speed to Dhaka — it introduced a new civic culture of shared space, discipline, and smart commuting. Small habits can change the whole city.',
+		bnExcerpt: 'মেট্রোরেল শুধু যাত্রা দ্রুত করেনি, এনেছে একটি নতুন ট্রান্সপোর্ট কালচার। ছোট ছোট অভ্যাস কীভাবে পুরো শহরের অভিজ্ঞতা বদলে দিতে পারে — সেটাই এই লেখার বিষয়।',
+		coverImage: 'https://scontent.fdac190-1.fna.fbcdn.net/v/t39.30808-6/680629956_122125671375143278_6416898430983655453_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=101&ccb=1-7&_nc_sid=13d280&_nc_ohc=GgLkYVw2u0sQ7kNvwF4fPOy&_nc_oc=AdrZVaPwN2amxKvjOWKA5Y8R5OTDFIF552InAFXD_2tYCDxTJigYAFiRKltXk5iSkms&_nc_zt=23&_nc_ht=scontent.fdac190-1.fna&_nc_gid=rSx7akmdeWyxbXDaueC7FQ&_nc_ss=7b2a8&oh=00_Af1vTgTB7jiIh-lTMPWd5jdRKQRekU_OrAMF93bM9p_0Fw&oe=69F2CB31',
+		content: `
+Amid Dhaka's traffic, crowds, and uncertainty, Metro Rail has arrived as a kind of relief. It saves time and makes commuting easier. But Metro Rail isn't just a fast vehicle — it's introducing a new **transport culture** for our city.
+
+This culture isn't built by infrastructure alone — it's built by our behavior.
 
 ---
 
-## 1. Gulistan – Gabtoli Route
+## Why Is This a "Culture"?
 
-**Best Buses:** Dhanmondi Paribahan, Agargaon Paribahan, Nirapad Paribahan
+Many of us notice it —
+crowding at stations, disorder while boarding and alighting, blocking escalators by standing in the middle.
 
-**Important Stops:**
-Gulistan -> Shahbagh -> Karwan Bazar -> Farmgate -> Asad Gate -> Mohammadpur -> Shyamoli -> Gabtoli
+These may seem like small things, but they determine how smoothly a system will run.
 
-**Why it's popular:**
-
-* High frequency (buses every 5-10 minutes)
-* Ideal for office goers and students
-* Covers major commercial and residential hubs
-
-**Fare:** ৳15–30
-**Journey Time:** 45–60 minutes
+The metro systems of developed cities work well not just because of technology — **but because of people's habits**.
 
 ---
 
-## 2. Uttara – Motijheel Route
+## Small Habits, Big Change
 
-**Best Buses:** Projapati Paribahan (A-1), Bihongo Paribahan, Shikor Paribahan
+### 1. Stand on the Left on Escalators, Keep the Right Side Clear
 
-**Stops:**
-Uttara -> Airport -> Banani -> Mohakhali -> Tejgaon -> Bijoy Sarani -> Paltan -> Motijheel
+Those in a hurry can move quickly on the right side. This saves everyone's time.
 
-**Why it's popular:**
+### 2. Let Passengers Off First, Then Board
 
-* Connects the airport area with the main commercial district
-* Multiple bus options available
-* Fast commuting via the north-south corridor
+This is the most basic but most ignored rule.
+When everyone gets the chance to exit, the entire process becomes faster.
 
-**Fare:** ৳20–40
-**Frequency:** Every 3–7 minutes
+### 3. Move Inside Instead of Crowding the Door
 
----
+When people crowd the door, the entire queue gets blocked. Moving a little further in creates much more space.
 
-## 3. Mirpur – Gulistan Route
+### 4. Give Priority to Passengers Who Need It
 
-**Best Buses:** BRTC, Talukdar Paribahan, Diabari Paribahan
-
-**Stops:**
-Mirpur-10 -> Kazipara -> Farmgate -> Shahbagh -> Gulistan
-
-**Why it's popular:**
-
-* Primary commuting route for Mirpur residents
-* Direct access to the city center and shopping districts
-
-**Fare:** ৳15–25
+Giving way to elderly, women, children, or physically challenged passengers — this isn't just a rule, it's humanity.
 
 ---
 
-## 4. Savar – Motijheel Route
+## Metro Is More Than Just Travel
 
-**Best Buses:** Nabinagar Paribahan, Selfin Paribahan
+Metro Rail is teaching us something new —
+**how to move with discipline in a shared space.**
 
-**Stops:**
-Savar -> Aminbazar -> Gabtoli -> Shyamoli -> Kallyanpur -> Shahbagh -> Motijheel
-
-**Why it's popular:**
-
-* Essential for workers in the Savar industrial area
-* Reliable long-distance service for cross-city travel
-
-**Fare:** ৳30–50
+This goes beyond just the train itself — it can change the behavior of the whole city.
 
 ---
 
-## 5. Keraniganj – Gulistan Route
+## Information + Behavior = A Better Journey
 
-**Best Buses:** Rajdhani Paribahan, Suprabhat Paribahan
+A good journey needs two things:
 
-**Stops:**
-Keraniganj -> Babubazar -> Sadarghat -> Gulistan
+* Knowing the right route
+* Moving the right way
 
-**Why it's popular:**
+For finding routes, we're often confused — which bus, which train, from where.
 
-* Makes commuting to Old Dhaka easier and faster
-* Frequent service throughout the day
+This is exactly where **KoyJabo (কই যাবো)** helps.
+You can easily see which route gets you there fastest and with the least hassle.
 
----
-
-## 6. Mohammadpur – Motijheel Route
-
-**Best Buses:** Ajmeri Glory, Baishakhi Paribahan
-
-**Stops:**
-Mohammadpur -> Asad Gate -> Farmgate -> Shahbagh -> Motijheel
-
-**Why it's popular:**
-* Key route for west-to-center travel
-* Passes through major hospitals and education hubs
+And the points raised in this article make that journey even smoother.
 
 ---
 
-## 7. Jatrabari – Uttara Route
+## Final Thought
 
-**Best Buses:** Turag, Anabil
+Metro Rail has handed us a good system.
+How effective it will be now depends largely on us.
 
-**Stops:**
-Jatrabari -> Sayedabad -> Paltan -> Mohakhali -> Banani -> Uttara
-
-**Why it's popular:**
-* Connects the southern entry point of Dhaka to the northern residential hub
+When we change small habits, the experience of the whole city can change.
 
 ---
 
-## 8. Gazipur – Gulistan Route
+🔗 [https://koyjabo.com](https://koyjabo.com)
 
-**Best Buses:** Bhogra Paribahan, VIP-27
-
-**Stops:**
-Gazipur -> Tongi -> Airport -> Mohakhali -> Gulistan
-
----
-
-## 9. Narayanganj – Motijheel Route
-
-**Best Buses:** Chashara Paribahan, Shital Paribahan
-
-**Why it's popular:**
-
-* Fast and direct commute from Narayanganj to central Dhaka
-
----
-
-## 10. Dhanmondi – Uttara Route
-
-**Best Buses:** Akash Paribahan, Labiba
-
-**Stops:**
-Dhanmondi -> Farmgate -> Mohakhali -> Banani -> Uttara
-
----
-
-## How to Use Koi Jabo App
-
-1. **Find Best Route**: Enter starting point and destination
-2. **Compare Buses**: See all available options in one list
-3. **Track Live**: See real-time bus locations (where supported)
-4. **Fare Estimate**: Know exactly how much you should pay
-5. **Save Routes**: Bookmark your daily commute for 1-tap access
-
----
-
-## Pro Travel Tips
-
-* **Avoid Peak Hours**: Travel between 10 AM – 4 PM for less crowding
-* **Choose Sitting Service**: A bit more expensive but much more comfortable
-* **Keep Small Change**: Conductors often struggle with large bills
-* **Smart Tracking**: Use Koi Jabo to know exactly when to get off
-
----
-
-## Conclusion
-
-Knowing the right bus route is crucial for traveling smartly in Dhaka. To save time, compare fares, and ensure a hassle-free journey, Koi Jabo is your most reliable companion.
-
-Use Koi Jabo — 200+ Dhaka bus routes, on one platform.
+#KoyJabo #DhakaMetro #Dhaka #PublicTransport #CivicSense
 `,
-                bnContent: `
-ঢাকার গণপরিবহন ব্যবস্থা প্রতিদিন লক্ষ লক্ষ মানুষের চলাচলের প্রধান ভরসা। কিন্তু সঠিক বাস রুট না জানলে সময় নষ্ট হয়, ভোগান্তিও বাড়ে। এই ব্লগে কভারেজ, ফ্রিকোয়েন্সি ও ব্যবহারকারীর অভিজ্ঞতার ভিত্তিতে ঢাকার সবচেয়ে কার্যকর ১০টি বাস রুট তুলে ধরা হলো।
+		bnContent: `
+ঢাকার ট্রাফিক, ভিড় আর অনিশ্চয়তার মাঝে মেট্রোরেল এসেছে এক ধরনের স্বস্তি নিয়ে। সময় বাঁচায়, যাত্রা সহজ করে। কিন্তু মেট্রোরেল শুধু একটা দ্রুত যানবাহন না — এটা আমাদের শহরের জন্য একটা নতুন **ট্রান্সপোর্ট কালচার**।
+
+এই কালচারটা শুধু অবকাঠামো দিয়ে তৈরি হয় না, তৈরি হয় আমাদের আচরণ দিয়ে।
 
 ---
 
-## ১. গুলিস্তান – গাবতলী রুট
+## কেন এটা "কালচার"?
 
-**সেরা বাস:** ধানমন্ডি পরিবহন, আগারগাঁও পরিবহন, নিরাপদ পরিবহন
+আমরা অনেকেই খেয়াল করি —
+স্টেশনে ভিড়, ট্রেনে উঠা-নামার সময় বিশৃঙ্খলা, এস্কেলেটরে জায়গা দখল করে দাঁড়িয়ে থাকা।
 
-**গুরুত্বপূর্ণ স্টপ:**
-গুলিস্তান -> শাহবাগ -> কারওয়ান বাজার -> ফার্মগেট -> আসাদ গেট -> মোহাম্মদপুর -> শ্যামলী -> গাবতলী
+আসলে এগুলো ছোট বিষয় মনে হলেও, এগুলোই ঠিক করে দেয় একটা সিস্টেম কতটা স্মুথভাবে চলবে।
 
-**কেন জনপ্রিয়:**
-
-* উচ্চ ফ্রিকোয়েন্সি (প্রতি ৫-১০ মিনিটে বাস)
-* অফিস ও শিক্ষার্থীদের জন্য আদর্শ
-* শহরের প্রধান সব এলাকাকে সংযুক্ত করে
-
-**ভাড়া:** ৳১৫–৩০
-**যাত্রার সময়:** ৪৫–৬০ মিনিট
+উন্নত শহরগুলোর মেট্রো সিস্টেম ভালো কাজ করে শুধু প্রযুক্তির জন্য না — **মানুষের অভ্যাসের জন্য**।
 
 ---
 
-## ২. উত্তরা – মতিঝিল রুট
+## কিছু ছোট অভ্যাস, বড় পরিবর্তন
 
-**সেরা বাস:** প্রজাপতি পরিবহন (এ-১), বিহঙ্গ পরিবহন, শিকর পরিবহন
+### ১. এস্কেলেটরে বামে দাঁড়ান, ডান পাশ ফাঁকা রাখুন
 
-**স্টপ:**
-উত্তরা -> বিমানবন্দর -> বনানী -> মহাখালী -> তেজগাঁও -> বিজয় সরণি -> পল্টন -> মতিঝিল
+যারা তাড়াহুড়ায় আছে তারা ডান পাশ দিয়ে দ্রুত যেতে পারবে। এতে সবার সময় বাঁচে।
 
-**কেন জনপ্রিয়:**
+### ২. আগে নামতে দিন, তারপর উঠুন
 
-* বিমানবন্দর ও প্রধান অফিস এলাকা সরাসরি সংযুক্ত
-* একাধিক বাস অপশন পাওয়া যায়
-* উত্তর থেকে দক্ষিণ ঢাকার মেরুদণ্ড হিসেবে পরিচিত
+এটা সবচেয়ে বেসিক কিন্তু সবচেয়ে বেশি উপেক্ষিত নিয়ম।
+যদি সবাই নামার সুযোগ পায়, পুরো প্রক্রিয়াটা দ্রুত হয়।
 
-**ভাড়া:** ৳২০–৪০
-**ফ্রিকোয়েন্সি:** প্রতি ৩–৭ মিনিট
+### ৩. দরজার সামনে না দাঁড়িয়ে ভেতরে যান
 
----
+দরজার সামনে ভিড় হলেই পুরো লাইন ব্লক হয়ে যায়। একটু ভেতরে গেলে অনেক জায়গা তৈরি হয়।
 
-## ৩. মিরপুর – গুলিস্তান রুট
+### ৪. বিশেষ চাহিদাসম্পন্ন যাত্রীদের অগ্রাধিকার দিন
 
-**সেরা বাস:** বিআরটিসি, তালুকদার পরিবহন, দিয়াবাড়ি পরিবহন
-
-**স্টপ:**
-মিরপুর-১০ -> কাজীপাড়া -> ফার্মগেট -> শাহবাগ -> গুলিস্তান
-
-**কেন জনপ্রিয়:**
-
-* মিরপুরবাসীর প্রধান যাতায়াত রুট
-
-**ভাড়া:** ৳১৫–২৫
+বয়স্ক, নারী, শিশু বা শারীরিকভাবে অসুবিধায় থাকা যাত্রীদের জন্য জায়গা ছেড়ে দেওয়া — এটা শুধু নিয়ম না, এটা মানবিকতা।
 
 ---
 
-## ৪. সাভার – মতিঝিল রুট
+## মেট্রো ব্যবহার মানে শুধু ট্রাভেল না
 
-**সেরা বাস:** নবীনগর পরিবহন, সেলফিন পরিবহন
+মেট্রোরেল আমাদের একটা নতুন জিনিস শিখাচ্ছে —
+**কিভাবে শেয়ারড স্পেসে শৃঙ্খলার সাথে চলতে হয়।**
 
-**স্টপ:**
-সাভার -> আমিনবাজার -> গাবতলী -> শ্যামলী -> কল্যাণপুর -> শাহবাগ -> মতিঝিল
-
-**কেন জনপ্রিয়:**
-
-* সাভার ইন্ডাস্ট্রিয়াল এলাকার কর্মীদের জন্য জরুরি
-
-**ভাড়া:** ৳৩০–৫০
+এটা শুধু ট্রেনের ভেতরে না, পুরো শহরের আচরণ বদলাতে পারে।
 
 ---
 
-## ৫. কেরানীগঞ্জ – গুলিস্তান রুট
+## তথ্য + ব্যবহার = ভালো যাত্রা
 
-**সেরা বাস:** রাজধানী পরিবহন, সুপ্রভাত পরিবহন
+একটা ভালো যাত্রার জন্য দুইটা জিনিস দরকার:
 
-**স্টপ:**
-কেরানীগঞ্জ -> বাবুবাজার -> সদরঘাট -> গুলিস্তান
+* সঠিক রুট জানা
+* সঠিকভাবে চলাচল করা
 
-**কেন জনপ্রিয়:**
+রুট জানার জন্য আমরা অনেক সময় কনফিউজড থাকি — কোন বাস, কোন ট্রেন, কোথা থেকে।
 
-* পুরান ঢাকায় যাতায়াত সহজ করে
+এই জায়গাটায় **KoyJabo (কই যাবো)** সাহায্য করে।
+আপনি সহজেই দেখতে পারেন কোন রুটে গেলে দ্রুত বা কম ঝামেলায় পৌঁছানো যাবে।
 
----
-
-## ৬. মোহাম্মদপুর – মতিঝিল রুট
-
-**সেরা বাস:** আজমেরী গ্লোরি, বৈশাখী পরিবহন
-
-**স্টপ:**
-মোহাম্মদপুর -> আসাদ গেট -> ফার্মগেট -> শাহবাগ -> মতিঝিল
+আর এই পোস্টে যেগুলো বললাম — এগুলো সেই যাত্রাটাকে আরও স্মুথ করে।
 
 ---
 
-## ৭. যাত্রাবাড়ী – উত্তরা রুট
+## শেষ কথা
 
-**সেরা বাস:** তুরাগ, অনাবিল
+মেট্রোরেল আমাদের হাতে একটা ভালো সিস্টেম তুলে দিয়েছে।
+এখন এটা কতটা কার্যকর হবে, সেটা অনেকটাই নির্ভর করছে আমাদের উপর।
 
-**স্টপ:**
-যাত্রাবাড়ী -> সায়েদাবাদ -> পল্টন -> মহাখালী -> বনানী -> উত্তরা
-
----
-
-## ৮. গাজীপুর – গুলিস্তান রুট
-
-**সেরা বাস:** ভোগরা পরিবহন, ভিআইপি-২৭
-
-**স্টপ:**
-গাজীপুর -> টঙ্গী -> বিমানবন্দর -> মহাখালী -> গুলিস্তান
+ছোট ছোট অভ্যাস বদলালে, পুরো শহরের অভিজ্ঞতা বদলে যেতে পারে।
 
 ---
 
-## ৯. নারায়ণগঞ্জ – মতিঝিল রুট
+🔗 [https://koyjabo.com](https://koyjabo.com)
 
-**সেরা বাস:** চাষাড়া পরিবহন, শীতল পরিবহন
-
-**কেন জনপ্রিয়:**
-
-* নারায়ণগঞ্জ থেকে ঢাকার কেন্দ্রস্থলে সরাসরি যাতায়াত
-
----
-
-## ১০. ধানমন্ডি – উত্তরা রুট
-
-**সেরা বাস:** আকাশ পরিবহন, লাবিবা
-
-**স্টপ:**
-ধানমন্ডি -> ফার্মগেট -> মহাখালী -> বনানী -> উত্তরা
-
----
-
-## কই যাবো অ্যাপ কীভাবে ব্যবহার করবেন
-
-১. শুরুর স্থান ও গন্তব্য লিখুন
-২. সব বাস রুট একসাথে দেখুন
-৩. লাইভ বাস লোকেশন ট্র্যাক করুন
-৪. ভাড়া তুলনা করুন
-৫. নিয়মিত রুট সংরক্ষণ করুন
-
----
-
-## প্রো ট্রাভেল টিপস
-
-* পিক আওয়ার এড়িয়ে চলুন (১০টা–৪টা)
-* সিটিং সার্ভিসে ভ্রমণ আরামদায়ক
-* খুচরা টাকা সঙ্গে রাখুন
-* GPS বা কই যাবো দিয়ে স্টপ ট্র্যাক করুন
-
----
-
-## উপসংহার
-
-ঢাকায় স্মার্টভাবে চলাচলের জন্য সঠিক বাস রুট জানা অত্যন্ত গুরুত্বপূর্ণ। সময় বাঁচাতে, ভাড়া তুলনা করতে এবং ঝামেলামুক্ত যাত্রার জন্য কই যাবো আপনার সবচেয়ে নির্ভরযোগ্য সঙ্গী।
-
-কই যাবো ব্যবহার করুন — ঢাকার ২০০+ বাস রুট, এক প্ল্যাটফর্মে।
+#KoyJabo #DhakaMetro #Dhaka #PublicTransport #CivicSense
 `,
-                author: 'কই যাবো Team',
-                publishDate: '2025-12-30',
-                readTime: '8 min read',
-                keywords: ['Dhaka bus routes 2025', 'best bus for commute dhaka', 'Dhaka public transport guide', 'BRTC bus list', 'Gulistan to Gabtoli bus', 'Uttara to Motijheel bus', 'Dhaka bus fare chart 2025', 'real-time bus tracking dhaka', 'Koi Jabo app', 'Dhaka transport map', 'bus route finder dhaka', 'cheapest bus dhaka'],
-                category: 'Bus Routes'
-        },
-
-        {
-                id: 'dhaka-metro-guide',
-                slug: 'dhaka-metro-guide',
-                title: 'Dhaka Metro Rail Guide 2025: Stations, Fare Chart, Timings & MRT Pass',
-                bnTitle: 'ঢাকা মেট্রো রেল গাইড ২০২৫: স্টেশন লিস্ট, ভাড়ার তালিকা, ও এমআরটি পাস নিয়ম',
-                excerpt: 'Get the latest information on Dhaka Metro Rail (MRT Line-6) stations, distance-based fare chart, Friday timings, and how to get an MRT Pass for traffic-free travel.',
-                bnExcerpt: 'ঢাকা মেট্রো রেলের (এমআরটি লাইন-৬) স্টেশন লিস্ট, ভাড়ার তালিকা এবং এমআরটি পাস তৈরির নিয়মসহ যাবতীয় সব সর্বশেষ আপডেট জানুন এক জায়গায়।',
-                coverImage: '/blog-metro-rail-guide.png',
-                content: `
-Dhaka Metro Rail (MRT Line-6) is Bangladesh's first-ever modern mass rapid transit system, playing a major role in reducing traffic congestion and making commuting fast and reliable. This guide provides all necessary information about MRT Line-6 in one place.
-
----
-
-## MRT Line-6 Quick Overview
-
-* **Full Route:** Uttara North -> Motijheel
-* **Current Operational Section:** Uttara North -> Motijheel (As of December 2025)
-* **Total Stations:** 20
-* **Line Type:** Elevated (Sky Metro)
-
-It quickly connects the northern part of Dhaka to the southern commercial districts.
-
----
-
-## MRT Line-6 Stations
-
-1. Uttara North
-2. Uttara Center
-3. Uttara South
-4. Pallabi
-5. Mirpur-11
-6. Mirpur-10
-7. Kazipara
-8. Shewrapara
-9. Agargaon
-10. Bijoy Sarani
-11. Farmgate
-12. Karwan Bazar
-13. Shahbagh
-14. Dhaka University
-15. Bangladesh Secretariat
-16. Motijheel
-
----
-
-## Metro Rail Fare Structure
-
-Fare is entirely **distance-based**:
-
-* 0–5 km: ৳20
-* 5–7 km: ৳30
-* 7–9 km: ৳40
-* 9–12 km: ৳60
-* Full Route: ৳100
-
-**Minimum Fare:** ৳20
-**Maximum Fare:** ৳100
-
----
-
-## Operating Schedule
-
-**General Days:**
-
-* First Train: 8:00 AM
-* Last Train: 8:00 PM
-
-**Friday:**
-
-* 3:00 PM – 9:00 PM
-* (Jummah Prayer Break: 1:00 PM – 3:00 PM)
-
----
-
-## How to Buy Tickets
-
-### Option 1: MRT Pass Card (Most Convenient)
-
-1. Collect from any metro station ticket counter
-2. **Card Price:** ৳100 (Refundable)
-3. **Minimum Recharge:** ৳100
-4. Fare is automatically deducted during each trip
-
-### Option 2: Single Journey Ticket
-
-* For one-time travel
-* Available from ticket machines or counters
-
----
-
-## Why Use Metro Rail
-
-* **Traffic-free**: Zero signals or congestion
-* **Punctual**: Reach your destination exactly on time
-* **Comfortable**: Efficient AC and modern coaches
-* **Secure**: Safe and monitored system with security personnel
-* **Green**: Most eco-friendly transport in the city
-
----
-
-## Metro Usage Tips
-
-* Reach the station early during peak hours (8–10 AM, 5–8 PM)
-* Use MRT Pass Card to skip long ticket queues
-* Account for extra time for bag scanning at entrance
-* Check the last train timings for your specific station
-
----
-
-## How to Use Metro + Bus Smartly
-
-Since metro stations might not be right at your doorstep:
-
-* **Metro + Bus**: Use buses for first/last mile connectivity
-* **Koi Jabo**: Search for nearest bus routes from any metro station
-* **Compare**: Check fare and time differences between direct bus and metro-bus combo
-
-Get all these insights instantly with Koi Jabo.
-
----
-
-## Conclusion
-
-Dhaka Metro Rail (MRT Line-6) is a new chapter in the city's transport system. It is now the preferred choice for residents for fast, safe, and reliable travel. Koi Jabo is your smart travel companion for finding the most effective routes using both Metro and buses.
-
-**Use Koi Jabo Today**
-Find the best **Metro + Bus** routes for your journey in one place!
-`,
-                bnContent: `
-ঢাকা মেট্রো রেল (MRT Line-6) বাংলাদেশের প্রথম আধুনিক গণপরিবহন ব্যবস্থা, যা ঢাকার যানজট কমাতে ও যাতায়াতকে দ্রুত ও নির্ভরযোগ্য করতে বড় ভূমিকা রাখছে। এই ব্লগে এমআরটি লাইন-৬ সম্পর্কে প্রয়োজনীয় সব তথ্য এক জায়গায় দেওয়া হলো।
-
----
-
-## এমআরটি লাইন–৬ সংক্ষিপ্ত বিবরণ
-
-* **সম্পূর্ণ রুট:** উত্তরা উত্তর -> মতিঝিল
-* **বর্তমান চালু অংশ:** উত্তরা উত্তর -> মতিঝিল (ডিসেম্বর ২০২৫)
-* **মোট স্টেশন:** ২০টি
-* **লাইন টাইপ:** এলিভেটেড (উড়াল মেট্রো)
-
-এটি ঢাকার উত্তর থেকে দক্ষিণ অংশকে দ্রুত সংযুক্ত করেছে।
-
----
-
-## এমআরটি লাইন–৬ এর স্টেশনসমূহ
-
-1. উত্তরা উত্তর
-2. উত্তরা সেন্টার
-3. উত্তরা দক্ষিণ
-4. পল্লবী
-5. মিরপুর–১১
-6. মিরপুর–১০
-7. কাজীপাড়া
-8. শেওড়াপাড়া
-9. আগারগাঁও
-10. বিজয় সরণি
-11. ফার্মগেট
-12. কারওয়ান বাজার
-13. শাহবাগ
-14. ঢাকা বিশ্ববিদ্যালয়
-15. বাংলাদেশ সচিবালয়
-16. মতিঝিল
-
----
-
-## মেট্রো রেল ভাড়া কাঠামো
-
-ভাড়া সম্পূর্ণ **দূরত্বভিত্তিক**:
-
-* ০–৫ কিমি: ৳২০
-* ৫–৭ কিমি: ৳৩০
-* ৭–৯ কিমি: ৳৪০
-* ৯–১২ কিমি: ৳৬০
-* সম্পূর্ণ রুট: ৳১০০
-
-**ন্যূনতম ভাড়া:** ৳২০
-**সর্বোচ্চ ভাড়া:** ৳১০০
-
----
-
-## পরিচালনা সময়সূচি
-
-**সাধারণ দিন:**
-
-* প্রথম ট্রেন: সকাল ৮:০০
-* শেষ ট্রেন: রাত ৮:০০
-
-**শুক্রবার:**
-
-* বিকেল ৩:০০ – রাত ৯:০০
-* (জুমার নামাজের বিরতি: দুপুর ১:০০ – ৩:০০)
-
----
-
-## কীভাবে টিকিট ক্রয় করবেন
-
-### অপশন ১: এমআরটি পাস কার্ড (সবচেয়ে সুবিধাজনক)
-
-1. যেকোনো মেট্রো স্টেশনের টিকিট কাউন্টার থেকে সংগ্রহ
-2. **কার্ড মূল্য:** ৳১০০ (ফেরতযোগ্য)
-3. **ন্যূনতম রিচার্জ:** ৳১০০
-4. প্রতিবার যাত্রায় স্বয়ংক্রিয়ভাবে ভাড়া কেটে নেওয়া হয়
-
-### অপশন ২: সিঙ্গেল জার্নি টিকিট
-
-* একবারের যাত্রার জন্য
-* টিকিট মেশিন বা কাউন্টার থেকে পাওয়া যায়
-
----
-
-## কেন মেট্রো রেল ব্যবহার করবেন
-
-* যানজটমুক্ত যাতায়াত
-* নির্দিষ্ট সময়ের মধ্যে গন্তব্যে পৌঁছানো
-* এসি ও আধুনিক কোচ
-* নিরাপদ ও মনিটরড সিস্টেম
-* পরিবেশবান্ধব পরিবহন
-
----
-
-## মেট্রো ব্যবহার টিপস
-
-* পিক আওয়ারে (৮–১০টা, ৫–৮টা) আগে স্টেশনে পৌঁছান
-* এমআরটি পাস কার্ড ব্যবহার করলে সময় বাঁচে
-* ব্যাগ স্ক্যানিংয়ের জন্য অতিরিক্ত সময় ধরুন
-* শেষ স্টেশনের সময় মনে রাখুন
-
----
-
-## মেট্রো + বাস কীভাবে স্মার্টভাবে ব্যবহার করবেন
-
-সব স্টেশন আপনার গন্তব্যের কাছে নাও হতে পারে। তাই—
-
-* মেট্রো + বাস কম্বিনেশন ব্যবহার করুন
-* কাছের স্টেশন থেকে বাস রুট খুঁজুন
-* ভাড়া ও সময় তুলনা করুন
-
-এসব একসাথে সহজভাবে পেতে ব্যবহার করুন কই যাবো।
-
----
-
-## উপসংহার
-
-ঢাকা মেট্রো রেল (এমআরটি লাইন–৬) শহরের যাতায়াত ব্যবস্থায় এক নতুন অধ্যায়। দ্রুত, নিরাপদ ও নির্ভরযোগ্য যাত্রার জন্য এটি এখন ঢাকাবাসীর প্রথম পছন্দ। মেট্রো ও বাস একসাথে ব্যবহার করে সবচেয়ে কার্যকর রুট বের করতে কই যাবো আপনার স্মার্ট ট্রাভেল সঙ্গী।
-
-**আজই কই যাবো ব্যবহার করুন**
-আপনার যাত্রার জন্য সেরা **মেট্রো + বাস** রুট খুঁজে নিন এক জায়গায়!
-`,
-                author: 'কই যাবো Team',
-                publishDate: '2025-12-30',
-                readTime: '10 min read',
-                keywords: ['Dhaka Metro Rail Guide 2025', 'MRT Line 6 stations list', 'Dhaka metro fare chart', 'Metro rail timings Friday', 'How to buy MRT Pass', 'Dhaka metro rail map', 'Uttara to Motijheel metro fare', 'Bangladesh metro rail update', 'Metro rail ticket price', 'Metro vs Bus Dhaka', 'Rapid Pass Bangladesh', 'Metro rail Motijheel'],
-                category: 'Metro Rail'
-        },
-        {
-                id: 'uttara-to-motijheel-bus-guide',
-                slug: 'uttara-to-motijheel-bus-guide',
-                title: 'Uttara to Motijheel Bus Route Guide 2025: All Options, Fares & Timings',
-                bnTitle: 'উত্তরা থেকে মতিঝিল বাস রুট গাইড ২০২৫: সব বাসের তালিকা এবং ভাড়া',
-                excerpt: 'Looking for the best way to travel from Uttara to Motijheel? Whether by Metro Rail or local bus, find all routes, fares, and travel tips in this 2025 guide.',
-                bnExcerpt: 'উত্তরা থেকে মতিঝিল যাওয়ার সবচেয়ে সহজ উপায় খুঁজছেন? মেট্রো রেল নাকি লোকাল বাস—সাশ্রয়ী ও দ্রুত যাত্রার সব পথ এবং ভাড়া জানুন এই গাইডে।',
-                coverImage: '/blog-uttara-motijheel.png',
-                content: `
-Traveling from Uttara to Motijheel is one of the most common commutes in Dhaka. With the introduction of the Metro Rail and various express bus services, commuters now have several options. This guide helps you choose the best one.
-
----
-
-## 1. Top Local Buses for Uttara to Motijheel
-
-Several buses operate directly or via major hubs between these two points.
-
-**Best Bus Services:**
-* **BRTC (Motijheel-Abdullahpur):** Direct route with reliable service.
-* **BRTC (Motijheel-Tongi):** Extended service through Uttara to Tongi.
-* **Gazipur Paribahan:** Long-distance service covering Uttara to Motijheel corridor.
-* **Green Dhaka:** Comfortable sitting service on this route.
-* **Shatabdi:** Semi-sitting service via Rampura route.
-
-**Route:** Motijheel -> Gulistan -> Paltan -> Shahbagh -> Farmgate -> Mohakhali -> Banani -> Airport -> Khilkhet -> Kuril -> Bashundhara -> Uttara -> Abdullahpur.
-
-**Fare:** ৳30–50 (depending on service type)
-**Avg. Time:** 60–90 minutes depending on traffic.
-
----
-
-## 2. Metro Rail (The Fastest Option)
-
-The MRT Line-6 has revolutionized this route. If you want to avoid traffic completely, this is your best bet.
-
-* **Start Station:** Uttara North / Uttara Center / Uttara South
-* **End Station:** Motijheel
-* **Fare:** ৳100 (Single Journey)
-* **Travel Time:** 32–35 minutes
-
-**Pro Tip:** Use an MRT Pass or Rapid Pass to skip the ticket counter queues.
-
----
-
-## 3. Comparing Bus vs. Metro
-
-| Feature | Local Bus | Metro Rail |
-|---------|-----------|------------|
-| Cost | ৳30–45 | ৳100 |
-| Time | 60–120 min | 35 min |
-| Comfort | Variable | High (AC) |
-| Availability | 24/7 (Almost) | 8 AM - 8 PM |
-
----
-
-## 4. Tips for a Smarter Commute
-
-1. **Check Live Traffic**: Use the Koi Jabo app to see if there are major jams on the Airport-Mohakhali corridor.
-2. **First/Last Mile**: If your office is far from the Motijheel Metro station, take a short rickshaw ride or a local circular bus.
-3. **Morning Peak**: If traveling between 8 AM and 10 AM, Metro Rail is highly recommended to save at least 1 hour.
-
----
-
-## Conclusion
-
-Whether you choose the budget-friendly bus or the lightning-fast Metro Rail, knowing your options saves time and money. Use the **Koi Jabo** app to find the nearest bus stop and real-time route info instantly.
-        `,
-                bnContent: `
-উত্তরা থেকে মতিঝিল যাতায়াত ঢাকার অন্যতম ব্যস্ত রুট। মেট্রো রেল চালু হওয়ায় এখন এই রুটে যাতায়াত আগের চেয়ে অনেক সহজ হয়েছে। তবুও বাসে যাতায়াতের চাহিদা এখনও অনেক। এই গাইডে আমরা উত্তরা থেকে মতিঝিল যাওয়ার সব সেরা উপায়গুলো আলোচনা করব।
-
----
-
-## ১. উত্তরা থেকে মতিঝিল সেরা লোকাল বাসসমূহ
-
-এই রুটে সরাসরি যাতায়াতের জন্য বেশ কিছু বাসের সার্ভিস রয়েছে।
-
-**সেরা বাস সার্ভিস:**
-* **বিহঙ্গ পরিবহন:** নিয়মিত ট্রিপ এবং সহজলভ্যতা।
-* **প্রজাপতি পরিবহন (এ-১):** নির্ভরযোগ্য এবং পুরো রুট কভার করে।
-* **শিকর পরিবহন:** উত্তরার ভেতর থেকে যারা যাত্রা করেন তাদের জন্য ভালো।
-* **বিআরটিসি (ডাবল ডেকার):** সরকারি বাসে কম ভাড়ায় যাতায়াতের সুযোগ।
-
-**রুট:** মতিঝিল -> গুলিস্তান -> পল্টন -> শাহবাগ -> ফার্মগেট -> মহাখালী -> বনানী -> বিমানবন্দর -> খিলক্ষেত -> কুড়িল -> বসুন্ধরা -> উত্তরা -> আবদুল্লাহপুর।
-
-**ভাড়া:** ৫০–৬০ টাকা (সিটিং সার্ভিস) | ৩০–৪০ টাকা (লোকাল সার্ভিস) - সময় ও পরিস্থিতিভেদে পরিবর্তন হতে পারে।
-**সময়:** যানজটভেদে ৬০ থেকে ৯০ মিনিট।
-
----
-
-## ২. মেট্রো রেল (সবচেয়ে দ্রুত উপায়)
-
-মেট্রো রেল এই রুটের চেহারা বদলে দিয়েছে। যানজট এড়াতে চাইলে এর কোনো বিকল্প নেই।
-
-* **শুরুর স্টেশন:** উত্তরা উত্তর / উত্তরা সেন্টার / উত্তরা দক্ষিণ
-* **গন্তব্য স্টেশন:** মতিঝিল
-* **ভাড়া:** ১০০ টাকা
-* **সময়:** মাত্র ৩২–৩৫ মিনিট
-
-**টিপস:** এমআরটি পাস ব্যবহার করলে স্টেশনে লাইনে দাঁড়ানোর ঝামেলা থাকে না।
-
----
-
-## ৩. বাস বনাম মেট্রো: কোনটি আপনার জন্য?
-
-| বৈশিষ্ট্য | লোকাল বাস | মেট্রো রেল |
-|---------|-----------|------------|
-| খরচ | ৩০–৫০ টাকা | ১০০ টাকা |
-| সময় | ৬০–১২০ মিনিট | ৩৫ মিনিট |
-| আরাম | সাধারণ | খুব ভালো (এসি) |
-| সময়সূচি | প্রায় সবসময় | সকাল ৮টা - রাত ৮টা |
-
----
-
-## ৪. স্মার্ট যাতায়াতের জন্য কিছু টিপস
-
-১. **লাইভ ট্রাফিক চেক:** বিমানবন্দর বা মহাখালী রুটে জ্যাম আছে কি না তা 'কই যাবো' অ্যাপে দেখে নিন।
-২. **সময় বাঁচান:** সকাল ৮টা থেকে ১০টার মধ্যে যাতায়াত করলে মেট্রো রেল ব্যবহার করে আপনি অন্তত ১ ঘণ্টা সময় বাঁচাতে পারেন।
-৩. **শেষ দূরত্ব:** মতিঝিল মেট্রো স্টেশন থেকে অফিস দূরে হলে রিকশা বা লোকাল সার্কুলার বাস ব্যবহার করুন।
-
----
-
-## উপসংহার
-
-সাশ্রয়ী যাতায়াতের জন্য বাস এবং দ্রুত গন্তব্যে পৌঁছানোর জন্য মেট্রো রেল—উভয় পথই এখন আগের চেয়ে উন্নত। আপনার সঠিক রুট এবং বাসের সঠিক লোকেশন জানতে আজই ব্যবহার করুন **কই যাবো** অ্যাপ।
-        `,
-                author: 'কই যাবো Team',
-                publishDate: '2026-01-02',
-                readTime: '6 min read',
-                keywords: ['Uttara to Motijheel bus route', 'Dhaka metro rail Uttara to Motijheel', 'Uttara to Motijheel bus fare', 'Bihongo Paribahan route', 'Dhaka bus guide 2025', 'উত্তরা থেকে মতিঝিল বাস ভাড়া', 'উত্তরা থেকে মতিঝিল মেট্রো রেল ভাড়া', 'ঢাকা বাস রুট গাইড'],
-                category: 'Bus Routes'
-        }
+		author: 'কই যাবো Team',
+		publishDate: '2026-04-25',
+		readTime: '4 min read',
+		keywords: [
+			'Dhaka Metro Rail culture', 'মেট্রোরেল', 'metro etiquette Dhaka',
+			'MRT Line 6 tips', 'Dhaka public transport', 'metro rail Bangladesh',
+			'civic sense metro', 'escalator etiquette', 'KoyJabo blog',
+			'ঢাকা মেট্রো', 'transport culture Bangladesh', 'metro commute Dhaka'
+		],
+		category: 'Metro Rail'
+	}
 ];

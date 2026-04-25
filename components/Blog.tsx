@@ -83,7 +83,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                                 </h3>
 
                                 <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-                                    {featuredPost.excerpt}
+                                    {language === 'bn' ? featuredPost.bnExcerpt : featuredPost.excerpt}
                                 </p>
 
                                 <div className="flex items-center justify-between">
@@ -100,8 +100,8 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                     </div>
                 )}
 
-                {/* Regular Posts Grid */}
-                <div>
+                {/* Regular Posts Grid — only shown when there are additional posts */}
+                {regularPosts.length > 0 && <div>
                     <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">
                         {language === 'bn' ? 'সকল পোস্ট' : 'All Posts'}
                     </h2>
@@ -156,7 +156,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                             </div>
                         ))}
                     </div>
-                </div>
+                </div>}
 
                 {/* Coming Soon Section */}
                 <div className="mt-12 bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-slate-800 dark:to-slate-700 rounded-2xl p-8 text-center border border-teal-100 dark:border-teal-800">
