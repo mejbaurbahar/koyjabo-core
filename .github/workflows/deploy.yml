@@ -68,11 +68,6 @@ jobs:
           # Copy new build output
           cp -r ../dist/. .
 
-          # Zero-Touch Sync: Only sync backend scripts. 
-          # We leave .github/workflows alone to avoid PAT permission issues.
-          mkdir -p .github/scripts
-          cp -r ../.github/scripts/. .github/scripts/
-
           # Ensure domain and Jekyll bypass are always present
           echo "koyjabo.com" > CNAME
           touch .nojekyll
