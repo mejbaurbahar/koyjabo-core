@@ -3,6 +3,7 @@ import { ArrowLeft, Clock, Calendar, Tag, Share2, Check, Copy, ArrowUp } from 'l
 import { BLOG_POSTS, BlogPost as BlogPostType } from '../data/blogPosts';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { useLanguage } from '../contexts/LanguageContext';
 
 declare global {
     interface Window {
@@ -18,6 +19,7 @@ interface BlogPostProps {
 }
 
 const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, language }) => {
+    const { t } = useLanguage();
     const post = BLOG_POSTS.find(p => p.slug === postSlug);
     const [copied, setCopied] = useState(false);
     const [showScrollTop, setShowScrollTop] = useState(false);
