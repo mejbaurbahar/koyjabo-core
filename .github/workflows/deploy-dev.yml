@@ -71,10 +71,6 @@ jobs:
           # Copy new build output
           cp -r ../dist/. .
 
-          # Sync backend auth scripts
-          mkdir -p .github/scripts
-          cp -r ../.github/scripts/. .github/scripts/
-
           # Dev domain CNAME
           echo "dev.koyjabo.com" > CNAME
           touch .nojekyll
