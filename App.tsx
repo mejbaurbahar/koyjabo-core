@@ -4001,11 +4001,11 @@ const App: React.FC = () => {
                 <span className="text-[9px] font-bold uppercase tracking-wide">{t('nav.aiAssistant') || 'AI'}</span>
               </button>
               <button
-                onClick={() => setView(AppView.ABOUT)}
-                className={`flex flex-col items-center justify-center gap-0.5 border-t-2 transition-all ${view === AppView.ABOUT ? 'border-orange-500 text-orange-600 dark:text-orange-400 bg-orange-50/50 dark:bg-orange-900/20' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'} `}
+                onClick={() => setView(AppView.BLOG)}
+                className={`flex flex-col items-center justify-center gap-0.5 border-t-2 transition-all ${view === AppView.BLOG ? 'border-orange-500 text-orange-600 dark:text-orange-400 bg-orange-50/50 dark:bg-orange-900/20' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'} `}
               >
-                <Info className={`w-5 h-5 ${view === AppView.ABOUT ? 'text-orange-600 dark:text-orange-400 fill-orange-100 dark:fill-orange-900' : 'text-gray-400 dark:text-gray-500'} `} />
-                <span className="text-[9px] font-bold uppercase tracking-wide">{t('nav.about') || 'About'}</span>
+                <BookOpen className={`w-5 h-5 ${view === AppView.BLOG ? 'text-orange-600 dark:text-orange-400 fill-orange-100 dark:fill-orange-900' : 'text-gray-400 dark:text-gray-500'} `} />
+                <span className="text-[9px] font-bold uppercase tracking-wide">{t('nav.blog') || 'Blog'}</span>
               </button>
             </div>
           </nav>
@@ -4090,6 +4090,12 @@ const App: React.FC = () => {
                 )}
 
                 <button
+                  onClick={() => { setView(AppView.BLOG); setIsMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.BLOG ? 'bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800' : ''}`}
+                >
+                  <BookOpen className="w-5 h-5 text-orange-600 dark:text-orange-400" /> {t('nav.blog') || 'Blog'}
+                </button>
+                <button
                   onClick={() => { setView(AppView.AI_ASSISTANT); setIsMenuOpen(false); }}
                   className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.AI_ASSISTANT ? 'bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800' : ''} `}
                 >
@@ -4113,14 +4119,6 @@ const App: React.FC = () => {
                 >
                   <HelpCircle className="w-5 h-5 text-cyan-600 dark:text-cyan-400" /> {t('nav.faq')}
                 </button>
-                <button
-                  onClick={() => { setView(AppView.BLOG); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.BLOG ? 'bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800' : ''}`}
-                >
-                  <BookOpen className="w-5 h-5 text-orange-600 dark:text-orange-400" /> {t('nav.blog') || 'Blog'}
-                </button>
-
-
                 {/* Install/Uninstall App - Always show */}
                 <button
                   onClick={() => { setView(AppView.INSTALL_APP); setIsMenuOpen(false); }}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Map, Bot, Heart, Info, Train, Menu, Sparkles, Navigation, Clock, MapPin, User, LogIn, Bus } from 'lucide-react';
+import { Home, Map, Bot, Heart, Info, Train, Menu, Sparkles, Navigation, Clock, MapPin, User, LogIn, Bus, BookOpen } from 'lucide-react';
 import { AppView } from '../types';
 import ThemeToggle from './ThemeToggle';
 import { AnimatedLogo } from './AnimatedLogo';
@@ -82,6 +82,12 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
             onClick: () => setView(AppView.AI_ASSISTANT)
         },
 
+        {
+            label: t('nav.blog') || 'Blog',
+            icon: BookOpen,
+            isActive: view === AppView.BLOG,
+            onClick: () => setView(AppView.BLOG)
+        },
         {
             label: t('nav.about'),
             icon: Info,
