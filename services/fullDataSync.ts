@@ -381,20 +381,6 @@ export function triggerAISync(): void {
   }, 3000);
 }
 
-/** Call to record a single query for learning */
-export function triggerQuerySync(query: string, response: string, intent: any, quality: string, lang: string): void {
-  fetch(`${PROXY}/gh`, {
-    method: 'POST',
-    credentials: 'omit',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      requestId: crypto.randomUUID(),
-      action: 'record-query',
-      userId: getAuthUserId() || 'anonymous',
-      data: JSON.stringify({ query, response, intent: intent.type, quality, lang })
-    }),
-  }).catch(() => {});
-}
 
 // ── Init (call once on app startup) ──────────────────────────────────────────
 
