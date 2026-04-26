@@ -14,7 +14,7 @@ const GlobalFooter: React.FC = () => {
                         <img src="/logo.png" alt="Logo" className="h-8 w-auto" />
                         <span className="font-bold text-gray-900 dark:text-gray-100 italic whitespace-nowrap">
                             কই<span className="text-emerald-600 dark:text-emerald-400 ml-1">যাবো</span>
-                            <span className="text-gray-400 dark:text-gray-500 font-normal ml-2 text-sm">Smart Transport Finder</span>
+                            <span className="text-gray-400 dark:text-gray-500 font-normal ml-2 text-sm">Bangladesh Smart Transport Finder</span>
                         </span>
                     </div>
 

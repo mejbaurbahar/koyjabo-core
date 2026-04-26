@@ -3,13 +3,8 @@ import { ArrowLeft, Clock, Calendar, Tag, Share2, Check, Copy, ArrowUp } from 'l
 import { BLOG_POSTS, BlogPost as BlogPostType } from '../data/blogPosts';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import AdSenseAd from './AdSenseAd';
 import { useLanguage } from '../contexts/LanguageContext';
-
-declare global {
-    interface Window {
-        adsbygoogle: any[];
-    }
-}
 
 interface BlogPostProps {
     postSlug: string;
@@ -76,20 +71,6 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
             });
             document.head.appendChild(scriptTag);
 
-            // Initialize AdSense ads safely
-            try {
-                if (typeof window !== 'undefined' && window.adsbygoogle) {
-                    // We have 3 ad units in this component, so we need up to 3 pushes
-                    // It's safer to push sequentially as the ads are rendered
-                    const adsContainers = document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status])');
-                    adsContainers.forEach(() => {
-                        (window.adsbygoogle = window.adsbygoogle || []).push({});
-                    });
-                }
-            } catch (err) {
-                console.error('AdSense initialization error:', err);
-            }
-
             return () => {
                 document.head.removeChild(scriptTag);
                 document.title = 'কই যাবো - Dhaka Bus & Transport Guide';
@@ -138,10 +119,11 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
     }
 
     return (
+        <div className="flex flex-col h-full bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-hidden">
         <div
             ref={scrollContainerRef}
             onScroll={handleScroll}
-            className="flex flex-col h-full relative bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-y-auto pt-20 md:pt-24 pb-32 pt-safe"
+            className="flex-1 min-h-0 overflow-y-auto pb-32"
             style={{ WebkitOverflowScrolling: 'touch' }}
         >
             {/* Hero Image */}
@@ -233,17 +215,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                     </div>
                 </header>
 
-                {/* AdSense - Top of Post */}
-                <div className="adsense-container my-10 hidden md:block">
-                    <ins
-                        className="adsbygoogle"
-                        style={{ display: 'block', textAlign: 'center' }}
-                        data-ad-client="ca-pub-6933713424631305"
-                        data-ad-slot="auto"
-                        data-ad-format="auto"
-                        data-full-width-responsive="true"
-                    ></ins>
-                </div>
+                <AdSenseAd adSlot="auto" className="my-10 hidden md:block" />
 
                 {/* Post Content with Better Formatting */}
                 <div className="prose prose-lg md:prose-xl dark:prose-invert max-w-none
@@ -267,17 +239,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>{language === 'bn' ? post.bnContent : post.content}</ReactMarkdown>
                 </div>
 
-                {/* AdSense - Middle of Post */}
-                <div className="adsense-container my-16 hidden md:block">
-                    <ins
-                        className="adsbygoogle"
-                        style={{ display: 'block' }}
-                        data-ad-format="fluid"
-                        data-ad-layout-key="-6t+ed+2i-1n-4w"
-                        data-ad-client="ca-pub-6933713424631305"
-                        data-ad-slot="auto"
-                    ></ins>
-                </div>
+                <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-16 hidden md:block" />
 
                 {/* Keywords/Tags Section */}
                 <div className="mt-16 pt-10 border-t-2 border-gray-200 dark:border-gray-700">
@@ -335,17 +297,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                     </div>
                 </div>
 
-                {/* AdSense - Bottom of Post */}
-                <div className="adsense-container my-16 hidden md:block">
-                    <ins
-                        className="adsbygoogle"
-                        style={{ display: 'block' }}
-                        data-ad-client="ca-pub-6933713424631305"
-                        data-ad-slot="auto"
-                        data-ad-format="auto"
-                        data-full-width-responsive="true"
-                    ></ins>
-                </div>
+                <AdSenseAd adSlot="auto" className="my-16 hidden md:block" />
 
                 {/* CTA */}
                 <div className="mt-16 bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 rounded-3xl p-8 md:p-12 text-center shadow-2xl">
@@ -379,6 +331,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                 <ArrowUp className="w-6 h-6" />
             </button>
 
+        </div>
         </div>
     );
 };

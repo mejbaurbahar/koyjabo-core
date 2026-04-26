@@ -1166,6 +1166,100 @@ function addTravelTips(query: string, isBn: boolean): string {
     : `\n\n💡 **Travel Tips:**\n- ${randomTips.join('\n- ')}`;
 }
 
+// ── Location-aware transit routing knowledge base ────────────────────────────
+// Each key: "fromArea→toArea" (lowercased). Values: multi-option transit plans.
+const LOCATION_TRANSIT_ROUTES: Record<string, { en: string; bn: string }> = {
+  'savar→mohammadpur': {
+    en: `📍 **Your current location: Savar**\n🗺️ **Destination: Mohammadpur**\n\nHere are your best transit options:\n\n**Option 1 (Recommended):**\n🚌 Take **Boishakhi** bus from Savar → get off at **Syamoli**\n🚶 Cross the road at Syamoli\n🚌 Take **Achim** or **Lakhyatari** bus from Syamoli → **Mohammadpur Shia Masjid**\n⏱️ Approx. 1h 20min | Fare: ৳35–50\n\n**Option 2 (via Asad Gate):**\n🚌 Take **Savar Paribahan** from Savar → **Asad Gate**\n🚌 From Asad Gate take **Projapoti**, **Paristhan**, or **Bhashani Novo** bus → **Mohammadpur Bus Stand**\n⏱️ Approx. 1h 30min | Fare: ৳40–55\n\n**Option 3 (Express):**\n🚌 Take any Dhaka-bound bus → get off at **Gabtoli**\n🚌 From Gabtoli take **Mohammadpur** local bus or CNG\n⏱️ Approx. 1h 10min | Fare: ৳30–45\n\n💡 **Tip:** Avoid 8–10 AM & 5–7 PM peak hours. Boishakhi route is most reliable.`,
+    bn: `📍 **আপনার বর্তমান অবস্থান: সাভার**\n🗺️ **গন্তব্য: মোহাম্মদপুর**\n\nআপনার সেরা যাতায়াতের অপশন:\n\n**অপশন ১ (সবচেয়ে ভালো):**\n🚌 সাভার থেকে **বৈশাখী** বাসে → **শ্যামলী**তে নামুন\n🚶 শ্যামলীতে রাস্তা পার হন\n🚌 শ্যামলী থেকে **আচিম** বা **লক্ষ্যতারী** বাসে → **মোহাম্মদপুর শিয়া মসজিদ**\n⏱️ প্রায় ১ঘণ্টা ২০মিনিট | ভাড়া: ৳৩৫–৫০\n\n**অপশন ২ (আসাদ গেট দিয়ে):**\n🚌 সাভার থেকে **সাভার পরিবহন** বাসে → **আসাদ গেট**\n🚌 আসাদ গেট থেকে **প্রজাপতি**, **পরিস্থান**, বা **ভাসানী নভো** বাসে → **মোহাম্মদপুর বাস স্ট্যান্ড**\n⏱️ প্রায় ১ঘণ্টা ৩০মিনিট | ভাড়া: ৳৪০–৫৫\n\n**অপশন ৩ (গাবতলী হয়ে):**\n🚌 যেকোনো ঢাকামুখী বাসে → **গাবতলী**তে নামুন\n🚌 গাবতলী থেকে মোহাম্মদপুর লোকাল বাস বা সিএনজি\n⏱️ প্রায় ১ঘণ্টা ১০মিনিট | ভাড়া: ৳৩০–৪৫\n\n💡 **টিপস:** সকাল ৮–১০টা ও সন্ধ্যা ৫–৭টা জ্যাম এড়িয়ে চলুন।`,
+  },
+  'savar→dhanmondi': {
+    en: `📍 **Your current location: Savar**\n🗺️ **Destination: Dhanmondi**\n\n**Option 1:**\n🚌 Take **Savar Paribahan** → **Asad Gate**\n🚌 From Asad Gate take **Projapoti** or **Bhashani Novo** → **Dhanmondi 27** or **Dhanmondi Lake**\n⏱️ ~1h 20min | Fare: ৳45–60\n\n**Option 2:**\n🚌 Take **Boishakhi** → **Syamoli**\n🚌 From Syamoli take **CNG / rickshaw** to Dhanmondi\n⏱️ ~1h 15min | Fare: ৳50–70`,
+    bn: `📍 **আপনার বর্তমান অবস্থান: সাভার**\n🗺️ **গন্তব্য: ধানমন্ডি**\n\n**অপশন ১:**\n🚌 **সাভার পরিবহন** → **আসাদ গেট**\n🚌 আসাদ গেট থেকে **প্রজাপতি** বা **ভাসানী নভো** → **ধানমন্ডি ২৭** বা **ধানমন্ডি লেক**\n⏱️ প্রায় ১ঘণ্টা ২০মিনিট | ভাড়া: ৳৪৫–৬০\n\n**অপশন ২:**\n🚌 **বৈশাখী** বাসে → **শ্যামলী**\n🚌 শ্যামলী থেকে সিএনজি/রিকশায় ধানমন্ডি\n⏱️ প্রায় ১ঘণ্টা ১৫মিনিট | ভাড়া: ৳৫০–৭০`,
+  },
+  'savar→gulshan': {
+    en: `📍 **Your current location: Savar**\n🗺️ **Destination: Gulshan**\n\n**Option 1:**\n🚌 Take **Savar Paribahan** or **Boishakhi** → **Abdullahpur / Uttara**\n🚌 From Uttara take **Niramoy** or **City Bus** → **Gulshan 2**\n⏱️ ~1h 40min | Fare: ৳55–75\n\n**Option 2 (Metro + Bus):**\n🚌 Take any bus → **Uttara North Metro Station (MRT-6)**\n🚇 Metro: Uttara North → Farmgate / Agargaon\n🚌 From there take **Gulshan-bound** bus or CNG\n⏱️ ~1h 30min | Fare: ৳80–100`,
+    bn: `📍 **আপনার বর্তমান অবস্থান: সাভার**\n🗺️ **গন্তব্য: গুলশান**\n\n**অপশন ১:**\n🚌 **সাভার পরিবহন** বা **বৈশাখী** → **আব্দুল্লাহপুর / উত্তরা**\n🚌 উত্তরা থেকে **নিরাময়** বা সিটি বাস → **গুলশান ২**\n⏱️ প্রায় ১ঘণ্টা ৪০মিনিট | ভাড়া: ৳৫৫–৭৫\n\n**অপশন ২ (মেট্রো + বাস):**\n🚌 যেকোনো বাসে → **উত্তরা নর্থ MRT-6 স্টেশন**\n🚇 মেট্রো: উত্তরা নর্থ → ফার্মগেট/আগারগাঁও\n🚌 সেখান থেকে গুলশানমুখী বাস বা সিএনজি\n⏱️ প্রায় ১ঘণ্টা ৩০মিনিট | ভাড়া: ৳৮০–১০০`,
+  },
+  'savar→motijheel': {
+    en: `📍 **Your current location: Savar**\n🗺️ **Destination: Motijheel**\n\n**Option 1 (Best):**\n🚌 Take **Boishakhi** or **Savar Paribahan** → **Gabtoli / Kallyanpur**\n🚌 From Gabtoli take **Mirpur Road** bus towards Motijheel\n⏱️ ~1h 50min | Fare: ৳40–55\n\n**Option 2 (Metro):**\n🚌 Take any bus → **Uttara Metro Station**\n🚇 MRT-6: Uttara North → Motijheel (Terminal)\n⏱️ ~1h 20min | Metro fare: ৳100`,
+    bn: `📍 **আপনার বর্তমান অবস্থান: সাভার**\n🗺️ **গন্তব্য: মতিঝিল**\n\n**অপশন ১ (সেরা):**\n🚌 **বৈশাখী** বা **সাভার পরিবহন** → **গাবতলী / কল্যাণপুর**\n🚌 গাবতলী থেকে মিরপুর রোড বাসে মতিঝিলমুখী\n⏱️ প্রায় ১ঘণ্টা ৫০মিনিট | ভাড়া: ৳৪০–৫৫\n\n**অপশন ২ (মেট্রো):**\n🚌 যেকোনো বাসে → **উত্তরা মেট্রো স্টেশন**\n🚇 MRT-6: উত্তরা নর্থ → মতিঝিল (শেষ স্টেশন)\n⏱️ প্রায় ১ঘণ্টা ২০মিনিট | মেট্রো ভাড়া: ৳১০০`,
+  },
+  'mirpur→dhanmondi': {
+    en: `📍 **Your current location: Mirpur**\n🗺️ **Destination: Dhanmondi**\n\n**Option 1 (Metro):**\n🚇 MRT-6 from **Mirpur-10** or **Mirpur-11** → **Farmgate**\n🚌 From Farmgate take **Bhashani Novo** or CNG → Dhanmondi\n⏱️ ~35 min | Fare: ৳30–50\n\n**Option 2 (Direct Bus):**\n🚌 Take **Mirpur-Dhanmondi** service or **Chanchal** bus from Mirpur-10\n⏱️ ~45–60 min | Fare: ৳20–30`,
+    bn: `📍 **আপনার বর্তমান অবস্থান: মিরপুর**\n🗺️ **গন্তব্য: ধানমন্ডি**\n\n**অপশন ১ (মেট্রো):**\n🚇 MRT-6: **মিরপুর-১০** বা **মিরপুর-১১** → **ফার্মগেট**\n🚌 ফার্মগেট থেকে **ভাসানী নভো** বা সিএনজিতে ধানমন্ডি\n⏱️ প্রায় ৩৫ মিনিট | ভাড়া: ৳৩০–৫০\n\n**অপশন ২ (সরাসরি বাস):**\n🚌 মিরপুর-১০ থেকে **মিরপুর-ধানমন্ডি** সার্ভিস বা **চঞ্চল** বাস\n⏱️ প্রায় ৪৫–৬০ মিনিট | ভাড়া: ৳২০–৩০`,
+  },
+  'mirpur→motijheel': {
+    en: `📍 **Your current location: Mirpur**\n🗺️ **Destination: Motijheel**\n\n**Option 1 (Metro — Recommended):**\n🚇 MRT-6 from **Mirpur-10** → **Motijheel** (direct)\n⏱️ ~30 min | Fare: ৳60\n\n**Option 2 (Bus):**\n🚌 Take **Route 8** or **Agrani** bus from Mirpur-10 → Motijheel\n⏱️ ~50–70 min (traffic dependent) | Fare: ৳20–25`,
+    bn: `📍 **আপনার বর্তমান অবস্থান: মিরপুর**\n🗺️ **গন্তব্য: মতিঝিল**\n\n**অপশন ১ (মেট্রো — সেরা):**\n🚇 MRT-6: **মিরপুর-১০** → **মতিঝিল** (সরাসরি)\n⏱️ প্রায় ৩০ মিনিট | ভাড়া: ৳৬০\n\n**অপশন ২ (বাস):**\n🚌 মিরপুর-১০ থেকে **রুট ৮** বা **অগ্রণী** বাসে মতিঝিল\n⏱️ প্রায় ৫০–৭০ মিনিট (ট্রাফিক অনুযায়ী) | ভাড়া: ৳২০–২৫`,
+  },
+  'uttara→mohammadpur': {
+    en: `📍 **Your current location: Uttara**\n🗺️ **Destination: Mohammadpur**\n\n**Option 1 (Metro + Bus):**\n🚇 MRT-6 from **Uttara North** → **Farmgate** or **Agargaon**\n🚌 From Farmgate take **Achim** or **Projapoti** → Mohammadpur\n⏱️ ~45 min | Fare: ৳50–70\n\n**Option 2 (Direct Bus):**\n🚌 Take **Balaka** or **Dhaka Paribahan** from Abdullahpur → Mohammadpur\n⏱️ ~60–90 min | Fare: ৳30–40`,
+    bn: `📍 **আপনার বর্তমান অবস্থান: উত্তরা**\n🗺️ **গন্তব্য: মোহাম্মদপুর**\n\n**অপশন ১ (মেট্রো + বাস):**\n🚇 MRT-6: **উত্তরা নর্থ** → **ফার্মগেট** বা **আগারগাঁও**\n🚌 ফার্মগেট থেকে **আচিম** বা **প্রজাপতি** বাসে মোহাম্মদপুর\n⏱️ প্রায় ৪৫ মিনিট | ভাড়া: ৳৫০–৭০\n\n**অপশন ২ (সরাসরি বাস):**\n🚌 আব্দুল্লাহপুর থেকে **বালাকা** বা **ঢাকা পরিবহন** → মোহাম্মদপুর\n⏱️ প্রায় ৬০–৯০ মিনিট | ভাড়া: ৳৩০–৪০`,
+  },
+  'mohammadpur→gulshan': {
+    en: `📍 **Your current location: Mohammadpur**\n🗺️ **Destination: Gulshan**\n\n**Option 1:**\n🚌 Take **Projapoti** or **Bhashani Novo** from Mohammadpur → **Farmgate**\n🚌 From Farmgate take **Gulshan-Motijheel** or **Niramoy** → Gulshan\n⏱️ ~50 min | Fare: ৳30–45\n\n**Option 2 (Metro):**\n🚌 Take bus to **Farmgate Metro**\n🚇 MRT-6: Farmgate → Agargaon → get off, take CNG to Gulshan\n⏱️ ~45 min`,
+    bn: `📍 **আপনার বর্তমান অবস্থান: মোহাম্মদপুর**\n🗺️ **গন্তব্য: গুলশান**\n\n**অপশন ১:**\n🚌 মোহাম্মদপুর থেকে **প্রজাপতি** বা **ভাসানী নভো** → **ফার্মগেট**\n🚌 ফার্মগেট থেকে **গুলশান-মতিঝিল** বা **নিরাময়** → গুলশান\n⏱️ প্রায় ৫০ মিনিট | ভাড়া: ৳৩০–৪৫\n\n**অপশন ২ (মেট্রো):**\n🚌 বাসে **ফার্মগেট মেট্রো** পর্যন্ত যান\n🚇 MRT-6: ফার্মগেট → আগারগাঁও → সিএনজিতে গুলশান\n⏱️ প্রায় ৪৫ মিনিট`,
+  },
+  'narayanganj→dhaka': {
+    en: `📍 **Your current location: Narayanganj**\n🗺️ **Destination: Dhaka**\n\n**Option 1 (Train — Best):**\n🚂 **Narayanganj–Dhaka Local Train** from Narayanganj Station → Kamalapur\n⏱️ ~45 min | Fare: ৳20–30\n\n**Option 2 (Bus):**\n🚌 Take **BRTC** or local bus from Chittagong Road → **Gulistan / Motijheel**\n⏱️ ~60 min | Fare: ৳30–40`,
+    bn: `📍 **আপনার বর্তমান অবস্থান: নারায়ণগঞ্জ**\n🗺️ **গন্তব্য: ঢাকা**\n\n**অপশন ১ (ট্রেন — সেরা):**\n🚂 নারায়ণগঞ্জ স্টেশন থেকে **নারায়ণগঞ্জ–ঢাকা লোকাল ট্রেন** → কমলাপুর\n⏱️ প্রায় ৪৫ মিনিট | ভাড়া: ৳২০–৩০\n\n**অপশন ২ (বাস):**\n🚌 চট্টগ্রাম রোড থেকে **বিআরটিসি** বা লোকাল বাস → **গুলিস্তান / মতিঝিল**\n⏱️ প্রায় ৬০ মিনিট | ভাড়া: ৳৩০–৪০`,
+  },
+  'gazipur→dhaka': {
+    en: `📍 **Your current location: Gazipur**\n🗺️ **Destination: Dhaka**\n\n**Option 1 (Metro+Bus):**\n🚌 Take **Gazipur–Uttara** bus → **Uttara North Metro Station**\n🚇 MRT-6: Uttara North → your destination\n⏱️ ~1h–1h 30min | Fare: ৳70–120\n\n**Option 2 (Direct Bus):**\n🚌 Take **Prowashshar** or **Tongi–Gulshan** bus from Gazipur Chowrasta → Dhaka\n⏱️ ~1h 20min | Fare: ৳40–60`,
+    bn: `📍 **আপনার বর্তমান অবস্থান: গাজীপুর**\n🗺️ **গন্তব্য: ঢাকা**\n\n**অপশন ১ (মেট্রো+বাস):**\n🚌 **গাজীপুর–উত্তরা** বাসে → **উত্তরা নর্থ মেট্রো স্টেশন**\n🚇 MRT-6: উত্তরা নর্থ → আপনার গন্তব্য\n⏱️ প্রায় ১–১.৫ ঘণ্টা | ভাড়া: ৳৭০–১২০\n\n**অপশন ২ (সরাসরি বাস):**\n🚌 গাজীপুর চৌরাস্তা থেকে **প্রবাসী** বা **টঙ্গী–গুলশান** বাস → ঢাকা\n⏱️ প্রায় ১ঘণ্টা ২০মিনিট | ভাড়া: ৳৪০–৬০`,
+  },
+};
+
+// Destination keyword map for matching user queries
+const DESTINATION_KEYWORDS: Record<string, string[]> = {
+  mohammadpur: ['mohammadpur', 'mohammodpur', 'mohammadpour', 'mohammadpur', 'মোহাম্মদপুর', 'মহম্মদপুর'],
+  dhanmondi: ['dhanmondi', 'dhanmandi', 'dhanmondi', 'ধানমন্ডি', 'ধানমণ্ডি'],
+  gulshan: ['gulshan', 'gulshen', 'গুলশান'],
+  motijheel: ['motijheel', 'motijhil', 'motijeel', 'মতিঝিল'],
+  dhaka: ['dhaka', 'dhaka city', 'ঢাকা', 'dhaka sadar'],
+  mirpur: ['mirpur', 'মিরপুর'],
+  uttara: ['uttara', 'উত্তরা'],
+  farmgate: ['farmgate', 'farm gate', 'ফার্মগেট'],
+};
+
+const ORIGIN_KEYWORDS: Record<string, string[]> = {
+  savar: ['savar', 'সাভার'],
+  mirpur: ['mirpur', 'মিরপুর'],
+  uttara: ['uttara', 'উত্তরা'],
+  mohammadpur: ['mohammadpur', 'মোহাম্মদপুর'],
+  narayanganj: ['narayanganj', 'নারায়ণগঞ্জ'],
+  gazipur: ['gazipur', 'গাজীপুর'],
+};
+
+function findLocationAwareTransitRoute(query: string, fromArea: string, isBn: boolean): string | null {
+  // Normalize the fromArea
+  let origin = '';
+  for (const [key, aliases] of Object.entries(ORIGIN_KEYWORDS)) {
+    if (aliases.some(a => fromArea.toLowerCase().includes(a.toLowerCase()))) {
+      origin = key;
+      break;
+    }
+  }
+  if (!origin) return null;
+
+  // Find destination in the query
+  let destination = '';
+  for (const [key, aliases] of Object.entries(DESTINATION_KEYWORDS)) {
+    if (aliases.some(a => query.includes(a.toLowerCase()))) {
+      destination = key;
+      break;
+    }
+  }
+  if (!destination) return null;
+
+  const routeKey = `${origin}→${destination}`;
+  const route = LOCATION_TRANSIT_ROUTES[routeKey];
+  if (!route) return null;
+
+  return isBn ? route.bn : route.en;
+}
+
 // --- MAIN AI LOGIC ---
 learningSystem.loadFromStorage();
 // Warm up learned-answer cache from previous session's fallback patterns
@@ -1300,9 +1394,23 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
 
   // Parse location context if available
   let userNearbyStation: string | null = null;
+  let userAreaName: string | null = null;
   if (contextPart) {
-    const match = contextPart.match(/near ([^(\[]+)/);
-    if (match) userNearbyStation = match[1].trim();
+    const nearMatch = contextPart.match(/near ([^(\[]+)/);
+    const inMatch = contextPart.match(/in ([^(area\[]+) area/);
+    if (inMatch) { userAreaName = inMatch[1].trim(); userNearbyStation = userAreaName; }
+    else if (nearMatch) { userNearbyStation = nearMatch[1].trim(); }
+  }
+
+  // ── Location-aware transit routing ──────────────────────────────────────────
+  // Triggered when: user asks "how to go" + we have location context
+  const isHowToGoQuery = lowerQuery.match(/(how to go|how can i go|how do i go|kemne jabo|kivabe jabo|kemon kore jabo|কিভাবে যাব|কিভাবে যাবো|কেমনে যাবো|কীভাবে যাবো|কই যাবো|কোথায় যাবো|how to reach|how can i reach|কীভাবে পৌঁছাবো|পৌঁছাবো কিভাবে)/i);
+  if (isHowToGoQuery && (userAreaName || userNearbyStation)) {
+    const fromArea = (userAreaName || userNearbyStation)!.toLowerCase().trim();
+    const transitResult = findLocationAwareTransitRoute(lowerQuery, fromArea, isBn);
+    if (transitResult) {
+      return transitResult;
+    }
   }
 
   if (isOffline) {

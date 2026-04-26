@@ -1,10 +1,10 @@
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { BusRoute, UserLocation, Station } from '../types';
 import { getCurrentLocation, findNearestStation, getDistance } from '../services/locationService';
 import { liveBusService } from '../services/liveBusService';
 import { STATIONS } from '../constants';
-import { Navigation, Clock, MapPin, AlertCircle, RefreshCw, Compass, Gauge, Flag, Phone, Radio, Users } from 'lucide-react';
+import { Navigation, Clock, MapPin, AlertCircle, RefreshCw, Compass, Gauge, Flag, Phone, Radio, Users, Search, X, ChevronDown, ChevronUp } from 'lucide-react';
 import EmergencyHelplineModal from './EmergencyHelplineModal';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -15,12 +15,11 @@ interface LiveTrackerProps {
   userLocation?: UserLocation | null;
   speed?: number | null;
   onBack?: () => void;
-  onViewLiveMap?: () => void; // New prop to open map
+  onViewLiveMap?: () => void;
 }
 
 const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highlightEndIdx, userLocation: propUserLocation, speed: propSpeed, onBack, onViewLiveMap }) => {
   const { t, formatNumber } = useLanguage();
-  // Use prop location directly instead of maintaining separate state
   const location = propUserLocation;
   const speed = propSpeed;
   const [error, setError] = useState<string | null>(null);
@@ -32,139 +31,129 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
   const [isBroadcasting, setIsBroadcasting] = useState(liveBusService.isBroadcasting());
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [proximityError, setProximityError] = useState<string | null>(null);
-
-  // Detect if user is on desktop/laptop (less accurate location)
   const [isDesktop, setIsDesktop] = useState(false);
+
+  // Manual location override
+  const [manualStopIndex, setManualStopIndex] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showSearch, setShowSearch] = useState(false);
+  const [showAllStops, setShowAllStops] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const timelineRef = useRef<HTMLDivElement>(null);
+
+  // Build route stop list with names for search
+  const routeStops = useMemo(() =>
+    bus.stops.map((id, idx) => ({ id, idx, station: STATIONS[id] })).filter(s => s.station),
+    [bus.stops]
+  );
+
+  const filteredStops = useMemo(() => {
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) return routeStops;
+    return routeStops.filter(s =>
+      s.station.name.toLowerCase().includes(q) ||
+      (s.station.bnName || '').includes(q)
+    );
+  }, [searchQuery, routeStops]);
+
+  // Effective current index: manual override takes priority over GPS
+  const effectiveNearestIndex = manualStopIndex !== null ? manualStopIndex : nearestIndex;
+  const isManualMode = manualStopIndex !== null;
+
+  const selectStop = (idx: number) => {
+    setManualStopIndex(idx);
+    setSearchQuery('');
+    setShowSearch(false);
+    // Scroll to the stop in timeline
+    setTimeout(() => {
+      const el = document.getElementById(`stop-${idx}`);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+  };
+
+  const clearManual = () => {
+    setManualStopIndex(null);
+    setSearchQuery('');
+    setShowSearch(false);
+  };
 
   useEffect(() => {
     const checkDevice = () => {
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       setIsDesktop(!isMobile);
-      if (!isMobile) {
-        console.log('💻 Desktop device detected - Location may be less accurate (IP/WiFi-based instead of GPS)');
-      }
     };
     checkDevice();
   }, []);
 
-  // Process location whenever it changes from parent
   useEffect(() => {
     if (!location) {
       setLoading(true);
       return;
     }
-
-    // Nearest on Route
     const nearest = findNearestStation(location, bus.stops);
     if (nearest) {
       setNearestIndex(nearest.index);
       setDistanceToStation(nearest.distance);
-      console.log('📍 Nearest stop updated:', {
-        index: nearest.index,
-        station: STATIONS[bus.stops[nearest.index]]?.name,
-        distance: (nearest.distance / 1000).toFixed(2) + ' km'
-      });
     }
-
-    // Nearest Global (Real Location Name)
     const allStationIds = Object.keys(STATIONS);
     const gNearest = findNearestStation(location, allStationIds);
     if (gNearest) {
       setGlobalNearest({ station: gNearest.station, distance: gNearest.distance });
     }
-
     setLoading(false);
     setError(null);
   }, [location, bus.stops]);
 
-  // Sync broadcasting state from service on mount and when bus changes
   useEffect(() => {
     const isGenerallyBroadcasting = liveBusService.isBroadcasting();
     const currentBroadcastingBus = liveBusService.getCurrentBusName();
     const isThisBusBroadcasting = isGenerallyBroadcasting && currentBroadcastingBus === bus.name;
     setIsBroadcasting(isThisBusBroadcasting);
-    console.log('🔄 Synced broadcasting state:', {
-      isActive: isThisBusBroadcasting,
-      currentBus: bus.name,
-      broadcastingBus: currentBroadcastingBus
-    });
   }, [bus.name]);
 
-  // Online/Offline detection
   useEffect(() => {
-    const handleOnline = () => {
-      setIsOnline(true);
-      console.log('✅ Network: Online');
-    };
-    const handleOffline = () => {
-      setIsOnline(false);
-      console.log('❌ Network: Offline');
-    };
-
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
-
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
   }, []);
 
-  // Handle Broadcast Toggle with validation
-  const toggleBroadcast = () => {
-    // Clear any previous proximity errors
-    setProximityError(null);
+  // Focus input when search opens
+  useEffect(() => {
+    if (showSearch) searchInputRef.current?.focus();
+  }, [showSearch]);
 
+  const toggleBroadcast = () => {
+    setProximityError(null);
     if (isBroadcasting) {
-      // Stop broadcasting
       liveBusService.stopBroadcasting();
       setIsBroadcasting(false);
-      console.log('🔕 Stopped broadcasting');
     } else {
-      // Validation before starting broadcast
-
-      // 1. Check if online
       if (!isOnline) {
         setProximityError(t('liveNav.offlineError') || 'You are offline. Please connect to the internet to use Live Tracking.');
         return;
       }
-
-      // 2. Check if location is available
-      if (!location) {
-        setProximityError(t('liveNav.locationNeeded') || 'Location not available. Please enable location services.');
+      if (!location && !isManualMode) {
+        setProximityError(t('liveNav.locationNeeded') || 'Location not available. Enable GPS or set your stop manually.');
         return;
       }
-
-      // 3. Proximity check: User must be within 2km of ANY station on this route
-      const MAX_DISTANCE_KM = 2.0; // 2km threshold (more lenient for GPS/distance between stops)
-      const minDistance = distanceToStation; // Already calculated in meters
-
-      if (minDistance > MAX_DISTANCE_KM * 1000) {
-        const nearestStation = nearestIndex !== -1 ? STATIONS[bus.stops[nearestIndex]] : null;
-        setProximityError(
-          t('liveNav.tooFarError') ||
-          `You are ${(minDistance / 1000).toFixed(1)}km away from the nearest station${nearestStation ? ` (${nearestStation.name})` : ''}. You must be on the bus or within ${MAX_DISTANCE_KM}km of the route to go live.`
-        );
-        console.warn('❌ Proximity check failed:', {
-          distance: minDistance,
-          threshold: MAX_DISTANCE_KM * 1000,
-          nearestStation: nearestStation?.name
-        });
-        return;
+      if (!isManualMode) {
+        const MAX_DISTANCE_KM = 2.0;
+        if (distanceToStation > MAX_DISTANCE_KM * 1000) {
+          const nearestStation = nearestIndex !== -1 ? STATIONS[bus.stops[nearestIndex]] : null;
+          setProximityError(
+            `You are ${(distanceToStation / 1000).toFixed(1)}km away from the nearest station${nearestStation ? ` (${nearestStation.name})` : ''}. You must be within ${MAX_DISTANCE_KM}km to go live.`
+          );
+          return;
+        }
       }
-
-      // All checks passed - start broadcasting
-      console.log('✅ Proximity check passed:', {
-        distance: minDistance,
-        threshold: MAX_DISTANCE_KM * 1000
-      });
       liveBusService.startBroadcasting(bus.name);
       setIsBroadcasting(true);
-
-      // Send immediate update if we have location
-      if (location) {
-        liveBusService.updateLocation(location.lat, location.lng, speed || 0);
-      }
+      if (location) liveBusService.updateLocation(location.lat, location.lng, speed || 0);
     }
   };
 
@@ -175,18 +164,15 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
           <AlertCircle className="w-8 h-8 text-red-500 dark:text-red-400" />
         </div>
         <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200 mb-6">{t('liveNav.locationNeeded')}</h3>
-
-        <button
-          onClick={() => { setLoading(true); window.location.reload(); }}
-          className="px-6 py-3 bg-dhaka-green text-white rounded-xl font-bold shadow-lg shadow-green-200 dark:shadow-green-900/40 active:scale-95 transition-transform"
-        >
+        <button onClick={() => { setLoading(true); window.location.reload(); }}
+          className="px-6 py-3 bg-dhaka-green text-white rounded-xl font-bold shadow-lg shadow-green-200 dark:shadow-green-900/40 active:scale-95 transition-transform">
           {t('liveNav.enableLocation')}
         </button>
       </div>
     );
   }
 
-  if (loading && !location) {
+  if (loading && !location && !isManualMode) {
     return (
       <div className="flex flex-col items-center justify-center h-full w-full p-8 text-center bg-white dark:bg-slate-900">
         <div className="relative w-24 h-24 mb-8">
@@ -198,37 +184,68 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
         </div>
         <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">{t('liveNav.findingSatellite')}</h3>
         <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">{t('liveNav.detectingPosition')}</p>
+        <button
+          onClick={() => setShowSearch(true)}
+          className="mt-6 flex items-center gap-2 px-5 py-2.5 bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-700 rounded-xl text-teal-700 dark:text-teal-400 font-semibold text-sm transition-colors hover:bg-teal-100 dark:hover:bg-teal-900/40"
+        >
+          <Search className="w-4 h-4" />
+          {t('liveTracker.setManually')}
+        </button>
+
+        {/* Loading state search panel */}
+        {showSearch && (
+          <div className="mt-4 w-full max-w-xs">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                ref={searchInputRef}
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder={t('liveTracker.typeStopName')}
+                className="w-full pl-9 pr-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm dark:text-white"
+              />
+            </div>
+            <div className="mt-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-lg max-h-48 overflow-y-auto">
+              {filteredStops.slice(0, 10).map(s => (
+                <button key={s.idx} onMouseDown={() => selectStop(s.idx)}
+                  className="w-full text-left px-3 py-2.5 text-sm hover:bg-teal-50 dark:hover:bg-teal-900/20 border-b border-gray-50 dark:border-slate-700 last:border-0 flex items-center gap-2">
+                  <MapPin className="w-3.5 h-3.5 text-teal-500 shrink-0" />
+                  <div>
+                    <p className="font-medium text-gray-800 dark:text-white">{s.station.name}</p>
+                    {s.station.bnName && <p className="text-xs text-gray-400">{s.station.bnName}</p>}
+                  </div>
+                </button>
+              ))}
+              {filteredStops.length === 0 && (
+                <p className="text-sm text-gray-400 text-center py-4">{t('liveTracker.noStopsFound')}</p>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     );
   }
 
-  const currentStation = nearestIndex !== -1 ? STATIONS[bus.stops[nearestIndex]] : null;
-  const nextStopId = nearestIndex !== -1 && nearestIndex < bus.stops.length - 1 ? bus.stops[nearestIndex + 1] : null;
+  const currentStation = effectiveNearestIndex !== -1 ? STATIONS[bus.stops[effectiveNearestIndex]] : null;
+  const nextStopId = effectiveNearestIndex !== -1 && effectiveNearestIndex < bus.stops.length - 1 ? bus.stops[effectiveNearestIndex + 1] : null;
+  const isAtStation = isManualMode ? true : distanceToStation < 1000;
 
-  // Is the user actually AT the station (within 1km)?
-  const isAtStation = distanceToStation < 1000;
-
-  // Calculate dist to next stop
   let distToNext = 0;
-  if (nextStopId && location) {
+  if (nextStopId && location && !isManualMode) {
     const nextStation = STATIONS[nextStopId];
     distToNext = getDistance(location, { lat: nextStation.lat, lng: nextStation.lng });
   }
 
-  // Calculate Trip Stats (If destination selected)
   let distToDest = 0;
   let etaMinutes = 0;
   let hasDestination = highlightEndIdx !== undefined && highlightEndIdx !== -1;
-  let destStationName = "";
+  let destStationName = '';
 
-  if (hasDestination && location && highlightEndIdx !== undefined) {
+  if (hasDestination && location && !isManualMode && highlightEndIdx !== undefined) {
     const destStation = STATIONS[bus.stops[highlightEndIdx]];
     if (destStation) {
       destStationName = destStation.name;
       distToDest = getDistance(location, { lat: destStation.lat, lng: destStation.lng });
-
-      // Calculate ETA
-      // Use current speed if > 5km/h, otherwise assume average bus speed of 20km/h
       const calcSpeed = (speed && speed > 5) ? speed : 20;
       etaMinutes = (distToDest / 1000) / calcSpeed * 60;
     }
@@ -236,20 +253,142 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
 
   return (
     <div className="h-full flex flex-col bg-slate-50 dark:bg-slate-900 relative">
-      {/* Status Card - Now part of flex layout, not absolute */}
+      {/* Status Card */}
       <div className="bg-white dark:bg-slate-800 rounded-b-3xl shadow-sm border-b border-gray-100 dark:border-gray-700 p-5 z-20 shrink-0">
-        {/* Back Button */}
+        {/* Desktop back */}
         {onBack && (
-          <button
-            onClick={onBack}
-            className="hidden md:flex mb-3 items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-dhaka-green dark:hover:text-dhaka-green transition-colors"
-            aria-label="Go back"
-          >
+          <button onClick={onBack}
+            className="hidden md:flex mb-3 items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-dhaka-green dark:hover:text-dhaka-green transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
             <span className="font-medium text-sm">{t('common.back')}</span>
           </button>
+        )}
+
+        {/* ─── Location Search Input ─── */}
+        <div className="mb-3">
+          {showSearch ? (
+            <div className="relative">
+              <div className="relative flex items-center gap-2">
+                <div className="flex-1 relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-teal-500" />
+                  <input
+                    ref={searchInputRef}
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    placeholder={t('liveTracker.searchStop')}
+                    className="w-full pl-9 pr-4 py-2.5 bg-teal-50 dark:bg-slate-700 border border-teal-200 dark:border-teal-700 rounded-xl text-sm dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-300 dark:focus:ring-teal-600"
+                  />
+                </div>
+                <button onClick={() => { setShowSearch(false); setSearchQuery(''); }}
+                  className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-xl transition-colors">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Dropdown suggestions */}
+              {(searchQuery || !searchQuery) && (
+                <div className="absolute top-full left-0 right-0 z-30 mt-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-xl max-h-56 overflow-y-auto">
+                  {filteredStops.length === 0 ? (
+                    <p className="text-sm text-gray-400 text-center py-4">{t('liveTracker.noStopsFound')}</p>
+                  ) : (
+                    filteredStops.slice(0, 12).map(s => (
+                      <button key={s.idx}
+                        onMouseDown={() => selectStop(s.idx)}
+                        className="w-full text-left px-3 py-2.5 hover:bg-teal-50 dark:hover:bg-teal-900/20 border-b border-gray-50 dark:border-slate-700 last:border-0 flex items-center gap-3 group transition-colors">
+                        <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-[10px] font-bold ${s.idx === 0 ? 'bg-green-500 text-white' : s.idx === bus.stops.length - 1 ? 'bg-red-500 text-white' : 'bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-400'}`}>
+                          {s.idx + 1}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-medium text-gray-800 dark:text-white text-sm truncate group-hover:text-teal-700 dark:group-hover:text-teal-400 transition-colors">{s.station.name}</p>
+                          {s.station.bnName && <p className="text-xs text-gray-400 dark:text-gray-500">{s.station.bnName}</p>}
+                        </div>
+                        {s.idx === effectiveNearestIndex && (
+                          <span className="ml-auto text-[10px] font-bold px-1.5 py-0.5 bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-400 rounded-full shrink-0">Current</span>
+                        )}
+                      </button>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setShowSearch(true)}
+                className="flex-1 flex items-center gap-2 px-3 py-2 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-xl text-sm text-gray-500 dark:text-gray-400 hover:border-teal-300 dark:hover:border-teal-600 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors"
+              >
+                <Search className="w-4 h-4 text-teal-500 shrink-0" />
+                <span className="flex-1 text-left truncate">
+                  {isManualMode && currentStation ? currentStation.name : t('liveTracker.searchStop')}
+                </span>
+                {isManualMode && (
+                  <span className="text-[10px] font-bold px-1.5 py-0.5 bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-400 rounded-full shrink-0">{t('liveTracker.manual')}</span>
+                )}
+              </button>
+              {isManualMode && (
+                <button onClick={clearManual}
+                  className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors"
+                  title="Use GPS location">
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+              <button
+                onClick={() => setShowAllStops(v => !v)}
+                className="p-2 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-500 dark:text-gray-400 hover:border-teal-300 dark:hover:border-teal-600 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors"
+                title="Show all stops"
+              >
+                {showAllStops ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              </button>
+            </div>
+          )}
+
+          {/* All stops panel */}
+          {showAllStops && !showSearch && (
+            <div className="mt-2 bg-gray-50 dark:bg-slate-700/50 border border-gray-200 dark:border-gray-600 rounded-xl overflow-hidden max-h-48 overflow-y-auto">
+              <div className="sticky top-0 bg-gray-100 dark:bg-slate-700 px-3 py-1.5 flex items-center justify-between">
+                <p className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  {t('liveTracker.allStops')} · {bus.stops.length}
+                </p>
+              </div>
+              {routeStops.map(s => (
+                <button key={s.idx} onClick={() => { selectStop(s.idx); setShowAllStops(false); }}
+                  className={`w-full text-left px-3 py-2 flex items-center gap-2.5 border-b border-gray-100 dark:border-slate-600 last:border-0 transition-colors
+                    ${s.idx === effectiveNearestIndex ? 'bg-teal-50 dark:bg-teal-900/20' : 'hover:bg-white dark:hover:bg-slate-700'}`}>
+                  <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold shrink-0
+                    ${s.idx === 0 ? 'bg-green-500 text-white' : s.idx === bus.stops.length - 1 ? 'bg-red-500 text-white' : s.idx === effectiveNearestIndex ? 'bg-teal-500 text-white' : 'bg-gray-200 dark:bg-slate-600 text-gray-600 dark:text-gray-300'}`}>
+                    {s.idx + 1}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className={`text-sm font-medium truncate ${s.idx === effectiveNearestIndex ? 'text-teal-700 dark:text-teal-400 font-bold' : 'text-gray-700 dark:text-gray-300'}`}>{s.station.name}</p>
+                  </div>
+                  {s.idx === effectiveNearestIndex && (
+                    <span className="text-[10px] font-bold text-teal-600 dark:text-teal-400 shrink-0">
+                      {isManualMode ? `📍 ${t('liveTracker.manual')}` : '📍 You'}
+                    </span>
+                  )}
+                  {s.idx === 0 && <span className="text-[10px] text-green-600 dark:text-green-400 font-bold shrink-0">{t('liveTracker.start')}</span>}
+                  {s.idx === bus.stops.length - 1 && <span className="text-[10px] text-red-600 dark:text-red-400 font-bold shrink-0">{t('liveTracker.end')}</span>}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Manual mode banner */}
+        {isManualMode && (
+          <div className="mb-3 bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-700 rounded-xl px-3 py-2 flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 min-w-0">
+              <MapPin className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400 shrink-0" />
+              <p className="text-xs font-semibold text-teal-700 dark:text-teal-300 truncate">
+                {t('liveTracker.manualStop')} {effectiveNearestIndex + 1} {t('liveTracker.of')} {bus.stops.length}
+              </p>
+            </div>
+            <button onClick={clearManual} className="text-[10px] font-bold text-teal-600 dark:text-teal-400 hover:underline shrink-0">
+              {t('liveTracker.useGPS')}
+            </button>
+          </div>
         )}
 
         <div className="flex items-center justify-between mb-2">
@@ -258,22 +397,21 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
             : 'text-gray-400'
             }`}>
             <MapPin className={`w-3 h-3 ${isAtStation ? 'animate-bounce' : ''}`} />
-            {isAtStation ? t('liveNav.currentStop') : t('liveNav.nearestStop')}
+            {isManualMode ? t('liveTracker.selectedStop') : (isAtStation ? t('liveNav.currentStop') : t('liveNav.nearestStop'))}
           </span>
           <span className="flex items-center gap-1 text-[10px] text-dhaka-green bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded-full border border-green-100 dark:border-green-800">
             <RefreshCw className="w-3 h-3 animate-spin" /> Live
           </span>
         </div>
+
         <h2 className={`text-2xl font-bold flex items-center gap-2 ${isAtStation
           ? 'text-dhaka-red dark:text-red-400'
           : 'text-dhaka-dark dark:text-gray-100'
           }`}>
-          {currentStation?.name || "Unknown Location"}
-          {isAtStation && (
-            <span className="inline-block w-2 h-2 bg-dhaka-red rounded-full animate-pulse"></span>
-          )}
+          {currentStation?.name || 'Unknown Location'}
+          {isAtStation && <span className="inline-block w-2 h-2 bg-dhaka-red rounded-full animate-pulse"></span>}
         </h2>
-        {!isAtStation && (
+        {!isAtStation && !isManualMode && (
           <p className="text-xs font-bold text-orange-600 bg-orange-50 dark:bg-orange-900/30 dark:text-orange-400 inline-block px-2 py-0.5 rounded mt-1">
             {t('liveNav.youAre')} {formatNumber((distanceToStation / 1000).toFixed(1))} km {t('emergency.away')}
           </p>
@@ -282,7 +420,6 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
 
         {/* Live Tracking Controls */}
         <div className="space-y-2">
-          {/* Offline Warning Badge */}
           {!isOnline && (
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-3 py-2 rounded-lg flex items-center gap-2">
               <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0" />
@@ -291,56 +428,43 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
               </p>
             </div>
           )}
-
-          {/* Proximity Error */}
           {proximityError && (
-            <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 px-3 py-2 rounded-lg flex items-start gap-2 animate-in slide-in-from-top">
+            <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 px-3 py-2 rounded-lg flex items-start gap-2">
               <AlertCircle className="w-4 h-4 text-orange-600 dark:text-orange-400 shrink-0 mt-0.5" />
-              <p className="text-xs font-bold text-orange-600 dark:text-orange-400 leading-tight">
-                {proximityError}
-              </p>
+              <p className="text-xs font-bold text-orange-600 dark:text-orange-400 leading-tight">{proximityError}</p>
             </div>
           )}
-
           <div className="flex gap-2">
-            <button
-              onClick={onViewLiveMap}
-              className="flex-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 px-3 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors"
-            >
+            <button onClick={onViewLiveMap}
+              className="flex-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 px-3 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors">
               <Users className="w-4 h-4" />
               {t('map.liveLocation') || 'Live Map'}
             </button>
-            <button
-              onClick={toggleBroadcast}
+            <button onClick={toggleBroadcast}
               disabled={!isOnline && !isBroadcasting}
               className={`flex-1 px-3 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-sm ${!isOnline && !isBroadcasting
                 ? 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed opacity-50'
                 : isBroadcasting
                   ? 'bg-red-500 text-white animate-pulse shadow-red-200'
                   : 'bg-dhaka-green text-white shadow-green-200 dark:shadow-green-900/30 hover:bg-green-700'
-                }`}
-            >
+                }`}>
               <Radio className={`w-4 h-4 ${isBroadcasting ? 'animate-ping' : ''}`} />
               {isBroadcasting ? t('liveNav.stopCasting') : t('liveNav.goLive')}
             </button>
           </div>
-
-          {/* Desktop Location Accuracy Warning */}
           {isDesktop && (
             <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 px-3 py-2 rounded-lg flex items-start gap-2">
               <AlertCircle className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
               <div className="text-xs text-blue-600 dark:text-blue-400">
-                <p className="font-bold">💻 Desktop Mode Detected</p>
-                <p className="text-[10px] mt-0.5 leading-tight">
-                  Location may be less accurate on PC/laptop (WiFi/IP-based). For best accuracy, use a mobile device with GPS.
-                </p>
+                <p className="font-bold">{t('liveTracker.desktopMode')}</p>
+                <p className="text-[10px] mt-0.5 leading-tight">{t('liveTracker.desktopWarning')}</p>
               </div>
             </div>
           )}
         </div>
 
-        {/* Trip Stats Grid */}
-        {hasDestination ? (
+        {/* Trip Stats */}
+        {hasDestination && !isManualMode ? (
           <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
             <div className="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-xl text-center">
               <div className="flex items-center justify-center gap-1 text-blue-600 dark:text-blue-400 mb-1">
@@ -370,7 +494,7 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
             </div>
           </div>
         ) : (
-          nextStopId ? (
+          !isManualMode && nextStopId ? (
             <div className="pt-3 border-t border-gray-100 dark:border-gray-700 flex items-center gap-4">
               <div className="w-10 h-10 bg-dhaka-green rounded-xl flex items-center justify-center text-white shadow-lg shadow-green-200 dark:shadow-green-900/20">
                 <Clock className="w-5 h-5" />
@@ -384,46 +508,45 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
               </div>
             </div>
           ) : (
-            <div className="pt-3 border-t border-gray-100 dark:border-gray-700 text-sm text-green-600 dark:text-green-400 font-bold">
-              {t('liveNav.arrivedDestination')}
-            </div>
+            !isManualMode && (
+              <div className="pt-3 border-t border-gray-100 dark:border-gray-700 text-sm text-green-600 dark:text-green-400 font-bold">
+                {t('liveNav.arrivedDestination')}
+              </div>
+            )
           )
         )}
       </div>
 
       {/* Timeline */}
-      <div className="flex-1 overflow-y-auto px-6 py-6 scroll-smooth">
-        <h4 className="text-xs font-bold text-gray-400 dark:text-gray-500 mb-6 uppercase tracking-wider ml-11">{t('liveNav.routeTimeline')}</h4>
+      <div ref={timelineRef} className="flex-1 overflow-y-auto px-6 py-6 scroll-smooth">
+        <h4 className="text-xs font-bold text-gray-400 dark:text-gray-500 mb-6 uppercase tracking-wider ml-11">
+          {t('liveNav.routeTimeline')} · {bus.stops.length} stops
+        </h4>
         <div className="relative ml-3 space-y-0 pb-20">
           {bus.stops.map((stopId, idx) => {
             const station = STATIONS[stopId];
             if (!station) return null;
 
-            const isPassed = nearestIndex !== -1 && idx < nearestIndex && isAtStation;
-            const isCurrent = nearestIndex !== -1 && idx === nearestIndex;
+            const isPassed = effectiveNearestIndex !== -1 && idx < effectiveNearestIndex && isAtStation;
+            const isCurrent = effectiveNearestIndex !== -1 && idx === effectiveNearestIndex;
 
-            // Highlight Logic
             const isStart = highlightStartIdx !== undefined && idx === highlightStartIdx;
             const isEnd = highlightEndIdx !== undefined && idx === highlightEndIdx;
             const isInRange = highlightStartIdx !== undefined && highlightEndIdx !== undefined && idx >= highlightStartIdx && idx <= highlightEndIdx;
 
             return (
-              <div key={stopId} className={`relative pb-10 ${isPassed ? 'opacity-40 grayscale blur-[0.5px]' : 'opacity-100'}`}>
-                {/* Connecting Line (Gray Dashed) */}
+              <div id={`stop-${idx}`} key={stopId} className={`relative pb-10 ${isPassed ? 'opacity-40 grayscale blur-[0.5px]' : 'opacity-100'}`}>
                 {idx < bus.stops.length - 1 && (
                   <div className="absolute left-[-2px] top-0 bottom-0 w-1 border-l-2 border-dashed border-gray-300 dark:border-gray-600 z-0"></div>
                 )}
-                {/* Highlight Line Segment */}
                 {isInRange && idx < highlightEndIdx! && (
                   <div className="absolute left-[-2px] top-0 bottom-[-40px] w-1 bg-green-500 z-0"></div>
                 )}
 
-                {/* Node */}
-                <div
-                  className={`absolute -left-[9px] top-0 rounded-full transition-all duration-500
+                <div className={`absolute -left-[9px] top-0 rounded-full transition-all duration-500
                     ${isCurrent && isAtStation
                       ? 'bg-dhaka-red border-4 border-white shadow-[0_0_0_4px_rgba(244,42,65,0.2)] w-7 h-7 -left-[13px] z-10 animate-pulse'
-                      : isCurrent // Nearest but far
+                      : isCurrent
                         ? 'bg-orange-500 border-4 border-white w-6 h-6 -left-[11px] z-10 shadow-[0_0_12px_rgba(249,115,22,0.5)]'
                         : isStart
                           ? 'bg-green-600 border-4 border-white w-5 h-5 -left-[9px] z-10 ring-2 ring-green-200'
@@ -434,27 +557,21 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
                               : isPassed
                                 ? 'bg-gray-400 w-4 h-4 border-2 border-white'
                                 : 'bg-white border-4 border-dhaka-green w-5 h-5 -left-[9px]'
-                    }`}
-                >
-                  {/* Pulsing ring for current location */}
-                  {isCurrent && (
-                    <div className="absolute -inset-2 border-2 border-current rounded-full opacity-75 animate-ping"></div>
-                  )}
+                    }`}>
+                  {isCurrent && <div className="absolute -inset-2 border-2 border-current rounded-full opacity-75 animate-ping"></div>}
                 </div>
 
-                {/* Content */}
                 <div className={`${isCurrent ? '-mt-1.5' : '-mt-1'} pl-12`}>
                   <div className="flex items-center justify-between gap-2">
-                    <p className={`font-medium ${isCurrent ? 'text-dhaka-dark dark:text-white text-xl font-bold' : isInRange ? 'text-green-800 dark:text-green-400 font-bold' : 'text-gray-700 dark:text-gray-400'}`}>
+                    <button
+                      onClick={() => selectStop(idx)}
+                      className={`font-medium text-left hover:text-teal-600 dark:hover:text-teal-400 transition-colors ${isCurrent ? 'text-dhaka-dark dark:text-white text-xl font-bold' : isInRange ? 'text-green-800 dark:text-green-400 font-bold' : 'text-gray-700 dark:text-gray-400'}`}
+                    >
                       {station.name}
-                    </p>
-                    {/* Helpline Button - Show beside current location */}
+                    </button>
                     {isCurrent && location && (
-                      <button
-                        onClick={() => setShowEmergencyModal(true)}
-                        className="shrink-0 bg-dhaka-red hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-md hover:shadow-lg active:scale-95 flex items-center gap-1.5"
-                        aria-label={t('liveNav.emergencyHelplines')}
-                      >
+                      <button onClick={() => setShowEmergencyModal(true)}
+                        className="shrink-0 bg-dhaka-red hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-md hover:shadow-lg active:scale-95 flex items-center gap-1.5">
                         <Phone className="w-3.5 h-3.5" />
                         {t('liveNav.help')}
                       </button>
@@ -462,27 +579,17 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
                   </div>
                   {isCurrent && isAtStation && (
                     <span className="inline-block mt-1 px-2 py-0.5 bg-dhaka-red text-white text-[10px] rounded font-bold uppercase tracking-wide shadow-sm">
-                      {t('busDetails.you')}
+                      {isManualMode ? '📍 Selected' : t('busDetails.you')}
                     </span>
                   )}
-                  {isStart && (
-                    <span className="inline-block mt-1 px-2 py-0.5 bg-green-100 text-green-700 text-[10px] rounded font-bold uppercase tracking-wide shadow-sm mr-2">
-                      {t('busDetails.start')}
-                    </span>
-                  )}
-                  {isEnd && (
-                    <span className="inline-block mt-1 px-2 py-0.5 bg-red-100 text-red-700 text-[10px] rounded font-bold uppercase tracking-wide shadow-sm">
-                      {t('busDetails.destination')}
-                    </span>
-                  )}
-                  {isCurrent && !isAtStation && (
+                  {isStart && <span className="inline-block mt-1 px-2 py-0.5 bg-green-100 text-green-700 text-[10px] rounded font-bold uppercase tracking-wide shadow-sm mr-2">{t('busDetails.start')}</span>}
+                  {isEnd && <span className="inline-block mt-1 px-2 py-0.5 bg-red-100 text-red-700 text-[10px] rounded font-bold uppercase tracking-wide shadow-sm">{t('busDetails.destination')}</span>}
+                  {isCurrent && !isAtStation && !isManualMode && (
                     <span className="inline-block mt-1 px-2 py-0.5 bg-orange-100 text-orange-700 text-[10px] rounded font-bold uppercase tracking-wide shadow-sm">
                       {t('liveNav.nearestStop')} ({formatNumber((distanceToStation / 1000).toFixed(1))} km)
                     </span>
                   )}
-                  {!isCurrent && (
-                    <p className="text-xs text-gray-400 mt-0.5">{station.bnName}</p>
-                  )}
+                  {!isCurrent && <p className="text-xs text-gray-400 mt-0.5">{station.bnName}</p>}
                 </div>
               </div>
             );
@@ -490,7 +597,6 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
         </div>
       </div>
 
-      {/* Emergency Helpline Modal */}
       <EmergencyHelplineModal
         isOpen={showEmergencyModal}
         onClose={() => setShowEmergencyModal(false)}

@@ -19,6 +19,9 @@ export default {
                 sans: ['Inter', 'system-ui', 'sans-serif'],
                 bengali: ['Noto Sans Bengali', 'Arial', 'sans-serif'],
             },
+            spacing: {
+                'nav-safe': '5rem',
+            },
             animation: {
                 'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             },

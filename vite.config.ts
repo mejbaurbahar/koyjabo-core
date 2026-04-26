@@ -14,7 +14,13 @@ export default defineConfig(({ mode }) => {
       proxy: {
         '/intercity': {
           target: 'http://localhost:3002',
-          changeOrigin: true
+          changeOrigin: true,
+          bypass(req) {
+            // Let Vite handle TypeScript/JavaScript source file imports directly
+            if (req.url && (req.url.endsWith('.ts') || req.url.endsWith('.tsx') || req.url.endsWith('.js'))) {
+              return req.url;
+            }
+          }
         },
         '/api/ai': {
           target: 'https://koyjabo-backend.onrender.com',
@@ -108,6 +114,7 @@ export default defineConfig(({ mode }) => {
           ]
         },
         workbox: {
+          maximumFileSizeToCacheInBytes: 4 * 1024 * 1024, // 4 MiB
           globPatterns: [
             '**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest,webp,jpg,jpeg,gif}',
             'intercity/**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest}',

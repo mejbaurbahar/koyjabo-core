@@ -584,13 +584,6 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
 
   const activeFilterCount = [filterType, filterDivision, filterFrom, filterTo].filter(Boolean).length;
 
-  useEffect(() => {
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
-    } catch { /* AdSense not loaded */ }
-  }, []);
-
   const nearestStation = useMemo(() => {
     if (!userLocation) return null;
     let minDist = Infinity;
@@ -619,7 +612,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
   }
 
   return (
-    <div className="flex flex-col h-full bg-[#0F172A] dark:bg-[#0F172A] overflow-hidden">
+    <div className="flex flex-col h-full min-h-0 bg-[#0F172A] dark:bg-[#0F172A] overflow-hidden">
       {/* Header */}
       <div className="shrink-0 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 shadow-xl shadow-emerald-500/30">
@@ -764,8 +757,8 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
         </div>
       </div>
 
-      {/* Nearest station banner */}
-      {nearestStation && (
+      {/* Nearest station banner — only show when within Bangladesh (~500 km radius) */}
+      {nearestStation && nearestStation.distKm < 500 && (
         <div className="shrink-0 px-4 py-2.5 bg-blue-50 dark:bg-blue-950/30 border-b border-blue-100 dark:border-blue-900/40">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1 shrink-0">
@@ -795,8 +788,6 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
           </div>
         </div>
       )}
-
-      {/* AdSense banner */}
 
       {/* Count row */}
       <div className="shrink-0 flex items-center justify-between px-5 py-2 bg-[#0F172A] border-b border-white/10">

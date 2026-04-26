@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from './contexts/LanguageContext';
-import { Search, ArrowRightLeft, AlertCircle, PlayCircle, WifiOff, Activity, Home, Train, Sparkles, Clock, Info, Sun, Moon, Menu, Navigation, Map, X, Bot, FileText, Settings, Shield, Download, Calendar, HelpCircle, LogIn, LogOut, User, Phone, Bus, Plane, ChevronRight } from 'lucide-react';
+import { Search, ArrowRightLeft, AlertCircle, PlayCircle, WifiOff, Activity, Home, Train, Sparkles, Clock, Info, Sun, Moon, Menu, Navigation, Map, X, Bot, FileText, Settings, Shield, Download, Calendar, HelpCircle, LogIn, LogOut, User, Phone, Bus, Plane, ChevronRight, AlertTriangle, Calculator, Ticket, BookOpen, UserPlus, MapPin, Star } from 'lucide-react';
 import { AnimatedLogo } from './components/AnimatedLogo';
 import DhakaAlive from './components/DhakaAlive';
 import ThemeToggle from './components/ThemeToggle';
@@ -54,6 +54,20 @@ function App() {
 
   const [selectedMode, setSelectedMode] = useState<'bus' | 'train' | 'plane' | 'launch' | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  // Intercity saved routes
+  const [savedRoutes, setSavedRoutes] = useState<{from: string; to: string}[]>(() => {
+    try { return JSON.parse(localStorage.getItem('intercity_saved_routes') || '[]'); } catch { return []; }
+  });
+  const isRouteSaved = (f: string, t: string) => savedRoutes.some(r => r.from === f && r.to === t);
+  const toggleSavedRoute = (f: string, t: string) => {
+    setSavedRoutes(prev => {
+      const exists = prev.some(r => r.from === f && r.to === t);
+      const next = exists ? prev.filter(r => !(r.from === f && r.to === t)) : [...prev, {from: f, to: t}];
+      localStorage.setItem('intercity_saved_routes', JSON.stringify(next));
+      return next;
+    });
+  };
 
   // Dark Mode State
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -496,10 +510,10 @@ function App() {
               {/* Content layer */}
               <div className="relative z-10 text-white rounded-xl md:rounded-[2rem] px-3 pt-2.5 pb-2 md:px-6 md:pt-5 md:pb-4">
                 <div className="mb-1.5 md:mb-4">
-                  <h2 className="text-base md:text-2xl font-extrabold leading-tight drop-shadow-sm">
+                  <h2 className="text-xl md:text-2xl font-extrabold leading-tight drop-shadow-sm">
                     {language === 'bn' ? <><span className="text-yellow-300">বাংলা</span>দেশ ভ্রমণ</> : <>Bangladesh <span className="text-yellow-300">Travel</span></>}
                   </h2>
-                  <p className="text-white/75 text-[10px] md:text-sm mt-0">{t('intercity.onYourRoute')}</p>
+                  <p className="text-white/75 text-xs md:text-sm mt-0">{t('intercity.onYourRoute')}</p>
                 </div>
                 <form onSubmit={handleSearch} className="space-y-1">
                   <DistrictSelect label={t('intercity.from')} name="from" value={from} onChange={setFrom} placeholder={t('intercity.startLocationPlaceholder')} />
@@ -524,7 +538,7 @@ function App() {
           </div>
 
           {/* ── Scrollable list area ── */}
-          <div ref={scrollAreaRef} className="flex-1 overflow-y-auto px-3 pb-nav-safe md:pb-4 space-y-2 min-h-0">
+          <div ref={scrollAreaRef} className="flex-1 overflow-y-auto px-3 pb-20 md:pb-4 space-y-2 min-h-0">
 
             {/* Error (mobile only) */}
             {error && (
@@ -554,7 +568,21 @@ function App() {
             {loading && <div className="md:hidden pt-2"><LoadingState /></div>}
 
             {/* Result card — mobile only, desktop shows in right panel */}
-            {!loading && result && <div className="md:hidden pt-2"><ResultCard data={result} /></div>}
+            {!loading && result && (
+              <div className="md:hidden pt-2 space-y-2">
+                <div className="flex items-center justify-between px-1">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{result.from} → {result.to}</p>
+                  <button
+                    onClick={() => toggleSavedRoute(result.from, result.to)}
+                    className={`flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full transition-colors ${isRouteSaved(result.from, result.to) ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400' : 'bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-gray-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20'}`}
+                  >
+                    <Star className="w-3 h-3" fill={isRouteSaved(result.from, result.to) ? 'currentColor' : 'none'} />
+                    {isRouteSaved(result.from, result.to) ? (language === 'bn' ? 'সেভ হয়েছে' : 'Saved') : (language === 'bn' ? 'সেভ করুন' : 'Save Route')}
+                  </button>
+                </div>
+                <ResultCard data={result} />
+              </div>
+            )}
 
             {/* Demo option — shown when not logged in and no result */}
             {!authUser && !loading && !result && (
@@ -571,6 +599,31 @@ function App() {
                     </div>
                   </div>
                 </div>
+              </div>
+            )}
+
+            {/* Saved routes — shown when logged in and no result */}
+            {authUser && !result && !loading && savedRoutes.length > 0 && (
+              <div className="pt-2 space-y-1.5">
+                <h3 className="text-xs font-bold text-yellow-600 dark:text-yellow-400 uppercase tracking-wider px-1 pt-1 flex items-center gap-1">
+                  <Star className="w-3 h-3 fill-current" />
+                  {language === 'bn' ? 'সেভ করা রুট' : 'Saved Routes'}
+                </h3>
+                {savedRoutes.map((r, i) => (
+                  <button key={i} onClick={() => { setFrom(r.from); setTo(r.to); }}
+                    className="w-full flex items-center justify-between gap-2 bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-800 rounded-xl px-3 py-2.5 text-left hover:border-yellow-400 transition-colors">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500 shrink-0" />
+                      <span className="text-sm font-semibold text-gray-800 dark:text-white truncate">{r.from}</span>
+                      <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+                      <span className="text-sm font-semibold text-gray-800 dark:text-white truncate">{r.to}</span>
+                    </div>
+                    <button onClick={(e) => { e.stopPropagation(); toggleSavedRoute(r.from, r.to); }}
+                      className="p-1 text-gray-300 dark:text-gray-600 hover:text-red-400 transition-colors shrink-0">
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  </button>
+                ))}
               </div>
             )}
 
@@ -712,7 +765,19 @@ function App() {
 
             {/* Search result */}
             {!loading && result && (
-              <div className="p-6 max-w-5xl mx-auto"><ResultCard data={result} /></div>
+              <div className="p-6 max-w-5xl mx-auto space-y-3">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{result.from} → {result.to}</p>
+                  <button
+                    onClick={() => toggleSavedRoute(result.from, result.to)}
+                    className={`flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-full transition-colors ${isRouteSaved(result.from, result.to) ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400' : 'bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-gray-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20'}`}
+                  >
+                    <Star className="w-4 h-4" fill={isRouteSaved(result.from, result.to) ? 'currentColor' : 'none'} />
+                    {isRouteSaved(result.from, result.to) ? (language === 'bn' ? 'সেভ হয়েছে' : 'Saved') : (language === 'bn' ? 'রুট সেভ করুন' : 'Save Route')}
+                  </button>
+                </div>
+                <ResultCard data={result} />
+              </div>
             )}
 
             {/* Empty state: transport mode detail or welcome */}
@@ -796,6 +861,10 @@ function App() {
                         : authUser.displayName.charAt(0).toUpperCase()
                       }
                     </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{authUser.displayName}</p>
+                      {authUser.username && <p className="text-xs text-gray-500 dark:text-gray-400 truncate">@{authUser.username}</p>}
+                    </div>
                   </div>
                   <div className="flex gap-2 mt-3">
                     <button
@@ -825,59 +894,131 @@ function App() {
                   >
                     <LogIn className="w-4 h-4" /> {t('nav.login')}
                   </button>
+                  <button
+                    onClick={() => { window.location.href = '/#signup'; setIsMenuOpen(false); }}
+                    className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-colors"
+                  >
+                    <UserPlus className="w-4 h-4" /> {t('nav.signup') || 'Sign Up'}
+                  </button>
                 </div>
               )}
 
+              {/* History & Settings — only for logged-in users */}
+              {authUser && (
+                <>
+                  <button
+                    onClick={() => { window.location.href = '/#history'; setIsMenuOpen(false); }}
+                    className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                  >
+                    <Clock className="w-5 h-5 text-emerald-600 dark:text-emerald-400" /> {t('nav.history') || 'History'}
+                  </button>
+                  <button
+                    onClick={() => { window.location.href = '/#settings'; setIsMenuOpen(false); }}
+                    className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                  >
+                    <Settings className="w-5 h-5 text-gray-600 dark:text-gray-400" /> {t('nav.settings') || 'Settings'}
+                  </button>
+                </>
+              )}
+
               <button
-                onClick={() => window.location.href = '/'}
+                onClick={() => { window.location.href = '/#blog'; setIsMenuOpen(false); }}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
               >
-                <Home className="w-5 h-5 text-emerald-600 dark:text-emerald-400" /> {t('nav.home')}
+                <BookOpen className="w-5 h-5 text-orange-600 dark:text-orange-400" /> {t('nav.blog') || 'Blog'}
               </button>
+
+              {/* ── Community Features ── */}
+              <div className="px-3 pt-2 pb-1">
+                <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{language === 'bn' ? 'কমিউনিটি ফিচার' : 'Community'}</p>
+              </div>
               <button
-                onClick={() => window.location.href = '/#ai-assistant'}
+                onClick={() => { window.location.href = '/#trip-reminders'; setIsMenuOpen(false); }}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
               >
-                <Bot className="w-5 h-5 text-purple-600 dark:text-purple-400" /> {t('nav.aiAssistant')}
+                <span className="w-5 h-5 text-center leading-5 text-violet-600">🔔</span> {language === 'bn' ? 'যাত্রা রিমাইন্ডার' : 'Trip Reminders'}
               </button>
               <button
-                onClick={() => window.location.href = '/#about'}
+                onClick={() => { window.location.href = '/#road-alerts'; setIsMenuOpen(false); }}
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+              >
+                <AlertTriangle className="w-5 h-5 text-orange-500" /> {language === 'bn' ? 'রাস্তা সতর্কতা' : 'Road Alerts'}
+              </button>
+              <button
+                onClick={() => { window.location.href = '/#neighbourhood-guides'; setIsMenuOpen(false); }}
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+              >
+                <MapPin className="w-5 h-5 text-purple-500" /> {language === 'bn' ? 'এলাকাভিত্তিক গাইড' : 'Area Guides'}
+              </button>
+              <button
+                onClick={() => { window.location.href = '/#bus-pass-info'; setIsMenuOpen(false); }}
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+              >
+                <span className="w-5 h-5 text-center leading-5 text-blue-600">💳</span> {language === 'bn' ? 'বাস পাস তথ্য' : 'Bus Pass Info'}
+              </button>
+              <button
+                onClick={() => { window.location.href = '/#multi-stop-planner'; setIsMenuOpen(false); }}
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+              >
+                <Navigation className="w-5 h-5 text-cyan-500" /> {language === 'bn' ? 'মাল্টি-স্টপ প্ল্যানার' : 'Multi-Stop Planner'}
+              </button>
+              <button
+                onClick={() => { window.location.href = '/#commute-cost'; setIsMenuOpen(false); }}
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+              >
+                <Calculator className="w-5 h-5 text-emerald-500" /> {language === 'bn' ? 'খরচ ক্যালকুলেটর' : 'Cost Calculator'}
+              </button>
+              <button
+                onClick={() => { window.location.href = '/#seat-availability'; setIsMenuOpen(false); }}
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+              >
+                <Ticket className="w-5 h-5 text-indigo-500" /> {language === 'bn' ? 'সিট প্রাপ্যতা' : 'Seat Availability'}
+              </button>
+
+              <button
+                onClick={() => { window.location.href = '/#ai-assistant'; setIsMenuOpen(false); }}
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+              >
+                <Bot className="w-5 h-5 text-purple-600 dark:text-purple-400" /> {t('ai.title') || 'AI Assistant'}
+              </button>
+              <button
+                onClick={() => { window.location.href = '/#about'; setIsMenuOpen(false); }}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
               >
                 <Info className="w-5 h-5 text-blue-500" /> {t('nav.about')}
               </button>
               <button
-                onClick={() => window.location.href = '/#why-use'}
+                onClick={() => { window.location.href = '/#why-use'; setIsMenuOpen(false); }}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
               >
                 <Sparkles className="w-5 h-5 text-pink-600 dark:text-pink-400" /> {t('home.whyUse')}
               </button>
               <button
-                onClick={() => window.location.href = '/#faq'}
+                onClick={() => { window.location.href = '/#faq'; setIsMenuOpen(false); }}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
               >
                 <HelpCircle className="w-5 h-5 text-cyan-600 dark:text-cyan-400" /> {t('nav.faq')}
               </button>
               <button
-                onClick={() => window.location.href = '/#install-app'}
+                onClick={() => { window.location.href = '/#install-app'; setIsMenuOpen(false); }}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
               >
                 <Download className="w-5 h-5 text-emerald-600 dark:text-emerald-400" /> {t('home.installApp')}
               </button>
               <button
-                onClick={() => window.location.href = '/#privacy'}
+                onClick={() => { window.location.href = '/#privacy'; setIsMenuOpen(false); }}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
               >
                 <Shield className="w-5 h-5 text-indigo-600 dark:text-indigo-400" /> {t('nav.privacy')}
               </button>
               <button
-                onClick={() => window.location.href = '/#terms'}
+                onClick={() => { window.location.href = '/#terms'; setIsMenuOpen(false); }}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
               >
                 <FileText className="w-5 h-5 text-orange-600 dark:text-orange-400" /> {t('nav.terms')}
               </button>
               <button
-                onClick={() => window.location.href = '/#contact'}
+                onClick={() => { window.location.href = '/#contact'; setIsMenuOpen(false); }}
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
               >
                 <Phone className="w-5 h-5 text-red-600 dark:text-red-400" /> {t('nav.contact') || 'Contact Us'}
