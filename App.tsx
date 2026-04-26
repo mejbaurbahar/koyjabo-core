@@ -1870,7 +1870,7 @@ const App: React.FC = () => {
   );
 
   const renderAbout = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-hidden">
+    <div className="flex flex-col h-full min-h-0 bg-white dark:bg-slate-900 overflow-hidden">
     <div className="flex-1 min-h-0 overflow-y-auto p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe">
       <div className="max-w-5xl mx-auto text-center">
         <div className="w-20 h-20 bg-dhaka-red rounded-3xl flex items-center justify-center text-white mx-auto mb-6 shadow-xl shadow-red-200 rotate-3 hover:rotate-6 transition-transform">
@@ -3502,11 +3502,11 @@ const App: React.FC = () => {
     // Train view: list always visible, details require login
     if (view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) {
       return (
-        <div className="relative flex flex-col h-full w-full">
+        <div className="relative flex flex-col h-full min-h-0 w-full overflow-hidden">
           <div className="absolute inset-0 z-0 pointer-events-none">
             <DhakaAlive hideIndicator />
           </div>
-          <div className="relative z-10 flex flex-col h-full w-full overflow-hidden">
+          <div className="relative z-10 flex flex-col h-full min-h-0 w-full overflow-hidden">
             <TrainListPage
               userLocation={userLocation}
               onBack={() => setView(AppView.HOME)}

@@ -612,7 +612,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
   }
 
   return (
-    <div className="flex flex-col h-full bg-[#0F172A] dark:bg-[#0F172A] overflow-hidden">
+    <div className="flex flex-col h-full min-h-0 bg-[#0F172A] dark:bg-[#0F172A] overflow-hidden">
       {/* Header */}
       <div className="shrink-0 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 shadow-xl shadow-emerald-500/30">
