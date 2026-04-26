@@ -81,15 +81,22 @@ if (rootElement) {
   );
 }
 
-// Register PWA Service Worker
-import { registerSW } from 'virtual:pwa-register';
+// Register PWA Service Worker (safe fallback if virtual module is unavailable)
+async function registerPWAWorker() {
+  try {
+    const mod = await import(/* @vite-ignore */ 'virtual:pwa-register');
+    const updateSW = mod.registerSW({
+      immediate: false,
+      onNeedRefresh() {
+        window.dispatchEvent(new CustomEvent('pwa-update-available', { detail: { updateSW } }));
+      },
+      onOfflineReady() {
+        window.dispatchEvent(new CustomEvent('pwa-offline-ready'));
+      },
+    });
+  } catch {
+    // PWA plugin not active for this runtime; continue without SW registration.
+  }
+}
 
-const updateSW = registerSW({
-  immediate: false,
-  onNeedRefresh() {
-    window.dispatchEvent(new CustomEvent('pwa-update-available', { detail: { updateSW } }));
-  },
-  onOfflineReady() {
-    window.dispatchEvent(new CustomEvent('pwa-offline-ready'));
-  },
-});
+void registerPWAWorker();
