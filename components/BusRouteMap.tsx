@@ -138,28 +138,28 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
           window.matchMedia('(pointer: coarse)').matches
         );
       const map = L.map(mapRef.current!, {
-        zoomControl: false,
+        zoomControl: !isTouchDevice,
         attributionControl: true,
-        // Embedded map is preview-only; keep page scroll behavior consistent.
-        scrollWheelZoom: false,
-        dragging: false,
+        scrollWheelZoom: !isTouchDevice,
+        dragging: !isTouchDevice,
         touchZoom: false,
-        tap: false,       // Disable Leaflet tap to avoid interfering with page scroll
+        tap: false,
       });
 
-      // On mobile: allow single-finger page scroll over the map
-      // Leaflet interactions are disabled; this keeps vertical page scrolling smooth
-      if (isTouchDevice && mapRef.current) {
-        mapRef.current.style.touchAction = 'pan-y';
-        mapRef.current.style.pointerEvents = 'none';
+      // On touch devices: disable all interactions so page scroll works smoothly
+      if (isTouchDevice) {
+        map.dragging.disable();
+        map.scrollWheelZoom.disable();
+        if (mapRef.current) {
+          mapRef.current.style.touchAction = 'pan-y';
+          mapRef.current.style.pointerEvents = 'none';
+        }
       }
 
-      map.dragging.disable();
       map.touchZoom.disable();
       map.doubleClickZoom.disable();
       map.boxZoom.disable();
       map.keyboard.disable();
-      map.scrollWheelZoom.disable();
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© <a href="https://www.openstreetmap.org/copyright">OSM</a>',

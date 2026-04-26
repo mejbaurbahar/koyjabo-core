@@ -757,8 +757,8 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
         </div>
       </div>
 
-      {/* Nearest station banner */}
-      {nearestStation && (
+      {/* Nearest station banner — only show when within Bangladesh (~500 km radius) */}
+      {nearestStation && nearestStation.distKm < 500 && (
         <div className="shrink-0 px-4 py-2.5 bg-blue-50 dark:bg-blue-950/30 border-b border-blue-100 dark:border-blue-900/40">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1 shrink-0">

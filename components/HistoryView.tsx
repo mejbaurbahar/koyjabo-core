@@ -181,7 +181,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
             )}
 
             {/* Header */}
-            <div className={`bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 px-4 md:px-6 pb-4 ${embedded ? 'pt-4' : 'pt-6 md:pt-24'}`}>
+            <div className={`bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 px-4 md:px-6 pb-4 ${embedded ? 'pt-4' : 'pt-6'}`}>
                 <div>
                     <div className="flex items-center gap-3 mb-4">
 

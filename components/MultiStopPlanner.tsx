@@ -8,6 +8,25 @@ interface Props { onBack: () => void; }
 interface Stop { id: string; name: string; }
 interface Leg { from: string; to: string; suggestion: string; }
 
+// Extra Dhaka city area stop names not in station constants
+const EXTRA_STOPS = [
+  'সাভার', 'গাজীপুর', 'নারায়ণগঞ্জ', 'আশুলিয়া', 'টঙ্গী', 'মানিকগঞ্জ',
+  'ধানমন্ডি', 'গুলশান', 'বনানী', 'বারিধারা', 'খিলগাঁও', 'রামপুরা',
+  'বাড্ডা', 'রায়েরবাগ', 'যাত্রাবাড়ী', 'পোস্তগোলা', 'আজিমপুর',
+  'লালবাগ', 'চকবাজার', 'সদরঘাট', 'গুলিস্তান', 'পল্টন', 'শাহবাগ',
+  'নিউমার্কেট', 'ধোলাইখাল', 'মহাখালী', 'তেজগাঁও', 'বিজয়নগর',
+  'মগবাজার', 'মালিবাগ', 'শান্তিনগর', 'আরামবাগ', 'ফকিরাপুল',
+  'আগারগাঁও', 'শ্যামলী', 'মোহাম্মদপুর', 'আসাদগেট', 'রিং রোড',
+  'বসুন্ধরা', 'নোয়াপাড়া', 'আব্দুল্লাহপুর', 'টুরাগ', 'দিয়াবাড়ি',
+  'ভাটারা', 'মেরুল বাড্ডা', 'নদ্দা', 'বারুইপাড়া', 'কালশী',
+  'পীরেরবাগ', 'বেগম রোকেয়া সরণি', 'কচুক্ষেত', 'ইব্রাহিমপুর',
+  'দারুস সালাম', 'বিমানবন্দর', 'কুর্মিটোলা', 'ক্যান্টনমেন্ট',
+  'গেন্ডারিয়া', 'সূত্রাপুর', 'কমলাপুর', 'মুগদা', 'বাসাবো',
+  'দনিয়া', 'শ্যামপুর', 'কদমতলী', 'সিদ্ধিরগঞ্জ', 'ফতুল্লা',
+  'চট্টগ্রাম', 'সিলেট', 'রাজশাহী', 'খুলনা', 'বরিশাল', 'ময়মনসিংহ',
+  'কক্সবাজার', 'কুমিল্লা', 'রংপুর', 'বগুড়া', 'যশোর',
+];
+
 // Build a flat, deduplicated list of Bengali stop names from all station sources
 const ALL_STOP_NAMES: string[] = (() => {
   const seen = new Set<string>();
@@ -18,7 +37,8 @@ const ALL_STOP_NAMES: string[] = (() => {
   Object.values(METRO_STATIONS).forEach(s => addIfNew(s.bnName));
   Object.values(RAILWAY_STATIONS).forEach(s => addIfNew(s.bnName));
   Object.values(STATIONS).forEach(s => { if (s.bnName) addIfNew(s.bnName); });
-  return names.slice(0, 500); // cap for performance
+  EXTRA_STOPS.forEach(addIfNew);
+  return names.slice(0, 800); // cap for performance
 })();
 
 const METRO_BN_NAMES = new Set(Object.values(METRO_STATIONS).map(s => s.bnName));
@@ -26,12 +46,72 @@ const METRO_BN_NAMES = new Set(Object.values(METRO_STATIONS).map(s => s.bnName))
 function suggestRoute(from: string, to: string): string {
   const fromMetro = METRO_BN_NAMES.has(from);
   const toMetro = METRO_BN_NAMES.has(to);
-  if (fromMetro && toMetro) return 'মেট্রো রেল (MRT-6) ব্যবহার করুন — দ্রুততম বিকল্প';
-  if (fromMetro || toMetro) return 'মেট্রো স্টেশন পর্যন্ত হেঁটে যান, তারপর MRT-6 ব্যবহার করুন';
-  if (from.includes('উত্তরা') || to.includes('উত্তরা')) return 'BRT বা মেট্রো রেল নিন — সরাসরি সংযোগ আছে';
-  if (from.includes('সায়েদাবাদ') || to.includes('সায়েদাবাদ')) return 'গুলিস্তান হয়ে লোকাল বাস নিন';
-  if (from.includes('কমলাপুর') || to.includes('কমলাপুর')) return 'ট্রেন বা মেট্রো ব্যবহার করুন';
-  return 'লোকাল বাস বা সিএনজি ব্যবহার করুন — রুট অনুযায়ী পরিবর্তন হতে পারে';
+
+  // Both stops on metro line — fastest option
+  if (fromMetro && toMetro) {
+    return '🚇 মেট্রো রেল (MRT-6) নিন — সবচেয়ে দ্রুত। ভাড়া ২০-১০০ টাকা। পিক আওয়ারেও সময়মতো পৌঁছাবেন।';
+  }
+
+  // One is metro, walk to station
+  if (fromMetro || toMetro) {
+    const station = fromMetro ? from : to;
+    return `🚇 ${station} মেট্রো স্টেশন পর্যন্ত হেঁটে বা রিকশায় যান, তারপর MRT-6 নিন। অথবা 🚌 লোকাল বাসে সরাসরি যান।`;
+  }
+
+  // Specific area routing
+  if ((from.includes('সাভার') || from.includes('আশুলিয়া')) && (to.includes('মোহাম্মদপুর') || to.includes('ধানমন্ডি') || to.includes('আসাদগেট'))) {
+    return '🚌 বিকল্প ১: সাভার পরিবহন বা বোয়ালখালী বাসে সরাসরি মোহাম্মদপুর যান। বিকল্প ২: বোয়ালখালী বাসে সায়মলী, তারপর পায়ে হেঁটে পার হয়ে আচিম বা অগ্রণী বাসে মোহাম্মদপুর।';
+  }
+
+  if ((from.includes('সাভার') || from.includes('আশুলিয়া')) && to.includes('মতিঝিল')) {
+    return '🚌 সাভার পরিবহন → গাবতলী → লোকাল বাস মতিঝিল। অথবা 🚇 গাবতলী থেকে মেট্রোতে মতিঝিল (কারওয়ান বাজার হয়ে)।';
+  }
+
+  if ((from.includes('সাভার') || from.includes('আশুলিয়া')) && to.includes('গুলশান')) {
+    return '🚌 সাভার পরিবহন → গাবতলী, তারপর সিএনজি বা উবারে গুলশান। অথবা 🚇 মেট্রোতে বিজয় সরণি → সিএনজি গুলশান।';
+  }
+
+  if ((from.includes('মিরপুর') || from.includes('পল্লবী')) && to.includes('ধানমন্ডি')) {
+    return '🚇 মিরপুর মেট্রো → ফার্মগেট/বিজয় সরণি, তারপর 🚌 লোকাল বাসে ধানমন্ডি। অথবা সরাসরি বাস রুট ৮ নিন।';
+  }
+
+  if ((from.includes('মিরপুর') || from.includes('পল্লবী')) && to.includes('মতিঝিল')) {
+    return '🚇 মিরপুর-১০ বা মিরপুর-১১ মেট্রো স্টেশন → সরাসরি মতিঝিল। দ্রুততম পথ, ৩০-৩৫ মিনিট।';
+  }
+
+  if ((from.includes('উত্তরা') || from.includes('আব্দুল্লাহপুর')) && (to.includes('মতিঝিল') || to.includes('ধানমন্ডি'))) {
+    return '🚇 উত্তরা মেট্রো স্টেশন থেকে সরাসরি MRT-6 নিন। ভাড়া ৬০-১০০ টাকা, সময় ৩০-৪০ মিনিট।';
+  }
+
+  if (from.includes('গাজীপুর') && to.includes('ঢাকা')) {
+    return '🚌 BRT (বাস র‍্যাপিড ট্রানজিট) ব্যবহার করুন — গাজীপুর থেকে এয়ারপোর্ট পর্যন্ত দ্রুত। তারপর 🚇 মেট্রো নিন ঢাকার ভেতরে।';
+  }
+
+  if (from.includes('নারায়ণগঞ্জ') && to.includes('ঢাকা')) {
+    return '🚌 নারায়ণগঞ্জ-গুলিস্তান সরাসরি বাস। অথবা 🚂 ট্রেনে কমলাপুর।';
+  }
+
+  if (from.includes('যাত্রাবাড়ী') || from.includes('সায়েদাবাদ')) {
+    return '🚌 গুলিস্তান হয়ে লোকাল বাসে যে কোনো গন্তব্য। পিক আওয়ারে ৩০+ মিনিট বেশি রাখুন।';
+  }
+
+  if (from.includes('কমলাপুর') || to.includes('কমলাপুর')) {
+    return '🚂 ট্রেন ব্যবহার করুন — কমলাপুর থেকে সারা দেশে। অথবা 🚇 মেট্রো নিন ঢাকার ভেতরে।';
+  }
+
+  if (from.includes('পুরান ঢাকা') || from.includes('সদরঘাট') || from.includes('লালবাগ') || from.includes('চকবাজার')) {
+    return '🚌 গুলিস্তান বা নিউমার্কেট থেকে লোকাল বাস। 🛺 রিকশা বা ইজিবাইক ছোট দূরত্বে ভালো। সদরঘাট থেকে লঞ্চে বরিশাল।';
+  }
+
+  // Short distance hint (same general area keywords)
+  const shortDistanceAreas = ['ধানমন্ডি', 'গুলশান', 'বনানী', 'মোহাম্মদপুর', 'আগারগাঁও', 'শ্যামলী'];
+  const fromShort = shortDistanceAreas.some(a => from.includes(a));
+  const toShort = shortDistanceAreas.some(a => to.includes(a));
+  if (fromShort && toShort) {
+    return '🚶 ২ কিমির কম হলে হেঁটে যান। ২-৫ কিমি হলে 🛺 রিকশা নিন। বেশি হলে 🚌 লোকাল বাস বা উবার/পাঠাও।';
+  }
+
+  return '🚌 লোকাল বাস বা সিএনজি নিন। পিক আওয়ার (৮-১০টা, ৫-৭টা) এড়িয়ে চলুন। 📱 উবার/পাঠাও অ্যাপে রাইড নিতে পারেন।';
 }
 
 export default function MultiStopPlanner({ onBack }: Props) {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowLeft, Clock, Tag, Calendar, ArrowRight } from 'lucide-react';
 import { BLOG_POSTS } from '../data/blogPosts';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface BlogProps {
     onBack: () => void;
@@ -9,25 +10,23 @@ interface BlogProps {
 }
 
 const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
-    // Get featured post (first one)
+    const { t } = useLanguage();
     const featuredPost = BLOG_POSTS[0];
     const regularPosts = BLOG_POSTS.slice(1);
 
     return (
-        <div className="flex flex-col h-full bg-gradient-to-br from-white via-teal-50/30 to-cyan-50/30 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 overflow-y-auto pt-16 pb-32 pt-safe">
+        <div className="flex flex-col h-full bg-gradient-to-br from-white via-teal-50/30 to-cyan-50/30 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 overflow-hidden">
+        <div className="flex-1 min-h-0 overflow-y-auto pb-32">
             {/* Header */}
             <div className="sticky top-0 z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 pt-safe">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
                     <div className="flex items-center gap-3">
-
                         <div>
                             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">
-                                {language === 'bn' ? 'ব্লগ' : 'Blog'}
+                                {t('blog.title')}
                             </h1>
                             <p className="text-sm text-gray-600 dark:text-gray-400">
-                                {language === 'bn'
-                                    ? 'ঢাকা এবং বাংলাদেশের যাতায়াত সম্পর্কে গাইড এবং টিপস'
-                                    : 'Guides and tips about Dhaka and Bangladesh transport'}
+                                {t('blog.subtitle')}
                             </p>
                         </div>
                     </div>
@@ -40,7 +39,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                     <div className="mb-12">
                         <h2 className="text-lg font-bold text-teal-600 dark:text-teal-400 mb-4 flex items-center gap-2">
                             <span className="bg-teal-100 dark:bg-teal-900/30 px-3 py-1 rounded-full text-sm">
-                                {language === 'bn' ? 'ফিচার্ড' : 'Featured'}
+                                {t('blog.featured')}
                             </span>
                         </h2>
                         <div
@@ -48,14 +47,14 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                             className="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer border border-gray-100 dark:border-gray-700"
                         >
                             {/* Cover Image */}
-                            <div className="relative h-64 sm:h-80 overflow-hidden">
+                            <div className="relative overflow-hidden bg-gray-100 dark:bg-slate-800">
                                 <img
                                     src={featuredPost.coverImage}
                                     alt={language === 'bn' ? featuredPost.bnTitle : featuredPost.title}
-                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                    className="w-full h-auto max-h-[480px] object-contain group-hover:scale-105 transition-transform duration-500"
                                     onError={(e) => { (e.target as HTMLImageElement).src = '/og-image.png'; }}
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
                             </div>
 
                             <div className="p-6 sm:p-8">
@@ -88,10 +87,10 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
 
                                 <div className="flex items-center justify-between">
                                     <span className="text-sm text-gray-500 dark:text-gray-400">
-                                        {language === 'bn' ? 'লেখক' : 'By'}: {featuredPost.author}
+                                        {t('blog.by')}: {featuredPost.author}
                                     </span>
                                     <button className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-medium transition-all group-hover:gap-3">
-                                        {language === 'bn' ? 'পড়ুন' : 'Read More'}
+                                        {t('blog.readMore')}
                                         <ArrowRight className="w-4 h-4" />
                                     </button>
                                 </div>
@@ -100,10 +99,10 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                     </div>
                 )}
 
-                {/* Regular Posts Grid — only shown when there are additional posts */}
+                {/* Regular Posts Grid */}
                 {regularPosts.length > 0 && <div>
                     <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">
-                        {language === 'bn' ? 'সকল পোস্ট' : 'All Posts'}
+                        {t('blog.allPosts')}
                     </h2>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -161,18 +160,16 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                 {/* Coming Soon Section */}
                 <div className="mt-12 bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-slate-800 dark:to-slate-700 rounded-2xl p-8 text-center border border-teal-100 dark:border-teal-800">
                     <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                        {language === 'bn' ? 'আরও আসছে শীঘ্রই!' : 'More Coming Soon!'}
+                        {t('blog.comingSoon')}
                     </h3>
                     <p className="text-gray-600 dark:text-gray-300">
-                        {language === 'bn'
-                            ? 'আমরা নিয়মিত নতুন গাইড এবং টিপস যুক্ত করছি। পরবর্তী আপডেটের জন্য থাকুন!'
-                            : 'We\'re regularly adding new guides and tips. Stay tuned for the next update!'}
+                        {t('blog.comingSoonDesc')}
                     </p>
                 </div>
 
-                {/* Bottom Spacing */}
                 <div className="h-4"></div>
             </div>
+        </div>
         </div>
     );
 };

@@ -14,7 +14,13 @@ export default defineConfig(({ mode }) => {
       proxy: {
         '/intercity': {
           target: 'http://localhost:3002',
-          changeOrigin: true
+          changeOrigin: true,
+          bypass(req) {
+            // Let Vite handle TypeScript/JavaScript source file imports directly
+            if (req.url && (req.url.endsWith('.ts') || req.url.endsWith('.tsx') || req.url.endsWith('.js'))) {
+              return req.url;
+            }
+          }
         },
         '/api/ai': {
           target: 'https://koyjabo-backend.onrender.com',

@@ -141,6 +141,8 @@ const getStoredView = (): AppView => {
         'for-ai': AppView.FOR_AI,
         'daily-journey': AppView.DAILY_JOURNEY,
         'blog': AppView.BLOG,
+        'live': AppView.HOME,
+        'live-map': AppView.HOME,
         'login': AppView.LOGIN,
         'signup': AppView.SIGNUP,
         'forgot-password': AppView.FORGOT_PASSWORD,
@@ -496,7 +498,7 @@ const checkIfInDhaka = (loc: UserLocation | null): boolean => {
 
 const App: React.FC = () => {
   // Multi-language support
-  const { t, formatNumber, language } = useLanguage();
+  const { t, formatNumber, language, setLanguage } = useLanguage();
   const { user, logout } = useAuth();
 
   // Polyfill for requestIdleCallback (Safari support)
@@ -781,6 +783,96 @@ const App: React.FC = () => {
     localStorage.setItem('dhaka_commute_view', JSON.stringify(view));
   }, [view]);
 
+  // Dynamic SEO — update title + meta description/keywords when view changes
+  useEffect(() => {
+    const setMeta = (title: string, desc: string, keywords: string) => {
+      document.title = title;
+      document.querySelector('meta[name="description"]')?.setAttribute('content', desc);
+      document.querySelector('meta[name="keywords"]')?.setAttribute('content', keywords);
+    };
+    const base = language === 'bn' ? ' | কই যাবো' : ' | KoyJabo';
+    switch (view) {
+      case AppView.SEAT_AVAILABILITY:
+        setMeta(
+          (language === 'bn' ? 'ট্রেন সিট প্রাপ্যতা' : 'Train Seat Availability') + base,
+          language === 'bn'
+            ? 'বাংলাদেশ রেলওয়ের ট্রেন সিট প্রাপ্যতা দেখুন। সুবর্ণ এক্সপ্রেস, মহানগর, পদ্মা এক্সপ্রেস-সহ সব ট্রেনের সময়সূচি ও টিকিট তথ্য।'
+            : 'Check Bangladesh Railway train seat availability. Subarna Express, Mahanagar, Padma Express schedules, fares, and eticket booking info.',
+          'train seat availability Bangladesh, Bangladesh Railway seat, Subarna Express, Padma Express, Mahanagar Godhuli, eticket railway, ট্রেন সিট, বাংলাদেশ রেলওয়ে, সুবর্ণ এক্সপ্রেস, ট্রেন টিকিট, ট্রেনের সময়সূচি, কমলাপুর স্টেশন, KoyJabo train'
+        );
+        break;
+      case AppView.NEIGHBOURHOOD_GUIDES:
+        setMeta(
+          (language === 'bn' ? 'এলাকাভিত্তিক যাতায়াত গাইড' : 'Dhaka Neighbourhood Transport Guide') + base,
+          language === 'bn'
+            ? 'ঢাকার প্রতিটি এলাকার বাস রুট, মেট্রো স্টেশন, টিপস ও যাতায়াত গাইড। মিরপুর, ধানমন্ডি, গুলশান, পুরান ঢাকা সহ সব এলাকা।'
+            : 'Complete transport guide for every Dhaka neighbourhood — bus routes, metro stations, tips for Mirpur, Dhanmondi, Gulshan, Uttara, Old Dhaka and more.',
+          'Dhaka neighbourhood transport guide, Mirpur bus route, Dhanmondi bus, Gulshan transport, Uttara bus, Old Dhaka rickshaw, MRT station guide, ঢাকা এলাকা গাইড, মিরপুর বাস, ধানমন্ডি বাস, গুলশান যাতায়াত, উত্তরা বাস, KoyJabo neighbourhood'
+        );
+        break;
+      case AppView.BUS_PASS_INFO:
+        setMeta(
+          (language === 'bn' ? 'বাস পাস ও মেট্রো কার্ড তথ্য' : 'Bus Pass & Metro Card Info') + base,
+          language === 'bn'
+            ? 'ঢাকার Rapid Pass (মেট্রো), BRTC বাস পাস, ওয়ান-ওয়ে ও রিটার্ন টিকিটের তথ্য। কোথায় পাওয়া যায়, কত ভাড়া, কীভাবে রিচার্জ করবেন।'
+            : 'Dhaka Rapid Pass (metro card), BRTC bus pass, MRT ticket types, fares, recharge locations and benefits for regular commuters.',
+          'Rapid Pass Bangladesh, MRT metro card Dhaka, BRTC bus pass, metro recharge Dhaka, ঢাকা বাস পাস, র‍্যাপিড পাস, মেট্রো কার্ড, মেট্রো ভাড়া, রিচার্জ, KoyJabo bus pass'
+        );
+        break;
+      case AppView.MULTI_STOP_PLANNER:
+        setMeta(
+          (language === 'bn' ? 'মাল্টি-স্টপ রুট প্ল্যানার' : 'Multi-Stop Route Planner') + base,
+          language === 'bn'
+            ? 'একাধিক গন্তব্য দিয়ে ঢাকার সেরা বাস রুট পরিকল্পনা করুন। যাত্রাপথ, ভাড়া ও সময় অনুমান সব এক জায়গায়।'
+            : 'Plan multi-stop journeys across Dhaka — find the best bus routes, transfers, estimated fares and travel times for multiple destinations.',
+          'multi stop route planner Dhaka, bus route planner Bangladesh, transit planner Dhaka, মাল্টি স্টপ রুট, ঢাকা রুট প্ল্যানার, বাস রুট পরিকল্পনা, KoyJabo planner'
+        );
+        break;
+      case AppView.COMMUTE_COST:
+        setMeta(
+          (language === 'bn' ? 'যাতায়াত খরচ ক্যালকুলেটর' : 'Commute Cost Calculator') + base,
+          language === 'bn'
+            ? 'ঢাকার বাস, সিএনজি, উবার ও রিকশার ভাড়া তুলনা করুন। মাসিক যাতায়াত খরচ হিসাব করুন এবং সাশ্রয়ী পথ খুঁজুন।'
+            : 'Compare bus, CNG, Uber and rickshaw fares for your Dhaka commute. Calculate monthly transport costs and find the most affordable route.',
+          'commute cost calculator Dhaka, bus fare calculator Bangladesh, Uber fare Dhaka, CNG fare Dhaka, rickshaw fare, ঢাকা যাতায়াত খরচ, বাস ভাড়া ক্যালকুলেটর, সিএনজি ভাড়া, KoyJabo cost'
+        );
+        break;
+      case AppView.TRIP_REMINDERS:
+        setMeta(
+          (language === 'bn' ? 'যাত্রা রিমাইন্ডার' : 'Trip Reminders') + base,
+          language === 'bn'
+            ? 'আপনার নিয়মিত যাতায়াতের জন্য রিমাইন্ডার সেট করুন। বাস, ট্রেন বা মেট্রোর সময়মতো নোটিফিকেশন পান।'
+            : 'Set reminders for your regular Dhaka commute — get notified before your bus, train or metro departure time.',
+          'trip reminder Dhaka, bus reminder Bangladesh, commute notification, যাত্রা রিমাইন্ডার, বাস নোটিফিকেশন, KoyJabo reminder'
+        );
+        break;
+      case AppView.ROAD_ALERTS:
+        setMeta(
+          (language === 'bn' ? 'রাস্তার সতর্কতা ও ট্রাফিক আপডেট' : 'Road Alerts & Traffic Updates') + base,
+          language === 'bn'
+            ? 'ঢাকার রাস্তার সতর্কতা, ট্রাফিক জ্যাম ও সড়ক বন্ধের লাইভ আপডেট পান। নিরাপদ ও দ্রুত রাস্তা বেছে নিন।'
+            : 'Live Dhaka road alerts, traffic jam updates, road closures and diversions. Choose the safest and fastest route for your commute.',
+          'Dhaka road alerts, traffic update Dhaka, road closure Bangladesh, ঢাকা ট্রাফিক, রাস্তার সতর্কতা, সড়ক বন্ধ, KoyJabo road alert'
+        );
+        break;
+      case AppView.BLOG:
+        setMeta(
+          (language === 'bn' ? 'ব্লগ — যাতায়াত গাইড ও টিপস' : 'Blog — Dhaka Transport Guides & Tips') + base,
+          language === 'bn'
+            ? 'বাংলাদেশের যাতায়াত নিয়ে গাইড, টিপস ও তথ্য। মেট্রোরেল, বাস, ট্রেন ও লঞ্চ সম্পর্কে বিস্তারিত জানুন।'
+            : 'Transport guides, travel tips and news about Dhaka metro rail, buses, trains and launches across Bangladesh.',
+          'Dhaka transport blog, metro rail guide, bus tips Bangladesh, Bangladesh travel blog, মেট্রোরেল গাইড, বাংলাদেশ ট্রান্সপোর্ট ব্লগ, ঢাকা যাতায়াত টিপস, KoyJabo blog'
+        );
+        break;
+      default:
+        if (view === AppView.HOME) {
+          document.title = 'কই যাবো | ঢাকা বাস রুট, মেট্রো রেল ও বাংলাদেশ ট্রান্সপোর্ট গাইড - Bangladesh Bus & Route Finder';
+          document.querySelector('meta[name="description"]')?.setAttribute('content', 'কই যাবো: বাংলাদেশের সেরা ট্রান্সপোর্ট গাইড। ঢাকা লোকাল বাস রুট (২০০+), মেট্রো রেল (MRT-6), আন্তঃজেলা বাস/ট্রেন/ফ্লাইট/লঞ্চ রুট, ভাড়া হিসাব ও AI সহায়ক। Find Dhaka local bus routes, metro rail fares, intercity bus/train/flight routes across Bangladesh. Free, offline, bilingual.');
+        }
+        break;
+    }
+  }, [view, language]);
+
   useEffect(() => {
     localStorage.setItem('dhaka_commute_suggested_routes', JSON.stringify(suggestedRoutes));
   }, [suggestedRoutes]);
@@ -866,7 +958,7 @@ const App: React.FC = () => {
   // Handle SEO Dynamic Titles and Meta Tags
   useEffect(() => {
     let title = 'কই যাবো - ঢাকা বাস রুট ও ট্রান্সপোর্ট গাইড | Dhaka Bus Route Finder';
-    let description = 'কই যাবো: ঢাকা এবং বাংলাদেশের বাস রুট, গন্তব্য এবং AI সহায়তা খুঁজুন। Find Dhaka bus routes instantly. 200+ buses, Metro Rail (MRT Line 6), intercity routes with AI. Free fare calculator.';
+    let description = 'কই যাবো: বাংলাদেশের সেরা ট্রান্সপোর্ট গাইড। ঢাকা ও সারা বাংলাদেশের বাস রুট, গন্তব্য ও AI সহায়তা খুঁজুন। Bangladesh Smart Transport Finder — 300+ buses, Metro Rail (MRT Line 6), 100+ intercity trains, AI assistant. Free fare calculator.';
 
     if (view === AppView.BUS_DETAILS && selectedBus) {
       const busName = formatBusName(selectedBus.name);
@@ -1514,20 +1606,59 @@ const App: React.FC = () => {
     let locationContext = "Dhaka, Bangladesh";
     try {
       const loc = await getCurrentLocation();
-      let nearestStation = null;
-      let minDist = Infinity;
-      Object.values(STATIONS).forEach(station => {
-        const dist = Math.sqrt(Math.pow(station.lat - loc.lat, 2) + Math.pow(station.lng - loc.lng, 2));
-        if (dist < minDist) {
-          minDist = dist;
-          nearestStation = station;
+
+      // Extended location zones covering Greater Dhaka and surroundings
+      const LOCATION_ZONES = [
+        { name: 'Savar', bnName: 'সাভার', lat: 23.8575, lng: 90.2664, radius: 0.05 },
+        { name: 'Ashulia', bnName: 'আশুলিয়া', lat: 23.8967, lng: 90.2477, radius: 0.04 },
+        { name: 'Gazipur', bnName: 'গাজীপুর', lat: 23.9999, lng: 90.4203, radius: 0.06 },
+        { name: 'Narayanganj', bnName: 'নারায়ণগঞ্জ', lat: 23.6238, lng: 90.4999, radius: 0.05 },
+        { name: 'Tongi', bnName: 'টঙ্গী', lat: 23.8951, lng: 90.3973, radius: 0.04 },
+        { name: 'Keraniganj', bnName: 'কেরানীগঞ্জ', lat: 23.7136, lng: 90.3702, radius: 0.04 },
+        { name: 'Uttara', bnName: 'উত্তরা', lat: 23.8759, lng: 90.3795, radius: 0.03 },
+        { name: 'Mirpur', bnName: 'মিরপুর', lat: 23.8223, lng: 90.3654, radius: 0.03 },
+        { name: 'Mohammadpur', bnName: 'মোহাম্মদপুর', lat: 23.7631, lng: 90.3580, radius: 0.025 },
+        { name: 'Dhanmondi', bnName: 'ধানমন্ডি', lat: 23.7461, lng: 90.3742, radius: 0.025 },
+        { name: 'Gulshan', bnName: 'গুলশান', lat: 23.7808, lng: 90.4148, radius: 0.025 },
+        { name: 'Banani', bnName: 'বনানী', lat: 23.7937, lng: 90.4046, radius: 0.02 },
+        { name: 'Motijheel', bnName: 'মতিঝিল', lat: 23.7258, lng: 90.4175, radius: 0.02 },
+        { name: 'Old Dhaka', bnName: 'পুরান ঢাকা', lat: 23.7104, lng: 90.4074, radius: 0.025 },
+        { name: 'Badda', bnName: 'বাড্ডা', lat: 23.7788, lng: 90.4348, radius: 0.025 },
+        { name: 'Rampura', bnName: 'রামপুরা', lat: 23.7553, lng: 90.4261, radius: 0.02 },
+        { name: 'Tejgaon', bnName: 'তেজগাঁও', lat: 23.7679, lng: 90.3924, radius: 0.02 },
+        { name: 'Farmgate', bnName: 'ফার্মগেট', lat: 23.7575, lng: 90.3847, radius: 0.015 },
+        { name: 'Shyamoli', bnName: 'শ্যামলী', lat: 23.7713, lng: 90.3636, radius: 0.015 },
+        { name: 'Manikganj', bnName: 'মানিকগঞ্জ', lat: 23.8647, lng: 90.0085, radius: 0.06 },
+        { name: 'Munshiganj', bnName: 'মুন্সিগঞ্জ', lat: 23.5422, lng: 90.5307, radius: 0.05 },
+      ];
+
+      // 1. First try to match a broad area zone by GPS distance
+      let bestZone: typeof LOCATION_ZONES[0] | null = null;
+      let bestZoneDist = Infinity;
+      for (const zone of LOCATION_ZONES) {
+        const dist = Math.sqrt(Math.pow(zone.lat - loc.lat, 2) + Math.pow(zone.lng - loc.lng, 2));
+        if (dist < zone.radius && dist < bestZoneDist) {
+          bestZoneDist = dist;
+          bestZone = zone;
         }
-      });
-      if (nearestStation) {
-        locationContext = `User is near ${nearestStation.name} (${nearestStation.bnName})`;
+      }
+
+      if (bestZone) {
+        locationContext = `User is in ${bestZone.name} (${bestZone.bnName}) area`;
+      } else {
+        // 2. Fallback: find nearest metro/bus station
+        let nearestStation: { name: string; bnName: string } | null = null;
+        let minDist = Infinity;
+        Object.values(STATIONS).forEach(station => {
+          const dist = Math.sqrt(Math.pow(station.lat - loc.lat, 2) + Math.pow(station.lng - loc.lng, 2));
+          if (dist < minDist) { minDist = dist; nearestStation = station; }
+        });
+        if (nearestStation && minDist < 0.05) {
+          locationContext = `User is near ${(nearestStation as { name: string; bnName: string }).name} (${(nearestStation as { name: string; bnName: string }).bnName})`;
+        }
       }
     } catch (e) {
-      console.log("Location not available for AI context");
+      // location not available
     }
 
     // Check for offline mode
@@ -1739,14 +1870,15 @@ const App: React.FC = () => {
   );
 
   const renderAbout = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-6 md:pt-24 md:pb-12 overflow-y-auto overflow-x-hidden w-full max-w-full pb-nav-safe">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-hidden">
+    <div className="flex-1 min-h-0 overflow-y-auto p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe">
       <div className="max-w-5xl mx-auto text-center">
         <div className="w-20 h-20 bg-dhaka-red rounded-3xl flex items-center justify-center text-white mx-auto mb-6 shadow-xl shadow-red-200 rotate-3 hover:rotate-6 transition-transform">
           <Bus className="w-10 h-10" />
         </div>
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">🚍 {t('about.title')}</h1>
         <h2 className="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-200">কই<span className="text-dhaka-red ml-2">যাবো</span> <span className="text-gray-600 dark:text-gray-400 text-lg">(KoyJabo)</span></h2>
-        <p className="text-gray-500 dark:text-gray-400 mb-8">{t('settings.version')} 2.0.0 • {t('common.tagline') || 'Bangladesh\'s Smart Transport Route Finder — Bus, Train, Metro, AI & More'}</p>
+        <p className="text-gray-500 dark:text-gray-400 mb-8">{t('settings.version')} 2.5.0 • {t('common.tagline') || 'Bangladesh\'s Smart Transport Route Finder — Bus, Train, Metro, AI & More'}</p>
 
         <AdSenseAd adSlot="auto" className="my-6 hidden md:block" />
         <div className="text-left space-y-8 bg-slate-50 dark:bg-slate-800 p-6 md:p-10 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm">
@@ -1911,6 +2043,7 @@ const App: React.FC = () => {
       {/* Spacer for bottom nav on mobile */}
       <div className="h-20 md:hidden"></div>
     </div>
+    </div>
   );
 
 
@@ -2058,7 +2191,8 @@ const App: React.FC = () => {
   );
 
   const renderWhyUse = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-6 md:pt-24 md:pb-12 overflow-y-auto w-full pb-nav-safe">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-hidden w-full">
+    <div className="flex-1 min-h-0 overflow-y-auto p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100 leading-tight">{t('whyUse.title')}</h1>
         <p className="text-gray-500 dark:text-gray-400 mb-8">{t('whyUse.subtitle')}</p>
@@ -2231,10 +2365,12 @@ const App: React.FC = () => {
         <div className="h-20"></div>
       </div>
     </div>
+    </div>
   );
 
   const renderFAQ = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-6 md:pt-24 md:pb-12 overflow-y-auto w-full pb-nav-safe">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-hidden w-full">
+    <div className="flex-1 min-h-0 overflow-y-auto p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100 leading-tight">{t('faq.title')}</h1>
         <p className="text-gray-500 dark:text-gray-400 mb-8">{t('faq.subtitle')}</p>
@@ -2391,10 +2527,12 @@ const App: React.FC = () => {
         <div className="h-20"></div>
       </div >
     </div >
+    </div>
   );
 
   const renderForAi = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-6 md:pt-24 md:pb-12 overflow-y-auto w-full pb-nav-safe">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-hidden w-full">
+    <div className="flex-1 min-h-0 overflow-y-auto p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl md:text-5xl font-bold mb-6 text-gray-900 leading-tight">AI Dataset & Integration</h1>
         <div className="flex items-center gap-2 text-sm text-gray-500 mb-8">
@@ -2417,7 +2555,7 @@ const App: React.FC = () => {
             <div className="grid md:grid-cols-2 gap-4">
               <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
                 <h3 className="font-bold text-gray-900 flex items-center gap-2">🚌 Local Bus Routes</h3>
-                <p className="text-sm text-gray-600 mt-1">200+ detailed routes covering Dhaka City (Mirpur, Uttara, Farmgate, Motijheel, etc).</p>
+                <p className="text-sm text-gray-600 mt-1">300+ detailed routes covering Dhaka City (Mirpur, Uttara, Farmgate, Motijheel, etc).</p>
               </div>
               <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
                 <h3 className="font-bold text-gray-900 flex items-center gap-2">🚇 MRT Line 6</h3>
@@ -2557,6 +2695,7 @@ const App: React.FC = () => {
         </div>
       </div>
     </div>
+    </div>
   );
 
   const renderBusDetails = () => {
@@ -2596,7 +2735,7 @@ const App: React.FC = () => {
         </div>
 
         {/* Desktop Header + Stats Bar — sticky together so stats bar never hides under header */}
-        <div className="hidden md:block sticky top-16 z-50 shrink-0">
+        <div className="hidden md:block sticky top-0 z-50 shrink-0">
         <div className="flex items-center gap-3 p-4 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-slate-900">
           <button onClick={() => setView(AppView.HOME)} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors" aria-label="Go back to home">
             <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
@@ -2977,22 +3116,22 @@ const App: React.FC = () => {
 
         {/* Community Actions */}
         <div className="px-4 pb-4">
-          <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">কমিউনিটি</p>
+          <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">{language === 'bn' ? 'কমিউনিটি' : 'Community'}</p>
           <div className="grid grid-cols-3 gap-2">
             <button onClick={() => setView(AppView.RATE_BUS)}
               className="flex flex-col items-center gap-1 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-amber-300 dark:hover:border-amber-700 transition-colors active:scale-95">
               <span className="text-xl">⭐</span>
-              <span className="text-xs font-semibold text-gray-700 dark:text-gray-300 text-center">রেটিং দিন</span>
+              <span className="text-xs font-semibold text-gray-700 dark:text-gray-300 text-center">{language === 'bn' ? 'রেটিং দিন' : 'Rate'}</span>
             </button>
             <button onClick={() => setView(AppView.BUS_LIVE_TRACKING)}
               className="flex flex-col items-center gap-1 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-700 transition-colors active:scale-95">
               <span className="text-xl">📍</span>
-              <span className="text-xs font-semibold text-gray-700 dark:text-gray-300 text-center">লাইভ অবস্থান</span>
+              <span className="text-xs font-semibold text-gray-700 dark:text-gray-300 text-center">{language === 'bn' ? 'লাইভ অবস্থান' : 'Live Location'}</span>
             </button>
             <button onClick={() => setView(AppView.BUS_PHOTOS)}
               className="flex flex-col items-center gap-1 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-pink-300 dark:hover:border-pink-700 transition-colors active:scale-95">
               <span className="text-xl">📷</span>
-              <span className="text-xs font-semibold text-gray-700 dark:text-gray-300 text-center">ছবি</span>
+              <span className="text-xs font-semibold text-gray-700 dark:text-gray-300 text-center">{language === 'bn' ? 'ছবি' : 'Photos'}</span>
             </button>
           </div>
         </div>
@@ -3363,7 +3502,7 @@ const App: React.FC = () => {
     // Train view: list always visible, details require login
     if (view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) {
       return (
-        <div className="relative flex flex-col h-full w-full md:pt-20">
+        <div className="relative flex flex-col h-full w-full">
           <div className="absolute inset-0 z-0 pointer-events-none">
             <DhakaAlive hideIndicator />
           </div>
@@ -3390,10 +3529,9 @@ const App: React.FC = () => {
     }
 
     return (
-      <div className="flex flex-col h-full w-full">
+      <div className="flex flex-col h-full w-full overflow-hidden min-h-0">
         {/* Sticky Top Section */}
-        {/* Sticky Top Section */}
-        <div className="flex-none bg-white dark:bg-slate-900 z-20 md:pt-24">
+        <div className="flex-none bg-white dark:bg-slate-900 z-20 md:pt-2">
           <div className="p-4 space-y-1">
             {primarySearch === 'LOCAL' ? (
               <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">
@@ -3739,7 +3877,7 @@ const App: React.FC = () => {
 
 
 
-        <main className="flex flex-1 min-h-0 overflow-hidden relative w-full max-w-full mx-auto bg-slate-50 dark:bg-slate-900">
+        <main className="flex flex-1 min-h-0 overflow-hidden relative w-full max-w-full mx-auto bg-slate-50 dark:bg-slate-900 md:pt-20">
           {/* Left Sidebar (Desktop) / Main View (Mobile Home) */}
           <div className={`
             ${'w-full md:w-1/3 md:min-w-[320px] md:max-w-md md:flex md:flex-col border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900 z-0 h-full min-h-0 overflow-hidden'}
@@ -3755,7 +3893,7 @@ const App: React.FC = () => {
             ${'w-full md:flex-1 bg-slate-50 dark:bg-slate-950 relative h-full min-h-0 overflow-hidden'}
             ${(view === AppView.HOME || view === AppView.TRAIN_LIST) && 'hidden md:block'}
 `}>
-            {(view === AppView.HOME || view === AppView.TRAIN_LIST) && <div className="hidden md:block absolute inset-0 w-full h-full"><DhakaAlive /></div>}
+            <div className={`hidden md:block absolute inset-0 w-full h-full transition-opacity duration-500 ${(view === AppView.HOME || view === AppView.TRAIN_LIST) ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}><DhakaAlive /></div>
             {view === AppView.TRAIN_DETAILS && (
               user && selectedTrain ? (
                 <TrainDetail
@@ -3871,8 +4009,8 @@ const App: React.FC = () => {
             {/* ── Community / New Features ── */}
             {view === AppView.TRIP_REMINDERS && (user ? <TripReminders onBack={() => setView(AppView.HOME)} /> : <LoginWall setView={setView} />)}
             {view === AppView.ROAD_ALERTS && (user ? <RoadAlerts onBack={() => setView(AppView.HOME)} /> : <LoginWall setView={setView} />)}
-            {view === AppView.NEIGHBOURHOOD_GUIDES && <NeighbourhoodGuides onBack={() => setView(AppView.HOME)} />}
-            {view === AppView.BUS_PASS_INFO && <BusPassInfo onBack={() => setView(AppView.HOME)} />}
+            {view === AppView.NEIGHBOURHOOD_GUIDES && (user ? <NeighbourhoodGuides onBack={() => setView(AppView.HOME)} /> : <LoginWall setView={setView} />)}
+            {view === AppView.BUS_PASS_INFO && (user ? <BusPassInfo onBack={() => setView(AppView.HOME)} /> : <LoginWall setView={setView} />)}
             {view === AppView.MULTI_STOP_PLANNER && (user ? <MultiStopPlanner onBack={() => setView(AppView.HOME)} /> : <LoginWall setView={setView} />)}
             {view === AppView.COMMUTE_COST && (user ? <CommuteCostCalculator onBack={() => setView(AppView.HOME)} /> : <LoginWall setView={setView} />)}
             {view === AppView.SEAT_AVAILABILITY && (user ? <SeatAvailability onBack={() => setView(AppView.HOME)} /> : <LoginWall setView={setView} />)}
@@ -3881,7 +4019,8 @@ const App: React.FC = () => {
             {view === AppView.BUS_LIVE_TRACKING && (user && selectedBus ? <BusLiveTracking busId={selectedBus.id} busName={selectedBus.displayName || selectedBus.name} onBack={() => setView(AppView.BUS_DETAILS)} /> : <LoginWall setView={setView} />)}
 
             {view === AppView.INSTALL_APP && (
-              <div className="flex flex-col h-full bg-white dark:bg-slate-900 p-6 md:p-12 pt-6 md:pt-12 overflow-y-auto w-full">
+              <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-hidden w-full">
+              <div className="flex-1 min-h-0 overflow-y-auto p-6 md:p-10 pt-6 md:pt-8 pb-nav-safe">
                 <div className="max-w-2xl mx-auto text-center">
                   {/* App Icon */}
                   <div className="w-24 h-24 bg-dhaka-red rounded-3xl flex items-center justify-center text-white mx-auto mb-6 shadow-xl shadow-red-200">
@@ -3991,6 +4130,7 @@ const App: React.FC = () => {
                   <div className="h-20"></div>
                 </div>
               </div>
+              </div>
             )}
             {view === AppView.NOT_FOUND && renderNotFound()}
             {view === AppView.SERVER_ERROR && renderServerError()}
@@ -4062,7 +4202,7 @@ const App: React.FC = () => {
                 </button>
               </div>
 
-              <div className="space-y-2 flex-1 overflow-y-auto hidden-scrollbar">
+              <div className="space-y-2 flex-1 overflow-y-auto overscroll-contain" style={{scrollbarWidth:'thin'}}>
                 {/* Auth Section */}
                 {user ? (
                   <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 mb-2">
@@ -4135,38 +4275,42 @@ const App: React.FC = () => {
                   <BookOpen className="w-5 h-5 text-orange-600 dark:text-orange-400" /> {t('nav.blog') || 'Blog'}
                 </button>
 
-                {/* ── Community Features ── */}
-                <div className="px-3 pt-2 pb-1">
-                  <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">কমিউনিটি ফিচার</p>
-                </div>
-                <button onClick={() => { setView(AppView.TRIP_REMINDERS); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.TRIP_REMINDERS ? 'bg-violet-50 dark:bg-violet-900/20 border border-violet-200 dark:border-violet-800' : ''}`}>
-                  <span className="w-5 h-5 text-center leading-5 text-violet-600">🔔</span> যাত্রা রিমাইন্ডার
-                </button>
-                <button onClick={() => { setView(AppView.ROAD_ALERTS); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.ROAD_ALERTS ? 'bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800' : ''}`}>
-                  <AlertTriangle className="w-5 h-5 text-orange-500" /> রাস্তা সতর্কতা
-                </button>
-                <button onClick={() => { setView(AppView.NEIGHBOURHOOD_GUIDES); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.NEIGHBOURHOOD_GUIDES ? 'bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800' : ''}`}>
-                  <MapPin className="w-5 h-5 text-purple-500" /> এলাকাভিত্তিক গাইড
-                </button>
-                <button onClick={() => { setView(AppView.BUS_PASS_INFO); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.BUS_PASS_INFO ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800' : ''}`}>
-                  <span className="w-5 h-5 text-center leading-5 text-blue-600">💳</span> বাস পাস তথ্য
-                </button>
-                <button onClick={() => { setView(AppView.MULTI_STOP_PLANNER); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.MULTI_STOP_PLANNER ? 'bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800' : ''}`}>
-                  <Navigation className="w-5 h-5 text-cyan-500" /> মাল্টি-স্টপ প্ল্যানার
-                </button>
-                <button onClick={() => { setView(AppView.COMMUTE_COST); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.COMMUTE_COST ? 'bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800' : ''}`}>
-                  <Calculator className="w-5 h-5 text-emerald-500" /> খরচ ক্যালকুলেটর
-                </button>
-                <button onClick={() => { setView(AppView.SEAT_AVAILABILITY); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.SEAT_AVAILABILITY ? 'bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800' : ''}`}>
-                  <Ticket className="w-5 h-5 text-indigo-500" /> সিট প্রাপ্যতা
-                </button>
+                {user && (
+                  <>
+                    {/* ── Community Features ── */}
+                    <div className="px-3 pt-2 pb-1">
+                      <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{language === 'bn' ? 'কমিউনিটি ফিচার' : 'Community'}</p>
+                    </div>
+                    <button onClick={() => { setView(AppView.TRIP_REMINDERS); setIsMenuOpen(false); }}
+                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.TRIP_REMINDERS ? 'bg-violet-50 dark:bg-violet-900/20 border border-violet-200 dark:border-violet-800' : ''}`}>
+                      <span className="w-5 h-5 text-center leading-5 text-violet-600">🔔</span> {language === 'bn' ? 'যাত্রা রিমাইন্ডার' : 'Trip Reminders'}
+                    </button>
+                    <button onClick={() => { setView(AppView.ROAD_ALERTS); setIsMenuOpen(false); }}
+                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.ROAD_ALERTS ? 'bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800' : ''}`}>
+                      <AlertTriangle className="w-5 h-5 text-orange-500" /> {language === 'bn' ? 'রাস্তা সতর্কতা' : 'Road Alerts'}
+                    </button>
+                    <button onClick={() => { setView(AppView.NEIGHBOURHOOD_GUIDES); setIsMenuOpen(false); }}
+                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.NEIGHBOURHOOD_GUIDES ? 'bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800' : ''}`}>
+                      <MapPin className="w-5 h-5 text-purple-500" /> {language === 'bn' ? 'এলাকাভিত্তিক গাইড' : 'Area Guides'}
+                    </button>
+                    <button onClick={() => { setView(AppView.BUS_PASS_INFO); setIsMenuOpen(false); }}
+                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.BUS_PASS_INFO ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800' : ''}`}>
+                      <span className="w-5 h-5 text-center leading-5 text-blue-600">💳</span> {language === 'bn' ? 'বাস পাস তথ্য' : 'Bus Pass Info'}
+                    </button>
+                    <button onClick={() => { setView(AppView.MULTI_STOP_PLANNER); setIsMenuOpen(false); }}
+                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.MULTI_STOP_PLANNER ? 'bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800' : ''}`}>
+                      <Navigation className="w-5 h-5 text-cyan-500" /> {language === 'bn' ? 'মাল্টি-স্টপ প্ল্যানার' : 'Multi-Stop Planner'}
+                    </button>
+                    <button onClick={() => { setView(AppView.COMMUTE_COST); setIsMenuOpen(false); }}
+                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.COMMUTE_COST ? 'bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800' : ''}`}>
+                      <Calculator className="w-5 h-5 text-emerald-500" /> {language === 'bn' ? 'খরচ ক্যালকুলেটর' : 'Cost Calculator'}
+                    </button>
+                    <button onClick={() => { setView(AppView.SEAT_AVAILABILITY); setIsMenuOpen(false); }}
+                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.SEAT_AVAILABILITY ? 'bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800' : ''}`}>
+                      <Ticket className="w-5 h-5 text-indigo-500" /> {language === 'bn' ? 'সিট প্রাপ্যতা' : 'Seat Availability'}
+                    </button>
+                  </>
+                )}
 
                 <button
                   onClick={() => { setView(AppView.AI_ASSISTANT); setIsMenuOpen(false); }}
@@ -4220,9 +4364,20 @@ const App: React.FC = () => {
                 </button>
               </div>
 
-              <div className="pt-6 border-t border-gray-100">
+              <div className="pt-4 border-t border-gray-100 dark:border-gray-800 space-y-3">
+                {/* Language Toggle */}
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setLanguage('bn')}
+                    className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${language === 'bn' ? 'bg-emerald-500 text-white' : 'bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-slate-700'}`}
+                  >বাংলা</button>
+                  <button
+                    onClick={() => setLanguage('en')}
+                    className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${language === 'en' ? 'bg-blue-500 text-white' : 'bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-slate-700'}`}
+                  >English</button>
+                </div>
                 <p className="text-xs text-center text-gray-400">
-                  {t('common.appName')} {t('settings.version')} {formatNumber('1.0.0')}
+                  {t('common.appName')} v2.5.0
                 </p>
               </div>
             </div>

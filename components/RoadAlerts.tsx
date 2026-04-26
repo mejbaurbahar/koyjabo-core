@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, AlertTriangle, Clock, MapPin, ChevronDown, ChevronUp, Plus } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, Clock, ChevronDown, ChevronUp, Plus } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { submitTrafficReport, getTodayTrafficReports, upvoteTrafficReport, TrafficReport, getAuthUser } from '../services/communityDataService';
 
@@ -7,23 +7,21 @@ interface Props {
   onBack: () => void;
 }
 
-const ALERT_TYPES: { value: TrafficReport['type']; label: string; icon: string; color: string }[] = [
-  { value: 'heavy_traffic', label: 'ভারী যানজট', icon: '🚦', color: 'text-red-600' },
-  { value: 'accident', label: 'দুর্ঘটনা', icon: '🚨', color: 'text-red-700' },
-  { value: 'road_block', label: 'রাস্তা বন্ধ', icon: '🚧', color: 'text-orange-600' },
-  { value: 'bus_delayed', label: 'বাস বিলম্বিত', icon: '🚌', color: 'text-amber-600' },
-  { value: 'bus_cancelled', label: 'বাস বাতিল', icon: '❌', color: 'text-red-600' },
+type AlertType = { value: TrafficReport['type']; icon: string; color: string };
+
+const ALERT_TYPES: AlertType[] = [
+  { value: 'heavy_traffic', icon: '🚦', color: 'text-red-600' },
+  { value: 'accident', icon: '🚨', color: 'text-red-700' },
+  { value: 'road_block', icon: '🚧', color: 'text-orange-600' },
+  { value: 'bus_delayed', icon: '🚌', color: 'text-amber-600' },
+  { value: 'bus_cancelled', icon: '❌', color: 'text-red-600' },
 ];
 
-const SEVERITY_LABELS: Record<string, string> = {
-  low: 'কম', medium: 'মাঝারি', high: 'তীব্র',
-};
-
-function timeAgo(ts: number): string {
+function timeAgo(ts: number, t: (key: string) => string): string {
   const diff = Math.floor((Date.now() - ts) / 60000);
-  if (diff < 1) return 'এখনই';
-  if (diff < 60) return `${diff} মিনিট আগে`;
-  return `${Math.floor(diff / 60)} ঘণ্টা আগে`;
+  if (diff < 1) return t('roadAlerts.justNow');
+  if (diff < 60) return `${diff}${t('roadAlerts.minutesAgo')}`;
+  return `${Math.floor(diff / 60)}${t('roadAlerts.hoursAgo')}`;
 }
 
 export default function RoadAlerts({ onBack }: Props) {
@@ -39,9 +37,30 @@ export default function RoadAlerts({ onBack }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
 
+  const getTypeLabel = (value: TrafficReport['type']) => {
+    const map: Record<string, string> = {
+      heavy_traffic: t('roadAlerts.typeHeavy'),
+      accident: t('roadAlerts.typeAccident'),
+      road_block: t('roadAlerts.typeRoadBlock'),
+      bus_delayed: t('roadAlerts.typeBusDelayed'),
+      bus_cancelled: t('roadAlerts.typeBusCancelled'),
+    };
+    return map[value] || value;
+  };
+
+  const getSeverityLabel = (s: string) => {
+    if (s === 'high') return t('roadAlerts.severityHigh');
+    if (s === 'medium') return t('roadAlerts.severityMedium');
+    return t('roadAlerts.severityLow');
+  };
+
   React.useEffect(() => {
     setLoading(true);
     getTodayTrafficReports().then(r => { setReports(r); setLoading(false); });
+    const interval = setInterval(() => {
+      getTodayTrafficReports().then(r => setReports(r));
+    }, 5 * 60 * 1000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -79,63 +98,65 @@ export default function RoadAlerts({ onBack }: Props) {
           <AlertTriangle className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1">
-          <h1 className="text-lg font-bold text-gray-900 dark:text-white">রাস্তা ও ট্রাফিক সতর্কতা</h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">আজকের রিপোর্ট — {reports.length}টি সক্রিয়</p>
+          <h1 className="text-lg font-bold text-gray-900 dark:text-white">{t('roadAlerts.title')}</h1>
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            {t('roadAlerts.activeReports').replace('{count}', String(reports.length))}
+          </p>
         </div>
         <button onClick={() => setShowForm(!showForm)}
           className="flex items-center gap-1.5 px-3 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold rounded-xl transition-colors">
-          <Plus className="w-4 h-4" /> রিপোর্ট
+          <Plus className="w-4 h-4" /> {t('roadAlerts.reportBtn')}
         </button>
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto p-4 space-y-3">
         {showForm && (
           <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 space-y-3">
-            <h3 className="font-bold text-gray-900 dark:text-white text-sm">নতুন সমস্যা রিপোর্ট করুন</h3>
+            <h3 className="font-bold text-gray-900 dark:text-white text-sm">{t('roadAlerts.newReport')}</h3>
             <input value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))}
-              placeholder="স্থান / রাস্তার নাম (যেমন: মিরপুর-১০ ফ্লাইওভার)"
+              placeholder={t('roadAlerts.locationPlaceholder')}
               className="w-full bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white" required />
             <div className="grid grid-cols-2 gap-2">
-              <select value={form.type} onChange={e => setForm(f => ({ ...f, type: e.target.value as any }))}
+              <select value={form.type} onChange={e => setForm(f => ({ ...f, type: e.target.value as TrafficReport['type'] }))}
                 className="bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white">
-                {ALERT_TYPES.map(t => <option key={t.value} value={t.value}>{t.icon} {t.label}</option>)}
+                {ALERT_TYPES.map(at => <option key={at.value} value={at.value}>{at.icon} {getTypeLabel(at.value)}</option>)}
               </select>
-              <select value={form.severity} onChange={e => setForm(f => ({ ...f, severity: e.target.value as any }))}
+              <select value={form.severity} onChange={e => setForm(f => ({ ...f, severity: e.target.value as TrafficReport['severity'] }))}
                 className="bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white">
-                <option value="low">কম তীব্র</option>
-                <option value="medium">মাঝারি</option>
-                <option value="high">তীব্র</option>
+                <option value="low">{t('roadAlerts.severityOptLow')}</option>
+                <option value="medium">{t('roadAlerts.severityOptMedium')}</option>
+                <option value="high">{t('roadAlerts.severityOptHigh')}</option>
               </select>
             </div>
             <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-              placeholder="বিস্তারিত বিবরণ..."
+              placeholder={t('roadAlerts.descPlaceholder')}
               rows={2}
               className="w-full bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white resize-none" required />
             <div className="flex gap-2">
               <button type="submit" disabled={submitting}
                 className="flex-1 py-2.5 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white font-semibold text-sm rounded-xl transition-colors">
-                {submitting ? 'পাঠানো হচ্ছে...' : 'রিপোর্ট করুন'}
+                {submitting ? t('roadAlerts.sending') : t('roadAlerts.reportAction')}
               </button>
               <button type="button" onClick={() => setShowForm(false)}
                 className="px-4 py-2.5 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 font-semibold text-sm rounded-xl">
-                বাতিল
+                {t('common.cancel')}
               </button>
             </div>
           </form>
         )}
 
-        {loading && <div className="text-center py-10 text-gray-400">লোড হচ্ছে...</div>}
+        {loading && <div className="text-center py-10 text-gray-400">{t('roadAlerts.loading')}</div>}
 
         {!loading && reports.length === 0 && (
           <div className="text-center py-12">
             <AlertTriangle className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-            <p className="text-gray-500 dark:text-gray-400 font-medium">আজ কোনো রিপোর্ট নেই</p>
-            <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">সমস্যা দেখলে রিপোর্ট করুন</p>
+            <p className="text-gray-500 dark:text-gray-400 font-medium">{t('roadAlerts.noReportsToday')}</p>
+            <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">{t('roadAlerts.reportIfYouSee')}</p>
           </div>
         )}
 
         {reports.map(r => {
-          const typeInfo = ALERT_TYPES.find(t => t.value === r.type) || ALERT_TYPES[0];
+          const typeInfo = ALERT_TYPES.find(at => at.value === r.type) || ALERT_TYPES[0];
           return (
             <div key={r.id} className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
               <div className="p-4">
@@ -145,9 +166,9 @@ export default function RoadAlerts({ onBack }: Props) {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="font-bold text-gray-900 dark:text-white text-sm">{r.location}</span>
-                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${severityColor(r.severity)}`}>{SEVERITY_LABELS[r.severity]}</span>
+                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${severityColor(r.severity)}`}>{getSeverityLabel(r.severity)}</span>
                       </div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{typeInfo.label} · {timeAgo(r.timestamp)}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{getTypeLabel(r.type)} · {timeAgo(r.timestamp, t)}</p>
                     </div>
                   </div>
                   <button onClick={() => setExpanded(expanded === r.id ? null : r.id)}
@@ -159,18 +180,18 @@ export default function RoadAlerts({ onBack }: Props) {
                 {expanded === r.id && (
                   <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
                     <p className="text-sm text-gray-700 dark:text-gray-300">{r.description}</p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">রিপোর্ট করেছেন: {r.displayName}</p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">{t('roadAlerts.reportedBy')} {r.displayName}</p>
                   </div>
                 )}
 
                 <div className="flex items-center justify-between mt-3">
                   <button onClick={() => handleUpvote(r.id)}
                     className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg font-medium transition-colors ${r.upvotes.includes(user?.id ?? '') ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-400 hover:bg-orange-50 dark:hover:bg-orange-900/20'}`}>
-                    👍 সঠিক ({r.upvotes.length})
+                    👍 {t('roadAlerts.correct')} ({r.upvotes.length})
                   </button>
                   <div className="flex items-center gap-1 text-xs text-gray-400">
                     <Clock className="w-3 h-3" />
-                    {timeAgo(r.timestamp)}
+                    {timeAgo(r.timestamp, t)}
                   </div>
                 </div>
               </div>

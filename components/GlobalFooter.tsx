@@ -17,7 +17,7 @@ const GlobalFooter: React.FC<GlobalFooterProps> = ({ setView }) => {
                     <div className="flex items-center gap-3">
                         <img src="/logo.png" alt="Logo" className="h-8 w-auto" />
                         <span className="font-bold text-gray-900 dark:text-gray-100 italic">
-                            কই<span className="text-dhaka-red ml-1">যাবো</span> - Smart Transport Finder
+                            কই<span className="text-dhaka-red ml-1">যাবো</span> - Bangladesh Smart Transport Finder
                         </span>
                     </div>
 

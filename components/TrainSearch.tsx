@@ -4,7 +4,7 @@ import { trainService, Train as TrainType, getClassDisplay, getTrainTypeIcon, fo
 import { useLanguage } from '../contexts/LanguageContext';
 
 const TrainSearch: React.FC = () => {
-    const { formatNumber } = useLanguage();
+    const { t, formatNumber } = useLanguage();
     const [from, setFrom] = useState('');
     const [to, setTo] = useState('');
     const [date, setDate] = useState('');
@@ -12,7 +12,6 @@ const TrainSearch: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // Autocomplete states
     const [fromSuggestions, setFromSuggestions] = useState<string[]>([]);
     const [toSuggestions, setToSuggestions] = useState<string[]>([]);
     const [showFromSuggestions, setShowFromSuggestions] = useState(false);
@@ -21,7 +20,6 @@ const TrainSearch: React.FC = () => {
     const fromInputRef = useRef<HTMLInputElement>(null);
     const toInputRef = useRef<HTMLInputElement>(null);
 
-    // Fetch suggestions for "from" field
     useEffect(() => {
         const fetchSuggestions = async () => {
             if (from.length >= 2) {
@@ -33,12 +31,10 @@ const TrainSearch: React.FC = () => {
                 setShowFromSuggestions(false);
             }
         };
-
         const timer = setTimeout(fetchSuggestions, 300);
         return () => clearTimeout(timer);
     }, [from]);
 
-    // Fetch suggestions for "to" field
     useEffect(() => {
         const fetchSuggestions = async () => {
             if (to.length >= 2) {
@@ -50,7 +46,6 @@ const TrainSearch: React.FC = () => {
                 setShowToSuggestions(false);
             }
         };
-
         const timer = setTimeout(fetchSuggestions, 300);
         return () => clearTimeout(timer);
     }, [to]);
@@ -58,22 +53,19 @@ const TrainSearch: React.FC = () => {
     const handleSearch = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!from || !to) {
-            setError('Please enter both origin and destination stations');
+            setError(t('trainSearch.errorBothRequired'));
             return;
         }
-
         setLoading(true);
         setError(null);
-
         try {
             const data = await trainService.searchTrains(from, to, date || undefined);
             setResults(data.trains);
-
             if (data.totalResults === 0) {
-                setError(`No trains found between ${from} and ${to}. Please check station names.`);
+                setError(`${t('trainSearch.errorNoTrains')} ${from} → ${to}`);
             }
         } catch (err: any) {
-            setError(err.message || 'Failed to search trains. Please try again.');
+            setError(err.message || t('trainSearch.errorFailed'));
             setResults(null);
         } finally {
             setLoading(false);
@@ -107,11 +99,11 @@ const TrainSearch: React.FC = () => {
                         <Train className="w-8 h-8 text-white" />
                     </div>
                     <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
-                        Bangladesh Railway
+                        {t('trainSearch.title')}
                     </h1>
                 </div>
                 <p className="text-gray-600 dark:text-gray-400">
-                    Search 367 trains across all routes | Intercity • Mail/Express • Commuter • Local
+                    {t('trainSearch.subtitle')}
                 </p>
             </div>
 
@@ -122,7 +114,7 @@ const TrainSearch: React.FC = () => {
                     <div className="relative">
                         <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                             <MapPin className="w-4 h-4 inline mr-1" />
-                            From Station
+                            {t('trainSearch.fromStation')}
                         </label>
                         <input
                             ref={fromInputRef}
@@ -130,7 +122,7 @@ const TrainSearch: React.FC = () => {
                             value={from}
                             onChange={(e) => setFrom(e.target.value)}
                             onBlur={() => setTimeout(() => setShowFromSuggestions(false), 200)}
-                            placeholder="e.g., Dhaka, Kamalapur"
+                            placeholder={t('trainSearch.fromPlaceholder')}
                             className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none transition-colors"
                             required
                         />
@@ -153,7 +145,7 @@ const TrainSearch: React.FC = () => {
                     <div className="relative">
                         <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                             <MapPin className="w-4 h-4 inline mr-1" />
-                            To Station
+                            {t('trainSearch.toStation')}
                         </label>
                         <input
                             ref={toInputRef}
@@ -161,7 +153,7 @@ const TrainSearch: React.FC = () => {
                             value={to}
                             onChange={(e) => setTo(e.target.value)}
                             onBlur={() => setTimeout(() => setShowToSuggestions(false), 200)}
-                            placeholder="e.g., Chittagong, Khulna"
+                            placeholder={t('trainSearch.toPlaceholder')}
                             className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none transition-colors"
                             required
                         />
@@ -186,7 +178,7 @@ const TrainSearch: React.FC = () => {
                     <div className="flex-1">
                         <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                             <Calendar className="w-4 h-4 inline mr-1" />
-                            Travel Date (Optional)
+                            {t('trainSearch.travelDate')}
                         </label>
                         <input
                             type="date"
@@ -200,7 +192,7 @@ const TrainSearch: React.FC = () => {
                         type="button"
                         onClick={handleSwapStations}
                         className="px-4 py-3 rounded-xl bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 transition-colors"
-                        title="Swap stations"
+                        title={t('trainSearch.swapStations')}
                     >
                         ⇄
                     </button>
@@ -213,12 +205,12 @@ const TrainSearch: React.FC = () => {
                         {loading ? (
                             <>
                                 <Loader2 className="w-5 h-5 animate-spin" />
-                                Searching...
+                                {t('trainSearch.searching')}
                             </>
                         ) : (
                             <>
                                 <Search className="w-5 h-5" />
-                                Search Trains
+                                {t('trainSearch.searchButton')}
                             </>
                         )}
                     </button>
@@ -238,7 +230,7 @@ const TrainSearch: React.FC = () => {
                 <div className="space-y-4">
                     <div className="flex items-center justify-between mb-4">
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                            Found {formatNumber(results.length)} train{results.length !== 1 ? 's' : ''}
+                            {t('trainSearch.found')} {formatNumber(results.length)} {t('trainSearch.train')}{results.length !== 1 ? 's' : ''}
                         </h2>
                         <a
                             href={bookingURL}
@@ -247,7 +239,7 @@ const TrainSearch: React.FC = () => {
                             className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-xl font-semibold flex items-center gap-2 transition-colors"
                         >
                             <ExternalLink className="w-4 h-4" />
-                            Book Tickets
+                            {t('trainSearch.bookTickets')}
                         </a>
                     </div>
 
@@ -256,7 +248,6 @@ const TrainSearch: React.FC = () => {
                             key={train.trainNumber}
                             className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-gray-200 dark:border-slate-700 p-6 hover:shadow-xl transition-shadow"
                         >
-                            {/* Train Header */}
                             <div className="flex items-start justify-between mb-4">
                                 <div>
                                     <div className="flex items-center gap-2 mb-1">
@@ -279,23 +270,21 @@ const TrainSearch: React.FC = () => {
                                 <div className="flex items-center gap-3">
                                     <Clock className="w-5 h-5 text-gray-500 dark:text-gray-400" />
                                     <div>
-                                        <p className="text-xs text-gray-500 dark:text-gray-400">Departure</p>
+                                        <p className="text-xs text-gray-500 dark:text-gray-400">{t('trainSearch.departure')}</p>
                                         <p className="font-semibold text-gray-900 dark:text-white">{formatNumber(train.departureTime)}</p>
                                     </div>
                                 </div>
-
                                 <div className="flex items-center gap-3">
                                     <ArrowRight className="w-5 h-5 text-gray-500 dark:text-gray-400" />
                                     <div>
-                                        <p className="text-xs text-gray-500 dark:text-gray-400">Duration</p>
+                                        <p className="text-xs text-gray-500 dark:text-gray-400">{t('trainSearch.duration')}</p>
                                         <p className="font-semibold text-gray-900 dark:text-white">{formatNumber(train.duration)}</p>
                                     </div>
                                 </div>
-
                                 <div className="flex items-center gap-3">
                                     <Clock className="w-5 h-5 text-gray-500 dark:text-gray-400" />
                                     <div>
-                                        <p className="text-xs text-gray-500 dark:text-gray-400">Arrival</p>
+                                        <p className="text-xs text-gray-500 dark:text-gray-400">{t('trainSearch.arrival')}</p>
                                         <p className="font-semibold text-gray-900 dark:text-white">{formatNumber(train.arrivalTime)}</p>
                                     </div>
                                 </div>
@@ -303,7 +292,7 @@ const TrainSearch: React.FC = () => {
 
                             {/* Classes */}
                             <div className="mb-3">
-                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Available Classes:</p>
+                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{t('trainSearch.availableClasses')}</p>
                                 <div className="flex flex-wrap gap-2">
                                     {train.classes.map((cls, idx) => (
                                         <span
@@ -320,7 +309,7 @@ const TrainSearch: React.FC = () => {
                             <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
                                 <span>📅 {train.frequency}</span>
                                 {train.offDays && train.offDays !== 'None' && (
-                                    <span>🚫 Off: {train.offDays}</span>
+                                    <span>🚫 {t('trainSearch.offDays')} {train.offDays}</span>
                                 )}
                                 {train.fare && (
                                     <span className="flex items-center gap-1">
@@ -334,7 +323,7 @@ const TrainSearch: React.FC = () => {
                             {train.stops && train.stops.length > 0 && (
                                 <div className="mt-4 pt-4 border-t border-gray-200 dark:border-slate-700">
                                     <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                                        Stops ({formatNumber(train.stops.length)}):
+                                        {t('trainSearch.stopsLabel')} ({formatNumber(train.stops.length)}):
                                     </p>
                                     <p className="text-sm text-gray-600 dark:text-gray-400">
                                         {train.stops.join(' • ')}
@@ -346,15 +335,15 @@ const TrainSearch: React.FC = () => {
                 </div>
             )}
 
-            {/* No Results Message */}
+            {/* No Results */}
             {results && results.length === 0 && !error && (
                 <div className="text-center py-12 bg-gray-50 dark:bg-slate-800 rounded-2xl border-2 border-dashed border-gray-300 dark:border-slate-700">
                     <Train className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                     <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                        No trains found
+                        {t('trainSearch.noTrainsFound')}
                     </h3>
                     <p className="text-gray-500 dark:text-gray-400">
-                        Try searching for a different route or check station names
+                        {t('trainSearch.tryDifferentRoute')}
                     </p>
                 </div>
             )}

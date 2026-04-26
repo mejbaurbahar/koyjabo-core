@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Star, MessageCircle } from 'lucide-react';
-import { getBusRatings, submitBusRating, BusRating, BusRatingSummary, getAuthUser } from '../services/communityDataService';
+import { getBusRatings, submitBusRating, BusRating as BusRatingData, BusRatingSummary, getAuthUser } from '../services/communityDataService';
 
 interface Props {
   busId: string;

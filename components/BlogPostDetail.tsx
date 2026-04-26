@@ -119,10 +119,11 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
     }
 
     return (
+        <div className="flex flex-col h-full bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-hidden">
         <div
             ref={scrollContainerRef}
             onScroll={handleScroll}
-            className="flex flex-col h-full relative bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-y-auto pt-20 md:pt-24 pb-32 pt-safe"
+            className="flex-1 min-h-0 overflow-y-auto pb-32"
             style={{ WebkitOverflowScrolling: 'touch' }}
         >
             {/* Hero Image */}
@@ -330,6 +331,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                 <ArrowUp className="w-6 h-6" />
             </button>
 
+        </div>
         </div>
     );
 };

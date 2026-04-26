@@ -1,14 +1,22 @@
 import React, { useState, useMemo } from 'react';
-import { ArrowLeft, Ticket, ExternalLink, Train, Search, ChevronLeft } from 'lucide-react';
+import { ArrowLeft, Ticket, ExternalLink, Train, Search, ChevronLeft, Star } from 'lucide-react';
 import { BD_TRAIN_ROUTES, BDTrainRoute } from '../data/bangladeshTrainData';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface Props { onBack: () => void; }
 
+function getFavorites(): string[] {
+  try { return JSON.parse(localStorage.getItem('seat_avail_favs') || '[]'); } catch { return []; }
+}
+function saveFavorites(ids: string[]) {
+  localStorage.setItem('seat_avail_favs', JSON.stringify(ids));
+}
+
 export default function SeatAvailability({ onBack }: Props) {
   const { t, language } = useLanguage();
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState<BDTrainRoute | null>(null);
+  const [favorites, setFavorites] = useState<string[]>(getFavorites);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
@@ -24,19 +32,35 @@ export default function SeatAvailability({ onBack }: Props) {
 
   const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
 
+  const toggleFavorite = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setFavorites(prev => {
+      const next = prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id];
+      saveFavorites(next);
+      return next;
+    });
+  };
+
+  const favoriteRoutes = BD_TRAIN_ROUTES.filter(r => favorites.includes(r.id));
+
   if (selected) {
     const railwayLink = 'https://eticket.railway.gov.bd/';
     return (
       <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-hidden">
         <div className="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
-          <button onClick={() => setSelected(null)} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full">
-            <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+          <button onClick={() => setSelected(null)} className="flex items-center gap-1 px-3 py-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-xl text-gray-600 dark:text-gray-400 font-medium text-sm">
+            <ChevronLeft className="w-5 h-5" />
+            {lbl('Back', 'ফিরে যান')}
           </button>
           <Train className="w-5 h-5 text-blue-500 shrink-0" />
           <div className="flex-1 min-w-0">
             <h1 className="text-base font-bold text-gray-900 dark:text-white truncate">{language === 'bn' ? selected.bnName : selected.name}</h1>
             <p className="text-xs text-gray-500 dark:text-gray-400">{lbl('Train No.', 'ট্রেন নং')} {selected.number}</p>
           </div>
+          <button onClick={(e) => toggleFavorite(selected.id, e)}
+            className={`p-2 rounded-full transition-colors ${favorites.includes(selected.id) ? 'text-yellow-500' : 'text-gray-300 dark:text-gray-600'}`}>
+            <Star className="w-5 h-5" fill={favorites.includes(selected.id) ? 'currentColor' : 'none'} />
+          </button>
         </div>
         <div className="flex-1 min-h-0 overflow-y-auto p-4 space-y-4">
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700">
@@ -137,6 +161,33 @@ export default function SeatAvailability({ onBack }: Props) {
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto px-4 pb-4 space-y-2">
+        {/* Favorites section */}
+        {!search && favoriteRoutes.length > 0 && (
+          <div className="mb-2">
+            <p className="text-xs font-bold text-yellow-600 dark:text-yellow-400 uppercase tracking-wider mb-2 flex items-center gap-1">
+              <Star className="w-3 h-3 fill-current" /> {lbl('Saved Trains', 'পছন্দের ট্রেন')}
+            </p>
+            {favoriteRoutes.map(t => (
+              <button key={t.id} onClick={() => setSelected(t)}
+                className="w-full bg-yellow-50 dark:bg-yellow-900/10 rounded-2xl p-4 border border-yellow-200 dark:border-yellow-800 text-left hover:border-yellow-400 dark:hover:border-yellow-600 transition-colors active:scale-[0.99] mb-2">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-gray-900 dark:text-white text-sm truncate">{language === 'bn' ? t.bnName : t.name}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{t.from} → {t.to} · #{t.number}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-semibold text-blue-600 dark:text-blue-400">{t.dhakaDepart}</p>
+                    <button onClick={(e) => toggleFavorite(t.id, e)} className="text-yellow-500">
+                      <Star className="w-4 h-4 fill-current" />
+                    </button>
+                  </div>
+                </div>
+              </button>
+            ))}
+            <div className="border-b border-gray-100 dark:border-gray-800 mb-3" />
+          </div>
+        )}
+
         {filtered.map(t => (
           <button key={t.id} onClick={() => setSelected(t)}
             className="w-full bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 text-left hover:border-blue-300 dark:hover:border-blue-700 transition-colors active:scale-[0.99]">
@@ -146,9 +197,15 @@ export default function SeatAvailability({ onBack }: Props) {
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{t.from} → {t.to} · #{t.number}</p>
                 {t.offDay && <p className="text-xs text-amber-600 dark:text-amber-400 mt-0.5">{lbl('Off:', 'ছুটি:')} {t.offDay}</p>}
               </div>
-              <div className="text-right shrink-0">
-                <p className="text-sm font-semibold text-blue-600 dark:text-blue-400">{t.dhakaDepart}</p>
-                <p className="text-xs text-gray-400">{lbl('departs', 'ছাড়বে')}</p>
+              <div className="flex items-center gap-2 shrink-0">
+                <div className="text-right">
+                  <p className="text-sm font-semibold text-blue-600 dark:text-blue-400">{t.dhakaDepart}</p>
+                  <p className="text-xs text-gray-400">{lbl('departs', 'ছাড়বে')}</p>
+                </div>
+                <button onClick={(e) => toggleFavorite(t.id, e)}
+                  className={`p-1.5 rounded-full transition-colors ${favorites.includes(t.id) ? 'text-yellow-500' : 'text-gray-200 dark:text-gray-700 hover:text-yellow-400'}`}>
+                  <Star className="w-4 h-4" fill={favorites.includes(t.id) ? 'currentColor' : 'none'} />
+                </button>
               </div>
             </div>
           </button>

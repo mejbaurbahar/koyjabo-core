@@ -193,10 +193,20 @@ export default function TripReminders({ onBack }: Props) {
         )}
 
         {reminders.length === 0 && !showForm && (
-          <div className="text-center py-12">
-            <Bell className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-            <p className="text-gray-500 dark:text-gray-400 font-medium">{lbl('No reminders', 'কোনো রিমাইন্ডার নেই')}</p>
-            <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">{lbl('Add reminders for regular trips', 'নিয়মিত যাত্রার জন্য রিমাইন্ডার যোগ করুন')}</p>
+          <div className="text-center py-10 px-4">
+            <div className="w-20 h-20 bg-violet-100 dark:bg-violet-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Bell className="w-10 h-10 text-violet-500" />
+            </div>
+            <p className="text-gray-700 dark:text-gray-200 font-bold text-lg mb-1">{lbl('No reminders yet', 'এখনো কোনো রিমাইন্ডার নেই')}</p>
+            <p className="text-sm text-gray-400 dark:text-gray-500 mb-6">{lbl('Set alerts for your daily commute so you never miss a bus or train.', 'নিয়মিত যাত্রার জন্য সতর্কতা সেট করুন — বাস বা ট্রেন মিস হবে না।')}</p>
+            <button
+              onClick={() => setShowForm(true)}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-violet-500 hover:bg-violet-600 text-white font-semibold rounded-2xl shadow-lg shadow-violet-200 dark:shadow-none transition-all active:scale-95"
+            >
+              <Plus className="w-5 h-5" />
+              {lbl('Add Your First Reminder', 'প্রথম রিমাইন্ডার যোগ করুন')}
+            </button>
+            <p className="text-xs text-gray-400 mt-4">{lbl('Tap the + button above to add more reminders', 'আরও রিমাইন্ডার যোগ করতে উপরের + বোতামে চাপুন')}</p>
           </div>
         )}
 
