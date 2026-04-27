@@ -3488,8 +3488,8 @@ export const METRO_STATIONS: Record<string, MetroStation> = {
     id: 'uttara_north',
     name: 'Uttara North Metro Station',
     bnName: 'উত্তরা উত্তর',
-    lat: 23.8753,
-    lng: 90.3956,
+    lat: 23.869147,
+    lng: 90.367491,
     distanceFromStart: 0.0,
     description: 'Near Diabari, residential areas, and local markets'
   },
@@ -3497,8 +3497,8 @@ export const METRO_STATIONS: Record<string, MetroStation> = {
     id: 'uttara_center',
     name: 'Uttara Center Metro Station',
     bnName: 'উত্তরা কেন্দ্র',
-    lat: 23.8690,
-    lng: 90.3967,
+    lat: 23.859583,
+    lng: 90.365067,
     distanceFromStart: 1.2,
     description: 'Central Uttara, close to Rajuk College, commercial areas, and shopping centers'
   },
@@ -3506,8 +3506,8 @@ export const METRO_STATIONS: Record<string, MetroStation> = {
     id: 'uttara_south',
     name: 'Uttara South Metro Station',
     bnName: 'উত্তরা দক্ষিণ',
-    lat: 23.8627,
-    lng: 90.3978,
+    lat: 23.845789,
+    lng: 90.363076,
     distanceFromStart: 2.2,
     description: 'Near Uttara Sector 10 & 12, residential areas, schools, and local markets'
   },
