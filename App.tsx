@@ -3726,6 +3726,57 @@ const App: React.FC = () => {
               </div>
             </div>
           )}
+          {/* ── Community Features Grid ── */}
+          {listFilter !== 'FAVORITES' && (
+            <div className="mb-2">
+              <div className="flex items-center justify-between mb-2 px-1">
+                <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{language === 'bn' ? 'কমিউনিটি' : 'Community'}</p>
+              </div>
+              <div className="grid grid-cols-4 gap-2">
+                <button onClick={() => setView(AppView.TRIP_REMINDERS)}
+                  className="flex flex-col items-center gap-1 p-2.5 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-violet-300 dark:hover:border-violet-700 transition-colors active:scale-95">
+                  <span className="text-lg">🔔</span>
+                  <span className="text-[10px] font-semibold text-gray-600 dark:text-gray-400 text-center leading-tight">{language === 'bn' ? 'রিমাইন্ডার' : 'Reminders'}</span>
+                </button>
+                <button onClick={() => setView(AppView.ROAD_ALERTS)}
+                  className="flex flex-col items-center gap-1 p-2.5 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-orange-300 dark:hover:border-orange-700 transition-colors active:scale-95">
+                  <span className="text-lg">⚠️</span>
+                  <span className="text-[10px] font-semibold text-gray-600 dark:text-gray-400 text-center leading-tight">{language === 'bn' ? 'রাস্তা সতর্কতা' : 'Road Alerts'}</span>
+                </button>
+                <button onClick={() => setView(AppView.NEIGHBOURHOOD_GUIDES)}
+                  className="flex flex-col items-center gap-1 p-2.5 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700 transition-colors active:scale-95">
+                  <span className="text-lg">🗺️</span>
+                  <span className="text-[10px] font-semibold text-gray-600 dark:text-gray-400 text-center leading-tight">{language === 'bn' ? 'এলাকা গাইড' : 'Area Guides'}</span>
+                </button>
+                <button onClick={() => setView(AppView.BUS_PASS_INFO)}
+                  className="flex flex-col items-center gap-1 p-2.5 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 transition-colors active:scale-95">
+                  <span className="text-lg">💳</span>
+                  <span className="text-[10px] font-semibold text-gray-600 dark:text-gray-400 text-center leading-tight">{language === 'bn' ? 'বাস পাস' : 'Bus Pass'}</span>
+                </button>
+                <button onClick={() => setView(AppView.MULTI_STOP_PLANNER)}
+                  className="flex flex-col items-center gap-1 p-2.5 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-cyan-300 dark:hover:border-cyan-700 transition-colors active:scale-95">
+                  <span className="text-lg">📍</span>
+                  <span className="text-[10px] font-semibold text-gray-600 dark:text-gray-400 text-center leading-tight">{language === 'bn' ? 'মাল্টি-স্টপ' : 'Multi-Stop'}</span>
+                </button>
+                <button onClick={() => setView(AppView.COMMUTE_COST)}
+                  className="flex flex-col items-center gap-1 p-2.5 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors active:scale-95">
+                  <span className="text-lg">💰</span>
+                  <span className="text-[10px] font-semibold text-gray-600 dark:text-gray-400 text-center leading-tight">{language === 'bn' ? 'খরচ হিসাব' : 'Cost Calc'}</span>
+                </button>
+                <button onClick={() => setView(AppView.SEAT_AVAILABILITY)}
+                  className="flex flex-col items-center gap-1 p-2.5 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors active:scale-95">
+                  <span className="text-lg">🎫</span>
+                  <span className="text-[10px] font-semibold text-gray-600 dark:text-gray-400 text-center leading-tight">{language === 'bn' ? 'সিট' : 'Seat Avail'}</span>
+                </button>
+                <button onClick={() => setView(AppView.BLOG)}
+                  className="flex flex-col items-center gap-1 p-2.5 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-orange-300 dark:hover:border-orange-700 transition-colors active:scale-95">
+                  <span className="text-lg">📝</span>
+                  <span className="text-[10px] font-semibold text-gray-600 dark:text-gray-400 text-center leading-tight">{language === 'bn' ? 'ব্লগ' : 'Blog'}</span>
+                </button>
+              </div>
+            </div>
+          )}
+
           {filteredBuses.map((bus, busIdx) => {
             const isFav = favorites.includes(bus.id);
             const estimatedFare = calculateFare(bus);
@@ -4295,42 +4346,38 @@ const App: React.FC = () => {
                   <BookOpen className="w-5 h-5 text-orange-600 dark:text-orange-400" /> {t('nav.blog') || 'Blog'}
                 </button>
 
-                {user && (
-                  <>
-                    {/* ── Community Features ── */}
-                    <div className="px-3 pt-2 pb-1">
-                      <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{language === 'bn' ? 'কমিউনিটি ফিচার' : 'Community'}</p>
-                    </div>
-                    <button onClick={() => { setView(AppView.TRIP_REMINDERS); setIsMenuOpen(false); }}
-                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.TRIP_REMINDERS ? 'bg-violet-50 dark:bg-violet-900/20 border border-violet-200 dark:border-violet-800' : ''}`}>
-                      <span className="w-5 h-5 text-center leading-5 text-violet-600">🔔</span> {language === 'bn' ? 'যাত্রা রিমাইন্ডার' : 'Trip Reminders'}
-                    </button>
-                    <button onClick={() => { setView(AppView.ROAD_ALERTS); setIsMenuOpen(false); }}
-                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.ROAD_ALERTS ? 'bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800' : ''}`}>
-                      <AlertTriangle className="w-5 h-5 text-orange-500" /> {language === 'bn' ? 'রাস্তা সতর্কতা' : 'Road Alerts'}
-                    </button>
-                    <button onClick={() => { setView(AppView.NEIGHBOURHOOD_GUIDES); setIsMenuOpen(false); }}
-                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.NEIGHBOURHOOD_GUIDES ? 'bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800' : ''}`}>
-                      <MapPin className="w-5 h-5 text-purple-500" /> {language === 'bn' ? 'এলাকাভিত্তিক গাইড' : 'Area Guides'}
-                    </button>
-                    <button onClick={() => { setView(AppView.BUS_PASS_INFO); setIsMenuOpen(false); }}
-                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.BUS_PASS_INFO ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800' : ''}`}>
-                      <span className="w-5 h-5 text-center leading-5 text-blue-600">💳</span> {language === 'bn' ? 'বাস পাস তথ্য' : 'Bus Pass Info'}
-                    </button>
-                    <button onClick={() => { setView(AppView.MULTI_STOP_PLANNER); setIsMenuOpen(false); }}
-                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.MULTI_STOP_PLANNER ? 'bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800' : ''}`}>
-                      <Navigation className="w-5 h-5 text-cyan-500" /> {language === 'bn' ? 'মাল্টি-স্টপ প্ল্যানার' : 'Multi-Stop Planner'}
-                    </button>
-                    <button onClick={() => { setView(AppView.COMMUTE_COST); setIsMenuOpen(false); }}
-                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.COMMUTE_COST ? 'bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800' : ''}`}>
-                      <Calculator className="w-5 h-5 text-emerald-500" /> {language === 'bn' ? 'খরচ ক্যালকুলেটর' : 'Cost Calculator'}
-                    </button>
-                    <button onClick={() => { setView(AppView.SEAT_AVAILABILITY); setIsMenuOpen(false); }}
-                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.SEAT_AVAILABILITY ? 'bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800' : ''}`}>
-                      <Ticket className="w-5 h-5 text-indigo-500" /> {language === 'bn' ? 'সিট প্রাপ্যতা' : 'Seat Availability'}
-                    </button>
-                  </>
-                )}
+                {/* ── Community Features — always visible, LoginWall if not logged in ── */}
+                <div className="px-3 pt-2 pb-1">
+                  <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{language === 'bn' ? 'কমিউনিটি ফিচার' : 'Community'}</p>
+                </div>
+                <button onClick={() => { setView(AppView.TRIP_REMINDERS); setIsMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.TRIP_REMINDERS ? 'bg-violet-50 dark:bg-violet-900/20 border border-violet-200 dark:border-violet-800' : ''}`}>
+                  <span className="w-5 h-5 text-center leading-5 text-violet-600">🔔</span> {language === 'bn' ? 'যাত্রা রিমাইন্ডার' : 'Trip Reminders'}
+                </button>
+                <button onClick={() => { setView(AppView.ROAD_ALERTS); setIsMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.ROAD_ALERTS ? 'bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800' : ''}`}>
+                  <AlertTriangle className="w-5 h-5 text-orange-500" /> {language === 'bn' ? 'রাস্তা সতর্কতা' : 'Road Alerts'}
+                </button>
+                <button onClick={() => { setView(AppView.NEIGHBOURHOOD_GUIDES); setIsMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.NEIGHBOURHOOD_GUIDES ? 'bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800' : ''}`}>
+                  <MapPin className="w-5 h-5 text-purple-500" /> {language === 'bn' ? 'এলাকাভিত্তিক গাইড' : 'Area Guides'}
+                </button>
+                <button onClick={() => { setView(AppView.BUS_PASS_INFO); setIsMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.BUS_PASS_INFO ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800' : ''}`}>
+                  <span className="w-5 h-5 text-center leading-5 text-blue-600">💳</span> {language === 'bn' ? 'বাস পাস তথ্য' : 'Bus Pass Info'}
+                </button>
+                <button onClick={() => { setView(AppView.MULTI_STOP_PLANNER); setIsMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.MULTI_STOP_PLANNER ? 'bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800' : ''}`}>
+                  <Navigation className="w-5 h-5 text-cyan-500" /> {language === 'bn' ? 'মাল্টি-স্টপ প্ল্যানার' : 'Multi-Stop Planner'}
+                </button>
+                <button onClick={() => { setView(AppView.COMMUTE_COST); setIsMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.COMMUTE_COST ? 'bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800' : ''}`}>
+                  <Calculator className="w-5 h-5 text-emerald-500" /> {language === 'bn' ? 'খরচ ক্যালকুলেটর' : 'Cost Calculator'}
+                </button>
+                <button onClick={() => { setView(AppView.SEAT_AVAILABILITY); setIsMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.SEAT_AVAILABILITY ? 'bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800' : ''}`}>
+                  <Ticket className="w-5 h-5 text-indigo-500" /> {language === 'bn' ? 'সিট প্রাপ্যতা' : 'Seat Availability'}
+                </button>
 
                 <button
                   onClick={() => { setView(AppView.AI_ASSISTANT); setIsMenuOpen(false); }}
