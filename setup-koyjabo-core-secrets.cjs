@@ -3,10 +3,13 @@
  * KoyJabo Core — One-time secrets setup
  *
  * Usage:
- *   node setup-koyjabo-core-secrets.cjs <GITHUB_CLASSIC_PAT>
+ *   node setup-koyjabo-core-secrets.cjs <GITHUB_CLASSIC_PAT> <SMTP_APP_PASSWORD>
  *
- * Get the token: https://github.com/settings/tokens
+ * Get the GitHub token: https://github.com/settings/tokens
  *   → "Generate new token (classic)" → tick "repo" → Generate → copy
+ *
+ * Get the SMTP App Password: myaccount.google.com/apppasswords
+ *   → Create a new app password for koyjabo.bd@gmail.com
  *
  * Sets these secrets on mejbaurbahar/koyjabo-core:
  *   SMTP_EMAIL, SMTP_PASSWORD, ADMIN_EMAIL, APP_URL,
@@ -18,14 +21,15 @@ const https = require('https');
 const crypto = require('crypto');
 const sodium = require('libsodium-wrappers');
 
-const SETUP_TOKEN = process.argv[2];
+const SETUP_TOKEN  = process.argv[2];
+const SMTP_PASSWORD = process.argv[3];
 const OWNER = 'mejbaurbahar';
 const REPO  = 'koyjabo-core';
 
-if (!SETUP_TOKEN) {
-  console.error('\nUsage: node setup-koyjabo-core-secrets.cjs <GITHUB_CLASSIC_PAT>\n');
-  console.error('Get one at: https://github.com/settings/tokens');
-  console.error('Required scope: repo\n');
+if (!SETUP_TOKEN || !SMTP_PASSWORD) {
+  console.error('\nUsage: node setup-koyjabo-core-secrets.cjs <GITHUB_CLASSIC_PAT> <SMTP_APP_PASSWORD>\n');
+  console.error('GitHub token: https://github.com/settings/tokens (scope: repo)');
+  console.error('SMTP App Password: myaccount.google.com/apppasswords\n');
   process.exit(1);
 }
 
@@ -34,7 +38,7 @@ const ENCRYPTION_KEY = crypto.randomBytes(32).toString('hex');
 
 const SECRETS = {
   SMTP_EMAIL:     'koyjabo.bd@gmail.com',
-  SMTP_PASSWORD:  'wxru dzvd wfcl pzmy',
+  SMTP_PASSWORD,
   ADMIN_EMAIL:    'koyjabo.bd@gmail.com',
   APP_URL:        'https://koyjabo.com',
   JWT_SECRET,
