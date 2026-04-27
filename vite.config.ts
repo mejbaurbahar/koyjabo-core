@@ -127,7 +127,7 @@ export default defineConfig(({ mode }) => {
           mode: 'production',
           sourcemap: false,
           // Cache versioning for proper updates
-          cacheId: 'dhaka-commute-v9',
+          cacheId: 'dhaka-commute-v10',
 
           runtimeCaching: [
             // Cache Intercity App - StaleWhileRevalidate: serve from cache instantly, update in background

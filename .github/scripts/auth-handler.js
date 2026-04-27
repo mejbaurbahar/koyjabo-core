@@ -261,19 +261,25 @@ async function sendAdminUserListEmail(triggeringUser) {
       const joined = u.createdAt
         ? new Date(u.createdAt).toLocaleDateString('en-US', { timeZone: 'Asia/Dhaka', dateStyle: 'medium' })
         : 'N/A';
+      const email = u.encryptedEmail ? (decrypt(u.encryptedEmail) || '—') : '—';
       const bg = i % 2 === 0 ? '#f0fdf4' : '#ffffff';
       return `<tr style="background:${bg}">
         <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;text-align:center;color:#6b7280;font-size:12px">${i + 1}</td>
         <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;color:#111827;font-size:13px">${u.displayName || '—'}</td>
         <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;color:#059669;font-size:13px;font-family:monospace">@${u.username || '—'}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;color:#2563eb;font-size:12px;font-family:monospace">${email}</td>
         <td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;color:#6b7280;font-size:12px">${joined}</td>
       </tr>`;
     }).join('');
 
+    const newUserEmail = triggeringUser.encryptedEmail
+      ? (decrypt(triggeringUser.encryptedEmail) || '—')
+      : '—';
+
     const html = `<!DOCTYPE html>
 <html>
 <body style="font-family:sans-serif;background:#f0fdf4;padding:24px;margin:0">
-  <div style="max-width:680px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
+  <div style="max-width:720px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
     <div style="background:linear-gradient(135deg,#059669,#0284c7);padding:28px 24px;text-align:center">
       <h1 style="color:#fff;margin:0;font-size:22px">&#128100; New User Signup</h1>
       <p style="color:#d1fae5;margin:6px 0 0;font-size:13px">KoyJabo Admin Notification</p>
@@ -283,6 +289,7 @@ async function sendAdminUserListEmail(triggeringUser) {
         <p style="margin:0;color:#065f46;font-size:14px;font-weight:600">New user details</p>
         <p style="margin:8px 0 0;color:#047857;font-size:13px">Name: <strong>${triggeringUser.displayName}</strong></p>
         <p style="margin:4px 0 0;color:#047857;font-size:13px">Username: <strong>@${triggeringUser.username}</strong></p>
+        <p style="margin:4px 0 0;color:#047857;font-size:13px">Email: <strong>${newUserEmail}</strong></p>
         <p style="margin:4px 0 0;color:#047857;font-size:13px">Joined: <strong>${joinedAt} (Dhaka)</strong></p>
       </div>
       <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:14px 20px;margin:0 0 24px">
@@ -294,9 +301,10 @@ async function sendAdminUserListEmail(triggeringUser) {
       <table style="width:100%;border-collapse:collapse;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
         <thead>
           <tr style="background:#065f46">
-            <th style="padding:10px;color:#fff;font-size:12px;text-align:center;width:40px">#</th>
+            <th style="padding:10px;color:#fff;font-size:12px;text-align:center;width:36px">#</th>
             <th style="padding:10px;color:#fff;font-size:12px;text-align:left">Full Name</th>
             <th style="padding:10px;color:#fff;font-size:12px;text-align:left">Username</th>
+            <th style="padding:10px;color:#fff;font-size:12px;text-align:left">Email</th>
             <th style="padding:10px;color:#fff;font-size:12px;text-align:left">Joined</th>
           </tr>
         </thead>

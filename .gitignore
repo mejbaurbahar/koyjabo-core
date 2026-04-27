@@ -28,3 +28,8 @@ dist-ssr
 
 dev-dist/
 .claude/
+
+# Secret management scripts — run locally, never commit
+update-smtp-secret.cjs
+setup-secrets.cjs
+setup-koyjabo-core-secrets.cjs
