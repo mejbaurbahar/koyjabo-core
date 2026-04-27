@@ -45,23 +45,18 @@ jobs:
           fi
           echo "Build OK — $(find dist -type f | wc -l) files"
 
-      - name: Clone Dhaka-Commute main branch (deploy target)
+      - name: Clone Dhaka-Commute gh-pages branch (deploy target)
         env:
           DATA_GITHUB_TOKEN: ${{ secrets.DATA_GITHUB_TOKEN }}
         run: |
           git clone \
-            --branch main \
+            --branch gh-pages \
             "https://x-access-token:${DATA_GITHUB_TOKEN}@github.com/mejbaurbahar/Dhaka-Commute.git" \
             deploy-repo
 
-      - name: Swap dist content (preserve workflows and auth results)
+      - name: Swap dist content (preserve workflows)
         run: |
           cd deploy-repo
-
-          # Stash auth result files before wiping tracked files
-          if [ -d data/results ]; then
-            cp -r data/results /tmp/auth-results-backup
-          fi
 
           # Remove all git-tracked files EXCEPT workflows
           git ls-files | grep -v '^\.github/workflows/' | xargs rm -f 2>/dev/null || true
@@ -75,17 +70,11 @@ jobs:
           # Copy new build output
           cp -r ../dist/. .
 
-          # Restore auth result files so active auth sessions are not broken
-          if [ -d /tmp/auth-results-backup ]; then
-            mkdir -p data/results
-            cp -r /tmp/auth-results-backup/. data/results/
-          fi
-
           # Ensure domain and Jekyll bypass are always present
           echo "koyjabo.com" > CNAME
           touch .nojekyll
 
-      - name: Commit and push to main
+      - name: Commit and push to gh-pages
         env:
           DATA_GITHUB_TOKEN: ${{ secrets.DATA_GITHUB_TOKEN }}
         run: |
@@ -106,7 +95,7 @@ jobs:
 
           SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
           git commit -m "deploy: $(date -u '+%Y-%m-%d %H:%M UTC') | core@${SHORT_SHA}"
-          git push origin HEAD:main
+          git push origin HEAD:gh-pages
 
       - name: Deploy summary
         if: success()
