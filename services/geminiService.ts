@@ -1576,10 +1576,15 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
         // Very basic positional heuristic: first mentioned = from, second = to.
         // E.g. "Mirpur 10 to Dhanmondi"
         if (mentioned.length >= 2) {
-          const firstIdx = Math.min(lowerQ.indexOf(mentioned[0].name.toLowerCase()), lowerQ.indexOf(mentioned[0].bnName || 'XYZ'));
-          const secondIdx = Math.min(lowerQ.indexOf(mentioned[1].name.toLowerCase()), lowerQ.indexOf(mentioned[1].bnName || 'XYZ'));
-          
-          if (firstIdx < secondIdx) {
+          const getIdx = (s: typeof mentioned[0]) => {
+            const ni = lowerQ.indexOf(s.name.toLowerCase());
+            if (ni >= 0) return ni;
+            return s.bnName ? lowerQ.indexOf(s.bnName) : -1;
+          };
+          const firstIdx = getIdx(mentioned[0]);
+          const secondIdx = getIdx(mentioned[1]);
+
+          if (firstIdx <= secondIdx) {
             fromLoc = mentioned[0].id;
             toLoc = mentioned[1].id;
           } else {

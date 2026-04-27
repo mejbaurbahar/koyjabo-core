@@ -406,6 +406,7 @@ function pathToSteps(state: DijkstraState, nodes: NodeMap): PathStep[] {
 
 function mergeSteps(steps: PathStep[]): PathStep[] {
   const merged: PathStep[] = [];
+  const segCounts: number[] = [];
   for (const step of steps) {
     const prev = merged[merged.length - 1];
     if (
@@ -415,7 +416,6 @@ function mergeSteps(steps: PathStep[]): PathStep[] {
       prev.mode !== 'walk' &&
       prev.mode !== 'transfer'
     ) {
-      // Extend previous step
       prev.toId = step.toId;
       prev.toName = step.toName;
       prev.toBnName = step.toBnName;
@@ -423,8 +423,16 @@ function mergeSteps(steps: PathStep[]): PathStep[] {
       prev.costBDT += step.costBDT;
       prev.instruction = prev.instruction.replace(/→.*/, `→ ${step.toName}`);
       prev.instructionBn = prev.instructionBn.replace(/→.*/, `→ ${step.toBnName}`);
+      segCounts[segCounts.length - 1]++;
     } else {
       merged.push({ ...step });
+      segCounts.push(1);
+    }
+  }
+  // Metro fare is zone-based (total stations apart), not a sum of per-segment fares
+  for (let i = 0; i < merged.length; i++) {
+    if (merged[i].mode === 'metro') {
+      merged[i].costBDT = METRO_FARE_SCHEDULE[Math.min(segCounts[i], METRO_FARE_SCHEDULE.length - 1)];
     }
   }
   return merged;
