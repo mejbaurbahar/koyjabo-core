@@ -3,19 +3,23 @@ import { createPortal } from 'react-dom';
 import { ImageIcon, X, AlertCircle } from 'lucide-react';
 import { getBusImagePath } from '../utils/busImageMapper';
 import { useLanguage } from '../contexts/LanguageContext';
+import { getBusPhotos } from '../services/communityDataService';
 
 interface BusImageViewerProps {
+    busId: string;
     busName: string;
     busBnName?: string;
     isCompact?: boolean;
 }
 
-export const BusImageViewer: React.FC<BusImageViewerProps> = ({ busName, busBnName, isCompact = false }) => {
+export const BusImageViewer: React.FC<BusImageViewerProps> = ({ busId, busName, busBnName, isCompact = false }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [imageError, setImageError] = useState(false);
+    const [communityImage, setCommunityImage] = useState<string | null>(null);
     const { t } = useLanguage();
 
     const imagePath = getBusImagePath(busName, busBnName);
+    const displayImage = communityImage || imagePath || '/default-bus.svg';
 
     // Reset image error when modal closes or bus changes
     useEffect(() => {
@@ -27,6 +31,18 @@ export const BusImageViewer: React.FC<BusImageViewerProps> = ({ busName, busBnNa
     useEffect(() => {
         setImageError(false);
     }, [busName, busBnName]);
+
+    useEffect(() => {
+        const loadCommunityImage = async () => {
+            try {
+                const photos = await getBusPhotos(busId);
+                setCommunityImage(photos[0]?.dataUrl ?? null);
+            } catch {
+                setCommunityImage(null);
+            }
+        };
+        void loadCommunityImage();
+    }, [busId, isModalOpen]);
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
@@ -81,7 +97,7 @@ export const BusImageViewer: React.FC<BusImageViewerProps> = ({ busName, busBnNa
                         <div className="p-6 bg-gray-50 dark:bg-slate-900">
                             <div className="relative w-full">
                                 <img
-                                    src={imageError ? '/default-bus.svg' : imagePath}
+                                    src={imageError ? '/default-bus.svg' : displayImage}
                                     alt={`${busName} - ${busBnName || ''}`}
                                     className="w-full h-auto max-h-[70vh] object-contain rounded-lg shadow-lg"
                                     onError={() => setImageError(true)}
@@ -93,7 +109,11 @@ export const BusImageViewer: React.FC<BusImageViewerProps> = ({ busName, busBnNa
                         {/* Footer */}
                         <div className="p-4 bg-gray-100 dark:bg-slate-800 border-t border-gray-200 dark:border-gray-700">
                             <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-                                {imageError ? t('busDetails.imageNotFound') : t('busDetails.realBusImage')}
+                                {imageError
+                                    ? t('busDetails.imageNotFound')
+                                    : communityImage
+                                        ? (t('busDetails.realBusImage') + ' · Community')
+                                        : t('busDetails.realBusImage')}
                             </p>
                         </div>
                     </div>

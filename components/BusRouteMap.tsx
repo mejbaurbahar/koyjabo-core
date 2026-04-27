@@ -400,6 +400,25 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
     });
   }, [showMetro, showRailway, showAirport, mapReady]);
 
+  // When Metro layer is enabled, include the full MRT line in viewport
+  // so Uttara North / Center / South are visible.
+  useEffect(() => {
+    if (!mapReady || !mapInstanceRef.current || !showMetro) return;
+    import('leaflet').then(L => {
+      const map = mapInstanceRef.current;
+      if (!map) return;
+
+      const metroPoints: [number, number][] = Object.values(METRO_STATIONS).map((station: any) => [station.lat, station.lng]);
+      const routePoints: [number, number][] = [...stopCoords];
+      if (userLocation) routePoints.push([userLocation.lat, userLocation.lng]);
+      const allPoints = [...routePoints, ...metroPoints];
+      if (allPoints.length < 2) return;
+
+      const bounds = L.latLngBounds(allPoints);
+      map.fitBounds(bounds, { padding: [30, 30] });
+    });
+  }, [showMetro, mapReady, userLocation, route.id, isReversed]);
+
   // Update user location marker live
   useEffect(() => {
     if (!mapReady || !mapInstanceRef.current || !userLocation) return;
@@ -458,7 +477,11 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
           <div className="bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm rounded-xl border border-gray-200 dark:border-slate-600 shadow-xl p-3 w-44 mb-1 animate-in slide-in-from-bottom-2 fade-in duration-150">
             <div className="flex justify-between items-center mb-2 pb-1.5 border-b border-gray-100 dark:border-slate-600">
               <span className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Layers</span>
-              <button onClick={() => setShowLayers(false)} className="p-0.5 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-full transition-colors">
+              <button
+                onClick={() => setShowLayers(false)}
+                className="w-5 h-5 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-slate-700 rounded-full transition-colors"
+                aria-label="Close layers panel"
+              >
                 <X className="w-3 h-3 text-gray-400" />
               </button>
             </div>

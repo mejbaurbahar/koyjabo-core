@@ -1943,9 +1943,6 @@ const App: React.FC = () => {
       <div className="flex flex-col h-full bg-white dark:bg-slate-900 md:rounded-l-3xl md:border-l md:border-gray-200 dark:md:border-gray-800 overflow-hidden relative w-full">
         {/* Mobile Header (Non-fixed flex child) */}
         <div className="block md:hidden flex items-center gap-3 p-4 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-slate-900 z-20 shrink-0 pt-safe">
-          <button onClick={() => setView(AppView.BUS_DETAILS)} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors">
-            <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-          </button>
           <div>
             <h2 className="text-lg font-bold text-dhaka-dark dark:text-gray-100 flex items-center gap-2">
               Live Navigation
@@ -1956,9 +1953,6 @@ const App: React.FC = () => {
         </div>
         {/* Desktop Header */}
         <div className="hidden md:flex items-center gap-3 p-4 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-slate-900 z-50 shrink-0 relative pt-4">
-          <button onClick={() => setView(AppView.BUS_DETAILS)} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors">
-            <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-          </button>
           <div>
             <h2 className="text-lg font-bold text-dhaka-dark dark:text-gray-100 flex items-center gap-2">
               Live Navigation
@@ -1974,7 +1968,6 @@ const App: React.FC = () => {
             highlightEndIdx={fareEndIndex}
             userLocation={userLocation}
             speed={speed}
-            onBack={() => setView(AppView.BUS_DETAILS)}
             onViewLiveMap={() => setShowLiveMap(true)}
           />
         </div>
@@ -2914,7 +2907,7 @@ const App: React.FC = () => {
               <Heart className={`w-5 h-5 transition-all ${favorites.includes(selectedBus.id) ? 'fill-pink-500 text-pink-500 scale-110 drop-shadow-lg' : 'text-gray-300 dark:text-gray-600'} `} />
             </button>
             <div className="flex items-center gap-1">
-              <BusImageViewer key={`mob-${selectedBus.id}`} busName={selectedBus.name} busBnName={selectedBus.bnName} isCompact />
+              <BusImageViewer key={`mob-${selectedBus.id}`} busId={selectedBus.id} busName={selectedBus.name} busBnName={selectedBus.bnName} isCompact />
               <button
                 onClick={() => setView(AppView.LIVE_NAV)}
                 className="bg-gradient-to-r from-dhaka-green to-[#005c44] text-white p-2.5 rounded-xl font-bold shadow-lg shadow-green-900/20 active:scale-[0.98] transition-all flex items-center justify-center"
@@ -2923,6 +2916,29 @@ const App: React.FC = () => {
                 <Navigation className="w-5 h-5" />
               </button>
             </div>
+          </div>
+          <div className="px-4 pb-2 grid grid-cols-3 gap-2">
+            <button
+              onClick={() => setView(AppView.RATE_BUS)}
+              className="flex items-center justify-center gap-1.5 p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-gray-700 hover:border-amber-300 dark:hover:border-amber-700 transition-colors active:scale-95"
+              aria-label={language === 'bn' ? 'রেটিং দিন' : 'Rate'}
+            >
+              <span className="text-base">⭐</span>
+            </button>
+            <button
+              onClick={() => setView(AppView.BUS_LIVE_TRACKING)}
+              className="flex items-center justify-center gap-1.5 p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-700 transition-colors active:scale-95"
+              aria-label={language === 'bn' ? 'লাইভ অবস্থান' : 'Live Location'}
+            >
+              <span className="text-base">📍</span>
+            </button>
+            <button
+              onClick={() => setView(AppView.BUS_PHOTOS)}
+              className="flex items-center justify-center gap-1.5 p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-gray-700 hover:border-pink-300 dark:hover:border-pink-700 transition-colors active:scale-95"
+              aria-label={language === 'bn' ? 'ছবি' : 'Photos'}
+            >
+              <span className="text-base">📷</span>
+            </button>
           </div>
         </div>
 
@@ -2936,7 +2952,7 @@ const App: React.FC = () => {
             <h2 className="text-lg font-bold text-dhaka-dark dark:text-gray-100 truncate max-w-[220px]">{formatBusName(selectedBus.name)}</h2>
             <p className="text-xs text-gray-500 dark:text-gray-400">{selectedBus.bnName}</p>
           </div>
-          <BusImageViewer key={`desk-${selectedBus.id}`} busName={selectedBus.name} busBnName={selectedBus.bnName} />
+          <BusImageViewer key={`desk-${selectedBus.id}`} busId={selectedBus.id} busName={selectedBus.name} busBnName={selectedBus.bnName} />
           <button
             onClick={() => setView(AppView.LIVE_NAV)}
             className="bg-dhaka-green text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-green-700 transition-colors flex items-center gap-2 mr-2"
@@ -2951,6 +2967,31 @@ const App: React.FC = () => {
           >
             <Heart className={`w-5 h-5 ${favorites.includes(selectedBus.id) ? 'fill-red-500 text-red-500' : 'text-gray-300'} `} />
           </button>
+        </div>
+        <div className="px-4 pb-3 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-gray-800">
+          <div className="grid grid-cols-3 gap-2">
+            <button
+              onClick={() => setView(AppView.RATE_BUS)}
+              className="flex items-center justify-center gap-1.5 p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-gray-700 hover:border-amber-300 dark:hover:border-amber-700 transition-colors active:scale-95"
+            >
+              <span className="text-base">⭐</span>
+              <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">{language === 'bn' ? 'রেটিং দিন' : 'Rate'}</span>
+            </button>
+            <button
+              onClick={() => setView(AppView.BUS_LIVE_TRACKING)}
+              className="flex items-center justify-center gap-1.5 p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-700 transition-colors active:scale-95"
+            >
+              <span className="text-base">📍</span>
+              <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">{language === 'bn' ? 'লাইভ অবস্থান' : 'Live Location'}</span>
+            </button>
+            <button
+              onClick={() => setView(AppView.BUS_PHOTOS)}
+              className="flex items-center justify-center gap-1.5 p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-gray-700 hover:border-pink-300 dark:hover:border-pink-700 transition-colors active:scale-95"
+            >
+              <span className="text-base">📷</span>
+              <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">{language === 'bn' ? 'ছবি' : 'Photos'}</span>
+            </button>
+          </div>
         </div>
 
         {/* Stats Bar — Sleek & Integrated */}
@@ -3307,28 +3348,6 @@ const App: React.FC = () => {
                 )}
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Community Actions */}
-        <div className="px-4 pb-4">
-          <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">{language === 'bn' ? 'কমিউনিটি' : 'Community'}</p>
-          <div className="grid grid-cols-3 gap-2">
-            <button onClick={() => setView(AppView.RATE_BUS)}
-              className="flex flex-col items-center gap-1 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-amber-300 dark:hover:border-amber-700 transition-colors active:scale-95">
-              <span className="text-xl">⭐</span>
-              <span className="text-xs font-semibold text-gray-700 dark:text-gray-300 text-center">{language === 'bn' ? 'রেটিং দিন' : 'Rate'}</span>
-            </button>
-            <button onClick={() => setView(AppView.BUS_LIVE_TRACKING)}
-              className="flex flex-col items-center gap-1 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-700 transition-colors active:scale-95">
-              <span className="text-xl">📍</span>
-              <span className="text-xs font-semibold text-gray-700 dark:text-gray-300 text-center">{language === 'bn' ? 'লাইভ অবস্থান' : 'Live Location'}</span>
-            </button>
-            <button onClick={() => setView(AppView.BUS_PHOTOS)}
-              className="flex flex-col items-center gap-1 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-pink-300 dark:hover:border-pink-700 transition-colors active:scale-95">
-              <span className="text-xl">📷</span>
-              <span className="text-xs font-semibold text-gray-700 dark:text-gray-300 text-center">{language === 'bn' ? 'ছবি' : 'Photos'}</span>
-            </button>
           </div>
         </div>
 
