@@ -2,10 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Camera, X, Upload } from 'lucide-react';
 import { getBusPhotos, submitBusPhoto, BusPhoto, getAuthUser } from '../services/communityDataService';
 import { trackFeatureUsage } from '../services/analyticsService';
+import { getBusImagePath } from '../utils/busImageMapper';
 
 interface Props {
   busId: string;
   busName: string;
+  busBnName?: string;
   onBack: () => void;
 }
 
@@ -48,7 +50,7 @@ async function compressImage(file: File, maxKB = 280): Promise<string> {
   });
 }
 
-export default function BusPhotoGallery({ busId, busName, onBack }: Props) {
+export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: Props) {
   const user = getAuthUser();
   const [photos, setPhotos] = useState<BusPhoto[]>([]);
   const [loading, setLoading] = useState(true);
@@ -58,6 +60,8 @@ export default function BusPhotoGallery({ busId, busName, onBack }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [lightbox, setLightbox] = useState<BusPhoto | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const officialImagePath = getBusImagePath(busName, busBnName);
+  const hasOfficialBusImage = !!officialImagePath && officialImagePath !== '/default-bus.svg';
 
   useEffect(() => { trackFeatureUsage('bus_photos'); }, []);
 
@@ -107,6 +111,23 @@ export default function BusPhotoGallery({ busId, busName, onBack }: Props) {
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
+        {hasOfficialBusImage && (
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-3 border border-gray-100 dark:border-gray-700">
+            <p className="text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Bus Image</p>
+            <div className="rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700 bg-slate-50 dark:bg-slate-900">
+              <img
+                src={officialImagePath!}
+                alt={`${busName} bus`}
+                className="w-full h-44 object-cover"
+                loading="lazy"
+              />
+            </div>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+              This is the currently available bus image. You can upload newer photos below.
+            </p>
+          </div>
+        )}
+
         {showForm && (
           <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 space-y-3">
             <h3 className="font-bold text-gray-900 dark:text-white text-sm">ছবি আপলোড করুন</h3>

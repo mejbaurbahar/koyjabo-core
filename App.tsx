@@ -4231,7 +4231,7 @@ const App: React.FC = () => {
             {view === AppView.COMMUTE_COST && (user ? <CommuteCostCalculator onBack={() => setView(AppView.HOME)} /> : <LoginWall setView={setView} />)}
             {view === AppView.SEAT_AVAILABILITY && (user ? <SeatAvailability onBack={() => setView(AppView.HOME)} /> : <LoginWall setView={setView} />)}
             {view === AppView.RATE_BUS && (user && selectedBus ? <BusRating busId={selectedBus.id} busName={selectedBus.displayName || selectedBus.name} onBack={() => setView(AppView.BUS_DETAILS)} /> : <LoginWall setView={setView} />)}
-            {view === AppView.BUS_PHOTOS && (user && selectedBus ? <BusPhotoGallery busId={selectedBus.id} busName={selectedBus.displayName || selectedBus.name} onBack={() => setView(AppView.BUS_DETAILS)} /> : <LoginWall setView={setView} />)}
+            {view === AppView.BUS_PHOTOS && (user && selectedBus ? <BusPhotoGallery busId={selectedBus.id} busName={selectedBus.displayName || selectedBus.name} busBnName={selectedBus.bnName} onBack={() => setView(AppView.BUS_DETAILS)} /> : <LoginWall setView={setView} />)}
             {view === AppView.BUS_LIVE_TRACKING && (user && selectedBus ? <BusLiveTracking busId={selectedBus.id} busName={selectedBus.displayName || selectedBus.name} onBack={() => setView(AppView.BUS_DETAILS)} /> : <LoginWall setView={setView} />)}
 
             {view === AppView.INSTALL_APP && (
