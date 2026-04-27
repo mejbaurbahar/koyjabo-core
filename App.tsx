@@ -448,7 +448,7 @@ const SettingsView: React.FC<{
             <Info className="w-4 h-4 text-blue-500" /> App Info
           </h3>
           <p className="text-sm text-gray-500">
-            Version 1.0.0. Use this app to find routes and estimate fares in Dhaka City.
+            Version 2.5.0. Use this app to find routes and estimate fares in Dhaka City.
           </p>
         </div>
       </div>
