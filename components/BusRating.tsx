@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Star, MessageCircle } from 'lucide-react';
 import { getBusRatings, submitBusRating, BusRating as BusRatingData, BusRatingSummary, getAuthUser } from '../services/communityDataService';
 import { trackFeatureUsage } from '../services/analyticsService';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface Props {
   busId: string;
@@ -9,16 +10,17 @@ interface Props {
   onBack: () => void;
 }
 
-function timeAgo(ts: number): string {
+function timeAgo(ts: number, t: (key: string, params?: Record<string, string | number>) => string, formatNumber: (n: number | string) => string): string {
   const diff = Math.floor((Date.now() - ts) / 60000);
-  if (diff < 1) return 'এখনই';
-  if (diff < 60) return `${diff} মিনিট আগে`;
-  if (diff < 1440) return `${Math.floor(diff / 60)} ঘণ্টা আগে`;
-  return `${Math.floor(diff / 1440)} দিন আগে`;
+  if (diff < 1) return t('history.justNow');
+  if (diff < 60) return `${formatNumber(diff)} ${t('history.minutesAgo')}`;
+  if (diff < 1440) return `${formatNumber(Math.floor(diff / 60))} ${t('history.hoursAgo')}`;
+  return `${formatNumber(Math.floor(diff / 1440))} ${t('history.daysAgo')}`;
 }
 
 export default function BusRating({ busId, busName, onBack }: Props) {
   const user = getAuthUser();
+  const { t, formatNumber } = useLanguage();
   const [summary, setSummary] = useState<BusRatingSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -64,12 +66,12 @@ export default function BusRating({ busId, busName, onBack }: Props) {
           <Star className="w-5 h-5 text-white fill-white" />
         </div>
         <div className="flex-1">
-          <h1 className="text-lg font-bold text-gray-900 dark:text-white">বাস রেটিং</h1>
+          <h1 className="text-lg font-bold text-gray-900 dark:text-white">{t('community.busRatingTitle')}</h1>
           <p className="text-xs text-gray-500 dark:text-gray-400">{busName}</p>
         </div>
         <button onClick={() => setShowForm(!showForm)}
           className="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold rounded-xl">
-          {myRating ? 'পরিবর্তন করুন' : 'রেটিং দিন'}
+          {myRating ? t('community.editRating') : t('community.rateNow')}
         </button>
       </div>
 
@@ -79,7 +81,7 @@ export default function BusRating({ busId, busName, onBack }: Props) {
             <div className="text-center">
               <p className="text-5xl font-black text-gray-900 dark:text-white">{summary.average.toFixed(1)}</p>
               <div className="flex mt-1">{renderStars(Math.round(summary.average), 'w-4 h-4')}</div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{summary.count}টি রেটিং</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('community.ratingsCount', { count: formatNumber(summary.count) })}</p>
             </div>
             <div className="flex-1 space-y-1">
               {[5, 4, 3, 2, 1].map(s => {
@@ -101,7 +103,7 @@ export default function BusRating({ busId, busName, onBack }: Props) {
 
         {showForm && (
           <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 space-y-3">
-            <h3 className="font-bold text-gray-900 dark:text-white text-sm">আপনার রেটিং দিন</h3>
+            <h3 className="font-bold text-gray-900 dark:text-white text-sm">{t('community.giveYourRating')}</h3>
             <div className="flex gap-1">
               {Array.from({ length: 5 }, (_, i) => (
                 <button key={i} type="button"
@@ -113,29 +115,29 @@ export default function BusRating({ busId, busName, onBack }: Props) {
               ))}
             </div>
             <textarea value={comment} onChange={e => setComment(e.target.value)}
-              placeholder="আপনার অভিজ্ঞতা লিখুন (ঐচ্ছিক)..."
+              placeholder={t('community.writeExperienceOptional')}
               rows={3}
               className="w-full bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white resize-none" />
             <div className="flex gap-2">
               <button type="submit" disabled={submitting}
                 className="flex-1 py-2.5 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white font-semibold text-sm rounded-xl">
-                {submitting ? 'পাঠানো হচ্ছে...' : 'জমা দিন'}
+                {submitting ? t('community.submitting') : t('community.submit')}
               </button>
               <button type="button" onClick={() => setShowForm(false)}
                 className="px-4 py-2.5 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 font-semibold text-sm rounded-xl">
-                বাতিল
+                {t('common.cancel')}
               </button>
             </div>
           </form>
         )}
 
-        {loading && <div className="text-center py-10 text-gray-400">লোড হচ্ছে...</div>}
+        {loading && <div className="text-center py-10 text-gray-400">{t('common.loading')}</div>}
 
         {!loading && (!summary || summary.count === 0) && !showForm && (
           <div className="text-center py-12">
             <Star className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-            <p className="text-gray-500 dark:text-gray-400 font-medium">এখনো কোনো রেটিং নেই</p>
-            <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">প্রথম রেটিং দিন!</p>
+            <p className="text-gray-500 dark:text-gray-400 font-medium">{t('community.noRatingsYet')}</p>
+            <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">{t('community.beFirstToRate')}</p>
           </div>
         )}
 
@@ -143,10 +145,10 @@ export default function BusRating({ busId, busName, onBack }: Props) {
           <div key={r.userId + r.timestamp} className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700">
             <div className="flex items-start justify-between gap-2">
               <div>
-                <p className="font-semibold text-gray-900 dark:text-white text-sm">{r.displayName || 'ব্যবহারকারী'}</p>
+                <p className="font-semibold text-gray-900 dark:text-white text-sm">{r.displayName || 'User'}</p>
                 <div className="flex gap-0.5 mt-0.5">{renderStars(r.stars, 'w-3.5 h-3.5')}</div>
               </div>
-              <span className="text-xs text-gray-400 dark:text-gray-500 shrink-0">{timeAgo(r.timestamp)}</span>
+              <span className="text-xs text-gray-400 dark:text-gray-500 shrink-0">{timeAgo(r.timestamp, t, formatNumber)}</span>
             </div>
             {r.comment && <p className="text-sm text-gray-700 dark:text-gray-300 mt-2">{r.comment}</p>}
           </div>

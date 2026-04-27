@@ -245,6 +245,41 @@ export const translations: Record<Language, Translations> = {
             imageNotFound: 'প্রকৃত বাস ছবি পাওয়া যায়নি',
         },
 
+        // Community (Bus Rating / Live Location / Photos)
+        community: {
+            busRatingTitle: 'বাস রেটিং',
+            rateNow: 'রেটিং দিন',
+            editRating: 'পরিবর্তন করুন',
+            ratingsCount: '{count}টি রেটিং',
+            noRatingsYet: 'এখনো কোনো রেটিং নেই',
+            beFirstToRate: 'প্রথম রেটিং দিন!',
+            giveYourRating: 'আপনার রেটিং দিন',
+            writeExperienceOptional: 'আপনার অভিজ্ঞতা লিখুন (ঐচ্ছিক)...',
+            submitting: 'পাঠানো হচ্ছে...',
+            submit: 'জমা দিন',
+
+            liveLocationTitle: 'লাইভ অবস্থান',
+            reportsCount: '{count}টি রিপোর্ট',
+            reportNow: 'রিপোর্ট করুন',
+            latestLocation: 'সর্বশেষ অবস্থান',
+            shareBusLocation: 'বাসের অবস্থান জানান',
+            pickStop: 'স্টপ নির্বাচন করুন',
+            typeStopName: 'বর্তমান স্টপের নাম লিখুন',
+            pickDirectionOptional: 'দিক নির্বাচন করুন (ঐচ্ছিক)',
+            headingTowards: '{heading} দিকে যাচ্ছে',
+            noLiveReports: 'কোনো লাইভ রিপোর্ট নেই',
+            promptReportIfSeen: 'বাস দেখলে অবস্থান জানান',
+
+            busPhotosTitle: 'বাসের ছবি',
+            photosCount: '{count}টি ছবি',
+            addPhoto: 'ছবি দিন',
+            uploadPhotoTitle: 'ছবি আপলোড করুন',
+            pickPhoto: 'ছবি নির্বাচন করুন',
+            photoCaptionOptional: 'ছবির বিবরণ (ঐচ্ছিক)',
+            noPhotosYet: 'এখনো কোনো ছবি নেই',
+            beFirstToUpload: 'প্রথম ছবি দিন!',
+        },
+
         // Live Navigation
         liveNav: {
             navigation: 'নেভিগেশন',
@@ -1215,6 +1250,41 @@ export const translations: Record<Language, Translations> = {
             viewBusImageShort: 'Image',
             realBusImage: 'Real Bus Image',
             imageNotFound: 'Original Bus image not found',
+        },
+
+        // Community (Bus Rating / Live Location / Photos)
+        community: {
+            busRatingTitle: 'Bus Rating',
+            rateNow: 'Rate',
+            editRating: 'Edit',
+            ratingsCount: '{count} ratings',
+            noRatingsYet: 'No ratings yet',
+            beFirstToRate: 'Be the first to rate!',
+            giveYourRating: 'Give your rating',
+            writeExperienceOptional: 'Write your experience (optional)...',
+            submitting: 'Submitting...',
+            submit: 'Submit',
+
+            liveLocationTitle: 'Live Location',
+            reportsCount: '{count} reports',
+            reportNow: 'Report',
+            latestLocation: 'Latest location',
+            shareBusLocation: 'Share bus location',
+            pickStop: 'Select a stop',
+            typeStopName: 'Type current stop name',
+            pickDirectionOptional: 'Select direction (optional)',
+            headingTowards: 'Heading {heading}',
+            noLiveReports: 'No live reports',
+            promptReportIfSeen: 'If you see the bus, share its location',
+
+            busPhotosTitle: 'Bus Photos',
+            photosCount: '{count} photos',
+            addPhoto: 'Add photo',
+            uploadPhotoTitle: 'Upload a photo',
+            pickPhoto: 'Choose a photo',
+            photoCaptionOptional: 'Photo caption (optional)',
+            noPhotosYet: 'No photos yet',
+            beFirstToUpload: 'Be the first to upload!',
         },
 
         // Live Navigation
