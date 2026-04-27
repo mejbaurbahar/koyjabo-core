@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Star, MessageCircle } from 'lucide-react';
 import { getBusRatings, submitBusRating, BusRating as BusRatingData, BusRatingSummary, getAuthUser } from '../services/communityDataService';
+import { trackFeatureUsage } from '../services/analyticsService';
 
 interface Props {
   busId: string;
@@ -25,6 +26,8 @@ export default function BusRating({ busId, busName, onBack }: Props) {
   const [comment, setComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [hovered, setHovered] = useState(0);
+
+  useEffect(() => { trackFeatureUsage('bus_rating'); }, []);
 
   useEffect(() => {
     getBusRatings(busId).then(d => { setSummary(d); setLoading(false); });

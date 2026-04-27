@@ -23,7 +23,7 @@ export const BLOG_POSTS: BlogPost[] = [
 		bnTitle: 'দূরপাল্লার বাসভাড়া বৃদ্ধি: যাত্রীদের উপর প্রভাব ও বাস্তবতা',
 		excerpt: 'New long-distance bus fares have been published for 40-seat and 51-seat buses across major routes. Find out what changed, why fares are rising, and how to make smarter travel decisions.',
 		bnExcerpt: 'সম্প্রতি দূরপাল্লার বাসভাড়ার নতুন তালিকা প্রকাশ হয়েছে। কী পরিবর্তন হয়েছে, কেন ভাড়া বাড়ছে এবং কীভাবে স্মার্ট সিদ্ধান্ত নেবেন — জানুন বিস্তারিত।',
-		coverImage: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=960&q=80',
+		coverImage: '/blog/long-distance-bus-fare-hike-bangladesh.jpg',
 		content: `
 A new long-distance bus fare list has recently been published. Fares have been increased for 40-seat and 51-seat buses on various routes — directly affecting the daily commute of ordinary passengers.
 

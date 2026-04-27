@@ -8,6 +8,11 @@ interface AdSenseAdProps {
   layoutKey?: string;
 }
 
+// Valid slot IDs are 9-10 digit numeric strings.
+// Passing "auto" as a slot ID is invalid; those placements rely on Google Auto Ads
+// (enabled from the AdSense dashboard) injecting ads automatically.
+const isValidSlot = (slot: string) => /^\d{9,11}$/.test(slot);
+
 const AdSenseAd: React.FC<AdSenseAdProps> = ({
   adSlot,
   adFormat = 'auto',
@@ -16,20 +21,25 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
   layoutKey,
 }) => {
   const insRef = useRef<HTMLModElement>(null);
+  const pushed = useRef(false);
 
   useEffect(() => {
     if (!navigator.onLine) return;
+    if (!isValidSlot(adSlot)) return;
+    if (pushed.current) return;
+    pushed.current = true;
     try {
       ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
     } catch {
       // ad blocker or script not loaded
     }
-  }, []);
+  }, [adSlot]);
 
-  if (!navigator.onLine) return null;
+  // Do not render if offline or slot ID is not valid
+  if (!navigator.onLine || !isValidSlot(adSlot)) return null;
 
   return (
-    <div className={`adsense-container ${className}`}>
+    <div className={`adsense-container overflow-hidden ${className}`}>
       <ins
         ref={insRef}
         className="adsbygoogle"

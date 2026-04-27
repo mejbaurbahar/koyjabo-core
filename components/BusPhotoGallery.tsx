@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Camera, X, Upload } from 'lucide-react';
 import { getBusPhotos, submitBusPhoto, BusPhoto, getAuthUser } from '../services/communityDataService';
+import { trackFeatureUsage } from '../services/analyticsService';
 
 interface Props {
   busId: string;
@@ -57,6 +58,8 @@ export default function BusPhotoGallery({ busId, busName, onBack }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [lightbox, setLightbox] = useState<BusPhoto | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => { trackFeatureUsage('bus_photos'); }, []);
 
   useEffect(() => {
     getBusPhotos(busId).then(p => { setPhotos(p); setLoading(false); });

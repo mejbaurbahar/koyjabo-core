@@ -20,6 +20,7 @@ import { SearchableSelect } from './SearchableSelect';
 import TrainRouteMap from './TrainRouteMap';
 import { UserLocation } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
+import { trackFeatureUsage } from '../services/analyticsService';
 
 interface TrainListPageProps {
   userLocation?: UserLocation | null;
@@ -528,6 +529,8 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
   const [sortBy, setSortBy] = useState<SortOption>('name');
   const [showFilters, setShowFilters] = useState(false);
   const bn = language === 'bn';
+
+  useEffect(() => { trackFeatureUsage('train_list'); }, []);
 
   const filtered = useMemo(() => {
     // Deduplicate by id (keep first occurrence)

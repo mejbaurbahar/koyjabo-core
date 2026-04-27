@@ -22,7 +22,7 @@ import { getCurrentLocation, getLocationByIP, findNearestStation, getDistance } 
 import { findNearestMetroStation } from './services/metroService';
 import { planRoutes, findRoutesBetweenStations, SuggestedRoute } from './services/routePlanner';
 import RouteSuggestions from './components/RouteSuggestions';
-import { incrementVisitCount, trackBusSearch, trackRouteSearch, trackTrainSearch } from './services/analyticsService';
+import { incrementVisitCount, trackBusSearch, trackRouteSearch, trackTrainSearch, trackFeatureUsage } from './services/analyticsService';
 import ThemeToggle from './components/ThemeToggle';
 import LiveLocationMap from './components/LiveLocationMap';
 
@@ -955,53 +955,230 @@ const App: React.FC = () => {
     return () => window.removeEventListener('popstate', handlePopState);
   }, [view]);
 
-  // Handle SEO Dynamic Titles and Meta Tags
+  // Handle SEO: title, description, keywords, OG, Twitter, canonical — per page
   useEffect(() => {
-    let title = 'কই যাবো - ঢাকা বাস রুট ও ট্রান্সপোর্ট গাইড | Dhaka Bus Route Finder';
-    let description = 'কই যাবো: বাংলাদেশের সেরা ট্রান্সপোর্ট গাইড। ঢাকা ও সারা বাংলাদেশের বাস রুট, গন্তব্য ও AI সহায়তা খুঁজুন। Bangladesh Smart Transport Finder — 300+ buses, Metro Rail (MRT Line 6), 100+ intercity trains, AI assistant. Free fare calculator.';
+    const BASE = 'https://koyjabo.com';
+
+    type PageMeta = { title: string; description: string; keywords: string; canonical: string };
+
+    let meta: PageMeta = {
+      title: 'কই যাবো - ঢাকা বাস রুট ও ট্রান্সপোর্ট গাইড | Dhaka Bus Route Finder',
+      description: 'কই যাবো: বাংলাদেশের সেরা ট্রান্সপোর্ট গাইড। ২০০+ ঢাকা বাস রুট, মেট্রো রেল (MRT-6), আন্তঃজেলা বাস/ট্রেন/ফ্লাইট/লঞ্চ ও AI সহায়ক। Bangladesh Smart Transport Finder — 200+ buses, Metro Rail, intercity routes, offline-ready.',
+      keywords: 'কই যাবো, ঢাকা বাস রুট, Bangladesh transport, Dhaka bus route finder, MRT Line 6, metro rail Dhaka, bus fare calculator, intercity bus Bangladesh, BRTC bus, Dhaka route planner 2025, public transport Dhaka, ঢাকা পরিবহন',
+      canonical: `${BASE}/`,
+    };
 
     if (view === AppView.BUS_DETAILS && selectedBus) {
       const busName = formatBusName(selectedBus.name);
-      title = `${busName} | কই যাবো`;
-      description = `${busName} bus route details, stops, and fare calculator. ${selectedBus.stops.length} stops covered. Find where ${busName} goes in Dhaka.`;
+      meta = {
+        title: `${busName} বাস রুট - স্টপ ও ভাড়া | কই যাবো`,
+        description: `${busName} বাসের সম্পূর্ণ রুট: ${selectedBus.stops.length}টি স্টপ, ভাড়া ও সময়সূচী। ${busName} bus route in Dhaka — all stops, fares, and operating hours. Find the best way to travel on ${busName}.`,
+        keywords: `${busName} bus route Dhaka, ${selectedBus.name} stops, ${busName} fare, Dhaka bus ${selectedBus.name}, ${selectedBus.name} bus schedule`,
+        canonical: `${BASE}/bus`,
+      };
     } else if (view === AppView.LIVE_NAV && selectedBus) {
       const busName = formatBusName(selectedBus.name);
-      title = `Tracking ${busName} | Live Navigation | কই যাবো`;
-      description = `Live tracking and navigation for ${busName} bus route. View real-time progress and estimated arrival times for stops in Dhaka.`;
-    } else if (view === AppView.BLOG) {
-      title = `Blog - Transport Tips & Guides | কই যাবো`;
-      description = `Learn about Dhaka's transport system, bus route guides, Metro Rail updates, and travel tips on the কই যাবো blog.`;
-    } else if (view === AppView.PRIVACY || window.location.hash === '#privacy') {
-      title = `${t('privacy.title')} | কই যাবো`;
-      description = `KoyJabo Privacy Policy - How we protect your data while using our bus route finder and AI assistant.`;
-    } else if (view === AppView.TERMS || window.location.hash === '#terms') {
-      title = `${t('nav.terms')} | কই যাবো`;
-      description = `KoyJabo Terms of Service - Usage guidelines for our Dhaka transport and intercity route finder.`;
-    } else if (view === AppView.ABOUT) {
-      title = `${t('nav.about')} | কই যাবো`;
-      description = `Learn more about কই যাবো (KoyJabo), our mission to simplify Dhaka's transport and the team behind it.`;
+      meta = {
+        title: `${busName} লাইভ নেভিগেশন | Real-time Bus Tracking | কই যাবো`,
+        description: `Real-time live tracking and turn-by-turn navigation for ${busName} bus in Dhaka. View stop progress and estimated arrival times.`,
+        keywords: `${busName} live tracking, Dhaka bus GPS, real-time bus Dhaka, bus navigation Bangladesh, ${busName} বাস`,
+        canonical: `${BASE}/navigate`,
+      };
     } else if (view === AppView.AI_ASSISTANT) {
-      title = `${t('nav.aiAssistant')} | কই যাবো`;
-      description = `Ask our AI assistant for bus routes, travel tips, and transport guides in Dhaka and across Bangladesh.`;
-    } else if (view === AppView.FAQ) {
-      title = `${t('nav.faq')} | কই যাবো`;
-      description = `Frequently asked questions about কই যাবো. How to find bus routes, use the fare calculator and more.`;
-    } else if (view === AppView.HISTORY) {
-      title = `${t('nav.history')} | কই যাবো`;
-      description = `View your search history and transport analytics on কই যাবো. 100% offline and private.`;
+      meta = {
+        title: 'AI ট্রান্সপোর্ট সহায়ক - বাস রুট প্রশ্ন করুন | কই যাবো',
+        description: 'AI সহায়কের কাছে ঢাকা বাস রুট, মেট্রো ভাড়া, আন্তঃজেলা সময়সূচী ও ভ্রমণ পরামর্শ জানুন। Ask our AI assistant any Bangladesh transport question — bus routes, train fares, travel tips.',
+        keywords: 'AI transport assistant Bangladesh, AI bus route finder, ask bus route Dhaka, Bangladesh travel AI, KoyJabo AI, transport chatbot Bangladesh, বাস রুট AI',
+        canonical: `${BASE}/ai`,
+      };
+    } else if (view === AppView.TRAIN_LIST) {
+      meta = {
+        title: 'বাংলাদেশ ট্রেন রুট ও সময়সূচী ২০২৫ | Bangladesh Train Schedule | কই যাবো',
+        description: 'বাংলাদেশের সকল ট্রেনের সময়সূচী, ভাড়া ও রুট। ঢাকা থেকে চট্টগ্রাম, সিলেট, রাজশাহী, কক্সবাজার ট্রেন। Bangladesh Railway intercity, express, mail and local train schedules with fares.',
+        keywords: 'Bangladesh train schedule 2025, BD train routes, Dhaka to Chittagong train, Dhaka to Sylhet train, intercity express Bangladesh, Bangladesh Railway fare, ট্রেন সময়সূচী, বাংলাদেশ রেলওয়ে ভাড়া, শোভন চেয়ার, স্নিগ্ধা',
+        canonical: `${BASE}/train`,
+      };
+    } else if (view === AppView.TRAIN_DETAILS && selectedTrain) {
+      meta = {
+        title: `${selectedTrain.name} (${selectedTrain.number}) সময়সূচী ও ভাড়া | কই যাবো`,
+        description: `${selectedTrain.name} ট্রেনের সম্পূর্ণ সময়সূচী, স্টেশন তালিকা ও ভাড়া। ${selectedTrain.name} train schedule, route map, and fare details — Bangladesh Railway.`,
+        keywords: `${selectedTrain.name}, ${selectedTrain.number}, ${selectedTrain.name} schedule, ${selectedTrain.name} fare, ${selectedTrain.name} route, Bangladesh train ${selectedTrain.number}`,
+        canonical: `${BASE}/train`,
+      };
+    } else if (view === AppView.COMMUTE_COST) {
+      meta = {
+        title: 'ঢাকা কমিউট খরচ হিসাবক ২০২৫ | Monthly Transport Cost | কই যাবো',
+        description: 'আপনার মাসিক যাতায়াত খরচ হিসাব করুন। বাস, মেট্রো, সিএনজি, উবার, রিকশার ভাড়া তুলনা। Calculate monthly Dhaka commute costs — compare bus, metro, CNG, and ride-sharing.',
+        keywords: 'Dhaka commute cost calculator 2025, monthly bus fare Dhaka, transport cost Bangladesh, metro vs bus cost, CNG fare Dhaka, যাতায়াত খরচ হিসাব, বাস ভাড়া হিসাব',
+        canonical: `${BASE}/commute-cost`,
+      };
+    } else if (view === AppView.MULTI_STOP_PLANNER) {
+      meta = {
+        title: 'মাল্টি-স্টপ রুট প্ল্যানার - ঢাকা | Multi-Stop Journey Planner | কই যাবো',
+        description: 'ঢাকায় একাধিক গন্তব্য সহ রুট পরিকল্পনা করুন। Plan your multi-stop journey across Dhaka with optimized bus route suggestions for every leg.',
+        keywords: 'multi stop route planner Dhaka, multiple destination bus, journey planner Bangladesh, route optimizer Dhaka, মাল্টি-স্টপ রুট',
+        canonical: `${BASE}/multi-stop`,
+      };
+    } else if (view === AppView.TRIP_REMINDERS) {
+      meta = {
+        title: 'ট্রিপ রিমাইন্ডার ও যাত্রা এলার্ট | Trip Reminders | কই যাবো',
+        description: 'যাত্রার আগে রিমাইন্ডার সেট করুন। Set bus and train trip reminders and travel alerts for your Dhaka commute — never miss your departure again.',
+        keywords: 'trip reminder Dhaka, bus alert Bangladesh, travel notification Bangladesh, commute reminder app, যাত্রা রিমাইন্ডার, bus departure alert',
+        canonical: `${BASE}/trip-reminders`,
+      };
+    } else if (view === AppView.NEIGHBOURHOOD_GUIDES) {
+      meta = {
+        title: 'ঢাকার এলাকা গাইড | Dhaka Neighbourhood Transport Guide | কই যাবো',
+        description: 'ঢাকার প্রতিটি এলাকার বাস রুট, গুরুত্বপূর্ণ স্থান ও যোগাযোগ তথ্য। Detailed transport guides for Gulshan, Dhanmondi, Mirpur, Uttara, Banani, Mohakhali and all Dhaka areas.',
+        keywords: 'Dhaka area transport guide, Gulshan bus routes, Dhanmondi transport, Mirpur buses, Uttara guide, Banani connectivity, ঢাকার এলাকা গাইড, এলাকা ট্রান্সপোর্ট',
+        canonical: `${BASE}/neighbourhood-guides`,
+      };
+    } else if (view === AppView.BUS_PASS_INFO) {
+      meta = {
+        title: 'ঢাকা MRT পাস ও বাস পাস তথ্য ২০২৫ | Bus Pass Info | কই যাবো',
+        description: 'ঢাকা মেট্রো রেল MRT পাস ও BRTC বাস পাসের দাম, কোথায় পাবেন ও কিভাবে ব্যবহার করবেন। MRT Pass pricing, recharge locations, and BRTC bus pass details for 2025.',
+        keywords: 'MRT pass Dhaka 2025, metro rail pass price, BRTC bus pass, MRT card Bangladesh, metro pass recharge, বাস পাস দাম, MRT পাস, metro pass Uttara',
+        canonical: `${BASE}/pass-info`,
+      };
+    } else if (view === AppView.ROAD_ALERTS) {
+      meta = {
+        title: 'ঢাকা রোড এলার্ট ও যানজট আপডেট | Road Alerts | কই যাবো',
+        description: 'ঢাকার রাস্তা বন্ধ, নির্মাণ কাজ ও যানজটের লাইভ আপডেট। Live road closure, construction, and traffic jam alerts for Dhaka city.',
+        keywords: 'Dhaka road alerts, traffic jam Dhaka, road closed Bangladesh, construction alert Dhaka, যানজট আপডেট, ঢাকা রাস্তা, road block Dhaka',
+        canonical: `${BASE}/road-alerts`,
+      };
+    } else if (view === AppView.SEAT_AVAILABILITY) {
+      meta = {
+        title: 'আন্তঃজেলা বাসে সিট পাওয়া যাচ্ছে | Intercity Seat Availability | কই যাবো',
+        description: 'Check intercity bus seat availability from Dhaka. Popular routes to Chittagong, Sylhet, Cox\'s Bazar, Rajshahi. আন্তঃজেলা বাসের সিট পাওয়া যাচ্ছে কিনা দেখুন।',
+        keywords: 'intercity bus seat Bangladesh, bus seat availability Dhaka, advance bus booking BD, Dhaka Chittagong seat, সিট পাওয়া যাচ্ছে, বাস সিট বুকিং',
+        canonical: `${BASE}/seat-availability`,
+      };
     } else if (view === AppView.DAILY_JOURNEY) {
-      title = `${t('journey.title')} | কই যাবো`;
-      description = `Track your daily journey and stops in Dhaka. Real-time path tracking for smarter travel.`;
+      meta = {
+        title: 'দৈনিক যাত্রা ট্র্যাকার | Daily Journey Tracker | কই যাবো',
+        description: 'ঢাকায় আপনার দৈনিক যাত্রা ট্র্যাক করুন। Monitor real-time journey progress, log your commute stops, and analyze daily travel patterns in Dhaka.',
+        keywords: 'daily journey tracker Dhaka, commute logger Bangladesh, journey tracking app, route history Dhaka, দৈনিক যাত্রা, commute path tracker',
+        canonical: `${BASE}/daily-journey`,
+      };
+    } else if (view === AppView.HISTORY) {
+      meta = {
+        title: 'আমার সার্চ হিস্ট্রি | My Search History | কই যাবো',
+        description: 'আপনার সার্চ করা বাস রুট, ট্রেন ও আন্তঃজেলা ট্রিপের ইতিহাস দেখুন। View your personal search history, most-used routes, and feature activity.',
+        keywords: 'KoyJabo search history, my bus routes, saved routes Bangladesh, transport history, সার্চ হিস্ট্রি',
+        canonical: `${BASE}/history`,
+      };
+    } else if (view === AppView.ABOUT) {
+      meta = {
+        title: 'কই যাবো সম্পর্কে | About KoyJabo | Bangladesh Transport App',
+        description: 'কই যাবো সম্পর্কে জানুন — মিশন, টিম ও বাংলাদেশের পরিবহন ব্যবস্থা সহজ করার লক্ষ্য। KoyJabo is Bangladesh\'s free, bilingual, offline-ready transport guide by Mejbaur Bahar Fagun.',
+        keywords: 'about KoyJabo, Bangladesh transport app creator, Dhaka bus app team, কই যাবো সম্পর্কে, free transport app Bangladesh, Mejbaur Bahar Fagun',
+        canonical: `${BASE}/about`,
+      };
+    } else if (view === AppView.WHY_USE) {
+      meta = {
+        title: 'কেন কই যাবো ব্যবহার করবেন | Why Use KoyJabo | বাংলাদেশ',
+        description: 'কই যাবো কেন বাংলাদেশের সেরা ট্রান্সপোর্ট অ্যাপ? অফলাইন সাপোর্ট, বাংলা-ইংরেজি, AI সহায়ক, বিনামূল্যে। Why KoyJabo is #1 free transport guide for Bangladesh.',
+        keywords: 'why KoyJabo best, offline bus app Bangladesh, bilingual transport app, free route finder Bangladesh, কই যাবো কেন ব্যবহার করবো',
+        canonical: `${BASE}/why-use`,
+      };
+    } else if (view === AppView.FAQ) {
+      meta = {
+        title: 'সাধারণ প্রশ্নোত্তর | FAQ - Dhaka Bus Routes | কই যাবো',
+        description: 'কই যাবো সম্পর্কে সাধারণ প্রশ্নের উত্তর। ঢাকা বাস রুট খোঁজার নিয়ম, মেট্রো ভাড়া, ট্রেন সময়সূচী FAQ। How to find bus routes, metro fares, and use KoyJabo features.',
+        keywords: 'KoyJabo FAQ, Dhaka bus route FAQ, metro fare questions, how to use KoyJabo, Bangladesh transport FAQ, ঢাকা বাস প্রশ্ন, মেট্রো ভাড়া FAQ',
+        canonical: `${BASE}/faq`,
+      };
+    } else if (view === AppView.BLOG) {
+      meta = {
+        title: 'ঢাকা ট্রান্সপোর্ট ব্লগ - বাস ও ট্রেন গাইড ২০২৫ | কই যাবো',
+        description: 'ঢাকার যাতায়াত নিয়ে সর্বশেষ গাইড, টিপস ও আর্টিকেল। Best bus routes, Metro Rail guide, intercity travel tips, and Bangladesh transport news on the KoyJabo Blog.',
+        keywords: 'Dhaka transport blog 2025, best bus routes guide, metro rail tips Bangladesh, intercity travel guide BD, ঢাকা ট্রান্সপোর্ট ব্লগ, KoyJabo blog articles',
+        canonical: `${BASE}/blog`,
+      };
+    } else if (view === AppView.PRIVACY || window.location.hash === '#privacy') {
+      meta = {
+        title: 'গোপনীয়তা নীতি | Privacy Policy | কই যাবো',
+        description: 'কই যাবো গোপনীয়তা নীতি। আপনার তথ্য কিভাবে সংগ্রহ, ব্যবহার ও সুরক্ষিত রাখা হয়। KoyJabo Privacy Policy — data protection for Bangladesh\'s transport guide.',
+        keywords: 'KoyJabo privacy policy, data protection Bangladesh app, user privacy KoyJabo',
+        canonical: `${BASE}/privacy`,
+      };
+    } else if (view === AppView.TERMS || window.location.hash === '#terms') {
+      meta = {
+        title: 'ব্যবহারের শর্তাবলী | Terms of Service | কই যাবো',
+        description: 'কই যাবো ব্যবহারের শর্তাবলী ও নিয়মকানুন। KoyJabo Terms of Service — usage guidelines for Bangladesh\'s transport route finder.',
+        keywords: 'KoyJabo terms of service, transport app terms Bangladesh, কই যাবো শর্তাবলী',
+        canonical: `${BASE}/terms`,
+      };
+    } else if (view === AppView.CONTACT) {
+      meta = {
+        title: 'যোগাযোগ করুন | Contact KoyJabo | কই যাবো',
+        description: 'কই যাবো টিমের সাথে যোগাযোগ করুন। মতামত, সমস্যা বা নতুন রুট যোগের জন্য। Contact KoyJabo for feedback, bug reports, or route addition requests.',
+        keywords: 'contact KoyJabo, feedback Bangladesh transport app, report bus route, কই যাবো যোগাযোগ',
+        canonical: `${BASE}/contact`,
+      };
+    } else if (view === AppView.LOGIN) {
+      meta = {
+        title: 'লগইন করুন | Login to কই যাবো',
+        description: 'কই যাবোতে লগইন করুন — সার্চ হিস্ট্রি, ট্রিপ রিমাইন্ডার ও পার্সোনালাইজড ফিচার পান। Login to KoyJabo to access your saved history and personalized transport features.',
+        keywords: 'KoyJabo login, sign in Bangladesh transport app, কই যাবো লগইন',
+        canonical: `${BASE}/login`,
+      };
+    } else if (view === AppView.SIGNUP) {
+      meta = {
+        title: 'নিবন্ধন করুন | Sign Up for কই যাবো — বিনামূল্যে',
+        description: 'বিনামূল্যে কই যাবো অ্যাকাউন্ট তৈরি করুন। সার্চ হিস্ট্রি সংরক্ষণ, ট্রিপ রিমাইন্ডার ও AI সহায়ক পান। Create your free KoyJabo account today.',
+        keywords: 'KoyJabo signup, register Bangladesh transport app, free account KoyJabo, নিবন্ধন',
+        canonical: `${BASE}/signup`,
+      };
+    } else if (view === AppView.PROFILE) {
+      meta = {
+        title: 'আমার প্রোফাইল | My Profile | কই যাবো',
+        description: 'আপনার কই যাবো প্রোফাইল — সার্চ হিস্ট্রি, ডিভাইস ম্যানেজমেন্ট ও সেটিংস। Manage your KoyJabo profile, history, and account settings.',
+        keywords: 'KoyJabo profile, my account Bangladesh transport, প্রোফাইল কই যাবো',
+        canonical: `${BASE}/profile`,
+      };
+    } else if (view === AppView.SETTINGS) {
+      meta = {
+        title: 'সেটিংস | Settings | কই যাবো',
+        description: 'কই যাবো অ্যাপ সেটিংস — থিম, ভাষা, অফলাইন ডেটা ও নোটিফিকেশন। Customize your KoyJabo experience.',
+        keywords: 'KoyJabo settings, app preferences Bangladesh transport, সেটিংস কই যাবো',
+        canonical: `${BASE}/settings`,
+      };
     } else if (view === AppView.NOT_FOUND) {
-      title = `404 - Page Not Found | কই যাবো`;
+      meta = {
+        title: '404 - পেজ পাওয়া যায়নি | Page Not Found | কই যাবো',
+        description: 'The page you are looking for could not be found. Return to KoyJabo to find bus routes across Bangladesh.',
+        keywords: '',
+        canonical: `${BASE}/`,
+      };
     }
 
-    document.title = title;
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute('content', description);
+    // Apply all meta updates
+    document.title = meta.title;
+
+    const setMeta = (selector: string, attr: string, val: string) => {
+      const el = document.querySelector(selector);
+      if (el) el.setAttribute(attr, val);
+    };
+
+    setMeta('meta[name="description"]', 'content', meta.description);
+    if (meta.keywords) setMeta('meta[name="keywords"]', 'content', meta.keywords);
+    setMeta('meta[property="og:title"]', 'content', meta.title);
+    setMeta('meta[property="og:description"]', 'content', meta.description);
+    setMeta('meta[property="og:url"]', 'content', meta.canonical);
+    setMeta('meta[name="twitter:title"]', 'content', meta.title);
+    setMeta('meta[name="twitter:description"]', 'content', meta.description);
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.setAttribute('href', meta.canonical);
+  }, [view, selectedBus, selectedTrain, language, t]);
+
+  // Track feature usage for AI Assistant when logged-in user opens it
+  useEffect(() => {
+    if (view === AppView.AI_ASSISTANT && user) {
+      trackFeatureUsage('ai_assistant');
     }
-  }, [view, selectedBus, language, t]);
+  }, [view, user]);
 
   // Track if view was set from hash to prevent conflict
   const viewSetFromHash = useRef(false);

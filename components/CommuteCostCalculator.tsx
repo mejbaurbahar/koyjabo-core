@@ -5,10 +5,14 @@ import { trackFeatureUsage } from '../services/analyticsService';
 
 interface Props { onBack: () => void; }
 
+// Fares based on BRTA-approved rates (August 2022 revision):
+// Non-AC city bus: ৳2.55/km (min ৳10), avg 10km trip ≈ ৳25
+// AC bus: ৳2.65/km, avg 10km trip ≈ ৳27
+// Non-AC intercity: ৳2.20/km
 const TRANSPORT_MODES = [
   { id: 'metro', label: 'মেট্রো রেল', labelEn: 'Metro Rail', icon: '🚇', avgPerTrip: 40 },
-  { id: 'bus', label: 'লোকাল বাস', labelEn: 'Local Bus', icon: '🚌', avgPerTrip: 20 },
-  { id: 'brtc', label: 'বিআরটিসি', labelEn: 'BRTC Bus', icon: '🚍', avgPerTrip: 30 },
+  { id: 'bus', label: 'লোকাল বাস', labelEn: 'Local Bus', icon: '🚌', avgPerTrip: 25 },
+  { id: 'brtc', label: 'বিআরটিসি', labelEn: 'BRTC Bus', icon: '🚍', avgPerTrip: 35 },
   { id: 'cng', label: 'সিএনজি', labelEn: 'CNG Auto', icon: '🛺', avgPerTrip: 80 },
   { id: 'uber', label: 'উবার/পাঠাও', labelEn: 'Uber/Pathao', icon: '🚗', avgPerTrip: 150 },
   { id: 'rickshaw', label: 'রিকশা', labelEn: 'Rickshaw', icon: '🛵', avgPerTrip: 50 },

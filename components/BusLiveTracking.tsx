@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, MapPin, Navigation, RefreshCw, Radio } from 'lucide-react';
 import { getBusLiveLocation, reportBusLocation, BusLocationReport, getAuthUser } from '../services/communityDataService';
+import { trackFeatureUsage } from '../services/analyticsService';
 
 interface Props {
   busId: string;
@@ -28,6 +29,8 @@ export default function BusLiveTracking({ busId, busName, stops = [], onBack }: 
   const [heading, setHeading] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => { trackFeatureUsage('bus_live_tracking'); }, []);
 
   const load = async () => {
     const data = await getBusLiveLocation(busId);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Clock, TrendingUp, Calendar, Users, Eye, Trash2, Bus, MapPin, ArrowRight, Activity, Train } from 'lucide-react';
+import { ArrowLeft, Clock, TrendingUp, Calendar, Users, Eye, Trash2, Bus, MapPin, ArrowRight, Activity, Train, Zap } from 'lucide-react';
 import {
     getUserHistory,
     getGlobalStats,
@@ -31,6 +31,21 @@ interface HistoryViewProps {
     onViewJourney?: () => void;
     embedded?: boolean;
 }
+
+const FEATURE_LABELS: Record<string, string> = {
+    ai_assistant: 'AI Assistant',
+    trip_reminders: 'Trip Reminders',
+    cost_calculator: 'Commute Cost Calculator',
+    multi_stop_planner: 'Multi-Stop Planner',
+    area_guides: 'Area Guides',
+    road_alerts: 'Road Alerts',
+    seat_availability: 'Seat Availability',
+    bus_pass_info: 'Bus Pass Info',
+    bus_rating: 'Bus Rating',
+    bus_live_tracking: 'Bus Live Tracking',
+    bus_photos: 'Bus Photos',
+    train_list: 'Train Routes',
+};
 
 const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainSelect, onViewJourney, embedded = false }) => {
     const { t, formatNumber } = useLanguage();
@@ -513,8 +528,33 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                             </div>
                         )}
 
+                        {/* Feature Activity */}
+                        {(history.communityFeatureHistory || []).length > 0 && (
+                            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
+                                <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+                                    <Zap className="w-5 h-5 text-amber-500" />
+                                    {t('history.featureActivity') || 'Feature Activity'}
+                                </h2>
+                                <div className="space-y-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                                    {[...(history.communityFeatureHistory || [])].reverse().slice(0, 50).map((record, index) => (
+                                        <div key={index} className="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-slate-700/50 rounded-lg transition-colors">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-8 h-8 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                    <Zap className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                                                </div>
+                                                <span className="font-medium text-sm text-gray-900 dark:text-gray-100">
+                                                    {FEATURE_LABELS[record.feature] || record.feature}
+                                                </span>
+                                            </div>
+                                            <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">{formatDate(record.timestamp)}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
                         {/* Empty State */}
-                        {recentBusSearches.length === 0 && recentRouteSearches.length === 0 && recentIntercitySearches.length === 0 && recentTrainSearches.length === 0 && (
+                        {recentBusSearches.length === 0 && recentRouteSearches.length === 0 && recentIntercitySearches.length === 0 && recentTrainSearches.length === 0 && (history.communityFeatureHistory || []).length === 0 && (
                             <div className="text-center py-12">
                                 <Clock className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
                                 <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">{t('history.noHistoryYet')}</h3>
