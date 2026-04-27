@@ -164,6 +164,32 @@ function buildGraph(): { graph: AdjacencyList; nodes: NodeMap } {
     }
   }
 
+  // 4.5 Train edges — BD_TRAIN_ROUTES
+  for (const train of BD_TRAIN_ROUTES) {
+    if (!train.stops) continue;
+    for (let i = 0; i < train.stops.length - 1; i++) {
+      const fromSt = train.stops[i];
+      const toSt = train.stops[i + 1];
+      const fromNode = nodes.get(fromSt);
+      const toNode = nodes.get(toSt);
+      if (!fromNode || !toNode) continue;
+      
+      const distM = haversineM(fromNode.lat, fromNode.lng, toNode.lat, toNode.lng);
+      const timeMin = (distM / 1000 / 45) * 60; // 45 km/h train avg
+      const costBDT = Math.max(45, Math.ceil((distM / 1000) * 1.5)); // rough train fare
+
+      addEdge(graph, fromSt, {
+        to: toSt, mode: 'train', timeMin, costBDT,
+        routeId: train.id, routeName: train.name, routeBnName: train.bnName
+      });
+      // Assuming trains run both ways for the graph
+      addEdge(graph, toSt, {
+        to: fromSt, mode: 'train', timeMin, costBDT,
+        routeId: train.id, routeName: train.name, routeBnName: train.bnName
+      });
+    }
+  }
+
   // 5. Metro edges — ordered station list from METRO_STATIONS
   // Build ordered metro sequence from constants
   const METRO_ORDER = [
@@ -220,12 +246,32 @@ function getGraph(): { graph: AdjacencyList; nodes: NodeMap } {
   return { graph: _graph, nodes: _nodes };
 }
 
-// ── Dijkstra ──────────────────────────────────────────────────────────────────
+let _graphPromise: Promise<{ graph: AdjacencyList; nodes: NodeMap }> | null = null;
+
+// ── Lazy-Load Graph Initialization ────────────────────────────────────────────
+
+export async function initGraphAsync() {
+  if (!_graphPromise) {
+    _graphPromise = new Promise((resolve) => {
+      // Use setTimeout to avoid blocking main thread (simulates worker)
+      setTimeout(() => {
+        const built = buildGraph();
+        _graph = built.graph;
+        _nodes = built.nodes;
+        resolve(built);
+      }, 0);
+    });
+  }
+  return _graphPromise;
+}
+
+// ── Dijkstra / A* ─────────────────────────────────────────────────────────────
 
 type WeightFn = (edge: GraphEdge, currentMode: EdgeMode | null) => number;
 
 interface DijkstraState {
   cost: number;
+  fCost: number; // For A* sorting
   node: string;
   path: Array<{ from: string; edge: GraphEdge }>;
   lastMode: EdgeMode | null;
@@ -237,7 +283,13 @@ function dijkstra(
   endId: string,
   weightFn: WeightFn,
 ): DijkstraState | null {
-  const { graph } = getGraph();
+  const { graph, nodes } = getGraph();
+
+  // Nighttime & Peak traffic logic
+  const hour = new Date().getHours();
+  const isNight = hour < 6 || hour > 22; // 10 PM to 6 AM
+  const isPeak = (hour >= 8 && hour <= 10) || (hour >= 17 && hour <= 20);
+  const trafficMultiplier = isPeak ? 1.8 : 1.0;
 
   // Min-heap (simple array-based priority queue for small graphs)
   const pq: DijkstraState[] = [];
@@ -245,10 +297,10 @@ function dijkstra(
 
   const push = (s: DijkstraState) => {
     pq.push(s);
-    pq.sort((a, b) => a.cost - b.cost); // O(n log n) — acceptable for <2000 nodes
+    pq.sort((a, b) => a.fCost - b.fCost); // O(n log n) — A* sort by fCost
   };
 
-  push({ cost: 0, node: startId, path: [], lastMode: null, transfers: 0 });
+  push({ cost: 0, fCost: 0, node: startId, path: [], lastMode: null, transfers: 0 });
   dist.set(startId, 0);
 
   while (pq.length > 0) {
@@ -256,19 +308,40 @@ function dijkstra(
 
     if (current.node === endId) return current;
 
-    // Skip stale queue entries
+    // Skip stale queue entries (check against actual g-cost)
     if ((dist.get(current.node) ?? Infinity) < current.cost) continue;
 
     const edges = graph.get(current.node) ?? [];
     for (const edge of edges) {
       const isTransfer = current.lastMode !== null && edge.mode !== current.lastMode && edge.mode !== 'walk' && current.lastMode !== 'walk';
       const transferPenalty = isTransfer ? TRANSFER_PENALTY_MIN : 0;
-      const newCost = current.cost + weightFn(edge, current.lastMode) + transferPenalty;
+      
+      const baseCost = weightFn(edge, current.lastMode);
+      
+      // Nighttime pruning: heavily penalize bus routes at night
+      const nightPenalty = (isNight && edge.mode === 'bus') ? 9999 : 0;
+      
+      // Traffic multiplier applied to bus time
+      const timeCost = edge.mode === 'bus' ? baseCost * trafficMultiplier : baseCost;
+      
+      const newCost = current.cost + timeCost + transferPenalty + nightPenalty;
 
       if (newCost < (dist.get(edge.to) ?? Infinity)) {
         dist.set(edge.to, newCost);
+        
+        // A* Heuristic calculation (h-cost)
+        const toNodeObj = nodes.get(edge.to);
+        const endNodeObj = nodes.get(endId);
+        let h = 0;
+        if (toNodeObj && endNodeObj) {
+           const distToEnd = haversineM(toNodeObj.lat, toNodeObj.lng, endNodeObj.lat, endNodeObj.lng);
+           h = (distToEnd / 1000 / METRO_AVG_KMH) * 60; // optimistic time heuristic
+        }
+        const fCost = newCost + h;
+
         push({
           cost: newCost,
+          fCost,
           node: edge.to,
           path: [...current.path, { from: current.node, edge }],
           lastMode: edge.mode,
@@ -535,11 +608,14 @@ export function formatRoutes(
 
 // ── Convenience wrapper for geminiService integration ────────────────────────
 
-export function planAndFormat(
+export async function planAndFormat(
   fromQuery: string,
   toQuery: string,
   isBn: boolean,
-): string {
+): Promise<string> {
+  // Ensure graph is loaded asynchronously
+  await initGraphAsync();
+
   const fromId = resolveLocation(fromQuery);
   const toId = resolveLocation(toQuery);
 

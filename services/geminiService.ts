@@ -1555,13 +1555,43 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
       lowerQuery.includes('direction') ||
       lowerQuery.includes('kivabe') ||
       lowerQuery.includes('kemne') ||
-      lowerQuery.includes('reach');
+      lowerQuery.includes('reach') ||
+      lowerQuery.includes(' থেকে ') ||
+      lowerQuery.includes(' যাব ');
 
     if (isRouteIntent) {
+      // First try intercity classification
       const gIntent = classifyIntent(query);
-      if (gIntent.from && gIntent.to) {
+      let fromLoc = gIntent.from;
+      let toLoc = gIntent.to;
+
+      // If intercity fails, look for local stations
+      if (!fromLoc || !toLoc) {
+        const lowerQ = query.toLowerCase();
+        // Look in STATIONS and METRO_STATIONS
+        const mentioned = [...Object.values(STATIONS), ...Object.values(METRO_STATIONS)].filter(s =>
+          lowerQ.includes(s.name.toLowerCase()) || (s.bnName && lowerQ.includes(s.bnName))
+        );
+        
+        // Very basic positional heuristic: first mentioned = from, second = to.
+        // E.g. "Mirpur 10 to Dhanmondi"
+        if (mentioned.length >= 2) {
+          const firstIdx = Math.min(lowerQ.indexOf(mentioned[0].name.toLowerCase()), lowerQ.indexOf(mentioned[0].bnName || 'XYZ'));
+          const secondIdx = Math.min(lowerQ.indexOf(mentioned[1].name.toLowerCase()), lowerQ.indexOf(mentioned[1].bnName || 'XYZ'));
+          
+          if (firstIdx < secondIdx) {
+            fromLoc = mentioned[0].id;
+            toLoc = mentioned[1].id;
+          } else {
+            fromLoc = mentioned[1].id;
+            toLoc = mentioned[0].id;
+          }
+        }
+      }
+
+      if (fromLoc && toLoc) {
         try {
-          const graphResult = planAndFormat(gIntent.from, gIntent.to, isBn);
+          const graphResult = await planAndFormat(fromLoc, toLoc, isBn);
           if (graphResult && !graphResult.startsWith('🤔') && graphResult.length > 60) {
             return graphResult;
           }
