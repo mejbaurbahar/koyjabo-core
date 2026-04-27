@@ -60,9 +60,8 @@ export default defineConfig(({ mode }) => {
         ]
       }),
       VitePWA({
-        registerType: 'prompt',
+        registerType: 'autoUpdate',
         includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg', 'logo.png', 'offline-styles.css', 'manifest.json'],
-        // Inline workbox runtime to avoid network dependency
         injectRegister: 'auto',
         manifest: {
           id: '/',
@@ -126,8 +125,10 @@ export default defineConfig(({ mode }) => {
           // Inline the workbox runtime instead of loading from CDN
           mode: 'production',
           sourcemap: false,
+          skipWaiting: true,
+          clientsClaim: true,
           // Cache versioning for proper updates
-          cacheId: 'dhaka-commute-v11',
+          cacheId: 'dhaka-commute-v12',
 
           runtimeCaching: [
             // Cache Intercity App - StaleWhileRevalidate: serve from cache instantly, update in background

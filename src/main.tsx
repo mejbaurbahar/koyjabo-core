@@ -85,11 +85,8 @@ if (rootElement) {
 async function registerPWAWorker() {
   try {
     const mod = await import(/* @vite-ignore */ 'virtual:pwa-register');
-    const updateSW = mod.registerSW({
-      immediate: false,
-      onNeedRefresh() {
-        window.dispatchEvent(new CustomEvent('pwa-update-available', { detail: { updateSW } }));
-      },
+    mod.registerSW({
+      immediate: true,
       onOfflineReady() {
         window.dispatchEvent(new CustomEvent('pwa-offline-ready'));
       },
