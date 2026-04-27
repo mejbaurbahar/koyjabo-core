@@ -60,8 +60,15 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
   const [submitting, setSubmitting] = useState(false);
   const [lightbox, setLightbox] = useState<BusPhoto | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
-  const officialImagePath = getBusImagePath(busName, busBnName);
-  const hasOfficialBusImage = !!officialImagePath && officialImagePath !== '/default-bus.svg';
+  const [officialSrc, setOfficialSrc] = useState<string | null>(null);
+  const [hasOfficialBusImage, setHasOfficialBusImage] = useState(false);
+
+  useEffect(() => {
+    const p = getBusImagePath(busName, busBnName);
+    const ok = !!p && p !== '/default-bus.svg';
+    setOfficialSrc(p);
+    setHasOfficialBusImage(ok);
+  }, [busName, busBnName]);
 
   useEffect(() => { trackFeatureUsage('bus_photos'); }, []);
 
@@ -114,12 +121,16 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
         {hasOfficialBusImage && (
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-3 border border-gray-100 dark:border-gray-700">
             <p className="text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Bus Image</p>
-            <div className="rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700 bg-slate-50 dark:bg-slate-900">
+            <div className="rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700 bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
               <img
-                src={officialImagePath!}
+                src={officialSrc || '/default-bus.svg'}
                 alt={`${busName} bus`}
-                className="w-full h-44 object-cover"
+                className="w-full max-h-52 object-contain"
                 loading="lazy"
+                onError={() => {
+                  setOfficialSrc('/default-bus.svg');
+                  setHasOfficialBusImage(false);
+                }}
               />
             </div>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
@@ -166,7 +177,7 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
 
         {loading && <div className="text-center py-10 text-gray-400">লোড হচ্ছে...</div>}
 
-        {!loading && photos.length === 0 && !showForm && (
+        {!loading && photos.length === 0 && !showForm && !hasOfficialBusImage && (
           <div className="text-center py-12">
             <Camera className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
             <p className="text-gray-500 dark:text-gray-400 font-medium">এখনো কোনো ছবি নেই</p>
