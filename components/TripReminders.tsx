@@ -5,7 +5,8 @@ import { useLanguage } from '../contexts/LanguageContext';
 
 interface Props { onBack: () => void; }
 
-const DAY_LABELS = ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহ', 'শুক্র', 'শনি'];
+const DAY_LABELS_BN = ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহ', 'শুক্র', 'শনি'];
+const DAY_LABELS_EN = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const BEFORE_OPTIONS = [5, 10, 15, 20, 30, 45, 60];
 
 function requestNotificationPermission() {
@@ -14,7 +15,7 @@ function requestNotificationPermission() {
   }
 }
 
-function scheduleNextAlarm(reminder: TripReminder) {
+function scheduleNextAlarm(reminder: TripReminder, lang: string = 'bn') {
   if (!reminder.enabled) return;
   const now = new Date();
   const [hh, mm] = reminder.time.split(':').map(Number);
@@ -27,7 +28,9 @@ function scheduleNextAlarm(reminder: TripReminder) {
       setTimeout(() => {
         if ('Notification' in window && Notification.permission === 'granted') {
           new Notification(`কই যাবো — ${reminder.label}`, {
-            body: `${reminder.minutesBefore} মিনিট পরে যাত্রা শুরু করুন${reminder.busName ? ` · ${reminder.busName}` : ''}`,
+            body: lang === 'bn'
+              ? `${reminder.minutesBefore} মিনিট পরে যাত্রা শুরু করুন${reminder.busName ? ` · ${reminder.busName}` : ''}`
+              : `Depart in ${reminder.minutesBefore} min${reminder.busName ? ` · ${reminder.busName}` : ''}`,
             icon: '/icon-192x192.png',
           });
         }
@@ -40,6 +43,7 @@ function scheduleNextAlarm(reminder: TripReminder) {
 export default function TripReminders({ onBack }: Props) {
   const { language } = useLanguage();
   const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
+  const DAY_LABELS = language === 'bn' ? DAY_LABELS_BN : DAY_LABELS_EN;
   const user = getAuthUser();
   const [reminders, setReminders] = useState<TripReminder[]>([]);
   const [showForm, setShowForm] = useState(false);
@@ -55,7 +59,7 @@ export default function TripReminders({ onBack }: Props) {
     pullReminders().then(() => {
       const loaded = getLocalReminders();
       setReminders(loaded);
-      loaded.filter(r => r.enabled).forEach(scheduleNextAlarm);
+      loaded.filter(r => r.enabled).forEach(r => scheduleNextAlarm(r, language));
     });
   }, []);
 
@@ -85,7 +89,7 @@ export default function TripReminders({ onBack }: Props) {
     const updated = [...reminders, newReminder];
     setReminders(updated);
     saveLocalReminders(updated);
-    scheduleNextAlarm(newReminder);
+    scheduleNextAlarm(newReminder, language);
     setShowForm(false);
     setForm({ label: '', busName: '', fromStop: '', toStop: '', days: [1, 2, 3, 4, 5], time: '08:00', minutesBefore: 15 });
     if (user) {
@@ -100,7 +104,7 @@ export default function TripReminders({ onBack }: Props) {
     setReminders(updated);
     saveLocalReminders(updated);
     const toggled = updated.find(r => r.id === id);
-    if (toggled?.enabled) scheduleNextAlarm(toggled);
+    if (toggled?.enabled) scheduleNextAlarm(toggled, language);
     if (user) await syncReminders();
   };
 

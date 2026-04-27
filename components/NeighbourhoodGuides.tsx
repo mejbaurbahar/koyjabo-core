@@ -376,8 +376,8 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
           </button>
           <span className="text-2xl">{selected.icon}</span>
           <div>
-            <h1 className="text-lg font-bold text-gray-900 dark:text-white">{selected.area}</h1>
-            <p className="text-xs text-gray-500 dark:text-gray-400">{selected.areaEn} · {selected.division}</p>
+            <h1 className="text-lg font-bold text-gray-900 dark:text-white">{language === 'bn' ? selected.area : selected.areaEn}</h1>
+            <p className="text-xs text-gray-500 dark:text-gray-400">{language === 'bn' ? selected.areaEn : selected.area} · {selected.division}</p>
           </div>
         </div>
         <div className="flex-1 min-h-0 overflow-y-auto p-4 space-y-4">
@@ -441,8 +441,8 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
               <button key={g.area} onClick={() => setSelected(g)}
                 className="bg-white dark:bg-slate-800 rounded-2xl p-4 text-left shadow-sm border border-gray-100 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700 transition-colors active:scale-95">
                 <span className="text-3xl block mb-2">{g.icon}</span>
-                <h3 className="font-bold text-gray-900 dark:text-white text-sm">{g.area}</h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{g.areaEn}</p>
+                <h3 className="font-bold text-gray-900 dark:text-white text-sm">{language === 'bn' ? g.area : g.areaEn}</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400">{language === 'bn' ? g.areaEn : g.area}</p>
                 <p className="text-xs text-purple-600 dark:text-purple-400 mt-1">{g.division}</p>
               </button>
             ))}
@@ -467,8 +467,8 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
                       <button key={g.area} onClick={() => setSelected(g)}
                         className="bg-white dark:bg-slate-800 rounded-2xl p-4 text-left shadow-sm border border-gray-100 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700 transition-colors active:scale-95">
                         <span className="text-3xl block mb-2">{g.icon}</span>
-                        <h3 className="font-bold text-gray-900 dark:text-white text-sm">{g.area}</h3>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">{g.areaEn}</p>
+                        <h3 className="font-bold text-gray-900 dark:text-white text-sm">{language === 'bn' ? g.area : g.areaEn}</h3>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">{language === 'bn' ? g.areaEn : g.area}</p>
                       </button>
                     ))}
                   </div>

@@ -43,64 +43,90 @@ const ALL_STOP_NAMES: string[] = (() => {
 
 const METRO_BN_NAMES = new Set(Object.values(METRO_STATIONS).map(s => s.bnName));
 
-function suggestRoute(from: string, to: string): string {
+function suggestRoute(from: string, to: string, lang: string = 'bn'): string {
   const fromMetro = METRO_BN_NAMES.has(from);
   const toMetro = METRO_BN_NAMES.has(to);
 
   // Both stops on metro line — fastest option
   if (fromMetro && toMetro) {
-    return '🚇 মেট্রো রেল (MRT-6) নিন — সবচেয়ে দ্রুত। ভাড়া ২০-১০০ টাকা। পিক আওয়ারেও সময়মতো পৌঁছাবেন।';
+    return lang === 'bn'
+      ? '🚇 মেট্রো রেল (MRT-6) নিন — সবচেয়ে দ্রুত। ভাড়া ২০-১০০ টাকা। পিক আওয়ারেও সময়মতো পৌঁছাবেন।'
+      : '🚇 Take MRT-6 Metro Rail — fastest option. Fare ৳20–100. On-time even during peak hours.';
   }
 
   // One is metro, walk to station
   if (fromMetro || toMetro) {
     const station = fromMetro ? from : to;
-    return `🚇 ${station} মেট্রো স্টেশন পর্যন্ত হেঁটে বা রিকশায় যান, তারপর MRT-6 নিন। অথবা 🚌 লোকাল বাসে সরাসরি যান।`;
+    return lang === 'bn'
+      ? `🚇 ${station} মেট্রো স্টেশন পর্যন্ত হেঁটে বা রিকশায় যান, তারপর MRT-6 নিন। অথবা 🚌 লোকাল বাসে সরাসরি যান।`
+      : `🚇 Walk or take a rickshaw to ${station} metro station, then take MRT-6. Or 🚌 take a local bus directly.`;
   }
 
   // Specific area routing
   if ((from.includes('সাভার') || from.includes('আশুলিয়া')) && (to.includes('মোহাম্মদপুর') || to.includes('ধানমন্ডি') || to.includes('আসাদগেট'))) {
-    return '🚌 বিকল্প ১: সাভার পরিবহন বা বোয়ালখালী বাসে সরাসরি মোহাম্মদপুর যান। বিকল্প ২: বোয়ালখালী বাসে সায়মলী, তারপর পায়ে হেঁটে পার হয়ে আচিম বা অগ্রণী বাসে মোহাম্মদপুর।';
+    return lang === 'bn'
+      ? '🚌 বিকল্প ১: সাভার পরিবহন বা বোয়ালখালী বাসে সরাসরি মোহাম্মদপুর যান। বিকল্প ২: বোয়ালখালী বাসে সায়মলী, তারপর পায়ে হেঁটে পার হয়ে আচিম বা অগ্রণী বাসে মোহাম্মদপুর।'
+      : '🚌 Option 1: Savar Paribahan or Bawakhali bus directly to Mohammadpur. Option 2: Bawakhali bus to Shyamoli, then walk and take Achim/Agrani bus to Mohammadpur.';
   }
 
   if ((from.includes('সাভার') || from.includes('আশুলিয়া')) && to.includes('মতিঝিল')) {
-    return '🚌 সাভার পরিবহন → গাবতলী → লোকাল বাস মতিঝিল। অথবা 🚇 গাবতলী থেকে মেট্রোতে মতিঝিল (কারওয়ান বাজার হয়ে)।';
+    return lang === 'bn'
+      ? '🚌 সাভার পরিবহন → গাবতলী → লোকাল বাস মতিঝিল। অথবা 🚇 গাবতলী থেকে মেট্রোতে মতিঝিল (কারওয়ান বাজার হয়ে)।'
+      : '🚌 Savar Paribahan → Gabtoli → local bus to Motijheel. Or 🚇 Metro from Gabtoli to Motijheel (via Karwan Bazar).';
   }
 
   if ((from.includes('সাভার') || from.includes('আশুলিয়া')) && to.includes('গুলশান')) {
-    return '🚌 সাভার পরিবহন → গাবতলী, তারপর সিএনজি বা উবারে গুলশান। অথবা 🚇 মেট্রোতে বিজয় সরণি → সিএনজি গুলশান।';
+    return lang === 'bn'
+      ? '🚌 সাভার পরিবহন → গাবতলী, তারপর সিএনজি বা উবারে গুলশান। অথবা 🚇 মেট্রোতে বিজয় সরণি → সিএনজি গুলশান।'
+      : '🚌 Savar Paribahan → Gabtoli, then CNG or Uber to Gulshan. Or 🚇 Metro to Bijoy Sarani → CNG to Gulshan.';
   }
 
   if ((from.includes('মিরপুর') || from.includes('পল্লবী')) && to.includes('ধানমন্ডি')) {
-    return '🚇 মিরপুর মেট্রো → ফার্মগেট/বিজয় সরণি, তারপর 🚌 লোকাল বাসে ধানমন্ডি। অথবা সরাসরি বাস রুট ৮ নিন।';
+    return lang === 'bn'
+      ? '🚇 মিরপুর মেট্রো → ফার্মগেট/বিজয় সরণি, তারপর 🚌 লোকাল বাসে ধানমন্ডি। অথবা সরাসরি বাস রুট ৮ নিন।'
+      : '🚇 Mirpur Metro → Farmgate/Bijoy Sarani, then 🚌 local bus to Dhanmondi. Or take bus route 8 directly.';
   }
 
   if ((from.includes('মিরপুর') || from.includes('পল্লবী')) && to.includes('মতিঝিল')) {
-    return '🚇 মিরপুর-১০ বা মিরপুর-১১ মেট্রো স্টেশন → সরাসরি মতিঝিল। দ্রুততম পথ, ৩০-৩৫ মিনিট।';
+    return lang === 'bn'
+      ? '🚇 মিরপুর-১০ বা মিরপুর-১১ মেট্রো স্টেশন → সরাসরি মতিঝিল। দ্রুততম পথ, ৩০-৩৫ মিনিট।'
+      : '🚇 Mirpur-10 or Mirpur-11 Metro Station → direct to Motijheel. Fastest route, 30–35 minutes.';
   }
 
   if ((from.includes('উত্তরা') || from.includes('আব্দুল্লাহপুর')) && (to.includes('মতিঝিল') || to.includes('ধানমন্ডি'))) {
-    return '🚇 উত্তরা মেট্রো স্টেশন থেকে সরাসরি MRT-6 নিন। ভাড়া ৬০-১০০ টাকা, সময় ৩০-৪০ মিনিট।';
+    return lang === 'bn'
+      ? '🚇 উত্তরা মেট্রো স্টেশন থেকে সরাসরি MRT-6 নিন। ভাড়া ৬০-১০০ টাকা, সময় ৩০-৪০ মিনিট।'
+      : '🚇 Take MRT-6 directly from Uttara Metro Station. Fare ৳60–100, journey time 30–40 minutes.';
   }
 
   if (from.includes('গাজীপুর') && to.includes('ঢাকা')) {
-    return '🚌 BRT (বাস র‍্যাপিড ট্রানজিট) ব্যবহার করুন — গাজীপুর থেকে এয়ারপোর্ট পর্যন্ত দ্রুত। তারপর 🚇 মেট্রো নিন ঢাকার ভেতরে।';
+    return lang === 'bn'
+      ? '🚌 BRT (বাস র‍্যাপিড ট্রানজিট) ব্যবহার করুন — গাজীপুর থেকে এয়ারপোর্ট পর্যন্ত দ্রুত। তারপর 🚇 মেট্রো নিন ঢাকার ভেতরে।'
+      : '🚌 Use BRT (Bus Rapid Transit) — fast from Gazipur to Airport. Then 🚇 take Metro within Dhaka.';
   }
 
   if (from.includes('নারায়ণগঞ্জ') && to.includes('ঢাকা')) {
-    return '🚌 নারায়ণগঞ্জ-গুলিস্তান সরাসরি বাস। অথবা 🚂 ট্রেনে কমলাপুর।';
+    return lang === 'bn'
+      ? '🚌 নারায়ণগঞ্জ-গুলিস্তান সরাসরি বাস। অথবা 🚂 ট্রেনে কমলাপুর।'
+      : '🚌 Direct Narayanganj–Gulistan bus. Or 🚂 train to Kamalapur.';
   }
 
   if (from.includes('যাত্রাবাড়ী') || from.includes('সায়েদাবাদ')) {
-    return '🚌 গুলিস্তান হয়ে লোকাল বাসে যে কোনো গন্তব্য। পিক আওয়ারে ৩০+ মিনিট বেশি রাখুন।';
+    return lang === 'bn'
+      ? '🚌 গুলিস্তান হয়ে লোকাল বাসে যে কোনো গন্তব্য। পিক আওয়ারে ৩০+ মিনিট বেশি রাখুন।'
+      : '🚌 Local bus via Gulistan to any destination. Allow 30+ extra minutes during peak hours.';
   }
 
   if (from.includes('কমলাপুর') || to.includes('কমলাপুর')) {
-    return '🚂 ট্রেন ব্যবহার করুন — কমলাপুর থেকে সারা দেশে। অথবা 🚇 মেট্রো নিন ঢাকার ভেতরে।';
+    return lang === 'bn'
+      ? '🚂 ট্রেন ব্যবহার করুন — কমলাপুর থেকে সারা দেশে। অথবা 🚇 মেট্রো নিন ঢাকার ভেতরে।'
+      : '🚂 Use train — Kamalapur connects to all parts of the country. Or 🚇 Metro for travel within Dhaka.';
   }
 
   if (from.includes('পুরান ঢাকা') || from.includes('সদরঘাট') || from.includes('লালবাগ') || from.includes('চকবাজার')) {
-    return '🚌 গুলিস্তান বা নিউমার্কেট থেকে লোকাল বাস। 🛺 রিকশা বা ইজিবাইক ছোট দূরত্বে ভালো। সদরঘাট থেকে লঞ্চে বরিশাল।';
+    return lang === 'bn'
+      ? '🚌 গুলিস্তান বা নিউমার্কেট থেকে লোকাল বাস। 🛺 রিকশা বা ইজিবাইক ছোট দূরত্বে ভালো। সদরঘাট থেকে লঞ্চে বরিশাল।'
+      : '🚌 Local bus from Gulistan or New Market. 🛺 Rickshaw or easy-bike for short distances. Sadarghat launch to Barisal.';
   }
 
   // Short distance hint (same general area keywords)
@@ -108,10 +134,14 @@ function suggestRoute(from: string, to: string): string {
   const fromShort = shortDistanceAreas.some(a => from.includes(a));
   const toShort = shortDistanceAreas.some(a => to.includes(a));
   if (fromShort && toShort) {
-    return '🚶 ২ কিমির কম হলে হেঁটে যান। ২-৫ কিমি হলে 🛺 রিকশা নিন। বেশি হলে 🚌 লোকাল বাস বা উবার/পাঠাও।';
+    return lang === 'bn'
+      ? '🚶 ২ কিমির কম হলে হেঁটে যান। ২-৫ কিমি হলে 🛺 রিকশা নিন। বেশি হলে 🚌 লোকাল বাস বা উবার/পাঠাও।'
+      : '🚶 Walk for under 2 km. 🛺 Rickshaw for 2–5 km. 🚌 Local bus or Uber/Pathao for longer distances.';
   }
 
-  return '🚌 লোকাল বাস বা সিএনজি নিন। পিক আওয়ার (৮-১০টা, ৫-৭টা) এড়িয়ে চলুন। 📱 উবার/পাঠাও অ্যাপে রাইড নিতে পারেন।';
+  return lang === 'bn'
+    ? '🚌 লোকাল বাস বা সিএনজি নিন। পিক আওয়ার (৮-১০টা, ৫-৭টা) এড়িয়ে চলুন। 📱 উবার/পাঠাও অ্যাপে রাইড নিতে পারেন।'
+    : '🚌 Take a local bus or CNG auto. Avoid peak hours (8–10 AM, 5–7 PM). 📱 Uber/Pathao app available for rides.';
 }
 
 export default function MultiStopPlanner({ onBack }: Props) {
@@ -165,7 +195,7 @@ export default function MultiStopPlanner({ onBack }: Props) {
       newLegs.push({
         from: filled[i].name,
         to: filled[i + 1].name,
-        suggestion: suggestRoute(filled[i].name, filled[i + 1].name),
+        suggestion: suggestRoute(filled[i].name, filled[i + 1].name, language),
       });
     }
     setLegs(newLegs);
