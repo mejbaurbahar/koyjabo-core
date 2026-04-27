@@ -3726,57 +3726,6 @@ const App: React.FC = () => {
               </div>
             </div>
           )}
-          {/* ── Community Features Grid ── */}
-          {listFilter !== 'FAVORITES' && (
-            <div className="mb-2">
-              <div className="flex items-center justify-between mb-2 px-1">
-                <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{language === 'bn' ? 'কমিউনিটি' : 'Community'}</p>
-              </div>
-              <div className="grid grid-cols-4 gap-2">
-                <button onClick={() => setView(AppView.TRIP_REMINDERS)}
-                  className="flex flex-col items-center gap-1 p-2.5 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-violet-300 dark:hover:border-violet-700 transition-colors active:scale-95">
-                  <span className="text-lg">🔔</span>
-                  <span className="text-[10px] font-semibold text-gray-600 dark:text-gray-400 text-center leading-tight">{language === 'bn' ? 'রিমাইন্ডার' : 'Reminders'}</span>
-                </button>
-                <button onClick={() => setView(AppView.ROAD_ALERTS)}
-                  className="flex flex-col items-center gap-1 p-2.5 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-orange-300 dark:hover:border-orange-700 transition-colors active:scale-95">
-                  <span className="text-lg">⚠️</span>
-                  <span className="text-[10px] font-semibold text-gray-600 dark:text-gray-400 text-center leading-tight">{language === 'bn' ? 'রাস্তা সতর্কতা' : 'Road Alerts'}</span>
-                </button>
-                <button onClick={() => setView(AppView.NEIGHBOURHOOD_GUIDES)}
-                  className="flex flex-col items-center gap-1 p-2.5 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700 transition-colors active:scale-95">
-                  <span className="text-lg">🗺️</span>
-                  <span className="text-[10px] font-semibold text-gray-600 dark:text-gray-400 text-center leading-tight">{language === 'bn' ? 'এলাকা গাইড' : 'Area Guides'}</span>
-                </button>
-                <button onClick={() => setView(AppView.BUS_PASS_INFO)}
-                  className="flex flex-col items-center gap-1 p-2.5 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 transition-colors active:scale-95">
-                  <span className="text-lg">💳</span>
-                  <span className="text-[10px] font-semibold text-gray-600 dark:text-gray-400 text-center leading-tight">{language === 'bn' ? 'বাস পাস' : 'Bus Pass'}</span>
-                </button>
-                <button onClick={() => setView(AppView.MULTI_STOP_PLANNER)}
-                  className="flex flex-col items-center gap-1 p-2.5 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-cyan-300 dark:hover:border-cyan-700 transition-colors active:scale-95">
-                  <span className="text-lg">📍</span>
-                  <span className="text-[10px] font-semibold text-gray-600 dark:text-gray-400 text-center leading-tight">{language === 'bn' ? 'মাল্টি-স্টপ' : 'Multi-Stop'}</span>
-                </button>
-                <button onClick={() => setView(AppView.COMMUTE_COST)}
-                  className="flex flex-col items-center gap-1 p-2.5 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors active:scale-95">
-                  <span className="text-lg">💰</span>
-                  <span className="text-[10px] font-semibold text-gray-600 dark:text-gray-400 text-center leading-tight">{language === 'bn' ? 'খরচ হিসাব' : 'Cost Calc'}</span>
-                </button>
-                <button onClick={() => setView(AppView.SEAT_AVAILABILITY)}
-                  className="flex flex-col items-center gap-1 p-2.5 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors active:scale-95">
-                  <span className="text-lg">🎫</span>
-                  <span className="text-[10px] font-semibold text-gray-600 dark:text-gray-400 text-center leading-tight">{language === 'bn' ? 'সিট' : 'Seat Avail'}</span>
-                </button>
-                <button onClick={() => setView(AppView.BLOG)}
-                  className="flex flex-col items-center gap-1 p-2.5 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-orange-300 dark:hover:border-orange-700 transition-colors active:scale-95">
-                  <span className="text-lg">📝</span>
-                  <span className="text-[10px] font-semibold text-gray-600 dark:text-gray-400 text-center leading-tight">{language === 'bn' ? 'ব্লগ' : 'Blog'}</span>
-                </button>
-              </div>
-            </div>
-          )}
-
           {filteredBuses.map((bus, busIdx) => {
             const isFav = favorites.includes(bus.id);
             const estimatedFare = calculateFare(bus);
