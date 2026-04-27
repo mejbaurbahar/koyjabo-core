@@ -74,6 +74,10 @@ jobs:
           echo "koyjabo.com" > CNAME
           touch .nojekyll
 
+          # Ensure Pages deployment workflow is always present
+          mkdir -p .github/workflows
+          cp "$GITHUB_WORKSPACE/.github/deploy-assets/pages.yml" .github/workflows/pages.yml
+
       - name: Commit and push to gh-pages
         env:
           DATA_GITHUB_TOKEN: ${{ secrets.DATA_GITHUB_TOKEN }}
