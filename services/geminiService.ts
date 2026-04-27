@@ -8,6 +8,8 @@ import {
 } from './travelAI';
 import { checkLearnedAnswer, recordAndLearn, warmUpCache } from './aiLearning';
 import { findRoutesBetweenStations, SuggestedRoute } from './routePlanner';
+import { planAndFormat, resolveLocation, findRoutes, formatRoutes } from './graphEngine';
+
 import {
   FARE_DATA,
   TRAFFIC_PATTERNS,
@@ -1262,9 +1264,76 @@ function findLocationAwareTransitRoute(query: string, fromArea: string, isBn: bo
 
 // --- MAIN AI LOGIC ---
 learningSystem.loadFromStorage();
-// Warm up learned-answer cache from previous session's fallback patterns
 setTimeout(warmUpCache, 0);
 setExtraKnowledgeData(ADVANCED_QA_DATA);
+
+// ══════════════════════════════════════════════════════════════════════════════
+// KOYJABO AI — SYSTEM IDENTITY & BEHAVIOURAL GUIDELINES
+// This constant defines the AI persona applied throughout all response paths.
+// ══════════════════════════════════════════════════════════════════════════════
+const KOYJABO_SYSTEM_PROMPT = {
+  persona: {
+    en: 'KoyJabo AI — intelligent transport assistant for Bangladesh',
+    bn: 'কই যাবো AI — বাংলাদেশের স্মার্ট যাতায়াত সহায়ক',
+  },
+  capabilities: {
+    en: [
+      '🚌 Dhaka local bus routes, stops & fares (200+ lines)',
+      '🚇 Metro Rail MRT-6 — Uttara ↔ Motijheel stations, fares & schedules',
+      '🚂 Intercity trains — all BD Railway routes with fares & timings',
+      '🚌 Intercity buses — AC/Non-AC operators, counter locations',
+      '✈️ Domestic flights — Biman, US-Bangla, Novoair routes',
+      '🚢 Launch services — Sadarghat to southern Bangladesh',
+      '🗺️ Tourist route plans — Cox\'s Bazar, Sylhet, Bandarban & more',
+      '📍 Nearest transport from your current location',
+      '🚶 First-mile & last-mile walking directions',
+    ],
+    bn: [
+      '🚌 ঢাকার স্থানীয় বাস রুট, স্টপ ও ভাড়া (২০০+ লাইন)',
+      '🚇 মেট্রোরেল MRT-6 — উত্তরা ↔ মতিঝিল স্টেশন, ভাড়া ও সময়সূচি',
+      '🚂 আন্তঃজেলা ট্রেন — সব বিডি রেলওয়ে রুট ভাড়া ও সময় সহ',
+      '🚌 আন্তঃজেলা বাস — AC/Non-AC অপারেটর ও কাউন্টার তথ্য',
+      '✈️ ঘরোয়া বিমান — বিমান, ইউএস-বাংলা, নভোএয়ার রুট',
+      '🚢 লঞ্চ সার্ভিস — সদরঘাট থেকে দক্ষিণ বাংলা',
+      '🗺️ পর্যটন রুট প্ল্যান — কক্সবাজার, সিলেট, বান্দরবান ইত্যাদি',
+      '📍 আপনার অবস্থান থেকে নিকটতম পরিবহন',
+      '🚶 ফার্স্ট-মাইল ও লাস্ট-মাইল হাঁটার নির্দেশনা',
+    ],
+  },
+  rules: [
+    'Always respond in the same language (bn/en/banglish) the user writes in.',
+    'Never hallucinate — if data is missing, say so clearly and suggest alternatives.',
+    'Rank multi-modal results: Best (balanced) → Fastest → Cheapest.',
+    'Include walking time whenever transport involves a station transfer.',
+    'Detect typos and informal location names via fuzzy matching.',
+    'For intercity queries always show Bus + Train options side by side when both available.',
+    'Peak-hour warnings must be shown for Dhaka local queries between 8-10 AM and 5-8 PM.',
+  ],
+};
+
+// ── Ranked Route Response Builder ────────────────────────────────────────────
+// Wraps any multi-option response with a Best/Fastest/Cheapest ranking header.
+function buildRankedRouteHeader(from: string, to: string, isBn: boolean): string {
+  return isBn
+    ? `🗺️ **${from} → ${to}** রুট পরিকল্পনা\n` +
+      `┌ 🏆 সেরা (সময় + খরচের ভারসাম্য)\n` +
+      `├ ⚡ দ্রুততম\n` +
+      `└ 💸 সাশ্রয়ী\n\n`
+    : `🗺️ **${from} → ${to}** Route Options\n` +
+      `┌ 🏆 Best (balanced time & cost)\n` +
+      `├ ⚡ Fastest\n` +
+      `└ 💸 Cheapest\n\n`;
+}
+
+// ── Honest data-missing response ─────────────────────────────────────────────
+function buildDataMissingResponse(query: string, isBn: boolean): string {
+  const suggest = isBn
+    ? 'কিছু পরামর্শ: নির্দিষ্ট স্টেশনের নাম দিন (যেমন: "ফার্মগেট থেকে মিরপুর ১০"), অথবা জেলা-স্তরের প্রশ্ন করুন (যেমন: "ঢাকা থেকে সিলেট").'
+    : 'Suggestions: specify a station name (e.g. "Farmgate to Mirpur 10"), or ask district-level (e.g. "Dhaka to Sylhet").';
+  return isBn
+    ? `🤔 আমি "${query}" এর জন্য নির্দিষ্ট তথ্য খুঁজে পাচ্ছি না।\n\n${suggest}`
+    : `🤔 I couldn't find specific data for "${query}".\n\n${suggest}`;
+}
 
 export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, chatHistory: ChatMessage[] = []): Promise<string> => {
 
@@ -1281,31 +1350,32 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   // Creator / builder questions
   if (lowerQuery.match(/who made (you|this|koyjabo|koy jabo|this app|it)|who built (you|this|koyjabo|this app|it)|who created (you|this|koyjabo|this app|it)|who developed (you|this|koyjabo|this app)|who is (your|the) (creator|developer|maker|author|founder)|who design|তোমাকে কে বানিয়েছে|কে বানিয়েছে|কে তৈরি করেছে|কে বানিয়েছেন|কে ডেভেলপ করেছে/)) {
     return isBn
-      ? "👨‍💻 আমাকে তৈরি করেছেন **মেজবাউর বাহার ফাগুন (Mejbaur Bahar Fagun)**, একজন **সফটওয়্যার ইঞ্জিনিয়ার**। তিনি বাংলাদেশের মানুষের যাতায়াত সহজ করার লক্ষ্যে **কই যাবো (KoyJabo)** প্ল্যাটফর্ম ও এই এআই তৈরি করেছেন। আমি প্রতিদিন ব্যবহারকারীদের প্রশ্ন থেকে শিখে আরও স্মার্ট হচ্ছি! 🚌"
-      : "👨‍💻 I was built by **Mejbaur Bahar Fagun**, a **Software Engineer** from Bangladesh. He created the **KoyJabo** platform and this AI to make travel across Bangladesh easy. I learn from every conversation and keep getting smarter! 🚌";
+      ? '👨‍💻 আমাকে তৈরি করেছেন **মেজবাউর বাহার ফাগুন (Mejbaur Bahar Fagun)**, একজন **সফটওয়্যার ইঞ্জিনিয়ার**। তিনি বাংলাদেশের মানুষের যাতায়াত সহজ করার লক্ষ্যে **কই যাবো (KoyJabo)** প্ল্যাটফর্ম ও এই এআই তৈরি করেছেন। আমি প্রতিদিন ব্যবহারকারীদের প্রশ্ন থেকে শিখে আরও স্মার্ট হচ্ছি! 🚌'
+      : '👨‍💻 I was built by **Mejbaur Bahar Fagun**, a **Software Engineer** from Bangladesh. He created the **KoyJabo** platform and this AI to make travel across Bangladesh easier. I learn from every query and keep improving! 🚌';
   }
 
   // Identity / introduction questions
   if (lowerQuery.match(/who are you|what are you|introduce yourself|what can you do|tell me about yourself|your name|are you ai|are you a bot|what is koyjabo|what is koy jabo|আপনি কে|তুমি কে|আপনার নাম|আপনি কী|তোমার নাম|তুমি কি ai|তুমি কি বট|কই যাবো কী|কই যাবো কি/)) {
+    const caps = KOYJABO_SYSTEM_PROMPT.capabilities[isBn ? 'bn' : 'en'].map(c => `- ${c}`).join('\n');
     return isBn
-      ? "🤖 আমি **কই যাবো (KoyJabo) AI Travel Assistant** — বাংলাদেশের যোগাযোগ ব্যবস্থার জন্য আপনার স্মার্ট ভ্রমণ সহায়ক!\n\n**আমি যা করতে পারি:**\n- 🚌 **ঢাকার স্থানীয় বাস রুট** — ফার্মগেট থেকে মিরপুর, গুলশান থেকে মতিঝিল সব রুট\n- 🚇 **মেট্রোরেল (MRT-6)** — উত্তরা থেকে মতিঝিল পর্যন্ত স্টেশন, ভাড়া ও সময়সূচি\n- 🚂 **আন্তঃজেলা ভ্রমণ** — বাস, ট্রেন, বিমান ও লঞ্চে ঢাকা থেকে যেকোনো জেলায়\n- ✈️ **বিমান ফ্লাইট** — ঘরোয়া রুট ও এয়ারপোর্ট তথ্য\n- 🚢 **লঞ্চ সার্ভিস** — ঢাকা সদরঘাট থেকে দক্ষিণ বাংলার নৌপথ\n- 🗺️ **পর্যটন গাইড** — কক্সবাজার, সুন্দরবন, সেন্টমার্টিন ভ্রমণ পরিকল্পনা\n\n*(নির্মাতা: Mejbaur Bahar Fagun, Software Engineer)*\n\nআজ কোথায় যেতে চান? 😊"
-      : "🤖 I am **KoyJabo AI Travel Assistant** — your smart travel guide for Bangladesh!\n\n**What I can help with:**\n- 🚌 **Dhaka Local Buses** — routes, stops, fares across 200+ bus lines\n- 🚇 **Metro Rail (MRT-6)** — stations, fares, schedules from Uttara to Motijheel\n- 🚂 **Intercity Travel** — Bus, Train, Flight & Launch from Dhaka to any district\n- ✈️ **Domestic Flights** — airport info, routes & airlines\n- 🚢 **Launch Services** — Sadarghat to southern Bangladesh waterway routes\n- 🗺️ **Tourist Guide** — Cox's Bazar, Sundarbans, Saint Martin tour plans\n\n*(Built by Mejbaur Bahar Fagun, Software Engineer)*\n\nWhere would you like to go today? 😊";
+      ? `🤖 আমি **কই যাবো (KoyJabo) AI** — ${KOYJABO_SYSTEM_PROMPT.persona.bn}!\n\n**আমি যা করতে পারি:**\n${caps}\n\n*(নির্মাতা: Mejbaur Bahar Fagun, Software Engineer)*\n\nআজ কোথায় যেতে চান? 😊`
+      : `🤖 I am **KoyJabo AI** — ${KOYJABO_SYSTEM_PROMPT.persona.en}!\n\n**What I can help with:**\n${caps}\n\n*(Built by Mejbaur Bahar Fagun, Software Engineer)*\n\nWhere would you like to go today? 😊`;
   }
 
-  // Greeting
+  // Greeting / help command
   if (lowerQuery.match(/^(hi|hello|hey|salam|assalamu|হাই|হেলো|হ্যালো)\b/) || lowerQuery === 'help' || lowerQuery === 'সাহায্য') {
     return isBn
-      ? "👋 হ্যালো! আমি কই যাবো AI সহায়ক। বলুন কোথায় যেতে চান — বাস, ট্রেন, মেট্রো, বিমান বা লঞ্চ যেকোনো কিছুতে সাহায্য করব!"
-      : "👋 Hello! I'm KoyJabo AI assistant. Tell me where you want to go — I can help with buses, trains, metro, flights or launches!";
+      ? '👋 হ্যালো! আমি **কই যাবো AI**। বলুন কোথায় যেতে চান —\n🚌 বাস · 🚇 মেট্রো · 🚂 ট্রেন · ✈️ বিমান · 🚢 লঞ্চ · 🗺️ ট্যুর প্ল্যান — সব বিষয়ে সাহায্য করব!\n\n_উদাহরণ: "মিরপুর ১০ থেকে ধানমন্ডি" অথবা "ঢাকা থেকে সিলেট ট্রেন"_'
+      : '👋 Hello! I\'m **KoyJabo AI**. Tell me where you want to go —\n🚌 Bus · 🚇 Metro · 🚂 Train · ✈️ Flight · 🚢 Launch · 🗺️ Tour Plans — I\'ll help with it all!\n\n_Example: "Farmgate to Mirpur 10" or "Dhaka to Sylhet train"_';
   }
 
-  // General conversation fallback for non-travel queries
+  // General conversation fallback for non-travel one-word queries
   const isNonTravel = lowerQuery.match(/^(thanks|thank you|ok|okay|great|nice|wow|cool|good|bad|yes|no|sure|why|how|what|when|where)\s*$/)
     || lowerQuery.match(/^(ধন্যবাদ|আচ্ছা|ঠিক আছে|হ্যাঁ|না|ভালো|খারাপ|কেন|কীভাবে|কখন)\s*$/);
   if (isNonTravel) {
     return isBn
-      ? "😊 আমি মূলত বাংলাদেশের পরিবহন বিষয়ে সাহায্য করি। আপনি কোথায় যেতে চান বলুন — বাস রুট, ট্রেন সময়সূচি, ভাড়া বা ভ্রমণ পরিকল্পনায় সাহায্য করতে পারব!"
-      : "😊 I specialize in Bangladesh travel — bus routes, train schedules, fares, metro, flights, and tour planning. Where would you like to go?";
+      ? '😊 আমি বাংলাদেশের যাতায়াত বিষয়ে সাহায্য করি। কোথায় যেতে চান বলুন — বাস রুট, ট্রেন সময়সূচি, ভাড়া বা ভ্রমণ পরিকল্পনায় সাহায্য করব!'
+      : '😊 I specialize in Bangladesh travel — bus routes, trains, metro, flights and tour planning. Where would you like to go?';
   }
 
   // Advanced bilingual Q&A retrieval (RAG-lite) from curated knowledge base.
@@ -1474,7 +1544,32 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   const airportInfo = findAirportInfo(query);
   if (airportInfo) responseParts.push(airportInfo);
 
-  // 1. Check for specific Bus Route (A to B)
+    // 0-G. GRAPH ENGINE (Dijkstra) — PRIMARY multi-modal route planner
+  // Fires on any "X to Y" / "X থেকে Y" / navigation intent query.
+  {
+    const isRouteIntent = lowerQuery.includes(' to ') ||
+      lowerQuery.includes(' from ') ||
+      lowerQuery.includes('jabo') ||
+      lowerQuery.includes('route') ||
+      lowerQuery.includes('path') ||
+      lowerQuery.includes('direction') ||
+      lowerQuery.includes('kivabe') ||
+      lowerQuery.includes('kemne') ||
+      lowerQuery.includes('reach');
+
+    if (isRouteIntent) {
+      const gIntent = classifyIntent(query);
+      if (gIntent.from && gIntent.to) {
+        try {
+          const graphResult = planAndFormat(gIntent.from, gIntent.to, isBn);
+          if (graphResult && !graphResult.startsWith('🤔') && graphResult.length > 60) {
+            return graphResult;
+          }
+        } catch (_) { /* fallthrough to legacy engine */ }
+      }
+    }
+  }
+// 1. Check for specific Bus Route (A to B)
   if (lowerQuery.includes(" to ") || lowerQuery.includes(" from ") || lowerQuery.includes(" থেকে ")) {
     // Extract potential locations?
     // Since we don't have NLP, we iterate known stations
@@ -1567,10 +1662,18 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   if (needsSmartAI && (travelIntent.from || travelIntent.to)) {
     const smartResult = buildSmartResponse(query);
     if (smartResult && !responseParts.some(p => p.includes(smartResult.substring(0, 20)))) {
-      responseParts.push(smartResult);
+      // Prepend ranked route header when we have both from+to and it's a route/comparison query
+      if (travelIntent.from && travelIntent.to &&
+          (travelIntent.type === 'route' || travelIntent.type === 'comparison' || travelIntent.type === 'recommendation')) {
+        const header = buildRankedRouteHeader(travelIntent.from, travelIntent.to, isBn);
+        responseParts.push(header + smartResult);
+      } else {
+        responseParts.push(smartResult);
+      }
     }
   }
 
+  // ── Honest fallback guard — never return empty silently ─────────────────────
   // Fallback if no specific match but query exists
   if (responseParts.length === 0) {
     // Try to find ANY station mentioned
@@ -1653,9 +1756,7 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
           : `📍 **Intercity Location:** I see you are asking about **${displayName}**. \nTo see available Bus, Train, and Flight routes, try: "Dhaka to ${displayName}" or "How to reach ${displayName}".`;
       }
 
-      return isBnFinal
-        ? "🤔 আমি আপনার উল্লেখিত স্থানটি বুঝতে পারছি না। দয়া করে নির্দিষ্ট স্টেশনের নাম (যেমন: ‘ফার্মগেট’, ‘মিরপুর’, ‘গুলশান’) অথবা আন্তঃজেলা ভ্রমণের জন্য জেলার নাম উল্লেখ করুন।"
-        : "🤔 I'm KoyJabo's travel assistant -- I help with bus routes, trains, metro, flights and tours across Bangladesh. Try: 'Bus from Farmgate to Mirpur', 'Dhaka to Sylhet train', or 'Metro fare'.";
+      return buildDataMissingResponse(query, isBnFinal);
     }
   }
 
