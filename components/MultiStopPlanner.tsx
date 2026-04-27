@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { ArrowLeft, Plus, Trash2, ChevronRight, MapPin, Navigation } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { trackFeatureUsage } from '../services/analyticsService';
 import { STATIONS, METRO_STATIONS, RAILWAY_STATIONS } from '../constants';
 
 interface Props { onBack: () => void; }
@@ -147,6 +148,9 @@ function suggestRoute(from: string, to: string, lang: string = 'bn'): string {
 export default function MultiStopPlanner({ onBack }: Props) {
   const { language } = useLanguage();
   const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
+
+  useEffect(() => { trackFeatureUsage('multi_stop_planner'); }, []);
+
   const [stops, setStops] = useState<Stop[]>([
     { id: '1', name: '' },
     { id: '2', name: '' },

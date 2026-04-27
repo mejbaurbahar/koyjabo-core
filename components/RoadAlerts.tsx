@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowLeft, AlertTriangle, Clock, ChevronDown, ChevronUp, Plus } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { submitTrafficReport, getTodayTrafficReports, upvoteTrafficReport, TrafficReport, getAuthUser } from '../services/communityDataService';
+import { trackFeatureUsage } from '../services/analyticsService';
 
 interface Props {
   onBack: () => void;
@@ -55,6 +56,7 @@ export default function RoadAlerts({ onBack }: Props) {
   };
 
   React.useEffect(() => {
+    trackFeatureUsage('road_alerts');
     setLoading(true);
     getTodayTrafficReports().then(r => { setReports(r); setLoading(false); });
     const interval = setInterval(() => {

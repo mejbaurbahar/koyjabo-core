@@ -2,6 +2,13 @@
 // History data: localStorage (per-user key) + synced to private GitHub repo
 // Global stats (visits): stored in GitHub koyjabo repo, updated via GitHub Actions
 
+export interface CommunityFeatureRecord {
+    feature: string;
+    timestamp: number;
+    date: string;
+    userId?: string;
+}
+
 export interface UserHistory {
     busSearches: BusSearchRecord[];
     routeSearches: RouteSearchRecord[];
@@ -16,6 +23,8 @@ export interface UserHistory {
     todayIntercity: string[]; // intercity routes searched today
     todayTrains: string[]; // trainIds viewed today
     lastResetDate: string; // ISO date string for daily reset
+    communityFeatureUsage: Record<string, number>; // feature -> total open count
+    communityFeatureHistory: CommunityFeatureRecord[]; // per-open log
 }
 
 export interface BusSearchRecord {
@@ -245,7 +254,8 @@ export const getUserHistory = (): UserHistory => {
                 busSearches: [], routeSearches: [], intercitySearches: [], trainSearches: [],
                 mostUsedBuses: {}, mostUsedRoutes: {}, mostUsedIntercity: {}, mostUsedTrains: {},
                 todayBuses: [], todayRoutes: [], todayIntercity: [], todayTrains: [],
-                lastResetDate: getTodayDate()
+                lastResetDate: getTodayDate(),
+                communityFeatureUsage: {}, communityFeatureHistory: [],
             };
         }
 
@@ -275,6 +285,8 @@ export const getUserHistory = (): UserHistory => {
         if (!history.todayRoutes)       history.todayRoutes = [];
         if (!history.todayIntercity)    history.todayIntercity = [];
         if (!history.todayTrains)       history.todayTrains = [];
+        if (!history.communityFeatureUsage)   history.communityFeatureUsage = {};
+        if (!history.communityFeatureHistory) history.communityFeatureHistory = [];
 
         return history;
     } catch {
@@ -282,7 +294,8 @@ export const getUserHistory = (): UserHistory => {
             busSearches: [], routeSearches: [], intercitySearches: [], trainSearches: [],
             mostUsedBuses: {}, mostUsedRoutes: {}, mostUsedIntercity: {}, mostUsedTrains: {},
             todayBuses: [], todayRoutes: [], todayIntercity: [], todayTrains: [],
-            lastResetDate: getTodayDate()
+            lastResetDate: getTodayDate(),
+            communityFeatureUsage: {}, communityFeatureHistory: [],
         };
     }
 };
@@ -298,14 +311,16 @@ const syncHistoryToGitHub = (history: UserHistory): void => {
         const userId = _currentUserId;
         if (!userId) return;
         const trimmed = {
-            busSearches:       (history.busSearches || []).slice(-50),
-            routeSearches:     (history.routeSearches || []).slice(-50),
-            intercitySearches: (history.intercitySearches || []).slice(-50),
-            trainSearches:     (history.trainSearches || []).slice(-50),
-            mostUsedBuses:     history.mostUsedBuses || {},
-            mostUsedRoutes:    history.mostUsedRoutes || {},
-            mostUsedIntercity: history.mostUsedIntercity || {},
-            mostUsedTrains:    history.mostUsedTrains || {},
+            busSearches:             (history.busSearches || []).slice(-50),
+            routeSearches:           (history.routeSearches || []).slice(-50),
+            intercitySearches:       (history.intercitySearches || []).slice(-50),
+            trainSearches:           (history.trainSearches || []).slice(-50),
+            mostUsedBuses:           history.mostUsedBuses || {},
+            mostUsedRoutes:          history.mostUsedRoutes || {},
+            mostUsedIntercity:       history.mostUsedIntercity || {},
+            mostUsedTrains:          history.mostUsedTrains || {},
+            communityFeatureUsage:   history.communityFeatureUsage || {},
+            communityFeatureHistory: (history.communityFeatureHistory || []).slice(-100),
         };
 
         fetch(`${PROXY}/gh`, {
@@ -381,6 +396,23 @@ export const trackTrainSearch = (
     history.mostUsedTrains[trainId] = (history.mostUsedTrains[trainId] || 0) + 1;
     if (!history.todayTrains.includes(trainId)) history.todayTrains.push(trainId);
     if (history.trainSearches.length > 100) history.trainSearches = history.trainSearches.slice(-100);
+    saveUserHistory(history);
+};
+
+export const trackFeatureUsage = (feature: string): void => {
+    const history = getUserHistory();
+    history.communityFeatureUsage = history.communityFeatureUsage || {};
+    history.communityFeatureHistory = history.communityFeatureHistory || [];
+    history.communityFeatureUsage[feature] = (history.communityFeatureUsage[feature] || 0) + 1;
+    history.communityFeatureHistory.push({
+        feature,
+        timestamp: Date.now(),
+        date: getTodayDate(),
+        userId: _currentUserId || undefined,
+    });
+    if (history.communityFeatureHistory.length > 200) {
+        history.communityFeatureHistory = history.communityFeatureHistory.slice(-200);
+    }
     saveUserHistory(history);
 };
 

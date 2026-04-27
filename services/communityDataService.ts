@@ -100,9 +100,24 @@ export interface DailyTrafficReports {
   reports: TrafficReport[];
 }
 
+const TRAFFIC_CACHE_KEY = 'kj_traffic_cache';
+
 export async function getTodayTrafficReports(): Promise<TrafficReport[]> {
-  const data = await repoGet<DailyTrafficReports>(`data/traffic/${today()}.json`);
-  return data?.reports ?? [];
+  try {
+    const data = await repoGet<DailyTrafficReports>(`data/traffic/${today()}.json`);
+    if (data?.reports) {
+      localStorage.setItem(TRAFFIC_CACHE_KEY, JSON.stringify({ date: today(), reports: data.reports }));
+      return data.reports;
+    }
+  } catch { /* fall through to cache */ }
+  try {
+    const cached = localStorage.getItem(TRAFFIC_CACHE_KEY);
+    if (cached) {
+      const parsed: DailyTrafficReports = JSON.parse(cached);
+      if (parsed.date === today()) return parsed.reports;
+    }
+  } catch { /* ignore */ }
+  return [];
 }
 
 export async function submitTrafficReport(

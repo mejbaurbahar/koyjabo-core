@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ArrowLeft, CreditCard, CheckCircle2, ExternalLink, Info } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { trackFeatureUsage } from '../services/analyticsService';
 
 interface Props { onBack: () => void; }
 
@@ -140,6 +141,8 @@ const howToUse = [
 export default function BusPassInfo({ onBack }: Props) {
   const { language } = useLanguage();
   const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
+
+  useEffect(() => { trackFeatureUsage('bus_pass_info'); }, []);
 
   return (
     <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-hidden">

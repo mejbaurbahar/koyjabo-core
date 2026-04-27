@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { ArrowLeft, MapPin, Bus, Search, ChevronLeft, ChevronDown, ChevronUp } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { trackFeatureUsage } from '../services/analyticsService';
 
 interface Props { onBack: () => void; }
 
@@ -345,6 +346,8 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState<typeof GUIDES[0] | null>(null);
   const [expandedDivisions, setExpandedDivisions] = useState<Set<string>>(new Set());
+
+  useEffect(() => { trackFeatureUsage('area_guides'); }, []);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();

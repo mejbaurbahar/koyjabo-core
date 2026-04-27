@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Calculator, TrendingDown, Trash2 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { trackFeatureUsage } from '../services/analyticsService';
 
 interface Props { onBack: () => void; }
 
@@ -35,6 +36,8 @@ export default function CommuteCostCalculator({ onBack }: Props) {
   const [legs, setLegs] = useState<Leg[]>([]);
   const [workDays, setWorkDays] = useState(22);
   const [hasSaved, setHasSaved] = useState(false);
+
+  useEffect(() => { trackFeatureUsage('cost_calculator'); }, []);
 
   useEffect(() => {
     const saved = loadSaved();

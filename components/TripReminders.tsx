@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Bell, Plus, Trash2, Clock } from 'lucide-react';
 import { getLocalReminders, saveLocalReminders, syncReminders, pullReminders, TripReminder, getAuthUser } from '../services/communityDataService';
 import { useLanguage } from '../contexts/LanguageContext';
+import { trackFeatureUsage } from '../services/analyticsService';
 
 interface Props { onBack: () => void; }
 
@@ -55,12 +56,40 @@ export default function TripReminders({ onBack }: Props) {
   });
 
   useEffect(() => {
+    trackFeatureUsage('trip_reminders');
     requestNotificationPermission();
     pullReminders().then(() => {
       const loaded = getLocalReminders();
       setReminders(loaded);
       loaded.filter(r => r.enabled).forEach(r => scheduleNextAlarm(r, language));
     });
+
+    // Re-schedule alarms when app returns to foreground; fire missed reminders
+    const onVisibilityChange = () => {
+      if (document.visibilityState !== 'visible') return;
+      const current = getLocalReminders();
+      const now = Date.now();
+      current.filter(r => r.enabled).forEach(r => {
+        scheduleNextAlarm(r, language);
+        // Check if a reminder fired in the last 30 minutes while the tab was hidden
+        const [hh, mm] = r.time.split(':').map(Number);
+        const fire = new Date();
+        fire.setHours(hh, mm - r.minutesBefore, 0, 0);
+        const msSinceFire = now - fire.getTime();
+        if (msSinceFire >= 0 && msSinceFire <= 30 * 60 * 1000 && r.days.includes(new Date().getDay())) {
+          if ('Notification' in window && Notification.permission === 'granted') {
+            new Notification(`কই যাবো — ${r.label}`, {
+              body: language === 'bn'
+                ? `${r.minutesBefore} মিনিট আগে যাত্রার সতর্কতা মিস হয়েছিল${r.busName ? ` · ${r.busName}` : ''}`
+                : `Missed alert from ${r.minutesBefore} min ago${r.busName ? ` · ${r.busName}` : ''}`,
+              icon: '/icon-192x192.png',
+            });
+          }
+        }
+      });
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', onVisibilityChange);
   }, []);
 
   const toggleDay = (d: number) => {

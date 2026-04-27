@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { ArrowLeft, Ticket, ExternalLink, Train, Search, ChevronLeft, Star } from 'lucide-react';
 import { BD_TRAIN_ROUTES, BDTrainRoute } from '../data/bangladeshTrainData';
 import { useLanguage } from '../contexts/LanguageContext';
+import { trackFeatureUsage } from '../services/analyticsService';
 
 interface Props { onBack: () => void; }
 
@@ -17,6 +18,8 @@ export default function SeatAvailability({ onBack }: Props) {
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState<BDTrainRoute | null>(null);
   const [favorites, setFavorites] = useState<string[]>(getFavorites);
+
+  useEffect(() => { trackFeatureUsage('seat_availability'); }, []);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
