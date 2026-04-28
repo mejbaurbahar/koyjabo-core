@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import {
   Train, Search, ArrowRight, Clock, CalendarX, Info,
   ArrowLeft, MapPin, Navigation,
-  Coins, AlertCircle, X, CheckCircle2, SlidersHorizontal, ChevronDown, Star
+  Coins, AlertCircle, X, CheckCircle2, SlidersHorizontal, ChevronDown, Star, Heart
 } from 'lucide-react';
 
 function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
@@ -51,6 +51,18 @@ function formatNumber(n: number): string {
   return n.toLocaleString('en-BD');
 }
 
+const TRAIN_FAVORITES_KEY = 'koyjabo_train_favorites';
+
+function getStoredTrainFavorites(): string[] {
+  try {
+    const stored = localStorage.getItem(TRAIN_FAVORITES_KEY);
+    const parsed = stored ? JSON.parse(stored) : [];
+    return Array.isArray(parsed) ? parsed.filter((v): v is string => typeof v === 'string') : [];
+  } catch {
+    return [];
+  }
+}
+
 // ── Train Detail View ─────────────────────────────────────────────────────────
 export function TrainDetail({
   route,
@@ -58,12 +70,16 @@ export function TrainDetail({
   onBack,
   language,
   onOpenRating,
+  isFavorite = false,
+  onToggleFavorite,
 }: {
   route: BDTrainRoute;
   userLocation?: UserLocation | null;
   onBack: () => void;
   language: string;
   onOpenRating?: () => void;
+  isFavorite?: boolean;
+  onToggleFavorite?: () => void;
 }) {
   const [fromId, setFromId] = useState<string>('');
   const [toId, setToId] = useState<string>('');
@@ -146,6 +162,13 @@ export function TrainDetail({
           aria-label={bn ? 'ট্রেন রেটিং' : 'Train rating'}
         >
           {ratingSummary?.count ? `★ ${ratingSummary.average.toFixed(1)}` : (bn ? '☆ রেটিং' : '☆ Rate')}
+        </button>
+        <button
+          onClick={() => onToggleFavorite?.()}
+          className="p-2 rounded-full bg-white/90 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+          aria-label={isFavorite ? (bn ? 'ফেভারিট থেকে সরান' : 'Remove from favorites') : (bn ? 'ফেভারিটে যোগ করুন' : 'Add to favorites')}
+        >
+          <Heart className={`w-4 h-4 ${isFavorite ? 'fill-pink-500 text-pink-500' : 'text-gray-400 dark:text-gray-500'}`} />
         </button>
       </div>
 
@@ -431,13 +454,15 @@ export function TrainDetail({
 
 // ── Train Card ────────────────────────────────────────────────────────────────
 function TrainCard({
-  route, onClick, onRateClick, language, ratingSummary
+  route, onClick, onRateClick, language, ratingSummary, isFavorite, onToggleFavorite
 }: {
   route: BDTrainRoute;
   onClick: () => void;
   onRateClick?: () => void;
   language: string;
   ratingSummary?: TrainRatingSummary | null;
+  isFavorite?: boolean;
+  onToggleFavorite?: () => void;
 }) {
   const bn = language === 'bn';
   const fromStation = TRAIN_STATIONS[route.from];
@@ -466,11 +491,24 @@ function TrainCard({
             {bn ? (TYPE_BN[route.type] ?? route.type) : route.type}
           </span>
         </div>
-        <div
-          className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
-          style={{ backgroundColor: route.color + '20', color: route.color }}
-        >
-          <Train className="w-4 h-4" />
+        <div className="flex items-center gap-1 shrink-0">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onToggleFavorite?.();
+            }}
+            className="p-1.5 rounded-full bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors"
+            aria-label={isFavorite ? `Remove ${route.name} from favorites` : `Add ${route.name} to favorites`}
+          >
+            <Heart className={`w-4 h-4 ${isFavorite ? 'fill-pink-500 text-pink-500' : 'text-gray-400 dark:text-gray-500'}`} />
+          </button>
+          <div
+            className="w-8 h-8 rounded-full flex items-center justify-center"
+            style={{ backgroundColor: route.color + '20', color: route.color }}
+          >
+            <Train className="w-4 h-4" />
+          </div>
         </div>
       </div>
 
@@ -574,6 +612,8 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
   const [sortBy, setSortBy] = useState<SortOption>('name');
   const [showFilters, setShowFilters] = useState(false);
   const [trainRatingsMap, setTrainRatingsMap] = useState<Record<string, TrainRatingSummary | null>>({});
+  const [favoriteTrainIds, setFavoriteTrainIds] = useState<string[]>(getStoredTrainFavorites);
+  const [listFilter, setListFilter] = useState<'ALL' | 'FAVORITES'>('ALL');
   const bn = language === 'bn';
 
   useEffect(() => { trackFeatureUsage('train_list'); }, []);
@@ -624,12 +664,18 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
     }
 
     // Sort
-    return [...results].sort((a, b) => {
+    const sorted = [...results].sort((a, b) => {
       if (sortBy === 'depart') return a.dhakaDepart.localeCompare(b.dhakaDepart);
       if (sortBy === 'distance') return a.distanceKm - b.distanceKm;
       return a.name.localeCompare(b.name);
     });
-  }, [searchQuery, filterType, filterDivision, filterFrom, filterTo, sortBy]);
+
+    if (listFilter === 'FAVORITES') {
+      return sorted.filter(r => favoriteTrainIds.includes(r.id));
+    }
+
+    return sorted;
+  }, [searchQuery, filterType, filterDivision, filterFrom, filterTo, sortBy, listFilter, favoriteTrainIds]);
 
   const activeFilterCount = [filterType, filterDivision, filterFrom, filterTo].filter(Boolean).length;
 
@@ -669,6 +715,14 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
     setFilterType(''); setFilterDivision(''); setFilterFrom(''); setFilterTo(''); setSearchQuery('');
   };
 
+  const toggleFavoriteTrain = (trainId: string) => {
+    setFavoriteTrainIds(prev => {
+      const next = prev.includes(trainId) ? prev.filter(id => id !== trainId) : [...prev, trainId];
+      localStorage.setItem(TRAIN_FAVORITES_KEY, JSON.stringify(next));
+      return next;
+    });
+  };
+
   // Inline detail fallback (when no external handler)
   if (!onSelectTrain && selectedTrain) {
     return (
@@ -678,6 +732,8 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
         onBack={() => setSelectedTrain(null)}
         language={language}
         onOpenRating={() => onRateTrain?.(selectedTrain)}
+        isFavorite={favoriteTrainIds.includes(selectedTrain.id)}
+        onToggleFavorite={() => toggleFavoriteTrain(selectedTrain.id)}
       />
     );
   }
@@ -863,7 +919,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
       {/* Count row */}
       <div className="shrink-0 flex items-center justify-between px-5 py-2 bg-[#0F172A] border-b border-white/10">
         <h3 className="font-bold text-gray-800 dark:text-gray-200 text-sm">
-          {bn ? 'ট্রেনের তালিকা' : 'Train List'}
+          {listFilter === 'FAVORITES' ? (bn ? 'সংরক্ষিত ট্রেন' : 'Saved Trains') : (bn ? 'ট্রেনের তালিকা' : 'Train List')}
         </h3>
         <div className="flex items-center gap-2">
           {activeFilterCount > 0 && (
@@ -874,6 +930,24 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
           <span className="text-[10px] bg-gray-200 dark:bg-slate-700 px-2 py-0.5 rounded-full text-gray-600 dark:text-gray-300 font-bold">
             {filtered.length}
           </span>
+        </div>
+      </div>
+
+      <div className="shrink-0 px-4 py-2 bg-[#0F172A] border-b border-white/10">
+        <div className="flex p-1 bg-gray-100 dark:bg-slate-800 rounded-xl">
+          <button
+            onClick={() => setListFilter('ALL')}
+            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${listFilter === 'ALL' ? 'bg-white dark:bg-slate-700 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'}`}
+          >
+            {bn ? 'সব ট্রেন' : 'All Trains'}
+          </button>
+          <button
+            onClick={() => setListFilter('FAVORITES')}
+            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1 ${listFilter === 'FAVORITES' ? 'bg-white dark:bg-slate-700 shadow-sm text-red-500' : 'text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'}`}
+          >
+            <Heart className="w-4 h-4 fill-current" />
+            {bn ? 'প্রিয়' : 'Favorites'}
+          </button>
         </div>
       </div>
 
@@ -902,6 +976,8 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
               onClick={() => onSelectTrain ? onSelectTrain(route) : setSelectedTrain(route)}
               onRateClick={() => onRateTrain ? onRateTrain(route) : setSelectedTrain(route)}
               ratingSummary={trainRatingsMap[route.id]}
+              isFavorite={favoriteTrainIds.includes(route.id)}
+              onToggleFavorite={() => toggleFavoriteTrain(route.id)}
               language={language}
             />
           ))
