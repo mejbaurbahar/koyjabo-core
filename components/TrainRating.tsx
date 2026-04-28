@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Star, MessageCircle } from 'lucide-react';
-import { getBusRatings, submitBusRating, deleteBusRating, BusRating as BusRatingData, BusRatingSummary, getAuthUser } from '../services/communityDataService';
-import { trackFeatureUsage } from '../services/analyticsService';
+import React, { useEffect, useState } from 'react';
+import { ArrowLeft, Star, Train } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { getAuthUser, getTrainRatings, submitTrainRating, deleteTrainRating, TrainRatingSummary } from '../services/communityDataService';
+import { trackFeatureUsage } from '../services/analyticsService';
 
 interface Props {
-  busId: string;
-  busName: string;
+  trainId: string;
+  trainName: string;
   onBack: () => void;
 }
 
@@ -18,10 +18,10 @@ function timeAgo(ts: number, t: (key: string, params?: Record<string, string | n
   return `${formatNumber(Math.floor(diff / 1440))} ${t('history.daysAgo')}`;
 }
 
-export default function BusRating({ busId, busName, onBack }: Props) {
+export default function TrainRating({ trainId, trainName, onBack }: Props) {
   const user = getAuthUser();
   const { t, formatNumber } = useLanguage();
-  const [summary, setSummary] = useState<BusRatingSummary | null>(null);
+  const [summary, setSummary] = useState<TrainRatingSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [stars, setStars] = useState(5);
@@ -30,20 +30,20 @@ export default function BusRating({ busId, busName, onBack }: Props) {
   const [hovered, setHovered] = useState(0);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  useEffect(() => { trackFeatureUsage('bus_rating'); }, []);
+  useEffect(() => { trackFeatureUsage('train_rating'); }, []);
 
   useEffect(() => {
-    getBusRatings(busId).then(d => { setSummary(d); setLoading(false); });
-  }, [busId]);
+    getTrainRatings(trainId).then(d => { setSummary(d); setLoading(false); });
+  }, [trainId]);
 
   const myRating = summary?.ratings.find(r => r.userId === user?.id);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    const ok = await submitBusRating(busId, stars, comment);
+    const ok = await submitTrainRating(trainId, trainName, stars, comment);
     if (ok) {
-      const fresh = await getBusRatings(busId);
+      const fresh = await getTrainRatings(trainId);
       setSummary(fresh);
       setShowForm(false);
       setComment('');
@@ -54,9 +54,9 @@ export default function BusRating({ busId, busName, onBack }: Props) {
 
   const handleDelete = async () => {
     setSubmitting(true);
-    const ok = await deleteBusRating(busId);
+    const ok = await deleteTrainRating(trainId);
     if (ok) {
-      const fresh = await getBusRatings(busId);
+      const fresh = await getTrainRatings(trainId);
       setSummary(fresh);
       setShowForm(false);
       setComment('');
@@ -88,12 +88,12 @@ export default function BusRating({ busId, busName, onBack }: Props) {
         <button onClick={onBack} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full">
           <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
         </button>
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center">
-          <Star className="w-5 h-5 text-white fill-white" />
+        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+          <Train className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1">
-          <h1 className="text-lg font-bold text-gray-900 dark:text-white">{t('community.busRatingTitle')}</h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{busName}</p>
+          <h1 className="text-lg font-bold text-gray-900 dark:text-white">{t('community.trainRatingTitle')}</h1>
+          <p className="text-xs text-gray-500 dark:text-gray-400">{trainName}</p>
         </div>
         <button onClick={handleOpenForm}
           className="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold rounded-xl">
@@ -219,3 +219,4 @@ export default function BusRating({ busId, busName, onBack }: Props) {
     </div>
   );
 }
+

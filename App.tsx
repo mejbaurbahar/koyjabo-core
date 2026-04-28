@@ -69,6 +69,7 @@ import ContactUs from './components/ContactUs';
 import OfflineIndicator from './components/OfflineIndicator';
 import AdSenseAd from './components/AdSenseAd';
 import TrainListPage, { TrainDetail } from './components/TrainListPage';
+import TrainRating from './components/TrainRating';
 import { BDTrainRoute } from './data/bangladeshTrainData';
 import TripReminders from './components/TripReminders';
 import RoadAlerts from './components/RoadAlerts';
@@ -157,6 +158,7 @@ const getStoredView = (): AppView => {
         'pass-info': AppView.BUS_PASS_INFO,
         'road-alerts': AppView.ROAD_ALERTS,
         'rate-bus': AppView.RATE_BUS,
+        'rate-train': AppView.RATE_TRAIN,
         'bus-photos': AppView.BUS_PHOTOS,
         'bus-live-tracking': AppView.BUS_LIVE_TRACKING,
         'seat-availability': AppView.SEAT_AVAILABILITY,
@@ -1234,6 +1236,7 @@ const App: React.FC = () => {
     [AppView.BUS_PASS_INFO]: 'pass-info',
     [AppView.ROAD_ALERTS]: 'road-alerts',
     [AppView.RATE_BUS]: 'rate-bus',
+    [AppView.RATE_TRAIN]: 'rate-train',
     [AppView.BUS_PHOTOS]: 'bus-photos',
     [AppView.BUS_LIVE_TRACKING]: 'bus-live-tracking',
     [AppView.SEAT_AVAILABILITY]: 'seat-availability',
@@ -1593,16 +1596,21 @@ const App: React.FC = () => {
   }, [selectedBus, view]);
 
   const filteredBuses = useMemo(() => {
+    const unavailableBusNames = new Set(['agradut', 'arnob']);
+    const isUnavailable = (bus: BusRoute) => unavailableBusNames.has((bus.name || '').toLowerCase().trim());
+    const availableFirst = (buses: BusRoute[]) =>
+      [...buses].sort((a, b) => Number(isUnavailable(a)) - Number(isUnavailable(b)));
+
     // Favorites tab: show ONLY favorites, ignore search
     if (listFilter === 'FAVORITES') {
-      return BUS_DATA.filter(bus => favorites.includes(bus.id));
+      return availableFirst(BUS_DATA.filter(bus => favorites.includes(bus.id)));
     }
 
     // Route search mode
     if (searchMode === 'ROUTE') {
       if (!fromStation || !toStation) return BUS_DATA;
 
-      return BUS_DATA.filter(bus => {
+      return availableFirst(BUS_DATA.filter(bus => {
         const stopsAtFrom = bus.stops.includes(fromStation);
         const stopsAtTo = bus.stops.includes(toStation);
 
@@ -1615,12 +1623,12 @@ const App: React.FC = () => {
         }
 
         return stopsAtFrom && stopsAtTo;
-      });
+      }));
     }
 
     // Text search mode - use enhancedBusSearch with location-based sorting
     const query = searchQuery.trim();
-    if (!query) return BUS_DATA;
+    if (!query) return availableFirst(BUS_DATA);
 
     // Use enhancedBusSearch which includes nearby stations logic
     const searchResult = enhancedBusSearch(query);
@@ -1632,7 +1640,7 @@ const App: React.FC = () => {
       searchResult.destinationStationIds || []
     );
 
-    return sortedBuses;
+    return availableFirst(sortedBuses);
   }, [listFilter, favorites, searchMode, fromStation, toStation, searchQuery, userLocation, destinationStationIds]);
 
   useEffect(() => {
@@ -1956,6 +1964,14 @@ const App: React.FC = () => {
   const EmptyState = () => <DhakaAlive />;
 
   const renderLiveNav = () => {
+    const handleLiveNavBack = () => {
+      if (selectedBus) {
+        setView(AppView.BUS_DETAILS);
+      } else {
+        setView(AppView.HOME);
+      }
+    };
+
     if (!selectedBus) {
       return (
         <div className="flex flex-col items-center justify-center h-full text-center p-6">
@@ -1969,6 +1985,13 @@ const App: React.FC = () => {
       <div className="flex flex-col h-full bg-white dark:bg-slate-900 md:rounded-l-3xl md:border-l md:border-gray-200 dark:md:border-gray-800 overflow-hidden relative w-full">
         {/* Mobile Header (Non-fixed flex child) */}
         <div className="block md:hidden flex items-center gap-3 p-4 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-slate-900 z-20 shrink-0 pt-safe">
+          <button
+            onClick={handleLiveNavBack}
+            className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
+            aria-label={t('common.back')}
+          >
+            <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+          </button>
           <div>
             <h2 className="text-lg font-bold text-dhaka-dark dark:text-gray-100 flex items-center gap-2">
               Live Navigation
@@ -1979,6 +2002,13 @@ const App: React.FC = () => {
         </div>
         {/* Desktop Header */}
         <div className="hidden md:flex items-center gap-3 p-4 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-slate-900 z-50 shrink-0 relative pt-4">
+          <button
+            onClick={handleLiveNavBack}
+            className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
+            aria-label={t('common.back')}
+          >
+            <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+          </button>
           <div>
             <h2 className="text-lg font-bold text-dhaka-dark dark:text-gray-100 flex items-center gap-2">
               Live Navigation
@@ -3763,6 +3793,14 @@ const App: React.FC = () => {
                   ));
                 }
               }}
+              onRateTrain={(route) => {
+                if (!user) {
+                  setView(AppView.LOGIN);
+                  return;
+                }
+                setSelectedTrain(route);
+                setView(AppView.RATE_TRAIN);
+              }}
             />
           </div>
         </div>
@@ -3956,6 +3994,7 @@ const App: React.FC = () => {
             const hasRating = ratingCount > 0;
             const avgRating = ratingSummary?.average ?? 0;
             const ratingPercent = Math.round((avgRating / 5) * 100);
+            const isUnavailable = ['agradut', 'arnob'].includes((bus.name || '').toLowerCase().trim());
 
             return (
               <React.Fragment key={bus.id}>
@@ -3976,7 +4015,7 @@ const App: React.FC = () => {
                 className={`w-full text-left bg-white dark:bg-slate-800 p-2 md:p-3 rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border transition-all group relative overflow-hidden cursor-pointer ${selectedBus?.id === bus.id ? 'border-dhaka-green ring-1 ring-dhaka-green' : 'border-transparent hover:border-green-100 dark:hover:border-green-800'} `}
               >
                 {selectedBus?.id === bus.id && <div className="absolute left-0 top-0 bottom-0 w-1 bg-dhaka-green"></div>}
-                <div className="flex justify-between items-start mb-1.5 md:mb-2">
+                <div className="flex justify-between items-start mb-1 md:mb-1.5">
                   <div className="flex items-start gap-2 md:gap-3">
                     <div className={`w-8 h-8 md:w-10 md:h-10 rounded-xl flex items-center justify-center text-base md:text-lg font-bold shadow-sm shrink-0
                       ${bus.type === 'AC' ? 'bg-blue-100 text-blue-700' :
@@ -3990,35 +4029,42 @@ const App: React.FC = () => {
                       <span className="text-xs font-bengali text-gray-600 dark:text-gray-400">{bus.bnName}</span>
                     </div>
                   </div>
-                  <div className="flex flex-col items-end gap-2">
-                    <button
-                      onClick={(e) => toggleFavorite(e, bus.id)}
-                      aria-label={isFav ? `Remove ${bus.name} from favorites` : `Add ${bus.name} to favorites`}
-                      className="p-1.5 -mr-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors z-20"
-                    >
-                      <Heart className={`w-5 h-5 transition-all ${isFav ? 'fill-pink-500 text-pink-500 scale-110' : 'text-gray-300 dark:text-gray-600 hover:text-pink-400'} `} />
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        if (!user) {
-                          setView(AppView.LOGIN);
-                          return;
-                        }
-                        setSelectedBus(bus);
-                        setView(AppView.RATE_BUS);
-                      }}
-                      className={`px-2 py-1 rounded-md border text-[10px] font-bold leading-none transition-colors ${hasRating
-                        ? 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100'
-                        : 'bg-gray-50 text-gray-500 border-gray-200 hover:bg-gray-100'}`}
-                      aria-label={hasRating ? `View rating for ${bus.name}` : `Rate ${bus.name}`}
-                    >
-                      {hasRating
-                        ? `★ ${formatNumber(avgRating.toFixed(1))} · ${formatNumber(ratingPercent)}%`
-                        : `☆ ${t('community.rateNow')}`}
-                    </button>
-                    <div className="flex flex-col items-end">
+                  <div className="flex flex-col items-end gap-1">
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          if (!user) {
+                            setView(AppView.LOGIN);
+                            return;
+                          }
+                          setSelectedBus(bus);
+                          setView(AppView.RATE_BUS);
+                        }}
+                        className={`px-2 py-1 rounded-md border text-[10px] font-bold leading-none transition-colors ${hasRating
+                          ? 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100'
+                          : 'bg-gray-50 text-gray-500 border-gray-200 hover:bg-gray-100'}`}
+                        aria-label={hasRating ? `View rating for ${bus.name}` : `Rate ${bus.name}`}
+                      >
+                        {hasRating
+                          ? `★ ${formatNumber(avgRating.toFixed(1))} · ${formatNumber(ratingPercent)}%`
+                          : `☆ ${t('community.rateNow')}`}
+                      </button>
+                      <button
+                        onClick={(e) => toggleFavorite(e, bus.id)}
+                        aria-label={isFav ? `Remove ${bus.name} from favorites` : `Add ${bus.name} to favorites`}
+                        className="p-1.5 -mr-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors z-20"
+                      >
+                        <Heart className={`w-5 h-5 transition-all ${isFav ? 'fill-pink-500 text-pink-500 scale-110' : 'text-gray-300 dark:text-gray-600 hover:text-pink-400'} `} />
+                      </button>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      {isUnavailable && (
+                        <span className="text-[10px] px-2 py-1 rounded-md font-bold uppercase tracking-wide bg-red-50 text-red-700 border border-red-200">
+                          {t('home.notAvailable')}
+                        </span>
+                      )}
                       <span className={`text-[10px] px-2 py-1 rounded-md font-bold uppercase tracking-wide
                       ${bus.type === 'Sitting' ? 'bg-purple-50 text-purple-600' :
                           bus.type === 'AC' ? 'bg-blue-50 text-blue-700' :
@@ -4168,6 +4214,16 @@ const App: React.FC = () => {
                   userLocation={userLocation}
                   onBack={() => { setSelectedTrain(null); setView(AppView.TRAIN_LIST); }}
                   language={language}
+                  onOpenRating={() => setView(AppView.RATE_TRAIN)}
+                />
+              ) : <LoginWall setView={setView} />
+            )}
+            {view === AppView.RATE_TRAIN && (
+              user && selectedTrain ? (
+                <TrainRating
+                  trainId={selectedTrain.id}
+                  trainName={selectedTrain.name}
+                  onBack={() => setView(AppView.TRAIN_DETAILS)}
                 />
               ) : <LoginWall setView={setView} />
             )}

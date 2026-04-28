@@ -209,6 +209,7 @@ export const translations: Record<Language, Translations> = {
             savedRoutes: 'সংরক্ষিত রুট',
             estimatedFare: 'আনুমানিক ভাড়া',
             metroRail: 'মেট্রো রেল',
+            notAvailable: 'Not Available',
         },
 
         // Bus Details
@@ -248,6 +249,7 @@ export const translations: Record<Language, Translations> = {
         // Community (Bus Rating / Live Location / Photos)
         community: {
             busRatingTitle: 'বাস রেটিং',
+            trainRatingTitle: 'ট্রেন রেটিং',
             rateNow: 'রেটিং দিন',
             editRating: 'পরিবর্তন করুন',
             ratingsCount: '{count}টি রেটিং',
@@ -1220,6 +1222,7 @@ export const translations: Record<Language, Translations> = {
             allBuses: 'All Buses',
             savedRoutes: 'Saved Routes',
             estimatedFare: 'Est. Fare',
+            notAvailable: 'Not Available',
         },
 
         // Bus Details
@@ -1258,6 +1261,7 @@ export const translations: Record<Language, Translations> = {
         // Community (Bus Rating / Live Location / Photos)
         community: {
             busRatingTitle: 'Bus Rating',
+            trainRatingTitle: 'Train Rating',
             rateNow: 'Rate',
             editRating: 'Edit',
             ratingsCount: '{count} ratings',

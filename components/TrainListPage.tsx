@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import {
   Train, Search, ArrowRight, Clock, CalendarX, Info,
   ArrowLeft, MapPin, Navigation,
-  Coins, AlertCircle, X, CheckCircle2, SlidersHorizontal, ChevronDown
+  Coins, AlertCircle, X, CheckCircle2, SlidersHorizontal, ChevronDown, Star
 } from 'lucide-react';
 
 function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
@@ -21,12 +21,14 @@ import TrainRouteMap from './TrainRouteMap';
 import { UserLocation } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
+import { getTrainRatings, TrainRatingSummary } from '../services/communityDataService';
 
 interface TrainListPageProps {
   userLocation?: UserLocation | null;
   onBack?: () => void;
   embedded?: boolean;
   onSelectTrain?: (route: BDTrainRoute) => void;
+  onRateTrain?: (route: BDTrainRoute) => void;
 }
 
 // Train type — colour chips (list view, light-mode-aware)
@@ -55,14 +57,17 @@ export function TrainDetail({
   userLocation,
   onBack,
   language,
+  onOpenRating,
 }: {
   route: BDTrainRoute;
   userLocation?: UserLocation | null;
   onBack: () => void;
   language: string;
+  onOpenRating?: () => void;
 }) {
   const [fromId, setFromId] = useState<string>('');
   const [toId, setToId] = useState<string>('');
+  const [ratingSummary, setRatingSummary] = useState<TrainRatingSummary | null>(null);
 
   const stopOptions = route.stops
     .filter(id => TRAIN_STATIONS[id])
@@ -81,6 +86,10 @@ export function TrainDetail({
   }, [fromId, toId, route]);
 
   const bn = language === 'bn';
+  useEffect(() => {
+    getTrainRatings(route.id).then(setRatingSummary);
+  }, [route.id]);
+
   const fromSt = TRAIN_STATIONS[route.from];
   const toSt   = TRAIN_STATIONS[route.to];
 
@@ -131,6 +140,13 @@ export function TrainDetail({
             {bn ? toSt?.bnName : toSt?.name}
           </p>
         </div>
+        <button
+          onClick={() => onOpenRating?.()}
+          className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900/40"
+          aria-label={bn ? 'ট্রেন রেটিং' : 'Train rating'}
+        >
+          {ratingSummary?.count ? `★ ${ratingSummary.average.toFixed(1)}` : (bn ? '☆ রেটিং' : '☆ Rate')}
+        </button>
       </div>
 
       <div className="flex-1 overflow-y-auto">
@@ -414,10 +430,22 @@ export function TrainDetail({
 }
 
 // ── Train Card ────────────────────────────────────────────────────────────────
-function TrainCard({ route, onClick, language }: { route: BDTrainRoute; onClick: () => void; language: string }) {
+function TrainCard({
+  route, onClick, onRateClick, language, ratingSummary
+}: {
+  route: BDTrainRoute;
+  onClick: () => void;
+  onRateClick?: () => void;
+  language: string;
+  ratingSummary?: TrainRatingSummary | null;
+}) {
   const bn = language === 'bn';
   const fromStation = TRAIN_STATIONS[route.from];
   const toStation   = TRAIN_STATIONS[route.to];
+
+  const hasRating = (ratingSummary?.count ?? 0) > 0;
+  const avgRating = ratingSummary?.average ?? 0;
+  const ratingPercent = Math.round((avgRating / 5) * 100);
 
   return (
     <div
@@ -478,9 +506,26 @@ function TrainCard({ route, onClick, language }: { route: BDTrainRoute; onClick:
       </div>
 
       {/* Fare range */}
-      <div className="mt-2 flex items-center gap-1 text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 px-2 py-1 rounded-lg w-fit">
-        <Coins className="w-3 h-3 shrink-0" />
-        <span>৳{route.fare.shuvan}{route.fare.acBerth ? ` – ৳${route.fare.acBerth.toLocaleString()}` : ''}</span>
+      <div className="mt-2 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-1 text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 px-2 py-1 rounded-lg w-fit">
+          <Coins className="w-3 h-3 shrink-0" />
+          <span>৳{route.fare.shuvan}{route.fare.acBerth ? ` – ৳${route.fare.acBerth.toLocaleString()}` : ''}</span>
+        </div>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onRateClick?.();
+          }}
+          className={`px-2 py-1 rounded-md border text-[10px] font-bold leading-none transition-colors ${hasRating
+            ? 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100'
+            : 'bg-gray-50 text-gray-500 border-gray-200 hover:bg-gray-100'}`}
+          aria-label={hasRating ? `View rating for ${route.name}` : `Rate ${route.name}`}
+        >
+          {hasRating
+            ? `★ ${avgRating.toFixed(1)} · ${ratingPercent}%`
+            : (bn ? '☆ রেটিং' : '☆ Rate')}
+        </button>
       </div>
     </div>
   );
@@ -518,7 +563,7 @@ const ALL_STATION_OPTIONS = (() => {
 type SortOption = 'name' | 'depart' | 'distance';
 
 // ── Main Export ───────────────────────────────────────────────────────────────
-const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, embedded = false, onSelectTrain }) => {
+const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, embedded = false, onSelectTrain, onRateTrain }) => {
   const { language } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTrain, setSelectedTrain] = useState<BDTrainRoute | null>(null);
@@ -528,6 +573,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
   const [filterTo, setFilterTo] = useState<string>('');
   const [sortBy, setSortBy] = useState<SortOption>('name');
   const [showFilters, setShowFilters] = useState(false);
+  const [trainRatingsMap, setTrainRatingsMap] = useState<Record<string, TrainRatingSummary | null>>({});
   const bn = language === 'bn';
 
   useEffect(() => { trackFeatureUsage('train_list'); }, []);
@@ -587,6 +633,27 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
 
   const activeFilterCount = [filterType, filterDivision, filterFrom, filterTo].filter(Boolean).length;
 
+  useEffect(() => {
+    let cancelled = false;
+    const idsToFetch = filtered
+      .map(r => r.id)
+      .filter(id => trainRatingsMap[id] === undefined)
+      .slice(0, 60);
+    if (idsToFetch.length === 0) return;
+
+    (async () => {
+      const entries = await Promise.all(idsToFetch.map(async (id) => [id, await getTrainRatings(id)] as const));
+      if (cancelled) return;
+      setTrainRatingsMap(prev => {
+        const next = { ...prev };
+        for (const [id, summary] of entries) next[id] = summary;
+        return next;
+      });
+    })();
+
+    return () => { cancelled = true; };
+  }, [filtered, trainRatingsMap]);
+
   const nearestStation = useMemo(() => {
     if (!userLocation) return null;
     let minDist = Infinity;
@@ -610,6 +677,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
         userLocation={userLocation}
         onBack={() => setSelectedTrain(null)}
         language={language}
+        onOpenRating={() => onRateTrain?.(selectedTrain)}
       />
     );
   }
@@ -832,6 +900,8 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
               key={route.id}
               route={route}
               onClick={() => onSelectTrain ? onSelectTrain(route) : setSelectedTrain(route)}
+              onRateClick={() => onRateTrain ? onRateTrain(route) : setSelectedTrain(route)}
+              ratingSummary={trainRatingsMap[route.id]}
               language={language}
             />
           ))

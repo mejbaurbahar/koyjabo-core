@@ -139,7 +139,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
         );
       const map = L.map(mapRef.current!, {
         zoomControl: !isTouchDevice,
-        attributionControl: true,
+        attributionControl: false,
         scrollWheelZoom: !isTouchDevice,
         dragging: !isTouchDevice,
         touchZoom: false,
@@ -162,7 +162,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
       map.keyboard.disable();
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OSM</a>',
+        attribution: '',
         maxZoom: 19,
         crossOrigin: true,
       }).addTo(map);
@@ -531,10 +531,10 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
       {onOpenFullMap && (
         <button
           onClick={onOpenFullMap}
-          className="absolute bottom-10 right-3 z-[500] flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg transition-colors"
+          className="absolute bottom-10 right-3 z-[500] flex items-center justify-center bg-emerald-500 hover:bg-emerald-600 text-white w-9 h-9 rounded-full shadow-lg transition-colors"
+          aria-label="Open live navigation"
         >
-          <Navigation className="w-3.5 h-3.5" />
-          Live Nav
+          <Navigation className="w-4 h-4" />
         </button>
       )}
 
