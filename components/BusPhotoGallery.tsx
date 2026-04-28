@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowLeft, Camera, X, Upload } from 'lucide-react';
+import { ArrowLeft, Camera, X, Upload, AlertCircle, CheckCircle } from 'lucide-react';
 import { getBusPhotos, submitBusPhoto, BusPhoto, getAuthUser } from '../services/communityDataService';
 import { trackFeatureUsage } from '../services/analyticsService';
 import { getBusImagePath } from '../utils/busImageMapper';
@@ -51,6 +51,16 @@ async function compressImage(file: File, maxKB = 280): Promise<string> {
   });
 }
 
+function PhotoSkeleton() {
+  return (
+    <div className="grid grid-cols-2 gap-2 animate-pulse">
+      {[1, 2, 3, 4].map(i => (
+        <div key={i} className="aspect-square rounded-2xl bg-gray-200 dark:bg-slate-700" />
+      ))}
+    </div>
+  );
+}
+
 export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: Props) {
   const user = getAuthUser();
   const { t, formatNumber } = useLanguage();
@@ -59,11 +69,13 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
   const [showForm, setShowForm] = useState(false);
   const [caption, setCaption] = useState('');
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [compressing, setCompressing] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [lightbox, setLightbox] = useState<BusPhoto | null>(null);
-  const fileRef = useRef<HTMLInputElement>(null);
   const [officialSrc, setOfficialSrc] = useState<string | null>(null);
   const [hasOfficialBusImage, setHasOfficialBusImage] = useState(false);
+  const [toast, setToast] = useState<{ type: 'success' | 'error'; msg: string } | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const p = getBusImagePath(busName, busBnName);
@@ -75,14 +87,29 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
   useEffect(() => { trackFeatureUsage('bus_photos'); }, []);
 
   useEffect(() => {
-    getBusPhotos(busId).then(p => { setPhotos(p); setLoading(false); });
+    setLoading(true);
+    getBusPhotos(busId)
+      .then(p => setPhotos(p))
+      .catch(() => showToast('error', t('community.loadError') || 'Failed to load photos'))
+      .finally(() => setLoading(false));
   }, [busId]);
+
+  const showToast = (type: 'success' | 'error', msg: string) => {
+    setToast({ type, msg });
+    setTimeout(() => setToast(null), 3000);
+  };
 
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      showToast('error', 'Please select a valid image file.');
+      return;
+    }
+    setCompressing(true);
     const compressed = await compressImage(file);
     setPreviewUrl(compressed);
+    setCompressing(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -96,12 +123,25 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
       setShowForm(false);
       setCaption('');
       setPreviewUrl(null);
+      showToast('success', t('community.photoUploaded') || 'Photo uploaded!');
+    } else {
+      showToast('error', t('community.submitError') || 'Failed to upload. Please try again.');
     }
     setSubmitting(false);
   };
 
   return (
     <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-hidden">
+      {/* Toast */}
+      {toast && (
+        <div className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-4 py-3 rounded-xl shadow-xl text-sm font-semibold transition-all ${
+          toast.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+        }`}>
+          {toast.type === 'success' ? <CheckCircle className="w-4 h-4 shrink-0" /> : <AlertCircle className="w-4 h-4 shrink-0" />}
+          {toast.msg}
+        </div>
+      )}
+
       <div className="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
         <button onClick={onBack} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full">
           <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
@@ -113,10 +153,12 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
           <h1 className="text-lg font-bold text-gray-900 dark:text-white">{t('community.busPhotosTitle')}</h1>
           <p className="text-xs text-gray-500 dark:text-gray-400">{busName} · {t('community.photosCount', { count: formatNumber(photos.length) })}</p>
         </div>
-        <button onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-1.5 px-3 py-2 bg-pink-500 hover:bg-pink-600 text-white text-sm font-semibold rounded-xl">
-          <Camera className="w-4 h-4" /> {t('community.addPhoto')}
-        </button>
+        {user && (
+          <button onClick={() => setShowForm(!showForm)}
+            className="flex items-center gap-1.5 px-3 py-2 bg-pink-500 hover:bg-pink-600 text-white text-sm font-semibold rounded-xl">
+            <Camera className="w-4 h-4" /> {t('community.addPhoto')}
+          </button>
+        )}
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
@@ -129,10 +171,7 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
                 alt={`${busName} bus`}
                 className="w-full max-h-52 object-contain"
                 loading="lazy"
-                onError={() => {
-                  setOfficialSrc('/default-bus.svg');
-                  setHasOfficialBusImage(false);
-                }}
+                onError={() => { setOfficialSrc('/default-bus.svg'); setHasOfficialBusImage(false); }}
               />
             </div>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
@@ -145,7 +184,12 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
           <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 space-y-3">
             <h3 className="font-bold text-gray-900 dark:text-white text-sm">{t('community.uploadPhotoTitle')}</h3>
 
-            {previewUrl ? (
+            {compressing ? (
+              <div className="w-full h-32 border-2 border-dashed border-pink-300 dark:border-pink-700 rounded-xl flex flex-col items-center justify-center gap-2 text-pink-500">
+                <span className="w-6 h-6 border-2 border-pink-300 border-t-pink-500 rounded-full animate-spin" />
+                <span className="text-sm">{t('community.compressing') || 'Compressing...'}</span>
+              </div>
+            ) : previewUrl ? (
               <div className="relative">
                 <img src={previewUrl} alt="preview" className="w-full rounded-xl object-cover max-h-48" />
                 <button type="button" onClick={() => { setPreviewUrl(null); if (fileRef.current) fileRef.current.value = ''; }}
@@ -162,43 +206,54 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
             )}
             <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
 
-            <input value={caption} onChange={e => setCaption(e.target.value)}
-              placeholder={t('community.photoCaptionOptional')}
+            <input value={caption} onChange={e => setCaption(e.target.value.slice(0, 200))}
+              placeholder={t('community.photoCaptionOptional')} maxLength={200}
               className="w-full bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white" />
 
             <div className="flex gap-2">
-              <button type="submit" disabled={!previewUrl || submitting}
-                className="flex-1 py-2.5 bg-pink-500 hover:bg-pink-600 disabled:opacity-50 text-white font-semibold text-sm rounded-xl">
-                {submitting ? t('community.submitting') : t('community.submit')}
+              <button type="submit" disabled={!previewUrl || submitting || compressing}
+                className="flex-1 py-2.5 bg-pink-500 hover:bg-pink-600 disabled:opacity-50 text-white font-semibold text-sm rounded-xl flex items-center justify-center gap-2">
+                {submitting ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />{t('community.submitting')}</> : t('community.submit')}
               </button>
-              <button type="button" onClick={() => { setShowForm(false); setPreviewUrl(null); }}
-                className="px-4 py-2.5 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 font-semibold text-sm rounded-xl">{t('common.cancel')}</button>
+              <button type="button" onClick={() => { setShowForm(false); setPreviewUrl(null); setCaption(''); }}
+                className="px-4 py-2.5 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 font-semibold text-sm rounded-xl">
+                {t('common.cancel')}
+              </button>
             </div>
           </form>
         )}
 
-        {loading && <div className="text-center py-10 text-gray-400">{t('common.loading')}</div>}
-
-        {!loading && photos.length === 0 && !showForm && !hasOfficialBusImage && (
-          <div className="text-center py-12">
-            <Camera className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-            <p className="text-gray-500 dark:text-gray-400 font-medium">{t('community.noPhotosYet')}</p>
-            <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">{t('community.beFirstToUpload')}</p>
-          </div>
-        )}
-
-        <div className="grid grid-cols-2 gap-2">
-          {photos.map(p => (
-            <button key={p.id} onClick={() => setLightbox(p)} className="relative rounded-2xl overflow-hidden aspect-square">
-              <img src={p.dataUrl} alt={p.caption || busName} className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-2">
-                {p.caption && <p className="text-xs text-white font-medium truncate">{p.caption}</p>}
-                <p className="text-xs text-white/70">{timeAgo(p.timestamp, t, formatNumber)}</p>
+        {loading ? (
+          <PhotoSkeleton />
+        ) : (
+          <>
+            {photos.length === 0 && !showForm && !hasOfficialBusImage && (
+              <div className="text-center py-12">
+                <Camera className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
+                <p className="text-gray-500 dark:text-gray-400 font-medium">{t('community.noPhotosYet')}</p>
+                <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">{t('community.beFirstToUpload')}</p>
+                {user && (
+                  <button onClick={() => setShowForm(true)} className="mt-4 px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white text-sm font-semibold rounded-xl">
+                    {t('community.addPhoto')}
+                  </button>
+                )}
               </div>
-            </button>
-          ))}
-        </div>
+            )}
+
+            <div className="grid grid-cols-2 gap-2">
+              {photos.map(p => (
+                <button key={p.id} onClick={() => setLightbox(p)} className="relative rounded-2xl overflow-hidden aspect-square">
+                  <img src={p.dataUrl} alt={p.caption || busName} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-2">
+                    {p.caption && <p className="text-xs text-white font-medium truncate">{p.caption}</p>}
+                    <p className="text-xs text-white/70">{timeAgo(p.timestamp, t, formatNumber)}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </>
+        )}
         <div className="h-4" />
       </div>
 

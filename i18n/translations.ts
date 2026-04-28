@@ -283,6 +283,13 @@ export const translations: Record<Language, Translations> = {
             photoCaptionOptional: 'ছবির বিবরণ (ঐচ্ছিক)',
             noPhotosYet: 'এখনো কোনো ছবি নেই',
             beFirstToUpload: 'প্রথম ছবি দিন!',
+            compressing: 'কম্প্রেস হচ্ছে...',
+            photoUploaded: 'ছবি আপলোড হয়েছে!',
+            photoError: 'ছবি আপলোড ব্যর্থ হয়েছে।',
+            loadError: 'লোড করতে ব্যর্থ হয়েছে।',
+            ratingSubmitted: 'রেটিং সংরক্ষিত হয়েছে!',
+            ratingDeleted: 'রেটিং মুছে ফেলা হয়েছে।',
+            submitError: 'সংরক্ষণ ব্যর্থ হয়েছে। আবার চেষ্টা করুন।',
         },
 
         // Live Navigation
@@ -794,6 +801,11 @@ export const translations: Record<Language, Translations> = {
             allPosts: 'সকল পোস্ট',
             comingSoon: 'আরও আসছে শীঘ্রই!',
             comingSoonDesc: 'আমরা নিয়মিত নতুন গাইড এবং টিপস যুক্ত করছি। পরবর্তী আপডেটের জন্য থাকুন!',
+            searchPlaceholder: 'পোস্ট খুঁজুন...',
+            allCategories: 'সব',
+            noResults: 'কোনো ফলাফল পাওয়া যায়নি',
+            clearFilters: 'ফিল্টার মুছুন',
+            results: 'ফলাফল',
         },
         trainSearch: {
             title: 'বাংলাদেশ রেলওয়ে',
@@ -1296,6 +1308,13 @@ export const translations: Record<Language, Translations> = {
             photoCaptionOptional: 'Photo caption (optional)',
             noPhotosYet: 'No photos yet',
             beFirstToUpload: 'Be the first to upload!',
+            compressing: 'Compressing...',
+            photoUploaded: 'Photo uploaded!',
+            photoError: 'Failed to upload photo.',
+            loadError: 'Failed to load. Please try again.',
+            ratingSubmitted: 'Rating saved!',
+            ratingDeleted: 'Rating removed.',
+            submitError: 'Failed to save. Please try again.',
         },
 
         // Live Navigation
@@ -1807,6 +1826,11 @@ export const translations: Record<Language, Translations> = {
             allPosts: 'All Posts',
             comingSoon: 'More Coming Soon!',
             comingSoonDesc: 'We\'re regularly adding new guides and tips. Stay tuned for the next update!',
+            searchPlaceholder: 'Search posts...',
+            allCategories: 'All',
+            noResults: 'No results found',
+            clearFilters: 'Clear filters',
+            results: 'results',
         },
         trainSearch: {
             title: 'Bangladesh Railway',

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowLeft, Star, Train } from 'lucide-react';
+import { ArrowLeft, Star, Train, AlertCircle, CheckCircle } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { getAuthUser, getTrainRatings, submitTrainRating, deleteTrainRating, TrainRatingSummary } from '../services/communityDataService';
 import { trackFeatureUsage } from '../services/analyticsService';
@@ -18,6 +18,42 @@ function timeAgo(ts: number, t: (key: string, params?: Record<string, string | n
   return `${formatNumber(Math.floor(diff / 1440))} ${t('history.daysAgo')}`;
 }
 
+function RatingSkeleton() {
+  return (
+    <div className="space-y-4 animate-pulse">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-gray-100 dark:border-gray-700 flex items-center gap-6">
+        <div className="text-center space-y-2">
+          <div className="w-16 h-12 bg-gray-200 dark:bg-slate-700 rounded-lg mx-auto" />
+          <div className="flex gap-1 justify-center">{Array.from({ length: 5 }, (_, i) => <div key={i} className="w-4 h-4 bg-gray-200 dark:bg-slate-700 rounded" />)}</div>
+          <div className="w-16 h-3 bg-gray-200 dark:bg-slate-700 rounded mx-auto" />
+        </div>
+        <div className="flex-1 space-y-2">
+          {[5, 4, 3, 2, 1].map(s => (
+            <div key={s} className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-gray-200 dark:bg-slate-700 rounded" />
+              <div className="flex-1 h-2 bg-gray-200 dark:bg-slate-700 rounded-full" />
+              <div className="w-4 h-3 bg-gray-200 dark:bg-slate-700 rounded" />
+            </div>
+          ))}
+        </div>
+      </div>
+      {[1, 2, 3].map(i => (
+        <div key={i} className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 space-y-2">
+          <div className="flex justify-between">
+            <div className="space-y-1">
+              <div className="w-24 h-3.5 bg-gray-200 dark:bg-slate-700 rounded" />
+              <div className="flex gap-1">{Array.from({ length: 5 }, (_, j) => <div key={j} className="w-3 h-3 bg-gray-200 dark:bg-slate-700 rounded" />)}</div>
+            </div>
+            <div className="w-16 h-3 bg-gray-200 dark:bg-slate-700 rounded" />
+          </div>
+          <div className="w-full h-3 bg-gray-200 dark:bg-slate-700 rounded" />
+          <div className="w-3/4 h-3 bg-gray-200 dark:bg-slate-700 rounded" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function TrainRating({ trainId, trainName, onBack }: Props) {
   const user = getAuthUser();
   const { t, formatNumber } = useLanguage();
@@ -29,12 +65,22 @@ export default function TrainRating({ trainId, trainName, onBack }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [hovered, setHovered] = useState(0);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [toast, setToast] = useState<{ type: 'success' | 'error'; msg: string } | null>(null);
 
   useEffect(() => { trackFeatureUsage('train_rating'); }, []);
 
   useEffect(() => {
-    getTrainRatings(trainId).then(d => { setSummary(d); setLoading(false); });
+    setLoading(true);
+    getTrainRatings(trainId)
+      .then(d => setSummary(d))
+      .catch(() => showToast('error', t('community.loadError') || 'Failed to load ratings'))
+      .finally(() => setLoading(false));
   }, [trainId]);
+
+  const showToast = (type: 'success' | 'error', msg: string) => {
+    setToast({ type, msg });
+    setTimeout(() => setToast(null), 3000);
+  };
 
   const myRating = summary?.ratings.find(r => r.userId === user?.id);
 
@@ -48,6 +94,9 @@ export default function TrainRating({ trainId, trainName, onBack }: Props) {
       setShowForm(false);
       setComment('');
       setStars(5);
+      showToast('success', t('community.ratingSubmitted') || 'Rating saved!');
+    } else {
+      showToast('error', t('community.submitError') || 'Failed to save. Please try again.');
     }
     setSubmitting(false);
   };
@@ -61,19 +110,17 @@ export default function TrainRating({ trainId, trainName, onBack }: Props) {
       setShowForm(false);
       setComment('');
       setStars(5);
+      showToast('success', t('community.ratingDeleted') || 'Rating removed.');
+    } else {
+      showToast('error', t('community.submitError') || 'Failed. Please try again.');
     }
     setShowDeleteModal(false);
     setSubmitting(false);
   };
 
   const handleOpenForm = () => {
-    if (myRating) {
-      setStars(myRating.stars);
-      setComment((myRating.comment || '').trim());
-    } else {
-      setStars(5);
-      setComment('');
-    }
+    if (myRating) { setStars(myRating.stars); setComment((myRating.comment || '').trim()); }
+    else { setStars(5); setComment(''); }
     setShowForm(v => !v);
   };
 
@@ -84,6 +131,16 @@ export default function TrainRating({ trainId, trainName, onBack }: Props) {
 
   return (
     <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-hidden">
+      {/* Toast */}
+      {toast && (
+        <div className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-4 py-3 rounded-xl shadow-xl text-sm font-semibold transition-all ${
+          toast.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+        }`}>
+          {toast.type === 'success' ? <CheckCircle className="w-4 h-4 shrink-0" /> : <AlertCircle className="w-4 h-4 shrink-0" />}
+          {toast.msg}
+        </div>
+      )}
+
       <div className="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
         <button onClick={onBack} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full">
           <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
@@ -95,100 +152,110 @@ export default function TrainRating({ trainId, trainName, onBack }: Props) {
           <h1 className="text-lg font-bold text-gray-900 dark:text-white">{t('community.trainRatingTitle')}</h1>
           <p className="text-xs text-gray-500 dark:text-gray-400">{trainName}</p>
         </div>
-        <button onClick={handleOpenForm}
-          className="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold rounded-xl">
-          {myRating ? t('community.editRating') : t('community.rateNow')}
-        </button>
+        {user && (
+          <button onClick={handleOpenForm}
+            className="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold rounded-xl">
+            {myRating ? t('community.editRating') : t('community.rateNow')}
+          </button>
+        )}
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {summary && (
-          <div className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-gray-100 dark:border-gray-700 flex items-center gap-6">
-            <div className="text-center">
-              <p className="text-5xl font-black text-gray-900 dark:text-white">{summary.average.toFixed(1)}</p>
-              <div className="flex mt-1">{renderStars(Math.round(summary.average), 'w-4 h-4')}</div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('community.ratingsCount', { count: formatNumber(summary.count) })}</p>
-            </div>
-            <div className="flex-1 space-y-1">
-              {[5, 4, 3, 2, 1].map(s => {
-                const cnt = summary.ratings.filter(r => r.stars === s).length;
-                const pct = summary.count ? (cnt / summary.count) * 100 : 0;
-                return (
-                  <div key={s} className="flex items-center gap-2 text-xs">
-                    <span className="w-3 text-gray-500 dark:text-gray-400">{s}</span>
-                    <div className="flex-1 bg-gray-100 dark:bg-slate-700 rounded-full h-2">
-                      <div className="bg-amber-400 h-2 rounded-full" style={{ width: `${pct}%` }} />
-                    </div>
-                    <span className="w-5 text-gray-500 dark:text-gray-400 text-right">{cnt}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {showForm && (
-          <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 space-y-3">
-            <h3 className="font-bold text-gray-900 dark:text-white text-sm">{t('community.giveYourRating')}</h3>
-            <div className="flex gap-1">
-              {Array.from({ length: 5 }, (_, i) => (
-                <button key={i} type="button"
-                  onMouseEnter={() => setHovered(i + 1)}
-                  onMouseLeave={() => setHovered(0)}
-                  onClick={() => setStars(i + 1)}>
-                  <Star className={`w-8 h-8 transition-colors ${i < (hovered || stars) ? 'text-amber-400 fill-amber-400' : 'text-gray-300 dark:text-gray-600'}`} />
-                </button>
-              ))}
-            </div>
-            <textarea value={comment} onChange={e => setComment(e.target.value)}
-              placeholder={t('community.writeExperienceOptional')}
-              rows={3}
-              className="w-full bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white resize-none" />
-            <div className="flex gap-2">
-              <button type="submit" disabled={submitting}
-                className="flex-1 py-2.5 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white font-semibold text-sm rounded-xl">
-                {submitting ? t('community.submitting') : t('community.submit')}
-              </button>
-              {myRating && (
-                <button
-                  type="button"
-                  onClick={() => setShowDeleteModal(true)}
-                  disabled={submitting}
-                  className="px-4 py-2.5 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-300 border border-red-200 dark:border-red-800 font-semibold text-sm rounded-xl disabled:opacity-50"
-                >
-                  {t('community.deleteRating')}
-                </button>
-              )}
-              <button type="button" onClick={() => setShowForm(false)}
-                className="px-4 py-2.5 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 font-semibold text-sm rounded-xl">
-                {t('common.cancel')}
-              </button>
-            </div>
-          </form>
-        )}
-
-        {loading && <div className="text-center py-10 text-gray-400">{t('common.loading')}</div>}
-
-        {!loading && (!summary || summary.count === 0) && !showForm && (
-          <div className="text-center py-12">
-            <Star className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-            <p className="text-gray-500 dark:text-gray-400 font-medium">{t('community.noRatingsYet')}</p>
-            <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">{t('community.beFirstToRate')}</p>
-          </div>
-        )}
-
-        {summary?.ratings.map(r => (
-          <div key={r.userId + r.timestamp} className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700">
-            <div className="flex items-start justify-between gap-2">
-              <div>
-                <p className="font-semibold text-gray-900 dark:text-white text-sm">{r.displayName || 'User'}</p>
-                <div className="flex gap-0.5 mt-0.5">{renderStars(r.stars, 'w-3.5 h-3.5')}</div>
+        {loading ? (
+          <RatingSkeleton />
+        ) : (
+          <>
+            {summary && summary.count > 0 && (
+              <div className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-gray-100 dark:border-gray-700 flex items-center gap-6">
+                <div className="text-center">
+                  <p className="text-5xl font-black text-gray-900 dark:text-white">{summary.average.toFixed(1)}</p>
+                  <div className="flex mt-1">{renderStars(Math.round(summary.average), 'w-4 h-4')}</div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('community.ratingsCount', { count: formatNumber(summary.count) })}</p>
+                </div>
+                <div className="flex-1 space-y-1">
+                  {[5, 4, 3, 2, 1].map(s => {
+                    const cnt = summary.ratings.filter(r => r.stars === s).length;
+                    const pct = summary.count ? (cnt / summary.count) * 100 : 0;
+                    return (
+                      <div key={s} className="flex items-center gap-2 text-xs">
+                        <span className="w-3 text-gray-500 dark:text-gray-400">{s}</span>
+                        <div className="flex-1 bg-gray-100 dark:bg-slate-700 rounded-full h-2">
+                          <div className="bg-amber-400 h-2 rounded-full transition-all duration-500" style={{ width: `${pct}%` }} />
+                        </div>
+                        <span className="w-5 text-gray-500 dark:text-gray-400 text-right">{cnt}</span>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-              <span className="text-xs text-gray-400 dark:text-gray-500 shrink-0">{timeAgo(r.timestamp, t, formatNumber)}</span>
-            </div>
-            {r.comment?.trim() && <p className="text-sm text-gray-700 dark:text-gray-300 mt-2">{r.comment.trim()}</p>}
-          </div>
-        ))}
+            )}
+
+            {showForm && (
+              <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 space-y-3">
+                <h3 className="font-bold text-gray-900 dark:text-white text-sm">{t('community.giveYourRating')}</h3>
+                <div className="flex gap-1">
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <button key={i} type="button"
+                      onMouseEnter={() => setHovered(i + 1)} onMouseLeave={() => setHovered(0)}
+                      onClick={() => setStars(i + 1)}>
+                      <Star className={`w-8 h-8 transition-colors ${i < (hovered || stars) ? 'text-amber-400 fill-amber-400' : 'text-gray-300 dark:text-gray-600'}`} />
+                    </button>
+                  ))}
+                </div>
+                <textarea value={comment} onChange={e => setComment(e.target.value.slice(0, 500))}
+                  placeholder={t('community.writeExperienceOptional')} rows={3} maxLength={500}
+                  className="w-full bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white resize-none" />
+                <div className="flex gap-2">
+                  <button type="submit" disabled={submitting}
+                    className="flex-1 py-2.5 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white font-semibold text-sm rounded-xl flex items-center justify-center gap-2">
+                    {submitting ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />{t('community.submitting')}</> : t('community.submit')}
+                  </button>
+                  {myRating && (
+                    <button type="button" onClick={() => setShowDeleteModal(true)} disabled={submitting}
+                      className="px-4 py-2.5 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-300 border border-red-200 dark:border-red-800 font-semibold text-sm rounded-xl disabled:opacity-50">
+                      {t('community.deleteRating')}
+                    </button>
+                  )}
+                  <button type="button" onClick={() => setShowForm(false)}
+                    className="px-4 py-2.5 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 font-semibold text-sm rounded-xl">
+                    {t('common.cancel')}
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {(!summary || summary.count === 0) && !showForm && (
+              <div className="text-center py-12">
+                <Star className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
+                <p className="text-gray-500 dark:text-gray-400 font-medium">{t('community.noRatingsYet')}</p>
+                <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">{t('community.beFirstToRate')}</p>
+                {user && (
+                  <button onClick={handleOpenForm} className="mt-4 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold rounded-xl">
+                    {t('community.rateNow')}
+                  </button>
+                )}
+              </div>
+            )}
+
+            {summary?.ratings.map(r => (
+              <div key={r.userId + r.timestamp} className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
+                      {(r.displayName || 'U').charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-white text-sm">{r.displayName || 'User'}</p>
+                      <div className="flex gap-0.5 mt-0.5">{renderStars(r.stars, 'w-3.5 h-3.5')}</div>
+                    </div>
+                  </div>
+                  <span className="text-xs text-gray-400 dark:text-gray-500 shrink-0">{timeAgo(r.timestamp, t, formatNumber)}</span>
+                </div>
+                {r.comment?.trim() && <p className="text-sm text-gray-700 dark:text-gray-300 mt-2 pl-10">{r.comment.trim()}</p>}
+              </div>
+            ))}
+          </>
+        )}
         <div className="h-4" />
       </div>
 
@@ -199,17 +266,13 @@ export default function TrainRating({ trainId, trainName, onBack }: Props) {
             <h3 className="text-base font-bold text-gray-900 dark:text-white mb-2">{t('community.deleteRating')}</h3>
             <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">{t('community.confirmDeleteRating')}</p>
             <div className="flex gap-2 justify-end">
-              <button
-                onClick={() => setShowDeleteModal(false)}
-                className="px-4 py-2 rounded-xl bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-semibold"
-              >
+              <button onClick={() => setShowDeleteModal(false)}
+                className="px-4 py-2 rounded-xl bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-semibold">
                 {t('common.cancel')}
               </button>
-              <button
-                onClick={handleDelete}
-                disabled={submitting}
-                className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-semibold disabled:opacity-50"
-              >
+              <button onClick={handleDelete} disabled={submitting}
+                className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-semibold disabled:opacity-50 flex items-center gap-2">
+                {submitting && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
                 {submitting ? t('community.submitting') : t('community.deleteRating')}
               </button>
             </div>
@@ -219,4 +282,3 @@ export default function TrainRating({ trainId, trainName, onBack }: Props) {
     </div>
   );
 }
-
