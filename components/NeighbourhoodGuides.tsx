@@ -5,6 +5,23 @@ import { trackFeatureUsage } from '../services/analyticsService';
 
 interface Props { onBack: () => void; }
 
+type GuideEntry = {
+  area: string;
+  areaEn: string;
+  division: string;
+  description: string;
+  descriptionEn: string;
+  metroAccess: string[];
+  metroAccessEn: string[];
+  buses: string[];
+  busesEn: string[];
+  tips: string[];
+  tipsEn: string[];
+  landmarks: string[];
+  landmarksEn: string[];
+  icon: string;
+};
+
 const GUIDES = [
   // ─── Dhaka ──────────────────────────────────────────────────────────────────
   {
@@ -520,6 +537,122 @@ const GUIDES = [
   },
 ];
 
+type DistrictSeed = {
+  area: string;
+  areaEn: string;
+  division: string;
+  icon?: string;
+  landmarks: string[];
+  landmarksEn: string[];
+};
+
+// Complete 64-district baseline (adds districts not explicitly covered above).
+const ALL_64_DISTRICTS: DistrictSeed[] = [
+  // Dhaka Division
+  { area: 'ঢাকা', areaEn: 'Dhaka', division: 'Dhaka', icon: '🏙️', landmarks: ['লালবাগ কেল্লা', 'আহসান মঞ্জিল', 'জাতীয় সংসদ ভবন'], landmarksEn: ['Lalbagh Fort', 'Ahsan Manzil', 'National Parliament'] },
+  { area: 'গাজীপুর', areaEn: 'Gazipur', division: 'Dhaka', icon: '🌲', landmarks: ['ভাওয়াল জাতীয় উদ্যান', 'শ্রীপুর'], landmarksEn: ['Bhawal National Park', 'Sreepur'] },
+  { area: 'নারায়ণগঞ্জ', areaEn: 'Narayanganj', division: 'Dhaka', icon: '🏭', landmarks: ['পানাম নগর', 'সোনারগাঁ'], landmarksEn: ['Panam Nagar', 'Sonargaon'] },
+  { area: 'নরসিংদী', areaEn: 'Narsingdi', division: 'Dhaka', icon: '🧵', landmarks: ['মনোহরদী', 'শিবপুর'], landmarksEn: ['Monohardi', 'Shibpur'] },
+  { area: 'মুন্সীগঞ্জ', areaEn: 'Munshiganj', division: 'Dhaka', icon: '🏞️', landmarks: ['ইদ্রাকপুর দুর্গ', 'বিক্রমপুর'], landmarksEn: ['Idrakpur Fort', 'Bikrampur'] },
+  { area: 'মানিকগঞ্জ', areaEn: 'Manikganj', division: 'Dhaka', icon: '🌊', landmarks: ['আরিচা ঘাট', 'বালিয়াটি জমিদার বাড়ি'], landmarksEn: ['Aricha Ghat', 'Baliati Zamindar Bari'] },
+  { area: 'টাঙ্গাইল', areaEn: 'Tangail', division: 'Dhaka', icon: '🧣', landmarks: ['মধুপুর গড়', 'আতিয়া মসজিদ'], landmarksEn: ['Madhupur Forest', 'Atia Mosque'] },
+  { area: 'কিশোরগঞ্জ', areaEn: 'Kishoreগঞ্জ', division: 'Dhaka', icon: '🚣', landmarks: ['ইটনা হাওর', 'এগারসিন্দুর'], landmarksEn: ['Itna Haor', 'Egarosindur'] },
+  { area: 'ফরিদপুর', areaEn: 'Faridpur', division: 'Dhaka', icon: '🌾', landmarks: ['গোয়ালন্দ ঘাট', 'রাজেন্দ্র কলেজ'], landmarksEn: ['Goalanda Ghat', 'Rajendra College'] },
+  { area: 'গোপালগঞ্জ', areaEn: 'Gopalগঞ্জ', division: 'Dhaka', icon: '🛶', landmarks: ['টুঙ্গিপাড়া', 'বঙ্গবন্ধুর সমাধি'], landmarksEn: ['Tungipara', 'Bangabandhu Mausoleum'] },
+  { area: 'মাদারীপুর', areaEn: 'Madaripur', division: 'Dhaka', icon: '🌿', landmarks: ['আড়িয়াল খাঁ নদী', 'শিবচর'], landmarksEn: ['Arial Kha River', 'Shibchar'] },
+  { area: 'রাজবাড়ী', areaEn: 'Rajbari', division: 'Dhaka', icon: '🏛️', landmarks: ['রাজবাড়ী জমিদার বাড়ি', 'দৌলতদিয়া ঘাট'], landmarksEn: ['Rajbari Zamindar Bari', 'Daulatdia Ghat'] },
+  { area: 'শরীয়তপুর', areaEn: 'Shariatpur', division: 'Dhaka', icon: '⛴️', landmarks: ['পদ্মা নদী', 'নড়িয়া'], landmarksEn: ['Padma River', 'Naria'] },
+
+  // Chittagong Division
+  { area: 'চট্টগ্রাম', areaEn: 'Chattogram', division: 'Chittagong', icon: '⚓', landmarks: ['পতেঙ্গা', 'চট্টগ্রাম বন্দর'], landmarksEn: ['Patenga', 'Chattogram Port'] },
+  { area: 'কুমিল্লা', areaEn: 'Cumilla', division: 'Chittagong', icon: '🏺', landmarks: ['ময়নামতি', 'শালবন বিহার'], landmarksEn: ['Mainamati', 'Shalban Vihara'] },
+  { area: 'ব্রাহ্মণবাড়িয়া', areaEn: 'Brahmanbaria', division: 'Chittagong', icon: '🎵', landmarks: ['আখাউড়া', 'তিতাস নদী'], landmarksEn: ['Akhaura', 'Titas River'] },
+  { area: 'চাঁদপুর', areaEn: 'Chandpur', division: 'Chittagong', icon: '🐟', landmarks: ['তিন নদীর মোহনা', 'হিলশা ঘাট'], landmarksEn: ['Meghna Estuary', 'Hilsa Landing Point'] },
+  { area: 'নোয়াখালী', areaEn: 'Noakhali', division: 'Chittagong', icon: '🌊', landmarks: ['মাইজদী', 'সুবর্ণচর'], landmarksEn: ['Maijdee', 'Subarnachar'] },
+  { area: 'ফেনী', areaEn: 'Feni', division: 'Chittagong', icon: '🚉', landmarks: ['মহিপাল', 'ফেনী নদী'], landmarksEn: ['Mohipal', 'Feni River'] },
+  { area: 'লক্ষ্মীপুর', areaEn: 'Lakshmipur', division: 'Chittagong', icon: '🌴', landmarks: ['রামগতি', 'মেঘনা তীর'], landmarksEn: ['Ramgati', 'Meghna Riverside'] },
+  { area: 'কক্সবাজার', areaEn: "Cox's Bazar", division: 'Chittagong', icon: '🏖️', landmarks: ['কক্সবাজার সমুদ্র সৈকত', 'ইনানী', 'হিমছড়ি'], landmarksEn: ["Cox's Bazar Beach", 'Inani', 'Himchhari'] },
+  { area: 'খাগড়াছড়ি', areaEn: 'Khagrachhari', division: 'Chittagong', icon: '⛰️', landmarks: ['আলুটিলা গুহা', 'রিসাং ঝরনা'], landmarksEn: ['Alutila Cave', 'Risang Waterfall'] },
+  { area: 'রাঙামাটি', areaEn: 'Rangamati', division: 'Chittagong', icon: '🏔️', landmarks: ['কাপ্তাই লেক', 'ঝুলন্ত সেতু'], landmarksEn: ['Kaptai Lake', 'Hanging Bridge'] },
+  { area: 'বান্দরবান', areaEn: 'Bandarban', division: 'Chittagong', icon: '🗻', landmarks: ['নীলাচল', 'বগা লেক'], landmarksEn: ['Nilachal', 'Boga Lake'] },
+
+  // Rajshahi Division
+  { area: 'রাজশাহী', areaEn: 'Rajshahi', division: 'Rajshahi', icon: '🍋', landmarks: ['পদ্মা পাড়', 'বরেন্দ্র জাদুঘর'], landmarksEn: ['Padma Riverside', 'Barendra Museum'] },
+  { area: 'নাটোর', areaEn: 'Natore', division: 'Rajshahi', icon: '🏰', landmarks: ['উত্তরা গণভবন', 'নাটোর রাজবাড়ী'], landmarksEn: ['Uttara Ganabhaban', 'Natore Rajbari'] },
+  { area: 'নওগাঁ', areaEn: 'Naogaon', division: 'Rajshahi', icon: '🛕', landmarks: ['পাহাড়পুর', 'আলতাদীঘি'], landmarksEn: ['Paharpur', 'Altadighi'] },
+  { area: 'চাঁপাইনবাবগঞ্জ', areaEn: 'Chapai Nawabগঞ্জ', division: 'Rajshahi', icon: '🥭', landmarks: ['ছোট সোনা মসজিদ', 'আমবাগান'], landmarksEn: ['Choto Sona Mosque', 'Mango Orchards'] },
+  { area: 'পাবনা', areaEn: 'Pabna', division: 'Rajshahi', icon: '🏞️', landmarks: ['হার্ডিঞ্জ ব্রিজ', 'ঈশ্বরদী'], landmarksEn: ['Hardinge Bridge', 'Ishwardi'] },
+  { area: 'সিরাজগঞ্জ', areaEn: 'Sirajগঞ্জ', division: 'Rajshahi', icon: '🌉', landmarks: ['যমুনা সেতু অঞ্চল', 'এনায়েতপুর'], landmarksEn: ['Jamuna Bridge Area', 'Enayetpur'] },
+  { area: 'বগুড়া', areaEn: 'Bogura', division: 'Rajshahi', icon: '🏯', landmarks: ['মহাস্থানগড়', 'বগুড়া জাদুঘর'], landmarksEn: ['Mahasthangarh', 'Bogura Museum'] },
+  { area: 'জয়পুরহাট', areaEn: 'Joypurhat', division: 'Rajshahi', icon: '🌾', landmarks: ['পাঁচবিবি', 'শান্তাহার সংযোগ'], landmarksEn: ['Panchbibi', 'Santahar Junction'] },
+
+  // Khulna Division
+  { area: 'খুলনা', areaEn: 'Khulna', division: 'Khulna', icon: '🌴', landmarks: ['রূপসা নদী', 'সুন্দরবন প্রবেশপথ'], landmarksEn: ['Rupsha River', 'Sundarbans Gateway'] },
+  { area: 'বাগেরহাট', areaEn: 'Bagerhat', division: 'Khulna', icon: '🕌', landmarks: ['ষাট গম্বুজ মসজিদ', 'সুন্দরবন (মংলা)'], landmarksEn: ['Sixty Dome Mosque', 'Sundarbans (Mongla)'] },
+  { area: 'সাতক্ষীরা', areaEn: 'Satkhira', division: 'Khulna', icon: '🦁', landmarks: ['শ্যামনগর', 'সুন্দরবন'], landmarksEn: ['Shyamnagar', 'Sundarbans'] },
+  { area: 'যশোর', areaEn: 'Jashore', division: 'Khulna', icon: '🌸', landmarks: ['বেনাপোল স্থলবন্দর', 'যশোর বিমানবন্দর'], landmarksEn: ['Benapole Land Port', 'Jashore Airport'] },
+  { area: 'নড়াইল', areaEn: 'Narail', division: 'Khulna', icon: '🏞️', landmarks: ['চিত্রা নদী', 'লোহাগড়া'], landmarksEn: ['Chitra River', 'Lohagara'] },
+  { area: 'মাগুরা', areaEn: 'Magura', division: 'Khulna', icon: '🌿', landmarks: ['মাগুরা সদর', 'শালিখা'], landmarksEn: ['Magura Sadar', 'Salikha'] },
+  { area: 'ঝিনাইদহ', areaEn: 'Jhenaidah', division: 'Khulna', icon: '🧵', landmarks: ['শৈলকুপা', 'হরিণাকুণ্ডু'], landmarksEn: ['Shailkupa', 'Harinakundu'] },
+  { area: 'কুষ্টিয়া', areaEn: 'Kushtia', division: 'Khulna', icon: '🎶', landmarks: ['লালন শাহ মাজার', 'শিলাইদহ কুঠিবাড়ি'], landmarksEn: ['Lalon Shah Shrine', 'Shilaidah Kuthibari'] },
+  { area: 'চুয়াডাঙ্গা', areaEn: 'Chuadanga', division: 'Khulna', icon: '🍃', landmarks: ['দর্শনা', 'আলমডাঙ্গা'], landmarksEn: ['Darshana', 'Alamdanga'] },
+  { area: 'মেহেরপুর', areaEn: 'Meherpur', division: 'Khulna', icon: '🏛️', landmarks: ['মুজিবনগর', 'মেহেরপুর সদর'], landmarksEn: ['Mujibnagar', 'Meherpur Sadar'] },
+
+  // Barisal Division
+  { area: 'বরিশাল', areaEn: 'Barishal', division: 'Barisal', icon: '🚢', landmarks: ['দুর্গাসাগর', 'কীর্তনখোলা'], landmarksEn: ['Durgasagar', 'Kirtankhola'] },
+  { area: 'ভোলা', areaEn: 'Bhola', division: 'Barisal', icon: '🏝️', landmarks: ['মনপুরা দ্বীপ', 'চর ফ্যাশন'], landmarksEn: ['Monpura Island', 'Char Fasson'] },
+  { area: 'ঝালকাঠি', areaEn: 'Jhalokathi', division: 'Barisal', icon: '⛵', landmarks: ['সুগন্ধা নদী', 'নলছিটি'], landmarksEn: ['Sugandha River', 'Nalchity'] },
+  { area: 'পিরোজপুর', areaEn: 'Pirojpur', division: 'Barisal', icon: '🌳', landmarks: ['ভাণ্ডারিয়া', 'বলেশ্বর নদী'], landmarksEn: ['Bhandaria', 'Baleshwar River'] },
+  { area: 'পটুয়াখালী', areaEn: 'Patuakhali', division: 'Barisal', icon: '🌅', landmarks: ['কুয়াকাটা', 'রাখাইন পল্লী'], landmarksEn: ['Kuakata', 'Rakhain Village'] },
+  { area: 'বরগুনা', areaEn: 'Barguna', division: 'Barisal', icon: '🏖️', landmarks: ['পাথরঘাটা', 'তালতলী'], landmarksEn: ['Patharghata', 'Taltoli'] },
+
+  // Sylhet Division
+  { area: 'সিলেট', areaEn: 'Sylhet', division: 'Sylhet', icon: '🍃', landmarks: ['শাহজালাল মাজার', 'জাফলং'], landmarksEn: ['Shahjalal Shrine', 'Jaflong'] },
+  { area: 'মৌলভীবাজার', areaEn: 'Moulvibazar', division: 'Sylhet', icon: '🌿', landmarks: ['লাউয়াছড়া', 'শ্রীমঙ্গল চা-বাগান'], landmarksEn: ['Lawachara', 'Srimangal Tea Gardens'] },
+  { area: 'হবিগঞ্জ', areaEn: 'Habiganj', division: 'Sylhet', icon: '🦋', landmarks: ['সাচার এলাকা', 'আজমিরীগঞ্জ হাওর'], landmarksEn: ['Satchari Area', 'Ajmiriganj Haor'] },
+  { area: 'সুনামগঞ্জ', areaEn: 'Sunamগঞ্জ', division: 'Sylhet', icon: '🌊', landmarks: ['টাঙ্গুয়ার হাওর', 'বিচনাকান্দি'], landmarksEn: ['Tanguar Haor', 'Bichanakandi'] },
+
+  // Rangpur Division
+  { area: 'রংপুর', areaEn: 'Rangpur', division: 'Rangpur', icon: '❄️', landmarks: ['তাজহাট', 'ঘাঘট নদী'], landmarksEn: ['Tajhat', 'Ghaghat River'] },
+  { area: 'দিনাজপুর', areaEn: 'Dinajpur', division: 'Rangpur', icon: '🛕', landmarks: ['কান্তজিউ মন্দির', 'রামসাগর'], landmarksEn: ['Kantaji Temple', 'Ramsagar'] },
+  { area: 'ঠাকুরগাঁও', areaEn: 'Thakurgaon', division: 'Rangpur', icon: '🌾', landmarks: ['ঠাকুরগাঁও সদর', 'টাঙ্গন ব্যারেজ'], landmarksEn: ['Thakurgaon Sadar', 'Tangon Barrage'] },
+  { area: 'পঞ্চগড়', areaEn: 'Panchagarh', division: 'Rangpur', icon: '🏔️', landmarks: ['তেঁতুলিয়া', 'কাঞ্চনজঙ্ঘা ভিউ পয়েন্ট'], landmarksEn: ['Tetulia', 'Kanchenjunga Viewpoint'] },
+  { area: 'নীলফামারী', areaEn: 'Nilphamari', division: 'Rangpur', icon: '✈️', landmarks: ['সৈয়দপুর', 'উত্তরা ইপিজেড'], landmarksEn: ['Saidpur', 'Uttara EPZ'] },
+  { area: 'লালমনিরহাট', areaEn: 'Lalmonirhat', division: 'Rangpur', icon: '🚂', landmarks: ['তিস্তা জংশন', 'পাটগ্রাম'], landmarksEn: ['Teesta Junction', 'Patgram'] },
+  { area: 'কুড়িগ্রাম', areaEn: 'Kurigram', division: 'Rangpur', icon: '🌊', landmarks: ['ভূরুঙ্গামারী', 'ধরলা নদী'], landmarksEn: ['Bhurungamari', 'Dharla River'] },
+  { area: 'গাইবান্ধা', areaEn: 'Gaibandha', division: 'Rangpur', icon: '🚣', landmarks: ['ব্রহ্মপুত্র চরাঞ্চল', 'গোবিন্দগঞ্জ'], landmarksEn: ['Brahmaputra Char Area', 'Gobindaganj'] },
+
+  // Mymensingh Division
+  { area: 'ময়মনসিংহ', areaEn: 'Mymensingh', division: 'Mymensingh', icon: '🌾', landmarks: ['ব্রহ্মপুত্র পাড়', 'কৃষি বিশ্ববিদ্যালয়'], landmarksEn: ['Brahmaputra Riverside', 'Agricultural University'] },
+  { area: 'জামালপুর', areaEn: 'Jamalpur', division: 'Mymensingh', icon: '🧺', landmarks: ['মেলান্দহ', 'যমুনা তীর'], landmarksEn: ['Melandah', 'Jamuna Riverside'] },
+  { area: 'শেরপুর', areaEn: 'Sherpur', division: 'Mymensingh', icon: '🌲', landmarks: ['গারো পাহাড়', 'নালিতাবাড়ী'], landmarksEn: ['Garo Hills', 'Nalitabari'] },
+  { area: 'নেত্রকোনা', areaEn: 'Netrokona', division: 'Mymensingh', icon: '🏞️', landmarks: ['বিরিশিরি', 'সোমেশ্বরী নদী'], landmarksEn: ['Birishiri', 'Someshwari River'] },
+];
+
+const makeDistrictGuide = (d: DistrictSeed): GuideEntry => ({
+  area: d.area,
+  areaEn: d.areaEn,
+  division: d.division,
+  description: `${d.area} জেলা ${d.division} বিভাগের গুরুত্বপূর্ণ অঞ্চল। জেলা শহর, বাস রুট ও দর্শনীয় স্থান সম্পর্কে এই গাইডে তথ্য পাবেন।`,
+  descriptionEn: `${d.areaEn} district is an important area in ${d.division} division. This guide covers district travel basics, routes, and key attractions.`,
+  metroAccess: ['কোনো মেট্রো নেই (স্থানীয় বাস/ট্রেন/নদীপথ ব্যবহার করুন)'],
+  metroAccessEn: ['No metro access (use local bus/train/waterway)'],
+  buses: ['জেলা আন্তঃজেলা বাস', 'লোকাল বাস/সিএনজি', 'প্রধান বাস টার্মিনাল সংযোগ'],
+  busesEn: ['District intercity buses', 'Local bus/CNG', 'Main terminal connections'],
+  tips: ['ভোর বা সকাল বেলা রওনা দিলে যানজট কম', 'জেলা শহরের টার্মিনাল থেকে লোকাল পরিবহন সহজে পাওয়া যায়', 'ভ্রমণের আগে আবহাওয়া ও রাস্তার অবস্থা দেখে নিন'],
+  tipsEn: ['Start early morning for lower congestion', 'Local transport is easiest from district terminals', 'Check weather and road conditions before travel'],
+  landmarks: d.landmarks,
+  landmarksEn: d.landmarksEn,
+  icon: d.icon || '📍',
+});
+
+const DISTRICT_GUIDES: GuideEntry[] = ALL_64_DISTRICTS.map(makeDistrictGuide);
+const DISTRICT_KEYS = new Set(DISTRICT_GUIDES.map(d => d.areaEn.toLowerCase()));
+const MERGED_GUIDES: GuideEntry[] = [
+  ...GUIDES,
+  ...DISTRICT_GUIDES.filter(d => !GUIDES.some(g => g.areaEn.toLowerCase() === d.areaEn.toLowerCase())),
+];
+
 export default function NeighbourhoodGuides({ onBack }: Props) {
   const { language } = useLanguage();
   const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
@@ -531,15 +664,15 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
-    if (!q) return GUIDES;
-    return GUIDES.filter(g =>
+    if (!q) return MERGED_GUIDES;
+    return MERGED_GUIDES.filter(g =>
       g.area.includes(q) || g.areaEn.toLowerCase().includes(q) ||
       g.division.toLowerCase().includes(q) ||
       g.description.includes(q) || g.descriptionEn.toLowerCase().includes(q)
     );
   }, [search]);
 
-  const divisions = [...new Set(GUIDES.map(g => g.division))];
+  const divisions = [...new Set(MERGED_GUIDES.map(g => g.division))];
 
   const toggleDivision = (div: string) => {
     setExpandedDivisions(prev => {
@@ -610,7 +743,7 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
         </div>
         <div>
           <h1 className="text-lg font-bold text-gray-900 dark:text-white">{lbl('Area Guides', 'এলাকাভিত্তিক গাইড')}</h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{lbl('Bangladesh Transport Guides', 'বাংলাদেশ পরিবহন গাইড')} · {GUIDES.length}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">{lbl('Bangladesh Transport Guides', 'বাংলাদেশ পরিবহন গাইড')} · {MERGED_GUIDES.length}</p>
         </div>
       </div>
 
@@ -645,7 +778,7 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
         ) : (
           <div className="space-y-4">
             {divisions.map(div => {
-              const divGuides = GUIDES.filter(g => g.division === div);
+              const divGuides = MERGED_GUIDES.filter(g => g.division === div);
               const isExpanded = expandedDivisions.has(div);
               const visible = isExpanded ? divGuides : divGuides.slice(0, 4);
               return (
