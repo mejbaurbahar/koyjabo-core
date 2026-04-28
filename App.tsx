@@ -175,6 +175,11 @@ const getStoredView = (): AppView => {
         return viewMap[target];
       }
 
+      // Deep link: /bus/<busSlug>
+      if (target === 'bus' || target.startsWith('bus/')) {
+        return AppView.BUS_DETAILS;
+      }
+
       // Special handling for blog sub-paths
       if (target.startsWith('blog/')) {
         return AppView.BLOG;
@@ -523,13 +528,67 @@ const App: React.FC = () => {
     return formatNumber(formatted);
   };
 
+  const POST_LOGIN_REDIRECT_KEY = 'koyjabo_post_login_redirect';
+
+  const slugify = (value: string) => {
+    return (value || '')
+      .toLowerCase()
+      .replace(/paribahan/g, '')
+      .replace(/&/g, ' and ')
+      .normalize('NFKD')
+      .replace(/[^\w\s\u0980-\u09FF-]/g, ' ')
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+  };
+
+  const getBusSlug = (bus: BusRoute) => slugify(bus.name || bus.id);
+
+  const getStationSlug = (stationId: string) => {
+    const st: any = (STATIONS as any)[stationId] || (METRO_STATIONS as any)[stationId] || (RAILWAY_STATIONS as any)[stationId] || (AIRPORTS as any)[stationId];
+    if (!st) return slugify(stationId);
+    return slugify(st.name || st.bnName || stationId);
+  };
+
+  const findBusBySlug = (busSlug: string): BusRoute | null => {
+    const normalized = slugify(busSlug);
+    if (!normalized) return null;
+    return BUS_DATA.find(b => getBusSlug(b) === normalized) || null;
+  };
+
+  const findStationIdBySlug = (stationSlug: string): string => {
+    const normalized = slugify(stationSlug);
+    if (!normalized) return '';
+    // Try exact id first (for backward compatibility)
+    if ((STATIONS as any)[stationSlug]) return stationSlug;
+    if ((METRO_STATIONS as any)[stationSlug]) return stationSlug;
+    if ((RAILWAY_STATIONS as any)[stationSlug]) return stationSlug;
+    if ((AIRPORTS as any)[stationSlug]) return stationSlug;
+
+    const all: Record<string, any> = { ...(STATIONS as any), ...(METRO_STATIONS as any), ...(RAILWAY_STATIONS as any), ...(AIRPORTS as any) };
+    for (const [id, st] of Object.entries(all)) {
+      const s = slugify((st as any)?.name || (st as any)?.bnName || id);
+      if (s === normalized) return id;
+    }
+    return '';
+  };
+
   const [view, setView] = useState<AppView>(getStoredView);
 
   // Auth guard: redirect logged-in users away from auth-only pages
   useEffect(() => {
     const AUTH_ONLY = new Set([AppView.LOGIN, AppView.SIGNUP, AppView.FORGOT_PASSWORD]);
     if (user && AUTH_ONLY.has(view)) {
-      setView(AppView.HOME);
+      const redirect = sessionStorage.getItem(POST_LOGIN_REDIRECT_KEY);
+      if (redirect) {
+        sessionStorage.removeItem(POST_LOGIN_REDIRECT_KEY);
+        window.history.replaceState({}, '', redirect);
+        // Re-sync view + selected bus from URL without a full reload.
+        window.dispatchEvent(new PopStateEvent('popstate'));
+      } else {
+        setView(AppView.HOME);
+      }
     }
   }, [user, view]);
 
@@ -949,15 +1008,14 @@ const App: React.FC = () => {
   // Browser history integration - Handle phone back button
   useEffect(() => {
     const handlePopState = () => {
-      // When user presses back button, go to previous view
-      if (view !== AppView.HOME) {
-        setView(AppView.HOME);
-      }
+      // Prefer URL-driven state for back/forward (deep links)
+      if (syncBusDeepLinkFromUrl()) return;
+      setView(getStoredView());
     };
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [view]);
+  }, [syncBusDeepLinkFromUrl]);
 
   // Handle SEO: title, description, keywords, OG, Twitter, canonical — per page
   useEffect(() => {
@@ -1187,6 +1245,29 @@ const App: React.FC = () => {
   // Track if view was set from hash to prevent conflict
   const viewSetFromHash = useRef(false);
 
+  const syncBusDeepLinkFromUrl = useCallback(() => {
+    const path = window.location.pathname.substring(1).replace(/\/$/, '');
+    if (!(path === 'bus' || path.startsWith('bus/'))) return false;
+
+    const slug = path.split('/')[1] || '';
+    const bus = slug ? findBusBySlug(slug) : null;
+    if (bus) {
+      setSelectedBus(bus);
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const fromSlug = params.get('from');
+    const toSlug = params.get('to');
+    const fromId = fromSlug ? findStationIdBySlug(fromSlug) : '';
+    const toId = toSlug ? findStationIdBySlug(toSlug) : '';
+    setFareStart(fromId || '');
+    setFareEnd(toId || '');
+
+    viewSetFromHash.current = true;
+    setView(AppView.BUS_DETAILS);
+    return true;
+  }, []);
+
   // Reverse mapping:  // Map views to URL paths
   const viewToPath: Record<AppView, string> = {
     [AppView.HOME]: '',
@@ -1252,6 +1333,23 @@ const App: React.FC = () => {
     const path = viewToPath[view];
     const currentPath = window.location.pathname.substring(1).replace(/\/$/, '');
 
+    // Special handling for bus deep links
+    if (view === AppView.BUS_DETAILS && selectedBus) {
+      const busSlug = getBusSlug(selectedBus);
+      const desiredPath = `bus/${busSlug}`;
+      const qs = new URLSearchParams();
+      if (fareStart && fareEnd) {
+        qs.set('from', getStationSlug(fareStart));
+        qs.set('to', getStationSlug(fareEnd));
+      }
+      const desiredUrl = `/${desiredPath}${qs.toString() ? `?${qs.toString()}` : ''}`;
+      const currentUrl = window.location.pathname + window.location.search;
+      if (currentUrl !== desiredUrl) {
+        window.history.pushState({ view }, '', desiredUrl);
+      }
+      return;
+    }
+
     // Special handling for blog posts
     if (view === AppView.BLOG && selectedBlogPost) {
       const blogPath = `blog/${selectedBlogPost}`;
@@ -1269,7 +1367,12 @@ const App: React.FC = () => {
     } else if (path && currentPath !== path) {
       window.history.pushState({ view }, '', `/${path}`);
     }
-  }, [view, selectedBlogPost]);
+  }, [view, selectedBlogPost, selectedBus, fareStart, fareEnd]);
+
+  // On first load, if URL is a deep link, sync state
+  useEffect(() => {
+    syncBusDeepLinkFromUrl();
+  }, [syncBusDeepLinkFromUrl]);
 
   // Check for hash on mount (e.g., #ai-assistant from intercity page)
   useEffect(() => {
@@ -1714,6 +1817,14 @@ const App: React.FC = () => {
   const handleBusSelect = useCallback((bus: BusRoute, fromHistory: boolean = false, trip?: SuggestedRoute) => {
     // Require sign-in to view bus details
     if (!user) {
+      // Preserve deep link so user lands back on the same bus after login
+      const busSlug = slugify(bus.name || bus.id);
+      const qs = new URLSearchParams();
+      if (fareStart && fareEnd) {
+        qs.set('from', getStationSlug(fareStart));
+        qs.set('to', getStationSlug(fareEnd));
+      }
+      sessionStorage.setItem(POST_LOGIN_REDIRECT_KEY, `/bus/${busSlug}${qs.toString() ? `?${qs.toString()}` : ''}`);
       setView(AppView.LOGIN);
       return;
     }
@@ -4863,6 +4974,7 @@ function AuthHeaderButton({ setView }: { setView: (v: AppView) => void }) {
 // ── LoginWall — shown instead of protected content when not logged in ─────────
 function LoginWall({ setView, message }: { setView: (v: AppView) => void; message?: string }) {
   const { t } = useLanguage();
+  const POST_LOGIN_REDIRECT_KEY = 'koyjabo_post_login_redirect';
   return (
     <div className="flex flex-col items-center justify-center h-full min-h-[60vh] gap-6 p-8 text-center">
       <div className="w-20 h-20 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
@@ -4878,13 +4990,19 @@ function LoginWall({ setView, message }: { setView: (v: AppView) => void; messag
       </div>
       <div className="flex gap-3">
         <button
-          onClick={() => setView(AppView.LOGIN)}
+          onClick={() => {
+            sessionStorage.setItem(POST_LOGIN_REDIRECT_KEY, window.location.pathname + window.location.search + window.location.hash);
+            setView(AppView.LOGIN);
+          }}
           className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-colors shadow-sm"
         >
           {t('common.loginBtn')}
         </button>
         <button
-          onClick={() => setView(AppView.SIGNUP)}
+          onClick={() => {
+            sessionStorage.setItem(POST_LOGIN_REDIRECT_KEY, window.location.pathname + window.location.search + window.location.hash);
+            setView(AppView.SIGNUP);
+          }}
           className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm transition-colors shadow-sm"
         >
           {t('common.signupBtn')}
