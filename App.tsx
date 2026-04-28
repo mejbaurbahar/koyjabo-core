@@ -2033,7 +2033,7 @@ const App: React.FC = () => {
         <div ref={chatEndRef}></div>
       </div>
 
-      <div className="shrink-0 p-4 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 pb-safe">
+      <div className="shrink-0 p-4 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 pb-safe mb-16 md:mb-0">
         <form onSubmit={handleAiSubmit} className="flex gap-2 relative">
           <input
             type="text"
@@ -3092,13 +3092,13 @@ const App: React.FC = () => {
           {/* Additional Stats when fare is selected */}
           {
             fareStart && fareEnd && (
-              <div className="relative z-20 mt-2 md:mt-3 grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div className="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-[0_2px_8px_rgba(0,0,0,0.02)] min-h-[120px] flex flex-col items-center text-center justify-center">
+              <div className="relative z-20 mt-2 md:mt-3 grid grid-cols-3 gap-2 sm:gap-3">
+                <div className="bg-white dark:bg-slate-800 p-2.5 sm:p-3 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-[0_2px_8px_rgba(0,0,0,0.02)] min-h-[96px] sm:min-h-[120px] flex flex-col items-center text-center justify-center">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white mb-2 shadow-lg shadow-indigo-500/30">
                     <Gauge className="w-5 h-5" />
                   </div>
                   <span className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">{userLocation ? t('busDetails.speed') : t('busDetails.stops')}</span>
-                  <span className="font-bold text-gray-800 dark:text-gray-200 text-sm mt-0.5">
+                  <span className="font-bold text-gray-800 dark:text-gray-200 text-[13px] sm:text-sm mt-0.5">
                     {userLocation ? (
                       `${formatNumber((speed || 0).toFixed(0))} km / h`
                     ) : (
@@ -3106,21 +3106,21 @@ const App: React.FC = () => {
                     )}
                   </span>
                 </div>
-                <div className="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-[0_2px_8px_rgba(0,0,0,0.02)] min-h-[120px] flex flex-col items-center text-center justify-center">
+                <div className="bg-white dark:bg-slate-800 p-2.5 sm:p-3 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-[0_2px_8px_rgba(0,0,0,0.02)] min-h-[96px] sm:min-h-[120px] flex flex-col items-center text-center justify-center">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center text-white mb-2 shadow-lg shadow-pink-500/30">
                     <Flag className="w-5 h-5" />
                   </div>
                   <span className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">{t('busDetails.awayFrom')}</span>
-                  <span className="font-bold text-gray-800 dark:text-gray-200 text-sm mt-0.5">
+                  <span className="font-bold text-gray-800 dark:text-gray-200 text-[13px] sm:text-sm mt-0.5">
                     {fareInfo ? `${formatNumber(fareInfo.distance.toFixed(1))} km` : '-- km'}
                   </span>
                 </div>
-                <div className="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-[0_2px_8px_rgba(0,0,0,0.02)] min-h-[120px] flex flex-col items-center text-center justify-center">
+                <div className="bg-white dark:bg-slate-800 p-2.5 sm:p-3 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-[0_2px_8px_rgba(0,0,0,0.02)] min-h-[96px] sm:min-h-[120px] flex flex-col items-center text-center justify-center">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white mb-2 shadow-lg shadow-emerald-500/30">
                     <Clock className="w-5 h-5" />
                   </div>
                   <span className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">{t('busDetails.eta')}</span>
-                  <span className="font-bold text-gray-800 dark:text-gray-200 text-sm mt-0.5">
+                  <span className="font-bold text-gray-800 dark:text-gray-200 text-[13px] sm:text-sm mt-0.5">
                     {fareInfo ? formatETA((fareInfo.distance / 15) * 60, formatNumber) : '--'}
                   </span>
                 </div>
