@@ -97,13 +97,6 @@ function createTransporter() {
 }
 
 async function sendOne(transporter, { email, displayName }) {
-  const shareText = encodeURIComponent('ঢাকার বাস, মেট্রো ও ট্রেনের তথ্য এক জায়গায়! সম্পূর্ণ বিনামূল্যে 👉 koyjabo.com');
-  const shareUrl  = encodeURIComponent(APP_URL);
-  const fbLink    = `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`;
-  const liLink    = `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`;
-  const waLink    = `https://wa.me/?text=${shareText}%20${shareUrl}`;
-  const twLink    = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
-
   const html = `<!DOCTYPE html>
 <html lang="bn">
 <body style="font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:#f0fdf4;padding:24px;margin:0">
@@ -112,110 +105,72 @@ async function sendOne(transporter, { email, displayName }) {
     <!-- Header -->
     <div style="background:linear-gradient(135deg,#059669 0%,#0284c7 100%);padding:34px 28px;text-align:center">
       <img src="${APP_URL}/logo.png" alt="কই যাবো" style="width:64px;height:64px;border-radius:16px;background:#fff;padding:8px;margin-bottom:14px;display:block;margin-left:auto;margin-right:auto">
-      <h1 style="color:#fff;margin:0;font-size:26px;letter-spacing:-0.5px">কই যাবো KoyJabo</h1>
+      <h1 style="color:#fff;margin:0;font-size:26px;font-weight:800;letter-spacing:-0.5px">কই যাবো (KoyJabo)</h1>
       <p style="color:#d1fae5;margin:6px 0 0;font-size:13px">বাংলাদেশের স্মার্ট ট্রান্সপোর্ট গাইড</p>
     </div>
 
     <!-- Body -->
     <div style="padding:32px 28px">
-      <p style="color:#111827;font-size:17px;font-weight:700;margin:0 0 6px">প্রিয় ${displayName}, 👋</p>
-      <p style="color:#374151;font-size:15px;line-height:1.8;margin:0 0 24px">
-        কই যাবো ব্যবহার করার জন্য আপনাকে আন্তরিক ধন্যবাদ! আমরা আপনার জন্য কিছু নতুন ফিচার নিয়ে এসেছি — একবার দেখে নিন।
+
+      <p style="color:#374151;font-size:15px;line-height:1.8;margin:0 0 6px">প্রিয় ব্যবহারকারী, 👋</p>
+      <p style="color:#374151;font-size:15px;line-height:1.8;margin:0 0 28px">
+        কই যাবো ব্যবহার করার জন্য আপনাকে আন্তরিক ধন্যবাদ। আপনার যাতায়াতকে আরও সহজ, দ্রুত এবং স্মার্ট করতে আমরা নিয়ে এসেছি বেশ কিছু নতুন ও উন্নত ফিচার।
       </p>
 
       <!-- New features -->
-      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:20px 22px;margin:0 0 22px">
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:20px 22px;margin:0 0 20px">
         <p style="margin:0 0 14px;color:#065f46;font-size:15px;font-weight:700">🆕 নতুন যা যোগ হয়েছে</p>
         <table style="width:100%;border-collapse:collapse">
-          <tr>
-            <td style="padding:7px 0;vertical-align:top;width:28px;font-size:18px">🚌</td>
-            <td style="padding:7px 0;color:#047857;font-size:14px;line-height:1.6">
-              <strong>আরও বেশি বাস রুট</strong> — ঢাকার নতুন রুট ও স্টপেজ আপডেট হয়েছে
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:7px 0;vertical-align:top;font-size:18px">🤖</td>
-            <td style="padding:7px 0;color:#047857;font-size:14px;line-height:1.6">
-              <strong>AI ট্রাভেল অ্যাসিস্ট্যান্ট</strong> — যেকোনো গন্তব্যের জন্য AI-চালিত রুট পরামর্শ
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:7px 0;vertical-align:top;font-size:18px">📍</td>
-            <td style="padding:7px 0;color:#047857;font-size:14px;line-height:1.6">
-              <strong>নিকটস্থ স্টপেজ</strong> — আপনার অবস্থান থেকে সবচেয়ে কাছের স্টপেজ ও রুট খুঁজুন
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:7px 0;vertical-align:top;font-size:18px">🚂</td>
-            <td style="padding:7px 0;color:#047857;font-size:14px;line-height:1.6">
-              <strong>আন্তঃনগর ট্রেন</strong> — সারাদেশের ট্রেনের সময়সূচি ও রুট
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:7px 0;vertical-align:top;font-size:18px">📶</td>
-            <td style="padding:7px 0;color:#047857;font-size:14px;line-height:1.6">
-              <strong>অফলাইন মোড</strong> — ইন্টারনেট ছাড়াও কাজ করে (PWA)
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:7px 0;vertical-align:top;font-size:18px">🚇</td>
-            <td style="padding:7px 0;color:#047857;font-size:14px;line-height:1.6">
-              <strong>মেট্রোরেল আপডেট</strong> — সর্বশেষ স্টেশন ও ভাড়ার তথ্য
-            </td>
-          </tr>
+          <tr><td style="padding:6px 0;vertical-align:top;width:26px;font-size:16px">🚌</td><td style="padding:6px 0;color:#047857;font-size:14px;line-height:1.6"><strong>বিস্তৃত বাস রুট আপডেট</strong> — ঢাকার নতুন রুট ও স্টপেজ যুক্ত করা হয়েছে</td></tr>
+          <tr><td style="padding:6px 0;vertical-align:top;font-size:16px">🤖</td><td style="padding:6px 0;color:#047857;font-size:14px;line-height:1.6"><strong>উন্নত AI ট্রাভেল অ্যাসিস্ট্যান্ট</strong> — বাংলাদেশের প্রথম স্মার্ট ট্রাভেল AI এখন আরও শক্তিশালী, নির্ভুল ও কনটেক্সট-অ্যাওয়ার রুট সাজেশন দেয়</td></tr>
+          <tr><td style="padding:6px 0;vertical-align:top;font-size:16px">📍</td><td style="padding:6px 0;color:#047857;font-size:14px;line-height:1.6"><strong>নিকটস্থ স্টপেজ খুঁজুন</strong> — আপনার বর্তমান লোকেশন থেকে কাছের বাস/স্টেশন সহজে খুঁজুন</td></tr>
+          <tr><td style="padding:6px 0;vertical-align:top;font-size:16px">🚂</td><td style="padding:6px 0;color:#047857;font-size:14px;line-height:1.6"><strong>আন্তঃনগর ট্রেন তথ্য</strong> — সারাদেশের ট্রেনের সময়সূচি ও রুট একসাথে</td></tr>
+          <tr><td style="padding:6px 0;vertical-align:top;font-size:16px">🚇</td><td style="padding:6px 0;color:#047857;font-size:14px;line-height:1.6"><strong>মেট্রোরেল আপডেট</strong> — সর্বশেষ স্টেশন, ভাড়া ও সময়সূচি</td></tr>
+        </table>
+      </div>
+
+      <!-- Smart features -->
+      <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:20px 22px;margin:0 0 24px">
+        <p style="margin:0 0 14px;color:#1e40af;font-size:15px;font-weight:700">🚀 নতুন স্মার্ট ফিচারসমূহ</p>
+        <table style="width:100%;border-collapse:collapse">
+          <tr><td style="padding:5px 0;vertical-align:top;width:26px;font-size:16px">⭐</td><td style="padding:5px 0;color:#1d4ed8;font-size:14px;line-height:1.6"><strong>রেটিং সিস্টেম</strong> — যেকোনো লোকাল বাস ও ট্রেন সার্ভিস রেট করুন</td></tr>
+          <tr><td style="padding:5px 0;vertical-align:top;font-size:16px">📸</td><td style="padding:5px 0;color:#1d4ed8;font-size:14px;line-height:1.6"><strong>ইমেজ আপলোড</strong> — ঢাকার বাস ও ট্রেনের বাস্তব ছবি শেয়ার করুন</td></tr>
+          <tr><td style="padding:5px 0;vertical-align:top;font-size:16px">⏰</td><td style="padding:5px 0;color:#1d4ed8;font-size:14px;line-height:1.6"><strong>Trip Reminder</strong> — আপনার যাত্রার জন্য রিমাইন্ডার সেট করুন</td></tr>
+          <tr><td style="padding:5px 0;vertical-align:top;font-size:16px">🚧</td><td style="padding:5px 0;color:#1d4ed8;font-size:14px;line-height:1.6"><strong>Road Alerts</strong> — রাস্তার অবস্থা, ট্রাফিক ও গুরুত্বপূর্ণ আপডেট পান</td></tr>
+          <tr><td style="padding:5px 0;vertical-align:top;font-size:16px">🗺️</td><td style="padding:5px 0;color:#1d4ed8;font-size:14px;line-height:1.6"><strong>Area Guides</strong> — নতুন এলাকায় যাওয়ার আগে বিস্তারিত গাইড দেখুন</td></tr>
+          <tr><td style="padding:5px 0;vertical-align:top;font-size:16px">🎫</td><td style="padding:5px 0;color:#1d4ed8;font-size:14px;line-height:1.6"><strong>Bus Pass Info</strong> — বাস পাস সংক্রান্ত তথ্য এক জায়গায়</td></tr>
+          <tr><td style="padding:5px 0;vertical-align:top;font-size:16px">🛣️</td><td style="padding:5px 0;color:#1d4ed8;font-size:14px;line-height:1.6"><strong>Multi-stop Planner</strong> — একাধিক গন্তব্য নিয়ে স্মার্ট রুট প্ল্যান করুন</td></tr>
+          <tr><td style="padding:5px 0;vertical-align:top;font-size:16px">💰</td><td style="padding:5px 0;color:#1d4ed8;font-size:14px;line-height:1.6"><strong>Cost Calculator</strong> — ভাড়া আগে থেকেই হিসাব করে নিন</td></tr>
+          <tr><td style="padding:5px 0;vertical-align:top;font-size:16px">💺</td><td style="padding:5px 0;color:#1d4ed8;font-size:14px;line-height:1.6"><strong>Seat Availability</strong> — ট্রেন/বাসের সিট উপলব্ধতা চেক করুন</td></tr>
+          <tr><td style="padding:5px 0;vertical-align:top;font-size:16px">📶</td><td style="padding:5px 0;color:#1d4ed8;font-size:14px;line-height:1.6"><strong>Offline Mode (PWA)</strong> — ইন্টারনেট ছাড়াও ব্যবহারযোগ্য</td></tr>
         </table>
       </div>
 
       <!-- CTA -->
       <a href="${APP_URL}" style="display:block;text-align:center;background:linear-gradient(135deg,#059669,#0284c7);color:#fff;padding:15px 28px;border-radius:11px;text-decoration:none;font-weight:700;font-size:16px;margin-bottom:28px">
-        এখনই দেখুন →
+        👉 এখনই এক্সপ্লোর করুন →
       </a>
 
       <!-- Share section -->
       <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:14px;padding:20px 22px;margin:0 0 24px">
-        <p style="margin:0 0 8px;color:#92400e;font-size:15px;font-weight:700">🙏 আপনার বন্ধুদের জানান!</p>
-        <p style="margin:0 0 16px;color:#b45309;font-size:14px;line-height:1.7">
-          কই যাবো সম্পূর্ণ বিনামূল্যে এবং এটি আরও বেশি মানুষের কাছে পৌঁছে দিতে আপনার সাহায্য দরকার।
-          নিচের বোতামগুলো দিয়ে আপনার সোশ্যাল মিডিয়ায় শেয়ার করুন:
+        <p style="margin:0 0 10px;color:#92400e;font-size:15px;font-weight:700">📢 আপনার বন্ধুদের জানান!</p>
+        <p style="color:#b45309;font-size:14px;line-height:1.8;margin:0 0 12px">
+          কই যাবো সম্পূর্ণ বিনামূল্যে। এটি আরও বেশি মানুষের কাছে পৌঁছে দিতে আপনার সহযোগিতা আমাদের জন্য গুরুত্বপূর্ণ।
         </p>
-        <table style="width:100%;border-collapse:collapse">
-          <tr>
-            <td style="padding:0 6px 0 0;width:50%">
-              <a href="${fbLink}" target="_blank"
-                 style="display:block;text-align:center;background:#1877f2;color:#fff;padding:11px 8px;border-radius:9px;text-decoration:none;font-weight:700;font-size:14px">
-                f  Facebook
-              </a>
-            </td>
-            <td style="padding:0 0 0 6px;width:50%">
-              <a href="${liLink}" target="_blank"
-                 style="display:block;text-align:center;background:#0a66c2;color:#fff;padding:11px 8px;border-radius:9px;text-decoration:none;font-weight:700;font-size:14px">
-                in  LinkedIn
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:10px 6px 0 0;width:50%">
-              <a href="${waLink}" target="_blank"
-                 style="display:block;text-align:center;background:#25d366;color:#fff;padding:11px 8px;border-radius:9px;text-decoration:none;font-weight:700;font-size:14px">
-                💬 WhatsApp
-              </a>
-            </td>
-            <td style="padding:10px 0 0 6px;width:50%">
-              <a href="${twLink}" target="_blank"
-                 style="display:block;text-align:center;background:#000;color:#fff;padding:11px 8px;border-radius:9px;text-decoration:none;font-weight:700;font-size:14px">
-                𝕏  Twitter / X
-              </a>
-            </td>
-          </tr>
-        </table>
-        <p style="margin:14px 0 0;color:#92400e;font-size:12px;text-align:center">
-          আপনার একটি শেয়ার আমাদের অনেক সাহায্য করবে — ধন্যবাদ! 💚
+        <p style="color:#b45309;font-size:14px;line-height:1.8;margin:0 0 10px">
+          আপনার সোশ্যাল মিডিয়ায় (Facebook, LinkedIn, WhatsApp, Twitter/X) একটি পোস্ট বা রিভিউ শেয়ার করুন এবং বন্ধুদের জানান।
+        </p>
+        <p style="color:#92400e;font-size:13px;margin:0;font-style:italic">
+          আপনার একটি শেয়ার আমাদের জন্য অনেক বড় অনুপ্রেরণা 💚
         </p>
       </div>
 
-      <p style="color:#9ca3af;font-size:12px;text-align:center;margin:0">
-        এই ইমেইলটি কই যাবো-তে নিবন্ধিত সকল ব্যবহারকারীকে পাঠানো হয়েছে।<br>
-        কোনো প্রশ্ন থাকলে <a href="mailto:${SMTP_EMAIL}" style="color:#059669">আমাদের ইমেইল করুন</a>।
+      <p style="color:#9ca3af;font-size:12px;text-align:center;margin:0 0 6px">
+        এই ইমেইলটি কই যাবো-তে নিবন্ধিত ব্যবহারকারীদের জন্য প্রেরণ করা হয়েছে।<br>
+        কোনো প্রশ্ন বা মতামত থাকলে <a href="mailto:${SMTP_EMAIL}" style="color:#059669">আমাদের সাথে যোগাযোগ করুন</a>।
+      </p>
+      <p style="color:#374151;font-size:13px;text-align:center;margin:8px 0 0;font-weight:600">
+        ধন্যবাদান্তে,<br>KoyJabo টিম 🚀
       </p>
     </div>
 
