@@ -210,6 +210,7 @@ export const translations: Record<Language, Translations> = {
             estimatedFare: 'আনুমানিক ভাড়া',
             metroRail: 'মেট্রো রেল',
             notAvailable: 'Not Available',
+            notAvailableNote: 'এই বাসটি বর্তমানে চলাচল করছে না',
         },
 
         // Bus Details
@@ -1223,6 +1224,7 @@ export const translations: Record<Language, Translations> = {
             savedRoutes: 'Saved Routes',
             estimatedFare: 'Est. Fare',
             notAvailable: 'Not Available',
+            notAvailableNote: 'This bus is currently not available',
         },
 
         // Bus Details

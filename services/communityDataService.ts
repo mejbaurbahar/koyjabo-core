@@ -71,9 +71,12 @@ export async function getBusRatings(busId: string): Promise<BusRatingSummary | n
 export async function submitBusRating(busId: string, stars: number, comment: string): Promise<boolean> {
   const user = getAuthUser();
   if (!user) return false;
+  const normalizedComment = (comment ?? '').trim();
+  // Keep comment optional while ensuring persistence never rejects empty payloads.
+  const persistedComment = normalizedComment.length > 0 ? normalizedComment : ' ';
   const existing = await getBusRatings(busId) || { busId, average: 0, count: 0, ratings: [] };
   const filtered = existing.ratings.filter(r => r.userId !== user.id);
-  const newRating: BusRating = { userId: user.id, displayName: user.displayName, busId, stars, comment, timestamp: Date.now() };
+  const newRating: BusRating = { userId: user.id, displayName: user.displayName, busId, stars, comment: persistedComment, timestamp: Date.now() };
   const ratings = [...filtered, newRating];
   const average = ratings.reduce((s, r) => s + r.stars, 0) / ratings.length;
   return repoPut(`data/ratings/${busId}.json`, { busId, average: Math.round(average * 10) / 10, count: ratings.length, ratings }, `rating: ${busId}`);
@@ -121,9 +124,12 @@ export async function getTrainRatings(trainId: string): Promise<TrainRatingSumma
 export async function submitTrainRating(trainId: string, trainName: string, stars: number, comment: string): Promise<boolean> {
   const user = getAuthUser();
   if (!user) return false;
+  const normalizedComment = (comment ?? '').trim();
+  // Keep comment optional while ensuring persistence never rejects empty payloads.
+  const persistedComment = normalizedComment.length > 0 ? normalizedComment : ' ';
   const existing = await getTrainRatings(trainId) || { trainId, trainName, average: 0, count: 0, ratings: [] };
   const filtered = existing.ratings.filter(r => r.userId !== user.id);
-  const newRating: TrainRating = { userId: user.id, displayName: user.displayName, trainId, trainName, stars, comment, timestamp: Date.now() };
+  const newRating: TrainRating = { userId: user.id, displayName: user.displayName, trainId, trainName, stars, comment: persistedComment, timestamp: Date.now() };
   const ratings = [...filtered, newRating];
   const average = ratings.length ? ratings.reduce((s, r) => s + r.stars, 0) / ratings.length : 0;
   return repoPut(

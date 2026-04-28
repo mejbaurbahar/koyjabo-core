@@ -3870,7 +3870,6 @@ const App: React.FC = () => {
         {/* Scrollable Content */}
         <div
           ref={scrollContainerRef}
-          onWheel={handleDesktopWheelScroll}
           onScroll={(e) => {
             if (typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches) {
               if (isRestoringLeftScrollRef.current) return;
@@ -4061,7 +4060,7 @@ const App: React.FC = () => {
                     </div>
                     <div className="flex items-center gap-1">
                       {isUnavailable && (
-                        <span className="text-[10px] px-2 py-1 rounded-md font-bold uppercase tracking-wide bg-red-50 text-red-700 border border-red-200">
+                        <span className="text-[10px] px-2 py-1 rounded-md font-bold uppercase tracking-wide bg-red-600 text-white border border-red-700">
                           {t('home.notAvailable')}
                         </span>
                       )}
@@ -4091,6 +4090,11 @@ const App: React.FC = () => {
                   <Coins className="w-3 h-3 text-amber-600 dark:text-amber-400" />
                   <span>{t('home.estimatedFare')}: ৳{formatNumber(estimatedFare.min)} - ৳{formatNumber(estimatedFare.max)}</span>
                 </div>
+                {isUnavailable && (
+                  <div className="mt-1.5 md:mt-2 text-[11px] font-semibold text-red-700 dark:text-red-300 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-md px-2 py-1.5">
+                    {t('home.notAvailableNote')}
+                  </div>
+                )}
               </div>
             </React.Fragment>
             );

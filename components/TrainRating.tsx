@@ -69,7 +69,7 @@ export default function TrainRating({ trainId, trainName, onBack }: Props) {
   const handleOpenForm = () => {
     if (myRating) {
       setStars(myRating.stars);
-      setComment(myRating.comment || '');
+      setComment((myRating.comment || '').trim());
     } else {
       setStars(5);
       setComment('');
@@ -186,7 +186,7 @@ export default function TrainRating({ trainId, trainName, onBack }: Props) {
               </div>
               <span className="text-xs text-gray-400 dark:text-gray-500 shrink-0">{timeAgo(r.timestamp, t, formatNumber)}</span>
             </div>
-            {r.comment && <p className="text-sm text-gray-700 dark:text-gray-300 mt-2">{r.comment}</p>}
+            {r.comment?.trim() && <p className="text-sm text-gray-700 dark:text-gray-300 mt-2">{r.comment.trim()}</p>}
           </div>
         ))}
         <div className="h-4" />
