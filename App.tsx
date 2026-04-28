@@ -4013,7 +4013,7 @@ const App: React.FC = () => {
                     </div>
                   </div>
                   <div className="flex flex-col items-end gap-1">
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center justify-end gap-1 flex-wrap">
                       <button
                         onClick={(e) => {
                           e.preventDefault();
@@ -4025,7 +4025,7 @@ const App: React.FC = () => {
                           setSelectedBus(bus);
                           setView(AppView.RATE_BUS);
                         }}
-                        className={`px-2 py-1 rounded-md border text-[10px] font-bold leading-none transition-colors ${hasRating
+                        className={`px-2 py-1 rounded-md border text-[10px] font-bold leading-none transition-colors whitespace-nowrap shrink-0 ${hasRating
                           ? 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100'
                           : 'bg-gray-50 text-gray-500 border-gray-200 hover:bg-gray-100'}`}
                         aria-label={hasRating ? `View rating for ${bus.name}` : `Rate ${bus.name}`}
