@@ -70,7 +70,7 @@ import OfflineIndicator from './components/OfflineIndicator';
 import AdSenseAd from './components/AdSenseAd';
 import TrainListPage, { TrainDetail } from './components/TrainListPage';
 import TrainRating from './components/TrainRating';
-import { BDTrainRoute, BD_TRAIN_ROUTES } from './data/bangladeshTrainData';
+import { BDTrainRoute, BD_TRAIN_ROUTES, TRAIN_STATIONS } from './data/bangladeshTrainData';
 import TripReminders from './components/TripReminders';
 import RoadAlerts from './components/RoadAlerts';
 import NeighbourhoodGuides from './components/NeighbourhoodGuides';
@@ -1033,11 +1033,39 @@ const App: React.FC = () => {
 
     if (view === AppView.BUS_DETAILS && selectedBus) {
       const busName = formatBusName(selectedBus.name);
+      const busSlug = getBusSlug(selectedBus);
+      const routeParts = selectedBus.routeString.split(/[⇄→↔]+/).map((s: string) => s.trim()).filter(Boolean);
+      const routeFrom = routeParts[0] || '';
+      const routeTo = routeParts[routeParts.length - 1] || '';
+      const allBusSt: Record<string, any> = { ...(STATIONS as any), ...(METRO_STATIONS as any) };
+      const stopNames = selectedBus.stops.slice(0, 8).map(id => allBusSt[id]?.name).filter(Boolean);
+      const BUS_TYPE_LABEL: Record<string, string> = { AC: 'AC Bus', Local: 'Local Bus', 'Semi-Sitting': 'Semi-Sitting Bus', Sitting: 'Sitting Bus', 'Double-Decker': 'Double-Decker Bus', 'Metro Rail': 'Metro Rail', 'Metro Shuttle': 'Metro Shuttle' };
+      const typeLabel = BUS_TYPE_LABEL[selectedBus.type] || selectedBus.type;
       meta = {
-        title: `${busName} বাস রুট - স্টপ ও ভাড়া | কই যাবো`,
-        description: `${busName} বাসের সম্পূর্ণ রুট: ${selectedBus.stops.length}টি স্টপ, ভাড়া ও সময়সূচী। ${busName} bus route in Dhaka — all stops, fares, and operating hours. Find the best way to travel on ${busName}.`,
-        keywords: `${busName} bus route Dhaka, ${selectedBus.name} stops, ${busName} fare, Dhaka bus ${selectedBus.name}, ${selectedBus.name} bus schedule`,
-        canonical: `${BASE}/bus`,
+        title: routeFrom && routeTo
+          ? `${busName} বাস রুট (${routeFrom} ⇄ ${routeTo}) - স্টপ ও ভাড়া | কই যাবো`
+          : `${busName} বাস রুট - স্টপ ও ভাড়া | কই যাবো`,
+        description: `${busName}${selectedBus.bnName ? ` (${selectedBus.bnName})` : ''} Dhaka ${typeLabel}${routeFrom && routeTo ? ` — ${routeFrom} to ${routeTo}` : ''}, ${selectedBus.stops.length} stops, hours: ${selectedBus.hours}. Key stops: ${stopNames.slice(0, 5).join(', ')}. ভাড়া, রুট ম্যাপ ও সম্পূর্ণ স্টপ তালিকা কই যাবোতে।`,
+        keywords: [
+          `${busName} bus route Dhaka`,
+          `${busName} বাস রুট`,
+          selectedBus.bnName ? `${selectedBus.bnName} বাস রুট` : '',
+          `${busName} bus stops Dhaka`,
+          `${busName} bus fare`,
+          routeFrom && routeTo ? `${routeFrom} to ${routeTo} bus` : '',
+          routeFrom && routeTo ? `${routeTo} to ${routeFrom} bus` : '',
+          routeFrom && routeTo ? `${routeFrom} ${routeTo} বাস রুট` : '',
+          `ঢাকা ${busName} বাস`,
+          `${typeLabel} Dhaka`,
+          `${busName} bus schedule Dhaka`,
+          `${busName} Dhaka route map`,
+          ...stopNames.slice(0, 5).map((s: string) => `${s} bus stop Dhaka`),
+          'ঢাকা বাস রুট ২০২৫',
+          'Dhaka local bus route',
+          'Bangladesh bus route 2025',
+          'কই যাবো বাস',
+        ].filter(Boolean).join(', '),
+        canonical: `${BASE}/bus/${busSlug}`,
       };
     } else if (view === AppView.LIVE_NAV && selectedBus) {
       const busName = formatBusName(selectedBus.name);
@@ -1062,11 +1090,41 @@ const App: React.FC = () => {
         canonical: `${BASE}/train`,
       };
     } else if (view === AppView.TRAIN_DETAILS && selectedTrain) {
+      const trainSlug = getTrainSlug(selectedTrain);
+      const allRailSt: Record<string, any> = TRAIN_STATIONS as any;
+      const fromStation = allRailSt[selectedTrain.from]?.name || selectedTrain.from;
+      const toStation = allRailSt[selectedTrain.to]?.name || selectedTrain.to;
+      const fares = selectedTrain.fare ? (Object.values(selectedTrain.fare) as number[]).filter(v => typeof v === 'number' && v > 0) : [];
+      const minFare = fares.length ? Math.min(...fares) : 0;
+      const maxFare = fares.length ? Math.max(...fares) : 0;
+      const midStops = (selectedTrain.stops || []).slice(1, -1).slice(0, 4).map(id => allRailSt[id]?.name).filter(Boolean);
       meta = {
-        title: `${selectedTrain.name} (${selectedTrain.number}) সময়সূচী ও ভাড়া | কই যাবো`,
-        description: `${selectedTrain.name} ট্রেনের সম্পূর্ণ সময়সূচী, স্টেশন তালিকা ও ভাড়া। ${selectedTrain.name} train schedule, route map, and fare details — Bangladesh Railway.`,
-        keywords: `${selectedTrain.name}, ${selectedTrain.number}, ${selectedTrain.name} schedule, ${selectedTrain.name} fare, ${selectedTrain.name} route, Bangladesh train ${selectedTrain.number}`,
-        canonical: `${BASE}/train`,
+        title: `${selectedTrain.name} (${selectedTrain.number}) | ${fromStation} → ${toStation} ট্রেন সময়সূচী ও ভাড়া | কই যাবো`,
+        description: `${selectedTrain.name}${selectedTrain.bnName ? ` (${selectedTrain.bnName})` : ''} — ${fromStation} to ${toStation}, ${(selectedTrain.stops || []).length} stations. Departs ${selectedTrain.dhakaDepart || 'N/A'}, arrives ${selectedTrain.destinationArrive || 'N/A'}${fares.length ? `. Fare ৳${minFare}–৳${maxFare}` : ''}${selectedTrain.offDay ? `. Off: ${selectedTrain.offDay}` : ''}. Bangladesh Railway ${selectedTrain.type}.`,
+        keywords: [
+          selectedTrain.name,
+          selectedTrain.bnName || '',
+          selectedTrain.number,
+          `${selectedTrain.name} schedule`,
+          `${selectedTrain.name} fare`,
+          `${selectedTrain.name} route`,
+          `${fromStation} to ${toStation} train`,
+          `${toStation} to ${fromStation} train`,
+          `${fromStation} ${toStation} ট্রেন`,
+          `Bangladesh Railway ${selectedTrain.name}`,
+          `Bangladesh train ${selectedTrain.number}`,
+          `${selectedTrain.type} train Bangladesh`,
+          `${selectedTrain.name} সময়সূচী`,
+          `${selectedTrain.name} ভাড়া`,
+          `শোভন চেয়ার ${selectedTrain.name}`,
+          `স্নিগ্ধা ${selectedTrain.name}`,
+          `${selectedTrain.name} off day`,
+          'বাংলাদেশ ট্রেন সময়সূচী ২০২৫',
+          'Bangladesh Railway schedule 2025',
+          'ট্রেন ভাড়া বাংলাদেশ',
+          ...midStops.map((s: string) => `${s} train stop`),
+        ].filter(Boolean).join(', '),
+        canonical: `${BASE}/train/${trainSlug}`,
       };
     } else if (view === AppView.COMMUTE_COST) {
       meta = {
@@ -1234,6 +1292,74 @@ const App: React.FC = () => {
     setMeta('meta[name="twitter:description"]', 'content', meta.description);
     const canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) canonical.setAttribute('href', meta.canonical);
+
+    // Dynamic JSON-LD — per-page structured data for bus/train detail pages
+    document.getElementById('page-jsonld')?.remove();
+    if (view === AppView.BUS_DETAILS && selectedBus) {
+      const busSlug = getBusSlug(selectedBus);
+      const busName = formatBusName(selectedBus.name);
+      const rp = selectedBus.routeString.split(/[⇄→↔]+/).map((s: string) => s.trim()).filter(Boolean);
+      const el = document.createElement('script');
+      el.id = 'page-jsonld';
+      el.type = 'application/ld+json';
+      el.textContent = JSON.stringify([
+        {
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: `${BASE}/` },
+            { '@type': 'ListItem', position: 2, name: 'Dhaka Bus Routes', item: `${BASE}/` },
+            { '@type': 'ListItem', position: 3, name: `${busName} Bus Route`, item: `${BASE}/bus/${busSlug}` },
+          ],
+        },
+        {
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          '@id': `${BASE}/bus/${busSlug}`,
+          name: `${busName} Bus Route${rp.length >= 2 ? ` — ${rp[0]} to ${rp[rp.length - 1]}` : ''}`,
+          description: `${busName}${selectedBus.bnName ? ` (${selectedBus.bnName})` : ''} Dhaka city bus — ${selectedBus.routeString}, ${selectedBus.stops.length} stops, ${selectedBus.hours}`,
+          url: `${BASE}/bus/${busSlug}`,
+          serviceType: 'City Bus Route',
+          areaServed: { '@type': 'City', name: 'Dhaka', addressCountry: 'BD' },
+          provider: { '@type': 'Organization', name: 'KoyJabo', url: BASE },
+        },
+      ]);
+      document.head.appendChild(el);
+    } else if (view === AppView.TRAIN_DETAILS && selectedTrain) {
+      const trainSlug = getTrainSlug(selectedTrain);
+      const allRailSt2: Record<string, any> = TRAIN_STATIONS as any;
+      const fromSt = allRailSt2[selectedTrain.from]?.name || selectedTrain.from;
+      const toSt = allRailSt2[selectedTrain.to]?.name || selectedTrain.to;
+      const el = document.createElement('script');
+      el.id = 'page-jsonld';
+      el.type = 'application/ld+json';
+      el.textContent = JSON.stringify([
+        {
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: `${BASE}/` },
+            { '@type': 'ListItem', position: 2, name: 'Bangladesh Train Routes', item: `${BASE}/train` },
+            { '@type': 'ListItem', position: 3, name: `${selectedTrain.name} (${selectedTrain.number})`, item: `${BASE}/train/${trainSlug}` },
+          ],
+        },
+        {
+          '@context': 'https://schema.org',
+          '@type': 'TrainTrip',
+          '@id': `${BASE}/train/${trainSlug}`,
+          name: selectedTrain.name,
+          trainName: selectedTrain.name,
+          trainNumber: selectedTrain.number,
+          departureStation: { '@type': 'TrainStation', name: fromSt, addressCountry: 'BD' },
+          arrivalStation: { '@type': 'TrainStation', name: toSt, addressCountry: 'BD' },
+          ...(selectedTrain.dhakaDepart ? { departureTime: selectedTrain.dhakaDepart } : {}),
+          ...(selectedTrain.destinationArrive ? { arrivalTime: selectedTrain.destinationArrive } : {}),
+          provider: { '@type': 'Organization', name: 'Bangladesh Railway', url: 'http://railway.gov.bd' },
+          url: `${BASE}/train/${trainSlug}`,
+        },
+      ]);
+      document.head.appendChild(el);
+    }
   }, [view, selectedBus, selectedTrain, language, t]);
 
   // Track feature usage for AI Assistant when logged-in user opens it

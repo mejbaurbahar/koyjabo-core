@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "cd intercity && npm install && npm run build && cd .. && vite build && node copy-intercity.mjs",
+    "build": "cd intercity && npm install && npm run build && cd .. && node scripts/generate-sitemap.mjs && vite build && node copy-intercity.mjs",
+    "build:sitemap": "node scripts/generate-sitemap.mjs",
     "build:qa": "node scripts/build-advanced-qa.mjs",
     "preview": "vite preview",
     "deploy": "gh-pages -d dist"
