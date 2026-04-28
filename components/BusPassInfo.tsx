@@ -66,7 +66,7 @@ const passes = [
     color: 'from-orange-500 to-amber-600',
     icon: '🎓',
     price: '50% of full fare',
-    priceNote: 'মূল ভাড়ার ৫০%',
+    priceNote: '50% discount / মূল ভাড়ার ৫০%',
     where: 'Local Transport Office or Bus Counter',
     wherebn: 'স্থানীয় পরিবহন অফিস বা বাস কাউন্টার',
     benefits: [

@@ -1379,7 +1379,23 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   }
 
   // Advanced bilingual Q&A retrieval (RAG-lite) from curated knowledge base.
-  const advancedMatch = getAdvancedKnowledgeAnswer(query);
+  // Skip QA when the query looks like a routing request mentioning a known station —
+  // the graph engine lower in this function handles those correctly.
+  const _hasRoutingKeyword =
+    lowerQuery.includes(' to ') ||
+    lowerQuery.includes(' from ') ||
+    /\b(go to|get to|reach|route|direction|jabo|yabo|kivabe|kemne)\b/i.test(lowerQuery) ||
+    lowerQuery.includes('থেকে') ||
+    lowerQuery.includes('যাব');
+  const _stationNameWords = (name: string) =>
+    name.toLowerCase().split(/[\s(),/-]+/).filter(w => w.length >= 4);
+  const _mentionsKnownStation = _hasRoutingKeyword &&
+    [...Object.values(STATIONS), ...Object.values(METRO_STATIONS)].some(s =>
+      lowerQuery.includes(s.name.toLowerCase()) ||
+      (s.bnName && lowerQuery.includes(s.bnName)) ||
+      _stationNameWords(s.name).some(w => lowerQuery.includes(w))
+    );
+  const advancedMatch = _mentionsKnownStation ? null : getAdvancedKnowledgeAnswer(query);
   if (advancedMatch && advancedMatch.confidence >= 0.62) {
     return advancedMatch.answer;
   }
@@ -1601,6 +1617,24 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
             return graphResult;
           }
         } catch (_) { /* fallthrough to legacy engine */ }
+      }
+
+      // Single-destination query — only one station matched, no "from" point.
+      // Ask the user where they're starting from instead of returning a wrong answer.
+      if (!fromLoc && isRouteIntent) {
+        const allStations = [...Object.values(STATIONS), ...Object.values(METRO_STATIONS)];
+        const stationNameWords = (name: string) =>
+          name.toLowerCase().split(/[\s(),/-]+/).filter(w => w.length >= 4);
+        const destStation = allStations.find(s =>
+          lowerQuery.includes(s.name.toLowerCase()) ||
+          (s.bnName && lowerQuery.includes(s.bnName)) ||
+          stationNameWords(s.name).some(w => lowerQuery.includes(w))
+        );
+        if (destStation) {
+          return isBn
+            ? `📍 **${destStation.bnName || destStation.name}**-এ যেতে চান?\n\n🗺️ আপনি কোথা থেকে আসছেন বলুন — তারপর সেরা রুট, ভাড়া ও সময় জানাব!\n\n💡 _উদাহরণ: "ফার্মগেট থেকে ${destStation.bnName || destStation.name}"_`
+            : `📍 Want to go to **${destStation.name}**?\n\n🗺️ Please tell me where you're starting from — I'll plan the best route with fares and timing!\n\n💡 _Example: "Farmgate to ${destStation.name}"_`;
+        }
       }
     }
   }

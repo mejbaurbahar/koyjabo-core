@@ -9,8 +9,8 @@ interface Props { onBack: () => void; }
 interface Stop { id: string; name: string; }
 interface Leg { from: string; to: string; suggestion: string; }
 
-// Extra Dhaka city area stop names not in station constants
-const EXTRA_STOPS = [
+// Extra Dhaka city area stop names (Bangla + English pairs, same index)
+const EXTRA_STOPS_BN = [
   'সাভার', 'গাজীপুর', 'নারায়ণগঞ্জ', 'আশুলিয়া', 'টঙ্গী', 'মানিকগঞ্জ',
   'ধানমন্ডি', 'গুলশান', 'বনানী', 'বারিধারা', 'খিলগাঁও', 'রামপুরা',
   'বাড্ডা', 'রায়েরবাগ', 'যাত্রাবাড়ী', 'পোস্তগোলা', 'আজিমপুর',
@@ -27,22 +27,53 @@ const EXTRA_STOPS = [
   'চট্টগ্রাম', 'সিলেট', 'রাজশাহী', 'খুলনা', 'বরিশাল', 'ময়মনসিংহ',
   'কক্সবাজার', 'কুমিল্লা', 'রংপুর', 'বগুড়া', 'যশোর',
 ];
+const EXTRA_STOPS_EN = [
+  'Savar', 'Gazipur', 'Narayanganj', 'Ashulia', 'Tongi', 'Manikganj',
+  'Dhanmondi', 'Gulshan', 'Banani', 'Baridhara', 'Khilgaon', 'Rampura',
+  'Badda', 'Rayerbagh', 'Jatrabari', 'Postogola', 'Azimpur',
+  'Lalbagh', 'Chawkbazar', 'Sadarghat', 'Gulistan', 'Paltan', 'Shahbagh',
+  'New Market', 'Dholaikhal', 'Mohakhali', 'Tejgaon', 'Bijoy Nagar',
+  'Maghbazar', 'Malibagh', 'Shantinagar', 'Arambagh', 'Fakirapool',
+  'Agargaon', 'Shyamoli', 'Mohammadpur', 'Asad Gate', 'Ring Road',
+  'Bashundhara', 'Noapara', 'Abdullahpur', 'Turag', 'Diabari',
+  'Bhatara', 'Merul Badda', 'Nadda', 'Baruipara', 'Kalshi',
+  'Pirerbagh', 'Begum Rokeya Sarani', 'Kachukhet', 'Ibrahimpur',
+  'Darus Salam', 'Airport', 'Kurmitola', 'Cantonment',
+  'Gandaria', 'Sutrapur', 'Kamalapur', 'Mugda', 'Basabo',
+  'Donia', 'Shyampur', 'Kadamtali', 'Siddhirganj', 'Fatullah',
+  'Chittagong', 'Sylhet', 'Rajshahi', 'Khulna', 'Barisal', 'Mymensingh',
+  "Cox's Bazar", 'Cumilla', 'Rangpur', 'Bogura', 'Jashore',
+];
 
-// Build a flat, deduplicated list of Bengali stop names from all station sources
-const ALL_STOP_NAMES: string[] = (() => {
-  const seen = new Set<string>();
-  const names: string[] = [];
-  const addIfNew = (n: string) => {
-    if (n && !seen.has(n)) { seen.add(n); names.push(n); }
+// Build BN↔EN translation maps from station constants + extra stops
+const BN_TO_EN = new Map<string, string>();
+const EN_TO_BN = new Map<string, string>();
+[METRO_STATIONS, RAILWAY_STATIONS, STATIONS].forEach(src =>
+  Object.values(src).forEach((s: any) => {
+    if (s.name && s.bnName) { BN_TO_EN.set(s.bnName, s.name); EN_TO_BN.set(s.name, s.bnName); }
+  })
+);
+EXTRA_STOPS_BN.forEach((bn, i) => {
+  const en = EXTRA_STOPS_EN[i];
+  BN_TO_EN.set(bn, en); EN_TO_BN.set(en, bn);
+});
+
+// Build deduplicated stop name lists for both languages
+const { ALL_STOP_NAMES_BN, ALL_STOP_NAMES_EN } = (() => {
+  const seenBn = new Set<string>(); const seenEn = new Set<string>();
+  const bn: string[] = []; const en: string[] = [];
+  const add = (bnName: string, enName: string) => {
+    if (bnName && !seenBn.has(bnName)) { seenBn.add(bnName); bn.push(bnName); }
+    if (enName && !seenEn.has(enName)) { seenEn.add(enName); en.push(enName); }
   };
-  Object.values(METRO_STATIONS).forEach(s => addIfNew(s.bnName));
-  Object.values(RAILWAY_STATIONS).forEach(s => addIfNew(s.bnName));
-  Object.values(STATIONS).forEach(s => { if (s.bnName) addIfNew(s.bnName); });
-  EXTRA_STOPS.forEach(addIfNew);
-  return names.slice(0, 800); // cap for performance
+  Object.values(METRO_STATIONS).forEach((s: any) => add(s.bnName, s.name));
+  Object.values(RAILWAY_STATIONS).forEach((s: any) => add(s.bnName, s.name));
+  Object.values(STATIONS).forEach((s: any) => { if (s.bnName) add(s.bnName, s.name || BN_TO_EN.get(s.bnName) || s.bnName); });
+  EXTRA_STOPS_BN.forEach((bnS, i) => add(bnS, EXTRA_STOPS_EN[i]));
+  return { ALL_STOP_NAMES_BN: bn.slice(0, 800), ALL_STOP_NAMES_EN: en.slice(0, 800) };
 })();
 
-const METRO_BN_NAMES = new Set(Object.values(METRO_STATIONS).map(s => s.bnName));
+const METRO_BN_NAMES = new Set(Object.values(METRO_STATIONS).map((s: any) => s.bnName));
 
 function suggestRoute(from: string, to: string, lang: string = 'bn'): string {
   const fromMetro = METRO_BN_NAMES.has(from);
@@ -160,12 +191,14 @@ export default function MultiStopPlanner({ onBack }: Props) {
   const [focusedId, setFocusedId] = useState<string | null>(null);
   const [queries, setQueries] = useState<Record<string, string>>({});
 
+  const allNames = language === 'bn' ? ALL_STOP_NAMES_BN : ALL_STOP_NAMES_EN;
+
   const filtered = useMemo(() => {
     if (!focusedId) return [];
     const q = (queries[focusedId] || '').toLowerCase().trim();
-    if (!q) return ALL_STOP_NAMES.slice(0, 8);
-    return ALL_STOP_NAMES.filter(n => n.includes(q) || n.toLowerCase().includes(q)).slice(0, 8);
-  }, [focusedId, queries]);
+    if (!q) return allNames.slice(0, 8);
+    return allNames.filter(n => n.toLowerCase().includes(q)).slice(0, 8);
+  }, [focusedId, queries, allNames]);
 
   const addStop = () => {
     setStops(s => [...s, { id: crypto.randomUUID(), name: '' }]);
@@ -196,10 +229,13 @@ export default function MultiStopPlanner({ onBack }: Props) {
     if (filled.length < 2) return;
     const newLegs: Leg[] = [];
     for (let i = 0; i < filled.length - 1; i++) {
+      // Routing logic uses Bangla names internally; convert if in English mode
+      const fromBn = language === 'en' ? (EN_TO_BN.get(filled[i].name) ?? filled[i].name) : filled[i].name;
+      const toBn = language === 'en' ? (EN_TO_BN.get(filled[i + 1].name) ?? filled[i + 1].name) : filled[i + 1].name;
       newLegs.push({
         from: filled[i].name,
         to: filled[i + 1].name,
-        suggestion: suggestRoute(filled[i].name, filled[i + 1].name, language),
+        suggestion: suggestRoute(fromBn, toBn, language),
       });
     }
     setLegs(newLegs);
