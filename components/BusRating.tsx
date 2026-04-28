@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Star, MessageCircle } from 'lucide-react';
-import { getBusRatings, submitBusRating, BusRating as BusRatingData, BusRatingSummary, getAuthUser } from '../services/communityDataService';
+import { getBusRatings, submitBusRating, deleteBusRating, BusRating as BusRatingData, BusRatingSummary, getAuthUser } from '../services/communityDataService';
 import { trackFeatureUsage } from '../services/analyticsService';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -41,6 +41,20 @@ export default function BusRating({ busId, busName, onBack }: Props) {
     e.preventDefault();
     setSubmitting(true);
     const ok = await submitBusRating(busId, stars, comment);
+    if (ok) {
+      const fresh = await getBusRatings(busId);
+      setSummary(fresh);
+      setShowForm(false);
+      setComment('');
+      setStars(5);
+    }
+    setSubmitting(false);
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm(t('community.confirmDeleteRating'))) return;
+    setSubmitting(true);
+    const ok = await deleteBusRating(busId);
     if (ok) {
       const fresh = await getBusRatings(busId);
       setSummary(fresh);
@@ -123,6 +137,16 @@ export default function BusRating({ busId, busName, onBack }: Props) {
                 className="flex-1 py-2.5 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white font-semibold text-sm rounded-xl">
                 {submitting ? t('community.submitting') : t('community.submit')}
               </button>
+              {myRating && (
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  disabled={submitting}
+                  className="px-4 py-2.5 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-300 border border-red-200 dark:border-red-800 font-semibold text-sm rounded-xl disabled:opacity-50"
+                >
+                  {t('community.deleteRating')}
+                </button>
+              )}
               <button type="button" onClick={() => setShowForm(false)}
                 className="px-4 py-2.5 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 font-semibold text-sm rounded-xl">
                 {t('common.cancel')}

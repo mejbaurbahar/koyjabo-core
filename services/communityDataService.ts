@@ -79,6 +79,21 @@ export async function submitBusRating(busId: string, stars: number, comment: str
   return repoPut(`data/ratings/${busId}.json`, { busId, average: Math.round(average * 10) / 10, count: ratings.length, ratings }, `rating: ${busId}`);
 }
 
+export async function deleteBusRating(busId: string): Promise<boolean> {
+  const user = getAuthUser();
+  if (!user) return false;
+  const existing = await getBusRatings(busId);
+  if (!existing) return false;
+
+  const ratings = existing.ratings.filter(r => r.userId !== user.id);
+  const average = ratings.length ? ratings.reduce((s, r) => s + r.stars, 0) / ratings.length : 0;
+  return repoPut(
+    `data/ratings/${busId}.json`,
+    { busId, average: Math.round(average * 10) / 10, count: ratings.length, ratings },
+    `rating-delete: ${busId}`
+  );
+}
+
 // ── Traffic / Delay Reports ───────────────────────────────────────────────────
 
 export interface TrafficReport {

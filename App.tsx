@@ -80,6 +80,7 @@ import MultiStopPlanner from './components/MultiStopPlanner';
 import CommuteCostCalculator from './components/CommuteCostCalculator';
 import SeatAvailability from './components/SeatAvailability';
 import BusPhotoGallery from './components/BusPhotoGallery';
+import { getBusRatings, BusRatingSummary } from './services/communityDataService';
 
 
 
@@ -605,6 +606,7 @@ const App: React.FC = () => {
   const [fareEnd, setFareEnd] = useState<string>(() => localStorage.getItem('dhaka_commute_fare_end') || '');
 
   const [favorites, setFavorites] = useState<string[]>(getStoredFavorites);
+  const [busRatingsMap, setBusRatingsMap] = useState<Record<string, BusRatingSummary | null>>({});
   const [listFilter, setListFilter] = useState<'ALL' | 'FAVORITES'>('ALL');
   const [isPending, startTransition] = useTransition();
 
@@ -1632,6 +1634,30 @@ const App: React.FC = () => {
 
     return sortedBuses;
   }, [listFilter, favorites, searchMode, fromStation, toStation, searchQuery, userLocation, destinationStationIds]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const idsToFetch = filteredBuses
+      .map(b => b.id)
+      .filter(id => busRatingsMap[id] === undefined)
+      .slice(0, 60);
+
+    if (idsToFetch.length === 0) return;
+
+    (async () => {
+      const entries = await Promise.all(idsToFetch.map(async (id) => [id, await getBusRatings(id)] as const));
+      if (cancelled) return;
+      setBusRatingsMap(prev => {
+        const next = { ...prev };
+        for (const [id, summary] of entries) next[id] = summary;
+        return next;
+      });
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [filteredBuses, busRatingsMap]);
 
   // Calculate routes when From/To changes in ROUTE mode
   useEffect(() => {
@@ -3925,6 +3951,11 @@ const App: React.FC = () => {
           {filteredBuses.map((bus, busIdx) => {
             const isFav = favorites.includes(bus.id);
             const estimatedFare = calculateFare(bus);
+            const ratingSummary = busRatingsMap[bus.id];
+            const ratingCount = ratingSummary?.count ?? 0;
+            const hasRating = ratingCount > 0;
+            const avgRating = ratingSummary?.average ?? 0;
+            const ratingPercent = Math.round((avgRating / 5) * 100);
 
             return (
               <React.Fragment key={bus.id}>
@@ -3966,6 +3997,26 @@ const App: React.FC = () => {
                       className="p-1.5 -mr-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors z-20"
                     >
                       <Heart className={`w-5 h-5 transition-all ${isFav ? 'fill-pink-500 text-pink-500 scale-110' : 'text-gray-300 dark:text-gray-600 hover:text-pink-400'} `} />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (!user) {
+                          setView(AppView.LOGIN);
+                          return;
+                        }
+                        setSelectedBus(bus);
+                        setView(AppView.RATE_BUS);
+                      }}
+                      className={`px-2 py-1 rounded-md border text-[10px] font-bold leading-none transition-colors ${hasRating
+                        ? 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100'
+                        : 'bg-gray-50 text-gray-500 border-gray-200 hover:bg-gray-100'}`}
+                      aria-label={hasRating ? `View rating for ${bus.name}` : `Rate ${bus.name}`}
+                    >
+                      {hasRating
+                        ? `★ ${formatNumber(avgRating.toFixed(1))} · ${formatNumber(ratingPercent)}%`
+                        : `☆ ${t('community.rateNow')}`}
                     </button>
                     <div className="flex flex-col items-end">
                       <span className={`text-[10px] px-2 py-1 rounded-md font-bold uppercase tracking-wide
