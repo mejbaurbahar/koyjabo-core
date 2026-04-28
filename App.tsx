@@ -1005,18 +1005,6 @@ const App: React.FC = () => {
     return { fareInfo: info, fareStartIndex: startIdx, fareEndIndex: endIdx, isReversed: reversed, actualStartStation: actualStart, actualEndStation: actualEnd };
   }, [selectedBus, fareStart, fareEnd]);
 
-  // Browser history integration - Handle phone back button
-  useEffect(() => {
-    const handlePopState = () => {
-      // Prefer URL-driven state for back/forward (deep links)
-      if (syncBusDeepLinkFromUrl()) return;
-      setView(getStoredView());
-    };
-
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, [syncBusDeepLinkFromUrl]);
-
   // Handle SEO: title, description, keywords, OG, Twitter, canonical — per page
   useEffect(() => {
     const BASE = 'https://koyjabo.com';
@@ -1372,6 +1360,18 @@ const App: React.FC = () => {
   // On first load, if URL is a deep link, sync state
   useEffect(() => {
     syncBusDeepLinkFromUrl();
+  }, [syncBusDeepLinkFromUrl]);
+
+  // Browser history integration - Handle phone back button
+  useEffect(() => {
+    const handlePopState = () => {
+      // Prefer URL-driven state for back/forward (deep links)
+      if (syncBusDeepLinkFromUrl()) return;
+      setView(getStoredView());
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, [syncBusDeepLinkFromUrl]);
 
   // Check for hash on mount (e.g., #ai-assistant from intercity page)
