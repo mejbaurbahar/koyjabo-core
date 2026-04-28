@@ -66,7 +66,7 @@ const NotificationBanner: React.FC = () => {
 
     return (
         <div
-            className={`fixed top-0 left-0 right-0 z-[9999] ${styles.bg} shadow-lg shadow-black/10 animate-in slide-in-from-top duration-300 cursor-pointer`}
+            className={`sticky top-0 left-0 right-0 z-[9999] ${styles.bg} shadow-lg shadow-black/10 animate-in slide-in-from-top duration-300 cursor-pointer pt-safe`}
             onClick={handleClick}
         >
             <div className="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
