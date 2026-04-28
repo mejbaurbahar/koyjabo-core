@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLanguage } from './contexts/LanguageContext';
 import { Search, ArrowRightLeft, AlertCircle, PlayCircle, WifiOff, Activity, Home, Train, Sparkles, Clock, Info, Sun, Moon, Menu, Navigation, Map, X, Bot, FileText, Settings, Shield, Download, Calendar, HelpCircle, LogIn, LogOut, User, Phone, Bus, Plane, ChevronRight, AlertTriangle, Calculator, Ticket, BookOpen, UserPlus, MapPin, Star } from 'lucide-react';
 import { AnimatedLogo } from './components/AnimatedLogo';
