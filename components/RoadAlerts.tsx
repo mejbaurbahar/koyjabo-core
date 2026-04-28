@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, AlertTriangle, Clock, ChevronDown, ChevronUp, Plus } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, Clock, ChevronDown, ChevronUp, Plus, ExternalLink } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { submitTrafficReport, getTodayTrafficReports, upvoteTrafficReport, TrafficReport, getAuthUser } from '../services/communityDataService';
 import { trackFeatureUsage } from '../services/analyticsService';
@@ -7,6 +7,34 @@ import { trackFeatureUsage } from '../services/analyticsService';
 interface Props {
   onBack: () => void;
 }
+
+// ── Admin pre-alerts (pinned official notices) ────────────────────────────────
+// Add or remove entries here to manage pinned government/admin notices.
+interface AdminAlert {
+  id: string;
+  titleBn: string;
+  titleEn: string;
+  descriptionBn?: string;
+  descriptionEn?: string;
+  url?: string;
+  source?: string;
+  timestamp: number;  // Unix ms — used for display only
+  icon: string;
+}
+
+const ADMIN_ALERTS: AdminAlert[] = [
+  {
+    id: 'fare-notice-diesel-2025',
+    titleBn: 'ডিজেল চালিত বাস ও মিনিবাসের সর্বোচ্চ ভাড়া নির্ধারণ সংক্রান্ত প্রজ্ঞাপন',
+    titleEn: 'Official notification on maximum fare for diesel-powered buses and minibuses',
+    descriptionBn: 'সড়ক পরিবহন ও মহাসড়ক বিভাগ (RTHD) কর্তৃক জারিকৃত সর্বোচ্চ বাস ভাড়া সংক্রান্ত সরকারি প্রজ্ঞাপন।',
+    descriptionEn: 'Official government notification issued by the Road Transport and Highways Division (RTHD) regarding maximum bus fares.',
+    url: 'https://rthd.gov.bd/pages/notices/%E0%A6%A1%E0%A6%BF%E0%A6%9C%E0%A7%87%E0%A6%B2-%E0%A6%9A%E0%A6%BE%E0%A6%B2%E0%A6%BF%E0%A6%A4-%E0%A6%AC%E0%A6%BE%E0%A6%B8-%E0%A6%93-%E0%A6%AE%E0%A6%BF%E0%A6%A8%E0%A6%BF%E0%A6%AC%E0%A6%BE%E0%A6%B8%E0%A7%87%E0%A6%B0-%E0%A6%B8%E0%A6%B0%E0%A7%8D%E0%A6%AC%E0%A7%8B%E0%A6%9A%E0%A7%8D%E0%A6%9A-%E0%A6%AD%E0%A6%BE%E0%A6%A1%E0%A6%BC%E0%A6%BE-%E0%A6%A8%E0%A6%BF%E0%A6%B0%E0%A7%8D%E0%A6%A7%E0%A6%BE%E0%A6%B0%E0%A6%A3-%E0%A6%B8%E0%A6%82%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4-%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%9C%E0%A7%8D%E0%A6%9E%E0%A6%BE%E0%A6%AA%E0%A6%A8-rdici2-69ea0138fec635b1a07ad32b',
+    source: 'rthd.gov.bd',
+    timestamp: Date.now(),
+    icon: '📋',
+  },
+];
 
 type AlertType = { value: TrafficReport['type']; icon: string; color: string };
 
@@ -26,7 +54,7 @@ function timeAgo(ts: number, t: (key: string) => string): string {
 }
 
 export default function RoadAlerts({ onBack }: Props) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const user = getAuthUser();
   const [reports, setReports] = useState<TrafficReport[]>([]);
   const [loading, setLoading] = useState(false);
@@ -145,6 +173,53 @@ export default function RoadAlerts({ onBack }: Props) {
               </button>
             </div>
           </form>
+        )}
+
+        {ADMIN_ALERTS.length > 0 && (
+          <div className="space-y-2">
+            <p className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wide px-1">
+              {language === 'bn' ? '📌 সরকারি নোটিশ' : '📌 Official Notices'}
+            </p>
+            {ADMIN_ALERTS.map(alert => (
+              <div key={alert.id} className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-200 dark:border-blue-800 overflow-hidden">
+                <div className="p-4">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-start gap-3 flex-1">
+                      <span className="text-xl">{alert.icon}</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-blue-900 dark:text-blue-100 text-sm leading-snug">
+                          {language === 'bn' ? alert.titleBn : alert.titleEn}
+                        </p>
+                        {alert.source && (
+                          <p className="text-xs text-blue-500 dark:text-blue-400 mt-0.5">{alert.source}</p>
+                        )}
+                      </div>
+                    </div>
+                    <button onClick={() => setExpanded(expanded === alert.id ? null : alert.id)}
+                      className="p-1 text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 shrink-0">
+                      {expanded === alert.id ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                    </button>
+                  </div>
+                  {expanded === alert.id && (
+                    <div className="mt-3 pt-3 border-t border-blue-200 dark:border-blue-700">
+                      {(language === 'bn' ? alert.descriptionBn : alert.descriptionEn) && (
+                        <p className="text-sm text-blue-800 dark:text-blue-200 mb-2">
+                          {language === 'bn' ? alert.descriptionBn : alert.descriptionEn}
+                        </p>
+                      )}
+                      {alert.url && (
+                        <a href={alert.url} target="_blank" rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          {language === 'bn' ? 'সম্পূর্ণ নোটিশ দেখুন' : 'View full notice'}
+                        </a>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
         )}
 
         {loading && <div className="text-center py-10 text-gray-400">{t('roadAlerts.loading')}</div>}
