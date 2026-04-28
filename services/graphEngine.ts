@@ -78,7 +78,7 @@ export interface GraphRoute {
   totalCostBDT: number;
   transfers: number;
   score: number;
-  tag: 'balanced' | 'fastest' | 'cheapest';
+  tag: 'balanced' | 'fastest' | 'cheapest' | 'direct';
 }
 
 // ── Haversine distance (meters) ───────────────────────────────────────────────
@@ -409,20 +409,24 @@ function mergeSteps(steps: PathStep[]): PathStep[] {
   const segCounts: number[] = [];
   for (const step of steps) {
     const prev = merged[merged.length - 1];
-    if (
-      prev &&
+    const canMerge = prev &&
       prev.mode === step.mode &&
-      prev.routeName === step.routeName &&
-      prev.mode !== 'walk' &&
-      prev.mode !== 'transfer'
-    ) {
+      prev.mode !== 'transfer' &&
+      (prev.mode === 'walk' || prev.routeName === step.routeName);
+    if (canMerge) {
       prev.toId = step.toId;
       prev.toName = step.toName;
       prev.toBnName = step.toBnName;
       prev.timeMin += step.timeMin;
       prev.costBDT += step.costBDT;
-      prev.instruction = prev.instruction.replace(/→.*/, `→ ${step.toName}`);
-      prev.instructionBn = prev.instructionBn.replace(/→.*/, `→ ${step.toBnName}`);
+      if (prev.mode === 'walk') {
+        const t = Math.round(prev.timeMin);
+        prev.instruction = `🚶 Walk ${t} min from ${prev.fromName} to ${prev.toName}`;
+        prev.instructionBn = `🚶 ${prev.fromBnName} থেকে ${prev.toBnName} পর্যন্ত হেঁটে যান (${t} মিনিট)`;
+      } else {
+        prev.instruction = prev.instruction.replace(/→.*/, `→ ${step.toName}`);
+        prev.instructionBn = prev.instructionBn.replace(/→.*/, `→ ${step.toBnName}`);
+      }
       segCounts[segCounts.length - 1]++;
     } else {
       merged.push({ ...step });
@@ -461,8 +465,9 @@ export function findRoutes(
   // 2. Fastest — minimize time only
   const fastestWeight: WeightFn = (edge) => edge.timeMin;
 
-  // 3. Cheapest — minimize cost, break ties by time
-  const cheapestWeight: WeightFn = (edge) => edge.costBDT + edge.timeMin * 0.01;
+  // 3. Cheapest — minimize cost; walking counted as ৳1.5/min to prevent absurd walk chains
+  const cheapestWeight: WeightFn = (edge) =>
+    edge.costBDT + (edge.mode === 'walk' ? edge.timeMin * 1.5 : 0) + edge.timeMin * 0.01;
 
   const weightFns: Array<[WeightFn, GraphRoute['tag']]> = [
     [balancedWeight, 'balanced'],
@@ -489,14 +494,78 @@ export function findRoutes(
     results.push({ steps, totalTimeMin, totalCostBDT, transfers: Math.max(0, transfers), score, tag });
   }
 
+  // Add a direct single-bus route if one exists and isn't already represented
+  const direct = findDirectBus(fromId, toId);
+  if (direct) {
+    const alreadyShown = results.some(r =>
+      r.transfers === 0 && r.steps.some(s => s.routeName === direct.steps[0].routeName)
+    );
+    if (!alreadyShown) results.push(direct);
+  }
+
+  // Filter routes where total walking time exceeds 25 min (impractical for passengers)
+  const practical = results.filter(r => {
+    const walkMin = r.steps.filter(s => s.mode === 'walk').reduce((sum, s) => sum + s.timeMin, 0);
+    return walkMin <= 25;
+  });
+  const finalRoutes = practical.length > 0 ? practical : results;
+
   // Deduplicate: remove routes that are identical (same steps sequence)
   const seen = new Set<string>();
-  return results.filter(r => {
+  return finalRoutes.filter(r => {
     const key = r.steps.map(s => `${s.fromId}-${s.mode}-${s.toId}`).join('|');
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
   });
+}
+
+// ── Direct single-bus route finder ───────────────────────────────────────────
+// Scans BUS_DATA for a route that covers both stops without any transfer.
+
+function findDirectBus(fromId: string, toId: string): GraphRoute | null {
+  const { nodes } = getGraph();
+  for (const bus of BUS_DATA.filter(b => b.active !== false)) {
+    const fromIdx = bus.stops.indexOf(fromId);
+    const toIdx = bus.stops.indexOf(toId);
+    if (fromIdx < 0 || toIdx < 0 || fromIdx >= toIdx) continue;
+
+    let totalTime = 0;
+    let totalCost = 0;
+    for (let i = fromIdx; i < toIdx; i++) {
+      const a = nodes.get(bus.stops[i]);
+      const b2 = nodes.get(bus.stops[i + 1]);
+      if (!a || !b2) continue;
+      const distKm = haversineM(a.lat, a.lng, b2.lat, b2.lng) / 1000;
+      totalTime += (distKm / BUS_AVG_KMH) * 60;
+      totalCost += Math.max(BUS_MIN_FARE, Math.ceil(distKm * BUS_FARE_PER_KM));
+    }
+    if (totalTime === 0) continue;
+
+    const fromNode = nodes.get(fromId);
+    const toNode = nodes.get(toId);
+    if (!fromNode || !toNode) continue;
+
+    const roundedTime = Math.round(totalTime);
+    const roundedCost = Math.round(totalCost);
+    const step: PathStep = {
+      fromId, fromName: fromNode.name, fromBnName: fromNode.bnName,
+      toId, toName: toNode.name, toBnName: toNode.bnName,
+      mode: 'bus', timeMin: totalTime, costBDT: roundedCost,
+      routeName: bus.name, routeBnName: bus.bnName,
+      instruction: `🚌 Take **${bus.name}** from ${fromNode.name} → ${toNode.name}`,
+      instructionBn: `🚌 **${bus.bnName}** বাসে ${fromNode.bnName} থেকে ${toNode.bnName}`,
+    };
+    return {
+      steps: [step],
+      totalTimeMin: roundedTime,
+      totalCostBDT: roundedCost,
+      transfers: 0,
+      score: roundedTime * SCORE_W_TIME + roundedCost * SCORE_W_COST,
+      tag: 'direct',
+    };
+  }
+  return null;
 }
 
 // ── Location resolver ─────────────────────────────────────────────────────────
@@ -567,9 +636,10 @@ export function findRoutesFromCoords(
 // Converts GraphRoute[] into a human-readable string (EN or BN)
 
 const TAG_LABELS: Record<GraphRoute['tag'], { en: string; bn: string; emoji: string }> = {
-  balanced: { en: 'Best Route (Balanced)', bn: 'সেরা রুট (সুষম)', emoji: '🏆' },
-  fastest:  { en: 'Fastest Route',         bn: 'দ্রুততম রুট',   emoji: '⚡' },
-  cheapest: { en: 'Cheapest Route',        bn: 'সাশ্রয়ী রুট',   emoji: '💸' },
+  balanced: { en: 'Best Route (Balanced)',      bn: 'সেরা রুট (সুষম)',           emoji: '🏆' },
+  fastest:  { en: 'Fastest Route',              bn: 'দ্রুততম রুট',               emoji: '⚡' },
+  cheapest: { en: 'Cheapest Route',             bn: 'সাশ্রয়ী রুট',               emoji: '💸' },
+  direct:   { en: 'Direct Route (No Transfer)', bn: 'সরাসরি রুট (সরাসরি বাস)', emoji: '🚌' },
 };
 
 export function formatRoutes(
