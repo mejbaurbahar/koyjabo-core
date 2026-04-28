@@ -1705,21 +1705,6 @@ const App: React.FC = () => {
     }
   };
 
-  // Desktop fallback: force wheel deltas onto panel scroll containers.
-  const handleDesktopWheelScroll = useCallback((e: React.WheelEvent<HTMLDivElement>) => {
-    const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
-    if (!isDesktop) return;
-
-    const container = e.currentTarget;
-    if (container.scrollHeight <= container.clientHeight || e.deltaY === 0) return;
-
-    e.preventDefault();
-    container.scrollTo({
-      top: container.scrollTop + e.deltaY,
-      behavior: 'auto',
-    });
-  }, []);
-
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleSearchCommit();
@@ -3091,7 +3076,6 @@ const App: React.FC = () => {
         <div
           className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain w-full pb-nav-safe md:pb-4"
           style={{ WebkitOverflowScrolling: 'touch' }}
-          onWheel={handleDesktopWheelScroll}
         >
 
         {/* Pinned Trip Info */}

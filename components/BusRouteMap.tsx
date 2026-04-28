@@ -150,13 +150,27 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
       if (isTouchDevice) {
         map.dragging.disable();
         map.scrollWheelZoom.disable();
+        map.touchZoom.enable();
         if (mapRef.current) {
-          mapRef.current.style.touchAction = 'pan-y';
-          mapRef.current.style.pointerEvents = 'none';
+          mapRef.current.style.touchAction = 'pan-y pinch-zoom';
+          mapRef.current.style.pointerEvents = 'auto';
+
+          // Prevent browser page zoom while pinching on the map area.
+          const blockPagePinchZoom = (event: TouchEvent) => {
+            if (event.touches.length > 1) {
+              event.preventDefault();
+            }
+          };
+          mapRef.current.addEventListener('touchmove', blockPagePinchZoom, { passive: false });
+          map.once('unload', () => {
+            mapRef.current?.removeEventListener('touchmove', blockPagePinchZoom);
+          });
         }
       }
 
-      map.touchZoom.disable();
+      if (!isTouchDevice) {
+        map.touchZoom.disable();
+      }
       map.doubleClickZoom.disable();
       map.boxZoom.disable();
       map.keyboard.disable();
