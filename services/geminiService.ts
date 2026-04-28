@@ -1631,6 +1631,26 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
           stationNameWords(s.name).some(w => lowerQuery.includes(w))
         );
         if (destStation) {
+          // Use injected GPS context as source before asking the user
+          if (contextPart) {
+            const ctxText = contextPart.replace(/\].*$/, '').trim();
+            const locMatch = ctxText.match(/User is (?:in|near)\s+([^(]+)/i);
+            const locName = locMatch ? locMatch[1].trim() : '';
+            if (locName) {
+              const fromLocId = resolveLocation(locName);
+              if (fromLocId && fromLocId !== destStation.id) {
+                try {
+                  const graphResult = await planAndFormat(fromLocId, destStation.id, isBn);
+                  if (graphResult && !graphResult.startsWith('🤔') && graphResult.length > 60) {
+                    const prefix = isBn
+                      ? `📍 আপনার বর্তমান অবস্থান **(${locName})** থেকে:\n\n`
+                      : `📍 Based on your current location **(${locName})**:\n\n`;
+                    return prefix + graphResult;
+                  }
+                } catch (_) { /* fall through to ask */ }
+              }
+            }
+          }
           return isBn
             ? `📍 **${destStation.bnName || destStation.name}**-এ যেতে চান?\n\n🗺️ আপনি কোথা থেকে আসছেন বলুন — তারপর সেরা রুট, ভাড়া ও সময় জানাব!\n\n💡 _উদাহরণ: "ফার্মগেট থেকে ${destStation.bnName || destStation.name}"_`
             : `📍 Want to go to **${destStation.name}**?\n\n🗺️ Please tell me where you're starting from — I'll plan the best route with fares and timing!\n\n💡 _Example: "Farmgate to ${destStation.name}"_`;
