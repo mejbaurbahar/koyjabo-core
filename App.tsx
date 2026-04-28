@@ -70,7 +70,7 @@ import OfflineIndicator from './components/OfflineIndicator';
 import AdSenseAd from './components/AdSenseAd';
 import TrainListPage, { TrainDetail } from './components/TrainListPage';
 import TrainRating from './components/TrainRating';
-import { BDTrainRoute } from './data/bangladeshTrainData';
+import { BDTrainRoute, BD_TRAIN_ROUTES } from './data/bangladeshTrainData';
 import TripReminders from './components/TripReminders';
 import RoadAlerts from './components/RoadAlerts';
 import NeighbourhoodGuides from './components/NeighbourhoodGuides';
@@ -178,6 +178,11 @@ const getStoredView = (): AppView => {
       // Deep link: /bus/<busSlug>
       if (target === 'bus' || target.startsWith('bus/')) {
         return AppView.BUS_DETAILS;
+      }
+
+      // Deep link: /train/<trainSlug>
+      if (target === 'train' || target.startsWith('train/')) {
+        return target.startsWith('train/') ? AppView.TRAIN_DETAILS : AppView.TRAIN_LIST;
       }
 
       // Special handling for blog sub-paths
@@ -572,6 +577,14 @@ const App: React.FC = () => {
       if (s === normalized) return id;
     }
     return '';
+  };
+
+  const getTrainSlug = (route: BDTrainRoute) => slugify(route.name || route.id);
+
+  const findTrainBySlug = (trainSlug: string): BDTrainRoute | null => {
+    const normalized = slugify(trainSlug);
+    if (!normalized) return null;
+    return BD_TRAIN_ROUTES.find(r => getTrainSlug(r) === normalized) || null;
   };
 
   const [view, setView] = useState<AppView>(getStoredView);
@@ -1256,6 +1269,27 @@ const App: React.FC = () => {
     return true;
   }, []);
 
+  const syncTrainDeepLinkFromUrl = useCallback(() => {
+    const path = window.location.pathname.substring(1).replace(/\/$/, '');
+    if (!(path === 'train' || path.startsWith('train/'))) return false;
+
+    const slug = path.split('/')[1] || '';
+    if (!slug) {
+      viewSetFromHash.current = true;
+      setSelectedTrain(null);
+      setView(AppView.TRAIN_LIST);
+      return true;
+    }
+
+    const train = findTrainBySlug(slug);
+    if (!train) return false;
+
+    setSelectedTrain(train);
+    viewSetFromHash.current = true;
+    setView(AppView.TRAIN_DETAILS);
+    return true;
+  }, []);
+
   // Reverse mapping:  // Map views to URL paths
   const viewToPath: Record<AppView, string> = {
     [AppView.HOME]: '',
@@ -1338,6 +1372,17 @@ const App: React.FC = () => {
       return;
     }
 
+    // Special handling for train deep links
+    if (view === AppView.TRAIN_DETAILS && selectedTrain) {
+      const trainSlug = getTrainSlug(selectedTrain);
+      const desiredUrl = `/train/${trainSlug}`;
+      const currentUrl = window.location.pathname + window.location.search;
+      if (currentUrl !== desiredUrl) {
+        window.history.pushState({ view }, '', desiredUrl);
+      }
+      return;
+    }
+
     // Special handling for blog posts
     if (view === AppView.BLOG && selectedBlogPost) {
       const blogPath = `blog/${selectedBlogPost}`;
@@ -1355,24 +1400,26 @@ const App: React.FC = () => {
     } else if (path && currentPath !== path) {
       window.history.pushState({ view }, '', `/${path}`);
     }
-  }, [view, selectedBlogPost, selectedBus, fareStart, fareEnd]);
+  }, [view, selectedBlogPost, selectedBus, fareStart, fareEnd, selectedTrain]);
 
   // On first load, if URL is a deep link, sync state
   useEffect(() => {
-    syncBusDeepLinkFromUrl();
-  }, [syncBusDeepLinkFromUrl]);
+    if (syncBusDeepLinkFromUrl()) return;
+    syncTrainDeepLinkFromUrl();
+  }, [syncBusDeepLinkFromUrl, syncTrainDeepLinkFromUrl]);
 
   // Browser history integration - Handle phone back button
   useEffect(() => {
     const handlePopState = () => {
       // Prefer URL-driven state for back/forward (deep links)
       if (syncBusDeepLinkFromUrl()) return;
+      if (syncTrainDeepLinkFromUrl()) return;
       setView(getStoredView());
     };
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [syncBusDeepLinkFromUrl]);
+  }, [syncBusDeepLinkFromUrl, syncTrainDeepLinkFromUrl]);
 
   // Check for hash on mount (e.g., #ai-assistant from intercity page)
   useEffect(() => {

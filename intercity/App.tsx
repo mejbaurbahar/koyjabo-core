@@ -55,6 +55,14 @@ function App() {
   const [selectedMode, setSelectedMode] = useState<'bus' | 'train' | 'plane' | 'launch' | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
+  const buildIntercityUrl = useCallback((fromVal?: string, toVal?: string) => {
+    if (!fromVal || !toVal) return '/intercity/';
+    const params = new URLSearchParams();
+    params.set('from', fromVal);
+    params.set('to', toVal);
+    return `/intercity/?${params.toString()}`;
+  }, []);
+
   // Intercity saved routes
   const [savedRoutes, setSavedRoutes] = useState<{from: string; to: string}[]>(() => {
     try { return JSON.parse(localStorage.getItem('intercity_saved_routes') || '[]'); } catch { return []; }
@@ -168,8 +176,7 @@ function App() {
     };
   }, []);
 
-  // Handle URL parameters for redirection from main app
-  useEffect(() => {
+  const applyRouteFromUrl = useCallback((pushHistory: boolean = false) => {
     const params = new URLSearchParams(window.location.search);
     const fromParam = params.get('from');
     const toParam = params.get('to');
@@ -178,8 +185,15 @@ function App() {
       setFrom(fromParam);
       setTo(toParam);
 
+      if (pushHistory) {
+        window.history.pushState({}, '', buildIntercityUrl(fromParam, toParam));
+      }
+
       // Only auto-search if user is signed in
-      if (!getStoredUser()) return;
+      if (!getStoredUser()) {
+        setResult(null);
+        return;
+      }
 
       setLoading(true);
       setTimeout(() => {
@@ -192,8 +206,22 @@ function App() {
           setLoading(false);
         }
       }, 500);
+    } else {
+      setResult(null);
     }
-  }, []);
+  }, [buildIntercityUrl, language]);
+
+  // Handle URL parameters for redirection / deep links
+  useEffect(() => {
+    applyRouteFromUrl(false);
+  }, [applyRouteFromUrl, authUser]);
+
+  // Browser back/forward should restore URL-driven state
+  useEffect(() => {
+    const handlePopState = () => applyRouteFromUrl(false);
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [applyRouteFromUrl]);
 
   // Auto-scroll to top when result appears on mobile
   useEffect(() => {
@@ -224,6 +252,7 @@ function App() {
       setFrom(demoData.from);
       setTo(demoData.to);
       setResult(demoData);
+      window.history.pushState({}, '', buildIntercityUrl(demoData.from, demoData.to));
       setLoading(false);
     }, 1500);
   };
@@ -307,6 +336,7 @@ function App() {
         const resultData = getOfflineIntercityData(from, to, language as 'en' | 'bn');
 
         setResult(resultData);
+        window.history.pushState({}, '', buildIntercityUrl(from, to));
         localStorage.setItem('intercity_last_result', JSON.stringify(resultData));
         trackSearchInHistory(from, to, 'combined');
       } catch (err: any) {
