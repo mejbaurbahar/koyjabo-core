@@ -35,6 +35,7 @@ export interface BusRoute {
   stops: string[]; // Array of station IDs
   type: 'Sitting' | 'Semi-Sitting' | 'Local' | 'AC' | 'Metro Rail' | 'Double-Decker' | 'Metro Shuttle';
   hours: string;
+  active?: boolean; // false = discontinued/inactive, omitted means active
 }
 
 export interface UserLocation {

@@ -477,6 +477,9 @@ const BANGLISH_MAP: Array<[string, string]> = [
   ['kibhabe jabo', 'how to go to'], ['kemne jabo', 'how to go to'],
   ['kemon kore jabo', 'how to go to'], ['koi vabe jabo', 'how to go to'],
   ['ki kore jabo', 'how to go to'],
+  ['jaite chai', 'want to go'], ['jaite hobe', 'need to go'],
+  ['jaite parbo', 'can go to'], ['ami jaite chai', 'i want to go'],
+  ['jaite', 'go to'],
   ['jete chai', 'want to go'], ['jete hobe', 'need to go'],
   ['jete parbo', 'can go to'], ['jete pari', 'can go to'],
   ['ami jabo', 'i want to go'], ['ami jete chai', 'i want to go'],
@@ -615,7 +618,7 @@ const BANGLISH_MAP: Array<[string, string]> = [
 // Detect Banglish: romanized Bengali (not Bangla script, but has Bengali-style words)
 function detectBanglish(q: string): boolean {
   if (/[\u0980-\u09FF]/.test(q)) return false; // Real Bengali script
-  return /\b(jabo|theke|kivabe|ki vabe|kemne|koto|ache|jete|ami|apni|bas|bhara|pora|lage|lagbe|pabo|kothay|koi|bolo|bolun|shoja|shomoy|theke|porjonto|mirpure|uttora|farmget|gulshan|banani|mohakhali|kamalapur|ctg|barishal|barisal|coxs|sylhete|kemon kore|jawa|asha|dur|kache)\b/i.test(q);
+  return /\b(jabo|theke|kivabe|ki vabe|kemne|koto|ache|jete|jaite|ami|apni|bas|bhara|pora|lage|lagbe|pabo|kothay|koi|bolo|bolun|shoja|shomoy|theke|porjonto|mirpure|uttora|farmget|gulshan|banani|mohakhali|kamalapur|ctg|barishal|barisal|coxs|sylhete|kemon kore|jawa|asha|dur|kache)\b/i.test(q);
 }
 
 // Normalize Banglish query: inject English equivalents for all known Banglish words
@@ -788,7 +791,7 @@ const findIntercityRoute = (query: string): string => {
 const findLocalBusInfo = (query: string): string => {
   const lowerQuery = normalize(query);
   // Search for a specific bus name
-  const bus = BUS_DATA.find(b => lowerQuery.includes(normalize(b.name)));
+  const bus = BUS_DATA.find(b => b.active !== false && lowerQuery.includes(normalize(b.name)));
   if (bus) {
     return `🚌 **${bus.name}**: Route is ${bus.routeString}.\n**Stops:** ${bus.stops.join(', ')}.`;
   }
@@ -1566,14 +1569,23 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
     const isRouteIntent = lowerQuery.includes(' to ') ||
       lowerQuery.includes(' from ') ||
       lowerQuery.includes('jabo') ||
+      lowerQuery.includes('jaite') ||
+      lowerQuery.includes('jete') ||
+      lowerQuery.includes('jite') ||
       lowerQuery.includes('route') ||
       lowerQuery.includes('path') ||
       lowerQuery.includes('direction') ||
       lowerQuery.includes('kivabe') ||
       lowerQuery.includes('kemne') ||
       lowerQuery.includes('reach') ||
+      lowerQuery.includes('want to go') ||
+      lowerQuery.includes('go to') ||
       lowerQuery.includes(' থেকে ') ||
-      lowerQuery.includes(' যাব ');
+      lowerQuery.includes(' যাব ') ||
+      lowerQuery.includes(' যেতে ') ||
+      lowerQuery.includes(' যেতে') ||
+      lowerQuery.includes('কিভাবে') ||
+      lowerQuery.includes('কেমনে');
 
     if (isRouteIntent) {
       // First try intercity classification
@@ -1704,7 +1716,7 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
         : `📍 You are currently near **${userNearbyStation}**. This is a good spot to find buses to most parts of Dhaka.`);
 
       // Suggest buses from here
-      const busesFromHere = BUS_DATA.filter(b => b.stops.some(s => s.toLowerCase().includes(userNearbyStation!.toLowerCase()))).slice(0, 5);
+      const busesFromHere = BUS_DATA.filter(b => b.active !== false && b.stops.some(s => s.toLowerCase().includes(userNearbyStation!.toLowerCase()))).slice(0, 5);
       if (busesFromHere.length > 0) {
         let busList = isBn ? `\n🚌 **এখানকার কিছু জনপ্রিয় বাস:**\n` : `\n🚌 **Popular buses from here:**\n`;
         busesFromHere.forEach(b => {
@@ -1787,7 +1799,7 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
             responseParts.push(busRes);
           } else {
             // Fallback to simple listing if no route found
-            const busesToTarget = BUS_DATA.filter(b => b.stops.some(s => s === targetStation.id || s === targetStation.name.toLowerCase()));
+            const busesToTarget = BUS_DATA.filter(b => b.active !== false && b.stops.some(s => s === targetStation.id || s === targetStation.name.toLowerCase()));
             if (busesToTarget.length > 0) {
               responseParts.push(isBn ? `🚌 **${displayName} পৌঁছাতে:**\nআপনি এই বাসগুলো ব্যবহার করতে পারেন:\n` : `🚌 **To reach ${displayName}:**\nYou can take these buses from various locations:\n`);
               busesToTarget.slice(0, 5).forEach(bus => {
@@ -1798,7 +1810,7 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
           }
         } else {
           // No user location context, just list buses
-          const busesToTarget = BUS_DATA.filter(b => b.stops.some(s => s === targetStation.id || s === targetStation.name.toLowerCase()));
+          const busesToTarget = BUS_DATA.filter(b => b.active !== false && b.stops.some(s => s === targetStation.id || s === targetStation.name.toLowerCase()));
 
           if (busesToTarget.length > 0) {
             responseParts.push(isBn ? `🚌 **${displayName} পৌঁছাতে:**\nআপনি এই বাসগুলো ব্যবহার করতে পারেন:\n` : `🚌 **To reach ${displayName}:**\nYou can take these buses from various locations:\n`);
@@ -1819,7 +1831,7 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
 
       } else {
         // Original logic: Just list buses passing
-        const busPassEx = BUS_DATA.filter(b => b.stops.some(s => {
+        const busPassEx = BUS_DATA.filter(b => b.active !== false && b.stops.some(s => {
           const station = STATIONS[s];
           return normalize(station?.name || s).includes(normalize(targetStation.name)) ||
             (station?.bnName && targetStation.bnName && normalize(station.bnName).includes(normalize(targetStation.bnName)));

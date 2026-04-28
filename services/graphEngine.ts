@@ -136,8 +136,8 @@ function buildGraph(): { graph: AdjacencyList; nodes: NodeMap } {
     }
   }
 
-  // 4. Bus route edges — consecutive stops
-  for (const bus of BUS_DATA) {
+  // 4. Bus route edges — consecutive stops (skip discontinued routes)
+  for (const bus of BUS_DATA.filter(b => b.active !== false)) {
     for (let i = 0; i < bus.stops.length - 1; i++) {
       const fromId = bus.stops[i];
       const toId = bus.stops[i + 1];

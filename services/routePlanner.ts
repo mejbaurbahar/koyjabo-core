@@ -10,8 +10,8 @@ let IS_MAP_INITIALIZED = false;
 const initStationMap = () => {
     if (IS_MAP_INITIALIZED) return;
 
-    // Build the map once
-    BUS_DATA.forEach(bus => {
+    // Build the map once (skip discontinued routes)
+    BUS_DATA.filter(b => b.active !== false).forEach(bus => {
         bus.stops.forEach(stopId => {
             if (!STATION_TO_BUSES_MAP[stopId]) {
                 STATION_TO_BUSES_MAP[stopId] = [];
