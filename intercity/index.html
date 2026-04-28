@@ -212,6 +212,17 @@
     body {
       font-family: 'Inter', sans-serif;
       overscroll-behavior-y: none;
+      background: #f8fafc; /* slate-50 fallback */
+    }
+
+    html {
+      background: #f8fafc; /* slate-50 fallback */
+    }
+
+    /* Prevent iOS overscroll from showing white behind the app */
+    .dark body,
+    .dark html {
+      background: #0f172a; /* slate-900 */
     }
 
     /* Modern Glassmorphism Utilities */
