@@ -165,7 +165,7 @@ export function TrainDetail({
         </button>
         <button
           onClick={() => onToggleFavorite?.()}
-          className="p-2 rounded-full bg-white/90 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+          className="w-8 h-8 flex items-center justify-center leading-none rounded-full bg-white/90 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors shrink-0"
           aria-label={isFavorite ? (bn ? 'ফেভারিট থেকে সরান' : 'Remove from favorites') : (bn ? 'ফেভারিটে যোগ করুন' : 'Add to favorites')}
         >
           <Heart className={`w-4 h-4 ${isFavorite ? 'fill-pink-500 text-pink-500' : 'text-gray-400 dark:text-gray-500'}`} />
@@ -498,7 +498,7 @@ function TrainCard({
               e.stopPropagation();
               onToggleFavorite?.();
             }}
-            className="p-1.5 rounded-full bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors"
+            className="w-8 h-8 flex items-center justify-center leading-none rounded-full bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors shrink-0"
             aria-label={isFavorite ? `Remove ${route.name} from favorites` : `Add ${route.name} to favorites`}
           >
             <Heart className={`w-4 h-4 ${isFavorite ? 'fill-pink-500 text-pink-500' : 'text-gray-400 dark:text-gray-500'}`} />
