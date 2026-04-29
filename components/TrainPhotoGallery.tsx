@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowLeft, Camera, X, Upload, AlertCircle, CheckCircle, Trash2, Train } from 'lucide-react';
+import { ArrowLeft, Camera, X, Upload, AlertCircle, CheckCircle, Trash2, Train, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getTrainPhotos, submitTrainPhoto, deleteTrainPhoto, TrainPhoto, getAuthUser } from '../services/communityDataService';
 import { trackFeatureUsage } from '../services/analyticsService';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -259,41 +259,75 @@ export default function TrainPhotoGallery({ trainId, trainName, onBack }: Props)
       </div>
 
       {/* Lightbox */}
-      {lightbox && (
-        <div className="fixed inset-0 z-50 bg-black/90 flex flex-col">
-          <div className="flex items-center justify-between p-4">
-            <div>
-              <p className="text-white font-semibold">{lightbox.caption || trainName}</p>
-              <p className="text-white/60 text-xs">{lightbox.displayName} · {timeAgo(lightbox.timestamp, t, formatNumber)}</p>
-            </div>
-            <div className="flex items-center gap-2">
-              {user && lightbox.userId === user.id && (
-                <button
-                  onClick={() => { setDeleteTarget(lightbox); setLightbox(null); }}
-                  className="w-9 h-9 rounded-full bg-red-500/80 hover:bg-red-600 flex items-center justify-center"
-                  title="Delete photo"
+      {lightbox && (() => {
+        const currentIndex = photos.findIndex(p => p.id === lightbox.id);
+        const hasPrev = currentIndex > 0;
+        const hasNext = currentIndex < photos.length - 1;
+
+        return (
+          <div className="fixed inset-0 z-[100] bg-black/95 flex flex-col items-center justify-center backdrop-blur-sm">
+            {/* Top Bar / Header */}
+            <div className="absolute top-0 left-0 right-0 p-4 flex items-start justify-between bg-gradient-to-b from-black/60 to-transparent z-10">
+              <div className="flex-1 pr-4">
+                <p className="text-white font-semibold text-sm md:text-base drop-shadow-md">{lightbox.caption || trainName}</p>
+                <p className="text-white/80 text-xs mt-1 drop-shadow-md">{lightbox.displayName} · {timeAgo(lightbox.timestamp, t, formatNumber)}</p>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                {user && lightbox.userId === user.id && (
+                  <button
+                    onClick={() => { setDeleteTarget(lightbox); setLightbox(null); }}
+                    className="w-10 h-10 rounded-full bg-red-500 hover:bg-red-600 flex items-center justify-center transition-transform active:scale-95 shadow-lg"
+                    title="Delete photo"
+                  >
+                    <Trash2 className="w-5 h-5 text-white" />
+                  </button>
+                )}
+                <button 
+                  onClick={() => setLightbox(null)} 
+                  className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md flex items-center justify-center transition-transform active:scale-95 shadow-lg"
                 >
-                  <Trash2 className="w-4 h-4 text-white" />
+                  <X className="w-6 h-6 text-white" />
                 </button>
-              )}
-              <button onClick={() => setLightbox(null)} className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center">
-                <X className="w-5 h-5 text-white" />
-              </button>
+              </div>
             </div>
+
+            {/* Main Image */}
+            <div className="relative w-full h-full flex items-center justify-center p-4 md:p-12">
+              <img 
+                src={lightbox.dataUrl} 
+                alt={lightbox.caption || trainName} 
+                className="max-w-full max-h-full object-contain rounded-lg select-none" 
+              />
+            </div>
+
+            {/* Navigation Arrows */}
+            {hasPrev && (
+              <button 
+                onClick={(e) => { e.stopPropagation(); setLightbox(photos[currentIndex - 1]); }}
+                className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center backdrop-blur-md transition-all active:scale-90 z-10"
+              >
+                <ChevronLeft className="w-8 h-8" />
+              </button>
+            )}
+            {hasNext && (
+              <button 
+                onClick={(e) => { e.stopPropagation(); setLightbox(photos[currentIndex + 1]); }}
+                className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center backdrop-blur-md transition-all active:scale-90 z-10"
+              >
+                <ChevronRight className="w-8 h-8" />
+              </button>
+            )}
           </div>
-          <div className="flex-1 flex items-center justify-center p-4">
-            <img src={lightbox.dataUrl} alt={lightbox.caption || trainName} className="max-w-full max-h-full rounded-2xl object-contain" />
-          </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* Delete confirm modal */}
       {deleteTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60" onClick={() => setDeleteTarget(null)} />
           <div className="relative w-full max-w-sm bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 shadow-2xl">
-            <h3 className="text-base font-bold text-gray-900 dark:text-white mb-2">Delete Photo?</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">This will permanently remove your photo. This action cannot be undone.</p>
+            <h3 className="text-base font-bold text-gray-900 dark:text-white mb-2">{t('community.deletePhotoTitle') || 'Delete Photo?'}</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">{t('community.deletePhotoDesc') || 'This will permanently remove your photo. This action cannot be undone.'}</p>
             <div className="flex gap-2 justify-end">
               <button onClick={() => setDeleteTarget(null)} disabled={deleting}
                 className="px-4 py-2 rounded-xl bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-semibold disabled:opacity-50">

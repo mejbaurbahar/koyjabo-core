@@ -1,4 +1,4 @@
-﻿export type Language = 'bn' | 'en';
+export type Language = 'bn' | 'en';
 
 interface Translations {
     [key: string]: string | Translations;
@@ -262,6 +262,8 @@ export const translations: Record<Language, Translations> = {
             writeExperienceOptional: 'আপনার অভিজ্ঞতা লিখুন (ঐচ্ছিক)...',
             submitting: 'পাঠানো হচ্ছে...',
             submit: 'জমা দিন',
+            deletePhotoTitle: 'ছবিটি মুছে ফেলতে চান?',
+            deletePhotoDesc: 'এটি স্থায়ীভাবে আপনার ছবি মুছে ফেলবে। এটি আর ফিরে পাওয়া যাবে না।',
 
             liveLocationTitle: 'লাইভ অবস্থান',
             reportsCount: '{count}টি রিপোর্ট',
@@ -1287,6 +1289,8 @@ export const translations: Record<Language, Translations> = {
             writeExperienceOptional: 'Write your experience (optional)...',
             submitting: 'Submitting...',
             submit: 'Submit',
+            deletePhotoTitle: 'Delete Photo?',
+            deletePhotoDesc: 'This will permanently remove your photo. This action cannot be undone.',
 
             liveLocationTitle: 'Live Location',
             reportsCount: '{count} reports',
