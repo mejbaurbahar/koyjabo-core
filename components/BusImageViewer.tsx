@@ -60,7 +60,11 @@ export const BusImageViewer: React.FC<BusImageViewerProps> = ({ busId, busName, 
                 className={`flex items-center justify-center gap-2 ${isCompact ? 'p-2.5 rounded-xl' : 'px-3 py-2 rounded-lg'} bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-md hover:shadow-lg transition-all duration-200 text-sm font-medium active:scale-95`}
                 title={t('busDetails.viewBusImage')}
             >
-                <ImageIcon className={isCompact ? 'w-5 h-5' : 'w-4 h-4'} />
+                {isCompact && displayImage !== '/default-bus.svg' ? (
+                    <img src={displayImage} alt="thumbnail" className="w-6 h-6 rounded-md object-cover ring-1 ring-white/50 bg-white/20" />
+                ) : (
+                    <ImageIcon className={isCompact ? 'w-5 h-5' : 'w-4 h-4'} />
+                )}
                 {!isCompact && (
                     <>
                         <span className="hidden sm:inline">{t('busDetails.viewBusImage')}</span>

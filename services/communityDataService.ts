@@ -20,7 +20,9 @@ export function getAuthUser(): { id: string; displayName: string; username: stri
 
 async function repoGet<T>(path: string): Promise<T | null> {
   try {
-    const res = await fetch(`${PROXY}/gh?r=d&p=${encodeURIComponent(path)}`);
+    const res = await fetch(`${PROXY}/gh?r=d&p=${encodeURIComponent(path)}&_t=${Date.now()}`, {
+      cache: 'no-store'
+    });
     if (res.status === 404) return null; // file doesn't exist yet — normal for new entries
     if (!res.ok) return null;
     const text = await res.text();
