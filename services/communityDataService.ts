@@ -21,9 +21,32 @@ export function getAuthUser(): { id: string; displayName: string; username: stri
 async function repoGet<T>(path: string): Promise<T | null> {
   try {
     const res = await fetch(`${PROXY}/gh?r=d&p=${encodeURIComponent(path)}`);
+    if (res.status === 404) return null; // file doesn't exist yet — normal for new entries
     if (!res.ok) return null;
-    return res.json() as Promise<T>;
+    const text = await res.text();
+    if (!text || text === 'null') return null;
+    return JSON.parse(text) as T;
   } catch { return null; }
+}
+
+async function repoDelete(path: string, message?: string): Promise<boolean> {
+  const user = getAuthUser();
+  try {
+    const res = await fetch(`${PROXY}/gh`, {
+      method: 'POST',
+      credentials: 'omit',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        requestId: crypto.randomUUID(),
+        action: 'delete-data',
+        userId: user?.id || 'anonymous',
+        data: JSON.stringify({ path, message: message || `delete: ${path}` }),
+      }),
+    });
+    if (!res.ok) return false;
+    const json = await res.json().catch(() => ({})) as { success?: boolean };
+    return json.success === true;
+  } catch { return false; }
 }
 
 async function repoPut(path: string, content: unknown, message?: string): Promise<boolean> {
@@ -344,6 +367,20 @@ export async function submitBusPhoto(busId: string, busName: string, caption: st
   return repoPut(`data/photos/${busId}.json`, existing, `photo: ${busName}`);
 }
 
+export async function deleteBusPhoto(busId: string, photoId: string): Promise<boolean> {
+  const user = getAuthUser();
+  if (!user) return false;
+  const existing = await repoGet<BusPhotoCollection>(`data/photos/${busId}.json`);
+  if (!existing) return false;
+  const before = existing.photos.length;
+  existing.photos = existing.photos.filter(p => !(p.id === photoId && p.userId === user.id));
+  if (existing.photos.length === before) return false; // photo not found or not owned by user
+  if (existing.photos.length === 0) {
+    return repoDelete(`data/photos/${busId}.json`, `photo-delete-all: ${busId}`);
+  }
+  return repoPut(`data/photos/${busId}.json`, existing, `photo-delete: ${photoId}`);
+}
+
 // ── Seat Availability helper (external links) ─────────────────────────────────
 
 export function buildSeatAvailabilityLinks(trainName: string, trainNumber: string) {
@@ -354,4 +391,51 @@ export function buildSeatAvailabilityLinks(trainName: string, trainNumber: strin
     seatplan: `https://seatplan.net/train/${encodeURIComponent(trainNumber || trainName)}`,
     label: trainName,
   };
+}
+
+// ── Train Photos ──────────────────────────────────────────────────────────────
+
+export interface TrainPhoto {
+  id: string;
+  userId: string;
+  displayName: string;
+  trainId: string;
+  trainName: string;
+  caption: string;
+  dataUrl: string;   // base64 — kept small (max 300KB after compress)
+  timestamp: number;
+}
+
+export interface TrainPhotoCollection {
+  trainId: string;
+  photos: TrainPhoto[];
+}
+
+export async function getTrainPhotos(trainId: string): Promise<TrainPhoto[]> {
+  const data = await repoGet<TrainPhotoCollection>(`data/train-photos/${trainId}.json`);
+  return data?.photos ?? [];
+}
+
+export async function submitTrainPhoto(trainId: string, trainName: string, caption: string, dataUrl: string): Promise<boolean> {
+  const user = getAuthUser();
+  if (!user) return false;
+  const existing = await repoGet<TrainPhotoCollection>(`data/train-photos/${trainId}.json`) || { trainId, photos: [] };
+  const photo: TrainPhoto = { id: crypto.randomUUID(), userId: user.id, displayName: user.displayName, trainId, trainName, caption, dataUrl, timestamp: Date.now() };
+  existing.photos.unshift(photo);
+  if (existing.photos.length > 50) existing.photos = existing.photos.slice(0, 50);
+  return repoPut(`data/train-photos/${trainId}.json`, existing, `train-photo: ${trainName}`);
+}
+
+export async function deleteTrainPhoto(trainId: string, photoId: string): Promise<boolean> {
+  const user = getAuthUser();
+  if (!user) return false;
+  const existing = await repoGet<TrainPhotoCollection>(`data/train-photos/${trainId}.json`);
+  if (!existing) return false;
+  const before = existing.photos.length;
+  existing.photos = existing.photos.filter(p => !(p.id === photoId && p.userId === user.id));
+  if (existing.photos.length === before) return false;
+  if (existing.photos.length === 0) {
+    return repoDelete(`data/train-photos/${trainId}.json`, `train-photo-delete-all: ${trainId}`);
+  }
+  return repoPut(`data/train-photos/${trainId}.json`, existing, `train-photo-delete: ${photoId}`);
 }

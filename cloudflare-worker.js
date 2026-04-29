@@ -30,7 +30,7 @@ const ALLOWED_ORIGINS = [
 const ALLOWED_ACTIONS = new Set([
   'signup', 'login', 'change-password', 'forgot-password', 'verify-otp', 'reset-password',
   'update-profile', 'save-history', 'record-device', 'logout-device',
-  'upload-avatar', 'record-visit', 'save-data', 'record-query',
+  'upload-avatar', 'record-visit', 'save-data', 'record-query', 'delete-data',
 ]);
 
 function corsHeaders(origin) {
@@ -94,8 +94,25 @@ async function writeDataFile(token, owner, repo, path, content, message) {
       headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json', 'User-Agent': 'koyjabo-proxy/1.0' },
       body: JSON.stringify(body),
     });
-    return res.ok || res.status === 201;
-  } catch { return false; }
+    if (res.ok || res.status === 201) return { ok: true };
+    const errBody = await res.json().catch(() => ({}));
+    return { ok: false, status: res.status, message: errBody?.message || 'GitHub write failed' };
+  } catch (e) { return { ok: false, status: 500, message: String(e) }; }
+}
+
+async function deleteDataFile(token, owner, repo, path, message) {
+  try {
+    const existing = await readDataFile(token, owner, repo, path);
+    if (!existing?.sha) return { ok: false, status: 404, message: 'File not found' };
+    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json', 'User-Agent': 'koyjabo-proxy/1.0' },
+      body: JSON.stringify({ message: message || `Delete: ${path}`, sha: existing.sha }),
+    });
+    if (res.ok) return { ok: true };
+    const errBody = await res.json().catch(() => ({}));
+    return { ok: false, status: res.status, message: errBody?.message || 'GitHub delete failed' };
+  } catch (e) { return { ok: false, status: 500, message: String(e) }; }
 }
 
 export default {
@@ -291,10 +308,27 @@ export default {
             { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
           );
         }
-        const writeOk = await writeDataFile(DATA_TOKEN, DATA_OWNER, DATA_REPO, path, content, message);
+        const writeResult = await writeDataFile(DATA_TOKEN, DATA_OWNER, DATA_REPO, path, content, message);
         return new Response(
-          JSON.stringify({ success: writeOk }),
-          { status: writeOk ? 200 : 500, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
+          JSON.stringify({ success: writeResult.ok, ...(writeResult.ok ? {} : { error: writeResult.message, status: writeResult.status }) }),
+          { status: writeResult.ok ? 200 : (writeResult.status === 403 ? 403 : 500), headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
+        );
+      }
+
+      if (body.action === 'delete-data') {
+        let payload = {};
+        try { payload = JSON.parse(body.data || '{}'); } catch { /* ignore */ }
+        const { path, message } = payload;
+        if (!path || !String(path).startsWith('data/')) {
+          return new Response(
+            JSON.stringify({ error: 'Invalid path for delete-data' }),
+            { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
+          );
+        }
+        const delResult = await deleteDataFile(DATA_TOKEN, DATA_OWNER, DATA_REPO, path, message);
+        return new Response(
+          JSON.stringify({ success: delResult.ok, ...(delResult.ok ? {} : { error: delResult.message }) }),
+          { status: delResult.ok ? 200 : (delResult.status === 404 ? 404 : 500), headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
         );
       }
 

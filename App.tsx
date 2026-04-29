@@ -81,6 +81,7 @@ import MultiStopPlanner from './components/MultiStopPlanner';
 import CommuteCostCalculator from './components/CommuteCostCalculator';
 import SeatAvailability from './components/SeatAvailability';
 import BusPhotoGallery from './components/BusPhotoGallery';
+import TrainPhotoGallery from './components/TrainPhotoGallery';
 import { getBusRatings, BusRatingSummary } from './services/communityDataService';
 
 
@@ -160,6 +161,7 @@ const getStoredView = (): AppView => {
         'rate-bus': AppView.RATE_BUS,
         'rate-train': AppView.RATE_TRAIN,
         'bus-photos': AppView.BUS_PHOTOS,
+        'train-photos': AppView.TRAIN_PHOTOS,
         'bus-live-tracking': AppView.BUS_LIVE_TRACKING,
         'seat-availability': AppView.SEAT_AVAILABILITY,
       };
@@ -4487,6 +4489,7 @@ const App: React.FC = () => {
                   onBack={() => { setSelectedTrain(null); setView(AppView.TRAIN_LIST); }}
                   language={language}
                   onOpenRating={() => setView(AppView.RATE_TRAIN)}
+                  onOpenPhotos={() => setView(AppView.TRAIN_PHOTOS)}
                 />
               ) : <LoginWall setView={setView} />
             )}
@@ -4612,6 +4615,7 @@ const App: React.FC = () => {
             {view === AppView.RATE_BUS && (user && selectedBus ? <BusRating busId={selectedBus.id} busName={selectedBus.displayName || selectedBus.name} onBack={() => setView(AppView.BUS_DETAILS)} /> : <LoginWall setView={setView} />)}
             {view === AppView.BUS_PHOTOS && (user && selectedBus ? <BusPhotoGallery busId={selectedBus.id} busName={selectedBus.displayName || selectedBus.name} busBnName={selectedBus.bnName} onBack={() => setView(AppView.BUS_DETAILS)} /> : <LoginWall setView={setView} />)}
             {view === AppView.BUS_LIVE_TRACKING && (user && selectedBus ? <BusLiveTracking busId={selectedBus.id} busName={selectedBus.displayName || selectedBus.name} onBack={() => setView(AppView.BUS_DETAILS)} /> : <LoginWall setView={setView} />)}
+            {view === AppView.TRAIN_PHOTOS && (user && selectedTrain ? <TrainPhotoGallery trainId={selectedTrain.id} trainName={selectedTrain.name} onBack={() => setView(AppView.TRAIN_DETAILS)} /> : <LoginWall setView={setView} />)}
 
             {view === AppView.INSTALL_APP && (
               <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-hidden w-full">
