@@ -22,6 +22,7 @@ import { UserLocation } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
 import { getTrainRatings, TrainRatingSummary } from '../services/communityDataService';
+import TrainImageViewer from './TrainImageViewer';
 
 interface TrainListPageProps {
   userLocation?: UserLocation | null;
@@ -141,6 +142,7 @@ export function TrainDetail({
         </button>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
+            <TrainImageViewer trainId={route.id} trainName={route.name} trainBnName={route.bnName} isCompact />
             <h2 className="font-bold text-gray-900 dark:text-white truncate">
               {bn ? route.bnName : route.name}
             </h2>
