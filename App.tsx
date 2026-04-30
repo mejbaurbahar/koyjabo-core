@@ -83,6 +83,7 @@ import SeatAvailability from './components/SeatAvailability';
 import BusPhotoGallery from './components/BusPhotoGallery';
 import TrainPhotoGallery from './components/TrainPhotoGallery';
 import { getBusRatings, BusRatingSummary } from './services/communityDataService';
+import ReleaseNotes from './components/ReleaseNotes';
 
 
 
@@ -164,6 +165,8 @@ const getStoredView = (): AppView => {
         'train-photos': AppView.TRAIN_PHOTOS,
         'bus-live-tracking': AppView.BUS_LIVE_TRACKING,
         'seat-availability': AppView.SEAT_AVAILABILITY,
+        'release-notes': AppView.RELEASE_NOTES,
+        'updates': AppView.RELEASE_NOTES,
       };
 
       if (viewMap[target]) {
@@ -4509,6 +4512,9 @@ const App: React.FC = () => {
             {view === AppView.ABOUT && renderAbout()}
             {view === AppView.WHY_USE && renderWhyUse()}
             {view === AppView.FAQ && renderFAQ()}
+            {view === AppView.RELEASE_NOTES && (
+              <ReleaseNotes onBack={() => setView(AppView.HOME)} />
+            )}
             {view === AppView.BLOG && (
               selectedBlogPost ? (
                 <BlogPostDetail
@@ -4554,6 +4560,7 @@ const App: React.FC = () => {
                 isDarkMode={isDarkMode}
                 toggleTheme={() => setIsDarkMode(!isDarkMode)}
                 onContactClick={() => setView(AppView.CONTACT)}
+                onReleaseNotesClick={() => setView(AppView.RELEASE_NOTES)}
               />
             )}
             {/* ── Auth Views ── */}
