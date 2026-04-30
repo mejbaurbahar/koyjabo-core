@@ -10,6 +10,8 @@ import { UserLocation, BusRoute, Station } from '../types';
 import { STATIONS, METRO_STATIONS, RAILWAY_STATIONS, AIRPORTS } from '../constants';
 import { useLanguage } from '../contexts/LanguageContext';
 import { liveBusService, LiveBus } from '../services/liveBusService';
+import maplibregl from 'maplibre-gl';
+import 'maplibre-gl/dist/maplibre-gl.css';
 
 // Fix default marker icons
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -103,6 +105,8 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
     const [sheetExpanded, setSheetExpanded] = useState(false);
     const [nearestStopIdx, setNearestStopIdx] = useState<number>(-1);
     const [is3D, setIs3D] = useState(false);
+    const mapLibreRef = useRef<any>(null);
+    const mapLibreContainerRef = useRef<HTMLDivElement>(null);
 
     // ── Online/Offline ──────────────────────────────────────────────────────────
     useEffect(() => {
@@ -164,42 +168,122 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
 
         map.eachLayer(l => { if (l instanceof L.TileLayer) map.removeLayer(l); });
 
-        const layer = isOffline ? 'standard' : (is3D && activeLayer === 'standard' ? 'satellite' : activeLayer);
+        // If in 3D mode and online, we'll handle the background via MapLibre later
+        if (!is3D || isOffline) {
+            const layer = isOffline ? 'standard' : activeLayer;
+            const configs: Record<MapLayer, { url: string; sub?: string[]; maxZoom?: number; attr?: string }> = {
+                standard: {
+                    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    sub: ['a', 'b', 'c'],
+                    attr: '© OpenStreetMap'
+                },
+                dark: {
+                    url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+                    sub: ['a', 'b', 'c', 'd'],
+                    attr: '© CARTO'
+                },
+                satellite: {
+                    url: 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',
+                    sub: ['mt0', 'mt1', 'mt2', 'mt3'],
+                    attr: '© Google'
+                },
+                terrain: {
+                    url: 'http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',
+                    sub: ['mt0', 'mt1', 'mt2', 'mt3'],
+                    attr: '© Google'
+                },
+                traffic: {
+                    url: 'https://mt1.google.com/vt/lyrs=m@221097413,traffic&x={x}&y={y}&z={z}',
+                    attr: '© Google'
+                },
+            };
 
-        const configs: Record<MapLayer, { url: string; sub?: string[]; maxZoom?: number; attr?: string }> = {
-            standard: {
-                url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                sub: ['a', 'b', 'c'],
-                attr: '© OpenStreetMap'
+            const cfg = configs[layer];
+            L.tileLayer(cfg.url, {
+                maxZoom: cfg.maxZoom ?? 19,
+                attribution: cfg.attr,
+                subdomains: cfg.sub ?? ['a', 'b', 'c'],
+            }).addTo(map);
+        }
+    }, [activeLayer, isOffline, isOpen, is3D]);
+
+    // ── MapLibre 3D Layer ───────────────────────────────────────────────────────
+    useEffect(() => {
+        if (!isOpen || !is3D || isOffline || !mapLibreContainerRef.current) {
+            if (mapLibreRef.current) {
+                mapLibreRef.current.remove();
+                mapLibreRef.current = null;
+            }
+            return;
+        }
+
+        const center = userLocation ? [userLocation.lng, userLocation.lat] : [90.4125, 23.8103];
+        
+        const mgl = new maplibregl.Map({
+            container: mapLibreContainerRef.current,
+            style: {
+                version: 8,
+                sources: {
+                    'osm': {
+                        type: 'raster',
+                        tiles: ['https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'],
+                        tileSize: 256,
+                        attribution: '© OpenStreetMap'
+                    },
+                    'openmaptiles': {
+                        type: 'vector',
+                        url: 'https://api.maptiler.com/tiles/v3/tiles.json?key=get_your_own_key'
+                    }
+                },
+                layers: [
+                    { id: 'osm-layer', type: 'raster', source: 'osm' },
+                    {
+                        'id': '3d-buildings',
+                        'source': 'openmaptiles',
+                        'source-layer': 'building',
+                        'type': 'fill-extrusion',
+                        'minzoom': 15,
+                        'paint': {
+                            'fill-extrusion-color': '#aaa',
+                            'fill-extrusion-height': ['get', 'render_height'],
+                            'fill-extrusion-base': ['get', 'render_min_height'],
+                            'fill-extrusion-opacity': 0.6
+                        }
+                    }
+                ]
             },
-            dark: {
-                url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-                sub: ['a', 'b', 'c', 'd'],
-                attr: '© CARTO'
-            },
-            satellite: {
-                url: 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',
-                sub: ['mt0', 'mt1', 'mt2', 'mt3'],
-                attr: '© Google'
-            },
-            terrain: {
-                url: 'http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',
-                sub: ['mt0', 'mt1', 'mt2', 'mt3'],
-                attr: '© Google'
-            },
-            traffic: {
-                url: 'https://mt1.google.com/vt/lyrs=m@221097413,traffic&x={x}&y={y}&z={z}',
-                attr: '© Google'
-            },
+            center: center as [number, number],
+            zoom: 15,
+            pitch: 60,
+            bearing: 0,
+            interactive: false
+        });
+
+        mapLibreRef.current = mgl;
+
+        const sync = () => {
+            const map = mapRef.current;
+            if (!map || !mapLibreRef.current) return;
+            const c = map.getCenter();
+            mapLibreRef.current.jumpTo({
+                center: [c.lng, c.lat],
+                zoom: map.getZoom() - 1,
+                pitch: is3D ? 60 : 0
+            });
         };
 
-        const cfg = configs[layer];
-        L.tileLayer(cfg.url, {
-            maxZoom: cfg.maxZoom ?? 19,
-            attribution: cfg.attr,
-            subdomains: cfg.sub ?? ['a', 'b', 'c'],
-        }).addTo(map);
-    }, [activeLayer, isOffline, isOpen]);
+        mapRef.current?.on('move', sync);
+        mapRef.current?.on('zoom', sync);
+        
+        return () => {
+            mapRef.current?.off('move', sync);
+            mapRef.current?.off('zoom', sync);
+            if (mapLibreRef.current) {
+                mapLibreRef.current.remove();
+                mapLibreRef.current = null;
+            }
+        };
+    }, [isOpen, is3D, isOffline]);
 
     // ── Route polyline + stop markers ───────────────────────────────────────────
     useEffect(() => {
@@ -511,12 +595,19 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
             >
             {/* Map wrapper with 3D perspective */}
             <div 
-                className="absolute inset-0 z-0 bg-slate-100 dark:bg-slate-800"
-                style={{ perspective: '1200px' }}
+                className="absolute inset-0 z-0 bg-slate-100 dark:bg-slate-800 overflow-hidden"
             >
+                {/* MapLibre 3D Background */}
                 <div 
-                    className={`w-full h-full transition-all duration-700 ease-in-out ${is3D ? 'scale-[1.5] origin-bottom' : 'scale-100'}`}
+                    ref={mapLibreContainerRef}
+                    className={`absolute inset-0 transition-opacity duration-500 ${is3D && !isOffline ? 'opacity-100' : 'opacity-0'}`}
+                />
+
+                {/* Leaflet Foreground (Markers & Routes) */}
+                <div 
+                    className={`absolute inset-0 transition-all duration-700 ease-in-out ${is3D ? 'scale-[1.5] origin-bottom' : 'scale-100'}`}
                     style={is3D ? {
+                        perspective: '1200px',
                         transform: 'rotateX(42deg) translateY(-10%)',
                         filter: 'contrast(1.1) brightness(1.05) saturate(1.1)'
                     } : {}}
