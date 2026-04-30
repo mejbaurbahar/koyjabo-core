@@ -170,29 +170,36 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
 
     // --- 3. Draw Elements ---
 
-    const addMarker = (coords: [number, number], label: string, color: string) => {
+    const addMarker = (coords: [number, number], label: string, color: string, isStartOrEnd = false) => {
       const iconHtml = `
-        <div style="
-          background-color: ${color};
-          width: 14px;
-          height: 14px;
-          border-radius: 50%;
-          border: 3px solid white;
-          box-shadow: 0 2px 5px rgba(0,0,0,0.4);
-        "></div>
+        <div class="relative flex items-center justify-center">
+          ${isStartOrEnd ? `<div class="absolute w-8 h-8 bg-${color === '#22c55e' ? 'green' : 'red'}-400/30 rounded-full animate-ping"></div>` : ''}
+          <div style="
+            background-color: ${color};
+            width: ${isStartOrEnd ? '16px' : '12px'};
+            height: ${isStartOrEnd ? '16px' : '12px'};
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+          "></div>
+        </div>
       `;
       const icon = window.L.divIcon({
         className: 'custom-div-icon',
         html: iconHtml,
-        iconSize: [14, 14],
-        iconAnchor: [7, 7]
+        iconSize: [32, 32],
+        iconAnchor: [16, 16]
       });
-      window.L.marker(coords, { icon }).bindPopup(label).addTo(layers);
+      window.L.marker(coords, { icon }).bindPopup(`
+        <div class="p-2 font-sans">
+          <p class="font-bold text-slate-800">${label}</p>
+        </div>
+      `).addTo(layers);
     };
 
-    addMarker(startCoords, `Start: ${from}`, '#22c55e'); // Green
-    viaWithCoords.forEach(v => addMarker(v.coords, `Via: ${v.name}`, '#3b82f6')); // Blue
-    addMarker(endCoords, `Destination: ${to}`, '#ef4444'); // Red
+    addMarker(startCoords, `Start: ${from}`, '#22c55e', true); // Green
+    viaWithCoords.forEach((v, idx) => addMarker(v.coords, `${idx + 1}. ${v.name}`, '#3b82f6')); // Blue
+    addMarker(endCoords, `Destination: ${to}`, '#ef4444', true); // Red
 
     // Fetch road-following route from OSRM, fall back to straight lines
     const drawRoute = async () => {
@@ -205,26 +212,45 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
           const data = await resp.json() as { routes?: { geometry?: { coordinates?: [number, number][] } }[] };
           const coords = data?.routes?.[0]?.geometry?.coordinates;
           if (coords && coords.length > 1) {
-            // OSRM returns [lng, lat], Leaflet needs [lat, lng]
             roadPoints = coords.map(c => [c[1], c[0]] as [number, number]);
           }
         }
       } catch { /* use straight lines if OSRM unavailable */ }
 
-      const polyline = window.L.polyline(roadPoints, {
+      // 1. Shadow/Glow Layer
+      window.L.polyline(roadPoints, {
         color: '#2563eb',
-        weight: 5,
-        opacity: 0.9,
+        weight: 12,
+        opacity: 0.15,
         lineCap: 'round',
         lineJoin: 'round'
       }).addTo(layers);
 
-      mapInstance.current.fitBounds(polyline.getBounds(), { padding: [80, 80] });
+      // 2. Main Line
+      const mainLine = window.L.polyline(roadPoints, {
+        color: '#2563eb',
+        weight: 5,
+        opacity: 1,
+        lineCap: 'round',
+        lineJoin: 'round'
+      }).addTo(layers);
+
+      // 3. Flow Layer (Animated)
+      window.L.polyline(roadPoints, {
+        color: '#ffffff',
+        weight: 2,
+        opacity: 0.6,
+        dashArray: '10, 20',
+        lineCap: 'round',
+        className: 'route-line-flow'
+      }).addTo(layers);
+
+      mapInstance.current.fitBounds(mainLine.getBounds(), { padding: [80, 80] });
 
       setTimeout(() => {
         if (mapInstance.current) {
           mapInstance.current.invalidateSize();
-          mapInstance.current.fitBounds(polyline.getBounds(), { padding: [80, 80] });
+          mapInstance.current.fitBounds(mainLine.getBounds(), { padding: [80, 80] });
         }
       }, 400);
     };

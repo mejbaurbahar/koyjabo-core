@@ -383,3 +383,31 @@ nav {
   will-change: transform;
   backface-visibility: hidden;
 }
+/* Map Animations */
+@keyframes flow {
+  from { stroke-dashoffset: 24; }
+  to { stroke-dashoffset: 0; }
+}
+
+.route-line-flow {
+  animation: flow 2s linear infinite;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.33); opacity: 0; }
+  80%, 100% { opacity: 0; }
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(0.8); opacity: 1; }
+  50% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.8); opacity: 1; }
+}
+
+.pulse-ring {
+  animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+.pulse-dot {
+  animation: pulse-dot 1.5s cubic-bezier(0.455, 0.03, 0.515, 0.955) -0.4s infinite;
+}

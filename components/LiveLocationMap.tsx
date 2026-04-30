@@ -4,10 +4,10 @@ import 'leaflet/dist/leaflet.css';
 import {
     X, Layers, Navigation, Map as MapIcon, Globe, Wifi, WifiOff,
     Lock, ChevronUp, ChevronDown, Bus, MapPin, Zap, Target,
-    Compass, AlertTriangle, CheckCircle2
+    Compass, AlertTriangle, CheckCircle2, Maximize
 } from 'lucide-react';
 import { UserLocation, BusRoute, Station } from '../types';
-import { STATIONS } from '../constants';
+import { STATIONS, METRO_STATIONS, RAILWAY_STATIONS, AIRPORTS } from '../constants';
 import { useLanguage } from '../contexts/LanguageContext';
 import { liveBusService, LiveBus } from '../services/liveBusService';
 
@@ -33,9 +33,14 @@ const ROUTE_COLORS = [
     '#ef4444', '#f97316', '#eab308', '#22c55e',
     '#06b6d4', '#3b82f6', '#8b5cf6', '#ec4899', '#14b8a6', '#f59e0b'
 ];
+
 function getRouteColor(routeId: string): string {
     const hash = routeId.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
     return ROUTE_COLORS[hash % ROUTE_COLORS.length];
+}
+
+function getStation(id: string): Station | null {
+    return (STATIONS[id] || METRO_STATIONS[id] || RAILWAY_STATIONS[id] || AIRPORTS[id]) as Station || null;
 }
 
 type MapLayer = 'standard' | 'satellite' | 'terrain' | 'traffic' | 'dark';
@@ -189,7 +194,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
         const coords: [number, number][] = [];
 
         selectedRoute.stops.forEach((stopId, idx) => {
-            const station = STATIONS[stopId];
+            const station = getStation(stopId);
             if (!station) return;
             const latLng: [number, number] = [station.lat, station.lng];
             coords.push(latLng);
@@ -197,64 +202,90 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
             // Stop marker — filled circle with stop number
             const isFirst = idx === 0;
             const isLast = idx === selectedRoute.stops.length - 1;
-            const size = isFirst || isLast ? 36 : 26;
+            const isNearest = idx === nearestStopIdx;
+            
+            // "Advanced" icon with ripple for nearest
+            const size = isFirst || isLast ? 38 : 28;
             const stopIcon = L.divIcon({
                 className: 'bg-transparent border-none',
-                html: `<div style="
-                    width:${size}px;height:${size}px;
-                    background:${isFirst || isLast ? color : '#fff'};
-                    border:3px solid ${color};
-                    border-radius:50%;
-                    display:flex;align-items:center;justify-content:center;
-                    box-shadow:0 2px 8px rgba(0,0,0,0.25);
-                    font-weight:700;
-                    font-size:${isFirst || isLast ? 12 : 10}px;
-                    color:${isFirst || isLast ? '#fff' : color};
-                    font-family:sans-serif;
-                    margin-left:-${size / 2}px;margin-top:-${size / 2}px;
-                ">${isFirst ? 'A' : isLast ? 'B' : idx}</div>`,
+                html: `<div style="position:relative; width:${size}px; height:${size}px; margin-left:-${size/2}px; margin-top:-${size/2}px;">
+                    ${isNearest ? `<div class="absolute inset-0 bg-blue-500/30 rounded-full animate-pulse-ring"></div>` : ''}
+                    <div style="
+                        position:absolute; inset:0;
+                        background:${isFirst || isLast ? color : (isNearest ? '#eff6ff' : '#fff')};
+                        border:3px solid ${isNearest ? '#3b82f6' : color};
+                        border-radius:50%;
+                        display:flex;align-items:center;justify-content:center;
+                        box-shadow:0 4px 12px rgba(0,0,0,0.15);
+                        font-weight:800;
+                        font-size:${isFirst || isLast ? 14 : 11}px;
+                        color:${isFirst || isLast ? '#fff' : (isNearest ? '#3b82f6' : color)};
+                        font-family:Inter, sans-serif;
+                        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    " class="${isNearest ? 'animate-pulse-dot' : ''}">
+                        ${isFirst ? 'A' : isLast ? 'B' : idx}
+                    </div>
+                </div>`,
                 iconSize: [size, size],
                 iconAnchor: [size / 2, size / 2],
             });
 
-            const marker = L.marker(latLng, { icon: stopIcon, zIndexOffset: isFirst || isLast ? 100 : 0 })
+            const marker = L.marker(latLng, { icon: stopIcon, zIndexOffset: isFirst || isLast ? 100 : (isNearest ? 200 : 0) })
                 .bindPopup(`
-                    <div style="font-family:sans-serif;padding:2px 4px;min-width:120px">
-                        <div style="font-weight:700;font-size:13px;color:#1e293b">${station.name}</div>
-                        <div style="font-size:11px;color:#64748b;margin-top:2px">${station.bnName || ''}</div>
-                        <div style="margin-top:6px;padding:4px 8px;background:${color}20;border-radius:6px;font-size:11px;font-weight:600;color:${color}">
-                            Stop ${idx + 1} of ${selectedRoute.stops.length}
+                    <div style="font-family:Inter, sans-serif;padding:6px;min-width:160px; border-radius:12px;">
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                            <div style="width:8px; height:8px; border-radius:50%; background:${color}"></div>
+                            <div style="font-weight:800;font-size:15px;color:#0f172a">${station.name}</div>
+                        </div>
+                        <div style="font-size:12px;color:#64748b;margin-left:16px">${station.bnName || ''}</div>
+                        <div style="margin-top:10px;padding:6px 10px;background:${isNearest ? '#3b82f610' : (color + '10')};border-radius:8px;font-size:11px;font-weight:700;color:${isNearest ? '#3b82f6' : color}; display:flex; justify-content:between; align-items:center;">
+                            <span>Stop ${idx + 1} of ${selectedRoute.stops.length}</span>
+                            ${isNearest ? '<span style="background:#3b82f6; color:white; padding:1px 4px; border-radius:4px; font-size:9px; margin-left:auto;">NEAREST</span>' : ''}
                         </div>
                     </div>
-                `);
+                `, { className: 'custom-popup', offset: [0, -10] });
 
             stopGroup?.addLayer(marker);
         });
 
-        // Draw animated route polyline (outer glow + inner line)
+        // Draw animated route polyline (Triple layer for "Advanced" look)
         if (coords.length > 1) {
-            // Glow effect
+            const isTrain = selectedRoute.type === 'Metro Rail' || selectedRoute.name.toLowerCase().includes('train');
+
+            // 1. Shadow/Glow (Bottom)
             L.polyline(coords, {
                 color: color,
-                weight: 10,
+                weight: 12,
                 opacity: 0.15,
+                lineCap: 'round'
             }).addTo(map);
 
-            const poly = L.polyline(coords, {
+            // 2. Main Line (Middle)
+            const mainPoly = L.polyline(coords, {
                 color: color,
-                weight: 4,
-                opacity: 0.9,
-                dashArray: '12 6',
+                weight: isTrain ? 6 : 5,
+                opacity: 0.8,
                 lineJoin: 'round',
+                lineCap: 'round'
             }).addTo(map);
 
-            // Store route polyline
-            routePolylineRef.current = poly;
+            // 3. Flow/Animated Pattern (Top)
+            L.polyline(coords, {
+                color: isTrain ? '#ffffff' : '#ffffff',
+                weight: 2,
+                opacity: 0.6,
+                dashArray: isTrain ? '8, 12' : '10, 20',
+                lineCap: 'round',
+                className: 'route-line-flow' // CSS animation
+            }).addTo(map);
+
+            // Store main polyline for potential reference
+            routePolylineRef.current = mainPoly;
             
             // Only fit bounds if we don't have user location (fallback)
             if (!userLocation) {
                 const bounds = L.latLngBounds(coords);
-                map.fitBounds(bounds, { padding: [40, 40], maxZoom: 15 });
+                map.fitBounds(bounds, { padding: [60, 60], maxZoom: 15 });
             }
         }
 
@@ -263,7 +294,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
             let minDist = Infinity;
             let nearestIdx = 0;
             selectedRoute.stops.forEach((stopId, idx) => {
-                const s = STATIONS[stopId];
+                const s = getStation(stopId);
                 if (!s) return;
                 const dist = Math.hypot(s.lat - userLocation.lat, s.lng - userLocation.lng);
                 if (dist < minDist) { minDist = dist; nearestIdx = idx; }
@@ -549,6 +580,23 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                 >
                     <Navigation className={`w-5 h-5 ${followMode ? 'animate-pulse' : ''}`} />
                 </button>
+
+                {/* Fit Route */}
+                {selectedRoute && routePolylineRef.current && (
+                    <button
+                        onClick={() => {
+                            if (routePolylineRef.current) {
+                                mapRef.current?.fitBounds(routePolylineRef.current.getBounds(), { padding: [60, 60] });
+                                followModeRef.current = false;
+                                setFollowMode(false);
+                            }
+                        }}
+                        title="Fit Route"
+                        className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2.5 rounded-xl shadow-lg border border-white/30 dark:border-slate-700/50 text-gray-600 dark:text-gray-300 active:scale-95 transition-all"
+                    >
+                        <Maximize className="w-5 h-5" />
+                    </button>
+                )}
 
                 {/* Recenter */}
                 <button

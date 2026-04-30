@@ -175,12 +175,12 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                     // Marker
                     const userIcon = L.divIcon({
                         className: 'bg-transparent border-none',
-                        html: `<div class="relative w-6 h-6 flex items-center justify-center">
-                         <div class="absolute w-full h-full bg-blue-500/50 rounded-full animate-ping"></div>
-                         <div class="relative w-4 h-4 bg-blue-600 border-[3px] border-white rounded-full shadow-lg"></div>
+                        html: `<div class="relative w-8 h-8 flex items-center justify-center">
+                         <div class="absolute inset-0 bg-blue-500 rounded-full pulse-ring"></div>
+                         <div class="relative w-4 h-4 bg-blue-600 border-[3px] border-white rounded-full shadow-lg pulse-dot"></div>
                        </div>`,
-                        iconSize: [24, 24],
-                        iconAnchor: [12, 12]
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 16]
                     });
 
                     if (userMarkerRef.current) {

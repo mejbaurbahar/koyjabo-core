@@ -658,37 +658,88 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
               <path
                 d={generateSmoothPath(nodePositions)}
                 fill="none"
-                strokeWidth="8"
+                strokeWidth="10"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="opacity-100 stroke-gray-200 dark:stroke-slate-700"
+                className="opacity-100 stroke-gray-200/50 dark:stroke-slate-700/50"
               />
 
               {/* Traffic-Aware Route (Default View - No Highlight) */}
-              {/* Using a single smooth path for better visual realism than segmented straight lines */}
               {!hasHighlight && (
-                <path
-                  d={generateSmoothPath(nodePositions)}
-                  fill="none"
-                  stroke={getTrafficColor('free')} // Default to free flow green
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="opacity-100 transition-all duration-500"
-                />
+                <>
+                  {/* Glow Layer */}
+                  <path
+                    d={generateSmoothPath(nodePositions)}
+                    fill="none"
+                    stroke={getTrafficColor('free')}
+                    strokeWidth="12"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="opacity-10 blur-[2px]"
+                  />
+                  {/* Main Line */}
+                  <path
+                    d={generateSmoothPath(nodePositions)}
+                    fill="none"
+                    stroke={getTrafficColor('free')}
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="opacity-100 transition-all duration-500"
+                  />
+                  {/* Flow Layer (Animated) */}
+                  <path
+                    d={generateSmoothPath(nodePositions)}
+                    fill="none"
+                    stroke="white"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeDasharray="10,20"
+                    className="opacity-40"
+                  >
+                    <animate attributeName="stroke-dashoffset" from="30" to="0" dur="2s" repeatCount="indefinite" />
+                  </path>
+                </>
               )}
 
               {/* Highlighted Segments */}
               {hasHighlight && (
-                <path
-                  d={generateSmoothPath(nodePositions.slice(highlightStartIdx, highlightEndIdx + 1))}
-                  fill="none"
-                  stroke="#006a4e"
-                  strokeWidth="6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="opacity-100 shadow-lg"
-                />
+                <>
+                  {/* Glow */}
+                  <path
+                    d={generateSmoothPath(nodePositions.slice(highlightStartIdx, highlightEndIdx + 1))}
+                    fill="none"
+                    stroke="#006a4e"
+                    strokeWidth="14"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="opacity-20 blur-[3px]"
+                  />
+                  {/* Main */}
+                  <path
+                    d={generateSmoothPath(nodePositions.slice(highlightStartIdx, highlightEndIdx + 1))}
+                    fill="none"
+                    stroke="#006a4e"
+                    strokeWidth="6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="opacity-100 shadow-lg"
+                  />
+                  {/* Flow */}
+                  <path
+                    d={generateSmoothPath(nodePositions.slice(highlightStartIdx, highlightEndIdx + 1))}
+                    fill="none"
+                    stroke="white"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeDasharray="12,24"
+                    className="opacity-60"
+                  >
+                    <animate attributeName="stroke-dashoffset" from="36" to="0" dur="1.5s" repeatCount="indefinite" />
+                  </path>
+                </>
               )}
 
               {/* Past Path (Greyed Out) */}
@@ -766,32 +817,72 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                     {/* Hover Hit Area */}
                     <circle cx={x} cy={y} r={25} fill="transparent" />
 
-                    {/* Current Location Ripple */}
-                    {isCurrent && !hasHighlight && (
-                      <circle cx={x} cy={y} r={20} fill="#f42a41" opacity="0.2">
-                        <animate attributeName="r" from="8" to="30" dur="1.5s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" from="0.6" to="0" dur="1.5s" repeatCount="indefinite" />
-                      </circle>
-                    )}
+                    {/* Advanced Station Node Rendering */}
+                    {(() => {
+                      const isMetroStation = !!METRO_STATIONS[s.id];
+                      const isRailwayStation = !!RAILWAY_STATIONS[s.id];
+                      const isAirport = !!AIRPORTS[s.id];
+                      const primaryColor = isMetroStation ? "#2563eb" : (isRailwayStation ? "#059669" : (isAirport ? "#ea580c" : "#006a4e"));
+                      const iconSize = 12;
 
-                    {/* Connect target ripple (START or START HERE) */}
-                    {isStartHereTarget && (
-                      <circle cx={x} cy={y} r={20} fill={isUserConnectionStart ? "#f97316" : "#16a34a"} opacity="0.2">
-                        <animate attributeName="r" from="8" to="25" dur="2s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" from="0.5" to="0" dur="2s" repeatCount="indefinite" />
-                      </circle>
-                    )}
+                      return (
+                        <>
+                          {/* Current Location Ripple */}
+                          {isCurrent && !hasHighlight && (
+                            <circle cx={x} cy={y} r={20} fill="#f42a41" opacity="0.2">
+                              <animate attributeName="r" from="8" to="30" dur="1.5s" repeatCount="indefinite" />
+                              <animate attributeName="opacity" from="0.6" to="0" dur="1.5s" repeatCount="indefinite" />
+                            </circle>
+                          )}
 
-                    {/* Visible Node */}
-                    <circle
-                      cx={x}
-                      cy={y}
-                      r={r}
-                      fill={fill}
-                      stroke={stroke}
-                      strokeWidth="2.5"
-                      className="transition-all duration-300 group-hover/node:r-8"
-                    />
+                          {/* Connect target ripple (START or START HERE) */}
+                          {isStartHereTarget && (
+                            <circle cx={x} cy={y} r={20} fill={isUserConnectionStart ? "#f97316" : "#16a34a"} opacity="0.2">
+                              <animate attributeName="r" from="8" to="25" dur="2s" repeatCount="indefinite" />
+                              <animate attributeName="opacity" from="0.5" to="0" dur="2s" repeatCount="indefinite" />
+                            </circle>
+                          )}
+
+                          {/* Visible Node */}
+                          <circle
+                            cx={x}
+                            cy={y}
+                            r={isCurrent || isStartHereTarget ? 10 : (isStart || isEnd ? 8 : 6)}
+                            fill={isCurrent ? "#f42a41" : (isStartHereTarget ? "#f97316" : "white")}
+                            stroke={isCurrent ? "white" : primaryColor}
+                            strokeWidth="2.5"
+                            className="transition-all duration-300 group-hover/node:r-12 shadow-md"
+                          />
+
+                          {/* Icon Overlay for special stations */}
+                          {(isMetroStation || isRailwayStation || isAirport) && (
+                            <g transform={`translate(${x - iconSize/2}, ${y - iconSize/2})`}>
+                              {isAirport ? (
+                                <Plane className={isCurrent || isStartHereTarget ? "text-white" : "text-orange-600"} size={iconSize} strokeWidth={3} />
+                              ) : (
+                                <Train className={isCurrent || isStartHereTarget ? "text-white" : "text-blue-600"} size={iconSize} strokeWidth={3} />
+                              )}
+                            </g>
+                          )}
+
+                          {/* Stop Number for Bus Routes */}
+                          {!isMetroStation && !isRailwayStation && !isAirport && (
+                            <text 
+                              x={x} 
+                              y={y + 1} 
+                              textAnchor="middle" 
+                              dominantBaseline="middle" 
+                              fontSize="8" 
+                              fontWeight="900" 
+                              fill={isCurrent || isStartHereTarget ? "white" : primaryColor}
+                              className="pointer-events-none font-sans"
+                            >
+                              {idx + 1}
+                            </text>
+                          )}
+                        </>
+                      );
+                    })()}
 
                     {/* Label */}
                     {/* SVG Label */}
