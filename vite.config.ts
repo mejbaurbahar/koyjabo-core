@@ -115,7 +115,7 @@ export default defineConfig(({ mode }) => {
           ]
         },
         workbox: {
-          maximumFileSizeToCacheInBytes: 4 * 1024 * 1024, // 4 MiB
+          maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // Increased to 10 MiB for Cesium
           globPatterns: [
             '**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest,webp,jpg,jpeg,gif}',
             'intercity/**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest}',
