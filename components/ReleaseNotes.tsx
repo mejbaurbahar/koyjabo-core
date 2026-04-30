@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Rocket, CheckCircle, Tool, Zap, Calendar, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Rocket, CheckCircle, Wrench, Zap, Calendar, ChevronRight } from 'lucide-react';
 import { RELEASE_NOTES } from '../data/releaseNotes';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -115,7 +115,7 @@ const ReleaseNotes: React.FC<ReleaseNotesProps> = ({ onBack }) => {
                     <div className="mb-0">
                       <div className="flex items-center gap-2 mb-4">
                         <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg">
-                          <Tool className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+                          <Wrench className="w-4 h-4 text-slate-600 dark:text-slate-400" />
                         </div>
                         <h3 className="font-bold text-slate-900 dark:text-slate-100">
                           {language === 'bn' ? 'ফিক্সড' : 'Fixed'}
