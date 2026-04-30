@@ -107,8 +107,21 @@ async function fetchRepo<T = unknown>(repo: 'd' | 'a', path: string): Promise<T 
   return JSON.parse(atob(data.content.replace(/\n/g, ''))) as T;
 }
 
-function fetchDataFile<T = unknown>(path: string): Promise<T | null> {
-  return fetchRepo<T>('d', path);
+let userIndexCache: { data: any, expires: number } | null = null;
+
+async function fetchDataFile<T = unknown>(path: string): Promise<T | null> {
+  // Simple 5-minute cache for the user index to avoid 429 errors
+  if (path === 'data/users/index.json' && userIndexCache && userIndexCache.expires > Date.now()) {
+    return userIndexCache.data as T;
+  }
+
+  const data = await fetchRepo<T>('d', path);
+
+  if (path === 'data/users/index.json' && data) {
+    userIndexCache = { data, expires: Date.now() + 300_000 };
+  }
+
+  return data;
 }
 
 function fetchAppFile<T = unknown>(path: string): Promise<T | null> {

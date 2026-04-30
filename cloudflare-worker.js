@@ -54,7 +54,7 @@ function ghHeaders(token) {
 
 // Simple in-memory rate limit (resets on Worker restart — best-effort)
 const reqCount = new Map();
-function isRateLimited(ip, limit = 60, windowMs = 60_000) {
+function isRateLimited(ip, limit = 180, windowMs = 60_000) {
   const now = Date.now();
   const entry = reqCount.get(ip);
   if (!entry || now > entry.resetAt) {
