@@ -1,8 +1,5 @@
-# Ezoic Ads.txt Redirect Configuration
-
-# Option 1: Apache (.htaccess)
-# Add this to your .htaccess file in the root directory
-Redirect 301 /ads.txt https://srv.adstxtmanager.com/19390/koyjabo.com
+# Ezoic Ads.txt Redirect Configuration (Disabled to serve local ads.txt)
+# Redirect 301 /ads.txt https://srv.adstxtmanager.com/19390/koyjabo.com
 
 # Option 2: Nginx
 # Add this to your nginx server configuration

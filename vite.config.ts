@@ -117,12 +117,12 @@ export default defineConfig(({ mode }) => {
         workbox: {
           maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // Increased to 10 MiB for Cesium
           globPatterns: [
-            '**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest,webp,jpg,jpeg,gif}',
-            'intercity/**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest}',
+            '**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest,webp,jpg,jpeg,gif,txt,xml}',
+            'intercity/**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest,txt,xml}',
             'data/**/*.json'  // Include all JSON data files for offline
           ],
           navigateFallback: 'index.html',  // Enable automatic fallback to index.html for SPA offline support
-          navigateFallbackDenylist: [/^\/api/, /^\/intercity/],
+          navigateFallbackDenylist: [/^\/api/, /^\/intercity/, /^\/ads\.txt/, /^\/robots\.txt/, /^\/sitemap\.xml/],
           cleanupOutdatedCaches: true,
           // Inline the workbox runtime instead of loading from CDN
           mode: 'production',
