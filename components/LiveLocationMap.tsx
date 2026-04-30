@@ -219,7 +219,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
         }
     }, [activeLayer, isOffline, isOpen, is3D]);
 
-    // ── MapLibre 3D Layer Replaced with Cesium ─────────────────────────────────
+    // ── Cesium 3D Layer ─────────────────────────────────
     useEffect(() => {
         if (!isOpen || !is3D || isOffline || !cesiumContainerRef.current) {
             if (cesiumViewerRef.current) {
@@ -229,45 +229,56 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
             return;
         }
 
-        const viewer = new Cesium.Viewer(cesiumContainerRef.current, {
-            terrainProvider: Cesium.createWorldTerrain(),
-            animation: false,
-            timeline: false,
-            baseLayerPicker: false,
-            geocoder: false,
-            homeButton: false,
-            infoBox: false,
-            sceneModePicker: false,
-            selectionIndicator: false,
-            navigationHelpButton: false,
-            navigationInstructionsInitiallyVisible: false,
-            fullscreenButton: false,
-        });
-
-        viewer.scene.primitives.add(Cesium.createOsmBuildings());
-        
-        cesiumViewerRef.current = viewer;
-
-        // Sync logic for route in 3D
-        if (selectedRoute?.stops) {
-            const stopCoords: [number, number][] = selectedRoute.stops
-                .map(id => getStation(id))
-                .filter(s => !!s)
-                .map(s => [s!.lat, s!.lng]);
+        const initCesium = async () => {
+            if (!cesiumContainerRef.current) return;
             
-            if (stopCoords.length >= 2) {
-                const positions = stopCoords.map(c => Cesium.Cartesian3.fromDegrees(c[1], c[0]));
-                viewer.entities.add({
-                    polyline: {
-                        positions,
-                        width: 6,
-                        material: Cesium.Color.fromCssColorString(getRouteColor(selectedRoute.id)),
-                        clampToGround: true
-                    }
+            try {
+                const viewer = new Cesium.Viewer(cesiumContainerRef.current, {
+                    terrain: Cesium.Terrain.fromWorldTerrain(),
+                    animation: false,
+                    timeline: false,
+                    baseLayerPicker: false,
+                    geocoder: false,
+                    homeButton: false,
+                    infoBox: false,
+                    sceneModePicker: false,
+                    selectionIndicator: false,
+                    navigationHelpButton: false,
+                    navigationInstructionsInitiallyVisible: false,
+                    fullscreenButton: false,
                 });
-                viewer.zoomTo(viewer.entities);
+
+                const buildingTileset = await Cesium.createOsmBuildingsAsync();
+                viewer.scene.primitives.add(buildingTileset);
+                
+                cesiumViewerRef.current = viewer;
+
+                // Sync logic for route in 3D
+                if (selectedRoute?.stops) {
+                    const stopCoords: [number, number][] = selectedRoute.stops
+                        .map(id => getStation(id))
+                        .filter(s => !!s)
+                        .map(s => [s!.lat, s!.lng]);
+                    
+                    if (stopCoords.length >= 2) {
+                        const positions = stopCoords.map(c => Cesium.Cartesian3.fromDegrees(c[1], c[0]));
+                        viewer.entities.add({
+                            polyline: {
+                                positions,
+                                width: 6,
+                                material: Cesium.Color.fromCssColorString(getRouteColor(selectedRoute.id)),
+                                clampToGround: true
+                            }
+                        });
+                        viewer.zoomTo(viewer.entities);
+                    }
+                }
+            } catch (e) {
+                console.error('Cesium init error:', e);
             }
-        }
+        };
+
+        initCesium();
 
         return () => {
             if (cesiumViewerRef.current) {

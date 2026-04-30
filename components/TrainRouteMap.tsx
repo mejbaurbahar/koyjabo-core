@@ -252,69 +252,79 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
       return;
     }
 
-    const viewer = new Cesium.Viewer(cesiumContainerRef.current, {
-      terrainProvider: Cesium.createWorldTerrain(),
-      animation: false,
-      timeline: false,
-      baseLayerPicker: false,
-      geocoder: false,
-      homeButton: false,
-      infoBox: false,
-      sceneModePicker: false,
-      selectionIndicator: false,
-      navigationHelpButton: false,
-      navigationInstructionsInitiallyVisible: false,
-      fullscreenButton: false,
-    });
-
-    // Add 3D Buildings
-    viewer.scene.primitives.add(Cesium.createOsmBuildings());
-
-    // Draw route in 3D
-    const positions = stopCoords.map(c => Cesium.Cartesian3.fromDegrees(c[1], c[0]));
-    viewer.entities.add({
-      polyline: {
-        positions,
-        width: 5,
-        material: Cesium.Color.fromCssColorString(route.color || '#3b82f6'),
-        clampToGround: true
-      }
-    });
-
-    // Draw stops
-    drawableStops.forEach((id, idx) => {
-      const station = TRAIN_STATIONS[id];
-      const pos = Cesium.Cartesian3.fromDegrees(station.lng, station.lat);
-      const isStart = idx === 0;
-      const isEnd = idx === drawableStops.length - 1;
+    const initCesium = async () => {
+      if (!cesiumContainerRef.current) return;
       
-      viewer.entities.add({
-        position: pos,
-        point: {
-          pixelSize: isStart || isEnd ? 12 : 8,
-          color: isStart ? Cesium.Color.fromCssColorString('#10b981') : (isEnd ? Cesium.Color.fromCssColorString('#1e293b') : Cesium.Color.WHITE),
-          outlineColor: Cesium.Color.fromCssColorString(route.color || '#3b82f6'),
-          outlineWidth: 2,
-          disableDepthTestDistance: Number.POSITIVE_INFINITY
-        },
-        label: {
-          text: bn ? station.bnName : station.name,
-          font: 'bold 12px sans-serif',
-          verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-          pixelOffset: new Cesium.Cartesian2(0, -15),
-          fillColor: Cesium.Color.WHITE,
-          outlineColor: Cesium.Color.BLACK,
-          outlineWidth: 2,
-          showBackground: true,
-          backgroundColor: Cesium.Color.fromCssColorString('rgba(0,0,0,0.5)'),
-          disableDepthTestDistance: Number.POSITIVE_INFINITY
-        }
-      });
-    });
+      try {
+        const viewer = new Cesium.Viewer(cesiumContainerRef.current, {
+          terrain: Cesium.Terrain.fromWorldTerrain(),
+          animation: false,
+          timeline: false,
+          baseLayerPicker: false,
+          geocoder: false,
+          homeButton: false,
+          infoBox: false,
+          sceneModePicker: false,
+          selectionIndicator: false,
+          navigationHelpButton: false,
+          navigationInstructionsInitiallyVisible: false,
+          fullscreenButton: false,
+        });
 
-    // Fly to route
-    viewer.zoomTo(viewer.entities);
-    cesiumViewerRef.current = viewer;
+        // Add 3D Buildings
+        const buildingTileset = await Cesium.createOsmBuildingsAsync();
+        viewer.scene.primitives.add(buildingTileset);
+
+        // Draw route in 3D
+        const positions = stopCoords.map(c => Cesium.Cartesian3.fromDegrees(c[1], c[0]));
+        viewer.entities.add({
+          polyline: {
+            positions,
+            width: 5,
+            material: Cesium.Color.fromCssColorString(route.color || '#3b82f6'),
+            clampToGround: true
+          }
+        });
+
+        // Draw stops
+        drawableStops.forEach((id, idx) => {
+          const station = TRAIN_STATIONS[id];
+          const pos = Cesium.Cartesian3.fromDegrees(station.lng, station.lat);
+          const isStart = idx === 0;
+          const isEnd = idx === drawableStops.length - 1;
+          
+          viewer.entities.add({
+            position: pos,
+            point: {
+              pixelSize: isStart || isEnd ? 12 : 8,
+              color: isStart ? Cesium.Color.fromCssColorString('#10b981') : (isEnd ? Cesium.Color.fromCssColorString('#1e293b') : Cesium.Color.WHITE),
+              outlineColor: Cesium.Color.fromCssColorString(route.color || '#3b82f6'),
+              outlineWidth: 2,
+              disableDepthTestDistance: Number.POSITIVE_INFINITY
+            },
+            label: {
+              text: bn ? station.bnName : station.name,
+              font: 'bold 12px sans-serif',
+              verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+              pixelOffset: new Cesium.Cartesian2(0, -15),
+              fillColor: Cesium.Color.WHITE,
+              outlineColor: Cesium.Color.BLACK,
+              outlineWidth: 2,
+              showBackground: true,
+              backgroundColor: Cesium.Color.fromCssColorString('rgba(0,0,0,0.5)'),
+              disableDepthTestDistance: Number.POSITIVE_INFINITY
+            }
+          });
+        });
+
+        viewer.zoomTo(viewer.entities);
+        cesiumViewerRef.current = viewer;
+      } catch (e) {
+        console.error('Cesium init error:', e);
+      }
+    };
+
+    initCesium();
 
     return () => {
       if (cesiumViewerRef.current) {
