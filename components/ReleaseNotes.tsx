@@ -169,8 +169,6 @@ const ReleaseNotes: React.FC<ReleaseNotesProps> = ({ onBack }) => {
             );
           })}
         </div>
-
-        </div>
       </div>
     </div>
   );
