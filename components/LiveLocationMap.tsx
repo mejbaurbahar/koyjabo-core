@@ -164,7 +164,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
 
         map.eachLayer(l => { if (l instanceof L.TileLayer) map.removeLayer(l); });
 
-        const layer = isOffline ? 'standard' : activeLayer;
+        const layer = isOffline ? 'standard' : (is3D && activeLayer === 'standard' ? 'satellite' : activeLayer);
 
         const configs: Record<MapLayer, { url: string; sub?: string[]; maxZoom?: number; attr?: string }> = {
             standard: {
@@ -517,16 +517,17 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                 <div 
                     className={`w-full h-full transition-all duration-700 ease-in-out ${is3D ? 'scale-[1.5] origin-bottom' : 'scale-100'}`}
                     style={is3D ? {
-                        transform: 'rotateX(45deg) translateY(-15%)',
+                        transform: 'rotateX(42deg) translateY(-10%)',
+                        filter: 'contrast(1.1) brightness(1.05) saturate(1.1)'
                     } : {}}
                 >
                     <div ref={mapContainerRef} className="w-full h-full" />
                 </div>
             </div>
 
-            {/* 3D Fog Effect */}
+            {/* 3D Fog Effect - Minimal to keep it "Clear" */}
             {is3D && (
-                <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-white dark:from-slate-900 via-white/40 dark:via-slate-900/40 to-transparent z-[300] pointer-events-none" />
+                <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white/20 dark:from-slate-900/20 to-transparent z-[300] pointer-events-none" />
             )}
 
             {/* ── Top status bar ── */}

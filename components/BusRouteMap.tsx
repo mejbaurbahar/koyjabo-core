@@ -501,17 +501,18 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
   return (
     <div className="relative z-0 isolate w-full rounded-b-2xl overflow-hidden bg-slate-100 dark:bg-slate-800" style={{ height: 310, perspective: '1000px' }}>
       <div 
-        className={`w-full h-full transition-all duration-700 ease-in-out ${is3D ? 'scale-[1.4] origin-bottom' : 'scale-100'}`} 
+        className={`w-full h-full transition-all duration-700 ease-in-out ${is3D ? 'scale-[1.5] origin-bottom' : 'scale-100'}`} 
         style={is3D ? {
-          transform: 'rotateX(45deg) translateY(-15%)',
+          transform: 'rotateX(42deg) translateY(-10%)',
+          filter: 'contrast(1.05) brightness(1.02)'
         } : {}}
       >
         <div ref={mapRef} className="w-full h-full" />
       </div>
 
-      {/* 3D Fog Effect - more subtle */}
+      {/* 3D Fog Effect - Minimal */}
       {is3D && (
-        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-white dark:from-slate-900 via-white/40 dark:via-slate-900/40 to-transparent z-[300] pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-white/10 dark:from-slate-900/10 to-transparent z-[300] pointer-events-none" />
       )}
 
       {/* Route badge */}
