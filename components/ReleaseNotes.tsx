@@ -3,11 +3,7 @@ import { ArrowLeft, Rocket, CheckCircle, Wrench, Zap, Calendar, ChevronRight, Ch
 import { RELEASE_NOTES } from '../data/releaseNotes';
 import { useLanguage } from '../contexts/LanguageContext';
 
-interface ReleaseNotesProps {
-  onBack: () => void;
-}
-
-const ReleaseNotes: React.FC<ReleaseNotesProps> = ({ onBack }) => {
+const ReleaseNotes: React.FC = () => {
   const { language, t } = useLanguage();
   const [expandedVersion, setExpandedVersion] = useState<string | null>(RELEASE_NOTES[0]?.version || null);
 
@@ -19,12 +15,6 @@ const ReleaseNotes: React.FC<ReleaseNotesProps> = ({ onBack }) => {
     <div className="flex flex-col h-full bg-[#f8fafc] dark:bg-slate-950 overflow-hidden font-sans">
       {/* Premium Header */}
       <div className="shrink-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 pt-safe px-6 py-5 flex items-center gap-5 shadow-sm relative z-10">
-        <button
-          onClick={onBack}
-          className="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all active:scale-95 text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/50"
-        >
-          <ArrowLeft className="w-5 h-5" />
-        </button>
         <div>
           <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             {t('releaseNotes.title')}

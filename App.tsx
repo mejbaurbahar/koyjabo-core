@@ -4511,7 +4511,7 @@ const App: React.FC = () => {
             {view === AppView.WHY_USE && renderWhyUse()}
             {view === AppView.FAQ && renderFAQ()}
             {view === AppView.RELEASE_NOTES && (
-              <ReleaseNotes onBack={() => setView(AppView.HOME)} />
+              <ReleaseNotes />
             )}
             {view === AppView.BLOG && (
               selectedBlogPost ? (
