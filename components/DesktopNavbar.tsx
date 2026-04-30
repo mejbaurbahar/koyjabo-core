@@ -34,7 +34,7 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
     toggleTheme,
     isInDhaka
 }) => {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const { user } = useAuth();
 
     // Navbar should be visible on all views for desktop now

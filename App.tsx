@@ -4393,7 +4393,22 @@ const App: React.FC = () => {
           )}
         </div>
 
-
+        {/* Home Footer Links */}
+        <div className="flex-none p-6 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-slate-900/50">
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-3">
+            <button onClick={() => setView(AppView.ABOUT)} className="text-xs font-bold text-gray-500 hover:text-emerald-600 transition-colors uppercase tracking-wider">{t('nav.about')}</button>
+            <button onClick={() => setView(AppView.FAQ)} className="text-xs font-bold text-gray-500 hover:text-emerald-600 transition-colors uppercase tracking-wider">{t('nav.faq')}</button>
+            <button onClick={() => setView(AppView.RELEASE_NOTES)} className="text-xs font-bold text-emerald-600 hover:text-emerald-700 transition-colors uppercase tracking-wider flex items-center gap-1.5">
+              <Rocket className="w-3.5 h-3.5" />
+              {language === 'bn' ? 'রিলিজ নোটস' : 'Release Notes'}
+            </button>
+            <button onClick={() => setView(AppView.PRIVACY)} className="text-xs font-bold text-gray-500 hover:text-emerald-600 transition-colors uppercase tracking-wider">{t('nav.privacy')}</button>
+            <button onClick={() => setView(AppView.TERMS)} className="text-xs font-bold text-gray-500 hover:text-emerald-600 transition-colors uppercase tracking-wider">{t('nav.terms')}</button>
+          </div>
+          <p className="text-[10px] text-center text-gray-400 mt-4 font-medium uppercase tracking-[0.2em]">
+            © 2026 {t('common.appName')} • {t('settings.version')} 2.5.0
+          </p>
+        </div>
       </div>
     );
   };
