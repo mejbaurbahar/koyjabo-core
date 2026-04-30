@@ -473,6 +473,14 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
         });
     }, [liveBuses]);
 
+    useEffect(() => {
+        if (mapRef.current) {
+            setTimeout(() => {
+                mapRef.current.invalidateSize();
+            }, 700);
+        }
+    }, [is3D]);
+
     // ── Recenter ────────────────────────────────────────────────────────────────
     const recenter = useCallback(() => {
         if (!mapRef.current || !userLocation) return;
@@ -501,20 +509,24 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                 className="relative w-full max-w-5xl h-[90vh] sm:h-[85vh] bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-gray-200/20 dark:border-slate-700/50 animate-in zoom-in-95 duration-200"
                 onClick={(e) => e.stopPropagation()}
             >
-            {/* Map fills everything */}
+            {/* Map wrapper with 3D perspective */}
             <div 
-                ref={mapContainerRef} 
-                className={`absolute inset-0 z-0 bg-slate-100 dark:bg-slate-800 transition-all duration-700 ease-in-out ${is3D ? 'scale-125' : ''}`}
-                style={is3D ? {
-                    perspective: '1200px',
-                    transform: 'rotateX(50deg) translateY(-5%)',
-                    transformOrigin: 'bottom'
-                } : {}}
-            />
+                className="absolute inset-0 z-0 bg-slate-100 dark:bg-slate-800"
+                style={{ perspective: '1200px' }}
+            >
+                <div 
+                    className={`w-full h-full transition-all duration-700 ease-in-out ${is3D ? 'scale-[1.5] origin-bottom' : 'scale-100'}`}
+                    style={is3D ? {
+                        transform: 'rotateX(45deg) translateY(-15%)',
+                    } : {}}
+                >
+                    <div ref={mapContainerRef} className="w-full h-full" />
+                </div>
+            </div>
 
             {/* 3D Fog Effect */}
             {is3D && (
-                <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-white dark:from-slate-900 to-transparent z-[300] pointer-events-none opacity-80" />
+                <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-white dark:from-slate-900 via-white/40 dark:via-slate-900/40 to-transparent z-[300] pointer-events-none" />
             )}
 
             {/* ── Top status bar ── */}

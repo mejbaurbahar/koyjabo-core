@@ -450,6 +450,14 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
     });
   }, [showMetro, showRailway, showAirport, mapReady]);
 
+  useEffect(() => {
+    if (mapInstanceRef.current) {
+      setTimeout(() => {
+        mapInstanceRef.current.invalidateSize();
+      }, 700);
+    }
+  }, [is3D]);
+
   // When Metro layer is enabled, include the full MRT line in viewport
   // so Uttara North / Center / South are visible.
   useEffect(() => {
@@ -491,20 +499,19 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
   }, [userLocation, mapReady]);
 
   return (
-    <div className="relative z-0 isolate w-full rounded-b-2xl overflow-hidden" style={{ height: 310 }}>
+    <div className="relative z-0 isolate w-full rounded-b-2xl overflow-hidden bg-slate-100 dark:bg-slate-800" style={{ height: 310, perspective: '1000px' }}>
       <div 
-        ref={mapRef} 
-        className={`w-full h-full transition-all duration-700 ease-in-out ${is3D ? 'scale-125' : ''}`} 
+        className={`w-full h-full transition-all duration-700 ease-in-out ${is3D ? 'scale-[1.4] origin-bottom' : 'scale-100'}`} 
         style={is3D ? {
-          perspective: '1000px',
-          transform: 'rotateX(50deg) translateY(-5%)',
-          transformOrigin: 'bottom'
+          transform: 'rotateX(45deg) translateY(-15%)',
         } : {}}
-      />
+      >
+        <div ref={mapRef} className="w-full h-full" />
+      </div>
 
-      {/* 3D Fog Effect */}
+      {/* 3D Fog Effect - more subtle */}
       {is3D && (
-        <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-white dark:from-slate-900/50 to-transparent z-[300] pointer-events-none opacity-60" />
+        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-white dark:from-slate-900 via-white/40 dark:via-slate-900/40 to-transparent z-[300] pointer-events-none" />
       )}
 
       {/* Route badge */}

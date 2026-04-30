@@ -230,7 +230,15 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
       setMapReady(true);
     });
 
-    return () => { cancelled = true; };
+  useEffect(() => {
+    if (mapInstanceRef.current) {
+      setTimeout(() => {
+        mapInstanceRef.current.invalidateSize();
+      }, 700);
+    }
+  }, [is3D]);
+
+  return () => { cancelled = true; };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route.id, currentStopId, is3D]);
 
@@ -320,20 +328,19 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
   }, []);
 
   return (
-    <div className="relative w-full h-full" style={{ touchAction: 'none' }}>
+    <div className="relative w-full h-full bg-slate-100 dark:bg-slate-800" style={{ touchAction: 'none', perspective: '1000px' }}>
       <div 
-        ref={mapRef} 
-        className={`w-full h-full transition-all duration-700 ease-in-out ${is3D ? 'scale-125' : ''}`}
+        className={`w-full h-full transition-all duration-700 ease-in-out ${is3D ? 'scale-[1.4] origin-bottom' : 'scale-100'}`}
         style={is3D ? {
-          perspective: '1000px',
-          transform: 'rotateX(50deg) translateY(-5%)',
-          transformOrigin: 'bottom'
+          transform: 'rotateX(45deg) translateY(-15%)',
         } : {}}
-      />
+      >
+        <div ref={mapRef} className="w-full h-full" />
+      </div>
 
       {/* 3D Fog Effect */}
       {is3D && (
-        <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-white dark:from-slate-900/50 to-transparent z-[300] pointer-events-none opacity-60" />
+        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-white dark:from-slate-900 via-white/40 dark:via-slate-900/40 to-transparent z-[300] pointer-events-none" />
       )}
 
       {!mapReady && (
