@@ -229,22 +229,43 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
 
     const linePath = roadCoords ?? coords;
 
-    // Glow
-    L.polyline(linePath, { color: routeColor, weight: 10, opacity: 0.15, lineCap: 'round', lineJoin: 'round' }).addTo(routeLayerRef.current);
-    // Main line
-    L.polyline(linePath, { color: routeColor, weight: 4, opacity: 0.95, lineCap: 'round', lineJoin: 'round' }).addTo(routeLayerRef.current);
+    // 1. Glow Layer
+    L.polyline(linePath, { 
+      color: routeColor, 
+      weight: 12, 
+      opacity: 0.15, 
+      lineCap: 'round', 
+      lineJoin: 'round' 
+    }).addTo(routeLayerRef.current);
+
+    // 2. Main Line
+    L.polyline(linePath, { 
+      color: routeColor, 
+      weight: 4, 
+      opacity: 0.95, 
+      lineCap: 'round', 
+      lineJoin: 'round' 
+    }).addTo(routeLayerRef.current);
+
+    // 3. Flow Layer (Animated)
+    L.polyline(linePath, {
+      color: '#ffffff',
+      weight: 1.5,
+      opacity: 0.5,
+      dashArray: '10, 20',
+      lineCap: 'round',
+      className: 'route-line-flow'
+    }).addTo(routeLayerRef.current);
 
     // Highlight segment
     if (highlightStartIdx >= 0 && highlightEndIdx >= 0 && highlightEndIdx > highlightStartIdx) {
       const hi = coords.slice(highlightStartIdx, highlightEndIdx + 1);
       if (hi.length >= 2) {
-        L.polyline(hi, { color: '#f59e0b', weight: 5, opacity: 1, lineCap: 'round', lineJoin: 'round' }).addTo(routeLayerRef.current);
+        L.polyline(hi, { color: '#f59e0b', weight: 6, opacity: 1, lineCap: 'round', lineJoin: 'round' }).addTo(routeLayerRef.current);
       }
     }
 
     // Stop markers
-    // When a fare segment is selected, Start/Destination labels go on the
-    // selected from/to stops; otherwise they go on the route's first/last stops.
     const hasFare = highlightStartIdx >= 0 && highlightEndIdx >= 0;
     const startMarkerIdx = hasFare ? highlightStartIdx : 0;
     const endMarkerIdx   = hasFare ? highlightEndIdx   : coords.length - 1;
@@ -254,6 +275,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
       if (!station) return;
       const isStart = idx === startMarkerIdx;
       const isEnd   = idx === endMarkerIdx;
+      const isNearest = idx === nearestStopIdx;
 
       let bg = '#fff';
       let border = routeColor;
@@ -268,24 +290,30 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
       } else if (isEnd) {
         bg = '#1e293b'; border = '#0f172a'; textColor = '#fff';
         label = 'Destination'; size = 76; fontSize = 10;
+      } else if (isNearest) {
+        bg = '#6366f1'; border = '#4f46e5'; textColor = '#fff';
+        label = 'Nearest'; size = 58; fontSize = 9;
       } else {
         label = '●'; size = 12; fontSize = 8;
       }
 
-      const h = isStart || isEnd ? 24 : 14;
-      const w = isStart || isEnd ? size : 14;
-      const br = isStart || isEnd ? 12 : '50%';
+      const h = isStart || isEnd || isNearest ? 24 : 14;
+      const w = isStart || isEnd || isNearest ? size : 14;
+      const br = isStart || isEnd || isNearest ? 12 : '50%';
 
       const icon = L.divIcon({
-        className: '',
+        className: 'custom-bus-marker',
         iconSize: [w, h],
         iconAnchor: [w / 2, h / 2],
-        html: isStart || isEnd
-          ? `<div style="width:${w}px;height:${h}px;border-radius:${br}px;background:${bg};border:2px solid ${border};display:flex;align-items:center;justify-content:center;font-size:${fontSize}px;font-weight:700;color:${textColor};box-shadow:0 2px 6px rgba(0,0,0,0.3);white-space:nowrap;padding:0 8px;font-family:sans-serif;">${label}</div>`
-          : `<div style="width:${w}px;height:${h}px;border-radius:50%;background:${bg};border:2px solid ${border};display:flex;align-items:center;justify-content:center;font-size:${fontSize}px;font-weight:700;color:${textColor};box-shadow:0 1px 4px rgba(0,0,0,0.2);"></div>`,
+        html: `
+          <div class="relative flex items-center justify-center">
+            ${(isStart || isEnd || isNearest) ? `<div class="absolute w-full h-full bg-${isStart ? 'green' : isEnd ? 'slate' : 'indigo'}-400/30 rounded-full animate-ping" style="padding: 10px;"></div>` : ''}
+            <div style="width:${w}px;height:${h}px;border-radius:${br}px;background:${bg};border:2px solid ${border};display:flex;align-items:center;justify-content:center;font-size:${fontSize}px;font-weight:700;color:${textColor};box-shadow:0 2px 6px rgba(0,0,0,0.3);white-space:nowrap;padding:0 8px;font-family:sans-serif;position:relative;z-index:1;">${label}</div>
+          </div>
+        `,
       });
 
-      L.marker(coord, { icon })
+      L.marker(coord, { icon, zIndexOffset: (isStart || isEnd || isNearest) ? 1000 : 500 })
         .bindTooltip(`<b>${station.name}</b><br><small>${station.bnName}</small>`, {
           direction: 'top',
           offset: [0, -h / 2 - 4],

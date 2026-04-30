@@ -113,12 +113,36 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
       if (cancelled) return;
 
       routeLayerRef.current = L.layerGroup();
-      if (roadCoords) {
-        setRouteSnapped(true);
-        L.polyline(roadCoords, { color: route.color, weight: 4, opacity: 0.4 }).addTo(routeLayerRef.current);
-      } else {
-        L.polyline(stopCoords, { color: route.color, weight: 4, opacity: 0.4, dashArray: '6 4' }).addTo(routeLayerRef.current);
-      }
+      const linePath = roadCoords || stopCoords;
+
+      // 1. Glow Layer
+      L.polyline(linePath, { 
+        color: route.color, 
+        weight: 12, 
+        opacity: 0.15, 
+        lineCap: 'round', 
+        lineJoin: 'round' 
+      }).addTo(routeLayerRef.current);
+
+      // 2. Main Line
+      L.polyline(linePath, { 
+        color: route.color, 
+        weight: 4, 
+        opacity: 0.95, 
+        lineCap: 'round', 
+        lineJoin: 'round' 
+      }).addTo(routeLayerRef.current);
+
+      // 3. Flow Layer (Animated)
+      L.polyline(linePath, {
+        color: '#ffffff',
+        weight: 1.5,
+        opacity: 0.5,
+        dashArray: '10, 20',
+        lineCap: 'round',
+        className: 'route-line-flow'
+      }).addTo(routeLayerRef.current);
+
       routeLayerRef.current.addTo(mapInstanceRef.current);
 
       // ── Draw stop markers ────────────────────────────────────────────────────
@@ -138,27 +162,34 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
           // "Nearest Station" pulsing indicator
           const nearestLabel = bn ? 'নিকটস্থ স্টেশন' : 'Nearest Station';
           w = 110; h = 42; ax = 55; ay = 38;
-          html = `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">` +
-            `<div style="width:110px;padding:3px 6px;border-radius:12px;background:#f59e0b;border:2px solid #d97706;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;box-shadow:0 2px 8px rgba(245,158,11,0.5);font-family:sans-serif;box-sizing:border-box;gap:4px;">` +
-            `<span style="width:6px;height:6px;border-radius:50%;background:#fff;display:inline-block;animation:ping 1s cubic-bezier(0,0,0.2,1) infinite;"></span>${nearestLabel}</div>` +
-            `<div style="width:8px;height:8px;border-radius:50%;background:#f59e0b;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.25);box-sizing:border-box;"></div>` +
-            `</div>`;
+          html = `
+            <div class="relative flex flex-col items-center gap-1">
+              <div class="absolute w-[30px] h-[30px] bg-amber-400/30 rounded-full animate-ping top-[24px]"></div>
+              <div style="width:110px;padding:3px 6px;border-radius:12px;background:#f59e0b;border:2px solid #d97706;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;box-shadow:0 2px 8px rgba(245,158,11,0.5);font-family:sans-serif;box-sizing:border-box;gap:4px;position:relative;z-index:2;">
+                <span style="width:6px;height:6px;border-radius:50%;background:#fff;display:inline-block;animation:pulse 1s infinite;"></span>${nearestLabel}
+              </div>
+              <div style="width:10px;height:10px;border-radius:50%;background:#f59e0b;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.25);box-sizing:border-box;position:relative;z-index:2;"></div>
+            </div>`;
         } else if (isFirst) {
           // Green pill — Start (matches BusRouteMap)
           const startLabel = bn ? 'শুরু' : 'Start';
           w = 52; h = 34; ax = 26; ay = 30;
-          html = `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">` +
-            `<div style="width:52px;height:24px;border-radius:12px;background:#10b981;border:2px solid #059669;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.35);font-family:sans-serif;box-sizing:border-box;">${startLabel}</div>` +
-            `<div style="width:8px;height:8px;border-radius:50%;background:#10b981;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.25);box-sizing:border-box;"></div>` +
-            `</div>`;
+          html = `
+            <div class="relative flex flex-col items-center gap-1">
+              <div class="absolute w-[24px] h-[24px] bg-emerald-400/30 rounded-full animate-ping top-[18px]"></div>
+              <div style="width:52px;height:24px;border-radius:12px;background:#10b981;border:2px solid #059669;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.35);font-family:sans-serif;box-sizing:border-box;position:relative;z-index:2;">${startLabel}</div>
+              <div style="width:8px;height:8px;border-radius:50%;background:#10b981;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.25);box-sizing:border-box;position:relative;z-index:2;"></div>
+            </div>`;
         } else if (isLast) {
           // Dark pill — Destination (matches BusRouteMap)
           const destLabel = bn ? 'গন্তব্য' : 'Destination';
           w = 76; h = 34; ax = 38; ay = 30;
-          html = `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">` +
-            `<div style="width:76px;height:24px;border-radius:12px;background:#1e293b;border:2px solid #0f172a;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.35);font-family:sans-serif;box-sizing:border-box;">${destLabel}</div>` +
-            `<div style="width:8px;height:8px;border-radius:50%;background:#1e293b;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.25);box-sizing:border-box;"></div>` +
-            `</div>`;
+          html = `
+            <div class="relative flex flex-col items-center gap-1">
+              <div class="absolute w-[24px] h-[24px] bg-slate-400/30 rounded-full animate-ping top-[18px]"></div>
+              <div style="width:76px;height:24px;border-radius:12px;background:#1e293b;border:2px solid #0f172a;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.35);font-family:sans-serif;box-sizing:border-box;position:relative;z-index:2;">${destLabel}</div>
+              <div style="width:8px;height:8px;border-radius:50%;background:#1e293b;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.25);box-sizing:border-box;position:relative;z-index:2;"></div>
+            </div>`;
         } else {
           // Intermediate: small dot + name label floating below
           // iconSize matches ONLY the dot so anchor is stable on mobile

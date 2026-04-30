@@ -695,6 +695,47 @@
         opacity: 0;
       }
     }
+
+    /* Advanced Map Animations */
+    @keyframes route-flow {
+      from { stroke-dashoffset: 60; }
+      to { stroke-dashoffset: 0; }
+    }
+    .route-line-flow {
+      animation: route-flow 3s linear infinite;
+    }
+
+    @keyframes pulse-ring {
+      0% { transform: scale(0.33); opacity: 0; }
+      80%, 100% { transform: scale(1.2); opacity: 0; }
+    }
+    .animate-pulse-ring {
+      animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+    }
+
+    @keyframes pulse-dot {
+      0% { transform: scale(0.9); }
+      50% { transform: scale(1); }
+      100% { transform: scale(0.9); }
+    }
+    .animate-pulse-dot {
+      animation: pulse-dot 1.5s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+    }
+
+    /* Custom Leaflet Tooltip Styles */
+    .leaflet-tooltip-bus {
+      background: rgba(15, 23, 42, 0.9) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border-radius: 8px !important;
+      color: white !important;
+      font-size: 11px !important;
+      font-family: 'Inter', sans-serif !important;
+      padding: 4px 8px !important;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+    }
+    .leaflet-tooltip-bus::before {
+      border-top-color: rgba(15, 23, 42, 0.9) !important;
+    }
   </style>
 
   <div id="root">

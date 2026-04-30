@@ -652,95 +652,79 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                     className="opacity-60"
                   />
                 </g>
-              )}
+             {/* 1. Base Glow Path (Triple Layer Layer 1) */}
+            <path
+              d={generateSmoothPath(nodePositions)}
+              fill="none"
+              stroke={route.color}
+              strokeWidth={14}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              opacity={0.12}
+              style={{ transition: 'all 0.5s ease' }}
+            />
 
-              {/* Base Path (Grey Shadow/Roadbed) */}
+            {/* 2. Main Route Path (Triple Layer Layer 2) */}
+            <path
+              d={generateSmoothPath(nodePositions)}
+              fill="none"
+              stroke={route.color}
+              strokeWidth={5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              opacity={0.9}
+              style={{ transition: 'all 0.5s ease' }}
+            />
+
+            {/* 3. Animated Flow Path (Triple Layer Layer 3) */}
+            <path
+              d={generateSmoothPath(nodePositions)}
+              fill="none"
+              stroke="white"
+              strokeWidth={1.5}
+              strokeLinecap="round"
+              strokeDasharray="10, 20"
+              opacity={0.6}
+              className="route-line-flow"
+              style={{ transition: 'all 0.5s ease' }}
+            />
+
+            {/* Fare Highlight Segment (Animated Glow) */}
+            {hasHighlight && (
               <path
-                d={generateSmoothPath(nodePositions)}
+                d={generateSmoothPath(nodePositions.slice(highlightStartIdx, highlightEndIdx + 1))}
                 fill="none"
-                strokeWidth="10"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="opacity-100 stroke-gray-200/50 dark:stroke-slate-700/50"
-              />
-
-              {/* Traffic-Aware Route (Default View - No Highlight) */}
-              {!hasHighlight && (
-                <>
-                  {/* Glow Layer */}
-                  <path
-                    d={generateSmoothPath(nodePositions)}
-                    fill="none"
-                    stroke={getTrafficColor('free')}
-                    strokeWidth="12"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="opacity-10 blur-[2px]"
-                  />
-                  {/* Main Line */}
-                  <path
-                    d={generateSmoothPath(nodePositions)}
-                    fill="none"
-                    stroke={getTrafficColor('free')}
-                    strokeWidth="4"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="opacity-100 transition-all duration-500"
-                  />
-                  {/* Flow Layer (Animated) */}
-                  <path
-                    d={generateSmoothPath(nodePositions)}
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeDasharray="10,20"
-                    className="opacity-40"
-                  >
-                    <animate attributeName="stroke-dashoffset" from="30" to="0" dur="2s" repeatCount="indefinite" />
-                  </path>
-                </>
-              )}
-
-              {/* Highlighted Segments */}
-              {hasHighlight && (
-                <>
-                  {/* Glow */}
-                  <path
-                    d={generateSmoothPath(nodePositions.slice(highlightStartIdx, highlightEndIdx + 1))}
-                    fill="none"
-                    stroke="#006a4e"
-                    strokeWidth="14"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="opacity-20 blur-[3px]"
-                  />
-                  {/* Main */}
-                  <path
-                    d={generateSmoothPath(nodePositions.slice(highlightStartIdx, highlightEndIdx + 1))}
-                    fill="none"
-                    stroke="#006a4e"
-                    strokeWidth="6"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="opacity-100 shadow-lg"
-                  />
-                  {/* Flow */}
-                  <path
-                    d={generateSmoothPath(nodePositions.slice(highlightStartIdx, highlightEndIdx + 1))}
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeDasharray="12,24"
-                    className="opacity-60"
-                  >
-                    <animate attributeName="stroke-dashoffset" from="36" to="0" dur="1.5s" repeatCount="indefinite" />
-                  </path>
-                </>
-              )}
+                stroke="white"
+                strokeWidth={3}
+              <g>
+                <path
+                  d={generateSmoothPath(nodePositions.slice(highlightStartIdx, highlightEndIdx + 1))}
+                  fill="none"
+                  stroke="#006a4e"
+                  strokeWidth="16"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="opacity-20 blur-[4px]"
+                />
+                <path
+                  d={generateSmoothPath(nodePositions.slice(highlightStartIdx, highlightEndIdx + 1))}
+                  fill="none"
+                  stroke="#006a4e"
+                  strokeWidth="6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d={generateSmoothPath(nodePositions.slice(highlightStartIdx, highlightEndIdx + 1))}
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeDasharray="12,24"
+                  className="route-line-flow opacity-80"
+                />
+              </g>
+            )}
 
               {/* Past Path (Greyed Out) */}
               {showUserOnNode && !hasHighlight && (
