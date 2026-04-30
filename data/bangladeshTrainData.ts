@@ -41,10 +41,10 @@ export interface BDTrainRoute {
 // ── Train Stations (Nationwide) ─────────────────────────────────────────────
 export const TRAIN_STATIONS: Record<string, BDTrainStation> = {
   // Dhaka
-  kamalapur:     { id: 'kamalapur',     name: 'Dhaka (Kamalapur)',      bnName: 'ঢাকা (কমলাপুর)',     lat: 23.7284, lng: 90.4226 },
-  tejgaon:       { id: 'tejgaon',       name: 'Tejgaon',                bnName: 'তেজগাঁও',            lat: 23.7570, lng: 90.3942 },
+  kamalapur:     { id: 'kamalapur',     name: 'Dhaka (Kamalapur)',      bnName: 'ঢাকা (কমলাপুর)',     lat: 23.7320, lng: 90.4262 },
+  tejgaon:       { id: 'tejgaon',       name: 'Tejgaon',                bnName: 'তেজগাঁও',            lat: 23.7580, lng: 90.3920 },
   cantonment:    { id: 'cantonment',    name: 'Dhaka Cantonment',       bnName: 'ঢাকা ক্যান্টনমেন্ট', lat: 23.8242, lng: 90.4101 },
-  airport_r:     { id: 'airport_r',     name: 'Biman Bandar (Airport)', bnName: 'বিমান বন্দর',        lat: 23.8511, lng: 90.4087 },
+  airport_r:     { id: 'airport_r',     name: 'Biman Bandar (Airport)', bnName: 'বিমান বন্দর',        lat: 23.8522, lng: 90.4083 },
   tongi:         { id: 'tongi',         name: 'Tongi',                  bnName: 'টঙ্গী',              lat: 23.8955, lng: 90.3971 },
   joydebpur:     { id: 'joydebpur',     name: 'Joydebpur',              bnName: 'জয়দেবপুর',          lat: 24.0036, lng: 90.3780 },
 
@@ -65,7 +65,7 @@ export const TRAIN_STATIONS: Record<string, BDTrainStation> = {
   comilla:       { id: 'comilla',       name: 'Comilla',                bnName: 'কুমিল্লা',          lat: 23.4607, lng: 91.1809 },
   laksam:        { id: 'laksam',        name: 'Laksam',                 bnName: 'লাকসাম',            lat: 23.2378, lng: 91.1213 },
   feni:          { id: 'feni',          name: 'Feni',                   bnName: 'ফেনী',              lat: 23.0153, lng: 91.3997 },
-  chattogram:    { id: 'chattogram',    name: 'Chattogram',             bnName: 'চট্টগ্রাম',         lat: 22.3569, lng: 91.8220 },
+  chattogram:    { id: 'chattogram',    name: 'Chattogram',             bnName: 'চট্টগ্রাম',         lat: 22.3337, lng: 91.8246 },
   noakhali:      { id: 'noakhali',      name: 'Noakhali',               bnName: 'নোয়াখালী',          lat: 22.8696, lng: 91.0991 },
   coxsbazar:     { id: 'coxsbazar',     name: "Cox's Bazar",            bnName: "কক্সবাজার",         lat: 21.4272, lng: 92.0058 },
 
@@ -80,7 +80,7 @@ export const TRAIN_STATIONS: Record<string, BDTrainStation> = {
   ullapara:      { id: 'ullapara',      name: 'Ullapara',               bnName: 'উল্লাপাড়া',         lat: 24.3349, lng: 89.6052 },
   ishwardi:      { id: 'ishwardi',      name: 'Ishwardi',               bnName: 'ঈশ্বরদী',           lat: 24.1352, lng: 89.0556 },
   natore:        { id: 'natore',        name: 'Natore',                 bnName: 'নাটোর',             lat: 24.4147, lng: 88.9872 },
-  rajshahi:      { id: 'rajshahi',      name: 'Rajshahi',               bnName: 'রাজশাহী',           lat: 24.3636, lng: 88.6241 },
+  rajshahi:      { id: 'rajshahi',      name: 'Rajshahi',               bnName: 'রাজশাহী',           lat: 24.3740, lng: 88.6011 },
 
   // North Bengal
   santahar:      { id: 'santahar',      name: 'Santahar',               bnName: 'সান্তাহার',          lat: 24.7500, lng: 89.0417 },
@@ -104,8 +104,8 @@ export const TRAIN_STATIONS: Record<string, BDTrainStation> = {
   chuadanga:     { id: 'chuadanga',     name: 'Chuadanga',              bnName: 'চুয়াডাঙ্গা',         lat: 23.6399, lng: 88.8411 },
   darshana:      { id: 'darshana',      name: 'Darshana',               bnName: 'দর্শনা',             lat: 23.6667, lng: 88.7833 },
   jessore:       { id: 'jessore',       name: 'Jessore (Jashore)',       bnName: 'যশোর',              lat: 23.1670, lng: 89.2083 },
-  benapole:      { id: 'benapole',      name: 'Benapole',               bnName: 'বেনাপোল',            lat: 23.0188, lng: 88.9361 },
-  khulna:        { id: 'khulna',        name: 'Khulna',                 bnName: 'খুলনা',             lat: 22.8456, lng: 89.5403 },
+  benapole:      { id: 'benapole',      name: 'Benapole',               bnName: 'বেনাপোল',            lat: 23.0431, lng: 88.9028 },
+  khulna:        { id: 'khulna',        name: 'Khulna',                 bnName: 'খুলনা',             lat: 22.8150, lng: 89.5500 },
 
   // North Bengal extra stations
   chilahati:      { id: 'chilahati',      name: 'Chilahati',             bnName: 'চিলাহাটি',             lat: 25.8900, lng: 88.8500 },

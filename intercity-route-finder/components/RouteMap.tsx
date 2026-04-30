@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import { RouteStep, TransportMode } from '../types';
 
@@ -8,11 +8,11 @@ interface RouteMapProps {
 
 // Major Bangladesh cities coordinates (fallback if coordinates not provided)
 const CITY_COORDINATES: Record<string, { lat: number; lng: number }> = {
-  'Dhaka': { lat: 23.8103, lng: 90.4125 },
-  'Chittagong': { lat: 22.3569, lng: 91.7832 },
+  'Dhaka': { lat: 23.7500, lng: 90.4000 },
+  'Chittagong': { lat: 22.3337, lng: 91.8246 },
   'Sylhet': { lat: 24.8949, lng: 91.8687 },
-  'Khulna': { lat: 22.8456, lng: 89.5403 },
-  'Rajshahi': { lat: 24.3745, lng: 88.6042 },
+  'Khulna': { lat: 22.8150, lng: 89.5500 },
+  'Rajshahi': { lat: 24.3740, lng: 88.6011 },
   'Barisal': { lat: 22.7010, lng: 90.3535 },
   'Rangpur': { lat: 25.7439, lng: 89.2752 },
   'Mymensingh': { lat: 24.7471, lng: 90.4203 },
@@ -26,7 +26,7 @@ const CITY_COORDINATES: Record<string, { lat: number; lng: number }> = {
   'Narayanganj': { lat: 23.6238, lng: 90.5000 },
   'Gazipur': { lat: 24.0022, lng: 90.4264 },
   'Jamalpur': { lat: 25.0831, lng: 89.9371 },
-  'Benapole': { lat: 23.0408, lng: 88.8275 },
+  'Benapole': { lat: 23.0431, lng: 88.9028 },
   'Feni': { lat: 23.0155, lng: 91.4075 },
   'Noakhali': { lat: 22.8696, lng: 91.0995 },
   'Kuakata': { lat: 21.8167, lng: 90.1167 },
