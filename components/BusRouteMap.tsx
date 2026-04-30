@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import type { BusRoute, UserLocation } from '../types';
 import { STATIONS, METRO_STATIONS, RAILWAY_STATIONS, AIRPORTS } from '../constants';
 import { Navigation, Layers, Train, Plane, X } from 'lucide-react';
+import * as Cesium from 'cesium';
+import 'cesium/Build/Cesium/Widgets/widgets.css';
 
 interface BusRouteMapProps {
   route: BusRoute;
@@ -79,6 +81,8 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
   const [showAirport, setShowAirport] = useState(false);
   const [routeSnapped, setRouteSnapped] = useState(false);
   const [is3D, setIs3D] = useState(false);
+  const cesiumContainerRef = useRef<HTMLDivElement>(null);
+  const cesiumViewerRef = useRef<Cesium.Viewer | null>(null);
 
   const routeColor = getRouteColor(route.id);
 
@@ -458,6 +462,88 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
     }
   }, [is3D]);
 
+  // Cesium 3D Globe Logic
+  useEffect(() => {
+    if (!is3D || !cesiumContainerRef.current) {
+      if (cesiumViewerRef.current) {
+        cesiumViewerRef.current.destroy();
+        cesiumViewerRef.current = null;
+      }
+      return;
+    }
+
+    const viewer = new Cesium.Viewer(cesiumContainerRef.current, {
+      terrainProvider: Cesium.createWorldTerrain(),
+      animation: false,
+      timeline: false,
+      baseLayerPicker: false,
+      geocoder: false,
+      homeButton: false,
+      infoBox: false,
+      sceneModePicker: false,
+      selectionIndicator: false,
+      navigationHelpButton: false,
+      navigationInstructionsInitiallyVisible: false,
+      fullscreenButton: false,
+    });
+
+    // Add 3D Buildings
+    viewer.scene.primitives.add(Cesium.createOsmBuildings());
+
+    // Draw route in 3D
+    const positions = (roadCoordsRef.current || stopCoords).map(c => Cesium.Cartesian3.fromDegrees(c[1], c[0]));
+    viewer.entities.add({
+      polyline: {
+        positions,
+        width: 6,
+        material: Cesium.Color.fromCssColorString(routeColor),
+        clampToGround: true
+      }
+    });
+
+    // Draw stops
+    drawableStops.forEach((id, idx) => {
+      const station = STATIONS[id];
+      const pos = Cesium.Cartesian3.fromDegrees(station.lng, station.lat);
+      const isStart = idx === 0;
+      const isEnd = idx === drawableStops.length - 1;
+      
+      viewer.entities.add({
+        position: pos,
+        point: {
+          pixelSize: isStart || isEnd ? 12 : 8,
+          color: isStart ? Cesium.Color.GREEN : (isEnd ? Cesium.Color.DARKSLATEGRAY : Cesium.Color.WHITE),
+          outlineColor: Cesium.Color.fromCssColorString(routeColor),
+          outlineWidth: 2,
+          disableDepthTestDistance: Number.POSITIVE_INFINITY
+        },
+        label: {
+          text: station.name,
+          font: 'bold 12px sans-serif',
+          verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+          pixelOffset: new Cesium.Cartesian2(0, -15),
+          fillColor: Cesium.Color.WHITE,
+          outlineColor: Cesium.Color.BLACK,
+          outlineWidth: 2,
+          showBackground: true,
+          backgroundColor: Cesium.Color.fromCssColorString('rgba(0,0,0,0.5)'),
+          disableDepthTestDistance: Number.POSITIVE_INFINITY
+        }
+      });
+    });
+
+    // Fly to route
+    viewer.zoomTo(viewer.entities);
+    cesiumViewerRef.current = viewer;
+
+    return () => {
+      if (cesiumViewerRef.current) {
+        cesiumViewerRef.current.destroy();
+        cesiumViewerRef.current = null;
+      }
+    };
+  }, [is3D, route.id]);
+
   // When Metro layer is enabled, include the full MRT line in viewport
   // so Uttara North / Center / South are visible.
   useEffect(() => {
@@ -499,20 +585,20 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
   }, [userLocation, mapReady]);
 
   return (
-    <div className="relative z-0 isolate w-full rounded-b-2xl overflow-hidden bg-slate-100 dark:bg-slate-800" style={{ height: 310, perspective: '1000px' }}>
+    <div className="relative z-0 isolate w-full rounded-b-2xl overflow-hidden bg-slate-100 dark:bg-slate-800" style={{ height: 310 }}>
+      {/* 2D Leaflet Map */}
       <div 
-        className={`w-full h-full transition-all duration-700 ease-in-out ${is3D ? 'scale-[1.5] origin-bottom' : 'scale-100'}`} 
-        style={is3D ? {
-          transform: 'rotateX(42deg) translateY(-10%)',
-          filter: 'contrast(1.05) brightness(1.02)'
-        } : {}}
+        className={`w-full h-full transition-opacity duration-500 ${is3D ? 'opacity-0 pointer-events-none' : 'opacity-100'}`} 
       >
         <div ref={mapRef} className="w-full h-full" />
       </div>
 
-      {/* 3D Fog Effect - Minimal */}
+      {/* 3D Cesium Globe */}
       {is3D && (
-        <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-white/10 dark:from-slate-900/10 to-transparent z-[300] pointer-events-none" />
+        <div 
+          ref={cesiumContainerRef} 
+          className="absolute inset-0 z-[10] animate-in fade-in duration-700" 
+        />
       )}
 
       {/* Route badge */}

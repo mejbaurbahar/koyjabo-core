@@ -10,8 +10,8 @@ import { UserLocation, BusRoute, Station } from '../types';
 import { STATIONS, METRO_STATIONS, RAILWAY_STATIONS, AIRPORTS } from '../constants';
 import { useLanguage } from '../contexts/LanguageContext';
 import { liveBusService, LiveBus } from '../services/liveBusService';
-import maplibregl from 'maplibre-gl';
-import 'maplibre-gl/dist/maplibre-gl.css';
+import * as Cesium from 'cesium';
+import 'cesium/Build/Cesium/Widgets/widgets.css';
 import StationDigitalTwin from './StationDigitalTwin';
 
 // Fix default marker icons
@@ -108,8 +108,8 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
     const [is3D, setIs3D] = useState(false);
     const [showDigitalTwin, setShowDigitalTwin] = useState(false);
     const [twinStationName, setTwinStationName] = useState('');
-    const mapLibreRef = useRef<any>(null);
-    const mapLibreContainerRef = useRef<HTMLDivElement>(null);
+    const cesiumViewerRef = useRef<Cesium.Viewer | null>(null);
+    const cesiumContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const handleOpenTwin = (e: any) => {
@@ -219,83 +219,63 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
         }
     }, [activeLayer, isOffline, isOpen, is3D]);
 
-    // ── MapLibre 3D Layer ───────────────────────────────────────────────────────
+    // ── MapLibre 3D Layer Replaced with Cesium ─────────────────────────────────
     useEffect(() => {
-        if (!isOpen || !is3D || isOffline || !mapLibreContainerRef.current) {
-            if (mapLibreRef.current) {
-                mapLibreRef.current.remove();
-                mapLibreRef.current = null;
+        if (!isOpen || !is3D || isOffline || !cesiumContainerRef.current) {
+            if (cesiumViewerRef.current) {
+                cesiumViewerRef.current.destroy();
+                cesiumViewerRef.current = null;
             }
             return;
         }
 
-        const center = userLocation ? [userLocation.lng, userLocation.lat] : [90.4125, 23.8103];
-        
-        const mgl = new maplibregl.Map({
-            container: mapLibreContainerRef.current,
-            style: {
-                version: 8,
-                sources: {
-                    'osm': {
-                        type: 'raster',
-                        tiles: ['https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'],
-                        tileSize: 256,
-                        attribution: '© OpenStreetMap'
-                    },
-                    'openmaptiles': {
-                        type: 'vector',
-                        url: 'https://api.maptiler.com/tiles/v3/tiles.json?key=get_your_own_key'
-                    }
-                },
-                layers: [
-                    { id: 'osm-layer', type: 'raster', source: 'osm' },
-                    {
-                        'id': '3d-buildings',
-                        'source': 'openmaptiles',
-                        'source-layer': 'building',
-                        'type': 'fill-extrusion',
-                        'minzoom': 15,
-                        'paint': {
-                            'fill-extrusion-color': '#aaa',
-                            'fill-extrusion-height': ['get', 'render_height'],
-                            'fill-extrusion-base': ['get', 'render_min_height'],
-                            'fill-extrusion-opacity': 0.6
-                        }
-                    }
-                ]
-            },
-            center: center as [number, number],
-            zoom: 15,
-            pitch: 60,
-            bearing: 0,
-            interactive: false
+        const viewer = new Cesium.Viewer(cesiumContainerRef.current, {
+            terrainProvider: Cesium.createWorldTerrain(),
+            animation: false,
+            timeline: false,
+            baseLayerPicker: false,
+            geocoder: false,
+            homeButton: false,
+            infoBox: false,
+            sceneModePicker: false,
+            selectionIndicator: false,
+            navigationHelpButton: false,
+            navigationInstructionsInitiallyVisible: false,
+            fullscreenButton: false,
         });
 
-        mapLibreRef.current = mgl;
-
-        const sync = () => {
-            const map = mapRef.current;
-            if (!map || !mapLibreRef.current) return;
-            const c = map.getCenter();
-            mapLibreRef.current.jumpTo({
-                center: [c.lng, c.lat],
-                zoom: map.getZoom() - 1,
-                pitch: is3D ? 60 : 0
-            });
-        };
-
-        mapRef.current?.on('move', sync);
-        mapRef.current?.on('zoom', sync);
+        viewer.scene.primitives.add(Cesium.createOsmBuildings());
         
+        cesiumViewerRef.current = viewer;
+
+        // Sync logic for route in 3D
+        if (selectedRoute?.stops) {
+            const stopCoords: [number, number][] = selectedRoute.stops
+                .map(id => getStation(id))
+                .filter(s => !!s)
+                .map(s => [s!.lat, s!.lng]);
+            
+            if (stopCoords.length >= 2) {
+                const positions = stopCoords.map(c => Cesium.Cartesian3.fromDegrees(c[1], c[0]));
+                viewer.entities.add({
+                    polyline: {
+                        positions,
+                        width: 6,
+                        material: Cesium.Color.fromCssColorString(getRouteColor(selectedRoute.id)),
+                        clampToGround: true
+                    }
+                });
+                viewer.zoomTo(viewer.entities);
+            }
+        }
+
         return () => {
-            mapRef.current?.off('move', sync);
-            mapRef.current?.off('zoom', sync);
-            if (mapLibreRef.current) {
-                mapLibreRef.current.remove();
-                mapLibreRef.current = null;
+            if (cesiumViewerRef.current) {
+                cesiumViewerRef.current.destroy();
+                cesiumViewerRef.current = null;
             }
         };
-    }, [isOpen, is3D, isOffline]);
+    }, [isOpen, is3D, isOffline, selectedRoute?.id]);
 
     // ── Route polyline + stop markers ───────────────────────────────────────────
     useEffect(() => {
@@ -618,20 +598,17 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
             <div 
                 className="absolute inset-0 z-0 bg-slate-100 dark:bg-slate-800 overflow-hidden"
             >
-                {/* MapLibre 3D Background */}
-                <div 
-                    ref={mapLibreContainerRef}
-                    className={`absolute inset-0 transition-opacity duration-500 ${is3D && !isOffline ? 'opacity-100' : 'opacity-0'}`}
-                />
+                {/* Cesium 3D Background */}
+                {is3D && !isOffline && (
+                    <div 
+                        ref={cesiumContainerRef}
+                        className="absolute inset-0 z-[10] animate-in fade-in duration-700"
+                    />
+                )}
 
                 {/* Leaflet Foreground (Markers & Routes) */}
                 <div 
-                    className={`absolute inset-0 transition-all duration-700 ease-in-out ${is3D ? 'scale-[1.5] origin-bottom' : 'scale-100'}`}
-                    style={is3D ? {
-                        perspective: '1200px',
-                        transform: 'rotateX(42deg) translateY(-10%)',
-                        filter: 'contrast(1.1) brightness(1.05) saturate(1.1)'
-                    } : {}}
+                    className={`absolute inset-0 transition-all duration-700 ease-in-out ${is3D ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
                 >
                     <div ref={mapContainerRef} className="w-full h-full" />
                 </div>
