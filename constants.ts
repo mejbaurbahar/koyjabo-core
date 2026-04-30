@@ -58,7 +58,7 @@ export const STATIONS: Record<string, Station> = {
   'shyamoli': { id: 'shyamoli', name: 'Shyamoli', bnName: 'শ্যামলী', lat: 23.775211, lng: 90.365503 },
   'dhanmondi27': { id: 'dhanmondi27', name: 'Dhanmondi 27', bnName: 'ধানমন্ডি ২৭', lat: 23.7570, lng: 90.3760 },
   'dhanmondi32': { id: 'dhanmondi32', name: 'Dhanmondi 32', bnName: 'ধানমন্ডি ৩২', lat: 23.7517, lng: 90.3779 },
-  'dhanmondi15': { id: 'dhanmondi15', name: 'Dhanmondi 15', bnName: 'ধানমন্ডি ১৫', lat: 23.7450, lng: 90.3700 },
+  'dhanmondi15': { id: 'dhanmondi15', name: 'Dhanmondi 15', bnName: 'ধানমন্ডি ১৫', lat: 23.744577, lng: 90.372565 },
   'newmarket': { id: 'newmarket', name: 'New Market', bnName: 'নিউ মার্কেট', lat: 23.734215, lng: 90.384422 },
   'azimpur': { id: 'azimpur', name: 'Azimpur', bnName: ' আজিমপুর', lat: 23.7298, lng: 90.3854 },
   'banani': { id: 'banani', name: 'Banani', bnName: 'বনানী', lat: 23.7930, lng: 90.4040 },
