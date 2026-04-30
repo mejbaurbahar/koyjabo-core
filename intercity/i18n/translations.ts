@@ -83,6 +83,7 @@ export const translations: Record<Language, Translations> = {
             login: 'লগইন',
             signup: 'সাইনআপ',
             profile: 'প্রোফাইল',
+            releaseNotes: 'রিলিজ নোটস',
         },
 
         // Home/Search
@@ -767,6 +768,7 @@ export const translations: Record<Language, Translations> = {
             login: 'Login',
             signup: 'Signup',
             profile: 'Profile',
+            releaseNotes: 'Release Notes',
         },
 
         // Home/Search

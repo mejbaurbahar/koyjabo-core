@@ -170,15 +170,6 @@ const ReleaseNotes: React.FC<ReleaseNotesProps> = ({ onBack }) => {
           })}
         </div>
 
-        {/* Footer */}
-        <div className="text-center py-12 px-6">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-900 rounded-full border border-slate-100 dark:border-slate-800 shadow-sm mb-4">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest">v2.5.0 Stable</span>
-          </div>
-          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em]">
-            © 2026 {t('common.appName')} • Made with ❤️ in Bangladesh
-          </p>
         </div>
       </div>
     </div>

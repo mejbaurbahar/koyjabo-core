@@ -424,7 +424,14 @@ function App() {
             <Sparkles size={16} />
             {t('nav.aiAssistant')}
           </a>
-
+          <a
+            href="/#release-notes"
+            onClick={(e) => { e.preventDefault(); window.location.href = '/#release-notes'; }}
+            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/20"
+          >
+            <Rocket size={16} />
+            {t('nav.releaseNotes')}
+          </a>
           <a
             href="/#about"
             onClick={(e) => { e.preventDefault(); window.location.href = '/#about'; }}
@@ -1016,6 +1023,12 @@ function App() {
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
               >
                 <Info className="w-5 h-5 text-blue-500" /> {t('nav.about')}
+              </button>
+              <button
+                onClick={() => { window.location.href = '/#release-notes'; setIsMenuOpen(false); }}
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 dark:hover:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-bold transition-colors"
+              >
+                <Rocket className="w-5 h-5" /> {t('nav.releaseNotes')}
               </button>
               <button
                 onClick={() => { window.location.href = '/#why-use'; setIsMenuOpen(false); }}
