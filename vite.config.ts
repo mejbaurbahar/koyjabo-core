@@ -397,10 +397,13 @@ export default defineConfig(({ mode }) => {
       emptyOutDir: true,
       rollupOptions: {
         output: {
-          entryFileNames: 'assets/[name]-[hash].js',
-          chunkFileNames: 'assets/[name]-[hash].js',
           assetFileNames: 'assets/[name]-[hash].[ext]'
         },
+        manualChunks: {
+          cesium: ['cesium'],
+          leaflet: ['leaflet'],
+          vendor: ['react', 'react-dom', 'lucide-react']
+        }
       },
     },
     define: {
@@ -419,7 +422,8 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
-      }
+      },
+      dedupe: ['react', 'react-dom']
     }
   };
 });
