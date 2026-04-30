@@ -3,7 +3,7 @@ import { Eye, EyeOff, LogIn, Loader2, AlertCircle, X, Lock } from 'lucide-react'
 import { loginUser, getAuthErrorKey, fetchAvatar } from '../../services/githubAuthService';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../../contexts/LanguageContext';
-import { useToast } from '../../contexts/ToastContext';
+import { useToast } from '../../../contexts/ToastContext';
 
 interface LoginPageProps {
   onSignup: () => void;

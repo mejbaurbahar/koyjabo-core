@@ -67,7 +67,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   }
 }
 
-import { ToastProvider } from './contexts/ToastContext';
+import { ToastProvider } from '../contexts/ToastContext';
 
 const rootElement = document.getElementById('root');
 if (rootElement) {

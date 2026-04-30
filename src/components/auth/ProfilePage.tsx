@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../../contexts/LanguageContext';
-import { useToast } from '../../contexts/ToastContext';
+import { useToast } from '../../../contexts/ToastContext';
 import {
   updateProfile, changePassword, uploadAvatar, fetchAvatar,
   fetchDevices, logoutDevice, getOrCreateDeviceId, resizeAndEncodeImage

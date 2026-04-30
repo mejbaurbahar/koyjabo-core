@@ -3,7 +3,7 @@ import { Eye, EyeOff, UserPlus, AlertCircle, CheckCircle2, Clock, X, Check } fro
 import { signupUser, getAuthErrorKey } from '../../services/githubAuthService';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../../contexts/LanguageContext';
-import { useToast } from '../../contexts/ToastContext';
+import { useToast } from '../../../contexts/ToastContext';
 import { isTempMailEmail } from '../../utils/tempMailDomains';
 
 interface SignupPageProps {
