@@ -30,19 +30,17 @@ function getRouteColor(id: string): string {
 }
 
 // Fetch road-snapped route from OSRM (free, no API key)
-async function fetchRoadRoute(coords: [number, number][]): Promise<[number, number][] | null> {
+// Fetch road-snapped route and waypoints from OSRM
+async function fetchRoadRoute(coords: [number, number][]): Promise<{ path: [number, number][], waypoints: [number, number][] } | null> {
   if (coords.length < 2) return null;
   try {
-    // Increase waypoint limit to 50 for much higher accuracy on long routes
-    const MAX_WP = 50;
+    const MAX_WP = 100;
     let waypoints = coords;
     if (coords.length > MAX_WP) {
       const step = (coords.length - 1) / (MAX_WP - 1);
       waypoints = Array.from({ length: MAX_WP }, (_, i) => coords[Math.round(i * step)]);
     }
     const coordStr = waypoints.map(([lat, lng]) => `${lng},${lat}`).join(';');
-    
-    // Add radiuses=50 for all points to help OSRM snap to roads even if coordinates are slightly off
     const radiuses = waypoints.map(() => 50).join(';');
     const url = `https://router.project-osrm.org/route/v1/driving/${coordStr}?overview=full&geometries=geojson&radiuses=${radiuses}`;
     
@@ -50,7 +48,11 @@ async function fetchRoadRoute(coords: [number, number][]): Promise<[number, numb
     if (!res.ok) return null;
     const data = await res.json();
     if (data.code !== 'Ok' || !data.routes?.[0]) return null;
-    return (data.routes[0].geometry.coordinates as [number, number][]).map(([lng, lat]) => [lat, lng]);
+    
+    return {
+      path: (data.routes[0].geometry.coordinates as [number, number][]).map(([lng, lat]) => [lat, lng]),
+      waypoints: (data.waypoints || []).map((wp: any) => [wp.location[1], wp.location[0]])
+    };
   } catch {
     return null;
   }
@@ -203,11 +205,11 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
       setMapReady(true);
 
       // Try to fetch road-snapped route
-      const snapped = await fetchRoadRoute(stopCoords);
+      const snappedData = await fetchRoadRoute(stopCoords);
       if (cancelled || !mapInstanceRef.current) return;
-      if (snapped && snapped.length > 1) {
-        roadCoordsRef.current = snapped;
-        drawRoute(L, stopCoords, snapped, true);
+      if (snappedData) {
+        roadCoordsRef.current = snappedData.path;
+        drawRoute(L, stopCoords, snappedData.path, true, snappedData.waypoints);
         setRouteSnapped(true);
       } else {
         roadCoordsRef.current = null;
@@ -227,7 +229,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
   }, [route.id, isReversed]);
 
   // Draw route lines + stop markers
-  const drawRoute = useCallback((L: any, coords: [number, number][], roadCoords: [number, number][] | null, snapped: boolean) => {
+  const drawRoute = useCallback((L: any, coords: [number, number][], roadCoords: [number, number][] | null, snapped: boolean, snappedWaypoints: [number, number][] | null = null) => {
     if (!routeLayerRef.current) return;
     routeLayerRef.current.clearLayers();
 
@@ -317,7 +319,8 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
         `,
       });
 
-      L.marker(coord, { icon, zIndexOffset: (isStart || isEnd || isNearest) ? 1000 : 500 })
+      const displayCoord = (snapped && snappedWaypoints && snappedWaypoints[idx]) ? snappedWaypoints[idx] : coord;
+      L.marker(displayCoord, { icon, zIndexOffset: (isStart || isEnd || isNearest) ? 1000 : 500 })
         .bindTooltip(`<b>${station.name}</b><br><small>${station.bnName}</small>`, {
           direction: 'top',
           offset: [0, -h / 2 - 4],
@@ -332,7 +335,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
 
       // Dashed walking line: user → nearest bus stop
       if (nearestStopIdx >= 0) {
-        const nearestCoord = coords[nearestStopIdx];
+        const nearestCoord = (snapped && snappedWaypoints && snappedWaypoints[nearestStopIdx]) ? snappedWaypoints[nearestStopIdx] : coords[nearestStopIdx];
         const distM = Math.round(nearestStopDistKm * 1000);
         const distLabel = distM >= 1000 ? `${(distM / 1000).toFixed(1)} km` : `${distM} m`;
 

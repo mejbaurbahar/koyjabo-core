@@ -53,11 +53,11 @@ const LAYERS: { id: MapLayer; label: string; icon: React.ElementType; online?: b
     { id: 'traffic',   label: 'Traffic',   icon: Zap, online: true },
 ];
 
-// Fetch road-snapped route from OSRM
-async function fetchRoadRoute(coords: [number, number][]): Promise<[number, number][] | null> {
+// Fetch road-snapped route and waypoints from OSRM
+async function fetchRoadRoute(coords: [number, number][]): Promise<{ path: [number, number][], waypoints: [number, number][] } | null> {
     if (coords.length < 2) return null;
     try {
-        const MAX_WP = 50;
+        const MAX_WP = 100;
         let waypoints = coords;
         if (coords.length > MAX_WP) {
             const step = (coords.length - 1) / (MAX_WP - 1);
@@ -70,7 +70,11 @@ async function fetchRoadRoute(coords: [number, number][]): Promise<[number, numb
         if (!res.ok) return null;
         const data = await res.json();
         if (data.code !== 'Ok' || !data.routes?.[0]) return null;
-        return (data.routes[0].geometry.coordinates as [number, number][]).map(([lng, lat]) => [lat, lng]);
+        
+        return {
+            path: (data.routes[0].geometry.coordinates as [number, number][]).map(([lng, lat]) => [lat, lng]),
+            waypoints: (data.waypoints || []).map((wp: any) => [wp.location[1], wp.location[0]])
+        };
     } catch { return null; }
 }
 
@@ -214,67 +218,77 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
         const color = getRouteColor(selectedRoute.id);
         const stopCoords: [number, number][] = [];
 
-        selectedRoute.stops.forEach((stopId, idx) => {
+        selectedRoute.stops.forEach((stopId) => {
             const station = getStation(stopId);
-            if (!station) return;
-            const latLng: [number, number] = [station.lat, station.lng];
-            stopCoords.push(latLng);
-
-            // Stop marker — filled circle with stop number
-            const isFirst = idx === 0;
-            const isLast = idx === selectedRoute.stops.length - 1;
-            const isNearest = idx === nearestStopIdx;
-            
-            // "Advanced" icon with ripple for nearest
-            const size = isFirst || isLast ? 38 : 28;
-            const stopIcon = L.divIcon({
-                className: 'bg-transparent border-none',
-                html: `<div style="position:relative; width:${size}px; height:${size}px; margin-left:-${size/2}px; margin-top:-${size/2}px;">
-                    ${isNearest ? `<div class="absolute inset-0 bg-blue-500/30 rounded-full animate-pulse-ring"></div>` : ''}
-                    <div style="
-                        position:absolute; inset:0;
-                        background:${isFirst || isLast ? color : (isNearest ? '#eff6ff' : '#fff')};
-                        border:3px solid ${isNearest ? '#3b82f6' : color};
-                        border-radius:50%;
-                        display:flex;align-items:center;justify-content:center;
-                        box-shadow:0 4px 12px rgba(0,0,0,0.15);
-                        font-weight:800;
-                        font-size:${isFirst || isLast ? 14 : 11}px;
-                        color:${isFirst || isLast ? '#fff' : (isNearest ? '#3b82f6' : color)};
-                        font-family:Inter, sans-serif;
-                        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                    " class="${isNearest ? 'animate-pulse-dot' : ''}">
-                        ${isFirst ? 'A' : isLast ? 'B' : idx}
-                    </div>
-                </div>`,
-                iconSize: [size, size],
-                iconAnchor: [size / 2, size / 2],
-            });
-
-            const marker = L.marker(latLng, { icon: stopIcon, zIndexOffset: isFirst || isLast ? 100 : (isNearest ? 200 : 0) })
-                .bindPopup(`
-                    <div style="font-family:Inter, sans-serif;padding:6px;min-width:160px; border-radius:12px;">
-                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-                            <div style="width:8px; height:8px; border-radius:50%; background:${color}"></div>
-                            <div style="font-weight:800;font-size:15px;color:#0f172a">${station.name}</div>
-                        </div>
-                        <div style="font-size:12px;color:#64748b;margin-left:16px">${station.bnName || ''}</div>
-                        <div style="margin-top:10px;padding:6px 10px;background:${isNearest ? '#3b82f610' : (color + '10')};border-radius:8px;font-size:11px;font-weight:700;color:${isNearest ? '#3b82f6' : color}; display:flex; justify-content:between; align-items:center;">
-                            <span>Stop ${idx + 1} of ${selectedRoute.stops.length}</span>
-                            ${isNearest ? '<span style="background:#3b82f6; color:white; padding:1px 4px; border-radius:4px; font-size:9px; margin-left:auto;">NEAREST</span>' : ''}
-                        </div>
-                    </div>
-                `, { className: 'custom-popup', offset: [0, -10] });
-
-            stopGroup?.addLayer(marker);
+            if (station) stopCoords.push([station.lat, station.lng]);
         });
 
-        // Draw animated route polyline
-        fetchRoadRoute(stopCoords).then(roadCoords => {
-            if (!mapRef.current) return;
-            const linePath = roadCoords || stopCoords;
+        if (stopCoords.length < 2) return;
+
+        // Try to fetch road-snapped route and markers
+        fetchRoadRoute(stopCoords).then(snappedData => {
+            if (!mapRef.current || !stopGroup) return;
+            
+            const linePath = snappedData?.path || stopCoords;
+            const snappedWaypoints = snappedData?.waypoints || null;
             const isTrain = selectedRoute.type === 'Metro Rail' || selectedRoute.name.toLowerCase().includes('train');
 
+            // Draw Markers (using snapped coordinates if available)
+            selectedRoute.stops.forEach((stopId, idx) => {
+                const station = getStation(stopId);
+                if (!station) return;
+
+                const rawLatLng: [number, number] = [station.lat, station.lng];
+                const latLng: [number, number] = (snappedWaypoints && snappedWaypoints[idx]) ? snappedWaypoints[idx] : rawLatLng;
+
+                const isFirst = idx === 0;
+                const isLast = idx === selectedRoute.stops.length - 1;
+                const isNearest = idx === nearestStopIdx;
+                
+                const size = isFirst || isLast ? 38 : 28;
+                const stopIcon = L.divIcon({
+                    className: 'bg-transparent border-none',
+                    html: `<div style="position:relative; width:${size}px; height:${size}px; margin-left:-${size/2}px; margin-top:-${size/2}px;">
+                        ${isNearest ? `<div class="absolute inset-0 bg-blue-500/30 rounded-full animate-pulse-ring"></div>` : ''}
+                        <div style="
+                            position:absolute; inset:0;
+                            background:${isFirst || isLast ? color : (isNearest ? '#eff6ff' : '#fff')};
+                            border:3px solid ${isNearest ? '#3b82f6' : color};
+                            border-radius:50%;
+                            display:flex;align-items:center;justify-content:center;
+                            box-shadow:0 4px 12px rgba(0,0,0,0.15);
+                            font-weight:800;
+                            font-size:${isFirst || isLast ? 14 : 11}px;
+                            color:${isFirst || isLast ? '#fff' : (isNearest ? '#3b82f6' : color)};
+                            font-family:Inter, sans-serif;
+                            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                        " class="${isNearest ? 'animate-pulse-dot' : ''}">
+                            ${isFirst ? 'A' : isLast ? 'B' : idx}
+                        </div>
+                    </div>`,
+                    iconSize: [size, size],
+                    iconAnchor: [size / 2, size / 2],
+                });
+
+                const marker = L.marker(latLng, { icon: stopIcon, zIndexOffset: isFirst || isLast ? 100 : (isNearest ? 200 : 0) })
+                    .bindPopup(`
+                        <div style="font-family:Inter, sans-serif;padding:6px;min-width:160px; border-radius:12px;">
+                            <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                                <div style="width:8px; height:8px; border-radius:50%; background:${color}"></div>
+                                <div style="font-weight:800;font-size:15px;color:#0f172a">${station.name}</div>
+                            </div>
+                            <div style="font-size:12px;color:#64748b;margin-left:16px">${station.bnName || ''}</div>
+                            <div style="margin-top:10px;padding:6px 10px;background:${isNearest ? '#3b82f610' : (color + '10')};border-radius:8px;font-size:11px;font-weight:700;color:${isNearest ? '#3b82f6' : color}; display:flex; justify-content:between; align-items:center;">
+                                <span>Stop ${idx + 1} of ${selectedRoute.stops.length}</span>
+                                ${isNearest ? '<span style="background:#3b82f6; color:white; padding:1px 4px; border-radius:4px; font-size:9px; margin-left:auto;">NEAREST</span>' : ''}
+                            </div>
+                        </div>
+                    `, { className: 'custom-popup', offset: [0, -10] });
+
+                stopGroup.addLayer(marker);
+            });
+
+            // Draw Route Lines
             // 1. Shadow/Glow (Bottom)
             L.polyline(linePath, {
                 color: color,

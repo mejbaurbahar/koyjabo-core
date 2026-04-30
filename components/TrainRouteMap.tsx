@@ -20,10 +20,10 @@ function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): nu
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-async function fetchRoadRoute(coords: [number, number][]): Promise<[number, number][] | null> {
+async function fetchRoadRoute(coords: [number, number][]): Promise<{ path: [number, number][], waypoints: [number, number][] } | null> {
   if (coords.length < 2) return null;
   try {
-    const MAX_WP = 50;
+    const MAX_WP = 100;
     let waypoints = coords;
     if (coords.length > MAX_WP) {
       const step = (coords.length - 1) / (MAX_WP - 1);
@@ -36,7 +36,10 @@ async function fetchRoadRoute(coords: [number, number][]): Promise<[number, numb
     if (!res.ok) return null;
     const data = await res.json();
     if (data.code !== 'Ok' || !data.routes?.[0]) return null;
-    return (data.routes[0].geometry.coordinates as [number, number][]).map(([lng, lat]) => [lat, lng]);
+    return {
+      path: (data.routes[0].geometry.coordinates as [number, number][]).map(([lng, lat]) => [lat, lng]),
+      waypoints: (data.waypoints || []).map((wp: any) => [wp.location[1], wp.location[0]])
+    };
   } catch {
     return null;
   }
@@ -110,11 +113,12 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
       if (routeLayerRef.current) { mapInstanceRef.current.removeLayer(routeLayerRef.current); }
 
       setRouteSnapped(false);
-      const roadCoords = await fetchRoadRoute(stopCoords);
+      const snappedData = await fetchRoadRoute(stopCoords);
       if (cancelled) return;
 
       routeLayerRef.current = L.layerGroup();
-      const linePath = roadCoords || stopCoords;
+      const linePath = snappedData?.path || stopCoords;
+      const snappedWaypoints = snappedData?.waypoints || null;
 
       // 1. Glow Layer
       L.polyline(linePath, { 
@@ -151,7 +155,10 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
       overlayLayerRef.current = L.layerGroup();
 
       drawableStops.forEach((id, idx) => {
-        const st = TRAIN_STATIONS[id];
+        const station = TRAIN_STATIONS[id];
+        const rawLatLng: [number, number] = [station.lat, station.lng];
+        const latLng: [number, number] = (snappedWaypoints && snappedWaypoints[idx]) ? snappedWaypoints[idx] : rawLatLng;
+        
         const isFirst = idx === 0;
         const isLast = idx === drawableStops.length - 1;
         const isCurrent = id === currentStopId;
@@ -196,26 +203,26 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
           // iconSize matches ONLY the dot so anchor is stable on mobile
           const dot = 10;
           w = dot; h = dot; ax = dot / 2; ay = dot / 2;
-          const stLabel = bn ? st.bnName : st.name;
-          html = `<div style="position:relative;width:${dot}px;height:${dot}px;">` +
-            `<div style="width:${dot}px;height:${dot}px;border-radius:50%;background:#fff;border:2px solid ${route.color};box-shadow:0 1px 4px rgba(0,0,0,0.25);box-sizing:border-box;"></div>` +
-            `<div style="position:absolute;top:${dot + 2}px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.95);color:#1e293b;padding:1px 5px;border-radius:4px;font-size:9px;font-weight:600;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.2);line-height:1.5;pointer-events:none;">${stLabel}</div>` +
-            `</div>`;
-        }
+        const stLabel = bn ? station.bnName : station.name;
+        html = `<div style="position:relative;width:${dot}px;height:${dot}px;">` +
+          `<div style="width:${dot}px;height:${dot}px;border-radius:50%;background:#fff;border:2px solid ${route.color};box-shadow:0 1px 4px rgba(0,0,0,0.25);box-sizing:border-box;"></div>` +
+          `<div style="position:absolute;top:${dot + 2}px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.95);color:#1e293b;padding:1px 5px;border-radius:4px;font-size:9px;font-weight:600;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.2);line-height:1.5;pointer-events:none;">${stLabel}</div>` +
+          `</div>`;
+      }
 
-        const icon = L.divIcon({
-          className: '',
-          iconSize: [w, h],
-          iconAnchor: [ax, ay],
-          html,
-        });
+      const icon = L.divIcon({
+        className: '',
+        iconSize: [w, h],
+        iconAnchor: [ax, ay],
+        html,
+      });
 
-        const marker = L.marker([st.lat, st.lng], {
-          icon,
-          zIndexOffset: isCurrent ? 2000 : (isFirst || isLast ? 1000 : 0),
-        });
-        marker.bindPopup(`<b>${st.name}</b><br/><span style="font-size:11px;color:#64748b">${st.bnName}</span>`);
-        marker.addTo(overlayLayerRef.current);
+      const marker = L.marker(latLng, {
+        icon,
+        zIndexOffset: isCurrent ? 2000 : (isFirst || isLast ? 1000 : 0),
+      });
+      marker.bindPopup(`<b>${station.name}</b><br/><span style="font-size:11px;color:#64748b">${station.bnName}</span>`);
+      marker.addTo(overlayLayerRef.current);
       });
 
       overlayLayerRef.current.addTo(mapInstanceRef.current);
