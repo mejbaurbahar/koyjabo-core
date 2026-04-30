@@ -66,10 +66,10 @@ export const STATIONS: Record<string, Station> = {
   'japan_garden': { id: 'japan_garden', name: 'Japan Garden City', bnName: 'জাপান গার্ডেন সিটি', lat: 23.7680, lng: 90.3570 },
   'ring_road': { id: 'ring_road', name: 'Ring Road', bnName: 'রিং রোড', lat: 23.7700, lng: 90.3560 },
   'adabor': { id: 'adabor', name: 'Adabor', bnName: 'আদাবর', lat: 23.7700, lng: 90.3550 },
-  'amin_bazar': { id: 'amin_bazar', name: 'Amin Bazar', bnName: 'আমিন বাজার', lat: 23.7900, lng: 90.3400 },
+  'amin_bazar': { id: 'amin_bazar', name: 'Amin Bazar', bnName: 'আমিন বাজার', lat: 23.7838, lng: 90.3345 },
   'boliarpur': { id: 'boliarpur', name: 'Boliarpur', bnName: 'বলিয়ারপুর', lat: 23.7953, lng: 90.2903 },
   'modhumoti': { id: 'modhumoti', name: 'Modhumoti', bnName: 'মধুমত', lat: 23.7920, lng: 90.3100 },
-  'parbat': { id: 'parbat', name: 'Parbat', bnName: 'পর্বত', lat: 23.7850, lng: 90.3420 },
+  'parbat': { id: 'parbat', name: 'Parbat', bnName: 'পর্বত', lat: 23.7845, lng: 90.3415 },
   'mazar_road': { id: 'mazar_road', name: 'Mazar Road', bnName: 'মাজার রোড', lat: 23.7922, lng: 90.3430 },
   'amtola': { id: 'amtola', name: 'Amtola', bnName: 'আমতলা', lat: 23.7850, lng: 90.4020 },
   'post_office_gulshan': { id: 'post_office_gulshan', name: 'Post Office (Gulshan)', bnName: 'পোস্ট অফিস (গুলশান)', lat: 23.7998, lng: 90.3940 },
@@ -303,7 +303,7 @@ export const STATIONS: Record<string, Station> = {
   'bank_town': { id: 'bank_town', name: 'Bank Town', bnName: 'ব্যাংক টাউন', lat: 23.8420, lng: 90.2580 },
 
   // Hemayetpur to Paturia - Dhaka-Aricha Highway (N5) stops
-  'aminbazar_bridge': { id: 'aminbazar_bridge', name: 'Aminbazar Bridge', bnName: 'আমিনবাজার ব্রিজ', lat: 23.7950, lng: 90.3200 },
+  'aminbazar_bridge': { id: 'aminbazar_bridge', name: 'Aminbazar Bridge', bnName: 'আমিনবাজার ব্রিজ', lat: 23.7845, lng: 90.3410 },
   'baipail_more': { id: 'baipail_more', name: 'Baipail More', bnName: 'বাইপাইল মোড়', lat: 23.9450, lng: 90.2650 },
   'savar_bus_stand': { id: 'savar_bus_stand', name: 'Savar Bus Stand', bnName: 'সাভার বাস স্ট্যান্ড', lat: 23.8480, lng: 90.2620 },
   'nabinagar_bazar': { id: 'nabinagar_bazar', name: 'Nabinagar Bazar', bnName: 'নবীনগর বাজার', lat: 23.9080, lng: 90.2520 },
