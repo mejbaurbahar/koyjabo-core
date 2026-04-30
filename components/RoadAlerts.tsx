@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, AlertTriangle, Clock, ChevronDown, ChevronUp, Plus, ExternalLink } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useToast } from '../contexts/ToastContext';
 import { submitTrafficReport, getTodayTrafficReports, upvoteTrafficReport, TrafficReport, getAuthUser } from '../services/communityDataService';
 import { trackFeatureUsage } from '../services/analyticsService';
 
@@ -55,6 +56,7 @@ function timeAgo(ts: number, t: (key: string) => string): string {
 
 export default function RoadAlerts({ onBack }: Props) {
   const { t, language } = useLanguage();
+  const { showToast } = useToast();
   const user = getAuthUser();
   const [reports, setReports] = useState<TrafficReport[]>([]);
   const [loading, setLoading] = useState(false);
@@ -103,6 +105,9 @@ export default function RoadAlerts({ onBack }: Props) {
       setForm({ location: '', type: 'heavy_traffic', severity: 'medium', description: '' });
       const fresh = await getTodayTrafficReports();
       setReports(fresh);
+      showToast(t('roadAlerts.reportSuccess'), 'success');
+    } else {
+      showToast(t('community.submitError'), 'error');
     }
     setSubmitting(false);
   };

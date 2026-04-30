@@ -3,6 +3,7 @@ import { ArrowLeft, MapPin, Navigation, RefreshCw, Radio } from 'lucide-react';
 import { getBusLiveLocation, reportBusLocation, BusLocationReport, getAuthUser } from '../services/communityDataService';
 import { trackFeatureUsage } from '../services/analyticsService';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useToast } from '../contexts/ToastContext';
 
 interface Props {
   busId: string;
@@ -23,6 +24,7 @@ const HEADING_OPTS = ['উত্তর', 'দক্ষিণ', 'পূর্ব'
 export default function BusLiveTracking({ busId, busName, stops = [], onBack }: Props) {
   const user = getAuthUser();
   const { t, language, formatNumber } = useLanguage();
+  const { showToast } = useToast();
   const [reports, setReports] = useState<BusLocationReport[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -58,6 +60,7 @@ export default function BusLiveTracking({ busId, busName, stops = [], onBack }: 
     setShowForm(false);
     setStopId(''); setStopName(''); setHeading('');
     setSubmitting(false);
+    showToast(t('community.locationReported'), 'success');
   };
 
   const latest = reports[reports.length - 1];

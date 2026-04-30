@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../../contexts/LanguageContext';
+import { useToast } from '../../contexts/ToastContext';
 import {
   updateProfile, changePassword, uploadAvatar, fetchAvatar,
   fetchDevices, logoutDevice, getOrCreateDeviceId, resizeAndEncodeImage
@@ -87,6 +88,7 @@ export default function ProfilePage({
 }: ProfilePageProps) {
   const { user, updateUser, logout } = useAuth();
   const { t, language } = useLanguage();
+  const { showToast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [devices, setDevices] = useState<Device[]>([]);
@@ -126,11 +128,11 @@ export default function ProfilePage({
   // ── Handlers ────────────────────────────────────────────────────────────────
   const handleSaveProfile = () =>
     profileOp.run(async () => {
-      // username is never changed — always pass the current one
       const result = await updateProfile(user.id, editName, user.username);
       if (!result.success) throw new Error(result.error);
       updateUser({ displayName: result.displayName!, username: result.username! });
       setEditMode(false);
+      showToast(t('profile.profileUpdated'), 'success');
     });
 
   const handleChangePassword = () =>
@@ -140,6 +142,7 @@ export default function ProfilePage({
       const result = await changePassword(user.id, user.email, pwForm.current, pwForm.newPass);
       if (!result.success) throw new Error(result.error);
       setPwForm({ current: '', newPass: '', confirm: '' });
+      showToast(t('profile.passwordChanged'), 'success');
     });
 
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -291,12 +294,6 @@ export default function ProfilePage({
 
             <div className="p-6 space-y-5">
               {/* Feedback */}
-              {profileOp.state === 'success' && (
-                <div className="p-3 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-200 flex items-center gap-2">
-                  <CheckCircle2 size={16} className="text-green-500" />
-                  <p className="text-sm text-green-700 dark:text-green-400">{t('profile.profileUpdated')}</p>
-                </div>
-              )}
               {profileOp.state === 'error' && (
                 <div className="p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 flex items-center gap-2">
                   <AlertCircle size={16} className="text-red-500" />
@@ -367,12 +364,6 @@ export default function ProfilePage({
               </h3>
             </div>
             <div className="p-6 space-y-4">
-              {passwordOp.state === 'success' && (
-                <div className="p-3 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-200 flex items-center gap-2">
-                  <CheckCircle2 size={16} className="text-green-500" />
-                  <p className="text-sm text-green-700 dark:text-green-400">{t('profile.passwordChanged')}</p>
-                </div>
-              )}
               {passwordOp.state === 'error' && (
                 <div className="p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 flex items-center gap-2">
                   <AlertCircle size={16} className="text-red-500" />

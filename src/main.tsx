@@ -67,15 +67,19 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   }
 }
 
+import { ToastProvider } from './contexts/ToastContext';
+
 const rootElement = document.getElementById('root');
 if (rootElement) {
   const root = createRoot(rootElement);
   root.render(
     <React.StrictMode>
       <ErrorBoundary>
-        <LanguageProvider>
-          <App />
-        </LanguageProvider>
+        <ToastProvider>
+          <LanguageProvider>
+            <App />
+          </LanguageProvider>
+        </ToastProvider>
       </ErrorBoundary>
     </React.StrictMode>
   );

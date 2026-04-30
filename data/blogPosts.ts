@@ -17,6 +17,198 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
 	{
+		id: 'ai-traffic-system-dhaka-violations-fines',
+		slug: 'ai-traffic-system-dhaka-violations-fines',
+		title: 'AI-Driven Traffic System in Dhaka: No More Escaping Violations!',
+		bnTitle: 'ঢাকায় ট্রাফিক আইন ভাঙলে আর রেহাই নেই — AI ধরবে, জরিমানা আসবেই!',
+		excerpt: 'A major change is coming to Dhaka\'s traffic system. DMP\'s new AI-based initiative will automatically detect traffic violations at key intersections.',
+		bnExcerpt: 'ঢাকার ট্রাফিক সিস্টেমে বড় পরিবর্তন শুরু হয়ে গেছে। এখন থেকে শুধু ট্রাফিক পুলিশ না—AI-based system নিজেই শনাক্ত করবে কে আইন ভাঙছে।',
+		coverImage: '/blog/ai-traffic-system-dhaka.jpg',
+		author: 'KoyJabo Team',
+		publishDate: '2026-04-30',
+		readTime: '4 min read',
+		keywords: [
+			'Dhaka AI traffic system', 'DMP smart cameras Dhaka', 'traffic fine Bangladesh',
+			'automated traffic enforcement Dhaka', 'Dhaka smart city', 'KoyJabo traffic guide',
+			'avoid traffic fines Dhaka', 'DMP Hello app', 'smart traffic signal Dhaka'
+		],
+		category: 'Tips & Tricks',
+		content: `
+A major change is finally arriving in Dhaka's traffic management. From now on, it's not just the traffic police you need to watch out for — **an AI-based system will automatically detect who is breaking the law.**
+
+According to the new initiative by the Dhaka Metropolitan Police (DMP), smart cameras are being installed at key intersections across the city to automatically detect traffic violations.
+
+---
+
+## 🔍 What's Changing?
+
+✅ **Smart traffic signals** at 25+ major intersections
+✅ **24/7 camera monitoring**
+✅ **AI detection** for:
+- 🚫 Breaking traffic signals
+- 🚧 Illegal lane changes
+- ⚠️ Other traffic violations
+
+👉 **Direct legal action** will follow — there will be no room for escaping the system.
+
+---
+
+## ⚡ Why is this a Game Changer?
+
+**Before:**
+- Manual checks by officers
+- Time-consuming process
+- High chance of escaping undetected
+
+**Now:**
+- 🤖 Automated AI surveillance
+- ⚡ Instant detection and processing
+- 🔒 Minimal loopholes
+
+---
+
+## 📱 Other Smart Systems Coming Soon
+
+🔹 **Hello DMP App**
+Direct access to police services, complaints, and feedback.
+
+🔹 **Hotel Information System**
+Real-time guest data for enhanced city security.
+
+🔹 **7+ New DMP Softwares**
+Making operations faster, more transparent, and fully digital.
+
+---
+
+## 🧠 Why KoyJabo.com is Essential Now
+
+AI will now catch your mistakes — but **who will help you plan your journey to avoid those mistakes?**
+
+This is where **KoyJabo.com** comes in.
+
+**KoyJabo.com** helps you plan ahead:
+- 🚌 Find the **correct bus routes**
+- 🚇 Create smart trips by **combining Metro Rail + Bus**
+- ⏱️ Choose the **shortest routes** to save time
+- 💰 **Calculate costs** beforehand
+
+👉 This means you will know in advance:
+- Which roads are less chaotic
+- Where the heaviest traffic is
+- Which routes have the lowest risk of delays
+
+---
+
+## 🎯 The Real Impact
+
+**AI + Smart Planning = 🚀 Smart City Movement**
+
+- Reduced traffic violations
+- Increased discipline on the roads
+- Fewer hassles and fines for commuters
+- A smoother, easier daily life
+
+---
+
+## 🔥 Final Thoughts
+
+Dhaka is moving towards an **AI-driven traffic system**. The technology is getting smarter, and it's time for us to be smart too.
+
+**Before the AI catches you, plan your journey.**
+
+🌐 Plan your journey smartly with: **[KoyJabo.com](https://koyjabo.com)**
+🚀 Travel smart. Stay safe. Avoid violations.
+
+#DhakaTraffic #SmartCity #AI #KoyJabo #SafeTravel #Bangladesh
+`,
+		bnContent: `
+ঢাকার ট্রাফিক সিস্টেমে বড় পরিবর্তন শুরু হয়ে গেছে। এখন থেকে শুধু ট্রাফিক পুলিশ না—**AI-based system নিজেই শনাক্ত করবে কে আইন ভাঙছে**।
+
+ডিএমপির নতুন উদ্যোগ অনুযায়ী, শহরের গুরুত্বপূর্ণ মোড়গুলোতে বসানো হচ্ছে স্মার্ট ক্যামেরা, যা অটোমেটিকভাবে ট্রাফিক ভায়োলেশন ডিটেক্ট করবে।
+
+---
+
+## 🔍 কী কী পরিবর্তন আসছে?
+
+✅ ২৫+ মোড়ে স্মার্ট ট্রাফিক সিগন্যাল
+✅ ২৪/৭ ক্যামেরা মনিটরিং
+✅ AI দিয়ে শনাক্ত করা হবে:
+- 🚫 সিগন্যাল ভাঙা
+- 🚧 লেন পরিবর্তনের ভুল
+- ⚠️ অন্যান্য ট্রাফিক আইন লঙ্ঘন
+
+👉 এরপর সরাসরি আইনগত ব্যবস্থা—কোনো ছাড় নেই।
+
+---
+
+## ⚡ কেন এটা গেম চেঞ্জার?
+
+**আগে:**
+- ম্যানুয়াল চেক
+- সময়সাপেক্ষ
+- অনেক ক্ষেত্রে এড়িয়ে যাওয়া সম্ভব ছিল
+
+**এখন:**
+- 🤖 অটোমেটেড AI নজরদারি
+- ⚡ দ্রুত ব্যবস্থা
+- 🔒 কম ফাঁকফোকর
+
+---
+
+## 📱 আরও যেসব স্মার্ট সিস্টেম আসছে
+
+🔹 **Hello DMP App**
+সরাসরি পুলিশ সেবা, অভিযোগ, ফিডব্যাক।
+
+🔹 **Hotel Information System**
+রিয়েল-টাইম গেস্ট ডাটা, উন্নত সিকিউরিটি।
+
+🔹 **ডিএমপির ৭+ নতুন সফটওয়্যার**
+অপারেশন হবে আরও দ্রুত, ট্রান্সপারেন্ট ও ডিজিটাল।
+
+---
+
+## 🧠 এখানে KoyJabo.com কেন গুরুত্বপূর্ণ?
+
+AI এখন ভুল ধরবে—কিন্তু **ভুল না করার প্ল্যানিংটা কে করবে?**
+
+ এখানেই আসে **KoyJabo.com**
+
+**KoyJabo.com** আপনাকে আগে থেকেই হেল্প করে:
+- 🚌 সঠিক বাস রুট খুঁজতে
+- 🚇 মেট্রো + বাস কম্বাইন করে স্মার্ট ট্রিপ বানাতে
+- ⏱️ কম সময়ের রুট বেছে নিতে
+- 💰 খরচ হিসাব করতে
+
+👉 মানে, আপনি আগে থেকেই জানবেন:
+- কোন রাস্তায় কম ঝামেলা
+- কোথায় ট্রাফিক বেশি
+- কোন রুটে রিস্ক কম
+
+---
+
+## 🎯 Real Impact
+
+**AI + Smart Planning = 🚀 Smart City Movement**
+
+- ট্রাফিক আইন ভাঙা কমবে
+- রাস্তায় ডিসিপ্লিন বাড়বে
+- ঝামেলা ও জরিমানা কমবে
+- কমিউটার লাইফ হবে সহজ
+
+---
+
+## 🔥 শেষ কথা
+
+ঢাকা এখন যাচ্ছে **AI-driven traffic system**-এর দিকে। এখন স্মার্ট হওয়া আপনার হাতে: **AI ধরার আগে, আপনি প্ল্যান করুন।**
+
+🌐 Plan your journey smartly with: **[KoyJabo.com](https://koyjabo.com)**
+🚀 Travel smart. Stay safe. Avoid violations.
+
+#ঢাকা #ট্রাফিক #AI #KoyJabo #নিরাপদ_ভ্রমণ #বাংলাদেশ
+`
+	},
+	{
 		id: 'complete-guide-getting-around-dhaka',
 		slug: 'complete-guide-getting-around-dhaka',
 		title: 'Complete Guide to Getting Around Dhaka in 2026',

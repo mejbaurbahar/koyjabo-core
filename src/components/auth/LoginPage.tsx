@@ -3,6 +3,7 @@ import { Eye, EyeOff, LogIn, Loader2, AlertCircle, X, Lock } from 'lucide-react'
 import { loginUser, getAuthErrorKey, fetchAvatar } from '../../services/githubAuthService';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../../contexts/LanguageContext';
+import { useToast } from '../../contexts/ToastContext';
 
 interface LoginPageProps {
   onSignup: () => void;
@@ -18,6 +19,7 @@ function isValidEmail(v: string): boolean {
 export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClose }: LoginPageProps) {
   const { login } = useAuth();
   const { t } = useLanguage();
+  const { showToast } = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailTouched, setEmailTouched] = useState(false);
@@ -53,6 +55,7 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
         createdAt: Date.now()
       });
 
+      showToast(t('auth.validation.loginSuccess'), 'success');
       onSuccess();
     } catch (err) {
       const msg = err instanceof Error ? err.message : '';

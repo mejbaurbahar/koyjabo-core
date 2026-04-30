@@ -3,6 +3,7 @@ import { Eye, EyeOff, UserPlus, AlertCircle, CheckCircle2, Clock, X, Check } fro
 import { signupUser, getAuthErrorKey } from '../../services/githubAuthService';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../../contexts/LanguageContext';
+import { useToast } from '../../contexts/ToastContext';
 import { isTempMailEmail } from '../../utils/tempMailDomains';
 
 interface SignupPageProps {
@@ -95,6 +96,7 @@ function SignupProcessingScreen({
 export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPageProps) {
   const { login } = useAuth();
   const { t, language } = useLanguage();
+  const { showToast } = useToast();
 
   const getPasswordRules = (password: string): PasswordRule[] => [
     { label: t('auth.passwordRules.minChars'), met: password.length >= 8 },
@@ -221,6 +223,7 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
         avatarUrl: undefined,
         createdAt: Date.now()
       });
+      showToast(t('auth.validation.signupSuccess'), 'success');
       onSuccess();
     } catch (err) {
       const msg = err instanceof Error ? err.message : '';

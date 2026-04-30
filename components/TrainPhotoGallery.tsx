@@ -3,6 +3,7 @@ import { ArrowLeft, Camera, X, Upload, AlertCircle, CheckCircle, Trash2, Train, 
 import { getTrainPhotos, submitTrainPhoto, deleteTrainPhoto, TrainPhoto, getAuthUser } from '../services/communityDataService';
 import { trackFeatureUsage } from '../services/analyticsService';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useToast } from '../contexts/ToastContext';
 
 interface Props {
   trainId: string;
@@ -72,7 +73,7 @@ export default function TrainPhotoGallery({ trainId, trainName, onBack }: Props)
   const [lightbox, setLightbox] = useState<TrainPhoto | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<TrainPhoto | null>(null);
   const [deleting, setDeleting] = useState(false);
-  const [toast, setToast] = useState<{ type: 'success' | 'error'; msg: string } | null>(null);
+  const { showToast } = useToast();
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => { trackFeatureUsage('train_photos'); }, []);
@@ -81,20 +82,15 @@ export default function TrainPhotoGallery({ trainId, trainName, onBack }: Props)
     setLoading(true);
     getTrainPhotos(trainId)
       .then(p => setPhotos(p))
-      .catch(() => showToast('error', t('community.loadError') || 'Failed to load photos'))
+      .catch(() => showToast(t('community.loadError') || 'Failed to load photos', 'error'))
       .finally(() => setLoading(false));
   }, [trainId]);
-
-  const showToast = (type: 'success' | 'error', msg: string) => {
-    setToast({ type, msg });
-    setTimeout(() => setToast(null), 3000);
-  };
 
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith('image/')) {
-      showToast('error', 'Please select a valid image file.');
+      showToast('Please select a valid image file.', 'error');
       return;
     }
     setCompressing(true);
@@ -114,9 +110,9 @@ export default function TrainPhotoGallery({ trainId, trainName, onBack }: Props)
       setShowForm(false);
       setCaption('');
       setPreviewUrl(null);
-      showToast('success', t('community.photoUploaded') || 'Photo uploaded!');
+      showToast(t('community.photoUploaded') || 'Photo uploaded!', 'success');
     } else {
-      showToast('error', t('community.submitError') || 'Failed to upload. Please try again.');
+      showToast(t('community.submitError') || 'Failed to upload. Please try again.', 'error');
     }
     setSubmitting(false);
   };
@@ -129,9 +125,9 @@ export default function TrainPhotoGallery({ trainId, trainName, onBack }: Props)
       const fresh = await getTrainPhotos(trainId);
       setPhotos(fresh);
       if (lightbox?.id === deleteTarget.id) setLightbox(null);
-      showToast('success', 'Photo deleted.');
+      showToast(t('community.photoDeleted') || 'Photo deleted.', 'success');
     } else {
-      showToast('error', 'Failed to delete photo. Please try again.');
+      showToast(t('community.submitError') || 'Failed to delete photo. Please try again.', 'error');
     }
     setDeleteTarget(null);
     setDeleting(false);
@@ -139,16 +135,6 @@ export default function TrainPhotoGallery({ trainId, trainName, onBack }: Props)
 
   return (
     <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-hidden">
-      {/* Toast */}
-      {toast && (
-        <div className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-4 py-3 rounded-xl shadow-xl text-sm font-semibold transition-all ${
-          toast.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
-        }`}>
-          {toast.type === 'success' ? <CheckCircle className="w-4 h-4 shrink-0" /> : <AlertCircle className="w-4 h-4 shrink-0" />}
-          {toast.msg}
-        </div>
-      )}
-
       {/* Header */}
       <div className="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
         <button onClick={onBack} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full">

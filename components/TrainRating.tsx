@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowLeft, Star, Train, AlertCircle, CheckCircle } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useToast } from '../contexts/ToastContext';
 import { getAuthUser, getTrainRatings, submitTrainRating, deleteTrainRating, TrainRatingSummary } from '../services/communityDataService';
 import { trackFeatureUsage } from '../services/analyticsService';
 
@@ -65,7 +66,7 @@ export default function TrainRating({ trainId, trainName, onBack }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [hovered, setHovered] = useState(0);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [toast, setToast] = useState<{ type: 'success' | 'error'; msg: string } | null>(null);
+  const { showToast } = useToast();
 
   useEffect(() => { trackFeatureUsage('train_rating'); }, []);
 
@@ -73,14 +74,9 @@ export default function TrainRating({ trainId, trainName, onBack }: Props) {
     setLoading(true);
     getTrainRatings(trainId)
       .then(d => setSummary(d))
-      .catch(() => showToast('error', t('community.loadError') || 'Failed to load ratings'))
+      .catch(() => showToast(t('community.loadError') || 'Failed to load ratings', 'error'))
       .finally(() => setLoading(false));
   }, [trainId]);
-
-  const showToast = (type: 'success' | 'error', msg: string) => {
-    setToast({ type, msg });
-    setTimeout(() => setToast(null), 3000);
-  };
 
   const myRating = summary?.ratings.find(r => r.userId === user?.id);
 
@@ -94,9 +90,9 @@ export default function TrainRating({ trainId, trainName, onBack }: Props) {
       setShowForm(false);
       setComment('');
       setStars(5);
-      showToast('success', t('community.ratingSubmitted') || 'Rating saved!');
+      showToast(t('community.ratingSubmitted') || 'Rating saved!', 'success');
     } else {
-      showToast('error', t('community.submitError') || 'Failed to save. Please try again.');
+      showToast(t('community.submitError') || 'Failed to save. Please try again.', 'error');
     }
     setSubmitting(false);
   };
@@ -110,9 +106,9 @@ export default function TrainRating({ trainId, trainName, onBack }: Props) {
       setShowForm(false);
       setComment('');
       setStars(5);
-      showToast('success', t('community.ratingDeleted') || 'Rating removed.');
+      showToast(t('community.ratingDeleted') || 'Rating removed.', 'success');
     } else {
-      showToast('error', t('community.submitError') || 'Failed. Please try again.');
+      showToast(t('community.submitError') || 'Failed. Please try again.', 'error');
     }
     setShowDeleteModal(false);
     setSubmitting(false);
@@ -131,16 +127,6 @@ export default function TrainRating({ trainId, trainName, onBack }: Props) {
 
   return (
     <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-hidden">
-      {/* Toast */}
-      {toast && (
-        <div className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-4 py-3 rounded-xl shadow-xl text-sm font-semibold transition-all ${
-          toast.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
-        }`}>
-          {toast.type === 'success' ? <CheckCircle className="w-4 h-4 shrink-0" /> : <AlertCircle className="w-4 h-4 shrink-0" />}
-          {toast.msg}
-        </div>
-      )}
-
       <div className="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
         <button onClick={onBack} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full">
           <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
