@@ -565,6 +565,12 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
             </div>
           </div>
         )}
+        <button
+          onClick={() => setShowLayers(v => !v)}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border transition-all ${showLayers ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 border-slate-900 dark:border-white' : 'bg-white/90 dark:bg-slate-800/90 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-slate-600 backdrop-blur-sm hover:bg-white dark:hover:bg-slate-700'}`}
+        >
+          <Layers className="w-3.5 h-3.5" />
+          Layers
         </button>
 
         <button
