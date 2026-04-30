@@ -102,6 +102,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
     const [gpsAccuracy, setGpsAccuracy] = useState<number | null>(null);
     const [sheetExpanded, setSheetExpanded] = useState(false);
     const [nearestStopIdx, setNearestStopIdx] = useState<number>(-1);
+    const [is3D, setIs3D] = useState(false);
 
     // ── Online/Offline ──────────────────────────────────────────────────────────
     useEffect(() => {
@@ -248,7 +249,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                 const size = isFirst || isLast ? 38 : 28;
                 const stopIcon = L.divIcon({
                     className: 'bg-transparent border-none',
-                    html: `<div style="position:relative; width:${size}px; height:${size}px; margin-left:-${size/2}px; margin-top:-${size/2}px;">
+                    html: `<div style="position:relative; width:${size}px; height:${size}px; margin-left:-${size/2}px; margin-top:-${size/2}px; transition: transform 0.7s ease-in-out; transform: ${is3D ? 'rotateX(-50deg)' : 'none'};">
                         ${isNearest ? `<div class="absolute inset-0 bg-blue-500/30 rounded-full animate-pulse-ring"></div>` : ''}
                         <div style="
                             position:absolute; inset:0;
@@ -256,7 +257,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                             border:3px solid ${isNearest ? '#3b82f6' : color};
                             border-radius:50%;
                             display:flex;align-items:center;justify-content:center;
-                            box-shadow:0 4px 12px rgba(0,0,0,0.15);
+                            box-shadow:${is3D ? '0 10px 20px rgba(0,0,0,0.3)' : '0 4px 12px rgba(0,0,0,0.15)'};
                             font-weight:800;
                             font-size:${isFirst || isLast ? 14 : 11}px;
                             color:${isFirst || isLast ? '#fff' : (isNearest ? '#3b82f6' : color)};
@@ -349,9 +350,9 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
 
         const userIcon = L.divIcon({
             className: 'bg-transparent border-none',
-            html: `<div style="position:relative;width:28px;height:28px;margin-left:-14px;margin-top:-14px">
+            html: `<div style="position:relative;width:28px;height:28px;margin-left:-14px;margin-top:-14px; transition: transform 0.7s ease-in-out; transform: ${is3D ? 'rotateX(-50deg)' : 'none'};">
                 <div style="position:absolute;inset:0;background:#3b82f6;opacity:0.2;border-radius:50%;animation:ping 1.5s cubic-bezier(0,0,0.2,1) infinite"></div>
-                <div style="position:absolute;inset:4px;background:#3b82f6;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(59,130,246,0.5)"></div>
+                <div style="position:absolute;inset:4px;background:#3b82f6;border:3px solid #fff;border-radius:50%;box-shadow: ${is3D ? '0 8px 16px rgba(59,130,246,0.6)' : '0 2px 8px rgba(59,130,246,0.5)'}"></div>
                 ${heading !== null ? `<div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%) rotate(${heading}deg);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:10px solid #3b82f6"></div>` : ''}
             </div>`,
             iconSize: [28, 28],
@@ -442,9 +443,9 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
             } else {
                 const busIcon = L.divIcon({
                     className: 'bg-transparent border-none',
-                    html: `<div style="position:relative;width:36px;height:36px;margin:-18px 0 0 -18px">
+                    html: `<div style="position:relative;width:36px;height:36px;margin:-18px 0 0 -18px; transition: transform 0.7s ease-in-out; transform: ${is3D ? 'rotateX(-50deg)' : 'none'};">
                         <div style="position:absolute;inset:0;background:#22c55e;opacity:0.2;border-radius:50%;animation:ping 2s cubic-bezier(0,0,0.2,1) infinite"></div>
-                        <div style="position:absolute;inset:4px;background:#fff;border:2.5px solid #16a34a;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.2)">
+                        <div style="position:absolute;inset:4px;background:#fff;border:2.5px solid #16a34a;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow: ${is3D ? '0 10px 20px rgba(0,0,0,0.3)' : '0 2px 8px rgba(0,0,0,0.2)'}">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M8 6v6"/><path d="M15 6v6"/><path d="M2 12h19.6"/>
                                 <path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3"/>
@@ -501,7 +502,20 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                 onClick={(e) => e.stopPropagation()}
             >
             {/* Map fills everything */}
-            <div ref={mapContainerRef} className="absolute inset-0 z-0 bg-slate-100 dark:bg-slate-800" />
+            <div 
+                ref={mapContainerRef} 
+                className={`absolute inset-0 z-0 bg-slate-100 dark:bg-slate-800 transition-all duration-700 ease-in-out ${is3D ? 'scale-125' : ''}`}
+                style={is3D ? {
+                    perspective: '1200px',
+                    transform: 'rotateX(50deg) translateY(-5%)',
+                    transformOrigin: 'bottom'
+                } : {}}
+            />
+
+            {/* 3D Fog Effect */}
+            {is3D && (
+                <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-white dark:from-slate-900 to-transparent z-[300] pointer-events-none opacity-80" />
+            )}
 
             {/* ── Top status bar ── */}
             <div className="absolute top-0 left-0 right-0 z-[400] pointer-events-none px-3 pt-3 flex items-start justify-between gap-2">
@@ -590,6 +604,15 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                             </div>
                         )}
                     </div>
+
+                        <button
+                            onClick={() => setIs3D(!is3D)}
+                            className={`bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2.5 rounded-xl shadow-lg border border-white/30 dark:border-slate-700/50 transition-all ${is3D ? 'text-blue-500 ring-2 ring-blue-500/50 scale-105' : 'text-gray-700 dark:text-gray-200 active:scale-95'}`}
+                            title="Toggle 3D View"
+                        >
+                            <Globe className={`w-5 h-5 transition-transform duration-500 ${is3D ? 'rotate-12' : ''}`} />
+                            <span className="absolute -bottom-1 -right-1 bg-blue-500 text-[8px] font-black text-white px-1 rounded-sm shadow-sm">3D</span>
+                        </button>
 
                     {/* Close */}
                     <button

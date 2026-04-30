@@ -78,6 +78,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
   const [showRailway, setShowRailway] = useState(false);
   const [showAirport, setShowAirport] = useState(false);
   const [routeSnapped, setRouteSnapped] = useState(false);
+  const [is3D, setIs3D] = useState(false);
 
   const routeColor = getRouteColor(route.id);
 
@@ -307,19 +308,19 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
       const w = isStart || isEnd || isNearest ? size : 14;
       const br = isStart || isEnd || isNearest ? 12 : '50%';
 
+      const displayCoord = (snapped && snappedWaypoints && snappedWaypoints[idx]) ? snappedWaypoints[idx] : coord;
       const icon = L.divIcon({
         className: 'custom-bus-marker',
         iconSize: [w, h],
         iconAnchor: [w / 2, h / 2],
         html: `
-          <div class="relative flex items-center justify-center">
+          <div class="relative flex items-center justify-center" style="transition: transform 0.7s ease-in-out; transform: ${is3D ? 'rotateX(-50deg)' : 'none'};">
             ${(isStart || isEnd || isNearest) ? `<div class="absolute w-full h-full bg-${isStart ? 'green' : isEnd ? 'slate' : 'indigo'}-400/30 rounded-full animate-ping" style="padding: 10px;"></div>` : ''}
-            <div style="width:${w}px;height:${h}px;border-radius:${br}px;background:${bg};border:2px solid ${border};display:flex;align-items:center;justify-content:center;font-size:${fontSize}px;font-weight:700;color:${textColor};box-shadow:0 2px 6px rgba(0,0,0,0.3);white-space:nowrap;padding:0 8px;font-family:sans-serif;position:relative;z-index:1;">${label}</div>
+            <div style="width:${w}px;height:${h}px;border-radius:${br}px;background:${bg};border:2px solid ${border};display:flex;align-items:center;justify-content:center;font-size:${fontSize}px;font-weight:700;color:${textColor};box-shadow:${is3D ? '0 8px 16px rgba(0,0,0,0.4)' : '0 2px 6px rgba(0,0,0,0.3)'};white-space:nowrap;padding:0 8px;font-family:sans-serif;position:relative;z-index:1;">${label}</div>
           </div>
         `,
       });
 
-      const displayCoord = (snapped && snappedWaypoints && snappedWaypoints[idx]) ? snappedWaypoints[idx] : coord;
       L.marker(displayCoord, { icon, zIndexOffset: (isStart || isEnd || isNearest) ? 1000 : 500 })
         .bindTooltip(`<b>${station.name}</b><br><small>${station.bnName}</small>`, {
           direction: 'top',
@@ -480,7 +481,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
           className: '',
           iconSize: [20, 20],
           iconAnchor: [10, 10],
-          html: `<div style="width:20px;height:20px;border-radius:50%;background:#3b82f6;border:3px solid #fff;box-shadow:0 0 0 2px #3b82f6,0 2px 6px rgba(0,0,0,0.3);"></div>`,
+          html: `<div style="width:20px;height:20px;border-radius:50%;background:#3b82f6;border:3px solid #fff;box-shadow:0 0 0 2px #3b82f6,0 2px 6px rgba(0,0,0,0.3); transition: transform 0.7s ease-in-out; transform: ${is3D ? 'rotateX(-50deg)' : 'none'};"></div>`,
         });
         userMarkerRef.current = L.marker([userLocation.lat, userLocation.lng], { icon: userIcon, zIndexOffset: 1000 })
           .bindTooltip('আপনি এখানে', { direction: 'top', className: 'leaflet-tooltip-bus' })
@@ -491,7 +492,20 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
 
   return (
     <div className="relative z-0 isolate w-full rounded-b-2xl overflow-hidden" style={{ height: 310 }}>
-      <div ref={mapRef} className="w-full h-full" />
+      <div 
+        ref={mapRef} 
+        className={`w-full h-full transition-all duration-700 ease-in-out ${is3D ? 'scale-125' : ''}`} 
+        style={is3D ? {
+          perspective: '1000px',
+          transform: 'rotateX(50deg) translateY(-5%)',
+          transformOrigin: 'bottom'
+        } : {}}
+      />
+
+      {/* 3D Fog Effect */}
+      {is3D && (
+        <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-white dark:from-slate-900/50 to-transparent z-[300] pointer-events-none opacity-60" />
+      )}
 
       {/* Route badge */}
       <div
@@ -551,12 +565,17 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
             </div>
           </div>
         )}
+        </button>
+
         <button
-          onClick={() => setShowLayers(v => !v)}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border transition-all ${showLayers ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 border-slate-900 dark:border-white' : 'bg-white/90 dark:bg-slate-800/90 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-slate-600 backdrop-blur-sm hover:bg-white dark:hover:bg-slate-700'}`}
+          onClick={() => setIs3D(v => !v)}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border transition-all ${is3D ? 'bg-blue-500 text-white border-blue-500 scale-105' : 'bg-white/90 dark:bg-slate-800/90 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-slate-600 backdrop-blur-sm'}`}
         >
-          <Layers className="w-3.5 h-3.5" />
-          Layers
+          <span className="relative flex h-2 w-2">
+            {is3D && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>}
+            <span className={`relative inline-flex rounded-full h-2 w-2 ${is3D ? 'bg-white' : 'bg-blue-500'}`}></span>
+          </span>
+          3D View
         </button>
       </div>
 

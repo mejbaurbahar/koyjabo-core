@@ -64,6 +64,7 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
   const [mapReady, setMapReady] = useState(false);
   const [showLayers, setShowLayers] = useState(false);
   const [routeSnapped, setRouteSnapped] = useState(false);
+  const [is3D, setIs3D] = useState(false);
 
   const drawableStops = route.stops.filter(id => !!TRAIN_STATIONS[id]);
   const stopCoords: [number, number][] = drawableStops.map(id => [TRAIN_STATIONS[id].lat, TRAIN_STATIONS[id].lng]);
@@ -171,9 +172,9 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
           const nearestLabel = bn ? 'নিকটস্থ স্টেশন' : 'Nearest Station';
           w = 110; h = 42; ax = 55; ay = 38;
           html = `
-            <div class="relative flex flex-col items-center gap-1">
+            <div class="relative flex flex-col items-center gap-1" style="transition: transform 0.7s ease-in-out; transform: ${is3D ? 'rotateX(-50deg)' : 'none'};">
               <div class="absolute w-[30px] h-[30px] bg-amber-400/30 rounded-full animate-ping top-[24px]"></div>
-              <div style="width:110px;padding:3px 6px;border-radius:12px;background:#f59e0b;border:2px solid #d97706;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;box-shadow:0 2px 8px rgba(245,158,11,0.5);font-family:sans-serif;box-sizing:border-box;gap:4px;position:relative;z-index:2;">
+              <div style="width:110px;padding:3px 6px;border-radius:12px;background:#f59e0b;border:2px solid #d97706;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;box-shadow:${is3D ? '0 10px 20px rgba(0,0,0,0.4)' : '0 2px 8px rgba(245,158,11,0.5)'};font-family:sans-serif;box-sizing:border-box;gap:4px;position:relative;z-index:2;">
                 <span style="width:6px;height:6px;border-radius:50%;background:#fff;display:inline-block;animation:pulse 1s infinite;"></span>${nearestLabel}
               </div>
               <div style="width:10px;height:10px;border-radius:50%;background:#f59e0b;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.25);box-sizing:border-box;position:relative;z-index:2;"></div>
@@ -183,9 +184,9 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
           const startLabel = bn ? 'শুরু' : 'Start';
           w = 52; h = 34; ax = 26; ay = 30;
           html = `
-            <div class="relative flex flex-col items-center gap-1">
+            <div class="relative flex flex-col items-center gap-1" style="transition: transform 0.7s ease-in-out; transform: ${is3D ? 'rotateX(-50deg)' : 'none'};">
               <div class="absolute w-[24px] h-[24px] bg-emerald-400/30 rounded-full animate-ping top-[18px]"></div>
-              <div style="width:52px;height:24px;border-radius:12px;background:#10b981;border:2px solid #059669;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.35);font-family:sans-serif;box-sizing:border-box;position:relative;z-index:2;">${startLabel}</div>
+              <div style="width:52px;height:24px;border-radius:12px;background:#10b981;border:2px solid #059669;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:${is3D ? '0 10px 20px rgba(0,0,0,0.4)' : '0 2px 6px rgba(0,0,0,0.35)'};font-family:sans-serif;box-sizing:border-box;position:relative;z-index:2;">${startLabel}</div>
               <div style="width:8px;height:8px;border-radius:50%;background:#10b981;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.25);box-sizing:border-box;position:relative;z-index:2;"></div>
             </div>`;
         } else if (isLast) {
@@ -193,9 +194,9 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
           const destLabel = bn ? 'গন্তব্য' : 'Destination';
           w = 76; h = 34; ax = 38; ay = 30;
           html = `
-            <div class="relative flex flex-col items-center gap-1">
+            <div class="relative flex flex-col items-center gap-1" style="transition: transform 0.7s ease-in-out; transform: ${is3D ? 'rotateX(-50deg)' : 'none'};">
               <div class="absolute w-[24px] h-[24px] bg-slate-400/30 rounded-full animate-ping top-[18px]"></div>
-              <div style="width:76px;height:24px;border-radius:12px;background:#1e293b;border:2px solid #0f172a;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.35);font-family:sans-serif;box-sizing:border-box;position:relative;z-index:2;">${destLabel}</div>
+              <div style="width:76px;height:24px;border-radius:12px;background:#1e293b;border:2px solid #0f172a;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:${is3D ? '0 10px 20px rgba(0,0,0,0.4)' : '0 2px 6px rgba(0,0,0,0.35)'};font-family:sans-serif;box-sizing:border-box;position:relative;z-index:2;">${destLabel}</div>
               <div style="width:8px;height:8px;border-radius:50%;background:#1e293b;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.25);box-sizing:border-box;position:relative;z-index:2;"></div>
             </div>`;
         } else {
@@ -204,10 +205,10 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
           const dot = 10;
           w = dot; h = dot; ax = dot / 2; ay = dot / 2;
         const stLabel = bn ? station.bnName : station.name;
-        html = `<div style="position:relative;width:${dot}px;height:${dot}px;">` +
-          `<div style="width:${dot}px;height:${dot}px;border-radius:50%;background:#fff;border:2px solid ${route.color};box-shadow:0 1px 4px rgba(0,0,0,0.25);box-sizing:border-box;"></div>` +
-          `<div style="position:absolute;top:${dot + 2}px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.95);color:#1e293b;padding:1px 5px;border-radius:4px;font-size:9px;font-weight:600;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.2);line-height:1.5;pointer-events:none;">${stLabel}</div>` +
-          `</div>`;
+          html = `<div style="position:relative;width:${dot}px;height:${dot}px; transition: transform 0.7s ease-in-out; transform: ${is3D ? 'rotateX(-50deg)' : 'none'};">` +
+            `<div style="width:${dot}px;height:${dot}px;border-radius:50%;background:#fff;border:2px solid ${route.color};box-shadow:${is3D ? '0 6px 12px rgba(0,0,0,0.3)' : '0 1px 4px rgba(0,0,0,0.25)'};box-sizing:border-box;"></div>` +
+            `<div style="position:absolute;top:${dot + 2}px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.95);color:#1e293b;padding:1px 5px;border-radius:4px;font-size:9px;font-weight:600;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.2);line-height:1.5;pointer-events:none;">${stLabel}</div>` +
+            `</div>`;
       }
 
       const icon = L.divIcon({
@@ -231,7 +232,7 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
 
     return () => { cancelled = true; };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [route.id, currentStopId]);
+  }, [route.id, currentStopId, is3D]);
 
   // ── Effect 2: Highlight segment (fare calc) ──────────────────────────────────
   useEffect(() => {
@@ -279,8 +280,8 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
         className: '',
         iconSize: [90, 42],
         iconAnchor: [45, 38],
-        html: `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">` +
-          `<div style="width:90px;padding:3px 6px;border-radius:12px;background:#3b82f6;border:2px solid #2563eb;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;box-shadow:0 2px 8px rgba(59,130,246,0.5);font-family:sans-serif;box-sizing:border-box;gap:4px;">` +
+        html: `<div style="display:flex;flex-direction:column;align-items:center;gap:2px; transition: transform 0.7s ease-in-out; transform: ${is3D ? 'rotateX(-50deg)' : 'none'};">` +
+          `<div style="width:90px;padding:3px 6px;border-radius:12px;background:#3b82f6;border:2px solid #2563eb;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;box-shadow:${is3D ? '0 10px 20px rgba(0,0,0,0.4)' : '0 2px 8px rgba(59,130,246,0.5)'};font-family:sans-serif;box-sizing:border-box;gap:4px;">` +
           `<span style="width:6px;height:6px;border-radius:50%;background:#fff;display:inline-block;animation:ping 1s cubic-bezier(0,0,0.2,1) infinite;"></span>${hereLabel}</div>` +
           `<div style="width:8px;height:8px;border-radius:50%;background:#3b82f6;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.25);box-sizing:border-box;"></div>` +
           `</div>`
@@ -301,7 +302,7 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
         ).addTo(map);
       }
     }
-  }, [userLocation, currentStopId]);
+  }, [userLocation, currentStopId, is3D]);
 
   // ── Cleanup on unmount ───────────────────────────────────────────────────────
   useEffect(() => {
@@ -320,7 +321,20 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
 
   return (
     <div className="relative w-full h-full" style={{ touchAction: 'none' }}>
-      <div ref={mapRef} className="w-full h-full" />
+      <div 
+        ref={mapRef} 
+        className={`w-full h-full transition-all duration-700 ease-in-out ${is3D ? 'scale-125' : ''}`}
+        style={is3D ? {
+          perspective: '1000px',
+          transform: 'rotateX(50deg) translateY(-5%)',
+          transformOrigin: 'bottom'
+        } : {}}
+      />
+
+      {/* 3D Fog Effect */}
+      {is3D && (
+        <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-white dark:from-slate-900/50 to-transparent z-[300] pointer-events-none opacity-60" />
+      )}
 
       {!mapReady && (
         <div className="absolute inset-0 flex items-center justify-center bg-slate-900/80 z-10">
@@ -338,14 +352,28 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
         </div>
       )}
 
-      <button
-        onClick={() => setShowLayers(v => !v)}
-        className="absolute top-2 right-2 z-[500] p-2 bg-white dark:bg-slate-800 rounded-full shadow-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700"
-      >
-        <Layers className="w-4 h-4" />
-      </button>
+      <div className="absolute top-2 right-2 z-[500] flex flex-col gap-2">
+        <button
+          onClick={() => setShowLayers(v => !v)}
+          className="p-2 bg-white dark:bg-slate-800 rounded-full shadow-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700"
+        >
+          <Layers className="w-4 h-4" />
+        </button>
+
+        <button
+          onClick={() => setIs3D(v => !v)}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border transition-all ${is3D ? 'bg-blue-500 text-white border-blue-500 scale-105' : 'bg-white/90 dark:bg-slate-800/90 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-slate-600 backdrop-blur-sm'}`}
+        >
+          <span className="relative flex h-2 w-2">
+            {is3D && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>}
+            <span className={`relative inline-flex rounded-full h-2 w-2 ${is3D ? 'bg-white' : 'bg-blue-500'}`}></span>
+          </span>
+          3D View
+        </button>
+      </div>
+      
       {showLayers && (
-        <div className="absolute top-12 right-2 z-[500] bg-white dark:bg-slate-800 rounded-xl shadow-lg p-3 w-40 text-xs font-medium text-gray-700 dark:text-gray-300">
+        <div className="absolute top-20 right-2 z-[500] bg-white dark:bg-slate-800 rounded-xl shadow-lg p-3 w-40 text-xs font-medium text-gray-700 dark:text-gray-300">
           <div className="flex items-center gap-2 mb-1">
             <Train className="w-3.5 h-3.5 text-blue-500" />
             <span>{bn ? 'রেল রুট ম্যাপ' : 'Rail Route Map'}</span>
