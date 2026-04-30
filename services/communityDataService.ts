@@ -378,7 +378,7 @@ export async function deleteBusPhoto(busId: string, photoId: string): Promise<bo
   existing.photos = existing.photos.filter(p => !(p.id === photoId && p.userId === user.id));
   if (existing.photos.length === before) return false; // photo not found or not owned by user
   if (existing.photos.length === 0) {
-    return repoDelete(`data/photos/${busId}.json`, `photo-delete-all: ${busId}`);
+    return repoPut(`data/photos/${busId}.json`, { busId, photos: [] }, `photo-delete-all: ${busId}`);
   }
   return repoPut(`data/photos/${busId}.json`, existing, `photo-delete: ${photoId}`);
 }
@@ -437,7 +437,7 @@ export async function deleteTrainPhoto(trainId: string, photoId: string): Promis
   existing.photos = existing.photos.filter(p => !(p.id === photoId && p.userId === user.id));
   if (existing.photos.length === before) return false;
   if (existing.photos.length === 0) {
-    return repoDelete(`data/train-photos/${trainId}.json`, `train-photo-delete-all: ${trainId}`);
+    return repoPut(`data/train-photos/${trainId}.json`, { trainId, photos: [] }, `train-photo-delete-all: ${trainId}`);
   }
   return repoPut(`data/train-photos/${trainId}.json`, existing, `train-photo-delete: ${photoId}`);
 }
