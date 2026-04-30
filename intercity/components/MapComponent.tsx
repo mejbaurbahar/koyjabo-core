@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { DISTRICT_COORDINATES } from '../constants';
+import * as Cesium from 'cesium';
+import 'cesium/Build/Cesium/Widgets/widgets.css';
 
 interface MapComponentProps {
   from: string;
@@ -68,6 +70,9 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
   const mapInstance = useRef<any>(null);
   const layerGroup = useRef<any>(null);
   const animationRef = useRef<number | null>(null);
+  const [is3D, setIs3D] = React.useState(false);
+  const cesiumContainerRef = useRef<HTMLDivElement>(null);
+  const cesiumViewerRef = useRef<Cesium.Viewer | null>(null);
 
   useEffect(() => {
     if (!window.L || !mapRef.current) return;
@@ -322,9 +327,150 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
 
-  }, [from, to, via, modeTitle]);
+  }, [from, to, via, modeTitle, is3D]);
 
-  return <div ref={mapRef} className="w-full h-full bg-slate-100" />;
+  // Cesium 3D Globe Logic
+  useEffect(() => {
+    if (!is3D || !cesiumContainerRef.current) {
+      if (cesiumViewerRef.current) {
+        cesiumViewerRef.current.destroy();
+        cesiumViewerRef.current = null;
+      }
+      return;
+    }
+
+    const initCesium = async () => {
+      if (!cesiumContainerRef.current) return;
+      
+      try {
+        const viewer = new Cesium.Viewer(cesiumContainerRef.current, {
+          terrain: Cesium.Terrain.fromWorldTerrain(),
+          animation: false,
+          timeline: false,
+          baseLayerPicker: false,
+          geocoder: false,
+          homeButton: false,
+          infoBox: false,
+          sceneModePicker: false,
+          selectionIndicator: false,
+          navigationHelpButton: false,
+          navigationInstructionsInitiallyVisible: false,
+          fullscreenButton: false,
+          skyAtmosphere: new Cesium.SkyAtmosphere(),
+          msaaSamples: 4,
+        });
+
+        // High-end visuals
+        viewer.scene.fog.enabled = true;
+        viewer.scene.fog.density = 0.0001;
+        viewer.scene.light = new Cesium.DirectionalLight({
+          direction: new Cesium.Cartesian3(0.5, -0.2, -1.0),
+          intensity: 2.0
+        });
+
+        // Add 3D Buildings
+        const buildingTileset = await Cesium.createOsmBuildingsAsync({
+          defaultColor: Cesium.Color.fromCssColorString('#f1f5f9'),
+        });
+        viewer.scene.primitives.add(buildingTileset);
+
+        // Draw routes in 3D
+        const getCoords = (name: string): [number, number] | null => {
+          if (!name) return null;
+          let searchName = name;
+          const bnMatch = Object.keys(BENGALI_TO_ENGLISH_NAMES).find(bn => name && name.includes(bn));
+          if (bnMatch) searchName = BENGALI_TO_ENGLISH_NAMES[bnMatch];
+          const key = Object.keys(DISTRICT_COORDINATES).find(k => {
+            const sName = (searchName || '').toLowerCase();
+            const kName = k.toLowerCase();
+            return sName.includes(kName) || kName.includes(sName);
+          });
+          return key ? DISTRICT_COORDINATES[key] : null;
+        };
+
+        const start = getCoords(from);
+        const end = getCoords(to);
+
+        if (start && end) {
+          // Route line
+          viewer.entities.add({
+            polyline: {
+              positions: [
+                Cesium.Cartesian3.fromDegrees(start[1], start[0]),
+                Cesium.Cartesian3.fromDegrees(end[1], end[0])
+              ],
+              width: 8,
+              material: Cesium.Color.fromCssColorString('#2563eb'),
+              clampToGround: true
+            }
+          });
+
+          // Destination marker
+          viewer.entities.add({
+            position: Cesium.Cartesian3.fromDegrees(end[1], end[0]),
+            point: { pixelSize: 15, color: Cesium.Color.RED, outlineColor: Cesium.Color.WHITE, outlineWidth: 3, disableDepthTestDistance: Number.POSITIVE_INFINITY },
+            label: {
+              text: to,
+              font: 'bold 14px sans-serif',
+              verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+              pixelOffset: new Cesium.Cartesian2(0, -15),
+              fillColor: Cesium.Color.WHITE,
+              outlineColor: Cesium.Color.BLACK,
+              outlineWidth: 2,
+              showBackground: true,
+              backgroundColor: Cesium.Color.fromCssColorString('rgba(0,0,0,0.5)'),
+              disableDepthTestDistance: Number.POSITIVE_INFINITY
+            }
+          });
+          
+          viewer.zoomTo(viewer.entities);
+        }
+
+        cesiumViewerRef.current = viewer;
+      } catch (e) {
+        console.error('Cesium init error:', e);
+      }
+    };
+
+    initCesium();
+
+    return () => {
+      if (cesiumViewerRef.current) {
+        cesiumViewerRef.current.destroy();
+        cesiumViewerRef.current = null;
+      }
+    };
+  }, [is3D, from, to]);
+
+  return (
+    <div className="w-full h-full relative z-0">
+      {/* 2D Leaflet Map */}
+      <div 
+        className={`w-full h-full transition-opacity duration-500 ${is3D ? 'opacity-0 pointer-events-none' : 'opacity-100'}`} 
+      >
+        <div ref={mapRef} className="w-full h-full bg-slate-100" />
+      </div>
+
+      {/* 3D Cesium Globe */}
+      {is3D && (
+        <div 
+          ref={cesiumContainerRef} 
+          className="absolute inset-0 z-[10] animate-in fade-in duration-700" 
+        />
+      )}
+
+      {/* 3D Toggle */}
+      <button
+        onClick={() => setIs3D(!is3D)}
+        className="absolute bottom-14 right-4 z-[500] flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 hover:scale-105 transition-all"
+      >
+        <span className="text-[10px] font-black uppercase tracking-widest bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+          {is3D ? '2D Map' : '3D Globe'}
+        </span>
+        <div className={`w-2 h-2 rounded-full ${is3D ? 'bg-blue-600' : 'bg-emerald-500'} animate-pulse`} />
+      </button>
+    </div>
+  );
 };
 
 export default MapComponent;
