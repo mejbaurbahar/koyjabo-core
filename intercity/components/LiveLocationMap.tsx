@@ -180,6 +180,11 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                     msaaSamples: 4,
                 });
 
+                // Hide Cesium branding/credits
+                if (viewer.cesiumWidget.creditContainer) {
+                    (viewer.cesiumWidget.creditContainer as HTMLElement).style.display = 'none';
+                }
+
                 // High-end visuals
                 viewer.scene.fog.enabled = true;
                 viewer.scene.fog.density = 0.0001;
