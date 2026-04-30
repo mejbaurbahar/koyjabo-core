@@ -12,6 +12,9 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { liveBusService, LiveBus } from '../services/liveBusService';
 import * as Cesium from 'cesium';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
+
+// Suppress Cesium default token warning
+Cesium.Ion.defaultAccessToken = '';
 import StationDigitalTwin from './StationDigitalTwin';
 
 // Fix default marker icons

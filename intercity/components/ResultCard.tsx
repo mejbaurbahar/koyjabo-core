@@ -26,9 +26,10 @@ import { useLanguage } from '../contexts/LanguageContext';
 
 interface ResultCardProps {
   data: RouteResponse;
+  userLocation?: { lat: number; lng: number } | null;
 }
 
-const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
+const ResultCard: React.FC<ResultCardProps> = ({ data, userLocation }) => {
   const { t, formatNumber } = useLanguage();
   const parsedData = useMemo(() => parseRouteMarkdown(data.result || ''), [data.result]);
 
@@ -218,6 +219,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
           to={data.to}
           via={currentModeStops}
           modeTitle={selectedMode?.title || 'Route'}
+          userLocation={userLocation}
         />
 
         {/* Floating Map Bottom Tip */}

@@ -925,4 +925,9 @@ footer {
 
 .animate-pulse-dot {
   animation: pulse-dot 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
-}
+}
+
+/* Suppress Cesium default token warning and credits */
+.cesium-widget-credits {
+  display: none !important;
+}

@@ -4,8 +4,12 @@ import { RouteStep, TransportMode } from '../types';
 import * as Cesium from 'cesium';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
 
+// Suppress Cesium default token warning
+Cesium.Ion.defaultAccessToken = '';
+
 interface RouteMapProps {
   steps: RouteStep[];
+  userLocation?: { lat: number; lng: number } | null;
 }
 
 // Major Bangladesh cities coordinates (fallback if coordinates not provided)
@@ -93,7 +97,7 @@ const getTransportName = (mode: TransportMode): string => {
   }
 };
 
-export const RouteMap: React.FC<RouteMapProps> = ({ steps }) => {
+export const RouteMap: React.FC<RouteMapProps> = ({ steps, userLocation }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const [is3D, setIs3D] = React.useState(false);
@@ -324,7 +328,17 @@ export const RouteMap: React.FC<RouteMapProps> = ({ steps }) => {
           }
         });
 
-        viewer.zoomTo(viewer.entities);
+        if (userLocation) {
+          viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(userLocation.lng, userLocation.lat, 20000),
+            orientation: {
+              pitch: Cesium.Math.toRadians(-35)
+            },
+            duration: 3
+          });
+        } else {
+          viewer.zoomTo(viewer.entities);
+        }
         cesiumViewerRef.current = viewer;
       } catch (e) {
         console.error('Cesium init error:', e);

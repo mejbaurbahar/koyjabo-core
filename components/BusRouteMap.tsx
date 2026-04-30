@@ -5,6 +5,9 @@ import { Navigation, Layers, Train, Plane, X } from 'lucide-react';
 import * as Cesium from 'cesium';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
 
+// Suppress Cesium default token warning
+Cesium.Ion.defaultAccessToken = '';
+
 interface BusRouteMapProps {
   route: BusRoute;
   userLocation?: UserLocation | null;
@@ -654,7 +657,17 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
 
     // Zoom only once on first load
     if (forceEntityUpdate === 1) {
-      viewer.zoomTo(viewer.entities);
+      if (userLocation) {
+        viewer.camera.flyTo({
+          destination: Cesium.Cartesian3.fromDegrees(userLocation.lng, userLocation.lat, 12000),
+          orientation: {
+            pitch: Cesium.Math.toRadians(-35)
+          },
+          duration: 3
+        });
+      } else {
+        viewer.zoomTo(viewer.entities);
+      }
       setForceEntityUpdate(2); 
     }
   }, [is3D, route.id, showMetro, showRailway, showAirport, userLocation, forceEntityUpdate]);

@@ -29,6 +29,11 @@ function getStoredUser(): StoredUser | null {
 const PROXY = (import.meta.env.VITE_API_PROXY as string | undefined)
   || 'https://koyjabo-auth-proxy.mejbaur-bahar.workers.dev';
 
+interface UserLocation {
+  lat: number;
+  lng: number;
+}
+
 function App() {
   const { t, language, formatNumber } = useLanguage();
   const [from, setFrom] = useState('');
@@ -53,6 +58,7 @@ function App() {
   // Removed usage limit as requested
 
   const [selectedMode, setSelectedMode] = useState<'bus' | 'train' | 'plane' | 'launch' | null>(null);
+  const [userLocation, setUserLocation] = useState<UserLocation | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const buildIntercityUrl = useCallback((fromVal?: string, toVal?: string) => {
@@ -174,6 +180,19 @@ function App() {
       document.removeEventListener('contextmenu', blockContextMenu);
       document.removeEventListener('keydown', blockKeys);
     };
+  }, []);
+
+  // Track User Location
+  useEffect(() => {
+    if (typeof navigator !== 'undefined' && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        },
+        (err) => console.debug('Location access denied or unavailable', err),
+        { enableHighAccuracy: false, timeout: 5000, maximumAge: 60000 }
+      );
+    }
   }, []);
 
   const applyRouteFromUrl = useCallback((pushHistory: boolean = false) => {
@@ -813,7 +832,7 @@ function App() {
                     {isRouteSaved(result.from, result.to) ? (language === 'bn' ? 'সেভ হয়েছে' : 'Saved') : (language === 'bn' ? 'রুট সেভ করুন' : 'Save Route')}
                   </button>
                 </div>
-                <ResultCard data={result} />
+                <ResultCard data={result} userLocation={userLocation} />
               </div>
             )}
 

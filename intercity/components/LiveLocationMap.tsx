@@ -4,6 +4,9 @@ import 'leaflet/dist/leaflet.css';
 import { X, Layers, Navigation, Map as MapIcon, Globe, Wifi, WifiOff, Lock, Box } from 'lucide-react';
 import * as Cesium from 'cesium';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
+
+// Suppress Cesium default token warning
+Cesium.Ion.defaultAccessToken = '';
 import { useLanguage } from '../contexts/LanguageContext';
 
 // Interfaces

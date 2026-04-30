@@ -3,11 +3,15 @@ import { DISTRICT_COORDINATES } from '../constants';
 import * as Cesium from 'cesium';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
 
+// Suppress Cesium default token warning
+Cesium.Ion.defaultAccessToken = '';
+
 interface MapComponentProps {
   from: string;
   to: string;
   via?: string[];
   modeTitle?: string; // e.g., "By Bus + Ship", "By Air + Road + Ship"
+  userLocation?: { lat: number; lng: number } | null;
 }
 
 declare global {
@@ -65,7 +69,7 @@ const BENGALI_TO_ENGLISH_NAMES: { [key: string]: string } = {
   "মাওয়া": "Mawa", "আরিচা": "Aricha", "পাটুরিয়া": "Paturia", "দৌলতদিয়া": "Daulatdia"
 };
 
-const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTitle = '' }) => {
+const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTitle = '', userLocation }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<any>(null);
   const layerGroup = useRef<any>(null);
@@ -423,7 +427,14 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
             }
           });
           
-          viewer.zoomTo(viewer.entities);
+          if (userLocation) {
+            viewer.camera.flyTo({
+              destination: Cesium.Cartesian3.fromDegrees(userLocation.lng, userLocation.lat, 500000), // Regional view
+              duration: 3
+            });
+          } else {
+            viewer.zoomTo(viewer.entities);
+          }
         }
 
         cesiumViewerRef.current = viewer;

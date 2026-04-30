@@ -5,6 +5,9 @@ import { Layers, Train, X } from 'lucide-react';
 import * as Cesium from 'cesium';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
 
+// Suppress Cesium default token warning
+Cesium.Ion.defaultAccessToken = '';
+
 interface TrainRouteMapProps {
   route: BDTrainRoute;
   userLocation?: UserLocation | null;
@@ -334,7 +337,17 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
           });
         });
 
-        viewer.zoomTo(viewer.entities);
+        if (userLocation) {
+          viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(userLocation.lng, userLocation.lat, 15000),
+            orientation: {
+              pitch: Cesium.Math.toRadians(-35)
+            },
+            duration: 3
+          });
+        } else {
+          viewer.zoomTo(viewer.entities);
+        }
         cesiumViewerRef.current = viewer;
       } catch (e) {
         console.error('Cesium init error:', e);
