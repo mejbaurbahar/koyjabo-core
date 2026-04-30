@@ -400,7 +400,6 @@ export default defineConfig(({ mode }) => {
           assetFileNames: 'assets/[name]-[hash].[ext]'
         },
         manualChunks: {
-          cesium: ['cesium'],
           leaflet: ['leaflet'],
           vendor: ['react', 'react-dom', 'lucide-react']
         }

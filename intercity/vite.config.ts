@@ -185,7 +185,6 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         output: {
           manualChunks: {
-            cesium: ['cesium'],
             leaflet: ['leaflet'],
             vendor: ['react', 'react-dom', 'lucide-react']
           }
