@@ -12,6 +12,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { liveBusService, LiveBus } from '../services/liveBusService';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import StationDigitalTwin from './StationDigitalTwin';
 
 // Fix default marker icons
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -105,8 +106,19 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
     const [sheetExpanded, setSheetExpanded] = useState(false);
     const [nearestStopIdx, setNearestStopIdx] = useState<number>(-1);
     const [is3D, setIs3D] = useState(false);
+    const [showDigitalTwin, setShowDigitalTwin] = useState(false);
+    const [twinStationName, setTwinStationName] = useState('');
     const mapLibreRef = useRef<any>(null);
     const mapLibreContainerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleOpenTwin = (e: any) => {
+            setTwinStationName(e.detail.name);
+            setShowDigitalTwin(true);
+        };
+        window.addEventListener('open-digital-twin', handleOpenTwin);
+        return () => window.removeEventListener('open-digital-twin', handleOpenTwin);
+    }, []);
 
     // ── Online/Offline ──────────────────────────────────────────────────────────
     useEffect(() => {
@@ -363,7 +375,16 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                                 <div style="font-weight:800;font-size:15px;color:#0f172a">${station.name}</div>
                             </div>
                             <div style="font-size:12px;color:#64748b;margin-left:16px">${station.bnName || ''}</div>
-                            <div style="margin-top:10px;padding:6px 10px;background:${isNearest ? '#3b82f610' : (color + '10')};border-radius:8px;font-size:11px;font-weight:700;color:${isNearest ? '#3b82f6' : color}; display:flex; justify-content:between; align-items:center;">
+                            
+                            <button 
+                                onclick="window.dispatchEvent(new CustomEvent('open-digital-twin', {detail: {name: '${station.name}'}}))"
+                                style="margin-top:10px; width:100%; padding:8px; background:linear-gradient(135deg, #10b981, #059669); color:white; border-radius:8px; font-weight:700; font-size:11px; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);"
+                            >
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                                VIEW 3D SCAN
+                            </button>
+
+                            <div style="margin-top:8px;padding:6px 10px;background:${isNearest ? '#3b82f610' : (color + '10')};border-radius:8px;font-size:11px;font-weight:700;color:${isNearest ? '#3b82f6' : color}; display:flex; justify-content:between; align-items:center;">
                                 <span>Stop ${idx + 1} of ${selectedRoute.stops.length}</span>
                                 ${isNearest ? '<span style="background:#3b82f6; color:white; padding:1px 4px; border-radius:4px; font-size:9px; margin-left:auto;">NEAREST</span>' : ''}
                             </div>
@@ -893,6 +914,12 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                 .leaflet-bottom.leaflet-right { bottom: 24px !important; }
             `}</style>
             </div>
+            {/* Digital Twin Viewer */}
+            <StationDigitalTwin 
+                isOpen={showDigitalTwin}
+                onClose={() => setShowDigitalTwin(false)}
+                stationName={twinStationName}
+            />
         </div>
     );
 };
