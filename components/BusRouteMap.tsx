@@ -489,10 +489,27 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
           navigationHelpButton: false,
           navigationInstructionsInitiallyVisible: false,
           fullscreenButton: false,
+          skyAtmosphere: new Cesium.SkyAtmosphere(),
+          msaaSamples: 4, // Anti-aliasing
         });
 
-        // Add 3D Buildings
-        const buildingTileset = await Cesium.createOsmBuildingsAsync();
+        // Latest Visual Improvements
+        viewer.scene.debugShowFramesPerSecond = false;
+        viewer.scene.fog.enabled = true;
+        viewer.scene.fog.density = 0.0001;
+        viewer.scene.fog.minimumBrightness = 0.03;
+        
+        // High-fidelity lighting
+        viewer.scene.light = new Cesium.DirectionalLight({
+          direction: new Cesium.Cartesian3(0.5, -0.2, -1.0),
+          color: Cesium.Color.WHITE,
+          intensity: 2.0
+        });
+
+        // Add 3D Buildings with textures
+        const buildingTileset = await Cesium.createOsmBuildingsAsync({
+          defaultColor: Cesium.Color.fromCssColorString('#f8fafc'),
+        });
         viewer.scene.primitives.add(buildingTileset);
 
         // Draw route in 3D

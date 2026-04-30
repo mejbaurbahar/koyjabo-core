@@ -274,10 +274,22 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
           navigationHelpButton: false,
           navigationInstructionsInitiallyVisible: false,
           fullscreenButton: false,
+          skyAtmosphere: new Cesium.SkyAtmosphere(),
+          msaaSamples: 4,
+        });
+
+        // High-end visuals
+        viewer.scene.fog.enabled = true;
+        viewer.scene.fog.density = 0.0001;
+        viewer.scene.light = new Cesium.DirectionalLight({
+          direction: new Cesium.Cartesian3(0.5, -0.2, -1.0),
+          intensity: 2.0
         });
 
         // Add 3D Buildings
-        const buildingTileset = await Cesium.createOsmBuildingsAsync();
+        const buildingTileset = await Cesium.createOsmBuildingsAsync({
+          defaultColor: Cesium.Color.fromCssColorString('#f1f5f9'),
+        });
         viewer.scene.primitives.add(buildingTileset);
 
         // Draw route in 3D

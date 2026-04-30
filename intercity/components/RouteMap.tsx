@@ -1,6 +1,8 @@
-﻿import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import { RouteStep, TransportMode } from '../types';
+import * as Cesium from 'cesium';
+import 'cesium/Build/Cesium/Widgets/widgets.css';
 
 interface RouteMapProps {
   steps: RouteStep[];
@@ -94,6 +96,9 @@ const getTransportName = (mode: TransportMode): string => {
 export const RouteMap: React.FC<RouteMapProps> = ({ steps }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
+  const [is3D, setIs3D] = React.useState(false);
+  const cesiumContainerRef = useRef<HTMLDivElement>(null);
+  const cesiumViewerRef = useRef<Cesium.Viewer | null>(null);
 
   useEffect(() => {
     if (!mapRef.current) return;
@@ -234,7 +239,107 @@ export const RouteMap: React.FC<RouteMapProps> = ({ steps }) => {
       }
     }
 
-  }, [steps]);
+  }, [steps, is3D]);
+
+  // Cesium 3D Globe Logic
+  useEffect(() => {
+    if (!is3D || !cesiumContainerRef.current) {
+      if (cesiumViewerRef.current) {
+        cesiumViewerRef.current.destroy();
+        cesiumViewerRef.current = null;
+      }
+      return;
+    }
+
+    const initCesium = async () => {
+      if (!cesiumContainerRef.current) return;
+      
+      try {
+        const viewer = new Cesium.Viewer(cesiumContainerRef.current, {
+          terrain: Cesium.Terrain.fromWorldTerrain(),
+          animation: false,
+          timeline: false,
+          baseLayerPicker: false,
+          geocoder: false,
+          homeButton: false,
+          infoBox: false,
+          sceneModePicker: false,
+          selectionIndicator: false,
+          navigationHelpButton: false,
+          navigationInstructionsInitiallyVisible: false,
+          fullscreenButton: false,
+          skyAtmosphere: new Cesium.SkyAtmosphere(),
+          msaaSamples: 4,
+        });
+
+        // High-end visuals
+        viewer.scene.fog.enabled = true;
+        viewer.scene.fog.density = 0.0001;
+        viewer.scene.light = new Cesium.DirectionalLight({
+          direction: new Cesium.Cartesian3(0.5, -0.2, -1.0),
+          intensity: 2.0
+        });
+
+        // Add 3D Buildings
+        const buildingTileset = await Cesium.createOsmBuildingsAsync({
+          defaultColor: Cesium.Color.fromCssColorString('#f1f5f9'),
+        });
+        viewer.scene.primitives.add(buildingTileset);
+
+        // Draw routes in 3D
+        steps.forEach((step) => {
+          const startCoords = step.startCoordinates || getCityCoordinates(step.from);
+          const endCoords = step.endCoordinates || getCityCoordinates(step.to);
+
+          if (startCoords && endCoords) {
+            viewer.entities.add({
+              polyline: {
+                positions: [
+                  Cesium.Cartesian3.fromDegrees(startCoords.lng, startCoords.lat),
+                  Cesium.Cartesian3.fromDegrees(endCoords.lng, endCoords.lat)
+                ],
+                width: 6,
+                material: Cesium.Color.fromCssColorString(getTransportColor(step.mode as TransportMode)),
+                clampToGround: true
+              }
+            });
+
+            // Start marker
+            viewer.entities.add({
+              position: Cesium.Cartesian3.fromDegrees(startCoords.lng, startCoords.lat),
+              point: { pixelSize: 10, color: Cesium.Color.WHITE, outlineColor: Cesium.Color.fromCssColorString(getTransportColor(step.mode as TransportMode)), outlineWidth: 2, disableDepthTestDistance: Number.POSITIVE_INFINITY },
+              label: {
+                text: step.from,
+                font: 'bold 12px sans-serif',
+                verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+                pixelOffset: new Cesium.Cartesian2(0, -15),
+                fillColor: Cesium.Color.WHITE,
+                outlineColor: Cesium.Color.BLACK,
+                outlineWidth: 2,
+                showBackground: true,
+                backgroundColor: Cesium.Color.fromCssColorString('rgba(0,0,0,0.5)'),
+                disableDepthTestDistance: Number.POSITIVE_INFINITY
+              }
+            });
+          }
+        });
+
+        viewer.zoomTo(viewer.entities);
+        cesiumViewerRef.current = viewer;
+      } catch (e) {
+        console.error('Cesium init error:', e);
+      }
+    };
+
+    initCesium();
+
+    return () => {
+      if (cesiumViewerRef.current) {
+        cesiumViewerRef.current.destroy();
+        cesiumViewerRef.current = null;
+      }
+    };
+  }, [is3D, steps]);
 
   // Clean up on unmount
   useEffect(() => {
@@ -248,15 +353,35 @@ export const RouteMap: React.FC<RouteMapProps> = ({ steps }) => {
 
   return (
     <div className="w-full h-full bg-gray-100 relative z-0">
-      {/* Map Container */}
-      <div ref={mapRef} className="w-full h-full" />
+      {/* 2D Leaflet Map */}
+      <div 
+        className={`w-full h-full transition-opacity duration-500 ${is3D ? 'opacity-0 pointer-events-none' : 'opacity-100'}`} 
+      >
+        <div ref={mapRef} className="w-full h-full" />
+      </div>
 
-      {/* Map Legend - Hidden */}
+      {/* 3D Cesium Globe */}
+      {is3D && (
+        <div 
+          ref={cesiumContainerRef} 
+          className="absolute inset-0 z-[10] animate-in fade-in duration-700" 
+        />
+      )}
 
+      {/* 3D Toggle */}
+      <button
+        onClick={() => setIs3D(!is3D)}
+        className="absolute bottom-10 right-4 z-[500] flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 hover:scale-105 transition-all"
+      >
+        <span className="text-xs font-bold bg-gradient-to-r from-emerald-500 to-blue-500 bg-clip-text text-transparent">
+          {is3D ? '2D View' : '3D View'}
+        </span>
+        <div className={`w-2 h-2 rounded-full ${is3D ? 'bg-blue-500' : 'bg-emerald-500'}`} />
+      </button>
 
       {/* Map Controls Info */}
       <div className="absolute bottom-2 right-2 z-[400] bg-white/90 backdrop-blur px-2 py-1 rounded text-[10px] text-gray-500 shadow-sm border border-white">
-        Scroll to Zoom â€¢ Drag to Pan
+        {is3D ? 'Right Click to Orbit â€¢ Scroll to Zoom' : 'Scroll to Zoom â€¢ Drag to Pan'}
       </div>
     </div>
   );
