@@ -53,6 +53,27 @@ const LAYERS: { id: MapLayer; label: string; icon: React.ElementType; online?: b
     { id: 'traffic',   label: 'Traffic',   icon: Zap, online: true },
 ];
 
+// Fetch road-snapped route from OSRM
+async function fetchRoadRoute(coords: [number, number][]): Promise<[number, number][] | null> {
+    if (coords.length < 2) return null;
+    try {
+        const MAX_WP = 50;
+        let waypoints = coords;
+        if (coords.length > MAX_WP) {
+            const step = (coords.length - 1) / (MAX_WP - 1);
+            waypoints = Array.from({ length: MAX_WP }, (_, i) => coords[Math.round(i * step)]);
+        }
+        const coordStr = waypoints.map(([lat, lng]) => `${lng},${lat}`).join(';');
+        const radiuses = waypoints.map(() => 50).join(';');
+        const url = `https://router.project-osrm.org/route/v1/driving/${coordStr}?overview=full&geometries=geojson&radiuses=${radiuses}`;
+        const res = await fetch(url);
+        if (!res.ok) return null;
+        const data = await res.json();
+        if (data.code !== 'Ok' || !data.routes?.[0]) return null;
+        return (data.routes[0].geometry.coordinates as [number, number][]).map(([lng, lat]) => [lat, lng]);
+    } catch { return null; }
+}
+
 const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
     isOpen, onClose, userLocation, selectedRoute,
 }) => {
@@ -191,13 +212,13 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
         if (!selectedRoute?.stops?.length) return;
 
         const color = getRouteColor(selectedRoute.id);
-        const coords: [number, number][] = [];
+        const stopCoords: [number, number][] = [];
 
         selectedRoute.stops.forEach((stopId, idx) => {
             const station = getStation(stopId);
             if (!station) return;
             const latLng: [number, number] = [station.lat, station.lng];
-            coords.push(latLng);
+            stopCoords.push(latLng);
 
             // Stop marker — filled circle with stop number
             const isFirst = idx === 0;
@@ -248,12 +269,14 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
             stopGroup?.addLayer(marker);
         });
 
-        // Draw animated route polyline (Triple layer for "Advanced" look)
-        if (coords.length > 1) {
+        // Draw animated route polyline
+        fetchRoadRoute(stopCoords).then(roadCoords => {
+            if (!mapRef.current) return;
+            const linePath = roadCoords || stopCoords;
             const isTrain = selectedRoute.type === 'Metro Rail' || selectedRoute.name.toLowerCase().includes('train');
 
             // 1. Shadow/Glow (Bottom)
-            L.polyline(coords, {
+            L.polyline(linePath, {
                 color: color,
                 weight: 12,
                 opacity: 0.15,
@@ -261,7 +284,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
             }).addTo(map);
 
             // 2. Main Line (Middle)
-            const mainPoly = L.polyline(coords, {
+            const mainPoly = L.polyline(linePath, {
                 color: color,
                 weight: isTrain ? 6 : 5,
                 opacity: 0.8,
@@ -270,24 +293,22 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
             }).addTo(map);
 
             // 3. Flow/Animated Pattern (Top)
-            L.polyline(coords, {
-                color: isTrain ? '#ffffff' : '#ffffff',
+            L.polyline(linePath, {
+                color: '#ffffff',
                 weight: 2,
                 opacity: 0.6,
                 dashArray: isTrain ? '8, 12' : '10, 20',
                 lineCap: 'round',
-                className: 'route-line-flow' // CSS animation
+                className: 'route-line-flow'
             }).addTo(map);
 
-            // Store main polyline for potential reference
             routePolylineRef.current = mainPoly;
             
-            // Only fit bounds if we don't have user location (fallback)
             if (!userLocation) {
-                const bounds = L.latLngBounds(coords);
+                const bounds = L.latLngBounds(linePath);
                 map.fitBounds(bounds, { padding: [60, 60], maxZoom: 15 });
             }
-        }
+        });
 
         // Find nearest stop to user
         if (userLocation && selectedRoute.stops.length) {
@@ -302,7 +323,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
             setNearestStopIdx(nearestIdx);
         }
 
-    }, [selectedRoute, isOpen]);
+    }, [selectedRoute, isOpen, nearestStopIdx]);
 
     // ── User location marker ────────────────────────────────────────────────────
     useEffect(() => {

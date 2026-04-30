@@ -33,16 +33,20 @@ function getRouteColor(id: string): string {
 async function fetchRoadRoute(coords: [number, number][]): Promise<[number, number][] | null> {
   if (coords.length < 2) return null;
   try {
-    // OSRM only accepts up to 25 waypoints reliably; sample if more
-    const MAX_WP = 20;
+    // Increase waypoint limit to 50 for much higher accuracy on long routes
+    const MAX_WP = 50;
     let waypoints = coords;
     if (coords.length > MAX_WP) {
       const step = (coords.length - 1) / (MAX_WP - 1);
       waypoints = Array.from({ length: MAX_WP }, (_, i) => coords[Math.round(i * step)]);
     }
     const coordStr = waypoints.map(([lat, lng]) => `${lng},${lat}`).join(';');
-    const url = `https://router.project-osrm.org/route/v1/driving/${coordStr}?overview=full&geometries=geojson`;
-    const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+    
+    // Add radiuses=50 for all points to help OSRM snap to roads even if coordinates are slightly off
+    const radiuses = waypoints.map(() => 50).join(';');
+    const url = `https://router.project-osrm.org/route/v1/driving/${coordStr}?overview=full&geometries=geojson&radiuses=${radiuses}`;
+    
+    const res = await fetch(url, { signal: AbortSignal.timeout(10000) });
     if (!res.ok) return null;
     const data = await res.json();
     if (data.code !== 'Ok' || !data.routes?.[0]) return null;
