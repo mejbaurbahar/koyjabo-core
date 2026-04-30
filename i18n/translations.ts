@@ -991,6 +991,15 @@ export const translations: Record<Language, Translations> = {
                 devices: 'ডিভাইস'
             }
         },
+        releaseNotes: {
+            title: 'রিলিজ নোটস',
+            subtitle: 'কই যাবো অ্যাপের নতুন সব আপডেট',
+            whatsNew: 'নতুন কী আছে',
+            improvements: 'উন্নতি',
+            fixed: 'ফিক্সড',
+            version: 'সংস্করণ',
+            date: 'তারিখ'
+        },
     },
 
     en: {
@@ -1977,7 +1986,15 @@ export const translations: Record<Language, Translations> = {
             journeyTrackerTitle: 'Daily Journey Tracker',
             journeyTrackerDesc: 'Log your daily commute stops, track journey history, and get route suggestions based on your travel patterns — all stored privately on your device.',
         },
-
+        releaseNotes: {
+            title: 'Release Notes',
+            subtitle: 'Latest updates and improvements to KoyJabo',
+            whatsNew: "What's New",
+            improvements: 'Improvements',
+            fixed: 'Fixed',
+            version: 'Version',
+            date: 'Date'
+        },
     },
 };
 
