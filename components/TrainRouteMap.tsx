@@ -234,6 +234,11 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
       setMapReady(true);
     });
 
+    return () => {
+      cancelled = true;
+    };
+  }, [route.id, currentStopId, is3D]);
+
   useEffect(() => {
     if (mapInstanceRef.current) {
       setTimeout(() => {
@@ -333,10 +338,6 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
       }
     };
   }, [is3D, route.id, bn]);
-
-  return () => { cancelled = true; };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [route.id, currentStopId, is3D]);
 
   // ── Effect 2: Highlight segment (fare calc) ──────────────────────────────────
   useEffect(() => {
