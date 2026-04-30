@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Map, Bot, Heart, Info, Train, Menu, Sparkles, Navigation, Clock, MapPin, User, LogIn, Bus, BookOpen } from 'lucide-react';
+import { Home, Map, Bot, Heart, Info, Train, Menu, Sparkles, Navigation, Clock, MapPin, User, LogIn, Bus, BookOpen, Rocket } from 'lucide-react';
 import { AppView } from '../types';
 import ThemeToggle from './ThemeToggle';
 import { AnimatedLogo } from './AnimatedLogo';
@@ -93,6 +93,12 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
             icon: Info,
             isActive: view === AppView.ABOUT,
             onClick: () => setView(AppView.ABOUT)
+        },
+        {
+            label: t('releaseNotes.title') || (language === 'bn' ? 'রিলিজ নোটস' : 'Release Notes'),
+            icon: Rocket,
+            isActive: view === AppView.RELEASE_NOTES,
+            onClick: () => setView(AppView.RELEASE_NOTES)
         }
     ];
 

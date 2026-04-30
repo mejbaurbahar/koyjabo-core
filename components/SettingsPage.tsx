@@ -6,11 +6,10 @@ interface SettingsPageProps {
     isDarkMode: boolean;
     toggleTheme: () => void;
     onContactClick: () => void;
-    onReleaseNotesClick: () => void;
     embedded?: boolean;
 }
 
-const SettingsPage: React.FC<SettingsPageProps> = ({ isDarkMode, toggleTheme, onContactClick, onReleaseNotesClick, embedded = false }) => {
+const SettingsPage: React.FC<SettingsPageProps> = ({ isDarkMode, toggleTheme, onContactClick, embedded = false }) => {
     const { language, setLanguage, t } = useLanguage();
 
     return (
@@ -194,24 +193,6 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ isDarkMode, toggleTheme, on
                                 <p className="text-sm text-gray-500 dark:text-gray-400">{t('settings.contactUsDesc')}</p>
                             </div>
                             <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
-                        </button>
-
-                        <button
-                            onClick={onReleaseNotesClick}
-                            className="w-full flex items-center gap-4 p-4 rounded-xl border-2 border-slate-100 dark:border-slate-700 hover:border-emerald-200 dark:hover:border-emerald-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-all text-left group mt-4"
-                        >
-                            <div className="p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
-                                <Rocket className="w-6 h-6" />
-                            </div>
-                            <div className="flex-1">
-                                <h3 className="font-bold text-gray-900 dark:text-gray-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                                    {language === 'bn' ? 'রিলিজ নোটস' : 'Release Notes'}
-                                </h3>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">
-                                    {language === 'bn' ? 'নতুন কী কী যুক্ত হয়েছে দেখুন' : 'See what\'s new in the latest update'}
-                                </p>
-                            </div>
-                            <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-emerald-500 group-hover:translate-x-1 transition-all" />
                         </button>
                     </div>
 

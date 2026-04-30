@@ -6,7 +6,7 @@ import SignupPage from './src/components/auth/SignupPage';
 import ForgotPasswordPage from './src/components/auth/ForgotPasswordPage';
 import ResetPasswordPage from './src/components/auth/ResetPasswordPage';
 import ProfilePage from './src/components/auth/ProfilePage';
-import { Search, Map as MapIcon, Navigation, Info, Bus, ArrowLeft, ArrowRight, Bot, ExternalLink, MapPin, Heart, Shield, Zap, Users, FileText, AlertTriangle, Home, ChevronRight, CheckCircle2, User, Linkedin, Github, Facebook, ArrowRightLeft, Settings, Save, Eye, EyeOff, Trash2, Key, Calculator, Coins, Train, Sparkles, X, Gauge, Flag, Clock, Menu, WifiOff, Plane, Phone, Download, TramFront, Sun, Moon, Calendar, Plus, Mail, HelpCircle, BookOpen, LogIn, LogOut, UserPlus, Ticket } from 'lucide-react';
+import { Search, Map as MapIcon, Navigation, Info, Bus, ArrowLeft, ArrowRight, Bot, ExternalLink, MapPin, Heart, Shield, Zap, Users, FileText, AlertTriangle, Home, ChevronRight, CheckCircle2, User, Linkedin, Github, Facebook, ArrowRightLeft, Settings, Save, Eye, EyeOff, Trash2, Key, Calculator, Coins, Train, Sparkles, X, Gauge, Flag, Clock, Menu, WifiOff, Plane, Phone, Download, TramFront, Sun, Moon, Calendar, Plus, Mail, HelpCircle, BookOpen, LogIn, LogOut, UserPlus, Ticket, Rocket } from 'lucide-react';
 import { BusRoute, AppView, UserLocation, ChatMessage } from './types';
 import { STATIONS, BUS_DATA, METRO_STATIONS, METRO_LINES, RAILWAY_STATIONS, AIRPORTS } from './constants';
 import MapVisualizer from './components/MapVisualizer';
@@ -4560,7 +4560,6 @@ const App: React.FC = () => {
                 isDarkMode={isDarkMode}
                 toggleTheme={() => setIsDarkMode(!isDarkMode)}
                 onContactClick={() => setView(AppView.CONTACT)}
-                onReleaseNotesClick={() => setView(AppView.RELEASE_NOTES)}
               />
             )}
             {/* ── Auth Views ── */}
@@ -4937,6 +4936,12 @@ const App: React.FC = () => {
                   className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.FAQ ? 'bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800' : ''} `}
                 >
                   <HelpCircle className="w-5 h-5 text-cyan-600 dark:text-cyan-400" /> {t('nav.faq')}
+                </button>
+                <button
+                  onClick={() => { setView(AppView.RELEASE_NOTES); setIsMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors ${view === AppView.RELEASE_NOTES ? 'bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800' : ''}`}
+                >
+                  <Rocket className="w-5 h-5 text-emerald-600 dark:text-emerald-400" /> {language === 'bn' ? 'রিলিজ নোটস' : 'Release Notes'}
                 </button>
                 {/* Install/Uninstall App - Always show */}
                 <button
