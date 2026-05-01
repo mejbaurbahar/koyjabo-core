@@ -67,6 +67,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   }
 }
 
+import AntiScraping from '../components/AntiScraping';
 import { ToastProvider } from '../contexts/ToastContext';
 
 const rootElement = document.getElementById('root');
@@ -77,6 +78,7 @@ if (rootElement) {
       <ErrorBoundary>
         <ToastProvider>
           <LanguageProvider>
+            <AntiScraping />
             <App />
           </LanguageProvider>
         </ToastProvider>
