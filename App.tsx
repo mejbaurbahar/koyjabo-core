@@ -4545,7 +4545,9 @@ const App: React.FC = () => {
             {view === AppView.RELEASE_NOTES && (
               <ReleaseNotes />
             )}
-            <AdSenseAd adSlot="auto" className="my-6" />
+            {![AppView.PROFILE, AppView.HISTORY, AppView.SETTINGS].includes(view) && (
+              <AdSenseAd adSlot="auto" className="my-6" />
+            )}
 
             {view === AppView.BLOG && (
               selectedBlogPost ? (

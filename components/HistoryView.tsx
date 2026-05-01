@@ -275,7 +275,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                             </div>
                         </div>
 
-                        <AdSenseAd adSlot="auto" className="my-6" />
+
 
 
                         {/* Most Used Buses */}
