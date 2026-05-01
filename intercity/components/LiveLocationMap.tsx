@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { X, Layers, Navigation, Map as MapIcon, Globe, Wifi, WifiOff, Lock, Box } from 'lucide-react';
-import * as Cesium from 'cesium';
-import 'cesium/Build/Cesium/Widgets/widgets.css';
+import { X, Layers, Navigation, Map as MapIcon, Wifi, WifiOff, Lock } from 'lucide-react';
+
 
 // Suppress Cesium default token warning
-Cesium.Ion.defaultAccessToken = '';
+
 import { useLanguage } from '../contexts/LanguageContext';
 
 // Interfaces
@@ -44,9 +43,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
     const [isOffline, setIsOffline] = useState(!navigator.onLine);
     const [userLocation, setUserLocation] = useState<UserLocation | null>(null);
     const [hasCentered, setHasCentered] = useState(false);
-    const [is3D, setIs3D] = useState(false);
-    const cesiumContainerRef = useRef<HTMLDivElement>(null);
-    const cesiumViewerRef = useRef<Cesium.Viewer | null>(null);
+
 
     // Monitor online status
     useEffect(() => {
@@ -149,99 +146,9 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
 
     }, [activeLayer, isOffline, isOpen]);
 
-    // Cesium 3D Globe Logic
-    useEffect(() => {
-        if (!isOpen || !is3D || isOffline || !cesiumContainerRef.current) {
-            if (cesiumViewerRef.current) {
-                cesiumViewerRef.current.destroy();
-                cesiumViewerRef.current = null;
-            }
-            return;
-        }
 
-        const initCesium = async () => {
-            if (!cesiumContainerRef.current) return;
-            
-            try {
-                const viewer = new Cesium.Viewer(cesiumContainerRef.current, {
-                    terrain: Cesium.Terrain.fromWorldTerrain(),
-                    animation: false,
-                    timeline: false,
-                    baseLayerPicker: false,
-                    geocoder: false,
-                    homeButton: false,
-                    infoBox: false,
-                    sceneModePicker: false,
-                    selectionIndicator: false,
-                    navigationHelpButton: false,
-                    navigationInstructionsInitiallyVisible: false,
-                    fullscreenButton: false,
-                    skyAtmosphere: new Cesium.SkyAtmosphere(),
-                    msaaSamples: 4,
-                });
 
-                // Hide Cesium branding/credits
-                if (viewer.cesiumWidget.creditContainer) {
-                    (viewer.cesiumWidget.creditContainer as HTMLElement).style.display = 'none';
-                }
 
-                // High-end visuals
-                viewer.scene.fog.enabled = true;
-                viewer.scene.fog.density = 0.0001;
-                viewer.scene.light = new Cesium.DirectionalLight({
-                    direction: new Cesium.Cartesian3(0.5, -0.2, -1.0),
-                    intensity: 2.0
-                });
-
-                // Add 3D Buildings
-                const buildingTileset = await Cesium.createOsmBuildingsAsync({
-                    defaultColor: Cesium.Color.fromCssColorString('#f1f5f9'),
-                });
-                viewer.scene.primitives.add(buildingTileset);
-                
-                cesiumViewerRef.current = viewer;
-
-                // Initial location sync
-                if (userLocation) {
-                    const pos = Cesium.Cartesian3.fromDegrees(userLocation.lng, userLocation.lat);
-                    viewer.camera.flyTo({
-                        destination: Cesium.Cartesian3.fromDegrees(userLocation.lng, userLocation.lat, 1000),
-                        orientation: {
-                            pitch: Cesium.Math.toRadians(-45)
-                        }
-                    });
-
-                    viewer.entities.add({
-                        position: pos,
-                        point: { pixelSize: 15, color: Cesium.Color.BLUE, outlineColor: Cesium.Color.WHITE, outlineWidth: 3, disableDepthTestDistance: Number.POSITIVE_INFINITY }
-                    });
-                }
-            } catch (e) {
-                console.error('Cesium init error:', e);
-            }
-        };
-
-        initCesium();
-
-        return () => {
-            if (cesiumViewerRef.current) {
-                cesiumViewerRef.current.destroy();
-                cesiumViewerRef.current = null;
-            }
-        };
-    }, [isOpen, is3D, isOffline]);
-
-    useEffect(() => {
-        if (cesiumViewerRef.current && userLocation) {
-            const viewer = cesiumViewerRef.current;
-            const pos = Cesium.Cartesian3.fromDegrees(userLocation.lng, userLocation.lat);
-            viewer.entities.removeAll();
-            viewer.entities.add({
-                position: pos,
-                point: { pixelSize: 15, color: Cesium.Color.BLUE, outlineColor: Cesium.Color.WHITE, outlineWidth: 3, disableDepthTestDistance: Number.POSITIVE_INFINITY }
-            });
-        }
-    }, [userLocation]);
 
     if (!isOpen) return null;
 
@@ -251,21 +158,9 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
 
                 {/* Map Container */}
                 <div className="flex-1 w-full h-full relative z-0 bg-gray-200">
-                    {/* 2D Leaflet Map */}
-                    <div 
-                        className={`absolute inset-0 transition-opacity duration-500 ${is3D ? 'opacity-0 pointer-events-none' : 'opacity-100'}`} 
-                    >
-                        <div ref={mapContainerRef} className="w-full h-full" />
-                    </div>
-
-                    {/* 3D Cesium Globe */}
-                    {is3D && (
-                        <div 
-                            ref={cesiumContainerRef} 
-                            className="absolute inset-0 z-[10] animate-in fade-in duration-700" 
-                        />
-                    )}
+                    <div ref={mapContainerRef} className="w-full h-full" />
                 </div>
+
 
                 {/* Floating Controls */}
                 <div className="absolute top-4 left-4 z-[400] flex flex-col gap-2">
@@ -316,9 +211,10 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                                 disabled={isOffline}
                                 className={`text-xs font-bold px-3 py-2 rounded-lg text-left flex items-center gap-2 justify-between ${activeLayer === 'satellite' ? 'bg-blue-50 text-blue-600' : isOffline ? 'text-gray-400 cursor-not-allowed opacity-60' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'}`}
                             >
-                                <div className="flex items-center gap-2"><Globe className="w-4 h-4" /> {t('map.satellite')}</div>
+                                <div className="flex items-center gap-2"><MapIcon className="w-4 h-4" /> {t('map.satellite')}</div>
                                 {isOffline && <Lock className="w-3 h-3" />}
                             </button>
+
 
                             <button
                                 onClick={() => !isOffline && setActiveLayer('terrain')}
@@ -358,32 +254,17 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                     <X className="w-6 h-6" />
                 </button>
 
-                {/* Recenter / 3D Button Group */}
-                <div className="absolute bottom-8 right-4 z-[400] flex flex-col gap-3">
-                    <button
-                        onClick={() => setIs3D(!is3D)}
-                        className={`p-3 rounded-full shadow-lg transition-all active:scale-95 flex items-center justify-center ${is3D ? 'bg-emerald-500 text-white' : 'bg-white dark:bg-slate-800 text-blue-600'}`}
-                    >
-                        <Box className="w-6 h-6" />
-                    </button>
-                    
                     <button
                         onClick={() => {
-                            if (userLocation) {
-                                if (is3D && cesiumViewerRef.current) {
-                                    cesiumViewerRef.current.camera.flyTo({
-                                        destination: Cesium.Cartesian3.fromDegrees(userLocation.lng, userLocation.lat, 1000)
-                                    });
-                                } else if (mapInstanceRef.current) {
-                                    mapInstanceRef.current.flyTo([userLocation.lat, userLocation.lng], 16, { duration: 1.5 });
-                                }
+                            if (userLocation && mapInstanceRef.current) {
+                                mapInstanceRef.current.flyTo([userLocation.lat, userLocation.lng], 16, { duration: 1.5 });
                             }
                         }}
                         className="bg-blue-600 text-white p-3 rounded-full shadow-lg shadow-blue-500/30 hover:bg-blue-700 transition-all active:scale-95 flex items-center justify-center"
                     >
                         <Navigation className="w-6 h-6" />
                     </button>
-                </div>
+
 
             </div>
         </div>

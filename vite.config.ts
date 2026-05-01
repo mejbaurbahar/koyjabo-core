@@ -3,7 +3,8 @@ import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
-import cesium from 'vite-plugin-cesium';
+
+
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
@@ -52,7 +53,7 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       react(),
-      cesium(),
+
       viteStaticCopy({
         targets: [
           {
@@ -115,7 +116,7 @@ export default defineConfig(({ mode }) => {
           ]
         },
         workbox: {
-          maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // Increased to 10 MiB for Cesium
+
           globPatterns: [
             '**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest,webp,jpg,jpeg,gif,txt,xml}',
             'intercity/**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest,txt,xml}',
