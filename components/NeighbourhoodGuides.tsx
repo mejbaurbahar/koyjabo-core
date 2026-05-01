@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { ArrowLeft, MapPin, Bus, Search, ChevronLeft, ChevronDown, ChevronUp } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
-import AdSenseAd from './AdSenseAd';
+
 
 
 interface Props { onBack: () => void; }
@@ -715,7 +715,7 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
             <h3 className="font-bold text-purple-900 dark:text-purple-300 mb-2 flex items-center gap-2"><MapPin className="w-4 h-4" /> {lbl('Landmarks', 'দর্শনীয় স্থান')}</h3>
             {landmarks.map(l => <p key={l} className="text-sm text-purple-800 dark:text-purple-200 py-0.5">• {l}</p>)}
           </div>
-          <AdSenseAd adSlot="auto" className="my-8" />
+
           <div className="h-4" />
 
         </div>
@@ -745,7 +745,7 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
             placeholder={lbl('Search area or district...', 'এলাকা বা জেলা খুঁজুন...')}
             className="w-full pl-9 pr-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm dark:text-white" />
         </div>
-        <AdSenseAd adSlot="auto" className="mt-4" />
+
       </div>
 
 

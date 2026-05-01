@@ -4545,7 +4545,18 @@ const App: React.FC = () => {
             {view === AppView.RELEASE_NOTES && (
               <ReleaseNotes />
             )}
-            {![AppView.PROFILE, AppView.HISTORY, AppView.SETTINGS].includes(view) && (
+            {![
+              AppView.PROFILE,
+              AppView.HISTORY,
+              AppView.SETTINGS,
+              AppView.TRIP_REMINDERS,
+              AppView.ROAD_ALERTS,
+              AppView.NEIGHBOURHOOD_GUIDES,
+              AppView.BUS_PASS_INFO,
+              AppView.MULTI_STOP_PLANNER,
+              AppView.COMMUTE_COST,
+              AppView.SEAT_AVAILABILITY
+            ].includes(view) && (
               <AdSenseAd adSlot="auto" className="my-6" />
             )}
 

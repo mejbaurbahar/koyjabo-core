@@ -5,7 +5,7 @@ import { useToast } from '../contexts/ToastContext';
 import { submitTrafficReport, getTodayTrafficReports, upvoteTrafficReport, TrafficReport, getAuthUser } from '../services/communityDataService';
 import { submitTrafficReport, getTodayTrafficReports, upvoteTrafficReport, TrafficReport, getAuthUser } from '../services/communityDataService';
 import { trackFeatureUsage } from '../services/analyticsService';
-import AdSenseAd from './AdSenseAd';
+
 
 
 interface Props {
@@ -183,7 +183,7 @@ export default function RoadAlerts({ onBack }: Props) {
           </form>
         )}
 
-        <AdSenseAd adSlot="auto" className="my-6" />
+
 
 
         {ADMIN_ALERTS.length > 0 && (
@@ -286,7 +286,7 @@ export default function RoadAlerts({ onBack }: Props) {
             </div>
           );
         })}
-        <AdSenseAd adSlot="auto" className="my-8" />
+
         <div className="h-4" />
 
       </div>
