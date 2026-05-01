@@ -784,9 +784,6 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
             </div>
           </div>
 
-            </div>
-          </div>
-
           <AdSenseAd adSlot="auto" className="mt-4 mb-2" />
 
           {/* Search + filter toggle row */}

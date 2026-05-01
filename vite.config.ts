@@ -132,6 +132,7 @@ export default defineConfig(({ mode }) => {
           clientsClaim: true,
           // Cache versioning for proper updates
           cacheId: 'dhaka-commute-v12',
+          maximumFileSizeToCacheInBytes: 10485760, // 10 MB
 
           runtimeCaching: [
             // Cache Intercity App - StaleWhileRevalidate: serve from cache instantly, update in background
@@ -396,15 +397,15 @@ export default defineConfig(({ mode }) => {
       sourcemap: false,
       minify: 'esbuild',
       emptyOutDir: true,
-      rollupOptions: {
-        output: {
-          assetFileNames: 'assets/[name]-[hash].[ext]'
+        rollupOptions: {
+          output: {
+            assetFileNames: 'assets/[name]-[hash].[ext]',
+            manualChunks: {
+              leaflet: ['leaflet'],
+              vendor: ['react', 'react-dom', 'lucide-react']
+            }
+          }
         },
-        manualChunks: {
-          leaflet: ['leaflet'],
-          vendor: ['react', 'react-dom', 'lucide-react']
-        }
-      },
     },
     define: {
       'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),

@@ -106,7 +106,6 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
     const [gpsAccuracy, setGpsAccuracy] = useState<number | null>(null);
     const [sheetExpanded, setSheetExpanded] = useState(false);
     const [nearestStopIdx, setNearestStopIdx] = useState<number>(-1);
-    const [nearestStopIdx, setNearestStopIdx] = useState<number>(-1);
     const [showDigitalTwin, setShowDigitalTwin] = useState(false);
     const [twinStationName, setTwinStationName] = useState('');
 
@@ -180,8 +179,14 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
 
         map.eachLayer(l => { if (l instanceof L.TileLayer) map.removeLayer(l); });
 
-            }).addTo(map);
-        }
+        let url = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        if (activeLayer === 'dark') url = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+        if (activeLayer === 'satellite') url = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+        if (activeLayer === 'terrain') url = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
+
+        L.tileLayer(url, {
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
     }, [activeLayer, isOffline, isOpen]);
 
 
