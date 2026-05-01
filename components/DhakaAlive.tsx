@@ -1,7 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { SangsadBhaban, ShaheedMinar, CurzonHall, AhsanManzil, NationalMemorial, LalbaghFort } from './DhakaLandmarks';
 import { Cloud, Airplane, MetroTrack, MetroTrain, CityBus, RiverBoat, Sun, Moon, Skyline, Stars, RiverWaves, Rain, Fog, TrafficPolice } from './DhakaAnimationElements';
+import AdSenseAd from './AdSenseAd';
 import { X, Sparkles } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -281,18 +281,14 @@ const DhakaAlive: React.FC<{ hideIndicator?: boolean }> = ({ hideIndicator = fal
 
             {/* --- Location Indicator (Bottom Right) --- */}
             {!hideIndicator && (
-            <div className="fixed bottom-4 right-4 z-50 text-xs text-white/50 bg-black/30 px-2 py-1 rounded flex items-center gap-1">
-                {usingLiveWeather ? (
-                    <>
-                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                        <span>Live Weather</span>
-                    </>
-                ) : (
-                    <span>Simulated Weather</span>
-                )}
             </div>
             )}
-
+            
+            <div className="fixed bottom-20 left-0 right-0 z-50 flex justify-center pointer-events-none">
+              <div className="pointer-events-auto bg-white/10 backdrop-blur-sm rounded-xl p-1">
+                <AdSenseAd adSlot="auto" className="w-full max-w-sm" />
+              </div>
+            </div>
         </div>
     );
 };

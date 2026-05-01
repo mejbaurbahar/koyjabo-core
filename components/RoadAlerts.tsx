@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, AlertTriangle, Clock, ChevronDown, ChevronUp, Plus, ExternalLink } from 'lucide-react';
+import AdSenseAd from './AdSenseAd';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useToast } from '../contexts/ToastContext';
 import { submitTrafficReport, getTodayTrafficReports, upvoteTrafficReport, TrafficReport, getAuthUser } from '../services/communityDataService';
@@ -182,6 +183,8 @@ export default function RoadAlerts({ onBack }: Props) {
             </div>
           </form>
         )}
+
+        <AdSenseAd adSlot="auto" className="my-4" />
 
 
 

@@ -9,6 +9,7 @@ import {
     ChevronRight,
     Circle,
 } from 'lucide-react';
+import AdSenseAd from './AdSenseAd';
 import {
     getTodayJourney,
     getJourneyHistory,
@@ -108,6 +109,7 @@ const DailyJourneyView: React.FC<DailyJourneyViewProps> = ({ onBack }) => {
                     )}
                 </div>
             </div>
+            <AdSenseAd adSlot="auto" className="my-6" />
 
             {/* Main Content */}
             <div className="flex-1 overflow-y-auto">

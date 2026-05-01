@@ -235,6 +235,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                     </div>
                 </div>
             </div>
+            <AdSenseAd adSlot="auto" className="my-4" />
 
             {/* Content */}
             <div className="relative z-10 p-4 md:p-6 space-y-6 pb-24 md:pb-6">
@@ -607,6 +608,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                 </div>
                             </div>
                         </div>
+                        <AdSenseAd adSlot="auto" className="my-6" />
 
                         {/* Info Card */}
                         <div className="bg-blue-50 dark:bg-slate-800 border border-blue-100 dark:border-slate-700 rounded-2xl p-6">

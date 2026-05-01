@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { ArrowLeft, MapPin, Bus, Search, ChevronLeft, ChevronDown, ChevronUp } from 'lucide-react';
+import AdSenseAd from './AdSenseAd';
 import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
 
@@ -738,15 +739,10 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
         </div>
       </div>
 
-      <div className="p-4 shrink-0">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-          <input value={search} onChange={e => setSearch(e.target.value)}
-            placeholder={lbl('Search area or district...', 'এলাকা বা জেলা খুঁজুন...')}
-            className="w-full pl-9 pr-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm dark:text-white" />
         </div>
-
       </div>
+
+      <AdSenseAd adSlot="auto" className="my-4" />
 
 
       <div className="flex-1 min-h-0 overflow-y-auto px-4 pb-4">

@@ -23,6 +23,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
 import { getTrainRatings, TrainRatingSummary } from '../services/communityDataService';
 import TrainImageViewer from './TrainImageViewer';
+import AdSenseAd from './AdSenseAd';
 
 
 
@@ -189,6 +190,8 @@ export function TrainDetail({
             currentStopId={nearestStopIdx >= 0 ? route.stops[nearestStopIdx] : undefined}
           />
         </div>
+
+        <AdSenseAd adSlot="auto" className="my-4" />
 
 
 
@@ -361,6 +364,8 @@ export function TrainDetail({
             </div>
           </div>
 
+          <AdSenseAd adSlot="auto" className="my-2" />
+
 
 
           {/* ── Fare Calculator ───────────────────────────────────────────── */}
@@ -446,6 +451,9 @@ export function TrainDetail({
                       : 'Fare is approximate. Check Bangladesh Railway website for exact fares.'}
                   </p>
                 </div>
+
+                <AdSenseAd adSlot="auto" className="my-8" />
+
               ) : (
                 <p className="text-xs text-gray-400 dark:text-white/40 text-center py-2">
                   {bn ? 'দুটি স্টেশন সিলেক্ট করুন' : 'Select two stations to calculate fare'}
@@ -776,6 +784,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
               </p>
             </div>
           </div>
+          <AdSenseAd adSlot="auto" className="mt-4 mb-2" />
 
 
 

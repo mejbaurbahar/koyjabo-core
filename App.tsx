@@ -2344,6 +2344,7 @@ const App: React.FC = () => {
         ref={chatMessagesContainerRef}
         className="flex-1 min-h-0 p-4 space-y-4 bg-slate-50 dark:bg-slate-900 overflow-y-auto"
       >
+        <AdSenseAd adSlot="auto" className="mb-4" />
 
 
         {chatHistory.length === 0 ? (
@@ -2354,6 +2355,11 @@ const App: React.FC = () => {
         ) : (
           chatHistory.map((msg, idx) => (
             <React.Fragment key={idx}>
+              {idx > 0 && idx % 10 === 0 && (
+                <div className="flex justify-center my-4">
+                  <AdSenseAd adSlot="auto" adFormat="fluid" className="w-full max-w-sm" />
+                </div>
+              )}
 
               <div className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-dhaka-dark dark:bg-emerald-700 text-white rounded-br-none' : 'bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-200 border border-gray-100 dark:border-gray-700 rounded-bl-none'}`}>
@@ -2400,6 +2406,8 @@ const App: React.FC = () => {
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">🚍 {t('about.title')}</h1>
         <h2 className="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-200">কই<span className="text-dhaka-red ml-2">যাবো</span> <span className="text-gray-600 dark:text-gray-400 text-lg">(KoyJabo)</span></h2>
         <p className="text-gray-500 dark:text-gray-400 mb-8">{t('settings.version')} 2.5.0 • {t('common.tagline') || 'Bangladesh\'s Smart Transport Route Finder — Bus, Train, Metro, AI & More'}</p>
+
+        <AdSenseAd adSlot="auto" className="my-6" />
 
 
         <div className="text-left space-y-8 bg-slate-50 dark:bg-slate-800 p-6 md:p-10 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm">
@@ -2548,16 +2556,13 @@ const App: React.FC = () => {
                   {t('about.devDesc')}
                 </p>
                 <div className="flex flex-wrap gap-3 justify-center md:justify-start">
-                  <a href="https://linkedin.com/in/mejbaur/" target="_blank" rel="noreferrer" className="p-2 bg-gray-100 dark:bg-slate-800 hover:bg-blue-50 text-gray-600 dark:text-gray-400 hover:text-blue-600 rounded-xl transition-all">
-                    <Linkedin className="w-5 h-5" />
-                  </a>
-                  <a href="https://github.com/fagun18" target="_blank" rel="noreferrer" className="p-2 bg-gray-100 dark:bg-slate-800 hover:bg-slate-200 text-gray-600 dark:text-gray-400 hover:text-black rounded-xl transition-all">
-                    <Github className="w-5 h-5" />
                   </a>
                 </div>
               </div>
             </div>
           </section>
+
+          <AdSenseAd adSlot="auto" className="my-10" />
 
 
         </div>
@@ -2766,6 +2771,8 @@ const App: React.FC = () => {
             </div>
           </div>
 
+          <AdSenseAd adSlot="auto" className="my-8" />
+
 
 
           {/* Benefit 4 */}
@@ -2887,6 +2894,8 @@ const App: React.FC = () => {
           </button>
         </div>
 
+        <AdSenseAd adSlot="auto" className="my-10" />
+
 
 
         {/* Bottom padding for mobile */}
@@ -2971,6 +2980,8 @@ const App: React.FC = () => {
             </p>
           </div>
 
+          <AdSenseAd adSlot="auto" className="my-8" />
+
 
 
           {/* FAQ 7 - Emergency Helpline */}
@@ -3030,6 +3041,8 @@ const App: React.FC = () => {
           </div>
         </div>
 
+        <AdSenseAd adSlot="auto" className="my-6" />
+
 
         {/* Still have questions? */}
         <div className="mt-12 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-slate-800 dark:to-slate-900 rounded-2xl p-8 text-center border border-blue-100 dark:border-slate-700">
@@ -3054,6 +3067,8 @@ const App: React.FC = () => {
             </a>
           </div>
         </div>
+
+        <AdSenseAd adSlot="auto" className="my-10" />
 
 
         {/* Bottom padding for mobile */}
@@ -3133,6 +3148,8 @@ const App: React.FC = () => {
               </li>
             </ul>
           </section>
+
+          <AdSenseAd adSlot="auto" className="my-10" />
 
           {/* Integration Info */}
           <section className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-2xl border border-blue-100 dark:border-blue-800/50">
@@ -3228,6 +3245,8 @@ const App: React.FC = () => {
           </div>
 
           </div >
+
+          <AdSenseAd adSlot="auto" className="my-10" />
 
 
 
@@ -3549,6 +3568,7 @@ const App: React.FC = () => {
                 </select>
               </div>
             </div>
+            <AdSenseAd adSlot="auto" className="my-6 pointer-events-none" />
             {fareInfo ? (
               <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-xl border border-green-100 dark:border-green-800 flex justify-between items-center animate-in fade-in slide-in-from-top-2">
                 <div>
@@ -3704,6 +3724,8 @@ const App: React.FC = () => {
               </div>
             </div>
           </div>
+
+          <AdSenseAd adSlot="auto" className="my-8" />
 
         </div>
 
@@ -4298,6 +4320,9 @@ const App: React.FC = () => {
 
             return (
               <React.Fragment key={bus.id}>
+                {busIdx > 0 && busIdx % 7 === 0 && (
+                  <AdSenseAd adSlot="auto" adFormat="fluid" className="my-4" />
+                )}
 
                 <div
                   onClick={() => handleBusSelect(bus)}
@@ -4540,6 +4565,8 @@ const App: React.FC = () => {
               <ReleaseNotes />
             )}
 
+            <AdSenseAd adSlot="auto" className="my-6" />
+
 
             {view === AppView.BLOG && (
               selectedBlogPost ? (
@@ -4660,6 +4687,7 @@ const App: React.FC = () => {
 
                   <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">{t('install.title')}</h1>
                   <p className="text-gray-500 dark:text-gray-400 mb-8">{t('install.subtitle')}</p>
+                  <AdSenseAd adSlot="auto" className="mb-8" />
 
 
                   {/* Check if already installed */}
@@ -4757,6 +4785,8 @@ const App: React.FC = () => {
                       )}
                     </div>
                   )}
+
+                  <AdSenseAd adSlot="auto" className="my-10" />
 
 
 

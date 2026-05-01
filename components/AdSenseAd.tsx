@@ -38,30 +38,30 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
   }, []);
 
   useEffect(() => {
-    if (!navigator.onLine || isMobile) return;
+    if (!navigator.onLine) return;
     if (!isValidSlot(adSlot)) return;
     if (pushed.current) return;
     pushed.current = true;
     try {
       ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
-    } catch {
-      // ad blocker or script not loaded
+    } catch (e) {
+      console.error('AdSense error:', e);
     }
-  }, [adSlot, isMobile]);
+  }, [adSlot]);
 
-  // Do not render if offline, slot ID is not valid, or user is on mobile
-  if (!navigator.onLine || !isValidSlot(adSlot) || isMobile) return null;
+  // Do not render if offline or slot ID is not valid
+  if (!navigator.onLine || !isValidSlot(adSlot)) return null;
 
   return (
-    <div className={`adsense-container hidden md:flex w-full justify-center flex-shrink-0 overflow-hidden ${className}`} style={{ minHeight: '90px', maxHeight: '100px' }}>
+    <div className={`adsense-container w-full flex justify-center overflow-hidden ${className}`}>
       <ins
         ref={insRef}
         className="adsbygoogle"
-        style={{ display: 'inline-block', width: '100%', maxWidth: '970px', height: '90px' }}
+        style={{ display: 'block' }}
         data-ad-client="ca-pub-8425219156685369"
         data-ad-slot={adSlot === 'auto' ? DEFAULT_SLOT : adSlot}
-        // Force fixed horizontal banner to prevent layout blowout
-        // Removed data-ad-format="auto" and data-full-width-responsive
+        data-ad-format="auto"
+        data-full-width-responsive="true"
         {...(layoutKey ? { 'data-ad-layout-key': layoutKey } : {})}
       />
     </div>
