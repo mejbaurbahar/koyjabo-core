@@ -40,7 +40,7 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
   if (!navigator.onLine || !isValidSlot(adSlot)) return null;
 
   return (
-    <div className={`adsense-container w-full flex justify-center flex-shrink-0 overflow-hidden ${className}`} style={{ minHeight: '90px', maxHeight: '100px' }}>
+    <div className={`adsense-container hidden md:flex w-full justify-center flex-shrink-0 overflow-hidden ${className}`} style={{ minHeight: '90px', maxHeight: '100px' }}>
       <ins
         ref={insRef}
         className="adsbygoogle"
