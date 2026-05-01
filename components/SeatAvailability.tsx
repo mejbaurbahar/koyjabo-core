@@ -103,7 +103,7 @@ export default function SeatAvailability({ onBack }: Props) {
             )}
           </div>
 
-          <AdSenseAd adSlot="auto" className="my-6 hidden md:block" />
+          <AdSenseAd adSlot="auto" className="my-6" />
 
 
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700">
@@ -138,7 +138,7 @@ export default function SeatAvailability({ onBack }: Props) {
               <li>• {lbl('NID required for e-ticket — carry it', 'ই-টিকিটে NID লাগে — সাথে রাখুন')}</li>
             </ul>
           </div>
-          <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
+          <AdSenseAd adSlot="auto" className="my-8" />
           <div className="h-4" />
         </div>
 
@@ -226,7 +226,7 @@ export default function SeatAvailability({ onBack }: Props) {
             <p className="text-gray-500 dark:text-gray-400">{lbl('No trains found', 'কোনো ট্রেন পাওয়া যায়নি')}</p>
           </div>
         )}
-        <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
+        <AdSenseAd adSlot="auto" className="my-8" />
         <div className="h-4" />
       </div>
 

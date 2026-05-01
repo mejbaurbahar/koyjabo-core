@@ -242,7 +242,7 @@ export default function TripReminders({ onBack }: Props) {
               {lbl('Add Your First Reminder', 'প্রথম রিমাইন্ডার যোগ করুন')}
             </button>
             <p className="text-xs text-gray-400 mt-4">{lbl('Tap the + button above to add more reminders', 'আরও রিমাইন্ডার যোগ করতে উপরের + বোতামে চাপুন')}</p>
-            <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
+            <AdSenseAd adSlot="auto" className="my-8" />
           </div>
 
         )}
@@ -281,7 +281,7 @@ export default function TripReminders({ onBack }: Props) {
             </div>
           </div>
         ))}
-        <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
+        <AdSenseAd adSlot="auto" className="my-8" />
         <div className="h-4" />
 
       </div>

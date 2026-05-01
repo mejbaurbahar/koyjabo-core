@@ -174,7 +174,7 @@ export default function BusPassInfo({ onBack }: Props) {
           </div>
         </div>
 
-        <AdSenseAd adSlot="auto" className="my-6 hidden md:block" />
+        <AdSenseAd adSlot="auto" className="my-6" />
 
 
         {passes.map((pass) => (
@@ -237,7 +237,7 @@ export default function BusPassInfo({ onBack }: Props) {
           </div>
         </div>
 
-        <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
+        <AdSenseAd adSlot="auto" className="my-8" />
         <div className="h-4" />
 
       </div>

@@ -161,7 +161,7 @@ const ReleaseNotes: React.FC = () => {
             );
           })}
         </div>
-        <AdSenseAd adSlot="auto" className="my-10 hidden md:block" />
+        <AdSenseAd adSlot="auto" className="my-10" />
       </div>
     </div>
 

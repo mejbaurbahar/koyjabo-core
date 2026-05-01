@@ -147,7 +147,7 @@ const DailyJourneyView: React.FC<DailyJourneyViewProps> = ({ onBack }) => {
                                     </div>
                                 </div>
                             </div>
-                            <AdSenseAd adSlot="auto" className="my-6 hidden md:block" />
+                            <AdSenseAd adSlot="auto" className="my-6" />
 
                             {/* Journey Timeline */}
                             <div className="space-y-3">

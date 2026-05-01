@@ -197,7 +197,7 @@ export function TrainDetail({
           />
         </div>
 
-        <AdSenseAd adSlot="auto" className="my-4 hidden md:block" />
+        <AdSenseAd adSlot="auto" className="my-4" />
 
         <div className="p-4 space-y-4">
 
@@ -368,6 +368,8 @@ export function TrainDetail({
             </div>
           </div>
 
+          <AdSenseAd adSlot="auto" className="my-2" />
+
           {/* ── Fare Calculator ───────────────────────────────────────────── */}
           {/* No overflow-hidden so SearchableSelect dropdown isn't clipped */}
           <div className="bg-gray-50 dark:bg-white/10 rounded-2xl border border-gray-200 dark:border-white/15">
@@ -459,7 +461,7 @@ export function TrainDetail({
             </div>
           </div>
 
-          <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
+          <AdSenseAd adSlot="auto" className="my-8" />
 
           {/* Spacer for mobile bottom nav */}
 
@@ -785,7 +787,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
             </div>
           </div>
 
-          <AdSenseAd adSlot="auto" className="mt-4 mb-2 hidden md:block" />
+          <AdSenseAd adSlot="auto" className="mt-4 mb-2" />
 
           {/* Search + filter toggle row */}
 

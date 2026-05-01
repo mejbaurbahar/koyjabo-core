@@ -2344,7 +2344,7 @@ const App: React.FC = () => {
         ref={chatMessagesContainerRef}
         className="flex-1 min-h-0 p-4 space-y-4 bg-slate-50 dark:bg-slate-900 overflow-y-auto"
       >
-        <AdSenseAd adSlot="auto" className="mb-4 hidden md:block" />
+        <AdSenseAd adSlot="auto" className="mb-4" />
 
         {chatHistory.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center p-8 opacity-50">
@@ -2356,7 +2356,7 @@ const App: React.FC = () => {
             <React.Fragment key={idx}>
               {idx > 0 && idx % 10 === 0 && (
                 <div className="flex justify-center my-4">
-                  <AdSenseAd adSlot="auto" adFormat="fluid" className="w-full max-w-sm hidden md:block" />
+                  <AdSenseAd adSlot="auto" adFormat="fluid" className="w-full max-w-sm" />
                 </div>
               )}
               <div className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -2405,7 +2405,7 @@ const App: React.FC = () => {
         <h2 className="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-200">কই<span className="text-dhaka-red ml-2">যাবো</span> <span className="text-gray-600 dark:text-gray-400 text-lg">(KoyJabo)</span></h2>
         <p className="text-gray-500 dark:text-gray-400 mb-8">{t('settings.version')} 2.5.0 • {t('common.tagline') || 'Bangladesh\'s Smart Transport Route Finder — Bus, Train, Metro, AI & More'}</p>
 
-        <AdSenseAd adSlot="auto" className="my-6 hidden md:block" />
+        <AdSenseAd adSlot="auto" className="my-6" />
         <div className="text-left space-y-8 bg-slate-50 dark:bg-slate-800 p-6 md:p-10 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm">
           <section>
             <h2 className="text-3xl font-bold text-dhaka-green dark:text-emerald-400 mb-4 border-b-2 border-dhaka-green/20 pb-2">{t('about.ourStoryTitle')}</h2>
@@ -2563,7 +2563,7 @@ const App: React.FC = () => {
             </div>
           </section>
 
-          <AdSenseAd adSlot="auto" className="my-10 hidden md:block" />
+          <AdSenseAd adSlot="auto" className="my-10" />
         </div>
 
       </div>
@@ -2770,7 +2770,7 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
+          <AdSenseAd adSlot="auto" className="my-8" />
 
           {/* Benefit 4 */}
 
@@ -2891,7 +2891,7 @@ const App: React.FC = () => {
           </button>
         </div>
 
-        <AdSenseAd adSlot="auto" className="my-10 hidden md:block" />
+        <AdSenseAd adSlot="auto" className="my-10" />
 
         {/* Bottom padding for mobile */}
 
@@ -2975,7 +2975,7 @@ const App: React.FC = () => {
             </p>
           </div>
 
-          <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
+          <AdSenseAd adSlot="auto" className="my-8" />
 
           {/* FAQ 7 - Emergency Helpline */}
 
@@ -3034,7 +3034,7 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        <AdSenseAd adSlot="auto" className="my-6 hidden md:block" />
+        <AdSenseAd adSlot="auto" className="my-6" />
         {/* Still have questions? */}
         <div className="mt-12 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-slate-800 dark:to-slate-900 rounded-2xl p-8 text-center border border-blue-100 dark:border-slate-700">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3">{t('faq.stillHaveQuestions')}</h2>
@@ -3059,7 +3059,7 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        <AdSenseAd adSlot="auto" className="my-10 hidden md:block" />
+        <AdSenseAd adSlot="auto" className="my-10" />
         {/* Bottom padding for mobile */}
         <div className="h-20"></div>
 
@@ -3155,7 +3155,7 @@ const App: React.FC = () => {
             </p>
           </section>
 
-          <AdSenseAd adSlot="auto" className="my-10 hidden md:block" />
+          <AdSenseAd adSlot="auto" className="my-10" />
 
           {/* Detailed Keyword Map for AI Context */}
 
@@ -3233,7 +3233,7 @@ const App: React.FC = () => {
 
           </div >
 
-          <AdSenseAd adSlot="auto" className="my-10 hidden md:block" />
+          <AdSenseAd adSlot="auto" className="my-10" />
 
           {/* Bottom space */}
 
@@ -3568,7 +3568,7 @@ const App: React.FC = () => {
               </div>
             )}
           </div>
-          <AdSenseAd adSlot="auto" className="my-6 hidden md:block pointer-events-none" />
+          <AdSenseAd adSlot="auto" className="my-6 pointer-events-none" />
 
           {/* Full Route List */}
           <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-gray-100 dark:border-gray-700 overflow-hidden">
@@ -3709,7 +3709,7 @@ const App: React.FC = () => {
               </div>
             </div>
           </div>
-          <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
+          <AdSenseAd adSlot="auto" className="my-8" />
         </div>
 
 
@@ -4304,7 +4304,7 @@ const App: React.FC = () => {
             return (
               <React.Fragment key={bus.id}>
                 {busIdx > 0 && busIdx % 7 === 0 && (
-                  <AdSenseAd adSlot="auto" adFormat="fluid" className="my-4 hidden md:block" />
+                  <AdSenseAd adSlot="auto" adFormat="fluid" className="my-4" />
                 )}
                 <div
                   onClick={() => handleBusSelect(bus)}
@@ -4546,7 +4546,7 @@ const App: React.FC = () => {
             {view === AppView.RELEASE_NOTES && (
               <ReleaseNotes />
             )}
-            <AdSenseAd adSlot="auto" className="my-6 hidden md:block" />
+            <AdSenseAd adSlot="auto" className="my-6" />
 
             {view === AppView.BLOG && (
               selectedBlogPost ? (
@@ -4667,6 +4667,7 @@ const App: React.FC = () => {
 
                   <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">{t('install.title')}</h1>
                   <p className="text-gray-500 dark:text-gray-400 mb-8">{t('install.subtitle')}</p>
+                  <AdSenseAd adSlot="auto" className="mb-8" />
 
                   {/* Check if already installed */}
                   {/* Check if already installed - Only check display-mode: standalone, ignore localStorage to allow reinstall */}
@@ -4764,7 +4765,7 @@ const App: React.FC = () => {
                     </div>
                   )}
 
-                  <AdSenseAd adSlot="auto" className="my-10 hidden md:block" />
+                  <AdSenseAd adSlot="auto" className="my-10" />
 
                   {/* Bottom padding */}
 

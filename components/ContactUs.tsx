@@ -30,7 +30,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
                     </p>
                 </div>
 
-                <AdSenseAd adSlot="auto" className="mb-12 hidden md:block" />
+                <AdSenseAd adSlot="auto" className="mb-12" />
 
 
                 <div className="grid md:grid-cols-2 gap-6 mb-16 max-w-2xl mx-auto">
@@ -107,7 +107,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
                     </div>
                 </div>
 
-                <AdSenseAd adSlot="auto" className="mt-12 hidden md:block" />
+                <AdSenseAd adSlot="auto" className="mt-12" />
 
                 {/* Mobile Bottom Spacer */}
 

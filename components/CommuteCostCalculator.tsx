@@ -173,7 +173,7 @@ export default function CommuteCostCalculator({ onBack }: Props) {
           )}
         </div>
 
-        <AdSenseAd adSlot="auto" className="my-6 hidden md:block" />
+        <AdSenseAd adSlot="auto" className="my-6" />
 
 
         {legs.length > 0 && (
@@ -223,7 +223,7 @@ export default function CommuteCostCalculator({ onBack }: Props) {
             ))}
           </div>
         </div>
-        <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
+        <AdSenseAd adSlot="auto" className="my-8" />
         <div className="h-4" />
 
       </div>

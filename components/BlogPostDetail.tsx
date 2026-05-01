@@ -264,7 +264,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                         </div>
                     )}
 
-                    <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
+                    <AdSenseAd adSlot="auto" className="my-8" />
 
                     {/* Content */}
                     <div className="prose prose-lg md:prose-xl dark:prose-invert max-w-none
@@ -289,7 +289,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                         </ReactMarkdown>
                     </div>
 
-                    <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-12 hidden md:block" />
+                    <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-12" />
 
                     {/* Tags */}
                     <div className="mt-12 pt-8 border-t-2 border-gray-200 dark:border-gray-700">
@@ -363,7 +363,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                         </div>
                     )}
 
-                    <AdSenseAd adSlot="auto" className="my-12 hidden md:block" />
+                    <AdSenseAd adSlot="auto" className="my-12" />
 
                     {/* CTA */}
                     <div className="mt-12 bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 rounded-3xl p-8 text-center shadow-2xl">

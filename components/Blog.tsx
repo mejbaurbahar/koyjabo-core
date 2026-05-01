@@ -146,7 +146,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                         </div>
                     )}
 
-                    <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
+                    <AdSenseAd adSlot="auto" className="my-8" />
 
                     {/* Regular Posts Grid */}
                     {regularPosts.length > 0 && (
@@ -205,7 +205,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                         </p>
                     </div>
                     
-                    <AdSenseAd adSlot="auto" className="mt-8 hidden md:block" />
+                    <AdSenseAd adSlot="auto" className="mt-8" />
                     <div className="h-4" />
                 </div>
             </div>

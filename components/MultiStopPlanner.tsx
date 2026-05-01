@@ -311,7 +311,7 @@ export default function MultiStopPlanner({ onBack }: Props) {
           </div>
         </div>
 
-        <AdSenseAd adSlot="auto" className="my-6 hidden md:block" />
+        <AdSenseAd adSlot="auto" className="my-6" />
 
 
         {planned && legs.length > 0 && (
@@ -338,7 +338,7 @@ export default function MultiStopPlanner({ onBack }: Props) {
             </div>
           </div>
         )}
-        <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
+        <AdSenseAd adSlot="auto" className="my-8" />
         <div className="h-4" />
 
       </div>
