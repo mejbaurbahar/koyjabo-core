@@ -144,7 +144,6 @@ export function TrainDetail({
         </button>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <TrainImageViewer trainId={route.id} trainName={route.name} trainBnName={route.bnName} isCompact />
             <h2 className="font-bold text-gray-900 dark:text-white truncate">
               {bn ? route.bnName : route.name}
             </h2>
@@ -161,13 +160,7 @@ export function TrainDetail({
             {bn ? toSt?.bnName : toSt?.name}
           </p>
         </div>
-        <button
-          onClick={() => onOpenPhotos?.()}
-          className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/40"
-          aria-label={bn ? 'ট্রেনের ছবি' : 'Train photos'}
-        >
-          {bn ? 'ছবি' : 'Photos'}
-        </button>
+
         <button
           onClick={() => onOpenRating?.()}
           className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900/40"
