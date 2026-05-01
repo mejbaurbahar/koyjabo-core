@@ -24,8 +24,21 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
   const insRef = useRef<HTMLModElement>(null);
   const pushed = useRef(false);
 
+  const [isMobile, setIsMobile] = React.useState(false);
+
   useEffect(() => {
-    if (!navigator.onLine) return;
+    // Check if device is mobile on mount
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (!navigator.onLine || isMobile) return;
     if (!isValidSlot(adSlot)) return;
     if (pushed.current) return;
     pushed.current = true;
@@ -34,10 +47,10 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
     } catch {
       // ad blocker or script not loaded
     }
-  }, [adSlot]);
+  }, [adSlot, isMobile]);
 
-  // Do not render if offline or slot ID is not valid
-  if (!navigator.onLine || !isValidSlot(adSlot)) return null;
+  // Do not render if offline, slot ID is not valid, or user is on mobile
+  if (!navigator.onLine || !isValidSlot(adSlot) || isMobile) return null;
 
   return (
     <div className={`adsense-container hidden md:flex w-full justify-center flex-shrink-0 overflow-hidden ${className}`} style={{ minHeight: '90px', maxHeight: '100px' }}>
