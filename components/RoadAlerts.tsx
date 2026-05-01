@@ -3,7 +3,10 @@ import { ArrowLeft, AlertTriangle, Clock, ChevronDown, ChevronUp, Plus, External
 import { useLanguage } from '../contexts/LanguageContext';
 import { useToast } from '../contexts/ToastContext';
 import { submitTrafficReport, getTodayTrafficReports, upvoteTrafficReport, TrafficReport, getAuthUser } from '../services/communityDataService';
+import { submitTrafficReport, getTodayTrafficReports, upvoteTrafficReport, TrafficReport, getAuthUser } from '../services/communityDataService';
 import { trackFeatureUsage } from '../services/analyticsService';
+import AdSenseAd from './AdSenseAd';
+
 
 interface Props {
   onBack: () => void;
@@ -180,6 +183,9 @@ export default function RoadAlerts({ onBack }: Props) {
           </form>
         )}
 
+        <AdSenseAd adSlot="auto" className="my-6 hidden md:block" />
+
+
         {ADMIN_ALERTS.length > 0 && (
           <div className="space-y-2">
             <p className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wide px-1">
@@ -280,7 +286,9 @@ export default function RoadAlerts({ onBack }: Props) {
             </div>
           );
         })}
+        <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
         <div className="h-4" />
+
       </div>
     </div>
   );

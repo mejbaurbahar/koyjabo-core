@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Calculator, TrendingDown, Trash2 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
+import AdSenseAd from './AdSenseAd';
+
 
 interface Props { onBack: () => void; }
 
@@ -171,6 +173,9 @@ export default function CommuteCostCalculator({ onBack }: Props) {
           )}
         </div>
 
+        <AdSenseAd adSlot="auto" className="my-6 hidden md:block" />
+
+
         {legs.length > 0 && (
           <>
             <div className="grid grid-cols-3 gap-3">
@@ -218,7 +223,9 @@ export default function CommuteCostCalculator({ onBack }: Props) {
             ))}
           </div>
         </div>
+        <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
         <div className="h-4" />
+
       </div>
     </div>
   );

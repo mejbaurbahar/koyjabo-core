@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { ArrowLeft, Rocket, CheckCircle, Wrench, Zap, Calendar, ChevronRight, ChevronDown, Sparkles } from 'lucide-react';
 import { RELEASE_NOTES } from '../data/releaseNotes';
 import { useLanguage } from '../contexts/LanguageContext';
+import AdSenseAd from './AdSenseAd';
+
 
 const ReleaseNotes: React.FC = () => {
   const { language, t } = useLanguage();
@@ -159,8 +161,10 @@ const ReleaseNotes: React.FC = () => {
             );
           })}
         </div>
+        <AdSenseAd adSlot="auto" className="my-10 hidden md:block" />
       </div>
     </div>
+
   );
 };
 

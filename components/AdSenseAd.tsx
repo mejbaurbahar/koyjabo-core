@@ -11,7 +11,8 @@ interface AdSenseAdProps {
 // Valid slot IDs are 9-10 digit numeric strings.
 // Passing "auto" as a slot ID is invalid; those placements rely on Google Auto Ads
 // (enabled from the AdSense dashboard) injecting ads automatically.
-const isValidSlot = (slot: string) => /^\d{9,11}$/.test(slot);
+const isValidSlot = (slot: string) => slot === 'auto' || /^\d{9,11}$/.test(slot);
+const DEFAULT_SLOT = '7294303750'; // From intercity/index.html
 
 const AdSenseAd: React.FC<AdSenseAdProps> = ({
   adSlot,
@@ -45,7 +46,7 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
         className="adsbygoogle"
         style={{ display: 'block' }}
         data-ad-client="ca-pub-8425219156685369"
-        data-ad-slot={adSlot}
+        data-ad-slot={adSlot === 'auto' ? DEFAULT_SLOT : adSlot}
         data-ad-format={adFormat}
         data-full-width-responsive={responsive ? 'true' : 'false'}
         {...(layoutKey ? { 'data-ad-layout-key': layoutKey } : {})}

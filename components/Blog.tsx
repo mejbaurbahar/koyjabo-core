@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Clock, Tag, Calendar, ArrowRight, Search, X } from 'lucide-react';
 import { BLOG_POSTS } from '../data/blogPosts';
 import { useLanguage } from '../contexts/LanguageContext';
+import AdSenseAd from './AdSenseAd';
 
 interface BlogProps {
     onBack: () => void;
@@ -145,6 +146,8 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                         </div>
                     )}
 
+                    <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
+
                     {/* Regular Posts Grid */}
                     {regularPosts.length > 0 && (
                         <div>
@@ -201,6 +204,8 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                                 : "Bangladesh's best public transport guide — Dhaka buses, metro rail, trains & intercity travel"}
                         </p>
                     </div>
+                    
+                    <AdSenseAd adSlot="auto" className="mt-8 hidden md:block" />
                     <div className="h-4" />
                 </div>
             </div>

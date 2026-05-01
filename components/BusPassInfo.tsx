@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { ArrowLeft, CreditCard, CheckCircle2, ExternalLink, Info } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
+import AdSenseAd from './AdSenseAd';
+
 
 interface Props { onBack: () => void; }
 
@@ -172,6 +174,9 @@ export default function BusPassInfo({ onBack }: Props) {
           </div>
         </div>
 
+        <AdSenseAd adSlot="auto" className="my-6 hidden md:block" />
+
+
         {passes.map((pass) => (
           <div key={pass.name} className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700">
             <div className={`bg-gradient-to-r ${pass.color} p-4 text-white`}>
@@ -232,7 +237,9 @@ export default function BusPassInfo({ onBack }: Props) {
           </div>
         </div>
 
+        <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
         <div className="h-4" />
+
       </div>
     </div>
   );

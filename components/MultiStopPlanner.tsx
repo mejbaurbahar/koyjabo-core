@@ -3,6 +3,8 @@ import { ArrowLeft, Plus, Trash2, ChevronRight, MapPin, Navigation } from 'lucid
 import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
 import { STATIONS, METRO_STATIONS, RAILWAY_STATIONS } from '../constants';
+import AdSenseAd from './AdSenseAd';
+
 
 interface Props { onBack: () => void; }
 
@@ -309,6 +311,9 @@ export default function MultiStopPlanner({ onBack }: Props) {
           </div>
         </div>
 
+        <AdSenseAd adSlot="auto" className="my-6 hidden md:block" />
+
+
         {planned && legs.length > 0 && (
           <div className="space-y-3">
             <h3 className="font-bold text-gray-900 dark:text-white text-sm px-1">{lbl('Your journey plan', 'আপনার যাত্রা পরিকল্পনা')}</h3>
@@ -333,7 +338,9 @@ export default function MultiStopPlanner({ onBack }: Props) {
             </div>
           </div>
         )}
+        <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
         <div className="h-4" />
+
       </div>
     </div>
   );

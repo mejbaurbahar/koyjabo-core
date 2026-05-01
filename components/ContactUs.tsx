@@ -2,6 +2,8 @@ import React from 'react';
 import { Mail, Linkedin, Facebook, MapPin, Send, MessageSquare, Bug, Lightbulb, Share2 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { AppView } from '../types';
+import AdSenseAd from './AdSenseAd';
+
 
 interface ContactUsProps {
     view: AppView;
@@ -27,6 +29,9 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
                         {t('contactUs.description')}
                     </p>
                 </div>
+
+                <AdSenseAd adSlot="auto" className="mb-12 hidden md:block" />
+
 
                 <div className="grid md:grid-cols-2 gap-6 mb-16 max-w-2xl mx-auto">
                     {/* Feedback */}
@@ -102,7 +107,10 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
                     </div>
                 </div>
 
+                <AdSenseAd adSlot="auto" className="mt-12 hidden md:block" />
+
                 {/* Mobile Bottom Spacer */}
+
                 <div className="h-24 md:hidden"></div>
             </div>
         </div>

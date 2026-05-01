@@ -2344,6 +2344,8 @@ const App: React.FC = () => {
         ref={chatMessagesContainerRef}
         className="flex-1 min-h-0 p-4 space-y-4 bg-slate-50 dark:bg-slate-900 overflow-y-auto"
       >
+        <AdSenseAd adSlot="auto" className="mb-4 hidden md:block" />
+
         {chatHistory.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center p-8 opacity-50">
             <Bot className="w-16 h-16 text-gray-300 dark:text-gray-600 mb-4" />
@@ -2351,13 +2353,21 @@ const App: React.FC = () => {
           </div>
         ) : (
           chatHistory.map((msg, idx) => (
-            <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-dhaka-dark dark:bg-emerald-700 text-white rounded-br-none' : 'bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-200 border border-gray-100 dark:border-gray-700 rounded-bl-none'}`}>
-                <div className="whitespace-pre-wrap">{msg.text.replace(/\*\*/g, '')}</div>
+            <React.Fragment key={idx}>
+              {idx > 0 && idx % 10 === 0 && (
+                <div className="flex justify-center my-4">
+                  <AdSenseAd adSlot="auto" adFormat="fluid" className="w-full max-w-sm hidden md:block" />
+                </div>
+              )}
+              <div className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-dhaka-dark dark:bg-emerald-700 text-white rounded-br-none' : 'bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-200 border border-gray-100 dark:border-gray-700 rounded-bl-none'}`}>
+                  <div className="whitespace-pre-wrap">{msg.text.replace(/\*\*/g, '')}</div>
+                </div>
               </div>
-            </div>
+            </React.Fragment>
           ))
         )}
+
 
         {aiLoading && <AiThinkingIndicator />}
         <div ref={chatEndRef}></div>
@@ -2553,7 +2563,9 @@ const App: React.FC = () => {
             </div>
           </section>
 
+          <AdSenseAd adSlot="auto" className="my-10 hidden md:block" />
         </div>
+
       </div>
       {/* Spacer for bottom nav on mobile */}
       <div className="h-20 md:hidden"></div>
@@ -2758,7 +2770,10 @@ const App: React.FC = () => {
             </div>
           </div>
 
+          <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
+
           {/* Benefit 4 */}
+
           <div className="bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-900/30 dark:to-amber-900/30 p-6 rounded-2xl border border-orange-100 dark:border-orange-800">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center text-white shrink-0">
@@ -2876,7 +2891,10 @@ const App: React.FC = () => {
           </button>
         </div>
 
+        <AdSenseAd adSlot="auto" className="my-10 hidden md:block" />
+
         {/* Bottom padding for mobile */}
+
         <div className="h-20"></div>
       </div>
     </div>
@@ -2957,7 +2975,10 @@ const App: React.FC = () => {
             </p>
           </div>
 
+          <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
+
           {/* FAQ 7 - Emergency Helpline */}
+
           <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hover:border-red-300 dark:hover:border-red-500 transition-colors">
             <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2 flex items-start gap-2">
               <span className="text-red-500">Q:</span>
@@ -3038,8 +3059,10 @@ const App: React.FC = () => {
           </div>
         </div>
 
+        <AdSenseAd adSlot="auto" className="my-10 hidden md:block" />
         {/* Bottom padding for mobile */}
         <div className="h-20"></div>
+
       </div >
     </div >
     </div>
@@ -3132,7 +3155,10 @@ const App: React.FC = () => {
             </p>
           </section>
 
+          <AdSenseAd adSlot="auto" className="my-10 hidden md:block" />
+
           {/* Detailed Keyword Map for AI Context */}
+
           <section className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">🔍 Domain Knowledge & Keyword Map</h2>
             <p className="text-gray-600 mb-6">The platform is optimized to answer queries across these key transportation domains in Bangladesh:</p>
@@ -3205,7 +3231,12 @@ const App: React.FC = () => {
             </a>
           </div>
 
+          </div >
+
+          <AdSenseAd adSlot="auto" className="my-10 hidden md:block" />
+
           {/* Bottom space */}
+
           <div className="h-20"></div>
         </div>
       </div>
@@ -3678,7 +3709,9 @@ const App: React.FC = () => {
               </div>
             </div>
           </div>
+          <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
         </div>
+
 
         {/* Emergency Helpline Modal */}
         <EmergencyHelplineModal
@@ -4513,6 +4546,8 @@ const App: React.FC = () => {
             {view === AppView.RELEASE_NOTES && (
               <ReleaseNotes />
             )}
+            <AdSenseAd adSlot="auto" className="my-6 hidden md:block" />
+
             {view === AppView.BLOG && (
               selectedBlogPost ? (
                 <BlogPostDetail
@@ -4729,7 +4764,10 @@ const App: React.FC = () => {
                     </div>
                   )}
 
+                  <AdSenseAd adSlot="auto" className="my-10 hidden md:block" />
+
                   {/* Bottom padding */}
+
                   <div className="h-20"></div>
                 </div>
               </div>

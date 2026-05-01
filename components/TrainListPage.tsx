@@ -23,6 +23,8 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
 import { getTrainRatings, TrainRatingSummary } from '../services/communityDataService';
 import TrainImageViewer from './TrainImageViewer';
+import AdSenseAd from './AdSenseAd';
+
 
 interface TrainListPageProps {
   userLocation?: UserLocation | null;
@@ -195,7 +197,10 @@ export function TrainDetail({
           />
         </div>
 
+        <AdSenseAd adSlot="auto" className="my-4 hidden md:block" />
+
         <div className="p-4 space-y-4">
+
           {/* ── Schedule ─────────────────────────────────────────────────── */}
           <div className="bg-gray-50 dark:bg-white/10 rounded-2xl p-4 border border-gray-200 dark:border-white/15">
             <h3 className="text-sm font-bold text-gray-800 dark:text-white mb-3 flex items-center gap-2">
@@ -454,7 +459,10 @@ export function TrainDetail({
             </div>
           </div>
 
+          <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
+
           {/* Spacer for mobile bottom nav */}
+
           <div className="h-24 md:h-4" />
         </div>
       </div>
@@ -774,7 +782,13 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
             </div>
           </div>
 
+            </div>
+          </div>
+
+          <AdSenseAd adSlot="auto" className="mt-4 mb-2 hidden md:block" />
+
           {/* Search + filter toggle row */}
+
           <div className="flex gap-2">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60" />

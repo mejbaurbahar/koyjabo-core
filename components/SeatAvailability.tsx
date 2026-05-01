@@ -3,6 +3,8 @@ import { ArrowLeft, Ticket, ExternalLink, Train, Search, ChevronLeft, Star } fro
 import { BD_TRAIN_ROUTES, BDTrainRoute } from '../data/bangladeshTrainData';
 import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
+import AdSenseAd from './AdSenseAd';
+
 
 interface Props { onBack: () => void; }
 
@@ -101,6 +103,9 @@ export default function SeatAvailability({ onBack }: Props) {
             )}
           </div>
 
+          <AdSenseAd adSlot="auto" className="my-6 hidden md:block" />
+
+
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700">
             <h3 className="font-bold text-gray-900 dark:text-white text-sm mb-2">{lbl('Fare (approx.)', 'আনুমানিক ভাড়া')}</h3>
             <div className="grid grid-cols-3 gap-2">
@@ -133,8 +138,10 @@ export default function SeatAvailability({ onBack }: Props) {
               <li>• {lbl('NID required for e-ticket — carry it', 'ই-টিকিটে NID লাগে — সাথে রাখুন')}</li>
             </ul>
           </div>
+          <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
           <div className="h-4" />
         </div>
+
       </div>
     );
   }
@@ -219,8 +226,10 @@ export default function SeatAvailability({ onBack }: Props) {
             <p className="text-gray-500 dark:text-gray-400">{lbl('No trains found', 'কোনো ট্রেন পাওয়া যায়নি')}</p>
           </div>
         )}
+        <AdSenseAd adSlot="auto" className="my-8 hidden md:block" />
         <div className="h-4" />
       </div>
+
     </div>
   );
 }
