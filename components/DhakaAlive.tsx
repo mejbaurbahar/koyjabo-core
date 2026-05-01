@@ -4,7 +4,7 @@ import { SangsadBhaban, ShaheedMinar, CurzonHall, AhsanManzil, NationalMemorial,
 import { Cloud, Airplane, MetroTrack, MetroTrain, CityBus, RiverBoat, Sun, Moon, Skyline, Stars, RiverWaves, Rain, Fog, TrafficPolice } from './DhakaAnimationElements';
 import { X, Sparkles } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import AdSenseAd from './AdSenseAd';
+
 
 // --- Fixed Landmark Data ---
 const landmarkData: Record<string, string> = {
@@ -273,7 +273,7 @@ const DhakaAlive: React.FC<{ hideIndicator?: boolean }> = ({ hideIndicator = fal
                                     {description}
                                 </p>
                             </div>
-                            <AdSenseAd adSlot="auto" className="mt-6" />
+
                         </div>
                     </div>
                 </div>
