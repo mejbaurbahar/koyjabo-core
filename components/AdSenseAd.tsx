@@ -40,19 +40,17 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
   if (!navigator.onLine || !isValidSlot(adSlot)) return null;
 
   return (
-    <div className={`adsense-container w-full max-w-full overflow-x-hidden flex-shrink-0 min-h-0 min-w-0 ${className}`}>
-      <div className="w-full flex justify-center">
-        <ins
-          ref={insRef}
-          className="adsbygoogle"
-          style={{ display: 'block', width: '100%', overflow: 'hidden' }}
-          data-ad-client="ca-pub-8425219156685369"
-          data-ad-slot={adSlot === 'auto' ? DEFAULT_SLOT : adSlot}
-          data-ad-format={adFormat}
-          data-full-width-responsive={responsive ? 'true' : 'false'}
-          {...(layoutKey ? { 'data-ad-layout-key': layoutKey } : {})}
-        />
-      </div>
+    <div className={`adsense-container w-full flex justify-center flex-shrink-0 overflow-hidden ${className}`} style={{ minHeight: '90px', maxHeight: '100px' }}>
+      <ins
+        ref={insRef}
+        className="adsbygoogle"
+        style={{ display: 'inline-block', width: '100%', maxWidth: '970px', height: '90px' }}
+        data-ad-client="ca-pub-8425219156685369"
+        data-ad-slot={adSlot === 'auto' ? DEFAULT_SLOT : adSlot}
+        // Force fixed horizontal banner to prevent layout blowout
+        // Removed data-ad-format="auto" and data-full-width-responsive
+        {...(layoutKey ? { 'data-ad-layout-key': layoutKey } : {})}
+      />
     </div>
   );
 };
