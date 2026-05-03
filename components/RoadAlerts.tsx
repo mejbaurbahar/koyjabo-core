@@ -184,7 +184,7 @@ export default function RoadAlerts({ onBack }: Props) {
           </form>
         )}
 
-        <AdSenseAd adSlot="auto" className="my-4" />
+        <AdSenseAd adSlot="auto" className="my-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
 
 

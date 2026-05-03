@@ -740,7 +740,7 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
       </div>
 
 
-      <AdSenseAd adSlot="auto" className="my-4" />
+      <AdSenseAd adSlot="auto" className="my-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
 
       <div className="flex-1 min-h-0 overflow-y-auto px-4 pb-4">

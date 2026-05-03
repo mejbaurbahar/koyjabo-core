@@ -24,32 +24,23 @@ const AdSenseAd: React.FC<AdSenseAdProps> = React.memo(({
   const insRef = useRef<HTMLModElement>(null);
   const pushed = useRef(false);
 
-  const [isMobile, setIsMobile] = React.useState(false);
-
   useEffect(() => {
-    // Check if device is mobile on mount
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+    pushed.current = false;
+  }, [adSlot]);
 
   useEffect(() => {
     if (!navigator.onLine) return;
     if (!isValidSlot(adSlot)) return;
-    
-    // Check if there are un-filled adsbygoogle elements
-    const unFilledAds = document.querySelectorAll('ins.adsbygoogle:not([data-adsbygoogle-status="done"])');
-    
-    if (pushed.current || unFilledAds.length === 0) return;
+    const ins = insRef.current;
+    if (!ins || pushed.current) return;
+    const status = ins.getAttribute('data-adsbygoogle-status');
+    if (status === 'done' || status === 'filled') return;
+
     pushed.current = true;
-    
     try {
       ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
     } catch (e) {
+      pushed.current = false;
       console.error('AdSense error:', e);
     }
   }, [adSlot]);
@@ -58,15 +49,15 @@ const AdSenseAd: React.FC<AdSenseAdProps> = React.memo(({
   if (!navigator.onLine || !isValidSlot(adSlot)) return null;
 
   return (
-    <div className={`adsense-container w-full flex justify-center overflow-hidden ${className}`}>
+    <div className={`adsense-container w-full flex justify-center max-w-full overflow-x-hidden ${className}`}>
       <ins
         ref={insRef}
         className="adsbygoogle"
-        style={{ display: 'block', minHeight: '100px', width: '100%' }}
+        style={{ display: 'block', minHeight: '100px', width: '100%', maxWidth: '100%' }}
         data-ad-client="ca-pub-8425219156685369"
         data-ad-slot={adSlot === 'auto' ? DEFAULT_SLOT : adSlot}
         data-ad-format={adFormat}
-        data-full-width-responsive={responsive ? "true" : "false"}
+        data-full-width-responsive={responsive ? 'true' : 'false'}
         {...(layoutKey ? { 'data-ad-layout-key': layoutKey } : {})}
       />
     </div>

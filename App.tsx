@@ -2306,7 +2306,7 @@ const App: React.FC = () => {
   };
 
   const renderAiAssistant = () => (
-    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 md:rounded-l-3xl md:border-l md:border-gray-200 dark:md:border-gray-800 overflow-hidden w-full max-w-full">
+    <div className="flex flex-col flex-1 min-h-0 w-full bg-slate-50 dark:bg-slate-900 md:rounded-l-3xl md:border-l md:border-gray-200 dark:md:border-gray-800 overflow-hidden max-w-full">
       <div className="md:hidden flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shadow-sm z-20 shrink-0">
         <button onClick={() => setView(AppView.HOME)} className="p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors">
           <ArrowLeft className="w-5 h-5 text-gray-600" />
@@ -2342,9 +2342,9 @@ const App: React.FC = () => {
 
       <div
         ref={chatMessagesContainerRef}
-        className="flex-1 min-h-0 p-4 space-y-4 bg-slate-50 dark:bg-slate-900 overflow-y-auto"
+        className="flex-1 min-h-0 p-4 space-y-4 bg-slate-50 dark:bg-slate-900 overflow-y-auto touch-pan-y"
       >
-        <AdSenseAd adSlot="auto" className="mb-4" />
+        <AdSenseAd adSlot="auto" className="mb-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
 
         {chatHistory.length === 0 ? (
@@ -2357,7 +2357,7 @@ const App: React.FC = () => {
             <React.Fragment key={idx}>
               {idx > 0 && idx % 10 === 0 && (
                 <div className="flex justify-center my-4">
-                  <AdSenseAd adSlot="auto" adFormat="fluid" className="w-full max-w-sm" />
+                  <AdSenseAd adSlot="auto" adFormat="fluid" className="w-full max-w-[728px] mx-auto px-2 md:px-0" />
                 </div>
               )}
 
@@ -2397,7 +2397,7 @@ const App: React.FC = () => {
   );
 
   const renderAbout = () => (
-    <div className="flex flex-col h-full min-h-0 bg-white dark:bg-slate-900 overflow-hidden">
+    <div className="flex flex-col flex-1 min-h-0 w-full bg-white dark:bg-slate-900 overflow-hidden">
     <div className="flex-1 min-h-0 overflow-y-auto p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe">
       <div className="max-w-5xl mx-auto text-center">
         <div className="w-20 h-20 bg-dhaka-red rounded-3xl flex items-center justify-center text-white mx-auto mb-6 shadow-xl shadow-red-200 rotate-3 hover:rotate-6 transition-transform">
@@ -2407,7 +2407,7 @@ const App: React.FC = () => {
         <h2 className="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-200">কই<span className="text-dhaka-red ml-2">যাবো</span> <span className="text-gray-600 dark:text-gray-400 text-lg">(KoyJabo)</span></h2>
         <p className="text-gray-500 dark:text-gray-400 mb-8">{t('settings.version')} 2.5.0 • {t('common.tagline') || 'Bangladesh\'s Smart Transport Route Finder — Bus, Train, Metro, AI & More'}</p>
 
-        <AdSenseAd adSlot="auto" className="my-6" />
+        <AdSenseAd adSlot="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
 
         <div className="text-left space-y-8 bg-slate-50 dark:bg-slate-800 p-6 md:p-10 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-sm">
@@ -2567,7 +2567,7 @@ const App: React.FC = () => {
             </div>
           </section>
 
-          <AdSenseAd adSlot="auto" className="my-10" />
+          <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
 
 
@@ -2725,7 +2725,7 @@ const App: React.FC = () => {
   );
 
   const renderWhyUse = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-hidden w-full">
+    <div className="flex flex-col flex-1 min-h-0 w-full bg-white dark:bg-slate-900 overflow-hidden">
     <div className="flex-1 min-h-0 overflow-y-auto p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100 leading-tight">{t('whyUse.title')}</h1>
@@ -2777,7 +2777,7 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          <AdSenseAd adSlot="auto" className="my-8" />
+          <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
 
 
@@ -2900,7 +2900,7 @@ const App: React.FC = () => {
           </button>
         </div>
 
-        <AdSenseAd adSlot="auto" className="my-10" />
+        <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
 
 
@@ -2913,7 +2913,7 @@ const App: React.FC = () => {
   );
 
   const renderFAQ = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-hidden w-full">
+    <div className="flex flex-col flex-1 min-h-0 w-full bg-white dark:bg-slate-900 overflow-hidden">
     <div className="flex-1 min-h-0 overflow-y-auto p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100 leading-tight">{t('faq.title')}</h1>
@@ -2986,7 +2986,7 @@ const App: React.FC = () => {
             </p>
           </div>
 
-          <AdSenseAd adSlot="auto" className="my-8" />
+          <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
 
 
@@ -3047,7 +3047,7 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        <AdSenseAd adSlot="auto" className="my-6" />
+        <AdSenseAd adSlot="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
 
         {/* Still have questions? */}
@@ -3074,7 +3074,7 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        <AdSenseAd adSlot="auto" className="my-10" />
+        <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
 
         {/* Bottom padding for mobile */}
@@ -3086,7 +3086,7 @@ const App: React.FC = () => {
   );
 
   const renderForAi = () => (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-hidden w-full">
+    <div className="flex flex-col flex-1 min-h-0 w-full bg-white dark:bg-slate-900 overflow-hidden">
     <div className="flex-1 min-h-0 overflow-y-auto p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl md:text-5xl font-bold mb-6 text-gray-900 leading-tight">AI Dataset & Integration</h1>
@@ -3155,7 +3155,7 @@ const App: React.FC = () => {
             </ul>
           </section>
 
-          <AdSenseAd adSlot="auto" className="my-10" />
+          <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
           {/* Integration Info */}
           <section className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-2xl border border-blue-100 dark:border-blue-800/50">
@@ -3252,7 +3252,7 @@ const App: React.FC = () => {
 
           </div >
 
-          <AdSenseAd adSlot="auto" className="my-10" />
+          <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
 
 
@@ -3268,7 +3268,7 @@ const App: React.FC = () => {
 
     const generalFareInfo = calculateFare(selectedBus);
     return (
-      <div className="flex flex-col h-full min-h-0 bg-slate-50 dark:bg-slate-900 overflow-hidden w-full max-w-full">
+      <div className="flex flex-col flex-1 min-h-0 w-full bg-slate-50 dark:bg-slate-900 overflow-hidden max-w-full">
         {/* Mobile sub-header — back + bus name (main app header above handles logo/avatar/menu) */}
         <div className="block md:hidden w-full z-40 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-gray-800 shrink-0">
           <div className="px-4 py-2 flex items-center justify-between">
@@ -3413,7 +3413,7 @@ const App: React.FC = () => {
 
         {/* Scrollable Container for everything else */}
         <div
-          className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain w-full pb-nav-safe md:pb-4"
+          className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain w-full pb-nav-safe md:pb-4 touch-pan-y"
           style={{ WebkitOverflowScrolling: 'touch' }}
         >
 
@@ -3573,7 +3573,7 @@ const App: React.FC = () => {
                 </select>
               </div>
             </div>
-            <AdSenseAd adSlot="auto" className="my-6 pointer-events-none" />
+            <AdSenseAd adSlot="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
             {fareInfo ? (
               <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-xl border border-green-100 dark:border-green-800 flex justify-between items-center animate-in fade-in slide-in-from-top-2">
                 <div>
@@ -3730,7 +3730,7 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          <AdSenseAd adSlot="auto" className="my-8" />
+          <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
         </div>
 
@@ -4204,7 +4204,7 @@ const App: React.FC = () => {
               desktopLeftScrollTopRef.current = e.currentTarget.scrollTop;
             }
           }}
-          className="flex-1 overflow-y-auto px-4 pb-nav-safe md:pb-4 space-y-3"
+          className="flex-1 overflow-y-auto px-4 pb-nav-safe md:pb-4 space-y-3 touch-pan-y"
           style={{ overflowAnchor: 'none' }}
         >
 
@@ -4326,7 +4326,7 @@ const App: React.FC = () => {
             return (
               <React.Fragment key={bus.id}>
                 {busIdx > 0 && busIdx % 7 === 0 && (
-                  <AdSenseAd adSlot="auto" adFormat="fluid" className="my-4" />
+                  <AdSenseAd adSlot="auto" adFormat="fluid" className="my-4 w-full max-w-full md:max-w-[728px] md:mx-auto shrink-0" />
                 )}
 
                 <div
@@ -4532,12 +4532,12 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Content Area (Desktop) / Views (Mobile) */}
+          {/* Right Content Area (Desktop) / Views (Mobile) — flex column so each full-page view is the only in-flow child */}
           <div className={`
-            ${'w-full md:flex-1 bg-slate-50 dark:bg-slate-950 relative h-full min-h-0 overflow-hidden'}
+            ${'w-full md:flex-1 bg-slate-50 dark:bg-slate-950 relative h-full min-h-0 overflow-hidden flex flex-col'}
             ${(view === AppView.HOME || view === AppView.TRAIN_LIST) && 'hidden md:block'}
 `}>
-            <div className={`hidden md:block absolute inset-0 w-full h-full transition-opacity duration-500 ${(view === AppView.HOME || view === AppView.TRAIN_LIST) ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}><DhakaAlive /></div>
+            <div className={`hidden md:block absolute inset-0 w-full h-full min-h-0 transition-opacity duration-500 ${(view === AppView.HOME || view === AppView.TRAIN_LIST) ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}><DhakaAlive /></div>
             {view === AppView.TRAIN_DETAILS && (
               user && selectedTrain ? (
                 <TrainDetail
@@ -4569,9 +4569,6 @@ const App: React.FC = () => {
             {view === AppView.RELEASE_NOTES && (
               <ReleaseNotes />
             )}
-
-            <AdSenseAd adSlot="auto" className="my-6" />
-
 
             {view === AppView.BLOG && (
               selectedBlogPost ? (
@@ -4692,7 +4689,7 @@ const App: React.FC = () => {
 
                   <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">{t('install.title')}</h1>
                   <p className="text-gray-500 dark:text-gray-400 mb-8">{t('install.subtitle')}</p>
-                  <AdSenseAd adSlot="auto" className="mb-8" />
+                  <AdSenseAd adSlot="auto" className="mb-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
 
                   {/* Check if already installed */}
@@ -4791,7 +4788,7 @@ const App: React.FC = () => {
                     </div>
                   )}
 
-                  <AdSenseAd adSlot="auto" className="my-10" />
+                  <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
 
 

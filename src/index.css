@@ -713,10 +713,9 @@ textarea {
 
 /* ===== GOOGLE ADSENSE INTEGRATION ===== */
 
-/* Prevent ads from breaking layout */
+/* Prevent ads from breaking layout — avoid overflow:hidden on ins (hurts nested iframes / touch) */
 .adsbygoogle {
   display: block !important;
-  overflow: hidden;
   margin: 0 auto;
   text-align: center;
 }
@@ -725,6 +724,8 @@ textarea {
 ins.adsbygoogle {
   max-width: 100%;
   box-sizing: border-box;
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 /* AdSense container styling */
@@ -735,10 +736,13 @@ ins.adsbygoogle {
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
-  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+  /* Let vertical scroll pass through to parent panels on mobile (ad iframes sit in flow) */
+  touch-action: manipulation;
 }
 
 .adsense-container:hover {
@@ -755,14 +759,12 @@ ins.adsbygoogle {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
-/* Mobile-specific ad optimizations */
+/* Mobile-specific ad spacing (do not cap height — clips units & breaks layout/scroll) */
 @media (max-width: 768px) {
   .adsense-container {
     margin: 0.5rem auto;
     padding: 0.25rem;
     border-radius: 8px;
-    max-height: 130px;
-    overflow: hidden;
   }
 
   /* Prevent ads from being too close to content */
@@ -819,32 +821,22 @@ footer {
   border-radius: 8px;
 }
 
-/* Responsive ad sizing */
+/* Responsive ad sizing — min-height hints CLS only; avoid max-height that clips fluid/vertical units */
 @media (max-width: 480px) {
   .adsbygoogle {
     min-height: 50px;
-    max-height: 100px;
-    overflow: hidden;
-  }
-
-  .adsense-container {
-    max-height: 110px;
-    overflow: hidden;
   }
 }
 
 @media (min-width: 481px) and (max-width: 768px) {
   .adsbygoogle {
     min-height: 50px;
-    max-height: 130px;
-    overflow: hidden;
   }
 }
 
 @media (min-width: 769px) {
   .adsbygoogle {
     min-height: 90px;
-    max-height: 600px;
   }
 }
 
@@ -854,15 +846,7 @@ footer {
   outline-offset: 2px;
 }
 
-/* Performance: Use GPU acceleration for ad containers */
-.adsense-container,
-.adsbygoogle {
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  will-change: transform;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
+/* Avoid GPU promotion on ads — extra compositing layers often break iOS/Android touch scrolling */
 
 /* Prevent ads from causing cumulative layout shift (CLS) */
 .adsense-placeholder {

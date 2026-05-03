@@ -132,7 +132,7 @@ export function TrainDetail({
 
   return (
     /* Light: white bg — Dark: deep navy gradient */
-    <div className="flex flex-col h-full bg-[#0F172A] dark:bg-[#0F172A] overflow-hidden">
+    <div className="flex flex-col flex-1 min-h-0 w-full bg-[#0F172A] dark:bg-[#0F172A] overflow-hidden">
 
       {/* Sub-header */}
       <div className="shrink-0 flex items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5">
@@ -191,7 +191,7 @@ export function TrainDetail({
           />
         </div>
 
-        <AdSenseAd adSlot="auto" className="my-4" />
+        <AdSenseAd adSlot="auto" className="my-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
 
 
@@ -364,7 +364,7 @@ export function TrainDetail({
             </div>
           </div>
 
-          <AdSenseAd adSlot="auto" className="my-2" />
+          <AdSenseAd adSlot="auto" className="my-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
 
 
@@ -453,7 +453,7 @@ export function TrainDetail({
                     </p>
                   </div>
 
-                  <AdSenseAd adSlot="auto" className="my-8" />
+                  <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
                 </>
               ) : (
                 <p className="text-xs text-gray-400 dark:text-white/40 text-center py-2">
@@ -762,7 +762,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
   }
 
   return (
-    <div className="flex flex-col h-full min-h-0 bg-[#0F172A] dark:bg-[#0F172A] overflow-hidden">
+    <div className="flex flex-col flex-1 min-h-0 w-full bg-[#0F172A] dark:bg-[#0F172A] overflow-hidden">
       {/* Header */}
       <div className="shrink-0 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 shadow-xl shadow-emerald-500/30">
@@ -785,7 +785,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
               </p>
             </div>
           </div>
-          <AdSenseAd adSlot="auto" className="mt-4 mb-2" />
+          <AdSenseAd adSlot="auto" className="mt-4 mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
 
 

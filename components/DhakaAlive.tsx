@@ -291,9 +291,9 @@ const DhakaAlive: React.FC<{ hideIndicator?: boolean }> = ({ hideIndicator = fal
                 </div>
             )}
             
-            <div className="fixed bottom-20 left-0 right-0 z-50 flex justify-center pointer-events-none">
-              <div className="pointer-events-auto bg-white/10 backdrop-blur-sm rounded-xl p-1">
-                <AdSenseAd adSlot="auto" className="w-full max-w-sm" />
+            <div className="fixed bottom-20 left-0 right-0 z-50 flex justify-center pointer-events-none px-3">
+              <div className="pointer-events-auto bg-white/10 dark:bg-slate-900/40 backdrop-blur-sm rounded-xl p-1 w-full max-w-sm md:max-w-[728px]">
+                <AdSenseAd adSlot="auto" className="w-full max-w-full" />
               </div>
             </div>
         </div>

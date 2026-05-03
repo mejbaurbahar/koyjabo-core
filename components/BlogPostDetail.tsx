@@ -137,7 +137,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
         .slice(0, 3);
 
     return (
-        <div className="flex flex-col h-full bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-hidden">
+        <div className="flex flex-col flex-1 min-h-0 w-full bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-hidden">
             {/* Reading Progress Bar */}
             <div className="h-1 w-full bg-gray-200 dark:bg-slate-800 shrink-0">
                 <div
@@ -266,7 +266,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
 
                     <div className="lg:grid lg:grid-cols-12 lg:gap-10">
                         <div className="lg:col-span-8">
-                            <AdSenseAd adSlot="auto" className="mb-8" />
+                            <AdSenseAd adSlot="auto" className="mb-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
                             {/* Content */}
                             <div className="prose prose-lg md:prose-xl dark:prose-invert max-w-none
@@ -313,7 +313,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                                 })()}
                             </div>
 
-                            <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-12" />
+                            <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-12 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
                             {/* Tags */}
                             <div className="mt-12 pt-8 border-t-2 border-gray-200 dark:border-gray-700">
@@ -339,7 +339,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                                         <Sparkles className="w-4 h-4 text-amber-500" />
                                         {language === 'bn' ? 'স্পন্সর' : 'Sponsored'}
                                     </h4>
-                                    <AdSenseAd adSlot="auto" adFormat="vertical" className="w-full min-h-[600px]" />
+                                    <AdSenseAd adSlot="auto" adFormat="vertical" className="w-full max-w-[300px] mx-auto min-h-[280px] lg:min-h-[600px]" />
                                 </div>
                                 
                                 {toc.length > 2 && (
@@ -428,7 +428,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                         </div>
                     )}
 
-                    <AdSenseAd adSlot="auto" className="my-12" />
+                    <AdSenseAd adSlot="auto" className="my-12 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
                     {/* CTA */}
                     <div className="mt-12 bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 rounded-3xl p-8 text-center shadow-2xl">

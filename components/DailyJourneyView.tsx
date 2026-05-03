@@ -109,7 +109,7 @@ const DailyJourneyView: React.FC<DailyJourneyViewProps> = ({ onBack }) => {
                     )}
                 </div>
             </div>
-            <AdSenseAd adSlot="auto" className="my-6" />
+            <AdSenseAd adSlot="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
             {/* Main Content */}
             <div className="flex-1 overflow-y-auto">
