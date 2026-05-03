@@ -149,7 +149,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
             <div
                 ref={scrollContainerRef}
                 onScroll={handleScroll}
-                className="flex-1 min-h-0 overflow-y-auto pb-32"
+                className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-32"
                 style={{ WebkitOverflowScrolling: 'touch' }}
             >
                 {/* Hero Image */}

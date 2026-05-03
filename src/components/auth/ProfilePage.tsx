@@ -218,7 +218,7 @@ export default function ProfilePage({
   );
 
   return (
-    <div className="flex flex-col h-full bg-gray-50 dark:bg-slate-900">
+    <div className="flex flex-col flex-1 min-h-0 w-full overflow-hidden bg-gray-50 dark:bg-slate-900">
       {/* Processing overlays */}
       {profileOp.state === 'loading' && <ProcessingOverlay message={t('profile.updatingProfile')} />}
       {passwordOp.state === 'loading' && <ProcessingOverlay message={t('profile.changingPassword')} />}
@@ -242,7 +242,7 @@ export default function ProfilePage({
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y" style={{ WebkitOverflowScrolling: 'touch' }}>
           <div className="max-w-2xl mx-auto px-4 pt-6 pb-28 md:pb-8 space-y-4">
             {/* Avatar + name card */}
             <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-slate-700">

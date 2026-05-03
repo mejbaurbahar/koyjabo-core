@@ -2342,7 +2342,8 @@ const App: React.FC = () => {
 
       <div
         ref={chatMessagesContainerRef}
-        className="flex-1 min-h-0 p-4 space-y-4 bg-slate-50 dark:bg-slate-900 overflow-y-auto touch-pan-y"
+        className="flex-1 min-h-0 p-4 space-y-4 bg-slate-50 dark:bg-slate-900 overflow-y-auto overscroll-y-contain touch-pan-y"
+        style={{ WebkitOverflowScrolling: 'touch' }}
       >
         <AdSenseAd adSlot="auto" className="mb-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
@@ -2398,7 +2399,7 @@ const App: React.FC = () => {
 
   const renderAbout = () => (
     <div className="flex flex-col flex-1 min-h-0 w-full bg-white dark:bg-slate-900 overflow-hidden">
-    <div className="flex-1 min-h-0 overflow-y-auto p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe">
+    <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
       <div className="max-w-5xl mx-auto text-center">
         <div className="w-20 h-20 bg-dhaka-red rounded-3xl flex items-center justify-center text-white mx-auto mb-6 shadow-xl shadow-red-200 rotate-3 hover:rotate-6 transition-transform">
           <Bus className="w-10 h-10" />
@@ -2726,7 +2727,7 @@ const App: React.FC = () => {
 
   const renderWhyUse = () => (
     <div className="flex flex-col flex-1 min-h-0 w-full bg-white dark:bg-slate-900 overflow-hidden">
-    <div className="flex-1 min-h-0 overflow-y-auto p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe">
+    <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100 leading-tight">{t('whyUse.title')}</h1>
         <p className="text-gray-500 dark:text-gray-400 mb-8">{t('whyUse.subtitle')}</p>
@@ -2914,7 +2915,7 @@ const App: React.FC = () => {
 
   const renderFAQ = () => (
     <div className="flex flex-col flex-1 min-h-0 w-full bg-white dark:bg-slate-900 overflow-hidden">
-    <div className="flex-1 min-h-0 overflow-y-auto p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe">
+    <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100 leading-tight">{t('faq.title')}</h1>
         <p className="text-gray-500 dark:text-gray-400 mb-8">{t('faq.subtitle')}</p>
@@ -3087,7 +3088,7 @@ const App: React.FC = () => {
 
   const renderForAi = () => (
     <div className="flex flex-col flex-1 min-h-0 w-full bg-white dark:bg-slate-900 overflow-hidden">
-    <div className="flex-1 min-h-0 overflow-y-auto p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe">
+    <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
       <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl md:text-5xl font-bold mb-6 text-gray-900 leading-tight">AI Dataset & Integration</h1>
         <div className="flex items-center gap-2 text-sm text-gray-500 mb-8">
@@ -4454,7 +4455,7 @@ const App: React.FC = () => {
 
   return (
     <NotificationProvider>
-      <div className="flex flex-col h-screen supports-[height:100dvh]:h-[100dvh] bg-slate-50 dark:bg-slate-900 font-sans text-gray-800 dark:text-gray-100 overflow-hidden max-w-full">
+      <div className="flex flex-col h-screen min-h-0 supports-[height:100dvh]:h-[100dvh] bg-slate-50 dark:bg-slate-900 font-sans text-gray-800 dark:text-gray-100 overflow-hidden max-w-full">
         <NotificationBanner />
 
         {/* PWA Update Banner */}
@@ -4524,17 +4525,17 @@ const App: React.FC = () => {
         <main className="flex flex-1 min-h-0 overflow-hidden relative w-full max-w-full mx-auto bg-slate-50 dark:bg-slate-900 md:pt-20">
           {/* Left Sidebar (Desktop) / Main View (Mobile Home) */}
           <div className={`
-            ${'w-full md:w-1/3 md:min-w-[320px] md:max-w-md md:flex md:flex-col border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900 z-0 h-full min-h-0 overflow-hidden'}
+            ${'flex-1 min-h-0 w-full md:flex-none md:w-1/3 md:min-w-[320px] md:max-w-md md:flex md:flex-col border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900 z-0 overflow-hidden'}
             ${view !== AppView.HOME && view !== AppView.TRAIN_LIST && 'hidden md:flex'}
 `}>
-            <div className="h-full min-h-0 flex flex-col md:pt-0">
+            <div className="flex-1 min-h-0 flex flex-col md:pt-0">
               {renderHomeContent()}
             </div>
           </div>
 
           {/* Right Content Area (Desktop) / Views (Mobile) — flex column so each full-page view is the only in-flow child */}
           <div className={`
-            ${'w-full md:flex-1 bg-slate-50 dark:bg-slate-950 relative h-full min-h-0 overflow-hidden flex flex-col'}
+            ${'flex-1 min-h-0 w-full min-w-0 bg-slate-50 dark:bg-slate-950 relative overflow-hidden flex flex-col'}
             ${(view === AppView.HOME || view === AppView.TRAIN_LIST) && 'hidden md:block'}
 `}>
             <div className={`hidden md:block absolute inset-0 w-full h-full min-h-0 transition-opacity duration-500 ${(view === AppView.HOME || view === AppView.TRAIN_LIST) ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}><DhakaAlive /></div>
@@ -5227,7 +5228,7 @@ function LoginWall({ setView, message }: { setView: (v: AppView) => void; messag
   const { t } = useLanguage();
   const POST_LOGIN_REDIRECT_KEY = 'koyjabo_post_login_redirect';
   return (
-    <div className="flex flex-col items-center justify-center h-full min-h-[60vh] gap-6 p-8 text-center">
+    <div className="flex flex-col flex-1 min-h-0 w-full overflow-y-auto overscroll-y-contain touch-pan-y items-center justify-center gap-6 p-8 text-center" style={{ WebkitOverflowScrolling: 'touch' }}>
       <div className="w-20 h-20 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
         <User className="w-10 h-10 text-blue-600 dark:text-blue-400" />
       </div>

@@ -68,7 +68,7 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
 
   if (loading) {
     return (
-      <div className="h-full flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 p-4">
+      <div className="flex-1 min-h-0 w-full flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 p-4">
         <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 max-w-xs w-full text-center">
           <div className="relative w-16 h-16 mx-auto mb-5">
             <div className="w-16 h-16 rounded-full border-4 border-blue-100 dark:border-slate-600 animate-spin border-t-blue-600" />
@@ -82,7 +82,7 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
   }
 
   return (
-    <div className="h-full overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-28 md:pt-safe md:pb-safe relative">
+    <div className="flex-1 min-h-0 w-full overflow-y-auto overscroll-y-contain touch-pan-y bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-28 md:pt-safe md:pb-safe relative" style={{ WebkitOverflowScrolling: 'touch' }}>
       {onClose && (
         <button
           onClick={onClose}

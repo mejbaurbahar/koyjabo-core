@@ -35,7 +35,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
 
     return (
         <div className="flex flex-col flex-1 min-h-0 w-full bg-gradient-to-br from-white via-teal-50/30 to-cyan-50/30 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 overflow-hidden">
-            <div className="flex-1 min-h-0 overflow-y-auto pb-32">
+            <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-32" style={{ WebkitOverflowScrolling: 'touch' }}>
                 {/* Header */}
                 <div className="sticky top-0 z-10 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 pt-safe">
                     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 space-y-3">

@@ -165,7 +165,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
     };
 
     return (
-        <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-y-auto overflow-x-hidden w-full relative max-w-full">
+        <div className="flex flex-col flex-1 min-h-0 w-full max-w-full overflow-hidden bg-white dark:bg-slate-900 relative">
             {/* Confirmation Modal */}
             {showClearConfirm && (
                 <div className="fixed inset-0 bg-black/50 z-[200] flex items-center justify-center p-4 animate-in fade-in duration-200">
@@ -196,7 +196,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
             )}
 
             {/* Header */}
-            <div className={`bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 px-4 md:px-6 pb-4 ${embedded ? 'pt-4' : 'pt-6'}`}>
+            <div className={`shrink-0 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 px-4 md:px-6 pb-4 ${embedded ? 'pt-4' : 'pt-6'}`}>
                 <div>
                     <div className="flex items-center gap-3 mb-4">
 
@@ -235,10 +235,12 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                     </div>
                 </div>
             </div>
-            <AdSenseAd adSlot="auto" className="my-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+            <div className="shrink-0 px-4 md:px-6">
+              <AdSenseAd adSlot="auto" className="my-4 w-full max-w-[728px] mx-auto px-2 md:px-0" />
+            </div>
 
             {/* Content */}
-            <div className="relative z-10 p-4 md:p-6 space-y-6 pb-24 md:pb-6">
+            <div className="relative z-10 flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 md:p-6 space-y-6 pb-24 md:pb-6" style={{ WebkitOverflowScrolling: 'touch' }}>
                 {activeTab === 'personal' ? (
                     <>
                         {/* Clear History Button */}

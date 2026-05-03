@@ -13,7 +13,10 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ isDarkMode, toggleTheme, on
     const { language, setLanguage, t } = useLanguage();
 
     return (
-        <div className={`flex flex-col flex-1 min-h-0 w-full max-h-full bg-white dark:bg-slate-900 p-6 md:p-12 pb-28 md:pb-12 overflow-y-auto ${embedded ? 'pt-4' : 'pt-4 md:pt-8'}`}>
+        <div
+            className={`flex flex-col flex-1 min-h-0 w-full max-h-full bg-white dark:bg-slate-900 p-6 md:p-12 pb-28 md:pb-12 overflow-y-auto overscroll-y-contain touch-pan-y ${embedded ? 'pt-4' : 'pt-4 md:pt-8'}`}
+            style={{ WebkitOverflowScrolling: 'touch' }}
+        >
             <div className="max-w-3xl mx-auto w-full">
                 <h1 className="text-2xl md:text-3xl font-bold mb-3 text-gray-900 dark:text-gray-100 flex items-center gap-2">
                     <SettingsIcon className="w-6 h-6 text-gray-600 dark:text-gray-400" />

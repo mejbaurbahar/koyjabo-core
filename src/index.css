@@ -741,8 +741,8 @@ ins.adsbygoogle {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-  /* Let vertical scroll pass through to parent panels on mobile (ad iframes sit in flow) */
-  touch-action: manipulation;
+  /* Do not restrict touch — manipulation can steal scroll gestures on nested overflow panels */
+  touch-action: auto;
 }
 
 .adsense-container:hover {

@@ -178,7 +178,7 @@ export function TrainDetail({
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y" style={{ WebkitOverflowScrolling: 'touch' }}>
         {/* Map */}
         <div className="h-[280px] md:h-[340px] bg-slate-100 dark:bg-slate-900 relative">
           <TrainRouteMap
@@ -979,7 +979,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
       </div>
 
       {/* Train list */}
-      <div className="relative z-10 flex-1 overflow-y-auto px-4 py-3 space-y-3 pb-28 md:pb-4">
+      <div className="relative z-10 flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y px-4 py-3 space-y-3 pb-28 md:pb-4" style={{ WebkitOverflowScrolling: 'touch' }}>
         <div className="flex items-start gap-2 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800 text-xs text-emerald-700 dark:text-emerald-300">
           <Info className="w-4 h-4 shrink-0 mt-0.5 text-emerald-500" />
           <span>
