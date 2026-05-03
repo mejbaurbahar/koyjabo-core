@@ -264,47 +264,112 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                         </div>
                     )}
 
-                    <AdSenseAd adSlot="auto" className="my-8" />
+                    <div className="lg:grid lg:grid-cols-12 lg:gap-10">
+                        <div className="lg:col-span-8">
+                            <AdSenseAd adSlot="auto" className="mb-8" />
 
-                    {/* Content */}
-                    <div className="prose prose-lg md:prose-xl dark:prose-invert max-w-none
-                        prose-headings:font-black prose-headings:text-gray-900 dark:prose-headings:text-gray-100 prose-headings:scroll-mt-20
-                        prose-h2:text-2xl md:prose-h2:text-3xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b-4 prose-h2:border-teal-500
-                        prose-h3:text-xl md:prose-h3:text-2xl prose-h3:mt-12 prose-h3:mb-5 prose-h3:text-teal-700 dark:prose-h3:text-teal-400
-                        prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-loose prose-p:mb-6 prose-p:text-base md:prose-p:text-lg
-                        prose-a:text-teal-600 dark:prose-a:text-teal-400 prose-a:font-bold prose-a:no-underline hover:prose-a:underline
-                        prose-strong:text-gray-900 dark:prose-strong:text-gray-100 prose-strong:font-black
-                        prose-ul:my-8 prose-ul:list-disc prose-ul:pl-6 prose-ul:space-y-3
-                        prose-ol:my-8 prose-ol:list-decimal prose-ol:pl-6 prose-ol:space-y-3
-                        prose-li:text-gray-700 dark:prose-li:text-gray-300 prose-li:text-base md:prose-li:text-lg prose-li:leading-loose
-                        prose-blockquote:border-l-4 prose-blockquote:border-teal-500 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-400 prose-blockquote:bg-teal-50 dark:prose-blockquote:bg-slate-800/50 prose-blockquote:py-4 prose-blockquote:rounded-r-xl prose-blockquote:my-8
-                        prose-code:bg-teal-100 dark:prose-code:bg-slate-800 prose-code:text-teal-800 dark:prose-code:text-teal-300 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:font-mono
-                        prose-table:border-collapse prose-table:w-full prose-table:shadow prose-table:rounded-xl prose-table:overflow-hidden prose-table:my-8
-                        prose-th:bg-teal-600 prose-th:text-white prose-th:p-4 prose-th:text-left prose-th:font-bold
-                        prose-td:border prose-td:border-gray-200 dark:prose-td:border-gray-700 prose-td:p-4 prose-td:bg-white dark:prose-td:bg-slate-800
-                        prose-img:rounded-2xl prose-img:shadow-xl prose-img:my-10
-                    ">
-                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                            {language === 'bn' ? post.bnContent : post.content}
-                        </ReactMarkdown>
-                    </div>
+                            {/* Content */}
+                            <div className="prose prose-lg md:prose-xl dark:prose-invert max-w-none
+                                prose-headings:font-black prose-headings:text-gray-900 dark:prose-headings:text-gray-100 prose-headings:scroll-mt-20
+                                prose-h2:text-2xl md:prose-h2:text-3xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b-4 prose-h2:border-teal-500
+                                prose-h3:text-xl md:prose-h3:text-2xl prose-h3:mt-12 prose-h3:mb-5 prose-h3:text-teal-700 dark:prose-h3:text-teal-400
+                                prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-loose prose-p:mb-6 prose-p:text-base md:prose-p:text-lg
+                                prose-a:text-teal-600 dark:prose-a:text-teal-400 prose-a:font-bold prose-a:no-underline hover:prose-a:underline
+                                prose-strong:text-gray-900 dark:prose-strong:text-gray-100 prose-strong:font-black
+                                prose-ul:my-8 prose-ul:list-disc prose-ul:pl-6 prose-ul:space-y-3
+                                prose-ol:my-8 prose-ol:list-decimal prose-ol:pl-6 prose-ol:space-y-3
+                                prose-li:text-gray-700 dark:prose-li:text-gray-300 prose-li:text-base md:prose-li:text-lg prose-li:leading-loose
+                                prose-blockquote:border-l-4 prose-blockquote:border-teal-500 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-400 prose-blockquote:bg-teal-50 dark:prose-blockquote:bg-slate-800/50 prose-blockquote:py-4 prose-blockquote:rounded-r-xl prose-blockquote:my-8
+                                prose-code:bg-teal-100 dark:prose-code:bg-slate-800 prose-code:text-teal-800 dark:prose-code:text-teal-300 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:font-mono
+                                prose-table:border-collapse prose-table:w-full prose-table:shadow prose-table:rounded-xl prose-table:overflow-hidden prose-table:my-8
+                                prose-th:bg-teal-600 prose-th:text-white prose-th:p-4 prose-th:text-left prose-th:font-bold
+                                prose-td:border prose-td:border-gray-200 dark:prose-td:border-gray-700 prose-td:p-4 prose-td:bg-white dark:prose-td:bg-slate-800
+                                prose-img:rounded-2xl prose-img:shadow-xl prose-img:my-10
+                            ">
+                                {(() => {
+                                    const content = language === 'bn' ? post.bnContent : post.content;
+                                    const paragraphs = content.split('\n\n');
+                                    const firstPart = paragraphs.slice(0, 3).join('\n\n');
+                                    const restPart = paragraphs.slice(3).join('\n\n');
 
-                    <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-12" />
+                                    return (
+                                        <>
+                                            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                                {firstPart}
+                                            </ReactMarkdown>
+                                            
+                                            {paragraphs.length > 3 && (
+                                                <div className="my-10 p-2 bg-gray-50 dark:bg-slate-800/50 rounded-2xl border border-dashed border-gray-200 dark:border-gray-700 overflow-hidden">
+                                                    <p className="text-[10px] text-gray-400 text-center mb-2 uppercase tracking-widest">Sponsored Advertisement</p>
+                                                    <AdSenseAd adSlot="auto" adFormat="fluid" className="w-full" />
+                                                </div>
+                                            )}
 
-                    {/* Tags */}
-                    <div className="mt-12 pt-8 border-t-2 border-gray-200 dark:border-gray-700">
-                        <h3 className="text-lg font-black text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-                            <Tag className="w-5 h-5 text-teal-600" />
-                            {language === 'bn' ? 'বিষয়সমূহ' : 'Topics'}
-                        </h3>
-                        <div className="flex flex-wrap gap-2">
-                            {post.keywords.map((keyword, i) => (
-                                <span key={i} className="px-3 py-1.5 bg-teal-50 dark:bg-slate-800 text-teal-700 dark:text-teal-300 rounded-lg text-xs font-semibold border border-teal-200 dark:border-teal-900/30">
-                                    #{keyword}
-                                </span>
-                            ))}
+                                            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                                {restPart}
+                                            </ReactMarkdown>
+                                        </>
+                                    );
+                                })()}
+                            </div>
+
+                            <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-12" />
+
+                            {/* Tags */}
+                            <div className="mt-12 pt-8 border-t-2 border-gray-200 dark:border-gray-700">
+                                <h3 className="text-lg font-black text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+                                    <Tag className="w-5 h-5 text-teal-600" />
+                                    {language === 'bn' ? 'বিষয়সমূহ' : 'Topics'}
+                                </h3>
+                                <div className="flex flex-wrap gap-2">
+                                    {post.keywords.map((keyword, i) => (
+                                        <span key={i} className="px-3 py-1.5 bg-teal-50 dark:bg-slate-800 text-teal-700 dark:text-teal-300 rounded-lg text-xs font-semibold border border-teal-200 dark:border-teal-900/30">
+                                            #{keyword}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
+
+                        {/* Sticky Sidebar (Desktop) */}
+                        <aside className="hidden lg:block lg:col-span-4 space-y-8">
+                            <div className="sticky top-24">
+                                <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm mb-6 overflow-hidden">
+                                    <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+                                        <Sparkles className="w-4 h-4 text-amber-500" />
+                                        {language === 'bn' ? 'স্পন্সর' : 'Sponsored'}
+                                    </h4>
+                                    <AdSenseAd adSlot="auto" adFormat="vertical" className="w-full min-h-[600px]" />
+                                </div>
+                                
+                                {toc.length > 2 && (
+                                    <div className="bg-teal-50/50 dark:bg-slate-800/50 rounded-2xl p-6 border border-teal-100 dark:border-teal-800">
+                                        <h4 className="font-bold text-teal-900 dark:text-teal-100 mb-4 flex items-center gap-2">
+                                            <List className="w-4 h-4 text-teal-600" />
+                                            {t('blog.toc')}
+                                        </h4>
+                                        <ul className="space-y-3">
+                                            {toc.map((item, i) => (
+                                                <li key={i} className={item.level === 3 ? 'pl-4' : ''}>
+                                                    <a
+                                                        href={`#${item.id}`}
+                                                        className="text-sm text-teal-700 dark:text-teal-400 hover:underline line-clamp-1"
+                                                        onClick={e => {
+                                                            e.preventDefault();
+                                                            scrollContainerRef.current?.querySelector(`#${item.id}`)?.scrollIntoView({ behavior: 'smooth' });
+                                                        }}
+                                                    >
+                                                        {item.level === 2 ? `${i + 1}. ` : '• '}{item.text}
+                                                    </a>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                            </div>
+                        </aside>
                     </div>
+
 
                     {/* Share again (bottom) */}
                     <div className="mt-8 p-5 bg-gray-50 dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700">

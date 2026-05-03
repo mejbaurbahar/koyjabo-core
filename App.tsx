@@ -2556,6 +2556,11 @@ const App: React.FC = () => {
                   {t('about.devDesc')}
                 </p>
                 <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+                  <a href="https://linkedin.com/in/mejbaur/" target="_blank" rel="noreferrer" className="p-2 bg-gray-100 dark:bg-slate-800 hover:bg-blue-50 text-gray-600 dark:text-gray-400 hover:text-blue-600 rounded-xl transition-all">
+                    <Linkedin className="w-5 h-5" />
+                  </a>
+                  <a href="https://github.com/fagun18" target="_blank" rel="noreferrer" className="p-2 bg-gray-100 dark:bg-slate-800 hover:bg-slate-200 text-gray-600 dark:text-gray-400 hover:text-black rounded-xl transition-all">
+                    <Github className="w-5 h-5" />
                   </a>
                 </div>
               </div>
@@ -2565,10 +2570,11 @@ const App: React.FC = () => {
           <AdSenseAd adSlot="auto" className="my-10" />
 
 
-        </div>
 
+        </div>
       </div>
       {/* Spacer for bottom nav on mobile */}
+
       <div className="h-20 md:hidden"></div>
     </div>
     </div>
@@ -3074,8 +3080,8 @@ const App: React.FC = () => {
         {/* Bottom padding for mobile */}
         <div className="h-20"></div>
 
-      </div >
-    </div >
+      </div>
+    </div>
     </div>
   );
 
@@ -3252,9 +3258,8 @@ const App: React.FC = () => {
 
           {/* Bottom space */}
 
-          <div className="h-20"></div>
-        </div>
       </div>
+    </div>
     </div>
   );
 

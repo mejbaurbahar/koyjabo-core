@@ -262,7 +262,7 @@ const DailyJourneyView: React.FC<DailyJourneyViewProps> = ({ onBack }) => {
                     </div>
                 )}
             </div>
-        </div >
+        </div>
     );
 };
 

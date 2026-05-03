@@ -8,7 +8,7 @@
  *   - User data (users, devices, avatars, password_resets) → private repo: mejbaurbahar/koyjabo
  *   - Temp results (polled by frontend, auto-deleted after 1h) → app repo: mejbaurbahar/Dhaka-Commute
  *
- * This means even if someone browses the public Dhaka-Commute repo they see nothing sensitive.
+ * This means even if someone browses the public Dhaka-Commute repo they see nothing sensitive. 
  * All personal data lives in the private koyjabo repo, invisible to the public.
  */
 

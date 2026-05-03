@@ -739,8 +739,6 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
         </div>
       </div>
 
-        </div>
-      </div>
 
       <AdSenseAd adSlot="auto" className="my-4" />
 
