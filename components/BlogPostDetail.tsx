@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { ArrowLeft, Clock, Calendar, Tag, Copy, Check, ArrowUp, List } from 'lucide-react';
+import { ArrowLeft, Clock, Calendar, Tag, Copy, Check, ArrowUp, List, Sparkles } from 'lucide-react';
 import { BLOG_POSTS } from '../data/blogPosts';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
