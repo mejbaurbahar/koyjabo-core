@@ -404,56 +404,57 @@ export function TrainDetail({
               </div>
 
               {journeyInfo ? (
-                <div className="mt-2 space-y-3 animate-in fade-in duration-200">
-                  <div className="flex items-center justify-between p-3 bg-emerald-50 dark:bg-emerald-400/15 rounded-xl border border-emerald-200 dark:border-emerald-400/20">
-                    <div className="flex items-center gap-2 text-sm">
-                      <Navigation className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                      <span className="font-medium text-gray-700 dark:text-white/80">
-                        ~{Math.round(journeyInfo.distKm)} km
-                      </span>
+                <>
+                  <div className="mt-2 space-y-3 animate-in fade-in duration-200">
+                    <div className="flex items-center justify-between p-3 bg-emerald-50 dark:bg-emerald-400/15 rounded-xl border border-emerald-200 dark:border-emerald-400/20">
+                      <div className="flex items-center gap-2 text-sm">
+                        <Navigation className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                        <span className="font-medium text-gray-700 dark:text-white/80">
+                          ~{Math.round(journeyInfo.distKm)} km
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Clock className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+                        <span className="font-medium text-gray-700 dark:text-white/80">{journeyInfo.travelTime}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2 text-sm">
-                      <Clock className="w-4 h-4 text-teal-600 dark:text-teal-400" />
-                      <span className="font-medium text-gray-700 dark:text-white/80">{journeyInfo.travelTime}</span>
-                    </div>
-                  </div>
 
-                  <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-white/15">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="bg-gray-100 dark:bg-white/10 text-xs text-gray-500 dark:text-white/60">
-                          <th className="text-left px-3 py-2 font-medium">{bn ? 'শ্রেণী' : 'Class'}</th>
-                          <th className="text-right px-3 py-2 font-medium">{bn ? 'ভাড়া' : 'Fare'}</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-100 dark:divide-white/10">
-                        {[
-                          { label: bn ? 'শুভন' : 'Shuvan', val: journeyInfo.fare.shuvan },
-                          { label: bn ? 'শুভন চেয়ার' : 'Shuvan Chair', val: journeyInfo.fare.shuvanChair },
-                          { label: bn ? 'স্নিগ্ধা (এসি চেয়ার)' : 'Snigdha (AC Chair)', val: journeyInfo.fare.snigdha },
-                          { label: bn ? '১ম শ্রেণী বার্থ' : '1st Class Berth', val: journeyInfo.fare.firstClassBerth! },
-                          { label: bn ? 'এসি বার্থ' : 'AC Berth', val: journeyInfo.fare.acBerth! },
-                        ].map(row => (
-                          <tr key={row.label} className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
-                            <td className="px-3 py-2.5 text-gray-700 dark:text-white/75">{row.label}</td>
-                            <td className="px-3 py-2.5 text-right font-bold text-emerald-700 dark:text-emerald-400">
-                              ৳{formatNumber(row.val)}
-                            </td>
+                    <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-white/15">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="bg-gray-100 dark:bg-white/10 text-xs text-gray-500 dark:text-white/60">
+                            <th className="text-left px-3 py-2 font-medium">{bn ? 'শ্রেণী' : 'Class'}</th>
+                            <th className="text-right px-3 py-2 font-medium">{bn ? 'ভাড়া' : 'Fare'}</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100 dark:divide-white/10">
+                          {[
+                            { label: bn ? 'শুভন' : 'Shuvan', val: journeyInfo.fare.shuvan },
+                            { label: bn ? 'শুভন চেয়ার' : 'Shuvan Chair', val: journeyInfo.fare.shuvanChair },
+                            { label: bn ? 'স্নিগ্ধা (এসি চেয়ার)' : 'Snigdha (AC Chair)', val: journeyInfo.fare.snigdha },
+                            { label: bn ? '১ম শ্রেণী বার্থ' : '1st Class Berth', val: journeyInfo.fare.firstClassBerth! },
+                            { label: bn ? 'এসি বার্থ' : 'AC Berth', val: journeyInfo.fare.acBerth! },
+                          ].map(row => (
+                            <tr key={row.label} className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                              <td className="px-3 py-2.5 text-gray-700 dark:text-white/75">{row.label}</td>
+                              <td className="px-3 py-2.5 text-right font-bold text-emerald-700 dark:text-emerald-400">
+                                ৳{formatNumber(row.val)}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <p className="text-[10px] text-gray-400 dark:text-white/40 flex items-start gap-1">
+                      <AlertCircle className="w-3 h-3 mt-0.5 shrink-0" />
+                      {bn
+                        ? 'ভাড়া আনুমানিক। সঠিক ভাড়ার জন্য বাংলাদেশ রেলওয়ে ওয়েবসাইট দেখুন।'
+                        : 'Fare is approximate. Check Bangladesh Railway website for exact fares.'}
+                    </p>
                   </div>
-                  <p className="text-[10px] text-gray-400 dark:text-white/40 flex items-start gap-1">
-                    <AlertCircle className="w-3 h-3 mt-0.5 shrink-0" />
-                    {bn
-                      ? 'ভাড়া আনুমানিক। সঠিক ভাড়ার জন্য বাংলাদেশ রেলওয়ে ওয়েবসাইট দেখুন।'
-                      : 'Fare is approximate. Check Bangladesh Railway website for exact fares.'}
-                  </p>
-                </div>
 
-                <AdSenseAd adSlot="auto" className="my-8" />
-
+                  <AdSenseAd adSlot="auto" className="my-8" />
+                </>
               ) : (
                 <p className="text-xs text-gray-400 dark:text-white/40 text-center py-2">
                   {bn ? 'দুটি স্টেশন সিলেক্ট করুন' : 'Select two stations to calculate fare'}
