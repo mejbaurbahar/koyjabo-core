@@ -680,7 +680,7 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
     const landmarks = language === 'bn' ? selected.landmarks : selected.landmarksEn;
 
     return (
-      <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-hidden">
+      <div className="flex flex-col h-full min-h-0 bg-slate-50 dark:bg-slate-900 overflow-hidden">
         <div className="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
           <button onClick={() => setSelected(null)} className="flex items-center gap-1 px-3 py-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-xl text-gray-600 dark:text-gray-400 font-medium text-sm">
             <ChevronLeft className="w-5 h-5" />
@@ -692,7 +692,7 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
             <p className="text-xs text-gray-500 dark:text-gray-400">{language === 'bn' ? selected.areaEn : selected.area} · {selected.division}</p>
           </div>
         </div>
-        <div className="flex-1 min-h-0 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 space-y-4 pb-6" style={{ WebkitOverflowScrolling: 'touch' }}>
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700">
             <p className="text-sm text-gray-700 dark:text-gray-300">{desc}</p>
           </div>
@@ -725,7 +725,7 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
   }
 
   return (
-    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-hidden">
+    <div className="flex flex-col h-full min-h-0 bg-slate-50 dark:bg-slate-900 overflow-hidden">
       <div className="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
         <button onClick={onBack} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full">
           <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
@@ -743,7 +743,7 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
       <AdSenseAd adSlot="auto" className="my-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
 
-      <div className="flex-1 min-h-0 overflow-y-auto px-4 pb-4">
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y px-4 pb-6" style={{ WebkitOverflowScrolling: 'touch' }}>
         {search ? (
           <div className="grid grid-cols-2 gap-3 content-start">
             {filtered.map(g => (

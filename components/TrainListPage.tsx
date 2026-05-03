@@ -785,7 +785,8 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
               </p>
             </div>
           </div>
-          <AdSenseAd adSlot="auto" className="mt-4 mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+          {/* AdSense removed from fixed header to prevent blocking content */}
+
 
 
 
@@ -980,6 +981,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
 
       {/* Train list */}
       <div className="relative z-10 flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y px-4 py-3 space-y-3 pb-28 md:pb-4" style={{ WebkitOverflowScrolling: 'touch' }}>
+        <AdSenseAd adSlot="auto" className="mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
         <div className="flex items-start gap-2 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800 text-xs text-emerald-700 dark:text-emerald-300">
           <Info className="w-4 h-4 shrink-0 mt-0.5 text-emerald-500" />
           <span>

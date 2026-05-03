@@ -83,7 +83,7 @@ const DailyJourneyView: React.FC<DailyJourneyViewProps> = ({ onBack }) => {
     };
 
     return (
-        <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-950 relative w-full overflow-x-hidden max-w-full">
+        <div className="flex flex-col h-full min-h-0 bg-slate-50 dark:bg-slate-950 relative w-full overflow-x-hidden max-w-full">
             {/* Unified Header */}
             <div className="flex-none bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 z-[60] px-4 py-3 shadow-md pt-safe">
                 <div className="flex items-center gap-3">
@@ -112,7 +112,7 @@ const DailyJourneyView: React.FC<DailyJourneyViewProps> = ({ onBack }) => {
             <AdSenseAd adSlot="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
             {/* Main Content */}
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-24" style={{ WebkitOverflowScrolling: 'touch' }}>
                 {/* Today's Journey */}
                 <div className="px-4 py-6">
                     <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">

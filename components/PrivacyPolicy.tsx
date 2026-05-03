@@ -13,7 +13,7 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
     const { t } = useLanguage();
 
     return (
-        <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-y-auto overflow-x-hidden w-full relative max-w-full">
+        <div className="flex flex-col h-full min-h-0 bg-white dark:bg-slate-900 overflow-y-auto overscroll-y-contain touch-pan-y overflow-x-hidden w-full relative max-w-full" style={{ WebkitOverflowScrolling: 'touch' }}>
             <div className="max-w-4xl mx-auto p-6 md:p-12 pt-6 md:pt-28 pb-32 md:pb-12">
 
                 <div className="text-center mb-12">

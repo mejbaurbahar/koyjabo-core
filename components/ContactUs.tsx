@@ -14,7 +14,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
     const { t } = useLanguage();
 
     return (
-        <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-y-auto w-full relative">
+        <div className="flex flex-col h-full min-h-0 bg-white dark:bg-slate-900 overflow-y-auto overscroll-y-contain touch-pan-y w-full relative" style={{ WebkitOverflowScrolling: 'touch' }}>
             <div className="max-w-4xl mx-auto p-6 md:p-12 pt-6 md:pt-32 pb-32 md:pb-12 w-full">
 
                 {/* Header Section */}
