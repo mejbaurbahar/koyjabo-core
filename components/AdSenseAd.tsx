@@ -14,7 +14,7 @@ interface AdSenseAdProps {
 const isValidSlot = (slot: string) => slot === 'auto' || /^\d{9,11}$/.test(slot);
 const DEFAULT_SLOT = '7294303750'; // From intercity/index.html
 
-const AdSenseAd: React.FC<AdSenseAdProps> = ({
+const AdSenseAd: React.FC<AdSenseAdProps> = React.memo(({
   adSlot,
   adFormat = 'auto',
   className = '',
@@ -40,8 +40,13 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
   useEffect(() => {
     if (!navigator.onLine) return;
     if (!isValidSlot(adSlot)) return;
-    if (pushed.current) return;
+    
+    // Check if there are un-filled adsbygoogle elements
+    const unFilledAds = document.querySelectorAll('ins.adsbygoogle:not([data-adsbygoogle-status="done"])');
+    
+    if (pushed.current || unFilledAds.length === 0) return;
     pushed.current = true;
+    
     try {
       ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
     } catch (e) {
@@ -57,15 +62,15 @@ const AdSenseAd: React.FC<AdSenseAdProps> = ({
       <ins
         ref={insRef}
         className="adsbygoogle"
-        style={{ display: 'block' }}
+        style={{ display: 'block', minHeight: '100px', width: '100%' }}
         data-ad-client="ca-pub-8425219156685369"
         data-ad-slot={adSlot === 'auto' ? DEFAULT_SLOT : adSlot}
-        data-ad-format="auto"
-        data-full-width-responsive="true"
+        data-ad-format={adFormat}
+        data-full-width-responsive={responsive ? "true" : "false"}
         {...(layoutKey ? { 'data-ad-layout-key': layoutKey } : {})}
       />
     </div>
   );
-};
+});
 
 export default AdSenseAd;
