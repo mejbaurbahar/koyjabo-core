@@ -37,8 +37,8 @@ export default defineConfig(({ mode }) => {
           theme_color: '#0f172a',
           background_color: '#0f172a',
           display: 'standalone',
-          start_url: '/intercity/',
-          scope: '/intercity/',
+          start_url: '/intercity',
+          scope: '/intercity',
           icons: [
             {
               src: 'logo.png',
@@ -62,26 +62,11 @@ export default defineConfig(({ mode }) => {
           clientsClaim: true,
           skipWaiting: true,
           // Cache versioning for proper updates - BUMPED to v4 to force cache refresh
-          cacheId: 'dhaka-commute-intercity-v4',
+          cacheId: 'dhaka-commute-intercity-v5',
           // Runtime caching for intercity navigation
           navigateFallbackAllowlist: [/^\/intercity/],  // Only handle intercity routes
           // Runtime caching for intercity external resources
           runtimeCaching: [
-            // Tailwind CSS CDN - Critical for offline styling
-            {
-              urlPattern: /^https:\/\/cdn\.tailwindcss\.com\/.*/i,
-              handler: 'CacheFirst',
-              options: {
-                cacheName: 'intercity-tailwind-cache',
-                expiration: {
-                  maxEntries: 10,
-                  maxAgeSeconds: 60 * 60 * 24 * 365 // 365 days
-                },
-                cacheableResponse: {
-                  statuses: [0, 200]
-                }
-              }
-            },
             // Google Fonts Stylesheets
             {
               urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -105,21 +90,6 @@ export default defineConfig(({ mode }) => {
                 cacheName: 'intercity-gstatic-cache',
                 expiration: {
                   maxEntries: 30,
-                  maxAgeSeconds: 60 * 60 * 24 * 365
-                },
-                cacheableResponse: {
-                  statuses: [0, 200]
-                }
-              }
-            },
-            // Leaflet CSS and JS
-            {
-              urlPattern: /^https:\/\/unpkg\.com\/leaflet.*/i,
-              handler: 'CacheFirst',
-              options: {
-                cacheName: 'intercity-leaflet-cache',
-                expiration: {
-                  maxEntries: 10,
                   maxAgeSeconds: 60 * 60 * 24 * 365
                 },
                 cacheableResponse: {
