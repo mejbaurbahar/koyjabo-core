@@ -9,6 +9,7 @@ import {
 import { UserLocation, BusRoute, Station } from '../types';
 import { STATIONS, METRO_STATIONS, RAILWAY_STATIONS, AIRPORTS } from '../constants';
 import { useLanguage } from '../contexts/LanguageContext';
+import { liveBusService, LiveBus } from '../services/liveBusService';
 
 
 // Suppress Cesium default token warning
