@@ -92,7 +92,7 @@ export default function CommuteCostCalculator({ onBack }: Props) {
   const yearlyCost = monthlyCost * 12;
 
   return (
-    <div className="flex flex-col h-full min-h-0 bg-slate-50 dark:bg-slate-900 overflow-hidden">
+    <div className="flex flex-col flex-1 min-h-0 bg-slate-50 dark:bg-slate-900 overflow-hidden">
       <div className="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
         <button onClick={onBack} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full">
           <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />

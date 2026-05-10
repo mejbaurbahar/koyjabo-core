@@ -51,7 +51,7 @@ export default function SeatAvailability({ onBack }: Props) {
   if (selected) {
     const railwayLink = 'https://eticket.railway.gov.bd/';
     return (
-      <div className="flex flex-col h-full min-h-0 bg-slate-50 dark:bg-slate-900 overflow-hidden">
+      <div className="flex flex-col flex-1 min-h-0 bg-slate-50 dark:bg-slate-900 overflow-hidden">
         <div className="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
           <button onClick={() => setSelected(null)} className="flex items-center gap-1 px-3 py-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-xl text-gray-600 dark:text-gray-400 font-medium text-sm">
             <ChevronLeft className="w-5 h-5" />
