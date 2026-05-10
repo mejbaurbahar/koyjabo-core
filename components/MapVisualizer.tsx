@@ -633,7 +633,7 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
             <path
               d={generateSmoothPath(nodePositions)}
               fill="none"
-              stroke={route.color}
+              stroke={route.color ?? '#006a4e'}
               strokeWidth={14}
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -645,7 +645,7 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
             <path
               d={generateSmoothPath(nodePositions)}
               fill="none"
-              stroke={route.color}
+              stroke={route.color ?? '#006a4e'}
               strokeWidth={5}
               strokeLinecap="round"
               strokeLinejoin="round"

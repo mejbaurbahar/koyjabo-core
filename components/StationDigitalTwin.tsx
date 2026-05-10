@@ -41,16 +41,16 @@ const StationDigitalTwin: React.FC<StationDigitalTwinProps> = ({
                 const controls = new GSPLAT.OrbitControls(camera, canvasRef.current!);
 
                 // Set initial camera
-                camera.position.set(0, 0, 5);
-                
+                (camera.position as any).set(0, 0, 5);
+
                 const loader = new GSPLAT.PLYLoader();
-                
+
                 // Simulate progress for better UX
                 const interval = setInterval(() => {
                     setProgress(prev => (prev < 90 ? prev + 5 : prev));
                 }, 200);
 
-                const splat = await loader.loadAsync(splatUrl, scene, (p: number) => {
+                const splat = await (loader as any).loadAsync(splatUrl, scene, (p: number) => {
                     // Actual progress if supported by loader
                 });
                 

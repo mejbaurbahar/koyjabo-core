@@ -54,6 +54,7 @@ export const liveBusService = {
                     const speedKmh = speed ? speed * 3.6 : 0;
                     liveBusService.updateLocation(latitude, longitude, speedKmh);
                 },
+                undefined,
                 { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
             );
         }

@@ -2761,7 +2761,7 @@ export const BD_TRAIN_ROUTES: BDTrainRoute[] = [
     dhakaArrive: '22:30',
     offDay: 'Mon, Thu (to NJP); Sun, Wed (to Dhaka)',
     distanceKm: 595,
-    fare: { shuvan: 3500, snigdha: 4200, acBerth: 6000 },
+    fare: { shuvan: 3500, shuvanChair: 4000, snigdha: 4200, acBerth: 6000 },
     color: '#10b981',
   },
 ];

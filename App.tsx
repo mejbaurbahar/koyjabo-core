@@ -7,7 +7,7 @@ import ForgotPasswordPage from './src/components/auth/ForgotPasswordPage';
 import ResetPasswordPage from './src/components/auth/ResetPasswordPage';
 import ProfilePage from './src/components/auth/ProfilePage';
 import { Search, Map as MapIcon, Navigation, Info, Bus, ArrowLeft, ArrowRight, Bot, ExternalLink, MapPin, Heart, Shield, Zap, Users, FileText, AlertTriangle, Home, ChevronRight, CheckCircle2, User, Linkedin, Github, Facebook, ArrowRightLeft, Settings, Save, Eye, EyeOff, Trash2, Key, Calculator, Coins, Train, Sparkles, X, Gauge, Flag, Clock, Menu, WifiOff, Plane, Phone, Download, TramFront, Sun, Moon, Calendar, Plus, Mail, HelpCircle, BookOpen, LogIn, LogOut, UserPlus, Ticket, Rocket } from 'lucide-react';
-import { BusRoute, AppView, UserLocation, ChatMessage } from './types';
+import { BusRoute, AppView, UserLocation, ChatMessage, Station } from './types';
 import { STATIONS, BUS_DATA, METRO_STATIONS, METRO_LINES, RAILWAY_STATIONS, AIRPORTS } from './constants';
 import MapVisualizer from './components/MapVisualizer';
 import BusRouteMap from './components/BusRouteMap';
@@ -1465,6 +1465,9 @@ const App: React.FC = () => {
     [AppView.BUS_PHOTOS]: 'bus-photos',
     [AppView.BUS_LIVE_TRACKING]: 'bus-live-tracking',
     [AppView.SEAT_AVAILABILITY]: 'seat-availability',
+    [AppView.TRAFFIC_REPORTS]: 'traffic-reports',
+    [AppView.TRAIN_PHOTOS]: 'train-photos',
+    [AppView.RELEASE_NOTES]: 'release-notes',
   };
 
   useEffect(() => {
@@ -2136,14 +2139,14 @@ const App: React.FC = () => {
         locationContext = `User is in ${bestZone.name} (${bestZone.bnName}) area`;
       } else {
         // 2. Fallback: find nearest metro/bus station
-        let nearestStation: { name: string; bnName: string } | null = null;
+        let nearestStation: Station | null = null;
         let minDist = Infinity;
         Object.values(STATIONS).forEach(station => {
           const dist = Math.sqrt(Math.pow(station.lat - loc.lat, 2) + Math.pow(station.lng - loc.lng, 2));
           if (dist < minDist) { minDist = dist; nearestStation = station; }
         });
         if (nearestStation && minDist < 0.05) {
-          locationContext = `User is near ${(nearestStation as { name: string; bnName: string }).name} (${(nearestStation as { name: string; bnName: string }).bnName})`;
+          locationContext = `User is near ${(nearestStation as Station).name} (${(nearestStation as Station).bnName ?? (nearestStation as Station).name})`;
         }
       }
     } catch (e) {
@@ -4662,9 +4665,9 @@ const App: React.FC = () => {
             {view === AppView.MULTI_STOP_PLANNER && (user ? <MultiStopPlanner onBack={() => setView(AppView.HOME)} /> : <LoginWall setView={setView} />)}
             {view === AppView.COMMUTE_COST && (user ? <CommuteCostCalculator onBack={() => setView(AppView.HOME)} /> : <LoginWall setView={setView} />)}
             {view === AppView.SEAT_AVAILABILITY && (user ? <SeatAvailability onBack={() => setView(AppView.HOME)} /> : <LoginWall setView={setView} />)}
-            {view === AppView.RATE_BUS && (user && selectedBus ? <BusRating busId={selectedBus.id} busName={selectedBus.displayName || selectedBus.name} onBack={() => setView(AppView.BUS_DETAILS)} /> : <LoginWall setView={setView} />)}
-            {view === AppView.BUS_PHOTOS && (user && selectedBus ? <BusPhotoGallery busId={selectedBus.id} busName={selectedBus.displayName || selectedBus.name} busBnName={selectedBus.bnName} onBack={() => setView(AppView.BUS_DETAILS)} /> : <LoginWall setView={setView} />)}
-            {view === AppView.BUS_LIVE_TRACKING && (user && selectedBus ? <BusLiveTracking busId={selectedBus.id} busName={selectedBus.displayName || selectedBus.name} onBack={() => setView(AppView.BUS_DETAILS)} /> : <LoginWall setView={setView} />)}
+            {view === AppView.RATE_BUS && (user && selectedBus ? <BusRating busId={selectedBus.id} busName={selectedBus.name} onBack={() => setView(AppView.BUS_DETAILS)} /> : <LoginWall setView={setView} />)}
+            {view === AppView.BUS_PHOTOS && (user && selectedBus ? <BusPhotoGallery busId={selectedBus.id} busName={selectedBus.name} busBnName={selectedBus.bnName} onBack={() => setView(AppView.BUS_DETAILS)} /> : <LoginWall setView={setView} />)}
+            {view === AppView.BUS_LIVE_TRACKING && (user && selectedBus ? <BusLiveTracking busId={selectedBus.id} busName={selectedBus.name} onBack={() => setView(AppView.BUS_DETAILS)} /> : <LoginWall setView={setView} />)}
             {view === AppView.TRAIN_PHOTOS && (user && selectedTrain ? <TrainPhotoGallery trainId={selectedTrain.id} trainName={selectedTrain.name} onBack={() => setView(AppView.TRAIN_DETAILS)} /> : <LoginWall setView={setView} />)}
 
             {view === AppView.INSTALL_APP && (

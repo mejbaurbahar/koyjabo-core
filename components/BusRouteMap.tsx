@@ -154,8 +154,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
         scrollWheelZoom: !isTouchDevice,
         dragging: !isTouchDevice,
         touchZoom: false,
-        tap: false,
-      });
+      } as L.MapOptions);
 
       // On touch devices: disable all interactions so page scroll works smoothly
       if (isTouchDevice) {

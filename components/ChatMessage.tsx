@@ -14,10 +14,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ text, role }) => {
         const textBeforeButton = cleanText.substring(0, buttonMatch.index);
 
         return (
-            <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${role === 'user'
-                    ? 'bg-dhaka-dark text-white rounded-br-none'
-                    : 'bg-white text-gray-800 border border-gray-100 rounded-bl-none'
-                }`}>
+            <div className="max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm bg-white text-gray-800 border border-gray-100 rounded-bl-none">
                 <div className="whitespace-pre-wrap">{textBeforeButton}</div>
                 <a
                     href={url}
