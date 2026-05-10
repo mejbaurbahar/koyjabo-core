@@ -30,7 +30,7 @@ export default function ForgotPasswordPage({ onBack }: ForgotPasswordPageProps) 
         return;
       }
       if (status.expired) {
-        setError('Reset link expired. Please request a new one.');
+        setError(t('auth.forgotPasswordPage.resetLinkExpired'));
         setStage('form');
         return;
       }
@@ -61,7 +61,7 @@ export default function ForgotPasswordPage({ onBack }: ForgotPasswordPageProps) 
     try {
       const result = await forgotPassword(emailAddr);
       if (!result.success) {
-        setError(result.error || 'Something went wrong. Please try again.');
+        setError(result.error || t('auth.forgotPasswordPage.errorTryAgain'));
         setStage('form');
         return;
       }
@@ -70,7 +70,7 @@ export default function ForgotPasswordPage({ onBack }: ForgotPasswordPageProps) 
       setResendCooldown(60);
       setStage('sent');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong.');
+      setError(err instanceof Error ? err.message : t('auth.validation.somethingWentWrong'));
       setStage('form');
     }
   };
@@ -92,8 +92,8 @@ export default function ForgotPasswordPage({ onBack }: ForgotPasswordPageProps) 
       <div className="flex-1 min-h-0 w-full flex flex-col items-center justify-center bg-gradient-to-br from-green-50 via-white to-emerald-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 p-4">
         <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 max-w-sm w-full text-center">
           <CheckCircle2 size={52} className="text-green-500 mx-auto mb-4" />
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Password Reset!</h2>
-          <p className="text-gray-500 dark:text-gray-400 text-sm">Your password has been updated. Redirecting to login…</p>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{t('auth.forgotPasswordPage.passwordReset')}</h2>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">{t('auth.forgotPasswordPage.passwordUpdated')}</p>
         </div>
       </div>
     );
@@ -108,7 +108,7 @@ export default function ForgotPasswordPage({ onBack }: ForgotPasswordPageProps) 
             <div className="absolute inset-0 rounded-full border-4 border-blue-100 dark:border-slate-600 animate-spin border-t-blue-600" />
             <Clock className="absolute inset-0 m-auto text-blue-600 dark:text-blue-400" size={18} />
           </div>
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Sending reset link…</h2>
+          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{t('auth.forgotPasswordPage.sendingLink')}</h2>
           <p className="text-sm text-gray-500 dark:text-gray-400">{t('auth.forgotPasswordPage.maxWait')}</p>
         </div>
       </div>
@@ -124,9 +124,9 @@ export default function ForgotPasswordPage({ onBack }: ForgotPasswordPageProps) 
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 shadow-lg shadow-blue-200 dark:shadow-blue-900 mb-4">
               <Mail className="text-white" size={28} />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Check Your Email</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('auth.forgotPasswordPage.checkEmail')}</h1>
             <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">
-              We sent a reset link to <strong className="text-gray-700 dark:text-gray-300">{email}</strong>
+              {t('auth.forgotPasswordPage.sentLinkTo')} <strong className="text-gray-700 dark:text-gray-300">{email}</strong>
             </p>
           </div>
 
@@ -142,14 +142,14 @@ export default function ForgotPasswordPage({ onBack }: ForgotPasswordPageProps) 
               <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 flex items-start gap-3">
                 <div className="w-5 h-5 rounded-full border-2 border-blue-400 animate-spin border-t-transparent flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-sm font-medium text-blue-800 dark:text-blue-300">Waiting for you to click the link…</p>
-                  <p className="text-xs text-blue-600 dark:text-blue-400 mt-0.5">This page updates automatically once your password is reset.</p>
+                  <p className="text-sm font-medium text-blue-800 dark:text-blue-300">{t('auth.forgotPasswordPage.waitingForClick')}</p>
+                  <p className="text-xs text-blue-600 dark:text-blue-400 mt-0.5">{t('auth.forgotPasswordPage.pageUpdatesAuto')}</p>
                 </div>
               </div>
 
               {fallbackLink && (
                 <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl p-4">
-                  <p className="text-xs text-amber-700 dark:text-amber-400 font-medium mb-2">Email not configured — use this link directly:</p>
+                  <p className="text-xs text-amber-700 dark:text-amber-400 font-medium mb-2">{t('auth.forgotPasswordPage.emailNotConfigured')}</p>
                   <a
                     href={fallbackLink}
                     target="_blank"
@@ -163,16 +163,16 @@ export default function ForgotPasswordPage({ onBack }: ForgotPasswordPageProps) 
               )}
 
               <div className="text-center pt-2">
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Didn't receive it? Check spam or</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">{t('auth.forgotPasswordPage.didntReceive')}</p>
                 {resendCooldown > 0 ? (
-                  <p className="text-sm text-gray-400 dark:text-gray-500">Resend in {resendCooldown}s</p>
+                  <p className="text-sm text-gray-400 dark:text-gray-500">{t('auth.forgotPasswordPage.resendIn', { seconds: resendCooldown })}</p>
                 ) : (
                   <button
                     onClick={handleResend}
                     className="text-sm text-blue-600 dark:text-blue-400 font-medium hover:underline flex items-center gap-1 mx-auto"
                   >
                     <RefreshCw size={14} />
-                    Resend Reset Link
+                    {t('auth.forgotPasswordPage.resendLink')}
                   </button>
                 )}
               </div>
@@ -182,7 +182,7 @@ export default function ForgotPasswordPage({ onBack }: ForgotPasswordPageProps) 
                 className="w-full py-2.5 rounded-xl border border-gray-200 dark:border-slate-600 text-gray-600 dark:text-gray-400 text-sm font-medium hover:bg-gray-50 dark:hover:bg-slate-700 transition flex items-center justify-center gap-2"
               >
                 <ArrowLeft size={16} />
-                Back to Login
+                {t('auth.forgotPasswordPage.returnToLogin')}
               </button>
             </div>
           </div>
@@ -208,7 +208,7 @@ export default function ForgotPasswordPage({ onBack }: ForgotPasswordPageProps) 
             <Mail className="text-white" size={28} />
           </div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('auth.forgotPasswordPage.passwordReset')}</h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">Enter your email to receive a password reset link</p>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">{t('auth.forgotPasswordPage.description')}</p>
         </div>
 
         <div className="md:bg-white md:dark:bg-slate-800 md:rounded-2xl md:shadow-xl md:p-8 md:border md:border-gray-100 md:dark:border-slate-700">
@@ -240,7 +240,7 @@ export default function ForgotPasswordPage({ onBack }: ForgotPasswordPageProps) 
               className="w-full py-3 px-6 rounded-xl font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-sm"
             >
               <Mail size={18} />
-              Send Reset Link
+              {t('auth.forgotPasswordPage.sendLink')}
             </button>
           </form>
         </div>

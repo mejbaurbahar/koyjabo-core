@@ -730,7 +730,6 @@ ins.adsbygoogle {
 
 /* AdSense container styling */
 .adsense-container {
-  margin: 1.5rem auto;
   padding: 0.75rem;
   background: linear-gradient(135deg, rgba(245, 247, 250, 0.6) 0%, rgba(195, 207, 226, 0.3) 100%);
   border-radius: 12px;
@@ -762,7 +761,6 @@ ins.adsbygoogle {
 /* Mobile-specific ad spacing (do not cap height — clips units & breaks layout/scroll) */
 @media (max-width: 768px) {
   .adsense-container {
-    margin: 0.5rem auto;
     padding: 0.25rem;
     border-radius: 8px;
   }
@@ -797,11 +795,6 @@ ins.adsbygoogle {
   }
 }
 
-/* Prevent ads from overlapping with navigation */
-.adsbygoogle {
-  z-index: 10;
-}
-
 /* Ensure header/footer stay above ads */
 header,
 nav,
@@ -817,7 +810,7 @@ footer {
       rgba(200, 200, 200, 0.1) 75%);
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.5s infinite;
-  min-height: 90px;
+  min-height: 50px;
   border-radius: 8px;
 }
 

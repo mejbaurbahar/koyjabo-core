@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SangsadBhaban, ShaheedMinar, CurzonHall, AhsanManzil, NationalMemorial, LalbaghFort } from './DhakaLandmarks';
 import { Cloud, Airplane, MetroTrack, MetroTrain, CityBus, RiverBoat, Sun, Moon, Skyline, Stars, RiverWaves, Rain, Fog, TrafficPolice } from './DhakaAnimationElements';
-import AdSenseAd from './AdSenseAd';
 import { X, Sparkles } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -291,11 +290,6 @@ const DhakaAlive: React.FC<{ hideIndicator?: boolean }> = ({ hideIndicator = fal
                 </div>
             )}
             
-            <div className="fixed bottom-20 left-0 right-0 z-50 flex justify-center pointer-events-none px-3">
-              <div className="pointer-events-auto bg-white/10 dark:bg-slate-900/40 backdrop-blur-sm rounded-xl p-1 w-full max-w-sm md:max-w-[728px]">
-                <AdSenseAd adSlot="auto" className="w-full max-w-full" />
-              </div>
-            </div>
         </div>
     );
 };

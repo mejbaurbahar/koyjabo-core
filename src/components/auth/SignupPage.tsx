@@ -367,7 +367,7 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
                 </p>
               )}
               {emailChecking && (
-                <p className="mt-1 text-xs text-blue-500">{language === 'bn' ? 'ইমেইল যাচাই করা হচ্ছে…' : 'Verifying email…'}</p>
+                <p className="mt-1 text-xs text-blue-500">{t('auth.emailVerifying')}</p>
               )}
             </div>
 

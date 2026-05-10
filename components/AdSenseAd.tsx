@@ -53,7 +53,7 @@ const AdSenseAd: React.FC<AdSenseAdProps> = React.memo(({
       <ins
         ref={insRef}
         className="adsbygoogle"
-        style={{ display: 'block', minHeight: '100px', width: '100%', maxWidth: '100%' }}
+        style={{ display: 'block', width: '100%', maxWidth: '100%' }}
         data-ad-client="ca-pub-8425219156685369"
         data-ad-slot={adSlot === 'auto' ? DEFAULT_SLOT : adSlot}
         data-ad-format={adFormat}

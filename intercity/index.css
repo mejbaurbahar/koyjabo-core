@@ -299,7 +299,6 @@ body {
 
 /* AdSense container styling */
 .adsense-container {
-  margin: 1.5rem auto;
   padding: 0.75rem;
   background: linear-gradient(135deg, rgba(245, 247, 250, 0.6) 0%, rgba(195, 207, 226, 0.3) 100%);
   border-radius: 12px;
@@ -324,7 +323,6 @@ body {
   }
 
   .adsense-container {
-    margin: 1rem auto;
     padding: 0.5rem;
   }
 
@@ -347,7 +345,7 @@ body {
 
 /* Prevent layout shift */
 .adsbygoogle:empty {
-  min-height: 90px;
+  min-height: 50px;
   background: linear-gradient(90deg,
       rgba(200, 200, 200, 0.1) 25%,
       rgba(200, 200, 200, 0.2) 50%,
@@ -370,10 +368,6 @@ body {
 header,
 nav {
   z-index: 100;
-}
-
-.adsbygoogle {
-  z-index: 10;
 }
 
 /* Avoid GPU promotion on ads — can break touch scrolling on mobile */

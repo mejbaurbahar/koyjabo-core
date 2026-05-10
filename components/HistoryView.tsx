@@ -235,12 +235,9 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                     </div>
                 </div>
             </div>
-            <div className="shrink-0 px-4 md:px-6">
-              <AdSenseAd adSlot="auto" className="my-4 w-full max-w-[728px] mx-auto px-2 md:px-0" />
-            </div>
-
             {/* Content */}
             <div className="relative z-10 flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 md:p-6 space-y-6 pb-24 md:pb-6" style={{ WebkitOverflowScrolling: 'touch' }}>
+                <AdSenseAd adSlot="auto" className="my-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
                 {activeTab === 'personal' ? (
                     <>
                         {/* Clear History Button */}
