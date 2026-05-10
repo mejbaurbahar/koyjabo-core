@@ -25,11 +25,13 @@ const RouteStepIcon: React.FC<{ type: RouteStep['type'] }> = ({ type }) => {
 };
 
 const RouteTypeBadge: React.FC<{ type: SuggestedRoute['routeType'] }> = ({ type }) => {
+    const { language } = useLanguage();
+    const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
     const badges = {
-        'fastest': { icon: Zap, text: 'Fastest', color: 'bg-green-100 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800' },
-        'direct': { icon: TrendingUp, text: 'Direct', color: 'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800' },
-        'cheapest': { icon: Coins, text: 'Cheapest', color: 'bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800' },
-        'least-transfers': { icon: Award, text: 'Easy', color: 'bg-purple-100 text-purple-700 border-purple-200 dark:bg-purple-900/30 dark:text-purple-400 dark:border-purple-800' }
+        'fastest': { icon: Zap, text: lbl('Fastest', 'সবচেয়ে দ্রুত'), color: 'bg-green-100 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800' },
+        'direct': { icon: TrendingUp, text: lbl('Direct', 'সরাসরি'), color: 'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800' },
+        'cheapest': { icon: Coins, text: lbl('Cheapest', 'সবচেয়ে সাশ্রয়ী'), color: 'bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800' },
+        'least-transfers': { icon: Award, text: lbl('Easy', 'সহজ'), color: 'bg-purple-100 text-purple-700 border-purple-200 dark:bg-purple-900/30 dark:text-purple-400 dark:border-purple-800' }
     };
 
     const badge = badges[type];
@@ -44,12 +46,13 @@ const RouteTypeBadge: React.FC<{ type: SuggestedRoute['routeType'] }> = ({ type 
 };
 
 const RouteSuggestions: React.FC<RouteSuggestionsProps> = ({ routes, onSelectRoute, currentLocation }) => {
-    const { formatNumber } = useLanguage();
+    const { formatNumber, language } = useLanguage();
+    const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
     if (routes.length === 0) {
         return (
             <div className="text-center py-8 text-gray-400">
                 <MapPin className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                <p className="text-sm">No routes found</p>
+                <p className="text-sm">{lbl('No routes found', 'কোনো রুট পাওয়া যায়নি')}</p>
             </div>
         );
     }
@@ -63,7 +66,7 @@ const RouteSuggestions: React.FC<RouteSuggestionsProps> = ({ routes, onSelectRou
                         <MapPin className="w-4 h-4 text-white" />
                     </div>
                     <div>
-                        <p className="text-[10px] text-blue-600 dark:text-blue-400 font-bold uppercase">You are at</p>
+                        <p className="text-[10px] text-blue-600 dark:text-blue-400 font-bold uppercase">{lbl('You are at', 'আপনি আছেন')}</p>
                         <p className="text-sm font-bold text-blue-900 dark:text-blue-200">{currentLocation}</p>
                     </div>
                 </div>
@@ -81,7 +84,7 @@ const RouteSuggestions: React.FC<RouteSuggestionsProps> = ({ routes, onSelectRou
                         <div className="flex items-start justify-between mb-2">
                             <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
-                                    <span className="text-lg font-bold text-gray-900 dark:text-white">Route {formatNumber(idx + 1)}</span>
+                                    <span className="text-lg font-bold text-gray-900 dark:text-white">{lbl('Route', 'রুট')} {formatNumber(idx + 1)}</span>
                                     <RouteTypeBadge type={route.routeType} />
                                 </div>
                                 <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{route.title}</h3>
@@ -93,21 +96,21 @@ const RouteSuggestions: React.FC<RouteSuggestionsProps> = ({ routes, onSelectRou
                             <div className="bg-white dark:bg-slate-700 rounded-lg p-2 border border-gray-100 dark:border-slate-600">
                                 <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 mb-1">
                                     <Clock className="w-3 h-3" />
-                                    <span className="text-[9px] font-bold uppercase">Time</span>
+                                    <span className="text-[9px] font-bold uppercase">{lbl('Time', 'সময়')}</span>
                                 </div>
                                 <p className="text-sm font-bold text-gray-900 dark:text-white">{formatNumber(Math.round(route.totalDuration))} min</p>
                             </div>
                             <div className="bg-white dark:bg-slate-700 rounded-lg p-2 border border-gray-100 dark:border-slate-600">
                                 <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 mb-1">
                                     <Coins className="w-3 h-3" />
-                                    <span className="text-[9px] font-bold uppercase">Fare</span>
+                                    <span className="text-[9px] font-bold uppercase">{lbl('Fare', 'ভাড়া')}</span>
                                 </div>
                                 <p className="text-sm font-bold text-gray-900 dark:text-white">৳{formatNumber(route.totalFare)}</p>
                             </div>
                             <div className="bg-white dark:bg-slate-700 rounded-lg p-2 border border-gray-100 dark:border-slate-600">
                                 <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 mb-1">
                                     <ArrowRight className="w-3 h-3" />
-                                    <span className="text-[9px] font-bold uppercase">Changes</span>
+                                    <span className="text-[9px] font-bold uppercase">{lbl('Changes', 'পরিবর্তন')}</span>
                                 </div>
                                 <p className="text-sm font-bold text-gray-900 dark:text-white">{formatNumber(route.transfers)}</p>
                             </div>
@@ -174,7 +177,7 @@ const RouteSuggestions: React.FC<RouteSuggestionsProps> = ({ routes, onSelectRou
                     <div className="px-4 pb-4">
                         <button className="w-full bg-dhaka-green text-white py-2.5 rounded-xl font-bold text-sm hover:bg-green-800 transition-colors flex items-center justify-center gap-2 group-hover:scale-[1.02] transition-transform">
                             <Navigation className="w-4 h-4" />
-                            Start This Route
+                            {lbl('Start This Route', 'এই রুট শুরু করুন')}
                         </button>
                     </div>
                 </div>

@@ -395,6 +395,8 @@ const SettingsView: React.FC<{
   apiKey: string,
   setApiKey: (key: string) => void
 }> = ({ onBack, onClearFavorites, apiKey, setApiKey }) => {
+  const { language } = useLanguage();
+  const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
   const [inputKey, setInputKey] = useState(apiKey);
   const [showKey, setShowKey] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'success' | 'error'>('idle');
@@ -442,7 +444,7 @@ const SettingsView: React.FC<{
               </p>
               <div className="mt-4 flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300">Always Available • No Setup Required • Completely Free</span>
+                <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300">{lbl('Always Available • No Setup Required • Completely Free', 'সবসময় উপলব্ধ • কোনো সেটআপ লাগবে না • সম্পূর্ণ বিনামূল্যে')}</span>
               </div>
             </div>
           </div>
@@ -505,6 +507,7 @@ const checkIfInDhaka = (loc: UserLocation | null): boolean => {
 const App: React.FC = () => {
   // Multi-language support
   const { t, formatNumber, language, setLanguage } = useLanguage();
+  const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
   const { user, logout } = useAuth();
 
   // Polyfill for requestIdleCallback (Safari support)

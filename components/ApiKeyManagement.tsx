@@ -1,11 +1,14 @@
 import React from 'react';
 import { X, Bot, CheckCircle2 } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface ApiKeyManagementProps {
     onClose: () => void;
 }
 
 const ApiKeyManagement: React.FC<ApiKeyManagementProps> = ({ onClose }) => {
+    const { language } = useLanguage();
+    const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
             <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto relative">
@@ -40,7 +43,7 @@ const ApiKeyManagement: React.FC<ApiKeyManagementProps> = ({ onClose }) => {
                             <div className="flex items-start gap-3">
                                 <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                                 <div>
-                                    <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-1">Always Available</h3>
+                                    <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-1">{lbl('Always Available', 'সবসময় উপলব্ধ')}</h3>
                                     <p className="text-sm text-gray-700 dark:text-gray-300">
                                         Our AI assistant is built into Koy Jabo and ready to help you 24/7
                                     </p>
@@ -50,7 +53,7 @@ const ApiKeyManagement: React.FC<ApiKeyManagementProps> = ({ onClose }) => {
                             <div className="flex items-start gap-3">
                                 <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                                 <div>
-                                    <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-1">No Setup Required</h3>
+                                    <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-1">{lbl('No Setup Required', 'কোনো সেটআপ লাগবে না')}</h3>
                                     <p className="text-sm text-gray-700 dark:text-gray-300">
                                         No API keys, no configuration - just ask your questions naturally
                                     </p>
@@ -70,7 +73,7 @@ const ApiKeyManagement: React.FC<ApiKeyManagementProps> = ({ onClose }) => {
                             <div className="flex items-start gap-3">
                                 <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                                 <div>
-                                    <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-1">Completely Free</h3>
+                                    <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-1">{lbl('Completely Free', 'সম্পূর্ণ বিনামূল্যে')}</h3>
                                     <p className="text-sm text-gray-700 dark:text-gray-300">
                                         Unlimited queries, no subscriptions, no hidden costs
                                     </p>

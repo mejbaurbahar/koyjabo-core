@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as GSPLAT from 'gsplat';
 import { X, Maximize, RotateCcw, Move, Smartphone, Info, Loader2 } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface StationDigitalTwinProps {
     isOpen: boolean;
@@ -15,6 +16,8 @@ const StationDigitalTwin: React.FC<StationDigitalTwinProps> = ({
     stationName,
     splatUrl = 'https://huggingface.co/datasets/dylanebert/3dgs/resolve/main/bonsai/bonsai-7k.ply'
 }) => {
+    const { language } = useLanguage();
+    const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
     const containerRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -136,7 +139,7 @@ const StationDigitalTwin: React.FC<StationDigitalTwinProps> = ({
                         <div className="w-16 h-16 bg-red-500/20 text-red-500 rounded-2xl flex items-center justify-center mb-4">
                             <Info className="w-8 h-8" />
                         </div>
-                        <h3 className="text-xl font-bold text-white mb-2">Scan Unavailable</h3>
+                        <h3 className="text-xl font-bold text-white mb-2">{lbl('Scan Unavailable', 'স্ক্যান পাওয়া যাচ্ছে না')}</h3>
                         <p className="text-white/60 max-w-xs mb-6">{error}</p>
                         <button 
                             onClick={() => window.location.reload()}

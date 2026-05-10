@@ -10,7 +10,8 @@ interface TermsOfServiceProps {
 }
 
 const TermsOfService: React.FC<TermsOfServiceProps> = ({ view, setView }) => {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
+    const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
 
     return (
         <div className="flex flex-col flex-1 min-h-0 bg-white dark:bg-slate-900 overflow-y-auto overscroll-y-contain touch-pan-y overflow-x-hidden w-full relative max-w-full" style={{ WebkitOverflowScrolling: 'touch' }}>
@@ -28,7 +29,7 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ view, setView }) => {
                 <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-400 p-6 rounded-r-xl mb-10 shadow-sm">
                     <div className="flex items-center gap-3 text-blue-800 dark:text-blue-200 font-bold mb-2">
                         <CheckCircle2 className="w-5 h-5" />
-                        <span>Effective Date: January 1, 2024</span>
+                        <span>{lbl('Effective Date: January 1, 2024', 'কার্যকর তারিখ: ১ জানুয়ারি ২০২৪')}</span>
                     </div>
                     <p className="text-sm text-blue-700 dark:text-blue-300">{t('terms.lastUpdated')}: April 17, 2026</p>
                 </div>
@@ -131,7 +132,7 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ view, setView }) => {
                             </div>
                             <div className="flex-1 text-center md:text-left">
                                 <h4 className="text-xl font-bold text-gray-900 dark:text-gray-100">Mejbaur Bahar Fagun</h4>
-                                <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">Founder, KoyJabo</p>
+                                <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">{lbl('Founder, KoyJabo', 'প্রতিষ্ঠাতা, কই যাবো')}</p>
                                 <div className="flex flex-col gap-2">
                                     <a href="https://linkedin.com/in/mejbaur/" target="_blank" rel="noreferrer" className="flex items-center justify-center md:justify-start gap-2 text-blue-600 hover:underline font-bold">
                                         LinkedIn Profile <ExternalLink className="w-4 h-4" />

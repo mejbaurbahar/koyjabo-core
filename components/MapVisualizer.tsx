@@ -32,7 +32,8 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
   tripDestination,
   tripTransferPoint
 }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
   const [simulationStep, setSimulationStep] = useState(0);
 
   // Layer visibility toggles - Metro off by default, others off
@@ -135,7 +136,7 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
 
   if (!route) return (
     <div className="w-full h-40 bg-gray-50 flex items-center justify-center text-gray-400 text-sm">
-      <p>No route data available</p>
+      <p>{lbl('No route data available', 'রুটের তথ্য পাওয়া যাচ্ছে না')}</p>
     </div>
   );
 
@@ -182,7 +183,7 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
     scrollContainerRef.current.scrollTop = scrollTop - walkY;
   };
 
-  if (stations.length === 0) return <div>No station data</div>;
+  if (stations.length === 0) return <div>{lbl('No station data', 'স্টেশনের তথ্য নেই')}</div>;
 
   // Calculate normalized Latitudes (Schematic View - Vertical Variation Only)
   const latData = React.useMemo(() => {
@@ -457,21 +458,21 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
         <div className="absolute top-4 left-4 z-20 bg-orange-50/90 backdrop-blur border border-orange-200 px-3 py-2 rounded-xl shadow-lg flex items-center gap-2 animate-pulse max-w-[200px]">
           <ArrowUpRight className="w-5 h-5 text-orange-600 shrink-0" />
           <div>
-            <p className="text-[10px] font-bold text-orange-800 uppercase">Outside Route</p>
+            <p className="text-[10px] font-bold text-orange-800 uppercase">{lbl('Outside Route', 'রুটের বাইরে')}</p>
             <p className="text-xs font-medium text-orange-900 leading-tight">
-              Go {
+              {lbl('Go', 'যান')} {
                 hasHighlight && highlightStartIdx !== -1 && userLocation && nodePositions[isReversed ? highlightEndIdx : highlightStartIdx]
                   ? (getDistance(userLocation, stations[isReversed ? highlightEndIdx : highlightStartIdx]) / 1000).toFixed(1)
                   : (userDistance / 1000).toFixed(1)
-              }km to {
+              }km {lbl('to', '-এ')} {
                 hasHighlight && highlightStartIdx !== -1 && stations[isReversed ? highlightEndIdx : highlightStartIdx].id === tripTransferPoint
-                  ? 'transit at'
-                  : 'start at'
+                  ? lbl('transit at', 'ট্রান্সফার')
+                  : lbl('start at', 'শুরু করুন')
               } <b>{hasHighlight && highlightStartIdx !== -1 ? stations[isReversed ? highlightEndIdx : highlightStartIdx].name : stations[userStationIndex].name}</b>
             </p>
             {globalNearestName && (
               <p className="text-[10px] text-orange-800 mt-1 border-t border-orange-200 pt-1">
-                Near: <b>{globalNearestName}</b>
+                {lbl('Near:', 'কাছাকাছি:')} <b>{globalNearestName}</b>
               </p>
             )}
           </div>
@@ -626,6 +627,8 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                     className="opacity-60"
                   />
                 </g>
+              )}
+
              {/* 1. Base Glow Path (Triple Layer Layer 1) */}
             <path
               d={generateSmoothPath(nodePositions)}
@@ -665,11 +668,6 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
 
             {/* Fare Highlight Segment (Animated Glow) */}
             {hasHighlight && (
-              <path
-                d={generateSmoothPath(nodePositions.slice(highlightStartIdx, highlightEndIdx + 1))}
-                fill="none"
-                stroke="white"
-                strokeWidth={3}
               <g>
                 <path
                   d={generateSmoothPath(nodePositions.slice(highlightStartIdx, highlightEndIdx + 1))}
