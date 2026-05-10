@@ -293,8 +293,6 @@ body {
   text-align: center;
   max-width: 100%;
   box-sizing: border-box;
-  overflow-x: clip;
-  overflow-y: visible;
 }
 
 /* AdSense container styling */
@@ -303,9 +301,8 @@ body {
   background: linear-gradient(135deg, rgba(245, 247, 250, 0.6) 0%, rgba(195, 207, 226, 0.3) 100%);
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-  overflow-x: clip;
-  overflow-y: visible;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  overflow: hidden;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
@@ -318,10 +315,6 @@ body {
 
 /* Mobile-specific ad optimizations */
 @media (max-width: 768px) {
-  .adsbygoogle {
-    min-height: 50px;
-  }
-
   .adsense-container {
     padding: 0.5rem;
   }
@@ -334,12 +327,12 @@ body {
 
 /* Desktop ad optimization */
 @media (min-width: 769px) {
-  .adsbygoogle {
-    min-height: 90px;
-  }
-
   .adsense-container {
     max-width: 728px;
+  }
+
+  .adsbygoogle:empty {
+    min-height: 90px;
   }
 }
 

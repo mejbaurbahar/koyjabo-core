@@ -81,47 +81,92 @@ async function getClientIP(): Promise<string> {
 
 // ── GitHub Contents API helpers ───────────────────────────────────────────────
 
+const USER_INDEX_LS_KEY = 'kj_user_index_cache';
+const USER_INDEX_TTL    = 30 * 60 * 1000; // 30 minutes
+
+// In-flight deduplication: path → pending Promise
+const inFlight = new Map<string, Promise<unknown>>();
+
 async function fetchRepo<T = unknown>(repo: 'd' | 'a', path: string): Promise<T | null> {
+  const url = PROXY
+    ? `${PROXY}/gh?r=${repo}&p=${encodeURIComponent(path)}`
+    : `${repo === 'd' ? DATA_BASE : APP_BASE}/contents/${path}`;
+
   let res: Response;
-  try {
-    if (PROXY) {
-      // Proxy path: Worker returns only decoded JSON, hiding all GitHub metadata
-      res = await fetch(`${PROXY}/gh?r=${repo}&p=${encodeURIComponent(path)}`, {
-        credentials: 'omit',
-      });
-    } else {
-      // Direct path: full GitHub API response visible in DevTools
-      const base = repo === 'd' ? DATA_BASE : APP_BASE;
-      res = await fetch(`${base}/contents/${path}`, { headers: ghHeaders() });
+  let attempt = 0;
+  while (true) {
+    try {
+      res = PROXY
+        ? await fetch(url, { credentials: 'omit' })
+        : await fetch(url, { headers: ghHeaders() });
+    } catch (err) {
+      throw new Error(friendlyNetworkError(err));
     }
-  } catch (err) {
-    throw new Error(friendlyNetworkError(err));
+    if (res.status === 429 && attempt < 3) {
+      // Exponential back-off: 2s, 4s, 8s
+      await new Promise(r => setTimeout(r, 2000 * (2 ** attempt)));
+      attempt++;
+      continue;
+    }
+    break;
   }
+
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(friendlyHttpError(res.status));
-  if (PROXY) {
-    return res.json() as Promise<T>;
-  }
+  if (PROXY) return res.json() as Promise<T>;
   const data = await res.json() as { content?: string };
   if (!data.content) return null;
   return JSON.parse(atob(data.content.replace(/\n/g, ''))) as T;
 }
 
-let userIndexCache: { data: any, expires: number } | null = null;
+function loadUserIndexFromStorage(): { data: any; expires: number } | null {
+  try {
+    const raw = localStorage.getItem(USER_INDEX_LS_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (parsed?.expires > Date.now()) return parsed;
+    localStorage.removeItem(USER_INDEX_LS_KEY);
+  } catch { /* ignore */ }
+  return null;
+}
+
+function saveUserIndexToStorage(data: unknown): void {
+  try {
+    localStorage.setItem(USER_INDEX_LS_KEY, JSON.stringify({ data, expires: Date.now() + USER_INDEX_TTL }));
+  } catch { /* ignore — storage quota */ }
+}
+
+// In-memory layer on top of localStorage (avoids JSON.parse on every call)
+let userIndexMem: { data: any; expires: number } | null = loadUserIndexFromStorage();
 
 async function fetchDataFile<T = unknown>(path: string): Promise<T | null> {
-  // Simple 5-minute cache for the user index to avoid 429 errors
-  if (path === 'data/users/index.json' && userIndexCache && userIndexCache.expires > Date.now()) {
-    return userIndexCache.data as T;
+  const isUserIndex = path === 'data/users/index.json';
+
+  // 1. Memory cache hit
+  if (isUserIndex && userIndexMem && userIndexMem.expires > Date.now()) {
+    return userIndexMem.data as T;
   }
 
-  const data = await fetchRepo<T>('d', path);
-
-  if (path === 'data/users/index.json' && data) {
-    userIndexCache = { data, expires: Date.now() + 300_000 };
+  // 2. In-flight deduplication — don't fire two requests for the same path
+  const cacheKey = `d:${path}`;
+  if (inFlight.has(cacheKey)) {
+    return inFlight.get(cacheKey) as Promise<T | null>;
   }
 
-  return data;
+  const promise = fetchRepo<T>('d', path).then(data => {
+    inFlight.delete(cacheKey);
+    if (isUserIndex && data) {
+      userIndexMem = { data, expires: Date.now() + USER_INDEX_TTL };
+      saveUserIndexToStorage(data);
+    }
+    return data;
+  }).catch(err => {
+    inFlight.delete(cacheKey);
+    throw err;
+  });
+
+  inFlight.set(cacheKey, promise);
+  return promise;
 }
 
 function fetchAppFile<T = unknown>(path: string): Promise<T | null> {

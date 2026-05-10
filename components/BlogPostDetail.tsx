@@ -339,7 +339,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                                         <Sparkles className="w-4 h-4 text-amber-500" />
                                         {language === 'bn' ? 'স্পন্সর' : 'Sponsored'}
                                     </h4>
-                                    <AdSenseAd adSlot="auto" adFormat="vertical" className="w-full max-w-[300px] mx-auto min-h-[280px] lg:min-h-[600px]" />
+                                    <AdSenseAd adSlot="auto" adFormat="vertical" className="w-full max-w-[300px] mx-auto" />
                                 </div>
                                 
                                 {toc.length > 2 && (
