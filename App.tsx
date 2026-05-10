@@ -401,10 +401,8 @@ const SettingsView: React.FC<{
 
   const handleSave = () => {
     const trimmedKey = inputKey.trim();
-    console.log('Saving API key, length:', trimmedKey.length);
 
     if (!trimmedKey || trimmedKey.length < 20) {
-      console.error('API key validation failed - too short or empty');
       setSaveStatus('error');
       setTimeout(() => setSaveStatus('idle'), 3000);
       return;
@@ -412,25 +410,15 @@ const SettingsView: React.FC<{
 
     setApiKey(trimmedKey);
     localStorage.setItem('gemini_api_key', trimmedKey);
-    console.log('✅ API key saved to localStorage');
-    console.log('Saved key starts with:', trimmedKey.substring(0, 20) + '...');
     setSaveStatus('success');
     setTimeout(() => setSaveStatus('idle'), 3000);
   };
 
   const handleClearKey = () => {
-    console.log('🗑️ DELETE BUTTON CLICKED - NO CONFIRMATION');
-    console.log('Before delete - apiKey:', apiKey ? 'EXISTS' : 'EMPTY');
-    console.log('Before delete - inputKey:', inputKey);
-
     setInputKey('');
     setApiKey('');
     localStorage.removeItem('gemini_api_key');
     setSaveStatus('idle');
-
-    console.log('✅ DELETE COMPLETE');
-    console.log('After delete - localStorage:', localStorage.getItem('gemini_api_key'));
-    console.log('After delete - apiKey should be empty now');
   };
 
   return (
@@ -1569,7 +1557,6 @@ const App: React.FC = () => {
     };
 
     if (hash && hashToView[hash]) {
-      console.log('Hash navigation:', hash, '→', hashToView[hash]);
       viewSetFromHash.current = true; // Prevent push state
       setView(hashToView[hash]);
       // Clear the hash after a short delay
@@ -1849,7 +1836,6 @@ const App: React.FC = () => {
               const metroResult = findNearestMetroStation(loc);
               if (metroResult) setNearestMetro(metroResult);
             } else {
-              console.warn('⚠️ Ignoring location update due to poor accuracy:', accuracy.toFixed(0) + 'm');
             }
 
           },
@@ -2060,7 +2046,7 @@ const App: React.FC = () => {
             }
           }
         }
-      }).catch(console.error);
+      }).catch(() => {});
     }, { timeout: 2000 });
   }, [user]);
 
@@ -2075,7 +2061,7 @@ const App: React.FC = () => {
         requestIdleCallback(() => {
           localStorage.setItem('dhaka_commute_favorites', JSON.stringify(newFavs));
         });
-      } catch (err) { console.warn("Fav save failed"); }
+      } catch { /* storage quota exceeded — ignore */ }
       return newFavs;
     });
   }, [requestIdleCallback]);
@@ -4089,7 +4075,6 @@ const App: React.FC = () => {
       if (!navigator.onLine) {
         const offlineData = getIntercityRoutesOffline(from, to);
         if (offlineData.routes.length > 0) {
-          console.log(`Found ${offlineData.routes.length} intercity routes offline`);
         }
       }
 

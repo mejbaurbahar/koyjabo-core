@@ -18,7 +18,6 @@ export const getAllSessions = (): ChatSession[] => {
         const stored = localStorage.getItem(STORAGE_KEY);
         return stored ? JSON.parse(stored) : [];
     } catch (e) {
-        console.error('Failed to load chat sessions', e);
         return [];
     }
 };

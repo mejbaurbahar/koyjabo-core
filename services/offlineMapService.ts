@@ -69,7 +69,6 @@ export async function precacheDhakaMapTiles(
         allTiles.push(...tiles);
     }
 
-    console.log(`📥 Pre-caching ${allTiles.length} map tiles for Dhaka...`);
 
     // Cache tiles in batches to avoid overwhelming the browser
     const batchSize = 50;
@@ -95,7 +94,6 @@ export async function precacheDhakaMapTiles(
                         }
                     }
                 } catch (error) {
-                    console.warn(`Failed to cache tile: ${url}`, error);
                 }
             })
         );
@@ -104,7 +102,6 @@ export async function precacheDhakaMapTiles(
         await new Promise(resolve => setTimeout(resolve, 100));
     }
 
-    console.log(`✅ Cached ${cached} of ${allTiles.length} tiles for offline use`);
 }
 
 // Check if tiles are cached
@@ -124,7 +121,6 @@ export async function checkOfflineMapStatus(): Promise<{
             };
         }
     } catch (error) {
-        console.error('Failed to check cache status:', error);
     }
 
     return { hasCachedTiles: false, cacheSize: 0 };
@@ -133,7 +129,6 @@ export async function checkOfflineMapStatus(): Promise<{
 // Auto-cache tiles when online (runs in background)
 export function autoPreloadMapTiles() {
     if (!navigator.onLine) {
-        console.log('📴 Offline - skipping auto map tile preload');
         return;
     }
 
@@ -142,7 +137,6 @@ export function autoPreloadMapTiles() {
     const oneWeekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
 
     if (lastPreload && parseInt(lastPreload) > oneWeekAgo) {
-        console.log('✅ Map tiles already preloaded recently');
         return;
     }
 
@@ -150,11 +144,9 @@ export function autoPreloadMapTiles() {
     setTimeout(() => {
         precacheDhakaMapTiles((current, total) => {
             if (current % 100 === 0) {
-                console.log(`📥 Cached ${current}/${total} map tiles...`);
             }
         }).then(() => {
             localStorage.setItem('map_tiles_preloaded', Date.now().toString());
-            console.log('🗺️ Offline maps ready!');
         });
     }, 5000); // Wait 5 seconds after page load to start
 }

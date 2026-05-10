@@ -190,7 +190,6 @@ export const askGeminiRoute = async (...args): Promise<string> => {
             );
         } catch (error) {
             // Fails silently, returns base response
-            console.log('Online enhancement not available:', error);
         }
     }
 

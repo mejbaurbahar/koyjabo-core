@@ -56,7 +56,6 @@ export async function fetchWeatherData(city: string = 'Dhaka'): Promise<WeatherD
             precipitation: data.current.precipitation
         };
     } catch (error) {
-        console.log('Weather data not available:', error);
         return null;
     }
 }
@@ -146,7 +145,6 @@ export async function fetchTransportNews(): Promise<NewsUpdate[]> {
         dataCache.set('transport_news', news, 60); // Cache for 60 minutes
         return news;
     } catch (error) {
-        console.log('News data not available:', error);
         return [];
     }
 }
@@ -191,7 +189,6 @@ export class QueryLearningSystem {
             localStorage.setItem('ai_query_history', JSON.stringify(Array.from(this.queryHistory.entries())));
             localStorage.setItem('ai_successful_responses', JSON.stringify(Array.from(this.successfulResponses)));
         } catch (error) {
-            console.log('Could not save query history:', error);
         }
     }
 
@@ -207,7 +204,6 @@ export class QueryLearningSystem {
                 this.successfulResponses = new Set(JSON.parse(successful));
             }
         } catch (error) {
-            console.log('Could not load query history:', error);
         }
     }
 }
@@ -291,7 +287,6 @@ export async function enhanceResponseWithOnlineData(
         learningSystem.logQuery(query);
 
     } catch (error) {
-        console.log('Could not enhance response:', error);
     }
 
     return enhancements.join('\n');

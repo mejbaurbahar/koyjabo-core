@@ -39,9 +39,8 @@ const AdSenseAd: React.FC<AdSenseAdProps> = React.memo(({
     pushed.current = true;
     try {
       ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
-    } catch (e) {
+    } catch {
       pushed.current = false;
-      console.error('AdSense error:', e);
     }
   }, [adSlot]);
 

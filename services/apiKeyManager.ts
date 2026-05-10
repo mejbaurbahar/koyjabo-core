@@ -90,7 +90,6 @@ export const getUsageRecord = (): UsageRecord => {
 
         return record;
     } catch (e) {
-        console.error('Error loading usage record:', e);
         return {
             aiChatCount: 0,
             intercitySearchCount: 0,
@@ -105,7 +104,6 @@ const saveUsageRecord = (record: UsageRecord): void => {
     try {
         localStorage.setItem(STORAGE_KEYS.USAGE_RECORD, JSON.stringify(record));
     } catch (e) {
-        console.error('Error saving usage record:', e);
     }
 };
 

@@ -12,7 +12,7 @@ export const cacheNotifications = (notifications: NotificationResponse): void =>
             timestamp: Date.now()
         }));
     } catch (e) {
-        console.error('Error caching notifications:', e);
+        
     }
 };
 
@@ -27,7 +27,7 @@ export const getCachedNotifications = (): NotificationResponse => {
             return { notifications: data.notifications || [] };
         }
     } catch (e) {
-        console.error('Error reading cached notifications:', e);
+        
     }
     return { notifications: [] };
 };
@@ -71,7 +71,7 @@ export const dismissNotification = (id: string): void => {
             localStorage.setItem('dhaka_commute_dismissed_notifications', JSON.stringify(dismissed));
         }
     } catch (e) {
-        console.error('Error dismissing notification:', e);
+        
     }
 };
 
@@ -98,7 +98,7 @@ export const markNotificationAsRead = (id: string): void => {
             localStorage.setItem('dhaka_commute_read_notifications', JSON.stringify(read));
         }
     } catch (e) {
-        console.error('Error marking notification as read:', e);
+        
     }
 };
 
@@ -111,7 +111,7 @@ export const markAllNotificationsAsRead = (notificationIds: string[]): void => {
         const allRead = [...new Set([...read, ...notificationIds])];
         localStorage.setItem('dhaka_commute_read_notifications', JSON.stringify(allRead));
     } catch (e) {
-        console.error('Error marking all notifications as read:', e);
+        
     }
 };
 
@@ -130,6 +130,6 @@ export const cleanupOldNotifications = (activeIds: string[]): void => {
         const validRead = read.filter(id => activeIds.includes(id));
         localStorage.setItem('dhaka_commute_read_notifications', JSON.stringify(validRead));
     } catch (e) {
-        console.error('Error cleaning up notifications:', e);
+        
     }
 };

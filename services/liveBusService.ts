@@ -54,19 +54,16 @@ export const liveBusService = {
                     const speedKmh = speed ? speed * 3.6 : 0;
                     liveBusService.updateLocation(latitude, longitude, speedKmh);
                 },
-                (err) => console.error('Broadcasting GPS Error:', err),
                 { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
             );
         }
 
-        console.log(`📡 Started broadcasting as ${busName}`);
     },
 
     // Stop broadcasting
     stopBroadcasting: () => {
         activeBroadcasting = false;
         currentBusName = null;
-        console.log('🔕 Stopped broadcasting');
 
         if (watchId !== null) {
             navigator.geolocation.clearWatch(watchId);
@@ -111,8 +108,6 @@ export const liveBusService = {
 
         liveBuses.set(selfId, selfBus);
         // Notify subscribers immediately
-        console.log('📡 Broadcasting self as:', selfBus);
-        console.log('👥 Total subscribers:', subscribers.length);
         subscribers.forEach(cb => cb(Array.from(liveBuses.values())));
 
 
@@ -169,7 +164,6 @@ const connect = () => {
         ws = new WebSocket(WS_URL);
 
         ws.onopen = () => {
-            console.log('✅ Connected to Bus Tracking Server');
             if (activeBroadcasting && currentBusName && lastLocation) {
                 // Resend last known location immediately
                 liveBusService.updateLocation(lastLocation.lat, lastLocation.lng, lastLocation.speed);
@@ -203,7 +197,6 @@ const connect = () => {
                     subscribers.forEach(cb => cb(currentList));
                 }
             } catch (e) {
-                console.error('Error parsing bus data:', e);
             }
         };
 
@@ -219,10 +212,8 @@ const connect = () => {
         };
 
         ws.onerror = (err) => {
-            console.error('Bus WS Error:', err);
         };
 
     } catch (e) {
-        console.error('Failed to connect to Bus Service:', e);
     }
 };

@@ -77,8 +77,7 @@ const DhakaAlive: React.FC<{ hideIndicator?: boolean }> = ({ hideIndicator = fal
                         setWeather('clear');
                     }
                 }
-            } catch (error) {
-                console.error("Failed to fetch weather, reverting to simulation:", error);
+            } catch {
                 setUsingLiveWeather(false); // Fallback will take over next interval
             }
         };
@@ -94,9 +93,7 @@ const DhakaAlive: React.FC<{ hideIndicator?: boolean }> = ({ hideIndicator = fal
                     (position) => {
                         fetchLiveWeather(position.coords.latitude, position.coords.longitude);
                     },
-                    (error) => {
-                        console.log("Location access denied or unavailable, using simulation.");
-                    }
+                    () => { /* location denied — simulation mode */ }
                 );
             }
         }, 2000); // Wait 2 seconds before fetching weather

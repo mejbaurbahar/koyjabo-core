@@ -321,19 +321,9 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
 
     // Subscribe to live bus updates
     const unsubscribe = liveBusService.subscribe((allBuses) => {
-      console.log('📡 MapVisualizer received bus update:', {
-        totalBuses: allBuses.length,
-        routeName: route.name,
-        normalizedRouteName: routeName,
-        allBusNames: allBuses.map(b => b.busName)
-      });
-      // Robust name matching
       const matches = allBuses.filter(b => normalize(b.busName).includes(routeName) || routeName.includes(normalize(b.busName)));
-      console.log('✅ Matched buses for this route:', matches.length, matches);
       setLiveBuses(matches);
     });
-
-    console.log('📞 MapVisualizer subscribed to liveBusService for route:', route.name);
 
     return unsubscribe;
   }, [route]);
@@ -380,22 +370,6 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
     }).filter(Boolean) as { x: number, y: number, busId: string, speed: number, isSelf?: boolean }[];
   }, [liveBuses, stations, nodePositions]);
 
-  // Debug: Log when live buses change
-  useEffect(() => {
-    console.log('🔄 Live bus state updated:', {
-      liveBusesCount: liveBuses.length,
-      liveBusPositionsCount: liveBusPositions.length,
-      stations: stations.length,
-      nodePositions: nodePositions.length
-    });
-    if (liveBuses.length > 0) {
-      console.log('🚍 Live Buses detected:', liveBuses);
-      console.log('📍 Live Bus Positions (calculated):', liveBusPositions);
-      if (liveBusPositions.length === 0) {
-        console.warn('⚠️ WARNING: Live buses exist but positions array is empty! Check position calculation logic.');
-      }
-    }
-  }, [liveBuses, liveBusPositions]);
 
 
   // Adjusted dimensions for Zoom

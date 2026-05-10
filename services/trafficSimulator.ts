@@ -13,7 +13,6 @@ let currentKeyIndex = 0;
 
 function getTomTomApiKey(): string {
     if (TOMTOM_API_KEYS.length === 0) {
-        console.warn('No TomTom API keys configured. Traffic data will be unavailable.');
         return '';
     }
     return TOMTOM_API_KEYS[currentKeyIndex];
@@ -61,7 +60,6 @@ async function fetchTomTomTraffic(lat: number, lng: number): Promise<TrafficLeve
         }
 
         if (!response.ok) {
-            console.warn('TomTom API error:', response.status);
             return null;
         }
 
@@ -77,7 +75,6 @@ async function fetchTomTomTraffic(lat: number, lng: number): Promise<TrafficLeve
         const confidence = flowData.confidence || 0.5;
 
         // Log for verification
-        console.log(`[TomTom API] Speed: ${currentSpeed}/${freeFlowSpeed} km/h (Confidence: ${confidence})`);
 
         // Calculate speed ratio (how much slower than free flow)
         const speedRatio = currentSpeed / freeFlowSpeed;
@@ -94,7 +91,6 @@ async function fetchTomTomTraffic(lat: number, lng: number): Promise<TrafficLeve
         return 'severe';                            // <30% of free flow speed
 
     } catch (error) {
-        console.error('Error fetching TomTom traffic:', error);
         return 'free'; // Default to free flow on error
     }
 }

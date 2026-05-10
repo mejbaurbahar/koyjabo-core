@@ -410,7 +410,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                     mapRef.current.panTo(latLng, { animate: true, duration: 0.5 });
                 }
             },
-            (err) => console.warn('GPS watch error', err.message),
+            () => { /* GPS watch unavailable */ },
             { enableHighAccuracy: true, maximumAge: isOffline ? 30000 : 2000, timeout: 15000 }
         );
 

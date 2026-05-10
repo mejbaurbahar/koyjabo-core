@@ -18,9 +18,7 @@ const SocialShare: React.FC<SocialShareProps> = ({ className = '' }) => {
                     text: shareText,
                     url: shareUrl,
                 });
-            } catch (err) {
-                console.log('Share cancelled or failed');
-            }
+            } catch { /* share dismissed */ }
         }
     };
 

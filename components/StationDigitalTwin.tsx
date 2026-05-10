@@ -64,8 +64,7 @@ const StationDigitalTwin: React.FC<StationDigitalTwinProps> = ({
                 frame();
                 viewer = { renderer, scene, camera, controls };
 
-            } catch (err) {
-                console.error('Splat load error:', err);
+            } catch {
                 setError('Failed to load 3D scan. Please check your connection or WebGL settings.');
                 setIsLoading(false);
             }
