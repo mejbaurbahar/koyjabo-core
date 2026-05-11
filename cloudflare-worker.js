@@ -31,6 +31,7 @@ const ALLOWED_ACTIONS = new Set([
   'signup', 'login', 'change-password', 'forgot-password', 'verify-otp', 'reset-password',
   'update-profile', 'save-history', 'record-device', 'logout-device',
   'upload-avatar', 'record-visit', 'save-data', 'record-query', 'delete-data',
+  'google-signup', 'set-google-password',
 ]);
 
 function corsHeaders(origin) {
