@@ -5,6 +5,8 @@ export interface AuthUser {
   displayName: string;
   avatarUrl?: string;
   createdAt: number;
+  provider?: 'manual' | 'google';
+  hasPassword?: boolean;
 }
 
 export interface AuthSession {
@@ -41,4 +43,6 @@ export interface AuthResult {
   resetToken?: string;
   sessionToken?: string;
   otp?: string;
+  provider?: 'manual' | 'google';
+  hasPassword?: boolean;
 }

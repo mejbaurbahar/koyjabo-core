@@ -455,6 +455,81 @@ export function getAuthErrorKey(message: string): string | null {
   return null;
 }
 
+/**
+ * GOOGLE LOGIN / SIGNUP — fires Firebase OAuth popup, then checks GitHub repo.
+ * New Google users get a workflow-created account (no password, provider=google).
+ * Existing Google users are logged in directly (fast path, no workflow needed).
+ */
+export async function loginWithGoogle(): Promise<{
+  userId: string;
+  username: string;
+  displayName: string;
+  email: string;
+  provider: 'google';
+  hasPassword: boolean;
+  googlePhotoUrl?: string;
+}> {
+  const { signInWithPopup } = await import('firebase/auth');
+  const { auth, googleProvider } = await import('./firebaseConfig');
+
+  const result = await signInWithPopup(auth, googleProvider);
+  const firebaseUser = result.user;
+  if (!firebaseUser.email) throw new Error('Google account has no email address.');
+
+  const normalizedEmail = firebaseUser.email.toLowerCase().trim();
+  const emailHashKey    = await sha256(normalizedEmail);
+  const googlePhotoUrl  = firebaseUser.photoURL ?? undefined;
+
+  // Fast path: existing user — read profile directly, no workflow needed
+  const index = await fetchDataFile<Record<string, string>>('data/users/index.json');
+  if (index?.[emailHashKey]) {
+    const userId = index[emailHashKey];
+    const user = await fetchDataFile<{
+      username: string; displayName: string; provider?: string; bcryptHash?: string | null;
+    }>(`data/users/${userId}.json`);
+    if (!user) throw new Error('Account not found. Please contact support.');
+    return {
+      userId,
+      username:    user.username,
+      displayName: user.displayName,
+      email:       normalizedEmail,
+      provider:    'google',
+      hasPassword: !!user.bcryptHash,
+      googlePhotoUrl,
+    };
+  }
+
+  // New user: trigger signup workflow (30-90 s)
+  const signupResult = await triggerAndWait('google-signup', {
+    email: normalizedEmail,
+    data: JSON.stringify({
+      displayName:    firebaseUser.displayName || 'Google User',
+      googlePhotoUrl: googlePhotoUrl || '',
+    }),
+  });
+
+  if (!signupResult.success) throw new Error(signupResult.error || 'Google signup failed.');
+
+  return {
+    userId:      signupResult.userId!,
+    username:    signupResult.username!,
+    displayName: signupResult.displayName!,
+    email:       normalizedEmail,
+    provider:    'google',
+    hasPassword: false,
+    googlePhotoUrl,
+  };
+}
+
+/**
+ * SET PASSWORD (Google users) — lets a Google-only user add a password.
+ * Triggers a workflow that bcrypt-hashes and saves it.
+ */
+export async function setGoogleUserPassword(userId: string, newPassword: string): Promise<AuthResult> {
+  const passwordHash = await sha256(newPassword);
+  return triggerAndWait('set-google-password', { userId, passwordHash });
+}
+
 // ── Image resize helper ───────────────────────────────────────────────────────
 export function resizeAndEncodeImage(file: File, maxDimension: number): Promise<string> {
   return new Promise((resolve, reject) => {

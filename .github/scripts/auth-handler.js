@@ -1087,6 +1087,158 @@ async function handleUploadAvatar({ userId, imageData }) {
   return { success: true, hasAvatar: true };
 }
 
+// ── Google Auth Handlers ──────────────────────────────────────────────────────
+
+async function handleGoogleSignup({ email, displayName, googlePhotoUrl }) {
+  if (!email || !displayName) {
+    return { success: false, error: 'Email and display name are required.' };
+  }
+
+  const normalizedEmail  = email.toLowerCase().trim();
+  const emailHashKey     = sha256hex(normalizedEmail);
+
+  const [indexFile, usernameIndexFile] = await Promise.all([
+    ensureIndexExists(),
+    ensureUsernameIndexExists(),
+  ]);
+
+  const index         = indexFile.content         || {};
+  const usernameIndex = usernameIndexFile.content || {};
+
+  // Already registered — return existing user data
+  if (index[emailHashKey]) {
+    const userId   = index[emailHashKey];
+    const userFile = await readDataFile(`data/users/${userId}.json`);
+    const user     = userFile?.content;
+    if (!user) return { success: false, error: 'Account not found.' };
+    return {
+      success:     true,
+      userId,
+      username:    user.username,
+      displayName: user.displayName,
+      email:       normalizedEmail,
+      provider:    'google',
+      hasPassword: !!user.bcryptHash,
+    };
+  }
+
+  // Auto-generate a unique username from displayName
+  const base = (displayName || 'user')
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '_')
+    .replace(/_+/g, '_')
+    .replace(/^_|_$/g, '')
+    .substring(0, 22) || 'user';
+
+  let username = base;
+  for (let attempt = 0; usernameIndex[username] && attempt < 10; attempt++) {
+    username = `${base}_${Math.floor(1000 + Math.random() * 9000)}`;
+  }
+
+  const userId       = crypto.randomUUID();
+  const encryptedEmail = encrypt(normalizedEmail);
+  const now          = Date.now();
+
+  const user = {
+    id:             userId,
+    emailHash:      emailHashKey,
+    encryptedEmail,
+    username,
+    displayName:    displayName.trim(),
+    bcryptHash:     null,
+    provider:       'google',
+    googlePhotoUrl: googlePhotoUrl || null,
+    createdAt:      now,
+    updatedAt:      now,
+  };
+
+  await writeDataFile(`data/users/${userId}.json`, user, null, `Google signup: ${userId}`);
+
+  const freshIndex = await readDataFile('data/users/index.json');
+  await writeDataFile(
+    'data/users/index.json',
+    { ...(freshIndex?.content || {}), [emailHashKey]: userId },
+    freshIndex?.sha,
+    'Update user index',
+  );
+
+  const freshUsernameIndex = await readDataFile('data/users/username_index.json');
+  await writeDataFile(
+    'data/users/username_index.json',
+    { ...(freshUsernameIndex?.content || {}), [username]: userId },
+    freshUsernameIndex?.sha,
+    'Update username index',
+  );
+
+  // Welcome email (non-blocking)
+  sendEmail({
+    to:      normalizedEmail,
+    subject: '🎉 Welcome to কই যাবো KoyJabo!',
+    html: `<!DOCTYPE html>
+<html>
+<body style="font-family:sans-serif;background:#f0fdf4;padding:24px;margin:0">
+  <div style="max-width:500px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
+    <div style="background:#ffffff;padding:32px 24px;text-align:center;border-bottom:1px solid #e5e7eb">
+      <h1 style="color:#111827;margin:0;font-size:28px">কই যাবো KoyJabo</h1>
+      <p style="color:#4b5563;margin:6px 0 0;font-size:14px">Bangladesh's Smart Transport Finder</p>
+    </div>
+    <div style="padding:32px 24px">
+      <h2 style="color:#111827;margin:0 0 8px">Welcome, ${displayName.trim()}! 🎉</h2>
+      <p style="color:#4b5563;font-size:15px;line-height:1.6;margin:0 0 20px">
+        You signed in with Google. Your account is ready — explore Dhaka city buses, metro, and intercity routes.
+      </p>
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:16px 20px;margin:0 0 24px">
+        <p style="margin:0;color:#065f46;font-size:14px;font-weight:600">Your account</p>
+        <p style="margin:8px 0 0;color:#047857;font-size:13px">👤 Name: <strong>${displayName.trim()}</strong></p>
+        <p style="margin:4px 0 0;color:#047857;font-size:13px">🔖 Username: <strong>@${username}</strong></p>
+        <p style="margin:4px 0 0;color:#047857;font-size:13px">📧 Email: <strong>${normalizedEmail}</strong></p>
+      </div>
+      <a href="${APP_URL}" style="display:block;text-align:center;background:linear-gradient(135deg,#059669,#0284c7);color:#fff;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px;margin-bottom:24px">Open KoyJabo →</a>
+    </div>
+  </div>
+</body>
+</html>`,
+  }).catch(() => {});
+
+  // Admin notification (non-blocking)
+  sendAdminUserListEmail({ displayName: user.displayName, username: user.username, createdAt: now })
+    .catch(err => console.error('sendAdminUserListEmail error:', err.message));
+
+  return {
+    success:     true,
+    userId,
+    username,
+    displayName: user.displayName,
+    email:       normalizedEmail,
+    provider:    'google',
+    hasPassword: false,
+  };
+}
+
+async function handleSetGooglePassword({ userId, newPasswordHash }) {
+  if (!userId || !newPasswordHash) {
+    return { success: false, error: 'userId and passwordHash are required.' };
+  }
+
+  const userFile = await readDataFile(`data/users/${userId}.json`);
+  if (!userFile) return { success: false, error: 'User not found.' };
+
+  const user = userFile.content;
+  if (user.bcryptHash) {
+    return { success: false, error: 'Password already set. Use "Change Password" instead.' };
+  }
+
+  const bcryptHash = await bcrypt.hash(newPasswordHash, 12);
+  await writeDataFile(
+    `data/users/${userId}.json`,
+    { ...user, bcryptHash, updatedAt: Date.now() },
+    userFile.sha,
+    `Set password for Google user: ${userId}`,
+  );
+
+  return { success: true };
+}
+
 // ── Result Writer ─────────────────────────────────────────────────────────────
 // Primary: Dhaka-Commute (public repo — Cloudflare Worker reads this FIRST, no private-token needed)
 // Fallback: koyjabo-core (Cloudflare Worker has a fallback for this)
@@ -1177,13 +1329,19 @@ async function main() {
       case 'save-data':
         result = await handleSaveData({ path: data.path, content: data.content, message: data.message });
         break;
+      case 'google-signup':
+        result = await handleGoogleSignup({ email, displayName: data.displayName, googlePhotoUrl: data.googlePhotoUrl });
+        break;
+      case 'set-google-password':
+        result = await handleSetGooglePassword({ userId, newPasswordHash: passwordHash });
+        break;
       case 'record-query':
-        result = await handleRecordQuery({ 
-          query: data.query, 
-          response: data.response, 
-          intent: data.intent, 
-          quality: data.quality, 
-          lang: data.lang, 
+        result = await handleRecordQuery({
+          query: data.query,
+          response: data.response,
+          intent: data.intent,
+          quality: data.quality,
+          lang: data.lang,
           userId 
         });
         break;
