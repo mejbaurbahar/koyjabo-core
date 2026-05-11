@@ -14,7 +14,7 @@ const ReleaseNotes: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 w-full bg-[#f8fafc] dark:bg-slate-950 overflow-hidden font-sans">
+    <div className="flex flex-col flex-1 min-h-0 w-full bg-[#f8fafc] dark:bg-slate-950 font-sans overflow-x-hidden">
       {/* Premium Header */}
       <div className="shrink-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 pt-safe px-6 py-5 flex items-center gap-5 shadow-sm relative z-10">
         <div>

@@ -138,7 +138,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
         .slice(0, 3);
 
     return (
-        <div className="flex flex-col flex-1 min-h-0 w-full bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-hidden">
+        <div className="flex flex-col flex-1 min-h-0 w-full bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-x-hidden">
             {/* Reading Progress Bar */}
             <div className="h-1 w-full bg-gray-200 dark:bg-slate-800 shrink-0">
                 <div
