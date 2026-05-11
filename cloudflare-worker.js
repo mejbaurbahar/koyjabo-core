@@ -66,6 +66,51 @@ function isRateLimited(ip, limit = 600, windowMs = 60_000) {
   return entry.count > limit;
 }
 
+// ── ETag cache — 304 responses are FREE (don't count against GitHub rate limit) ──
+// key: "owner/repo:path" → { etag, decoded, cachedAt }
+const etagCache = new Map();
+const ETAG_MAX_AGE = 10 * 60 * 1000; // serve stale for up to 10 min
+
+// Result-polling files must never be cached (they go from 404 → exists)
+function isCacheable(path) {
+  return !path.startsWith('data/results/');
+}
+
+async function ghFetch(token, owner, repo, path) {
+  const cacheKey = `${owner}/${repo}:${path}`;
+  const cached = etagCache.get(cacheKey);
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    Accept: 'application/vnd.github.v3+json',
+    'User-Agent': 'koyjabo-proxy/1.0',
+  };
+  if (cached?.etag && (Date.now() - cached.cachedAt) < ETAG_MAX_AGE) {
+    headers['If-None-Match'] = cached.etag;
+  }
+  const res = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
+    { headers }
+  );
+  // 304 = free cache hit — return stored content without touching rate limit
+  if (res.status === 304 && cached) return { status: 200, decoded: cached.decoded };
+  if (res.status === 404)  return { status: 404, decoded: null };
+  // Rate-limited but we have stale cache — serve it rather than failing
+  if (res.status === 403 && cached) return { status: 200, decoded: cached.decoded };
+  if (!res.ok)             return { status: res.status, decoded: null };
+  const data = await res.json();
+  if (!data.content)       return { status: 404, decoded: null };
+  const clean = data.content.replace(/\n/g, '');
+  const bytes = Uint8Array.from(atob(clean), c => c.charCodeAt(0));
+  const text  = new TextDecoder().decode(bytes);
+  let decoded;
+  try { decoded = JSON.parse(text); } catch { return { status: 500, decoded: null }; }
+  const etag = res.headers.get('ETag');
+  if (isCacheable(path) && etag) {
+    etagCache.set(cacheKey, { etag, decoded, cachedAt: Date.now() });
+  }
+  return { status: 200, decoded };
+}
+
 // ── GitHub direct read/write helpers ─────────────────────────────────────────
 
 async function readDataFile(token, owner, repo, path) {
@@ -191,60 +236,34 @@ export default {
         );
       }
 
-      const ghUrl = `https://api.github.com/repos/${repo.owner}/${repo.repo}/contents/${p}`;
-      let upstream = await fetch(ghUrl, { headers: ghHeaders(TOKEN) });
+      // Primary fetch with ETag caching (304 = free, no rate limit cost)
+      let result = await ghFetch(TOKEN, repo.owner, repo.repo, p);
 
-      // Fallback: If r=a (results) and not found in APP_REPO (Dhaka-Commute), try CORE_REPO (koyjabo-core)
-      if (upstream.status === 404 && r === 'a') {
-        const fallbackUrl = `https://api.github.com/repos/${APP_OWNER}/${CORE_REPO}/contents/${p}`;
-        upstream = await fetch(fallbackUrl, { headers: ghHeaders(TOKEN) });
+      // Fallback: r=a (results) → try CORE_REPO if not in APP_REPO
+      if (result.status === 404 && r === 'a') {
+        result = await ghFetch(TOKEN, APP_OWNER, CORE_REPO, p);
       }
 
-      // Fallback: If r=d (user data) and not found in DATA_REPO (koyjabo), try koyjabo-core
-      // This handles existing users stored in koyjabo-core during the repo migration
-      if (upstream.status === 404 && r === 'd') {
-        const fallbackUrl = `https://api.github.com/repos/${DATA_OWNER}/${CORE_REPO}/contents/${p}`;
-        upstream = await fetch(fallbackUrl, { headers: ghHeaders(TOKEN) });
+      // Fallback: r=d (user data) → try koyjabo-core for migrated users
+      if (result.status === 404 && r === 'd') {
+        result = await ghFetch(TOKEN, DATA_OWNER, CORE_REPO, p);
       }
 
-      if (upstream.status === 404) {
+      if (result.status === 404) {
         return new Response('null', {
           status: 404,
-          headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) }
+          headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) },
         });
       }
 
-      if (!upstream.ok) {
+      if (result.status !== 200 || result.decoded === null) {
         return new Response(
           JSON.stringify({ error: 'Account service connection failed.' }),
-          { status: upstream.status, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
+          { status: result.status >= 400 ? result.status : 502, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
         );
       }
 
-      const data = await upstream.json();
-      if (!data.content) {
-        return new Response('null', {
-          status: 404,
-          headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) }
-        });
-      }
-
-      // Decode base64 content and return ONLY the parsed JSON — no sha, no URLs, no metadata
-      // TextDecoder handles UTF-8 multi-byte chars (Bangla, Arabic, etc.) that atob() can't
-      let decoded;
-      try {
-        const clean = data.content.replace(/\n/g, '');
-        const bytes = Uint8Array.from(atob(clean), c => c.charCodeAt(0));
-        const text = new TextDecoder().decode(bytes);
-        decoded = JSON.parse(text);
-      } catch {
-        return new Response(
-          JSON.stringify({ error: 'Parse error' }),
-          { status: 500, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
-        );
-      }
-
-      return new Response(JSON.stringify(decoded), {
+      return new Response(JSON.stringify(result.decoded), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
