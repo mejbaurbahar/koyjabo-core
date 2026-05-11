@@ -53,7 +53,9 @@ function ghHeaders(token) {
   };
 }
 
-// Simple in-memory rate limit (resets on Worker restart — best-effort)
+// In-memory rate limit — 100% free, no paid bindings required.
+// Cloudflare Workers isolates are long-lived within a region, so this
+// provides effective per-edge-location throttling without any paid service.
 const reqCount = new Map();
 function isRateLimited(ip, limit = 600, windowMs = 60_000) {
   const now = Date.now();
@@ -186,7 +188,7 @@ export default {
       return new Response('Forbidden', { status: 403, headers: corsHeaders(origin) });
     }
 
-    // Rate limit by IP
+    // Rate limit by IP — free in-memory, effective per edge location
     const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
     if (isRateLimited(ip)) {
       return new Response(
@@ -263,11 +265,13 @@ export default {
         );
       }
 
+      // User-data reads are private; non-user paths can be revalidated in background
+      const isUserData = p.startsWith('data/users/') || p.startsWith('data/results/');
       return new Response(JSON.stringify(result.decoded), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'no-store',
+          'Cache-Control': isUserData ? 'no-store' : 'public, max-age=30, stale-while-revalidate=60',
           ...corsHeaders(origin),
         },
       });
