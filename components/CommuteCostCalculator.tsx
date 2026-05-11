@@ -177,7 +177,7 @@ export default function CommuteCostCalculator({ onBack }: Props) {
 
 
 
-        <AdSenseAd adSlot="auto" className="w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+        <AdSenseAd adSlot="auto" native className="w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
         {legs.length > 0 && (
           <>

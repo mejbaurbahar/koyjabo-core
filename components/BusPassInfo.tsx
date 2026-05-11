@@ -175,7 +175,7 @@ export default function BusPassInfo({ onBack }: Props) {
           </div>
         </div>
 
-        <AdSenseAd adSlot="auto" className="w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+        <AdSenseAd adSlot="auto" native className="w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
         {passes.map((pass) => (
           <div key={pass.name} className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700">

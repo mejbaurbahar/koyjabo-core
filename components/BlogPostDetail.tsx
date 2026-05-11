@@ -321,7 +321,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                                 })()}
                             </div>
 
-                            <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-12 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+                            <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" native className="my-12 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
                             {/* Tags */}
                             <div className="mt-12 pt-8 border-t-2 border-gray-200 dark:border-gray-700">
@@ -339,7 +339,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                             </div>
 
                             {/* Post-tags rectangle — high-intent readers, good CPA */}
-                            <AdSenseAd adSlot="auto" adFormat="rectangle" className="mt-10 w-full max-w-[336px] mx-auto shrink-0" />
+                            <AdSenseAd adSlot="auto" adFormat="rectangle" native className="mt-10 w-full max-w-[336px] mx-auto shrink-0" />
                         </div>
 
                         {/* Sticky Sidebar (Desktop) */}

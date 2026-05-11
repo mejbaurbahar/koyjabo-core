@@ -262,7 +262,7 @@ export default function MultiStopPlanner({ onBack }: Props) {
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 space-y-3 pb-6" style={{ WebkitOverflowScrolling: 'touch' }}>
-        <AdSenseAd adSlot="auto" className="mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+        <AdSenseAd adSlot="auto" native className="mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
         <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 space-y-2">
           {stops.map((stop, i) => (
             <div key={stop.id} className="flex items-center gap-2">
