@@ -85,6 +85,9 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                 </div>
 
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-8">
+                    {/* Top leaderboard — high visibility, above the fold */}
+                    <AdSenseAd adSlot="auto" adFormat="horizontal" className="w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+
                     {/* No results */}
                     {filteredPosts.length === 0 && (
                         <div className="text-center py-16">
@@ -148,50 +151,61 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
 
                     <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
-                    {/* Regular Posts Grid */}
+                    {/* Regular Posts Grid — injected in-feed ad after every 6 posts */}
                     {regularPosts.length > 0 && (
                         <div>
                             <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-5">
                                 {searchQuery || selectedCategory !== 'All' ? '' : t('blog.allPosts')}
                             </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                                {regularPosts.map((post) => (
-                                    <div
-                                        key={post.id}
-                                        onClick={() => onSelectPost(post.slug)}
-                                        className="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 dark:border-gray-700 hover:-translate-y-1 flex flex-col"
-                                    >
-                                        <div className="relative h-44 overflow-hidden bg-gray-100 dark:bg-slate-700">
-                                            <img
-                                                src={post.coverImage}
-                                                alt={language === 'bn' ? post.bnTitle : post.title}
-                                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                                onError={(e) => { (e.target as HTMLImageElement).src = '/logo.png'; }}
-                                            />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
-                                            <span className="absolute top-2 left-2 inline-flex items-center gap-1 px-2 py-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm text-teal-600 dark:text-teal-400 rounded-lg text-xs font-semibold">
-                                                <Tag className="w-3 h-3" />{post.category}
-                                            </span>
+                            {Array.from({ length: Math.ceil(regularPosts.length / 6) }, (_, chunkIdx) => {
+                                const chunk = regularPosts.slice(chunkIdx * 6, (chunkIdx + 1) * 6);
+                                return (
+                                    <React.Fragment key={chunkIdx}>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                                            {chunk.map((post) => (
+                                                <div
+                                                    key={post.id}
+                                                    onClick={() => onSelectPost(post.slug)}
+                                                    className="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 dark:border-gray-700 hover:-translate-y-1 flex flex-col"
+                                                >
+                                                    <div className="relative h-44 overflow-hidden bg-gray-100 dark:bg-slate-700">
+                                                        <img
+                                                            src={post.coverImage}
+                                                            alt={language === 'bn' ? post.bnTitle : post.title}
+                                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                                            onError={(e) => { (e.target as HTMLImageElement).src = '/logo.png'; }}
+                                                        />
+                                                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
+                                                        <span className="absolute top-2 left-2 inline-flex items-center gap-1 px-2 py-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm text-teal-600 dark:text-teal-400 rounded-lg text-xs font-semibold">
+                                                            <Tag className="w-3 h-3" />{post.category}
+                                                        </span>
+                                                    </div>
+                                                    <div className="p-4 flex-1 flex flex-col">
+                                                        <div className="flex items-center gap-2 mb-2 text-xs text-gray-500 dark:text-gray-400">
+                                                            <Clock className="w-3 h-3" />{post.readTime}
+                                                            <span className="ml-auto">{new Date(post.publishDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US', { month: 'short', day: 'numeric' })}</span>
+                                                        </div>
+                                                        <h3 className="text-base font-bold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors line-clamp-2">
+                                                            {language === 'bn' ? post.bnTitle : post.title}
+                                                        </h3>
+                                                        <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 flex-1">
+                                                            {language === 'bn' ? post.bnExcerpt : post.excerpt}
+                                                        </p>
+                                                        <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100 dark:border-gray-700 text-xs text-gray-500 dark:text-gray-400">
+                                                            <span>{post.author}</span>
+                                                            <span className="text-teal-600 dark:text-teal-400 font-semibold">{t('blog.readMore')} →</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
                                         </div>
-                                        <div className="p-4 flex-1 flex flex-col">
-                                            <div className="flex items-center gap-2 mb-2 text-xs text-gray-500 dark:text-gray-400">
-                                                <Clock className="w-3 h-3" />{post.readTime}
-                                                <span className="ml-auto">{new Date(post.publishDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US', { month: 'short', day: 'numeric' })}</span>
-                                            </div>
-                                            <h3 className="text-base font-bold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors line-clamp-2">
-                                                {language === 'bn' ? post.bnTitle : post.title}
-                                            </h3>
-                                            <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 flex-1">
-                                                {language === 'bn' ? post.bnExcerpt : post.excerpt}
-                                            </p>
-                                            <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100 dark:border-gray-700 text-xs text-gray-500 dark:text-gray-400">
-                                                <span>{post.author}</span>
-                                                <span className="text-teal-600 dark:text-teal-400 font-semibold">{t('blog.readMore')} →</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                                        {/* In-feed ad between chunks */}
+                                        {chunkIdx < Math.ceil(regularPosts.length / 6) - 1 && (
+                                            <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+                                        )}
+                                    </React.Fragment>
+                                );
+                            })}
                         </div>
                     )}
 

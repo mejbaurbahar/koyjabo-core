@@ -289,25 +289,33 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                                 {(() => {
                                     const content = language === 'bn' ? post.bnContent : post.content;
                                     const paragraphs = content.split('\n\n');
-                                    const firstPart = paragraphs.slice(0, 3).join('\n\n');
-                                    const restPart = paragraphs.slice(3).join('\n\n');
+                                    const cut1 = Math.max(3, Math.floor(paragraphs.length * 0.25));
+                                    const cut2 = Math.max(cut1 + 3, Math.floor(paragraphs.length * 0.65));
+                                    const part1 = paragraphs.slice(0, cut1).join('\n\n');
+                                    const part2 = paragraphs.slice(cut1, cut2).join('\n\n');
+                                    const part3 = paragraphs.slice(cut2).join('\n\n');
 
                                     return (
                                         <>
-                                            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                                                {firstPart}
-                                            </ReactMarkdown>
-                                            
-                                            {paragraphs.length > 3 && (
+                                            <ReactMarkdown remarkPlugins={[remarkGfm]}>{part1}</ReactMarkdown>
+
+                                            {paragraphs.length > cut1 && (
                                                 <div className="my-10 p-2 bg-gray-50 dark:bg-slate-800/50 rounded-2xl border border-dashed border-gray-200 dark:border-gray-700 overflow-hidden">
                                                     <p className="text-[10px] text-gray-400 text-center mb-2 uppercase tracking-widest">Sponsored Advertisement</p>
                                                     <AdSenseAd adSlot="auto" adFormat="fluid" className="w-full" />
                                                 </div>
                                             )}
 
-                                            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                                                {restPart}
-                                            </ReactMarkdown>
+                                            {part2 && <ReactMarkdown remarkPlugins={[remarkGfm]}>{part2}</ReactMarkdown>}
+
+                                            {paragraphs.length > cut2 && (
+                                                <div className="my-10 p-2 bg-gray-50 dark:bg-slate-800/50 rounded-2xl border border-dashed border-gray-200 dark:border-gray-700 overflow-hidden">
+                                                    <p className="text-[10px] text-gray-400 text-center mb-2 uppercase tracking-widest">Sponsored Advertisement</p>
+                                                    <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="w-full" />
+                                                </div>
+                                            )}
+
+                                            {part3 && <ReactMarkdown remarkPlugins={[remarkGfm]}>{part3}</ReactMarkdown>}
                                         </>
                                     );
                                 })()}
@@ -329,6 +337,9 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                                     ))}
                                 </div>
                             </div>
+
+                            {/* Post-tags rectangle — high-intent readers, good CPA */}
+                            <AdSenseAd adSlot="auto" adFormat="rectangle" className="mt-10 w-full max-w-[336px] mx-auto shrink-0" />
                         </div>
 
                         {/* Sticky Sidebar (Desktop) */}

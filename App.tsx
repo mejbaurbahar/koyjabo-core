@@ -4196,8 +4196,8 @@ const App: React.FC = () => {
               desktopLeftScrollTopRef.current = e.currentTarget.scrollTop;
             }
           }}
-          className="flex-1 overflow-y-auto px-4 pb-nav-safe md:pb-4 space-y-3 touch-pan-y"
-          style={{ overflowAnchor: 'none' }}
+          className="flex-1 overflow-y-auto overscroll-y-contain px-4 pb-nav-safe md:pb-4 space-y-3 touch-pan-y"
+          style={{ overflowAnchor: 'none', WebkitOverflowScrolling: 'touch' }}
         >
 
           {/* Ad Banner - in scrollable area so it doesn't shrink bus list */}
@@ -4516,7 +4516,7 @@ const App: React.FC = () => {
         <main className="flex flex-1 min-h-0 overflow-hidden relative w-full max-w-full mx-auto bg-slate-50 dark:bg-slate-900 md:pt-20">
           {/* Left Sidebar (Desktop) / Main View (Mobile Home) */}
           <div className={`
-            ${'flex-1 min-h-0 w-full md:flex-none md:w-1/3 md:min-w-[320px] md:max-w-md md:flex md:flex-col border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900 z-0 overflow-hidden'}
+            ${'flex flex-col flex-1 min-h-0 w-full md:flex-none md:w-1/3 md:min-w-[320px] md:max-w-md border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900 z-0 overflow-hidden'}
             ${view !== AppView.HOME && view !== AppView.TRAIN_LIST && 'hidden md:flex'}
 `}>
             <div className="flex-1 min-h-0 flex flex-col md:pt-0">

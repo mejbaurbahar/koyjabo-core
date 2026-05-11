@@ -3,6 +3,7 @@ import { ArrowLeft, Bell, Plus, Trash2, Clock } from 'lucide-react';
 import { getLocalReminders, saveLocalReminders, syncReminders, pullReminders, TripReminder, getAuthUser } from '../services/communityDataService';
 import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
+import AdSenseAd from './AdSenseAd';
 
 
 
@@ -166,6 +167,7 @@ export default function TripReminders({ onBack }: Props) {
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 space-y-3 pb-6" style={{ WebkitOverflowScrolling: 'touch' }}>
+        <AdSenseAd adSlot="auto" className="mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
         {showForm && (
           <form onSubmit={handleAdd} className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-violet-200 dark:border-violet-800 space-y-3">
             <h3 className="font-bold text-gray-900 dark:text-white text-sm">{lbl('New Reminder', 'নতুন রিমাইন্ডার')}</h3>
