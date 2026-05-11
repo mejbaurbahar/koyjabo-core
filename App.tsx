@@ -4614,7 +4614,7 @@ const App: React.FC = () => {
               <LoginPage
                 onSignup={() => setView(AppView.SIGNUP)}
                 onForgotPassword={() => setView(AppView.FORGOT_PASSWORD)}
-                onSuccess={() => setView(AppView.HOME)}
+                onSuccess={() => setView(AppView.PROFILE)}
                 onClose={() => setView(AppView.HOME)}
               />
             )}

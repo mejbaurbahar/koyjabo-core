@@ -478,6 +478,9 @@ const AUTH_ERROR_KEY_MAP: Record<string, string> = {
   'An unexpected error occurred. Please try again.':                   'auth.validation.somethingWentWrong',
   'Service not found. Please try again later.':                        'auth.validation.connectionFailed',
   'Failed to read data. Please check your connection and try again.':  'auth.validation.connectionFailed',
+  'Google sign-in was cancelled.':                                     'auth.validation.googleCancelled',
+  'Popup was blocked. Please allow popups for this site and try again.': 'auth.validation.googlePopupBlocked',
+  'Google sign-in is not configured. Please contact support.':         'auth.validation.googleLoginFailed',
 };
 
 const AUTH_ERROR_PATTERNS: Array<[RegExp, string]> = [
@@ -498,6 +501,104 @@ export function getAuthErrorKey(message: string): string | null {
     if (pattern.test(message)) return key;
   }
   return null;
+}
+
+/**
+ * GOOGLE LOGIN / SIGNUP — fires Firebase OAuth popup, then checks GitHub repo.
+ * New Google users get a workflow-created account (no password, provider=google).
+ * Existing Google users are logged in directly (fast path, no workflow needed).
+ */
+export async function loginWithGoogle(): Promise<{
+  userId: string;
+  username: string;
+  displayName: string;
+  email: string;
+  provider: 'google';
+  hasPassword: boolean;
+  googlePhotoUrl?: string;
+}> {
+  const { signInWithPopup } = await import('firebase/auth');
+  const { auth, googleProvider, isFirebaseConfigured } = await import('./firebaseConfig');
+
+  if (!isFirebaseConfigured) {
+    throw new Error('Google sign-in is not configured. Please contact support.');
+  }
+
+  let result;
+  try {
+    result = await signInWithPopup(auth, googleProvider);
+  } catch (err: unknown) {
+    const code = (err as { code?: string }).code ?? '';
+    if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
+      throw new Error('Google sign-in was cancelled.');
+    }
+    if (code === 'auth/popup-blocked') {
+      throw new Error('Popup was blocked. Please allow popups for this site and try again.');
+    }
+    if (code === 'auth/network-request-failed') {
+      throw new Error('Connection failed. Please check your internet and try again.');
+    }
+    if (code === 'auth/too-many-requests') {
+      throw new Error('Too many requests. Please wait a moment and try again.');
+    }
+    throw err;
+  }
+
+  const firebaseUser = result.user;
+  if (!firebaseUser.email) throw new Error('Google account has no email address.');
+
+  const normalizedEmail = firebaseUser.email.toLowerCase().trim();
+  const emailHashKey    = await sha256(normalizedEmail);
+  const googlePhotoUrl  = firebaseUser.photoURL ?? undefined;
+
+  // Fast path: existing user — read profile directly, no workflow needed
+  const index = await fetchDataFile<Record<string, string>>('data/users/index.json');
+  if (index?.[emailHashKey]) {
+    const userId = index[emailHashKey];
+    const user = await fetchDataFile<{
+      username: string; displayName: string; provider?: string; bcryptHash?: string | null;
+    }>(`data/users/${userId}.json`);
+    if (!user) throw new Error('Account not found. Please contact support.');
+    return {
+      userId,
+      username:    user.username,
+      displayName: user.displayName,
+      email:       normalizedEmail,
+      provider:    'google',
+      hasPassword: !!user.bcryptHash,
+      googlePhotoUrl,
+    };
+  }
+
+  // New user: trigger signup workflow (30-90 s)
+  const signupResult = await triggerAndWait('google-signup', {
+    email: normalizedEmail,
+    data: JSON.stringify({
+      displayName:    firebaseUser.displayName || 'Google User',
+      googlePhotoUrl: googlePhotoUrl || '',
+    }),
+  });
+
+  if (!signupResult.success) throw new Error(signupResult.error || 'Google signup failed.');
+
+  return {
+    userId:      signupResult.userId!,
+    username:    signupResult.username!,
+    displayName: signupResult.displayName!,
+    email:       normalizedEmail,
+    provider:    'google',
+    hasPassword: false,
+    googlePhotoUrl,
+  };
+}
+
+/**
+ * SET PASSWORD (Google users) — lets a Google-only user add a password.
+ * Triggers a workflow that bcrypt-hashes and saves it.
+ */
+export async function setGoogleUserPassword(userId: string, newPassword: string): Promise<AuthResult> {
+  const passwordHash = await sha256(newPassword);
+  return triggerAndWait('set-google-password', { userId, passwordHash });
 }
 
 // ── Image resize helper ───────────────────────────────────────────────────────

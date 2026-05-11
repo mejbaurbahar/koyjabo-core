@@ -8,7 +8,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../../contexts/LanguageContext';
 import { useToast } from '../../../contexts/ToastContext';
 import {
-  updateProfile, changePassword, uploadAvatar, fetchAvatar,
+  updateProfile, changePassword, setGoogleUserPassword, uploadAvatar, fetchAvatar,
   fetchDevices, logoutDevice, getOrCreateDeviceId, resizeAndEncodeImage
 } from '../../services/githubAuthService';
 import type { Device } from '../../types/auth';
@@ -101,10 +101,15 @@ export default function ProfilePage({
   const [editUsername, setEditUsername] = useState(user?.username || '');
   const profileOp = useAsyncOp();
 
-  // Password change
+  // Password change (manual users)
   const [pwForm, setPwForm] = useState({ current: '', newPass: '', confirm: '' });
   const [showPw, setShowPw] = useState({ current: false, newPass: false, confirm: false });
   const passwordOp = useAsyncOp();
+
+  // Set password (Google users who don't have one yet)
+  const [setPassForm, setSetPassForm] = useState({ newPass: '', confirm: '' });
+  const [showSetPw, setShowSetPw] = useState({ newPass: false, confirm: false });
+  const setPassOp = useAsyncOp();
 
   // Avatar
   const [avatarProcessing, setAvatarProcessing] = useState(false);
@@ -143,6 +148,17 @@ export default function ProfilePage({
       if (!result.success) throw new Error(result.error);
       setPwForm({ current: '', newPass: '', confirm: '' });
       showToast(t('profile.passwordChanged'), 'success');
+    });
+
+  const handleSetPassword = () =>
+    setPassOp.run(async () => {
+      if (setPassForm.newPass.length < 8) throw new Error(t('auth.validation.passwordTooWeak'));
+      if (setPassForm.newPass !== setPassForm.confirm) throw new Error(t('auth.validation.passwordsDoNotMatch'));
+      const result = await setGoogleUserPassword(user.id, setPassForm.newPass);
+      if (!result.success) throw new Error(result.error);
+      setSetPassForm({ newPass: '', confirm: '' });
+      updateUser({ hasPassword: true });
+      showToast(t('profile.passwordSet'), 'success');
     });
 
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -222,6 +238,7 @@ export default function ProfilePage({
       {/* Processing overlays */}
       {profileOp.state === 'loading' && <ProcessingOverlay message={t('profile.updatingProfile')} />}
       {passwordOp.state === 'loading' && <ProcessingOverlay message={t('profile.changingPassword')} />}
+      {setPassOp.state === 'loading' && <ProcessingOverlay message={t('profile.settingPassword')} />}
       {avatarProcessing && <ProcessingOverlay message={t('profile.uploadingAvatar')} />}
       {loggingOutDevice && <ProcessingOverlay message={t('profile.loggingOutDevice')} />}
 
@@ -358,55 +375,115 @@ export default function ProfilePage({
         {/* ── SECURITY SECTION ── */}
         {activeSection === 'security' && (
           <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-50 dark:border-slate-700">
-              <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                <Key size={18} className="text-blue-600" /> {t('profile.passwordChange')}
-              </h3>
-            </div>
-            <div className="p-6 space-y-4">
-              {passwordOp.state === 'error' && (
-                <div className="p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 flex items-center gap-2">
-                  <AlertCircle size={16} className="text-red-500" />
-                  <p className="text-sm text-red-700 dark:text-red-400">{passwordOp.message}</p>
+            {/* Google user without password yet → Set Password form */}
+            {user.provider === 'google' && !user.hasPassword ? (
+              <>
+                <div className="px-6 py-4 border-b border-gray-50 dark:border-slate-700">
+                  <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                    <Key size={18} className="text-blue-600" /> {t('profile.setPasswordTitle')}
+                  </h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('profile.setPasswordDesc')}</p>
                 </div>
-              )}
-
-              {[
-                { key: 'current', label: t('profile.currentPassword'), placeholder: '••••••••', autoComplete: 'current-password' },
-                { key: 'newPass', label: t('profile.newPassword'), placeholder: t('auth.passPlaceholder'), autoComplete: 'new-password' },
-                { key: 'confirm', label: t('profile.confirmNewPassword'), placeholder: '••••••••', autoComplete: 'new-password' }
-              ].map(({ key, label, placeholder, autoComplete }) => (
-                <div key={key}>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{label}</label>
-                  <div className="relative">
-                    <input
-                      type={showPw[key as keyof typeof showPw] ? 'text' : 'password'}
-                      value={pwForm[key as keyof typeof pwForm]}
-                      onChange={e => setPwForm(prev => ({ ...prev, [key]: e.target.value }))}
-                      placeholder={placeholder}
-                      autoComplete={autoComplete}
-                      className="w-full px-4 py-3 pr-12 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPw(prev => ({ ...prev, [key]: !prev[key as keyof typeof prev] }))}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 p-1"
-                    >
-                      {showPw[key as keyof typeof showPw] ? <EyeOff size={16} /> : <Eye size={16} />}
-                    </button>
-                  </div>
+                <div className="p-6 space-y-4">
+                  {setPassOp.state === 'error' && (
+                    <div className="p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 flex items-center gap-2">
+                      <AlertCircle size={16} className="text-red-500" />
+                      <p className="text-sm text-red-700 dark:text-red-400">{setPassOp.message}</p>
+                    </div>
+                  )}
+                  {setPassOp.state === 'success' && (
+                    <div className="p-3 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-200 flex items-center gap-2">
+                      <CheckCircle2 size={16} className="text-green-500" />
+                      <p className="text-sm text-green-700 dark:text-green-400">{t('profile.passwordSet')}</p>
+                    </div>
+                  )}
+                  {[
+                    { key: 'newPass', label: t('profile.newPassword'), placeholder: t('auth.passPlaceholder'), autoComplete: 'new-password' },
+                    { key: 'confirm', label: t('profile.confirmNewPassword'), placeholder: '••••••••', autoComplete: 'new-password' },
+                  ].map(({ key, label, placeholder, autoComplete }) => (
+                    <div key={key}>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{label}</label>
+                      <div className="relative">
+                        <input
+                          type={showSetPw[key as keyof typeof showSetPw] ? 'text' : 'password'}
+                          value={setPassForm[key as keyof typeof setPassForm]}
+                          onChange={e => setSetPassForm(prev => ({ ...prev, [key]: e.target.value }))}
+                          placeholder={placeholder}
+                          autoComplete={autoComplete}
+                          className="w-full px-4 py-3 pr-12 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowSetPw(prev => ({ ...prev, [key]: !prev[key as keyof typeof prev] }))}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 p-1"
+                        >
+                          {showSetPw[key as keyof typeof showSetPw] ? <EyeOff size={16} /> : <Eye size={16} />}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  <button
+                    onClick={handleSetPassword}
+                    disabled={!setPassForm.newPass || !setPassForm.confirm || setPassOp.state === 'loading'}
+                    className="w-full py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 disabled:opacity-50 transition flex items-center justify-center gap-2 mt-2"
+                  >
+                    <Shield size={16} />
+                    {t('auth.setPasswordBtn')}
+                  </button>
                 </div>
-              ))}
-
-              <button
-                onClick={handleChangePassword}
-                disabled={!pwForm.current || !pwForm.newPass || !pwForm.confirm}
-                className="w-full py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 disabled:opacity-50 transition flex items-center justify-center gap-2 mt-2"
-              >
-                <Shield size={16} />
-                {t('profile.updatePasswordBtn')}
-              </button>
-            </div>
+              </>
+            ) : (
+              /* Manual users or Google users who already set a password → Change Password form */
+              <>
+                <div className="px-6 py-4 border-b border-gray-50 dark:border-slate-700">
+                  <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                    <Key size={18} className="text-blue-600" /> {t('profile.passwordChange')}
+                  </h3>
+                </div>
+                <div className="p-6 space-y-4">
+                  {passwordOp.state === 'error' && (
+                    <div className="p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 flex items-center gap-2">
+                      <AlertCircle size={16} className="text-red-500" />
+                      <p className="text-sm text-red-700 dark:text-red-400">{passwordOp.message}</p>
+                    </div>
+                  )}
+                  {[
+                    { key: 'current', label: t('profile.currentPassword'), placeholder: '••••••••', autoComplete: 'current-password' },
+                    { key: 'newPass', label: t('profile.newPassword'), placeholder: t('auth.passPlaceholder'), autoComplete: 'new-password' },
+                    { key: 'confirm', label: t('profile.confirmNewPassword'), placeholder: '••••••••', autoComplete: 'new-password' },
+                  ].map(({ key, label, placeholder, autoComplete }) => (
+                    <div key={key}>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{label}</label>
+                      <div className="relative">
+                        <input
+                          type={showPw[key as keyof typeof showPw] ? 'text' : 'password'}
+                          value={pwForm[key as keyof typeof pwForm]}
+                          onChange={e => setPwForm(prev => ({ ...prev, [key]: e.target.value }))}
+                          placeholder={placeholder}
+                          autoComplete={autoComplete}
+                          className="w-full px-4 py-3 pr-12 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPw(prev => ({ ...prev, [key]: !prev[key as keyof typeof prev] }))}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 p-1"
+                        >
+                          {showPw[key as keyof typeof showPw] ? <EyeOff size={16} /> : <Eye size={16} />}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  <button
+                    onClick={handleChangePassword}
+                    disabled={!pwForm.current || !pwForm.newPass || !pwForm.confirm}
+                    className="w-full py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 disabled:opacity-50 transition flex items-center justify-center gap-2 mt-2"
+                  >
+                    <Shield size={16} />
+                    {t('profile.updatePasswordBtn')}
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         )}
 
