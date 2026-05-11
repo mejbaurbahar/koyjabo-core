@@ -348,9 +348,15 @@ const saveUserHistory = (history: UserHistory): void => {
     }
 };
 
+// Fire a GA4 custom event if GA4 is configured (window.gtag exists)
+const ga4 = (eventName: string, params: Record<string, string | number>) => {
+    try { (window as any).gtag?.('event', eventName, params); } catch { /**/ }
+};
+
 export const trackBusSearch = (busId: string, busName: string): void => {
     const history = getUserHistory();
     const today = getTodayDate();
+    ga4('bus_search', { bus_id: busId, bus_name: busName });
     history.busSearches.push({ busId, busName, timestamp: Date.now(), date: today });
     history.mostUsedBuses[busId] = (history.mostUsedBuses[busId] || 0) + 1;
     if (!history.todayBuses.includes(busId)) history.todayBuses.push(busId);
@@ -362,6 +368,7 @@ export const trackRouteSearch = (from: string, to: string): void => {
     const history = getUserHistory();
     const today = getTodayDate();
     const routeKey = `${from}-${to}`;
+    ga4('route_search', { from_location: from, to_location: to });
     history.routeSearches.push({ from, to, timestamp: Date.now(), date: today });
     history.mostUsedRoutes[routeKey] = (history.mostUsedRoutes[routeKey] || 0) + 1;
     if (!history.todayRoutes.includes(routeKey)) history.todayRoutes.push(routeKey);
@@ -374,6 +381,7 @@ export const trackIntercitySearch = (from: string, to: string, transportType: st
     const today = getTodayDate();
     const routeKey = `${from}-${to}`;
     history.intercitySearches = history.intercitySearches || [];
+    ga4('intercity_search', { from_location: from, to_location: to, transport_type: transportType });
     history.intercitySearches.push({ from, to, transportType, timestamp: Date.now(), date: today });
     history.mostUsedIntercity = history.mostUsedIntercity || {};
     history.mostUsedIntercity[routeKey] = (history.mostUsedIntercity[routeKey] || 0) + 1;
@@ -392,6 +400,7 @@ export const trackTrainSearch = (
     history.trainSearches = history.trainSearches || [];
     history.mostUsedTrains = history.mostUsedTrains || {};
     history.todayTrains = history.todayTrains || [];
+    ga4('train_search', { train_id: trainId, train_name: trainName, from_location: from, to_location: to });
     history.trainSearches.push({ trainId, trainName, trainNumber, from, to, timestamp: Date.now(), date: today });
     history.mostUsedTrains[trainId] = (history.mostUsedTrains[trainId] || 0) + 1;
     if (!history.todayTrains.includes(trainId)) history.todayTrains.push(trainId);
@@ -403,6 +412,7 @@ export const trackFeatureUsage = (feature: string): void => {
     const history = getUserHistory();
     history.communityFeatureUsage = history.communityFeatureUsage || {};
     history.communityFeatureHistory = history.communityFeatureHistory || [];
+    ga4('feature_open', { feature_name: feature });
     history.communityFeatureUsage[feature] = (history.communityFeatureUsage[feature] || 0) + 1;
     history.communityFeatureHistory.push({
         feature,

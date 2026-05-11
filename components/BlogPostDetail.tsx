@@ -4,6 +4,7 @@ import { BLOG_POSTS } from '../data/blogPosts';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import AdSenseAd from './AdSenseAd';
+import NewsletterBanner from './NewsletterBanner';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface BlogPostProps {
@@ -340,6 +341,9 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
 
                             {/* Post-tags rectangle — high-intent readers, good CPA */}
                             <AdSenseAd adSlot="auto" adFormat="rectangle" native className="mt-10 w-full max-w-[336px] mx-auto shrink-0" />
+
+                            {/* Newsletter — appears after user finishes reading */}
+                            <NewsletterBanner className="mt-8" />
                         </div>
 
                         {/* Sticky Sidebar (Desktop) */}

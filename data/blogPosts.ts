@@ -2324,5 +2324,588 @@ Don't get overcharged by middlemen. Use **[KoyJabo.com](https://koyjabo.com)** t
 
 #ভ্রমণখরচ #বাংলাদেশ #বাজেট #ট্যুরপ্ল্যানার #কইযাবো
 `
+	},
+	{
+		id: 'sundarbans-tour-guide-from-dhaka',
+		slug: 'sundarbans-tour-guide-from-dhaka',
+		title: 'Sundarbans Tour from Dhaka: Complete 2026 Guide (Cost, Routes & Tips)',
+		bnTitle: 'ঢাকা থেকে সুন্দরবন ভ্রমণ: সম্পূর্ণ ২০২৬ গাইড (খরচ, রুট ও টিপস)',
+		excerpt: 'The Sundarbans — home to Royal Bengal Tigers and the world\'s largest mangrove forest — is Bangladesh\'s most awe-inspiring destination. Here\'s exactly how to get there from Dhaka, how much it costs, and what to expect.',
+		bnExcerpt: 'সুন্দরবন — রয়েল বেঙ্গল টাইগারের আবাস এবং পৃথিবীর বৃহত্তম ম্যানগ্রোভ বন — বাংলাদেশের সবচেয়ে অসাধারণ গন্তব্য। ঢাকা থেকে কীভাবে যাবেন, খরচ কত এবং কী দেখবেন।',
+		coverImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Sundarban_Tiger.jpg/1024px-Sundarban_Tiger.jpg',
+		author: 'KoyJabo Team',
+		publishDate: '2026-05-10',
+		readTime: '9 min read',
+		keywords: [
+			'Sundarbans tour from Dhaka', 'Sundarbans travel guide', 'visit Sundarbans Bangladesh',
+			'Sundarbans cost 2026', 'Sundarbans package tour', 'Khulna to Sundarbans',
+			'Royal Bengal Tiger Bangladesh', 'Sundarbans UNESCO', 'mangrove forest Bangladesh',
+			'Mongla port Sundarbans', 'Sundarbans boat tour', 'Bangladesh wildlife tour',
+			'KoyJabo travel guide', 'সুন্দরবন ভ্রমণ', 'সুন্দরবন যাওয়ার উপায়'
+		],
+		category: 'Travel Guide',
+		content: `
+The **Sundarbans** is one of the most extraordinary places on Earth — a UNESCO World Heritage Site spanning 10,000 sq km across Bangladesh and India. It is home to the legendary **Royal Bengal Tiger**, saltwater crocodiles, spotted deer, and over 300 species of birds.
+
+If you're planning a Bangladesh trip, the Sundarbans is non-negotiable.
+
+---
+
+## 🗺️ How to Get from Dhaka to Sundarbans
+
+The Sundarbans is in southwestern Bangladesh. You cannot enter directly — you must go through **Khulna or Mongla** port first.
+
+### Route 1: By Bus (Budget Option)
+- **Dhaka → Khulna:** Bus from Kalyanpur/Gabtoli terminal
+  - Non-AC: ৳700–900 | AC: ৳1,100–1,600
+  - Journey time: 7–9 hours
+  - Operators: Soudia, Shyamoli, Green Line, Hanif
+- **Khulna → Mongla:** Local bus or CNG auto (~1.5 hrs, ৳80–150)
+- **Mongla → Sundarbans:** Boat/launch (arranged by tour operators)
+
+### Route 2: By Train (Comfortable)
+- **Jahanabad Express** (Dhaka → Khulna via Padma Bridge): **3 hrs 45 min only!**
+  - Shovan Chair: ৳445 | Snigdha AC: ৳856
+  - Departs from Kamalapur/Airport stations
+- Fastest and most comfortable option thanks to Padma Bridge
+
+### Route 3: Overnight Launch from Dhaka (Scenic)
+- Sadarghat → Khulna by overnight launch
+- Deck: ৳300–500 | Cabin: ৳1,000–3,000
+- Journey: 10–12 hours (evening departure)
+- Relaxing option — see the rivers at dawn
+
+---
+
+## 💰 Sundarbans Tour Cost Breakdown
+
+| Item | Budget | Mid-Range | Premium |
+|------|--------|-----------|---------|
+| Dhaka–Khulna transport | ৳800 | ৳1,200 | ৳2,000 |
+| Sundarbans package (2N/3D) | ৳4,000 | ৳8,000 | ৳18,000+ |
+| Forest entry + guide fee | ৳1,500 | ৳1,500 | Included |
+| Food (per day) | ৳300 | ৳600 | Included |
+| **Total (per person)** | **~৳7,000** | **~৳12,000** | **৳22,000+** |
+
+> **Tip:** Group tours (6–10 people) can be 40% cheaper per person.
+
+---
+
+## 📅 Best Time to Visit
+
+| Season | Months | What to Expect |
+|--------|--------|----------------|
+| ✅ Best | November – February | Cool, dry, wildlife very active |
+| ✅ Good | March – April | Warm, fewer crowds |
+| ⚠️ Avoid | June – September | Monsoon, high flood risk, tours limited |
+| 🐯 Tiger sightings | January – March | Best chance during dry season |
+
+---
+
+## 🚤 What Happens Inside the Sundarbans
+
+All visitors must travel by boat — no roads exist inside. Your package includes:
+
+- **Boat ride** through the mangrove canals
+- **Forest walks** with armed forest guards (mandatory)
+- **Watch towers** at Katka, Kochikhali, Hiron Point
+- **Wildlife spotting:** Tigers (rare but possible), spotted deer, crocodiles, kingfishers, dolphins
+- **Mangrove forest:** Surreal beauty of sundarl trees reflected in still water
+
+---
+
+## 🏨 Where to Stay
+
+**In Khulna (before/after):**
+- Hotel Castle Salam (mid-range, ৳1,500–3,000/night)
+- Hotel Royal (budget, ৳800/night)
+
+**In the Sundarbans:**
+- Bangladesh Forest Department guesthouses at Hiron Point, Katka
+- Boat accommodation (included in most packages)
+
+---
+
+## 📋 Tour Operators (Trusted)
+
+- **Guide Tour Ltd** — Dhaka-based, reputable for Sundarbans packages
+- **Bengal Tours** — Good group packages
+- **Parjatan Hotel & Tourism** — Government operator, reliable
+
+> **Book via KoyJabo.com route planner** to find the cheapest bus or train to Khulna as your first step.
+
+---
+
+## ⚠️ Important Rules
+
+- 🚫 No plastic bags inside the forest (strict ban)
+- 🚫 Do not wander alone — tigers are real, guards mandatory
+- 📋 Carry national ID or passport for forest permit
+- 📱 Mobile signal is almost zero inside
+
+---
+
+## 🔑 Quick Summary
+
+1. **Fastest route:** Train (Jahanabad Express, Padma Bridge, 3h45m)
+2. **Cheapest route:** Bus (~৳700)
+3. **Most scenic:** Overnight launch from Sadarghat
+4. **Best package:** 2 nights / 3 days, ~৳8,000–12,000 per person
+5. **Best time:** November to February
+
+Use **[KoyJabo.com](https://koyjabo.com)** to find real-time bus fares and train schedules for Dhaka → Khulna before booking your Sundarbans trip.
+
+#Sundarbans #BangladeshTravel #WildlifeTour #RoyalBengalTiger #KoyJabo #TravelBangladesh
+`,
+		bnContent: `
+**সুন্দরবন** পৃথিবীর অন্যতম বিস্ময়কর স্থান — একটি UNESCO বিশ্ব ঐতিহ্য স্থান যা বাংলাদেশ ও ভারত জুড়ে ১০,০০০ বর্গকিলোমিটার বিস্তৃত। এখানে রয়েছে কিংবদন্তি **রয়েল বেঙ্গল টাইগার**, লোনা জলের কুমির, চিত্রল হরিণ এবং ৩০০+ প্রজাতির পাখি।
+
+---
+
+## 🗺️ ঢাকা থেকে সুন্দরবন যাওয়ার উপায়
+
+সুন্দরবন বাংলাদেশের দক্ষিণ-পশ্চিমে। সরাসরি প্রবেশ করা যায় না — আগে **খুলনা বা মংলা** বন্দরে যেতে হবে।
+
+### রুট ১: বাসে (বাজেট)
+- **ঢাকা → খুলনা:** কল্যাণপুর/গাবতলী টার্মিনাল থেকে
+  - নন-এসি: ৳৭০০–৯০০ | এসি: ৳১,১০০–১,৬০০
+  - সময়: ৭–৯ ঘন্টা
+- **খুলনা → মংলা:** লোকাল বাস বা সিএনজি (~১.৫ ঘন্টা, ৳৮০–১৫০)
+
+### রুট ২: ট্রেনে (সবচেয়ে দ্রুত)
+- **জাহানাবাদ এক্সপ্রেস** (পদ্মা সেতু হয়ে): মাত্র **৩ ঘন্টা ৪৫ মিনিট!**
+  - শোভন চেয়ার: ৳৪৪৫ | স্নিগ্ধা এসি: ৳৮৫৬
+
+### রুট ৩: রাতের লঞ্চে (দর্শনীয়)
+- সদরঘাট → খুলনা, ১০–১২ ঘন্টা
+- ডেক: ৳৩০০–৫০০ | কেবিন: ৳১,০০০–৩,০০০
+
+---
+
+## 💰 সুন্দরবন ট্যুরের খরচ
+
+| আইটেম | বাজেট | মধ্যম | প্রিমিয়াম |
+|--------|-------|-------|----------|
+| ঢাকা–খুলনা যাতায়াত | ৳৮০০ | ৳১,২০০ | ৳২,০০০ |
+| সুন্দরবন প্যাকেজ (২রাত/৩দিন) | ৳৪,০০০ | ৳৮,০০০ | ৳১৮,০০০+ |
+| বন প্রবেশ + গাইড | ৳১,৫০০ | ৳১,৫০০ | অন্তর্ভুক্ত |
+| **মোট (প্রতিজন)** | **~৳৭,০০০** | **~৳১২,০০০** | **৳২২,০০০+** |
+
+---
+
+## 📅 যাওয়ার সেরা সময়
+
+- ✅ **নভেম্বর – ফেব্রুয়ারি:** শীতল, শুষ্ক, বন্যপ্রাণী সক্রিয়
+- ✅ **মার্চ – এপ্রিল:** উষ্ণ, ভিড় কম
+- ⚠️ **জুন – সেপ্টেম্বর:** বর্ষা, বন্যার ঝুঁকি
+
+**[KoyJabo.com](https://koyjabo.com)** ব্যবহার করে ঢাকা → খুলনার বাস বা ট্রেনের ভাড়া ও সময়সূচী দেখুন।
+
+#সুন্দরবন #বাংলাদেশভ্রমণ #রয়েলবেঙ্গলটাইগার #কইযাবো
+`
+	},
+	{
+		id: 'saint-martin-island-travel-guide-bangladesh',
+		slug: 'saint-martin-island-travel-guide-bangladesh',
+		title: 'Saint Martin Island Bangladesh: Complete Travel Guide 2026',
+		bnTitle: 'সেন্ট মার্টিন দ্বীপ সম্পূর্ণ ভ্রমণ গাইড ২০২৬',
+		excerpt: 'Saint Martin is Bangladesh\'s only coral island — crystal clear water, white sand beaches and coconut groves. Here\'s the complete guide: how to get there, where to stay, costs and the best time to visit.',
+		bnExcerpt: 'সেন্ট মার্টিন বাংলাদেশের একমাত্র প্রবাল দ্বীপ — স্বচ্ছ জল, সাদা বালির সৈকত এবং নারকেল বাগান। কীভাবে যাবেন, কোথায় থাকবেন, খরচ ও সেরা সময় জানুন।',
+		coverImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Saint_Martin_Island.jpg/1024px-Saint_Martin_Island.jpg',
+		author: 'KoyJabo Team',
+		publishDate: '2026-05-11',
+		readTime: '8 min read',
+		keywords: [
+			'Saint Martin island Bangladesh', 'Saint Martin travel guide', 'how to go Saint Martin',
+			'Saint Martin cost 2026', 'Teknaf to Saint Martin', 'Bangladesh coral island',
+			'Saint Martin hotel', 'Saint Martin beach', 'cox\'s bazar to Saint Martin',
+			'সেন্ট মার্টিন ভ্রমণ', 'সেন্ট মার্টিন যাওয়ার উপায়', 'KoyJabo travel',
+			'Bangladesh island tour', 'Keari Sindbad ship', 'Saint Martin ship schedule'
+		],
+		category: 'Travel Guide',
+		content: `
+**Saint Martin Island** (Narikel Jinjira / নারিকেল জিঞ্জিরা) is Bangladesh's only coral island and one of the most beautiful destinations in the entire Bay of Bengal. Located 9km south of Teknaf in the southernmost tip of Bangladesh, it offers turquoise water, white sandy beaches, coral reefs, and fresh seafood.
+
+Every year, hundreds of thousands of Bangladeshi tourists and international visitors come here — and for good reason.
+
+---
+
+## 🚢 How to Get to Saint Martin Island
+
+There is only **one way to reach Saint Martin: by ship from Teknaf**. No airport, no bridge.
+
+### Full Route from Dhaka
+
+**Step 1: Dhaka → Cox's Bazar**
+- **Bus:** 10–12 hrs | ৳900–2,500 (non-AC to luxury AC)
+  - Operators: Green Line, Hanif, Shyamoli, S Alam
+  - Departs: Sayedabad Terminal, Dhaka
+- **Train:** Cox's Bazar Express (departs 10:30 PM) | ৳745–2,656
+- **Flight:** 55 min | ৳4,500–12,000 (Biman, US-Bangla, Novoair)
+
+**Step 2: Cox's Bazar → Teknaf**
+- Local bus or tourist bus: 1.5–2 hrs | ৳80–200
+- CNG/taxi: ৳300–500
+
+**Step 3: Teknaf → Saint Martin (by Ship)**
+| Ship | Departs | Returns | Fare (one way) |
+|------|---------|---------|----------------|
+| Keari Sindbad | 9:00 AM | 3:00 PM | ৳650–1,200 |
+| Bay One Express | 9:30 AM | 3:30 PM | ৳600–1,100 |
+| MV Swarnadwip | 9:00 AM | 3:00 PM | ৳550–900 |
+
+> Ships depart **Teknaf at 9–9:30 AM** and return at **3–3:30 PM**. Miss it, and you stay the night (or go back by speedboat for ৳3,000–4,000).
+
+---
+
+## 💰 Saint Martin Trip Cost (per person)
+
+| Item | Budget | Mid-Range | Luxury |
+|------|--------|-----------|--------|
+| Dhaka→Cox's Bazar (bus) | ৳1,000 | ৳1,500 | ৳3,500 |
+| Cox's Bazar→Teknaf | ৳150 | ৳200 | ৳400 |
+| Ship (return) | ৳1,100 | ৳1,600 | ৳2,400 |
+| Hotel (2 nights) | ৳800 | ৳2,000 | ৳6,000+ |
+| Food (2 days) | ৳600 | ৳1,200 | ৳2,500 |
+| **Total** | **~৳4,000** | **~৳7,000** | **৳15,000+** |
+
+---
+
+## 📅 Best Time to Visit
+
+| Season | Verdict |
+|--------|---------|
+| November – February | ✅ **Best** — calm sea, clear water, cool weather |
+| March – April | ✅ Good — warm, manageable waves |
+| May – June | ⚠️ Border season — sea getting rough |
+| July – October | ❌ Ships stopped — cyclone season |
+
+> **Saint Martin is officially closed to tourists from June to September.** Ships stop running due to the Bay of Bengal cyclone season. Plan accordingly.
+
+---
+
+## 🏨 Where to Stay on Saint Martin
+
+| Hotel/Resort | Price per night | Notes |
+|---|---|---|
+| Blue Marine Resort | ৳3,000–6,000 | Popular, sea-view rooms |
+| Coral Blue Resort | ৳2,500–5,000 | Good beach access |
+| Hotel Sea Beach | ৳1,500–3,000 | Budget-friendly |
+| Local homestays | ৳500–1,000 | Cheapest option |
+
+> Book in advance for November–February — the island gets packed.
+
+---
+
+## 🐠 What to Do at Saint Martin
+
+- **Sunrise & sunset** from the beach (spectacular)
+- **Coral viewing** — snorkel or glass-bottom boat (৳200–400/hr)
+- **Chera Dwip** — tiny island accessible by boat at low tide (৳50 boat fee)
+- **Fresh seafood** — lobster, crab, hilsa, various fish cooked fresh
+- **Coconut everywhere** — fresh coconut water for ৳30–50
+- **Star-gazing at night** — no light pollution, incredible sky
+
+---
+
+## ⚠️ Important Tips
+
+- 📋 **Carry your National ID / passport** — checkpoints on route
+- 🐠 **No plastic** — Saint Martin has a plastic ban for environmental protection
+- 💧 **Carry extra water** — fresh water is limited on the island
+- 🌊 **Don't swim in deep water** — currents can be dangerous
+- 📱 **Network is limited** — Robi/Teletalk have partial coverage
+
+---
+
+## 🔑 Quick Summary
+
+1. **Only way in:** Ship from Teknaf (departs 9 AM)
+2. **Closest base:** Cox's Bazar (2 hrs from Teknaf)
+3. **Cheapest trip from Dhaka:** ~৳4,000 total
+4. **Best season:** November – February
+5. **Must try:** Fresh lobster on the beach at sunset
+
+Use **[KoyJabo.com](https://koyjabo.com)** to check bus/train schedules and fares for Dhaka → Cox's Bazar as your first step.
+
+#SaintMartin #Bangladesh #BeachTravel #CoralIsland #KoyJabo #TravelBangladesh
+`,
+		bnContent: `
+**সেন্ট মার্টিন দ্বীপ** (নারিকেল জিঞ্জিরা) বাংলাদেশের একমাত্র প্রবাল দ্বীপ। বঙ্গোপসাগরের তীরে অবস্থিত এই দ্বীপে রয়েছে নীলাভ জল, সাদা বালির সৈকত, প্রবাল প্রাচীর এবং তাজা সামুদ্রিক খাবার।
+
+---
+
+## 🚢 সেন্ট মার্টিন যাওয়ার উপায়
+
+সেন্ট মার্টিন যাওয়ার একমাত্র পথ: **টেকনাফ থেকে জাহাজে**।
+
+### ঢাকা থেকে সম্পূর্ণ রুট
+
+**ধাপ ১: ঢাকা → কক্সবাজার**
+- বাস: ১০–১২ ঘন্টা | ৳৯০০–২,৫০০ (সায়েদাবাদ টার্মিনাল)
+- ট্রেন: কক্সবাজার এক্সপ্রেস (রাত ১০:৩০)
+- ফ্লাইট: ৫৫ মিনিট | ৳৪,৫০০–১২,০০০
+
+**ধাপ ২: কক্সবাজার → টেকনাফ**
+- লোকাল বাস: ১.৫–২ ঘন্টা | ৳৮০–২০০
+
+**ধাপ ৩: টেকনাফ → সেন্ট মার্টিন (জাহাজে)**
+- সকাল ৯টায় জাহাজ ছাড়ে | একমুখী ভাড়া: ৳৫৫০–১,২০০
+
+---
+
+## 💰 সেন্ট মার্টিন ট্রিপের খরচ
+
+| আইটেম | বাজেট | মধ্যম |
+|--------|-------|-------|
+| ঢাকা→কক্সবাজার বাস | ৳১,০০০ | ৳১,৫০০ |
+| কক্সবাজার→টেকনাফ | ৳১৫০ | ৳২০০ |
+| জাহাজ (আসা-যাওয়া) | ৳১,১০০ | ৳১,৬০০ |
+| হোটেল (২ রাত) | ৳৮০০ | ৳২,০০০ |
+| খাবার (২ দিন) | ৳৬০০ | ৳১,২০০ |
+| **মোট** | **~৳৪,০০০** | **~৳৭,০০০** |
+
+---
+
+## 📅 যাওয়ার সেরা সময়
+
+- ✅ **নভেম্বর – ফেব্রুয়ারি:** সেরা — শান্ত সমুদ্র, স্বচ্ছ পানি
+- ✅ **মার্চ – এপ্রিল:** ভালো — উষ্ণ আবহাওয়া
+- ❌ **জুন – অক্টোবর:** জাহাজ বন্ধ — ঘূর্ণিঝড়ের মৌসুম
+
+**[KoyJabo.com](https://koyjabo.com)** ব্যবহার করে ঢাকা → কক্সবাজার বাস বা ট্রেনের তথ্য দেখুন।
+
+#সেন্টমার্টিন #বাংলাদেশভ্রমণ #প্রবালদ্বীপ #কইযাবো
+`
+	},
+	{
+		id: 'bangladesh-travel-guide-for-tourists-foreigners',
+		slug: 'bangladesh-travel-guide-for-tourists-foreigners',
+		title: 'Bangladesh Travel Guide for Tourists & Foreigners (2026): Everything You Need to Know',
+		bnTitle: 'বিদেশি পর্যটকদের জন্য বাংলাদেশ ভ্রমণ গাইড ২০২৬',
+		excerpt: 'Planning a trip to Bangladesh? This complete guide covers visa requirements, best places to visit, how to get around, safety, costs and insider tips — everything a foreign tourist needs to know.',
+		bnExcerpt: 'বাংলাদেশ ভ্রমণের পরিকল্পনা করছেন? ভিসা, সেরা জায়গা, যাতায়াত, নিরাপত্তা, খরচ এবং ভেতরের টিপস — বিদেশি পর্যটকের জানার সব কিছু।',
+		coverImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Flag_of_Bangladesh.svg/1200px-Flag_of_Bangladesh.svg.png',
+		author: 'KoyJabo Team',
+		publishDate: '2026-05-11',
+		readTime: '12 min read',
+		keywords: [
+			'Bangladesh travel guide foreigners', 'visit Bangladesh 2026', 'Bangladesh tourism guide',
+			'Bangladesh visa on arrival', 'is Bangladesh safe for tourists', 'Bangladesh travel tips',
+			'budget travel Bangladesh', 'best things to do Bangladesh', 'Bangladesh itinerary',
+			'traveling in Bangladesh', 'Bangladesh transport for tourists', 'Dhaka tourist guide',
+			'KoyJabo tourists', 'bangladesh travel cost', 'Bangladesh backpacker guide'
+		],
+		category: 'Travel Guide',
+		content: `
+Bangladesh is one of Asia's most underrated travel destinations. Lush river deltas, the world's longest sea beach, UNESCO-listed mangrove forests, ancient temples, and some of the most hospitable people on Earth — all at a fraction of the cost of neighbouring countries.
+
+This guide covers everything you need to know as a foreign tourist visiting Bangladesh.
+
+---
+
+## 🛂 Visa Requirements
+
+| Nationality | Visa Type |
+|---|---|
+| Most Western countries (USA, UK, EU, Australia, Canada) | Visa on Arrival (VOA) at Hazrat Shahjalal International Airport |
+| India, Pakistan, China | Prior visa required |
+| Most South/Southeast Asian | Visa on Arrival |
+
+**Visa on Arrival:**
+- Fee: **$50 USD**
+- Duration: **30 days** (extendable)
+- Available at Dhaka airport only (not at land borders)
+
+> Check the Bangladesh immigration website for the latest visa rules before travel.
+
+---
+
+## ✈️ Getting to Bangladesh
+
+**By Air:**
+- **Hazrat Shahjalal International Airport (DAC), Dhaka** — main international hub
+- Airlines: Biman Bangladesh, Qatar Airways, Emirates, Singapore Airlines, Thai Airways, IndiGo, Air India
+
+**From Dhaka Airport to City:**
+- Taxi: ৳500–800 to Motijheel/Gulshan
+- Uber/Pathao: ৳300–500
+- BRTC Airport Bus: ৳80 to Motijheel
+
+---
+
+## 🗺️ Top Destinations for Tourists
+
+### 1. Cox's Bazar — World's Longest Sea Beach
+- 120km unbroken beach
+- Water sports, surfing, seafood
+- 6–7 hrs from Dhaka by bus/train
+
+### 2. Sundarbans — UNESCO Mangrove Forest
+- Royal Bengal Tiger, crocodiles, dolphins
+- 3h45m from Dhaka by train to Khulna, then boat
+
+### 3. Saint Martin Island — Coral Paradise
+- Bangladesh's only coral island
+- Turquoise water, snorkelling, lobster
+- Via Cox's Bazar → Teknaf → ship (9 AM daily, Nov–May)
+
+### 4. Srimangal — Tea Capital
+- Rolling tea gardens, rubber plantations, wildlife
+- 3 hrs from Dhaka by train (Upaban Express)
+- Famous for "7-layer tea"
+
+### 5. Dhaka — Vibrant Capital
+- Old Dhaka: Lalbagh Fort, Ahsan Manzil, Sadarghat river port
+- Shopping: Bashundhara City, New Market, Jamuna Future Park
+- Food: Kacchi biryani, hilsa curry, street food
+
+### 6. Bandarban — Hill Tracts Adventure
+- Blue Nilgiri hills, Boga Lake, tribal villages
+- Trekking, zipline, camp stays
+- 4 hrs from Chittagong by bus
+
+### 7. Sylhet — Spiritual & Green
+- Shrine of Hazrat Shah Jalal
+- Tea estates, haor wetlands, Jaflong stone beach
+- 6.5 hrs from Dhaka by train
+
+---
+
+## 🚌 Getting Around Bangladesh
+
+Bangladesh has excellent intercity transport. Use **[KoyJabo.com](https://koyjabo.com)** to find routes and fares.
+
+| Mode | Best For | Cost |
+|------|----------|------|
+| **Bus (AC)** | Intercity comfort | ৳500–2,500 |
+| **Train** | Long distance, scenic | ৳200–2,656 |
+| **Domestic flight** | Fast, Chittagong/Cox's Bazar | ৳4,500–12,000 |
+| **Launch/ferry** | River routes, experience | ৳300–3,000 |
+| **Uber/Pathao** | City travel | ৳80–300 |
+| **Rickshaw** | Short distances | ৳20–60 |
+| **Metro Rail (MRT-6)** | Dhaka north-south | ৳20–100 |
+
+---
+
+## 💵 Budget Guide (per person, per day)
+
+| Style | Daily Budget |
+|-------|-------------|
+| Backpacker | $15–25 USD (৳1,600–2,700) |
+| Mid-range | $35–60 USD (৳3,800–6,500) |
+| Comfort | $80–150 USD (৳8,700–16,000) |
+| Luxury | $200+ USD (৳22,000+) |
+
+**Bangladesh is extremely affordable.** A full meal costs ৳100–250 (under $3). A comfortable hotel room: ৳1,500–3,000 ($15–30).
+
+---
+
+## 🛡️ Safety for Tourists
+
+Bangladesh is **generally safe for tourists.** Common sense applies:
+
+- ✅ Dhaka, Cox's Bazar, Sylhet, Chittagong are all tourist-friendly
+- ✅ Locals are extremely welcoming and helpful to foreigners
+- ⚠️ Avoid Chittagong Hill Tracts border areas without permits
+- ⚠️ Standard petty theft caution in crowded areas (Sadarghat, markets)
+- ⚠️ Traffic in Dhaka is chaotic — use Uber over street rickshaws for longer trips
+
+---
+
+## 🍛 Food to Try
+
+| Dish | What it is |
+|------|-----------|
+| Kacchi Biryani | Slow-cooked lamb biryani, Dhaka's signature dish |
+| Hilsa Curry | National fish, must-try in Dhaka or Chandpur |
+| Shorshe Ilish | Hilsa in mustard gravy |
+| Panta Bhaat | Fermented rice dish |
+| Mishti Doi | Sweet yogurt, Bogura is famous for it |
+| Street food | Fuchka (like gol gappa), chotpoti, jhalmuri |
+
+---
+
+## 📱 Useful Apps & Tools
+
+| Tool | Use |
+|------|-----|
+| **KoyJabo.com** | Find bus, train, metro routes & fares |
+| **Pathao** | Ride-sharing (motorcycle + car) |
+| **Uber** | Ride-sharing (car) |
+| **bKash** | Mobile payments (get someone local to help set up) |
+| **Google Maps** | Navigation (works well in major cities) |
+
+---
+
+## 📋 Quick Essential Info
+
+- **Currency:** Bangladeshi Taka (BDT). 1 USD ≈ ৳110
+- **Language:** Bengali (Bangla). English understood in cities and tourist areas.
+- **Religion:** Majority Muslim. Dress modestly outside tourist areas.
+- **Power:** 220V, Type C/G plugs
+- **SIM card:** Get Grameenphone or Robi SIM at airport (৳200 with data pack)
+- **Emergency:** Police 999 | Ambulance 199 | Fire 199
+
+---
+
+## 🗓️ Suggested 7-Day Bangladesh Itinerary
+
+| Day | Destination |
+|-----|-------------|
+| Day 1 | Arrive Dhaka, Old Dhaka tour (Lalbagh Fort, Sadarghat) |
+| Day 2 | Dhaka museums, shopping, evening food walk |
+| Day 3 | Train to Cox's Bazar (Cox's Bazar Express, 10:30 PM overnight) |
+| Day 4 | Cox's Bazar beach, Himchari waterfall |
+| Day 5 | Teknaf → Saint Martin Island by ship (9 AM) |
+| Day 6 | Saint Martin — beach, snorkel, sunset |
+| Day 7 | Return Teknaf → Cox's Bazar → fly Dhaka → depart |
+
+---
+
+Bangladesh will surprise you. Plan your transport with **[KoyJabo.com](https://koyjabo.com)** — the free bilingual app covering every bus, train, and metro route in the country.
+
+#BangladeshTravel #VisitBangladesh #TravelAsia #BackpackBangladesh #KoyJabo #TouristGuide
+`,
+		bnContent: `
+বাংলাদেশ এশিয়ার সবচেয়ে কম মূল্যায়িত ভ্রমণ গন্তব্যগুলোর একটি। পৃথিবীর দীর্ঘতম সমুদ্র সৈকত, UNESCO-তালিকাভুক্ত ম্যানগ্রোভ বন, প্রাচীন মন্দির — সব কিছু প্রতিবেশী দেশগুলোর চেয়ে অনেক কম খরচে।
+
+---
+
+## 🗺️ পর্যটকদের জন্য সেরা গন্তব্য
+
+১. **কক্সবাজার** — বিশ্বের দীর্ঘতম সমুদ্র সৈকত (১২০ কিমি)
+২. **সুন্দরবন** — UNESCO ম্যানগ্রোভ বন, রয়েল বেঙ্গল টাইগার
+৩. **সেন্ট মার্টিন** — প্রবাল দ্বীপ, স্বচ্ছ জল
+৪. **সিলেট** — চা বাগান, হাওর, ঝর্ণা
+৫. **বান্দরবান** — পাহাড়, ট্রেকিং, উপজাতীয় সংস্কৃতি
+৬. **ঢাকা** — লালবাগ কেল্লা, আহসান মঞ্জিল, সদরঘাট
+
+---
+
+## 🚌 যাতায়াত
+
+বাংলাদেশে যাতায়াতের জন্য **[KoyJabo.com](https://koyjabo.com)** ব্যবহার করুন।
+
+| মাধ্যম | সেরা ব্যবহার | খরচ |
+|--------|-------------|------|
+| এসি বাস | আন্তঃজেলা | ৳৫০০–২,৫০০ |
+| ট্রেন | দীর্ঘ দূরত্ব | ৳২০০–২,৬৫৬ |
+| ঘরোয়া ফ্লাইট | দ্রুত যাতায়াত | ৳৪,৫০০–১২,০০০ |
+| উবার/পাঠাও | শহরে | ৳৮০–৩০০ |
+| মেট্রো রেল | ঢাকায় | ৳২০–১০০ |
+
+---
+
+## 💵 বাজেট গাইড (প্রতিদিন, প্রতিজন)
+
+- ব্যাকপ্যাকার: $১৫–২৫ (৳১,৬০০–২,৭০০)
+- মধ্যম: $৩৫–৬০ (৳৩,৮০০–৬,৫০০)
+- আরামদায়ক: $৮০–১৫০ (৳৮,৭০০–১৬,০০০)
+
+বাংলাদেশ অত্যন্ত সাশ্রয়ী। একটি পূর্ণ খাবার ৳১০০–২৫০ ($৩ এর কম)।
+
+#বাংলাদেশভ্রমণ #পর্যটনগাইড #কইযাবো #ভিজিটবাংলাদেশ
+`
 	}
 ];

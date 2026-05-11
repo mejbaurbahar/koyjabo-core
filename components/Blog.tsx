@@ -3,6 +3,7 @@ import { Clock, Tag, Calendar, ArrowRight, Search, X } from 'lucide-react';
 import { BLOG_POSTS } from '../data/blogPosts';
 import { useLanguage } from '../contexts/LanguageContext';
 import AdSenseAd from './AdSenseAd';
+import NewsletterBanner from './NewsletterBanner';
 
 interface BlogProps {
     onBack: () => void;
@@ -209,8 +210,11 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                         </div>
                     )}
 
+                    {/* Newsletter */}
+                    <NewsletterBanner className="mt-8" />
+
                     {/* SEO Footer */}
-                    <div className="mt-8 bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-slate-800 dark:to-slate-700 rounded-2xl p-6 text-center border border-teal-100 dark:border-teal-800">
+                    <div className="mt-6 bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-slate-800 dark:to-slate-700 rounded-2xl p-6 text-center border border-teal-100 dark:border-teal-800">
                         <p className="text-sm font-semibold text-teal-700 dark:text-teal-300 mb-1">koyjabo.com</p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
                             {language === 'bn'

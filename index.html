@@ -54,6 +54,34 @@
   <meta name="distribution" content="global" />
   <meta name="rating" content="general" />
 
+  <!-- Google Analytics 4 ─────────────────────────────────────────────────────
+       SETUP (5 min, free with your Gmail):
+       1. Go to analytics.google.com → sign in with mejbaur.bahar@gmail.com
+       2. Click "Start measuring" → create Account → create Property
+       3. Copy your Measurement ID (looks like: G-ABC123DEF4)
+       4. Replace BOTH occurrences of G-XXXXXXXXXX below with that ID
+       5. Save & push — you'll see live traffic data within 24 hours
+  ──────────────────────────────────────────────────────────────────────────── -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX', {
+      send_page_view: true,
+      cookie_flags: 'SameSite=None;Secure',
+    });
+  </script>
+
+  <!-- Google Search Console verification ─────────────────────────────────────
+       SETUP (5 min, free with your Gmail):
+       1. Go to search.google.com/search-console → sign in
+       2. Add property → URL prefix → enter https://koyjabo.com
+       3. Choose "HTML tag" verification → copy the content="..." value
+       4. Replace REPLACE_WITH_YOUR_VERIFICATION_CODE below
+  ──────────────────────────────────────────────────────────────────────────── -->
+  <!-- <meta name="google-site-verification" content="REPLACE_WITH_YOUR_VERIFICATION_CODE" /> -->
+
   <!-- Google AdSense — Auto Ads (publisher: ca-pub-8425219156685369) -->
   <!-- Auto Ads are configured in AdSense dashboard → Ads → Auto Ads.            -->
   <!-- For manual Display Ad units, replace adSlot="auto" in AdSenseAd.tsx       -->
