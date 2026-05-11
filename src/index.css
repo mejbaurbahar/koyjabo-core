@@ -733,7 +733,6 @@ ins.adsbygoogle {
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   transition: box-shadow 0.3s ease, background-color 0.3s ease;
-  overflow: hidden;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;

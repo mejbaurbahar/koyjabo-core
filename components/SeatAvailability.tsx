@@ -68,7 +68,7 @@ export default function SeatAvailability({ onBack }: Props) {
             <Star className="w-5 h-5" fill={favorites.includes(selected.id) ? 'currentColor' : 'none'} />
           </button>
         </div>
-        <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 space-y-4 pb-6" style={{ WebkitOverflowScrolling: 'touch' }}>
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 space-y-4 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700">
             <div className="flex items-center justify-between mb-3">
               <div className="text-center">
@@ -170,7 +170,7 @@ export default function SeatAvailability({ onBack }: Props) {
         </div>
       </div>
 
-      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y px-4 pb-6 space-y-2" style={{ WebkitOverflowScrolling: 'touch' }}>
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y px-4 pb-nav-safe space-y-2" style={{ WebkitOverflowScrolling: 'touch' }}>
         <AdSenseAd adSlot="auto" native className="mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
         {/* Favorites section */}
         {!search && favoriteRoutes.length > 0 && (

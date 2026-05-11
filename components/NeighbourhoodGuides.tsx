@@ -692,7 +692,7 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
             <p className="text-xs text-gray-500 dark:text-gray-400">{language === 'bn' ? selected.areaEn : selected.area} · {selected.division}</p>
           </div>
         </div>
-        <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 space-y-4 pb-6" style={{ WebkitOverflowScrolling: 'touch' }}>
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 space-y-4 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700">
             <p className="text-sm text-gray-700 dark:text-gray-300">{desc}</p>
           </div>
@@ -740,7 +740,7 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
       </div>
 
 
-      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y px-4 pb-6" style={{ WebkitOverflowScrolling: 'touch' }}>
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y px-4 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
         <AdSenseAd adSlot="auto" className="mt-2 mb-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
         {search ? (
           <div className="grid grid-cols-2 gap-3 content-start">

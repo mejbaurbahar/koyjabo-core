@@ -166,7 +166,7 @@ export default function TripReminders({ onBack }: Props) {
         </button>
       </div>
 
-      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 space-y-3 pb-6" style={{ WebkitOverflowScrolling: 'touch' }}>
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 space-y-3 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
         <AdSenseAd adSlot="auto" native className="mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
         {showForm && (
           <form onSubmit={handleAdd} className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-violet-200 dark:border-violet-800 space-y-3">

@@ -112,7 +112,7 @@ export default function CommuteCostCalculator({ onBack }: Props) {
         )}
       </div>
 
-      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 space-y-4 pb-6" style={{ WebkitOverflowScrolling: 'touch' }}>
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 space-y-4 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
         <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 space-y-3">
           <div className="flex items-center justify-between">
             <h3 className="font-bold text-gray-900 dark:text-white text-sm">{lbl('Daily Commute', 'দৈনিক যাতায়াত')}</h3>

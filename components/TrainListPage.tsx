@@ -178,7 +178,7 @@ export function TrainDetail({
         </button>
       </div>
 
-      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y" style={{ WebkitOverflowScrolling: 'touch' }}>
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
         {/* Map */}
         <div className="h-[280px] md:h-[340px] bg-slate-100 dark:bg-slate-900 relative">
           <TrainRouteMap
