@@ -510,7 +510,8 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
             </button>
           </form>
 
-          <div className="mt-5 relative">
+          {false /* Google sign-in temporarily hidden on production — enabled on dev */ && (
+          <><div className="mt-5 relative">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-200 dark:border-slate-600" />
             </div>
@@ -536,7 +537,7 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
               </svg>
             )}
             {t('auth.continueWithGoogle')}
-          </button>
+          </button></>)}
 
           <div className="mt-5 text-center text-sm text-gray-500 dark:text-gray-400">
             {t('auth.hasAccount')}{' '}
