@@ -981,7 +981,6 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
 
       {/* Train list */}
       <div className="relative z-10 flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y px-4 py-3 space-y-3 pb-28 md:pb-4" style={{ WebkitOverflowScrolling: 'touch' }}>
-        <AdSenseAd adSlot="auto" className="mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
         <div className="flex items-start gap-2 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800 text-xs text-emerald-700 dark:text-emerald-300">
           <Info className="w-4 h-4 shrink-0 mt-0.5 text-emerald-500" />
           <span>
@@ -998,17 +997,21 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
             <p className="text-sm mt-1">{bn ? 'অন্য কীওয়ার্ড দিয়ে খুঁজুন' : 'Try a different keyword'}</p>
           </div>
         ) : (
-          filtered.map(route => (
-            <TrainCard
-              key={route.id}
-              route={route}
-              onClick={() => onSelectTrain ? onSelectTrain(route) : setSelectedTrain(route)}
-              onRateClick={() => onRateTrain ? onRateTrain(route) : setSelectedTrain(route)}
-              ratingSummary={trainRatingsMap[route.id]}
-              isFavorite={favoriteTrainIds.includes(route.id)}
-              onToggleFavorite={() => toggleFavoriteTrain(route.id)}
-              language={language}
-            />
+          filtered.map((route, idx) => (
+            <React.Fragment key={route.id}>
+              {idx > 0 && idx % 6 === 4 && (
+                <AdSenseAd adSlot="auto" adFormat="fluid" className="my-3 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+              )}
+              <TrainCard
+                route={route}
+                onClick={() => onSelectTrain ? onSelectTrain(route) : setSelectedTrain(route)}
+                onRateClick={() => onRateTrain ? onRateTrain(route) : setSelectedTrain(route)}
+                ratingSummary={trainRatingsMap[route.id]}
+                isFavorite={favoriteTrainIds.includes(route.id)}
+                onToggleFavorite={() => toggleFavoriteTrain(route.id)}
+                language={language}
+              />
+            </React.Fragment>
           ))
         )}
       </div>
