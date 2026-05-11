@@ -81,16 +81,14 @@ async function getClientIP(): Promise<string> {
 
 // ── GitHub Contents API helpers ───────────────────────────────────────────────
 
-async function fetchRepo<T = unknown>(repo: 'd' | 'a', path: string): Promise<T | null> {
+async function fetchRepo<T = unknown>(repo: 'd' | 'a', path: string, attempt = 0): Promise<T | null> {
   let res: Response;
   try {
     if (PROXY) {
-      // Proxy path: Worker returns only decoded JSON, hiding all GitHub metadata
       res = await fetch(`${PROXY}/gh?r=${repo}&p=${encodeURIComponent(path)}`, {
         credentials: 'omit',
       });
     } else {
-      // Direct path: full GitHub API response visible in DevTools
       const base = repo === 'd' ? DATA_BASE : APP_BASE;
       res = await fetch(`${base}/contents/${path}`, { headers: ghHeaders() });
     }
@@ -98,6 +96,11 @@ async function fetchRepo<T = unknown>(repo: 'd' | 'a', path: string): Promise<T 
     throw new Error(friendlyNetworkError(err));
   }
   if (res.status === 404) return null;
+  // Retry once on 429 after a short delay
+  if (res.status === 429 && attempt === 0) {
+    await new Promise(r => setTimeout(r, 3000));
+    return fetchRepo<T>(repo, path, 1);
+  }
   if (!res.ok) throw new Error(friendlyHttpError(res.status));
   if (PROXY) {
     return res.json() as Promise<T>;
@@ -118,7 +121,7 @@ async function fetchDataFile<T = unknown>(path: string): Promise<T | null> {
   const data = await fetchRepo<T>('d', path);
 
   if (path === 'data/users/index.json' && data) {
-    userIndexCache = { data, expires: Date.now() + 300_000 };
+    userIndexCache = { data, expires: Date.now() + 600_000 };
   }
 
   return data;
@@ -433,6 +436,9 @@ const AUTH_ERROR_KEY_MAP: Record<string, string> = {
   'An unexpected error occurred. Please try again.':                   'auth.validation.somethingWentWrong',
   'Service not found. Please try again later.':                        'auth.validation.connectionFailed',
   'Failed to read data. Please check your connection and try again.':  'auth.validation.connectionFailed',
+  'Google sign-in was cancelled.':                                     'auth.validation.googleCancelled',
+  'Popup was blocked. Please allow popups for this site and try again.': 'auth.validation.googlePopupBlocked',
+  'Google sign-in is not configured. Please contact support.':         'auth.validation.googleLoginFailed',
 };
 
 const AUTH_ERROR_PATTERNS: Array<[RegExp, string]> = [
@@ -470,9 +476,32 @@ export async function loginWithGoogle(): Promise<{
   googlePhotoUrl?: string;
 }> {
   const { signInWithPopup } = await import('firebase/auth');
-  const { auth, googleProvider } = await import('./firebaseConfig');
+  const { auth, googleProvider, isFirebaseConfigured } = await import('./firebaseConfig');
 
-  const result = await signInWithPopup(auth, googleProvider);
+  if (!isFirebaseConfigured) {
+    throw new Error('Google sign-in is not configured. Please contact support.');
+  }
+
+  let result;
+  try {
+    result = await signInWithPopup(auth, googleProvider);
+  } catch (err: unknown) {
+    const code = (err as { code?: string }).code ?? '';
+    if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
+      throw new Error('Google sign-in was cancelled.');
+    }
+    if (code === 'auth/popup-blocked') {
+      throw new Error('Popup was blocked. Please allow popups for this site and try again.');
+    }
+    if (code === 'auth/network-request-failed') {
+      throw new Error('Connection failed. Please check your internet and try again.');
+    }
+    if (code === 'auth/too-many-requests') {
+      throw new Error('Too many requests. Please wait a moment and try again.');
+    }
+    throw err;
+  }
+
   const firebaseUser = result.user;
   if (!firebaseUser.email) throw new Error('Google account has no email address.');
 
