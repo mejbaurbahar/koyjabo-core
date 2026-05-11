@@ -93,6 +93,11 @@ async function registerPWAWorker() {
     const mod = await import(/* @vite-ignore */ 'virtual:pwa-register');
     mod.registerSW({
       immediate: true,
+      onNeedRefresh() {
+        // New service worker activated with new assets — reload so the running
+        // page doesn't try to load old chunk filenames that no longer exist.
+        window.location.reload();
+      },
       onOfflineReady() {
         window.dispatchEvent(new CustomEvent('pwa-offline-ready'));
       },
@@ -103,3 +108,11 @@ async function registerPWAWorker() {
 }
 
 void registerPWAWorker();
+
+// Backup: if the SW controller changes (new SW took over), reload immediately.
+// This catches the case where skipWaiting activates a new SW mid-session.
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    window.location.reload();
+  });
+}

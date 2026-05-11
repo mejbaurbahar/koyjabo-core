@@ -131,7 +131,7 @@ export default defineConfig(({ mode }) => {
           skipWaiting: true,
           clientsClaim: true,
           // Cache versioning for proper updates
-          cacheId: 'dhaka-commute-v12',
+          cacheId: 'dhaka-commute-v13',
           maximumFileSizeToCacheInBytes: 10485760, // 10 MB
 
           runtimeCaching: [
@@ -401,15 +401,8 @@ export default defineConfig(({ mode }) => {
           output: {
             assetFileNames: 'assets/[name]-[hash].[ext]',
             manualChunks: {
-              // Heavy mapping libraries loaded lazily — split so app shell is tiny
-              maplibre: ['maplibre-gl'],
               leaflet: ['leaflet'],
-              // Core React runtime — cached separately from app code
-              vendor: ['react', 'react-dom'],
-              // Icon library — large but tree-shaken by Rollup
-              icons: ['lucide-react'],
-              // Markdown renderer — only needed on blog/docs routes
-              markdown: ['react-markdown', 'remark-gfm'],
+              vendor: ['react', 'react-dom', 'lucide-react']
             }
           }
         },
