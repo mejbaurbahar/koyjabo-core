@@ -4188,7 +4188,7 @@ const App: React.FC = () => {
               desktopLeftScrollTopRef.current = e.currentTarget.scrollTop;
             }
           }}
-          className="flex-1 overflow-y-auto overscroll-y-contain px-4 pb-nav-safe md:pb-4 space-y-3 touch-pan-y"
+          className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain px-4 pb-nav-safe md:pb-4 space-y-3 touch-pan-y"
           style={{ overflowAnchor: 'none', WebkitOverflowScrolling: 'touch' }}
         >
 
@@ -4507,18 +4507,18 @@ const App: React.FC = () => {
 
         <main className="flex flex-1 min-h-0 overflow-hidden relative w-full max-w-full mx-auto bg-slate-50 dark:bg-slate-900 md:pt-20">
           {/* Left Sidebar (Desktop) / Main View (Mobile Home) */}
-          <div className={`
-            ${'flex flex-col flex-1 min-h-0 w-full md:flex-none md:w-1/3 md:min-w-[320px] md:max-w-md border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900 z-0 overflow-hidden'}
-            ${view === AppView.HOME || view === AppView.TRAIN_LIST ? '' : (view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? 'hidden' : 'hidden md:flex'}
-`}>
+          <div
+            className={`flex flex-col flex-1 min-h-0 w-full md:flex-none md:w-1/3 md:min-w-[320px] md:max-w-md border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900 z-0 overflow-hidden ${view !== AppView.HOME && view !== AppView.TRAIN_LIST && 'hidden md:flex'}`}
+            style={(view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? { display: 'none' } : undefined}
+          >
             <div className="flex-1 min-h-0 flex flex-col md:pt-0">
               {renderHomeContent()}
             </div>
           </div>
 
-          {/* Right Content Area (Desktop) / Views (Mobile) — flex column so each full-page view is the only in-flow child */}
+          {/* Right Content Area (Desktop) / Views (Mobile) — grid with 1fr row gives each page a definite height for Safari overflow-y scroll */}
           <div className={`
-            ${'flex-1 h-full min-h-0 w-full min-w-0 bg-slate-50 dark:bg-slate-950 relative overflow-hidden flex flex-col'}
+            ${'flex-1 min-h-0 w-full min-w-0 bg-slate-50 dark:bg-slate-950 relative overflow-hidden grid grid-rows-[1fr]'}
             ${(view === AppView.HOME || view === AppView.TRAIN_LIST) && 'hidden md:block'}
 `}>
             <div className={`hidden md:block absolute inset-0 w-full h-full min-h-0 transition-opacity duration-500 ${(view === AppView.HOME || view === AppView.TRAIN_LIST) ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}><DhakaAlive /></div>
