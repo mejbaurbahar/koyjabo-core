@@ -4193,7 +4193,7 @@ const App: React.FC = () => {
         >
 
           {/* Ad Banner - in scrollable area so it doesn't shrink bus list */}
-
+          <AdSenseAd adSlot="auto" className="mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
           {/* Intelligent Route Suggestions - Hide in Favorites Mode */}
           {(suggestedRoutes.length > 0 && listFilter !== 'FAVORITES') && (

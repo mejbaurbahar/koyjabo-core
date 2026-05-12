@@ -2907,5 +2907,762 @@ Bangladesh will surprise you. Plan your transport with **[KoyJabo.com](https://k
 
 #বাংলাদেশভ্রমণ #পর্যটনগাইড #কইযাবো #ভিজিটবাংলাদেশ
 `
+	},
+	{
+		id: 'bangladesh-visa-guide-uk-us-uae-canada-2026',
+		slug: 'bangladesh-visa-guide-uk-us-uae-canada-2026',
+		title: 'Bangladesh Visa Guide 2026: UK, US, UAE, Canada & EU Citizens — Fees, Requirements & How to Apply',
+		bnTitle: 'বাংলাদেশ ভিসা গাইড ২০২৬: ব্রিটেন, আমেরিকা, ইউএই, কানাডা ও ইউরোপ থেকে আবেদন পদ্ধতি',
+		excerpt: 'Everything you need to know about getting a Bangladesh visa in 2026 — visa on arrival, e-visa, tourist visa fees, required documents, and step-by-step application guide for UK, US, UAE, Canada and EU passport holders.',
+		bnExcerpt: 'ব্রিটেন, আমেরিকা, ইউএই ও কানাডা থেকে বাংলাদেশ ভিসা পাওয়ার সম্পূর্ণ গাইড — ভিসা অন অ্যারাইভাল, ই-ভিসা, প্রয়োজনীয় কাগজপত্র ও আবেদন প্রক্রিয়া।',
+		coverImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Flag_of_Bangladesh.svg/1200px-Flag_of_Bangladesh.svg.png',
+		author: 'KoyJabo Team',
+		publishDate: '2026-05-10',
+		readTime: '10 min read',
+		keywords: [
+			'Bangladesh visa UK citizens 2026', 'Bangladesh tourist visa USA', 'Bangladesh visa on arrival',
+			'Bangladesh e-visa apply online', 'Bangladesh visa fee 2026', 'Bangladesh visa requirements',
+			'how to get Bangladesh visa from UK', 'Bangladesh visa from USA', 'Bangladesh visa Dubai',
+			'Bangladesh visa Canada', 'Bangladesh visa EU citizens', 'Bangladesh immigration',
+			'visit Bangladesh visa', 'Bangladesh tourist visa documents', 'Bangladesh visa application'
+		],
+		category: 'Travel Guide',
+		content: `
+Planning a trip to Bangladesh? Getting your visa sorted is the first step. This complete guide covers everything UK, US, UAE, Canada and EU citizens need to know about Bangladesh visas in 2026.
+
+---
+
+## 🛂 Do You Need a Visa for Bangladesh?
+
+Most Western passport holders can enter Bangladesh through one of three routes:
+
+| Nationality | Visa Option |
+|---|---|
+| UK, USA, Canada, Australia, EU | Visa on Arrival (VOA) at Dhaka Airport |
+| UAE residents | Visa on Arrival |
+| Most South Asian nationalities | Prior visa required at embassy |
+| Indian nationals | Special tourist visa — apply in advance |
+
+> **Important:** Visa on Arrival is only available at **Hazrat Shahjalal International Airport (DAC), Dhaka** — NOT at land borders.
+
+---
+
+## 💳 Bangladesh Visa on Arrival (VOA) — 2026
+
+The easiest option for most Western travellers.
+
+**Eligibility:** Citizens of UK, USA, Canada, Australia, New Zealand, most EU countries, UAE, and 50+ other nationalities.
+
+**Fee:** $50 USD (paid in cash at the airport)
+
+**Duration:** 30 days (can be extended up to 90 days at the Department of Immigration in Dhaka)
+
+**Documents required at airport:**
+- Valid passport (minimum 6 months validity)
+- Return/onward flight ticket
+- Hotel booking confirmation or invitation letter
+- Proof of sufficient funds ($50 per day recommended)
+- 2 passport-size photographs
+- Completed visa form (available at airport)
+
+**Processing time:** 30–60 minutes at the airport immigration desk.
+
+---
+
+## 💻 Bangladesh E-Visa — Apply Online Before You Travel
+
+Bangladesh now offers an **e-visa** that you can apply for before departure — avoiding airport queues.
+
+**Apply at:** [evisa.immigration.gov.bd](https://evisa.immigration.gov.bd)
+
+**Processing time:** 3–5 working days
+
+**Fee:** $52 USD (including service charge), paid by card online
+
+**Documents needed:**
+- Scanned passport (bio-data page)
+- Recent passport photo (JPEG, white background)
+- Hotel booking or invitation letter
+- Bank statement (last 3 months)
+- Travel itinerary
+
+**Steps to apply:**
+1. Go to Bangladesh e-visa portal
+2. Select "Tourist Visa"
+3. Fill in personal and travel details
+4. Upload documents
+5. Pay the fee online
+6. Receive e-visa approval by email (print or save on phone)
+7. Present at airport immigration
+
+---
+
+## 🏛️ Bangladesh Tourist Visa from Embassy/High Commission
+
+If you prefer to apply in person before travelling:
+
+**UK — Bangladesh High Commission London:**
+- Address: 28 Queen's Gate, London SW7 5JA
+- Processing: 2–3 working days (standard), 1 day (express +£20)
+- Fee: £35 (single entry), £55 (multiple entry)
+- Tel: 020 7584 0081
+
+**USA — Bangladesh Embassy Washington DC:**
+- Address: 3510 International Dr NW, Washington DC 20008
+- Processing: 5–7 business days
+- Fee: $160 (single entry tourist visa)
+- Also in: New York, Los Angeles, Houston
+
+**UAE — Bangladesh Embassy Abu Dhabi / Consulate Dubai:**
+- Processing: 3–5 days
+- Fee: AED 130–200
+
+**Canada — Bangladesh High Commission Ottawa:**
+- Processing: 5–10 business days
+- Fee: CAD 60 (single entry)
+
+---
+
+## ⏳ Extending Your Bangladesh Visa
+
+If you're staying longer than 30 days, you can extend at:
+
+**Department of Immigration & Passports, Dhaka**
+- Address: Agargaon, Dhaka 1207
+- Max extension: 90 days total
+- Fee: ৳3,000–5,000 (approx $30–50)
+
+---
+
+## 🚫 Common Visa Mistakes to Avoid
+
+- ❌ Arriving at a land border expecting VOA — it's only available at Dhaka airport
+- ❌ Insufficient cash — the $50 VOA fee must be in USD, not local currency
+- ❌ No return ticket — immigration may ask for proof of onward travel
+- ❌ Applying too late — e-visa takes 3–5 days, don't leave it to the last minute
+
+---
+
+## ✅ Quick Checklist for Bangladesh Visa
+
+- [ ] Check if your nationality qualifies for Visa on Arrival
+- [ ] Book flights and hotel first (needed for visa application)
+- [ ] Prepare passport photos (2 copies, recent)
+- [ ] Bring $50–60 USD cash for VOA fee
+- [ ] Print your e-visa approval if applying online
+- [ ] Check passport expiry (must be valid 6+ months)
+
+---
+
+## 🗺️ Planning Your Bangladesh Trip?
+
+Once your visa is sorted, use **[KoyJabo.com](https://koyjabo.com)** to plan all your transport in Bangladesh — Dhaka bus routes, Metro Rail, intercity buses, trains, and flights.
+
+#BangladeshVisa #VisitBangladesh2026 #BangladeshTourism #UKtoBangladesh #USAtoBangladesh
+`,
+		bnContent: `
+বাংলাদেশ ভ্রমণের পরিকল্পনা করছেন? ভিসার বিষয়টি আগে থেকে জেনে নিন। এই গাইডে যুক্তরাজ্য, আমেরিকা, ইউএই ও কানাডার নাগরিকদের জন্য বাংলাদেশ ভিসার সম্পূর্ণ তথ্য দেওয়া হয়েছে।
+
+---
+
+## 🛂 কারা ভিসা অন অ্যারাইভালে আসতে পারবেন?
+
+| দেশ | ভিসার ধরন |
+|---|---|
+| ব্রিটেন, আমেরিকা, কানাডা, অস্ট্রেলিয়া, ইইউ | ভিসা অন অ্যারাইভাল |
+| ইউএই | ভিসা অন অ্যারাইভাল |
+| ভারত, পাকিস্তান | আগাম ভিসা লাগবে |
+
+**গুরুত্বপূর্ণ:** ভিসা অন অ্যারাইভাল শুধুমাত্র **হযরত শাহজালাল আন্তর্জাতিক বিমানবন্দর, ঢাকা** — স্থলসীমান্তে পাওয়া যায় না।
+
+---
+
+## 💳 ভিসা অন অ্যারাইভাল ২০২৬
+
+- **ফি:** $৫০ মার্কিন ডলার (নগদ)
+- **মেয়াদ:** ৩০ দিন (৯০ দিন পর্যন্ত বাড়ানো যাবে)
+- **প্রয়োজনীয় কাগজ:** পাসপোর্ট, রিটার্ন টিকেট, হোটেল বুকিং, ২ কপি ছবি
+
+---
+
+## 💻 ই-ভিসা অনলাইনে আবেদন
+
+- **ওয়েবসাইট:** evisa.immigration.gov.bd
+- **প্রসেসিং টাইম:** ৩–৫ কার্যদিবস
+- **ফি:** $৫২ মার্কিন ডলার (অনলাইন কার্ডে পেমেন্ট)
+
+---
+
+## 🏛️ দেশ ভিত্তিক দূতাবাস তথ্য
+
+- **যুক্তরাজ্য:** বাংলাদেশ হাই কমিশন, লন্ডন — ফি £৩৫
+- **আমেরিকা:** বাংলাদেশ দূতাবাস, ওয়াশিংটন ডিসি — ফি $১৬০
+- **ইউএই:** বাংলাদেশ দূতাবাস, আবুধাবি — ফি AED ১৩০–২০০
+- **কানাডা:** বাংলাদেশ হাই কমিশন, অটোয়া — ফি CAD ৬০
+
+---
+
+বাংলাদেশে এসে যাতায়াতের জন্য **[KoyJabo.com](https://koyjabo.com)** ব্যবহার করুন।
+
+#বাংলাদেশভিসা #ভিজিটবাংলাদেশ #কইযাবো
+`
+	},
+	{
+		id: 'best-hotels-coxs-bazar-accommodation-guide-2026',
+		slug: 'best-hotels-coxs-bazar-accommodation-guide-2026',
+		title: "Best Hotels & Resorts in Cox's Bazar 2026: Where to Stay (Budget to Luxury)",
+		bnTitle: "কক্সবাজারে সেরা হোটেল ও রিসোর্ট ২০২৬: বাজেট থেকে বিলাসবহুল",
+		excerpt: "Looking for the best place to stay in Cox's Bazar? This complete hotel guide covers budget guesthouses, mid-range hotels and luxury beach resorts — with prices, locations and booking tips for 2026.",
+		bnExcerpt: "কক্সবাজারে কোথায় থাকবেন? এই গাইডে বাজেট গেস্টহাউস থেকে শুরু করে লাক্সারি বিচ রিসোর্ট পর্যন্ত সেরা হোটেলের তালিকা, দাম ও বুকিং টিপস।",
+		coverImage: '/blog/ai-traffic-system-dhaka.jpg',
+		author: 'KoyJabo Team',
+		publishDate: '2026-05-09',
+		readTime: '9 min read',
+		keywords: [
+			"Cox's Bazar hotels 2026", "best hotels Cox's Bazar", "Cox's Bazar beach resort",
+			"Cox's Bazar accommodation", "where to stay Cox's Bazar", "Cox's Bazar luxury hotel",
+			"Cox's Bazar budget hotel", "Hotel Sea Crown Cox's Bazar", "Long Beach Hotel Cox's Bazar",
+			"Saifuls Beach Resort", "Cox's Bazar hotel booking", "Cox's Bazar hotel price",
+			"Cox's Bazar hotel near beach", "koxs bazar best resort", "Bangladesh beach hotel"
+		],
+		category: 'Travel Guide',
+		content: `
+Cox's Bazar is home to the world's longest natural sea beach — 120km of unbroken coastline. Whether you're looking for a budget guesthouse or a five-star resort with an ocean view, this guide covers the best places to stay in 2026.
+
+---
+
+## 🏨 Best Luxury Hotels in Cox's Bazar
+
+### 1. Long Beach Hotel ⭐⭐⭐⭐⭐
+One of the most popular luxury hotels right on Cox's Bazar beach. Stunning sea views, rooftop pool, multiple restaurants.
+- **Price:** ৳8,000–18,000/night
+- **Location:** Kolatoli Road (main beach strip)
+- **Highlights:** Direct beach access, sea-view rooms, infinity pool
+
+### 2. Ocean Paradise Hotel & Resort ⭐⭐⭐⭐⭐
+Massive resort complex with private beach area, water park, and conference facilities.
+- **Price:** ৳7,500–20,000/night
+- **Location:** Kolatoli, Cox's Bazar
+- **Highlights:** Water park, multiple pools, children's play area
+
+### 3. Hotel Saifuls ⭐⭐⭐⭐
+Well-established beachfront hotel with excellent service and great seafood restaurant.
+- **Price:** ৳5,000–12,000/night
+- **Location:** Kolatoli Beach
+- **Highlights:** Beachfront, seafood restaurant, rooftop bar
+
+### 4. Cox's Bazar Marriott Hotel ⭐⭐⭐⭐⭐
+The newest international brand hotel in Cox's Bazar. World-class amenities.
+- **Price:** ৳12,000–30,000/night
+- **Highlights:** International standard, gym, spa, business centre
+
+---
+
+## 🏩 Best Mid-Range Hotels (৳2,000–6,000/night)
+
+### Hotel Motel Zone (Main Options)
+The "Hotel-Motel Zone" (মোটেল জোন) on Kolatoli Road is the main tourist strip with 50+ mid-range hotels.
+
+| Hotel | Price/Night | Notable Feature |
+|---|---|---|
+| Hotel Seagull | ৳2,500–4,500 | Great views, central location |
+| Hotel Cox Today | ৳2,000–4,000 | Good value, clean rooms |
+| Hotel Unique | ৳2,500–5,000 | Beachfront access |
+| Hotel Praasad Paradise | ৳3,000–6,000 | Sea-view rooms |
+| Hotel Coral Reef | ৳2,000–3,500 | Budget-friendly, clean |
+
+**Best areas to stay:**
+- **Kolatoli Beach Road** — main tourist strip, closest to the beach
+- **Sugandha Beach Area** — quieter, more upscale
+- **Laboni Beach Area** — near bus terminal, convenient
+
+---
+
+## 🛏️ Budget Accommodation (Under ৳2,000/night)
+
+If you're travelling on a tight budget, there are plenty of decent guesthouses:
+
+- **Hotel Hill Side** — ৳600–1,200/night, clean, near beach
+- **Hotel Sun Rise** — ৳800–1,500/night
+- **Various guest houses** in Kolatoli area — ৳500–1,000/night
+
+> **Tip:** Book in advance for weekends and public holidays — Cox's Bazar fills up fast during Eid and winter peak season (November–February).
+
+---
+
+## 🏕️ Eco-Resorts & Unique Stays
+
+### Inani Beach Area
+About 20km south of Cox's Bazar, Inani Beach is quieter and more scenic. Great for couples and nature lovers.
+- **Inani Beach Resort** — ৳3,000–8,000/night
+- **BWTC Eco Resort** — government-run, affordable
+
+### Himchori
+- Waterfalls, hills, rice paddies
+- A few boutique eco-lodges available
+
+---
+
+## 📅 Best Time to Book
+
+| Season | Dates | Notes |
+|---|---|---|
+| Peak | November–February | Book 1–2 weeks in advance |
+| Shoulder | March–May | Good deals, less crowded |
+| Monsoon | June–October | Very cheap but rough sea |
+| Eid holidays | Varies | Book 1 month+ in advance |
+
+---
+
+## 💡 Hotel Booking Tips for Cox's Bazar
+
+1. **Book directly** with the hotel for the best price (many hotels give 10–20% discount vs OTA)
+2. **Compare on Booking.com / Agoda** for international travellers
+3. **For local bookings**, Shohoz.com and Pathao are popular
+4. **Always request a sea-view room** — worth the upgrade
+5. **Check if breakfast is included** — many hotels in the ৳3,000+ range include it
+
+---
+
+## 🚌 Getting to Cox's Bazar from Dhaka
+
+Use **[KoyJabo.com](https://koyjabo.com)** to find all transport options:
+
+| Mode | Journey Time | Cost |
+|---|---|---|
+| AC Bus (Green Line/Hanif) | 10–12 hrs | ৳900–2,500 |
+| Train (Cox's Bazar Express) | 10 hrs | ৳745–2,656 |
+| Flight (Biman/US-Bangla/Novoair) | 1 hr | ৳4,500–12,000 |
+
+#CoxsBazar #BangladeshHotels #CoxsBazarResort #BangladeshBeach #VisitBangladesh2026
+`,
+		bnContent: `
+কক্সবাজার — পৃথিবীর দীর্ঘতম প্রাকৃতিক সমুদ্র সৈকত। এই গাইডে ২০২৬ সালের সেরা হোটেল ও রিসোর্টের তালিকা, দাম এবং বুকিং টিপস দেওয়া হয়েছে।
+
+---
+
+## 🏨 সেরা বিলাসবহুল হোটেল
+
+### ১. লং বিচ হোটেল ⭐⭐⭐⭐⭐
+- **দাম:** ৳৮,০০০–১৮,০০০/রাত
+- **সুবিধা:** সরাসরি বিচ অ্যাক্সেস, ইনফিনিটি পুল, সি-ভিউ রুম
+
+### ২. ওশান প্যারাডাইস হোটেল ⭐⭐⭐⭐⭐
+- **দাম:** ৳৭,৫০০–২০,০০০/রাত
+- **সুবিধা:** ওয়াটার পার্ক, প্রাইভেট বিচ
+
+### ৩. হোটেল সাইফুলস ⭐⭐⭐⭐
+- **দাম:** ৳৫,০০০–১২,০০০/রাত
+- **সুবিধা:** বিচফ্রন্ট, সিফুড রেস্তোরাঁ
+
+---
+
+## 🏩 মধ্যম মানের হোটেল (৳২,০০০–৬,০০০/রাত)
+
+কলাতলী রোডের "হোটেল-মোটেল জোন"-এ ৫০টিরও বেশি হোটেল আছে।
+
+| হোটেল | দাম/রাত | বিশেষত্ব |
+|---|---|---|
+| হোটেল সীগাল | ৳২,৫০০–৪,৫০০ | কেন্দ্রীয় অবস্থান |
+| কক্স টুডে হোটেল | ৳২,০০০–৪,০০০ | সাশ্রয়ী, পরিষ্কার |
+| হোটেল ইউনিক | ৳২,৫০০–৫,০০০ | বিচ অ্যাক্সেস |
+
+---
+
+## 🚌 ঢাকা থেকে কক্সবাজার যাওয়ার উপায়
+
+রুট ও ভাড়া জানতে **[KoyJabo.com](https://koyjabo.com)** ব্যবহার করুন।
+
+| মাধ্যম | সময় | ভাড়া |
+|---|---|---|
+| এসি বাস | ১০–১২ ঘন্টা | ৳৯০০–২,৫০০ |
+| ট্রেন | ১০ ঘন্টা | ৳৭৪৫–২,৬৫৬ |
+| ফ্লাইট | ১ ঘন্টা | ৳৪,৫০০–১২,০০০ |
+
+#কক্সবাজার #হোটেল #বাংলাদেশপর্যটন #কইযাবো
+`
+	},
+	{
+		id: 'cheap-flights-from-bangladesh-dubai-london-usa-2026',
+		slug: 'cheap-flights-from-bangladesh-dubai-london-usa-2026',
+		title: 'Cheap Flights from Bangladesh 2026: Dhaka to Dubai, London, USA, Malaysia & More',
+		bnTitle: 'বাংলাদেশ থেকে সস্তায় বিদেশ যাওয়ার উপায় ২০২৬: দুবাই, লন্ডন, আমেরিকা, মালয়েশিয়া',
+		excerpt: 'How to find the cheapest international flights from Dhaka (DAC) in 2026. Best airlines, cheapest routes, booking tips and price comparison for Bangladesh to Dubai, UK, USA, Malaysia, Singapore, Saudi Arabia and more.',
+		bnExcerpt: 'ঢাকা থেকে দুবাই, লন্ডন, আমেরিকা, মালয়েশিয়া যাওয়ার সবচেয়ে সস্তা বিমান কোথায় পাবেন? এয়ারলাইন্স তুলনা, বুকিং টিপস এবং ২০২৬ সালের সর্বনিম্ন ভাড়া।',
+		coverImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Flag_of_Bangladesh.svg/1200px-Flag_of_Bangladesh.svg.png',
+		author: 'KoyJabo Team',
+		publishDate: '2026-05-08',
+		readTime: '11 min read',
+		keywords: [
+			'cheap flights Dhaka 2026', 'Bangladesh to Dubai cheap flight', 'Dhaka to London cheap ticket',
+			'Bangladesh to USA cheap flight', 'Dhaka to Malaysia flight price', 'Dhaka to Saudi Arabia flight',
+			'Biman Bangladesh flights', 'Emirates flights from Dhaka', 'Qatar Airways Dhaka',
+			'cheap international flights Bangladesh', 'DAC airport flights', 'Bangladesh to UK flight cost',
+			'Dhaka to Singapore flight', 'Dhaka to Canada flight', 'best airlines from Bangladesh'
+		],
+		category: 'Travel Guide',
+		content: `
+Dhaka's Hazrat Shahjalal International Airport (DAC) is well-connected to the world. Whether you're heading to the Middle East for work, the UK to visit family, or Southeast Asia for a holiday, this guide shows you how to find the cheapest flights from Bangladesh.
+
+---
+
+## ✈️ Major Airlines Flying from Dhaka
+
+| Airline | Key Routes | Known For |
+|---|---|---|
+| **Biman Bangladesh** | Dubai, London, New York, Kuala Lumpur | National carrier, good prices |
+| **Emirates** | Dubai hub → worldwide | Comfort, best connections |
+| **Qatar Airways** | Doha hub → worldwide | Award-winning service |
+| **Saudi Arabian Airlines** | Riyadh, Jeddah, Medina | Popular for Hajj/Umrah |
+| **Air Arabia** | Sharjah/UAE | Cheapest to UAE |
+| **flydubai** | Dubai | Budget-friendly |
+| **AirAsia** | Kuala Lumpur | Cheapest to Malaysia |
+| **Singapore Airlines** | Singapore | Premium, great connections |
+| **IndiGo / Air India** | India connections | Short hops to India |
+| **Thai Airways** | Bangkok | Good price to Southeast Asia |
+| **US-Bangla Airlines** | Regional + international | Dhaka–Kolkata–regional |
+| **Novoair** | Regional Bangladesh | Domestic only |
+
+---
+
+## 💰 Average Flight Prices from Dhaka (2026)
+
+### Dhaka to Dubai (UAE)
+- **Economy one-way:** $280–520
+- **Cheapest options:** Air Arabia, flydubai (via Sharjah/Dubai)
+- **Flight time:** 5–6 hours
+- **Tip:** Book 6–8 weeks in advance for best prices
+
+### Dhaka to London (UK)
+- **Economy one-way:** $450–900
+- **Cheapest options:** Biman Bangladesh direct, or Gulf carriers (1 stop)
+- **Flight time:** 10–12 hrs direct; 14–16 hrs with 1 stop
+- **Tip:** Biman's direct Dhaka–London Heathrow is often cheapest ($450–600)
+
+### Dhaka to New York / USA
+- **Economy round trip:** $900–1,800
+- **Common routes:** Dhaka → Dubai/Doha → New York JFK/Newark
+- **Airlines:** Emirates, Qatar, Biman (to New York via London)
+- **Flight time:** 18–22 hours total
+
+### Dhaka to Kuala Lumpur (Malaysia)
+- **Economy one-way:** $120–280
+- **Cheapest:** AirAsia, Biman, Malindo Air
+- **Flight time:** 4–5 hours
+- **Tip:** Malaysia visa-free for Bangladeshi nationals
+
+### Dhaka to Singapore
+- **Economy one-way:** $200–400
+- **Airlines:** Singapore Airlines, SilkAir, Biman, IndiGo (via Kolkata)
+- **Flight time:** 4–5 hours
+
+### Dhaka to Saudi Arabia (Riyadh / Jeddah)
+- **Economy one-way:** $180–400
+- **Airlines:** Saudi Arabian Airlines, Biman, Air Arabia, flydubai
+- **Flight time:** 5–6 hours
+- **Tip:** Book 2–3 months in advance for Umrah season (best prices)
+
+### Dhaka to Toronto / Canada
+- **Economy round trip:** $1,100–2,200
+- **Routes:** Via London, Dubai, or New York
+- **Airlines:** Biman+Air Canada, Emirates+AC, Qatar+AC
+
+---
+
+## 🗓️ When to Book for Cheapest Prices
+
+| Booking Window | Savings |
+|---|---|
+| 3–4 months in advance | Up to 40% cheaper |
+| 6–8 weeks in advance | 20–30% cheaper |
+| Last minute | Usually expensive |
+
+**Cheapest travel months from Dhaka:**
+- **To Middle East:** February–March, September–October
+- **To UK/Europe:** January–March (avoid June–August peak)
+- **To Southeast Asia:** May–June, September–November
+
+---
+
+## 🔍 How to Find Cheap Flights from Bangladesh
+
+### Best Comparison Sites
+1. **Google Flights** — best for comparing and tracking prices
+2. **Skyscanner** — great for flexible date search
+3. **Kayak** — good for alerts
+4. **Booking.com Flights** — occasional exclusive deals
+5. **Official airline websites** — sometimes cheaper than OTAs (Biman Bangladesh especially)
+
+### Money-Saving Tips
+- **Use "Explore" on Google Flights** — shows cheapest months visually
+- **Set price alerts** on Skyscanner — get notified when prices drop
+- **Clear cookies or use incognito** when booking — prices sometimes increase after repeat visits
+- **Book domestic Dhaka flights** on KoyJabo for onward connections
+- **Check nearby airports** — Chittagong (CGP) sometimes cheaper for Middle East routes
+
+---
+
+## 🛫 Dhaka Airport (DAC) — Terminal Info
+
+**Hazrat Shahjalal International Airport (DAC)**
+- Terminal 1: Domestic flights (Biman, US-Bangla, Novoair)
+- Terminal 2: All international flights
+- **Getting to airport from Dhaka:** Uber/Pathao ৳300–500, taxi ৳500–700
+- **Metro Rail:** Take MRT-6 to Uttara North, then rickshaw/CNG (10 min)
+
+---
+
+## 🌍 New: Terminal 3 Under Construction
+
+The new Terminal 3 at Dhaka airport (scheduled 2027) will significantly increase capacity. International airline routes are expected to expand.
+
+---
+
+Use **[KoyJabo.com](https://koyjabo.com)** to find domestic transport options once you arrive in Bangladesh.
+
+#CheapFlightsBangladesh #DhakaFlights #BimandBangladesh #Bangladesh2026 #VisitBangladesh
+`,
+		bnContent: `
+ঢাকার হযরত শাহজালাল আন্তর্জাতিক বিমানবন্দর (DAC) থেকে সারা বিশ্বে ফ্লাইট রয়েছে। এই গাইডে সবচেয়ে কম দামে বিদেশ যাওয়ার উপায় দেওয়া হয়েছে।
+
+---
+
+## ✈️ ঢাকা থেকে প্রধান আন্তর্জাতিক ফ্লাইট
+
+| এয়ারলাইন | রুট | বৈশিষ্ট্য |
+|---|---|---|
+| **বিমান বাংলাদেশ** | দুবাই, লন্ডন, নিউ ইয়র্ক | জাতীয় বাহক, ভালো দাম |
+| **এমিরেটস** | দুবাই হয়ে বিশ্বব্যাপী | আরামদায়ক |
+| **কাতার এয়ারওয়েজ** | দোহা হয়ে বিশ্বব্যাপী | পুরস্কারজয়ী সেবা |
+| **এয়ার আরাবিয়া** | শারজাহ/ইউএই | ইউএই-তে সবচেয়ে সস্তা |
+| **এয়ারএশিয়া** | কুয়ালালামপুর | মালয়েশিয়ায় সস্তা |
+
+---
+
+## 💰 গড় একমুখী ভাড়া (২০২৬)
+
+| গন্তব্য | ভাড়া |
+|---|---|
+| দুবাই | $২৮০–৫২০ |
+| লন্ডন | $৪৫০–৯০০ |
+| নিউ ইয়র্ক | $৯০০–১,৮০০ (রাউন্ড ট্রিপ) |
+| কুয়ালালামপুর | $১২০–২৮০ |
+| সিঙ্গাপুর | $২০০–৪০০ |
+| রিয়াদ/জেদ্দা | $১৮০–৪০০ |
+
+---
+
+## 🔍 সস্তায় টিকেট পাওয়ার উপায়
+
+১. **Google Flights**-এ মূল্য ট্র্যাক করুন
+২. **Skyscanner**-এ প্রাইস অ্যালার্ট সেট করুন
+৩. **৩–৪ মাস আগে বুক করুন** — ৪০% পর্যন্ত সাশ্রয়
+৪. **ইনকগনিটো মোডে বুক করুন** — বারবার সার্চ করলে দাম বাড়তে পারে
+
+---
+
+বাংলাদেশের অভ্যন্তরীণ যাতায়াতের জন্য **[KoyJabo.com](https://koyjabo.com)** ব্যবহার করুন।
+
+#ঢাকাফ্লাইট #সস্তাটিকেট #বিমানবাংলাদেশ #কইযাবো
+`
+	},
+	{
+		id: 'bangladesh-tour-packages-2026-travel-agency-guide',
+		slug: 'bangladesh-tour-packages-2026-travel-agency-guide',
+		title: "Bangladesh Tour Packages 2026: Best Holiday Deals, Prices & Travel Agency Guide",
+		bnTitle: "বাংলাদেশ ট্যুর প্যাকেজ ২০২৬: সেরা ছুটির ডিল, দাম ও ট্রাভেল এজেন্সি গাইড",
+		excerpt: "Looking for the best Bangladesh tour packages in 2026? Compare Cox's Bazar, Sundarbans, Sylhet, Saint Martin, Bandarban and Dhaka tour packages with prices, inclusions and top travel agencies.",
+		bnExcerpt: "কক্সবাজার, সুন্দরবন, সিলেট, সেন্ট মার্টিন ও বান্দরবান ট্যুর প্যাকেজের দাম ও সেরা ট্রাভেল এজেন্সির তালিকা।",
+		coverImage: '/blog/ai-traffic-system-dhaka.jpg',
+		author: 'KoyJabo Team',
+		publishDate: '2026-05-07',
+		readTime: '10 min read',
+		keywords: [
+			"Bangladesh tour packages 2026", "Cox's Bazar tour package price", "Sundarbans tour package Dhaka",
+			"Saint Martin tour package", "Bandarban tour package", "Sylhet tour package Bangladesh",
+			"Bangladesh holiday package", "Bangladesh travel agency", "cheap Bangladesh tour",
+			"Bangladesh group tour", "Bangladesh honeymoon package", "Dhaka day tour",
+			"Bangladesh adventure tour", "best travel agency Bangladesh", "Bangladesh eco tour"
+		],
+		category: 'Travel Guide',
+		content: `
+Bangladesh has some of Southeast Asia's most affordable and rewarding travel destinations. Whether you want a beach holiday at Cox's Bazar, a wildlife adventure in the Sundarbans, or a cultural journey through Dhaka — there's a tour package for every budget.
+
+This guide covers the most popular Bangladesh tour packages in 2026, with prices, inclusions and how to find the best deals.
+
+---
+
+## 🏖️ Cox's Bazar Tour Packages
+
+The most popular destination in Bangladesh — the world's longest natural sea beach.
+
+### 3 Nights / 4 Days Cox's Bazar Package
+**Includes:** Dhaka–Cox's Bazar transport (AC bus), 3-night hotel, breakfast daily, local sightseeing
+
+| Budget Type | Cost Per Person | Hotel Standard |
+|---|---|---|
+| Budget | ৳4,500–6,000 | 2-star guesthouse |
+| Mid-range | ৳7,000–12,000 | 3-star hotel |
+| Premium | ৳15,000–25,000 | 4–5 star beachfront |
+
+**What to see:**
+- Laboni Beach (main beach)
+- Inani Beach (scenic, 27km south)
+- Himchori waterfall
+- Maheshkhali Island day trip
+- Ramu Buddhist temples
+
+### Cox's Bazar + Saint Martin Extension
+Add 2 nights at Saint Martin Island (coral island, November–April only):
+- Extra cost: ৳3,000–6,000 per person
+- Includes: Teknaf–Saint Martin ship, island accommodation
+
+---
+
+## 🌿 Sundarbans Tour Packages (from Dhaka/Khulna)
+
+The Sundarbans is the world's largest mangrove forest and a UNESCO World Heritage Site. Home to the Royal Bengal Tiger.
+
+### 2 Nights / 3 Days Sundarbans Package
+**Route:** Dhaka → Khulna → Sundarbans by boat
+
+| Package Type | Cost Per Person |
+|---|---|
+| Budget (shared boat) | ৳5,000–8,000 |
+| Mid-range (private cabin) | ৳10,000–15,000 |
+| Premium (luxury cruise) | ৳20,000–40,000 |
+
+**Includes:** Return transport Dhaka–Khulna, boat hire, accommodation, meals, forest entry permit, guide
+
+**Best time:** November–February (dry season, tiger sightings more likely)
+
+---
+
+## 🏔️ Bandarban Hill Tracts Tour Packages
+
+Bangladesh's most scenic hill district — perfect for trekking, tribal culture and waterfalls.
+
+### 2 Nights / 3 Days Bandarban Package
+- **Cost:** ৳4,000–9,000 per person
+- **Includes:** Chittagong/Dhaka transport, accommodation, local guide
+
+**Top spots:**
+- Nilgiri Hills (highest accessible peak, 2,200 ft)
+- Boga Lake (crater lake)
+- Chimbuk Hill
+- Tribal village stays (Marma, Murung communities)
+- Nafakhum Waterfall (2-day trek, permit required)
+
+> **Note:** Some areas in Bandarban require a permit. Your tour operator will arrange this.
+
+---
+
+## 🍵 Sylhet Tour Packages
+
+Sylhet is famous for tea gardens, haor wetlands and the Shrine of Hazrat Shah Jalal.
+
+### 2 Nights / 3 Days Sylhet Package
+- **Cost:** ৳4,500–10,000 per person
+- **Highlights:** Tea estates (Srimangal), Jaflong stone beach, Ratargul swamp forest, Bichanakandi
+
+---
+
+## 🏛️ Dhaka City Tour (Day Tour)
+
+Perfect for transit passengers or first-time visitors.
+- **Half-day (4 hrs):** ৳800–1,500 per person
+- **Full day (8 hrs):** ৳1,500–3,000 per person
+
+**Covers:** Lalbagh Fort, Ahsan Manzil (Pink Palace), Sadarghat river port, Old Dhaka food tour
+
+---
+
+## 🏢 Top Travel Agencies in Bangladesh
+
+### For International Tourists
+- **Guide Tours Ltd** — highly rated for Sundarbans and Bandarban
+- **Bengal Tours** — eco-tourism specialist
+- **Ruposhi Bangla Tours** — budget-friendly packages
+- **Bangladesh Eco Tours** — sustainable travel
+
+### For Online Booking
+- **Shohoz.com** — buses, trains, hotels
+- **Booking.com** — international hotel booking
+- **Agoda** — hotels in Cox's Bazar and Dhaka
+- **GetYourGuide** — day tours and activities
+
+---
+
+## 💡 Tips for Booking Bangladesh Tour Packages
+
+1. **Book directly with the agency** for the best price (OTAs add 15–25% markup)
+2. **Ask what's included** — some packages exclude meals, permits and entry fees
+3. **Group discounts:** Most agencies give 10–20% discount for groups of 4+
+4. **Read reviews on TripAdvisor and Google** before booking
+5. **Peak season surcharges:** Expect 30–50% higher prices during Eid holidays
+
+---
+
+## 🚌 Getting Around Bangladesh on Your Own
+
+Prefer independent travel? Use **[KoyJabo.com](https://koyjabo.com)** to find bus, train, metro and intercity transport routes across Bangladesh — free, bilingual, and works offline.
+
+#BangladeshTourPackages #VisitBangladesh2026 #CoxsBazarTour #SundarbansTrip #BangladeshHoliday
+`,
+		bnContent: `
+বাংলাদেশের সেরা পর্যটন গন্তব্যগুলো সাশ্রয়ী মূল্যে পরিদর্শন করুন। এই গাইডে কক্সবাজার, সুন্দরবন, বান্দরবান, সিলেট ও ঢাকার ট্যুর প্যাকেজের দাম ও তথ্য দেওয়া হয়েছে।
+
+---
+
+## 🏖️ কক্সবাজার ট্যুর প্যাকেজ
+
+### ৩ রাত / ৪ দিন প্যাকেজ
+
+| বাজেট | জনপ্রতি খরচ |
+|---|---|
+| কম বাজেট | ৳৪,৫০০–৬,০০০ |
+| মধ্যম | ৳৭,০০০–১২,০০০ |
+| প্রিমিয়াম | ৳১৫,০০০–২৫,০০০ |
+
+---
+
+## 🌿 সুন্দরবন ট্যুর প্যাকেজ
+
+### ২ রাত / ৩ দিন
+
+| প্যাকেজ | জনপ্রতি খরচ |
+|---|---|
+| বাজেট | ৳৫,০০০–৮,০০০ |
+| মধ্যম | ৳১০,০০০–১৫,০০০ |
+| লাক্সারি | ৳২০,০০০–৪০,০০০ |
+
+---
+
+## 🏔️ বান্দরবান ট্যুর প্যাকেজ
+
+- **খরচ:** ৳৪,০০০–৯,০০০ জনপ্রতি
+- **গন্তব্য:** নীলগিরি, বগা লেক, চিম্বুক, নাফাখুম
+
+---
+
+## 🍵 সিলেট ট্যুর প্যাকেজ
+
+- **খরচ:** ৳৪,৫০০–১০,০০০ জনপ্রতি
+- **গন্তব্য:** চা বাগান, জাফলং, রাতারগুল
+
+---
+
+## 💡 ট্যুর বুকিং টিপস
+
+১. সরাসরি এজেন্সিতে বুক করুন — ১৫–২৫% সাশ্রয়
+২. প্যাকেজে কী কী অন্তর্ভুক্ত তা নিশ্চিত করুন
+৩. ৪ জনের বেশি গ্রুপে ১০–২০% ছাড় পাওয়া যায়
+
+---
+
+স্বাধীনভাবে ভ্রমণ করতে চাইলে **[KoyJabo.com](https://koyjabo.com)** ব্যবহার করুন।
+
+#বাংলাদেশট্যুর #কক্সবাজার #সুন্দরবন #কইযাবো #ভিজিটবাংলাদেশ
+`
 	}
 ];
