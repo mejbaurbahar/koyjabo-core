@@ -2390,8 +2390,7 @@ const App: React.FC = () => {
   );
 
   const renderAbout = () => (
-    <div className="flex flex-col flex-1 min-h-0 w-full bg-white dark:bg-slate-900 overflow-hidden">
-    <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="absolute inset-0 z-10 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 pb-nav-safe bg-kj-bg" style={{ WebkitOverflowScrolling: 'touch' }}>
       <div className="max-w-5xl mx-auto text-center">
         <div className="w-20 h-20 bg-dhaka-red rounded-3xl flex items-center justify-center text-white mx-auto mb-6 shadow-xl shadow-red-200 rotate-3 hover:rotate-6 transition-transform">
           <Bus className="w-10 h-10" />
@@ -2569,8 +2568,7 @@ const App: React.FC = () => {
       {/* Spacer for bottom nav on mobile */}
 
       <div className="h-20 md:hidden"></div>
-    </div>
-    </div>
+      </div>
   );
 
 
@@ -2718,8 +2716,7 @@ const App: React.FC = () => {
   );
 
   const renderWhyUse = () => (
-    <div className="flex flex-col flex-1 min-h-0 w-full bg-white dark:bg-slate-900 overflow-hidden">
-    <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="absolute inset-0 z-10 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 pb-nav-safe bg-white dark:bg-slate-900" style={{ WebkitOverflowScrolling: 'touch' }}>
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100 leading-tight">{t('whyUse.title')}</h1>
         <p className="text-gray-500 dark:text-gray-400 mb-8">{t('whyUse.subtitle')}</p>
@@ -2901,13 +2898,11 @@ const App: React.FC = () => {
 
         <div className="h-20"></div>
       </div>
-    </div>
-    </div>
+      </div>
   );
 
   const renderFAQ = () => (
-    <div className="flex flex-col flex-1 min-h-0 w-full bg-white dark:bg-slate-900 overflow-hidden">
-    <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="absolute inset-0 z-10 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 pb-nav-safe bg-white dark:bg-slate-900" style={{ WebkitOverflowScrolling: 'touch' }}>
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100 leading-tight">{t('faq.title')}</h1>
         <p className="text-gray-500 dark:text-gray-400 mb-8">{t('faq.subtitle')}</p>
@@ -3074,13 +3069,11 @@ const App: React.FC = () => {
         <div className="h-20"></div>
 
       </div>
-    </div>
-    </div>
+      </div>
   );
 
   const renderForAi = () => (
-    <div className="flex flex-col flex-1 min-h-0 w-full bg-white dark:bg-slate-900 overflow-hidden">
-    <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="absolute inset-0 z-10 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 pb-nav-safe bg-white dark:bg-slate-900" style={{ WebkitOverflowScrolling: 'touch' }}>
       <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl md:text-5xl font-bold mb-6 text-gray-900 leading-tight">AI Dataset & Integration</h1>
         <div className="flex items-center gap-2 text-sm text-gray-500 mb-8">
@@ -3252,8 +3245,7 @@ const App: React.FC = () => {
           {/* Bottom space */}
 
       </div>
-    </div>
-    </div>
+      </div>
   );
 
   const renderBusDetails = () => {
@@ -3786,62 +3778,59 @@ const App: React.FC = () => {
   const renderHomeContent = () => {
     const renderLocalBusSearch = () => (
       <div className="relative mb-4 group isolate z-50">
-        {/* Background Layer - Clipped */}
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 rounded-2xl md:rounded-[2rem] shadow-xl shadow-emerald-500/30 overflow-hidden transition-all duration-300">
-          {/* Decorative Elements */}
-          <div className="absolute top-0 right-0 -mr-12 -mt-12 w-40 h-40 rounded-full bg-white/10 blur-2xl"></div>
-          <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-32 h-32 rounded-full bg-white/10 blur-2xl"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-white/5 blur-3xl"></div>
-        </div>
+        {/* KJ panel card */}
+        <div className="bg-kj-panel border border-kj-line rounded-2xl shadow-kj overflow-visible">
 
-        {/* Content Layer - Visible Overflow for Dropdowns */}
-        <div className="relative z-10 text-white rounded-2xl md:rounded-[2rem]">
-
-          {/* Text Content */}
-          <div className="px-4 md:px-6 pt-3 md:pt-6 pb-1 md:pb-4 relative z-10">
-            <div>
-              <h2 className="text-xl md:text-3xl font-bold mb-0.5 md:mb-2 font-bengali drop-shadow-lg text-white">{isInDhaka ? t('home.whereToGo') : t('home.whereToGoInDhaka')}</h2>
-              <p className="text-white/90 text-[10px] md:text-sm font-medium">{t('home.findPerfectRoute')}</p>
-            </div>
+          {/* Heading */}
+          <div className="px-4 md:px-5 pt-4 pb-2">
+            <h2 className="font-bengali font-bold text-kj-text text-lg md:text-2xl leading-tight tracking-tight mb-0.5">
+              {isInDhaka ? t('home.whereToGo') : t('home.whereToGoInDhaka')}
+            </h2>
+            <p className="text-kj-text-dim text-[11px] md:text-sm font-medium">{t('home.findPerfectRoute')}</p>
           </div>
 
-          {/* Mode Toggle */}
-          <div className="flex px-4 md:px-6 pb-1.5 md:pb-4 gap-2 md:gap-4">
+          {/* Mode Pill Tabs */}
+          <div className="flex items-center gap-2 px-4 md:px-5 pb-3 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             <button
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setSearchMode('TEXT');
-                setSuggestedRoutes([]);
-              }}
-              className={`flex-1 max-w-[50%] py-1.5 md:py-2.5 rounded-xl text-[11px] md:text-sm font-bold flex items-center justify-center gap-1 transition-all cursor-pointer relative z-50 ${searchMode === 'TEXT' ? 'bg-white text-dhaka-green shadow-sm ring-1 ring-white' : 'bg-black/10 text-white/70 hover:bg-black/20'} `}
+              onClick={(e) => { e.stopPropagation(); setSearchMode('TEXT'); setSuggestedRoutes([]); }}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${searchMode === 'TEXT' ? 'bg-kj-primary-soft text-kj-primary-deep border border-kj-primary/20' : 'bg-kj-chip-bg text-kj-chip-text border border-transparent'}`}
             >
-              <Search className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" /> {t('home.localBusSearch')}
+              <span className={`w-1.5 h-1.5 rounded-full ${searchMode === 'TEXT' ? 'bg-kj-primary' : 'bg-kj-text-faint'}`} />
+              {language === 'bn' ? 'লোকাল বাস' : 'Local bus'}
             </button>
             <button
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setSearchMode('ROUTE');
-                setSuggestedRoutes([]);
-              }}
-              className={`flex-1 max-w-[50%] py-1.5 md:py-2.5 rounded-xl text-[11px] md:text-sm font-bold flex items-center justify-center gap-1 transition-all cursor-pointer relative z-50 ${searchMode === 'ROUTE' ? 'bg-white text-dhaka-green shadow-sm ring-1 ring-white' : 'bg-black/10 text-white/70 hover:bg-black/20'} `}
+              onClick={(e) => { e.stopPropagation(); setSearchMode('ROUTE'); setSuggestedRoutes([]); }}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${searchMode === 'ROUTE' ? 'bg-kj-primary-soft text-kj-primary-deep border border-kj-primary/20' : 'bg-kj-chip-bg text-kj-chip-text border border-transparent'}`}
             >
-              <MapPin className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" /> {t('home.routeFinder')}
+              {language === 'bn' ? 'রুট খুঁজুন' : 'Route finder'}
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); window.location.href = '/intercity/'; }}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 bg-kj-chip-bg text-kj-chip-text border border-transparent"
+            >
+              {language === 'bn' ? 'আন্তঃজেলা' : 'Intercity'}
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); setView(AppView.TRAIN_LIST); }}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${(view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) ? 'bg-kj-accent-soft text-kj-accent border border-kj-accent/20' : 'bg-kj-chip-bg text-kj-chip-text border border-transparent'}`}
+            >
+              {language === 'bn' ? 'ট্রেন' : 'Train'}
             </button>
           </div>
 
-          <div className="px-4 md:px-6 pb-4 md:pb-6">
+          {/* Search inputs */}
+          <div className="relative z-10">
+          <div className="px-4 md:px-5 pb-4 md:pb-5">
             {searchMode === 'TEXT' ? (
               <div className="relative group">
                 <div className="relative flex items-center">
                   <div className="absolute left-[18px] top-1/2 -translate-y-1/2 pointer-events-none z-10 flex items-center justify-center">
-                    <Search className="text-emerald-500 w-5 h-5 group-focus-within:text-emerald-600 transition-colors" />
+                    <Search className="text-kj-primary w-5 h-5 group-focus-within:text-kj-primary-deep transition-colors" />
                   </div>
                   <input
                     type="text"
                     placeholder={t('home.searchPlaceholder')}
-                    className="w-full pl-10 md:pl-12 pr-10 md:pr-12 py-2.5 md:py-3.5 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 rounded-xl focus:outline-none focus:ring-4 focus:ring-green-400/30 dark:focus:ring-green-500/30 transition-all text-sm md:text-base shadow-sm font-medium placeholder:text-gray-400 dark:placeholder-gray-500"
+                    className="w-full pl-10 md:pl-12 pr-10 md:pr-12 py-2.5 md:py-3.5 bg-kj-input-bg text-kj-text border border-kj-line rounded-xl focus:outline-none focus:ring-2 focus:ring-kj-primary/30 transition-all text-sm md:text-base font-medium placeholder:text-kj-text-faint"
                     value={inputValue}
                     onChange={(e) => {
                       setInputValue(e.target.value);
@@ -4016,6 +4005,7 @@ const App: React.FC = () => {
               </div>
             )}
           </div>
+          </div>
         </div>
       </div>
     );
@@ -4093,11 +4083,11 @@ const App: React.FC = () => {
     // Train view: list always visible, details require login
     if (view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) {
       return (
-        <div className="relative flex flex-col h-full min-h-0 w-full overflow-hidden">
+        <div className="relative flex flex-col flex-1 min-h-0 w-full overflow-hidden">
           <div className="absolute inset-0 z-0 pointer-events-none">
             <DhakaAlive hideIndicator />
           </div>
-          <div className="relative z-10 flex flex-col h-full min-h-0 w-full overflow-hidden">
+          <div className="relative z-10 flex flex-col flex-1 min-h-0 w-full overflow-hidden">
             <TrainListPage
               userLocation={userLocation}
               onBack={() => setView(AppView.HOME)}
@@ -4128,9 +4118,9 @@ const App: React.FC = () => {
     }
 
     return (
-      <div className="flex flex-col h-full w-full overflow-hidden min-h-0">
+      <div className="flex flex-col flex-1 min-h-0 w-full overflow-hidden">
         {/* Sticky Top Section */}
-        <div className="flex-none bg-white dark:bg-slate-900 z-20 md:pt-2">
+        <div className="flex-none bg-kj-bg z-20 md:pt-2">
           <div className="p-4 space-y-1">
             {primarySearch === 'LOCAL' ? (
               <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">
@@ -4165,24 +4155,24 @@ const App: React.FC = () => {
               </div>
             </button>
             {/* List Filter Tabs */}
-            <div className="flex p-1 bg-gray-100 dark:bg-slate-800 rounded-xl">
+            <div className="flex p-1 bg-kj-chip-bg rounded-xl border border-kj-line">
               <button
                 onClick={() => handleFilterChange('ALL')}
-                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${listFilter === 'ALL' ? 'bg-white dark:bg-slate-700 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'} `}
+                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${listFilter === 'ALL' ? 'bg-kj-panel shadow-sm text-kj-text' : 'text-kj-text-dim hover:text-kj-text'}`}
               >
                 {t('home.allDhakaLocalBuses')}
               </button>
               <button
                 onClick={() => handleFilterChange('FAVORITES')}
-                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1 ${listFilter === 'FAVORITES' ? 'bg-white dark:bg-slate-700 shadow-sm text-red-500' : 'text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'} `}
+                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1 ${listFilter === 'FAVORITES' ? 'bg-kj-panel shadow-sm text-kj-accent' : 'text-kj-text-dim hover:text-kj-text'}`}
               >
                 <Heart className="w-4 h-4 fill-current" /> {t('home.favorites')}
               </button>
             </div>
 
             <div className="flex items-center justify-between px-2">
-              <h3 className="font-bold text-dhaka-dark dark:text-gray-100 text-lg">{listFilter === 'FAVORITES' ? t('home.savedRoutes') : t('home.allBuses')}</h3>
-              <span className="text-[10px] bg-gray-200 dark:bg-slate-700 px-2 py-0.5 rounded-full text-gray-600 dark:text-gray-300 font-bold">{formatNumber(filteredBuses.length)}</span>
+              <h3 className="font-bold text-kj-text text-lg">{listFilter === 'FAVORITES' ? t('home.savedRoutes') : t('home.allBuses')}</h3>
+              <span className="text-[10px] bg-kj-chip-bg px-2 py-0.5 rounded-full text-kj-text-dim font-bold">{formatNumber(filteredBuses.length)}</span>
             </div>
           </div>
         </div>
@@ -4196,12 +4186,12 @@ const App: React.FC = () => {
               desktopLeftScrollTopRef.current = e.currentTarget.scrollTop;
             }
           }}
-          className="flex-1 overflow-y-auto overscroll-y-contain px-4 pb-nav-safe md:pb-4 space-y-3 touch-pan-y"
+          className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain px-4 pb-nav-safe md:pb-4 space-y-3 touch-pan-y bg-kj-bg"
           style={{ overflowAnchor: 'none', WebkitOverflowScrolling: 'touch' }}
         >
 
           {/* Ad Banner - in scrollable area so it doesn't shrink bus list */}
-
+          <AdSenseAd adSlot="auto" className="mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
           {/* Intelligent Route Suggestions - Hide in Favorites Mode */}
           {(suggestedRoutes.length > 0 && listFilter !== 'FAVORITES') && (
@@ -4317,7 +4307,7 @@ const App: React.FC = () => {
 
             return (
               <React.Fragment key={bus.id}>
-                {busIdx > 0 && busIdx % 7 === 0 && (
+                {busIdx === 9 && (
                   <AdSenseAd adSlot="auto" adFormat="fluid" className="my-4 w-full max-w-full md:max-w-[728px] md:mx-auto shrink-0" />
                 )}
 
@@ -4446,7 +4436,7 @@ const App: React.FC = () => {
 
   return (
     <NotificationProvider>
-      <div className="flex flex-col h-screen min-h-0 supports-[height:100dvh]:h-[100dvh] bg-slate-50 dark:bg-slate-900 font-sans text-gray-800 dark:text-gray-100 overflow-hidden max-w-full">
+      <div className="flex flex-col h-screen min-h-0 supports-[height:100dvh]:h-[100dvh] bg-kj-bg dark:bg-kj-bg font-sans text-gray-800 dark:text-gray-100 overflow-hidden max-w-full">
         <NotificationBanner />
 
         {/* PWA Update Banner */}
@@ -4475,19 +4465,25 @@ const App: React.FC = () => {
         )}
 
         {/* Mobile Header */}
-        <header className={`sticky top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-5 py-3 shadow-sm z-[100] md:hidden transition-transform duration-300 pt-safe ${(view === AppView.LIVE_NAV || view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? '-translate-y-full h-0 overflow-hidden py-0 border-none' : 'translate-y-0 h-auto'} `}>
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2 outline-none cursor-pointer" onClick={() => setView(AppView.HOME)}>
-              <AnimatedLogo size="small" />
+        <header className={`sticky top-0 left-0 right-0 bg-kj-panel/90 dark:bg-kj-panel/90 backdrop-blur-md border-b border-kj-line dark:border-kj-line px-5 py-3 shadow-sm z-[100] md:hidden transition-transform duration-300 pt-safe ${(view === AppView.LIVE_NAV || view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? '-translate-y-full h-0 overflow-hidden py-0 border-none' : 'translate-y-0 h-auto'} `}>
+          <div className="flex items-center gap-3">
+            <button onClick={() => setIsMenuOpen(true)} className="p-2 hover:bg-kj-chip-bg rounded-xl text-kj-text transition-colors flex items-center justify-center shrink-0" aria-label="Open menu">
+              <Menu className="w-5 h-5" />
+            </button>
+            <div className="flex items-center gap-2.5 flex-1 cursor-pointer" onClick={() => setView(AppView.HOME)}>
+              <div className="w-8 h-8 rounded-[10px] bg-kj-primary flex items-center justify-center relative overflow-hidden shrink-0" style={{ boxShadow: 'inset 0 -2px 0 var(--kj-accent)' }}>
+                <span className="font-bengali font-bold text-kj-primary-ink text-[17px] leading-none">ক</span>
+              </div>
+              <div className="flex flex-col leading-none gap-0.5">
+                <span className="font-bengali font-bold text-kj-text text-[17px] leading-tight tracking-tight">কই যাবো</span>
+                <span className="font-sans font-medium text-kj-text-faint text-[9px] tracking-[0.12em] uppercase">KoyJabo · BD</span>
+              </div>
             </div>
-            <div className="flex items-center gap-1">
-              <button onClick={() => setShowLiveMap(true)} className="p-2 hover:bg-blue-50 bg-white border-2 border-blue-100 rounded-full text-blue-600 transition-colors shadow-lg shadow-blue-100 active:scale-95 animate-pulse flex items-center justify-center" aria-label="Live Location">
-                <Navigation className="w-4 h-4" />
+            <div className="flex items-center gap-1.5 shrink-0">
+              <button onClick={() => setIsDarkMode(!isDarkMode)} className="w-9 h-9 rounded-xl border border-kj-line bg-kj-panel-muted flex items-center justify-center text-kj-text transition-colors hover:bg-kj-chip-bg active:scale-95" aria-label="Toggle theme">
+                {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
               <AuthHeaderButton setView={setView} />
-              <button onClick={() => setIsMenuOpen(true)} className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full text-gray-600 dark:text-gray-300 transition-colors flex items-center justify-center" aria-label="Open menu">
-                <Menu className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-              </button>
             </div>
           </div>
 
@@ -4513,21 +4509,21 @@ const App: React.FC = () => {
 
 
 
-        <main className="flex flex-1 min-h-0 overflow-hidden relative w-full max-w-full mx-auto bg-slate-50 dark:bg-slate-900 md:pt-20">
+        <main className="flex flex-1 min-h-0 overflow-hidden relative w-full max-w-full mx-auto bg-kj-bg dark:bg-kj-bg md:pt-20">
           {/* Left Sidebar (Desktop) / Main View (Mobile Home) */}
-          <div className={`
-            ${'flex flex-col flex-1 min-h-0 w-full md:flex-none md:w-1/3 md:min-w-[320px] md:max-w-md border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900 z-0 overflow-hidden'}
-            ${view !== AppView.HOME && view !== AppView.TRAIN_LIST && 'hidden md:flex'}
-`}>
+          <div
+            className={`flex flex-col flex-1 min-h-0 w-full md:flex-none md:w-1/3 md:min-w-[320px] md:max-w-md border-r border-kj-line dark:border-kj-line bg-kj-panel dark:bg-kj-panel z-0 overflow-hidden ${view !== AppView.HOME && view !== AppView.TRAIN_LIST && 'hidden md:flex'}`}
+            style={(view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? { display: 'none' } : undefined}
+          >
             <div className="flex-1 min-h-0 flex flex-col md:pt-0">
               {renderHomeContent()}
             </div>
           </div>
 
-          {/* Right Content Area (Desktop) / Views (Mobile) — flex column so each full-page view is the only in-flow child */}
+          {/* Right Content Area (Desktop) / Views (Mobile) */}
           <div className={`
-            ${'flex-1 min-h-0 w-full min-w-0 bg-slate-50 dark:bg-slate-950 relative overflow-hidden flex flex-col'}
-            ${(view === AppView.HOME || view === AppView.TRAIN_LIST) && 'hidden md:block'}
+            ${'flex-1 min-h-0 w-full min-w-0 bg-kj-bg dark:bg-kj-bg relative overflow-hidden flex flex-col'}
+            ${(view === AppView.HOME || view === AppView.TRAIN_LIST) && 'hidden md:flex'}
 `}>
             <div className={`hidden md:block absolute inset-0 w-full h-full min-h-0 transition-opacity duration-500 ${(view === AppView.HOME || view === AppView.TRAIN_LIST) ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}><DhakaAlive /></div>
             {view === AppView.TRAIN_DETAILS && (
@@ -4671,7 +4667,7 @@ const App: React.FC = () => {
             {view === AppView.TRAIN_PHOTOS && (user && selectedTrain ? <TrainPhotoGallery trainId={selectedTrain.id} trainName={selectedTrain.name} onBack={() => setView(AppView.TRAIN_DETAILS)} /> : <LoginWall setView={setView} />)}
 
             {view === AppView.INSTALL_APP && (
-              <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-hidden w-full">
+              <div className="flex flex-col flex-1 min-h-0 bg-white dark:bg-slate-900 overflow-hidden w-full">
               <div className="flex-1 min-h-0 overflow-y-auto p-6 md:p-10 pt-6 md:pt-8 pb-nav-safe">
                 <div className="max-w-2xl mx-auto text-center">
                   {/* App Icon */}
@@ -4798,52 +4794,62 @@ const App: React.FC = () => {
 
         {/* Mobile Bottom Navigation - Always show except on BUS_DETAILS and LIVE_NAV */}
         {view !== AppView.BUS_DETAILS && view !== AppView.LIVE_NAV && (
-          <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] md:hidden pb-safe">
-            <div className="grid grid-cols-5 h-16 pt-1">
+          <nav className="fixed bottom-0 left-0 right-0 bg-kj-panel dark:bg-kj-panel border-t border-kj-line dark:border-kj-line z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] md:hidden pb-safe">
+            <div className="grid grid-cols-5 h-16">
+              {/* Home */}
               <button
-                onClick={() => {
-                  setView(AppView.HOME);
-                  setPrimarySearch('LOCAL');
-                }}
-                className={`flex flex-col items-center justify-center gap-0.5 border-t-2 transition-all duration-300 transform ${view === AppView.HOME && primarySearch === 'LOCAL' ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-900/20 scale-105' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:scale-105'} `}
+                onClick={() => { setView(AppView.HOME); setPrimarySearch('LOCAL'); setSearchMode('TEXT'); }}
+                className={`flex flex-col items-center justify-center gap-1 relative transition-all duration-200 ${view === AppView.HOME && searchMode === 'TEXT' ? 'text-kj-primary' : 'text-kj-text-faint hover:text-kj-text-dim'}`}
               >
-                <MapIcon className={`w-5 h-5 transition-all duration-300 ${view === AppView.HOME && primarySearch === 'LOCAL' ? 'text-emerald-600 dark:text-emerald-400 fill-emerald-100 dark:fill-emerald-900' : 'text-gray-400 dark:text-gray-500'} `} />
-                <span className="text-[9px] font-bold uppercase tracking-wide">{t('nav.local') || 'Local'}</span>
+                {view === AppView.HOME && searchMode === 'TEXT' && (
+                  <span className="absolute top-0 w-6 h-[3px] rounded-full bg-kj-primary" />
+                )}
+                <Home className="w-5 h-5" />
+                <span className="text-[10px] font-semibold font-bengali">{language === 'bn' ? 'হোম' : 'Home'}</span>
               </button>
+              {/* Search */}
               <button
-                onClick={() => {
-                  if (!isInDhaka) {
-                    setView(AppView.HOME);
-                    setPrimarySearch('INTERCITY');
-                  } else {
-                    window.location.href = '/intercity/';
-                  }
-                }}
-                className={`flex flex-col items-center justify-center gap-0.5 border-t-2 transition-all duration-300 transform ${!isInDhaka && view === AppView.HOME && primarySearch === 'INTERCITY' ? 'border-teal-500 text-teal-600 dark:text-teal-400 bg-teal-50/50 dark:bg-teal-900/20 scale-105' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:scale-105'} `}
+                onClick={() => { setView(AppView.HOME); setSearchMode('ROUTE'); setPrimarySearch('LOCAL'); }}
+                className={`flex flex-col items-center justify-center gap-1 relative transition-all duration-200 ${view === AppView.HOME && searchMode === 'ROUTE' ? 'text-kj-primary' : 'text-kj-text-faint hover:text-kj-text-dim'}`}
               >
-                <Bus className={`w-5 h-5 transition-all duration-300 ${!isInDhaka && view === AppView.HOME && primarySearch === 'INTERCITY' ? 'text-teal-600 dark:text-teal-400 fill-teal-100 dark:fill-teal-900' : 'text-gray-400 dark:text-gray-500'} `} />
-                <span className="text-[9px] font-bold uppercase tracking-wide">{t('nav.intercity') || 'Intercity'}</span>
+                {view === AppView.HOME && searchMode === 'ROUTE' && (
+                  <span className="absolute top-0 w-6 h-[3px] rounded-full bg-kj-primary" />
+                )}
+                <Search className="w-5 h-5" />
+                <span className="text-[10px] font-semibold font-bengali">{language === 'bn' ? 'খুঁজুন' : 'Search'}</span>
               </button>
+              {/* Train */}
               <button
                 onClick={() => setView(AppView.TRAIN_LIST)}
-                className={`flex flex-col items-center justify-center gap-0.5 border-t-2 transition-all duration-300 transform ${view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS ? 'border-blue-500 text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-900/20 scale-105' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:scale-105'} `}
+                className={`flex flex-col items-center justify-center gap-1 relative transition-all duration-200 ${view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS ? 'text-kj-primary' : 'text-kj-text-faint hover:text-kj-text-dim'}`}
               >
-                <Train className={`w-5 h-5 transition-all duration-300 ${view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS ? 'text-blue-600 dark:text-blue-400 fill-blue-100 dark:fill-blue-900' : 'text-gray-400 dark:text-gray-500'} `} />
-                <span className="text-[9px] font-bold uppercase tracking-wide">{t('nav.train') || 'Train'}</span>
+                {(view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) && (
+                  <span className="absolute top-0 w-6 h-[3px] rounded-full bg-kj-primary" />
+                )}
+                <Train className="w-5 h-5" />
+                <span className="text-[10px] font-semibold font-bengali">{language === 'bn' ? 'ট্রেন' : 'Train'}</span>
               </button>
+              {/* AI */}
               <button
                 onClick={() => setView(AppView.AI_ASSISTANT)}
-                className={`flex flex-col items-center justify-center gap-0.5 border-t-2 transition-all ${view === AppView.AI_ASSISTANT ? 'border-purple-500 text-purple-600 dark:text-purple-400 bg-purple-50/50 dark:bg-purple-900/20' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'} `}
+                className={`flex flex-col items-center justify-center gap-1 relative transition-all duration-200 ${view === AppView.AI_ASSISTANT ? 'text-kj-primary' : 'text-kj-text-faint hover:text-kj-text-dim'}`}
               >
-                <Sparkles className={`w-5 h-5 ${view === AppView.AI_ASSISTANT ? 'text-purple-600 dark:text-purple-400 fill-purple-100 dark:fill-purple-900' : 'text-gray-400 dark:text-gray-500'} `} />
-                <span className="text-[9px] font-bold uppercase tracking-wide">{t('nav.aiAssistant') || 'AI'}</span>
+                {view === AppView.AI_ASSISTANT && (
+                  <span className="absolute top-0 w-6 h-[3px] rounded-full bg-kj-primary" />
+                )}
+                <Sparkles className="w-5 h-5" />
+                <span className="text-[10px] font-semibold font-bengali">{language === 'bn' ? 'AI' : 'AI'}</span>
               </button>
+              {/* Profile */}
               <button
-                onClick={() => setView(AppView.ABOUT)}
-                className={`flex flex-col items-center justify-center gap-0.5 border-t-2 transition-all ${view === AppView.ABOUT ? 'border-orange-500 text-orange-600 dark:text-orange-400 bg-orange-50/50 dark:bg-orange-900/20' : 'border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'} `}
+                onClick={() => user ? setView(AppView.PROFILE) : setView(AppView.LOGIN)}
+                className={`flex flex-col items-center justify-center gap-1 relative transition-all duration-200 ${(view === AppView.PROFILE || view === AppView.LOGIN) ? 'text-kj-primary' : 'text-kj-text-faint hover:text-kj-text-dim'}`}
               >
-                <Info className={`w-5 h-5 ${view === AppView.ABOUT ? 'text-orange-600 dark:text-orange-400 fill-orange-100 dark:fill-orange-900' : 'text-gray-400 dark:text-gray-500'} `} />
-                <span className="text-[9px] font-bold uppercase tracking-wide">{t('nav.about') || 'About'}</span>
+                {(view === AppView.PROFILE || view === AppView.LOGIN) && (
+                  <span className="absolute top-0 w-6 h-[3px] rounded-full bg-kj-primary" />
+                )}
+                <User className="w-5 h-5" />
+                <span className="text-[10px] font-semibold font-bengali">{language === 'bn' ? 'আপনি' : 'You'}</span>
               </button>
             </div>
           </nav>

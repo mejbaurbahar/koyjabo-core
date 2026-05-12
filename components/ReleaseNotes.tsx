@@ -14,9 +14,9 @@ const ReleaseNotes: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 w-full bg-[#f8fafc] dark:bg-slate-950 overflow-hidden font-sans">
+    <div className="absolute inset-0 z-10 flex flex-col bg-kj-bg font-sans overflow-hidden">
       {/* Premium Header */}
-      <div className="shrink-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 pt-safe px-6 py-5 flex items-center gap-5 shadow-sm relative z-10">
+      <div className="shrink-0 bg-kj-panel border-b border-kj-line pt-safe px-6 py-5 flex items-center gap-5 shadow-sm relative z-10">
         <div>
           <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             {t('releaseNotes.title')}

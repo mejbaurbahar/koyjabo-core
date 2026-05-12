@@ -17,15 +17,23 @@ export const AnimatedLogo = ({ size = 'default' }: { size?: 'small' | 'default' 
 
     const containerSizeClass = size === 'large' ? 'w-10 h-10 rounded-xl' : (size === 'small' ? 'w-8 h-8 md:w-11 md:h-11 rounded-lg' : 'w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl');
     const iconSize = size === 'large' ? 28 : (size === 'small' ? 20 : 24);
+    const bengaliSize = size === 'large' ? 'text-xl' : (size === 'small' ? 'text-base md:text-lg' : 'text-lg md:text-xl');
 
     return (
         <div className="flex items-center gap-0 outline-none cursor-pointer select-none group">
-            <div className={`bg-gradient-to-br from-[#006a4e] to-teal-600 text-red-500 flex items-center justify-center shadow-md shadow-green-500/20 transition-all duration-300 group-hover:shadow-lg group-hover:scale-105 ${containerSizeClass}`}>
+            <div className={`bg-kj-primary relative flex flex-col items-center justify-center shadow-kj transition-all duration-300 group-hover:shadow-kj-lg group-hover:scale-105 overflow-hidden ${containerSizeClass}`}>
+                {/* Bengali "ক" letter — primary content */}
+                <span className={`font-bengali font-bold text-kj-primary-ink leading-none ${bengaliSize}`}>
+                    ক
+                </span>
+                {/* Accent underline bar at bottom */}
+                <span className="absolute bottom-0 left-0 right-0 h-[3px] bg-kj-accent" />
+                {/* Animated transport icon — small overlay, fades in/out */}
                 <CurrentIcon
-                    size={iconSize}
-                    className="animate-in fade-in zoom-in duration-500"
-                    key={iconIndex} // Key ensures animation retriggers on change
-                    strokeWidth={2.5}
+                    size={Math.round(iconSize * 0.45)}
+                    className="absolute top-[3px] right-[3px] text-kj-primary-ink/50 animate-in fade-in zoom-in duration-500"
+                    key={iconIndex}
+                    strokeWidth={2}
                 />
             </div>
             <img
