@@ -3808,12 +3808,6 @@ const App: React.FC = () => {
               {language === 'bn' ? 'লোকাল বাস' : 'LOCAL BUS'}
             </button>
             <button
-              onClick={(e) => { e.stopPropagation(); setSearchMode('ROUTE'); setSuggestedRoutes([]); }}
-              className={`flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${searchMode === 'ROUTE' ? 'bg-kj-primary-soft text-kj-primary-deep border border-kj-primary/30' : 'bg-kj-chip-bg text-kj-chip-text border border-kj-line'}`}
-            >
-              {language === 'bn' ? 'মেট্রো' : 'METRO'}
-            </button>
-            <button
               onClick={(e) => { e.stopPropagation(); window.location.href = '/intercity/'; }}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 bg-kj-chip-bg text-kj-chip-text border border-transparent"
             >
@@ -3824,12 +3818,6 @@ const App: React.FC = () => {
               className={`flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${(view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) ? 'bg-kj-primary-soft text-kj-primary-deep border border-kj-primary/30' : 'bg-kj-chip-bg text-kj-chip-text border border-kj-line'}`}
             >
               {language === 'bn' ? 'ট্রেন' : 'TRAIN'}
-            </button>
-            <button
-              onClick={(e) => { e.stopPropagation(); }}
-              className="flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap shrink-0 bg-kj-chip-bg text-kj-chip-text border border-kj-line"
-            >
-              {language === 'bn' ? 'লঞ্চ' : 'LAUNCH'}
             </button>
           </div>
 
@@ -4528,14 +4516,8 @@ const App: React.FC = () => {
             <button onClick={() => setIsMenuOpen(true)} className="p-0 flex items-center justify-center shrink-0 text-kj-text active:opacity-70" aria-label="Open menu">
               <Menu className="w-[22px] h-[22px]" />
             </button>
-            <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => setView(AppView.HOME)}>
-              <div className="w-[34px] h-[34px] rounded-[9px] bg-kj-primary flex items-center justify-center relative overflow-hidden shrink-0" style={{ boxShadow: 'inset 0 -2px 0 var(--kj-accent)' }}>
-                <span className="font-bengali font-bold text-kj-primary-ink text-[17px] leading-none">ক</span>
-              </div>
-              <div className="flex flex-col leading-none">
-                <span className="font-bengali font-bold text-kj-text text-[17px] leading-tight tracking-[-0.3px]">কই যাবো</span>
-                <span className="font-sans font-medium text-kj-text-faint text-[10px] tracking-[0.14em] uppercase mt-[3px]">KoyJabo · BD</span>
-              </div>
+            <div className="cursor-pointer" onClick={() => setView(AppView.HOME)}>
+              <AnimatedLogo size="small" />
             </div>
             <div className="flex-1" />
             <div className="flex items-center gap-2 shrink-0">
