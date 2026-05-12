@@ -132,30 +132,30 @@ export function TrainDetail({
 
   return (
     /* Light: white bg — Dark: deep navy gradient */
-    <div className="flex flex-col flex-1 min-h-0 w-full bg-[#0F172A] dark:bg-[#0F172A] overflow-hidden">
+    <div className="flex flex-col flex-1 min-h-0 w-full bg-kj-bg overflow-hidden">
 
       {/* Sub-header */}
-      <div className="shrink-0 flex items-center gap-3 px-4 py-3 border-b border-kj-line dark:border-white/10 bg-gray-50 dark:bg-white/5">
+      <div className="shrink-0 flex items-center gap-3 px-4 py-3 border-b border-kj-line dark:border-kj-line bg-kj-panel-muted">
         <button
           onClick={onBack}
-          className="p-2 -ml-1 hover:bg-kj-chip-bg dark:hover:bg-white/10 rounded-full transition-colors"
+          className="p-2 -ml-1 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full transition-colors"
           aria-label={bn ? 'ফিরুন' : 'Back'}
         >
-          <ArrowLeft className="w-5 h-5 text-kj-text-dim dark:text-white/80" />
+          <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
         </button>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <h2 className="font-bold text-kj-text truncate">
               {bn ? route.bnName : route.name}
             </h2>
-            <span className="text-xs font-bold px-2 py-0.5 bg-gray-100 dark:bg-white/15 text-kj-text-dim dark:text-white/80 rounded-full">
+            <span className="text-xs font-bold px-2 py-0.5 bg-kj-chip-bg text-kj-text-dim rounded-full">
               #{route.number}
             </span>
             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${TYPE_COLORS[route.type] || TYPE_COLORS.Local}`}>
               {bn ? (TYPE_BN[route.type] ?? route.type) : route.type}
             </span>
           </div>
-          <p className="text-xs text-kj-text-dim dark:text-white/55 mt-0.5">
+          <p className="text-xs text-kj-text-dim mt-0.5">
             {bn ? fromSt?.bnName : fromSt?.name}
             {' → '}
             {bn ? toSt?.bnName : toSt?.name}
@@ -171,7 +171,7 @@ export function TrainDetail({
         </button>
         <button
           onClick={() => onToggleFavorite?.()}
-          className="w-8 h-8 flex items-center justify-center leading-none rounded-full bg-white/90 dark:bg-kj-chip-bg border border-kj-line hover:bg-kj-chip-bg dark:hover:bg-slate-700 transition-colors shrink-0"
+          className="w-8 h-8 flex items-center justify-center leading-none rounded-full bg-kj-panel border border-kj-line hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg transition-colors shrink-0"
           aria-label={isFavorite ? (bn ? 'ফেভারিট থেকে সরান' : 'Remove from favorites') : (bn ? 'ফেভারিটে যোগ করুন' : 'Add to favorites')}
         >
           <Heart className={`w-4 h-4 ${isFavorite ? 'fill-pink-500 text-pink-500' : 'text-kj-text-faint'}`} />
@@ -180,7 +180,7 @@ export function TrainDetail({
 
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
         {/* Map */}
-        <div className="h-[280px] md:h-[340px] bg-slate-100 dark:bg-kj-panel relative">
+        <div className="h-[280px] md:h-[340px] bg-kj-panel relative">
           <TrainRouteMap
             route={route}
             userLocation={userLocation}
@@ -198,28 +198,28 @@ export function TrainDetail({
         <div className="p-4 space-y-4">
 
           {/* ── Schedule ─────────────────────────────────────────────────── */}
-          <div className="bg-gray-50 dark:bg-white/10 rounded-2xl p-4 border border-kj-line dark:border-white/15">
+          <div className="bg-kj-chip-bg rounded-2xl p-4 border border-kj-line dark:border-kj-line">
             <h3 className="text-sm font-bold text-kj-text mb-3 flex items-center gap-2">
               <Clock className="w-4 h-4 text-kj-primary" />
               {bn ? 'সময়সূচি' : 'Schedule'}
             </h3>
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div className="space-y-1">
-                <p className="text-xs text-kj-text-dim dark:text-white/55">
+                <p className="text-xs text-kj-text-dim">
                   {bn ? `${fromSt?.bnName || 'শুরু'} ছাড়ে` : `Departs ${fromSt?.name || 'Start'}`}
                 </p>
                 <p className="font-bold text-kj-text text-base">{route.dhakaDepart}</p>
               </div>
               <div className="space-y-1">
-                <p className="text-xs text-kj-text-dim dark:text-white/55">{bn ? 'গন্তব্যে পৌঁছায়' : 'Arrives'}</p>
+                <p className="text-xs text-kj-text-dim">{bn ? 'গন্তব্যে পৌঁছায়' : 'Arrives'}</p>
                 <p className="font-bold text-kj-text text-base">{route.destinationArrive}</p>
               </div>
               <div className="space-y-1">
-                <p className="text-xs text-kj-text-dim dark:text-white/55">{bn ? 'ফিরতি ছাড়ে' : 'Return Departs'}</p>
+                <p className="text-xs text-kj-text-dim">{bn ? 'ফিরতি ছাড়ে' : 'Return Departs'}</p>
                 <p className="font-bold text-kj-text text-base">{route.returnDepart}</p>
               </div>
               <div className="space-y-1">
-                <p className="text-xs text-kj-text-dim dark:text-white/55">
+                <p className="text-xs text-kj-text-dim">
                   {bn ? `${fromSt?.bnName || 'ঢাকা'} ফেরে` : `Returns ${fromSt?.name || 'Dhaka'}`}
                 </p>
                 <p className="font-bold text-kj-text text-base">{route.dhakaArrive}</p>
@@ -233,15 +233,15 @@ export function TrainDetail({
                 </span>
               </div>
             )}
-            <div className="mt-3 flex items-center gap-2 text-xs text-kj-text-dim dark:text-white/55">
+            <div className="mt-3 flex items-center gap-2 text-xs text-kj-text-dim">
               <Navigation className="w-3.5 h-3.5 shrink-0" />
               <span>{bn ? `মোট দূরত্ব: ~${route.distanceKm} কিমি` : `Total distance: ~${route.distanceKm} km`}</span>
             </div>
           </div>
 
           {/* ── Station timeline ──────────────────────────────────────────── */}
-          <div className="bg-gray-50 dark:bg-white/10 rounded-2xl border border-kj-line dark:border-white/15 overflow-hidden">
-            <div className="px-4 py-3 border-b border-kj-line dark:border-white/10">
+          <div className="bg-kj-chip-bg rounded-2xl border border-kj-line dark:border-kj-line overflow-hidden">
+            <div className="px-4 py-3 border-b border-kj-line dark:border-kj-line">
               <h3 className="text-sm font-bold text-kj-text flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-kj-primary" />
                 {bn ? `স্টেশন (${route.stops.length}টি)` : `Stations (${route.stops.length})`}
@@ -341,7 +341,7 @@ export function TrainDetail({
                           isNearUser ? 'text-sm font-bold text-orange-600 dark:text-orange-400'
                           : isPassed ? 'text-xs text-kj-primary line-through opacity-60'
                           : isFirst || isLast ? 'text-sm font-bold text-kj-text'
-                          : 'text-xs text-kj-text-dim dark:text-white/60'
+                          : 'text-xs text-kj-text-dim'
                         }`}>
                           {bn ? st.bnName : st.name}
                         </span>
@@ -352,7 +352,7 @@ export function TrainDetail({
                           </p>
                         )}
                         {!isNearUser && (isFirst || isLast) && (
-                          <p className="text-[10px] text-kj-text-faint dark:text-white/40 mt-0.5">
+                          <p className="text-[10px] text-kj-text-faint mt-0.5">
                             {isFirst ? (bn ? 'যাত্রা শুরু' : 'Departure') : (bn ? 'চূড়ান্ত গন্তব্য' : 'Final Destination')}
                           </p>
                         )}
@@ -370,8 +370,8 @@ export function TrainDetail({
 
           {/* ── Fare Calculator ───────────────────────────────────────────── */}
           {/* No overflow-hidden so SearchableSelect dropdown isn't clipped */}
-          <div className="bg-gray-50 dark:bg-white/10 rounded-2xl border border-kj-line dark:border-white/15">
-            <div className="px-4 py-3 border-b border-kj-line dark:border-white/10 rounded-t-2xl">
+          <div className="bg-kj-chip-bg rounded-2xl border border-kj-line dark:border-kj-line">
+            <div className="px-4 py-3 border-b border-kj-line dark:border-kj-line rounded-t-2xl">
               <h3 className="text-sm font-bold text-kj-text flex items-center gap-2">
                 <Coins className="w-4 h-4 text-amber-500 dark:text-amber-400" />
                 {bn ? 'ভাড়া ও সময় ক্যালকুলেটর' : 'Fare & Time Calculator'}
@@ -380,7 +380,7 @@ export function TrainDetail({
             <div className="p-4 space-y-3">
               <div className="space-y-3">
                 <div>
-                  <label className="text-xs font-medium text-kj-text-dim dark:text-white/60 mb-1 block">
+                  <label className="text-xs font-medium text-kj-text-dim mb-1 block">
                     {bn ? 'কোথায় থেকে' : 'From Station'}
                   </label>
                   <SearchableSelect
@@ -391,7 +391,7 @@ export function TrainDetail({
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-medium text-kj-text-dim dark:text-white/60 mb-1 block">
+                  <label className="text-xs font-medium text-kj-text-dim mb-1 block">
                     {bn ? 'কোথায় যাবেন' : 'To Station'}
                   </label>
                   <SearchableSelect
@@ -409,20 +409,20 @@ export function TrainDetail({
                     <div className="flex items-center justify-between p-3 bg-kj-primary-soft dark:bg-emerald-400/15 rounded-xl border border-kj-primary/30 dark:border-emerald-400/20">
                       <div className="flex items-center gap-2 text-sm">
                         <Navigation className="w-4 h-4 text-kj-primary" />
-                        <span className="font-medium text-kj-text-dim dark:text-white/80">
+                        <span className="font-medium text-kj-text-dim">
                           ~{Math.round(journeyInfo.distKm)} km
                         </span>
                       </div>
                       <div className="flex items-center gap-2 text-sm">
                         <Clock className="w-4 h-4 text-kj-primary" />
-                        <span className="font-medium text-kj-text-dim dark:text-white/80">{journeyInfo.travelTime}</span>
+                        <span className="font-medium text-kj-text-dim">{journeyInfo.travelTime}</span>
                       </div>
                     </div>
 
-                    <div className="overflow-hidden rounded-xl border border-kj-line dark:border-white/15">
+                    <div className="overflow-hidden rounded-xl border border-kj-line dark:border-kj-line">
                       <table className="w-full text-sm">
                         <thead>
-                          <tr className="bg-gray-100 dark:bg-white/10 text-xs text-kj-text-dim dark:text-white/60">
+                          <tr className="bg-gray-100 dark:bg-kj-chip-bg text-xs text-kj-text-dim">
                             <th className="text-left px-3 py-2 font-medium">{bn ? 'শ্রেণী' : 'Class'}</th>
                             <th className="text-right px-3 py-2 font-medium">{bn ? 'ভাড়া' : 'Fare'}</th>
                           </tr>
@@ -445,7 +445,7 @@ export function TrainDetail({
                         </tbody>
                       </table>
                     </div>
-                    <p className="text-[10px] text-kj-text-faint dark:text-white/40 flex items-start gap-1">
+                    <p className="text-[10px] text-kj-text-faint flex items-start gap-1">
                       <AlertCircle className="w-3 h-3 mt-0.5 shrink-0" />
                       {bn
                         ? 'ভাড়া আনুমানিক। সঠিক ভাড়ার জন্য বাংলাদেশ রেলওয়ে ওয়েবসাইট দেখুন।'
@@ -456,7 +456,7 @@ export function TrainDetail({
                   {/* <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
                 </>
               ) : (
-                <p className="text-xs text-kj-text-faint dark:text-white/40 text-center py-2">
+                <p className="text-xs text-kj-text-faint text-center py-2">
                   {bn ? 'দুটি স্টেশন সিলেক্ট করুন' : 'Select two stations to calculate fare'}
                 </p>
               )}
@@ -505,7 +505,7 @@ function TrainCard({
             <h3 className="font-bold text-kj-text text-sm truncate">
               {bn ? route.bnName : route.name}
             </h3>
-            <span className="text-[10px] font-bold px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 text-kj-text-dim rounded shrink-0">
+            <span className="text-[10px] font-bold px-1.5 py-0.5 bg-kj-chip-bg text-kj-text-dim rounded shrink-0">
               #{route.number}
             </span>
           </div>
@@ -520,7 +520,7 @@ function TrainCard({
               e.stopPropagation();
               onToggleFavorite?.();
             }}
-            className="w-8 h-8 flex items-center justify-center leading-none rounded-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-slate-600 hover:bg-kj-chip-bg dark:hover:bg-slate-600 transition-colors shrink-0"
+            className="w-8 h-8 flex items-center justify-center leading-none rounded-full bg-kj-chip-bg border border-kj-line dark:border-kj-line hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg transition-colors shrink-0"
             aria-label={isFavorite ? `Remove ${route.name} from favorites` : `Add ${route.name} to favorites`}
           >
             <Heart className={`w-4 h-4 ${isFavorite ? 'fill-pink-500 text-pink-500' : 'text-kj-text-faint'}`} />
@@ -762,7 +762,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
   }
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 w-full bg-[#0F172A] dark:bg-[#0F172A] overflow-hidden">
+    <div className="flex flex-col flex-1 min-h-0 w-full bg-kj-bg overflow-hidden">
       {/* Header */}
       <div className="shrink-0 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 shadow-xl shadow-emerald-500/30">
@@ -955,7 +955,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
               {bn ? 'ক্লিয়ার' : 'Clear'}
             </button>
           )}
-          <span className="text-[10px] bg-gray-200 dark:bg-slate-700 px-2 py-0.5 rounded-full text-kj-text-dim font-bold">
+          <span className="text-[10px] bg-gray-200 dark:bg-kj-chip-bg px-2 py-0.5 rounded-full text-kj-text-dim font-bold">
             {filtered.length}
           </span>
         </div>
@@ -965,13 +965,13 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
         <div className="flex p-1 bg-kj-chip-bg rounded-xl">
           <button
             onClick={() => setListFilter('ALL')}
-            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${listFilter === 'ALL' ? 'bg-white dark:bg-slate-700 shadow-sm text-kj-text' : 'text-kj-text-dim dark:text-kj-text-faint hover:text-kj-text dark:hover:text-gray-200'}`}
+            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${listFilter === 'ALL' ? 'bg-white dark:bg-kj-chip-bg shadow-sm text-kj-text' : 'text-kj-text-dim dark:text-kj-text-faint hover:text-kj-text dark:hover:text-gray-200'}`}
           >
             {bn ? 'সব ট্রেন' : 'All Trains'}
           </button>
           <button
             onClick={() => setListFilter('FAVORITES')}
-            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1 ${listFilter === 'FAVORITES' ? 'bg-white dark:bg-slate-700 shadow-sm text-red-500' : 'text-kj-text-dim dark:text-kj-text-faint hover:text-kj-text dark:hover:text-gray-200'}`}
+            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1 ${listFilter === 'FAVORITES' ? 'bg-white dark:bg-kj-chip-bg shadow-sm text-red-500' : 'text-kj-text-dim dark:text-kj-text-faint hover:text-kj-text dark:hover:text-gray-200'}`}
           >
             <Heart className="w-4 h-4 fill-current" />
             {bn ? 'প্রিয়' : 'Favorites'}

@@ -415,14 +415,14 @@ function App() {
           <a
             href="/"
             onClick={(e) => { e.preventDefault(); window.location.href = '/'; }}
-            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-kj-text-dim hover:text-kj-text-dim dark:hover:text-gray-200 hover:bg-kj-chip-bg/50 dark:hover:bg-slate-700/50"
+            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-kj-text-dim hover:text-kj-text hover:bg-kj-chip-bg/50"
           >
 
             <Home size={16} />
             {t('nav.home')}
           </a>
           <button
-            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 bg-white dark:bg-slate-700 text-kj-primary shadow-sm transform scale-100"
+            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 bg-kj-chip-bg text-kj-primary shadow-sm transform scale-100"
           >
             <Bus size={16} className="animate-pulse" />
             {t('nav.intercity')}
@@ -430,7 +430,7 @@ function App() {
           <a
             href="/train"
             onClick={(e) => { e.preventDefault(); window.location.href = '/#train'; }}
-            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-kj-text-dim hover:text-kj-text-dim dark:hover:text-gray-200 hover:bg-kj-chip-bg/50 dark:hover:bg-slate-700/50"
+            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-kj-text-dim hover:text-kj-text hover:bg-kj-chip-bg/50"
           >
             <Train size={16} />
             {t('nav.train')}
@@ -438,7 +438,7 @@ function App() {
           <a
             href="/#ai-assistant"
             onClick={(e) => { e.preventDefault(); window.location.href = '/#ai-assistant'; }}
-            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-kj-text-dim hover:text-kj-text-dim dark:hover:text-gray-200 hover:bg-kj-chip-bg/50 dark:hover:bg-slate-700/50"
+            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-kj-text-dim hover:text-kj-text hover:bg-kj-chip-bg/50"
           >
             <Sparkles size={16} />
             {t('nav.aiAssistant')}
@@ -454,7 +454,7 @@ function App() {
           <a
             href="/#about"
             onClick={(e) => { e.preventDefault(); window.location.href = '/#about'; }}
-            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-kj-text-dim hover:text-kj-text-dim dark:hover:text-gray-200 hover:bg-kj-chip-bg/50 dark:hover:bg-slate-700/50"
+            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-kj-text-dim hover:text-kj-text hover:bg-kj-chip-bg/50"
           >
             <Info size={16} />
             {t('nav.about')}
@@ -746,7 +746,7 @@ function App() {
                         onClick={() => setSelectedMode(isSelected ? null : mode.id)}
                         className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all text-left ${isSelected ? mode.sel : 'bg-kj-panel border-kj-line hover:border-kj-line dark:hover:border-slate-600'}`}
                       >
-                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${isSelected ? mode.sel : 'bg-gray-50 dark:bg-slate-700 text-kj-text-dim'}`}>
+                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${isSelected ? mode.sel : 'bg-kj-chip-bg text-kj-text-dim'}`}>
                           {mode.icon}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -793,7 +793,7 @@ function App() {
             {/* Loading */}
             {loading && (
               <div className="flex items-center justify-center h-full min-h-[400px]">
-                <div className="bg-white/90 dark:bg-kj-chip-bg/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl"><LoadingState /></div>
+                <div className="bg-kj-panel/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl"><LoadingState /></div>
               </div>
             )}
 
@@ -840,7 +840,7 @@ function App() {
             {!loading && !result && !error && (
               <div className="flex flex-col items-center justify-center h-full min-h-[400px] p-8 text-center">
                 {selectedMode === 'bus' && authUser && (
-                  <div className="bg-white/90 dark:bg-kj-chip-bg/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
+                  <div className="bg-kj-panel/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
                     <div className="text-4xl mb-4 text-center">🚌</div>
                     <h3 className="text-xl font-bold text-kj-text mb-2 text-center">{t('intercity.byBus')}</h3>
                     <p className="text-kj-text-dim text-sm leading-relaxed mb-5 text-center">{t('intercity.busInfo')}</p>
@@ -852,7 +852,7 @@ function App() {
                   </div>
                 )}
                 {selectedMode === 'train' && authUser && (
-                  <div className="bg-white/90 dark:bg-kj-chip-bg/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
+                  <div className="bg-kj-panel/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
                     <div className="text-4xl mb-4 text-center">🚂</div>
                     <h3 className="text-xl font-bold text-kj-text mb-2 text-center">{t('intercity.byTrain')}</h3>
                     <p className="text-kj-text-dim text-sm leading-relaxed mb-5 text-center">{t('intercity.trainInfo')}</p>
@@ -864,7 +864,7 @@ function App() {
                   </div>
                 )}
                 {selectedMode === 'plane' && authUser && (
-                  <div className="bg-white/90 dark:bg-kj-chip-bg/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
+                  <div className="bg-kj-panel/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
                     <div className="text-4xl mb-4 text-center">✈️</div>
                     <h3 className="text-xl font-bold text-kj-text mb-2 text-center">{t('intercity.byAir')}</h3>
                     <p className="text-kj-text-dim text-sm leading-relaxed mb-5 text-center">{t('intercity.airInfo')}</p>
@@ -876,7 +876,7 @@ function App() {
                   </div>
                 )}
                 {selectedMode === 'launch' && authUser && (
-                  <div className="bg-white/90 dark:bg-kj-chip-bg/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
+                  <div className="bg-kj-panel/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
                     <div className="text-4xl mb-4 text-center">🛥️</div>
                     <h3 className="text-xl font-bold text-kj-text mb-2 text-center">{t('intercity.launchTitle')}</h3>
                     <p className="text-kj-text-dim text-sm leading-relaxed mb-5 text-center">{t('intercity.launchInfo')}</p>
@@ -936,7 +936,7 @@ function App() {
                         setResult(null);
                         setIsMenuOpen(false);
                       }}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-kj-text-dim text-xs font-semibold transition-colors"
+                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-kj-chip-bg hover:bg-kj-chip-bg text-kj-text-dim text-xs font-semibold transition-colors"
                     >
                       <LogOut className="w-3.5 h-3.5" /> {t('common.logout') || 'Logout'}
                     </button>
