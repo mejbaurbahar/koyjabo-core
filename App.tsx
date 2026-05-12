@@ -2390,7 +2390,8 @@ const App: React.FC = () => {
   );
 
   const renderAbout = () => (
-    <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe w-full bg-white dark:bg-slate-900" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="flex flex-col flex-1 min-h-0 w-full bg-white dark:bg-slate-900 overflow-hidden">
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
       <div className="max-w-5xl mx-auto text-center">
         <div className="w-20 h-20 bg-dhaka-red rounded-3xl flex items-center justify-center text-white mx-auto mb-6 shadow-xl shadow-red-200 rotate-3 hover:rotate-6 transition-transform">
           <Bus className="w-10 h-10" />
@@ -2568,6 +2569,7 @@ const App: React.FC = () => {
       {/* Spacer for bottom nav on mobile */}
 
       <div className="h-20 md:hidden"></div>
+      </div>
     </div>
   );
 
@@ -2716,7 +2718,8 @@ const App: React.FC = () => {
   );
 
   const renderWhyUse = () => (
-    <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe w-full bg-white dark:bg-slate-900" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="flex flex-col flex-1 min-h-0 w-full bg-white dark:bg-slate-900 overflow-hidden">
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100 leading-tight">{t('whyUse.title')}</h1>
         <p className="text-gray-500 dark:text-gray-400 mb-8">{t('whyUse.subtitle')}</p>
@@ -2898,11 +2901,13 @@ const App: React.FC = () => {
 
         <div className="h-20"></div>
       </div>
+      </div>
     </div>
   );
 
   const renderFAQ = () => (
-    <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe w-full bg-white dark:bg-slate-900" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="flex flex-col flex-1 min-h-0 w-full bg-white dark:bg-slate-900 overflow-hidden">
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100 leading-tight">{t('faq.title')}</h1>
         <p className="text-gray-500 dark:text-gray-400 mb-8">{t('faq.subtitle')}</p>
@@ -3069,11 +3074,13 @@ const App: React.FC = () => {
         <div className="h-20"></div>
 
       </div>
+      </div>
     </div>
   );
 
   const renderForAi = () => (
-    <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe w-full bg-white dark:bg-slate-900" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="flex flex-col flex-1 min-h-0 w-full bg-white dark:bg-slate-900 overflow-hidden">
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 md:pb-12 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
       <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl md:text-5xl font-bold mb-6 text-gray-900 leading-tight">AI Dataset & Integration</h1>
         <div className="flex items-center gap-2 text-sm text-gray-500 mb-8">
@@ -3244,6 +3251,7 @@ const App: React.FC = () => {
 
           {/* Bottom space */}
 
+      </div>
       </div>
     </div>
   );

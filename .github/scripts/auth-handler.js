@@ -895,24 +895,32 @@ async function handleSaveHistory({ userId, historyData }) {
 async function handleRecordVisit({ visitorId, userId }) {
   const today = new Date().toISOString().split('T')[0];
   const isLoggedIn = !!(userId && userId !== 'anonymous');
-  const updated = await updateDataFileWithRetry(
-    'data/stats/global.json',
-    (existing) => {
-      const s = existing || { totalVisits: 0, todayVisits: 0, totalUsers: 0, loggedInVisits: 0, anonymousVisits: 0, todayDate: today, lastUpdated: 0 };
-      if (s.todayDate !== today) { s.todayVisits = 0; s.todayDate = today; }
-      s.totalVisits = (s.totalVisits || 0) + 1;
-      s.todayVisits = (s.todayVisits || 0) + 1;
-      if (isLoggedIn) {
-        s.loggedInVisits = (s.loggedInVisits || 0) + 1;
-      } else {
-        s.anonymousVisits = (s.anonymousVisits || 0) + 1;
-      }
-      s.lastUpdated = Date.now();
-      return s;
-    },
-    `Visit: ${visitorId?.slice(0, 8) || 'anon'}`
-  );
-  return { success: true, totalVisits: updated.totalVisits, todayVisits: updated.todayVisits };
+  try {
+    const updated = await updateDataFileWithRetry(
+      'data/stats/global.json',
+      (existing) => {
+        const s = existing || { totalVisits: 0, todayVisits: 0, totalUsers: 0, loggedInVisits: 0, anonymousVisits: 0, todayDate: today, lastUpdated: 0 };
+        if (s.todayDate !== today) { s.todayVisits = 0; s.todayDate = today; }
+        s.totalVisits = (s.totalVisits || 0) + 1;
+        s.todayVisits = (s.todayVisits || 0) + 1;
+        if (isLoggedIn) {
+          s.loggedInVisits = (s.loggedInVisits || 0) + 1;
+        } else {
+          s.anonymousVisits = (s.anonymousVisits || 0) + 1;
+        }
+        s.lastUpdated = Date.now();
+        return s;
+      },
+      `Visit: ${visitorId?.slice(0, 8) || 'anon'}`
+    );
+    return { success: true, totalVisits: updated.totalVisits, todayVisits: updated.todayVisits };
+  } catch (err) {
+    if (err.status === 403) {
+      console.warn('[record-visit] Rate limited — stats update skipped.');
+      return { success: true, totalVisits: 0, todayVisits: 0 };
+    }
+    throw err;
+  }
 }
 
 async function handleSaveData({ path, content, message }) {
@@ -1257,9 +1265,17 @@ async function writeResult(requestId, result) {
   }
 
   // Fallback: koyjabo-core (GITHUB_TOKEN always has access here)
-  const existing = await readDataFile(path);
-  await writeDataFile(path, content, existing?.sha, `Auth result: ${requestId}`);
-  console.log(`Result written to ${DATA_REPO}/${path}`);
+  try {
+    const existing = await readDataFile(path);
+    await writeDataFile(path, content, existing?.sha, `Auth result: ${requestId}`);
+    console.log(`Result written to ${DATA_REPO}/${path}`);
+  } catch (err) {
+    if (err.status === 403) {
+      console.warn('[writeResult] Rate limited on fallback — result not persisted.');
+      return;
+    }
+    throw err;
+  }
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
