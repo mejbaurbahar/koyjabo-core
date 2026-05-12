@@ -9,11 +9,8 @@ interface AdSenseAdProps {
   native?: boolean;
 }
 
-// Valid slot IDs are 9-10 digit numeric strings.
-// Passing "auto" as a slot ID is invalid; those placements rely on Google Auto Ads
-// (enabled from the AdSense dashboard) injecting ads automatically.
 const isValidSlot = (slot: string) => slot === 'auto' || /^\d{9,11}$/.test(slot);
-const DEFAULT_SLOT = '7294303750'; // From intercity/index.html
+const DEFAULT_SLOT = '7294303750';
 
 const AdSenseAd: React.FC<AdSenseAdProps> = React.memo(({
   adSlot,
@@ -34,19 +31,31 @@ const AdSenseAd: React.FC<AdSenseAdProps> = React.memo(({
     if (!navigator.onLine) return;
     if (!isValidSlot(adSlot)) return;
     const ins = insRef.current;
-    if (!ins || pushed.current) return;
-    const status = ins.getAttribute('data-adsbygoogle-status');
-    if (status === 'done' || status === 'filled') return;
+    if (!ins) return;
 
-    pushed.current = true;
-    try {
-      ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
-    } catch {
-      pushed.current = false;
-    }
+    // Use IntersectionObserver so each ad only pushes when it enters the viewport.
+    // This prevents the race condition caused by 20+ simultaneous push({}) calls
+    // when the bus list renders many AdSenseAd components at once.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) return;
+        if (pushed.current) return;
+        if (ins.getAttribute('data-adsbygoogle-status') === 'done') return;
+        pushed.current = true;
+        observer.disconnect();
+        try {
+          ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+        } catch {
+          pushed.current = false;
+        }
+      },
+      { threshold: 0.1, rootMargin: '200px 0px' },
+    );
+
+    observer.observe(ins);
+    return () => observer.disconnect();
   }, [adSlot]);
 
-  // Do not render if offline or slot ID is not valid
   if (!navigator.onLine || !isValidSlot(adSlot)) return null;
 
   const insEl = (
