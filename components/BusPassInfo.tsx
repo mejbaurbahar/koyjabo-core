@@ -148,17 +148,17 @@ export default function BusPassInfo({ onBack }: Props) {
   useEffect(() => { trackFeatureUsage('bus_pass_info'); }, []);
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 bg-slate-50 dark:bg-slate-900 overflow-hidden">
-      <div className="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
-        <button onClick={onBack} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors">
-          <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+    <div className="flex flex-col flex-1 min-h-0 bg-kj-bg overflow-hidden">
+      <div className="flex items-center gap-3 p-4 bg-kj-panel border-b border-kj-line shrink-0">
+        <button onClick={onBack} className="p-2 -ml-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full transition-colors">
+          <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
         </button>
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shrink-0">
           <CreditCard className="w-5 h-5 text-white" />
         </div>
         <div>
-          <h1 className="text-lg font-bold text-gray-900 dark:text-white">{lbl('Bus Pass & Transit Cards', 'বাস পাস / কার্ড তথ্য')}</h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{lbl('Save money on daily commute', 'দৈনিক যাতায়াতে খরচ বাঁচান')}</p>
+          <h1 className="text-lg font-bold text-kj-text">{lbl('Bus Pass & Transit Cards', 'বাস পাস / কার্ড তথ্য')}</h1>
+          <p className="text-xs text-kj-text-dim">{lbl('Save money on daily commute', 'দৈনিক যাতায়াতে খরচ বাঁচান')}</p>
         </div>
       </div>
 
@@ -178,7 +178,7 @@ export default function BusPassInfo({ onBack }: Props) {
         <AdSenseAd adSlot="auto" native className="w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
         {passes.map((pass) => (
-          <div key={pass.name} className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700">
+          <div key={pass.name} className="bg-kj-panel rounded-2xl overflow-hidden shadow-sm border border-kj-line">
             <div className={`bg-gradient-to-r ${pass.color} p-4 text-white`}>
               <div className="flex items-center gap-3">
                 <span className="text-3xl">{pass.icon}</span>
@@ -195,12 +195,12 @@ export default function BusPassInfo({ onBack }: Props) {
 
             <div className="p-4 space-y-3">
               <div>
-                <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">
+                <p className="text-xs font-bold text-kj-text-dim uppercase tracking-wide mb-1">
                   {lbl('Benefits', 'সুবিধাসমূহ')}
                 </p>
                 <ul className="space-y-1.5">
                   {(language === 'bn' ? pass.benefitsbn : pass.benefits).map((b, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                    <li key={i} className="flex items-start gap-2 text-sm text-kj-text-dim">
                       <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
                       {b}
                     </li>
@@ -208,8 +208,8 @@ export default function BusPassInfo({ onBack }: Props) {
                 </ul>
               </div>
               <div className="bg-gray-50 dark:bg-slate-700/50 rounded-xl p-3">
-                <p className="text-xs font-bold text-gray-500 dark:text-gray-400 mb-1">{lbl('Where to get it', 'কোথায় পাবেন')}</p>
-                <p className="text-sm text-gray-700 dark:text-gray-300">{language === 'bn' ? pass.wherebn : pass.where}</p>
+                <p className="text-xs font-bold text-kj-text-dim mb-1">{lbl('Where to get it', 'কোথায় পাবেন')}</p>
+                <p className="text-sm text-kj-text-dim">{language === 'bn' ? pass.wherebn : pass.where}</p>
               </div>
               <div className="bg-amber-50 dark:bg-amber-900/20 rounded-xl p-3">
                 <p className="text-xs font-bold text-amber-700 dark:text-amber-400 mb-1">{lbl('Eligibility', 'যোগ্যতা')}</p>
@@ -225,13 +225,13 @@ export default function BusPassInfo({ onBack }: Props) {
           </div>
         ))}
 
-        <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
-          <h3 className="font-bold text-gray-900 dark:text-white mb-4">{lbl('How to get a pass?', 'কীভাবে পাস পাবেন?')}</h3>
+        <div className="bg-kj-panel rounded-2xl p-4 shadow-sm border border-kj-line">
+          <h3 className="font-bold text-kj-text mb-4">{lbl('How to get a pass?', 'কীভাবে পাস পাবেন?')}</h3>
           <div className="space-y-3">
             {howToUse.map((item) => (
               <div key={item.step} className="flex items-start gap-3">
-                <span className="w-7 h-7 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 flex items-center justify-center text-sm font-bold shrink-0">{item.step}</span>
-                <p className="text-sm text-gray-700 dark:text-gray-300 pt-1">{language === 'bn' ? item.textbn : item.text}</p>
+                <span className="w-7 h-7 rounded-full bg-kj-primary-soft dark:bg-emerald-900/40 text-emerald-700 dark:text-kj-primary flex items-center justify-center text-sm font-bold shrink-0">{item.step}</span>
+                <p className="text-sm text-kj-text-dim pt-1">{language === 'bn' ? item.textbn : item.text}</p>
               </div>
             ))}
           </div>

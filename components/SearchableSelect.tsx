@@ -69,7 +69,7 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({ options, val
                     }}
                     placeholder={placeholder}
                     disabled={disabled}
-                    className="w-full pl-2 md:pl-3 pr-10 md:pr-14 py-2 md:py-3.5 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 rounded-xl text-xs md:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-green-400/30 disabled:bg-gray-100 dark:disabled:bg-slate-900 disabled:text-gray-400 dark:disabled:text-gray-600 border border-transparent focus:border-green-400/30 transition-all shadow-sm"
+                    className="w-full pl-2 md:pl-3 pr-10 md:pr-14 py-2 md:py-3.5 bg-kj-panel text-kj-text rounded-xl text-xs md:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-kj-primary/30 disabled:bg-gray-100 dark:disabled:bg-kj-panel disabled:text-kj-text-faint dark:disabled:text-kj-text-dim border border-transparent focus:border-green-400/30 transition-all shadow-sm"
                 />
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
                     {searchTerm && !disabled && (
@@ -88,12 +88,12 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({ options, val
                             <X className="w-4 h-4" />
                         </button>
                     )}
-                    <MapPin className="w-4 h-4 text-gray-400 pointer-events-none mx-1" />
+                    <MapPin className="w-4 h-4 text-kj-text-faint pointer-events-none mx-1" />
                 </div>
             </div>
 
             {isOpen && !disabled && (
-                <div className="absolute top-full left-0 w-full mt-1 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 max-h-60 overflow-y-auto z-[9999] animate-in fade-in slide-in-from-top-2">
+                <div className="absolute top-full left-0 w-full mt-1 bg-kj-panel rounded-xl shadow-xl border border-kj-line max-h-60 overflow-y-auto z-[9999] animate-in fade-in slide-in-from-top-2">
                     {filteredOptions.length > 0 ? (
                         filteredOptions.map((option) => (
                             <div
@@ -103,23 +103,23 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({ options, val
                                     setSearchTerm(option.name);
                                     setIsOpen(false);
                                 }}
-                                className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-slate-700 cursor-pointer border-b border-gray-50 dark:border-gray-700 last:border-0 flex items-center justify-between group"
+                                className="px-4 py-3 hover:bg-kj-chip-bg dark:hover:bg-slate-700 cursor-pointer border-b border-gray-50 dark:border-gray-700 last:border-0 flex items-center justify-between group"
                             >
                                 <div className="flex-1">
-                                    <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                                    <div className="text-sm font-semibold text-kj-text">
                                         {option.name}
                                     </div>
                                     {option.bnName && (
-                                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                                        <div className="text-xs text-kj-text-dim mt-0.5">
                                             {option.bnName}
                                         </div>
                                     )}
                                 </div>
-                                {value === option.id && <div className="w-2 h-2 rounded-full bg-dhaka-green"></div>}
+                                {value === option.id && <div className="w-2 h-2 rounded-full bg-kj-primary"></div>}
                             </div>
                         ))
                     ) : (
-                        <div className="px-4 py-3 text-xs text-gray-400 text-center">{t('home.noResults')}</div>
+                        <div className="px-4 py-3 text-xs text-kj-text-faint text-center">{t('home.noResults')}</div>
                     )}
                 </div>
             )}

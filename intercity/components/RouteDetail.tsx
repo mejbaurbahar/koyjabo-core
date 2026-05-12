@@ -503,7 +503,7 @@ const TouristSpotsModal: React.FC<{ city: string; spots: any[]; onClose: () => v
       onClick={onClose}
       style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
     >
-      <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl w-full max-w-2xl rounded-[2rem] shadow-2xl border border-white dark:border-slate-700 overflow-hidden flex flex-col max-h-[80vh] animate-fade-in-up" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-white/90 dark:bg-kj-chip-bg/90 backdrop-blur-xl w-full max-w-2xl rounded-[2rem] shadow-2xl border border-white dark:border-kj-line overflow-hidden flex flex-col max-h-[80vh] animate-fade-in-up" onClick={(e) => e.stopPropagation()}>
 
         {/* Header */}
         <div className="p-6 bg-gradient-to-r from-teal-500 to-emerald-600 text-white flex justify-between items-center shrink-0">
@@ -524,10 +524,10 @@ const TouristSpotsModal: React.FC<{ city: string; spots: any[]; onClose: () => v
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {spots.map((spot, idx) => {
               let Icon = MapPin;
-              let color = "text-gray-500";
+              let color = "text-kj-text-dim";
               let bg = "bg-gray-100";
 
-              if (spot.type === "Nature") { Icon = Mountain; color = "text-emerald-600"; bg = "bg-emerald-50"; }
+              if (spot.type === "Nature") { Icon = Mountain; color = "text-kj-primary"; bg = "bg-kj-primary-soft"; }
               else if (spot.type === "Water") { Icon = Waves; color = "text-blue-600"; bg = "bg-blue-50"; }
               else if (spot.type === "History") { Icon = History; color = "text-amber-600"; bg = "bg-amber-50"; }
               else if (spot.type === "Attraction") { Icon = Camera; color = "text-purple-600"; bg = "bg-purple-50"; }
@@ -535,17 +535,17 @@ const TouristSpotsModal: React.FC<{ city: string; spots: any[]; onClose: () => v
               else if (spot.type === "Architecture") { Icon = Navigation; color = "text-indigo-600"; bg = "bg-indigo-50"; }
 
               return (
-                <div key={idx} className="bg-white dark:bg-slate-700 p-4 rounded-2xl border border-gray-100 dark:border-gray-600 shadow-sm hover:shadow-md transition-shadow group">
+                <div key={idx} className="bg-white dark:bg-slate-700 p-4 rounded-2xl border border-kj-line dark:border-gray-600 shadow-sm hover:shadow-md transition-shadow group">
                   <div className="flex items-start gap-3">
                     <div className={`w-10 h-10 ${bg} rounded-full flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
                       <Icon className={`w-5 h-5 ${color}`} />
                     </div>
                     <div>
-                      <h4 className="font-bold text-gray-800 dark:text-gray-100">{spot.name}</h4>
+                      <h4 className="font-bold text-kj-text">{spot.name}</h4>
                       <span className={`text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded ${bg} ${color} mb-1 inline-block`}>
                         {spot.type}
                       </span>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mt-1">{spot.desc}</p>
+                      <p className="text-xs text-kj-text-dim leading-relaxed mt-1">{spot.desc}</p>
                     </div>
                   </div>
                 </div>
@@ -555,7 +555,7 @@ const TouristSpotsModal: React.FC<{ city: string; spots: any[]; onClose: () => v
         </div>
 
         {/* Footer */}
-        <div className="p-4 bg-gray-50 dark:bg-slate-700 border-t border-gray-200 dark:border-gray-600 text-center text-xs text-gray-400 dark:text-gray-300 shrink-0">
+        <div className="p-4 bg-gray-50 dark:bg-slate-700 border-t border-kj-line dark:border-gray-600 text-center text-xs text-kj-text-faint dark:text-kj-text-faint shrink-0">
           Explore these spots during your visit to {city}!
         </div>
       </div>
@@ -578,15 +578,15 @@ const StepIcon: React.FC<{ mode: TransportMode }> = ({ mode }) => {
       Icon = Train;
       break;
     case TransportMode.METRO_RAIL:
-      bgClass = "bg-dhaka-red";
+      bgClass = "bg-kj-accent";
       Icon = Train;
       break;
     case TransportMode.BUS:
-      bgClass = "bg-emerald-500";
+      bgClass = "bg-kj-primary";
       Icon = Bus;
       break;
     case TransportMode.LOCAL_BUS:
-      bgClass = "bg-teal-600";
+      bgClass = "bg-kj-primary";
       Icon = Bus;
       break;
     case TransportMode.CNG:
@@ -644,18 +644,18 @@ const ScheduleList: React.FC<{ schedules: Schedule[], mode: TransportMode }> = (
     <div className="mt-4">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="group w-full flex items-center justify-between p-3 bg-white dark:bg-slate-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
+        className="group w-full flex items-center justify-between p-3 bg-kj-panel border border-kj-line rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
       >
         <span className="flex items-center gap-2.5">
           <div className={`w-8 h-8 rounded-full bg-${color}-50 flex items-center justify-center text-${color}-600`}>
             <Ticket size={16} />
           </div>
           <div className="text-left">
-            <div className="text-xs font-bold text-gray-800 uppercase tracking-wider">Available {label}</div>
-            <div className="text-[10px] text-gray-400 font-medium">{schedules.length} options found</div>
+            <div className="text-xs font-bold text-kj-text uppercase tracking-wider">Available {label}</div>
+            <div className="text-[10px] text-kj-text-faint font-medium">{schedules.length} options found</div>
           </div>
         </span>
-        <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${isOpen ? 'bg-gray-100 text-gray-600' : 'bg-transparent text-gray-400'}`}>
+        <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${isOpen ? 'bg-gray-100 text-kj-text-dim' : 'bg-transparent text-kj-text-faint'}`}>
           {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
         </div>
       </button>
@@ -663,14 +663,14 @@ const ScheduleList: React.FC<{ schedules: Schedule[], mode: TransportMode }> = (
       {isOpen && (
         <div className="mt-3 grid gap-3">
           {schedules.map((schedule, idx) => (
-            <div key={idx} className="relative bg-white dark:bg-slate-800 border border-gray-100 dark:border-gray-700 rounded-xl p-0 overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 group/item">
+            <div key={idx} className="relative bg-kj-panel border border-kj-line rounded-xl p-0 overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 group/item">
               {/* Ticket Left Color Bar */}
               <div className={`absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-${color}-400 to-${color}-500`}></div>
 
               <div className="pl-5 pr-4 py-3 flex flex-col gap-2">
                 {/* Top Row: Operator & Price */}
-                <div className="flex justify-between items-center border-b border-dashed border-gray-100 pb-2">
-                  <span className="font-bold text-gray-800 dark:text-gray-100 text-sm">{schedule.operator}</span>
+                <div className="flex justify-between items-center border-b border-dashed border-kj-line pb-2">
+                  <span className="font-bold text-kj-text text-sm">{schedule.operator}</span>
                   <span className={`font-bold text-${color}-600 bg-${color}-50 px-2 py-0.5 rounded text-xs`}>
                     {schedule.price}
                   </span>
@@ -679,9 +679,9 @@ const ScheduleList: React.FC<{ schedules: Schedule[], mode: TransportMode }> = (
                 {/* Middle Row: Time & Type */}
                 <div className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
-                    <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded font-medium">{schedule.type}</span>
-                    <span className="flex items-center gap-1 text-gray-500 font-medium">
-                      <Clock size={12} className="text-gray-400" /> {schedule.departureTime}
+                    <span className="bg-gray-100 text-kj-text-dim px-2 py-1 rounded font-medium">{schedule.type}</span>
+                    <span className="flex items-center gap-1 text-kj-text-dim font-medium">
+                      <Clock size={12} className="text-kj-text-faint" /> {schedule.departureTime}
                     </span>
                   </div>
                   {schedule.contactNumber && (
@@ -694,8 +694,8 @@ const ScheduleList: React.FC<{ schedules: Schedule[], mode: TransportMode }> = (
                 {/* Bottom Row: Counter */}
                 <div className="flex items-end justify-between pt-1">
                   <div className="flex items-start gap-1.5">
-                    <MapPin size={12} className="text-gray-400 mt-0.5 shrink-0" />
-                    <span className="text-[11px] text-gray-500 leading-tight">{schedule.counter}</span>
+                    <MapPin size={12} className="text-kj-text-faint mt-0.5 shrink-0" />
+                    <span className="text-[11px] text-kj-text-dim leading-tight">{schedule.counter}</span>
                   </div>
                 </div>
               </div>
@@ -718,18 +718,18 @@ export const RouteDetail: React.FC<RouteDetailProps> = ({ option }) => {
 
   return (
     <>
-      <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-[2.5rem] shadow-glass border border-white dark:border-slate-700 overflow-hidden flex flex-col">
+      <div className="bg-white/80 dark:bg-kj-chip-bg/80 backdrop-blur-xl rounded-[2.5rem] shadow-glass border border-white dark:border-kj-line overflow-hidden flex flex-col">
 
         {/* Header Info */}
         <div className="p-6 md:p-8 bg-gradient-to-b from-white dark:from-slate-800 to-gray-50/50 dark:to-slate-900/50">
           <div className="flex flex-col md:flex-row justify-between items-start gap-4">
             <div className="space-y-1">
-              <h3 className="font-bold text-2xl text-gray-800 dark:text-gray-100 leading-tight">{option.title}</h3>
-              <p className="text-sm text-gray-500 font-medium max-w-md leading-relaxed">{option.summary}</p>
+              <h3 className="font-bold text-2xl text-kj-text leading-tight">{option.title}</h3>
+              <p className="text-sm text-kj-text-dim font-medium max-w-md leading-relaxed">{option.summary}</p>
             </div>
-            <div className="flex md:flex-col items-center md:items-end gap-3 md:gap-1 bg-white dark:bg-slate-700 p-3 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-600">
-              <div className="text-xl font-bold text-emerald-600">{option.totalCostRange}</div>
-              <div className="text-xs font-bold text-gray-500 uppercase tracking-wide bg-gray-100 px-2 py-0.5 rounded-md">{option.totalDuration}</div>
+            <div className="flex md:flex-col items-center md:items-end gap-3 md:gap-1 bg-white dark:bg-slate-700 p-3 rounded-2xl shadow-sm border border-kj-line dark:border-gray-600">
+              <div className="text-xl font-bold text-kj-primary">{option.totalCostRange}</div>
+              <div className="text-xs font-bold text-kj-text-dim uppercase tracking-wide bg-gray-100 px-2 py-0.5 rounded-md">{option.totalDuration}</div>
             </div>
           </div>
 
@@ -740,37 +740,37 @@ export const RouteDetail: React.FC<RouteDetailProps> = ({ option }) => {
                 <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-blue-500 shadow-sm text-2xl">
                   {weather.icon === 'SUN' ? <Sun size={24} className="text-amber-500" /> :
                     weather.icon === 'RAIN' ? <CloudRain size={24} className="text-blue-500" /> :
-                      weather.icon === 'WIND' ? <Wind size={24} className="text-gray-500" /> :
-                        <Cloud size={24} className="text-gray-400" />}
+                      weather.icon === 'WIND' ? <Wind size={24} className="text-kj-text-dim" /> :
+                        <Cloud size={24} className="text-kj-text-faint" />}
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-gray-800 text-lg">{weather.temperature}</span>
+                    <span className="font-bold text-kj-text text-lg">{weather.temperature}</span>
                     <span className="text-xs font-bold bg-white px-2 py-0.5 rounded-md text-blue-600 border border-blue-100">{weather.condition}</span>
                   </div>
-                  <p className="text-xs text-gray-500 leading-tight mt-0.5">{weather.advice}</p>
+                  <p className="text-xs text-kj-text-dim leading-tight mt-0.5">{weather.advice}</p>
                 </div>
               </div>
               <div className="text-right hidden sm:block">
-                <span className="text-[10px] font-bold uppercase text-gray-400 tracking-wider">Destination</span>
-                <div className="text-sm font-bold text-gray-700">{destination}</div>
+                <span className="text-[10px] font-bold uppercase text-kj-text-faint tracking-wider">Destination</span>
+                <div className="text-sm font-bold text-kj-text-dim">{destination}</div>
               </div>
             </div>
           )}
         </div>
 
         {/* Map Section */}
-        <div className="w-full h-56 md:h-80 relative border-y border-gray-100 dark:border-gray-700">
+        <div className="w-full h-56 md:h-80 relative border-y border-kj-line">
           <RouteMap steps={option.steps} />
           {/* Gradients to blend map */}
           <div className="absolute top-0 left-0 w-full h-12 bg-gradient-to-b from-white dark:from-slate-800 to-transparent pointer-events-none z-[400]"></div>
           <div className="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-white dark:from-slate-800 to-transparent pointer-events-none z-[400]"></div>
 
           {/* Live View Badge */}
-          <div className="absolute top-4 left-4 z-[500] bg-slate-900/90 backdrop-blur text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-2 border border-slate-700 shadow-lg">
+          <div className="absolute top-4 left-4 z-[500] bg-kj-panel/90 backdrop-blur text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-2 border border-kj-line shadow-lg">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-kj-primary"></span>
             </span>
             LIVE VIEW
           </div>
@@ -778,22 +778,22 @@ export const RouteDetail: React.FC<RouteDetailProps> = ({ option }) => {
 
         {/* Pros & Cons Section (Modern UI) */}
         {((option as any).enhancedData?.tips?.pros || (option as any).enhancedData?.tips?.cons) && (
-          <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-4 bg-white dark:bg-slate-900">
+          <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-4 bg-kj-panel">
 
             {/* Why Choose This */}
             {(option as any).enhancedData?.tips?.pros && (option as any).enhancedData.tips.pros.length > 0 && (
-              <div className="bg-emerald-50/50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-800/30 rounded-2xl p-5">
+              <div className="bg-kj-primary-soft/50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-800/30 rounded-2xl p-5">
                 <div className="flex items-center gap-2 mb-4">
-                  <div className="p-1.5 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
-                    <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                  <div className="p-1.5 bg-kj-primary-soft rounded-lg">
+                    <Sparkles className="w-4 h-4 text-kj-primary" />
                   </div>
-                  <h4 className="font-bold text-emerald-900 dark:text-emerald-400 text-sm uppercase tracking-wide">Why Choose This</h4>
+                  <h4 className="font-bold text-emerald-900 dark:text-kj-primary text-sm uppercase tracking-wide">Why Choose This</h4>
                 </div>
                 <ul className="space-y-3">
                   {(option as any).enhancedData.tips.pros.map((pro: string, i: number) => (
-                    <li key={i} className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
-                      <div className="mt-0.5 w-4 h-4 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center shrink-0">
-                        <svg className="w-2.5 h-2.5 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <li key={i} className="flex items-start gap-3 text-sm text-kj-text-dim">
+                      <div className="mt-0.5 w-4 h-4 rounded-full bg-kj-primary-soft flex items-center justify-center shrink-0">
+                        <svg className="w-2.5 h-2.5 text-kj-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                         </svg>
                       </div>
@@ -815,7 +815,7 @@ export const RouteDetail: React.FC<RouteDetailProps> = ({ option }) => {
                 </div>
                 <ul className="space-y-3">
                   {(option as any).enhancedData.tips.cons.map((con: string, i: number) => (
-                    <li key={i} className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+                    <li key={i} className="flex items-start gap-3 text-sm text-kj-text-dim">
                       <div className="mt-0.5 w-4 h-4 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center shrink-0">
                         <span className="text-amber-600 dark:text-amber-400 font-bold text-[10px]">!</span>
                       </div>
@@ -830,7 +830,7 @@ export const RouteDetail: React.FC<RouteDetailProps> = ({ option }) => {
 
         {/* Enhanced Transport Details Section */}
         {(option as any).enhancedData && !(option as any).enhancedData?.tips?.pros && (
-          <div className="p-6 md:p-8 bg-gray-50 dark:bg-slate-800/50">
+          <div className="p-6 md:p-8 bg-gray-50 dark:bg-kj-chip-bg/50">
             <EnhancedTransportDetails
               enhancedData={(option as any).enhancedData}
               tips={(option as any).enhancedData?.tips}
@@ -839,7 +839,7 @@ export const RouteDetail: React.FC<RouteDetailProps> = ({ option }) => {
         )}
 
         {/* Timeline Section */}
-        <div className="p-6 md:p-8 bg-white dark:bg-slate-900">
+        <div className="p-6 md:p-8 bg-kj-panel">
           <div className="relative pl-4 md:pl-6 pb-4">
 
             {/* Continuous Vertical Line */}
@@ -857,19 +857,19 @@ export const RouteDetail: React.FC<RouteDetailProps> = ({ option }) => {
                   {/* Content */}
                   <div className="flex flex-col gap-3 group">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1">
-                      <h4 className="font-bold text-gray-900 dark:text-gray-100 text-lg leading-tight group-hover:text-emerald-600 transition-colors">{step.instruction}</h4>
+                      <h4 className="font-bold text-kj-text text-lg leading-tight group-hover:text-kj-primary transition-colors">{step.instruction}</h4>
                       {step.duration && (
-                        <span className="text-[11px] font-bold bg-gray-50 px-2.5 py-1 rounded-lg text-gray-500 border border-gray-100 whitespace-nowrap self-start">
+                        <span className="text-[11px] font-bold bg-gray-50 px-2.5 py-1 rounded-lg text-kj-text-dim border border-kj-line whitespace-nowrap self-start">
                           {step.duration}
                         </span>
                       )}
                     </div>
 
                     {/* From -> To */}
-                    <div className="flex items-center gap-2 text-sm text-gray-500 bg-gray-50/50 w-fit px-3 py-1.5 rounded-lg border border-gray-100/50">
-                      <span className="font-semibold text-gray-700">{step.from}</span>
-                      <ArrowRight size={14} className="text-gray-300" />
-                      <span className="font-semibold text-gray-700">{step.to}</span>
+                    <div className="flex items-center gap-2 text-sm text-kj-text-dim bg-gray-50/50 w-fit px-3 py-1.5 rounded-lg border border-kj-line/50">
+                      <span className="font-semibold text-kj-text-dim">{step.from}</span>
+                      <ArrowRight size={14} className="text-kj-text-faint" />
+                      <span className="font-semibold text-kj-text-dim">{step.to}</span>
                     </div>
 
                     {/* Specific Details Cards */}
@@ -922,8 +922,8 @@ export const RouteDetail: React.FC<RouteDetailProps> = ({ option }) => {
 
                     {step.cost && (
                       <div className="flex items-center gap-2 mt-1">
-                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Est. Cost</span>
-                        <span className="font-bold text-gray-700 text-xs bg-gray-100 px-2 py-0.5 rounded-md border border-gray-200">{step.cost}</span>
+                        <span className="text-[10px] font-bold text-kj-text-faint uppercase tracking-wider">Est. Cost</span>
+                        <span className="font-bold text-kj-text-dim text-xs bg-gray-100 px-2 py-0.5 rounded-md border border-kj-line">{step.cost}</span>
                       </div>
                     )}
                   </div>
@@ -932,12 +932,12 @@ export const RouteDetail: React.FC<RouteDetailProps> = ({ option }) => {
 
               {/* Destination Marker with Discovery */}
               <div className="relative pl-12 md:pl-16">
-                <div className="absolute left-0 top-0 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-dhaka-red shadow-lg shadow-red-500/30 border-[3px] border-white z-10 animate-pulse-slow">
+                <div className="absolute left-0 top-0 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-kj-accent shadow-lg shadow-red-500/30 border-[3px] border-white z-10 animate-pulse-slow">
                   <Flag className="text-white w-5 h-5 md:w-6 md:h-6 fill-current" />
                 </div>
                 <div className="flex flex-col pt-1">
-                  <h4 className="font-bold text-dhaka-dark text-xl">Arrive at {destination}</h4>
-                  <p className="text-sm text-gray-500 font-medium">Trip Completed</p>
+                  <h4 className="font-bold text-kj-text text-xl">Arrive at {destination}</h4>
+                  <p className="text-sm text-kj-text-dim font-medium">Trip Completed</p>
 
                   {/* Discovery Button */}
                   {nearbySpots && (

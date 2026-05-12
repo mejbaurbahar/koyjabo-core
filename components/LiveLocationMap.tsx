@@ -504,11 +504,11 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
     return (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200" onClick={onClose}>
             <div 
-                className="relative w-full max-w-5xl h-[90vh] sm:h-[85vh] bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-gray-200/20 dark:border-slate-700/50 animate-in zoom-in-95 duration-200"
+                className="relative w-full max-w-5xl h-[90vh] sm:h-[85vh] bg-kj-panel rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-kj-line/20 dark:border-kj-line/50 animate-in zoom-in-95 duration-200"
                 onClick={(e) => e.stopPropagation()}
             >
             {/* Map wrapper */}
-            <div className="absolute inset-0 z-0 bg-slate-100 dark:bg-slate-800 overflow-hidden">
+            <div className="absolute inset-0 z-0 bg-kj-chip-bg overflow-hidden">
                 <div ref={mapContainerRef} className="w-full h-full" />
             </div>
 
@@ -516,34 +516,34 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
             {/* ── Top status bar ── */}
             <div className="absolute top-0 left-0 right-0 z-[400] pointer-events-none px-3 pt-3 flex items-start justify-between gap-2">
                 {/* GPS + route info */}
-                <div className="pointer-events-auto bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl px-3 py-2.5 shadow-lg border border-white/30 dark:border-slate-700/50 flex items-center gap-2.5 max-w-[60vw]">
+                <div className="pointer-events-auto bg-kj-panel/90 backdrop-blur-md rounded-2xl px-3 py-2.5 shadow-lg border border-white/30 dark:border-kj-line/50 flex items-center gap-2.5 max-w-[60vw]">
                     <div className="relative shrink-0">
                         {isOffline
                             ? <WifiOff className="w-4 h-4 text-red-500" />
-                            : <Wifi className="w-4 h-4 text-emerald-500" />
+                            : <Wifi className="w-4 h-4 text-kj-primary" />
                         }
                         {userLocation && (
-                            <span className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-500 rounded-full border border-white animate-pulse" />
+                            <span className="absolute -top-1 -right-1 w-2 h-2 bg-kj-primary rounded-full border border-white animate-pulse" />
                         )}
                     </div>
                     <div className="min-w-0">
                         {selectedRoute ? (
                             <>
-                                <p className="text-xs font-bold text-gray-900 dark:text-white leading-tight truncate"
+                                <p className="text-xs font-bold text-kj-text leading-tight truncate"
                                    style={{ color: routeColor }}>
                                     {selectedRoute.name}
                                 </p>
-                                <p className="text-[10px] text-gray-500 dark:text-gray-400 leading-tight">
+                                <p className="text-[10px] text-kj-text-dim leading-tight">
                                     {routeStops.length} stops
                                     {gpsAccuracy ? ` · GPS ±${gpsAccuracy}m` : ''}
                                 </p>
                             </>
                         ) : (
                             <>
-                                <p className="text-xs font-bold text-gray-900 dark:text-white leading-tight">
+                                <p className="text-xs font-bold text-kj-text leading-tight">
                                     {isOffline ? t('map.offlineMode') : t('map.liveLocation')}
                                 </p>
-                                <p className="text-[10px] text-gray-500 dark:text-gray-400 leading-tight">
+                                <p className="text-[10px] text-kj-text-dim leading-tight">
                                     {userLocation
                                         ? `GPS ±${gpsAccuracy ?? '?'}m${gpsSpeed !== null && gpsSpeed > 0 ? ` · ${gpsSpeed} km/h` : ''}`
                                         : t('map.acquiringSignal')}
@@ -559,7 +559,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                     <div className="relative">
                         <button
                             onClick={() => setShowLayerMenu(v => !v)}
-                            className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2.5 rounded-xl shadow-lg border border-white/30 dark:border-slate-700/50 text-gray-700 dark:text-gray-200 active:scale-95 transition-all relative"
+                            className="bg-kj-panel/90 backdrop-blur-md p-2.5 rounded-xl shadow-lg border border-white/30 dark:border-kj-line/50 text-kj-text-dim active:scale-95 transition-all relative"
                         >
                             <Layers className="w-5 h-5" />
                             {isOffline && (
@@ -570,7 +570,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                         </button>
 
                         {showLayerMenu && (
-                            <div className="absolute top-12 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-200/50 dark:border-slate-700/50 p-2 w-40 flex flex-col gap-1 animate-in slide-in-from-top-2 duration-150">
+                            <div className="absolute top-12 right-0 bg-white/95 dark:bg-kj-panel/95 backdrop-blur-md rounded-2xl shadow-2xl border border-kj-line/50 dark:border-kj-line/50 p-2 w-40 flex flex-col gap-1 animate-in slide-in-from-top-2 duration-150">
                                 {isOffline && (
                                     <div className="flex items-center gap-1.5 px-2 py-1.5 text-[10px] font-bold text-amber-700 bg-amber-50 dark:bg-amber-900/20 rounded-lg mb-1">
                                         <WifiOff className="w-3 h-3" /> Offline Mode
@@ -585,8 +585,8 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                                             activeLayer === layer.id
                                                 ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
                                                 : isOffline && layer.online
-                                                    ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed'
-                                                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'
+                                                    ? 'text-kj-text-faint cursor-not-allowed'
+                                                    : 'text-kj-text-dim hover:bg-kj-chip-bg'
                                         }`}
                                     >
                                         <span className="flex items-center gap-2">
@@ -606,7 +606,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                     {/* Close */}
                     <button
                         onClick={onClose}
-                        className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2.5 rounded-xl shadow-lg border border-white/30 dark:border-slate-700/50 text-gray-700 dark:text-gray-200 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-500 active:scale-95 transition-all"
+                        className="bg-kj-panel/90 backdrop-blur-md p-2.5 rounded-xl shadow-lg border border-white/30 dark:border-kj-line/50 text-kj-text-dim hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-500 active:scale-95 transition-all"
                     >
                         <X className="w-5 h-5" />
                     </button>
@@ -622,7 +622,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                     className={`p-2.5 rounded-xl shadow-lg border backdrop-blur-md active:scale-95 transition-all ${
                         followMode
                             ? 'bg-blue-600 border-blue-500 text-white shadow-blue-500/30'
-                            : 'bg-white/90 dark:bg-slate-900/90 border-white/30 dark:border-slate-700/50 text-gray-600 dark:text-gray-300'
+                            : 'bg-kj-panel/90 border-white/30 dark:border-kj-line/50 text-kj-text-dim'
                     }`}
                 >
                     <Navigation className={`w-5 h-5 ${followMode ? 'animate-pulse' : ''}`} />
@@ -639,7 +639,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                             }
                         }}
                         title="Fit Route"
-                        className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2.5 rounded-xl shadow-lg border border-white/30 dark:border-slate-700/50 text-gray-600 dark:text-gray-300 active:scale-95 transition-all"
+                        className="bg-kj-panel/90 backdrop-blur-md p-2.5 rounded-xl shadow-lg border border-white/30 dark:border-kj-line/50 text-kj-text-dim active:scale-95 transition-all"
                     >
                         <Maximize className="w-5 h-5" />
                     </button>
@@ -649,14 +649,14 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                 <button
                     onClick={recenter}
                     disabled={!userLocation}
-                    className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2.5 rounded-xl shadow-lg border border-white/30 dark:border-slate-700/50 text-gray-600 dark:text-gray-300 disabled:opacity-40 active:scale-95 transition-all"
+                    className="bg-kj-panel/90 backdrop-blur-md p-2.5 rounded-xl shadow-lg border border-white/30 dark:border-kj-line/50 text-kj-text-dim disabled:opacity-40 active:scale-95 transition-all"
                 >
                     <Target className="w-5 h-5" />
                 </button>
 
                 {/* Live buses count */}
                 {liveBuses.length > 0 && (
-                    <div className="bg-emerald-600 text-white px-2.5 py-2 rounded-xl shadow-lg flex items-center gap-1.5 text-xs font-bold">
+                    <div className="bg-kj-primary text-white px-2.5 py-2 rounded-xl shadow-lg flex items-center gap-1.5 text-xs font-bold">
                         <Bus className="w-3.5 h-3.5" />
                         {liveBuses.length}
                     </div>
@@ -670,7 +670,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                     style={{ '--sheet-h': sheetExpanded ? '60vh' : '90px' } as React.CSSProperties}
                 >
                     <div
-                        className={`bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl rounded-t-3xl shadow-2xl border-t border-white/30 dark:border-slate-700 transition-all duration-300 ease-in-out overflow-hidden ${sheetExpanded ? 'h-[60vh]' : 'h-[90px]'}`}
+                        className={`bg-white/95 dark:bg-kj-panel/95 backdrop-blur-xl rounded-t-3xl shadow-2xl border-t border-white/30 dark:border-kj-line transition-all duration-300 ease-in-out overflow-hidden ${sheetExpanded ? 'h-[60vh]' : 'h-[90px]'}`}
                     >
                         {/* Handle + header */}
                         <button
@@ -687,15 +687,15 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                                         <Bus className="w-4 h-4" />
                                     </div>
                                     <div className="text-left">
-                                        <p className="text-sm font-bold text-gray-900 dark:text-white leading-tight">{selectedRoute.name}</p>
-                                        <p className="text-[10px] text-gray-500 dark:text-gray-400">
+                                        <p className="text-sm font-bold text-kj-text leading-tight">{selectedRoute.name}</p>
+                                        <p className="text-[10px] text-kj-text-dim">
                                             {routeStops[0]?.name} → {routeStops[routeStops.length - 1]?.name}
                                         </p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{routeStops.length} stops</span>
-                                    {sheetExpanded ? <ChevronDown className="w-4 h-4 text-gray-400" /> : <ChevronUp className="w-4 h-4 text-gray-400" />}
+                                    <span className="text-xs text-kj-text-dim font-medium">{routeStops.length} stops</span>
+                                    {sheetExpanded ? <ChevronDown className="w-4 h-4 text-kj-text-faint" /> : <ChevronUp className="w-4 h-4 text-kj-text-faint" />}
                                 </div>
                             </div>
                         </button>
@@ -711,7 +711,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                                     return (
                                         <div
                                             key={stop.id}
-                                            className={`flex items-center gap-3 py-2.5 cursor-pointer rounded-xl px-2 -mx-2 transition-colors ${isNearest ? 'bg-blue-50 dark:bg-blue-900/20' : 'hover:bg-gray-50 dark:hover:bg-slate-800'}`}
+                                            className={`flex items-center gap-3 py-2.5 cursor-pointer rounded-xl px-2 -mx-2 transition-colors ${isNearest ? 'bg-blue-50 dark:bg-blue-900/20' : 'hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg'}`}
                                             onClick={() => {
                                                 mapRef.current?.flyTo([stop.lat, stop.lng], 16, { duration: 0.8 });
                                                 followModeRef.current = false;
@@ -736,14 +736,14 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
 
                                             {/* Name */}
                                             <div className="flex-1 min-w-0">
-                                                <p className={`text-sm font-semibold leading-tight truncate ${isNearest ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>
+                                                <p className={`text-sm font-semibold leading-tight truncate ${isNearest ? 'text-blue-600 dark:text-blue-400' : 'text-kj-text'}`}>
                                                     {stop.name}
                                                     {isNearest && <span className="ml-1.5 text-[10px] bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded-full font-bold">Nearest</span>}
                                                 </p>
-                                                <p className="text-[10px] text-gray-400 dark:text-gray-500">{stop.bnName}</p>
+                                                <p className="text-[10px] text-kj-text-faint">{stop.bnName}</p>
                                             </div>
 
-                                            <MapPin className="w-3.5 h-3.5 text-gray-300 dark:text-gray-600 shrink-0" />
+                                            <MapPin className="w-3.5 h-3.5 text-kj-text-faint shrink-0" />
                                         </div>
                                     );
                                 })}

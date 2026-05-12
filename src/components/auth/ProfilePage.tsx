@@ -50,7 +50,7 @@ function useAsyncOp() {
 
 // ── Device icon ───────────────────────────────────────────────────────────────
 function DeviceIcon({ type }: { type: Device['deviceType'] }) {
-  const cls = 'text-gray-500 dark:text-gray-400';
+  const cls = 'text-kj-text-dim';
   if (type === 'mobile') return <Smartphone size={20} className={cls} />;
   if (type === 'tablet') return <Tablet size={20} className={cls} />;
   return <Monitor size={20} className={cls} />;
@@ -65,13 +65,13 @@ function ProcessingOverlay({ message }: { message: string }) {
   const { t } = useLanguage();
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center">
+      <div className="bg-kj-panel rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center">
         <div className="relative w-14 h-14 mx-auto mb-4">
           <div className="w-14 h-14 rounded-full border-4 border-blue-100 dark:border-slate-600 animate-spin border-t-blue-600" />
           <Clock className="absolute inset-0 m-auto text-blue-600" size={18} />
         </div>
-        <p className="text-gray-700 dark:text-gray-300 font-medium">{message}</p>
-        <p className="text-gray-500 dark:text-gray-500 text-sm mt-1">{t('auth.forgotPasswordPage.maxWait')}</p>
+        <p className="text-kj-text-dim font-medium">{message}</p>
+        <p className="text-kj-text-dim text-sm mt-1">{t('auth.forgotPasswordPage.maxWait')}</p>
       </div>
     </div>
   );
@@ -211,7 +211,7 @@ export default function ProfilePage({
 
   // Shared tab list used in both layout modes
   const tabList = (
-    <div className="flex gap-1 bg-white dark:bg-slate-800 rounded-2xl p-1.5 shadow-sm border border-gray-100 dark:border-slate-700 overflow-x-auto">
+    <div className="flex gap-1 bg-kj-panel rounded-2xl p-1.5 shadow-sm border border-kj-line overflow-x-auto">
       {([
         { key: 'profile',  label: t('profile.tabs.profile'),  Icon: User    },
         { key: 'security', label: t('profile.tabs.password'),  Icon: Shield  },
@@ -223,7 +223,7 @@ export default function ProfilePage({
           className={`flex-shrink-0 px-3 py-2 rounded-xl text-xs font-medium flex items-center gap-1.5 transition whitespace-nowrap ${
             activeSection === key
               ? 'bg-blue-600 text-white shadow-sm'
-              : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-700'
+              : 'text-kj-text-dim hover:bg-kj-chip-bg dark:hover:bg-slate-700'
           }`}
         >
           <Icon size={14} />
@@ -234,7 +234,7 @@ export default function ProfilePage({
   );
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 w-full overflow-hidden bg-gray-50 dark:bg-slate-900">
+    <div className="flex flex-col flex-1 min-h-0 w-full overflow-hidden bg-kj-bg">
       {/* Processing overlays */}
       {profileOp.state === 'loading' && <ProcessingOverlay message={t('profile.updatingProfile')} />}
       {passwordOp.state === 'loading' && <ProcessingOverlay message={t('profile.changingPassword')} />}
@@ -243,12 +243,12 @@ export default function ProfilePage({
       {loggingOutDevice && <ProcessingOverlay message={t('profile.loggingOutDevice')} />}
 
       {/* Header */}
-      <div className="shrink-0 bg-white dark:bg-slate-800 border-b border-gray-100 dark:border-slate-700 z-10">
+      <div className="shrink-0 bg-kj-panel border-b border-kj-line z-10">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center gap-3">
-          <button onClick={onBack} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700 transition">
-            <ArrowLeft size={20} className="text-gray-600 dark:text-gray-400" />
+          <button onClick={onBack} className="p-2 rounded-full hover:bg-kj-chip-bg transition">
+            <ArrowLeft size={20} className="text-kj-text-dim" />
           </button>
-          <h1 className="text-lg font-bold text-gray-900 dark:text-white flex-1">{t('profile.title')}</h1>
+          <h1 className="text-lg font-bold text-kj-text flex-1">{t('profile.title')}</h1>
           <button
             onClick={handleLogout}
             className="flex items-center gap-1.5 text-sm text-red-500 hover:text-red-700 dark:hover:text-red-400 font-medium px-3 py-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition"
@@ -262,7 +262,7 @@ export default function ProfilePage({
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y" style={{ WebkitOverflowScrolling: 'touch' }}>
           <div className="max-w-2xl mx-auto px-4 pt-6 pb-28 md:pb-8 space-y-4">
             {/* Avatar + name card */}
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-slate-700">
+            <div className="bg-kj-panel rounded-2xl p-6 shadow-sm border border-kj-line">
               <div className="flex items-center gap-5">
                 {/* Avatar */}
                 <div className="relative">
@@ -283,9 +283,9 @@ export default function ProfilePage({
                 </div>
                 {/* Info */}
                 <div className="flex-1 min-w-0">
-                  <h2 className="text-xl font-bold text-gray-900 dark:text-white truncate">{user.displayName}</h2>
-                  <p className="text-gray-500 dark:text-gray-400 text-sm">@{user.username}</p>
-                  <p className="text-gray-400 dark:text-gray-500 text-xs mt-0.5 truncate">{user.email}</p>
+                  <h2 className="text-xl font-bold text-kj-text truncate">{user.displayName}</h2>
+                  <p className="text-kj-text-dim text-sm">@{user.username}</p>
+                  <p className="text-kj-text-faint text-xs mt-0.5 truncate">{user.email}</p>
                 </div>
               </div>
             </div>
@@ -295,15 +295,15 @@ export default function ProfilePage({
 
         {/* ── PROFILE SECTION ── */}
         {activeSection === 'profile' && (
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-50 dark:border-slate-700">
-              <h3 className="font-semibold text-gray-900 dark:text-white">{t('profile.profileInfo')}</h3>
+          <div className="bg-kj-panel rounded-2xl shadow-sm border border-kj-line overflow-hidden">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-50 dark:border-kj-line">
+              <h3 className="font-semibold text-kj-text">{t('profile.profileInfo')}</h3>
               {!editMode ? (
                 <button onClick={() => setEditMode(true)} className="flex items-center gap-1.5 text-blue-600 dark:text-blue-400 text-sm font-medium">
                   <Edit3 size={15} /> {t('profile.edit')}
                 </button>
               ) : (
-                <button onClick={() => setEditMode(false)} className="text-gray-400 hover:text-gray-600 p-1">
+                <button onClick={() => setEditMode(false)} className="text-kj-text-faint hover:text-kj-text-dim p-1">
                   <X size={18} />
                 </button>
               )}
@@ -320,7 +320,7 @@ export default function ProfilePage({
 
               {/* Display Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1.5 flex items-center gap-1.5">
+                <label className="block text-sm font-medium text-kj-text-dim mb-1.5 flex items-center gap-1.5">
                   <User size={14} /> {t('profile.fullName')}
                 </label>
                 {editMode ? (
@@ -328,34 +328,34 @@ export default function ProfilePage({
                     type="text"
                     value={editName}
                     onChange={e => setEditName(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                    className="w-full px-4 py-3 rounded-xl border border-kj-line dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-kj-text focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                   />
                 ) : (
-                  <p className="text-gray-900 dark:text-white font-medium px-4 py-3 bg-gray-50 dark:bg-slate-700 rounded-xl">{user.displayName}</p>
+                  <p className="text-kj-text font-medium px-4 py-3 bg-gray-50 dark:bg-slate-700 rounded-xl">{user.displayName}</p>
                 )}
               </div>
 
               {/* Username — permanently locked after signup */}
               <div>
-                <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1.5 flex items-center gap-1.5">
+                <label className="block text-sm font-medium text-kj-text-dim mb-1.5 flex items-center gap-1.5">
                   <AtSign size={14} /> {t('profile.username')}
                   <span className="ml-1 text-xs bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 px-1.5 py-0.5 rounded-full">
                     {t('profile.usernameFixed')}
                   </span>
                 </label>
-                <div className="flex items-center gap-2 px-4 py-3 bg-gray-100 dark:bg-slate-700/60 rounded-xl border border-dashed border-gray-300 dark:border-slate-600 cursor-not-allowed">
-                  <AtSign size={14} className="text-gray-400 shrink-0" />
-                  <span className="text-gray-700 dark:text-gray-300 font-medium">{user.username}</span>
-                  <span className="ml-auto text-[10px] text-gray-400 dark:text-gray-500 italic">{t('profile.notChangeable')}</span>
+                <div className="flex items-center gap-2 px-4 py-3 bg-kj-chip-bg/60 rounded-xl border border-dashed border-kj-line dark:border-slate-600 cursor-not-allowed">
+                  <AtSign size={14} className="text-kj-text-faint shrink-0" />
+                  <span className="text-kj-text-dim font-medium">{user.username}</span>
+                  <span className="ml-auto text-[10px] text-kj-text-faint italic">{t('profile.notChangeable')}</span>
                 </div>
               </div>
 
               {/* Email (read-only) */}
               <div>
-                <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1.5 flex items-center gap-1.5">
-                  <Mail size={14} /> {t('profile.email')} <span className="text-xs text-gray-400">{t('profile.notChangeable')}</span>
+                <label className="block text-sm font-medium text-kj-text-dim mb-1.5 flex items-center gap-1.5">
+                  <Mail size={14} /> {t('profile.email')} <span className="text-xs text-kj-text-faint">{t('profile.notChangeable')}</span>
                 </label>
-                <p className="text-gray-700 dark:text-gray-300 px-4 py-3 bg-gray-50 dark:bg-slate-700 rounded-xl">{user.email}</p>
+                <p className="text-kj-text-dim px-4 py-3 bg-gray-50 dark:bg-slate-700 rounded-xl">{user.email}</p>
               </div>
 
               {editMode && (
@@ -374,15 +374,15 @@ export default function ProfilePage({
 
         {/* ── SECURITY SECTION ── */}
         {activeSection === 'security' && (
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
+          <div className="bg-kj-panel rounded-2xl shadow-sm border border-kj-line overflow-hidden">
             {/* Google user without password yet → Set Password form */}
             {user.provider === 'google' && !user.hasPassword ? (
               <>
-                <div className="px-6 py-4 border-b border-gray-50 dark:border-slate-700">
-                  <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                <div className="px-6 py-4 border-b border-gray-50 dark:border-kj-line">
+                  <h3 className="font-semibold text-kj-text flex items-center gap-2">
                     <Key size={18} className="text-blue-600" /> {t('profile.setPasswordTitle')}
                   </h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('profile.setPasswordDesc')}</p>
+                  <p className="text-sm text-kj-text-dim mt-1">{t('profile.setPasswordDesc')}</p>
                 </div>
                 <div className="p-6 space-y-4">
                   {setPassOp.state === 'error' && (
@@ -402,7 +402,7 @@ export default function ProfilePage({
                     { key: 'confirm', label: t('profile.confirmNewPassword'), placeholder: '••••••••', autoComplete: 'new-password' },
                   ].map(({ key, label, placeholder, autoComplete }) => (
                     <div key={key}>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{label}</label>
+                      <label className="block text-sm font-medium text-kj-text-dim mb-1.5">{label}</label>
                       <div className="relative">
                         <input
                           type={showSetPw[key as keyof typeof showSetPw] ? 'text' : 'password'}
@@ -410,12 +410,12 @@ export default function ProfilePage({
                           onChange={e => setSetPassForm(prev => ({ ...prev, [key]: e.target.value }))}
                           placeholder={placeholder}
                           autoComplete={autoComplete}
-                          className="w-full px-4 py-3 pr-12 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                          className="w-full px-4 py-3 pr-12 rounded-xl border border-kj-line dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-kj-text placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                         />
                         <button
                           type="button"
                           onClick={() => setShowSetPw(prev => ({ ...prev, [key]: !prev[key as keyof typeof prev] }))}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 p-1"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-kj-text-faint p-1"
                         >
                           {showSetPw[key as keyof typeof showSetPw] ? <EyeOff size={16} /> : <Eye size={16} />}
                         </button>
@@ -435,8 +435,8 @@ export default function ProfilePage({
             ) : (
               /* Manual users or Google users who already set a password → Change Password form */
               <>
-                <div className="px-6 py-4 border-b border-gray-50 dark:border-slate-700">
-                  <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                <div className="px-6 py-4 border-b border-gray-50 dark:border-kj-line">
+                  <h3 className="font-semibold text-kj-text flex items-center gap-2">
                     <Key size={18} className="text-blue-600" /> {t('profile.passwordChange')}
                   </h3>
                 </div>
@@ -453,7 +453,7 @@ export default function ProfilePage({
                     { key: 'confirm', label: t('profile.confirmNewPassword'), placeholder: '••••••••', autoComplete: 'new-password' },
                   ].map(({ key, label, placeholder, autoComplete }) => (
                     <div key={key}>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{label}</label>
+                      <label className="block text-sm font-medium text-kj-text-dim mb-1.5">{label}</label>
                       <div className="relative">
                         <input
                           type={showPw[key as keyof typeof showPw] ? 'text' : 'password'}
@@ -461,12 +461,12 @@ export default function ProfilePage({
                           onChange={e => setPwForm(prev => ({ ...prev, [key]: e.target.value }))}
                           placeholder={placeholder}
                           autoComplete={autoComplete}
-                          className="w-full px-4 py-3 pr-12 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                          className="w-full px-4 py-3 pr-12 rounded-xl border border-kj-line dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-kj-text placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                         />
                         <button
                           type="button"
                           onClick={() => setShowPw(prev => ({ ...prev, [key]: !prev[key as keyof typeof prev] }))}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 p-1"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-kj-text-faint p-1"
                         >
                           {showPw[key as keyof typeof showPw] ? <EyeOff size={16} /> : <Eye size={16} />}
                         </button>
@@ -489,22 +489,22 @@ export default function ProfilePage({
 
         {/* ── DEVICES SECTION ── */}
         {activeSection === 'devices' && (
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-50 dark:border-slate-700">
-              <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <div className="bg-kj-panel rounded-2xl shadow-sm border border-kj-line overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-50 dark:border-kj-line">
+              <h3 className="font-semibold text-kj-text flex items-center gap-2">
                 <Monitor size={18} className="text-blue-600" /> {t('profile.loginDevices')}
               </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{t('profile.activeDevicesList')}</p>
+              <p className="text-sm text-kj-text-dim mt-0.5">{t('profile.activeDevicesList')}</p>
             </div>
 
             <div className="divide-y divide-gray-50 dark:divide-slate-700">
               {devicesLoading ? (
                 <div className="p-8 text-center">
                   <Loader2 size={24} className="animate-spin text-blue-500 mx-auto mb-2" />
-                  <p className="text-gray-500 dark:text-gray-400 text-sm">{t('profile.loadingDevices')}</p>
+                  <p className="text-kj-text-dim text-sm">{t('profile.loadingDevices')}</p>
                 </div>
               ) : devices.length === 0 ? (
-                <div className="p-8 text-center text-gray-400 dark:text-gray-500">
+                <div className="p-8 text-center text-kj-text-faint">
                   <Monitor size={32} className="mx-auto mb-2 opacity-30" />
                   <p className="text-sm">{t('profile.noDevices')}<br />{t('profile.nextLoginInstruction')}</p>
                 </div>
@@ -512,27 +512,27 @@ export default function ProfilePage({
                 devices.map(device => (
                   <div key={device.id} className="px-6 py-4 flex items-start gap-4">
                     <div className="relative w-10 h-10 shrink-0">
-                      <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-slate-700 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-xl bg-kj-chip-bg flex items-center justify-center">
                         <DeviceIcon type={device.deviceType} />
                       </div>
                       {device.isCurrent && (
-                        <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-white dark:border-slate-800 animate-pulse" title="Active now" />
+                        <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-white dark:border-kj-line animate-pulse" title="Active now" />
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-medium text-gray-900 dark:text-white text-sm">{device.name}</span>
+                        <span className="font-medium text-kj-text text-sm">{device.name}</span>
                         {device.isCurrent && (
                           <span className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-0.5 rounded-full font-medium">
                             {t('profile.thisDevice')}
                           </span>
                         )}
                       </div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{device.os} • {device.browser}</p>
-                      <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+                      <p className="text-xs text-kj-text-dim mt-0.5">{device.os} • {device.browser}</p>
+                      <p className="text-xs text-kj-text-faint mt-0.5">
                         {t('profile.ip')}: {device.ip || t('profile.unknown')} • {t('profile.lastLogin')}: {formatDate(device.lastLogin, language)}
                       </p>
-                      <p className="text-xs text-gray-400 dark:text-gray-500">
+                      <p className="text-xs text-kj-text-faint">
                         {t('profile.firstLogin')}: {formatDate(device.firstLogin, language)}
                       </p>
                     </div>
@@ -543,7 +543,7 @@ export default function ProfilePage({
                           : t('profile.logoutConfirmOther');
                         if (window.confirm(msg)) handleLogoutDevice(device.id);
                       }}
-                      className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-gray-400 hover:text-red-500 transition shrink-0"
+                      className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-kj-text-faint hover:text-red-500 transition shrink-0"
                       title={t('profile.logoutDeviceTooltip')}
                     >
                       <LogOut size={16} />
@@ -555,7 +555,7 @@ export default function ProfilePage({
 
             {devices.length > 0 && (
               <div className="px-6 py-4 bg-gray-50 dark:bg-slate-700/50">
-                <p className="text-xs text-gray-500 dark:text-gray-400">
+                <p className="text-xs text-kj-text-dim">
                   {t('profile.securityWarning')}
                 </p>
               </div>

@@ -501,7 +501,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
 
 
   return (
-    <div className="relative z-0 isolate w-full rounded-b-2xl overflow-hidden bg-slate-100 dark:bg-slate-800" style={{ height: 310 }}>
+    <div className="relative z-0 isolate w-full rounded-b-2xl overflow-hidden bg-kj-chip-bg" style={{ height: 310 }}>
       {/* 2D Leaflet Map */}
       <div className="w-full h-full">
         <div ref={mapRef} className="w-full h-full" />
@@ -520,7 +520,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
       {/* Road-snapped badge */}
       <div className="absolute top-3 right-[90px] z-[500]">
         {routeSnapped ? (
-          <div className="bg-emerald-500/90 text-white text-[10px] font-bold px-2 py-1 rounded-lg shadow-sm">
+          <div className="bg-kj-primary/90 text-white text-[10px] font-bold px-2 py-1 rounded-lg shadow-sm">
             🛣 Road route
           </div>
         ) : mapReady ? (
@@ -531,22 +531,22 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
       </div>
 
       {/* Stop count */}
-      <div className="absolute top-3 right-3 z-[500] bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm px-2 py-1 rounded-lg text-[10px] font-semibold text-gray-600 dark:text-gray-300 shadow border border-gray-100 dark:border-gray-700">
+      <div className="absolute top-3 right-3 z-[500] bg-white/90 dark:bg-kj-chip-bg/90 backdrop-blur-sm px-2 py-1 rounded-lg text-[10px] font-semibold text-kj-text-dim shadow border border-kj-line">
         {stops.length} stops
       </div>
 
       {/* Layer toggle panel */}
       <div className="absolute bottom-10 left-3 z-[500] flex flex-col items-start gap-1.5">
         {showLayers && (
-          <div className="bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm rounded-xl border border-gray-200 dark:border-slate-600 shadow-xl p-3 w-44 mb-1 animate-in slide-in-from-bottom-2 fade-in duration-150">
-            <div className="flex justify-between items-center mb-2 pb-1.5 border-b border-gray-100 dark:border-slate-600">
-              <span className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Layers</span>
+          <div className="bg-white/95 dark:bg-kj-chip-bg/95 backdrop-blur-sm rounded-xl border border-kj-line dark:border-slate-600 shadow-xl p-3 w-44 mb-1 animate-in slide-in-from-bottom-2 fade-in duration-150">
+            <div className="flex justify-between items-center mb-2 pb-1.5 border-b border-kj-line dark:border-slate-600">
+              <span className="text-[10px] font-bold text-kj-text-dim uppercase tracking-wider">Layers</span>
               <button
                 onClick={() => setShowLayers(false)}
-                className="w-5 h-5 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-slate-700 rounded-full transition-colors"
+                className="w-5 h-5 flex items-center justify-center hover:bg-kj-chip-bg rounded-full transition-colors"
                 aria-label="Close layers panel"
               >
-                <X className="w-3 h-3 text-gray-400" />
+                <X className="w-3 h-3 text-kj-text-faint" />
               </button>
             </div>
             <div className="space-y-1.5">
@@ -555,12 +555,12 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
                 { key: 'railway', label: 'Railway', active: showRailway, set: setShowRailway, color: 'from-green-500 to-emerald-600', Icon: Train },
                 { key: 'airport', label: 'Airport', active: showAirport, set: setShowAirport, color: 'from-orange-500 to-red-500', Icon: Plane },
               ].map(({ key, label, active, set, color, Icon }) => (
-                <label key={key} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700 p-1.5 rounded-lg transition-colors">
-                  <div className={`w-5 h-5 rounded-md flex items-center justify-center border-2 transition-all ${active ? `bg-gradient-to-br ${color} border-transparent shadow-sm` : 'border-gray-300 dark:border-slate-500 bg-white dark:bg-slate-700'}`}>
+                <label key={key} className="flex items-center gap-2 cursor-pointer hover:bg-kj-chip-bg dark:hover:bg-slate-700 p-1.5 rounded-lg transition-colors">
+                  <div className={`w-5 h-5 rounded-md flex items-center justify-center border-2 transition-all ${active ? `bg-gradient-to-br ${color} border-transparent shadow-sm` : 'border-kj-line dark:border-slate-500 bg-white dark:bg-slate-700'}`}>
                     {active && <Icon className="w-3 h-3 text-white" />}
                   </div>
                   <input type="checkbox" checked={active} onChange={e => set(e.target.checked)} className="hidden" />
-                  <span className="text-xs font-semibold text-gray-700 dark:text-gray-200">{label}</span>
+                  <span className="text-xs font-semibold text-kj-text-dim">{label}</span>
                 </label>
               ))}
             </div>
@@ -568,7 +568,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
         )}
         <button
           onClick={() => setShowLayers(v => !v)}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border transition-all ${showLayers ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 border-slate-900 dark:border-white' : 'bg-white/90 dark:bg-slate-800/90 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-slate-600 backdrop-blur-sm hover:bg-white dark:hover:bg-slate-700'}`}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border transition-all ${showLayers ? 'bg-kj-panel dark:bg-white text-white dark:text-kj-text border-slate-900 dark:border-white' : 'bg-white/90 dark:bg-kj-chip-bg/90 text-kj-text-dim border-kj-line dark:border-slate-600 backdrop-blur-sm hover:bg-white dark:hover:bg-slate-700'}`}
         >
           <Layers className="w-3.5 h-3.5" />
           Layers
@@ -582,12 +582,12 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
         <div className="absolute bottom-[72px] right-3 z-[600] flex flex-col gap-1">
           <button
             onClick={() => mapInstanceRef.current?.zoomIn()}
-            className="w-7 h-7 bg-white/95 dark:bg-slate-800/95 border border-gray-200 dark:border-slate-600 rounded-lg shadow-md flex items-center justify-center text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-700 text-base font-bold leading-none transition-colors"
+            className="w-7 h-7 bg-white/95 dark:bg-kj-chip-bg/95 border border-kj-line dark:border-slate-600 rounded-lg shadow-md flex items-center justify-center text-kj-text-dim hover:bg-kj-chip-bg dark:hover:bg-slate-700 text-base font-bold leading-none transition-colors"
             aria-label="Zoom in"
           >+</button>
           <button
             onClick={() => mapInstanceRef.current?.zoomOut()}
-            className="w-7 h-7 bg-white/95 dark:bg-slate-800/95 border border-gray-200 dark:border-slate-600 rounded-lg shadow-md flex items-center justify-center text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-700 text-base font-bold leading-none transition-colors"
+            className="w-7 h-7 bg-white/95 dark:bg-kj-chip-bg/95 border border-kj-line dark:border-slate-600 rounded-lg shadow-md flex items-center justify-center text-kj-text-dim hover:bg-kj-chip-bg dark:hover:bg-slate-700 text-base font-bold leading-none transition-colors"
             aria-label="Zoom out"
           >−</button>
         </div>
@@ -597,7 +597,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
       {onOpenFullMap && (
         <button
           onClick={onOpenFullMap}
-          className="absolute bottom-10 right-3 z-[500] flex items-center justify-center bg-emerald-500 hover:bg-emerald-600 text-white w-9 h-9 rounded-full shadow-lg transition-colors"
+          className="absolute bottom-10 right-3 z-[500] flex items-center justify-center bg-kj-primary hover:bg-kj-primary-deep text-white w-9 h-9 rounded-full shadow-lg transition-colors"
           aria-label="Open live navigation"
         >
           <Navigation className="w-4 h-4" />
@@ -606,8 +606,8 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
 
       {/* Loading state */}
       {!mapReady && (
-        <div className="absolute inset-0 flex items-center justify-center bg-slate-100 dark:bg-slate-800">
-          <div className="flex flex-col items-center gap-2 text-gray-400">
+        <div className="absolute inset-0 flex items-center justify-center bg-kj-chip-bg">
+          <div className="flex flex-col items-center gap-2 text-kj-text-faint">
             <div className="w-8 h-8 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin" />
             <span className="text-xs">Loading map…</span>
           </div>

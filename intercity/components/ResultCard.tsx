@@ -82,8 +82,8 @@ const ResultCard: React.FC<ResultCardProps> = ({ data, userLocation }) => {
   const getSummaryIcon = (text: string) => {
     const lower = text.toLowerCase();
     if (lower.includes('time') || lower.includes('সময়') || lower.includes('h') || lower.includes('m') || lower.includes('ঘণ্টা')) return <Clock size={12} className="text-blue-500" />;
-    if (lower.includes('fare') || lower.includes('price') || lower.includes('ভাড়া') || lower.includes('tk') || lower.includes('৳') || lower.includes('bdt')) return <Banknote size={12} className="text-emerald-500" />;
-    return <Info size={12} className="text-slate-400" />;
+    if (lower.includes('fare') || lower.includes('price') || lower.includes('ভাড়া') || lower.includes('tk') || lower.includes('৳') || lower.includes('bdt')) return <Banknote size={12} className="text-kj-primary" />;
+    return <Info size={12} className="text-kj-text-faint" />;
   };
 
   const handleCopy = () => {
@@ -95,12 +95,12 @@ const ResultCard: React.FC<ResultCardProps> = ({ data, userLocation }) => {
   if (!data.result) return null;
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-[40px] shadow-2xl border border-slate-100 dark:border-slate-800 overflow-clip transition-all duration-700">
+    <div className="bg-kj-panel rounded-[40px] shadow-2xl border border-slate-100 dark:border-kj-line overflow-clip transition-all duration-700">
 
       {/* 1. TOP HEADER - GLASS OVERLAY STYLE */}
       <div className="sticky top-0 z-20 p-3 md:p-12 relative overflow-hidden bg-gradient-to-br from-white via-slate-50 to-blue-50/20 dark:from-slate-900 dark:via-slate-800/80 dark:to-blue-900/10 backdrop-blur-md">
         <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400/10 dark:bg-blue-600/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-400/10 dark:bg-emerald-600/5 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-400/10 dark:bg-kj-primary/5 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2"></div>
 
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-2 md:gap-8 mb-3 md:mb-10">
           <div className="space-y-1 md:space-y-4">
@@ -110,7 +110,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ data, userLocation }) => {
               </span>
             </div>
 
-            <h2 className="text-lg md:text-4xl lg:text-6xl font-[1000] tracking-tighter text-slate-900 dark:text-white flex items-center gap-2 md:gap-6 flex-wrap">
+            <h2 className="text-lg md:text-4xl lg:text-6xl font-[1000] tracking-tighter text-kj-text flex items-center gap-2 md:gap-6 flex-wrap">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400">{data.from}</span>
               <div className="w-7 h-7 md:w-14 md:h-14 rounded-full bg-blue-50 dark:bg-blue-900/40 flex items-center justify-center border-2 border-blue-200 dark:border-blue-800 shadow-inner group">
                 <Navigation className="text-blue-600 dark:text-blue-400 rotate-90 md:rotate-0 transition-transform group-hover:scale-110" size={14} strokeWidth={3} />
@@ -130,7 +130,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ data, userLocation }) => {
                 className={`flex items-center gap-2 md:gap-4 px-3 py-2 md:px-8 md:py-5 rounded-[20px] md:rounded-[28px] font-black transition-all duration-500 border-2 group
                   ${selectedModeId === mode.id
                     ? 'bg-blue-600 border-blue-500 text-white shadow-[0_10px_20px_-5px_rgba(37,99,235,0.4)] md:shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] translate-y-[-2px] md:translate-y-[-4px] scale-105'
-                    : 'bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-transparent text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-700 hover:border-blue-200 dark:hover:border-blue-800 hover:translate-y-[-2px]'
+                    : 'bg-white/80 dark:bg-kj-chip-bg/80 backdrop-blur-md border-transparent text-kj-text-dim hover:bg-white dark:hover:bg-slate-700 hover:border-blue-200 dark:hover:border-blue-800 hover:translate-y-[-2px]'
                   }`}
               >
                 <div className={`text-xl md:text-3xl transition-transform duration-500 ${selectedModeId === mode.id ? 'scale-125' : 'group-hover:scale-110 opacity-70 group-hover:opacity-100'}`}>
@@ -147,21 +147,21 @@ const ResultCard: React.FC<ResultCardProps> = ({ data, userLocation }) => {
       </div>
 
       {/* 3. MAIN CONTENT - TWO COLUMN LAYOUT */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 border-t border-slate-100 dark:border-slate-800">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 border-t border-slate-100 dark:border-kj-line">
 
         {/* Detail Panel (Left) */}
-        <div className="lg:col-span-8 p-4 md:p-8 lg:p-14 bg-white dark:bg-slate-900">
+        <div className="lg:col-span-8 p-4 md:p-8 lg:p-14 bg-kj-panel">
           {selectedMode ? (
             <div className="max-w-3xl space-y-6 md:space-y-16 animate-in fade-in slide-in-from-bottom-6 duration-1000">
 
               {/* Highlight Card */}
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-8 p-4 md:p-8 lg:p-10 bg-gradient-to-br from-slate-50 to-blue-50/30 dark:from-slate-800/50 dark:to-slate-900 rounded-[24px] md:rounded-[40px] border border-slate-100 dark:border-slate-700/50 shadow-inner mb-4 md:mb-8">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-8 p-4 md:p-8 lg:p-10 bg-gradient-to-br from-slate-50 to-blue-50/30 dark:from-slate-800/50 dark:to-slate-900 rounded-[24px] md:rounded-[40px] border border-slate-100 dark:border-kj-line/50 shadow-inner mb-4 md:mb-8">
                 <div className="flex items-center gap-6">
                   <div className="w-12 h-12 md:w-20 md:h-20 bg-blue-600 dark:bg-blue-500 rounded-[16px] md:rounded-[28px] flex items-center justify-center text-2xl md:text-4xl shadow-xl shadow-blue-500/20 text-white">
                     {selectedMode.icon}
                   </div>
                   <div>
-                    <h3 className="text-3xl font-[1000] text-slate-900 dark:text-white leading-tight mb-1">{selectedMode.title}</h3>
+                    <h3 className="text-3xl font-[1000] text-kj-text leading-tight mb-1">{selectedMode.title}</h3>
                     <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-bold text-sm">
                       <Route size={16} />
                       <span>{t('intercity.suggestedModes')}</span>
@@ -171,9 +171,9 @@ const ResultCard: React.FC<ResultCardProps> = ({ data, userLocation }) => {
 
                 <div className="flex flex-wrap gap-3">
                   {selectedMode.summary && selectedMode.summary.split('|').map((s, i) => (
-                    <div key={i} className="flex items-center gap-3 px-5 py-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm transition-transform hover:scale-105">
+                    <div key={i} className="flex items-center gap-3 px-5 py-3 bg-kj-panel rounded-2xl border border-slate-100 dark:border-kj-line shadow-sm transition-transform hover:scale-105">
                       {getSummaryIcon(s)}
-                      <span className="text-sm font-black text-slate-800 dark:text-slate-100">{formatNumber(s.trim())}</span>
+                      <span className="text-sm font-black text-kj-text">{formatNumber(s.trim())}</span>
                     </div>
                   ))}
                 </div>
@@ -182,12 +182,12 @@ const ResultCard: React.FC<ResultCardProps> = ({ data, userLocation }) => {
               {/* Markdown Content */}
               <div className="prose prose-slate lg:prose-lg dark:prose-invert max-w-none 
                 prose-headings:font-black prose-headings:tracking-tight prose-headings:mb-6
-                prose-p:text-slate-600 dark:prose-p:text-slate-300 prose-p:leading-relaxed prose-p:mb-6
-                prose-li:text-slate-600 dark:prose-li:text-slate-300 prose-li:mb-3
-                prose-strong:text-slate-900 dark:prose-strong:text-white
+                prose-p:text-kj-text-dim dark:prose-p:text-kj-text-faint prose-p:leading-relaxed prose-p:mb-6
+                prose-li:text-kj-text-dim dark:prose-li:text-kj-text-faint prose-li:mb-3
+                prose-strong:text-kj-text dark:prose-strong:text-white
                 prose-table:rounded-3xl prose-table:overflow-hidden prose-table:mb-8
-                prose-th:bg-slate-100/50 dark:prose-th:bg-slate-800/50 prose-th:p-4
-                prose-td:p-4 prose-td:border-slate-100 dark:prose-td:border-slate-800">
+                prose-th:bg-slate-100/50 dark:prose-th:bg-kj-chip-bg/50 prose-th:p-4
+                prose-td:p-4 prose-td:border-slate-100 dark:prose-td:border-kj-line">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>{selectedMode.fullContent}</ReactMarkdown>
               </div>
             </div>
@@ -199,7 +199,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ data, userLocation }) => {
         </div>
 
         {/* Sidebar (Right) */}
-        <div className="lg:col-span-4 bg-slate-50/50 dark:bg-slate-900/50 border-t lg:border-t-0 lg:border-l border-slate-100 dark:border-slate-800 p-4 md:p-8 lg:p-12 space-y-6 md:space-y-12">
+        <div className="lg:col-span-4 bg-slate-50/50 dark:bg-kj-panel/50 border-t lg:border-t-0 lg:border-l border-slate-100 dark:border-kj-line p-4 md:p-8 lg:p-12 space-y-6 md:space-y-12">
 
 
           {/* Quick Stats Overlay - Visual Flair */}
@@ -213,7 +213,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ data, userLocation }) => {
       </div>
 
       {/* 4. MAP SECTION - FULL WIDTH INTERACTIVE */}
-      <div className="h-[500px] md:h-[650px] relative group border-t border-slate-100 dark:border-slate-800">
+      <div className="h-[500px] md:h-[650px] relative group border-t border-slate-100 dark:border-kj-line">
         <MapComponent
           from={data.from}
           to={data.to}
@@ -224,7 +224,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ data, userLocation }) => {
 
         {/* Floating Map Bottom Tip */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[1000] opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
-          <div className="px-6 py-3 bg-slate-900/80 dark:bg-slate-800/80 backdrop-blur-md rounded-full text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-3 border border-white/10 shadow-2xl">
+          <div className="px-6 py-3 bg-kj-panel/80 dark:bg-kj-chip-bg/80 backdrop-blur-md rounded-full text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-3 border border-white/10 shadow-2xl">
             <Compass size={14} className="animate-spin-slow" />
             <span>Simulating real-time path logic</span>
           </div>

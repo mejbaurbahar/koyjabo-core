@@ -135,7 +135,7 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
 
 
   if (!route) return (
-    <div className="w-full h-40 bg-gray-50 flex items-center justify-center text-gray-400 text-sm">
+    <div className="w-full h-40 bg-gray-50 flex items-center justify-center text-kj-text-faint text-sm">
       <p>{lbl('No route data available', 'রুটের তথ্য পাওয়া যাচ্ছে না')}</p>
     </div>
   );
@@ -451,7 +451,7 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
   const startPos = (startIdx >= 0 && startIdx < nodePositions.length) ? nodePositions[startIdx] : null;
 
   return (
-    <div className="w-full h-80 md:h-[500px] bg-slate-50 dark:bg-slate-900 border-t border-b border-gray-100 dark:border-slate-800 relative group overflow-hidden">
+    <div className="w-full h-80 md:h-[500px] bg-kj-bg border-t border-b border-kj-line relative group overflow-hidden">
 
       {/* Connection Line Info Badge */}
       {isUserFar && (userStationIndex !== -1 || hasHighlight) && (
@@ -486,17 +486,17 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
 
         {/* Collapsible Panel */}
         {showLayers && (
-          <div className="bg-white/95 dark:bg-slate-800/95 backdrop-blur rounded-xl border border-gray-200 dark:border-slate-700 shadow-xl p-3 w-[180px] mb-2 animate-in slide-in-from-bottom-2 fade-in duration-200">
-            <div className="flex justify-between items-center mb-2 pb-2 border-b border-gray-100 dark:border-slate-700">
-              <p className="text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('liveNav.layers')}</p>
-              <button onClick={() => setShowLayers(false)} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-1 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-full transition-colors flex items-center justify-center">
+          <div className="bg-white/95 dark:bg-kj-chip-bg/95 backdrop-blur rounded-xl border border-kj-line shadow-xl p-3 w-[180px] mb-2 animate-in slide-in-from-bottom-2 fade-in duration-200">
+            <div className="flex justify-between items-center mb-2 pb-2 border-b border-kj-line">
+              <p className="text-[10px] font-bold text-kj-text-dim uppercase tracking-wider">{t('liveNav.layers')}</p>
+              <button onClick={() => setShowLayers(false)} className="text-kj-text-faint hover:text-kj-text-dim dark:hover:text-kj-text-faint p-1 hover:bg-kj-chip-bg rounded-full transition-colors flex items-center justify-center">
                 <X className="w-3 h-3" />
               </button>
             </div>
 
             <div className="space-y-2">
-              <label className="flex items-center gap-2.5 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700 p-1.5 rounded-lg transition-colors group">
-                <div className={`w-5 h-5 rounded-md flex items-center justify-center border-2 transition-all ${showMetro ? 'bg-gradient-to-br from-blue-500 to-indigo-600 border-blue-500 shadow-lg shadow-blue-500/30' : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-700'}`}>
+              <label className="flex items-center gap-2.5 cursor-pointer hover:bg-kj-chip-bg dark:hover:bg-slate-700 p-1.5 rounded-lg transition-colors group">
+                <div className={`w-5 h-5 rounded-md flex items-center justify-center border-2 transition-all ${showMetro ? 'bg-gradient-to-br from-blue-500 to-indigo-600 border-blue-500 shadow-lg shadow-blue-500/30' : 'border-kj-line bg-white dark:bg-slate-700'}`}>
                   {showMetro && <Train className="w-3 h-3 text-white" />}
                 </div>
                 <input
@@ -505,11 +505,11 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                   onChange={(e) => setShowMetro(e.target.checked)}
                   className="hidden"
                 />
-                <span className="text-xs font-semibold text-gray-800 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white">{t('home.metroRail')}</span>
+                <span className="text-xs font-semibold text-kj-text group-hover:text-kj-text dark:group-hover:text-white">{t('home.metroRail')}</span>
               </label>
 
-              <label className="flex items-center gap-2.5 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700 p-1.5 rounded-lg transition-colors group">
-                <div className={`w-5 h-5 rounded-md flex items-center justify-center border-2 transition-all ${showRailway ? 'bg-gradient-to-br from-green-500 to-emerald-600 border-green-500 shadow-lg shadow-green-500/30' : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-700'}`}>
+              <label className="flex items-center gap-2.5 cursor-pointer hover:bg-kj-chip-bg dark:hover:bg-slate-700 p-1.5 rounded-lg transition-colors group">
+                <div className={`w-5 h-5 rounded-md flex items-center justify-center border-2 transition-all ${showRailway ? 'bg-gradient-to-br from-green-500 to-emerald-600 border-green-500 shadow-lg shadow-green-500/30' : 'border-kj-line bg-white dark:bg-slate-700'}`}>
                   {showRailway && <Train className="w-3 h-3 text-white" />}
                 </div>
                 <input
@@ -518,11 +518,11 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                   onChange={(e) => setShowRailway(e.target.checked)}
                   className="hidden"
                 />
-                <span className="text-xs font-semibold text-gray-800 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white">{t('intercity.byTrain')}</span>
+                <span className="text-xs font-semibold text-kj-text group-hover:text-kj-text dark:group-hover:text-white">{t('intercity.byTrain')}</span>
               </label>
 
-              <label className="flex items-center gap-2.5 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700 p-1.5 rounded-lg transition-colors group">
-                <div className={`w-5 h-5 rounded-md flex items-center justify-center border-2 transition-all ${showAirport ? 'bg-gradient-to-br from-orange-500 to-red-600 border-orange-500 shadow-lg shadow-orange-500/30' : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-700'}`}>
+              <label className="flex items-center gap-2.5 cursor-pointer hover:bg-kj-chip-bg dark:hover:bg-slate-700 p-1.5 rounded-lg transition-colors group">
+                <div className={`w-5 h-5 rounded-md flex items-center justify-center border-2 transition-all ${showAirport ? 'bg-gradient-to-br from-orange-500 to-red-600 border-orange-500 shadow-lg shadow-orange-500/30' : 'border-kj-line bg-white dark:bg-slate-700'}`}>
                   {showAirport && <Plane className="w-3 h-3 text-white" />}
                 </div>
                 <input
@@ -531,7 +531,7 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                   onChange={(e) => setShowAirport(e.target.checked)}
                   className="hidden"
                 />
-                <span className="text-xs font-semibold text-gray-800 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white">{t('intercity.byAir')}</span>
+                <span className="text-xs font-semibold text-kj-text group-hover:text-kj-text dark:group-hover:text-white">{t('intercity.byAir')}</span>
               </label>
             </div>
           </div>
@@ -541,8 +541,8 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
         <button
           onClick={() => setShowLayers(!showLayers)}
           className={`flex items-center gap-2 px-3 py-2 rounded-full border shadow-lg transition-all duration-300 group ${showLayers
-            ? 'bg-gray-900 dark:bg-gray-100 border-gray-900 dark:border-white text-white dark:text-gray-900'
-            : 'bg-white/95 dark:bg-slate-800/95 backdrop-blur border-gray-200 dark:border-slate-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-700 hover:border-gray-300 dark:hover:border-slate-600'
+            ? 'bg-gray-900 dark:bg-gray-100 border-gray-900 dark:border-white text-white dark:text-kj-text'
+            : 'bg-white/95 dark:bg-kj-chip-bg/95 backdrop-blur border-kj-line text-kj-text-dim hover:bg-kj-chip-bg dark:hover:bg-slate-700 hover:border-kj-line dark:hover:border-slate-600'
             }`}
         >
           <Layers className={`w-4 h-4 ${!showLayers && 'group-hover:scale-110 transition-transform'}`} />
@@ -957,10 +957,10 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                       className="overflow-visible"
                     >
                       <div className="flex flex-col items-center">
-                        <div className="px-3 py-1.5 rounded-lg shadow-md bg-slate-600 text-white border border-slate-700 text-xs font-bold whitespace-nowrap mb-1">
+                        <div className="px-3 py-1.5 rounded-lg shadow-md bg-slate-600 text-white border border-kj-line text-xs font-bold whitespace-nowrap mb-1">
                           {originStation.name}
                         </div>
-                        <div className="text-[9px] font-bold text-slate-500 bg-white/90 px-1.5 rounded-full border border-slate-100 shadow-sm">
+                        <div className="text-[9px] font-bold text-kj-text-dim bg-white/90 px-1.5 rounded-full border border-slate-100 shadow-sm">
                           ORIGINAL START
                         </div>
                       </div>
@@ -1012,7 +1012,7 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                       className="overflow-visible"
                     >
                       <div className="flex flex-col items-center">
-                        <div className="px-3 py-1.5 rounded-lg shadow-md bg-dhaka-red text-white border border-red-600 text-xs font-bold whitespace-nowrap mb-1">
+                        <div className="px-3 py-1.5 rounded-lg shadow-md bg-kj-accent text-white border border-red-600 text-xs font-bold whitespace-nowrap mb-1">
                           {destStation.name}
                         </div>
                         <div className="text-[9px] font-bold text-red-600 bg-white/90 px-1.5 rounded-full border border-red-100 shadow-sm">

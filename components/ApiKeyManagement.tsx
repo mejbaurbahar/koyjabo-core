@@ -11,11 +11,11 @@ const ApiKeyManagement: React.FC<ApiKeyManagementProps> = ({ onClose }) => {
     const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-            <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto relative">
+            <div className="bg-kj-panel rounded-3xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto relative">
                 {/* Close Button */}
                 <button
                     onClick={onClose}
-                    className="absolute top-6 right-6 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors z-10"
+                    className="absolute top-6 right-6 text-kj-text-faint hover:text-kj-text-dim dark:hover:text-gray-200 transition-colors z-10"
                     aria-label="Close"
                 >
                     <X className="w-6 h-6" />
@@ -29,52 +29,52 @@ const ApiKeyManagement: React.FC<ApiKeyManagementProps> = ({ onClose }) => {
                     </div>
 
                     {/* Title */}
-                    <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-gray-100 mb-3">
+                    <h2 className="text-3xl font-bold text-center text-kj-text mb-3">
                         🤖 Koy Jabo AI Assistant
                     </h2>
 
-                    <p className="text-center text-gray-600 dark:text-gray-400 mb-6">
+                    <p className="text-center text-kj-text-dim mb-6">
                         Built-in Intelligence, Ready to Help
                     </p>
 
                     {/* Features */}
-                    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/30 rounded-2xl p-6 mb-6 border border-emerald-200 dark:border-emerald-800">
+                    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/30 rounded-2xl p-6 mb-6 border border-kj-primary/30">
                         <div className="space-y-4">
                             <div className="flex items-start gap-3">
-                                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                                <CheckCircle2 className="w-5 h-5 text-kj-primary shrink-0 mt-0.5" />
                                 <div>
-                                    <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-1">{lbl('Always Available', 'সবসময় উপলব্ধ')}</h3>
-                                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                                    <h3 className="font-bold text-kj-text mb-1">{lbl('Always Available', 'সবসময় উপলব্ধ')}</h3>
+                                    <p className="text-sm text-kj-text-dim">
                                         Our AI assistant is built into Koy Jabo and ready to help you 24/7
                                     </p>
                                 </div>
                             </div>
 
                             <div className="flex items-start gap-3">
-                                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                                <CheckCircle2 className="w-5 h-5 text-kj-primary shrink-0 mt-0.5" />
                                 <div>
-                                    <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-1">{lbl('No Setup Required', 'কোনো সেটআপ লাগবে না')}</h3>
-                                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                                    <h3 className="font-bold text-kj-text mb-1">{lbl('No Setup Required', 'কোনো সেটআপ লাগবে না')}</h3>
+                                    <p className="text-sm text-kj-text-dim">
                                         No API keys, no configuration - just ask your questions naturally
                                     </p>
                                 </div>
                             </div>
 
                             <div className="flex items-start gap-3">
-                                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                                <CheckCircle2 className="w-5 h-5 text-kj-primary shrink-0 mt-0.5" />
                                 <div>
-                                    <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-1">Bilingual Support</h3>
-                                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                                    <h3 className="font-bold text-kj-text mb-1">Bilingual Support</h3>
+                                    <p className="text-sm text-kj-text-dim">
                                         Ask questions in English or Bengali - whatever feels natural to you
                                     </p>
                                 </div>
                             </div>
 
                             <div className="flex items-start gap-3">
-                                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                                <CheckCircle2 className="w-5 h-5 text-kj-primary shrink-0 mt-0.5" />
                                 <div>
-                                    <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-1">{lbl('Completely Free', 'সম্পূর্ণ বিনামূল্যে')}</h3>
-                                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                                    <h3 className="font-bold text-kj-text mb-1">{lbl('Completely Free', 'সম্পূর্ণ বিনামূল্যে')}</h3>
+                                    <p className="text-sm text-kj-text-dim">
                                         Unlimited queries, no subscriptions, no hidden costs
                                     </p>
                                 </div>

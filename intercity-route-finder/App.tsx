@@ -196,10 +196,10 @@ function App() {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-slate-50 dark:bg-slate-900 text-gray-800 dark:text-gray-100 overflow-hidden transition-colors duration-300">
+    <div className="h-screen flex flex-col bg-kj-bg text-kj-text overflow-hidden transition-colors duration-300">
 
       {/* Fixed Header - Desktop */}
-      <header className="hidden md:flex fixed top-0 left-0 right-0 h-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-[100] px-8 items-center justify-between transition-all duration-300">
+      <header className="hidden md:flex fixed top-0 left-0 right-0 h-20 bg-kj-panel/90 backdrop-blur-md border-b border-kj-line z-[100] px-8 items-center justify-between transition-all duration-300">
         {/* Logo Section */}
         <a
           href="/"
@@ -215,17 +215,17 @@ function App() {
         </a>
 
         {/* Navigation Links */}
-        <div className="flex items-center gap-2 bg-gray-100/50 dark:bg-slate-800/50 p-1.5 rounded-2xl border border-gray-200 dark:border-gray-700">
+        <div className="flex items-center gap-2 bg-kj-chip-bg/60 p-1.5 rounded-2xl border border-kj-line">
           <a
             href="/"
             onClick={(e) => { e.preventDefault(); window.location.href = '/'; }}
-            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-slate-700/50"
+            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-kj-text-dim hover:text-kj-text-dim dark:hover:text-gray-200 hover:bg-kj-chip-bg/50 dark:hover:bg-slate-700/50"
           >
             <Home size={16} />
             Home
           </a>
           <button
-            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 bg-white dark:bg-slate-700 text-emerald-600 dark:text-emerald-400 shadow-sm transform scale-100"
+            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 bg-white dark:bg-slate-700 text-kj-primary shadow-sm transform scale-100"
           >
             <Train size={16} className="animate-pulse" />
             Intercity
@@ -233,7 +233,7 @@ function App() {
           <a
             href="/#ai-assistant"
             onClick={(e) => { e.preventDefault(); window.location.href = '/#ai-assistant'; }}
-            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-slate-700/50"
+            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-kj-text-dim hover:text-kj-text-dim dark:hover:text-gray-200 hover:bg-kj-chip-bg/50 dark:hover:bg-slate-700/50"
           >
             <Sparkles size={16} />
             AI Chat
@@ -241,7 +241,7 @@ function App() {
           <a
             href="/#history"
             onClick={(e) => { e.preventDefault(); window.location.href = '/#history'; }}
-            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-slate-700/50"
+            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-kj-text-dim hover:text-kj-text-dim dark:hover:text-gray-200 hover:bg-kj-chip-bg/50 dark:hover:bg-slate-700/50"
           >
             <Clock size={16} />
             History
@@ -249,7 +249,7 @@ function App() {
           <a
             href="/#about"
             onClick={(e) => { e.preventDefault(); window.location.href = '/#about'; }}
-            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-slate-700/50"
+            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-kj-text-dim hover:text-kj-text-dim dark:hover:text-gray-200 hover:bg-kj-chip-bg/50 dark:hover:bg-slate-700/50"
           >
             <Info size={16} />
             About
@@ -268,7 +268,7 @@ function App() {
           <ThemeToggle isDarkMode={isDarkMode} toggleTheme={() => setIsDarkMode(!isDarkMode)} />
           <button
             onClick={() => setIsMenuOpen(true)}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors text-gray-600 dark:text-gray-300">
+            className="p-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full transition-colors text-kj-text-dim">
             <Menu size={24} />
           </button>
         </div>
@@ -276,7 +276,7 @@ function App() {
 
       {/* Fixed Header - Mobile */}
       <header
-        className="md:hidden fixed top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-[100] flex flex-col transition-all duration-300"
+        className="md:hidden fixed top-0 left-0 right-0 bg-kj-panel/90 backdrop-blur-md border-b border-kj-line z-[100] flex flex-col transition-all duration-300"
         style={{ paddingTop: 'env(safe-area-inset-top)' }}
       >
         <div className="h-16 px-4 flex items-center justify-between">
@@ -300,8 +300,8 @@ function App() {
           </button>
           <button
             onClick={() => setIsMenuOpen(true)}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full text-gray-600 dark:text-gray-300 transition-colors flex items-center justify-center" aria-label="Open menu">
-            <Menu className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+            className="p-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full text-kj-text-dim transition-colors flex items-center justify-center" aria-label="Open menu">
+            <Menu className="w-5 h-5 text-kj-text-dim" />
           </button>
         </div>
         </div>
@@ -309,7 +309,7 @@ function App() {
 
       {/* FIXED TOP SECTION (Title + Search) - Add padding for fixed header */}
       <div
-        className="flex-none relative overflow-visible bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 z-50 shadow-sm transition-colors duration-300 md:mt-20"
+        className="flex-none relative overflow-visible bg-kj-panel border-b border-kj-line z-50 shadow-sm transition-colors duration-300 md:mt-20"
         style={{ marginTop: 'calc(4rem + env(safe-area-inset-top))' }}
       >
 
@@ -349,8 +349,8 @@ function App() {
           {/* Hero Title Section */}
           <div className="text-center mb-3 md:mb-6 animate-fade-in">
             <h1 className="text-2xl md:text-4xl font-extrabold mb-2 tracking-tight drop-shadow-sm">
-              <span className="text-dhaka-red">বাংলাদেশ</span>{' '}
-              <span className="text-dhaka-green">ঘুরে দেখুন</span>
+              <span className="text-kj-accent">বাংলাদেশ</span>{' '}
+              <span className="text-kj-primary">ঘুরে দেখুন</span>
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
                 আপনার পছন্দের রুটে
@@ -359,7 +359,7 @@ function App() {
           </div>
 
           {/* Search Box */}
-          <div className="max-w-4xl mx-auto bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm rounded-2xl shadow-xl shadow-blue-900/5 border border-gray-100 dark:border-slate-700 p-1.5 md:p-2 relative z-10 transition-colors duration-300">
+          <div className="max-w-4xl mx-auto bg-white/95 dark:bg-kj-chip-bg/95 backdrop-blur-sm rounded-2xl shadow-xl shadow-blue-900/5 border border-kj-line p-1.5 md:p-2 relative z-10 transition-colors duration-300">
             {/* Offline Banner inside Search Box */}
             {!isOnline && (
               <div className="absolute -top-12 left-0 right-0 mx-auto w-max max-w-[90%] bg-red-500 text-white text-xs md:text-sm px-4 py-2 rounded-full shadow-md flex items-center gap-2 justify-center animate-slide-up z-50">
@@ -424,7 +424,7 @@ function App() {
                   className={`
                     w-full h-10 md:h-[50px] px-6 md:px-8 font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 transform active:scale-95 text-sm md:text-base dark:shadow-blue-900/20
                     ${loading || !isOnline || usageCount >= DAILY_LIMIT || !from || !to
-                      ? 'bg-gray-300 dark:bg-slate-700 text-gray-500 cursor-not-allowed'
+                      ? 'bg-gray-300 dark:bg-slate-700 text-kj-text-dim cursor-not-allowed'
                       : 'bg-blue-600 hover:bg-blue-700 text-white'
                     }
                   `}
@@ -455,7 +455,7 @@ function App() {
       </div>
 
       {/* SCROLLABLE BOTTOM SECTION (Results) */}
-      <div className="flex-1 overflow-y-auto bg-slate-50/50 dark:bg-slate-900/50 relative z-0">
+      <div className="flex-1 overflow-y-auto bg-slate-50/50 dark:bg-kj-panel/50 relative z-0">
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8">
 
           {/* Error Message */}
@@ -479,13 +479,13 @@ function App() {
             {/* Empty State / Popular Routes */}
             {!loading && !result && !error && (
               <div className="mt-4 md:mt-12 animate-slide-up max-w-4xl mx-auto">
-                <div className="mt-8 md:mt-12 bg-white dark:bg-slate-800 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 max-w-2xl mx-auto border border-gray-100 dark:border-slate-700 shadow-sm text-center md:text-left transition-colors duration-300">
+                <div className="mt-8 md:mt-12 bg-kj-panel rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 max-w-2xl mx-auto border border-kj-line shadow-sm text-center md:text-left transition-colors duration-300">
                   <div className="bg-blue-50 dark:bg-slate-700 p-4 rounded-full text-blue-500 dark:text-blue-400 animate-pulse">
                     <PlayCircle size={32} />
                   </div>
                   <div>
-                    <h4 className="text-gray-900 dark:text-white font-bold text-lg mb-2">কিভাবে কাজ করে দেখতে চান?</h4>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">সার্চ না করেই রেজাল্ট কার্ডের ইন্টারফেস দেখতে ডেমো বাটনে ক্লিক করুন।</p>
+                    <h4 className="text-kj-text font-bold text-lg mb-2">কিভাবে কাজ করে দেখতে চান?</h4>
+                    <p className="text-kj-text-dim text-sm mb-4">সার্চ না করেই রেজাল্ট কার্ডের ইন্টারফেস দেখতে ডেমো বাটনে ক্লিক করুন।</p>
                     <button
                       onClick={handleDemoSearch}
                       disabled={!isOnline}
@@ -504,56 +504,56 @@ function App() {
       {isMenuOpen && (
         <div className="fixed inset-0 z-[200]">
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setIsMenuOpen(false)}></div>
-          <div className="absolute top-0 right-0 bottom-0 w-3/4 max-w-xs bg-white dark:bg-slate-900 shadow-2xl p-6 flex flex-col animate-in slide-in-from-right">
+          <div className="absolute top-0 right-0 bottom-0 w-3/4 max-w-xs bg-kj-panel shadow-2xl p-6 flex flex-col animate-in slide-in-from-right">
             <div className="flex justify-between items-center mb-8">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Menu</h2>
-              <button onClick={() => setIsMenuOpen(false)} className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full" aria-label="Close menu">
-                <X className="w-6 h-6 text-gray-500 dark:text-gray-400" />
+              <h2 className="text-xl font-bold text-kj-text">Menu</h2>
+              <button onClick={() => setIsMenuOpen(false)} className="p-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full" aria-label="Close menu">
+                <X className="w-6 h-6 text-kj-text-dim" />
               </button>
             </div>
 
             <div className="space-y-2 flex-1 overflow-y-auto hidden-scrollbar">
               <button
                 onClick={() => window.location.href = '/'}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
-                <Home className="w-5 h-5 text-emerald-600 dark:text-emerald-400" /> Home
+                <Home className="w-5 h-5 text-kj-primary" /> Home
               </button>
               <button
                 onClick={() => window.location.href = '/#ai-assistant'}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
                 <Bot className="w-5 h-5 text-purple-600 dark:text-purple-400" /> AI Assistant
               </button>
               <button
                 onClick={() => window.location.href = '/#about'}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
                 <Info className="w-5 h-5 text-blue-500" /> About
               </button>
 
               <button
                 onClick={() => window.location.href = '/#settings'}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
-                <Settings className="w-5 h-5 text-gray-600 dark:text-gray-400" /> Settings
+                <Settings className="w-5 h-5 text-kj-text-dim" /> Settings
               </button>
               <button
                 onClick={() => window.location.href = '/#privacy'}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
                 <Shield className="w-5 h-5 text-indigo-600 dark:text-indigo-400" /> Privacy Policy
               </button>
               <button
                 onClick={() => window.location.href = '/#terms'}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
                 <FileText className="w-5 h-5 text-orange-600 dark:text-orange-400" /> Terms of Service
               </button>
             </div>
 
-            <div className="pt-6 border-t border-gray-100 dark:border-gray-800">
-              <p className="text-xs text-center text-gray-400">
+            <div className="pt-6 border-t border-kj-line">
+              <p className="text-xs text-center text-kj-text-faint">
                 কই যাবো v1.0.0
               </p>
             </div>
@@ -568,21 +568,21 @@ function App() {
       />
 
       {/* Mobile Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 pb-safe z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] md:hidden">
+      <nav className="fixed bottom-0 left-0 right-0 bg-kj-panel border-t border-kj-line pb-safe z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] md:hidden">
         <div className="grid grid-cols-4 h-16">
           <button
             onClick={() => window.location.href = '/'}
-            className="flex flex-col items-center justify-center gap-1 border-t-2 transition-all border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+            className="flex flex-col items-center justify-center gap-1 border-t-2 transition-all border-transparent text-kj-text-faint hover:text-kj-text-dim dark:hover:text-kj-text-faint"
           >
-            <Home className="w-6 h-6 text-gray-400 dark:text-gray-500" />
+            <Home className="w-6 h-6 text-kj-text-faint" />
             <span className="text-[10px] font-bold uppercase tracking-wide">Home</span>
           </button>
 
           <button
             onClick={() => window.location.href = '/#ai-assistant'}
-            className="flex flex-col items-center justify-center gap-1 border-t-2 transition-all border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+            className="flex flex-col items-center justify-center gap-1 border-t-2 transition-all border-transparent text-kj-text-faint hover:text-kj-text-dim dark:hover:text-kj-text-faint"
           >
-            <Sparkles className="w-6 h-6 text-gray-400 dark:text-gray-500" />
+            <Sparkles className="w-6 h-6 text-kj-text-faint" />
             <span className="text-[10px] font-bold uppercase tracking-wide">AI Help</span>
           </button>
 
@@ -595,9 +595,9 @@ function App() {
 
           <button
             onClick={() => window.location.href = '/#about'}
-            className="flex flex-col items-center justify-center gap-1 border-t-2 transition-all border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+            className="flex flex-col items-center justify-center gap-1 border-t-2 transition-all border-transparent text-kj-text-faint hover:text-kj-text-dim dark:hover:text-kj-text-faint"
           >
-            <Info className="w-6 h-6 text-gray-400 dark:text-gray-500" />
+            <Info className="w-6 h-6 text-kj-text-faint" />
             <span className="text-[10px] font-bold uppercase tracking-wide">About</span>
           </button>
         </div>

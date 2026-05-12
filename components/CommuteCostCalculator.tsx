@@ -93,17 +93,17 @@ export default function CommuteCostCalculator({ onBack }: Props) {
   const yearlyCost = monthlyCost * 12;
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 bg-slate-50 dark:bg-slate-900 overflow-hidden">
-      <div className="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
-        <button onClick={onBack} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full">
-          <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+    <div className="flex flex-col flex-1 min-h-0 bg-kj-bg overflow-hidden">
+      <div className="flex items-center gap-3 p-4 bg-kj-panel border-b border-kj-line shrink-0">
+        <button onClick={onBack} className="p-2 -ml-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full">
+          <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
         </button>
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shrink-0">
           <Calculator className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1">
-          <h1 className="text-lg font-bold text-gray-900 dark:text-white">{lbl('Cost Calculator', 'খরচ ক্যালকুলেটর')}</h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{lbl('Commute Cost Calculator', 'যাতায়াত খরচ ক্যালকুলেটর')}</p>
+          <h1 className="text-lg font-bold text-kj-text">{lbl('Cost Calculator', 'খরচ ক্যালকুলেটর')}</h1>
+          <p className="text-xs text-kj-text-dim">{lbl('Commute Cost Calculator', 'যাতায়াত খরচ ক্যালকুলেটর')}</p>
         </div>
         {hasSaved && (
           <button onClick={handleClear} className="flex items-center gap-1 px-2 py-1.5 text-xs text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg">
@@ -113,17 +113,17 @@ export default function CommuteCostCalculator({ onBack }: Props) {
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 space-y-4 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
-        <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 space-y-3">
+        <div className="bg-kj-panel rounded-2xl p-4 border border-kj-line space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="font-bold text-gray-900 dark:text-white text-sm">{lbl('Daily Commute', 'দৈনিক যাতায়াত')}</h3>
-            <button onClick={addLeg} className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold hover:underline">
+            <h3 className="font-bold text-kj-text text-sm">{lbl('Daily Commute', 'দৈনিক যাতায়াত')}</h3>
+            <button onClick={addLeg} className="text-xs text-kj-primary font-semibold hover:underline">
               + {lbl('Add', 'যোগ করুন')}
             </button>
           </div>
 
           {legs.length === 0 && (
             <button onClick={addLeg}
-              className="w-full py-8 border-2 border-dashed border-gray-200 dark:border-slate-600 rounded-xl text-gray-400 dark:text-gray-500 hover:border-emerald-400 hover:text-emerald-500 transition-colors text-sm">
+              className="w-full py-8 border-2 border-dashed border-kj-line dark:border-slate-600 rounded-xl text-kj-text-faint hover:border-emerald-400 hover:text-kj-primary transition-colors text-sm">
               + {lbl('Tap to add your first transport leg', 'যাতায়াতের তথ্য যোগ করুন')}
             </button>
           )}
@@ -138,7 +138,7 @@ export default function CommuteCostCalculator({ onBack }: Props) {
                     updateLeg(i, 'mode', e.target.value);
                     if (mode) updateLeg(i, 'fare', mode.avgPerTrip);
                   }}
-                  className="flex-1 bg-white dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-lg px-2 py-1.5 text-sm dark:text-white">
+                  className="flex-1 bg-white dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-lg px-2 py-1.5 text-sm dark:text-white">
                   {TRANSPORT_MODES.map(m => (
                     <option key={m.id} value={m.id}>{language === 'bn' ? m.label : m.labelEn}</option>
                   ))}
@@ -149,16 +149,16 @@ export default function CommuteCostCalculator({ onBack }: Props) {
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{lbl('Fare per trip (৳)', 'প্রতি যাত্রায় ভাড়া (৳)')}</p>
+                  <p className="text-xs text-kj-text-dim mb-1">{lbl('Fare per trip (৳)', 'প্রতি যাত্রায় ভাড়া (৳)')}</p>
                   <input type="number" min={0} value={leg.fare}
                     onChange={e => updateLeg(i, 'fare', Number(e.target.value))}
-                    className="w-full bg-white dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-lg px-2 py-1.5 text-sm dark:text-white" />
+                    className="w-full bg-white dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-lg px-2 py-1.5 text-sm dark:text-white" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{lbl('Trips per day', 'দৈনিক যাত্রার সংখ্যা')}</p>
+                  <p className="text-xs text-kj-text-dim mb-1">{lbl('Trips per day', 'দৈনিক যাত্রার সংখ্যা')}</p>
                   <input type="number" min={1} max={10} value={leg.trips}
                     onChange={e => updateLeg(i, 'trips', Number(e.target.value))}
-                    className="w-full bg-white dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-lg px-2 py-1.5 text-sm dark:text-white" />
+                    className="w-full bg-white dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-lg px-2 py-1.5 text-sm dark:text-white" />
                 </div>
               </div>
             </div>
@@ -166,10 +166,10 @@ export default function CommuteCostCalculator({ onBack }: Props) {
 
           {legs.length > 0 && (
             <div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{lbl('Working days per month', 'মাসে কর্মদিবস')}</p>
+              <p className="text-xs text-kj-text-dim mb-1">{lbl('Working days per month', 'মাসে কর্মদিবস')}</p>
               <input type="number" min={1} max={31} value={workDays}
                 onChange={e => updateWorkDays(Number(e.target.value))}
-                className="w-full bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-xl px-3 py-2 text-sm dark:text-white" />
+                className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2 text-sm dark:text-white" />
             </div>
           )}
         </div>
@@ -187,22 +187,22 @@ export default function CommuteCostCalculator({ onBack }: Props) {
                 { label: lbl('Monthly', 'মাসিক'), value: monthlyCost },
                 { label: lbl('Yearly', 'বার্ষিক'), value: yearlyCost },
               ].map(({ label, value }) => (
-                <div key={label} className="bg-white dark:bg-slate-800 rounded-2xl p-3 border border-gray-100 dark:border-gray-700 text-center">
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{label}</p>
-                  <p className="text-lg font-black text-gray-900 dark:text-white">৳{value.toLocaleString()}</p>
+                <div key={label} className="bg-kj-panel rounded-2xl p-3 border border-kj-line text-center">
+                  <p className="text-xs text-kj-text-dim mb-1">{label}</p>
+                  <p className="text-lg font-black text-kj-text">৳{value.toLocaleString()}</p>
                 </div>
               ))}
             </div>
 
             {monthlyCost > 1500 && (
-              <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-4">
+              <div className="bg-kj-primary-soft dark:bg-emerald-900/20 border border-kj-primary/30 rounded-2xl p-4">
                 <div className="flex items-start gap-3">
-                  <TrendingDown className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                  <TrendingDown className="w-5 h-5 text-kj-primary shrink-0 mt-0.5" />
                   <div>
                     <p className="font-bold text-emerald-800 dark:text-emerald-300 text-sm">
                       {lbl('A pass could save you money!', 'পাস কিনলে সাশ্রয় হতে পারে!')}
                     </p>
-                    <p className="text-xs text-emerald-700 dark:text-emerald-400 mt-1">
+                    <p className="text-xs text-emerald-700 dark:text-kj-primary mt-1">
                       {lbl(
                         `Metro Rapid Pass (৳1,000) could reduce monthly costs. You're currently spending ৳${monthlyCost.toLocaleString()}/month.`,
                         `মেট্রো র‍্যাপিড পাস (৳1,000) + বিআরটিসি পাস (৳800) = ৳1,800/মাস। বর্তমান খরচ ৳${monthlyCost.toLocaleString()} — সাশ্রয় হতে পারে ৳${Math.max(0, monthlyCost - 1800).toLocaleString()}`
@@ -215,13 +215,13 @@ export default function CommuteCostCalculator({ onBack }: Props) {
           </>
         )}
 
-        <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700">
-          <h3 className="font-bold text-gray-900 dark:text-white text-sm mb-3">{lbl('Average fares by mode', 'ধরন অনুযায়ী গড় ভাড়া')}</h3>
+        <div className="bg-kj-panel rounded-2xl p-4 border border-kj-line">
+          <h3 className="font-bold text-kj-text text-sm mb-3">{lbl('Average fares by mode', 'ধরন অনুযায়ী গড় ভাড়া')}</h3>
           <div className="space-y-2">
             {TRANSPORT_MODES.map(m => (
               <div key={m.id} className="flex items-center justify-between text-sm">
-                <span className="text-gray-700 dark:text-gray-300">{m.icon} {language === 'bn' ? m.label : m.labelEn}</span>
-                <span className="font-semibold text-gray-900 dark:text-white">৳{m.avgPerTrip} {lbl('avg', 'গড়')}</span>
+                <span className="text-kj-text-dim">{m.icon} {language === 'bn' ? m.label : m.labelEn}</span>
+                <span className="font-semibold text-kj-text">৳{m.avgPerTrip} {lbl('avg', 'গড়')}</span>
               </div>
             ))}
           </div>

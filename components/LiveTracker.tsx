@@ -159,13 +159,13 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center h-full p-6 text-center text-gray-500 dark:text-gray-400">
+      <div className="flex flex-col items-center justify-center h-full p-6 text-center text-kj-text-dim">
         <div className="w-16 h-16 bg-red-50 dark:bg-red-900/20 rounded-full flex items-center justify-center mb-4 animate-pulse">
           <AlertCircle className="w-8 h-8 text-red-500 dark:text-red-400" />
         </div>
-        <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200 mb-6">{t('liveNav.locationNeeded')}</h3>
+        <h3 className="text-lg font-bold text-kj-text mb-6">{t('liveNav.locationNeeded')}</h3>
         <button onClick={() => { setLoading(true); window.location.reload(); }}
-          className="px-6 py-3 bg-dhaka-green text-white rounded-xl font-bold shadow-lg shadow-green-200 dark:shadow-green-900/40 active:scale-95 transition-transform">
+          className="px-6 py-3 bg-kj-primary text-white rounded-xl font-bold shadow-lg shadow-green-200 dark:shadow-green-900/40 active:scale-95 transition-transform">
           {t('liveNav.enableLocation')}
         </button>
       </div>
@@ -174,16 +174,16 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
 
   if (loading && !location && !isManualMode) {
     return (
-      <div className="flex flex-col items-center justify-center h-full w-full p-8 text-center bg-white dark:bg-slate-900">
+      <div className="flex flex-col items-center justify-center h-full w-full p-8 text-center bg-kj-panel">
         <div className="relative w-24 h-24 mb-8">
-          <div className="absolute inset-0 border-4 border-gray-100 dark:border-gray-800 rounded-full"></div>
-          <div className="absolute inset-0 border-4 border-dhaka-green border-t-transparent rounded-full animate-spin"></div>
+          <div className="absolute inset-0 border-4 border-kj-line rounded-full"></div>
+          <div className="absolute inset-0 border-4 border-kj-primary border-t-transparent rounded-full animate-spin"></div>
           <div className="absolute inset-0 flex items-center justify-center">
-            <Compass className="w-8 h-8 text-dhaka-green animate-pulse" />
+            <Compass className="w-8 h-8 text-kj-primary animate-pulse" />
           </div>
         </div>
-        <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">{t('liveNav.findingSatellite')}</h3>
-        <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">{t('liveNav.detectingPosition')}</p>
+        <h3 className="text-xl font-bold text-kj-text">{t('liveNav.findingSatellite')}</h3>
+        <p className="text-sm text-kj-text-faint mt-2">{t('liveNav.detectingPosition')}</p>
         <button
           onClick={() => setShowSearch(true)}
           className="mt-6 flex items-center gap-2 px-5 py-2.5 bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-700 rounded-xl text-teal-700 dark:text-teal-400 font-semibold text-sm transition-colors hover:bg-teal-100 dark:hover:bg-teal-900/40"
@@ -196,28 +196,28 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
         {showSearch && (
           <div className="mt-4 w-full max-w-xs">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-kj-text-faint" />
               <input
                 ref={searchInputRef}
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder={t('liveTracker.typeStopName')}
-                className="w-full pl-9 pr-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm dark:text-white"
+                className="w-full pl-9 pr-4 py-2.5 bg-kj-panel border border-kj-line rounded-xl text-sm dark:text-white"
               />
             </div>
-            <div className="mt-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-lg max-h-48 overflow-y-auto">
+            <div className="mt-1 bg-kj-panel border border-kj-line rounded-xl overflow-hidden shadow-lg max-h-48 overflow-y-auto">
               {filteredStops.slice(0, 10).map(s => (
                 <button key={s.idx} onMouseDown={() => selectStop(s.idx)}
-                  className="w-full text-left px-3 py-2.5 text-sm hover:bg-teal-50 dark:hover:bg-teal-900/20 border-b border-gray-50 dark:border-slate-700 last:border-0 flex items-center gap-2">
+                  className="w-full text-left px-3 py-2.5 text-sm hover:bg-teal-50 dark:hover:bg-teal-900/20 border-b border-gray-50 dark:border-kj-line last:border-0 flex items-center gap-2">
                   <MapPin className="w-3.5 h-3.5 text-teal-500 shrink-0" />
                   <div>
-                    <p className="font-medium text-gray-800 dark:text-white">{s.station.name}</p>
-                    {s.station.bnName && <p className="text-xs text-gray-400">{s.station.bnName}</p>}
+                    <p className="font-medium text-kj-text">{s.station.name}</p>
+                    {s.station.bnName && <p className="text-xs text-kj-text-faint">{s.station.bnName}</p>}
                   </div>
                 </button>
               ))}
               {filteredStops.length === 0 && (
-                <p className="text-sm text-gray-400 text-center py-4">{t('liveTracker.noStopsFound')}</p>
+                <p className="text-sm text-kj-text-faint text-center py-4">{t('liveTracker.noStopsFound')}</p>
               )}
             </div>
           </div>
@@ -252,13 +252,13 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
   }
 
   return (
-    <div className="h-full flex flex-col bg-slate-50 dark:bg-slate-900 relative">
+    <div className="h-full flex flex-col bg-kj-bg relative">
       {/* Status Card */}
-      <div className="bg-white dark:bg-slate-800 rounded-b-3xl shadow-sm border-b border-gray-100 dark:border-gray-700 p-5 z-20 shrink-0">
+      <div className="bg-kj-panel rounded-b-3xl shadow-sm border-b border-kj-line p-5 z-20 shrink-0">
         {/* Desktop back */}
         {onBack && (
           <button onClick={onBack}
-            className="hidden md:flex mb-3 items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-dhaka-green dark:hover:text-dhaka-green transition-colors">
+            className="hidden md:flex mb-3 items-center gap-2 text-kj-text-dim hover:text-kj-primary dark:hover:text-kj-primary transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
@@ -282,27 +282,27 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
                   />
                 </div>
                 <button onClick={() => { setShowSearch(false); setSearchQuery(''); }}
-                  className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-xl transition-colors">
+                  className="p-2 text-kj-text-faint hover:text-kj-text-dim dark:hover:text-kj-text-faint hover:bg-kj-chip-bg rounded-xl transition-colors">
                   <X className="w-4 h-4" />
                 </button>
               </div>
 
               {/* Dropdown suggestions */}
               {(searchQuery || !searchQuery) && (
-                <div className="absolute top-full left-0 right-0 z-30 mt-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-xl max-h-56 overflow-y-auto">
+                <div className="absolute top-full left-0 right-0 z-30 mt-1 bg-kj-panel border border-kj-line rounded-xl overflow-hidden shadow-xl max-h-56 overflow-y-auto">
                   {filteredStops.length === 0 ? (
-                    <p className="text-sm text-gray-400 text-center py-4">{t('liveTracker.noStopsFound')}</p>
+                    <p className="text-sm text-kj-text-faint text-center py-4">{t('liveTracker.noStopsFound')}</p>
                   ) : (
                     filteredStops.slice(0, 12).map(s => (
                       <button key={s.idx}
                         onMouseDown={() => selectStop(s.idx)}
-                        className="w-full text-left px-3 py-2.5 hover:bg-teal-50 dark:hover:bg-teal-900/20 border-b border-gray-50 dark:border-slate-700 last:border-0 flex items-center gap-3 group transition-colors">
+                        className="w-full text-left px-3 py-2.5 hover:bg-teal-50 dark:hover:bg-teal-900/20 border-b border-gray-50 dark:border-kj-line last:border-0 flex items-center gap-3 group transition-colors">
                         <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-[10px] font-bold ${s.idx === 0 ? 'bg-green-500 text-white' : s.idx === bus.stops.length - 1 ? 'bg-red-500 text-white' : 'bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-400'}`}>
                           {s.idx + 1}
                         </div>
                         <div className="min-w-0">
-                          <p className="font-medium text-gray-800 dark:text-white text-sm truncate group-hover:text-teal-700 dark:group-hover:text-teal-400 transition-colors">{s.station.name}</p>
-                          {s.station.bnName && <p className="text-xs text-gray-400 dark:text-gray-500">{s.station.bnName}</p>}
+                          <p className="font-medium text-kj-text text-sm truncate group-hover:text-teal-700 dark:group-hover:text-teal-400 transition-colors">{s.station.name}</p>
+                          {s.station.bnName && <p className="text-xs text-kj-text-faint">{s.station.bnName}</p>}
                         </div>
                         {s.idx === effectiveNearestIndex && (
                           <span className="ml-auto text-[10px] font-bold px-1.5 py-0.5 bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-400 rounded-full shrink-0">Current</span>
@@ -317,7 +317,7 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setShowSearch(true)}
-                className="flex-1 flex items-center gap-2 px-3 py-2 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-xl text-sm text-gray-500 dark:text-gray-400 hover:border-teal-300 dark:hover:border-teal-600 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors"
+                className="flex-1 flex items-center gap-2 px-3 py-2 bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl text-sm text-kj-text-dim hover:border-teal-300 dark:hover:border-teal-600 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors"
               >
                 <Search className="w-4 h-4 text-teal-500 shrink-0" />
                 <span className="flex-1 text-left truncate">
@@ -329,14 +329,14 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
               </button>
               {isManualMode && (
                 <button onClick={clearManual}
-                  className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors"
+                  className="p-2 text-kj-text-faint hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors"
                   title="Use GPS location">
                   <X className="w-4 h-4" />
                 </button>
               )}
               <button
                 onClick={() => setShowAllStops(v => !v)}
-                className="p-2 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-500 dark:text-gray-400 hover:border-teal-300 dark:hover:border-teal-600 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors"
+                className="p-2 bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl text-kj-text-dim hover:border-teal-300 dark:hover:border-teal-600 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors"
                 title="Show all stops"
               >
                 {showAllStops ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -346,25 +346,25 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
 
           {/* All stops panel */}
           {showAllStops && !showSearch && (
-            <div className="mt-2 bg-gray-50 dark:bg-slate-700/50 border border-gray-200 dark:border-gray-600 rounded-xl overflow-hidden max-h-48 overflow-y-auto">
-              <div className="sticky top-0 bg-gray-100 dark:bg-slate-700 px-3 py-1.5 flex items-center justify-between">
-                <p className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            <div className="mt-2 bg-gray-50 dark:bg-slate-700/50 border border-kj-line dark:border-gray-600 rounded-xl overflow-hidden max-h-48 overflow-y-auto">
+              <div className="sticky top-0 bg-kj-chip-bg px-3 py-1.5 flex items-center justify-between">
+                <p className="text-[10px] font-bold text-kj-text-dim uppercase tracking-wider">
                   {t('liveTracker.allStops')} · {bus.stops.length}
                 </p>
               </div>
               {routeStops.map(s => (
                 <button key={s.idx} onClick={() => { selectStop(s.idx); setShowAllStops(false); }}
-                  className={`w-full text-left px-3 py-2 flex items-center gap-2.5 border-b border-gray-100 dark:border-slate-600 last:border-0 transition-colors
+                  className={`w-full text-left px-3 py-2 flex items-center gap-2.5 border-b border-kj-line dark:border-slate-600 last:border-0 transition-colors
                     ${s.idx === effectiveNearestIndex ? 'bg-teal-50 dark:bg-teal-900/20' : 'hover:bg-white dark:hover:bg-slate-700'}`}>
                   <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold shrink-0
-                    ${s.idx === 0 ? 'bg-green-500 text-white' : s.idx === bus.stops.length - 1 ? 'bg-red-500 text-white' : s.idx === effectiveNearestIndex ? 'bg-teal-500 text-white' : 'bg-gray-200 dark:bg-slate-600 text-gray-600 dark:text-gray-300'}`}>
+                    ${s.idx === 0 ? 'bg-green-500 text-white' : s.idx === bus.stops.length - 1 ? 'bg-red-500 text-white' : s.idx === effectiveNearestIndex ? 'bg-kj-primary text-white' : 'bg-gray-200 dark:bg-slate-600 text-kj-text-dim'}`}>
                     {s.idx + 1}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className={`text-sm font-medium truncate ${s.idx === effectiveNearestIndex ? 'text-teal-700 dark:text-teal-400 font-bold' : 'text-gray-700 dark:text-gray-300'}`}>{s.station.name}</p>
+                    <p className={`text-sm font-medium truncate ${s.idx === effectiveNearestIndex ? 'text-teal-700 dark:text-teal-400 font-bold' : 'text-kj-text-dim'}`}>{s.station.name}</p>
                   </div>
                   {s.idx === effectiveNearestIndex && (
-                    <span className="text-[10px] font-bold text-teal-600 dark:text-teal-400 shrink-0">
+                    <span className="text-[10px] font-bold text-kj-primary shrink-0">
                       {isManualMode ? `📍 ${t('liveTracker.manual')}` : '📍 You'}
                     </span>
                   )}
@@ -380,12 +380,12 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
         {isManualMode && (
           <div className="mb-3 bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-700 rounded-xl px-3 py-2 flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 min-w-0">
-              <MapPin className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400 shrink-0" />
+              <MapPin className="w-3.5 h-3.5 text-kj-primary shrink-0" />
               <p className="text-xs font-semibold text-teal-700 dark:text-teal-300 truncate">
                 {t('liveTracker.manualStop')} {effectiveNearestIndex + 1} {t('liveTracker.of')} {bus.stops.length}
               </p>
             </div>
-            <button onClick={clearManual} className="text-[10px] font-bold text-teal-600 dark:text-teal-400 hover:underline shrink-0">
+            <button onClick={clearManual} className="text-[10px] font-bold text-kj-primary hover:underline shrink-0">
               {t('liveTracker.useGPS')}
             </button>
           </div>
@@ -393,30 +393,30 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
 
         <div className="flex items-center justify-between mb-2">
           <span className={`text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 ${isAtStation
-            ? 'text-dhaka-red bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded-full'
-            : 'text-gray-400'
+            ? 'text-kj-accent bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded-full'
+            : 'text-kj-text-faint'
             }`}>
             <MapPin className={`w-3 h-3 ${isAtStation ? 'animate-bounce' : ''}`} />
             {isManualMode ? t('liveTracker.selectedStop') : (isAtStation ? t('liveNav.currentStop') : t('liveNav.nearestStop'))}
           </span>
-          <span className="flex items-center gap-1 text-[10px] text-dhaka-green bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded-full border border-green-100 dark:border-green-800">
+          <span className="flex items-center gap-1 text-[10px] text-kj-primary bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded-full border border-green-100 dark:border-green-800">
             <RefreshCw className="w-3 h-3 animate-spin" /> Live
           </span>
         </div>
 
         <h2 className={`text-2xl font-bold flex items-center gap-2 ${isAtStation
-          ? 'text-dhaka-red dark:text-red-400'
-          : 'text-dhaka-dark dark:text-gray-100'
+          ? 'text-kj-accent dark:text-red-400'
+          : 'text-kj-text'
           }`}>
           {currentStation?.name || 'Unknown Location'}
-          {isAtStation && <span className="inline-block w-2 h-2 bg-dhaka-red rounded-full animate-pulse"></span>}
+          {isAtStation && <span className="inline-block w-2 h-2 bg-kj-accent rounded-full animate-pulse"></span>}
         </h2>
         {!isAtStation && !isManualMode && (
           <p className="text-xs font-bold text-orange-600 bg-orange-50 dark:bg-orange-900/30 dark:text-orange-400 inline-block px-2 py-0.5 rounded mt-1">
             {t('liveNav.youAre')} {formatNumber((distanceToStation / 1000).toFixed(1))} km {t('emergency.away')}
           </p>
         )}
-        <p className="text-xs text-gray-500 dark:text-gray-400 font-bengali mt-1 mb-3 ml-0.5">{currentStation?.bnName}</p>
+        <p className="text-xs text-kj-text-dim font-bengali mt-1 mb-3 ml-0.5">{currentStation?.bnName}</p>
 
         {/* Live Tracking Controls */}
         <div className="space-y-2">
@@ -443,10 +443,10 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
             <button onClick={toggleBroadcast}
               disabled={!isOnline && !isBroadcasting}
               className={`flex-1 px-3 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-sm ${!isOnline && !isBroadcasting
-                ? 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed opacity-50'
+                ? 'bg-gray-300 dark:bg-gray-700 text-kj-text-dim cursor-not-allowed opacity-50'
                 : isBroadcasting
                   ? 'bg-red-500 text-white animate-pulse shadow-red-200'
-                  : 'bg-dhaka-green text-white shadow-green-200 dark:shadow-green-900/30 hover:bg-green-700'
+                  : 'bg-kj-primary text-white shadow-green-200 dark:shadow-green-900/30 hover:bg-green-700'
                 }`}>
               <Radio className={`w-4 h-4 ${isBroadcasting ? 'animate-ping' : ''}`} />
               {isBroadcasting ? t('liveNav.stopCasting') : t('liveNav.goLive')}
@@ -465,7 +465,7 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
 
         {/* Trip Stats */}
         {hasDestination && !isManualMode ? (
-          <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
+          <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-kj-line">
             <div className="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-xl text-center">
               <div className="flex items-center justify-center gap-1 text-blue-600 dark:text-blue-400 mb-1">
                 <Gauge className="w-3 h-3" />
@@ -495,21 +495,21 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
           </div>
         ) : (
           !isManualMode && nextStopId ? (
-            <div className="pt-3 border-t border-gray-100 dark:border-gray-700 flex items-center gap-4">
-              <div className="w-10 h-10 bg-dhaka-green rounded-xl flex items-center justify-center text-white shadow-lg shadow-green-200 dark:shadow-green-900/20">
+            <div className="pt-3 border-t border-kj-line flex items-center gap-4">
+              <div className="w-10 h-10 bg-kj-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-green-200 dark:shadow-green-900/20">
                 <Clock className="w-5 h-5" />
               </div>
               <div>
-                <p className="text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-wide">{t('liveNav.nextStopIn')}</p>
+                <p className="text-[10px] text-kj-text-faint font-bold uppercase tracking-wide">{t('liveNav.nextStopIn')}</p>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-lg font-bold text-gray-800 dark:text-gray-100">{formatNumber((distToNext / 1000 * 3 + 2).toFixed(0))} {t('liveNav.min')}</span>
-                  <span className="text-xs text-gray-400">({formatNumber((distToNext / 1000).toFixed(1))} km)</span>
+                  <span className="text-lg font-bold text-kj-text">{formatNumber((distToNext / 1000 * 3 + 2).toFixed(0))} {t('liveNav.min')}</span>
+                  <span className="text-xs text-kj-text-faint">({formatNumber((distToNext / 1000).toFixed(1))} km)</span>
                 </div>
               </div>
             </div>
           ) : (
             !isManualMode && (
-              <div className="pt-3 border-t border-gray-100 dark:border-gray-700 text-sm text-green-600 dark:text-green-400 font-bold">
+              <div className="pt-3 border-t border-kj-line text-sm text-green-600 dark:text-green-400 font-bold">
                 {t('liveNav.arrivedDestination')}
               </div>
             )
@@ -519,7 +519,7 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
 
       {/* Timeline */}
       <div ref={timelineRef} className="flex-1 overflow-y-auto px-6 py-6 scroll-smooth">
-        <h4 className="text-xs font-bold text-gray-400 dark:text-gray-500 mb-6 uppercase tracking-wider ml-11">
+        <h4 className="text-xs font-bold text-kj-text-faint mb-6 uppercase tracking-wider ml-11">
           {t('liveNav.routeTimeline')} · {bus.stops.length} stops
         </h4>
         <div className="relative ml-3 space-y-0 pb-20">
@@ -537,7 +537,7 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
             return (
               <div id={`stop-${idx}`} key={stopId} className={`relative pb-10 ${isPassed ? 'opacity-40 grayscale blur-[0.5px]' : 'opacity-100'}`}>
                 {idx < bus.stops.length - 1 && (
-                  <div className="absolute left-[-2px] top-0 bottom-0 w-1 border-l-2 border-dashed border-gray-300 dark:border-gray-600 z-0"></div>
+                  <div className="absolute left-[-2px] top-0 bottom-0 w-1 border-l-2 border-dashed border-kj-line z-0"></div>
                 )}
                 {isInRange && idx < highlightEndIdx! && (
                   <div className="absolute left-[-2px] top-0 bottom-[-40px] w-1 bg-green-500 z-0"></div>
@@ -545,7 +545,7 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
 
                 <div className={`absolute -left-[9px] top-0 rounded-full transition-all duration-500
                     ${isCurrent && isAtStation
-                      ? 'bg-dhaka-red border-4 border-white shadow-[0_0_0_4px_rgba(244,42,65,0.2)] w-7 h-7 -left-[13px] z-10 animate-pulse'
+                      ? 'bg-kj-accent border-4 border-white shadow-[0_0_0_4px_rgba(244,42,65,0.2)] w-7 h-7 -left-[13px] z-10 animate-pulse'
                       : isCurrent
                         ? 'bg-orange-500 border-4 border-white w-6 h-6 -left-[11px] z-10 shadow-[0_0_12px_rgba(249,115,22,0.5)]'
                         : isStart
@@ -556,7 +556,7 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
                               ? 'bg-green-400 border-4 border-white w-4 h-4 -left-[7px] z-0'
                               : isPassed
                                 ? 'bg-gray-400 w-4 h-4 border-2 border-white'
-                                : 'bg-white border-4 border-dhaka-green w-5 h-5 -left-[9px]'
+                                : 'bg-white border-4 border-kj-primary w-5 h-5 -left-[9px]'
                     }`}>
                   {isCurrent && <div className="absolute -inset-2 border-2 border-current rounded-full opacity-75 animate-ping"></div>}
                 </div>
@@ -565,20 +565,20 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
                   <div className="flex items-center justify-between gap-2">
                     <button
                       onClick={() => selectStop(idx)}
-                      className={`font-medium text-left hover:text-teal-600 dark:hover:text-teal-400 transition-colors ${isCurrent ? 'text-dhaka-dark dark:text-white text-xl font-bold' : isInRange ? 'text-green-800 dark:text-green-400 font-bold' : 'text-gray-700 dark:text-gray-400'}`}
+                      className={`font-medium text-left hover:text-teal-600 dark:hover:text-teal-400 transition-colors ${isCurrent ? 'text-kj-text text-xl font-bold' : isInRange ? 'text-green-800 dark:text-green-400 font-bold' : 'text-kj-text-dim dark:text-kj-text-faint'}`}
                     >
                       {station.name}
                     </button>
                     {isCurrent && location && (
                       <button onClick={() => setShowEmergencyModal(true)}
-                        className="shrink-0 bg-dhaka-red hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-md hover:shadow-lg active:scale-95 flex items-center gap-1.5">
+                        className="shrink-0 bg-kj-accent hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-md hover:shadow-lg active:scale-95 flex items-center gap-1.5">
                         <Phone className="w-3.5 h-3.5" />
                         {t('liveNav.help')}
                       </button>
                     )}
                   </div>
                   {isCurrent && isAtStation && (
-                    <span className="inline-block mt-1 px-2 py-0.5 bg-dhaka-red text-white text-[10px] rounded font-bold uppercase tracking-wide shadow-sm">
+                    <span className="inline-block mt-1 px-2 py-0.5 bg-kj-accent text-white text-[10px] rounded font-bold uppercase tracking-wide shadow-sm">
                       {isManualMode ? '📍 Selected' : t('busDetails.you')}
                     </span>
                   )}
@@ -589,7 +589,7 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
                       {t('liveNav.nearestStop')} ({formatNumber((distanceToStation / 1000).toFixed(1))} km)
                     </span>
                   )}
-                  {!isCurrent && <p className="text-xs text-gray-400 mt-0.5">{station.bnName}</p>}
+                  {!isCurrent && <p className="text-xs text-kj-text-faint mt-0.5">{station.bnName}</p>}
                 </div>
               </div>
             );

@@ -247,27 +247,27 @@ export default function MultiStopPlanner({ onBack }: Props) {
   };
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 bg-slate-50 dark:bg-slate-900 overflow-hidden">
-      <div className="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
-        <button onClick={onBack} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full">
-          <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+    <div className="flex flex-col flex-1 min-h-0 bg-kj-bg overflow-hidden">
+      <div className="flex items-center gap-3 p-4 bg-kj-panel border-b border-kj-line shrink-0">
+        <button onClick={onBack} className="p-2 -ml-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full">
+          <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
         </button>
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shrink-0">
           <Navigation className="w-5 h-5 text-white" />
         </div>
         <div>
-          <h1 className="text-lg font-bold text-gray-900 dark:text-white">{lbl('Multi-Stop Planner', 'মাল্টি-স্টপ প্ল্যানার')}</h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{lbl('Plan a multi-leg journey', 'বহু-পর্যায়ের যাত্রা পরিকল্পনা করুন')}</p>
+          <h1 className="text-lg font-bold text-kj-text">{lbl('Multi-Stop Planner', 'মাল্টি-স্টপ প্ল্যানার')}</h1>
+          <p className="text-xs text-kj-text-dim">{lbl('Plan a multi-leg journey', 'বহু-পর্যায়ের যাত্রা পরিকল্পনা করুন')}</p>
         </div>
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 space-y-3 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
         <AdSenseAd adSlot="auto" native className="mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
-        <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 space-y-2">
+        <div className="bg-kj-panel rounded-2xl p-4 border border-kj-line space-y-2">
           {stops.map((stop, i) => (
             <div key={stop.id} className="flex items-center gap-2">
               <div className="flex flex-col items-center shrink-0">
-                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${i === 0 ? 'bg-blue-500 text-white' : i === stops.length - 1 ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-slate-600 text-gray-700 dark:text-gray-300'}`}>
+                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${i === 0 ? 'bg-blue-500 text-white' : i === stops.length - 1 ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-slate-600 text-kj-text-dim'}`}>
                   {i + 1}
                 </div>
                 {i < stops.length - 1 && <div className="w-0.5 h-4 bg-gray-200 dark:bg-slate-600 my-0.5" />}
@@ -279,15 +279,15 @@ export default function MultiStopPlanner({ onBack }: Props) {
                   onFocus={() => setFocusedId(stop.id)}
                   onBlur={() => setTimeout(() => setFocusedId(prev => prev === stop.id ? null : prev), 200)}
                   placeholder={i === 0 ? lbl('From (start)', 'যাত্রা শুরু') : i === stops.length - 1 ? lbl('To (destination)', 'গন্তব্য') : `${lbl('Stop', 'স্টপ')} ${i + 1}`}
-                  className="w-full bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-xl px-3 py-2 text-sm dark:text-white"
+                  className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2 text-sm dark:text-white"
                 />
                 {focusedId === stop.id && filtered.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 z-20 mt-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-lg max-h-48 overflow-y-auto">
+                  <div className="absolute top-full left-0 right-0 z-20 mt-1 bg-kj-panel border border-kj-line rounded-xl overflow-hidden shadow-lg max-h-48 overflow-y-auto">
                     {filtered.map(s => (
                       <button key={s} type="button"
                         onMouseDown={() => selectSuggestion(stop.id, s)}
-                        className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 dark:hover:bg-slate-700 text-gray-800 dark:text-gray-200 flex items-center gap-2 border-b border-gray-50 dark:border-slate-700 last:border-0">
-                        <MapPin className="w-3 h-3 text-gray-400 shrink-0" /> {s}
+                        className="w-full text-left px-3 py-2 text-sm hover:bg-kj-chip-bg dark:hover:bg-slate-700 text-kj-text flex items-center gap-2 border-b border-gray-50 dark:border-kj-line last:border-0">
+                        <MapPin className="w-3 h-3 text-kj-text-faint shrink-0" /> {s}
                       </button>
                     ))}
                   </div>
@@ -318,17 +318,17 @@ export default function MultiStopPlanner({ onBack }: Props) {
 
         {planned && legs.length > 0 && (
           <div className="space-y-3">
-            <h3 className="font-bold text-gray-900 dark:text-white text-sm px-1">{lbl('Your journey plan', 'আপনার যাত্রা পরিকল্পনা')}</h3>
+            <h3 className="font-bold text-kj-text text-sm px-1">{lbl('Your journey plan', 'আপনার যাত্রা পরিকল্পনা')}</h3>
             {legs.map((leg, i) => (
-              <div key={i} className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700">
-                <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-white flex-wrap">
+              <div key={i} className="bg-kj-panel rounded-2xl p-4 border border-kj-line">
+                <div className="flex items-center gap-2 text-sm font-semibold text-kj-text flex-wrap">
                   <span className="text-blue-600 dark:text-blue-400">{leg.from}</span>
-                  <ChevronRight className="w-4 h-4 text-gray-400 shrink-0" />
+                  <ChevronRight className="w-4 h-4 text-kj-text-faint shrink-0" />
                   <span className="text-green-600 dark:text-green-400">{leg.to}</span>
                 </div>
                 <div className="mt-2 flex items-start gap-2">
                   <span className="text-lg">💡</span>
-                  <p className="text-sm text-gray-700 dark:text-gray-300">{leg.suggestion}</p>
+                  <p className="text-sm text-kj-text-dim">{leg.suggestion}</p>
                 </div>
               </div>
             ))}

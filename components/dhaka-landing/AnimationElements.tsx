@@ -130,7 +130,7 @@ export const Skyline = ({ isNight }: { isNight?: boolean }) => {
   })), []);
 
   return (
-    <div className={`absolute bottom-0 w-full flex items-end z-0 pointer-events-none transition-colors duration-1000 ${isNight ? 'text-slate-800' : 'text-indigo-900 opacity-20'}`}>
+    <div className={`absolute bottom-0 w-full flex items-end z-0 pointer-events-none transition-colors duration-1000 ${isNight ? 'text-kj-text' : 'text-indigo-900 opacity-20'}`}>
       {buildings.map((b, i) => (
         <div key={i} className="bg-current mx-[2px] rounded-t-sm relative" style={{ height: `${b.height}rem`, width: `${b.width}rem` }}>
           {/* Lit Windows at Night */}
@@ -294,7 +294,7 @@ export const MetroTrain = ({ isNight }: { isNight: boolean }) => {
       {/* HEAD CAR */}
       <div className="relative w-48 h-14 bg-gradient-to-b from-slate-100 to-slate-300 rounded-l-[3rem] rounded-r-sm border border-slate-400 overflow-hidden flex items-center z-20 shadow-lg">
         {/* Cockpit Window with Reflection */}
-        <div className="absolute left-1 top-2 w-10 h-8 bg-slate-800 rounded-l-2xl rounded-tr-md skew-x-12 border-r-2 border-slate-600 opacity-90 overflow-hidden">
+        <div className="absolute left-1 top-2 w-10 h-8 bg-kj-chip-bg rounded-l-2xl rounded-tr-md skew-x-12 border-r-2 border-slate-600 opacity-90 overflow-hidden">
           <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/30 to-transparent"></div>
         </div>
 
@@ -302,8 +302,8 @@ export const MetroTrain = ({ isNight }: { isNight: boolean }) => {
         <div className="absolute bottom-1 w-full h-1.5 bg-red-600 opacity-90"></div>
 
         <div className="ml-16 flex space-x-3 z-10 mt-1">
-          <div className={`w-10 h-6 ${isNight ? 'bg-yellow-100/60' : 'bg-slate-800'} rounded-sm border border-slate-500 relative overflow-hidden transition-colors duration-1000`}></div>
-          <div className={`w-10 h-6 ${isNight ? 'bg-yellow-100/60' : 'bg-slate-800'} rounded-sm border border-slate-500 relative overflow-hidden transition-colors duration-1000`}></div>
+          <div className={`w-10 h-6 ${isNight ? 'bg-yellow-100/60' : 'bg-kj-chip-bg'} rounded-sm border border-slate-500 relative overflow-hidden transition-colors duration-1000`}></div>
+          <div className={`w-10 h-6 ${isNight ? 'bg-yellow-100/60' : 'bg-kj-chip-bg'} rounded-sm border border-slate-500 relative overflow-hidden transition-colors duration-1000`}></div>
         </div>
         <div className="absolute right-4 top-2 w-6 h-10 bg-slate-300 border border-slate-400 shadow-inner">
           <div className="w-[1px] h-full bg-slate-400 mx-auto"></div>
@@ -319,8 +319,8 @@ export const MetroTrain = ({ isNight }: { isNight: boolean }) => {
             <div className="w-[1px] h-full bg-slate-400 mx-auto"></div>
           </div>
           <div className="flex space-x-3 z-10 mt-1">
-            <div className={`w-10 h-6 ${isNight ? 'bg-yellow-100/60' : 'bg-slate-800'} rounded-sm border border-slate-500 relative overflow-hidden transition-colors duration-1000`}></div>
-            <div className={`w-10 h-6 ${isNight ? 'bg-yellow-100/60' : 'bg-slate-800'} rounded-sm border border-slate-500 relative overflow-hidden transition-colors duration-1000`}></div>
+            <div className={`w-10 h-6 ${isNight ? 'bg-yellow-100/60' : 'bg-kj-chip-bg'} rounded-sm border border-slate-500 relative overflow-hidden transition-colors duration-1000`}></div>
+            <div className={`w-10 h-6 ${isNight ? 'bg-yellow-100/60' : 'bg-kj-chip-bg'} rounded-sm border border-slate-500 relative overflow-hidden transition-colors duration-1000`}></div>
           </div>
           <div className="w-6 h-10 bg-slate-300 border border-slate-400 z-10 mt-1 shadow-inner relative">
             <div className="w-[1px] h-full bg-slate-400 mx-auto"></div>
@@ -472,12 +472,12 @@ export const TrafficPolice = ({ isNight, isStopped }: { isNight: boolean, isStop
         <div className="absolute bottom-0 w-3 h-3 bg-[#d2a679] rounded-full"></div>
       </div>
       {/* Belt */}
-      <div className="absolute bottom-0 w-full h-1.5 bg-slate-900 z-10"></div>
+      <div className="absolute bottom-0 w-full h-1.5 bg-kj-panel z-10"></div>
     </div>
     {/* Legs */}
     <div className="flex space-x-0.5 -mt-0.5">
-      <div className="w-3.5 h-9 bg-slate-800 rounded-b-sm"></div>
-      <div className="w-3.5 h-9 bg-slate-800 rounded-b-sm"></div>
+      <div className="w-3.5 h-9 bg-kj-chip-bg rounded-b-sm"></div>
+      <div className="w-3.5 h-9 bg-kj-chip-bg rounded-b-sm"></div>
     </div>
     {/* Shadow */}
     <div className="absolute bottom-0 w-12 h-1.5 bg-black/30 blur-[2px] rounded-full scale-x-125"></div>

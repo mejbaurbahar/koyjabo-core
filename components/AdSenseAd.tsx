@@ -64,13 +64,13 @@ const AdSenseAd: React.FC<AdSenseAdProps> = React.memo(({
 
   if (native) {
     return (
-      <div className={`bg-white dark:bg-slate-800 border border-gray-100 dark:border-gray-700 rounded-2xl overflow-hidden shadow-sm ${className}`}>
+      <div className={`bg-kj-panel border border-kj-line rounded-2xl overflow-hidden shadow-sm ${className}`}>
         <div className="flex items-center justify-between px-3 py-1.5 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 dark:from-emerald-500/15 dark:to-teal-500/15 border-b border-emerald-100 dark:border-emerald-900/30">
           <div className="flex items-center gap-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">Sponsored</span>
+            <div className="w-1.5 h-1.5 rounded-full bg-kj-primary" />
+            <span className="text-[10px] font-bold text-emerald-700 dark:text-kj-primary uppercase tracking-wider">Sponsored</span>
           </div>
-          <span className="text-[9px] text-gray-400 dark:text-gray-500">Ad</span>
+          <span className="text-[9px] text-kj-text-faint">Ad</span>
         </div>
         <div className="p-1 w-full flex justify-center overflow-x-hidden">
           {insEl}

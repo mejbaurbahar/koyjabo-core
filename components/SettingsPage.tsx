@@ -14,23 +14,23 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ isDarkMode, toggleTheme, on
 
     return (
         <div
-            className={`flex flex-col flex-1 min-h-0 w-full max-h-full bg-white dark:bg-slate-900 p-6 md:p-12 pb-28 md:pb-12 overflow-y-auto overscroll-y-contain touch-pan-y ${embedded ? 'pt-4' : 'pt-4 md:pt-8'}`}
+            className={`flex flex-col flex-1 min-h-0 w-full max-h-full bg-kj-panel p-6 md:p-12 pb-28 md:pb-12 overflow-y-auto overscroll-y-contain touch-pan-y ${embedded ? 'pt-4' : 'pt-4 md:pt-8'}`}
             style={{ WebkitOverflowScrolling: 'touch' }}
         >
             <div className="max-w-3xl mx-auto w-full">
-                <h1 className="text-2xl md:text-3xl font-bold mb-3 text-gray-900 dark:text-gray-100 flex items-center gap-2">
-                    <SettingsIcon className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                <h1 className="text-2xl md:text-3xl font-bold mb-3 text-kj-text flex items-center gap-2">
+                    <SettingsIcon className="w-6 h-6 text-kj-text-dim" />
                     {t('settings.title')}
                 </h1>
-                <p className="text-gray-500 dark:text-gray-400 mb-8">{t('settings.subtitle')}</p>
+                <p className="text-kj-text-dim mb-8">{t('settings.subtitle')}</p>
 
                 <div className="space-y-6">
                     {/* Language Settings */}
-                    <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-                        <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">
+                    <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
+                        <h2 className="text-lg font-bold text-kj-text mb-4">
                             {t('settings.languagePreference')}
                         </h2>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                        <p className="text-sm text-kj-text-dim mb-4">
                             {t('settings.languageDescription')}
                         </p>
 
@@ -40,23 +40,23 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ isDarkMode, toggleTheme, on
                             <button
                                 onClick={() => setLanguage('bn')}
                                 className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all ${language === 'bn'
-                                    ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20'
-                                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                                    ? 'border-kj-primary bg-kj-primary-soft dark:bg-emerald-900/20'
+                                    : 'border-kj-line hover:border-kj-line dark:hover:border-gray-600'
                                     }`}
                             >
-                                <div className={`p-2 rounded-lg ${language === 'bn' ? 'bg-emerald-500' : 'bg-gray-200 dark:bg-slate-700'}`}>
-                                    <Globe className={`w-5 h-5 ${language === 'bn' ? 'text-white' : 'text-gray-600 dark:text-gray-400'}`} />
+                                <div className={`p-2 rounded-lg ${language === 'bn' ? 'bg-kj-primary' : 'bg-gray-200 dark:bg-slate-700'}`}>
+                                    <Globe className={`w-5 h-5 ${language === 'bn' ? 'text-white' : 'text-kj-text-dim'}`} />
                                 </div>
                                 <div className="text-left flex-1">
-                                    <div className={`font-bold text-sm ${language === 'bn' ? 'text-emerald-700 dark:text-emerald-400' : 'text-gray-900 dark:text-gray-100'}`}>
+                                    <div className={`font-bold text-sm ${language === 'bn' ? 'text-emerald-700 dark:text-kj-primary' : 'text-kj-text'}`}>
                                         বাংলা
                                     </div>
-                                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                                    <div className="text-xs text-kj-text-dim">
                                         Bangla
                                     </div>
                                 </div>
                                 {language === 'bn' && (
-                                    <div className="w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center">
+                                    <div className="w-5 h-5 bg-kj-primary rounded-full flex items-center justify-center">
                                         <div className="w-2 h-2 bg-white rounded-full"></div>
                                     </div>
                                 )}
@@ -67,17 +67,17 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ isDarkMode, toggleTheme, on
                                 onClick={() => setLanguage('en')}
                                 className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all ${language === 'en'
                                     ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                                    : 'border-kj-line hover:border-kj-line dark:hover:border-gray-600'
                                     }`}
                             >
                                 <div className={`p-2 rounded-lg ${language === 'en' ? 'bg-blue-500' : 'bg-gray-200 dark:bg-slate-700'}`}>
-                                    <Globe className={`w-5 h-5 ${language === 'en' ? 'text-white' : 'text-gray-600 dark:text-gray-400'}`} />
+                                    <Globe className={`w-5 h-5 ${language === 'en' ? 'text-white' : 'text-kj-text-dim'}`} />
                                 </div>
                                 <div className="text-left flex-1">
-                                    <div className={`font-bold text-sm ${language === 'en' ? 'text-blue-700 dark:text-blue-400' : 'text-gray-900 dark:text-gray-100'}`}>
+                                    <div className={`font-bold text-sm ${language === 'en' ? 'text-blue-700 dark:text-blue-400' : 'text-kj-text'}`}>
                                         English
                                     </div>
-                                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                                    <div className="text-xs text-kj-text-dim">
                                         ইংরেজি
                                     </div>
                                 </div>
@@ -92,19 +92,19 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ isDarkMode, toggleTheme, on
                         {/* Current Status */}
                         <div className="mt-4 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
                             <div className="flex items-center gap-2 text-sm">
-                                <Globe className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                                <span className="text-gray-600 dark:text-gray-300">
-                                    {t('settings.currentLanguage')}: <span className="font-bold text-gray-900 dark:text-gray-100">{language === 'bn' ? 'বাংলা (Bangla)' : 'English (ইংরেজি)'}</span>
+                                <Globe className="w-4 h-4 text-kj-text-dim" />
+                                <span className="text-kj-text-dim">
+                                    {t('settings.currentLanguage')}: <span className="font-bold text-kj-text">{language === 'bn' ? 'বাংলা (Bangla)' : 'English (ইংরেজি)'}</span>
                                 </span>
                             </div>
                         </div>
                     </div>
                     {/* Theme Settings */}
-                    <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-                        <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">
+                    <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
+                        <h2 className="text-lg font-bold text-kj-text mb-4">
                             {t('settings.themePreference')}
                         </h2>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                        <p className="text-sm text-kj-text-dim mb-4">
                             {t('settings.themeDescription')}
                         </p>
 
@@ -117,17 +117,17 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ isDarkMode, toggleTheme, on
                                 }}
                                 className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all ${!isDarkMode
                                     ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                                    : 'border-kj-line hover:border-kj-line dark:hover:border-gray-600'
                                     }`}
                             >
                                 <div className={`p-2 rounded-lg ${!isDarkMode ? 'bg-blue-500' : 'bg-gray-200 dark:bg-slate-700'}`}>
-                                    <Sun className={`w-5 h-5 ${!isDarkMode ? 'text-white' : 'text-gray-600 dark:text-gray-400'}`} />
+                                    <Sun className={`w-5 h-5 ${!isDarkMode ? 'text-white' : 'text-kj-text-dim'}`} />
                                 </div>
                                 <div className="text-left flex-1">
-                                    <div className={`font-bold text-sm ${!isDarkMode ? 'text-blue-700 dark:text-blue-400' : 'text-gray-900 dark:text-gray-100'}`}>
+                                    <div className={`font-bold text-sm ${!isDarkMode ? 'text-blue-700 dark:text-blue-400' : 'text-kj-text'}`}>
                                         {t('settings.lightMode')}
                                     </div>
-                                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                                    <div className="text-xs text-kj-text-dim">
                                         {t('settings.brightTheme')}
                                     </div>
                                 </div>
@@ -145,17 +145,17 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ isDarkMode, toggleTheme, on
                                 }}
                                 className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all ${isDarkMode
                                     ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
-                                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                                    : 'border-kj-line hover:border-kj-line dark:hover:border-gray-600'
                                     }`}
                             >
                                 <div className={`p-2 rounded-lg ${isDarkMode ? 'bg-purple-500' : 'bg-gray-200 dark:bg-slate-700'}`}>
-                                    <Moon className={`w-5 h-5 ${isDarkMode ? 'text-white' : 'text-gray-600 dark:text-gray-400'}`} />
+                                    <Moon className={`w-5 h-5 ${isDarkMode ? 'text-white' : 'text-kj-text-dim'}`} />
                                 </div>
                                 <div className="text-left flex-1">
-                                    <div className={`font-bold text-sm ${isDarkMode ? 'text-purple-700 dark:text-purple-400' : 'text-gray-900 dark:text-gray-100'}`}>
+                                    <div className={`font-bold text-sm ${isDarkMode ? 'text-purple-700 dark:text-purple-400' : 'text-kj-text'}`}>
                                         {t('settings.darkMode')}
                                     </div>
-                                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                                    <div className="text-xs text-kj-text-dim">
                                         {t('settings.easyOnEyes')}
                                     </div>
                                 </div>
@@ -170,48 +170,48 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ isDarkMode, toggleTheme, on
                         {/* Current Status */}
                         <div className="mt-4 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
                             <div className="flex items-center gap-2 text-sm">
-                                <Monitor className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                                <span className="text-gray-600 dark:text-gray-300">
-                                    {t('settings.currentTheme')}: <span className="font-bold text-gray-900 dark:text-gray-100">{isDarkMode ? t('settings.dark') : t('settings.light')}</span>
+                                <Monitor className="w-4 h-4 text-kj-text-dim" />
+                                <span className="text-kj-text-dim">
+                                    {t('settings.currentTheme')}: <span className="font-bold text-kj-text">{isDarkMode ? t('settings.dark') : t('settings.light')}</span>
                                 </span>
                             </div>
                         </div>
                     </div>
 
                     {/* Support & Contact */}
-                    <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-                        <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">
+                    <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
+                        <h2 className="text-lg font-bold text-kj-text mb-4">
                             {t('settings.supportFeedback')}
                         </h2>
 
                         <button
                             onClick={onContactClick}
-                            className="w-full flex items-center gap-4 p-4 rounded-xl border-2 border-slate-100 dark:border-slate-700 hover:border-blue-200 dark:hover:border-blue-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-all text-left group"
+                            className="w-full flex items-center gap-4 p-4 rounded-xl border-2 border-slate-100 dark:border-kj-line hover:border-blue-200 dark:hover:border-blue-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-all text-left group"
                         >
                             <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform">
                                 <Mail className="w-6 h-6" />
                             </div>
                             <div className="flex-1">
-                                <h3 className="font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{t('settings.contactUsBtn')}</h3>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">{t('settings.contactUsDesc')}</p>
+                                <h3 className="font-bold text-kj-text group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{t('settings.contactUsBtn')}</h3>
+                                <p className="text-sm text-kj-text-dim">{t('settings.contactUsDesc')}</p>
                             </div>
-                            <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
+                            <ChevronRight className="w-5 h-5 text-kj-text-faint group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
                         </button>
                     </div>
 
                     {/* App Info */}
-                    <div className="bg-slate-50 dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-                        <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+                    <div className="bg-slate-50 dark:bg-kj-chip-bg border border-kj-line rounded-2xl p-6">
+                        <h2 className="text-lg font-bold text-kj-text mb-2">
                             {t('settings.appInfo')}
                         </h2>
                         <div className="space-y-2 text-sm">
                             <div className="flex justify-between">
-                                <span className="text-gray-600 dark:text-gray-300">{t('settings.version')}</span>
-                                <span className="font-medium text-gray-900 dark:text-white">1.0.0</span>
+                                <span className="text-kj-text-dim">{t('settings.version')}</span>
+                                <span className="font-medium text-kj-text">1.0.0</span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-gray-600 dark:text-gray-300">{t('settings.lastUpdated')}</span>
-                                <span className="font-medium text-gray-900 dark:text-white">January 2026</span>
+                                <span className="text-kj-text-dim">{t('settings.lastUpdated')}</span>
+                                <span className="font-medium text-kj-text">January 2026</span>
                             </div>
                         </div>
                     </div>

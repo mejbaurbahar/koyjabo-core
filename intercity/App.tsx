@@ -384,7 +384,7 @@ function App() {
   }, [result]);
 
   return (
-    <div className="h-screen flex flex-col bg-slate-50 dark:bg-slate-900 text-gray-800 dark:text-gray-100 overflow-hidden transition-colors duration-300">
+    <div className="h-screen flex flex-col bg-kj-bg text-kj-text overflow-hidden transition-colors duration-300">
 
       {/* Offline Status Bar */}
       {!isOnline && (
@@ -395,7 +395,7 @@ function App() {
       )}
 
       {/* Fixed Header - Desktop */}
-      <header className={`hidden md:flex fixed top-0 left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-[100] px-8 items-center justify-between transition-all duration-300 h-20 ${isOnline ? '' : 'pt-7'}`}>
+      <header className={`hidden md:flex fixed top-0 left-0 right-0 bg-kj-panel/90 backdrop-blur-md border-b border-kj-line z-[100] px-8 items-center justify-between transition-all duration-300 h-20 ${isOnline ? '' : 'pt-7'}`}>
         {/* Logo Section */}
         <a
           href="/"
@@ -411,18 +411,18 @@ function App() {
         </a>
 
         {/* Navigation Links */}
-        <div className="flex items-center gap-2 bg-gray-100/50 dark:bg-slate-800/50 p-1.5 rounded-2xl border border-gray-200 dark:border-gray-700">
+        <div className="flex items-center gap-2 bg-kj-chip-bg/60 p-1.5 rounded-2xl border border-kj-line">
           <a
             href="/"
             onClick={(e) => { e.preventDefault(); window.location.href = '/'; }}
-            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-slate-700/50"
+            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-kj-text-dim hover:text-kj-text-dim dark:hover:text-gray-200 hover:bg-kj-chip-bg/50 dark:hover:bg-slate-700/50"
           >
 
             <Home size={16} />
             {t('nav.home')}
           </a>
           <button
-            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 bg-white dark:bg-slate-700 text-emerald-600 dark:text-emerald-400 shadow-sm transform scale-100"
+            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 bg-white dark:bg-slate-700 text-kj-primary shadow-sm transform scale-100"
           >
             <Bus size={16} className="animate-pulse" />
             {t('nav.intercity')}
@@ -430,7 +430,7 @@ function App() {
           <a
             href="/train"
             onClick={(e) => { e.preventDefault(); window.location.href = '/#train'; }}
-            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-slate-700/50"
+            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-kj-text-dim hover:text-kj-text-dim dark:hover:text-gray-200 hover:bg-kj-chip-bg/50 dark:hover:bg-slate-700/50"
           >
             <Train size={16} />
             {t('nav.train')}
@@ -438,7 +438,7 @@ function App() {
           <a
             href="/#ai-assistant"
             onClick={(e) => { e.preventDefault(); window.location.href = '/#ai-assistant'; }}
-            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-slate-700/50"
+            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-kj-text-dim hover:text-kj-text-dim dark:hover:text-gray-200 hover:bg-kj-chip-bg/50 dark:hover:bg-slate-700/50"
           >
             <Sparkles size={16} />
             {t('nav.aiAssistant')}
@@ -446,7 +446,7 @@ function App() {
           <a
             href="/#release-notes"
             onClick={(e) => { e.preventDefault(); window.location.href = '/#release-notes'; }}
-            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/20"
+            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-kj-primary hover:bg-kj-primary-soft/50 dark:hover:bg-emerald-900/20"
           >
             <Rocket size={16} />
             {t('nav.releaseNotes')}
@@ -454,7 +454,7 @@ function App() {
           <a
             href="/#about"
             onClick={(e) => { e.preventDefault(); window.location.href = '/#about'; }}
-            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-slate-700/50"
+            className="relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 text-kj-text-dim hover:text-kj-text-dim dark:hover:text-gray-200 hover:bg-kj-chip-bg/50 dark:hover:bg-slate-700/50"
           >
             <Info size={16} />
             {t('nav.about')}
@@ -485,7 +485,7 @@ function App() {
           ) : (
             <button
               onClick={() => { window.location.href = '/#login'; }}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-semibold text-sm transition-colors"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-kj-line hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-semibold text-sm transition-colors"
             >
               <LogIn size={15} />
               {t('nav.login')}
@@ -493,14 +493,14 @@ function App() {
           )}
           <button
             onClick={() => setIsMenuOpen(true)}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors text-gray-600 dark:text-gray-300">
+            className="p-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full transition-colors text-kj-text-dim">
             <Menu size={24} />
           </button>
         </div>
       </header>
 
       {/* Fixed Header - Mobile */}
-      <header className={`md:hidden fixed top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-[100] px-4 flex items-center justify-between transition-all duration-300 pb-3 ${isOnline ? 'pt-safe' : 'pt-7'}`}>
+      <header className={`md:hidden fixed top-0 left-0 right-0 bg-kj-panel/90 backdrop-blur-md border-b border-kj-line z-[100] px-4 flex items-center justify-between transition-all duration-300 pb-3 ${isOnline ? 'pt-safe' : 'pt-7'}`}>
         <a
           href="/"
           onClick={(e) => {
@@ -541,8 +541,8 @@ function App() {
           )}
           <button
             onClick={() => setIsMenuOpen(true)}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full text-gray-600 dark:text-gray-300 transition-colors flex items-center justify-center" aria-label="Open menu">
-            <Menu className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+            className="p-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full text-kj-text-dim transition-colors flex items-center justify-center" aria-label="Open menu">
+            <Menu className="w-5 h-5 text-kj-text-dim" />
           </button>
         </div>
       </header>
@@ -551,7 +551,7 @@ function App() {
       <div className="flex flex-1 min-h-0 md:pt-20" style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 3.5rem)' }}>
 
         {/* ═══ LEFT PANEL: Search card + list ═══ */}
-        <div className="w-full flex flex-col min-h-0 md:w-[380px] md:min-w-[340px] md:max-w-md md:border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900">
+        <div className="w-full flex flex-col min-h-0 md:w-[380px] md:min-w-[340px] md:max-w-md md:border-r border-kj-line bg-kj-panel">
           {/* Offline bar spacer */}
           {!isOnline && <div className="h-7 shrink-0" />}
 
@@ -599,13 +599,13 @@ function App() {
             {/* Error (mobile only) */}
             {error && (
               <div className="md:hidden pt-2">
-                <div className="bg-white dark:bg-slate-800 border border-red-200 dark:border-red-800 rounded-2xl overflow-hidden shadow-sm">
+                <div className="bg-kj-panel border border-red-200 dark:border-red-800 rounded-2xl overflow-hidden shadow-sm">
                   <div className="bg-red-50 dark:bg-red-900/20 px-4 py-3 flex items-center gap-3 border-b border-red-100 dark:border-red-800/50">
                     <AlertCircle size={18} className="text-red-500 flex-shrink-0" />
                     <p className="font-bold text-red-600 dark:text-red-400 text-sm">{language === 'bn' ? 'ত্রুটি' : 'Error'}</p>
                   </div>
                   <div className="px-4 py-3 space-y-3">
-                    <p className="text-gray-600 dark:text-gray-300 text-sm">{error}</p>
+                    <p className="text-kj-text-dim text-sm">{error}</p>
                     {!authUser && (
                       <button
                         onClick={() => { window.location.href = '/#login'; }}
@@ -627,10 +627,10 @@ function App() {
             {!loading && result && (
               <div className="md:hidden pt-2 space-y-2">
                 <div className="flex items-center justify-between px-1">
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{result.from} → {result.to}</p>
+                  <p className="text-xs text-kj-text-dim">{result.from} → {result.to}</p>
                   <button
                     onClick={() => toggleSavedRoute(result.from, result.to)}
-                    className={`flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full transition-colors ${isRouteSaved(result.from, result.to) ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400' : 'bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-gray-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20'}`}
+                    className={`flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full transition-colors ${isRouteSaved(result.from, result.to) ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400' : 'bg-kj-chip-bg text-kj-text-dim hover:bg-yellow-50 dark:hover:bg-yellow-900/20'}`}
                   >
                     <Star className="w-3 h-3" fill={isRouteSaved(result.from, result.to) ? 'currentColor' : 'none'} />
                     {isRouteSaved(result.from, result.to) ? (language === 'bn' ? 'সেভ হয়েছে' : 'Saved') : (language === 'bn' ? 'সেভ করুন' : 'Save Route')}
@@ -647,8 +647,8 @@ function App() {
                   <div className="flex items-start gap-4">
                     <div className="bg-blue-100 dark:bg-blue-900/40 p-3 rounded-xl text-blue-500 shrink-0"><PlayCircle size={24} /></div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-bold text-gray-900 dark:text-white text-sm mb-1">{t('intercity.demoTitle')}</h4>
-                      <p className="text-gray-500 dark:text-gray-400 text-xs mb-3 leading-relaxed">{t('intercity.demoDesc')}</p>
+                      <h4 className="font-bold text-kj-text text-sm mb-1">{t('intercity.demoTitle')}</h4>
+                      <p className="text-kj-text-dim text-xs mb-3 leading-relaxed">{t('intercity.demoDesc')}</p>
                       <button onClick={handleDemoSearch} className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-black rounded-xl transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95 uppercase tracking-wider">
                         {t('intercity.viewDemo')}
                       </button>
@@ -670,12 +670,12 @@ function App() {
                     className="w-full flex items-center justify-between gap-2 bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-800 rounded-xl px-3 py-2.5 text-left hover:border-yellow-400 transition-colors">
                     <div className="flex items-center gap-2 min-w-0">
                       <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500 shrink-0" />
-                      <span className="text-sm font-semibold text-gray-800 dark:text-white truncate">{r.from}</span>
-                      <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
-                      <span className="text-sm font-semibold text-gray-800 dark:text-white truncate">{r.to}</span>
+                      <span className="text-sm font-semibold text-kj-text truncate">{r.from}</span>
+                      <ChevronRight className="w-3.5 h-3.5 text-kj-text-faint shrink-0" />
+                      <span className="text-sm font-semibold text-kj-text truncate">{r.to}</span>
                     </div>
                     <button onClick={(e) => { e.stopPropagation(); toggleSavedRoute(r.from, r.to); }}
-                      className="p-1 text-gray-300 dark:text-gray-600 hover:text-red-400 transition-colors shrink-0">
+                      className="p-1 text-kj-text-faint hover:text-red-400 transition-colors shrink-0">
                       <X className="w-3.5 h-3.5" />
                     </button>
                   </button>
@@ -686,19 +686,19 @@ function App() {
             {/* Transport mode list — shown when logged in and no result */}
             {authUser && !result && !loading && (
               <div className="pt-2 space-y-2">
-                <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-1 pt-1">
+                <h3 className="text-xs font-bold text-kj-text-dim uppercase tracking-wider px-1 pt-1">
                   {t('intercity.travelModes')}
                 </h3>
                 {([
                   {
                     id: 'bus' as const, icon: <Bus size={18} />, label: t('intercity.byBus'),
                     desc: t('intercity.busDesc'),
-                    sel: 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400',
+                    sel: 'bg-kj-primary-soft dark:bg-emerald-900/20 border-kj-primary/30 text-kj-primary',
                     details: [
-                      { l: t('intercity.acBus'), d: t('intercity.acBusDesc'), color: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' },
-                      { l: t('intercity.nonAcBus'), d: t('intercity.nonAcBusDesc'), color: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' },
-                      { l: t('intercity.chairCoach'), d: t('intercity.chairCoachDesc'), color: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' },
-                      { l: t('intercity.sleeperCoach'), d: t('intercity.sleeperCoachDesc'), color: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' },
+                      { l: t('intercity.acBus'), d: t('intercity.acBusDesc'), color: 'bg-kj-primary-soft dark:bg-emerald-900/20 text-emerald-700 dark:text-kj-primary' },
+                      { l: t('intercity.nonAcBus'), d: t('intercity.nonAcBusDesc'), color: 'bg-kj-primary-soft dark:bg-emerald-900/20 text-emerald-700 dark:text-kj-primary' },
+                      { l: t('intercity.chairCoach'), d: t('intercity.chairCoachDesc'), color: 'bg-kj-primary-soft dark:bg-emerald-900/20 text-emerald-700 dark:text-kj-primary' },
+                      { l: t('intercity.sleeperCoach'), d: t('intercity.sleeperCoachDesc'), color: 'bg-kj-primary-soft dark:bg-emerald-900/20 text-emerald-700 dark:text-kj-primary' },
                     ],
                     info: t('intercity.busInfo'),
                   },
@@ -729,7 +729,7 @@ function App() {
                   {
                     id: 'launch' as const, icon: <span className="text-base">🛥️</span>, label: t('intercity.byLaunch'),
                     desc: t('intercity.launchDesc'),
-                    sel: 'bg-teal-50 dark:bg-teal-900/20 border-teal-200 dark:border-teal-800 text-teal-600 dark:text-teal-400',
+                    sel: 'bg-teal-50 dark:bg-teal-900/20 border-teal-200 dark:border-teal-800 text-kj-primary',
                     details: [
                       { l: 'ঢাকা–বরিশাল', d: '~8-10 hrs', color: 'bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-400' },
                       { l: 'ঢাকা–পটুয়াখালী', d: '~10-12 hrs', color: 'bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-400' },
@@ -744,26 +744,26 @@ function App() {
                     <div key={mode.id}>
                       <button
                         onClick={() => setSelectedMode(isSelected ? null : mode.id)}
-                        className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all text-left ${isSelected ? mode.sel : 'bg-white dark:bg-slate-800 border-gray-100 dark:border-slate-700 hover:border-gray-200 dark:hover:border-slate-600'}`}
+                        className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all text-left ${isSelected ? mode.sel : 'bg-kj-panel border-kj-line hover:border-kj-line dark:hover:border-slate-600'}`}
                       >
-                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${isSelected ? mode.sel : 'bg-gray-50 dark:bg-slate-700 text-gray-500 dark:text-gray-400'}`}>
+                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${isSelected ? mode.sel : 'bg-gray-50 dark:bg-slate-700 text-kj-text-dim'}`}>
                           {mode.icon}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="font-bold text-gray-900 dark:text-white text-sm">{mode.label}</p>
-                          <p className="text-gray-500 dark:text-gray-400 text-xs truncate">{mode.desc}</p>
+                          <p className="font-bold text-kj-text text-sm">{mode.label}</p>
+                          <p className="text-kj-text-dim text-xs truncate">{mode.desc}</p>
                         </div>
-                        <ChevronRight size={15} className={`shrink-0 text-gray-400 transition-transform duration-200 ${isSelected ? 'rotate-90' : ''}`} />
+                        <ChevronRight size={15} className={`shrink-0 text-kj-text-faint transition-transform duration-200 ${isSelected ? 'rotate-90' : ''}`} />
                       </button>
                       {/* Mobile expandable detail panel */}
                       {isSelected && (
-                        <div className="md:hidden mx-1 -mt-1 bg-white dark:bg-slate-800 border border-t-0 border-gray-100 dark:border-slate-700 rounded-b-xl p-4 shadow-sm">
-                          <p className="text-xs text-gray-500 dark:text-gray-400 mb-3 leading-relaxed">{mode.info}</p>
+                        <div className="md:hidden mx-1 -mt-1 bg-kj-panel border border-t-0 border-kj-line rounded-b-xl p-4 shadow-sm">
+                          <p className="text-xs text-kj-text-dim mb-3 leading-relaxed">{mode.info}</p>
                           <div className="grid grid-cols-2 gap-2">
                             {mode.details.map(item => (
                               <div key={item.l} className={`${item.color} rounded-xl p-2.5`}>
                                 <p className="font-bold text-xs leading-tight">{item.l}</p>
-                                <p className="text-gray-500 dark:text-gray-400 text-[10px] mt-0.5">{item.d}</p>
+                                <p className="text-kj-text-dim text-[10px] mt-0.5">{item.d}</p>
                               </div>
                             ))}
                           </div>
@@ -793,19 +793,19 @@ function App() {
             {/* Loading */}
             {loading && (
               <div className="flex items-center justify-center h-full min-h-[400px]">
-                <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl"><LoadingState /></div>
+                <div className="bg-white/90 dark:bg-kj-chip-bg/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl"><LoadingState /></div>
               </div>
             )}
 
             {/* Error */}
             {error && !loading && (
               <div className="flex items-center justify-center h-full min-h-[400px] p-8">
-                <div className="max-w-sm w-full bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-red-100 dark:border-red-900/30 text-center">
+                <div className="max-w-sm w-full bg-white/95 dark:bg-kj-chip-bg/95 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-red-100 dark:border-red-900/30 text-center">
                   <div className="w-16 h-16 bg-red-50 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-red-100 dark:ring-red-900/20">
                     <AlertCircle size={30} className="text-red-500" />
                   </div>
-                  <h3 className="font-extrabold text-xl text-gray-900 dark:text-white mb-2">{language === 'bn' ? 'ত্রুটি' : 'Error'}</h3>
-                  <p className="text-gray-500 dark:text-gray-400 text-sm mb-5 leading-relaxed">{error}</p>
+                  <h3 className="font-extrabold text-xl text-kj-text mb-2">{language === 'bn' ? 'ত্রুটি' : 'Error'}</h3>
+                  <p className="text-kj-text-dim text-sm mb-5 leading-relaxed">{error}</p>
                   {!authUser && (
                     <button
                       onClick={() => { window.location.href = '/#login'; }}
@@ -823,10 +823,10 @@ function App() {
             {!loading && result && (
               <div className="p-6 max-w-5xl mx-auto space-y-3">
                 <div className="flex items-center justify-between">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{result.from} → {result.to}</p>
+                  <p className="text-sm text-kj-text-dim">{result.from} → {result.to}</p>
                   <button
                     onClick={() => toggleSavedRoute(result.from, result.to)}
-                    className={`flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-full transition-colors ${isRouteSaved(result.from, result.to) ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400' : 'bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-gray-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20'}`}
+                    className={`flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-full transition-colors ${isRouteSaved(result.from, result.to) ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400' : 'bg-kj-chip-bg text-kj-text-dim hover:bg-yellow-50 dark:hover:bg-yellow-900/20'}`}
                   >
                     <Star className="w-4 h-4" fill={isRouteSaved(result.from, result.to) ? 'currentColor' : 'none'} />
                     {isRouteSaved(result.from, result.to) ? (language === 'bn' ? 'সেভ হয়েছে' : 'Saved') : (language === 'bn' ? 'রুট সেভ করুন' : 'Save Route')}
@@ -840,49 +840,49 @@ function App() {
             {!loading && !result && !error && (
               <div className="flex flex-col items-center justify-center h-full min-h-[400px] p-8 text-center">
                 {selectedMode === 'bus' && authUser && (
-                  <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
+                  <div className="bg-white/90 dark:bg-kj-chip-bg/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
                     <div className="text-4xl mb-4 text-center">🚌</div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 text-center">{t('intercity.byBus')}</h3>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5 text-center">{t('intercity.busInfo')}</p>
+                    <h3 className="text-xl font-bold text-kj-text mb-2 text-center">{t('intercity.byBus')}</h3>
+                    <p className="text-kj-text-dim text-sm leading-relaxed mb-5 text-center">{t('intercity.busInfo')}</p>
                     <div className="grid grid-cols-2 gap-3">
                       {[{ l: t('intercity.acBus'), d: t('intercity.acBusDesc') }, { l: t('intercity.nonAcBus'), d: t('intercity.nonAcBusDesc') }, { l: t('intercity.chairCoach'), d: t('intercity.chairCoachDesc') }, { l: t('intercity.sleeperCoach'), d: t('intercity.sleeperCoachDesc') }].map(i => (
-                        <div key={i.l} className="bg-emerald-50 dark:bg-emerald-900/20 rounded-xl p-3"><p className="font-bold text-emerald-700 dark:text-emerald-400 text-sm">{i.l}</p><p className="text-gray-500 dark:text-gray-400 text-xs">{i.d}</p></div>
+                        <div key={i.l} className="bg-kj-primary-soft dark:bg-emerald-900/20 rounded-xl p-3"><p className="font-bold text-emerald-700 dark:text-kj-primary text-sm">{i.l}</p><p className="text-kj-text-dim text-xs">{i.d}</p></div>
                       ))}
                     </div>
                   </div>
                 )}
                 {selectedMode === 'train' && authUser && (
-                  <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
+                  <div className="bg-white/90 dark:bg-kj-chip-bg/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
                     <div className="text-4xl mb-4 text-center">🚂</div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 text-center">{t('intercity.byTrain')}</h3>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5 text-center">{t('intercity.trainInfo')}</p>
+                    <h3 className="text-xl font-bold text-kj-text mb-2 text-center">{t('intercity.byTrain')}</h3>
+                    <p className="text-kj-text-dim text-sm leading-relaxed mb-5 text-center">{t('intercity.trainInfo')}</p>
                     <div className="grid grid-cols-2 gap-3">
                       {[{ l: t('intercity.shovon'), d: t('intercity.shovonDesc') }, { l: t('intercity.shovonChair'), d: t('intercity.shovonChairDesc') }, { l: t('intercity.acChair'), d: t('intercity.acChairDesc') }, { l: t('intercity.acBerth'), d: t('intercity.acBerthDesc') }].map(i => (
-                        <div key={i.l} className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-3"><p className="font-bold text-blue-700 dark:text-blue-400 text-sm">{i.l}</p><p className="text-gray-500 dark:text-gray-400 text-xs">{i.d}</p></div>
+                        <div key={i.l} className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-3"><p className="font-bold text-blue-700 dark:text-blue-400 text-sm">{i.l}</p><p className="text-kj-text-dim text-xs">{i.d}</p></div>
                       ))}
                     </div>
                   </div>
                 )}
                 {selectedMode === 'plane' && authUser && (
-                  <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
+                  <div className="bg-white/90 dark:bg-kj-chip-bg/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
                     <div className="text-4xl mb-4 text-center">✈️</div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 text-center">{t('intercity.byAir')}</h3>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5 text-center">{t('intercity.airInfo')}</p>
+                    <h3 className="text-xl font-bold text-kj-text mb-2 text-center">{t('intercity.byAir')}</h3>
+                    <p className="text-kj-text-dim text-sm leading-relaxed mb-5 text-center">{t('intercity.airInfo')}</p>
                     <div className="grid grid-cols-2 gap-3">
                       {[{ l: 'ঢাকা–চট্টগ্রাম', d: '~45 min' }, { l: 'ঢাকা–সিলেট', d: '~40 min' }, { l: 'ঢাকা–কক্সবাজার', d: '~1 hr' }, { l: 'ঢাকা–যশোর', d: '~45 min' }].map(i => (
-                        <div key={i.l} className="bg-sky-50 dark:bg-sky-900/20 rounded-xl p-3"><p className="font-bold text-sky-700 dark:text-sky-400 text-sm">{i.l}</p><p className="text-gray-500 dark:text-gray-400 text-xs">{i.d}</p></div>
+                        <div key={i.l} className="bg-sky-50 dark:bg-sky-900/20 rounded-xl p-3"><p className="font-bold text-sky-700 dark:text-sky-400 text-sm">{i.l}</p><p className="text-kj-text-dim text-xs">{i.d}</p></div>
                       ))}
                     </div>
                   </div>
                 )}
                 {selectedMode === 'launch' && authUser && (
-                  <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
+                  <div className="bg-white/90 dark:bg-kj-chip-bg/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
                     <div className="text-4xl mb-4 text-center">🛥️</div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 text-center">{t('intercity.launchTitle')}</h3>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5 text-center">{t('intercity.launchInfo')}</p>
+                    <h3 className="text-xl font-bold text-kj-text mb-2 text-center">{t('intercity.launchTitle')}</h3>
+                    <p className="text-kj-text-dim text-sm leading-relaxed mb-5 text-center">{t('intercity.launchInfo')}</p>
                     <div className="grid grid-cols-2 gap-3">
                       {[{ l: 'ঢাকা–বরিশাল', d: '~8-10 hrs' }, { l: 'ঢাকা–পটুয়াখালী', d: '~10-12 hrs' }, { l: 'ঢাকা–ভোলা', d: '~8-9 hrs' }, { l: 'ঢাকা–ঝালকাঠি', d: '~9-10 hrs' }].map(i => (
-                        <div key={i.l} className="bg-teal-50 dark:bg-teal-900/20 rounded-xl p-3"><p className="font-bold text-teal-700 dark:text-teal-400 text-sm">{i.l}</p><p className="text-gray-500 dark:text-gray-400 text-xs">{i.d}</p></div>
+                        <div key={i.l} className="bg-teal-50 dark:bg-teal-900/20 rounded-xl p-3"><p className="font-bold text-teal-700 dark:text-teal-400 text-sm">{i.l}</p><p className="text-kj-text-dim text-xs">{i.d}</p></div>
                       ))}
                     </div>
                   </div>
@@ -898,11 +898,11 @@ function App() {
       {isMenuOpen && (
         <div className="fixed inset-0 z-[200]">
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setIsMenuOpen(false)}></div>
-          <div className="absolute top-0 right-0 bottom-0 w-3/4 max-w-xs bg-white dark:bg-slate-900 shadow-2xl p-6 flex flex-col animate-in slide-in-from-right">
+          <div className="absolute top-0 right-0 bottom-0 w-3/4 max-w-xs bg-kj-panel shadow-2xl p-6 flex flex-col animate-in slide-in-from-right">
             <div className="flex justify-between items-center mb-8">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">{t('common.menu')}</h2>
-              <button onClick={() => setIsMenuOpen(false)} className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full" aria-label="Close menu">
-                <X className="w-6 h-6 text-gray-500 dark:text-gray-400" />
+              <h2 className="text-xl font-bold text-kj-text">{t('common.menu')}</h2>
+              <button onClick={() => setIsMenuOpen(false)} className="p-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full" aria-label="Close menu">
+                <X className="w-6 h-6 text-kj-text-dim" />
               </button>
             </div>
 
@@ -918,8 +918,8 @@ function App() {
                       }
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{authUser.displayName}</p>
-                      {authUser.username && <p className="text-xs text-gray-500 dark:text-gray-400 truncate">@{authUser.username}</p>}
+                      <p className="text-sm font-semibold text-kj-text truncate">{authUser.displayName}</p>
+                      {authUser.username && <p className="text-xs text-kj-text-dim truncate">@{authUser.username}</p>}
                     </div>
                   </div>
                   <div className="flex gap-2 mt-3">
@@ -936,7 +936,7 @@ function App() {
                         setResult(null);
                         setIsMenuOpen(false);
                       }}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-gray-700 dark:text-gray-200 text-xs font-semibold transition-colors"
+                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-kj-text-dim text-xs font-semibold transition-colors"
                     >
                       <LogOut className="w-3.5 h-3.5" /> {t('common.logout') || 'Logout'}
                     </button>
@@ -952,7 +952,7 @@ function App() {
                   </button>
                   <button
                     onClick={() => { window.location.href = '/#signup'; setIsMenuOpen(false); }}
-                    className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-colors"
+                    className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-kj-primary hover:bg-kj-primary-deep text-white text-sm font-semibold transition-colors"
                   >
                     <UserPlus className="w-4 h-4" /> {t('nav.signup') || 'Sign Up'}
                   </button>
@@ -964,131 +964,131 @@ function App() {
                 <>
                   <button
                     onClick={() => { window.location.href = '/#history'; setIsMenuOpen(false); }}
-                    className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                    className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
                   >
-                    <Clock className="w-5 h-5 text-emerald-600 dark:text-emerald-400" /> {t('nav.history') || 'History'}
+                    <Clock className="w-5 h-5 text-kj-primary" /> {t('nav.history') || 'History'}
                   </button>
                   <button
                     onClick={() => { window.location.href = '/#settings'; setIsMenuOpen(false); }}
-                    className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                    className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
                   >
-                    <Settings className="w-5 h-5 text-gray-600 dark:text-gray-400" /> {t('nav.settings') || 'Settings'}
+                    <Settings className="w-5 h-5 text-kj-text-dim" /> {t('nav.settings') || 'Settings'}
                   </button>
                 </>
               )}
 
               <button
                 onClick={() => { window.location.href = '/#blog'; setIsMenuOpen(false); }}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
                 <BookOpen className="w-5 h-5 text-orange-600 dark:text-orange-400" /> {t('nav.blog') || 'Blog'}
               </button>
 
               {/* ── Community Features ── */}
               <div className="px-3 pt-2 pb-1">
-                <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{language === 'bn' ? 'কমিউনিটি ফিচার' : 'Community'}</p>
+                <p className="text-xs font-bold text-kj-text-faint uppercase tracking-wider">{language === 'bn' ? 'কমিউনিটি ফিচার' : 'Community'}</p>
               </div>
               <button
                 onClick={() => { window.location.href = '/#trip-reminders'; setIsMenuOpen(false); }}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
                 <span className="w-5 h-5 text-center leading-5 text-violet-600">🔔</span> {language === 'bn' ? 'যাত্রা রিমাইন্ডার' : 'Trip Reminders'}
               </button>
               <button
                 onClick={() => { window.location.href = '/#road-alerts'; setIsMenuOpen(false); }}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
                 <AlertTriangle className="w-5 h-5 text-orange-500" /> {language === 'bn' ? 'রাস্তা সতর্কতা' : 'Road Alerts'}
               </button>
               <button
                 onClick={() => { window.location.href = '/#neighbourhood-guides'; setIsMenuOpen(false); }}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
                 <MapPin className="w-5 h-5 text-purple-500" /> {language === 'bn' ? 'এলাকাভিত্তিক গাইড' : 'Area Guides'}
               </button>
               <button
                 onClick={() => { window.location.href = '/#bus-pass-info'; setIsMenuOpen(false); }}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
                 <span className="w-5 h-5 text-center leading-5 text-blue-600">💳</span> {language === 'bn' ? 'বাস পাস তথ্য' : 'Bus Pass Info'}
               </button>
               <button
                 onClick={() => { window.location.href = '/#multi-stop-planner'; setIsMenuOpen(false); }}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
                 <Navigation className="w-5 h-5 text-cyan-500" /> {language === 'bn' ? 'মাল্টি-স্টপ প্ল্যানার' : 'Multi-Stop Planner'}
               </button>
               <button
                 onClick={() => { window.location.href = '/#commute-cost'; setIsMenuOpen(false); }}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
-                <Calculator className="w-5 h-5 text-emerald-500" /> {language === 'bn' ? 'খরচ ক্যালকুলেটর' : 'Cost Calculator'}
+                <Calculator className="w-5 h-5 text-kj-primary" /> {language === 'bn' ? 'খরচ ক্যালকুলেটর' : 'Cost Calculator'}
               </button>
               <button
                 onClick={() => { window.location.href = '/#seat-availability'; setIsMenuOpen(false); }}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
                 <Ticket className="w-5 h-5 text-indigo-500" /> {language === 'bn' ? 'সিট প্রাপ্যতা' : 'Seat Availability'}
               </button>
 
               <button
                 onClick={() => { window.location.href = '/#ai-assistant'; setIsMenuOpen(false); }}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
                 <Bot className="w-5 h-5 text-purple-600 dark:text-purple-400" /> {t('ai.title') || 'AI Assistant'}
               </button>
               <button
                 onClick={() => { window.location.href = '/#about'; setIsMenuOpen(false); }}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
                 <Info className="w-5 h-5 text-blue-500" /> {t('nav.about')}
               </button>
               <button
                 onClick={() => { window.location.href = '/#release-notes'; setIsMenuOpen(false); }}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 dark:hover:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-bold transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-primary-soft dark:hover:bg-emerald-900/20 text-kj-primary font-bold transition-colors"
               >
                 <Rocket className="w-5 h-5" /> {t('nav.releaseNotes')}
               </button>
               <button
                 onClick={() => { window.location.href = '/#why-use'; setIsMenuOpen(false); }}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
                 <Sparkles className="w-5 h-5 text-pink-600 dark:text-pink-400" /> {t('home.whyUse')}
               </button>
               <button
                 onClick={() => { window.location.href = '/#faq'; setIsMenuOpen(false); }}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
                 <HelpCircle className="w-5 h-5 text-cyan-600 dark:text-cyan-400" /> {t('nav.faq')}
               </button>
               <button
                 onClick={() => { window.location.href = '/#install-app'; setIsMenuOpen(false); }}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
-                <Download className="w-5 h-5 text-emerald-600 dark:text-emerald-400" /> {t('home.installApp')}
+                <Download className="w-5 h-5 text-kj-primary" /> {t('home.installApp')}
               </button>
               <button
                 onClick={() => { window.location.href = '/#privacy'; setIsMenuOpen(false); }}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
                 <Shield className="w-5 h-5 text-indigo-600 dark:text-indigo-400" /> {t('nav.privacy')}
               </button>
               <button
                 onClick={() => { window.location.href = '/#terms'; setIsMenuOpen(false); }}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
                 <FileText className="w-5 h-5 text-orange-600 dark:text-orange-400" /> {t('nav.terms')}
               </button>
               <button
                 onClick={() => { window.location.href = '/#contact'; setIsMenuOpen(false); }}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium transition-colors"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
               >
                 <Phone className="w-5 h-5 text-red-600 dark:text-red-400" /> {t('nav.contact') || 'Contact Us'}
               </button>
             </div>
 
-            <div className="pt-6 border-t border-gray-100 dark:border-gray-800">
-              <p className="text-xs text-center text-gray-400">
+            <div className="pt-6 border-t border-kj-line">
+              <p className="text-xs text-center text-kj-text-faint">
                 {t('common.appName')} {t('settings.version')} {formatNumber('1.0.0')}
               </p>
             </div>
@@ -1103,39 +1103,39 @@ function App() {
       />
 
       {/* Mobile Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 pb-safe z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] md:hidden">
+      <nav className="fixed bottom-0 left-0 right-0 bg-kj-panel border-t border-kj-line pb-safe z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] md:hidden">
         <div className="grid grid-cols-5 h-16">
           <button
             onClick={() => window.location.href = '/'}
-            className="flex items-center justify-center border-t-2 transition-all border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+            className="flex items-center justify-center border-t-2 transition-all border-transparent text-kj-text-faint hover:text-kj-text-dim dark:hover:text-kj-text-faint"
           >
             <Home className="w-6 h-6" />
           </button>
 
           <button
             onClick={() => window.location.href = '/intercity/'}
-            className="flex items-center justify-center border-t-2 transition-all border-emerald-500 text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-900/20"
+            className="flex items-center justify-center border-t-2 transition-all border-kj-primary text-kj-primary bg-kj-primary-soft/50 dark:bg-emerald-900/20"
           >
             <Bus className="w-6 h-6 fill-emerald-100 dark:fill-emerald-900" />
           </button>
 
           <button
             onClick={() => window.location.href = '/#train'}
-            className="flex items-center justify-center border-t-2 transition-all border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+            className="flex items-center justify-center border-t-2 transition-all border-transparent text-kj-text-faint hover:text-kj-text-dim dark:hover:text-kj-text-faint"
           >
             <Train className="w-6 h-6" />
           </button>
 
           <button
             onClick={() => window.location.href = '/#ai-assistant'}
-            className="flex items-center justify-center border-t-2 transition-all border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+            className="flex items-center justify-center border-t-2 transition-all border-transparent text-kj-text-faint hover:text-kj-text-dim dark:hover:text-kj-text-faint"
           >
             <Sparkles className="w-6 h-6" />
           </button>
 
           <button
             onClick={() => window.location.href = '/#about'}
-            className="flex items-center justify-center border-t-2 transition-all border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+            className="flex items-center justify-center border-t-2 transition-all border-transparent text-kj-text-faint hover:text-kj-text-dim dark:hover:text-kj-text-faint"
           >
             <Info className="w-6 h-6" />
           </button>

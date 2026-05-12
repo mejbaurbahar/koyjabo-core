@@ -40,19 +40,19 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) =
             key={toast.id}
             className={`pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg border animate-in fade-in slide-in-from-bottom-5 duration-300 ${
               toast.type === 'success'
-                ? 'bg-emerald-50 dark:bg-emerald-900/30 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200'
+                ? 'bg-kj-primary-soft border-kj-primary/30 text-emerald-800 dark:text-emerald-200'
                 : 'bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800 text-red-800 dark:text-red-200'
             }`}
           >
             {toast.type === 'success' ? (
-              <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />
+              <CheckCircle2 className="w-5 h-5 text-kj-primary shrink-0" />
             ) : (
                <XCircle className="w-5 h-5 text-red-500 shrink-0" />
             )}
             <p className="text-sm font-medium whitespace-nowrap">{toast.message}</p>
             <button
               onClick={() => removeToast(toast.id)}
-              className="ml-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              className="ml-2 text-kj-text-faint hover:text-kj-text-dim dark:hover:text-kj-text-faint"
             >
               <X className="w-4 h-4" />
             </button>

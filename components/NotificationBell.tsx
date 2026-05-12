@@ -31,7 +31,7 @@ const NotificationBell: React.FC = () => {
         <div className="relative" ref={dropdownRef}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="relative p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors text-gray-600 dark:text-gray-300 flex items-center justify-center"
+                className="relative p-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full transition-colors text-kj-text-dim flex items-center justify-center"
                 aria-label={t('notifications.title')}
             >
                 <Bell className="w-4 h-4" />
