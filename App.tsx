@@ -4085,11 +4085,11 @@ const App: React.FC = () => {
     // Train view: list always visible, details require login
     if (view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) {
       return (
-        <div className="relative flex flex-col h-full min-h-0 w-full overflow-hidden">
+        <div className="relative flex flex-col flex-1 min-h-0 w-full overflow-hidden">
           <div className="absolute inset-0 z-0 pointer-events-none">
             <DhakaAlive hideIndicator />
           </div>
-          <div className="relative z-10 flex flex-col h-full min-h-0 w-full overflow-hidden">
+          <div className="relative z-10 flex flex-col flex-1 min-h-0 w-full overflow-hidden">
             <TrainListPage
               userLocation={userLocation}
               onBack={() => setView(AppView.HOME)}
@@ -4120,7 +4120,7 @@ const App: React.FC = () => {
     }
 
     return (
-      <div className="flex flex-col h-full w-full overflow-hidden min-h-0">
+      <div className="flex flex-col flex-1 min-h-0 w-full overflow-hidden">
         {/* Sticky Top Section */}
         <div className="flex-none bg-white dark:bg-slate-900 z-20 md:pt-2">
           <div className="p-4 space-y-1">
@@ -4516,10 +4516,10 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Content Area (Desktop) / Views (Mobile) — grid with 1fr row gives each page a definite height for Safari overflow-y scroll */}
+          {/* Right Content Area (Desktop) / Views (Mobile) */}
           <div className={`
-            ${'flex-1 min-h-0 w-full min-w-0 bg-slate-50 dark:bg-slate-950 relative overflow-hidden grid grid-rows-[1fr]'}
-            ${(view === AppView.HOME || view === AppView.TRAIN_LIST) && 'hidden md:block'}
+            ${'flex-1 min-h-0 w-full min-w-0 bg-slate-50 dark:bg-slate-950 relative overflow-hidden flex flex-col'}
+            ${(view === AppView.HOME || view === AppView.TRAIN_LIST) && 'hidden md:flex'}
 `}>
             <div className={`hidden md:block absolute inset-0 w-full h-full min-h-0 transition-opacity duration-500 ${(view === AppView.HOME || view === AppView.TRAIN_LIST) ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}><DhakaAlive /></div>
             {view === AppView.TRAIN_DETAILS && (
@@ -4663,7 +4663,7 @@ const App: React.FC = () => {
             {view === AppView.TRAIN_PHOTOS && (user && selectedTrain ? <TrainPhotoGallery trainId={selectedTrain.id} trainName={selectedTrain.name} onBack={() => setView(AppView.TRAIN_DETAILS)} /> : <LoginWall setView={setView} />)}
 
             {view === AppView.INSTALL_APP && (
-              <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-hidden w-full">
+              <div className="flex flex-col flex-1 min-h-0 bg-white dark:bg-slate-900 overflow-hidden w-full">
               <div className="flex-1 min-h-0 overflow-y-auto p-6 md:p-10 pt-6 md:pt-8 pb-nav-safe">
                 <div className="max-w-2xl mx-auto text-center">
                   {/* App Icon */}
