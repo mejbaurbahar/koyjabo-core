@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Clock, Tag, Calendar, ArrowRight, Search, X } from 'lucide-react';
 import { BLOG_POSTS } from '../data/blogPosts';
 import { useLanguage } from '../contexts/LanguageContext';
-import AdSenseAd from './AdSenseAd';
+// import AdSenseAd from './AdSenseAd';
 import NewsletterBanner from './NewsletterBanner';
 
 interface BlogProps {
@@ -86,7 +86,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
 
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-8">
                     {/* Top leaderboard — high visibility, above the fold */}
-                    <AdSenseAd adSlot="auto" adFormat="horizontal" className="w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+                    {/* <AdSenseAd adSlot="auto" adFormat="horizontal" className="w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
                     {/* No results */}
                     {filteredPosts.length === 0 && (
@@ -149,7 +149,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                         </div>
                     )}
 
-                    <AdSenseAd adSlot="auto" native className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+                    {/* <AdSenseAd adSlot="auto" native className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
                     {/* Regular Posts Grid — injected in-feed ad after every 6 posts */}
                     {regularPosts.length > 0 && (
@@ -201,7 +201,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                                         </div>
                                         {/* In-feed ad between chunks */}
                                         {chunkIdx < Math.ceil(regularPosts.length / 6) - 1 && (
-                                            <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" native className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+                                            {/* <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" native className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
                                         )}
                                     </React.Fragment>
                                 );
@@ -222,7 +222,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                         </p>
                     </div>
                     
-                    <AdSenseAd adSlot="auto" className="mt-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+                    {/* <AdSenseAd adSlot="auto" className="mt-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
                     <div className="h-4" />
                 </div>
         </div>

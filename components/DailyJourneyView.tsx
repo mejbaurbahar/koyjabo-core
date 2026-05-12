@@ -9,7 +9,7 @@ import {
     ChevronRight,
     Circle,
 } from 'lucide-react';
-import AdSenseAd from './AdSenseAd';
+// import AdSenseAd from './AdSenseAd';
 import {
     getTodayJourney,
     getJourneyHistory,
@@ -111,7 +111,7 @@ const DailyJourneyView: React.FC<DailyJourneyViewProps> = ({ onBack }) => {
             </div>
             {/* Main Content */}
             <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-24" style={{ WebkitOverflowScrolling: 'touch' }}>
-                <AdSenseAd adSlot="auto" className="mt-4 mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+                {/* <AdSenseAd adSlot="auto" className="mt-4 mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
                 {/* Today's Journey */}
                 <div className="px-4 py-6">
                     <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">

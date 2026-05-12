@@ -3,7 +3,7 @@ import { ArrowLeft, Ticket, ExternalLink, Train, Search, ChevronLeft, Star } fro
 import { BD_TRAIN_ROUTES, BDTrainRoute } from '../data/bangladeshTrainData';
 import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
-import AdSenseAd from './AdSenseAd';
+// import AdSenseAd from './AdSenseAd';
 
 
 
@@ -171,7 +171,7 @@ export default function SeatAvailability({ onBack }: Props) {
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y px-4 pb-nav-safe space-y-2" style={{ WebkitOverflowScrolling: 'touch' }}>
-        <AdSenseAd adSlot="auto" native className="mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+        {/* <AdSenseAd adSlot="auto" native className="mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
         {/* Favorites section */}
         {!search && favoriteRoutes.length > 0 && (
           <div className="mb-2">

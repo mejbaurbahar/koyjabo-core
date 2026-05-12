@@ -2,7 +2,7 @@ import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Shield, Lock, Eye, Clock, ExternalLink, UserCheck, WifiOff } from 'lucide-react';
 import { AppView } from '../types';
-import AdSenseAd from './AdSenseAd';
+// import AdSenseAd from './AdSenseAd';
 
 interface PrivacyPolicyProps {
     view: AppView;
@@ -23,7 +23,7 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
                     </div>
                     <h1 className="text-3xl md:text-5xl font-bold mb-4 text-kj-text">🔒 {t('privacy.title')}</h1>
                     <p className="text-lg text-kj-text-dim">কই যাবো (KoyJabo) - Bangladesh's Smart Transport Route Finder</p>
-                    <AdSenseAd adSlot="auto" className="mt-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+                    {/* <AdSenseAd adSlot="auto" className="mt-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
                 </div>
 
                 <div className="bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-400 p-6 rounded-r-xl mb-10 shadow-sm">

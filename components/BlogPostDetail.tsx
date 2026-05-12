@@ -3,7 +3,7 @@ import { ArrowLeft, Clock, Calendar, Tag, Copy, Check, ArrowUp, List, Sparkles }
 import { BLOG_POSTS } from '../data/blogPosts';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import AdSenseAd from './AdSenseAd';
+// import AdSenseAd from './AdSenseAd';
 import NewsletterBanner from './NewsletterBanner';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -267,7 +267,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
 
                     <div className="lg:grid lg:grid-cols-12 lg:gap-10">
                         <div className="lg:col-span-8">
-                            <AdSenseAd adSlot="auto" className="mb-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+                            {/* <AdSenseAd adSlot="auto" className="mb-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
                             {/* Content */}
                             <div className="prose prose-lg md:prose-xl dark:prose-invert max-w-none
@@ -303,7 +303,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                                             {paragraphs.length > cut1 && (
                                                 <div className="my-10 p-2 bg-gray-50 dark:bg-kj-chip-bg/50 rounded-2xl border border-dashed border-kj-line overflow-hidden">
                                                     <p className="text-[10px] text-kj-text-faint text-center mb-2 uppercase tracking-widest">Sponsored Advertisement</p>
-                                                    <AdSenseAd adSlot="auto" adFormat="fluid" className="w-full" />
+                                                    {/* <AdSenseAd adSlot="auto" adFormat="fluid" className="w-full" /> */}
                                                 </div>
                                             )}
 
@@ -312,7 +312,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                                             {paragraphs.length > cut2 && (
                                                 <div className="my-10 p-2 bg-gray-50 dark:bg-kj-chip-bg/50 rounded-2xl border border-dashed border-kj-line overflow-hidden">
                                                     <p className="text-[10px] text-kj-text-faint text-center mb-2 uppercase tracking-widest">Sponsored Advertisement</p>
-                                                    <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="w-full" />
+                                                    {/* <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="w-full" /> */}
                                                 </div>
                                             )}
 
@@ -322,7 +322,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                                 })()}
                             </div>
 
-                            <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" native className="my-12 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+                            {/* <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" native className="my-12 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
                             {/* Tags */}
                             <div className="mt-12 pt-8 border-t-2 border-kj-line">
@@ -340,7 +340,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                             </div>
 
                             {/* Post-tags rectangle — high-intent readers, good CPA */}
-                            <AdSenseAd adSlot="auto" adFormat="rectangle" native className="mt-10 w-full max-w-[336px] mx-auto shrink-0" />
+                            {/* <AdSenseAd adSlot="auto" adFormat="rectangle" native className="mt-10 w-full max-w-[336px] mx-auto shrink-0" /> */}
 
                             {/* Newsletter — appears after user finishes reading */}
                             <NewsletterBanner className="mt-8" />
@@ -354,7 +354,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                                         <Sparkles className="w-4 h-4 text-amber-500" />
                                         {language === 'bn' ? 'স্পন্সর' : 'Sponsored'}
                                     </h4>
-                                    <AdSenseAd adSlot="auto" adFormat="vertical" className="w-full max-w-[300px] mx-auto" />
+                                    {/* <AdSenseAd adSlot="auto" adFormat="vertical" className="w-full max-w-[300px] mx-auto" /> */}
                                 </div>
                                 
                                 {toc.length > 2 && (
@@ -443,7 +443,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                         </div>
                     )}
 
-                    <AdSenseAd adSlot="auto" className="my-12 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+                    {/* <AdSenseAd adSlot="auto" className="my-12 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
                     {/* CTA */}
                     <div className="mt-12 bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 rounded-3xl p-8 text-center shadow-2xl">

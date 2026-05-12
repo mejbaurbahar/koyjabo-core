@@ -23,7 +23,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
 import { getTrainRatings, TrainRatingSummary } from '../services/communityDataService';
 import TrainImageViewer from './TrainImageViewer';
-import AdSenseAd from './AdSenseAd';
+// import AdSenseAd from './AdSenseAd';
 
 
 
@@ -191,7 +191,7 @@ export function TrainDetail({
           />
         </div>
 
-        <AdSenseAd adSlot="auto" className="my-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+        {/* <AdSenseAd adSlot="auto" className="my-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
 
 
@@ -364,7 +364,7 @@ export function TrainDetail({
             </div>
           </div>
 
-          <AdSenseAd adSlot="auto" className="my-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+          {/* <AdSenseAd adSlot="auto" className="my-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
 
 
@@ -453,7 +453,7 @@ export function TrainDetail({
                     </p>
                   </div>
 
-                  <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+                  {/* <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
                 </>
               ) : (
                 <p className="text-xs text-kj-text-faint dark:text-white/40 text-center py-2">
@@ -1000,7 +1000,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
           filtered.map((route, idx) => (
             <React.Fragment key={route.id}>
               {idx > 0 && idx % 6 === 4 && (
-                <AdSenseAd adSlot="auto" adFormat="fluid" className="my-3 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+                {/* <AdSenseAd adSlot="auto" adFormat="fluid" className="my-3 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
               )}
               <TrainCard
                 route={route}

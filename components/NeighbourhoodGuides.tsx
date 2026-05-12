@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { ArrowLeft, MapPin, Bus, Search, ChevronLeft, ChevronDown, ChevronUp } from 'lucide-react';
-import AdSenseAd from './AdSenseAd';
+// import AdSenseAd from './AdSenseAd';
 import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
 
@@ -741,7 +741,7 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
 
 
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y px-4 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
-        <AdSenseAd adSlot="auto" className="mt-2 mb-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+        {/* <AdSenseAd adSlot="auto" className="mt-2 mb-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
         {search ? (
           <div className="grid grid-cols-2 gap-3 content-start">
             {filtered.map(g => (

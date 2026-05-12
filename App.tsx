@@ -67,7 +67,7 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
 import ContactUs from './components/ContactUs';
 import OfflineIndicator from './components/OfflineIndicator';
-import AdSenseAd from './components/AdSenseAd';
+// import AdSenseAd from './components/AdSenseAd';
 import TrainListPage, { TrainDetail } from './components/TrainListPage';
 import TrainRating from './components/TrainRating';
 import { BDTrainRoute, BD_TRAIN_ROUTES, TRAIN_STATIONS } from './data/bangladeshTrainData';
@@ -2337,7 +2337,7 @@ const App: React.FC = () => {
         className="flex-1 min-h-0 p-4 space-y-4 bg-kj-bg overflow-y-auto overscroll-y-contain touch-pan-y"
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
-        <AdSenseAd adSlot="auto" className="mb-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+        {/* <AdSenseAd adSlot="auto" className="mb-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
 
         {chatHistory.length === 0 ? (
@@ -2350,7 +2350,7 @@ const App: React.FC = () => {
             <React.Fragment key={idx}>
               {idx > 0 && idx % 10 === 0 && (
                 <div className="flex justify-center my-4">
-                  <AdSenseAd adSlot="auto" adFormat="fluid" className="w-full max-w-[728px] mx-auto px-2 md:px-0" />
+                  {/* <AdSenseAd adSlot="auto" adFormat="fluid" className="w-full max-w-[728px] mx-auto px-2 md:px-0" /> */}
                 </div>
               )}
 
@@ -2399,7 +2399,7 @@ const App: React.FC = () => {
         <h2 className="text-2xl font-bold mb-2 text-kj-text">কই<span className="text-kj-accent ml-2">যাবো</span> <span className="text-kj-text-dim text-lg">(KoyJabo)</span></h2>
         <p className="text-kj-text-dim mb-8">{t('settings.version')} 2.5.0 • {t('common.tagline') || 'Bangladesh\'s Smart Transport Route Finder — Bus, Train, Metro, AI & More'}</p>
 
-        <AdSenseAd adSlot="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+        {/* <AdSenseAd adSlot="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
 
         <div className="text-left space-y-8 bg-kj-chip-bg p-6 md:p-10 rounded-[2rem] border border-kj-line shadow-sm">
@@ -2559,7 +2559,7 @@ const App: React.FC = () => {
             </div>
           </section>
 
-          <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+          {/* <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
 
 
@@ -2767,7 +2767,7 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+          {/* <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
 
 
@@ -2890,7 +2890,7 @@ const App: React.FC = () => {
           </button>
         </div>
 
-        <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+        {/* <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
 
 
@@ -2974,7 +2974,7 @@ const App: React.FC = () => {
             </p>
           </div>
 
-          <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+          {/* <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
 
 
@@ -3035,7 +3035,7 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        <AdSenseAd adSlot="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+        {/* <AdSenseAd adSlot="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
 
         {/* Still have questions? */}
@@ -3062,7 +3062,7 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+        {/* <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
 
         {/* Bottom padding for mobile */}
@@ -3141,7 +3141,7 @@ const App: React.FC = () => {
             </ul>
           </section>
 
-          <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+          {/* <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
           {/* Integration Info */}
           <section className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-2xl border border-blue-100 dark:border-blue-800/50">
@@ -3238,7 +3238,7 @@ const App: React.FC = () => {
 
           </div >
 
-          <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+          {/* <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
 
 
@@ -3558,7 +3558,7 @@ const App: React.FC = () => {
                 </select>
               </div>
             </div>
-            <AdSenseAd adSlot="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+            {/* <AdSenseAd adSlot="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
             {fareInfo ? (
               <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-xl border border-green-100 dark:border-green-800 flex justify-between items-center animate-in fade-in slide-in-from-top-2">
                 <div>
@@ -3715,7 +3715,7 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+          {/* <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
         </div>
 
@@ -3781,40 +3781,55 @@ const App: React.FC = () => {
         {/* KJ panel card */}
         <div className="bg-kj-panel border border-kj-line rounded-2xl shadow-kj overflow-visible">
 
-          {/* Heading */}
-          <div className="px-4 md:px-5 pt-4 pb-2">
-            <h2 className="font-bengali font-bold text-kj-text text-lg md:text-2xl leading-tight tracking-tight mb-0.5">
-              {isInDhaka ? t('home.whereToGo') : t('home.whereToGoInDhaka')}
+          {/* Heading — greeting + location/weather context */}
+          <div className="px-4 md:px-5 pt-4 pb-3">
+            <div className="flex items-center gap-1.5 mb-1.5">
+              <span className="w-[7px] h-[7px] rounded-full bg-kj-primary shrink-0" />
+              <span className="font-sans text-[10px] font-bold text-kj-text-faint tracking-[1.4px] uppercase">
+                {isInDhaka ? (language === 'bn' ? 'ঢাকা · মধ্যম যানজট' : 'DHAKA · MODERATE TRAFFIC') : (language === 'bn' ? 'বাংলাদেশ' : 'BANGLADESH')}
+              </span>
+            </div>
+            <h2 className="font-bengali font-bold text-kj-text text-xl md:text-[28px] leading-tight tracking-[-0.5px] mb-1">
+              {user
+                ? (language === 'bn' ? `কোথায় যেতে চান, ${user.displayName.split(' ')[0]}?` : `Where are you headed, ${user.displayName.split(' ')[0]}?`)
+                : (isInDhaka ? t('home.whereToGo') : t('home.whereToGoInDhaka'))
+              }
             </h2>
-            <p className="text-kj-text-dim text-[11px] md:text-sm font-medium">{t('home.findPerfectRoute')}</p>
+            <p className="text-kj-text-dim text-[12px] md:text-sm font-medium leading-snug">{t('home.findPerfectRoute')}</p>
           </div>
 
           {/* Mode Pill Tabs */}
           <div className="flex items-center gap-2 px-4 md:px-5 pb-3 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             <button
               onClick={(e) => { e.stopPropagation(); setSearchMode('TEXT'); setSuggestedRoutes([]); }}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${searchMode === 'TEXT' ? 'bg-kj-primary-soft text-kj-primary-deep border border-kj-primary/20' : 'bg-kj-chip-bg text-kj-chip-text border border-transparent'}`}
+              className={`flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${searchMode === 'TEXT' ? 'bg-kj-primary-soft text-kj-primary-deep border border-kj-primary/30' : 'bg-kj-chip-bg text-kj-chip-text border border-kj-line'}`}
             >
-              <span className={`w-1.5 h-1.5 rounded-full ${searchMode === 'TEXT' ? 'bg-kj-primary' : 'bg-kj-text-faint'}`} />
-              {language === 'bn' ? 'লোকাল বাস' : 'Local bus'}
+              <span className={`w-[6px] h-[6px] rounded-full ${searchMode === 'TEXT' ? 'bg-kj-primary' : 'bg-kj-text-faint'}`} />
+              {language === 'bn' ? 'লোকাল বাস' : 'LOCAL BUS'}
             </button>
             <button
               onClick={(e) => { e.stopPropagation(); setSearchMode('ROUTE'); setSuggestedRoutes([]); }}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${searchMode === 'ROUTE' ? 'bg-kj-primary-soft text-kj-primary-deep border border-kj-primary/20' : 'bg-kj-chip-bg text-kj-chip-text border border-transparent'}`}
+              className={`flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${searchMode === 'ROUTE' ? 'bg-kj-primary-soft text-kj-primary-deep border border-kj-primary/30' : 'bg-kj-chip-bg text-kj-chip-text border border-kj-line'}`}
             >
-              {language === 'bn' ? 'রুট খুঁজুন' : 'Route finder'}
+              {language === 'bn' ? 'মেট্রো' : 'METRO'}
             </button>
             <button
               onClick={(e) => { e.stopPropagation(); window.location.href = '/intercity/'; }}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 bg-kj-chip-bg text-kj-chip-text border border-transparent"
             >
-              {language === 'bn' ? 'আন্তঃজেলা' : 'Intercity'}
+              {language === 'bn' ? 'আন্তঃজেলা' : 'INTERCITY'}
             </button>
             <button
               onClick={(e) => { e.stopPropagation(); setView(AppView.TRAIN_LIST); }}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${(view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) ? 'bg-kj-accent-soft text-kj-accent border border-kj-accent/20' : 'bg-kj-chip-bg text-kj-chip-text border border-transparent'}`}
+              className={`flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${(view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) ? 'bg-kj-primary-soft text-kj-primary-deep border border-kj-primary/30' : 'bg-kj-chip-bg text-kj-chip-text border border-kj-line'}`}
             >
-              {language === 'bn' ? 'ট্রেন' : 'Train'}
+              {language === 'bn' ? 'ট্রেন' : 'TRAIN'}
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); }}
+              className="flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap shrink-0 bg-kj-chip-bg text-kj-chip-text border border-kj-line"
+            >
+              {language === 'bn' ? 'লঞ্চ' : 'LAUNCH'}
             </button>
           </div>
 
@@ -3968,39 +3983,84 @@ const App: React.FC = () => {
                 )}
               </div>
             ) : (
-              <div className="flex gap-2 items-start">
-                <div className="flex-1 relative">
-                  <SearchableSelect
-                    options={sortedStations}
-                    value={fromStation}
-                    onChange={setFromStation}
-                    placeholder={t('common.from')}
-                  />
+              <div className="flex flex-col gap-2">
+                {/* From */}
+                <div className="flex items-center gap-3 bg-kj-input-bg border border-kj-line rounded-[14px] px-3.5 py-2.5">
+                  <div className="w-[28px] h-[28px] rounded-[8px] bg-kj-primary-soft flex items-center justify-center shrink-0">
+                    <MapPin className="w-4 h-4 text-kj-primary-deep" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-sans text-[10px] font-semibold tracking-[1.2px] uppercase text-kj-text-faint mb-0.5">{t('common.from')}</div>
+                    <SearchableSelect
+                      options={sortedStations}
+                      value={fromStation}
+                      onChange={setFromStation}
+                      placeholder={language === 'bn' ? 'শুরুর স্থান' : 'Starting point'}
+                    />
+                  </div>
                 </div>
-                <div className="flex items-center justify-center pt-2">
+                {/* Swap */}
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 h-px bg-kj-line" />
                   <button
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      // Swap values
                       const temp = fromStation;
                       setFromStation(toStation);
                       setToStation(temp);
                     }}
-                    className="bg-white/10 hover:bg-white/20 p-2 rounded-full transition-colors active:scale-95 active:rotate-180"
+                    className="w-8 h-8 rounded-full border border-kj-line bg-kj-panel flex items-center justify-center text-kj-text active:scale-95 transition-transform shadow-kj"
                     title="Swap locations"
                   >
-                    <ArrowRightLeft className="w-5 h-5 text-white/90" />
+                    <ArrowRightLeft className="w-4 h-4" />
                   </button>
+                  <div className="flex-1 h-px bg-kj-line" />
                 </div>
-                <div className="flex-1 relative">
-                  <SearchableSelect
-                    options={sortedStations}
-                    value={toStation}
-                    onChange={setToStation}
-                    placeholder={t('common.to')}
-                    disabled={!fromStation}
-                  />
+                {/* To */}
+                <div className="flex items-center gap-3 bg-kj-input-bg border border-kj-line rounded-[14px] px-3.5 py-2.5">
+                  <div className="w-[28px] h-[28px] rounded-[8px] bg-kj-accent-soft flex items-center justify-center shrink-0">
+                    <Flag className="w-4 h-4 text-kj-accent" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-sans text-[10px] font-semibold tracking-[1.2px] uppercase text-kj-text-faint mb-0.5">{t('common.to')}</div>
+                    <SearchableSelect
+                      options={sortedStations}
+                      value={toStation}
+                      onChange={setToStation}
+                      placeholder={language === 'bn' ? 'গন্তব্য' : 'Destination'}
+                      disabled={!fromStation}
+                    />
+                  </div>
+                </div>
+                {/* Find button */}
+                <button
+                  onClick={() => { if (fromStation && toStation) { /* trigger search */ } }}
+                  className="w-full bg-kj-primary text-kj-primary-ink font-sans font-bold text-[14px] py-3 rounded-[14px] flex items-center justify-center gap-2 active:opacity-90 transition-opacity mt-1"
+                  style={{ boxShadow: '0 6px 16px -6px var(--kj-primary)' }}
+                >
+                  <Search className="w-4 h-4" />
+                  {language === 'bn' ? 'রুট খুঁজুন' : 'Find routes'}
+                </button>
+                {/* Filter chips */}
+                <div className="flex items-center gap-2 flex-wrap pt-0.5">
+                  <button className="flex items-center gap-1.5 h-8 px-3 rounded-full border border-kj-line bg-kj-panel-muted text-kj-text text-[11px] font-medium">
+                    <Clock className="w-3 h-3" />
+                    {language === 'bn' ? 'এখনই' : 'Leave now'}
+                  </button>
+                  <button className="flex items-center gap-1.5 h-8 px-3 rounded-full border border-kj-line bg-kj-panel-muted text-kj-text text-[11px] font-medium">
+                    <Zap className="w-3 h-3" />
+                    {language === 'bn' ? 'দ্রুততম' : 'Fastest'}
+                  </button>
+                  <button className="flex items-center gap-1.5 h-8 px-3 rounded-full border border-kj-line bg-kj-panel-muted text-kj-text text-[11px] font-medium">
+                    <Coins className="w-3 h-3" />
+                    {language === 'bn' ? 'সস্তা' : 'Cheapest'}
+                  </button>
+                  <div className="flex-1" />
+                  <span className="flex items-center gap-1.5 text-[11px] text-kj-text-faint font-sans font-medium">
+                    <span className="w-2 h-2 rounded-full bg-kj-primary" style={{ boxShadow: '0 0 0 3px var(--kj-primary-soft)' }} />
+                    {language === 'bn' ? '২,৪১২ রুট লাইভ' : '2,412 routes live'}
+                  </span>
                 </div>
               </div>
             )}
@@ -4191,7 +4251,7 @@ const App: React.FC = () => {
         >
 
           {/* Ad Banner - in scrollable area so it doesn't shrink bus list */}
-          <AdSenseAd adSlot="auto" className="mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+          {/* <AdSenseAd adSlot="auto" className="mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
           {/* Intelligent Route Suggestions - Hide in Favorites Mode */}
           {(suggestedRoutes.length > 0 && listFilter !== 'FAVORITES') && (
@@ -4308,7 +4368,7 @@ const App: React.FC = () => {
             return (
               <React.Fragment key={bus.id}>
                 {busIdx === 9 && (
-                  <AdSenseAd adSlot="auto" adFormat="fluid" className="my-4 w-full max-w-full md:max-w-[728px] md:mx-auto shrink-0" />
+                  {/* <AdSenseAd adSlot="auto" adFormat="fluid" className="my-4 w-full max-w-full md:max-w-[728px] md:mx-auto shrink-0" /> */}
                 )}
 
                 <div
@@ -4465,28 +4525,36 @@ const App: React.FC = () => {
         )}
 
         {/* Mobile Header */}
-        <header className={`sticky top-0 left-0 right-0 bg-kj-panel/90 dark:bg-kj-panel/90 backdrop-blur-md border-b border-kj-line dark:border-kj-line px-5 py-3 shadow-sm z-[100] md:hidden transition-transform duration-300 pt-safe ${(view === AppView.LIVE_NAV || view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? '-translate-y-full h-0 overflow-hidden py-0 border-none' : 'translate-y-0 h-auto'} `}>
-          <div className="flex items-center gap-3">
-            <button onClick={() => setIsMenuOpen(true)} className="p-2 hover:bg-kj-chip-bg rounded-xl text-kj-text transition-colors flex items-center justify-center shrink-0" aria-label="Open menu">
-              <Menu className="w-5 h-5" />
+        <header className={`sticky top-0 left-0 right-0 bg-kj-panel border-b border-kj-line z-[100] md:hidden transition-transform duration-300 pt-safe ${(view === AppView.LIVE_NAV || view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? '-translate-y-full h-0 overflow-hidden py-0 border-none' : 'translate-y-0 h-auto'}`}>
+          <div className="flex items-center gap-3 px-[18px] py-[14px]">
+            <button onClick={() => setIsMenuOpen(true)} className="p-0 flex items-center justify-center shrink-0 text-kj-text active:opacity-70" aria-label="Open menu">
+              <Menu className="w-[22px] h-[22px]" />
             </button>
-            <div className="flex items-center gap-2.5 flex-1 cursor-pointer" onClick={() => setView(AppView.HOME)}>
-              <div className="w-8 h-8 rounded-[10px] bg-kj-primary flex items-center justify-center relative overflow-hidden shrink-0" style={{ boxShadow: 'inset 0 -2px 0 var(--kj-accent)' }}>
+            <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => setView(AppView.HOME)}>
+              <div className="w-[34px] h-[34px] rounded-[9px] bg-kj-primary flex items-center justify-center relative overflow-hidden shrink-0" style={{ boxShadow: 'inset 0 -2px 0 var(--kj-accent)' }}>
                 <span className="font-bengali font-bold text-kj-primary-ink text-[17px] leading-none">ক</span>
               </div>
-              <div className="flex flex-col leading-none gap-0.5">
-                <span className="font-bengali font-bold text-kj-text text-[17px] leading-tight tracking-tight">কই যাবো</span>
-                <span className="font-sans font-medium text-kj-text-faint text-[9px] tracking-[0.12em] uppercase">KoyJabo · BD</span>
+              <div className="flex flex-col leading-none">
+                <span className="font-bengali font-bold text-kj-text text-[17px] leading-tight tracking-[-0.3px]">কই যাবো</span>
+                <span className="font-sans font-medium text-kj-text-faint text-[10px] tracking-[0.14em] uppercase mt-[3px]">KoyJabo · BD</span>
               </div>
             </div>
-            <div className="flex items-center gap-1.5 shrink-0">
-              <button onClick={() => setIsDarkMode(!isDarkMode)} className="w-9 h-9 rounded-xl border border-kj-line bg-kj-panel-muted flex items-center justify-center text-kj-text transition-colors hover:bg-kj-chip-bg active:scale-95" aria-label="Toggle theme">
+            <div className="flex-1" />
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={() => setLanguage(language === 'bn' ? 'en' : 'bn')}
+                className="h-9 px-2.5 rounded-[10px] border border-kj-line bg-kj-panel-muted flex items-center gap-1.5 text-kj-text text-[12px] font-semibold tracking-[0.4px] active:scale-95 transition-transform"
+                aria-label="Toggle language"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a13.5 13.5 0 0 1 0 18"/><path d="M12 3a13.5 13.5 0 0 0 0 18"/></svg>
+                <span>{language === 'bn' ? 'বাং' : 'EN'}</span>
+              </button>
+              <button onClick={() => setIsDarkMode(!isDarkMode)} className="w-9 h-9 rounded-[10px] border border-kj-line bg-kj-panel-muted flex items-center justify-center text-kj-text active:scale-95 transition-transform" aria-label="Toggle theme">
                 {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
               <AuthHeaderButton setView={setView} />
             </div>
           </div>
-
         </header>
 
         {/* Desktop Header */}
@@ -4677,7 +4745,7 @@ const App: React.FC = () => {
 
                   <h1 className="text-3xl font-bold text-kj-text mb-2">{t('install.title')}</h1>
                   <p className="text-kj-text-dim mb-8">{t('install.subtitle')}</p>
-                  <AdSenseAd adSlot="auto" className="mb-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+                  {/* <AdSenseAd adSlot="auto" className="mb-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
 
                   {/* Check if already installed */}
@@ -4776,7 +4844,7 @@ const App: React.FC = () => {
                     </div>
                   )}
 
-                  <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+                  {/* <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
 
 
@@ -4792,64 +4860,64 @@ const App: React.FC = () => {
           </div>
         </main>
 
-        {/* Mobile Bottom Navigation - Always show except on BUS_DETAILS and LIVE_NAV */}
+        {/* Mobile Bottom Navigation */}
         {view !== AppView.BUS_DETAILS && view !== AppView.LIVE_NAV && (
-          <nav className="fixed bottom-0 left-0 right-0 bg-kj-panel dark:bg-kj-panel border-t border-kj-line dark:border-kj-line z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] md:hidden pb-safe">
-            <div className="grid grid-cols-5 h-16">
+          <nav className="fixed bottom-0 left-0 right-0 bg-kj-panel border-t border-kj-line z-50 md:hidden pb-safe" style={{ padding: '8px 10px 14px' }}>
+            <div className="grid grid-cols-5 gap-1">
               {/* Home */}
               <button
                 onClick={() => { setView(AppView.HOME); setPrimarySearch('LOCAL'); setSearchMode('TEXT'); }}
-                className={`flex flex-col items-center justify-center gap-1 relative transition-all duration-200 ${view === AppView.HOME && searchMode === 'TEXT' ? 'text-kj-primary' : 'text-kj-text-faint hover:text-kj-text-dim'}`}
+                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${view === AppView.HOME && searchMode === 'TEXT' ? 'text-kj-primary' : 'text-kj-text-faint'}`}
               >
                 {view === AppView.HOME && searchMode === 'TEXT' && (
-                  <span className="absolute top-0 w-6 h-[3px] rounded-full bg-kj-primary" />
+                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-[22px] h-[3px] rounded-full bg-kj-primary" />
                 )}
                 <Home className="w-5 h-5" />
-                <span className="text-[10px] font-semibold font-bengali">{language === 'bn' ? 'হোম' : 'Home'}</span>
+                <span>{language === 'bn' ? 'হোম' : 'Home'}</span>
               </button>
               {/* Search */}
               <button
                 onClick={() => { setView(AppView.HOME); setSearchMode('ROUTE'); setPrimarySearch('LOCAL'); }}
-                className={`flex flex-col items-center justify-center gap-1 relative transition-all duration-200 ${view === AppView.HOME && searchMode === 'ROUTE' ? 'text-kj-primary' : 'text-kj-text-faint hover:text-kj-text-dim'}`}
+                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${view === AppView.HOME && searchMode === 'ROUTE' ? 'text-kj-primary' : 'text-kj-text-faint'}`}
               >
                 {view === AppView.HOME && searchMode === 'ROUTE' && (
-                  <span className="absolute top-0 w-6 h-[3px] rounded-full bg-kj-primary" />
+                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-[22px] h-[3px] rounded-full bg-kj-primary" />
                 )}
                 <Search className="w-5 h-5" />
-                <span className="text-[10px] font-semibold font-bengali">{language === 'bn' ? 'খুঁজুন' : 'Search'}</span>
+                <span>{language === 'bn' ? 'খুঁজুন' : 'Search'}</span>
               </button>
               {/* Train */}
               <button
                 onClick={() => setView(AppView.TRAIN_LIST)}
-                className={`flex flex-col items-center justify-center gap-1 relative transition-all duration-200 ${view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS ? 'text-kj-primary' : 'text-kj-text-faint hover:text-kj-text-dim'}`}
+                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS ? 'text-kj-primary' : 'text-kj-text-faint'}`}
               >
                 {(view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) && (
-                  <span className="absolute top-0 w-6 h-[3px] rounded-full bg-kj-primary" />
+                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-[22px] h-[3px] rounded-full bg-kj-primary" />
                 )}
                 <Train className="w-5 h-5" />
-                <span className="text-[10px] font-semibold font-bengali">{language === 'bn' ? 'ট্রেন' : 'Train'}</span>
+                <span>{language === 'bn' ? 'ট্রেন' : 'Train'}</span>
               </button>
               {/* AI */}
               <button
                 onClick={() => setView(AppView.AI_ASSISTANT)}
-                className={`flex flex-col items-center justify-center gap-1 relative transition-all duration-200 ${view === AppView.AI_ASSISTANT ? 'text-kj-primary' : 'text-kj-text-faint hover:text-kj-text-dim'}`}
+                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${view === AppView.AI_ASSISTANT ? 'text-kj-primary' : 'text-kj-text-faint'}`}
               >
                 {view === AppView.AI_ASSISTANT && (
-                  <span className="absolute top-0 w-6 h-[3px] rounded-full bg-kj-primary" />
+                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-[22px] h-[3px] rounded-full bg-kj-primary" />
                 )}
                 <Sparkles className="w-5 h-5" />
-                <span className="text-[10px] font-semibold font-bengali">{language === 'bn' ? 'AI' : 'AI'}</span>
+                <span>{language === 'bn' ? 'AI' : 'AI'}</span>
               </button>
               {/* Profile */}
               <button
                 onClick={() => user ? setView(AppView.PROFILE) : setView(AppView.LOGIN)}
-                className={`flex flex-col items-center justify-center gap-1 relative transition-all duration-200 ${(view === AppView.PROFILE || view === AppView.LOGIN) ? 'text-kj-primary' : 'text-kj-text-faint hover:text-kj-text-dim'}`}
+                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${(view === AppView.PROFILE || view === AppView.LOGIN) ? 'text-kj-primary' : 'text-kj-text-faint'}`}
               >
                 {(view === AppView.PROFILE || view === AppView.LOGIN) && (
-                  <span className="absolute top-0 w-6 h-[3px] rounded-full bg-kj-primary" />
+                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-[22px] h-[3px] rounded-full bg-kj-primary" />
                 )}
                 <User className="w-5 h-5" />
-                <span className="text-[10px] font-semibold font-bengali">{language === 'bn' ? 'আপনি' : 'You'}</span>
+                <span>{language === 'bn' ? 'প্রোফাইল' : 'You'}</span>
               </button>
             </div>
           </nav>
@@ -4858,12 +4926,19 @@ const App: React.FC = () => {
         {/* Menu Overlay - Works on all pages */}
         {isMenuOpen && (
           <div className="fixed inset-0 z-[100]">
-            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setIsMenuOpen(false)}></div>
-            <div className="absolute top-0 right-0 bottom-0 w-3/4 max-w-xs bg-kj-panel shadow-2xl p-6 flex flex-col animate-in slide-in-from-right">
-              <div className="flex justify-between items-center mb-8">
-                <h2 className="text-xl font-bold text-kj-text">{t('common.menu')}</h2>
-                <button onClick={() => setIsMenuOpen(false)} className="p-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full" aria-label="Close menu">
-                  <X className="w-6 h-6 text-kj-text-dim" />
+            <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={() => setIsMenuOpen(false)}/>
+            <div className="absolute top-0 left-0 bottom-0 w-[280px] bg-kj-panel border-r border-kj-line flex flex-col animate-in slide-in-from-left duration-200">
+              {/* Drawer header */}
+              <div className="flex items-center gap-3 px-5 py-4 border-b border-kj-line shrink-0">
+                <div className="w-[34px] h-[34px] rounded-[9px] bg-kj-primary flex items-center justify-center shrink-0" style={{ boxShadow: 'inset 0 -2px 0 var(--kj-accent)' }}>
+                  <span className="font-bengali font-bold text-kj-primary-ink text-[17px] leading-none">ক</span>
+                </div>
+                <div className="flex flex-col leading-none flex-1">
+                  <span className="font-bengali font-bold text-kj-text text-[16px] leading-tight tracking-[-0.3px]">কই যাবো</span>
+                  <span className="font-sans text-kj-text-faint text-[9px] tracking-[0.14em] uppercase mt-[3px]">KoyJabo · BD</span>
+                </div>
+                <button onClick={() => setIsMenuOpen(false)} className="w-8 h-8 rounded-lg flex items-center justify-center text-kj-text-dim hover:bg-kj-chip-bg transition-colors" aria-label="Close menu">
+                  <X className="w-4 h-4" />
                 </button>
               </div>
 
@@ -5197,13 +5272,13 @@ function AuthHeaderButton({ setView }: { setView: (v: AppView) => void }) {
     return (
       <button
         onClick={() => setView(AppView.PROFILE)}
-        className="w-8 h-8 rounded-full overflow-hidden bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold hover:ring-2 hover:ring-blue-400 transition shrink-0"
+        className="w-9 h-9 rounded-full overflow-hidden bg-kj-primary-soft flex items-center justify-center text-kj-primary-deep text-[13px] font-bold font-sans shrink-0 active:scale-95 transition-transform"
         aria-label={t('nav.settings')}
         title={user.displayName}
       >
         {user.avatarUrl
           ? <img src={user.avatarUrl} alt={user.displayName} className="w-full h-full object-cover" />
-          : user.displayName.charAt(0).toUpperCase()
+          : user.displayName.slice(0, 2).toUpperCase()
         }
       </button>
     );
@@ -5211,11 +5286,11 @@ function AuthHeaderButton({ setView }: { setView: (v: AppView) => void }) {
   return (
     <button
       onClick={() => setView(AppView.LOGIN)}
-      className="p-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full text-blue-600 dark:text-blue-400 transition-colors flex items-center justify-center shrink-0"
+      className="w-9 h-9 rounded-full bg-kj-primary-soft flex items-center justify-center text-kj-primary-deep shrink-0 active:scale-95 transition-transform"
       aria-label={t('nav.login')}
       title={t('nav.login')}
     >
-      <User className="w-5 h-5" />
+      <User className="w-[18px] h-[18px]" />
     </button>
   );
 }

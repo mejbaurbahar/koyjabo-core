@@ -15,7 +15,7 @@ interface AdSenseAdProps {
 const isValidSlot = (slot: string) => slot === 'auto' || /^\d{9,11}$/.test(slot);
 const DEFAULT_SLOT = '7294303750'; // From intercity/index.html
 
-const AdSenseAd: React.FC<AdSenseAdProps> = React.memo(({
+const AdSenseAd: React.FC{/* <AdSenseAdProps> = React.memo(({
   adSlot,
   adFormat = 'auto',
   className = '',
@@ -59,7 +59,7 @@ const AdSenseAd: React.FC<AdSenseAdProps> = React.memo(({
       data-ad-format={adFormat}
       data-full-width-responsive={responsive ? 'true' : 'false'}
       {...(layoutKey ? { 'data-ad-layout-key': layoutKey } : {})}
-    />
+    /> */}
   );
 
   if (native) {

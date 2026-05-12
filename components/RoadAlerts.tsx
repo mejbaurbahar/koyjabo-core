@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, AlertTriangle, Clock, ChevronDown, ChevronUp, Plus, ExternalLink } from 'lucide-react';
-import AdSenseAd from './AdSenseAd';
+// import AdSenseAd from './AdSenseAd';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useToast } from '../contexts/ToastContext';
 import { submitTrafficReport, getTodayTrafficReports, upvoteTrafficReport, TrafficReport, getAuthUser } from '../services/communityDataService';
@@ -183,7 +183,7 @@ export default function RoadAlerts({ onBack }: Props) {
           </form>
         )}
 
-        <AdSenseAd adSlot="auto" className="my-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+        {/* <AdSenseAd adSlot="auto" className="my-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
 
 
