@@ -4367,9 +4367,7 @@ const App: React.FC = () => {
 
             return (
               <React.Fragment key={bus.id}>
-                {busIdx === 9 && (
-                  {/* <AdSenseAd adSlot="auto" adFormat="fluid" className="my-4 w-full max-w-full md:max-w-[728px] md:mx-auto shrink-0" /> */}
-                )}
+                {/* <AdSenseAd adSlot="auto" adFormat="fluid" className="my-4 w-full max-w-full md:max-w-[728px] md:mx-auto shrink-0" /> */}
 
                 <div
                   onClick={() => handleBusSelect(bus)}

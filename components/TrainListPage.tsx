@@ -999,9 +999,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
         ) : (
           filtered.map((route, idx) => (
             <React.Fragment key={route.id}>
-              {idx > 0 && idx % 6 === 4 && (
-                {/* <AdSenseAd adSlot="auto" adFormat="fluid" className="my-3 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-              )}
+              {/* <AdSenseAd adSlot="auto" adFormat="fluid" className="my-3 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
               <TrainCard
                 route={route}
                 onClick={() => onSelectTrain ? onSelectTrain(route) : setSelectedTrain(route)}

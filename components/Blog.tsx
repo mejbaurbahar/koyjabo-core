@@ -200,9 +200,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                                             ))}
                                         </div>
                                         {/* In-feed ad between chunks */}
-                                        {chunkIdx < Math.ceil(regularPosts.length / 6) - 1 && (
-                                            {/* <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" native className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-                                        )}
+                                        {/* <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" native className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
                                     </React.Fragment>
                                 );
                             })}
