@@ -97,13 +97,13 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
   if (loading) {
     return (
       <div className="flex-1 min-h-0 w-full flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 p-4">
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 max-w-xs w-full text-center">
+        <div className="bg-kj-panel rounded-2xl shadow-xl p-10 max-w-xs w-full text-center">
           <div className="relative w-16 h-16 mx-auto mb-5">
             <div className="w-16 h-16 rounded-full border-4 border-blue-100 dark:border-slate-600 animate-spin border-t-blue-600" />
             <Lock className="absolute inset-0 m-auto text-blue-600" size={20} />
           </div>
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-1">{t('auth.verifying')}</h2>
-          <p className="text-gray-500 dark:text-gray-400 text-sm">{t('auth.processingWait')}</p>
+          <h2 className="text-lg font-bold text-kj-text mb-1">{t('auth.verifying')}</h2>
+          <p className="text-kj-text-dim text-sm">{t('auth.processingWait')}</p>
         </div>
       </div>
     );
@@ -114,7 +114,7 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
       {onClose && (
         <button
           onClick={onClose}
-          className="md:hidden absolute top-4 right-4 p-2 rounded-full bg-white/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-700 text-gray-500 dark:text-gray-400 shadow-sm transition-colors z-10"
+          className="md:hidden absolute top-4 right-4 p-2 rounded-full bg-white/80 dark:bg-kj-chip-bg/80 hover:bg-white dark:hover:bg-slate-700 text-kj-text-dim shadow-sm transition-colors z-10"
           aria-label="Close"
         >
           <X size={20} />
@@ -126,12 +126,12 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 shadow-lg shadow-blue-200 dark:shadow-blue-900 mb-4">
             <LogIn className="text-white" size={28} />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('auth.welcome')}</h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">{t('auth.loginToAccount')}</p>
+          <h1 className="text-2xl font-bold text-kj-text">{t('auth.welcome')}</h1>
+          <p className="text-kj-text-dim mt-1">{t('auth.loginToAccount')}</p>
         </div>
 
         {/* Card */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-slate-700">
+        <div className="bg-kj-panel rounded-2xl shadow-xl p-8 border border-kj-line">
           {error && (
             <div className="mb-5 p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 flex items-start gap-2">
               <AlertCircle size={16} className="text-red-500 mt-0.5 shrink-0" />
@@ -141,7 +141,7 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
 
           <form onSubmit={handleSubmit} className="space-y-5" noValidate>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+              <label className="block text-sm font-medium text-kj-text-dim mb-1.5">
                 {t('auth.email')}
               </label>
               <input
@@ -151,8 +151,8 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
                 onBlur={() => setEmailTouched(true)}
                 placeholder={t('auth.emailPlaceholder')}
                 autoComplete="email"
-                className={`w-full px-4 py-3 rounded-xl border bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition ${
-                  emailError ? 'border-red-400 dark:border-red-500' : 'border-gray-200 dark:border-slate-600'
+                className={`w-full px-4 py-3 rounded-xl border bg-gray-50 dark:bg-slate-700 text-kj-text placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition ${
+                  emailError ? 'border-red-400 dark:border-red-500' : 'border-kj-line dark:border-slate-600'
                 }`}
               />
               {emailError && (
@@ -163,7 +163,7 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+              <label className="block text-sm font-medium text-kj-text-dim mb-1.5">
                 {t('auth.password')}
               </label>
               <div className="relative">
@@ -174,14 +174,14 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
                   onBlur={() => setPasswordTouched(true)}
                   placeholder="••••••••"
                   autoComplete="current-password"
-                  className={`w-full px-4 py-3 pr-12 rounded-xl border bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition ${
-                    passwordError ? 'border-red-400 dark:border-red-500' : 'border-gray-200 dark:border-slate-600'
+                  className={`w-full px-4 py-3 pr-12 rounded-xl border bg-gray-50 dark:bg-slate-700 text-kj-text placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition ${
+                    passwordError ? 'border-red-400 dark:border-red-500' : 'border-kj-line dark:border-slate-600'
                   }`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPass(p => !p)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-1"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-kj-text-faint hover:text-kj-text-dim dark:hover:text-kj-text-faint p-1"
                 >
                   {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -223,10 +223,10 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
           {false /* Google sign-in temporarily hidden on production — enabled on dev */ && (
           <><div className="mt-5 relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200 dark:border-slate-600" />
+              <div className="w-full border-t border-kj-line dark:border-slate-600" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="px-3 bg-white dark:bg-slate-800 text-gray-400">{t('auth.orContinueWith')}</span>
+              <span className="px-3 bg-kj-panel text-kj-text-faint">{t('auth.orContinueWith')}</span>
             </div>
           </div>
 
@@ -234,7 +234,7 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
             type="button"
             onClick={handleGoogleLogin}
             disabled={googleLoading || loading}
-            className="mt-4 w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 hover:bg-gray-50 dark:hover:bg-slate-600 text-gray-700 dark:text-gray-200 font-medium transition disabled:opacity-60 disabled:cursor-not-allowed"
+            className="mt-4 w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-kj-line dark:border-slate-600 bg-white dark:bg-slate-700 hover:bg-kj-chip-bg dark:hover:bg-slate-600 text-kj-text-dim font-medium transition disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {googleLoading ? (
               <Loader2 size={18} className="animate-spin" />
@@ -249,7 +249,7 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
             {t('auth.continueWithGoogle')}
           </button></>)}
 
-          <div className="mt-5 text-center text-sm text-gray-500 dark:text-gray-400">
+          <div className="mt-5 text-center text-sm text-kj-text-dim">
             {t('auth.noAccount')}{' '}
             <button
               onClick={onSignup}

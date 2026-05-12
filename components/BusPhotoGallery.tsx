@@ -145,17 +145,17 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
   };
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 bg-slate-50 dark:bg-slate-900 overflow-hidden">
-      <div className="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
-        <button onClick={onBack} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full">
-          <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+    <div className="flex flex-col flex-1 min-h-0 bg-kj-bg overflow-hidden">
+      <div className="flex items-center gap-3 p-4 bg-kj-panel border-b border-kj-line shrink-0">
+        <button onClick={onBack} className="p-2 -ml-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full">
+          <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
         </button>
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center">
           <Camera className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1">
-          <h1 className="text-lg font-bold text-gray-900 dark:text-white">{t('community.busPhotosTitle')}</h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{busName} · {t('community.photosCount', { count: formatNumber(photos.length) })}</p>
+          <h1 className="text-lg font-bold text-kj-text">{t('community.busPhotosTitle')}</h1>
+          <p className="text-xs text-kj-text-dim">{busName} · {t('community.photosCount', { count: formatNumber(photos.length) })}</p>
         </div>
         {user && (
           <button onClick={() => setShowForm(!showForm)}
@@ -167,9 +167,9 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
 
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 space-y-3 pb-6" style={{ WebkitOverflowScrolling: 'touch' }}>
         {hasOfficialBusImage && (
-          <div className="bg-white dark:bg-slate-800 rounded-2xl p-3 border border-gray-100 dark:border-gray-700">
-            <p className="text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Bus Image</p>
-            <div className="rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700 bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
+          <div className="bg-kj-panel rounded-2xl p-3 border border-kj-line">
+            <p className="text-[11px] font-bold text-kj-text-dim uppercase tracking-wider mb-2">Bus Image</p>
+            <div className="rounded-xl overflow-hidden border border-kj-line bg-kj-bg flex items-center justify-center">
               <img
                 src={officialSrc || '/default-bus.svg'}
                 alt={`${busName} bus`}
@@ -178,15 +178,15 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
                 onError={() => { setOfficialSrc('/default-bus.svg'); setHasOfficialBusImage(false); }}
               />
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+            <p className="text-xs text-kj-text-dim mt-2">
               This is the currently available bus image. You can upload newer photos below.
             </p>
           </div>
         )}
 
         {showForm && (
-          <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 space-y-3">
-            <h3 className="font-bold text-gray-900 dark:text-white text-sm">{t('community.uploadPhotoTitle')}</h3>
+          <form onSubmit={handleSubmit} className="bg-kj-panel rounded-2xl p-4 border border-kj-line space-y-3">
+            <h3 className="font-bold text-kj-text text-sm">{t('community.uploadPhotoTitle')}</h3>
 
             {compressing ? (
               <div className="w-full h-32 border-2 border-dashed border-pink-300 dark:border-pink-700 rounded-xl flex flex-col items-center justify-center gap-2 text-pink-500">
@@ -203,7 +203,7 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
               </div>
             ) : (
               <button type="button" onClick={() => fileRef.current?.click()}
-                className="w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl flex flex-col items-center justify-center gap-2 text-gray-400 hover:border-pink-400 hover:text-pink-500 transition-colors">
+                className="w-full h-32 border-2 border-dashed border-kj-line rounded-xl flex flex-col items-center justify-center gap-2 text-kj-text-faint hover:border-pink-400 hover:text-pink-500 transition-colors">
                 <Upload className="w-6 h-6" />
                 <span className="text-sm">{t('community.pickPhoto')}</span>
               </button>
@@ -212,7 +212,7 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
 
             <input value={caption} onChange={e => setCaption(e.target.value.slice(0, 200))}
               placeholder={t('community.photoCaptionOptional')} maxLength={200}
-              className="w-full bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white" />
+              className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white" />
 
             <div className="flex gap-2">
               <button type="submit" disabled={!previewUrl || submitting || compressing}
@@ -220,7 +220,7 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
                 {submitting ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />{t('community.submitting')}</> : t('community.submit')}
               </button>
               <button type="button" onClick={() => { setShowForm(false); setPreviewUrl(null); setCaption(''); }}
-                className="px-4 py-2.5 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 font-semibold text-sm rounded-xl">
+                className="px-4 py-2.5 bg-kj-chip-bg text-kj-text-dim font-semibold text-sm rounded-xl">
                 {t('common.cancel')}
               </button>
             </div>
@@ -233,9 +233,9 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
           <>
             {photos.length === 0 && !showForm && !hasOfficialBusImage && (
               <div className="text-center py-12">
-                <Camera className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-                <p className="text-gray-500 dark:text-gray-400 font-medium">{t('community.noPhotosYet')}</p>
-                <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">{t('community.beFirstToUpload')}</p>
+                <Camera className="w-12 h-12 text-kj-text-faint mx-auto mb-3" />
+                <p className="text-kj-text-dim font-medium">{t('community.noPhotosYet')}</p>
+                <p className="text-sm text-kj-text-faint mt-1">{t('community.beFirstToUpload')}</p>
                 {user && (
                   <button onClick={() => setShowForm(true)} className="mt-4 px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white text-sm font-semibold rounded-xl">
                     {t('community.addPhoto')}
@@ -337,12 +337,12 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
       {deleteTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60" onClick={() => setDeleteTarget(null)} />
-          <div className="relative w-full max-w-sm bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 shadow-2xl">
-            <h3 className="text-base font-bold text-gray-900 dark:text-white mb-2">{t('community.deletePhotoTitle') || 'Delete Photo?'}</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">{t('community.deletePhotoDesc') || 'This will permanently remove your photo. This action cannot be undone.'}</p>
+          <div className="relative w-full max-w-sm bg-kj-panel rounded-2xl border border-kj-line p-5 shadow-2xl">
+            <h3 className="text-base font-bold text-kj-text mb-2">{t('community.deletePhotoTitle') || 'Delete Photo?'}</h3>
+            <p className="text-sm text-kj-text-dim mb-4">{t('community.deletePhotoDesc') || 'This will permanently remove your photo. This action cannot be undone.'}</p>
             <div className="flex gap-2 justify-end">
               <button onClick={() => setDeleteTarget(null)} disabled={deleting}
-                className="px-4 py-2 rounded-xl bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-semibold disabled:opacity-50">
+                className="px-4 py-2 rounded-xl bg-kj-chip-bg text-kj-text-dim text-sm font-semibold disabled:opacity-50">
                 Cancel
               </button>
               <button onClick={handleDeletePhoto} disabled={deleting}

@@ -278,9 +278,9 @@ const DhakaAlive: React.FC<{ hideIndicator?: boolean }> = ({ hideIndicator = fal
             {/* --- Location Indicator (Bottom Right) --- */}
             {!hideIndicator && (
                 <div className="fixed bottom-24 right-4 z-[50] flex flex-col items-end gap-2 animate-in slide-in-from-right-4 duration-500">
-                    <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-xl border border-white/20 flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                        <span className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest">
+                    <div className="bg-kj-panel/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-xl border border-white/20 flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-kj-primary animate-pulse" />
+                        <span className="text-[10px] font-bold text-kj-text-dim uppercase tracking-widest">
                             Live Simulation: Dhaka
                         </span>
                     </div>

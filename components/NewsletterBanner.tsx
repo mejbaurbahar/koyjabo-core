@@ -50,14 +50,14 @@ export default function NewsletterBanner({ className = '' }: Props) {
     };
 
     return (
-        <div className={`relative bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border border-emerald-200 dark:border-emerald-800/60 rounded-2xl p-5 overflow-hidden ${className}`}>
+        <div className={`relative bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border border-kj-primary/30/60 rounded-2xl p-5 overflow-hidden ${className}`}>
             {/* background decoration */}
             <div className="absolute -right-8 -top-8 w-32 h-32 bg-emerald-400/10 rounded-full pointer-events-none" />
             <div className="absolute -right-4 -bottom-6 w-20 h-20 bg-teal-400/10 rounded-full pointer-events-none" />
 
             <button
                 onClick={handleDismiss}
-                className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-1 z-10"
+                className="absolute top-3 right-3 text-kj-text-faint hover:text-kj-text-dim dark:hover:text-kj-text-faint p-1 z-10"
                 aria-label="Dismiss"
             >
                 <X className="w-3.5 h-3.5" />
@@ -65,12 +65,12 @@ export default function NewsletterBanner({ className = '' }: Props) {
 
             {status === 'success' ? (
                 <div className="flex items-center gap-3">
-                    <CheckCircle className="w-9 h-9 text-emerald-500 shrink-0" />
+                    <CheckCircle className="w-9 h-9 text-kj-primary shrink-0" />
                     <div>
                         <p className="font-bold text-emerald-800 dark:text-emerald-300 text-sm">
                             {lbl('You\'re subscribed! 🎉', 'সাবস্ক্রাইব হয়েছে! 🎉')}
                         </p>
-                        <p className="text-xs text-emerald-700 dark:text-emerald-400 mt-0.5">
+                        <p className="text-xs text-emerald-700 dark:text-kj-primary mt-0.5">
                             {lbl('Weekly Bangladesh travel tips coming to your inbox.', 'সাপ্তাহিক বাংলাদেশ ভ্রমণ টিপস আসবে।')}
                         </p>
                     </div>
@@ -82,10 +82,10 @@ export default function NewsletterBanner({ className = '' }: Props) {
                             <Mail className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                            <h3 className="font-bold text-gray-900 dark:text-gray-100 text-sm leading-tight">
+                            <h3 className="font-bold text-kj-text text-sm leading-tight">
                                 {lbl('Get Free Weekly Travel Tips', 'সাপ্তাহিক ভ্রমণ টিপস পান বিনামূল্যে')}
                             </h3>
-                            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 leading-relaxed">
+                            <p className="text-xs text-kj-text-dim mt-1 leading-relaxed">
                                 {lbl(
                                     'Bus routes, travel hacks & Bangladesh trip guides delivered free every week.',
                                     'বাস রুট, ভ্রমণ হ্যাক ও বাংলাদেশ ট্রিপ গাইড প্রতি সপ্তাহে বিনামূল্যে।'
@@ -101,7 +101,7 @@ export default function NewsletterBanner({ className = '' }: Props) {
                             onChange={e => setEmail(e.target.value)}
                             placeholder={lbl('your@email.com', 'আপনার@email.com')}
                             required
-                            className="flex-1 min-w-0 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                            className="flex-1 min-w-0 bg-kj-panel border border-kj-line rounded-xl px-3 py-2 text-sm text-kj-text placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-kj-primary"
                         />
                         <button
                             type="submit"
@@ -121,7 +121,7 @@ export default function NewsletterBanner({ className = '' }: Props) {
                         </div>
                     )}
 
-                    <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-2.5">
+                    <p className="text-[10px] text-kj-text-faint mt-2.5">
                         {lbl('No spam. Unsubscribe anytime. Completely free.', 'কোনো স্প্যাম নেই। যেকোনো সময় আনসাবস্ক্রাইব। বিনামূল্যে।')}
                     </p>
                 </>

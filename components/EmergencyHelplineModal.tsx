@@ -49,7 +49,7 @@ const EmergencyHelplineModal: React.FC<EmergencyHelplineModalProps> = ({
             case 'fire':
                 return 'bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800';
             default:
-                return 'bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-700';
+                return 'bg-gray-50 dark:bg-gray-800 text-kj-text-dim border-kj-line';
         }
     };
 
@@ -63,7 +63,7 @@ const EmergencyHelplineModal: React.FC<EmergencyHelplineModalProps> = ({
         return (
             <div
                 key={service.id}
-                className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md transition-shadow"
+                className="bg-kj-panel border border-kj-line rounded-xl p-4 hover:shadow-md transition-shadow"
             >
                 <div className="flex items-start justify-between gap-3">
                     <div className="flex-1">
@@ -71,17 +71,17 @@ const EmergencyHelplineModal: React.FC<EmergencyHelplineModalProps> = ({
                             <div className={`p-1.5 rounded-lg border ${colorClass}`}>
                                 {getServiceIcon(service.type)}
                             </div>
-                            <h4 className="font-bold text-gray-900 dark:text-gray-100 text-sm">{service.name}</h4>
+                            <h4 className="font-bold text-kj-text text-sm">{service.name}</h4>
                         </div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">{service.bnName}</p>
-                        <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                        <p className="text-xs text-kj-text-dim mb-2">{service.bnName}</p>
+                        <div className="flex items-center gap-2 text-xs text-kj-text-dim">
                             <MapPin className="w-3 h-3" />
                             <span>{service.area} • {formatNumber(formatDistance(service.distance))} {t('emergency.away')}</span>
                         </div>
                     </div>
                     <button
                         onClick={() => handleCall(service.phone)}
-                        className="shrink-0 bg-dhaka-green hover:bg-green-600 text-white p-3 rounded-xl transition-colors shadow-sm active:scale-95"
+                        className="shrink-0 bg-kj-primary hover:bg-green-600 text-white p-3 rounded-xl transition-colors shadow-sm active:scale-95"
                         aria-label={`Call ${service.name}`}
                     >
                         <Phone className="w-4 h-4" />
@@ -98,18 +98,18 @@ const EmergencyHelplineModal: React.FC<EmergencyHelplineModalProps> = ({
             onClick={onClose}
         >
             <div
-                className="bg-white dark:bg-slate-900 w-full md:max-w-2xl md:rounded-2xl rounded-t-3xl h-[100dvh] md:h-auto md:max-h-[90vh] flex flex-col shadow-2xl animate-in slide-in-from-bottom md:slide-in-from-bottom-0"
+                className="bg-kj-panel w-full md:max-w-2xl md:rounded-2xl rounded-t-3xl h-[100dvh] md:h-auto md:max-h-[90vh] flex flex-col shadow-2xl animate-in slide-in-from-bottom md:slide-in-from-bottom-0"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
-                <div className="sticky top-0 z-10 flex items-center justify-between px-5 py-4 pt-[max(env(safe-area-inset-top),1rem)] border-b border-gray-200 dark:border-gray-800 shrink-0 bg-white dark:bg-slate-900">
+                <div className="sticky top-0 z-10 flex items-center justify-between px-5 py-4 pt-[max(env(safe-area-inset-top),1rem)] border-b border-kj-line shrink-0 bg-kj-panel">
                     <div>
-                        <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-                            <Phone className="w-5 h-5 text-dhaka-red" />
+                        <h2 className="text-xl font-bold text-kj-text flex items-center gap-2">
+                            <Phone className="w-5 h-5 text-kj-accent" />
                             {t('emergency.title')}
                         </h2>
                         {currentLocationName && (
-                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 flex items-center gap-1">
+                            <p className="text-xs text-kj-text-dim mt-1 flex items-center gap-1">
                                 <Navigation2 className="w-3 h-3" />
                                 {t('emergency.near')} {currentLocationName}
                             </p>
@@ -117,10 +117,10 @@ const EmergencyHelplineModal: React.FC<EmergencyHelplineModalProps> = ({
                     </div>
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors"
+                        className="p-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full transition-colors"
                         aria-label="Close"
                     >
-                        <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                        <X className="w-5 h-5 text-kj-text-dim" />
                     </button>
                 </div>
 
@@ -128,8 +128,8 @@ const EmergencyHelplineModal: React.FC<EmergencyHelplineModalProps> = ({
                 <div className="flex-1 overflow-y-auto p-5 space-y-6">
                     {/* National Helplines */}
                     <div>
-                        <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wide flex items-center gap-2">
-                            <Shield className="w-4 h-4 text-dhaka-red" />
+                        <h3 className="text-sm font-bold text-kj-text-dim mb-3 uppercase tracking-wide flex items-center gap-2">
+                            <Shield className="w-4 h-4 text-kj-accent" />
                             {t('emergency.nationalEmergencyNumbers')}
                         </h3>
                         <div className="grid grid-cols-1 gap-2">
@@ -139,13 +139,13 @@ const EmergencyHelplineModal: React.FC<EmergencyHelplineModalProps> = ({
                                     className="bg-gradient-to-r from-dhaka-red/5 to-transparent border border-red-100 dark:border-red-900/30 rounded-xl p-3 flex items-center justify-between"
                                 >
                                     <div className="flex-1">
-                                        <h4 className="font-bold text-gray-900 dark:text-gray-100 text-sm">{helpline.name}</h4>
-                                        <p className="text-xs text-gray-500 dark:text-gray-400">{helpline.bnName}</p>
-                                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{helpline.description}</p>
+                                        <h4 className="font-bold text-kj-text text-sm">{helpline.name}</h4>
+                                        <p className="text-xs text-kj-text-dim">{helpline.bnName}</p>
+                                        <p className="text-xs text-kj-text-faint mt-0.5">{helpline.description}</p>
                                     </div>
                                     <button
                                         onClick={() => handleCall(helpline.number)}
-                                        className="shrink-0 bg-dhaka-red hover:bg-red-600 text-white px-4 py-2 rounded-lg font-bold text-sm transition-colors shadow-sm active:scale-95 flex items-center gap-2"
+                                        className="shrink-0 bg-kj-accent hover:bg-red-600 text-white px-4 py-2 rounded-lg font-bold text-sm transition-colors shadow-sm active:scale-95 flex items-center gap-2"
                                     >
                                         <Phone className="w-4 h-4" />
                                         {formatNumber(helpline.number)}
@@ -161,7 +161,7 @@ const EmergencyHelplineModal: React.FC<EmergencyHelplineModalProps> = ({
                             {/* Police Stations */}
                             {nearestServices.police.length > 0 && (
                                 <div>
-                                    <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wide flex items-center gap-2">
+                                    <h3 className="text-sm font-bold text-kj-text-dim mb-3 uppercase tracking-wide flex items-center gap-2">
                                         <Shield className="w-4 h-4 text-blue-600" />
                                         {t('emergency.nearestPoliceStations')}
                                     </h3>
@@ -174,7 +174,7 @@ const EmergencyHelplineModal: React.FC<EmergencyHelplineModalProps> = ({
                             {/* Hospitals */}
                             {nearestServices.hospital.length > 0 && (
                                 <div>
-                                    <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wide flex items-center gap-2">
+                                    <h3 className="text-sm font-bold text-kj-text-dim mb-3 uppercase tracking-wide flex items-center gap-2">
                                         <Activity className="w-4 h-4 text-green-600" />
                                         {t('emergency.nearestHospitals')}
                                     </h3>
@@ -187,7 +187,7 @@ const EmergencyHelplineModal: React.FC<EmergencyHelplineModalProps> = ({
                             {/* Fire Stations */}
                             {nearestServices.fire.length > 0 && (
                                 <div>
-                                    <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wide flex items-center gap-2">
+                                    <h3 className="text-sm font-bold text-kj-text-dim mb-3 uppercase tracking-wide flex items-center gap-2">
                                         <Flame className="w-4 h-4 text-red-600" />
                                         {t('emergency.nearestFireStations')}
                                     </h3>
@@ -200,8 +200,8 @@ const EmergencyHelplineModal: React.FC<EmergencyHelplineModalProps> = ({
                     )}
 
                     {!userLocation && (
-                        <div className="text-center py-8 text-gray-500">
-                            <MapPin className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                        <div className="text-center py-8 text-kj-text-dim">
+                            <MapPin className="w-12 h-12 mx-auto mb-3 text-kj-text-faint" />
                             <p className="text-sm">{t('emergency.locationNotAvailable')}</p>
                             <p className="text-xs mt-1">{t('emergency.enableLocation')}</p>
                         </div>
@@ -209,9 +209,9 @@ const EmergencyHelplineModal: React.FC<EmergencyHelplineModalProps> = ({
                 </div>
 
                 {/* Footer */}
-                <div className="p-4 pb-[max(env(safe-area-inset-bottom),1rem)] border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-slate-800 shrink-0 rounded-b-3xl md:rounded-b-2xl">
-                    <p className="text-xs text-center text-gray-500 dark:text-gray-400">
-                        {t('emergency.emergencyFooter')} <span className="font-bold text-dhaka-red">{formatNumber(999)}</span> {t('emergency.immediately')}
+                <div className="p-4 pb-[max(env(safe-area-inset-bottom),1rem)] border-t border-kj-line bg-gray-50 dark:bg-kj-chip-bg shrink-0 rounded-b-3xl md:rounded-b-2xl">
+                    <p className="text-xs text-center text-kj-text-dim">
+                        {t('emergency.emergencyFooter')} <span className="font-bold text-kj-accent">{formatNumber(999)}</span> {t('emergency.immediately')}
                     </p>
                 </div>
             </div>

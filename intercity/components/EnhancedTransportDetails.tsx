@@ -15,16 +15,16 @@ interface EnhancedDetailsProps {
 // Bus Renderer
 export const BusDetailsCard: React.FC<{ bus: BusOption }> = ({ bus }) => {
     return (
-        <div className="transport-card bus-card space-y-4 bg-white dark:bg-slate-800 dark:border-emerald-600">
+        <div className="transport-card bus-card space-y-4 bg-kj-panel dark:border-emerald-600">
             {/* Header */}
             <div className="flex items-center justify-between border-b border-emerald-100 dark:border-emerald-800 pb-3">
                 <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center">
-                        <Bus className="w-6 h-6 text-emerald-600" />
+                    <div className="w-12 h-12 bg-kj-primary-soft rounded-xl flex items-center justify-center">
+                        <Bus className="w-6 h-6 text-kj-primary" />
                     </div>
                     <div>
-                        <h3 className="font-bold text-gray-800 dark:text-gray-100 text-lg">{bus.operator}</h3>
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded-md text-xs font-medium border border-emerald-200">
+                        <h3 className="font-bold text-kj-text text-lg">{bus.operator}</h3>
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-kj-primary-soft text-emerald-700 rounded-md text-xs font-medium border border-kj-primary/30">
                             {bus.type}
                         </span>
                     </div>
@@ -34,28 +34,28 @@ export const BusDetailsCard: React.FC<{ bus: BusOption }> = ({ bus }) => {
             {/* Schedule */}
             <div className="flex items-center justify-between">
                 <div className="flex-1 text-center">
-                    <label className="block text-xs text-gray-500 mb-1 uppercase tracking-wide">Departure</label>
-                    <div className="font-bold text-gray-800 dark:text-gray-100 text-xl">{bus.departure}</div>
-                    <small className="text-xs text-gray-600 mt-1 block">{bus.boarding}</small>
+                    <label className="block text-xs text-kj-text-dim mb-1 uppercase tracking-wide">Departure</label>
+                    <div className="font-bold text-kj-text text-xl">{bus.departure}</div>
+                    <small className="text-xs text-kj-text-dim mt-1 block">{bus.boarding}</small>
                 </div>
-                <div className="flex items-center px-4 text-gray-400">
+                <div className="flex items-center px-4 text-kj-text-faint">
                     <div className="flex flex-col items-center">
                         <Clock className="w-4 h-4 mb-1" />
-                        <span className="text-xs font-medium text-gray-600">{bus.duration}</span>
+                        <span className="text-xs font-medium text-kj-text-dim">{bus.duration}</span>
                     </div>
                 </div>
                 <div className="flex-1 text-center">
-                    <label className="block text-xs text-gray-500 mb-1 uppercase tracking-wide">Arrival</label>
-                    <div className="font-bold text-gray-800 dark:text-gray-100 text-xl">{bus.arrival}</div>
-                    <small className="text-xs text-gray-600 mt-1 block">{bus.dropping}</small>
+                    <label className="block text-xs text-kj-text-dim mb-1 uppercase tracking-wide">Arrival</label>
+                    <div className="font-bold text-kj-text text-xl">{bus.arrival}</div>
+                    <small className="text-xs text-kj-text-dim mt-1 block">{bus.dropping}</small>
                 </div>
             </div>
 
             {/* Price & Booking */}
-            <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
+            <div className="flex items-center justify-between pt-3 border-t border-kj-line">
                 <div className="flex items-center gap-2">
-                    <DollarSign className="w-5 h-5 text-emerald-600" />
-                    <span className="text-2xl font-bold text-emerald-600">৳{bus.price}</span>
+                    <DollarSign className="w-5 h-5 text-kj-primary" />
+                    <span className="text-2xl font-bold text-kj-primary">৳{bus.price}</span>
                 </div>
                 {bus.booking_url && (
                     <a
@@ -72,8 +72,8 @@ export const BusDetailsCard: React.FC<{ bus: BusOption }> = ({ bus }) => {
 
             {/* Contact */}
             {bus.contact && (
-                <div className="flex items-center gap-2 p-3 bg-gray-50 dark:bg-slate-700 rounded-lg border border-gray-100 dark:border-gray-600">
-                    <Phone className="w-4 h-4 text-gray-600" />
+                <div className="flex items-center gap-2 p-3 bg-gray-50 dark:bg-slate-700 rounded-lg border border-kj-line dark:border-gray-600">
+                    <Phone className="w-4 h-4 text-kj-text-dim" />
                     <a href={`tel:${bus.contact}`} className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">
                         {bus.contact}
                     </a>
@@ -86,7 +86,7 @@ export const BusDetailsCard: React.FC<{ bus: BusOption }> = ({ bus }) => {
 // Train Renderer
 export const TrainDetailsCard: React.FC<{ train: TrainOption }> = ({ train }) => {
     return (
-        <div className="transport-card train-card space-y-4 bg-white dark:bg-slate-800 dark:border-orange-600">
+        <div className="transport-card train-card space-y-4 bg-kj-panel dark:border-orange-600">
             {/* Header */}
             <div className="flex items-center justify-between border-b border-orange-100 pb-3">
                 <div className="flex items-center gap-3">
@@ -94,8 +94,8 @@ export const TrainDetailsCard: React.FC<{ train: TrainOption }> = ({ train }) =>
                         <Train className="w-6 h-6 text-orange-600" />
                     </div>
                     <div>
-                        <h3 className="font-bold text-gray-800 dark:text-gray-100 text-lg">{train.name}</h3>
-                        <span className="text-sm text-gray-600">Train No. {train.number}</span>
+                        <h3 className="font-bold text-kj-text text-lg">{train.name}</h3>
+                        <span className="text-sm text-kj-text-dim">Train No. {train.number}</span>
                     </div>
                 </div>
                 {train.off_day !== 'None' && (
@@ -108,34 +108,34 @@ export const TrainDetailsCard: React.FC<{ train: TrainOption }> = ({ train }) =>
             {/* Schedule */}
             <div className="flex items-center justify-between">
                 <div className="flex-1 text-center">
-                    <label className="block text-xs text-gray-500 mb-1 uppercase tracking-wide">Departure</label>
-                    <div className="font-bold text-gray-800 dark:text-gray-100 text-xl">{train.departure}</div>
+                    <label className="block text-xs text-kj-text-dim mb-1 uppercase tracking-wide">Departure</label>
+                    <div className="font-bold text-kj-text text-xl">{train.departure}</div>
                 </div>
-                <div className="flex items-center px-4 text-gray-400">
+                <div className="flex items-center px-4 text-kj-text-faint">
                     <div className="flex flex-col items-center">
                         <Clock className="w-4 h-4 mb-1" />
-                        <span className="text-xs font-medium text-gray-600">{train.duration}</span>
+                        <span className="text-xs font-medium text-kj-text-dim">{train.duration}</span>
                     </div>
                 </div>
                 <div className="flex-1 text-center">
-                    <label className="block text-xs text-gray-500 mb-1 uppercase tracking-wide">Arrival</label>
-                    <div className="font-bold text-gray-800 dark:text-gray-100 text-xl">{train.arrival}</div>
+                    <label className="block text-xs text-kj-text-dim mb-1 uppercase tracking-wide">Arrival</label>
+                    <div className="font-bold text-kj-text text-xl">{train.arrival}</div>
                 </div>
             </div>
 
             {/* Route */}
             <div className="flex items-start gap-2 p-3 bg-orange-50/50 rounded-lg border border-orange-100">
                 <Navigation className="w-4 h-4 text-orange-600 mt-0.5 flex-shrink-0" />
-                <span className="text-sm text-gray-700">{train.route_via}</span>
+                <span className="text-sm text-kj-text-dim">{train.route_via}</span>
             </div>
 
             {/* Classes & Pricing */}
             <div>
-                <label className="block text-xs text-gray-500 mb-2 uppercase tracking-wide font-medium">Available Classes</label>
+                <label className="block text-xs text-kj-text-dim mb-2 uppercase tracking-wide font-medium">Available Classes</label>
                 <div className="grid grid-cols-2 gap-2">
                     {Object.entries(train.classes).map(([className, price]) => (
-                        <div key={className} className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200 hover:border-orange-300 transition-colors">
-                            <span className="text-sm font-medium text-gray-700">{className.replace('_', ' ')}</span>
+                        <div key={className} className="flex items-center justify-between p-3 bg-white rounded-lg border border-kj-line hover:border-orange-300 transition-colors">
+                            <span className="text-sm font-medium text-kj-text-dim">{className.replace('_', ' ')}</span>
                             <span className="text-sm font-bold text-orange-600">৳{price}</span>
                         </div>
                     ))}
@@ -143,11 +143,11 @@ export const TrainDetailsCard: React.FC<{ train: TrainOption }> = ({ train }) =>
             </div>
 
             {/* Booking Info */}
-            <div className="flex items-start gap-2 p-3 bg-gray-50 rounded-lg border border-gray-100">
-                <Phone className="w-4 h-4 text-gray-600 mt-0.5" />
+            <div className="flex items-start gap-2 p-3 bg-gray-50 rounded-lg border border-kj-line">
+                <Phone className="w-4 h-4 text-kj-text-dim mt-0.5" />
                 <div className="text-sm">
-                    <span className="block text-gray-500 text-xs mb-1">Book via:</span>
-                    <span className="font-medium text-gray-700">{train.booking}</span>
+                    <span className="block text-kj-text-dim text-xs mb-1">Book via:</span>
+                    <span className="font-medium text-kj-text-dim">{train.booking}</span>
                 </div>
             </div>
         </div>
@@ -157,7 +157,7 @@ export const TrainDetailsCard: React.FC<{ train: TrainOption }> = ({ train }) =>
 // Flight Renderer
 export const FlightDetailsCard: React.FC<{ flight: FlightOption }> = ({ flight }) => {
     return (
-        <div className="transport-card flight-card space-y-4 bg-white dark:bg-slate-800 dark:border-blue-600">
+        <div className="transport-card flight-card space-y-4 bg-kj-panel dark:border-blue-600">
             {/* Header */}
             <div className="flex items-center justify-between border-b border-blue-100 pb-3">
                 <div className="flex items-center gap-3">
@@ -165,8 +165,8 @@ export const FlightDetailsCard: React.FC<{ flight: FlightOption }> = ({ flight }
                         <Plane className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
-                        <h3 className="font-bold text-gray-800 dark:text-gray-100 text-lg">{flight.airline}</h3>
-                        <span className="text-sm text-gray-600">{flight.flight_no}</span>
+                        <h3 className="font-bold text-kj-text text-lg">{flight.airline}</h3>
+                        <span className="text-sm text-kj-text-dim">{flight.flight_no}</span>
                     </div>
                 </div>
             </div>
@@ -174,25 +174,25 @@ export const FlightDetailsCard: React.FC<{ flight: FlightOption }> = ({ flight }
             {/* Flight Route */}
             <div className="flex items-center justify-between">
                 <div className="flex-1 text-center">
-                    <label className="block text-xs text-gray-500 mb-1 uppercase tracking-wide">From</label>
-                    <div className="font-bold text-gray-800 text-2xl">{flight.from_airport}</div>
-                    <div className="text-sm text-gray-600 mt-1">{flight.departure}</div>
+                    <label className="block text-xs text-kj-text-dim mb-1 uppercase tracking-wide">From</label>
+                    <div className="font-bold text-kj-text text-2xl">{flight.from_airport}</div>
+                    <div className="text-sm text-kj-text-dim mt-1">{flight.departure}</div>
                 </div>
-                <div className="flex items-center px-4 text-gray-400">
+                <div className="flex items-center px-4 text-kj-text-faint">
                     <div className="flex flex-col items-center">
                         <Plane className="w-5 h-5 mb-1 text-blue-500 transform rotate-90" />
-                        <span className="text-xs font-medium text-gray-600">{flight.total_time}</span>
+                        <span className="text-xs font-medium text-kj-text-dim">{flight.total_time}</span>
                     </div>
                 </div>
                 <div className="flex-1 text-center">
-                    <label className="block text-xs text-gray-500 mb-1 uppercase tracking-wide">To</label>
-                    <div className="font-bold text-gray-800 text-2xl">{flight.to_airport}</div>
-                    <div className="text-sm text-gray-600 mt-1">{flight.arrival}</div>
+                    <label className="block text-xs text-kj-text-dim mb-1 uppercase tracking-wide">To</label>
+                    <div className="font-bold text-kj-text text-2xl">{flight.to_airport}</div>
+                    <div className="text-sm text-kj-text-dim mt-1">{flight.arrival}</div>
                 </div>
             </div>
 
             {/* Price */}
-            <div className="flex items-center justify-center pt-3 border-t border-gray-100">
+            <div className="flex items-center justify-center pt-3 border-t border-kj-line">
                 <div className="flex items-center gap-2">
                     <DollarSign className="w-5 h-5 text-blue-600" />
                     <span className="text-3xl font-bold text-blue-600">৳{flight.price}</span>
@@ -205,7 +205,7 @@ export const FlightDetailsCard: React.FC<{ flight: FlightOption }> = ({ flight }
                     <Info className="w-4 h-4 text-blue-600 mt-0.5" />
                     <div className="text-sm">
                         <span className="block text-blue-600 font-medium mb-1">Ground Transfer</span>
-                        <span className="text-gray-700">{flight.ground_transfer}</span>
+                        <span className="text-kj-text-dim">{flight.ground_transfer}</span>
                     </div>
                 </div>
             )}
@@ -218,57 +218,57 @@ export const DrivingDetailsCard: React.FC<{ driving: DrivingInfo }> = ({ driving
     const totalCost = (driving.fuel_cost || 0) + (driving.toll || 0);
 
     return (
-        <div className="transport-card driving-card space-y-4 bg-white dark:bg-slate-800 dark:border-gray-600">
+        <div className="transport-card driving-card space-y-4 bg-kj-panel dark:border-gray-600">
             {/* Header */}
-            <div className="flex items-center gap-3 border-b border-gray-200 pb-3">
+            <div className="flex items-center gap-3 border-b border-kj-line pb-3">
                 <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
-                    <Car className="w-6 h-6 text-gray-600" />
+                    <Car className="w-6 h-6 text-kj-text-dim" />
                 </div>
                 <div>
-                    <h3 className="font-bold text-gray-800 dark:text-gray-100 text-lg">🚗 Drive Yourself</h3>
-                    <span className="text-sm text-gray-600">Personal Vehicle</span>
+                    <h3 className="font-bold text-kj-text text-lg">🚗 Drive Yourself</h3>
+                    <span className="text-sm text-kj-text-dim">Personal Vehicle</span>
                 </div>
             </div>
 
             {/* Route Info */}
             <div className="grid grid-cols-2 gap-3">
-                <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
-                    <label className="block text-xs text-gray-500 mb-1 uppercase tracking-wide">Distance</label>
-                    <div className="font-bold text-gray-800 text-lg">{driving.distance_km} km</div>
+                <div className="p-3 bg-gray-50 rounded-lg border border-kj-line">
+                    <label className="block text-xs text-kj-text-dim mb-1 uppercase tracking-wide">Distance</label>
+                    <div className="font-bold text-kj-text text-lg">{driving.distance_km} km</div>
                 </div>
-                <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
-                    <label className="block text-xs text-gray-500 mb-1 uppercase tracking-wide">Duration</label>
-                    <div className="font-bold text-gray-800 text-lg">{driving.duration}</div>
+                <div className="p-3 bg-gray-50 rounded-lg border border-kj-line">
+                    <label className="block text-xs text-kj-text-dim mb-1 uppercase tracking-wide">Duration</label>
+                    <div className="font-bold text-kj-text text-lg">{driving.duration}</div>
                 </div>
             </div>
 
             {/* Route Path */}
-            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
-                <label className="block text-xs text-gray-500 mb-2 uppercase tracking-wide">Route</label>
-                <p className="text-sm text-gray-700 font-medium">{driving.route}</p>
+            <div className="p-3 bg-gray-50 rounded-lg border border-kj-line">
+                <label className="block text-xs text-kj-text-dim mb-2 uppercase tracking-wide">Route</label>
+                <p className="text-sm text-kj-text-dim font-medium">{driving.route}</p>
             </div>
 
             {/* Costs Breakdown */}
             <div className="space-y-2">
-                <label className="block text-xs text-gray-500 uppercase tracking-wide font-medium">Cost Breakdown</label>
+                <label className="block text-xs text-kj-text-dim uppercase tracking-wide font-medium">Cost Breakdown</label>
                 <div className="space-y-2">
-                    <div className="flex items-center justify-between p-2 bg-white rounded-lg border border-gray-200">
+                    <div className="flex items-center justify-between p-2 bg-white rounded-lg border border-kj-line">
                         <div className="flex items-center gap-2">
-                            <Fuel className="w-4 h-4 text-gray-600" />
-                            <span className="text-sm text-gray-700">Fuel Cost</span>
+                            <Fuel className="w-4 h-4 text-kj-text-dim" />
+                            <span className="text-sm text-kj-text-dim">Fuel Cost</span>
                         </div>
-                        <span className="text-sm font-bold text-gray-800">৳{driving.fuel_cost}</span>
+                        <span className="text-sm font-bold text-kj-text">৳{driving.fuel_cost}</span>
                     </div>
-                    <div className="flex items-center justify-between p-2 bg-white rounded-lg border border-gray-200">
+                    <div className="flex items-center justify-between p-2 bg-white rounded-lg border border-kj-line">
                         <div className="flex items-center gap-2">
-                            <Coins className="w-4 h-4 text-gray-600" />
-                            <span className="text-sm text-gray-700">Toll</span>
+                            <Coins className="w-4 h-4 text-kj-text-dim" />
+                            <span className="text-sm text-kj-text-dim">Toll</span>
                         </div>
-                        <span className="text-sm font-bold text-gray-800">৳{driving.toll}</span>
+                        <span className="text-sm font-bold text-kj-text">৳{driving.toll}</span>
                     </div>
-                    <div className="flex items-center justify-between p-3 bg-gradient-to-r from-gray-100 to-gray-50 rounded-lg border-2 border-gray-300">
-                        <span className="text-sm font-bold text-gray-700 uppercase">Total Cost</span>
-                        <span className="text-xl font-bold text-gray-900">৳{totalCost}</span>
+                    <div className="flex items-center justify-between p-3 bg-gradient-to-r from-gray-100 to-gray-50 rounded-lg border-2 border-kj-line">
+                        <span className="text-sm font-bold text-kj-text-dim uppercase">Total Cost</span>
+                        <span className="text-xl font-bold text-kj-text">৳{totalCost}</span>
                     </div>
                 </div>
             </div>

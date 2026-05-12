@@ -71,18 +71,18 @@ export default function TrainPhotoGallery({ trainId, trainName, onBack }: Props)
   };
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 bg-slate-50 dark:bg-slate-900 overflow-hidden">
+    <div className="flex flex-col flex-1 min-h-0 bg-kj-bg overflow-hidden">
       {/* Header */}
-      <div className="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
-        <button onClick={onBack} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full">
-          <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+      <div className="flex items-center gap-3 p-4 bg-kj-panel border-b border-kj-line shrink-0">
+        <button onClick={onBack} className="p-2 -ml-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full">
+          <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
         </button>
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
           <Train className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1">
-          <h1 className="text-lg font-bold text-gray-900 dark:text-white">Train Photos</h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{trainName} · {formatNumber(photos.length)} photos</p>
+          <h1 className="text-lg font-bold text-kj-text">Train Photos</h1>
+          <p className="text-xs text-kj-text-dim">{trainName} · {formatNumber(photos.length)} photos</p>
         </div>
 
       </div>
@@ -96,8 +96,8 @@ export default function TrainPhotoGallery({ trainId, trainName, onBack }: Props)
           <>
             {photos.length === 0 && (
               <div className="text-center py-12">
-                <Camera className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-                <p className="text-gray-500 dark:text-gray-400 font-medium">{t('community.noPhotosYet')}</p>
+                <Camera className="w-12 h-12 text-kj-text-faint mx-auto mb-3" />
+                <p className="text-kj-text-dim font-medium">{t('community.noPhotosYet')}</p>
               </div>
             )}
 
@@ -196,12 +196,12 @@ export default function TrainPhotoGallery({ trainId, trainName, onBack }: Props)
       {deleteTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60" onClick={() => setDeleteTarget(null)} />
-          <div className="relative w-full max-w-sm bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 shadow-2xl">
-            <h3 className="text-base font-bold text-gray-900 dark:text-white mb-2">{t('community.deletePhotoTitle') || 'Delete Photo?'}</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">{t('community.deletePhotoDesc') || 'This will permanently remove your photo. This action cannot be undone.'}</p>
+          <div className="relative w-full max-w-sm bg-kj-panel rounded-2xl border border-kj-line p-5 shadow-2xl">
+            <h3 className="text-base font-bold text-kj-text mb-2">{t('community.deletePhotoTitle') || 'Delete Photo?'}</h3>
+            <p className="text-sm text-kj-text-dim mb-4">{t('community.deletePhotoDesc') || 'This will permanently remove your photo. This action cannot be undone.'}</p>
             <div className="flex gap-2 justify-end">
               <button onClick={() => setDeleteTarget(null)} disabled={deleting}
-                className="px-4 py-2 rounded-xl bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-200 text-sm font-semibold disabled:opacity-50">
+                className="px-4 py-2 rounded-xl bg-kj-chip-bg text-kj-text-dim text-sm font-semibold disabled:opacity-50">
                 Cancel
               </button>
               <button onClick={handleDeletePhoto} disabled={deleting}

@@ -99,7 +99,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onClo
             onClick={handleClick}
             className={`px-4 py-3 transition-colors cursor-pointer group ${!isRead
                 ? 'bg-blue-50/30 dark:bg-blue-900/10 hover:bg-blue-50/50 dark:hover:bg-blue-900/20'
-                : 'hover:bg-gray-50 dark:hover:bg-slate-800'
+                : 'hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg'
                 }`}
         >
             <div className="flex items-start gap-3">
@@ -122,8 +122,8 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onClo
                     <div className="flex items-start justify-between gap-2 mb-1">
                         <h4
                             className={`text-sm leading-tight ${isRead
-                                ? 'text-gray-700 dark:text-gray-300'
-                                : 'text-gray-900 dark:text-gray-100 font-bold'
+                                ? 'text-kj-text-dim'
+                                : 'text-kj-text font-bold'
                                 }`}
                         >
                             {displayTitle}
@@ -132,18 +132,18 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onClo
                             <ExternalLink className="w-3.5 h-3.5 text-blue-500 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
                         )}
                     </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-2 mb-2">
+                    <p className="text-xs text-kj-text-dim leading-relaxed line-clamp-2 mb-2">
                         {displayMessage}
                     </p>
 
                     {/* Footer with time and source */}
                     <div className="flex items-center gap-2 text-[10px]">
-                        <span className="text-gray-400 dark:text-gray-500">
+                        <span className="text-kj-text-faint">
                             {formatTime(notification.createdAt)}
                         </span>
                         {sourceDomain && (
                             <>
-                                <span className="text-gray-300 dark:text-gray-600">•</span>
+                                <span className="text-kj-text-faint">•</span>
                                 <span className="text-blue-500 dark:text-blue-400 font-medium flex items-center gap-1">
                                     {sourceDomain}
                                     <ExternalLink className="w-2.5 h-2.5" />

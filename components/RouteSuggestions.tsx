@@ -50,7 +50,7 @@ const RouteSuggestions: React.FC<RouteSuggestionsProps> = ({ routes, onSelectRou
     const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
     if (routes.length === 0) {
         return (
-            <div className="text-center py-8 text-gray-400">
+            <div className="text-center py-8 text-kj-text-faint">
                 <MapPin className="w-12 h-12 mx-auto mb-3 opacity-50" />
                 <p className="text-sm">{lbl('No routes found', 'কোনো রুট পাওয়া যায়নি')}</p>
             </div>
@@ -76,43 +76,43 @@ const RouteSuggestions: React.FC<RouteSuggestionsProps> = ({ routes, onSelectRou
             {routes.map((route, idx) => (
                 <div
                     key={route.id}
-                    className="bg-white dark:bg-slate-800 rounded-2xl border-2 border-gray-100 dark:border-slate-700 hover:border-dhaka-green dark:hover:border-dhaka-green transition-all shadow-sm hover:shadow-md overflow-hidden group cursor-pointer"
+                    className="bg-kj-panel rounded-2xl border-2 border-kj-line hover:border-kj-primary dark:hover:border-kj-primary transition-all shadow-sm hover:shadow-md overflow-hidden group cursor-pointer"
                     onClick={() => onSelectRoute(route)}
                 >
                     {/* Route Header */}
-                    <div className="p-4 bg-gradient-to-r from-slate-50 to-white dark:from-slate-800 dark:to-slate-900 border-b border-gray-100 dark:border-slate-700">
+                    <div className="p-4 bg-gradient-to-r from-slate-50 to-white dark:from-slate-800 dark:to-slate-900 border-b border-kj-line">
                         <div className="flex items-start justify-between mb-2">
                             <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
-                                    <span className="text-lg font-bold text-gray-900 dark:text-white">{lbl('Route', 'রুট')} {formatNumber(idx + 1)}</span>
+                                    <span className="text-lg font-bold text-kj-text">{lbl('Route', 'রুট')} {formatNumber(idx + 1)}</span>
                                     <RouteTypeBadge type={route.routeType} />
                                 </div>
-                                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{route.title}</h3>
+                                <h3 className="text-sm font-semibold text-kj-text-dim">{route.title}</h3>
                             </div>
                         </div>
 
                         {/* Stats */}
                         <div className="grid grid-cols-3 gap-2 mt-3">
-                            <div className="bg-white dark:bg-slate-700 rounded-lg p-2 border border-gray-100 dark:border-slate-600">
-                                <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 mb-1">
+                            <div className="bg-white dark:bg-slate-700 rounded-lg p-2 border border-kj-line dark:border-slate-600">
+                                <div className="flex items-center gap-1 text-kj-text-dim mb-1">
                                     <Clock className="w-3 h-3" />
                                     <span className="text-[9px] font-bold uppercase">{lbl('Time', 'সময়')}</span>
                                 </div>
-                                <p className="text-sm font-bold text-gray-900 dark:text-white">{formatNumber(Math.round(route.totalDuration))} min</p>
+                                <p className="text-sm font-bold text-kj-text">{formatNumber(Math.round(route.totalDuration))} min</p>
                             </div>
-                            <div className="bg-white dark:bg-slate-700 rounded-lg p-2 border border-gray-100 dark:border-slate-600">
-                                <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 mb-1">
+                            <div className="bg-white dark:bg-slate-700 rounded-lg p-2 border border-kj-line dark:border-slate-600">
+                                <div className="flex items-center gap-1 text-kj-text-dim mb-1">
                                     <Coins className="w-3 h-3" />
                                     <span className="text-[9px] font-bold uppercase">{lbl('Fare', 'ভাড়া')}</span>
                                 </div>
-                                <p className="text-sm font-bold text-gray-900 dark:text-white">৳{formatNumber(route.totalFare)}</p>
+                                <p className="text-sm font-bold text-kj-text">৳{formatNumber(route.totalFare)}</p>
                             </div>
-                            <div className="bg-white dark:bg-slate-700 rounded-lg p-2 border border-gray-100 dark:border-slate-600">
-                                <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 mb-1">
+                            <div className="bg-white dark:bg-slate-700 rounded-lg p-2 border border-kj-line dark:border-slate-600">
+                                <div className="flex items-center gap-1 text-kj-text-dim mb-1">
                                     <ArrowRight className="w-3 h-3" />
                                     <span className="text-[9px] font-bold uppercase">{lbl('Changes', 'পরিবর্তন')}</span>
                                 </div>
-                                <p className="text-sm font-bold text-gray-900 dark:text-white">{formatNumber(route.transfers)}</p>
+                                <p className="text-sm font-bold text-kj-text">{formatNumber(route.transfers)}</p>
                             </div>
                         </div>
                     </div>
@@ -125,7 +125,7 @@ const RouteSuggestions: React.FC<RouteSuggestionsProps> = ({ routes, onSelectRou
                                 <div className="flex flex-col items-center">
                                     <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step.type === 'bus' ? 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400' :
                                         step.type === 'metro' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-400' :
-                                            step.type === 'walk' ? 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300' :
+                                            step.type === 'walk' ? 'bg-gray-100 text-kj-text-dim dark:bg-gray-700 dark:text-kj-text-faint' :
                                                 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-400'
                                         }`}>
                                         <RouteStepIcon type={step.type} />
@@ -137,7 +137,7 @@ const RouteSuggestions: React.FC<RouteSuggestionsProps> = ({ routes, onSelectRou
 
                                 {/* Step Details */}
                                 <div className="flex-1">
-                                    <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 leading-tight">{step.instruction}</p>
+                                    <p className="text-sm font-semibold text-kj-text leading-tight">{step.instruction}</p>
 
                                     {step.busRoute && (
                                         <div className="mt-1 inline-flex items-center gap-1 bg-green-50 border border-green-200 dark:bg-green-900/30 dark:border-green-800 px-2 py-0.5 rounded-md">
@@ -154,7 +154,7 @@ const RouteSuggestions: React.FC<RouteSuggestionsProps> = ({ routes, onSelectRou
                                         </div>
                                     )}
 
-                                    <div className="flex items-center gap-3 mt-1 text-[10px] text-gray-500 dark:text-gray-400">
+                                    <div className="flex items-center gap-3 mt-1 text-[10px] text-kj-text-dim">
                                         {step.duration && (
                                             <span className="flex items-center gap-1">
                                                 <Clock className="w-3 h-3" />
@@ -175,7 +175,7 @@ const RouteSuggestions: React.FC<RouteSuggestionsProps> = ({ routes, onSelectRou
 
                     {/* Action Button */}
                     <div className="px-4 pb-4">
-                        <button className="w-full bg-dhaka-green text-white py-2.5 rounded-xl font-bold text-sm hover:bg-green-800 transition-colors flex items-center justify-center gap-2 group-hover:scale-[1.02] transition-transform">
+                        <button className="w-full bg-kj-primary text-white py-2.5 rounded-xl font-bold text-sm hover:bg-green-800 transition-colors flex items-center justify-center gap-2 group-hover:scale-[1.02] transition-transform">
                             <Navigation className="w-4 h-4" />
                             {lbl('Start This Route', 'এই রুট শুরু করুন')}
                         </button>

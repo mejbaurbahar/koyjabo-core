@@ -339,7 +339,7 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
   }, []);
 
   return (
-    <div className="relative w-full h-full bg-slate-100 dark:bg-slate-800" style={{ touchAction: 'none' }}>
+    <div className="relative w-full h-full bg-kj-chip-bg" style={{ touchAction: 'none' }}>
       {/* 2D Leaflet Map */}
       <div className="w-full h-full">
         <div ref={mapRef} className="w-full h-full" />
@@ -347,17 +347,17 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
 
 
       {!mapReady && (
-        <div className="absolute inset-0 flex items-center justify-center bg-slate-900/80 z-10">
+        <div className="absolute inset-0 flex items-center justify-center bg-kj-panel/80 z-10">
           <div className="flex flex-col items-center gap-3">
-            <div className="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-10 h-10 border-4 border-kj-primary border-t-transparent rounded-full animate-spin" />
             <p className="text-sm text-white/70">{bn ? 'ম্যাপ লোড হচ্ছে...' : 'Loading map...'}</p>
           </div>
         </div>
       )}
 
       {routeSnapped && (
-        <div className="absolute top-2 left-2 bg-white/90 dark:bg-slate-800/90 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 px-2 py-1 rounded-full shadow flex items-center gap-1 z-[500]">
-          <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse inline-block" />
+        <div className="absolute top-2 left-2 bg-white/90 dark:bg-kj-chip-bg/90 text-[10px] font-bold text-kj-primary px-2 py-1 rounded-full shadow flex items-center gap-1 z-[500]">
+          <span className="w-1.5 h-1.5 bg-kj-primary rounded-full animate-pulse inline-block" />
           {bn ? 'রোড-স্ন্যাপড' : 'Road-Snapped'}
         </div>
       )}
@@ -365,7 +365,7 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
       <div className="absolute top-2 right-2 z-[500] flex flex-col gap-2">
         <button
           onClick={() => setShowLayers(v => !v)}
-          className="p-2 bg-white dark:bg-slate-800 rounded-full shadow-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700"
+          className="p-2 bg-kj-panel rounded-full shadow-md text-kj-text-dim hover:bg-kj-chip-bg"
         >
           <Layers className="w-4 h-4" />
         </button>
@@ -374,15 +374,15 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
       </div>
       
       {showLayers && (
-        <div className="absolute top-20 right-2 z-[500] bg-white dark:bg-slate-800 rounded-xl shadow-lg p-3 w-40 text-xs font-medium text-gray-700 dark:text-gray-300">
+        <div className="absolute top-20 right-2 z-[500] bg-kj-panel rounded-xl shadow-lg p-3 w-40 text-xs font-medium text-kj-text-dim">
           <div className="flex items-center gap-2 mb-1">
             <Train className="w-3.5 h-3.5 text-blue-500" />
             <span>{bn ? 'রেল রুট ম্যাপ' : 'Rail Route Map'}</span>
           </div>
-          <p className="text-gray-400 dark:text-gray-500 text-[10px] leading-tight mt-1">
+          <p className="text-kj-text-faint text-[10px] leading-tight mt-1">
             {bn ? `এই রুটে ${drawableStops.length}টি স্টেশন` : `Showing ${drawableStops.length} stations on this route`}
           </p>
-          <button onClick={() => setShowLayers(false)} className="absolute top-1 right-1 p-0.5 text-gray-400 hover:text-gray-600">
+          <button onClick={() => setShowLayers(false)} className="absolute top-1 right-1 p-0.5 text-kj-text-faint hover:text-kj-text-dim">
             <X className="w-3 h-3" />
           </button>
         </div>

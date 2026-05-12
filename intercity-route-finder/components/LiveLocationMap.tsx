@@ -215,22 +215,22 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
 
     return (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-            <div className="bg-white dark:bg-slate-900 w-full max-w-5xl h-[85vh] rounded-3xl shadow-2xl overflow-hidden relative flex flex-col md:flex-row">
+            <div className="bg-kj-panel w-full max-w-5xl h-[85vh] rounded-3xl shadow-2xl overflow-hidden relative flex flex-col md:flex-row">
 
                 {/* Map Container */}
                 <div ref={mapContainerRef} className="flex-1 w-full h-full relative z-0 bg-gray-200" />
 
                 {/* Floating Controls */}
                 <div className="absolute top-4 left-4 z-[400] flex flex-col gap-2">
-                    <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-3 rounded-2xl shadow-lg border border-gray-200/50 dark:border-gray-700/50">
+                    <div className="bg-kj-panel/90 backdrop-blur-md p-3 rounded-2xl shadow-lg border border-kj-line/50 dark:border-gray-700/50">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 relative">
-                                {isOffline ? <WifiOff className="w-5 h-5 text-gray-400" /> : <Wifi className="w-5 h-5" />}
+                                {isOffline ? <WifiOff className="w-5 h-5 text-kj-text-faint" /> : <Wifi className="w-5 h-5" />}
                                 {userLocation && <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-slate-900 rounded-full animate-bounce"></div>}
                             </div>
                             <div>
-                                <h3 className="font-bold text-gray-800 dark:text-gray-200 text-sm">Live Location</h3>
-                                <p className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">
+                                <h3 className="font-bold text-kj-text text-sm">Live Location</h3>
+                                <p className="text-[10px] text-kj-text-dim font-medium">
                                     {userLocation ? 'GPS Signal Active' : 'Acquiring Signal...'}
                                 </p>
                             </div>
@@ -242,7 +242,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                 <div className="absolute top-4 right-16 z-[400]">
                     <button
                         onClick={() => setShowLayerMenu(!showLayerMenu)}
-                        className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2.5 rounded-xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 transition-all active:scale-95 relative"
+                        className="bg-kj-panel/90 backdrop-blur-md p-2.5 rounded-xl shadow-lg border border-kj-line/50 dark:border-gray-700/50 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim transition-all active:scale-95 relative"
                     >
                         <Layers className="w-6 h-6" />
                         {isOffline && (
@@ -253,21 +253,21 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                     </button>
 
                     {showLayerMenu && (
-                        <div className="absolute top-14 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2 rounded-2xl shadow-xl border border-gray-200/50 dark:border-gray-700/50 w-44 flex flex-col gap-1 animate-in slide-in-from-top-2">
+                        <div className="absolute top-14 right-0 bg-kj-panel/90 backdrop-blur-md p-2 rounded-2xl shadow-xl border border-kj-line/50 dark:border-gray-700/50 w-44 flex flex-col gap-1 animate-in slide-in-from-top-2">
                             {isOffline && (
                                 <div className="px-3 py-2 text-[10px] text-red-500 font-bold bg-red-50 dark:bg-red-900/30 rounded-lg mb-1 flex items-center gap-2">
                                     <WifiOff className="w-3 h-3" /> Offline Mode
                                 </div>
                             )}
 
-                            <button onClick={() => setActiveLayer('standard')} className={`text-xs font-bold px-3 py-2 rounded-lg text-left flex items-center gap-2 ${activeLayer === 'standard' ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'}`}>
+                            <button onClick={() => setActiveLayer('standard')} className={`text-xs font-bold px-3 py-2 rounded-lg text-left flex items-center gap-2 ${activeLayer === 'standard' ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : 'text-kj-text-dim hover:bg-kj-chip-bg'}`}>
                                 <MapIcon className="w-4 h-4" /> Standard
                             </button>
 
                             <button
                                 onClick={() => !isOffline && setActiveLayer('satellite')}
                                 disabled={isOffline}
-                                className={`text-xs font-bold px-3 py-2 rounded-lg text-left flex items-center gap-2 justify-between ${activeLayer === 'satellite' ? 'bg-blue-50 text-blue-600' : isOffline ? 'text-gray-400 cursor-not-allowed opacity-60' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'}`}
+                                className={`text-xs font-bold px-3 py-2 rounded-lg text-left flex items-center gap-2 justify-between ${activeLayer === 'satellite' ? 'bg-blue-50 text-blue-600' : isOffline ? 'text-kj-text-faint cursor-not-allowed opacity-60' : 'text-kj-text-dim hover:bg-kj-chip-bg'}`}
                             >
                                 <div className="flex items-center gap-2"><Globe className="w-4 h-4" /> Satellite</div>
                                 {isOffline && <Lock className="w-3 h-3" />}
@@ -276,7 +276,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                             <button
                                 onClick={() => !isOffline && setActiveLayer('terrain')}
                                 disabled={isOffline}
-                                className={`text-xs font-bold px-3 py-2 rounded-lg text-left flex items-center gap-2 justify-between ${activeLayer === 'terrain' ? 'bg-blue-50 text-blue-600' : isOffline ? 'text-gray-400 cursor-not-allowed opacity-60' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'}`}
+                                className={`text-xs font-bold px-3 py-2 rounded-lg text-left flex items-center gap-2 justify-between ${activeLayer === 'terrain' ? 'bg-blue-50 text-blue-600' : isOffline ? 'text-kj-text-faint cursor-not-allowed opacity-60' : 'text-kj-text-dim hover:bg-kj-chip-bg'}`}
                             >
                                 <div className="flex items-center gap-2"><MapIcon className="w-4 h-4" /> Terrain</div>
                                 {isOffline && <Lock className="w-3 h-3" />}
@@ -285,7 +285,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                             <button
                                 onClick={() => !isOffline && setActiveLayer('traffic')}
                                 disabled={isOffline}
-                                className={`text-xs font-bold px-3 py-2 rounded-lg text-left flex items-center gap-2 justify-between ${activeLayer === 'traffic' ? 'bg-blue-50 text-blue-600' : isOffline ? 'text-gray-400 cursor-not-allowed opacity-60' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'}`}
+                                className={`text-xs font-bold px-3 py-2 rounded-lg text-left flex items-center gap-2 justify-between ${activeLayer === 'traffic' ? 'bg-blue-50 text-blue-600' : isOffline ? 'text-kj-text-faint cursor-not-allowed opacity-60' : 'text-kj-text-dim hover:bg-kj-chip-bg'}`}
                             >
                                 <div className="flex items-center gap-2"><Navigation className="w-4 h-4" /> Traffic</div>
                                 {isOffline && <Lock className="w-3 h-3" />}
@@ -294,7 +294,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                             <button
                                 onClick={() => !isOffline && setActiveLayer('dark')}
                                 disabled={isOffline}
-                                className={`text-xs font-bold px-3 py-2 rounded-lg text-left flex items-center gap-2 justify-between ${activeLayer === 'dark' ? 'bg-blue-50 text-blue-600' : isOffline ? 'text-gray-400 cursor-not-allowed opacity-60' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'}`}
+                                className={`text-xs font-bold px-3 py-2 rounded-lg text-left flex items-center gap-2 justify-between ${activeLayer === 'dark' ? 'bg-blue-50 text-blue-600' : isOffline ? 'text-kj-text-faint cursor-not-allowed opacity-60' : 'text-kj-text-dim hover:bg-kj-chip-bg'}`}
                             >
                                 <div className="flex items-center gap-2"><MapIcon className="w-4 h-4" /> Dark Mode</div>
                                 {isOffline && <Lock className="w-3 h-3" />}
@@ -306,7 +306,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                 {/* Close Button */}
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 z-[400] bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2.5 rounded-full shadow-lg border border-gray-200/50 dark:border-gray-700/50 hover:bg-red-50 dark:hover:bg-red-900/30 text-gray-700 dark:text-gray-200 hover:text-red-500 transition-all active:scale-95"
+                    className="absolute top-4 right-4 z-[400] bg-kj-panel/90 backdrop-blur-md p-2.5 rounded-full shadow-lg border border-kj-line/50 dark:border-gray-700/50 hover:bg-red-50 dark:hover:bg-red-900/30 text-kj-text-dim hover:text-red-500 transition-all active:scale-95"
                 >
                     <X className="w-6 h-6" />
                 </button>

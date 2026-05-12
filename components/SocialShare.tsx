@@ -44,17 +44,17 @@ const SocialShare: React.FC<SocialShareProps> = ({ className = '' }) => {
 
     return (
         <div className={`flex items-center gap-2 ${className}`}>
-            <span className="text-sm text-gray-600 dark:text-gray-400 hidden sm:inline">Share:</span>
+            <span className="text-sm text-kj-text-dim hidden sm:inline">Share:</span>
 
             {/* Native Share (Mobile) */}
             {navigator.share && (
                 <button
                     onClick={handleShare}
-                    className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    className="p-2 rounded-full hover:bg-kj-chip-bg transition-colors"
                     title="Share KoyJabo"
                     aria-label="Share KoyJabo"
                 >
-                    <Share2 className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                    <Share2 className="w-5 h-5 text-kj-text-dim" />
                 </button>
             )}
 

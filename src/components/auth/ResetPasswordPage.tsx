@@ -54,13 +54,13 @@ export default function ResetPasswordPage({ token, onSuccess }: ResetPasswordPag
   if (stage === 'processing') {
     return (
       <div className="flex-1 min-h-0 w-full overflow-y-auto overscroll-y-contain touch-pan-y bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10" style={{ WebkitOverflowScrolling: 'touch' }}>
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 max-w-sm w-full text-center mt-12 md:mt-0">
+        <div className="bg-kj-panel rounded-2xl shadow-xl p-10 max-w-sm w-full text-center mt-12 md:mt-0">
           <div className="relative w-16 h-16 mx-auto mb-4">
             <div className="w-16 h-16 rounded-full border-4 border-blue-100 dark:border-slate-600 animate-spin border-t-blue-600" />
             <Clock className="absolute inset-0 m-auto text-blue-600" size={20} />
           </div>
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{t('auth.resettingPassword')}</h2>
-          <p className="text-gray-500 dark:text-gray-400 text-sm">{t('auth.forgotPasswordPage.maxWait')}</p>
+          <h2 className="text-lg font-bold text-kj-text mb-2">{t('auth.resettingPassword')}</h2>
+          <p className="text-kj-text-dim text-sm">{t('auth.forgotPasswordPage.maxWait')}</p>
         </div>
       </div>
     );
@@ -69,10 +69,10 @@ export default function ResetPasswordPage({ token, onSuccess }: ResetPasswordPag
   if (stage === 'done') {
     return (
       <div className="flex-1 min-h-0 w-full overflow-y-auto overscroll-y-contain touch-pan-y bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10" style={{ WebkitOverflowScrolling: 'touch' }}>
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 max-w-sm w-full text-center mt-12 md:mt-0">
+        <div className="bg-kj-panel rounded-2xl shadow-xl p-10 max-w-sm w-full text-center mt-12 md:mt-0">
           <CheckCircle2 size={48} className="text-green-500 mx-auto mb-4" />
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{t('profile.passwordChanged')}</h2>
-          <p className="text-gray-500 dark:text-gray-400 text-sm">{t('auth.redirectingToLogin')}</p>
+          <h2 className="text-xl font-bold text-kj-text mb-2">{t('profile.passwordChanged')}</h2>
+          <p className="text-kj-text-dim text-sm">{t('auth.redirectingToLogin')}</p>
         </div>
       </div>
     );
@@ -85,10 +85,10 @@ export default function ResetPasswordPage({ token, onSuccess }: ResetPasswordPag
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 shadow-lg shadow-blue-200 dark:shadow-blue-900 mb-4">
             <KeyRound className="text-white" size={28} />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('auth.resetPasswordTitle')}</h1>
+          <h1 className="text-2xl font-bold text-kj-text">{t('auth.resetPasswordTitle')}</h1>
         </div>
 
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-slate-700">
+        <div className="bg-kj-panel rounded-2xl shadow-xl p-8 border border-kj-line">
           {error && (
             <div className="mb-5 p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 flex items-start gap-2">
               <AlertCircle size={16} className="text-red-500 mt-0.5 shrink-0" />
@@ -98,7 +98,7 @@ export default function ResetPasswordPage({ token, onSuccess }: ResetPasswordPag
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{t('profile.newPassword')}</label>
+              <label className="block text-sm font-medium text-kj-text-dim mb-1.5">{t('profile.newPassword')}</label>
               <div className="relative">
                 <input
                   type={showPass ? 'text' : 'password'}
@@ -108,16 +108,16 @@ export default function ResetPasswordPage({ token, onSuccess }: ResetPasswordPag
                   required
                   minLength={8}
                   autoComplete="new-password"
-                  className="w-full px-4 py-3 pr-12 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  className="w-full px-4 py-3 pr-12 rounded-xl border border-kj-line dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-kj-text placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                 />
-                <button type="button" onClick={() => setShowPass(p => !p)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1">
+                <button type="button" onClick={() => setShowPass(p => !p)} className="absolute right-3 top-1/2 -translate-y-1/2 text-kj-text-faint hover:text-kj-text-dim p-1">
                   {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{t('profile.confirmNewPassword')}</label>
+              <label className="block text-sm font-medium text-kj-text-dim mb-1.5">{t('profile.confirmNewPassword')}</label>
               <div className="relative">
                 <input
                   type={showPass ? 'text' : 'password'}
@@ -126,7 +126,7 @@ export default function ResetPasswordPage({ token, onSuccess }: ResetPasswordPag
                   placeholder={t('auth.confirmPassPlaceholder')}
                   required
                   autoComplete="new-password"
-                  className="w-full px-4 py-3 pr-12 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  className="w-full px-4 py-3 pr-12 rounded-xl border border-kj-line dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-kj-text placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                 />
                 {confirm && (
                   <span className="absolute right-3 top-1/2 -translate-y-1/2">

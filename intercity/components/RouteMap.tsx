@@ -127,7 +127,7 @@ export const RouteMap: React.FC<RouteMapProps> = ({ steps, userLocation }) => {
 
     // 3. Define Icons
     const startIcon = L.divIcon({
-      html: '<div class="flex items-center justify-center w-full h-full"><div class="w-3 h-3 bg-emerald-500 border-2 border-white rounded-full shadow-lg"></div></div>',
+      html: '<div class="flex items-center justify-center w-full h-full"><div class="w-3 h-3 bg-kj-primary border-2 border-white rounded-full shadow-lg"></div></div>',
       className: '',
       iconSize: [20, 20],
       iconAnchor: [10, 10],
@@ -178,7 +178,7 @@ export const RouteMap: React.FC<RouteMapProps> = ({ steps, userLocation }) => {
             .bindTooltip(step.from, {
               permanent: true,
               direction: 'top',
-              className: 'font-bold text-emerald-700 bg-white border-2 border-emerald-200 shadow-lg px-3 py-1 rounded-lg text-sm',
+              className: 'font-bold text-emerald-700 bg-white border-2 border-kj-primary/30 shadow-lg px-3 py-1 rounded-lg text-sm',
               offset: [0, -15]
             });
         } else {
@@ -187,7 +187,7 @@ export const RouteMap: React.FC<RouteMapProps> = ({ steps, userLocation }) => {
             .addTo(map)
             .bindTooltip(step.from, {
               direction: 'auto',
-              className: 'text-gray-700 bg-white border border-gray-300 px-2 py-0.5 rounded text-xs font-medium shadow'
+              className: 'text-kj-text-dim bg-white border border-kj-line px-2 py-0.5 rounded text-xs font-medium shadow'
             });
         }
 
@@ -385,16 +385,16 @@ export const RouteMap: React.FC<RouteMapProps> = ({ steps, userLocation }) => {
       {/* 3D Toggle */}
       <button
         onClick={() => setIs3D(!is3D)}
-        className="absolute bottom-10 right-4 z-[500] flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 hover:scale-105 transition-all"
+        className="absolute bottom-10 right-4 z-[500] flex items-center gap-2 px-3 py-2 bg-kj-panel rounded-xl shadow-xl border border-kj-line hover:scale-105 transition-all"
       >
         <span className="text-xs font-bold bg-gradient-to-r from-emerald-500 to-blue-500 bg-clip-text text-transparent">
           {is3D ? '2D View' : '3D View'}
         </span>
-        <div className={`w-2 h-2 rounded-full ${is3D ? 'bg-blue-500' : 'bg-emerald-500'}`} />
+        <div className={`w-2 h-2 rounded-full ${is3D ? 'bg-blue-500' : 'bg-kj-primary'}`} />
       </button>
 
       {/* Map Controls Info */}
-      <div className="absolute bottom-2 right-2 z-[400] bg-white/90 backdrop-blur px-2 py-1 rounded text-[10px] text-gray-500 shadow-sm border border-white">
+      <div className="absolute bottom-2 right-2 z-[400] bg-white/90 backdrop-blur px-2 py-1 rounded text-[10px] text-kj-text-dim shadow-sm border border-white">
         {is3D ? 'Right Click to Orbit â€¢ Scroll to Zoom' : 'Scroll to Zoom â€¢ Drag to Pan'}
       </div>
     </div>

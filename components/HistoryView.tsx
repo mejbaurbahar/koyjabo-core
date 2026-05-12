@@ -22,7 +22,7 @@ import { BUS_DATA, STATIONS } from '../constants';
 import { BusRoute } from '../types';
 import { BD_TRAIN_ROUTES, BDTrainRoute } from '../data/bangladeshTrainData';
 import { useLanguage } from '../contexts/LanguageContext';
-import AdSenseAd from './AdSenseAd';
+// import AdSenseAd from './AdSenseAd';
 
 interface HistoryViewProps {
     onBack: () => void;
@@ -165,22 +165,22 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
     };
 
     return (
-        <div className="flex flex-col flex-1 min-h-0 w-full max-w-full overflow-hidden bg-white dark:bg-slate-900 relative">
+        <div className="flex flex-col flex-1 min-h-0 w-full max-w-full overflow-hidden bg-kj-panel relative">
             {/* Confirmation Modal */}
             {showClearConfirm && (
                 <div className="fixed inset-0 bg-black/50 z-[200] flex items-center justify-center p-4 animate-in fade-in duration-200">
-                    <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 w-full max-w-sm shadow-2xl scale-100 animate-in zoom-in-95 duration-200">
+                    <div className="bg-kj-panel rounded-2xl p-6 w-full max-w-sm shadow-2xl scale-100 animate-in zoom-in-95 duration-200">
                         <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
                             <Trash2 className="w-6 h-6 text-red-600 dark:text-red-400" />
                         </div>
-                        <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 text-center mb-2">{t('history.clearHistory')}</h3>
-                        <p className="text-gray-500 dark:text-gray-400 text-center text-sm mb-6">
+                        <h3 className="text-lg font-bold text-kj-text text-center mb-2">{t('history.clearHistory')}</h3>
+                        <p className="text-kj-text-dim text-center text-sm mb-6">
                             {t('history.clearConfirm')}
                         </p>
                         <div className="flex gap-3">
                             <button
                                 onClick={() => setShowClearConfirm(false)}
-                                className="flex-1 py-2.5 rounded-xl font-bold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors"
+                                className="flex-1 py-2.5 rounded-xl font-bold text-kj-text-dim bg-kj-chip-bg hover:bg-kj-chip-bg dark:hover:bg-slate-600 transition-colors"
                             >
                                 {t('history.cancel')}
                             </button>
@@ -196,23 +196,23 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
             )}
 
             {/* Header */}
-            <div className={`shrink-0 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 px-4 md:px-6 pb-4 ${embedded ? 'pt-4' : 'pt-6'}`}>
+            <div className={`shrink-0 bg-kj-panel border-b border-kj-line px-4 md:px-6 pb-4 ${embedded ? 'pt-4' : 'pt-6'}`}>
                 <div>
                     <div className="flex items-center gap-3 mb-4">
 
-                        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-                            <Clock className="w-6 h-6 text-dhaka-green" />
+                        <h1 className="text-2xl font-bold text-kj-text flex items-center gap-2">
+                            <Clock className="w-6 h-6 text-kj-primary" />
                             {t('history.title')}
                         </h1>
                     </div>
 
                     {/* Tabs */}
-                    <div className="flex gap-2 bg-gray-100 dark:bg-slate-800 p-1 rounded-xl">
+                    <div className="flex gap-2 bg-kj-chip-bg p-1 rounded-xl">
                         <button
                             onClick={() => setActiveTab('personal')}
                             className={`flex-1 py-2 px-4 rounded-lg font-bold text-sm transition-all ${activeTab === 'personal'
-                                ? 'bg-white dark:bg-slate-700 text-dhaka-green shadow-sm'
-                                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                                ? 'bg-white dark:bg-slate-700 text-kj-primary shadow-sm'
+                                : 'text-kj-text-dim hover:text-kj-text dark:hover:text-gray-200'
                                 }`}
                         >
                             <div className="flex items-center justify-center gap-2">
@@ -223,8 +223,8 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                         <button
                             onClick={() => setActiveTab('global')}
                             className={`flex-1 py-2 px-4 rounded-lg font-bold text-sm transition-all ${activeTab === 'global'
-                                ? 'bg-white dark:bg-slate-700 text-dhaka-green shadow-sm'
-                                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                                ? 'bg-white dark:bg-slate-700 text-kj-primary shadow-sm'
+                                : 'text-kj-text-dim hover:text-kj-text dark:hover:text-gray-200'
                                 }`}
                         >
                             <div className="flex items-center justify-center gap-2">
@@ -237,7 +237,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
             </div>
             {/* Content */}
             <div className="relative z-10 flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 md:p-6 space-y-6 pb-24 md:pb-6" style={{ WebkitOverflowScrolling: 'touch' }}>
-                <AdSenseAd adSlot="auto" className="my-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+                {/* <AdSenseAd adSlot="auto" className="my-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
                 {activeTab === 'personal' ? (
                     <>
                         {/* Clear History Button */}
@@ -254,23 +254,23 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                         )}
 
                         {/* Today's Activity */}
-                        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-800 p-6 rounded-2xl border border-blue-100 dark:border-slate-700">
-                            <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+                        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-800 p-6 rounded-2xl border border-blue-100 dark:border-kj-line">
+                            <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
                                 <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                                 {t('history.todayActivity')}
                             </h2>
                             <div className="grid grid-cols-3 gap-3">
                                 <div className="bg-white dark:bg-slate-700 p-4 rounded-xl">
                                     <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{formatNumber(todayBuses.length)}</div>
-                                    <div className="text-sm text-gray-600 dark:text-gray-300 mt-1">{t('history.busesSearched')}</div>
+                                    <div className="text-sm text-kj-text-dim mt-1">{t('history.busesSearched')}</div>
                                 </div>
                                 <div className="bg-white dark:bg-slate-700 p-4 rounded-xl">
                                     <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">{formatNumber(todayRoutes.length)}</div>
-                                    <div className="text-sm text-gray-600 dark:text-gray-300 mt-1">{t('history.routesSearched')}</div>
+                                    <div className="text-sm text-kj-text-dim mt-1">{t('history.routesSearched')}</div>
                                 </div>
                                 <div className="bg-white dark:bg-slate-700 p-4 rounded-xl">
-                                    <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">{formatNumber((history.todayTrains || []).length)}</div>
-                                    <div className="text-sm text-gray-600 dark:text-gray-300 mt-1">{t('history.trainsViewed') || 'Trains'}</div>
+                                    <div className="text-3xl font-bold text-kj-primary">{formatNumber((history.todayTrains || []).length)}</div>
+                                    <div className="text-sm text-kj-text-dim mt-1">{t('history.trainsViewed') || 'Trains'}</div>
                                 </div>
                             </div>
                         </div>
@@ -280,9 +280,9 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
 
                         {/* Most Used Buses */}
                         {mostUsedBuses.length > 0 && (
-                            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-                                <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-                                    <TrendingUp className="w-5 h-5 text-dhaka-green" />
+                            <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
+                                <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
+                                    <TrendingUp className="w-5 h-5 text-kj-primary" />
                                     {t('history.mostUsedBuses')}
                                 </h2>
                                 <div className="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
@@ -295,24 +295,24 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                             <div
                                                 key={`bus-${idx}-${busId}`}
                                                 onClick={() => onBusSelect(bus, true)}
-                                                className="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700/50 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-xl cursor-pointer transition-colors group flex-shrink-0"
+                                                className="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700/50 hover:bg-kj-chip-bg rounded-xl cursor-pointer transition-colors group flex-shrink-0"
                                             >
                                                 <div className="flex items-center gap-3">
-                                                    <div className="w-10 h-10 bg-dhaka-green rounded-lg flex items-center justify-center">
+                                                    <div className="w-10 h-10 bg-kj-primary rounded-lg flex items-center justify-center">
                                                         <Bus className="w-5 h-5 text-white" />
                                                     </div>
                                                     <div>
-                                                        <div className="font-bold text-gray-900 dark:text-gray-100 group-hover:text-dhaka-green transition-colors">
+                                                        <div className="font-bold text-kj-text group-hover:text-kj-primary transition-colors">
                                                             {bus.name}
                                                         </div>
-                                                        <div className="text-xs text-gray-500 dark:text-gray-400 font-bengali">{bus.bnName}</div>
+                                                        <div className="text-xs text-kj-text-dim font-bengali">{bus.bnName}</div>
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center gap-2">
-                                                    <span className="px-3 py-1 bg-dhaka-green/10 text-dhaka-green rounded-full text-sm font-bold">
+                                                    <span className="px-3 py-1 bg-kj-primary/10 text-kj-primary rounded-full text-sm font-bold">
                                                         {formatNumber(count)}x
                                                     </span>
-                                                    <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-dhaka-green transition-colors" />
+                                                    <ArrowRight className="w-4 h-4 text-kj-text-faint group-hover:text-kj-primary transition-colors" />
                                                 </div>
                                             </div>
                                         );
@@ -323,9 +323,9 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
 
                         {/* Most Used Routes */}
                         {mostUsedRoutes.length > 0 && (
-                            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-                                <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-                                    <TrendingUp className="w-5 h-5 text-dhaka-red" />
+                            <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
+                                <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
+                                    <TrendingUp className="w-5 h-5 text-kj-accent" />
                                     {t('history.mostUsedRoutes')}
                                 </h2>
                                 <div className="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
@@ -338,18 +338,18 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                                 className="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700/50 rounded-xl flex-shrink-0"
                                             >
                                                 <div className="flex items-center gap-3 flex-1">
-                                                    <div className="w-10 h-10 bg-dhaka-red rounded-lg flex items-center justify-center">
+                                                    <div className="w-10 h-10 bg-kj-accent rounded-lg flex items-center justify-center">
                                                         <MapPin className="w-5 h-5 text-white" />
                                                     </div>
                                                     <div className="flex-1 min-w-0 max-w-[calc(100%-100px)]">
                                                         <div className="flex items-center gap-2 text-sm flex-wrap">
-                                                            <span className="font-bold text-gray-900 dark:text-gray-100 truncate max-w-[120px]">{getStationName(from)}</span>
+                                                            <span className="font-bold text-kj-text truncate max-w-[120px]">{getStationName(from)}</span>
                                                             <ArrowRight className="w-4 h-4 text-dhaka-gray-400 flex-shrink-0" />
-                                                            <span className="font-bold text-gray-900 dark:text-gray-100 truncate max-w-[120px]">{getStationName(to)}</span>
+                                                            <span className="font-bold text-kj-text truncate max-w-[120px]">{getStationName(to)}</span>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <span className="px-3 py-1 bg-dhaka-red/10 text-dhaka-red rounded-full text-sm font-bold ml-2">
+                                                <span className="px-3 py-1 bg-kj-accent/10 text-kj-accent rounded-full text-sm font-bold ml-2">
                                                     {formatNumber(count)}x
                                                 </span>
                                             </div>
@@ -361,9 +361,9 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
 
                         {/* Recent Bus Searches */}
                         {recentBusSearches.length > 0 && (
-                            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-                                <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-                                    <Clock className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                            <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
+                                <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
+                                    <Clock className="w-5 h-5 text-kj-text-dim" />
                                     {t('history.recentBusSearches')}
                                 </h2>
                                 <div className="space-y-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
@@ -374,17 +374,17 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                             <div
                                                 key={index}
                                                 onClick={() => onBusSelect(bus, true)}
-                                                className="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-slate-700/50 rounded-lg cursor-pointer transition-colors group flex-shrink-0"
+                                                className="flex items-center justify-between p-3 hover:bg-kj-chip-bg dark:hover:bg-slate-700/50 rounded-lg cursor-pointer transition-colors group flex-shrink-0"
                                             >
                                                 <div className="flex items-center gap-3">
-                                                    <Bus className="w-4 h-4 text-gray-400" />
+                                                    <Bus className="w-4 h-4 text-kj-text-faint" />
                                                     <div>
-                                                        <div className="font-bold text-sm text-gray-900 dark:text-gray-100 group-hover:text-dhaka-green transition-colors">
+                                                        <div className="font-bold text-sm text-kj-text group-hover:text-kj-primary transition-colors">
                                                             {record.busName}
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <span className="text-xs text-gray-500 dark:text-gray-400">{formatDate(record.timestamp)}</span>
+                                                <span className="text-xs text-kj-text-dim">{formatDate(record.timestamp)}</span>
                                             </div>
                                         );
                                     })}
@@ -394,26 +394,26 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
 
                         {/* Recent Route Searches */}
                         {recentRouteSearches.length > 0 && (
-                            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-                                <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-                                    <Clock className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                            <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
+                                <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
+                                    <Clock className="w-5 h-5 text-kj-text-dim" />
                                     {t('history.recentRouteSearches')}
                                 </h2>
                                 <div className="space-y-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                                     {recentRouteSearches.map((record, index) => (
                                         <div
                                             key={index}
-                                            className="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-slate-700/50 rounded-lg transition-colors flex-shrink-0"
+                                            className="flex items-center justify-between p-3 hover:bg-kj-chip-bg dark:hover:bg-slate-700/50 rounded-lg transition-colors flex-shrink-0"
                                         >
                                             <div className="flex items-center gap-2 flex-1 min-w-0">
-                                                <MapPin className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                                                <MapPin className="w-4 h-4 text-kj-text-faint flex-shrink-0" />
                                                 <div className="flex items-center gap-2 text-sm min-w-0">
-                                                    <span className="font-bold text-gray-900 dark:text-gray-100 truncate">{getStationName(record.from)}</span>
-                                                    <ArrowRight className="w-3 h-3 text-gray-400 flex-shrink-0" />
-                                                    <span className="font-bold text-gray-900 dark:text-gray-100 truncate">{getStationName(record.to)}</span>
+                                                    <span className="font-bold text-kj-text truncate">{getStationName(record.from)}</span>
+                                                    <ArrowRight className="w-3 h-3 text-kj-text-faint flex-shrink-0" />
+                                                    <span className="font-bold text-kj-text truncate">{getStationName(record.to)}</span>
                                                 </div>
                                             </div>
-                                            <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">{formatDate(record.timestamp)}</span>
+                                            <span className="text-xs text-kj-text-dim ml-2">{formatDate(record.timestamp)}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -422,8 +422,8 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
 
                         {/* Recent Intercity Searches */}
                         {(recentIntercitySearches || []).length > 0 && (
-                            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-                                <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+                            <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
+                                <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
                                     <TrendingUp className="w-5 h-5 text-purple-600" />
                                     {t('history.recentIntercityTrips')}
                                 </h2>
@@ -434,19 +434,19 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                         return (
                                             <div
                                                 key={index}
-                                                className="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-slate-700/50 rounded-lg transition-colors flex-shrink-0"
+                                                className="flex items-center justify-between p-3 hover:bg-kj-chip-bg dark:hover:bg-slate-700/50 rounded-lg transition-colors flex-shrink-0"
                                             >
                                                 <div className="flex items-center gap-2 flex-1 min-w-0">
                                                     <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
                                                         {record.transportType === 'AIR' ? <TrendingUp className="w-4 h-4 text-purple-600" /> : <Bus className="w-4 h-4 text-purple-600" />}
                                                     </div>
                                                     <div className="flex items-center gap-2 text-sm min-w-0">
-                                                        <span className="font-bold text-gray-900 dark:text-gray-100 truncate">{record.from}</span>
-                                                        <ArrowRight className="w-3 h-3 text-gray-400 flex-shrink-0" />
-                                                        <span className="font-bold text-gray-900 dark:text-gray-100 truncate">{record.to}</span>
+                                                        <span className="font-bold text-kj-text truncate">{record.from}</span>
+                                                        <ArrowRight className="w-3 h-3 text-kj-text-faint flex-shrink-0" />
+                                                        <span className="font-bold text-kj-text truncate">{record.to}</span>
                                                     </div>
                                                 </div>
-                                                <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">{formatDate(record.timestamp || Date.now())}</span>
+                                                <span className="text-xs text-kj-text-dim ml-2">{formatDate(record.timestamp || Date.now())}</span>
                                             </div>
                                         );
                                     })}
@@ -456,9 +456,9 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
 
                         {/* Most Used Trains */}
                         {mostUsedTrains.length > 0 && (
-                            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-                                <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-                                    <TrendingUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                            <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
+                                <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
+                                    <TrendingUp className="w-5 h-5 text-kj-primary" />
                                     {t('history.mostUsedTrains') || 'Most Viewed Trains'}
                                 </h2>
                                 <div className="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
@@ -468,22 +468,22 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                             <div
                                                 key={idx}
                                                 onClick={() => train && onTrainSelect && onTrainSelect(train)}
-                                                className={`flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700/50 rounded-xl transition-colors group ${train && onTrainSelect ? 'cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700' : ''}`}
+                                                className={`flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700/50 rounded-xl transition-colors group ${train && onTrainSelect ? 'cursor-pointer hover:bg-kj-chip-bg' : ''}`}
                                             >
                                                 <div className="flex items-center gap-3">
-                                                    <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center">
+                                                    <div className="w-10 h-10 bg-kj-primary rounded-lg flex items-center justify-center">
                                                         <Train className="w-5 h-5 text-white" />
                                                     </div>
                                                     <div>
-                                                        <div className={`font-bold text-gray-900 dark:text-gray-100 text-sm group-hover:text-emerald-500 transition-colors`}>{item.trainName}</div>
-                                                        {train && <div className="text-[10px] text-gray-500 dark:text-gray-400">#{train.number}</div>}
+                                                        <div className={`font-bold text-kj-text text-sm group-hover:text-kj-primary transition-colors`}>{item.trainName}</div>
+                                                        {train && <div className="text-[10px] text-kj-text-dim">#{train.number}</div>}
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center gap-2">
-                                                    <span className="px-3 py-1 bg-emerald-600/10 text-emerald-600 dark:text-emerald-400 rounded-full text-sm font-bold">
+                                                    <span className="px-3 py-1 bg-kj-primary/10 text-kj-primary rounded-full text-sm font-bold">
                                                         {formatNumber(item.count)}x
                                                     </span>
-                                                    {train && onTrainSelect && <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-emerald-500 transition-colors" />}
+                                                    {train && onTrainSelect && <ArrowRight className="w-4 h-4 text-kj-text-faint group-hover:text-kj-primary transition-colors" />}
                                                 </div>
                                             </div>
                                         );
@@ -494,9 +494,9 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
 
                         {/* Recent Train Views */}
                         {recentTrainSearches.length > 0 && (
-                            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-                                <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-                                    <Train className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                            <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
+                                <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
+                                    <Train className="w-5 h-5 text-kj-primary" />
                                     {t('history.recentTrainViews') || 'Recent Train Views'}
                                 </h2>
                                 <div className="space-y-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
@@ -506,20 +506,20 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                             <div
                                                 key={index}
                                                 onClick={() => train && onTrainSelect && onTrainSelect(train)}
-                                                className={`flex items-center justify-between p-3 rounded-lg transition-colors group ${train && onTrainSelect ? 'cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700/50' : ''}`}
+                                                className={`flex items-center justify-between p-3 rounded-lg transition-colors group ${train && onTrainSelect ? 'cursor-pointer hover:bg-kj-chip-bg dark:hover:bg-slate-700/50' : ''}`}
                                             >
                                                 <div className="flex items-center gap-3 flex-1 min-w-0">
-                                                    <Train className="w-4 h-4 text-emerald-500 shrink-0" />
+                                                    <Train className="w-4 h-4 text-kj-primary shrink-0" />
                                                     <div className="min-w-0">
-                                                        <div className="font-bold text-sm text-gray-900 dark:text-gray-100 truncate group-hover:text-emerald-500 transition-colors">
+                                                        <div className="font-bold text-sm text-kj-text truncate group-hover:text-kj-primary transition-colors">
                                                             {record.trainName}
                                                         </div>
-                                                        <div className="text-xs text-gray-400 dark:text-gray-500">#{record.trainNumber}</div>
+                                                        <div className="text-xs text-kj-text-faint">#{record.trainNumber}</div>
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-xs text-gray-500 dark:text-gray-400 ml-2 shrink-0">{formatDate(record.timestamp)}</span>
-                                                    {train && onTrainSelect && <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-emerald-500 transition-colors" />}
+                                                    <span className="text-xs text-kj-text-dim ml-2 shrink-0">{formatDate(record.timestamp)}</span>
+                                                    {train && onTrainSelect && <ArrowRight className="w-4 h-4 text-kj-text-faint group-hover:text-kj-primary transition-colors" />}
                                                 </div>
                                             </div>
                                         );
@@ -530,23 +530,23 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
 
                         {/* Feature Activity */}
                         {(history.communityFeatureHistory || []).length > 0 && (
-                            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-                                <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+                            <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
+                                <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
                                     <Zap className="w-5 h-5 text-amber-500" />
                                     {t('history.featureActivity') || 'Feature Activity'}
                                 </h2>
                                 <div className="space-y-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                                     {[...(history.communityFeatureHistory || [])].reverse().slice(0, 50).map((record, index) => (
-                                        <div key={index} className="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-slate-700/50 rounded-lg transition-colors">
+                                        <div key={index} className="flex items-center justify-between p-3 hover:bg-kj-chip-bg dark:hover:bg-slate-700/50 rounded-lg transition-colors">
                                             <div className="flex items-center gap-3">
                                                 <div className="w-8 h-8 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
                                                     <Zap className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                                                 </div>
-                                                <span className="font-medium text-sm text-gray-900 dark:text-gray-100">
+                                                <span className="font-medium text-sm text-kj-text">
                                                     {FEATURE_LABELS[record.feature] || record.feature}
                                                 </span>
                                             </div>
-                                            <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">{formatDate(record.timestamp)}</span>
+                                            <span className="text-xs text-kj-text-dim ml-2">{formatDate(record.timestamp)}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -556,9 +556,9 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                         {/* Empty State */}
                         {recentBusSearches.length === 0 && recentRouteSearches.length === 0 && recentIntercitySearches.length === 0 && recentTrainSearches.length === 0 && (history.communityFeatureHistory || []).length === 0 && (
                             <div className="text-center py-12">
-                                <Clock className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-                                <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">{t('history.noHistoryYet')}</h3>
-                                <p className="text-gray-500 dark:text-gray-400">
+                                <Clock className="w-16 h-16 text-kj-text-faint mx-auto mb-4" />
+                                <h3 className="text-lg font-bold text-kj-text mb-2">{t('history.noHistoryYet')}</h3>
+                                <p className="text-kj-text-dim">
                                     {t('history.startSearching')}
                                 </p>
                             </div>
@@ -567,8 +567,8 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                 ) : (
                     <>
                         {/* Global Statistics */}
-                        <div className="mt-6 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-slate-800 dark:to-slate-800 p-6 rounded-2xl border border-green-100 dark:border-slate-700 flex flex-col gap-4">
-                            <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+                        <div className="mt-6 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-slate-800 dark:to-slate-800 p-6 rounded-2xl border border-green-100 dark:border-kj-line flex flex-col gap-4">
+                            <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
                                 <Users className="w-5 h-5 text-green-600 dark:text-green-400" />
                                 {t('history.communityStats')}
                                 <span className="ml-auto text-xs text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded-full flex items-center gap-1">
@@ -587,7 +587,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                             <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                                                 {formatNumber(globalStats.totalVisits)}
                                             </div>
-                                            <div className="text-xs text-gray-500 dark:text-gray-400">{t('history.totalVisits')}</div>
+                                            <div className="text-xs text-kj-text-dim">{t('history.totalVisits')}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -601,23 +601,23 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                             <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                                                 {formatNumber(globalStats.todayVisits)}
                                             </div>
-                                            <div className="text-xs text-gray-500 dark:text-gray-400">{t('history.todayVisits')}</div>
+                                            <div className="text-xs text-kj-text-dim">{t('history.todayVisits')}</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <AdSenseAd adSlot="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+                        {/* <AdSenseAd adSlot="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
                         {/* Info Card */}
-                        <div className="bg-blue-50 dark:bg-slate-800 border border-blue-100 dark:border-slate-700 rounded-2xl p-6">
+                        <div className="bg-blue-50 dark:bg-kj-chip-bg border border-blue-100 dark:border-kj-line rounded-2xl p-6">
                             <div className="flex gap-3">
                                 <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
                                     <Eye className="w-5 h-5 text-blue-600" />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-2">{t('history.realtimeUpdates')}</h3>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                    <h3 className="font-bold text-kj-text mb-2">{t('history.realtimeUpdates')}</h3>
+                                    <p className="text-sm text-kj-text-dim leading-relaxed">
                                         {t('history.realtimeDescription')}
                                     </p>
                                 </div>
@@ -625,16 +625,16 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                         </div>
 
                         {/* Community Impact */}
-                        <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
-                            <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">{t('history.communityImpact')}</h2>
+                        <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
+                            <h2 className="text-lg font-bold text-kj-text mb-4">{t('history.communityImpact')}</h2>
                             <div className="space-y-4">
                                 <div className="flex items-start gap-3">
                                     <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
                                         <Bus className="w-4 h-4 text-green-600" />
                                     </div>
                                     <div>
-                                        <div className="font-bold text-gray-900 dark:text-gray-100">{t('history.helpingCommuters')}</div>
-                                        <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                        <div className="font-bold text-kj-text">{t('history.helpingCommuters')}</div>
+                                        <div className="text-sm text-kj-text-dim mt-1">
                                             {t('history.helpingDescription')}
                                         </div>
                                     </div>
@@ -644,8 +644,8 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                         <MapPin className="w-4 h-4 text-blue-600" />
                                     </div>
                                     <div>
-                                        <div className="font-bold text-gray-900 dark:text-gray-100">{t('history.growingCommunity')}</div>
-                                        <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                        <div className="font-bold text-kj-text">{t('history.growingCommunity')}</div>
+                                        <div className="text-sm text-kj-text-dim mt-1">
                                             {t('history.growingDescription')}
                                         </div>
                                     </div>

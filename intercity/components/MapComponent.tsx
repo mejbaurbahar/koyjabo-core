@@ -201,7 +201,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
       });
       window.L.marker(coords, { icon }).bindPopup(`
         <div class="p-2 font-sans">
-          <p class="font-bold text-slate-800">${label}</p>
+          <p class="font-bold text-kj-text">${label}</p>
         </div>
       `).addTo(layers);
     };
@@ -473,12 +473,12 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
       {/* 3D Toggle */}
       <button
         onClick={() => setIs3D(!is3D)}
-        className="absolute bottom-14 right-4 z-[500] flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 hover:scale-105 transition-all"
+        className="absolute bottom-14 right-4 z-[500] flex items-center gap-2 px-3 py-2 bg-kj-panel rounded-xl shadow-xl border border-kj-line hover:scale-105 transition-all"
       >
         <span className="text-[10px] font-black uppercase tracking-widest bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
           {is3D ? '2D Map' : '3D Globe'}
         </span>
-        <div className={`w-2 h-2 rounded-full ${is3D ? 'bg-blue-600' : 'bg-emerald-500'} animate-pulse`} />
+        <div className={`w-2 h-2 rounded-full ${is3D ? 'bg-blue-600' : 'bg-kj-primary'} animate-pulse`} />
       </button>
     </div>
   );

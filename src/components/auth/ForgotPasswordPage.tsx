@@ -90,10 +90,10 @@ export default function ForgotPasswordPage({ onBack }: ForgotPasswordPageProps) 
   if (stage === 'done') {
     return (
       <div className="flex-1 min-h-0 w-full flex flex-col items-center justify-center bg-gradient-to-br from-green-50 via-white to-emerald-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 p-4">
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 max-w-sm w-full text-center">
+        <div className="bg-kj-panel rounded-2xl shadow-xl p-10 max-w-sm w-full text-center">
           <CheckCircle2 size={52} className="text-green-500 mx-auto mb-4" />
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{t('auth.forgotPasswordPage.passwordReset')}</h2>
-          <p className="text-gray-500 dark:text-gray-400 text-sm">{t('auth.forgotPasswordPage.passwordUpdated')}</p>
+          <h2 className="text-xl font-bold text-kj-text mb-2">{t('auth.forgotPasswordPage.passwordReset')}</h2>
+          <p className="text-kj-text-dim text-sm">{t('auth.forgotPasswordPage.passwordUpdated')}</p>
         </div>
       </div>
     );
@@ -103,13 +103,13 @@ export default function ForgotPasswordPage({ onBack }: ForgotPasswordPageProps) 
   if (stage === 'processing') {
     return (
       <div className="flex-1 min-h-0 w-full flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 p-4">
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 max-w-xs w-full text-center">
+        <div className="bg-kj-panel rounded-2xl shadow-xl p-10 max-w-xs w-full text-center">
           <div className="relative w-16 h-16 mx-auto mb-5">
             <div className="absolute inset-0 rounded-full border-4 border-blue-100 dark:border-slate-600 animate-spin border-t-blue-600" />
             <Clock className="absolute inset-0 m-auto text-blue-600 dark:text-blue-400" size={18} />
           </div>
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{t('auth.forgotPasswordPage.sendingLink')}</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">{t('auth.forgotPasswordPage.maxWait')}</p>
+          <h2 className="text-lg font-bold text-kj-text mb-2">{t('auth.forgotPasswordPage.sendingLink')}</h2>
+          <p className="text-sm text-kj-text-dim">{t('auth.forgotPasswordPage.maxWait')}</p>
         </div>
       </div>
     );
@@ -118,19 +118,19 @@ export default function ForgotPasswordPage({ onBack }: ForgotPasswordPageProps) 
   // ── Sent — waiting for user to click link ──
   if (stage === 'sent') {
     return (
-      <div className="flex-1 min-h-0 w-full overflow-y-auto overscroll-y-contain touch-pan-y bg-white dark:bg-slate-900 md:bg-gradient-to-br md:from-blue-50 md:via-white md:to-indigo-50 md:dark:from-slate-900 md:dark:via-slate-800 md:dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-28 md:pt-4" style={{ WebkitOverflowScrolling: 'touch' }}>
+      <div className="flex-1 min-h-0 w-full overflow-y-auto overscroll-y-contain touch-pan-y bg-kj-panel md:bg-gradient-to-br md:from-blue-50 md:via-white md:to-indigo-50 md:dark:from-slate-900 md:dark:via-slate-800 md:dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-28 md:pt-4" style={{ WebkitOverflowScrolling: 'touch' }}>
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 shadow-lg shadow-blue-200 dark:shadow-blue-900 mb-4">
               <Mail className="text-white" size={28} />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('auth.forgotPasswordPage.checkEmail')}</h1>
-            <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">
-              {t('auth.forgotPasswordPage.sentLinkTo')} <strong className="text-gray-700 dark:text-gray-300">{email}</strong>
+            <h1 className="text-2xl font-bold text-kj-text">{t('auth.forgotPasswordPage.checkEmail')}</h1>
+            <p className="text-kj-text-dim mt-1 text-sm">
+              {t('auth.forgotPasswordPage.sentLinkTo')} <strong className="text-kj-text-dim">{email}</strong>
             </p>
           </div>
 
-          <div className="md:bg-white md:dark:bg-slate-800 md:rounded-2xl md:shadow-xl md:p-8 md:border md:border-gray-100 md:dark:border-slate-700">
+          <div className="md:bg-white md:dark:bg-kj-chip-bg md:rounded-2xl md:shadow-xl md:p-8 md:border md:border-kj-line md:dark:border-kj-line">
             {error && (
               <div className="mx-6 md:mx-0 mb-5 p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 flex items-start gap-2">
                 <AlertCircle size={16} className="text-red-500 mt-0.5 shrink-0" />
@@ -163,9 +163,9 @@ export default function ForgotPasswordPage({ onBack }: ForgotPasswordPageProps) 
               )}
 
               <div className="text-center pt-2">
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">{t('auth.forgotPasswordPage.didntReceive')}</p>
+                <p className="text-sm text-kj-text-dim mb-2">{t('auth.forgotPasswordPage.didntReceive')}</p>
                 {resendCooldown > 0 ? (
-                  <p className="text-sm text-gray-400 dark:text-gray-500">{t('auth.forgotPasswordPage.resendIn', { seconds: resendCooldown })}</p>
+                  <p className="text-sm text-kj-text-faint">{t('auth.forgotPasswordPage.resendIn', { seconds: resendCooldown })}</p>
                 ) : (
                   <button
                     onClick={handleResend}
@@ -179,7 +179,7 @@ export default function ForgotPasswordPage({ onBack }: ForgotPasswordPageProps) 
 
               <button
                 onClick={onBack}
-                className="w-full py-2.5 rounded-xl border border-gray-200 dark:border-slate-600 text-gray-600 dark:text-gray-400 text-sm font-medium hover:bg-gray-50 dark:hover:bg-slate-700 transition flex items-center justify-center gap-2"
+                className="w-full py-2.5 rounded-xl border border-kj-line dark:border-slate-600 text-kj-text-dim text-sm font-medium hover:bg-kj-chip-bg dark:hover:bg-slate-700 transition flex items-center justify-center gap-2"
               >
                 <ArrowLeft size={16} />
                 {t('auth.forgotPasswordPage.returnToLogin')}
@@ -193,11 +193,11 @@ export default function ForgotPasswordPage({ onBack }: ForgotPasswordPageProps) 
 
   // ── Form ──
   return (
-    <div className="flex-1 min-h-0 w-full overflow-y-auto overscroll-y-contain touch-pan-y bg-white dark:bg-slate-900 md:bg-gradient-to-br md:from-blue-50 md:via-white md:to-indigo-50 md:dark:from-slate-900 md:dark:via-slate-800 md:dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-28 md:pt-4" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="flex-1 min-h-0 w-full overflow-y-auto overscroll-y-contain touch-pan-y bg-kj-panel md:bg-gradient-to-br md:from-blue-50 md:via-white md:to-indigo-50 md:dark:from-slate-900 md:dark:via-slate-800 md:dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-28 md:pt-4" style={{ WebkitOverflowScrolling: 'touch' }}>
       <div className="w-full max-w-md">
         <button
           onClick={onBack}
-          className="md:hidden flex items-center gap-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mb-6 transition"
+          className="md:hidden flex items-center gap-2 text-kj-text-dim hover:text-kj-text-dim dark:text-kj-text-faint dark:hover:text-gray-200 mb-6 transition"
         >
           <ArrowLeft size={18} />
           {t('auth.forgotPasswordPage.returnToLogin')}
@@ -207,11 +207,11 @@ export default function ForgotPasswordPage({ onBack }: ForgotPasswordPageProps) 
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 shadow-lg shadow-blue-200 dark:shadow-blue-900 mb-4">
             <Mail className="text-white" size={28} />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('auth.forgotPasswordPage.passwordReset')}</h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">{t('auth.forgotPasswordPage.description')}</p>
+          <h1 className="text-2xl font-bold text-kj-text">{t('auth.forgotPasswordPage.passwordReset')}</h1>
+          <p className="text-kj-text-dim mt-1">{t('auth.forgotPasswordPage.description')}</p>
         </div>
 
-        <div className="md:bg-white md:dark:bg-slate-800 md:rounded-2xl md:shadow-xl md:p-8 md:border md:border-gray-100 md:dark:border-slate-700">
+        <div className="md:bg-white md:dark:bg-kj-chip-bg md:rounded-2xl md:shadow-xl md:p-8 md:border md:border-kj-line md:dark:border-kj-line">
           {error && (
             <div className="mx-6 md:mx-0 mb-5 p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 flex items-start gap-2">
               <AlertCircle size={16} className="text-red-500 mt-0.5 shrink-0" />
@@ -221,7 +221,7 @@ export default function ForgotPasswordPage({ onBack }: ForgotPasswordPageProps) 
 
           <form onSubmit={handleEmailSubmit} className="space-y-5 p-6 md:p-0">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+              <label className="block text-sm font-medium text-kj-text-dim mb-1.5">
                 {t('auth.forgotPasswordPage.registeredEmail')}
               </label>
               <input
@@ -231,7 +231,7 @@ export default function ForgotPasswordPage({ onBack }: ForgotPasswordPageProps) 
                 placeholder={t('auth.emailPlaceholder')}
                 required
                 autoComplete="email"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                className="w-full px-4 py-3 rounded-xl border border-kj-line dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-kj-text placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               />
             </div>
 

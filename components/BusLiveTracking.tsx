@@ -66,19 +66,19 @@ export default function BusLiveTracking({ busId, busName, stops = [], onBack }: 
   const latest = reports[reports.length - 1];
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 bg-slate-50 dark:bg-slate-900 overflow-hidden">
-      <div className="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
-        <button onClick={onBack} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full">
-          <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+    <div className="flex flex-col flex-1 min-h-0 bg-kj-bg overflow-hidden">
+      <div className="flex items-center gap-3 p-4 bg-kj-panel border-b border-kj-line shrink-0">
+        <button onClick={onBack} className="p-2 -ml-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full">
+          <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
         </button>
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center">
           <Radio className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1">
-          <h1 className="text-lg font-bold text-gray-900 dark:text-white">{t('community.liveLocationTitle')}</h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{busName} · {t('community.reportsCount', { count: formatNumber(reports.length) })}</p>
+          <h1 className="text-lg font-bold text-kj-text">{t('community.liveLocationTitle')}</h1>
+          <p className="text-xs text-kj-text-dim">{busName} · {t('community.reportsCount', { count: formatNumber(reports.length) })}</p>
         </div>
-        <button onClick={refresh} disabled={refreshing} className="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full">
+        <button onClick={refresh} disabled={refreshing} className="p-2 text-kj-text-dim hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full">
           <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
         </button>
         <button onClick={() => setShowForm(!showForm)}
@@ -104,21 +104,21 @@ export default function BusLiveTracking({ busId, busName, stops = [], onBack }: 
         )}
 
         {showForm && (
-          <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 space-y-3">
-            <h3 className="font-bold text-gray-900 dark:text-white text-sm">{t('community.shareBusLocation')}</h3>
+          <form onSubmit={handleSubmit} className="bg-kj-panel rounded-2xl p-4 border border-kj-line space-y-3">
+            <h3 className="font-bold text-kj-text text-sm">{t('community.shareBusLocation')}</h3>
             {stops.length > 0 ? (
               <select value={stopId} onChange={e => setStopId(e.target.value)}
-                className="w-full bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white">
+                className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white">
                 <option value="">{t('community.pickStop')}</option>
                 {stops.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
               </select>
             ) : (
               <input value={stopName} onChange={e => setStopName(e.target.value)}
                 placeholder={t('community.typeStopName')}
-                className="w-full bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white" required />
+                className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white" required />
             )}
             <select value={heading} onChange={e => setHeading(e.target.value)}
-              className="w-full bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white">
+              className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white">
               <option value="">{t('community.pickDirectionOptional')}</option>
               {HEADING_OPTS.map(h => <option key={h} value={h}>{t('community.headingTowards', { heading: h })}</option>)}
             </select>
@@ -128,32 +128,32 @@ export default function BusLiveTracking({ busId, busName, stops = [], onBack }: 
                 {submitting ? t('community.submitting') : t('community.submit')}
               </button>
               <button type="button" onClick={() => setShowForm(false)}
-                className="px-4 py-2.5 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 font-semibold text-sm rounded-xl">{t('common.cancel')}</button>
+                className="px-4 py-2.5 bg-kj-chip-bg text-kj-text-dim font-semibold text-sm rounded-xl">{t('common.cancel')}</button>
             </div>
           </form>
         )}
 
-        {loading && <div className="text-center py-10 text-gray-400">{t('common.loading')}</div>}
+        {loading && <div className="text-center py-10 text-kj-text-faint">{t('common.loading')}</div>}
 
         {!loading && reports.length === 0 && !showForm && (
           <div className="text-center py-12">
-            <Navigation className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-            <p className="text-gray-500 dark:text-gray-400 font-medium">{t('community.noLiveReports')}</p>
-            <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">{t('community.promptReportIfSeen')}</p>
+            <Navigation className="w-12 h-12 text-kj-text-faint mx-auto mb-3" />
+            <p className="text-kj-text-dim font-medium">{t('community.noLiveReports')}</p>
+            <p className="text-sm text-kj-text-faint mt-1">{t('community.promptReportIfSeen')}</p>
           </div>
         )}
 
         {reports.slice().reverse().map((r, i) => (
-          <div key={i} className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700">
+          <div key={i} className="bg-kj-panel rounded-2xl p-4 border border-kj-line">
             <div className="flex items-start justify-between gap-2">
               <div className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
                 <div>
-                  <p className="font-semibold text-gray-900 dark:text-white text-sm">{r.stopName}</p>
-                  {r.heading && <p className="text-xs text-gray-500 dark:text-gray-400">{t('community.headingTowards', { heading: r.heading })}</p>}
+                  <p className="font-semibold text-kj-text text-sm">{r.stopName}</p>
+                  {r.heading && <p className="text-xs text-kj-text-dim">{t('community.headingTowards', { heading: r.heading })}</p>}
                 </div>
               </div>
-              <span className="text-xs text-gray-400 dark:text-gray-500 shrink-0">{timeAgo(r.timestamp, t, formatNumber)}</span>
+              <span className="text-xs text-kj-text-faint shrink-0">{timeAgo(r.timestamp, t, formatNumber)}</span>
             </div>
           </div>
         ))}

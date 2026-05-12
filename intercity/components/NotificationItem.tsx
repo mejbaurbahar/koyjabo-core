@@ -78,7 +78,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onClo
     return (
         <div
             onClick={handleClick}
-            className={`px-4 py-3 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors ${!isRead ? 'bg-blue-50/30 dark:bg-blue-900/10 cursor-pointer' : ''
+            className={`px-4 py-3 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg transition-colors ${!isRead ? 'bg-blue-50/30 dark:bg-blue-900/10 cursor-pointer' : ''
                 }`}
         >
             <div className="flex items-start gap-3">
@@ -101,18 +101,18 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onClo
                     <div className="flex items-start justify-between gap-2 mb-1">
                         <h4
                             className={`text-sm leading-tight ${isRead
-                                ? 'text-gray-700 dark:text-gray-300'
-                                : 'text-gray-900 dark:text-gray-100 font-bold'
+                                ? 'text-kj-text-dim'
+                                : 'text-kj-text font-bold'
                                 }`}
                         >
                             {displayTitle}
                         </h4>
 
                     </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-2 mb-1">
+                    <p className="text-xs text-kj-text-dim leading-relaxed line-clamp-2 mb-1">
                         {displayMessage}
                     </p>
-                    <span className="text-[10px] text-gray-400 dark:text-gray-500">
+                    <span className="text-[10px] text-kj-text-faint">
                         {formatTime(notification.createdAt)}
                     </span>
                 </div>

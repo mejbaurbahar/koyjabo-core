@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { ArrowLeft, MapPin, Bus, Search, ChevronLeft, ChevronDown, ChevronUp } from 'lucide-react';
-import AdSenseAd from './AdSenseAd';
+// import AdSenseAd from './AdSenseAd';
 import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
 
@@ -680,21 +680,21 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
     const landmarks = language === 'bn' ? selected.landmarks : selected.landmarksEn;
 
     return (
-      <div className="flex flex-col flex-1 min-h-0 bg-slate-50 dark:bg-slate-900 overflow-hidden">
-        <div className="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
-          <button onClick={() => setSelected(null)} className="flex items-center gap-1 px-3 py-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-xl text-gray-600 dark:text-gray-400 font-medium text-sm">
+      <div className="flex flex-col flex-1 min-h-0 bg-kj-bg overflow-hidden">
+        <div className="flex items-center gap-3 p-4 bg-kj-panel border-b border-kj-line shrink-0">
+          <button onClick={() => setSelected(null)} className="flex items-center gap-1 px-3 py-2 -ml-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-xl text-kj-text-dim font-medium text-sm">
             <ChevronLeft className="w-5 h-5" />
             {lbl('Back', 'ফিরে যান')}
           </button>
           <span className="text-2xl">{selected.icon}</span>
           <div>
-            <h1 className="text-lg font-bold text-gray-900 dark:text-white">{language === 'bn' ? selected.area : selected.areaEn}</h1>
-            <p className="text-xs text-gray-500 dark:text-gray-400">{language === 'bn' ? selected.areaEn : selected.area} · {selected.division}</p>
+            <h1 className="text-lg font-bold text-kj-text">{language === 'bn' ? selected.area : selected.areaEn}</h1>
+            <p className="text-xs text-kj-text-dim">{language === 'bn' ? selected.areaEn : selected.area} · {selected.division}</p>
           </div>
         </div>
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 space-y-4 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
-          <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700">
-            <p className="text-sm text-gray-700 dark:text-gray-300">{desc}</p>
+          <div className="bg-kj-panel rounded-2xl p-4 border border-kj-line">
+            <p className="text-sm text-kj-text-dim">{desc}</p>
           </div>
           <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 border border-blue-100 dark:border-blue-800">
             <h3 className="font-bold text-blue-900 dark:text-blue-300 mb-2 flex items-center gap-2"><span>🚇</span> {lbl('Metro / MRT Access', 'মেট্রো স্টেশন')}</h3>
@@ -725,36 +725,36 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
   }
 
   return (
-    <div className="flex flex-col h-full min-h-0 bg-slate-50 dark:bg-slate-900 overflow-hidden">
-      <div className="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
-        <button onClick={onBack} className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full">
-          <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+    <div className="flex flex-col h-full min-h-0 bg-kj-bg overflow-hidden">
+      <div className="flex items-center gap-3 p-4 bg-kj-panel border-b border-kj-line shrink-0">
+        <button onClick={onBack} className="p-2 -ml-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full">
+          <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
         </button>
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shrink-0">
           <MapPin className="w-5 h-5 text-white" />
         </div>
         <div>
-          <h1 className="text-lg font-bold text-gray-900 dark:text-white">{lbl('Area Guides', 'এলাকাভিত্তিক গাইড')}</h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{lbl('Bangladesh Transport Guides', 'বাংলাদেশ পরিবহন গাইড')} · {MERGED_GUIDES.length}</p>
+          <h1 className="text-lg font-bold text-kj-text">{lbl('Area Guides', 'এলাকাভিত্তিক গাইড')}</h1>
+          <p className="text-xs text-kj-text-dim">{lbl('Bangladesh Transport Guides', 'বাংলাদেশ পরিবহন গাইড')} · {MERGED_GUIDES.length}</p>
         </div>
       </div>
 
 
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y px-4 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
-        <AdSenseAd adSlot="auto" className="mt-2 mb-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+        {/* <AdSenseAd adSlot="auto" className="mt-2 mb-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
         {search ? (
           <div className="grid grid-cols-2 gap-3 content-start">
             {filtered.map(g => (
               <button key={g.area} onClick={() => setSelected(g)}
-                className="bg-white dark:bg-slate-800 rounded-2xl p-4 text-left shadow-sm border border-gray-100 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700 transition-colors active:scale-95">
+                className="bg-kj-panel rounded-2xl p-4 text-left shadow-sm border border-kj-line hover:border-purple-300 dark:hover:border-purple-700 transition-colors active:scale-95">
                 <span className="text-3xl block mb-2">{g.icon}</span>
-                <h3 className="font-bold text-gray-900 dark:text-white text-sm">{language === 'bn' ? g.area : g.areaEn}</h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{language === 'bn' ? g.areaEn : g.area}</p>
+                <h3 className="font-bold text-kj-text text-sm">{language === 'bn' ? g.area : g.areaEn}</h3>
+                <p className="text-xs text-kj-text-dim">{language === 'bn' ? g.areaEn : g.area}</p>
                 <p className="text-xs text-purple-600 dark:text-purple-400 mt-1">{g.division}</p>
               </button>
             ))}
             {filtered.length === 0 && (
-              <div className="col-span-2 text-center py-12 text-gray-400">
+              <div className="col-span-2 text-center py-12 text-kj-text-faint">
                 <MapPin className="w-10 h-10 mx-auto mb-2 opacity-40" />
                 <p>{lbl('No area found', 'কোনো এলাকা পাওয়া যায়নি')}</p>
               </div>
@@ -768,14 +768,14 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
               const visible = isExpanded ? divGuides : divGuides.slice(0, 4);
               return (
                 <div key={div}>
-                  <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">{div}</p>
+                  <p className="text-xs font-bold text-kj-text-faint uppercase tracking-wider mb-2">{div}</p>
                   <div className="grid grid-cols-2 gap-3">
                     {visible.map(g => (
                       <button key={g.area} onClick={() => setSelected(g)}
-                        className="bg-white dark:bg-slate-800 rounded-2xl p-4 text-left shadow-sm border border-gray-100 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700 transition-colors active:scale-95">
+                        className="bg-kj-panel rounded-2xl p-4 text-left shadow-sm border border-kj-line hover:border-purple-300 dark:hover:border-purple-700 transition-colors active:scale-95">
                         <span className="text-3xl block mb-2">{g.icon}</span>
-                        <h3 className="font-bold text-gray-900 dark:text-white text-sm">{language === 'bn' ? g.area : g.areaEn}</h3>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">{language === 'bn' ? g.areaEn : g.area}</p>
+                        <h3 className="font-bold text-kj-text text-sm">{language === 'bn' ? g.area : g.areaEn}</h3>
+                        <p className="text-xs text-kj-text-dim">{language === 'bn' ? g.areaEn : g.area}</p>
                       </button>
                     ))}
                   </div>

@@ -99,17 +99,17 @@ const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ isOnline }) => {
                                         <WifiOff className="w-6 h-6" />
                                     </div>
                                     <div>
-                                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                                        <h3 className="text-lg font-bold text-kj-text">
                                             {t('offline.offlineMode')}
                                         </h3>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                                        <p className="text-sm text-kj-text-dim">
                                             {t('offline.noInternet')}
                                         </p>
                                     </div>
                                 </div>
                                 <button
                                     onClick={() => setShowDetails(false)}
-                                    className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                                    className="text-kj-text-faint hover:text-kj-text-dim dark:hover:text-gray-200"
                                 >
                                     <X className="w-5 h-5" />
                                 </button>
@@ -137,7 +137,7 @@ const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ isOnline }) => {
 
                             {/* Available Features */}
                             <div>
-                                <h4 className="text-sm font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                                <h4 className="text-sm font-bold text-kj-text mb-3 flex items-center gap-2">
                                     <Zap className="w-4 h-4 text-yellow-500" />
                                     {t('offline.availableFeatures')}
                                 </h4>
@@ -146,7 +146,7 @@ const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ isOnline }) => {
                                     {features.map((feature, index) => (
                                         <li
                                             key={index}
-                                            className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300"
+                                            className="flex items-start gap-2 text-sm text-kj-text-dim"
                                         >
                                             <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
                                             <span>{feature}</span>
@@ -157,17 +157,17 @@ const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ isOnline }) => {
 
                             {/* Not Available */}
                             <div className="mt-6">
-                                <h4 className="text-sm font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                                <h4 className="text-sm font-bold text-kj-text mb-3 flex items-center gap-2">
                                     <X className="w-4 h-4 text-red-500" />
                                     {t('offline.requiresOnline')}
                                 </h4>
 
                                 <ul className="space-y-2">
-                                    <li className="flex items-start gap-2 text-sm text-gray-500 dark:text-gray-400">
+                                    <li className="flex items-start gap-2 text-sm text-kj-text-dim">
                                         <X className="w-4 h-4 text-red-400 mt-0.5 shrink-0" />
                                         <span>🚦 {t('offline.liveTracking')}</span>
                                     </li>
-                                    <li className="flex items-start gap-2 text-sm text-gray-500 dark:text-gray-400">
+                                    <li className="flex items-start gap-2 text-sm text-kj-text-dim">
                                         <X className="w-4 h-4 text-red-400 mt-0.5 shrink-0" />
                                         <span>🌐 {t('offline.realTimeUpdates')}</span>
                                     </li>
@@ -175,7 +175,7 @@ const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ isOnline }) => {
                             </div>
 
                             {/* Reassurance Message */}
-                            <div className="mt-6 p-4 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-xl border border-emerald-200 dark:border-emerald-800">
+                            <div className="mt-6 p-4 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-xl border border-kj-primary/30">
                                 <p className="text-sm text-emerald-800 dark:text-emerald-200 leading-relaxed">
                                     {t('offline.dontWorry')}
                                 </p>

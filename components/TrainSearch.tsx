@@ -102,17 +102,17 @@ const TrainSearch: React.FC = () => {
                         {t('trainSearch.title')}
                     </h1>
                 </div>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-kj-text-dim">
                     {t('trainSearch.subtitle')}
                 </p>
             </div>
 
             {/* Search Form */}
-            <form onSubmit={handleSearch} className="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-6 md:p-8 border border-gray-200 dark:border-slate-700 mb-8">
+            <form onSubmit={handleSearch} className="bg-kj-panel rounded-3xl shadow-xl p-6 md:p-8 border border-kj-line mb-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     {/* From Station */}
                     <div className="relative">
-                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        <label className="block text-sm font-semibold text-kj-text-dim mb-2">
                             <MapPin className="w-4 h-4 inline mr-1" />
                             {t('trainSearch.fromStation')}
                         </label>
@@ -123,11 +123,11 @@ const TrainSearch: React.FC = () => {
                             onChange={(e) => setFrom(e.target.value)}
                             onBlur={() => setTimeout(() => setShowFromSuggestions(false), 200)}
                             placeholder={t('trainSearch.fromPlaceholder')}
-                            className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none transition-colors"
+                            className="w-full px-4 py-3 rounded-xl border-2 border-kj-line dark:border-slate-600 bg-gray-50 dark:bg-slate-700 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none transition-colors"
                             required
                         />
                         {showFromSuggestions && fromSuggestions.length > 0 && (
-                            <ul className="absolute z-50 w-full mt-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-lg max-h-48 overflow-y-auto">
+                            <ul className="absolute z-50 w-full mt-2 bg-kj-panel border border-kj-line rounded-xl shadow-lg max-h-48 overflow-y-auto">
                                 {fromSuggestions.map((suggestion, i) => (
                                     <li
                                         key={i}
@@ -143,7 +143,7 @@ const TrainSearch: React.FC = () => {
 
                     {/* To Station */}
                     <div className="relative">
-                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        <label className="block text-sm font-semibold text-kj-text-dim mb-2">
                             <MapPin className="w-4 h-4 inline mr-1" />
                             {t('trainSearch.toStation')}
                         </label>
@@ -154,11 +154,11 @@ const TrainSearch: React.FC = () => {
                             onChange={(e) => setTo(e.target.value)}
                             onBlur={() => setTimeout(() => setShowToSuggestions(false), 200)}
                             placeholder={t('trainSearch.toPlaceholder')}
-                            className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none transition-colors"
+                            className="w-full px-4 py-3 rounded-xl border-2 border-kj-line dark:border-slate-600 bg-gray-50 dark:bg-slate-700 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none transition-colors"
                             required
                         />
                         {showToSuggestions && toSuggestions.length > 0 && (
-                            <ul className="absolute z-50 w-full mt-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-lg max-h-48 overflow-y-auto">
+                            <ul className="absolute z-50 w-full mt-2 bg-kj-panel border border-kj-line rounded-xl shadow-lg max-h-48 overflow-y-auto">
                                 {toSuggestions.map((suggestion, i) => (
                                     <li
                                         key={i}
@@ -176,7 +176,7 @@ const TrainSearch: React.FC = () => {
                 {/* Date and Actions */}
                 <div className="flex flex-col md:flex-row gap-4 items-end">
                     <div className="flex-1">
-                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        <label className="block text-sm font-semibold text-kj-text-dim mb-2">
                             <Calendar className="w-4 h-4 inline mr-1" />
                             {t('trainSearch.travelDate')}
                         </label>
@@ -184,7 +184,7 @@ const TrainSearch: React.FC = () => {
                             type="date"
                             value={date}
                             onChange={(e) => setDate(e.target.value)}
-                            className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none transition-colors"
+                            className="w-full px-4 py-3 rounded-xl border-2 border-kj-line dark:border-slate-600 bg-gray-50 dark:bg-slate-700 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none transition-colors"
                         />
                     </div>
 
@@ -229,7 +229,7 @@ const TrainSearch: React.FC = () => {
             {results && results.length > 0 && (
                 <div className="space-y-4">
                     <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                        <h2 className="text-2xl font-bold text-kj-text">
                             {t('trainSearch.found')} {formatNumber(results.length)} {t('trainSearch.train')}{results.length !== 1 ? 's' : ''}
                         </h2>
                         <a
@@ -246,20 +246,20 @@ const TrainSearch: React.FC = () => {
                     {results.map((train) => (
                         <div
                             key={train.trainNumber}
-                            className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-gray-200 dark:border-slate-700 p-6 hover:shadow-xl transition-shadow"
+                            className="bg-kj-panel rounded-2xl shadow-lg border border-kj-line p-6 hover:shadow-xl transition-shadow"
                         >
                             <div className="flex items-start justify-between mb-4">
                                 <div>
                                     <div className="flex items-center gap-2 mb-1">
                                         <span className="text-2xl">{getTrainTypeIcon(train.type)}</span>
-                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                                        <h3 className="text-xl font-bold text-kj-text">
                                             {train.trainName}
                                         </h3>
                                         <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 rounded-full text-sm font-semibold">
                                             {formatNumber(train.trainNumber)}
                                         </span>
                                     </div>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                                    <p className="text-sm text-kj-text-dim">
                                         {train.type} • {train.route}
                                     </p>
                                 </div>
@@ -268,31 +268,31 @@ const TrainSearch: React.FC = () => {
                             {/* Journey Details */}
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                                 <div className="flex items-center gap-3">
-                                    <Clock className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                                    <Clock className="w-5 h-5 text-kj-text-dim" />
                                     <div>
-                                        <p className="text-xs text-gray-500 dark:text-gray-400">{t('trainSearch.departure')}</p>
-                                        <p className="font-semibold text-gray-900 dark:text-white">{formatNumber(train.departureTime)}</p>
+                                        <p className="text-xs text-kj-text-dim">{t('trainSearch.departure')}</p>
+                                        <p className="font-semibold text-kj-text">{formatNumber(train.departureTime)}</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <ArrowRight className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                                    <ArrowRight className="w-5 h-5 text-kj-text-dim" />
                                     <div>
-                                        <p className="text-xs text-gray-500 dark:text-gray-400">{t('trainSearch.duration')}</p>
-                                        <p className="font-semibold text-gray-900 dark:text-white">{formatNumber(train.duration)}</p>
+                                        <p className="text-xs text-kj-text-dim">{t('trainSearch.duration')}</p>
+                                        <p className="font-semibold text-kj-text">{formatNumber(train.duration)}</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <Clock className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                                    <Clock className="w-5 h-5 text-kj-text-dim" />
                                     <div>
-                                        <p className="text-xs text-gray-500 dark:text-gray-400">{t('trainSearch.arrival')}</p>
-                                        <p className="font-semibold text-gray-900 dark:text-white">{formatNumber(train.arrivalTime)}</p>
+                                        <p className="text-xs text-kj-text-dim">{t('trainSearch.arrival')}</p>
+                                        <p className="font-semibold text-kj-text">{formatNumber(train.arrivalTime)}</p>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Classes */}
                             <div className="mb-3">
-                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{t('trainSearch.availableClasses')}</p>
+                                <p className="text-sm text-kj-text-dim mb-2">{t('trainSearch.availableClasses')}</p>
                                 <div className="flex flex-wrap gap-2">
                                     {train.classes.map((cls, idx) => (
                                         <span
@@ -306,7 +306,7 @@ const TrainSearch: React.FC = () => {
                             </div>
 
                             {/* Additional Info */}
-                            <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
+                            <div className="flex flex-wrap gap-4 text-sm text-kj-text-dim">
                                 <span>📅 {train.frequency}</span>
                                 {train.offDays && train.offDays !== 'None' && (
                                     <span>🚫 {t('trainSearch.offDays')} {train.offDays}</span>
@@ -321,11 +321,11 @@ const TrainSearch: React.FC = () => {
 
                             {/* Stops */}
                             {train.stops && train.stops.length > 0 && (
-                                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-slate-700">
-                                    <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                <div className="mt-4 pt-4 border-t border-kj-line">
+                                    <p className="text-sm font-semibold text-kj-text-dim mb-2">
                                         {t('trainSearch.stopsLabel')} ({formatNumber(train.stops.length)}):
                                     </p>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                                    <p className="text-sm text-kj-text-dim">
                                         {train.stops.join(' • ')}
                                     </p>
                                 </div>
@@ -337,12 +337,12 @@ const TrainSearch: React.FC = () => {
 
             {/* No Results */}
             {results && results.length === 0 && !error && (
-                <div className="text-center py-12 bg-gray-50 dark:bg-slate-800 rounded-2xl border-2 border-dashed border-gray-300 dark:border-slate-700">
-                    <Train className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                <div className="text-center py-12 bg-gray-50 dark:bg-kj-chip-bg rounded-2xl border-2 border-dashed border-kj-line dark:border-kj-line">
+                    <Train className="w-16 h-16 text-kj-text-faint mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-kj-text-dim mb-2">
                         {t('trainSearch.noTrainsFound')}
                     </h3>
-                    <p className="text-gray-500 dark:text-gray-400">
+                    <p className="text-kj-text-dim">
                         {t('trainSearch.tryDifferentRoute')}
                     </p>
                 </div>

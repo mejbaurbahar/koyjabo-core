@@ -103,7 +103,7 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
     ];
 
     return (
-        <nav className="hidden md:flex fixed top-0 left-0 right-0 h-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-[100] px-8 items-center justify-between transition-all duration-300">
+        <nav className="hidden md:flex fixed top-0 left-0 right-0 h-20 bg-kj-panel/90 backdrop-blur-md border-b border-kj-line z-[100] px-8 items-center justify-between transition-all duration-300">
             {/* Logo Section */}
             <div
                 className="flex items-center gap-3 cursor-pointer group"
@@ -112,47 +112,36 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
                     setPrimarySearch('LOCAL');
                 }}
             >
-                <div className="flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <AnimatedLogo size="small" />
+                <div className="w-9 h-9 rounded-[11px] bg-kj-primary flex items-center justify-center relative overflow-hidden shrink-0 group-hover:scale-105 transition-transform" style={{ boxShadow: 'inset 0 -2px 0 var(--kj-accent)' }}>
+                    <span className="font-bengali font-bold text-kj-primary-ink text-[19px] leading-none">ক</span>
+                </div>
+                <div className="flex flex-col leading-none gap-0.5">
+                    <span className="font-bengali font-bold text-kj-text text-[18px] leading-tight tracking-tight">কই যাবো</span>
+                    <span className="font-sans font-medium text-kj-text-faint text-[9px] tracking-[0.14em] uppercase">KoyJabo · BD</span>
                 </div>
             </div>
 
-
             {/* Navigation Links */}
-            <div className="flex items-center gap-2 bg-gray-100/50 dark:bg-slate-800/50 p-1.5 rounded-2xl border border-gray-200 dark:border-gray-700">
+            <div className="flex items-center gap-1 bg-kj-chip-bg p-1.5 rounded-2xl border border-kj-line">
                 {navItems.map((item) => (
                     <button
                         key={item.label}
                         onClick={item.onClick}
-                        className={`
-              relative px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300
-              ${item.isActive
-                                ? 'bg-white dark:bg-slate-700 text-emerald-600 dark:text-emerald-400 shadow-sm transform scale-100'
-                                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-slate-700/50'
-                            }
-            `}
+                        className={`relative px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition-all duration-200 ${item.isActive ? 'bg-kj-panel text-kj-primary shadow-sm' : 'text-kj-text-dim hover:text-kj-text hover:bg-kj-panel/60'}`}
                     >
-                        <item.icon className={`w-4 h-4 ${item.isActive ? 'animate-pulse' : ''}`} />
+                        <item.icon className="w-4 h-4" />
                         {item.label}
                     </button>
                 ))}
             </div>
 
-            <div className="flex items-center gap-4">
-                <button
-                    onClick={() => onOpenLiveMap && onOpenLiveMap()}
-                    className="flex items-center gap-2 px-4 py-2 bg-red-100/50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 rounded-full font-bold text-sm transition-all animate-pulse"
-                >
-                    <Map className="w-4 h-4" />
-                    <span>{t('busDetails.liveView')}</span>
-                </button>
+            <div className="flex items-center gap-3">
                 <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-                {/* Auth button — avatar if logged in, login if not */}
                 {user ? (
                     <button
                         onClick={() => setView(AppView.PROFILE)}
                         title={user.displayName}
-                        className="w-9 h-9 rounded-full overflow-hidden bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold hover:ring-2 hover:ring-blue-400 hover:scale-105 transition-all shadow-sm"
+                        className="w-9 h-9 rounded-full overflow-hidden bg-kj-primary flex items-center justify-center text-kj-primary-ink text-sm font-bold hover:ring-2 hover:ring-kj-primary/40 hover:scale-105 transition-all"
                     >
                         {user.avatarUrl
                             ? <img src={user.avatarUrl} alt={user.displayName} className="w-full h-full object-cover" />
@@ -162,7 +151,7 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
                 ) : (
                     <button
                         onClick={() => setView(AppView.LOGIN)}
-                        className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-colors shadow-sm"
+                        className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-kj-text text-kj-bg text-sm font-semibold transition-colors hover:opacity-90"
                     >
                         <LogIn className="w-4 h-4" />
                         {t('nav.login')}
@@ -170,11 +159,11 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
                 )}
                 <button
                     onClick={onOpenMenu}
-                    className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors text-gray-600 dark:text-gray-300"
+                    className="p-2 hover:bg-kj-chip-bg rounded-xl transition-colors text-kj-text-dim hover:text-kj-text"
                 >
-                    <Menu className="w-6 h-6" />
+                    <Menu className="w-5 h-5" />
                 </button>
             </div>
-        </nav >
+        </nav>
     );
 };

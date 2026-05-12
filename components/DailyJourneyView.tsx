@@ -9,7 +9,7 @@ import {
     ChevronRight,
     Circle,
 } from 'lucide-react';
-import AdSenseAd from './AdSenseAd';
+// import AdSenseAd from './AdSenseAd';
 import {
     getTodayJourney,
     getJourneyHistory,
@@ -83,25 +83,25 @@ const DailyJourneyView: React.FC<DailyJourneyViewProps> = ({ onBack }) => {
     };
 
     return (
-        <div className="flex flex-col h-full min-h-0 bg-slate-50 dark:bg-slate-950 relative w-full overflow-x-hidden max-w-full">
+        <div className="flex flex-col h-full min-h-0 bg-kj-bg relative w-full overflow-x-hidden max-w-full">
             {/* Unified Header */}
-            <div className="flex-none bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 z-[60] px-4 py-3 shadow-md pt-safe">
+            <div className="flex-none bg-kj-panel border-b border-kj-line z-[60] px-4 py-3 shadow-md pt-safe">
                 <div className="flex items-center gap-3">
                     <button
                         onClick={onBack}
-                        className="p-3 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors flex items-center justify-center shrink-0"
+                        className="p-3 -ml-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full transition-colors flex items-center justify-center shrink-0"
                         aria-label="Go back"
                     >
-                        <ChevronRight className="w-5 h-5 rotate-180 text-gray-700 dark:text-gray-300 stroke-[3]" />
+                        <ChevronRight className="w-5 h-5 rotate-180 text-kj-text-dim stroke-[3]" />
                     </button>
-                    <h1 className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-                        <Calendar className="w-5 h-5 md:w-6 md:h-6 text-emerald-600 shrink-0" />
+                    <h1 className="text-lg md:text-xl font-bold text-kj-text flex items-center gap-2">
+                        <Calendar className="w-5 h-5 md:w-6 md:h-6 text-kj-primary shrink-0" />
                         {t('journey.title')}
                     </h1>
                     {todayJourney && todayJourney.points.length > 0 && (
                         <button
                             onClick={handleClearToday}
-                            className="ml-auto p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors"
+                            className="ml-auto p-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full transition-colors"
                             aria-label="Clear today's journey"
                         >
                             <Trash2 className="w-5 h-5 text-red-500" />
@@ -111,11 +111,11 @@ const DailyJourneyView: React.FC<DailyJourneyViewProps> = ({ onBack }) => {
             </div>
             {/* Main Content */}
             <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-24" style={{ WebkitOverflowScrolling: 'touch' }}>
-                <AdSenseAd adSlot="auto" className="mt-4 mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+                {/* <AdSenseAd adSlot="auto" className="mt-4 mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
                 {/* Today's Journey */}
                 <div className="px-4 py-6">
-                    <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-                        <MapPin className="w-5 h-5 text-emerald-600" />
+                    <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
+                        <MapPin className="w-5 h-5 text-kj-primary" />
                         {formatDate(new Date().toISOString().split('T')[0])}
                     </h2>
 
@@ -123,27 +123,27 @@ const DailyJourneyView: React.FC<DailyJourneyViewProps> = ({ onBack }) => {
                         <>
                             {/* Stats Cards */}
                             <div className="grid grid-cols-3 gap-3 mb-6">
-                                <div className="bg-white dark:bg-slate-800 p-3 rounded-xl border border-gray-200 dark:border-gray-700">
-                                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                                <div className="bg-kj-panel p-3 rounded-xl border border-kj-line">
+                                    <div className="text-xs text-kj-text-dim mb-1">
                                         {t('journey.distance')}
                                     </div>
-                                    <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                                    <div className="text-lg font-bold text-kj-text">
                                         {formatNumber(formatDistance(todayJourney.totalDistance))}
                                     </div>
                                 </div>
-                                <div className="bg-white dark:bg-slate-800 p-3 rounded-xl border border-gray-200 dark:border-gray-700">
-                                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                                <div className="bg-kj-panel p-3 rounded-xl border border-kj-line">
+                                    <div className="text-xs text-kj-text-dim mb-1">
                                         {t('journey.duration')}
                                     </div>
-                                    <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                                    <div className="text-lg font-bold text-kj-text">
                                         {formatNumber(formatDuration(todayJourney.totalDuration))}
                                     </div>
                                 </div>
-                                <div className="bg-white dark:bg-slate-800 p-3 rounded-xl border border-gray-200 dark:border-gray-700">
-                                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                                <div className="bg-kj-panel p-3 rounded-xl border border-kj-line">
+                                    <div className="text-xs text-kj-text-dim mb-1">
                                         {t('journey.stops')}
                                     </div>
-                                    <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                                    <div className="text-lg font-bold text-kj-text">
                                         {formatNumber(todayJourney.stops.filter((s) => s.isSignificant).length)}
                                     </div>
                                 </div>
@@ -155,25 +155,25 @@ const DailyJourneyView: React.FC<DailyJourneyViewProps> = ({ onBack }) => {
                                 {todayJourney.stops.map((stop, index) => (
                                     <div
                                         key={stop.id}
-                                        className="bg-white dark:bg-slate-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700"
+                                        className="bg-kj-panel rounded-xl p-4 border border-kj-line"
                                     >
                                         <div className="flex items-start gap-3">
-                                            <div className="shrink-0 w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
-                                                <MapPin className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                                            <div className="shrink-0 w-10 h-10 rounded-full bg-kj-primary-soft flex items-center justify-center">
+                                                <MapPin className="w-5 h-5 text-kj-primary" />
                                             </div>
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-start justify-between gap-2 mb-1">
-                                                    <h3 className="font-bold text-gray-900 dark:text-gray-100">
+                                                    <h3 className="font-bold text-kj-text">
                                                         {t('journey.stopNumber')} #{formatNumber(index + 1)}
                                                     </h3>
-                                                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                                                    <span className="text-xs text-kj-text-dim">
                                                         {formatNumber(formatTime(stop.arrivalTime))}
                                                     </span>
                                                 </div>
-                                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                                                <p className="text-sm text-kj-text-dim mb-2">
                                                     {formatNumber(stop.location.latitude.toFixed(4))}, {formatNumber(stop.location.longitude.toFixed(4))}
                                                 </p>
-                                                <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                                                <div className="flex items-center gap-2 text-xs text-kj-text-dim">
                                                     <Clock className="w-3 h-3" />
                                                     <span>{t('journey.stayed')} {formatNumber(formatDuration(stop.duration))}</span>
                                                 </div>
@@ -182,8 +182,8 @@ const DailyJourneyView: React.FC<DailyJourneyViewProps> = ({ onBack }) => {
 
                                         {/* Route to next stop */}
                                         {index < todayJourney.stops.length - 1 && (
-                                            <div className="ml-5 mt-3 pl-5 border-l-2 border-dashed border-gray-200 dark:border-gray-700 py-2">
-                                                <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                                            <div className="ml-5 mt-3 pl-5 border-l-2 border-dashed border-kj-line py-2">
+                                                <div className="flex items-center gap-2 text-xs text-kj-text-dim">
                                                     <Navigation className="w-3 h-3" />
                                                     <span>{t('journey.traveledToNext')}</span>
                                                 </div>
@@ -210,14 +210,14 @@ const DailyJourneyView: React.FC<DailyJourneyViewProps> = ({ onBack }) => {
                             </div>
                         </>
                     ) : (
-                        <div className="bg-white dark:bg-slate-800 rounded-xl p-8 text-center border border-gray-200 dark:border-gray-700">
-                            <div className="w-16 h-16 bg-gray-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-3">
-                                <MapPin className="w-8 h-8 text-gray-400" />
+                        <div className="bg-kj-panel rounded-xl p-8 text-center border border-kj-line">
+                            <div className="w-16 h-16 bg-kj-chip-bg rounded-full flex items-center justify-center mx-auto mb-3">
+                                <MapPin className="w-8 h-8 text-kj-text-faint" />
                             </div>
-                            <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-1">
+                            <h3 className="font-bold text-kj-text mb-1">
                                 {t('journey.noJourneyToday')}
                             </h3>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                            <p className="text-sm text-kj-text-dim">
                                 {t('journey.enableLocation')}
                             </p>
                         </div>
@@ -227,7 +227,7 @@ const DailyJourneyView: React.FC<DailyJourneyViewProps> = ({ onBack }) => {
                 {/* Journey History */}
                 {history.length > 0 && (
                     <div className="px-4 pb-6">
-                        <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+                        <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
                             <TrendingUp className="w-5 h-5 text-purple-600" />
                             {t('journey.pastJourneys')}
                         </h2>
@@ -235,17 +235,17 @@ const DailyJourneyView: React.FC<DailyJourneyViewProps> = ({ onBack }) => {
                             {history.map((jour) => (
                                 <div
                                     key={jour.date}
-                                    className="bg-white dark:bg-slate-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700"
+                                    className="bg-kj-panel rounded-xl p-4 border border-kj-line"
                                 >
                                     <div className="flex items-center justify-between mb-2">
-                                        <h3 className="font-bold text-gray-900 dark:text-gray-100">
+                                        <h3 className="font-bold text-kj-text">
                                             {formatNumber(formatDate(jour.date))}
                                         </h3>
-                                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                                        <span className="text-xs text-kj-text-dim">
                                             {formatNumber(jour.stops.filter((s) => s.isSignificant).length)} {t('journey.stopsCount')}
                                         </span>
                                     </div>
-                                    <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
+                                    <div className="flex items-center gap-4 text-xs text-kj-text-dim">
                                         <div className="flex items-center gap-1">
                                             <Navigation className="w-3 h-3" />
                                             {formatNumber(formatDistance(jour.totalDistance))}

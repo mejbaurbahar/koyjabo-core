@@ -80,11 +80,11 @@ export const BusImageViewer: React.FC<BusImageViewerProps> = ({ busId, busName, 
                     onClick={handleCloseModal}
                 >
                     <div
-                        className="relative max-w-4xl w-full bg-white dark:bg-slate-800 rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300"
+                        className="relative max-w-4xl w-full bg-kj-panel rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300"
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* Header */}
-                        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-500 to-blue-600">
+                        <div className="flex items-center justify-between p-4 border-b border-kj-line bg-gradient-to-r from-blue-500 to-blue-600">
                             <div>
                                 <h3 className="text-xl font-bold text-white">{busName}</h3>
                                 {busBnName && (
@@ -101,7 +101,7 @@ export const BusImageViewer: React.FC<BusImageViewerProps> = ({ busId, busName, 
                         </div>
 
                         {/* Image Container */}
-                        <div className="p-6 bg-gray-50 dark:bg-slate-900">
+                        <div className="p-6 bg-kj-bg">
                             <div className="relative w-full group flex items-center justify-center">
                                 {communityImages.length > 1 && currentImageIndex > 0 && (
                                     <button 
@@ -130,8 +130,8 @@ export const BusImageViewer: React.FC<BusImageViewerProps> = ({ busId, busName, 
                         </div>
 
                         {/* Footer */}
-                        <div className="p-4 bg-gray-100 dark:bg-slate-800 border-t border-gray-200 dark:border-gray-700">
-                            <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                        <div className="p-4 bg-kj-chip-bg border-t border-kj-line">
+                            <p className="text-sm text-kj-text-dim text-center">
                                 {imageError
                                     ? t('busDetails.imageNotFound')
                                     : communityImages.length > 0

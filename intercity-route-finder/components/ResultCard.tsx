@@ -106,16 +106,16 @@ const SmartDetailView: React.FC<{ content: string, summary: string }> = ({ conte
               <Clock size={18} />
             </div>
             <span className="text-xs text-blue-500 dark:text-blue-400 font-medium uppercase tracking-wider">আনুমানিক সময়</span>
-            <span className="font-bold text-slate-800 dark:text-white text-sm md:text-base">{time.replace(/\*\*/g, '')}</span>
+            <span className="font-bold text-kj-text dark:text-white text-sm md:text-base">{time.replace(/\*\*/g, '')}</span>
           </div>
         )}
         {price && (
-          <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-900/50 p-3 rounded-2xl flex flex-col justify-center items-center text-center">
-            <div className="bg-emerald-100 dark:bg-emerald-800 p-2 rounded-full mb-1 text-emerald-600 dark:text-emerald-300">
+          <div className="bg-kj-primary-soft dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-900/50 p-3 rounded-2xl flex flex-col justify-center items-center text-center">
+            <div className="bg-kj-primary-soft dark:bg-emerald-800 p-2 rounded-full mb-1 text-kj-primary dark:text-emerald-300">
               <Banknote size={18} />
             </div>
-            <span className="text-xs text-emerald-500 dark:text-emerald-400 font-medium uppercase tracking-wider">আনুমানিক ভাড়া</span>
-            <span className="font-bold text-slate-800 dark:text-white text-sm md:text-base">{price.replace(/\*\*/g, '')}</span>
+            <span className="text-xs text-kj-primary font-medium uppercase tracking-wider">আনুমানিক ভাড়া</span>
+            <span className="font-bold text-kj-text dark:text-white text-sm md:text-base">{price.replace(/\*\*/g, '')}</span>
           </div>
         )}
       </div>
@@ -123,7 +123,7 @@ const SmartDetailView: React.FC<{ content: string, summary: string }> = ({ conte
       {/* 2. Description Text */}
       {description && (
         <div className="prose prose-sm prose-slate dark:prose-invert max-w-none">
-          <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-sm md:text-[15px]">
+          <p className="text-kj-text-dim leading-relaxed text-sm md:text-[15px]">
             {description}
           </p>
         </div>
@@ -133,15 +133,15 @@ const SmartDetailView: React.FC<{ content: string, summary: string }> = ({ conte
       {details.length > 0 && (
         <div className="space-y-3">
           {details.map((item, idx) => (
-            <div key={idx} className="bg-gray-50 dark:bg-slate-800/80 border border-gray-100 dark:border-slate-700 p-3.5 rounded-xl flex gap-3.5 items-start transition-colors hover:border-blue-200 dark:hover:border-blue-700/50">
-              <div className="mt-0.5 bg-white dark:bg-slate-700 p-1.5 rounded-lg shadow-sm text-gray-600 dark:text-gray-300 shrink-0">
+            <div key={idx} className="bg-gray-50 dark:bg-kj-chip-bg/80 border border-kj-line p-3.5 rounded-xl flex gap-3.5 items-start transition-colors hover:border-blue-200 dark:hover:border-blue-700/50">
+              <div className="mt-0.5 bg-white dark:bg-slate-700 p-1.5 rounded-lg shadow-sm text-kj-text-dim shrink-0">
                 <item.icon size={18} />
               </div>
               <div>
-                <h5 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-0.5">
+                <h5 className="text-xs font-bold text-kj-text-dim uppercase tracking-wide mb-0.5">
                   {item.key}
                 </h5>
-                <p className="text-sm font-medium text-slate-800 dark:text-gray-100 leading-snug">
+                <p className="text-sm font-medium text-kj-text dark:text-gray-100 leading-snug">
                   {item.value}
                 </p>
               </div>
@@ -259,24 +259,24 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-xl border border-gray-100 dark:border-slate-700 overflow-hidden animate-slide-up flex flex-col h-auto min-h-[600px] lg:h-[850px] transition-colors duration-300">
+    <div className="bg-kj-panel rounded-3xl shadow-xl border border-kj-line overflow-hidden animate-slide-up flex flex-col h-auto min-h-[600px] lg:h-[850px] transition-colors duration-300">
 
       {/* 1. Header (Visible on Desktop, hidden on Mobile Detail View) */}
       {!showMobileDetail && (
-        <div className="bg-white dark:bg-slate-800 border-b border-gray-100 dark:border-slate-700 p-4 md:p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 z-20 shadow-sm transition-colors">
+        <div className="bg-kj-panel border-b border-kj-line p-4 md:p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 z-20 shadow-sm transition-colors">
           <div>
-            <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-1">
+            <div className="flex items-center space-x-2 text-sm text-kj-text-dim mb-1">
               <Calendar size={14} />
               <span>{new Date(data.date).toLocaleDateString('bn-BD', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}</span>
-              <span className="text-gray-300 dark:text-gray-600">|</span>
+              <span className="text-kj-text-faint">|</span>
               <div className="flex items-center space-x-1">
                 {data.source === 'memory_cache' ? <Zap size={12} className="text-yellow-500" /> : <Bot size={12} className="text-green-500" />}
-                <span className="text-xs font-medium bg-gray-100 dark:bg-slate-700 px-2 py-0.5 rounded-full dark:text-gray-300">
+                <span className="text-xs font-medium bg-kj-chip-bg px-2 py-0.5 rounded-full dark:text-kj-text-faint">
                   {data.source === 'memory_cache' ? 'ইনস্ট্যান্ট' : 'এআই'}
                 </span>
               </div>
             </div>
-            <h2 className="text-xl md:text-2xl font-bold flex items-center gap-2 text-slate-900 dark:text-white flex-wrap">
+            <h2 className="text-xl md:text-2xl font-bold flex items-center gap-2 text-kj-text flex-wrap">
               <span>{data.from}</span>
               <Navigation className="text-blue-500 fill-blue-50 dark:fill-blue-900/30 rotate-90 md:rotate-0" size={20} />
               <span>{data.to}</span>
@@ -284,7 +284,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
           </div>
 
           {/* Intro Summary Markdown */}
-          <div className="text-xs md:text-sm text-gray-600 dark:text-gray-300 bg-slate-50 dark:bg-slate-900/50 p-2 md:p-3 rounded-lg border border-slate-100 dark:border-slate-700 w-full md:max-w-md transition-colors">
+          <div className="text-xs md:text-sm text-kj-text-dim bg-kj-bg/50 p-2 md:p-3 rounded-lg border border-slate-100 dark:border-kj-line w-full md:max-w-md transition-colors">
             <ReactMarkdown
               components={{ p: ({ node, ...props }) => <p className="m-0 leading-relaxed" {...props} /> }}
             >
@@ -298,8 +298,8 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
       <div className="flex flex-row flex-1 overflow-hidden relative">
 
         {/* Left Column: List (Visible on Desktop. Hidden on Mobile if Detail Open) */}
-        <div className={`w-full lg:w-4/12 overflow-y-auto border-r border-gray-100 dark:border-slate-700 bg-gray-50/50 dark:bg-slate-900/30 p-4 custom-scrollbar h-full ${showMobileDetail ? 'hidden lg:block' : 'block'} transition-colors`}>
-          <h3 className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4 px-2 hidden lg:block">প্রস্তাবিত যাতায়াত মাধ্যম</h3>
+        <div className={`w-full lg:w-4/12 overflow-y-auto border-r border-kj-line bg-gray-50/50 dark:bg-kj-panel/30 p-4 custom-scrollbar h-full ${showMobileDetail ? 'hidden lg:block' : 'block'} transition-colors`}>
+          <h3 className="text-xs font-bold text-kj-text-faint uppercase tracking-wider mb-4 px-2 hidden lg:block">প্রস্তাবিত যাতায়াত মাধ্যম</h3>
 
           <div className="space-y-4 pb-20 lg:pb-0">
             {parsedData.modes.map((mode) => (
@@ -310,7 +310,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
                   relative group cursor-pointer rounded-2xl p-4 md:p-5 border transition-all duration-300
                   ${selectedModeId === mode.id
                     ? 'bg-white dark:bg-slate-700 border-blue-500 shadow-lg shadow-blue-500/10 ring-1 ring-blue-500'
-                    : 'bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-500/50 hover:shadow-md'
+                    : 'bg-kj-panel border-kj-line hover:border-blue-300 dark:hover:border-blue-500/50 hover:shadow-md'
                   }
                 `}
               >
@@ -319,22 +319,22 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
                   <div className="flex items-center gap-3">
                     <div className="text-2xl md:text-3xl">{mode.icon}</div>
                     <div>
-                      <h4 className={`font-bold text-base md:text-lg leading-tight transition-colors ${selectedModeId === mode.id ? 'text-slate-900 dark:text-white' : 'text-slate-800 dark:text-gray-200'}`}>{mode.title.replace(/\*\*/g, '')}</h4>
+                      <h4 className={`font-bold text-base md:text-lg leading-tight transition-colors ${selectedModeId === mode.id ? 'text-kj-text' : 'text-kj-text dark:text-gray-200'}`}>{mode.title.replace(/\*\*/g, '')}</h4>
                       <span className="text-[10px] md:text-xs text-blue-600 dark:text-blue-400 font-medium bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded-md mt-1 inline-block">
                         অপশন {mode.id}
                       </span>
                     </div>
                   </div>
                   {/* Arrow indicating action on mobile, or state on desktop */}
-                  <div className={`p-1 rounded-full animate-fade-in shrink-0 ${selectedModeId === mode.id ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-slate-700 text-gray-400 dark:text-gray-500'}`}>
+                  <div className={`p-1 rounded-full animate-fade-in shrink-0 ${selectedModeId === mode.id ? 'bg-blue-600 text-white' : 'bg-kj-chip-bg text-kj-text-faint'}`}>
                     <ChevronRight size={16} />
                   </div>
                 </div>
 
                 {/* Summary Info (Chips) */}
-                <div className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-2 font-medium flex flex-wrap gap-2">
+                <div className="text-xs md:text-sm text-kj-text-dim mb-2 font-medium flex flex-wrap gap-2">
                   {mode.summary.split('|').map((part, idx) => (
-                    <span key={idx} className="bg-gray-100 dark:bg-slate-900/50 px-2 py-1 rounded text-gray-700 dark:text-gray-300 border border-transparent dark:border-slate-600">
+                    <span key={idx} className="bg-kj-chip-bg/50 px-2 py-1 rounded text-kj-text-dim border border-transparent dark:border-slate-600">
                       {part.trim().replace(/\*\*/g, '')}
                     </span>
                   ))}
@@ -343,7 +343,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
                 {/* Desktop: Expandable Details */}
                 <div className="hidden lg:block">
                   <div className={`overflow-hidden transition-all duration-500 ${selectedModeId === mode.id ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-50'}`}>
-                    <div className="pt-4 border-t border-gray-100 dark:border-slate-600 mt-4">
+                    <div className="pt-4 border-t border-kj-line dark:border-slate-600 mt-4">
                       {/* USE THE NEW SMART VIEW HERE */}
                       <SmartDetailView content={mode.fullContent} summary={mode.summary} />
                     </div>
@@ -351,7 +351,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
                 </div>
 
                 {/* Mobile Hint */}
-                <div className="lg:hidden text-[10px] text-gray-400 dark:text-gray-500 mt-2 flex items-center gap-1">
+                <div className="lg:hidden text-[10px] text-kj-text-faint mt-2 flex items-center gap-1">
                   <span>ম্যাপ এবং বিস্তারিত দেখতে ট্যাপ করুন</span>
                 </div>
               </div>
@@ -360,7 +360,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
         </div>
 
         {/* Right Column: Desktop Map (Always visible on LG) */}
-        <div className="hidden lg:block lg:w-8/12 relative bg-slate-100 dark:bg-slate-900 shadow-inner">
+        <div className="hidden lg:block lg:w-8/12 relative bg-slate-100 dark:bg-kj-panel shadow-inner">
           <div className="absolute inset-0">
             <MapComponent
               from={data.from}
@@ -370,15 +370,15 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
             />
           </div>
           <div className="absolute bottom-6 left-6 right-6 z-[1000] pointer-events-none">
-            <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-md p-4 rounded-xl shadow-lg border border-white/50 dark:border-slate-700/50 flex items-center justify-between pointer-events-auto">
+            <div className="bg-white/90 dark:bg-kj-chip-bg/90 backdrop-blur-md p-4 rounded-xl shadow-lg border border-white/50 dark:border-kj-line/50 flex items-center justify-between pointer-events-auto">
               <div>
-                <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">রুট ম্যাপ</p>
-                <p className="font-semibold text-slate-800 dark:text-white">{selectedMode?.title.replace(/\*\*/g, '') || 'Overview'}</p>
+                <p className="text-[10px] font-bold text-kj-text-faint uppercase tracking-wider">রুট ম্যাপ</p>
+                <p className="font-semibold text-kj-text dark:text-white">{selectedMode?.title.replace(/\*\*/g, '') || 'Overview'}</p>
               </div>
               {currentModeStops.length > 0 && (
                 <div className="text-xs text-right">
-                  <p className="text-gray-400 dark:text-gray-500 text-[10px]">ভায়া</p>
-                  <p className="font-medium text-slate-700 dark:text-slate-300">{currentModeStops.slice(0, 3).join(', ')}{currentModeStops.length > 3 ? '...' : ''}</p>
+                  <p className="text-kj-text-faint text-[10px]">ভায়া</p>
+                  <p className="font-medium text-kj-text-dim">{currentModeStops.slice(0, 3).join(', ')}{currentModeStops.length > 3 ? '...' : ''}</p>
                 </div>
               )}
             </div>
@@ -387,23 +387,23 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
 
         {/* MOBILE FULL PAGE OVERLAY ("New Page") */}
         {showMobileDetail && (
-          <div className="fixed inset-0 z-[100] bg-white dark:bg-slate-900 flex flex-col lg:hidden animate-slide-up transition-colors">
+          <div className="fixed inset-0 z-[100] bg-kj-panel flex flex-col lg:hidden animate-slide-up transition-colors">
             {/* Mobile Header with Back Button */}
-            <div className="flex-none p-4 border-b border-gray-100 dark:border-slate-800 flex items-center gap-3 bg-white dark:bg-slate-800 shadow-sm z-20">
+            <div className="flex-none p-4 border-b border-kj-line flex items-center gap-3 bg-kj-panel shadow-sm z-20">
               <button
                 onClick={handleBackToResults}
-                className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-full transition-colors text-slate-800 dark:text-white"
+                className="p-2 -ml-2 hover:bg-kj-chip-bg rounded-full transition-colors text-kj-text dark:text-white"
               >
                 <ArrowLeft size={24} />
               </button>
               <div className="flex-1 min-w-0">
-                <h3 className="font-bold text-slate-900 dark:text-white truncate">{selectedMode?.title.replace(/\*\*/g, '')}</h3>
-                <div className="text-xs text-gray-500 dark:text-gray-400 truncate">{selectedMode?.summary.replace(/\*\*/g, '')}</div>
+                <h3 className="font-bold text-kj-text truncate">{selectedMode?.title.replace(/\*\*/g, '')}</h3>
+                <div className="text-xs text-kj-text-dim truncate">{selectedMode?.summary.replace(/\*\*/g, '')}</div>
               </div>
             </div>
 
             {/* Top Map Section (40% height) */}
-            <div className="h-[40%] bg-slate-100 dark:bg-slate-900 relative shrink-0 shadow-inner border-b border-gray-200 dark:border-slate-800">
+            <div className="h-[40%] bg-slate-100 dark:bg-kj-panel relative shrink-0 shadow-inner border-b border-kj-line">
               <MapComponent
                 from={data.from}
                 to={data.to}
@@ -419,7 +419,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ data }) => {
             </div>
 
             {/* Bottom Details Section (Scrollable) */}
-            <div className="flex-1 overflow-y-auto p-5 bg-white dark:bg-slate-900">
+            <div className="flex-1 overflow-y-auto p-5 bg-kj-panel">
               {/* USE THE NEW SMART VIEW HERE AS WELL */}
               {selectedMode && <SmartDetailView content={selectedMode.fullContent} summary={selectedMode.summary} />}
 
