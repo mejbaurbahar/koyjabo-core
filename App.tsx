@@ -4517,7 +4517,7 @@ const App: React.FC = () => {
               <Menu className="w-[22px] h-[22px]" />
             </button>
             <div className="cursor-pointer" onClick={() => setView(AppView.HOME)}>
-              <AnimatedLogo size="small" />
+              <img src="/logo.png" alt="KoyJabo" className="h-9 w-9 rounded-xl" />
             </div>
             <div className="flex-1" />
             <div className="flex items-center gap-2 shrink-0">
@@ -4907,16 +4907,11 @@ const App: React.FC = () => {
         {isMenuOpen && (
           <div className="fixed inset-0 z-[100]">
             <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={() => setIsMenuOpen(false)}/>
-            <div className="absolute top-0 left-0 bottom-0 w-[280px] bg-kj-panel border-r border-kj-line flex flex-col animate-in slide-in-from-left duration-200">
+            <div className="absolute top-0 right-0 bottom-0 w-[280px] bg-kj-panel border-l border-kj-line flex flex-col animate-in slide-in-from-right duration-200">
               {/* Drawer header */}
               <div className="flex items-center gap-3 px-5 py-4 border-b border-kj-line shrink-0">
-                <div className="w-[34px] h-[34px] rounded-[9px] bg-kj-primary flex items-center justify-center shrink-0" style={{ boxShadow: 'inset 0 -2px 0 var(--kj-accent)' }}>
-                  <span className="font-bengali font-bold text-kj-primary-ink text-[17px] leading-none">ক</span>
-                </div>
-                <div className="flex flex-col leading-none flex-1">
-                  <span className="font-bengali font-bold text-kj-text text-[16px] leading-tight tracking-[-0.3px]">কই যাবো</span>
-                  <span className="font-sans text-kj-text-faint text-[9px] tracking-[0.14em] uppercase mt-[3px]">KoyJabo · BD</span>
-                </div>
+                <img src="/logo.png" alt="KoyJabo" className="h-9 w-9 rounded-xl flex-shrink-0" />
+                <div className="flex-1" />
                 <button onClick={() => setIsMenuOpen(false)} className="w-8 h-8 rounded-lg flex items-center justify-center text-kj-text-dim hover:bg-kj-chip-bg transition-colors" aria-label="Close menu">
                   <X className="w-4 h-4" />
                 </button>
