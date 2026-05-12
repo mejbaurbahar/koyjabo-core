@@ -112,9 +112,7 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
                     setPrimarySearch('LOCAL');
                 }}
             >
-                <div className="w-9 h-9 rounded-[11px] bg-kj-primary flex items-center justify-center relative overflow-hidden shrink-0 group-hover:scale-105 transition-transform" style={{ boxShadow: 'inset 0 -2px 0 var(--kj-accent)' }}>
-                    <span className="font-bengali font-bold text-kj-primary-ink text-[19px] leading-none">ক</span>
-                </div>
+                <img src="/logo.png" alt="KoyJabo" className="w-9 h-9 rounded-[11px] shrink-0 group-hover:scale-105 transition-transform" />
                 <div className="flex flex-col leading-none gap-0.5">
                     <span className="font-bengali font-bold text-kj-text text-[18px] leading-tight tracking-tight">কই যাবো</span>
                     <span className="font-sans font-medium text-kj-text-faint text-[9px] tracking-[0.14em] uppercase">KoyJabo · BD</span>
