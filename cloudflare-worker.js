@@ -1,7 +1,7 @@
 /**
  * KoyJabo Auth Proxy — Cloudflare Worker
  *
- * Deploy at: api.koyjabo.com
+ * Deploy at: api.koyjabo.com  (or koyjabo-auth-proxy.mejbaur-bahar.workers.dev)
  * Environment variables (set in Cloudflare dashboard):
  *   GH_TOKEN    — fine-grained PAT: actions:write on koyjabo-core + contents:read on koyjabo
  *   DATA_TOKEN  — classic PAT with contents:write on koyjabo (used for direct data writes)
@@ -53,11 +53,12 @@ function ghHeaders(token) {
   };
 }
 
-// In-memory rate limit — 100% free, no paid bindings required.
-// Cloudflare Workers isolates are long-lived within a region, so this
-// provides effective per-edge-location throttling without any paid service.
+// ── Rate limiter ──────────────────────────────────────────────────────────────
+// Raised to 1800/min (30/sec): a single page load fires ~60 ratings requests.
+// With the old 600/min limit, 10 simultaneous page loads from the same IP
+// (common behind NAT/mobile carrier) would hit the ceiling.
 const reqCount = new Map();
-function isRateLimited(ip, limit = 600, windowMs = 60_000) {
+function isRateLimited(ip, limit = 1800, windowMs = 60_000) {
   const now = Date.now();
   const entry = reqCount.get(ip);
   if (!entry || now > entry.resetAt) {
@@ -68,19 +69,42 @@ function isRateLimited(ip, limit = 600, windowMs = 60_000) {
   return entry.count > limit;
 }
 
-// ── ETag cache — 304 responses are FREE (don't count against GitHub rate limit) ──
-// key: "owner/repo:path" → { etag, decoded, cachedAt }
+// ── ETag + SHA in-memory cache ────────────────────────────────────────────────
+// Per-isolate, fast. Also stores `sha` so writeDataFile can skip a redundant
+// GitHub API read-before-write call.
+// key: "owner/repo:path" → { etag, decoded, sha, cachedAt }
 const etagCache = new Map();
 const ETAG_MAX_AGE = 10 * 60 * 1000; // serve stale for up to 10 min
 
-// Result-polling files must never be cached (they go from 404 → exists)
+// Result-polling files must never be cached (they transition 404 → exists)
 function isCacheable(path) {
   return !path.startsWith('data/results/');
 }
 
-async function ghFetch(token, owner, repo, path) {
-  const cacheKey = `${owner}/${repo}:${path}`;
-  const cached = etagCache.get(cacheKey);
+// Cloudflare distributed cache key (survives isolate restarts, shared globally)
+function cfCacheKey(owner, repo, path) {
+  return `https://koyjabo-auth-proxy.mejbaur-bahar.workers.dev/cached/${owner}/${repo}/${path}`;
+}
+
+// ── ghFetch — reads a file with 3-layer caching ───────────────────────────────
+// Layer 1: Cloudflare Cache API (global, 5 min TTL, survives isolate cold starts)
+// Layer 2: In-memory ETag cache (per-isolate, 10 min, sends 304 to GitHub)
+// Layer 3: Fresh GitHub API call
+async function ghFetch(token, owner, repo, path, ctx) {
+  // Layer 1: Cloudflare distributed cache
+  if (isCacheable(path)) {
+    try {
+      const hit = await caches.default.match(cfCacheKey(owner, repo, path));
+      if (hit) {
+        const decoded = await hit.json();
+        return { status: 200, decoded };
+      }
+    } catch { /* cold cache or storage error — fall through */ }
+  }
+
+  // Layer 2: In-memory ETag cache (send conditional request to GitHub)
+  const memKey = `${owner}/${repo}:${path}`;
+  const cached = etagCache.get(memKey);
   const headers = {
     Authorization: `Bearer ${token}`,
     Accept: 'application/vnd.github.v3+json',
@@ -89,33 +113,81 @@ async function ghFetch(token, owner, repo, path) {
   if (cached?.etag && (Date.now() - cached.cachedAt) < ETAG_MAX_AGE) {
     headers['If-None-Match'] = cached.etag;
   }
+
+  // Layer 3: GitHub API
   const res = await fetch(
     `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
     { headers }
   );
-  // 304 = free cache hit — return stored content without touching rate limit
-  if (res.status === 304 && cached) return { status: 200, decoded: cached.decoded };
+
+  // 304 = not modified — return in-memory copy (free, no rate-limit cost)
+  if (res.status === 304 && cached) {
+    // Refresh CF cache from the still-valid in-memory copy
+    if (isCacheable(path) && ctx) {
+      ctx.waitUntil(_storeCfCache(owner, repo, path, cached.decoded));
+    }
+    return { status: 200, decoded: cached.decoded };
+  }
   if (res.status === 404)  return { status: 404, decoded: null };
-  // Rate-limited but we have stale cache — serve it rather than failing
-  if (res.status === 403 && cached) return { status: 200, decoded: cached.decoded };
-  if (!res.ok)             return { status: res.status, decoded: null };
+  // GitHub rate-limited but we have a stale copy — serve it rather than failing
+  if ((res.status === 403 || res.status === 429) && cached) {
+    return { status: 200, decoded: cached.decoded };
+  }
+  if (!res.ok) return { status: res.status, decoded: null };
+
   const data = await res.json();
-  if (!data.content)       return { status: 404, decoded: null };
+  if (!data.content) return { status: 404, decoded: null };
+
   const clean = data.content.replace(/\n/g, '');
   const bytes = Uint8Array.from(atob(clean), c => c.charCodeAt(0));
   const text  = new TextDecoder().decode(bytes);
   let decoded;
   try { decoded = JSON.parse(text); } catch { return { status: 500, decoded: null }; }
+
+  // Store in both caches
   const etag = res.headers.get('ETag');
-  if (isCacheable(path) && etag) {
-    etagCache.set(cacheKey, { etag, decoded, cachedAt: Date.now() });
+  if (isCacheable(path)) {
+    if (etag) {
+      // Store sha alongside so writeDataFile can skip a second GitHub fetch
+      etagCache.set(memKey, { etag, decoded, sha: data.sha, cachedAt: Date.now() });
+    }
+    if (ctx) {
+      ctx.waitUntil(_storeCfCache(owner, repo, path, decoded));
+    }
   }
+
   return { status: 200, decoded };
+}
+
+async function _storeCfCache(owner, repo, path, decoded) {
+  try {
+    const resp = new Response(JSON.stringify(decoded), {
+      headers: {
+        'Content-Type': 'application/json',
+        // 5-min TTL in Cloudflare's distributed cache
+        'Cache-Control': 'public, max-age=300',
+      },
+    });
+    await caches.default.put(cfCacheKey(owner, repo, path), resp);
+  } catch { /* non-fatal */ }
+}
+
+async function _purgeCfCache(owner, repo, path) {
+  try {
+    await caches.default.delete(cfCacheKey(owner, repo, path));
+  } catch { /* non-fatal */ }
 }
 
 // ── GitHub direct read/write helpers ─────────────────────────────────────────
 
 async function readDataFile(token, owner, repo, path) {
+  // Check ETag cache first — if sha is stored, skip the GitHub fetch
+  const memKey = `${owner}/${repo}:${path}`;
+  const cached = etagCache.get(memKey);
+  if (cached?.sha && cached.decoded !== undefined) {
+    return { content: cached.decoded, sha: cached.sha };
+  }
+
   try {
     const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
       headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github.v3+json', 'User-Agent': 'koyjabo-proxy/1.0' },
@@ -126,11 +198,17 @@ async function readDataFile(token, owner, repo, path) {
     const clean = data.content.replace(/\n/g, '');
     const bytes = Uint8Array.from(atob(clean), c => c.charCodeAt(0));
     const text = new TextDecoder().decode(bytes);
-    return { content: JSON.parse(text), sha: data.sha };
+    const content = JSON.parse(text);
+    // Cache the sha for future writes
+    const etag = res.headers.get('ETag');
+    if (etag) {
+      etagCache.set(memKey, { etag, decoded: content, sha: data.sha, cachedAt: Date.now() });
+    }
+    return { content, sha: data.sha };
   } catch { return null; }
 }
 
-async function writeDataFile(token, owner, repo, path, content, message) {
+async function writeDataFile(token, owner, repo, path, content, message, ctx) {
   try {
     const existing = await readDataFile(token, owner, repo, path);
     const json = JSON.stringify(content, null, 2);
@@ -142,13 +220,19 @@ async function writeDataFile(token, owner, repo, path, content, message) {
       headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json', 'User-Agent': 'koyjabo-proxy/1.0' },
       body: JSON.stringify(body),
     });
-    if (res.ok || res.status === 201) return { ok: true };
+    if (res.ok || res.status === 201) {
+      // Invalidate both caches so next read returns fresh data
+      const memKey = `${owner}/${repo}:${path}`;
+      etagCache.delete(memKey);
+      if (ctx) ctx.waitUntil(_purgeCfCache(owner, repo, path));
+      return { ok: true };
+    }
     const errBody = await res.json().catch(() => ({}));
     return { ok: false, status: res.status, message: errBody?.message || 'GitHub write failed' };
   } catch (e) { return { ok: false, status: 500, message: String(e) }; }
 }
 
-async function deleteDataFile(token, owner, repo, path, message) {
+async function deleteDataFile(token, owner, repo, path, message, ctx) {
   try {
     const existing = await readDataFile(token, owner, repo, path);
     if (!existing?.sha) return { ok: false, status: 404, message: 'File not found' };
@@ -157,14 +241,19 @@ async function deleteDataFile(token, owner, repo, path, message) {
       headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json', 'User-Agent': 'koyjabo-proxy/1.0' },
       body: JSON.stringify({ message: message || `Delete: ${path}`, sha: existing.sha }),
     });
-    if (res.ok) return { ok: true };
+    if (res.ok) {
+      const memKey = `${owner}/${repo}:${path}`;
+      etagCache.delete(memKey);
+      if (ctx) ctx.waitUntil(_purgeCfCache(owner, repo, path));
+      return { ok: true };
+    }
     const errBody = await res.json().catch(() => ({}));
     return { ok: false, status: res.status, message: errBody?.message || 'GitHub delete failed' };
   } catch (e) { return { ok: false, status: 500, message: String(e) }; }
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const origin = request.headers.get('Origin') || '';
     const url = new URL(request.url);
 
@@ -173,13 +262,17 @@ export default {
       return new Response(null, { status: 204, headers: corsHeaders(origin) });
     }
 
+    // Ignore cached/ sub-path (used as CF Cache API keys — not real routes)
+    if (url.pathname.startsWith('/cached/')) {
+      return new Response('Not found', { status: 404 });
+    }
+
     // Only serve /gh path
     if (url.pathname !== '/gh' && url.pathname !== '/gh/') {
       return new Response('Not found', { status: 404 });
     }
 
     // Block requests not from our domain (in production)
-    const referer = request.headers.get('Referer') || '';
     const isLocalDev = origin.startsWith('http://localhost');
     const isOurSite = origin.startsWith('https://koyjabo.com') ||
                       origin.startsWith('https://www.koyjabo.com') ||
@@ -188,22 +281,22 @@ export default {
       return new Response('Forbidden', { status: 403, headers: corsHeaders(origin) });
     }
 
-    // Rate limit by IP — free in-memory, effective per edge location
+    // Rate limit by IP
     const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
     if (isRateLimited(ip)) {
       return new Response(
         JSON.stringify({ error: 'Too many requests. Please wait a moment and try again.' }),
-        { status: 429, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
+        { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': '60', ...corsHeaders(origin) } }
       );
     }
 
     const TOKEN = env.GH_TOKEN;
-    const DATA_TOKEN = env.DATA_TOKEN || TOKEN; // PAT with contents:write on koyjabo
-    const APP_OWNER = env.APP_OWNER || 'mejbaurbahar';
-    const APP_REPO  = env.APP_REPO  || 'Dhaka-Commute';
+    const DATA_TOKEN = env.DATA_TOKEN || TOKEN;
+    const APP_OWNER  = env.APP_OWNER  || 'mejbaurbahar';
+    const APP_REPO   = env.APP_REPO   || 'Dhaka-Commute';
     const DATA_OWNER = env.DATA_OWNER || 'mejbaurbahar';
-    const DATA_REPO  = env.DATA_REPO  || 'koyjabo';   // private data repo
-    const CORE_REPO = 'koyjabo-core';                  // result files live here
+    const DATA_REPO  = env.DATA_REPO  || 'koyjabo';
+    const CORE_REPO  = 'koyjabo-core';
 
     if (!TOKEN) {
       return new Response(
@@ -238,17 +331,17 @@ export default {
         );
       }
 
-      // Primary fetch with ETag caching (304 = free, no rate limit cost)
-      let result = await ghFetch(TOKEN, repo.owner, repo.repo, p);
+      // Primary fetch with 3-layer caching (CF cache → ETag → GitHub API)
+      let result = await ghFetch(TOKEN, repo.owner, repo.repo, p, ctx);
 
       // Fallback: r=a (results) → try CORE_REPO if not in APP_REPO
       if (result.status === 404 && r === 'a') {
-        result = await ghFetch(TOKEN, APP_OWNER, CORE_REPO, p);
+        result = await ghFetch(TOKEN, APP_OWNER, CORE_REPO, p, ctx);
       }
 
       // Fallback: r=d (user data) → try koyjabo-core for migrated users
       if (result.status === 404 && r === 'd') {
-        result = await ghFetch(TOKEN, DATA_OWNER, CORE_REPO, p);
+        result = await ghFetch(TOKEN, DATA_OWNER, CORE_REPO, p, ctx);
       }
 
       if (result.status === 404) {
@@ -265,19 +358,18 @@ export default {
         );
       }
 
-      // User-data reads are private; non-user paths can be revalidated in background
       const isUserData = p.startsWith('data/users/') || p.startsWith('data/results/');
       return new Response(JSON.stringify(result.decoded), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': isUserData ? 'no-store' : 'public, max-age=30, stale-while-revalidate=60',
+          'Cache-Control': isUserData ? 'no-store' : 'public, max-age=300, stale-while-revalidate=60',
           ...corsHeaders(origin),
         },
       });
     }
 
-    // ── POST /gh  (trigger GitHub Actions workflow dispatch) ─────────────────
+    // ── POST /gh  ────────────────────────────────────────────────────────────
     if (request.method === 'POST') {
       const contentType = request.headers.get('Content-Type') || '';
       if (!contentType.includes('application/json')) {
@@ -318,10 +410,7 @@ export default {
         );
       }
 
-      // ── Direct data writes (no GitHub Actions needed) ────────────────────────
-      // save-data and record-query write directly to the data repo via GitHub API.
-      // This is faster (instant vs 1-3 min) and doesn't require DATA_GITHUB_TOKEN secret.
-
+      // ── Direct data writes (no GitHub Actions needed) ─────────────────────
       if (body.action === 'save-data') {
         let payload = {};
         try { payload = JSON.parse(body.data || '{}'); } catch { /* ignore */ }
@@ -332,7 +421,7 @@ export default {
             { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
           );
         }
-        const writeResult = await writeDataFile(DATA_TOKEN, DATA_OWNER, DATA_REPO, path, content, message);
+        const writeResult = await writeDataFile(DATA_TOKEN, DATA_OWNER, DATA_REPO, path, content, message, ctx);
         return new Response(
           JSON.stringify({ success: writeResult.ok, ...(writeResult.ok ? {} : { error: writeResult.message, status: writeResult.status }) }),
           { status: writeResult.ok ? 200 : (writeResult.status === 403 ? 403 : 500), headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
@@ -349,7 +438,7 @@ export default {
             { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
           );
         }
-        const delResult = await deleteDataFile(DATA_TOKEN, DATA_OWNER, DATA_REPO, path, message);
+        const delResult = await deleteDataFile(DATA_TOKEN, DATA_OWNER, DATA_REPO, path, message, ctx);
         return new Response(
           JSON.stringify({ success: delResult.ok, ...(delResult.ok ? {} : { error: delResult.message }) }),
           { status: delResult.ok ? 200 : (delResult.status === 404 ? 404 : 500), headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
@@ -362,7 +451,7 @@ export default {
         const today = new Date().toISOString().split('T')[0];
         const path = `data/learning/queries/${today}.json`;
         const existing = await readDataFile(TOKEN, DATA_OWNER, DATA_REPO, path);
-        const record = existing || { date: today, queries: [] };
+        const record = existing?.content || { date: today, queries: [] };
         record.queries.push({
           query: (payload.query || '').slice(0, 300),
           responseLen: (payload.response || '').length,
@@ -373,14 +462,14 @@ export default {
           timestamp: Date.now(),
         });
         if (record.queries.length > 500) record.queries = record.queries.slice(-500);
-        const writeOk = await writeDataFile(DATA_TOKEN, DATA_OWNER, DATA_REPO, path, record, `Query record: ${(payload.query || '').slice(0, 30)}`);
+        const writeOk = await writeDataFile(DATA_TOKEN, DATA_OWNER, DATA_REPO, path, record, `Query record: ${(payload.query || '').slice(0, 30)}`, ctx);
         return new Response(
-          JSON.stringify({ success: writeOk }),
-          { status: writeOk ? 200 : 500, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
+          JSON.stringify({ success: writeOk.ok }),
+          { status: writeOk.ok ? 200 : 500, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
         );
       }
 
-      // ── Auth actions → dispatch GitHub Actions workflow ───────────────────────
+      // ── Auth actions → dispatch GitHub Actions workflow ───────────────────
       const ghUrl = `https://api.github.com/repos/${APP_OWNER}/koyjabo-core/actions/workflows/auth.yml/dispatches`;
       const upstream = await fetch(ghUrl, {
         method: 'POST',

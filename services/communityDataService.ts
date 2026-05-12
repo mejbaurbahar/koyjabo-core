@@ -9,6 +9,29 @@
 const PROXY = (import.meta.env.VITE_API_PROXY as string | undefined)
   || 'https://koyjabo-auth-proxy.mejbaur-bahar.workers.dev';
 
+// In-memory cache to avoid hammering the proxy with duplicate reads (e.g. 60 concurrent ratings fetches)
+const _cache = new Map<string, { data: unknown; expiresAt: number }>();
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+// Concurrency limiter — cap simultaneous proxy requests to avoid 429s
+const MAX_CONCURRENT = 5;
+let _active = 0;
+const _queue: Array<() => void> = [];
+
+function _acquire(): Promise<void> {
+  if (_active < MAX_CONCURRENT) { _active++; return Promise.resolve(); }
+  return new Promise(resolve => _queue.push(resolve));
+}
+
+function _release(): void {
+  const next = _queue.shift();
+  if (next) { next(); } else { _active--; }
+}
+
+function _invalidate(path: string): void {
+  _cache.delete(path);
+}
+
 export function getAuthUser(): { id: string; displayName: string; username: string } | null {
   try {
     const s = localStorage.getItem('koyjabo_auth_session');
@@ -19,16 +42,29 @@ export function getAuthUser(): { id: string; displayName: string; username: stri
 }
 
 async function repoGet<T>(path: string): Promise<T | null> {
+  const hit = _cache.get(path);
+  if (hit && hit.expiresAt > Date.now()) return hit.data as T;
+
+  await _acquire();
   try {
     const res = await fetch(`${PROXY}/gh?r=d&p=${encodeURIComponent(path)}&_t=${Date.now()}`, {
       cache: 'no-store'
     });
-    if (res.status === 404) return null; // file doesn't exist yet — normal for new entries
+    if (res.status === 404) {
+      _cache.set(path, { data: null, expiresAt: Date.now() + CACHE_TTL });
+      return null;
+    }
     if (!res.ok) return null;
     const text = await res.text();
-    if (!text || text === 'null') return null;
-    return JSON.parse(text) as T;
+    if (!text || text === 'null') {
+      _cache.set(path, { data: null, expiresAt: Date.now() + CACHE_TTL });
+      return null;
+    }
+    const data = JSON.parse(text) as T;
+    _cache.set(path, { data, expiresAt: Date.now() + CACHE_TTL });
+    return data;
   } catch { return null; }
+  finally { _release(); }
 }
 
 async function repoDelete(path: string, message?: string): Promise<boolean> {
@@ -47,6 +83,7 @@ async function repoDelete(path: string, message?: string): Promise<boolean> {
     });
     if (!res.ok) return false;
     const json = await res.json().catch(() => ({})) as { success?: boolean };
+    if (json.success === true) _invalidate(path);
     return json.success === true;
   } catch { return false; }
 }
@@ -65,6 +102,7 @@ async function repoPut(path: string, content: unknown, message?: string): Promis
         data: JSON.stringify({ path, content, message: message || `community: ${path}` }),
       }),
     });
+    if (res.ok) _invalidate(path);
     return res.ok;
   } catch { return false; }
 }

@@ -9,7 +9,8 @@
     "build:sitemap": "node scripts/generate-sitemap.mjs",
     "build:qa": "node scripts/build-advanced-qa.mjs",
     "preview": "vite preview",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "deploy:worker": "npx wrangler deploy"
   },
   "dependencies": {
     "@maplibre/maplibre-gl-leaflet": "^0.1.3",
