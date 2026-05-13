@@ -663,7 +663,7 @@ const App: React.FC = () => {
     };
   }, []);
 
-  const [searchMode, setSearchMode] = useState<'TEXT' | 'ROUTE'>('ROUTE');
+  const [searchMode, setSearchMode] = useState<'TEXT' | 'ROUTE'>('TEXT');
   const [inputValue, setInputValue] = useState(() => localStorage.getItem('dhaka_commute_input_value') || '');
   const [searchQuery, setSearchQuery] = useState(() => localStorage.getItem('dhaka_commute_search_query') || '');
 
