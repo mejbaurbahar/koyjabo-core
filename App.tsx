@@ -3825,13 +3825,6 @@ const App: React.FC = () => {
               className={`flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${searchMode === 'ROUTE' && view === AppView.HOME ? 'bg-kj-primary-soft text-kj-primary-deep border border-kj-primary/30' : 'bg-kj-chip-bg text-kj-chip-text border border-kj-line'}`}
             >
               <span className={`w-[6px] h-[6px] rounded-full ${searchMode === 'ROUTE' && view === AppView.HOME ? 'bg-kj-primary' : 'bg-kj-text-faint'}`} />
-              {language === 'bn' ? 'রুট খুঁজুন' : 'FIND ROUTE'}
-            </button>
-            <button
-              onClick={(e) => { e.stopPropagation(); setSearchMode('TEXT'); setSuggestedRoutes([]); setBusRouteSort('DEFAULT'); }}
-              className={`flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${searchMode === 'TEXT' ? 'bg-kj-primary-soft text-kj-primary-deep border border-kj-primary/30' : 'bg-kj-chip-bg text-kj-chip-text border border-kj-line'}`}
-            >
-              <span className={`w-[6px] h-[6px] rounded-full ${searchMode === 'TEXT' ? 'bg-kj-primary' : 'bg-kj-text-faint'}`} />
               {language === 'bn' ? 'লোকাল বাস' : 'LOCAL BUS'}
             </button>
             <button
