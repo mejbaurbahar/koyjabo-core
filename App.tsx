@@ -3822,25 +3822,25 @@ const App: React.FC = () => {
           <div className={`flex items-center gap-2 px-4 md:px-5 overflow-x-auto ${searchMode === 'ROUTE' ? 'pt-2.5 pb-2' : 'pb-3'}`} style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             <button
               onClick={(e) => { e.stopPropagation(); setSearchMode('ROUTE'); setSuggestedRoutes([]); }}
-              className="flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 bg-kj-chip-bg text-kj-chip-text border border-kj-line"
-            >
-              {language === 'bn' ? 'রুট খুঁজুন' : 'FIND ROUTE'}
-            </button>
-            <button
-              onClick={(e) => { e.stopPropagation(); setSearchMode('TEXT'); setSuggestedRoutes([]); setBusRouteSort('DEFAULT'); }}
-              className="flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 bg-kj-chip-bg text-kj-chip-text border border-kj-line"
+              className={`flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${searchMode === 'ROUTE' && view === AppView.HOME ? 'bg-kj-chip-bg text-kj-chip-text border border-kj-line' : 'text-kj-text-faint border border-transparent'}`}
             >
               {language === 'bn' ? 'লোকাল বাস' : 'LOCAL BUS'}
             </button>
             <button
+              onClick={(e) => { e.stopPropagation(); setSearchMode('TEXT'); setSuggestedRoutes([]); setBusRouteSort('DEFAULT'); }}
+              className={`flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${searchMode === 'TEXT' ? 'bg-kj-chip-bg text-kj-chip-text border border-kj-line' : 'text-kj-text-faint border border-transparent'}`}
+            >
+              {language === 'bn' ? 'সার্চ করুন' : 'SEARCH'}
+            </button>
+            <button
               onClick={(e) => { e.stopPropagation(); window.location.href = '/intercity/'; }}
-              className="flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 bg-kj-chip-bg text-kj-chip-text border border-kj-line"
+              className="flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 text-kj-text-faint border border-transparent"
             >
               {language === 'bn' ? 'আন্তঃজেলা' : 'INTERCITY'}
             </button>
             <button
               onClick={(e) => { e.stopPropagation(); setView(AppView.TRAIN_LIST); }}
-              className="flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 bg-kj-chip-bg text-kj-chip-text border border-kj-line"
+              className={`flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${(view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) ? 'bg-kj-chip-bg text-kj-chip-text border border-kj-line' : 'text-kj-text-faint border border-transparent'}`}
             >
               {language === 'bn' ? 'ট্রেন' : 'TRAIN'}
             </button>
