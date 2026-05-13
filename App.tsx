@@ -3799,7 +3799,8 @@ const App: React.FC = () => {
         {/* KJ panel card */}
         <div className="bg-kj-panel border border-kj-line rounded-2xl shadow-kj overflow-visible">
 
-          {/* Heading — greeting + location/weather context */}
+          {/* Heading — greeting + location/weather context — hidden in ROUTE mode to save space */}
+          {searchMode !== 'ROUTE' && (
           <div className="px-4 md:px-5 pt-4 pb-3">
             <div className="flex items-center gap-1.5 mb-1.5">
               <span className="w-[7px] h-[7px] rounded-full bg-kj-primary shrink-0" />
@@ -3815,9 +3816,10 @@ const App: React.FC = () => {
             </h2>
             <p className="text-kj-text-dim text-[12px] md:text-sm font-medium leading-snug">{t('home.findPerfectRoute')}</p>
           </div>
+          )}
 
           {/* Mode Pill Tabs */}
-          <div className="flex items-center gap-2 px-4 md:px-5 pb-3 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          <div className={`flex items-center gap-2 px-4 md:px-5 overflow-x-auto ${searchMode === 'ROUTE' ? 'pt-2.5 pb-2' : 'pb-3'}`} style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             <button
               onClick={(e) => { e.stopPropagation(); setSearchMode('ROUTE'); setSuggestedRoutes([]); }}
               className={`flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${searchMode === 'ROUTE' && view === AppView.HOME ? 'bg-kj-primary-soft text-kj-primary-deep border border-kj-primary/30' : 'bg-kj-chip-bg text-kj-chip-text border border-kj-line'}`}
@@ -3848,7 +3850,7 @@ const App: React.FC = () => {
 
           {/* Search inputs */}
           <div className="relative z-10">
-          <div className="px-4 md:px-5 pb-4 md:pb-5">
+          <div className={`px-4 md:px-5 ${searchMode === 'ROUTE' ? 'pb-2' : 'pb-4 md:pb-5'}`}>
             {searchMode === 'TEXT' ? (
               <div className="relative group">
                 <div className="relative flex items-center">
@@ -3996,25 +3998,43 @@ const App: React.FC = () => {
                 )}
               </div>
             ) : (
-              <div className="flex flex-col gap-2">
-                {/* From */}
-                <div className="flex items-center gap-3 bg-kj-input-bg border border-kj-line rounded-[14px] px-3.5 py-2.5">
-                  <div className="w-[28px] h-[28px] rounded-[8px] bg-kj-primary-soft flex items-center justify-center shrink-0">
-                    <MapPin className="w-4 h-4 text-kj-primary-deep" />
+              <div className="flex flex-col gap-1.5">
+                {/* From + Swap + To row */}
+                <div className="flex items-stretch gap-1.5">
+                  <div className="flex-1 flex flex-col gap-1.5 min-w-0">
+                    {/* From */}
+                    <div className="flex items-center gap-2 bg-kj-input-bg border border-kj-line rounded-xl px-3 py-1.5">
+                      <div className="w-[22px] h-[22px] rounded-md bg-kj-primary-soft flex items-center justify-center shrink-0">
+                        <MapPin className="w-3 h-3 text-kj-primary-deep" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-sans text-[9px] font-semibold tracking-[1px] uppercase text-kj-text-faint">{t('common.from')}</div>
+                        <SearchableSelect
+                          options={sortedStations}
+                          value={fromStation}
+                          onChange={setFromStation}
+                          placeholder={language === 'bn' ? 'শুরুর স্থান' : 'Starting point'}
+                        />
+                      </div>
+                    </div>
+                    {/* To */}
+                    <div className="flex items-center gap-2 bg-kj-input-bg border border-kj-line rounded-xl px-3 py-1.5">
+                      <div className="w-[22px] h-[22px] rounded-md bg-kj-accent-soft flex items-center justify-center shrink-0">
+                        <Flag className="w-3 h-3 text-kj-accent" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-sans text-[9px] font-semibold tracking-[1px] uppercase text-kj-text-faint">{t('common.to')}</div>
+                        <SearchableSelect
+                          options={sortedStations}
+                          value={toStation}
+                          onChange={setToStation}
+                          placeholder={language === 'bn' ? 'গন্তব্য' : 'Destination'}
+                          disabled={!fromStation}
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="font-sans text-[10px] font-semibold tracking-[1.2px] uppercase text-kj-text-faint mb-0.5">{t('common.from')}</div>
-                    <SearchableSelect
-                      options={sortedStations}
-                      value={fromStation}
-                      onChange={setFromStation}
-                      placeholder={language === 'bn' ? 'শুরুর স্থান' : 'Starting point'}
-                    />
-                  </div>
-                </div>
-                {/* Swap */}
-                <div className="flex items-center gap-2">
-                  <div className="flex-1 h-px bg-kj-line" />
+                  {/* Swap button — right-side vertical */}
                   <button
                     onClick={(e) => {
                       e.preventDefault();
@@ -4023,28 +4043,11 @@ const App: React.FC = () => {
                       setFromStation(toStation);
                       setToStation(temp);
                     }}
-                    className="w-8 h-8 rounded-full border border-kj-line bg-kj-panel flex items-center justify-center text-kj-text active:scale-95 transition-transform shadow-kj"
+                    className="w-8 self-center rounded-full border border-kj-line bg-kj-panel flex items-center justify-center text-kj-text active:scale-95 transition-transform shadow-kj aspect-square"
                     title="Swap locations"
                   >
-                    <ArrowRightLeft className="w-4 h-4" />
+                    <ArrowRightLeft className="w-3.5 h-3.5" />
                   </button>
-                  <div className="flex-1 h-px bg-kj-line" />
-                </div>
-                {/* To */}
-                <div className="flex items-center gap-3 bg-kj-input-bg border border-kj-line rounded-[14px] px-3.5 py-2.5">
-                  <div className="w-[28px] h-[28px] rounded-[8px] bg-kj-accent-soft flex items-center justify-center shrink-0">
-                    <Flag className="w-4 h-4 text-kj-accent" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="font-sans text-[10px] font-semibold tracking-[1.2px] uppercase text-kj-text-faint mb-0.5">{t('common.to')}</div>
-                    <SearchableSelect
-                      options={sortedStations}
-                      value={toStation}
-                      onChange={setToStation}
-                      placeholder={language === 'bn' ? 'গন্তব্য' : 'Destination'}
-                      disabled={!fromStation}
-                    />
-                  </div>
                 </div>
                 {/* Find button */}
                 <button
@@ -4056,41 +4059,38 @@ const App: React.FC = () => {
                     }
                   }}
                   disabled={!fromStation || !toStation}
-                  className="w-full bg-kj-primary text-kj-primary-ink font-sans font-bold text-[14px] py-3 rounded-[14px] flex items-center justify-center gap-2 active:opacity-90 transition-opacity mt-1 disabled:opacity-50 disabled:cursor-not-allowed"
-                  style={{ boxShadow: '0 6px 16px -6px var(--kj-primary)' }}
+                  className="w-full bg-kj-primary text-kj-primary-ink font-sans font-bold text-[13px] py-2 rounded-xl flex items-center justify-center gap-2 active:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{ boxShadow: '0 4px 12px -4px var(--kj-primary)' }}
                 >
-                  <Search className="w-4 h-4" />
+                  <Search className="w-3.5 h-3.5" />
                   {language === 'bn' ? 'রুট খুঁজুন' : 'Find routes'}
                 </button>
-                {/* Filter chips */}
-                <div className="flex items-center gap-2 flex-wrap pt-0.5">
+                {/* Filter chips — only shown once both stations selected */}
+                {fromStation && toStation && (
+                <div className="flex items-center gap-1.5 flex-wrap">
                   <button
                     onClick={() => setBusRouteSort('DEFAULT')}
-                    className={`flex items-center gap-1.5 h-8 px-3 rounded-full border text-[11px] font-medium transition-colors ${busRouteSort === 'DEFAULT' ? 'bg-kj-primary text-kj-primary-ink border-kj-primary' : 'border-kj-line bg-kj-panel-muted text-kj-text'}`}
+                    className={`flex items-center gap-1 h-7 px-2.5 rounded-full border text-[10px] font-medium transition-colors ${busRouteSort === 'DEFAULT' ? 'bg-kj-primary text-kj-primary-ink border-kj-primary' : 'border-kj-line bg-kj-panel-muted text-kj-text'}`}
                   >
                     <Clock className="w-3 h-3" />
                     {language === 'bn' ? 'এখনই' : 'Leave now'}
                   </button>
                   <button
                     onClick={() => setBusRouteSort(busRouteSort === 'FASTEST' ? 'DEFAULT' : 'FASTEST')}
-                    className={`flex items-center gap-1.5 h-8 px-3 rounded-full border text-[11px] font-medium transition-colors ${busRouteSort === 'FASTEST' ? 'bg-kj-primary text-kj-primary-ink border-kj-primary' : 'border-kj-line bg-kj-panel-muted text-kj-text'}`}
+                    className={`flex items-center gap-1 h-7 px-2.5 rounded-full border text-[10px] font-medium transition-colors ${busRouteSort === 'FASTEST' ? 'bg-kj-primary text-kj-primary-ink border-kj-primary' : 'border-kj-line bg-kj-panel-muted text-kj-text'}`}
                   >
                     <Zap className="w-3 h-3" />
                     {language === 'bn' ? 'দ্রুততম' : 'Fastest'}
                   </button>
                   <button
                     onClick={() => setBusRouteSort(busRouteSort === 'CHEAPEST' ? 'DEFAULT' : 'CHEAPEST')}
-                    className={`flex items-center gap-1.5 h-8 px-3 rounded-full border text-[11px] font-medium transition-colors ${busRouteSort === 'CHEAPEST' ? 'bg-kj-primary text-kj-primary-ink border-kj-primary' : 'border-kj-line bg-kj-panel-muted text-kj-text'}`}
+                    className={`flex items-center gap-1 h-7 px-2.5 rounded-full border text-[10px] font-medium transition-colors ${busRouteSort === 'CHEAPEST' ? 'bg-kj-primary text-kj-primary-ink border-kj-primary' : 'border-kj-line bg-kj-panel-muted text-kj-text'}`}
                   >
                     <Coins className="w-3 h-3" />
                     {language === 'bn' ? 'সস্তা' : 'Cheapest'}
                   </button>
-                  <div className="flex-1" />
-                  <span className="flex items-center gap-1.5 text-[11px] text-kj-text-faint font-sans font-medium">
-                    <span className="w-2 h-2 rounded-full bg-kj-primary" style={{ boxShadow: '0 0 0 3px var(--kj-primary-soft)' }} />
-                    {language === 'bn' ? '২,৪১২ রুট লাইভ' : '2,412 routes live'}
-                  </span>
                 </div>
+                )}
               </div>
             )}
           </div>
