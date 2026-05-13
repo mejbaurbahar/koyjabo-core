@@ -20,7 +20,7 @@ export default function SeatAvailability({ onBack }: Props) {
   const { t, language } = useLanguage();
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState<BDTrainRoute | null>(null);
-  const [favorites, setFavorites] = useState<string[]>(getFavorites);
+  const [favorites, setFavorites] = useState<string[]>(getFavorites());
 
   useEffect(() => { trackFeatureUsage('seat_availability'); }, []);
 

@@ -945,7 +945,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
       )}
 
       {/* Count row */}
-      <div className="shrink-0 flex items-center justify-between px-5 py-2 bg-[#0F172A] border-b border-white/10">
+      <div className="shrink-0 flex items-center justify-between px-5 py-2 bg-kj-panel border-b border-kj-line">
         <h3 className="font-bold text-kj-text text-sm">
           {listFilter === 'FAVORITES' ? (bn ? 'সংরক্ষিত ট্রেন' : 'Saved Trains') : (bn ? 'ট্রেনের তালিকা' : 'Train List')}
         </h3>
@@ -961,7 +961,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
         </div>
       </div>
 
-      <div className="shrink-0 px-4 py-2 bg-[#0F172A] border-b border-white/10">
+      <div className="shrink-0 px-4 py-2 bg-kj-panel border-b border-kj-line">
         <div className="flex p-1 bg-kj-chip-bg rounded-xl">
           <button
             onClick={() => setListFilter('ALL')}

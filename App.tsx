@@ -678,6 +678,7 @@ const App: React.FC = () => {
   const [favorites, setFavorites] = useState<string[]>(getStoredFavorites);
   const [busRatingsMap, setBusRatingsMap] = useState<Record<string, BusRatingSummary | null>>({});
   const [listFilter, setListFilter] = useState<'ALL' | 'FAVORITES'>('ALL');
+  const [busRouteSort, setBusRouteSort] = useState<'DEFAULT' | 'FASTEST' | 'CHEAPEST'>('DEFAULT');
   const [isPending, startTransition] = useTransition();
 
   // Optimized filter handler to prevent UI blocking
@@ -1883,7 +1884,7 @@ const App: React.FC = () => {
     if (searchMode === 'ROUTE') {
       if (!fromStation || !toStation) return BUS_DATA;
 
-      return availableFirst(BUS_DATA.filter(bus => {
+      const matched = availableFirst(BUS_DATA.filter(bus => {
         const stopsAtFrom = bus.stops.includes(fromStation);
         const stopsAtTo = bus.stops.includes(toStation);
 
@@ -1897,6 +1898,24 @@ const App: React.FC = () => {
 
         return stopsAtFrom && stopsAtTo;
       }));
+
+      if (busRouteSort === 'FASTEST') {
+        return [...matched].sort((a, b) => {
+          const iA = a.stops.indexOf(fromStation);
+          const jA = a.stops.indexOf(toStation);
+          const iB = b.stops.indexOf(fromStation);
+          const jB = b.stops.indexOf(toStation);
+          return Math.abs(jA - iA) - Math.abs(jB - iB);
+        });
+      }
+      if (busRouteSort === 'CHEAPEST') {
+        return [...matched].sort((a, b) => {
+          const fareA = calculateFare(a, fromStation, toStation);
+          const fareB = calculateFare(b, fromStation, toStation);
+          return fareA.min - fareB.min;
+        });
+      }
+      return matched;
     }
 
     // Text search mode - use enhancedBusSearch with location-based sorting
@@ -1914,7 +1933,7 @@ const App: React.FC = () => {
     );
 
     return availableFirst(sortedBuses);
-  }, [listFilter, favorites, searchMode, fromStation, toStation, searchQuery, userLocation, destinationStationIds]);
+  }, [listFilter, favorites, searchMode, fromStation, toStation, searchQuery, userLocation, destinationStationIds, busRouteSort]);
 
   useEffect(() => {
     let cancelled = false;
@@ -2356,7 +2375,11 @@ const App: React.FC = () => {
 
               <div className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-dhaka-dark dark:bg-emerald-700 text-white rounded-br-none' : 'bg-kj-panel text-kj-text border border-kj-line rounded-bl-none'}`}>
-                  <div className="whitespace-pre-wrap">{msg.text.replace(/\*\*/g, '')}</div>
+                  <div className="whitespace-pre-wrap">{msg.text.split(/(\*\*[^*]+\*\*)/).map((part, i) =>
+                    /^\*\*[^*]+\*\*$/.test(part)
+                      ? <strong key={i}>{part.slice(2, -2)}</strong>
+                      : part
+                  )}</div>
                 </div>
               </div>
             </React.Fragment>
@@ -3801,7 +3824,7 @@ const App: React.FC = () => {
           {/* Mode Pill Tabs */}
           <div className="flex items-center gap-2 px-4 md:px-5 pb-3 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             <button
-              onClick={(e) => { e.stopPropagation(); setSearchMode('TEXT'); setSuggestedRoutes([]); }}
+              onClick={(e) => { e.stopPropagation(); setSearchMode('TEXT'); setSuggestedRoutes([]); setBusRouteSort('DEFAULT'); }}
               className={`flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${searchMode === 'TEXT' ? 'bg-kj-primary-soft text-kj-primary-deep border border-kj-primary/30' : 'bg-kj-chip-bg text-kj-chip-text border border-kj-line'}`}
             >
               <span className={`w-[6px] h-[6px] rounded-full ${searchMode === 'TEXT' ? 'bg-kj-primary' : 'bg-kj-text-faint'}`} />
@@ -4023,8 +4046,15 @@ const App: React.FC = () => {
                 </div>
                 {/* Find button */}
                 <button
-                  onClick={() => { if (fromStation && toStation) { /* trigger search */ } }}
-                  className="w-full bg-kj-primary text-kj-primary-ink font-sans font-bold text-[14px] py-3 rounded-[14px] flex items-center justify-center gap-2 active:opacity-90 transition-opacity mt-1"
+                  onClick={() => {
+                    if (fromStation && toStation) {
+                      setSearchQuery('');
+                      setInputValue('');
+                      if (scrollContainerRef.current) scrollContainerRef.current.scrollTop = 0;
+                    }
+                  }}
+                  disabled={!fromStation || !toStation}
+                  className="w-full bg-kj-primary text-kj-primary-ink font-sans font-bold text-[14px] py-3 rounded-[14px] flex items-center justify-center gap-2 active:opacity-90 transition-opacity mt-1 disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{ boxShadow: '0 6px 16px -6px var(--kj-primary)' }}
                 >
                   <Search className="w-4 h-4" />
@@ -4032,15 +4062,24 @@ const App: React.FC = () => {
                 </button>
                 {/* Filter chips */}
                 <div className="flex items-center gap-2 flex-wrap pt-0.5">
-                  <button className="flex items-center gap-1.5 h-8 px-3 rounded-full border border-kj-line bg-kj-panel-muted text-kj-text text-[11px] font-medium">
+                  <button
+                    onClick={() => setBusRouteSort('DEFAULT')}
+                    className={`flex items-center gap-1.5 h-8 px-3 rounded-full border text-[11px] font-medium transition-colors ${busRouteSort === 'DEFAULT' ? 'bg-kj-primary text-kj-primary-ink border-kj-primary' : 'border-kj-line bg-kj-panel-muted text-kj-text'}`}
+                  >
                     <Clock className="w-3 h-3" />
                     {language === 'bn' ? 'এখনই' : 'Leave now'}
                   </button>
-                  <button className="flex items-center gap-1.5 h-8 px-3 rounded-full border border-kj-line bg-kj-panel-muted text-kj-text text-[11px] font-medium">
+                  <button
+                    onClick={() => setBusRouteSort(busRouteSort === 'FASTEST' ? 'DEFAULT' : 'FASTEST')}
+                    className={`flex items-center gap-1.5 h-8 px-3 rounded-full border text-[11px] font-medium transition-colors ${busRouteSort === 'FASTEST' ? 'bg-kj-primary text-kj-primary-ink border-kj-primary' : 'border-kj-line bg-kj-panel-muted text-kj-text'}`}
+                  >
                     <Zap className="w-3 h-3" />
                     {language === 'bn' ? 'দ্রুততম' : 'Fastest'}
                   </button>
-                  <button className="flex items-center gap-1.5 h-8 px-3 rounded-full border border-kj-line bg-kj-panel-muted text-kj-text text-[11px] font-medium">
+                  <button
+                    onClick={() => setBusRouteSort(busRouteSort === 'CHEAPEST' ? 'DEFAULT' : 'CHEAPEST')}
+                    className={`flex items-center gap-1.5 h-8 px-3 rounded-full border text-[11px] font-medium transition-colors ${busRouteSort === 'CHEAPEST' ? 'bg-kj-primary text-kj-primary-ink border-kj-primary' : 'border-kj-line bg-kj-panel-muted text-kj-text'}`}
+                  >
                     <Coins className="w-3 h-3" />
                     {language === 'bn' ? 'সস্তা' : 'Cheapest'}
                   </button>
@@ -4119,6 +4158,9 @@ const App: React.FC = () => {
       if (!navigator.onLine) {
         const offlineData = getIntercityRoutesOffline(from, to);
         if (offlineData.routes.length > 0) {
+          sessionStorage.setItem('intercity_offline_result', JSON.stringify(offlineData));
+        } else {
+          return; // No offline data available, don't navigate
         }
       }
 

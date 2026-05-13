@@ -221,6 +221,7 @@ export default function MultiStopPlanner({ onBack }: Props) {
   };
 
   const selectSuggestion = (stopId: string, name: string) => {
+    if (stops.some(x => x.id !== stopId && x.name === name)) return; // prevent duplicates
     setStops(s => s.map(x => x.id === stopId ? { ...x, name } : x));
     setQueries(q => ({ ...q, [stopId]: '' }));
     setFocusedId(null);
@@ -282,7 +283,7 @@ export default function MultiStopPlanner({ onBack }: Props) {
                   className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2 text-sm dark:text-white"
                 />
                 {focusedId === stop.id && filtered.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 z-20 mt-1 bg-kj-panel border border-kj-line rounded-xl overflow-hidden shadow-lg max-h-48 overflow-y-auto">
+                  <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-kj-panel border border-kj-line rounded-xl overflow-hidden shadow-lg max-h-48 overflow-y-auto">
                     {filtered.map(s => (
                       <button key={s} type="button"
                         onMouseDown={() => selectSuggestion(stop.id, s)}
