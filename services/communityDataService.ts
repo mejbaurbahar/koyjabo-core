@@ -141,7 +141,7 @@ export async function submitBusRating(busId: string, stars: number, comment: str
   const filtered = existing.ratings.filter(r => r.userId !== user.id);
   const newRating: BusRating = { userId: user.id, displayName: user.displayName, busId, stars, comment: persistedComment, timestamp: Date.now() };
   const ratings = [...filtered, newRating];
-  const average = ratings.reduce((s, r) => s + r.stars, 0) / ratings.length;
+  const average = ratings.length ? ratings.reduce((s, r) => s + r.stars, 0) / ratings.length : 0;
   return repoPut(`data/ratings/${busId}.json`, { busId, average: Math.round(average * 10) / 10, count: ratings.length, ratings }, `rating: ${busId}`);
 }
 

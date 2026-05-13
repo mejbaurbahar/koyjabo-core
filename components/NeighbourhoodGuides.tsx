@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { ArrowLeft, MapPin, Bus, Search, ChevronLeft, ChevronDown, ChevronUp } from 'lucide-react';
+import { ArrowLeft, MapPin, Bus, Search, ChevronLeft, ChevronDown, ChevronUp, X } from 'lucide-react';
 // import AdSenseAd from './AdSenseAd';
 import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
@@ -740,6 +740,23 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
       </div>
 
 
+      <div className="px-4 pt-3 pb-2 bg-kj-panel border-b border-kj-line shrink-0">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-kj-text-dim pointer-events-none" />
+          <input
+            type="text"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder={lbl('Search areas...', 'এলাকা খুঁজুন...')}
+            className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl pl-9 pr-3 py-2.5 text-sm text-kj-text dark:text-white placeholder-kj-text-faint focus:outline-none focus:ring-2 focus:ring-purple-400"
+          />
+          {search && (
+            <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-kj-text-faint hover:text-kj-text">
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+      </div>
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y px-4 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
         {/* <AdSenseAd adSlot="auto" className="mt-2 mb-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
         {search ? (

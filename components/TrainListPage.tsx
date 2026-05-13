@@ -765,7 +765,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
     <div className="flex flex-col flex-1 min-h-0 w-full bg-kj-bg overflow-hidden">
       {/* Header */}
       <div className="shrink-0 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 shadow-xl shadow-emerald-500/30">
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 dark:from-[#10181c] dark:via-[#16222a] dark:to-[#10181c] shadow-xl shadow-emerald-500/30 dark:shadow-none">
           <div className="absolute top-0 right-0 -mr-12 -mt-12 w-40 h-40 rounded-full bg-white/10 blur-2xl" />
           <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-32 h-32 rounded-full bg-white/10 blur-2xl" />
         </div>
@@ -945,7 +945,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
       )}
 
       {/* Count row */}
-      <div className="shrink-0 flex items-center justify-between px-5 py-2 bg-[#0F172A] border-b border-white/10">
+      <div className="shrink-0 flex items-center justify-between px-5 py-2 bg-kj-panel border-b border-kj-line">
         <h3 className="font-bold text-kj-text text-sm">
           {listFilter === 'FAVORITES' ? (bn ? 'সংরক্ষিত ট্রেন' : 'Saved Trains') : (bn ? 'ট্রেনের তালিকা' : 'Train List')}
         </h3>
@@ -961,7 +961,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
         </div>
       </div>
 
-      <div className="shrink-0 px-4 py-2 bg-[#0F172A] border-b border-white/10">
+      <div className="shrink-0 px-4 py-2 bg-kj-panel border-b border-kj-line">
         <div className="flex p-1 bg-kj-chip-bg rounded-xl">
           <button
             onClick={() => setListFilter('ALL')}

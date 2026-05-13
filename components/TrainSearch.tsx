@@ -56,6 +56,10 @@ const TrainSearch: React.FC = () => {
             setError(t('trainSearch.errorBothRequired'));
             return;
         }
+        if (!navigator.onLine) {
+            setError(t('trainSearch.errorOffline') || 'No internet connection. Train data requires an online connection.');
+            return;
+        }
         setLoading(true);
         setError(null);
         try {

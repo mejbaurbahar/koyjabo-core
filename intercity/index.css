@@ -25,16 +25,16 @@
 }
 
 .dark {
-  --kj-bg: #080d10;
-  --kj-panel: #10181c;
-  --kj-panel-muted: #0c1418;
+  --kj-bg: #10181c;
+  --kj-panel: #16222a;
+  --kj-panel-muted: #10181c;
   --kj-line: #1c272c;
   --kj-text: #e8efe9;
   --kj-text-dim: #8d9b9d;
   --kj-text-faint: #5e6d70;
   --kj-chip-bg: #172226;
   --kj-chip-text: #b6c4c4;
-  --kj-input-bg: #0a1114;
+  --kj-input-bg: #0c1418;
   --kj-primary: #10b981;
   --kj-primary-ink: #04130d;
   --kj-primary-soft: #0f2a22;
@@ -47,8 +47,11 @@
 }
 
 /* Custom Styles */
+html,
 body {
   font-family: 'Inter', sans-serif;
+  background-color: var(--kj-bg);
+  color: var(--kj-text);
 }
 
 /* Custom Scrollbar Styles */

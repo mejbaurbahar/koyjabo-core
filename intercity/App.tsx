@@ -559,7 +559,7 @@ function App() {
           <div className="flex-none px-2 pt-1.5 pb-1.5 md:px-4 md:pt-3 md:pb-2 relative z-50">
             <div className="relative group">
               {/* Gradient background layer */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0F788F] via-[#219E91] to-[#11B084] rounded-xl md:rounded-[2rem] shadow-lg shadow-[#0F788F]/20 overflow-hidden transition-all duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0F788F] via-[#219E91] to-[#11B084] dark:from-[#10181c] dark:via-[#16222a] dark:to-[#10181c] rounded-xl md:rounded-[2rem] shadow-lg shadow-[#0F788F]/20 dark:shadow-none overflow-hidden transition-all duration-300">
                 <div className="absolute top-0 right-0 -mr-12 -mt-12 w-40 h-40 rounded-full bg-white/10 blur-2xl" />
                 <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-32 h-32 rounded-full bg-white/10 blur-2xl" />
               </div>

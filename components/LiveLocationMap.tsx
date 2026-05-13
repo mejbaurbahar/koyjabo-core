@@ -423,8 +423,17 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
         const handler = (e: DeviceOrientationEvent) => {
             if (e.alpha !== null) headingRef.current = 360 - e.alpha;
         };
-        window.addEventListener('deviceorientationabsolute', handler as EventListener, true);
-        window.addEventListener('deviceorientation', handler as EventListener, true);
+        const attach = () => {
+            window.addEventListener('deviceorientationabsolute', handler as EventListener, true);
+            window.addEventListener('deviceorientation', handler as EventListener, true);
+        };
+        // iOS 13+ requires explicit permission before DeviceOrientationEvent fires
+        const DevOrient = DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<string> };
+        if (typeof DevOrient.requestPermission === 'function') {
+            DevOrient.requestPermission().then(state => { if (state === 'granted') attach(); }).catch(() => {});
+        } else {
+            attach();
+        }
         return () => {
             window.removeEventListener('deviceorientationabsolute', handler as EventListener, true);
             window.removeEventListener('deviceorientation', handler as EventListener, true);
