@@ -663,9 +663,7 @@ const App: React.FC = () => {
     };
   }, []);
 
-  const [searchMode, setSearchMode] = useState<'TEXT' | 'ROUTE'>(() =>
-    (localStorage.getItem('dhaka_commute_search_mode') as 'TEXT' | 'ROUTE') || 'ROUTE'
-  );
+  const [searchMode, setSearchMode] = useState<'TEXT' | 'ROUTE'>('ROUTE');
   const [inputValue, setInputValue] = useState(() => localStorage.getItem('dhaka_commute_input_value') || '');
   const [searchQuery, setSearchQuery] = useState(() => localStorage.getItem('dhaka_commute_search_query') || '');
 
@@ -820,9 +818,6 @@ const App: React.FC = () => {
   }, [isInDhaka, initialLocationChecked]);
 
   // Persistence Effects
-  useEffect(() => {
-    localStorage.setItem('dhaka_commute_search_mode', searchMode);
-  }, [searchMode]);
 
   useEffect(() => {
     localStorage.setItem('dhaka_commute_input_value', inputValue);
@@ -3823,6 +3818,13 @@ const App: React.FC = () => {
 
           {/* Mode Pill Tabs */}
           <div className="flex items-center gap-2 px-4 md:px-5 pb-3 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            <button
+              onClick={(e) => { e.stopPropagation(); setSearchMode('ROUTE'); setSuggestedRoutes([]); }}
+              className={`flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${searchMode === 'ROUTE' && view === AppView.HOME ? 'bg-kj-primary-soft text-kj-primary-deep border border-kj-primary/30' : 'bg-kj-chip-bg text-kj-chip-text border border-kj-line'}`}
+            >
+              <span className={`w-[6px] h-[6px] rounded-full ${searchMode === 'ROUTE' && view === AppView.HOME ? 'bg-kj-primary' : 'bg-kj-text-faint'}`} />
+              {language === 'bn' ? 'রুট খুঁজুন' : 'FIND ROUTE'}
+            </button>
             <button
               onClick={(e) => { e.stopPropagation(); setSearchMode('TEXT'); setSuggestedRoutes([]); setBusRouteSort('DEFAULT'); }}
               className={`flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${searchMode === 'TEXT' ? 'bg-kj-primary-soft text-kj-primary-deep border border-kj-primary/30' : 'bg-kj-chip-bg text-kj-chip-text border border-kj-line'}`}
