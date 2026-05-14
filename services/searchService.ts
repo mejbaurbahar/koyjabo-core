@@ -1,6 +1,7 @@
 import { BusRoute, Station } from '../types';
 import { BUS_DATA, STATIONS } from '../constants';
 import { findNearbyStations, getNearbyStationNames } from './nearbyStationsService';
+import { detectIntercityDestination } from './intercityDetectionService';
 
 /**
  * Enhanced Search Service for Bus & Station Search
@@ -18,7 +19,7 @@ const getStationsList = () => {
 
 
 export interface SearchSuggestion {
-    type: 'bus' | 'station';
+    type: 'bus' | 'station' | 'intercity';
     id: string;
     name: string;
     bnName?: string;
@@ -79,11 +80,23 @@ export const generateSearchSuggestions = (query: string): SearchSuggestion[] => 
         }
     });
 
-    // Return top 10 suggestions (5 stations + 5 buses preferred)
+    // Check for intercity destination
+    const intercityDest = detectIntercityDestination(query);
+    if (intercityDest) {
+        suggestions.push({
+            type: 'intercity',
+            id: `intercity-${intercityDest}`,
+            name: intercityDest,
+            subtitle: 'Intercity — opens in intercity search',
+        });
+    }
+
+    // Return top 10 suggestions (5 stations + 5 buses preferred) + intercity
     const stationSuggestions = suggestions.filter(s => s.type === 'station').slice(0, 6);
     const busSuggestions = suggestions.filter(s => s.type === 'bus').slice(0, 4);
+    const intercitySuggestions = suggestions.filter(s => s.type === 'intercity');
 
-    return [...stationSuggestions, ...busSuggestions];
+    return [...stationSuggestions, ...busSuggestions, ...intercitySuggestions];
 };
 
 /**

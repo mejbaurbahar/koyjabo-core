@@ -40,6 +40,7 @@ import {
   generateSearchSuggestions,
   type SearchSuggestion
 } from './services/searchService';
+import { detectIntercityDestination, getNearestDistrictFromCoords } from './services/intercityDetectionService';
 import { sortBusesByLocation } from './services/locationBasedSortService';
 import { initDataSync, triggerChatSync, triggerAISync } from './services/fullDataSync';
 import { DesktopNavbar } from './components/DesktopNavbar';
@@ -746,6 +747,7 @@ const App: React.FC = () => {
 
 
   const [intercityLoading, setIntercityLoading] = useState(false);
+  const [isIntercityRedirecting, setIsIntercityRedirecting] = useState(false);
   const [showOfflineNavModal, setShowOfflineNavModal] = useState(false);
   const [pendingIntercityNav, setPendingIntercityNav] = useState<{ from: string, to: string } | null>(null);
 
@@ -1965,9 +1967,49 @@ const App: React.FC = () => {
     }
   }, [searchMode, fromStation, toStation]);
 
-  const handleSearchCommit = () => {
-    setSearchQuery(inputValue);
+  const handleIntercityRedirect = (destination: string) => {
+    setIsIntercityRedirecting(true);
+    setShowSuggestions(false);
     (document.activeElement as HTMLElement)?.blur();
+
+    const redirect = (from: string) => {
+      const params = new URLSearchParams({ from, to: destination });
+      window.location.href = `/intercity/?${params.toString()}`;
+    };
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const from = getNearestDistrictFromCoords(pos.coords.latitude, pos.coords.longitude);
+        redirect(from);
+      },
+      () => {
+        // Fallback: use cached userLocation or default to Dhaka
+        if (userLocation) {
+          const from = getNearestDistrictFromCoords(userLocation.lat, userLocation.lng);
+          redirect(from);
+        } else {
+          redirect('Dhaka');
+        }
+      },
+      { timeout: 4000, maximumAge: 60000 }
+    );
+  };
+
+  const handleSearchCommit = () => {
+    const query = inputValue.trim();
+    setShowSuggestions(false);
+    (document.activeElement as HTMLElement)?.blur();
+
+    // Check if the query is an intercity destination before local search
+    if (query) {
+      const intercityDest = detectIntercityDestination(query);
+      if (intercityDest) {
+        handleIntercityRedirect(intercityDest);
+        return;
+      }
+    }
+
+    setSearchQuery(inputValue);
 
     // Scroll to top to show search results (Fix Issue #1)
     if (scrollContainerRef.current) {
@@ -1975,10 +2017,10 @@ const App: React.FC = () => {
     }
 
     // Generate intelligent route suggestions and search context
-    if (inputValue.trim()) {
+    if (query) {
       // Defer heavy calculation to next tick to allow UI to update first (INP fix)
       setTimeout(() => {
-        const searchResult = enhancedBusSearch(inputValue.trim());
+        const searchResult = enhancedBusSearch(query);
         const routes = planRoutes(userLocation, inputValue);
 
         // Batch updates
@@ -3889,15 +3931,9 @@ const App: React.FC = () => {
                     </button>
                   ) : (
                     <button
-                      onClick={() => {
-                        if (inputValue.trim()) {
-                          const result = enhancedBusSearch(inputValue);
-                          setSearchContext(result.searchContext);
-                          setSearchQuery(inputValue);
-                          setShowSuggestions(false);
-                        }
-                      }}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center p-2 bg-kj-primary-soft rounded-lg text-emerald-700 dark:text-kj-primary hover:bg-emerald-200 dark:hover:bg-emerald-900/50 transition-colors"
+                      onClick={handleSearchCommit}
+                      disabled={isIntercityRedirecting}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center p-2 bg-kj-primary-soft rounded-lg text-emerald-700 dark:text-kj-primary hover:bg-emerald-200 dark:hover:bg-emerald-900/50 transition-colors disabled:opacity-60"
                       title="Click to Search"
                       aria-label="Search"
                     >
@@ -3905,6 +3941,14 @@ const App: React.FC = () => {
                     </button>
                   )}
                 </div>
+
+                {/* Intercity redirecting indicator */}
+                {isIntercityRedirecting && (
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-kj-panel rounded-xl shadow-2xl z-[9999] border border-kj-line px-4 py-3 flex items-center gap-3">
+                    <Navigation className="w-4 h-4 text-orange-500 animate-pulse flex-shrink-0" />
+                    <span className="text-sm text-kj-text">Detecting your location for intercity search…</span>
+                  </div>
+                )}
 
                 {/* Autocomplete Dropdown */}
                 {showSuggestions && searchSuggestions.length > 0 && (
@@ -3914,8 +3958,13 @@ const App: React.FC = () => {
                         key={`${suggestion.type}-${suggestion.id}-${idx}`}
                         className="px-4 py-3.5 hover:bg-kj-primary-soft dark:hover:bg-slate-700 cursor-pointer border-b border-kj-line last:border-b-0 transition-colors"
                         onMouseDown={(e) => {
-                          e.preventDefault(); // Prevent input blur
-                          e.stopPropagation(); // Prevent event bubbling
+                          e.preventDefault();
+                          e.stopPropagation();
+                          if (suggestion.type === 'intercity') {
+                            setInputValue(suggestion.name);
+                            handleIntercityRedirect(suggestion.name);
+                            return;
+                          }
                           const displayName = suggestion.name;
                           setInputValue(displayName);
                           setShowSuggestions(false);
@@ -3929,6 +3978,8 @@ const App: React.FC = () => {
                         <div className="flex items-start gap-3">
                           {suggestion.type === 'station' ? (
                             <MapPin className="w-4 h-4 text-kj-primary flex-shrink-0 mt-1" />
+                          ) : suggestion.type === 'intercity' ? (
+                            <Navigation className="w-4 h-4 text-orange-500 flex-shrink-0 mt-1" />
                           ) : (
                             <Bus className="w-4 h-4 text-blue-600 flex-shrink-0 mt-1" />
                           )}
@@ -3950,6 +4001,11 @@ const App: React.FC = () => {
                           {suggestion.type === 'station' && (
                             <span className="text-xs text-kj-primary bg-kj-primary-soft px-2 py-1 rounded-full flex-shrink-0">
                               Station
+                            </span>
+                          )}
+                          {suggestion.type === 'intercity' && (
+                            <span className="text-xs text-orange-600 bg-orange-50 dark:bg-orange-900/30 dark:text-orange-400 px-2 py-1 rounded-full flex-shrink-0">
+                              Intercity
                             </span>
                           )}
                           {suggestion.type === 'bus' && (
