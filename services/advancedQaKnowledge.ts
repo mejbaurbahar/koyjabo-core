@@ -32,10 +32,17 @@ const normalizeText = (value: string): string =>
     .replace(/\s+/g, ' ')
     .trim();
 
+const STOP_WORDS = new Set([
+  'how', 'to', 'go', 'the', 'a', 'an', 'in', 'of', 'and', 'is', 'are',
+  'i', 'can', 'do', 'what', 'where', 'when', 'way', 'get', 'reach', 'take',
+  'from', 'at', 'on', 'for', 'by', 'it', 'me', 'my', 'we', 'you', 'be',
+  'will', 'was', 'that', 'this', 'with', 'which', 'or', 'about', 'if', 'up'
+]);
+
 const tokenize = (value: string): string[] =>
   normalizeText(value)
     .split(' ')
-    .filter((t) => t.length > 1);
+    .filter((t) => t.length > 2 && !STOP_WORDS.has(t));
 
 const detectLanguage = (query: string): 'en' | 'bn' => {
   return BN_CHAR_PATTERN.test(query) ? 'bn' : 'en';

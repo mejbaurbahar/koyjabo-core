@@ -2215,10 +2215,10 @@ const App: React.FC = () => {
     try {
       if (!navigator.onLine) {
         // Rule-based AI works fully offline
-        result = await askGeminiRoute(queryToSend + ` [OfflineMode] [Context: ${locationContext}]`, '', updatedHistory);
+        result = await askGeminiRoute(queryToSend + ` [OfflineMode] [Context: ${locationContext}]`, '', updatedHistory, user?.displayName || undefined);
       } else {
         const latestApiKey = localStorage.getItem('gemini_api_key') || '';
-        result = await askGeminiRoute(queryToSend + ` [Context: ${locationContext}]`, latestApiKey, updatedHistory);
+        result = await askGeminiRoute(queryToSend + ` [Context: ${locationContext}]`, latestApiKey, updatedHistory, user?.displayName || undefined);
       }
     } catch (aiError) {
       result = !navigator.onLine
