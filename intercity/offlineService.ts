@@ -802,6 +802,18 @@ const BUS_ROUTES_MAJOR = [
     { from: "Bandarban", to: "Chattogram", buses: ["Purbani", "Purabi", "Dolphin", "Local buses"], fare: "200-500" },
     { from: "Rangamati", to: "Chattogram", buses: ["BRTC", "Local buses"], fare: "250-600" },
     { from: "Khagrachari", to: "Chattogram", buses: ["Shanti Paribahan", "Local buses"], fare: "200-500" },
+    // Bandarban district internal routes
+    { from: "Bandarban", to: "Ruma", buses: ["Local bus (Bandarban Bus Terminal)", "Shared Jeep (Chander Gari)", "CNG/Microbus"], fare: "80-200" },
+    { from: "Bandarban", to: "Thanchi", buses: ["Shared Jeep (Chander Gari)", "Local bus"], fare: "150-300" },
+    { from: "Bandarban", to: "Alikadam", buses: ["Local bus", "Shared Jeep"], fare: "100-250" },
+    { from: "Bandarban", to: "Lama", buses: ["Local bus", "CNG"], fare: "80-180" },
+    { from: "Bandarban", to: "Naikhongchhari", buses: ["Shared Jeep", "Local bus"], fare: "120-250" },
+    // Rangamati district internal routes
+    { from: "Rangamati", to: "Kaptai", buses: ["Local bus", "CNG", "Boat (Rangamati Lake)"], fare: "50-120" },
+    { from: "Rangamati", to: "Barkal", buses: ["Boat (Rangamati Lake)", "Local bus"], fare: "100-250" },
+    // Khagrachari district internal routes
+    { from: "Khagrachari", to: "Dighinala", buses: ["Local bus", "CNG"], fare: "60-130" },
+    { from: "Khagrachari", to: "Mahalchhari", buses: ["Local bus", "Shared Jeep"], fare: "80-180" },
     
     // --- OTHERS ---
     { from: "Khulna", to: "Barishal", buses: ["Shohagh", "Hanif", "Sakura", "Local buses"], fare: "350-700" },
@@ -893,10 +905,27 @@ const buildViaHubSuggestions = (from: string, to: string): Array<{
     leg1Time: string;
     leg2Time: string;
 }> => {
+    // If either endpoint has no known coordinates it's a local/sub-district area —
+    // we can't validate detour distance so skip all hub suggestions.
+    if (!DISTRICT_COORDINATES[from] || !DISTRICT_COORDINATES[to]) return [];
+
+    const [fromLat, fromLng] = DISTRICT_COORDINATES[from];
+    const [toLat, toLng] = DISTRICT_COORDINATES[to];
+    const directDist = calculateDistance(fromLat, fromLng, toLat, toLng);
+
     const candidates: Array<{ hub: string; leg1Modes: string[]; leg2Modes: string[]; leg1Time: string; leg2Time: string; score: number }> = [];
 
     for (const hub of MAJOR_HUBS) {
         if (hub === from || hub === to) continue;
+
+        // Skip hub if it has no coordinates or is geographically out of the way
+        // (total via-hub distance > 1.9× the direct distance — not a sensible detour)
+        const hubCoord = DISTRICT_COORDINATES[hub];
+        if (hubCoord) {
+            const leg1Dist = calculateDistance(fromLat, fromLng, hubCoord[0], hubCoord[1]);
+            const leg2Dist = calculateDistance(hubCoord[0], hubCoord[1], toLat, toLng);
+            if (leg1Dist + leg2Dist > directDist * 1.9) continue;
+        }
 
         const leg1Modes: string[] = [];
         const leg2Modes: string[] = [];
@@ -1028,10 +1057,16 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
             const hillTracts = ['Bandarban', 'Rangamati', 'Khagrachari'];
             const isHillTract = hillTracts.includes(from) || hillTracts.includes(to);
             if (isHillTract) {
-                const hub = hillTracts.includes(from) ? to : from;
                 const hillCity = hillTracts.includes(from) ? from : to;
-                result += `💡 **পাহাড়ি রুট নোট:** ${hillCity} থেকে সরাসরি দূরপাল্লার বাস সীমিত। সাধারণত **চট্টগ্রাম** হয়ে যাওয়া সহজ।  \n`;
-                result += `লোকাল বাস বা শেয়ার্ড জিপ/মাইক্রোবাস পাওয়া যায় — স্থানীয় বাস টার্মিনালে খোঁজ নিন।  \n`;
+                const otherCity = hillTracts.includes(from) ? to : from;
+                const otherIsKnownDistrict = !!DISTRICT_COORDINATES[otherCity];
+                const otherIsHillTract = hillTracts.includes(otherCity);
+                if (otherIsKnownDistrict && !otherIsHillTract) {
+                    result += `💡 **পাহাড়ি রুট নোট:** ${hillCity} থেকে সরাসরি দূরপাল্লার বাস সীমিত। সাধারণত **চট্টগ্রাম** হয়ে যাওয়া সহজ।  \n`;
+                    result += `লোকাল বাস বা শেয়ার্ড জিপ/মাইক্রোবাস পাওয়া যায় — স্থানীয় বাস টার্মিনালে খোঁজ নিন।  \n`;
+                } else {
+                    result += `💡 এটি পার্বত্য চট্টগ্রামের স্থানীয় রুট। ${hillCity} বাস টার্মিনাল থেকে লোকাল বাস, শেয়ার্ড জিপ (চান্দের গাড়ি) বা সিএনজি পাওয়া যায়।  \n`;
+                }
             } else if (distance < 100) {
                 result += `💡 এটি একটি স্বল্প দূরত্বের রুট। লোকাল বাস, সিএনজি বা অটোরিকশায় যাতায়াত করা যায়।  \n`;
             } else {
@@ -1183,8 +1218,17 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
             const isHillTract = hillTracts.includes(from) || hillTracts.includes(to);
             if (isHillTract) {
                 const hillCity = hillTracts.includes(from) ? from : to;
-                result += `💡 **Hill Tract Note:** Direct long-distance buses from ${hillCity} are limited. The most reliable option is to travel via **Chattogram** first.  \n`;
-                result += `Local buses and shared jeeps/microbuses are available — check at the local bus stand.  \n`;
+                const otherCity = hillTracts.includes(from) ? to : from;
+                // Only suggest Chattogram when the other end is a major district-level city,
+                // not when both ends are within the hill tracts or one is a local sub-area.
+                const otherIsKnownDistrict = !!DISTRICT_COORDINATES[otherCity];
+                const otherIsHillTract = hillTracts.includes(otherCity);
+                if (otherIsKnownDistrict && !otherIsHillTract) {
+                    result += `💡 **Hill Tract Note:** Direct long-distance buses from ${hillCity} are limited. The most reliable option is to travel via **Chattogram** first.  \n`;
+                    result += `Local buses and shared jeeps/microbuses are available — check at the local bus stand.  \n`;
+                } else {
+                    result += `💡 This looks like a local route within the Chittagong Hill Tracts. Local buses, shared jeeps (Chander Gari), and CNG/microbuses are available from ${hillCity} Bus Terminal.  \n`;
+                }
             } else if (distance < 100) {
                 result += `💡 This is a short route. Local buses, CNGs, or auto-rickshaws are your best option.  \n`;
             } else {

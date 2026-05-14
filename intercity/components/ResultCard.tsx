@@ -70,9 +70,15 @@ const ResultCard: React.FC<ResultCardProps> = ({ data, userLocation }) => {
       { name: "Barishal", bnName: "বরিশাল", lat: 22.7010, lng: 90.3535 }
     ];
 
-    const content = selectedMode.fullContent || '';
+    // Only scan lines that contain "→" — these are actual route waypoint lines.
+    // Tip/note lines (e.g. "travel via Chattogram first") must not pollute the map.
+    const routeLines = (selectedMode.fullContent || '')
+      .split('\n')
+      .filter(line => line.includes('→'))
+      .join('\n');
+
     const matched = potentialStops.filter(stop =>
-      (content.includes(stop.name) || content.includes(stop.bnName)) &&
+      (routeLines.includes(stop.name) || routeLines.includes(stop.bnName)) &&
       !data.from.includes(stop.name) && !data.to.includes(stop.name)
     );
 
