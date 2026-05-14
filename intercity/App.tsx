@@ -797,7 +797,7 @@ function App() {
             {/* Loading */}
             {loading && (
               <div className="flex items-center justify-center h-full min-h-[400px]">
-                <div className="bg-kj-panel/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl"><LoadingState /></div>
+                <div className="bg-kj-panel rounded-3xl p-8 shadow-xl border border-kj-line"><LoadingState /></div>
               </div>
             )}
 
@@ -844,49 +844,49 @@ function App() {
             {!loading && !result && !error && (
               <div className="flex flex-col items-center justify-center h-full min-h-[400px] p-8 text-center">
                 {selectedMode === 'bus' && authUser && (
-                  <div className="bg-kj-panel/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
+                  <div className="bg-kj-panel rounded-3xl p-8 shadow-xl border border-kj-line max-w-lg w-full text-left">
                     <div className="text-4xl mb-4 text-center">🚌</div>
                     <h3 className="text-xl font-bold text-kj-text mb-2 text-center">{t('intercity.byBus')}</h3>
                     <p className="text-kj-text-dim text-sm leading-relaxed mb-5 text-center">{t('intercity.busInfo')}</p>
                     <div className="grid grid-cols-2 gap-3">
                       {[{ l: t('intercity.acBus'), d: t('intercity.acBusDesc') }, { l: t('intercity.nonAcBus'), d: t('intercity.nonAcBusDesc') }, { l: t('intercity.chairCoach'), d: t('intercity.chairCoachDesc') }, { l: t('intercity.sleeperCoach'), d: t('intercity.sleeperCoachDesc') }].map(i => (
-                        <div key={i.l} className="bg-kj-primary-soft dark:bg-emerald-900/20 rounded-xl p-3"><p className="font-bold text-emerald-700 dark:text-kj-primary text-sm">{i.l}</p><p className="text-kj-text-dim text-xs">{i.d}</p></div>
+                        <div key={i.l} className="bg-kj-primary-soft dark:bg-emerald-900/20 rounded-xl p-3"><p className="font-bold text-emerald-700 dark:text-kj-primary text-sm">{i.l}</p><p className="text-kj-text-dim dark:text-slate-300 text-xs">{i.d}</p></div>
                       ))}
                     </div>
                   </div>
                 )}
                 {selectedMode === 'train' && authUser && (
-                  <div className="bg-kj-panel/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
+                  <div className="bg-kj-panel rounded-3xl p-8 shadow-xl border border-kj-line max-w-lg w-full text-left">
                     <div className="text-4xl mb-4 text-center">🚂</div>
                     <h3 className="text-xl font-bold text-kj-text mb-2 text-center">{t('intercity.byTrain')}</h3>
                     <p className="text-kj-text-dim text-sm leading-relaxed mb-5 text-center">{t('intercity.trainInfo')}</p>
                     <div className="grid grid-cols-2 gap-3">
                       {[{ l: t('intercity.shovon'), d: t('intercity.shovonDesc') }, { l: t('intercity.shovonChair'), d: t('intercity.shovonChairDesc') }, { l: t('intercity.acChair'), d: t('intercity.acChairDesc') }, { l: t('intercity.acBerth'), d: t('intercity.acBerthDesc') }].map(i => (
-                        <div key={i.l} className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-3"><p className="font-bold text-blue-700 dark:text-blue-400 text-sm">{i.l}</p><p className="text-kj-text-dim text-xs">{i.d}</p></div>
+                        <div key={i.l} className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-3"><p className="font-bold text-blue-700 dark:text-blue-400 text-sm">{i.l}</p><p className="text-kj-text-dim dark:text-slate-300 text-xs">{i.d}</p></div>
                       ))}
                     </div>
                   </div>
                 )}
                 {selectedMode === 'plane' && authUser && (
-                  <div className="bg-kj-panel/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
+                  <div className="bg-kj-panel rounded-3xl p-8 shadow-xl border border-kj-line max-w-lg w-full text-left">
                     <div className="text-4xl mb-4 text-center">✈️</div>
                     <h3 className="text-xl font-bold text-kj-text mb-2 text-center">{t('intercity.byAir')}</h3>
                     <p className="text-kj-text-dim text-sm leading-relaxed mb-5 text-center">{t('intercity.airInfo')}</p>
                     <div className="grid grid-cols-2 gap-3">
                       {[{ l: 'ঢাকা–চট্টগ্রাম', d: '~45 min' }, { l: 'ঢাকা–সিলেট', d: '~40 min' }, { l: 'ঢাকা–কক্সবাজার', d: '~1 hr' }, { l: 'ঢাকা–যশোর', d: '~45 min' }].map(i => (
-                        <div key={i.l} className="bg-sky-50 dark:bg-sky-900/20 rounded-xl p-3"><p className="font-bold text-sky-700 dark:text-sky-400 text-sm">{i.l}</p><p className="text-kj-text-dim text-xs">{i.d}</p></div>
+                        <div key={i.l} className="bg-sky-50 dark:bg-sky-900/20 rounded-xl p-3"><p className="font-bold text-sky-700 dark:text-sky-400 text-sm">{i.l}</p><p className="text-kj-text-dim dark:text-slate-300 text-xs">{i.d}</p></div>
                       ))}
                     </div>
                   </div>
                 )}
                 {selectedMode === 'launch' && authUser && (
-                  <div className="bg-kj-panel/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl max-w-lg w-full text-left">
+                  <div className="bg-kj-panel rounded-3xl p-8 shadow-xl border border-kj-line max-w-lg w-full text-left">
                     <div className="text-4xl mb-4 text-center">🛥️</div>
                     <h3 className="text-xl font-bold text-kj-text mb-2 text-center">{t('intercity.launchTitle')}</h3>
                     <p className="text-kj-text-dim text-sm leading-relaxed mb-5 text-center">{t('intercity.launchInfo')}</p>
                     <div className="grid grid-cols-2 gap-3">
                       {[{ l: 'ঢাকা–বরিশাল', d: '~8-10 hrs' }, { l: 'ঢাকা–পটুয়াখালী', d: '~10-12 hrs' }, { l: 'ঢাকা–ভোলা', d: '~8-9 hrs' }, { l: 'ঢাকা–ঝালকাঠি', d: '~9-10 hrs' }].map(i => (
-                        <div key={i.l} className="bg-teal-50 dark:bg-teal-900/20 rounded-xl p-3"><p className="font-bold text-teal-700 dark:text-teal-400 text-sm">{i.l}</p><p className="text-kj-text-dim text-xs">{i.d}</p></div>
+                        <div key={i.l} className="bg-teal-50 dark:bg-teal-900/20 rounded-xl p-3"><p className="font-bold text-teal-700 dark:text-teal-400 text-sm">{i.l}</p><p className="text-kj-text-dim dark:text-slate-300 text-xs">{i.d}</p></div>
                       ))}
                     </div>
                   </div>
