@@ -451,7 +451,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                         </p>
                         <button
                             onClick={onGoHome}
-                            className="px-8 py-3 bg-white text-teal-600 rounded-xl font-black text-base hover:bg-kj-chip-bg transition-all shadow-xl hover:shadow-2xl transform hover:-translate-y-0.5"
+                            className="px-8 py-3 bg-white dark:bg-kj-chip-bg text-teal-600 dark:text-teal-300 rounded-xl font-black text-base hover:bg-kj-chip-bg dark:hover:bg-slate-600 transition-all shadow-xl hover:shadow-2xl transform hover:-translate-y-0.5"
                         >
                             {language === 'bn' ? 'হোমে যান' : 'Open KoyJabo'}
                         </button>

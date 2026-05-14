@@ -21,25 +21,57 @@ const AdSenseAd: React.FC<AdSenseAdProps> = React.memo(({
 }) => {
   const insRef = useRef<HTMLModElement>(null);
   const pushed = useRef(false);
+  const retryTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(() => { pushed.current = false; }, [adSlot]);
-
-  useEffect(() => {
+  const tryPush = () => {
     if (!navigator.onLine) return;
     if (!isValidSlot(adSlot)) return;
     const ins = insRef.current;
     if (!ins || pushed.current) return;
     const status = ins.getAttribute('data-adsbygoogle-status');
     if (status === 'done' || status === 'filled') return;
+
+    // If the AdSense script hasn't loaded yet, retry after 2 s
+    if (typeof (window as any).adsbygoogle === 'undefined') {
+      if (!retryTimer.current) {
+        retryTimer.current = setTimeout(() => {
+          retryTimer.current = null;
+          tryPush();
+        }, 2000);
+      }
+      return;
+    }
+
     pushed.current = true;
     try {
       ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
     } catch {
       pushed.current = false;
     }
+  };
+
+  useEffect(() => {
+    pushed.current = false;
+    if (retryTimer.current) {
+      clearTimeout(retryTimer.current);
+      retryTimer.current = null;
+    }
   }, [adSlot]);
 
-  if (!navigator.onLine || !isValidSlot(adSlot)) return null;
+  useEffect(() => {
+    tryPush();
+
+    // Re-try when the browser comes back online (PWA offline → online transition)
+    const handleOnline = () => { pushed.current = false; tryPush(); };
+    window.addEventListener('online', handleOnline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      if (retryTimer.current) clearTimeout(retryTimer.current);
+    };
+  }, [adSlot]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!isValidSlot(adSlot)) return null;
 
   return (
     <div

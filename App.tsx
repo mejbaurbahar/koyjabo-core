@@ -452,7 +452,7 @@ const SettingsView: React.FC<{
         </div>
 
         {/* About the App */}
-        <div className="bg-slate-50 p-6 rounded-2xl border border-kj-line">
+        <div className="bg-slate-50 dark:bg-kj-chip-bg/50 p-6 rounded-2xl border border-kj-line">
           <h3 className="font-bold text-kj-text mb-2 flex items-center gap-2">
             <Info className="w-4 h-4 text-blue-500" /> App Info
           </h3>
@@ -2899,7 +2899,7 @@ const App: React.FC = () => {
           <p className="mb-6 opacity-90">{t('whyUse.readyToNavigateDesc')}</p>
           <button
             onClick={() => setView(AppView.HOME)}
-            className="bg-white text-kj-primary px-8 py-3 rounded-xl font-bold hover:bg-kj-chip-bg transition-all shadow-lg"
+            className="bg-white dark:bg-kj-chip-bg text-kj-primary px-8 py-3 rounded-xl font-bold hover:bg-kj-chip-bg dark:hover:bg-slate-700 transition-all shadow-lg"
           >
             {t('whyUse.startFinding')}
           </button>
@@ -3106,19 +3106,19 @@ const App: React.FC = () => {
           <section className="bg-slate-50 dark:bg-kj-chip-bg/50 p-4 sm:p-6 rounded-2xl border border-kj-line">
             <h2 className="text-xl sm:text-2xl font-bold text-kj-text mb-4">📂 Dataset Overview</h2>
             <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
-              <div className="bg-white p-4 rounded-xl shadow-sm border border-kj-line">
+              <div className="bg-white dark:bg-kj-chip-bg p-4 rounded-xl shadow-sm border border-kj-line">
                 <h3 className="font-bold text-kj-text flex items-center gap-2">🚌 Local Bus Routes</h3>
                 <p className="text-sm text-kj-text-dim mt-1">300+ detailed routes covering Dhaka City (Mirpur, Uttara, Farmgate, Motijheel, etc).</p>
               </div>
-              <div className="bg-white p-4 rounded-xl shadow-sm border border-kj-line">
+              <div className="bg-white dark:bg-kj-chip-bg p-4 rounded-xl shadow-sm border border-kj-line">
                 <h3 className="font-bold text-kj-text flex items-center gap-2">🚇 MRT Line 6</h3>
                 <p className="text-sm text-kj-text-dim mt-1">Real-time schedule and station data for Dhaka Metro Rail (Uttara North to Motijheel).</p>
               </div>
-              <div className="bg-white p-4 rounded-xl shadow-sm border border-kj-line">
+              <div className="bg-white dark:bg-kj-chip-bg p-4 rounded-xl shadow-sm border border-kj-line">
                 <h3 className="font-bold text-kj-text flex items-center gap-2">🏙️ Intercity Transport</h3>
                 <p className="text-sm text-kj-text-dim mt-1">Bus, Train, and Air routes connecting 64 districts of Bangladesh.</p>
               </div>
-              <div className="bg-white p-4 rounded-xl shadow-sm border border-kj-line">
+              <div className="bg-white dark:bg-kj-chip-bg p-4 rounded-xl shadow-sm border border-kj-line">
                 <h3 className="font-bold text-kj-text flex items-center gap-2">💰 Fare Data</h3>
                 <p className="text-sm text-kj-text-dim mt-1">Government-approved 2022 fare charts logic for accurate cost estimation.</p>
               </div>
@@ -3176,7 +3176,7 @@ const App: React.FC = () => {
 
           {/* Detailed Keyword Map for AI Context */}
 
-          <section className="bg-slate-50 p-6 rounded-2xl border border-kj-line">
+          <section className="bg-slate-50 dark:bg-kj-chip-bg/50 p-6 rounded-2xl border border-kj-line">
             <h2 className="text-2xl font-bold text-kj-text mb-4">🔍 Domain Knowledge & Keyword Map</h2>
             <p className="text-kj-text-dim mb-6">The platform is optimized to answer queries across these key transportation domains in Bangladesh:</p>
 
@@ -3704,7 +3704,7 @@ const App: React.FC = () => {
                                 if (startId) setFareStart(startId);
                                 if (endId) setFareEnd(endId);
                               }}
-                              className="w-full text-left bg-white p-3 rounded-xl border border-blue-200 shadow-sm hover:shadow-md transition-all flex items-center justify-between group"
+                              className="w-full text-left bg-white dark:bg-kj-chip-bg p-3 rounded-xl border border-blue-200 dark:border-kj-line shadow-sm hover:shadow-md transition-all flex items-center justify-between group"
                             >
                               <div className="flex items-center gap-3">
                                 <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
@@ -3746,7 +3746,7 @@ const App: React.FC = () => {
           showOfflineNavModal && (
             <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
               <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowOfflineNavModal(false)}></div>
-              <div className="relative bg-white rounded-3xl shadow-2xl p-6 max-w-sm w-full animate-in fade-in zoom-in border border-kj-line">
+              <div className="relative bg-white dark:bg-kj-panel rounded-3xl shadow-2xl p-6 max-w-sm w-full animate-in fade-in zoom-in border border-kj-line">
                 <div className="flex flex-col items-center text-center">
                   <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4 border-4 border-white shadow-lg animate-pulse-slow">
                     <WifiOff className="w-8 h-8 text-orange-600" />
@@ -4439,7 +4439,7 @@ const App: React.FC = () => {
                         }}
                         className={`px-2 py-1 rounded-md border text-[10px] font-bold leading-none transition-colors whitespace-nowrap shrink-0 ${hasRating
                           ? 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100'
-                          : 'bg-gray-50 text-kj-text-dim border-kj-line hover:bg-kj-chip-bg'}`}
+                          : 'bg-gray-50 dark:bg-slate-700/50 text-kj-text-dim border-kj-line hover:bg-kj-chip-bg'}`}
                         aria-label={hasRating ? `View rating for ${bus.name}` : `Rate ${bus.name}`}
                       >
                         {hasRating
