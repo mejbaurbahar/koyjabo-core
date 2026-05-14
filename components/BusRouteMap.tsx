@@ -18,6 +18,8 @@ interface BusRouteMapProps {
   onOpenFullMap?: () => void;
 }
 
+const esc = (s: string) => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');
+
 function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
   const R = 6371;
   const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -83,7 +85,16 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
   const [showRailway, setShowRailway] = useState(false);
   const [showAirport, setShowAirport] = useState(false);
   const [routeSnapped, setRouteSnapped] = useState(false);
-  const [isTraffic, setIsTraffic] = useState(false);
+  const [isTraffic, setIsTraffic] = useState(true);
+  const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
+
+  useEffect(() => {
+    const up = () => setIsOnline(true);
+    const down = () => setIsOnline(false);
+    window.addEventListener('online', up);
+    window.addEventListener('offline', down);
+    return () => { window.removeEventListener('online', up); window.removeEventListener('offline', down); };
+  }, []);
 
 
   const routeColor = getRouteColor(route.id);
@@ -329,7 +340,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
       });
 
       L.marker(displayCoord, { icon, zIndexOffset: (isStart || isEnd || isNearest) ? 1000 : 500 })
-        .bindTooltip(`<b>${station.name}</b><br><small>${station.bnName}</small>`, {
+        .bindTooltip(`<b>${esc(station.name)}</b><br><small>${esc(station.bnName)}</small>`, {
           direction: 'top',
           offset: [0, -h / 2 - 4],
           className: 'leaflet-tooltip-bus',
@@ -364,7 +375,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
           });
           L.marker(nearestCoord, { icon: nearestIcon, zIndexOffset: 900 })
             .bindTooltip(
-              `<b>📍 ${nearestStation.name}</b><br><small>নিকটতম বাস স্টপ · ${distLabel} দূরে</small>`,
+              `<b>📍 ${esc(nearestStation.name)}</b><br><small>নিকটতম বাস স্টপ · ${esc(distLabel)} দূরে</small>`,
               { direction: 'top', offset: [0, -16], className: 'leaflet-tooltip-bus' }
             )
             .addTo(routeLayerRef.current);
@@ -422,7 +433,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
             html: `<div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#6366f1);border:2.5px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(59,130,246,0.5);" title="${station.name}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="9" y1="6" x2="15" y2="6"/><circle cx="9" cy="14" r="1.5" fill="white"/><circle cx="15" cy="14" r="1.5" fill="white"/></svg></div>`,
           });
           L.marker([station.lat, station.lng], { icon })
-            .bindTooltip(`<b>🚇 ${station.name}</b><br><small>${station.bnName || ''}</small>`, { direction: 'top', className: 'leaflet-tooltip-bus' })
+            .bindTooltip(`<b>🚇 ${esc(station.name)}</b><br><small>${esc(station.bnName || '')}</small>`, { direction: 'top', className: 'leaflet-tooltip-bus' })
             .addTo(overlayLayerRef.current);
         });
       }
@@ -433,10 +444,10 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
             className: '',
             iconSize: [26, 26],
             iconAnchor: [13, 13],
-            html: `<div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);border:2.5px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(16,185,129,0.5);" title="${station.name}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="4" y="3" width="16" height="15" rx="3"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="7" y2="21"/><line x1="15" y1="18" x2="17" y2="21"/></svg></div>`,
+            html: `<div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);border:2.5px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(16,185,129,0.5);" title="${esc(station.name)}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="4" y="3" width="16" height="15" rx="3"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="7" y2="21"/><line x1="15" y1="18" x2="17" y2="21"/></svg></div>`,
           });
           L.marker([station.lat, station.lng], { icon })
-            .bindTooltip(`<b>🚂 ${station.name}</b><br><small>${station.bnName || ''}</small>`, { direction: 'top', className: 'leaflet-tooltip-bus' })
+            .bindTooltip(`<b>🚂 ${esc(station.name)}</b><br><small>${esc(station.bnName || '')}</small>`, { direction: 'top', className: 'leaflet-tooltip-bus' })
             .addTo(overlayLayerRef.current);
         });
       }
@@ -447,10 +458,10 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
             className: '',
             iconSize: [28, 28],
             iconAnchor: [14, 14],
-            html: `<div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#f97316,#ef4444);border:2.5px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(249,115,22,0.5);" title="${airport.name}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21 4 19.5 2.5S18 1 16.5 2.5L13 6 4.8 4.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 5.7 5.3c.3.4.8.5 1.3.3l.5-.3c.4-.2.6-.6.5-1.1z"/></svg></div>`,
+            html: `<div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#f97316,#ef4444);border:2.5px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(249,115,22,0.5);" title="${esc(airport.name)}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21 4 19.5 2.5S18 1 16.5 2.5L13 6 4.8 4.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 5.7 5.3c.3.4.8.5 1.3.3l.5-.3c.4-.2.6-.6.5-1.1z"/></svg></div>`,
           });
           L.marker([airport.lat, airport.lng], { icon })
-            .bindTooltip(`<b>✈️ ${airport.name}</b><br><small>${airport.bnName || ''}</small>`, { direction: 'top', className: 'leaflet-tooltip-bus' })
+            .bindTooltip(`<b>✈️ ${esc(airport.name)}</b><br><small>${esc(airport.bnName || '')}</small>`, { direction: 'top', className: 'leaflet-tooltip-bus' })
             .addTo(overlayLayerRef.current);
         });
       }
@@ -502,18 +513,19 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
     });
   }, [userLocation, mapReady]);
 
-  // Swap tile layer between OSM and Google Maps traffic
+  // Swap tile layer between OSM and Google Maps traffic — falls back to OSM when offline
   useEffect(() => {
-    if (!mapInstanceRef.current || !tileLayerRef.current) return;
+    if (!mapReady || !mapInstanceRef.current || !tileLayerRef.current) return;
     const map = mapInstanceRef.current;
     import('leaflet').then(L => {
-      if (tileLayerRef.current) map.removeLayer(tileLayerRef.current);
-      const url = isTraffic
+      if (!map || !tileLayerRef.current) return;
+      map.removeLayer(tileLayerRef.current);
+      const url = (isTraffic && isOnline)
         ? 'https://mt1.google.com/vt/lyrs=m@221097413,traffic&x={x}&y={y}&z={z}'
         : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
       tileLayerRef.current = L.tileLayer(url, { attribution: '', maxZoom: 19 }).addTo(map);
     });
-  }, [isTraffic]);
+  }, [isTraffic, isOnline, mapReady]);
 
   return (
     <div className="relative z-0 isolate w-full rounded-b-2xl overflow-hidden bg-kj-chip-bg" style={{ height: 310 }}>
@@ -590,11 +602,11 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
         {/* Traffic toggle */}
         <button
           onClick={() => setIsTraffic(v => !v)}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border transition-all ${isTraffic ? 'bg-orange-500 border-orange-600 text-white' : 'bg-white/90 dark:bg-kj-chip-bg/90 text-orange-500 border-orange-200 dark:border-orange-900/40 backdrop-blur-sm hover:bg-orange-50 dark:hover:bg-orange-900/20'}`}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border transition-all ${isTraffic && isOnline ? 'bg-orange-500 border-orange-600 text-white' : isTraffic && !isOnline ? 'bg-slate-400 border-slate-500 text-white' : 'bg-white/90 dark:bg-kj-chip-bg/90 text-orange-500 border-orange-200 dark:border-orange-900/40 backdrop-blur-sm hover:bg-orange-50 dark:hover:bg-orange-900/20'}`}
         >
           🚦
-          <span>Traffic</span>
-          {isTraffic && <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />}
+          <span>Traffic{isTraffic && !isOnline ? ' (offline)' : ''}</span>
+          {isTraffic && isOnline && <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />}
         </button>
 
 

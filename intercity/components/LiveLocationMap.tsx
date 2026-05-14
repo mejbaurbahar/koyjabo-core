@@ -109,12 +109,12 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
 
         switch (layerToUse) {
             case 'satellite':
-                tileUrl = 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}';
+                tileUrl = 'https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}';
                 attribution = '&copy; Google Maps';
                 (L.TileLayer.prototype as any).options.subdomains = ['mt0', 'mt1', 'mt2', 'mt3'];
                 break;
             case 'terrain':
-                tileUrl = 'http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}';
+                tileUrl = 'https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}';
                 attribution = '&copy; Google Maps';
                 (L.TileLayer.prototype as any).options.subdomains = ['mt0', 'mt1', 'mt2', 'mt3'];
                 break;

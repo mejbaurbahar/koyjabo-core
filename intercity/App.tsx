@@ -154,33 +154,10 @@ function App() {
         requestId: crypto.randomUUID(),
         action: 'record-visit',
         email: '',
-        passwordHash: '',
         userId: authUser?.id ?? '',
         data: JSON.stringify({ visitorId }),
       }),
     }).catch(() => {});
-  }, []);
-
-  // Disable right-click and devtools keyboard shortcuts
-  useEffect(() => {
-    const blockContextMenu = (e: MouseEvent) => e.preventDefault();
-    const blockKeys = (e: KeyboardEvent) => {
-      // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C, Ctrl+U
-      if (
-        e.key === 'F12' ||
-        (e.ctrlKey && e.shiftKey && ['I', 'i', 'J', 'j', 'C', 'c'].includes(e.key)) ||
-        (e.ctrlKey && ['U', 'u'].includes(e.key))
-      ) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    };
-    document.addEventListener('contextmenu', blockContextMenu);
-    document.addEventListener('keydown', blockKeys);
-    return () => {
-      document.removeEventListener('contextmenu', blockContextMenu);
-      document.removeEventListener('keydown', blockKeys);
-    };
   }, []);
 
   // Track User Location
@@ -322,7 +299,6 @@ function App() {
             requestId: crypto.randomUUID(),
             action: 'save-history',
             email: '',
-            passwordHash: '',
             userId,
             data: JSON.stringify(trimmed),
           }),

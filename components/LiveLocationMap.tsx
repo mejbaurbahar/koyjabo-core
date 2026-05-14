@@ -16,6 +16,8 @@ import { liveBusService, LiveBus } from '../services/liveBusService';
 
 import StationDigitalTwin from './StationDigitalTwin';
 
+const esc = (s: string) => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');
+
 // Fix default marker icons
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -269,12 +271,13 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                         <div style="font-family:Inter, sans-serif;padding:6px;min-width:160px; border-radius:12px;">
                             <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
                                 <div style="width:8px; height:8px; border-radius:50%; background:${color}"></div>
-                                <div style="font-weight:800;font-size:15px;color:#0f172a">${station.name}</div>
+                                <div style="font-weight:800;font-size:15px;color:#0f172a">${esc(station.name)}</div>
                             </div>
-                            <div style="font-size:12px;color:#64748b;margin-left:16px">${station.bnName || ''}</div>
-                            
-                            <button 
-                                onclick="window.dispatchEvent(new CustomEvent('open-digital-twin', {detail: {name: '${station.name}'}}))"
+                            <div style="font-size:12px;color:#64748b;margin-left:16px">${esc(station.bnName || '')}</div>
+
+                            <button
+                                data-twin-name="${esc(station.name)}"
+                                onclick="window.dispatchEvent(new CustomEvent('open-digital-twin', {detail: {name: this.getAttribute('data-twin-name')}}))"
                                 style="margin-top:10px; width:100%; padding:8px; background:linear-gradient(135deg, #10b981, #059669); color:white; border-radius:8px; font-weight:700; font-size:11px; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);"
                             >
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
@@ -471,7 +474,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                 markers.set(bus.id,
                     L.marker(latLng, { icon: busIcon })
                         .bindPopup(`<div style="font-family:sans-serif;padding:4px">
-                            <div style="font-weight:700;font-size:13px">${bus.busName}</div>
+                            <div style="font-weight:700;font-size:13px">${esc(bus.busName)}</div>
                             <div style="font-size:11px;color:#64748b;margin-top:2px">Speed: ${Math.round(bus.speed)} km/h</div>
                             <span style="display:inline-block;margin-top:4px;padding:2px 6px;background:#dcfce7;color:#16a34a;font-size:10px;font-weight:700;border-radius:4px">LIVE</span>
                         </div>`)

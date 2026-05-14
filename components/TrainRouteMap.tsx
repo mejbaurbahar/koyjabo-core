@@ -16,6 +16,8 @@ interface TrainRouteMapProps {
   currentStopId?: string;
 }
 
+const esc = (s: string) => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');
+
 function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
   const R = 6371;
   const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -233,7 +235,7 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
         icon,
         zIndexOffset: isCurrent ? 2000 : (isFirst || isLast ? 1000 : 0),
       });
-      marker.bindPopup(`<b>${station.name}</b><br/><span style="font-size:11px;color:#64748b">${station.bnName}</span>`);
+      marker.bindPopup(`<b>${esc(station.name)}</b><br/><span style="font-size:11px;color:#64748b">${esc(station.bnName)}</span>`);
       marker.addTo(overlayLayerRef.current);
       });
 
