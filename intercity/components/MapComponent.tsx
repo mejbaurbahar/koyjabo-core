@@ -75,8 +75,23 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
   const layerGroup = useRef<any>(null);
   const animationRef = useRef<number | null>(null);
   const [is3D, setIs3D] = React.useState(false);
+  const [isTraffic, setIsTraffic] = React.useState(false);
   const cesiumContainerRef = useRef<HTMLDivElement>(null);
   const cesiumViewerRef = useRef<Cesium.Viewer | null>(null);
+
+  // Build Google Maps embed URL with traffic layer — free, no API key needed.
+  // Uses district coordinates when available for precision, falls back to name-based query.
+  const trafficIframeSrc = React.useMemo(() => {
+    const fromEn = BENGALI_TO_ENGLISH_NAMES[from] || from;
+    const toEn = BENGALI_TO_ENGLISH_NAMES[to] || to;
+    const coordF = DISTRICT_COORDINATES[fromEn];
+    const coordT = DISTRICT_COORDINATES[toEn];
+    const base = 'https://maps.google.com/maps';
+    if (coordF && coordT) {
+      return `${base}?saddr=${coordF[0]},${coordF[1]}&daddr=${coordT[0]},${coordT[1]}&layer=traffic&output=embed`;
+    }
+    return `${base}?saddr=${encodeURIComponent(fromEn + ', Bangladesh')}&daddr=${encodeURIComponent(toEn + ', Bangladesh')}&layer=traffic&output=embed`;
+  }, [from, to]);
 
   useEffect(() => {
     if (!window.L || !mapRef.current) return;
@@ -456,30 +471,61 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
   return (
     <div className="w-full h-full relative z-0">
       {/* 2D Leaflet Map */}
-      <div 
-        className={`w-full h-full transition-opacity duration-500 ${is3D ? 'opacity-0 pointer-events-none' : 'opacity-100'}`} 
+      <div
+        className={`w-full h-full transition-opacity duration-500 ${is3D || isTraffic ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
       >
         <div ref={mapRef} className="w-full h-full bg-slate-100" />
       </div>
 
       {/* 3D Cesium Globe */}
-      {is3D && (
-        <div 
-          ref={cesiumContainerRef} 
-          className="absolute inset-0 z-[10] animate-in fade-in duration-700" 
+      {is3D && !isTraffic && (
+        <div
+          ref={cesiumContainerRef}
+          className="absolute inset-0 z-[10] animate-in fade-in duration-700"
         />
       )}
 
-      {/* 3D Toggle */}
-      <button
-        onClick={() => setIs3D(!is3D)}
-        className="absolute bottom-14 right-4 z-[500] flex items-center gap-2 px-3 py-2 bg-kj-panel rounded-xl shadow-xl border border-kj-line hover:scale-105 transition-all"
-      >
-        <span className="text-[10px] font-black uppercase tracking-widest bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-          {is3D ? '2D Map' : '3D Globe'}
-        </span>
-        <div className={`w-2 h-2 rounded-full ${is3D ? 'bg-blue-600' : 'bg-kj-primary'} animate-pulse`} />
-      </button>
+      {/* Google Maps Traffic Embed — free, no API key required */}
+      {isTraffic && (
+        <div className="absolute inset-0 z-[20] animate-in fade-in duration-400">
+          <iframe
+            src={trafficIframeSrc}
+            title="Live Traffic"
+            className="w-full h-full border-0"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+          {/* Small attribution badge */}
+          <div className="absolute top-2 left-2 z-10 bg-black/60 text-white text-[10px] font-semibold px-2 py-1 rounded-lg backdrop-blur-sm pointer-events-none">
+            🚦 Live Traffic · Google Maps
+          </div>
+        </div>
+      )}
+
+      {/* Controls row */}
+      <div className="absolute bottom-3 right-3 z-[500] flex flex-col items-end gap-2">
+        {/* Traffic toggle */}
+        <button
+          onClick={() => { setIsTraffic(v => !v); if (is3D) setIs3D(false); }}
+          className={`flex items-center gap-2 px-3 py-2 rounded-xl shadow-xl border hover:scale-105 transition-all ${isTraffic ? 'bg-orange-500 border-orange-600 text-white' : 'bg-kj-panel border-kj-line'}`}
+        >
+          <span className="text-[10px] font-black uppercase tracking-widest" style={isTraffic ? {} : { background: 'linear-gradient(to right,#f97316,#ef4444)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            Traffic
+          </span>
+          <div className={`w-2 h-2 rounded-full animate-pulse ${isTraffic ? 'bg-white' : 'bg-orange-500'}`} />
+        </button>
+
+        {/* 3D Globe toggle */}
+        <button
+          onClick={() => { setIs3D(v => !v); if (isTraffic) setIsTraffic(false); }}
+          className="flex items-center gap-2 px-3 py-2 bg-kj-panel rounded-xl shadow-xl border border-kj-line hover:scale-105 transition-all"
+        >
+          <span className="text-[10px] font-black uppercase tracking-widest bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            {is3D ? '2D Map' : '3D Globe'}
+          </span>
+          <div className={`w-2 h-2 rounded-full ${is3D ? 'bg-blue-600' : 'bg-kj-primary'} animate-pulse`} />
+        </button>
+      </div>
     </div>
   );
 };
