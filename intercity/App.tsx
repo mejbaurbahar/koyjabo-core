@@ -600,10 +600,10 @@ function App() {
             {/* Loading (mobile only) */}
             {loading && <div className="md:hidden pt-2"><LoadingState /></div>}
 
-            {/* Result card — mobile only, desktop shows in right panel */}
+            {/* Result card — mobile only; desktop shows result in right panel */}
             {!loading && result && (
               <div className="pt-2 space-y-2">
-                <div className="flex items-center justify-between px-1">
+                <div className="md:hidden flex items-center justify-between px-1">
                   <p className="text-xs text-kj-text-dim">{result.from} → {result.to}</p>
                   <button
                     onClick={() => toggleSavedRoute(result.from, result.to)}
@@ -613,7 +613,9 @@ function App() {
                     {isRouteSaved(result.from, result.to) ? (language === 'bn' ? 'সেভ হয়েছে' : 'Saved') : (language === 'bn' ? 'সেভ করুন' : 'Save Route')}
                   </button>
                 </div>
-                <ResultCard data={result} />
+                <div className="md:hidden">
+                  <ResultCard data={result} />
+                </div>
                 <AdUnit className="mt-3" />
               </div>
             )}

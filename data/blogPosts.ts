@@ -3664,5 +3664,1160 @@ Prefer independent travel? Use **[KoyJabo.com](https://koyjabo.com)** to find bu
 
 #বাংলাদেশট্যুর #কক্সবাজার #সুন্দরবন #কইযাবো #ভিজিটবাংলাদেশ
 `
+	},
+	{
+		id: 'visiting-bangladesh-for-eid-guide-uk-us-uae-canada',
+		slug: 'visiting-bangladesh-for-eid-guide-uk-us-uae-canada',
+		title: 'Visiting Bangladesh for Eid from UK, USA, UAE & Canada: Complete NRB Travel Guide (2026)',
+		bnTitle: 'ঈদে বাংলাদেশ আসা: যুক্তরাজ্য, আমেরিকা, ইউএই ও কানাডা থেকে সম্পূর্ণ গাইড',
+		excerpt: 'Planning your Eid trip back to Bangladesh from the UK, USA, UAE or Canada? This NRB guide covers when to book flights, how to get around, what to expect, and tips for reuniting with family — from landing at DAC to getting to your hometown.',
+		bnExcerpt: 'ঈদে বাংলাদেশে আসার পরিকল্পনা করছেন? ফ্লাইট বুকিং, বিমানবন্দর থেকে যাতায়াত ও পরিবারের সাথে পুনর্মিলনের সম্পূর্ণ গাইড।',
+		coverImage: '/blog/ai-traffic-system-dhaka.jpg',
+		author: 'KoyJabo Team',
+		publishDate: '2026-05-14',
+		readTime: '10 min read',
+		keywords: [
+			'Eid travel Bangladesh from UK', 'visiting Bangladesh for Eid', 'NRB Eid holiday Bangladesh',
+			'flight to Bangladesh Eid', 'Bangladesh Eid travel guide diaspora', 'UK Bangladeshi Eid trip',
+			'USA Bangladesh Eid flight', 'UAE Bangladesh Eid flight', 'Eid holiday Bangladesh 2026',
+			'Non-Resident Bangladeshi travel', 'Dhaka Eid rush', 'Bangladesh family visit',
+			'KoyJabo NRB guide', 'Biman Bangladesh Eid', 'Canada Bangladesh Eid'
+		],
+		category: 'Travel Guide',
+		content: `
+Every year, hundreds of thousands of Non-Resident Bangladeshis (NRBs) make the journey home for Eid. Whether you're flying from London Heathrow, JFK New York, Dubai International, or Toronto Pearson — this guide will help you plan your trip smoothly.
+
+---
+
+## ✈️ When to Book Your Eid Flight
+
+Eid flights from the UK, US, UAE and Canada sell out **3–4 months in advance**. During Eid-ul-Fitr and Eid-ul-Adha, prices can triple compared to off-peak fares.
+
+**Best booking windows:**
+| Departure | Book By |
+|---|---|
+| Eid-ul-Fitr (March/April) | December–January |
+| Eid-ul-Adha (June) | February–March |
+| Eid holidays (school summer) | January–February |
+
+**Price guide (return, economy):**
+| Route | Off-Peak | Eid Season |
+|---|---|---|
+| London → Dhaka | £450–600 | £800–1,400 |
+| New York → Dhaka | $700–900 | $1,200–1,800 |
+| Dubai → Dhaka | AED 800–1,200 | AED 1,500–2,500 |
+| Toronto → Dhaka | CAD 900–1,200 | CAD 1,600–2,400 |
+
+> **Tip:** Book directly with Biman Bangladesh Airlines, Qatar Airways, or Emirates for better prices and flexibility during Eid.
+
+---
+
+## 🛬 Arriving at Hazrat Shahjalal International Airport (DAC)
+
+Dhaka's airport can be chaotic during Eid — especially on the 3–5 days before the holiday. Here's what to expect:
+
+### Immigration & Customs
+- NRBs can use the **general immigration lane** (no dedicated NRB fast-track)
+- Declare goods over BDT 1 lakh in customs
+- Baggage check is standard but thorough during peak periods
+
+### Getting from DAC to the City
+| Transport | Cost | Time to Gulshan |
+|---|---|---|
+| Uber/Pathao (app) | ৳400–600 | 30–60 min |
+| CNG auto-rickshaw | ৳500–800 | 40–70 min |
+| BRTC Airport Bus | ৳80 | 60–90 min |
+| Pre-booked private car | ৳800–1,200 | 30–50 min |
+
+**Use [KoyJabo.com](https://koyjabo.com) to check live bus routes and traffic** before leaving the airport.
+
+---
+
+## 🚌 Getting Around Bangladesh During Eid
+
+### Dhaka City
+- Dhaka's **MRT Line 6 (Metro Rail)** runs from Uttara to Motijheel — highly recommended for avoiding Eid traffic
+- Use KoyJabo to find bus routes
+- Avoid road travel on Eid day itself — roads are largely empty or chaotic depending on direction
+
+### Intercity Travel (Going to the Village)
+During Eid, intercity buses are overwhelmed. Book **in advance** or use the intercity tab on KoyJabo.
+
+**Top routes for NRBs:**
+| Destination | Mode | Booking |
+|---|---|---|
+| Sylhet | Bus (6h) or Train | Book 2–3 weeks ahead |
+| Chittagong | Bus (5h) or Train | Book 1–2 weeks ahead |
+| Comilla | Bus (2h) | Same day usually fine |
+| Barisal | Launch (overnight) | Book 1 week ahead |
+| Rajshahi | Bus (6h) | Book 1–2 weeks ahead |
+
+---
+
+## 💰 Money & Spending During Eid
+
+- **ATMs** are widely available in Dhaka (Visa/Mastercard accepted at major banks)
+- Outside Dhaka, carry **cash in Taka** — card machines are rare in rural areas
+- Current exchange rate: approximately £1 = ৳150, $1 = ৳120, AED 1 = ৳33
+- **Mobile banking (bKash/Nagad)** is widely used — recipients in Bangladesh can receive money instantly if you send remittances before travel
+
+**Eid gift budget (for reference):**
+- Eid salami for children: ৳100–500 per child
+- Clothing (new outfit per family member): ৳500–2,000 per person
+- Family meal costs: ৳2,000–8,000 for a large gathering
+
+---
+
+## 📱 Essential Apps for Your Bangladesh Trip
+
+- **KoyJabo** ([koyjabo.com](https://koyjabo.com)) — bus routes, metro fares, intercity planner, AI assistant
+- **Uber** / **Pathao** — ride-hailing in Dhaka and Chittagong
+- **bKash** / **Nagad** — mobile money for daily expenses
+- **Shohoz** — intercity bus booking
+- **Shohoz / e-Ticket BD** — train ticket booking online
+
+---
+
+## 🕌 Eid Day Logistics
+
+- Most transport is disrupted on Eid day morning
+- Markets, shops close for 1–2 days (vary by location)
+- Mosques fill up for Eid prayer from 7–9 AM
+- Streets are quieter than usual early morning — this is the best time to travel
+
+---
+
+## 🧳 What to Pack
+
+Coming from the UK/US in summer, Bangladesh in Eid season (typically spring or summer) will be **hot and humid** (30–36°C):
+
+- Light cotton clothes (avoid synthetics)
+- Mosquito repellent
+- Any UK/US medications you use — bring enough for the whole trip
+- A power adapter (Type D/G — Type G same as UK, but Type D is common in Bangladesh too)
+- Gifts from abroad are always appreciated (chocolates, perfume, cosmetics)
+
+---
+
+## Summary: Your Eid Travel Checklist
+
+- [ ] Book flights 3–4 months before Eid
+- [ ] Arrange visa if needed (UK, US, Canada, Australia — Visa on Arrival available)
+- [ ] Book intercity bus/train if travelling outside Dhaka
+- [ ] Install KoyJabo for local transport
+- [ ] Carry cash in BDT for rural areas
+- [ ] Pack for heat and rain
+
+Eid Mubarak — and safe travels home! 🌙
+
+*Use [KoyJabo.com](https://koyjabo.com) to navigate Bangladesh transport with ease.*
+`,
+		bnContent: `
+প্রতি বছর লক্ষ লক্ষ প্রবাসী বাংলাদেশি ঈদে দেশে আসেন। লন্ডন, নিউ ইয়র্ক, দুবাই বা টরন্টো — যেখান থেকেই আসুন, এই গাইড আপনাকে সাহায্য করবে।
+
+---
+
+## ✈️ ফ্লাইট বুকিং কখন করবেন
+
+ঈদের আগে ৩–৪ মাস আগেই টিকিট বুক করুন। দাম দ্রুত বাড়ে।
+
+**বুকিং সময়:**
+- ঈদুল ফিতর: ডিসেম্বর–জানুয়ারিতে বুক করুন
+- ঈদুল আযহা: ফেব্রুয়ারি–মার্চে বুক করুন
+
+---
+
+## 🛬 ঢাকা বিমানবন্দর থেকে শহরে যাওয়া
+
+| যানবাহন | ভাড়া | সময় |
+|---|---|---|
+| Uber/Pathao | ৳৪০০–৬০০ | ৩০–৬০ মিনিট |
+| CNG | ৳৫০০–৮০০ | ৪০–৭০ মিনিট |
+| BRTC বাস | ৳৮০ | ৬০–৯০ মিনিট |
+
+---
+
+## 🚌 ঈদে দূরের যাত্রা
+
+আগেভাগে বুক করুন:
+- সিলেট: ২–৩ সপ্তাহ আগে
+- চট্টগ্রাম: ১–২ সপ্তাহ আগে
+- বরিশাল (লঞ্চ): ১ সপ্তাহ আগে
+
+---
+
+## 💡 গুরুত্বপূর্ণ টিপস
+
+- গ্রামের জন্য নগদ টাকা নিন
+- KoyJabo অ্যাপ ব্যবহার করুন বাস ও মেট্রো তথ্যের জন্য
+- ঈদের দিন সকালে যাতায়াত কম থাকে
+
+ঈদ মোবারক! 🌙
+`
+	},
+	{
+		id: 'dhaka-airport-arrival-guide-nrb-bangladeshi-diaspora',
+		slug: 'dhaka-airport-arrival-guide-nrb-bangladeshi-diaspora',
+		title: 'Dhaka Airport Arrival Guide for NRBs: Transport, SIM Cards & First 24 Hours in Dhaka (2026)',
+		bnTitle: 'ঢাকা বিমানবন্দর আগমন গাইড: পরিবহন, সিম কার্ড ও প্রথম ২৪ ঘণ্টা (২০২৬)',
+		excerpt: 'Just landed at Hazrat Shahjalal International Airport? This step-by-step guide covers immigration, customs, SIM cards, transport to the city, and what to do in your first 24 hours in Dhaka — written for NRBs and returning Bangladeshis.',
+		bnExcerpt: 'হজরত শাহজালাল বিমানবন্দরে নেমেছেন? ইমিগ্রেশন, কাস্টমস, সিম কার্ড, শহরে যাওয়া এবং প্রথম ২৪ ঘণ্টার সম্পূর্ণ গাইড।',
+		coverImage: '/blog/ai-traffic-system-dhaka.jpg',
+		author: 'KoyJabo Team',
+		publishDate: '2026-05-14',
+		readTime: '8 min read',
+		keywords: [
+			'Dhaka airport arrival guide', 'HSIA arrival guide NRB', 'Dhaka airport to city transport',
+			'Hazrat Shahjalal airport guide', 'NRB returning Bangladesh', 'Dhaka airport SIM card',
+			'Bangladesh airport customs', 'first time Dhaka arrival', 'Bangladesh airport taxi',
+			'Dhaka airport Uber', 'DAC airport guide', 'Bangladesh arrival checklist',
+			'Dhaka airport BRTC bus', 'returning Bangladeshi diaspora', 'KoyJabo airport guide'
+		],
+		category: 'Travel Guide',
+		content: `
+Whether you've been away for 2 years or 20, arriving at Hazrat Shahjalal International Airport (DAC) in Dhaka can be overwhelming. This guide walks you through every step — from the moment you land to getting settled in the city.
+
+---
+
+## 🛬 Step 1: Immigration
+
+**For NRBs (Bangladeshi passport holders):**
+- Use the **Bangladeshi Nationals** immigration lane
+- Processing time: 10–30 minutes during peak hours
+- Have your **Bangladesh passport** ready with any visa/entry stamps if required
+
+**For foreign nationals visiting Bangladesh:**
+- Visa on Arrival available at the airport for most Western passport holders (UK, USA, EU, Australia, Canada) — **$50 USD fee, cash preferred**
+- Join the **Visa on Arrival** queue before immigration
+- Duration: 30 days (extendable)
+
+**NRB Tip:** If you have dual nationality, use your **Bangladesh passport** at Dhaka airport — it's faster and avoids the VOA process.
+
+---
+
+## 🧳 Step 2: Baggage & Customs
+
+- Collect baggage from the carousel (check screens for your flight number)
+- **Customs declaration limit:** BDT 1 lakh in goods (beyond that, duty applies)
+- Electronics, gold, and large amounts of cash must be declared
+- Red Channel (to declare) vs. Green Channel (nothing to declare)
+
+**What you can bring in without duty:**
+- Personal electronics (laptop, phone, camera — 1 unit each)
+- Clothing for personal use
+- Up to 200 cigarettes or 50 cigars
+- Up to 1 litre of alcohol (for non-Muslim travellers)
+
+---
+
+## 📱 Step 3: Get a SIM Card
+
+Right inside the arrivals hall, you'll find SIM card counters for all major operators:
+
+| Operator | Best For | Data Package (30 days) |
+|---|---|---|
+| Grameenphone (GP) | Coverage nationwide | ৳250–500 |
+| Robi | Data speed | ৳200–450 |
+| Banglalink | Budget | ৳150–350 |
+| Teletalk | Government services | ৳100–300 |
+
+**Requirements:** NID or passport for registration. The SIM will be activated within a few minutes.
+
+> **Tip:** Buy a SIM card **before leaving the airport** — it's easier here than in the city, and you'll need data for Uber, Google Maps, and KoyJabo.
+
+---
+
+## 💵 Step 4: Get Local Currency (BDT)
+
+- **ATMs** are available inside the terminal (Visa/Mastercard accepted)
+- **Money exchange counters** in arrivals — rates are reasonable
+- Current rates (approximate): £1 ≈ ৳150, $1 ≈ ৳120, AED 1 ≈ ৳33, MYR 1 ≈ ৳28
+- Avoid exchanging too much upfront — ATMs in Dhaka city centre are widely available
+
+---
+
+## 🚖 Step 5: Transport from Airport to City
+
+The airport is located in **Kurmitola**, about 15–20km north of central Dhaka (Motijheel/Old Dhaka) and 5–10km from Uttara/Gulshan.
+
+### Ride-Hailing Apps (Recommended)
+- **Uber** — reliable, fixed price, card or cash
+- **Pathao** — cheaper, also reliable
+- Install on your phone before arrival and use your regular account
+
+**Fare estimates (from DAC):**
+| Destination | Uber/Pathao | CNG |
+|---|---|---|
+| Gulshan / Baridhara | ৳350–500 | ৳500–700 |
+| Uttara | ৳200–300 | ৳300–500 |
+| Motijheel / Old Dhaka | ৳500–700 | ৳700–1,000 |
+| Dhanmondi | ৳450–650 | ৳600–900 |
+
+### BRTC Airport Bus (Cheapest)
+- Route: Airport → Motijheel (City Centre)
+- Fare: **৳80**
+- Journey time: 60–90 minutes (depending on traffic)
+- Runs frequently, but no AC — not ideal with heavy luggage
+
+### Private Car (Pre-arranged)
+- Ask your family to send a driver with the car — safest option
+- Many Bangladeshis pre-arrange this from abroad via WhatsApp
+
+---
+
+## 🗺️ Using KoyJabo from the Airport
+
+Once you have a SIM and data:
+
+1. Open **[KoyJabo.com](https://koyjabo.com)** in your phone browser (no app download needed)
+2. The app works offline after first load
+3. Search your destination to find bus routes, metro info, and transport options
+4. Use the **AI assistant** if you need personalised help
+
+**For Uttara residents:** The **MRT Line 6 Metro** starts at Uttara North — if you're staying in Uttara, this is the fastest way to access central Dhaka.
+
+---
+
+## 🏨 Your First 24 Hours in Dhaka
+
+### First night
+- Get to your accommodation — rest is essential after a long flight
+- Avoid a full sightseeing day on Day 1
+- Dhaka's heat (30–36°C in summer) can be a shock after UK/US winters
+
+### Day 1 essentials
+- ✅ Register your SIM with NID (at any mobile shop)
+- ✅ Get BDT from an ATM
+- ✅ Buy a local rechargeable travel card for Metro (at Uttara/Motijheel metro station)
+- ✅ Catch up with family
+- ✅ Try local food (paratha, dal, bhuna khichuri — your childhood favourites await)
+
+---
+
+## 🚇 Getting Around Dhaka: Quick Reference
+
+| Mode | Best For | Cost |
+|---|---|---|
+| MRT Metro (Line 6) | Uttara ↔ Motijheel fast | ৳20–100 |
+| Uber/Pathao | Door-to-door, no haggling | ৳100–600 |
+| CNG auto-rickshaw | Short trips, budget | ৳60–300 |
+| Local bus | Cheapest, slow | ৳5–30 |
+| Rickshaw | Last-mile, very short | ৳20–80 |
+
+Use **KoyJabo** to find the right bus, plan metro journeys, and get route info across Dhaka.
+
+---
+
+*For intercity travel from Dhaka to Sylhet, Chittagong, Cox's Bazar and beyond — check the [KoyJabo Intercity planner](https://koyjabo.com).*
+`,
+		bnContent: `
+হজরত শাহজালাল বিমানবন্দরে নামার পর কী করবেন — ধাপে ধাপে গাইড।
+
+---
+
+## ধাপ ১: ইমিগ্রেশন
+
+বাংলাদেশি পাসপোর্ট থাকলে বাংলাদেশি নাগরিক লাইনে যান। সময় লাগতে পারে ১০–৩০ মিনিট।
+
+---
+
+## ধাপ ২: সিম কার্ড নিন
+
+আগমন হলে ভেতরেই কাউন্টার আছে:
+- গ্রামীণফোন, রবি, বাংলালিংক
+- ৳১৫০–৫০০ (৩০ দিনের ডেটা সহ)
+- পাসপোর্ট দিয়ে নিবন্ধন করুন
+
+---
+
+## ধাপ ৩: শহরে যাওয়া
+
+| গন্তব্য | Uber/Pathao | CNG |
+|---|---|---|
+| গুলশান | ৳৩৫০–৫০০ | ৳৫০০–৭০০ |
+| উত্তরা | ৳২০০–৩০০ | ৳৩০০–৫০০ |
+| মতিঝিল | ৳৫০০–৭০০ | ৳৭০০–১,০০০ |
+
+BRTC বাস সবচেয়ে সস্তা — মাত্র ৳৮০ মতিঝিল পর্যন্ত।
+
+---
+
+## 💡 গুরুত্বপূর্ণ টিপস
+
+- বিমানবন্দরে সিম কিনুন — শহরে পরে ঝামেলা কম
+- Uber/Pathao অ্যাপ আগে থেকেই ইনস্টল রাখুন
+- [KoyJabo.com](https://koyjabo.com) খুলুন — বাস রুট ও মেট্রো তথ্য পাবেন
+`
+	},
+	{
+		id: 'uk-bangladeshi-travel-guide-sylhet-chittagong-dhaka-2026',
+		slug: 'uk-bangladeshi-travel-guide-sylhet-chittagong-dhaka-2026',
+		title: 'UK Bangladeshi Travel Guide: Visiting Sylhet, Chittagong & Dhaka in 2026',
+		bnTitle: 'যুক্তরাজ্যে বসবাসকারী বাংলাদেশিদের জন্য সিলেট, চট্টগ্রাম ও ঢাকা ভ্রমণ গাইড ২০২৬',
+		excerpt: 'For the 600,000 Bangladeshis living in the UK — whether you\'re visiting Sylhet to see your roots, exploring Chittagong\'s coastline, or navigating Dhaka for the first time in years — this is your practical travel guide for 2026.',
+		bnExcerpt: 'যুক্তরাজ্যে বসবাসকারী বাংলাদেশিদের জন্য সিলেট, চট্টগ্রাম ও ঢাকায় ভ্রমণের সম্পূর্ণ গাইড।',
+		coverImage: '/blog/ai-traffic-system-dhaka.jpg',
+		author: 'KoyJabo Team',
+		publishDate: '2026-05-14',
+		readTime: '11 min read',
+		keywords: [
+			'UK Bangladeshi visit Bangladesh', 'British Bangladeshi travel guide', 'Sylhet travel guide UK',
+			'visiting Sylhet from UK', 'Sylhet roots tourism', 'Chittagong travel guide UK Bangladeshi',
+			'Dhaka travel guide British Bangladeshi', 'Bangladesh from London', 'UK NRB Bangladesh travel',
+			'Sylhet jaflong travel', 'Ratargul Sylhet', 'visiting Bangladesh family',
+			'British Bangladeshi homeland visit', 'Sylhet airport UK', 'Bangladesh roots trip 2026'
+		],
+		category: 'Travel Guide',
+		content: `
+Over 600,000 people of Bangladeshi origin live in the UK — the largest Bangladeshi diaspora community in the world outside South Asia. The vast majority trace their roots to **Sylhet Division**, with significant communities from **Chittagong** and **Dhaka** as well.
+
+Whether you're making your first visit, returning after many years, or bringing UK-born children to see where the family comes from — this guide is for you.
+
+---
+
+## ✈️ Getting to Bangladesh from the UK
+
+### From London Heathrow (LHR)
+- **Biman Bangladesh Airlines:** Direct flights to Dhaka (DAC) — ~10h 30min
+- **Qatar Airways:** Via Doha — ~14h total, often cheaper
+- **Emirates:** Via Dubai — ~13h total
+- **Turkish Airlines:** Via Istanbul — ~15h total, competitive prices
+
+### From London Gatwick / Manchester / Birmingham
+- Usually 1 stop via Doha, Dubai, Istanbul or Muscat
+- Manchester and Birmingham have larger Bangladeshi communities — more charter flights during Eid
+
+**Price guide (return, economy from Heathrow):**
+| Time of Year | Approx. Price |
+|---|---|
+| Off-peak (Oct–Feb excl. Christmas) | £420–580 |
+| Standard (March–May, Sep) | £550–750 |
+| Eid season (2 weeks before Eid) | £800–1,400 |
+| Summer school holidays | £650–950 |
+
+> **Tip:** For Sylhet, you can fly directly to **Osmani International Airport (ZYL)** from some UK airports via charter or indirect routes — check Biman and Regent Airways for domestic connections.
+
+---
+
+## 🌿 Sylhet: The Ancestral Home
+
+Most UK Bangladeshis have family roots in Sylhet. Even if you've been before, Sylhet has changed significantly — here's what to see in 2026.
+
+### Getting to Sylhet from Dhaka
+| Mode | Duration | Cost |
+|---|---|---|
+| Bus (Hanif, Shyamoli, Green Line) | 5–6 hours | ৳500–900 |
+| Train (Upaban, Parabat Express) | 6–7 hours | ৳350–1,200 |
+| Domestic flight (Biman/Novoair) | 45 minutes | ৳3,000–6,000 |
+
+### Top Places in Sylhet
+
+**1. Jaflong — India Border & Crystal Clear Rivers**
+- Located at the Bangladesh–India border in Gowainghat
+- Famous for stone-laden rivers, tribal Khasi villages, and misty mountains
+- 1.5 hours from Sylhet city
+- Best visited October–March
+
+**2. Ratargul Swamp Forest**
+- Bangladesh's only freshwater swamp forest
+- Boat trips through submerged trees — magical in monsoon (July–September)
+- 30 minutes from Sylhet city
+
+**3. Srimangal — Tea Garden Capital**
+- 2 hours from Sylhet (or via Dhaka–Chittagong rail line)
+- Walk through endless tea gardens
+- Try 7-layer tea (local Sylheti tradition)
+- Visit: Lawachara National Park (monkeys, birds, leeches!)
+
+**4. Madhabkunda Waterfall**
+- Bangladesh's highest waterfall (162 feet)
+- Near Moulvibazar district
+- 2.5 hours from Sylhet city
+- Best in monsoon season
+
+**5. Baishnabpara — Hindu Temples**
+- Ancient temples near Sylhet city
+- Historical and spiritual significance
+
+**Staying in Sylhet:**
+- Rose View Hotel (5-star): ৳5,000–8,000/night
+- Hotel Noorjahan Grand: ৳3,000–5,000/night
+- Budget guesthouses near Kumarpara: ৳800–2,000/night
+
+---
+
+## 🌊 Chittagong: Port City & Sea
+
+UK Bangladeshis from Chittagong often visit the port city and its stunning surrounding coastline.
+
+### Getting to Chittagong from Dhaka
+| Mode | Duration | Cost |
+|---|---|---|
+| Bus (AC, Hanif/Shyamoli) | 5–6 hours | ৳600–1,000 |
+| Train (Sonar Bangla Express) | 5–6 hours | ৳350–1,100 |
+| Domestic flight | 45 minutes | ৳3,000–5,500 |
+
+### Top Places in & Around Chittagong
+
+**1. Patenga Beach**
+- 14km from Chittagong city
+- Sunsets over the Bay of Bengal
+- Seafood at local restaurants
+
+**2. Foy's Lake**
+- Artificial lake in the hills — picturesque
+- Amusement park, picnic spots
+
+**3. Kaptai Lake**
+- Largest man-made lake in Bangladesh
+- Boat trips through tribal villages
+- 2 hours from Chittagong
+
+**4. Cox's Bazar** (from Chittagong)
+- 2.5 hours south — the world's longest sea beach
+- Lahkudi beachfront drive
+
+---
+
+## 🏙️ Dhaka for UK Returnees
+
+Dhaka has changed dramatically. Here's what to expect in 2026:
+
+### New in Dhaka (Since You Last Visited)
+- **MRT Line 6 Metro Rail** — from Uttara to Motijheel, clean, air-conditioned, ৳20–100 fare
+- **Hatirjheel** — beautiful lakeside development, evening walks and cafes
+- **Bashundhara City & Jamuna Future Park** — massive malls
+- **Food scene** — Dhanmondi, Gulshan, Banani now have hundreds of cafes, restaurants and rooftop dining
+- **Ride-hailing (Uber/Pathao)** — no more haggling with CNG drivers
+
+### Dhaka Neighbourhoods for UK Visitors
+| Area | Known For |
+|---|---|
+| Gulshan 1 & 2 | Embassies, restaurants, expat-friendly |
+| Dhanmondi | Cafes, food, Rabindra Sarobar lake |
+| Banani | Bars (licensed), restaurants, cosmopolitan |
+| Old Dhaka | History, authentic food, Buriganga River |
+| Uttara | Metro-accessible, newer, spacious |
+
+---
+
+## 📱 Navigating Bangladesh with KoyJabo
+
+[KoyJabo.com](https://koyjabo.com) is Bangladesh's first bilingual transport app — free, offline-capable, and designed for both locals and returning diaspora.
+
+**What you can do:**
+- Find bus routes across Dhaka (200+ routes)
+- Check MRT Line 6 metro fares and schedules
+- Plan intercity trips (bus, train, plane, launch)
+- Ask the AI assistant questions in English or Bengali
+
+**No app store download needed** — works directly in your phone browser.
+
+---
+
+## 💡 Tips for UK Bangladeshis
+
+1. **Language:** Even if your Sylheti/Chittagonian dialect is rusty, people will appreciate the effort — mix English and Bengali freely
+2. **Money:** UK bank cards work at most Dhaka ATMs (Visa/Mastercard) — Standard Chartered, HSBC, and Dutch Bangla Bank branches are reliable
+3. **Safety:** Dhaka is generally safe for visitors — normal urban caution applies
+4. **Health:** Drink bottled water only; eat at established restaurants in the city
+5. **Weather:** November–February is the coolest and most comfortable time to visit (18–26°C)
+
+---
+
+*Plan your Bangladesh journey with [KoyJabo.com](https://koyjabo.com) — transport, routes, and AI assistance, all in one place.*
+`,
+		bnContent: `
+যুক্তরাজ্যে ৬ লক্ষেরও বেশি বাংলাদেশি বসবাস করেন। বেশিরভাগের শিকড় সিলেটে। এই গাইড তাদের জন্য।
+
+---
+
+## ✈️ যুক্তরাজ্য থেকে বাংলাদেশে আসার উপায়
+
+- **বিমান বাংলাদেশ:** লন্ডন থেকে সরাসরি ঢাকা (~১০.৩০ ঘণ্টা)
+- **কাতার এয়ারওয়েজ:** দোহা হয়ে (~১৪ ঘণ্টা)
+- **এমিরেটস:** দুবাই হয়ে (~১৩ ঘণ্টা)
+
+---
+
+## 🌿 সিলেট: পূর্বপুরুষের ভূমি
+
+**ঢাকা থেকে সিলেট:**
+- বাস: ৫–৬ ঘণ্টা, ৳৫০০–৯০০
+- ট্রেন: ৬–৭ ঘণ্টা, ৳৩৫০–১,২০০
+
+**সেরা স্থান:**
+- জাফলং — ভারত সীমান্তে স্বচ্ছ নদী
+- রাতারগুল — মিঠাপানির জলাবন
+- শ্রীমঙ্গল — চা বাগান
+
+---
+
+## 🏙️ ঢাকার নতুন আকর্ষণ
+
+- মেট্রো রেল (MRT লাইন ৬) — উত্তরা থেকে মতিঝিল
+- হাতিরঝিল — লেকসাইড পার্ক
+- নতুন মল, রেস্তোরাঁ, ক্যাফে
+
+[KoyJabo.com](https://koyjabo.com) দিয়ে বাস, মেট্রো ও অন্যান্য যানবাহনের তথ্য পান।
+`
+	},
+	{
+		id: 'bangladesh-travel-guide-for-workers-in-uae-malaysia-2026',
+		slug: 'bangladesh-travel-guide-for-workers-in-uae-malaysia-2026',
+		title: 'Bangladesh Travel Guide for Workers in UAE & Malaysia: Coming Home in 2026',
+		bnTitle: 'ইউএই ও মালয়েশিয়ায় কর্মরত বাংলাদেশিদের জন্য দেশে ফেরার গাইড ২০২৬',
+		excerpt: 'For the 3 million+ Bangladeshi workers in the UAE and Malaysia — this guide covers the cheapest flights home, what has changed since you left, how to get around Bangladesh, and how to make the most of your annual leave back home.',
+		bnExcerpt: 'ইউএই ও মালয়েশিয়ায় কর্মরত বাংলাদেশিদের জন্য সস্তায় দেশে আসার টিপস, বিমানবন্দর গাইড ও যাতায়াত তথ্য।',
+		coverImage: '/blog/ai-traffic-system-dhaka.jpg',
+		author: 'KoyJabo Team',
+		publishDate: '2026-05-14',
+		readTime: '9 min read',
+		keywords: [
+			'Bangladesh from UAE travel guide', 'Bangladesh from Malaysia travel guide',
+			'Dubai to Dhaka flight cheap', 'Kuala Lumpur to Dhaka flight', 'Bangladeshi workers UAE return',
+			'Malaysia Bangladeshi come home', 'cheap flight Dubai Dhaka', 'AirAsia Dhaka Malaysia',
+			'flydubai Dhaka UAE', 'Bangladesh remittance workers travel', 'annual leave Bangladesh',
+			'Eid flight UAE Bangladesh', 'cheapest way Bangladesh from Dubai', 'NRB UAE Bangladesh',
+			'Bangladeshi Malaysia return visit'
+		],
+		category: 'Travel Guide',
+		content: `
+Over **1.5 million Bangladeshis** live and work in the UAE, and another **800,000+** in Malaysia. Most work in construction, manufacturing, hospitality, or domestic services — sending remittances home and saving for annual visits.
+
+This guide is written for you: how to get home affordably, what's changed, and how to make the most of your time with family.
+
+---
+
+## ✈️ Cheapest Flights from UAE to Bangladesh
+
+### From Dubai (DXB / DWC)
+
+| Airline | Route | Approx. Price (One Way) |
+|---|---|---|
+| flydubai | Dubai → Dhaka (direct, ~4.5h) | AED 350–700 |
+| Air Arabia | Sharjah → Dhaka | AED 300–650 |
+| Biman Bangladesh | Dubai → Dhaka (direct) | AED 500–900 |
+| Emirates | Dubai → Dhaka (via) | AED 800–1,500 |
+| IndiGo | Dubai → Dhaka (via Delhi) | AED 500–900 |
+
+> **Best deal:** Check flydubai and Air Arabia on Tuesdays/Wednesdays — budget seats go fast.
+
+### From Abu Dhabi (AUH)
+- Air Arabia Abu Dhabi: AED 280–600 to Dhaka
+- Etihad: AED 600–1,200
+
+### From Sharjah (SHJ)
+- Air Arabia: AED 300–650 direct to Dhaka
+
+---
+
+## ✈️ Cheapest Flights from Malaysia to Bangladesh
+
+### From Kuala Lumpur (KUL / KLIA2)
+
+| Airline | Route | Approx. Price (One Way) |
+|---|---|---|
+| AirAsia | KLIA2 → Dhaka (direct, ~4h) | MYR 350–700 |
+| Biman Bangladesh | KLIA → Dhaka | MYR 500–900 |
+| Malindo Air / Batik Air | KLIA → Dhaka | MYR 450–850 |
+| IndiGo | KLIA → Dhaka (via Chennai) | MYR 500–900 |
+
+> **Best deal:** AirAsia offers promotions (sale fares) 2–4 times a year — check their website and subscribe to alerts.
+
+---
+
+## 🛬 Arriving at Dhaka Airport
+
+After a long shift or contract abroad, arriving home is emotional — but the airport can be hectic. Here's what to know:
+
+1. **Immigration:** Use the Bangladeshi Nationals lane — queue is usually 15–30 minutes
+2. **Customs:** No duty on personal items; declare electronics/goods over BDT 1 lakh
+3. **SIM card:** Get a GP or Robi SIM inside the terminal (৳150–300 with data)
+4. **Transport to city:**
+   - Uber/Pathao: ৳350–600 to Gulshan/Dhanmondi
+   - BRTC Airport Bus: ৳80 to Motijheel (cheapest)
+   - Family driver: best option if possible
+
+---
+
+## 🏘️ Getting to Your Home District
+
+Most workers from UAE/Malaysia are from rural Bangladesh — Cumilla, Brahmanbaria, Noakhali, Mymensingh, Jashore, Rajshahi.
+
+**Getting from Dhaka to your district:**
+
+| Destination | Bus | Train | Fare (AC Bus) |
+|---|---|---|---|
+| Cumilla | 2 hours | 2.5 hours | ৳250–350 |
+| Brahmanbaria | 2.5 hours | 3 hours | ৳300–400 |
+| Noakhali | 4 hours | — | ৳400–600 |
+| Mymensingh | 3 hours | 3.5 hours | ৳300–500 |
+| Jashore | 5 hours | 6 hours | ৳500–800 |
+| Rajshahi | 6 hours | 7 hours | ৳600–900 |
+
+Use **[KoyJabo Intercity](https://koyjabo.com)** to check bus routes and schedules.
+
+---
+
+## 💰 Money Matters
+
+### Sending Money Before Your Trip
+- Send remittances via **bKash, Nagad, or bank transfer** — your family will have BDT ready when you arrive
+- Exchange rates: AED 1 ≈ ৳33–34, MYR 1 ≈ ৳26–28 (check live rate before sending)
+- Western Union, MoneyGram, Brac Bank, and Dutch Bangla Bank all offer competitive rates
+
+### Spending in Bangladesh
+- Daily cost in rural Bangladesh: ৳300–500/day (meals, local transport, basics)
+- Daily cost in Dhaka: ৳600–1,200/day depending on lifestyle
+- Carry cash in rural areas — cards/ATMs are rare
+
+---
+
+## 📱 New Technology to Know About
+
+Bangladesh has changed since 2016–2018 when many workers left:
+
+- **Metro Rail (MRT-6):** Air-conditioned metro from Uttara to Motijheel — ৳20–100 per trip
+- **Uber/Pathao:** Ride-hailing everywhere in Dhaka and Chittagong — no haggling
+- **bKash/Nagad:** Mobile money — used for everything, even at small shops
+- **KoyJabo.com:** Free transport app for bus routes, metro, intercity — works offline
+
+---
+
+## ⏰ Making the Most of Annual Leave (14–30 Days)
+
+**Sample 2-week itinerary for a worker returning from UAE:**
+
+| Day | Plan |
+|---|---|
+| Day 1–3 | Dhaka airport → village home, rest, family reunion |
+| Day 4–7 | Spend time in village, attend local events, visit relatives |
+| Day 8–9 | Dhaka sightseeing (Metro, Hatirjheel, Old Dhaka) |
+| Day 10–11 | Cox's Bazar or Sylhet trip (optional) |
+| Day 12–13 | Shopping in Dhaka (Bashundhara City, New Market) |
+| Day 14 | Rest, pack, return flight |
+
+---
+
+## 💡 Practical Tips for Workers Returning Home
+
+1. **Book flights 2–3 months in advance** — prices spike 1 month before departure, especially before Eid
+2. **Your National ID (NID) card is essential** — many services require it; apply for a new card if yours has expired
+3. **Update bKash/Nagad** with your Bangladeshi number while home
+4. **Check your passport expiry** — Bangladesh passport must have 6 months validity for re-entry to UAE/Malaysia
+5. **Medical checkup** while home — access to cheap, quality healthcare in Bangladesh
+
+---
+
+*Navigate Bangladesh transport easily with [KoyJabo.com](https://koyjabo.com) — free, offline-ready, bilingual.*
+`,
+		bnContent: `
+ইউএই ও মালয়েশিয়ায় কর্মরত ১৫ লক্ষেরও বেশি বাংলাদেশির জন্য এই গাইড।
+
+---
+
+## ✈️ সস্তায় দেশে আসার উপায়
+
+### দুবাই থেকে
+- flydubai: AED ৩৫০–৭০০
+- Air Arabia: AED ৩০০–৬৫০
+- বিমান বাংলাদেশ: AED ৫০০–৯০০
+
+### কুয়ালালামপুর থেকে
+- AirAsia: MYR ৩৫০–৭০০
+- বিমান: MYR ৫০০–৯০০
+
+---
+
+## 💰 টাকা পাঠানোর আগে
+
+- bKash/Nagad বা ব্যাংক ট্রান্সফারে টাকা পাঠান
+- বর্তমান রেট: AED ১ ≈ ৳৩৩–৩৪, MYR ১ ≈ ৳২৬–২৮
+
+---
+
+## 📱 নতুন কী আছে বাংলাদেশে
+
+- মেট্রো রেল (MRT লাইন ৬) — উত্তরা থেকে মতিঝিল
+- Uber/Pathao — ঢাকায় ভাড়া নিয়ে ঝামেলা নেই
+- [KoyJabo.com](https://koyjabo.com) — বিনামূল্যে পরিবহন গাইড, অফলাইনেও কাজ করে
+`
+	},
+	{
+		id: 'what-changed-bangladesh-2026-nrb-returning-guide',
+		slug: 'what-changed-bangladesh-2026-nrb-returning-guide',
+		title: "Bangladesh in 2026: What's New for NRBs Returning Home (Metro, Transport, Tech & More)",
+		bnTitle: 'বাংলাদেশ ২০২৬: প্রবাসীরা ফিরে এসে যা নতুন দেখবেন (মেট্রো, প্রযুক্তি ও পরিবহন)',
+		excerpt: "If you haven't been back to Bangladesh in 2–5 years, you'll be surprised. Dhaka has a metro rail, ride-hailing is everywhere, new highways connect the country, and tech has transformed daily life. Here's everything that has changed.",
+		bnExcerpt: '২–৫ বছর দেশে না আসলে অনেক কিছু বদলে গেছে। মেট্রো রেল, রাইড-হেইলিং, নতুন সেতু ও প্রযুক্তি — সব কিছু জানুন।',
+		coverImage: '/blog/ai-traffic-system-dhaka.jpg',
+		author: 'KoyJabo Team',
+		publishDate: '2026-05-14',
+		readTime: '8 min read',
+		keywords: [
+			'Bangladesh changed 2026 NRB', 'what is new in Bangladesh 2026', 'Dhaka metro rail for NRBs',
+			'Bangladesh transport changes 2026', 'returning to Bangladesh NRB', 'Bangladesh development 2026',
+			'Dhaka modern city 2026', 'Bangladesh tech changes', 'Padma Bridge Bangladesh',
+			'MRT Line 6 Dhaka metro', 'Bangladesh digital 2026', 'NRB returning home Bangladesh',
+			'Bangladesh infrastructure 2026', 'changes in Dhaka 2024 2025 2026', 'Bangladesh economy 2026'
+		],
+		category: 'Travel Guide',
+		content: `
+If you left Bangladesh in 2019 or 2020 and haven't been back, you're in for a surprise. Bangladesh has transformed in ways that will genuinely impress you — new infrastructure, new technology, and a new way of living for Dhaka residents.
+
+Here's everything that has changed, written for the NRB coming home.
+
+---
+
+## 🚇 1. Dhaka Now Has a Metro Rail
+
+The biggest change in Dhaka's transport history: **MRT Line 6** opened in 2022 and is now fully operational from **Uttara North to Motijheel**.
+
+**What it means for you:**
+- Commute from Uttara to Motijheel in **35 minutes** — what used to take 90–120 minutes in traffic
+- Air-conditioned, clean, affordable (৳20–100 per trip)
+- 16 stations across 21km
+- Runs from 7 AM to 10 PM (last train)
+- Uses a rechargeable **MRT Pass** card
+
+**Stations:** Uttara North · Uttara Centre · Uttara South · Pallabi · Mirpur 11 · Mirpur 10 · Kazipara · Shewrapara · Agargaon · Bijoy Sarani · Farmgate · Kawranbazar · Shahbagh · Dhaka University · Bangladesh Secretariat · Motijheel
+
+> Check metro fares and plan your trip on [KoyJabo.com](https://koyjabo.com)
+
+---
+
+## 🌉 2. The Padma Bridge is Open
+
+The **Padma Multipurpose Bridge** opened in June 2022, connecting Dhaka to southern Bangladesh across the Padma River.
+
+**What changed:**
+- **Barisal, Khulna, Kushtia, Faridpur** — journey times cut by 2–3 hours
+- No more ferry wait at Mawa/Shimulia crossing
+- Dhaka to Barisal: now 4 hours (was 6–7 hours via ferry)
+- Dhaka to Khulna (Sundarban entry): now 5 hours (was 7–8 hours)
+
+---
+
+## 🚗 3. Ride-Hailing is Everywhere
+
+In 2019, Uber and Pathao were new. In 2026, they are **the default** way Dhaka residents get around.
+
+**Apps to use:**
+- **Uber** — global app, card/cash, most reliable
+- **Pathao** — Bangladeshi app, often cheaper, motorbikes and cars
+- **Shohoz** — bikes and cars, competitive pricing
+
+**What this means:** No more haggling with CNG drivers. Open an app, see the price upfront, and go.
+
+---
+
+## 🏗️ 4. Major Infrastructure Changes
+
+| Project | Status in 2026 |
+|---|---|
+| MRT Line 6 (Uttara–Motijheel) | Fully operational |
+| Padma Bridge | Open (2022) |
+| Bangabandhu Tunnel (Chittagong) | Open (2023) — first underwater road tunnel in Bangladesh |
+| Elevated Expressway (Dhaka) | Partially open, ongoing |
+| MRT Line 1 (Airport–Kamalapur) | Under construction |
+| MRT Line 5 (Hemayetpur–Vatara) | Under construction |
+
+---
+
+## 📱 5. Tech & Digital Services Have Changed
+
+### Mobile Payments
+- **bKash** and **Nagad** are now used for almost everything — grocery shops, pharmacies, even street food vendors
+- You can pay utility bills, buy bus tickets, and send money via mobile
+
+### Online Shopping
+- **Chaldal** — groceries delivered in 1 hour in Dhaka
+- **Shajgoj** — cosmetics/beauty
+- **Daraz** — everything (like Amazon for Bangladesh)
+- **Shohoz, Ekhanei.com** — local e-commerce
+
+### Food Delivery
+- **Foodpanda** and **Shohoz Food** now deliver to most Dhaka areas within 30–45 minutes
+- Prices are affordable — BDT 200–600 for a full meal delivered
+
+---
+
+## 🏙️ 6. Dhaka's New Neighbourhoods & Attractions
+
+**Hatirjheel:**
+The waterfront lake development in Rampura/Badda has transformed into a beautiful public space. Evening walks, boat rides, cafes, and restaurants. Free to visit.
+
+**Bashundhara City:**
+Still one of Asia's largest shopping malls — now even more shops, food courts, and a cinema.
+
+**Jamuna Future Park:**
+The second mega-mall in Dhaka — well worth a visit.
+
+**New Cafes & Restaurants:**
+Dhaka's food scene has exploded. Dhanmondi, Gulshan, and Banani now have hundreds of cafes, from local cha (tea) stalls to international cuisine. Instagram-worthy spots everywhere.
+
+---
+
+## 💊 7. Healthcare Has Improved
+
+- **Evercare Hospital** and **Square Hospital** offer world-class facilities
+- **Lab Aid, Popular Diagnostic Centre** have branches across Dhaka for tests and checkups
+- Private healthcare is still far cheaper than UK/US/UAE — use your trip to get checkups done
+
+---
+
+## 🌾 8. Outside Dhaka: New Highways
+
+- **Dhaka Elevated Expressway** reduces city travel times
+- **Dhaka–Chittagong** route improved with road upgrades
+- **New bridges** across river crossings in northern Bangladesh
+
+---
+
+## 📋 Quick Reference: Then vs. Now
+
+| Then (2019) | Now (2026) |
+|---|---|
+| No metro — all traffic on roads | MRT Line 6 cuts Uttara–Motijheel to 35 min |
+| Ferry required to cross Padma | Padma Bridge (drive across in 5 min) |
+| Haggle with CNGs | Uber/Pathao fixed price on app |
+| Cash for everything | bKash/Nagad everywhere |
+| Limited food delivery | Foodpanda/Shohoz Food 30-min delivery |
+| No Chittagong tunnel | Bangabandhu Tunnel (under Karnaphuli) open |
+
+---
+
+## 💡 Tips for Returning NRBs
+
+1. **Download Uber/Pathao before landing** — register with your international number
+2. **Get a local SIM at the airport** — Grameenphone or Robi, with data package
+3. **Use KoyJabo** for all transport navigation — [koyjabo.com](https://koyjabo.com)
+4. **bKash app** — link to your Bangladesh account before arrival if possible
+5. **The heat:** If you're coming from a cold country, give yourself 2–3 days to adjust to Dhaka's climate
+
+---
+
+*Use [KoyJabo.com](https://koyjabo.com) to navigate the new Bangladesh transport network — metro, buses, intercity, and more.*
+`,
+		bnContent: `
+২–৫ বছর দেশে না আসলে অনেক কিছু বদলে গেছে। প্রধান পরিবর্তনগুলো:
+
+---
+
+## 🚇 মেট্রো রেল
+
+MRT লাইন ৬ এখন পুরোপুরি চালু — উত্তরা থেকে মতিঝিল মাত্র ৩৫ মিনিটে।
+- ১৬টি স্টেশন
+- ভাড়া: ৳২০–১০০
+- এসি পরিবেশ
+
+---
+
+## 🌉 পদ্মা সেতু
+
+জুন ২০২২ থেকে খোলা। ঢাকা থেকে বরিশাল এখন মাত্র ৪ ঘণ্টা।
+
+---
+
+## 🚗 রাইড-হেইলিং
+
+Uber ও Pathao এখন ঢাকার সর্বত্র। দরদাম নেই — অ্যাপে দাম দেখেই চড়ুন।
+
+---
+
+## 💳 মোবাইল পেমেন্ট
+
+bKash ও Nagad দিয়ে সব কিছু — বাজার, ওষুধ, বাস টিকিট।
+
+[KoyJabo.com](https://koyjabo.com) দিয়ে বাস, মেট্রো ও ইন্টারসিটি রুট পরিকল্পনা করুন।
+`
+	},
+	{
+		id: 'usa-canada-bangladeshi-travel-guide-visit-bangladesh-2026',
+		slug: 'usa-canada-bangladeshi-travel-guide-visit-bangladesh-2026',
+		title: 'USA & Canada Bangladeshi Travel Guide: Visiting Bangladesh from North America (2026)',
+		bnTitle: 'আমেরিকা ও কানাডা প্রবাসী বাংলাদেশিদের জন্য দেশ ভ্রমণ গাইড ২০২৬',
+		excerpt: 'For the 300,000+ Bangladeshis living in the USA and Canada — this guide covers the best routes to fly home, visa tips, travel costs, and how to make the most of your visit to Bangladesh in 2026.',
+		bnExcerpt: 'আমেরিকা ও কানাডায় বসবাসকারী বাংলাদেশিদের জন্য বিমান টিকিট, ভিসা, খরচ ও ভ্রমণ টিপস।',
+		coverImage: '/blog/ai-traffic-system-dhaka.jpg',
+		author: 'KoyJabo Team',
+		publishDate: '2026-05-14',
+		readTime: '10 min read',
+		keywords: [
+			'USA Bangladeshi visit Bangladesh', 'Canada Bangladeshi travel guide Bangladesh',
+			'New York to Dhaka flight', 'Toronto to Dhaka flight', 'cheapest flight USA to Bangladesh',
+			'Bangladeshi American travel', 'North America Bangladesh flight', 'NRB USA travel Bangladesh',
+			'Bangladesh from New York', 'Bangladesh from Toronto', 'Bengali American travel guide',
+			'Bangladeshi diaspora USA travel', 'visit Bangladesh from America', 'Jackson Heights Bangladesh',
+			'Bronx Bangladeshi community travel'
+		],
+		category: 'Travel Guide',
+		content: `
+The United States and Canada are home to over **350,000 Bangladeshis** — concentrated in New York City (Jackson Heights, the Bronx, Jamaica), Detroit, Los Angeles, Washington DC, Toronto, and Montreal.
+
+Whether you're a first-generation immigrant visiting family, a 1.5-gen visiting for the first time as an adult, or a second-generation American-Bangladeshi discovering your roots — this guide is for you.
+
+---
+
+## ✈️ Flights from North America to Bangladesh
+
+### From New York (JFK / EWR)
+
+| Airline | Route | Approx. Return Price | Duration |
+|---|---|---|---|
+| Qatar Airways | JFK → Doha → Dhaka | $900–1,400 | 17–19h |
+| Emirates | JFK → Dubai → Dhaka | $950–1,500 | 18–20h |
+| Turkish Airlines | JFK → Istanbul → Dhaka | $800–1,200 | 20–22h |
+| Etihad Airways | JFK → Abu Dhabi → Dhaka | $900–1,400 | 18–20h |
+| Biman Bangladesh | Various routing | $1,000–1,600 | 18–22h |
+
+### From Washington DC (IAD / DCA)
+- Similar airlines and prices to New York; add ~$50–100 for smaller hub
+- Turkish Airlines via Istanbul often the best value
+
+### From Toronto (YYZ)
+| Airline | Approx. Return Price | Duration |
+|---|---|---|
+| Qatar Airways | CAD 1,100–1,700 | 17–20h |
+| Emirates | CAD 1,200–1,800 | 18–21h |
+| Turkish Airlines | CAD 1,000–1,500 | 20–23h |
+
+### From Los Angeles (LAX)
+- Japan Airlines via Tokyo to Dhaka: $1,000–1,500 return (shorter flight time)
+- Qatar/Emirates via Middle East: $950–1,400
+
+> **Best booking tip:** Use Google Flights, set a price alert 3–4 months before travel. Prices are cheapest October–January (off-peak). Jackson Heights travel agents sometimes offer group rates for Eid season.
+
+---
+
+## 🛂 Visa Information
+
+**US & Canada passport holders:**
+- **Visa on Arrival** at Dhaka airport — $50 USD, valid 30 days
+- No pre-approval needed; simply join the VOA queue on arrival
+- Extendable to 60 days at the Department of Immigration, Dhaka
+
+**Bangladesh-origin US/Canada citizens (Dual nationals):**
+- If you hold a Bangladesh passport, use it — no visa needed, faster immigration
+- If you only have US/Canadian passport and lost Bangladesh citizenship — apply for No Visa Required (NVR) endorsement (longer process, check Bangladesh embassy)
+
+---
+
+## 💱 Currency & Spending
+
+**Exchange rates (approximate):**
+- $1 USD ≈ ৳120–125
+- CAD 1 ≈ ৳89–95
+
+**How to access BDT:**
+- US/Canadian Visa and Mastercard cards work at ATMs of Standard Chartered, HSBC, Dutch Bangla Bank, BRAC Bank
+- Airport exchange counters for initial cash
+
+**Cost of living reference:**
+| Item | BDT | USD Equivalent |
+|---|---|---|
+| Restaurant meal (local) | ৳150–300 | $1.25–2.50 |
+| Restaurant meal (nice) | ৳500–1,500 | $4–12 |
+| Hotel (Dhaka, mid-range) | ৳3,000–6,000/night | $24–50 |
+| Hotel (Dhaka, 5-star) | ৳15,000–30,000/night | $120–240 |
+| CNG/rickshaw short trip | ৳50–200 | $0.40–1.65 |
+
+Bangladesh is extremely affordable for North American visitors. $50/day covers accommodation, meals, and transport comfortably.
+
+---
+
+## 🗺️ What to Do: Bangladesh for American-Bangladeshis
+
+### Dhaka: The Capital City
+- **Metro Rail (MRT-6):** Take the metro — it's clean, air-conditioned, and a completely different experience from old Dhaka
+- **Old Dhaka:** Ahsan Manzil (Pink Palace), Lalbagh Fort, Sadarghat boat terminal, 400-year-old Mosque City
+- **Hatirjheel:** Beautiful lake park, cafes, evening walks
+- **Food:** Try biryani at Haji's in Old Dhaka, fuchka and chotpoti at Dhanmondi Lake
+
+### Cox's Bazar
+- The world's longest natural sea beach (120km)
+- 5.5 hours from Dhaka by AC bus or 45 minutes by domestic flight
+- **Inani Beach** for cleaner, quieter sand
+- **Saint Martin Island** for snorkeling (November–April only)
+
+### Sylhet
+- Tea gardens, Jaflong crystal river, Ratargul swamp forest
+- Many NYC Bangladeshis trace roots here
+
+### Sundarbans
+- UNESCO World Heritage mangrove forest
+- Royal Bengal Tigers
+- 2-day boat tour from Khulna (now easier with Padma Bridge — 4h from Dhaka)
+
+---
+
+## 📱 Navigate Bangladesh with KoyJabo
+
+**[KoyJabo.com](https://koyjabo.com)** is free, works offline, and covers all transport in Bangladesh:
+- 200+ Dhaka bus routes with maps
+- MRT Line 6 metro fares and schedules
+- Intercity bus/train planner
+- AI travel assistant in English and Bengali
+
+No app download needed — works in any mobile browser. Install to home screen for offline use.
+
+---
+
+## 📸 For Second-Generation Bangladeshi Americans
+
+If you're visiting Bangladesh as an American-born Bangladeshi (ABD) for the first time or first time as an adult:
+
+1. **Language:** Your parents' Bangla dialect will be understood everywhere. English is spoken by educated Bangladeshis in Dhaka
+2. **Culture shock:** Traffic, heat, and crowds can be overwhelming — be patient with yourself
+3. **Food safety:** Eat at established restaurants; drink bottled water; ice is generally fine in hotels
+4. **Safety:** Bangladesh is generally safe for visitors; petty theft is the main concern in crowds
+5. **Phone:** Your US SIM may roam; a local SIM from the airport (৳150–300) is cheaper for a long stay
+6. **Power:** Bangladesh uses Type D/G sockets (220V); US plugs (Type A/B) need an adapter
+
+---
+
+## 🛍️ Shopping: What to Bring Back
+
+| Item | Why Buy in Bangladesh |
+|---|---|
+| Muslin fabric / jamdani sari | UNESCO-listed, origin country |
+| Hilsa fish (frozen, exported) | National fish, distinct flavour |
+| Nakshi kantha (quilt embroidery) | Traditional folk art |
+| Brass/bronze crafts | Old Dhaka artisan work |
+| Dried spices (turmeric, mustard) | Fresher and cheaper than US stores |
+| Jute products | Eco-friendly, sustainable |
+
+---
+
+*Plan your Bangladesh journey with [KoyJabo.com](https://koyjabo.com) — Bangladesh's #1 free transport guide.*
+`,
+		bnContent: `
+আমেরিকা ও কানাডায় বসবাসকারী ৩৫০,০০০+ বাংলাদেশি প্রবাসীর জন্য এই গাইড।
+
+---
+
+## ✈️ উত্তর আমেরিকা থেকে বাংলাদেশে আসার উপায়
+
+- কাতার এয়ারওয়েজ (JFK → ঢাকা): $৯০০–১,৪০০
+- এমিরেটস: $৯৫০–১,৫০০
+- টার্কিশ এয়ারলাইন্স: $৮০০–১,২০০
+
+---
+
+## 🛂 ভিসা তথ্য
+
+মার্কিন/কানাডিয়ান পাসপোর্টধারীরা ঢাকা বিমানবন্দরে ভিসা অন অ্যারাইভাল পাবেন — $৫০ ডলার, ৩০ দিন।
+
+---
+
+## 💡 জানার মতো নতুন বিষয়
+
+- মেট্রো রেল (MRT লাইন ৬): উত্তরা থেকে মতিঝিল মাত্র ৩৫ মিনিট
+- পদ্মা সেতু: দক্ষিণবঙ্গে যাওয়া এখন ২–৩ ঘণ্টা কম সময়ের
+- Uber/Pathao: ঢাকায় ভাড়া ঠিক করার ঝামেলা নেই
+
+[KoyJabo.com](https://koyjabo.com) দিয়ে বাংলাদেশের সব পরিবহন তথ্য পান — বিনামূল্যে, অফলাইনে।
+`
 	}
 ];
