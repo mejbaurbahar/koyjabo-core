@@ -100,7 +100,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
     const hasCenteredRef = useRef(false);
     const followModeRef = useRef(true);
 
-    const [activeLayer, setActiveLayer] = useState<MapLayer>('standard');
+    const [activeLayer, setActiveLayer] = useState<MapLayer>('traffic');
     const [showLayerMenu, setShowLayerMenu] = useState(false);
     const [isOffline, setIsOffline] = useState(!navigator.onLine);
     const [liveBuses, setLiveBuses] = useState<LiveBus[]>([]);

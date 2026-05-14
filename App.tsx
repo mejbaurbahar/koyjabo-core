@@ -2223,7 +2223,7 @@ const App: React.FC = () => {
     } catch (aiError) {
       result = !navigator.onLine
         ? 'আপনি অফলাইনে আছেন। বাস রুট, ভাড়া ও মেট্রো তথ্য অফলাইনেই পাওয়া যাবে — একটু ভিন্নভাবে প্রশ্ন করে দেখুন।\n\nYou are offline. Bus routes, fares, and metro info are available offline — try rephrasing your question.'
-        : 'Something went wrong. Please try again.';
+        : '😔 দুঃখিত, উত্তর দিতে সমস্যা হয়েছে। প্রশ্নটি একটু ভিন্নভাবে লিখুন অথবা আবার চেষ্টা করুন।\n\n😔 Sorry, I had trouble with that query. Please rephrase and try again.';
     }
 
 

@@ -64,10 +64,15 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onClo
             markAsRead(notification.id);
         }
 
-        // Open link if available
+        // Open link if available — validate protocol to prevent javascript: URLs
         if (notification.link) {
-            window.open(notification.link, '_blank', 'noopener,noreferrer');
-            onClose?.();
+            try {
+                const url = new URL(notification.link, window.location.origin);
+                if (url.protocol === 'http:' || url.protocol === 'https:') {
+                    window.open(url.href, '_blank', 'noopener,noreferrer');
+                    onClose?.();
+                }
+            } catch { /* invalid URL */ }
         }
     };
 

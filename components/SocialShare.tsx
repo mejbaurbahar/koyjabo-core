@@ -24,22 +24,22 @@ const SocialShare: React.FC<SocialShareProps> = ({ className = '' }) => {
 
     const handleFacebookShare = () => {
         const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
-        window.open(facebookUrl, '_blank', 'width=600,height=400');
+        window.open(facebookUrl, '_blank', 'noopener,noreferrer,width=600,height=400');
     };
 
     const handleTwitterShare = () => {
         const twitterUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
-        window.open(twitterUrl, '_blank', 'width=600,height=400');
+        window.open(twitterUrl, '_blank', 'noopener,noreferrer,width=600,height=400');
     };
 
     const handleLinkedInShare = () => {
         const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
-        window.open(linkedInUrl, '_blank', 'width=600,height=400');
+        window.open(linkedInUrl, '_blank', 'noopener,noreferrer,width=600,height=400');
     };
 
     const handleWhatsAppShare = () => {
         const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`;
-        window.open(whatsappUrl, '_blank');
+        window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
     };
 
     return (

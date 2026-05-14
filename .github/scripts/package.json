@@ -7,5 +7,8 @@
     "@octokit/rest": "^21.0.0",
     "bcryptjs": "^2.4.3",
     "nodemailer": "^6.9.0"
+  },
+  "devDependencies": {
+    "tweetsodium": "^0.0.4"
   }
 }
