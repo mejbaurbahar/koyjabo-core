@@ -3,9 +3,6 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { X, Layers, Navigation, Map as MapIcon, Wifi, WifiOff, Lock } from 'lucide-react';
 
-
-// Suppress Cesium default token warning
-
 import { useLanguage } from '../contexts/LanguageContext';
 
 // Interfaces

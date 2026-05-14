@@ -55,7 +55,7 @@ export default defineConfig(({ mode }) => {
           ]
         },
         workbox: {
-          maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MB limit for larger assets like Cesium
+          maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
           globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'],
           navigateFallback: 'index.html',
           cleanupOutdatedCaches: true,
@@ -157,7 +157,6 @@ export default defineConfig(({ mode }) => {
           manualChunks: {
             leaflet: ['leaflet'],
             vendor: ['react', 'react-dom', 'lucide-react'],
-            cesium: ['cesium']
           }
         }
       }
