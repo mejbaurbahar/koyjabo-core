@@ -602,7 +602,7 @@ function App() {
 
             {/* Result card — mobile only, desktop shows in right panel */}
             {!loading && result && (
-              <div className="md:hidden pt-2 space-y-2">
+              <div className="pt-2 space-y-2">
                 <div className="flex items-center justify-between px-1">
                   <p className="text-xs text-kj-text-dim">{result.from} → {result.to}</p>
                   <button

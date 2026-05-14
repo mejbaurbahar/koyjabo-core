@@ -4436,6 +4436,9 @@ const App: React.FC = () => {
               </div>
             </div>
           )}
+          {filteredBuses.length > 0 && (
+            <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="mb-3 max-w-[728px] mx-auto" />
+          )}
           {filteredBuses.map((bus, busIdx) => {
             const isFav = favorites.includes(bus.id);
             const estimatedFare = calculateFare(bus);
@@ -4448,8 +4451,8 @@ const App: React.FC = () => {
 
             return (
               <React.Fragment key={bus.id}>
-              {busIdx > 0 && busIdx % 8 === 0 && (
-                <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-1 max-w-[728px] mx-auto" />
+              {busIdx > 0 && busIdx % 5 === 0 && (
+                <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-2 max-w-[728px] mx-auto" />
               )}
 
                 <div
