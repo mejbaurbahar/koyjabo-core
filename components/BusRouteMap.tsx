@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import type { BusRoute, UserLocation } from '../types';
 import { STATIONS, METRO_STATIONS, RAILWAY_STATIONS, AIRPORTS } from '../constants';
 import { Navigation, Layers, Train, Plane, X } from 'lucide-react';
@@ -82,6 +82,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
   const [showRailway, setShowRailway] = useState(false);
   const [showAirport, setShowAirport] = useState(false);
   const [routeSnapped, setRouteSnapped] = useState(false);
+  const [isTraffic, setIsTraffic] = useState(false);
 
 
   const routeColor = getRouteColor(route.id);
@@ -90,6 +91,18 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
   const stops = isReversed ? [...route.stops].reverse() : route.stops;
   const drawableStops = stops.filter(id => !!STATIONS[id]);
   const stopCoords: [number, number][] = drawableStops.map(id => [STATIONS[id].lat, STATIONS[id].lng]);
+
+  // Google Maps embed URL with traffic — free, no API key needed.
+  const trafficIframeSrc = useMemo(() => {
+    const base = 'https://maps.google.com/maps';
+    if (stopCoords.length >= 2) {
+      const [sLat, sLng] = stopCoords[0];
+      const [eLat, eLng] = stopCoords[stopCoords.length - 1];
+      return `${base}?saddr=${sLat},${sLng}&daddr=${eLat},${eLng}&layer=traffic&output=embed`;
+    }
+    // Fallback: Dhaka city traffic view
+    return `${base}?q=Dhaka,Bangladesh&layer=traffic&output=embed&zoom=13`;
+  }, [stopCoords]);
 
   // Compute highlight indices against the drawable stops array (not validStopIds)
   let highlightStartIdx = -1;
@@ -503,9 +516,25 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
   return (
     <div className="relative z-0 isolate w-full rounded-b-2xl overflow-hidden bg-kj-chip-bg" style={{ height: 310 }}>
       {/* 2D Leaflet Map */}
-      <div className="w-full h-full">
+      <div className={`w-full h-full transition-opacity duration-400 ${isTraffic ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
         <div ref={mapRef} className="w-full h-full" />
       </div>
+
+      {/* Google Maps Traffic Embed — free, no API key required */}
+      {isTraffic && (
+        <div className="absolute inset-0 z-[20] animate-in fade-in duration-400">
+          <iframe
+            src={trafficIframeSrc}
+            title="Live Traffic"
+            className="w-full h-full border-0"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+          <div className="absolute top-2 left-[120px] z-10 bg-black/60 text-white text-[10px] font-semibold px-2 py-1 rounded-lg backdrop-blur-sm pointer-events-none">
+            🚦 Live Traffic · Google Maps
+          </div>
+        </div>
+      )}
 
 
       {/* Route badge */}
@@ -572,6 +601,16 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
         >
           <Layers className="w-3.5 h-3.5" />
           Layers
+        </button>
+
+        {/* Traffic toggle */}
+        <button
+          onClick={() => setIsTraffic(v => !v)}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border transition-all ${isTraffic ? 'bg-orange-500 border-orange-600 text-white' : 'bg-white/90 dark:bg-kj-chip-bg/90 text-orange-500 border-orange-200 dark:border-orange-900/40 backdrop-blur-sm hover:bg-orange-50 dark:hover:bg-orange-900/20'}`}
+        >
+          🚦
+          <span>Traffic</span>
+          {isTraffic && <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />}
         </button>
 
 
