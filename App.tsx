@@ -167,6 +167,7 @@ const getStoredView = (): AppView => {
         'seat-availability': AppView.SEAT_AVAILABILITY,
         'release-notes': AppView.RELEASE_NOTES,
         'updates': AppView.RELEASE_NOTES,
+        'intercity': AppView.HOME,
       };
 
       if (viewMap[target]) {
@@ -4917,7 +4918,7 @@ const App: React.FC = () => {
               </button>
               {/* Intercity */}
               <button
-                onClick={() => { window.location.href = '/intercity/'; }}
+                onClick={() => { localStorage.setItem('dhaka_commute_view', JSON.stringify(AppView.HOME)); window.location.href = '/intercity/'; }}
                 className="flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold text-kj-text-faint"
               >
                 <Plane className="w-5 h-5" />

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Calculator, TrendingDown, Trash2 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
-// import AdSenseAd from './AdSenseAd';
+import AdSenseAd from './AdSenseAd';
 
 
 
@@ -177,7 +177,7 @@ export default function CommuteCostCalculator({ onBack }: Props) {
 
 
 
-        {/* <AdSenseAd adSlot="auto" native className="w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+        <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="mb-4 max-w-[728px] mx-auto" />
 
         {legs.length > 0 && (
           <>

@@ -990,6 +990,8 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
           </span>
         </div>
 
+        <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-2 max-w-[728px] mx-auto" />
+
         {filtered.length === 0 ? (
           <div className="text-center py-16 text-kj-text-faint">
             <Train className="w-12 h-12 mx-auto mb-3 opacity-30" />

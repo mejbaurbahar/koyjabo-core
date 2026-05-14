@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLanguage } from './contexts/LanguageContext';
 import { Search, ArrowRightLeft, AlertCircle, PlayCircle, WifiOff, Activity, Home, Train, Sparkles, Clock, Info, Sun, Moon, Menu, Navigation, Map, X, Bot, FileText, Settings, Shield, Download, Calendar, HelpCircle, LogIn, LogOut, User, Phone, Bus, Plane, ChevronRight, AlertTriangle, Calculator, Ticket, BookOpen, UserPlus, MapPin, Star, Rocket } from 'lucide-react';
 import { AnimatedLogo } from './components/AnimatedLogo';
+import AdUnit from './components/AdUnit';
 import DhakaAlive from './components/DhakaAlive';
 import ThemeToggle from './components/ThemeToggle';
 import DistrictSelect from './components/DistrictSelect';
@@ -637,6 +638,7 @@ function App() {
                   </button>
                 </div>
                 <ResultCard data={result} />
+                <AdUnit className="mt-3" />
               </div>
             )}
 
@@ -657,6 +659,8 @@ function App() {
                 </div>
               </div>
             )}
+
+            <AdUnit className="my-2" />
 
             {/* Saved routes — shown when logged in and no result */}
             {authUser && !result && !loading && savedRoutes.length > 0 && (

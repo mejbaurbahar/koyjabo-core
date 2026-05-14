@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { ArrowLeft, Clock, Calendar, Tag, Copy, Check, ArrowUp, List, Sparkles } from 'lucide-react';
+import { ArrowLeft, Clock, Calendar, Tag, Copy, Check, ArrowUp, List } from 'lucide-react';
 import { BLOG_POSTS } from '../data/blogPosts';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -302,7 +302,6 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
 
                                             {paragraphs.length > cut1 && (
                                                 <div className="my-10 p-2 bg-gray-50 dark:bg-kj-chip-bg/50 rounded-2xl border border-dashed border-kj-line overflow-hidden">
-                                                    <p className="text-[10px] text-kj-text-faint text-center mb-2 uppercase tracking-widest">Sponsored Advertisement</p>
                                                     <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="w-full" />
                                                 </div>
                                             )}
@@ -311,7 +310,6 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
 
                                             {paragraphs.length > cut2 && (
                                                 <div className="my-10 p-2 bg-gray-50 dark:bg-kj-chip-bg/50 rounded-2xl border border-dashed border-kj-line overflow-hidden">
-                                                    <p className="text-[10px] text-kj-text-faint text-center mb-2 uppercase tracking-widest">Sponsored Advertisement</p>
                                                     <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="w-full" />
                                                 </div>
                                             )}
@@ -350,10 +348,6 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                         <aside className="hidden lg:block lg:col-span-4 space-y-8">
                             <div className="sticky top-24">
                                 <div className="bg-kj-panel rounded-2xl p-6 border border-kj-line shadow-sm mb-6 overflow-hidden">
-                                    <h4 className="font-bold text-kj-text mb-4 flex items-center gap-2">
-                                        <Sparkles className="w-4 h-4 text-amber-500" />
-                                        {language === 'bn' ? 'স্পন্সর' : 'Sponsored'}
-                                    </h4>
                                     <AdSenseAd adSlot="auto" adFormat="vertical" className="w-full max-w-[300px] mx-auto" />
                                 </div>
                                 
