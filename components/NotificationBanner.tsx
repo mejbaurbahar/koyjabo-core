@@ -59,9 +59,13 @@ const NotificationBanner: React.FC = () => {
     };
 
     const handleClick = () => {
-        if (link && link !== '#') {
-            window.open(link, '_blank');
-        }
+        if (!link || link === '#') return;
+        try {
+            const url = new URL(link, window.location.origin);
+            if (url.protocol === 'http:' || url.protocol === 'https:') {
+                window.open(url.href, '_blank', 'noopener,noreferrer');
+            }
+        } catch { /* invalid URL — do nothing */ }
     };
 
     return (

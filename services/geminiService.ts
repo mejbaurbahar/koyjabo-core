@@ -747,7 +747,7 @@ const findMetroRoute = (query: string, isBn: boolean): string => {
     : `🚇 **Metro Rail (MRT Line 6):** Runs from Uttara North to Motijheel.\n\n**Stations:** ${stationList}.\n**Timing:** 7:10 AM - 8:40 PM.`;
 };
 
-const findIntercityRoute = (query: string): string => {
+const findIntercityRoute = (query: string, fromContextDistrict?: string): string => {
   const lowerQuery = normalize(query);
   const isBn = /[\u0980-\u09FF]/.test(query);
 
@@ -780,7 +780,10 @@ const findIntercityRoute = (query: string): string => {
     const isNavIntent = lowerQuery.match(/(jabo|kivabe|jawa|go|reach|direction|jite|kemne|route|যাব|কিভাবে|জাব|কেমনে|পথ|how|ticket|fare|বাস|ট্রেন)/);
     if (isNavIntent) {
       const to = uniqueDistricts[0];
-      const from = to === "Dhaka" ? "Chattogram" : "Dhaka"; // Default from Dhaka unless asking about Dhaka
+      // Use GPS context district when available, otherwise default to Dhaka
+      const from = (fromContextDistrict && fromContextDistrict !== to)
+        ? fromContextDistrict
+        : (to === "Dhaka" ? "Chattogram" : "Dhaka");
       const routeData = getOfflineIntercityData(from, to, isBn ? 'bn' : 'en');
       return routeData.result;
     }
@@ -964,6 +967,9 @@ const detectDestinationAndOfferPlan = (query: string): { destination: string | n
   for (const [key, destination] of Object.entries(TOURIST_DESTINATIONS)) {
     if (lowerQuery.includes(normalize(key)) ||
       (destination.bn && lowerQuery.includes(normalize(destination.bn)))) {
+
+      // Only offer a plan when we actually have one stored
+      if (!TOUR_PLANS[key]) continue;
 
       if (lowerQuery.includes("how") || lowerQuery.includes("jabo") || lowerQuery.includes("kivabe") ||
         lowerQuery.includes("যাব") || lowerQuery.includes("কিভাবে") || lowerQuery.includes("যেতে")) {
@@ -1347,7 +1353,7 @@ function buildDataMissingResponse(query: string, isBn: boolean): string {
 }
 
 export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, chatHistory: ChatMessage[] = [], userName?: string): Promise<string> => {
-
+  try {
   const [actualQueryPart, contextPart] = userQuery.split('[Context:');
   const isOffline = userQuery.includes('[OfflineMode]');
   const query = actualQueryPart.trim();
@@ -1379,6 +1385,15 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
     return isBn
       ? `👋 হ্যালো${nameGreet}! আমি **কই যাবো AI**। বলুন কোথায় যেতে চান —\n🚌 বাস · 🚇 মেট্রো · 🚂 ট্রেন · ✈️ বিমান · 🚢 লঞ্চ · 🗺️ ট্যুর প্ল্যান — সব বিষয়ে সাহায্য করব!\n\n_উদাহরণ: "মিরপুর ১০ থেকে ধানমন্ডি" অথবা "ঢাকা থেকে সিলেট ট্রেন"_`
       : `👋 Hello${nameGreet}! I'm **KoyJabo AI**. Tell me where you want to go —\n🚌 Bus · 🚇 Metro · 🚂 Train · ✈️ Flight · 🚢 Launch · 🗺️ Tour Plans — I'll help with it all!\n\n_Example: "Farmgate to Mirpur 10" or "Dhaka to Sylhet train"_`;
+  }
+
+  // Tour plan affirmative — check BEFORE the one-word guard so "sure/yes/ok" triggers the plan
+  {
+    const { isAffirm, requestedDestination } = isAffirmativeResponse(query, chatHistory);
+    if (isAffirm && requestedDestination) {
+      const plan = getTourPlan(requestedDestination, isBn);
+      if (plan) return plan;
+    }
   }
 
   // General conversation fallback for non-travel one-word queries
@@ -1509,6 +1524,24 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
     else if (nearMatch) { userNearbyStation = nearMatch[1].trim(); }
   }
 
+  // Resolve GPS context area to an intercity district so routing says "from YOUR location"
+  const _gpsDistrict: string | undefined = (() => {
+    const area = (userAreaName || userNearbyStation || '').toLowerCase();
+    if (!area) return undefined;
+    // Direct match against intercity district list
+    const direct = MAJOR_LOCATIONS.find(loc => area.includes(loc.toLowerCase()));
+    if (direct) return direct;
+    // Bengali district names
+    const bnEntry = Object.entries(MAJOR_LOCATIONS_BN).find(([, bn]) => bn && area.includes(bn.toLowerCase()));
+    if (bnEntry) return bnEntry[0];
+    // Dhaka metro sub-areas
+    const dhakaKeywords = ['mirpur', 'gulshan', 'banani', 'dhanmondi', 'uttara', 'mohammadpur',
+      'farmgate', 'motijheel', 'tejgaon', 'badda', 'rampura', 'shyamoli', 'keraniganj',
+      'savar', 'ashulia', 'tongi', 'old dhaka', 'agargaon', 'pallabi', 'kazipara'];
+    if (dhakaKeywords.some(k => area.includes(k))) return 'Dhaka';
+    return undefined;
+  })();
+
   // ── Location-aware transit routing ──────────────────────────────────────────
   // Triggered when: user asks "how to go" + we have location context
   const isHowToGoQuery = lowerQuery.match(/(how to go|how can i go|how do i go|kemne jabo|kivabe jabo|kemon kore jabo|কিভাবে যাব|কিভাবে যাবো|কেমনে যাবো|কীভাবে যাবো|কই যাবো|কোথায় যাবো|how to reach|how can i reach|কীভাবে পৌঁছাবো|পৌঁছাবো কিভাবে)/i);
@@ -1551,16 +1584,6 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
       `- **মেলা প্রাঙ্গণ → সাইনবোর্ড**: ভাড়া ১০০ টাকা\n\n` +
       `**🕗 সময়:** সকাল ৮টা থেকে | শেষ ট্রিপ রাত ১১টা পর্যন্ত।\n\n` +
       `🎟️ **টিকিট মূল্য:** বড় ৫০ টাকা, ছোট ২৫ টাকা (৫ বছরের কম ফ্রি)।`;
-  }
-
-  // 0. Check if user is responding affirmatively to a tour plan offer
-  const { isAffirm, requestedDestination } = isAffirmativeResponse(query, chatHistory);
-  if (isAffirm && requestedDestination) {
-    const isBn = /[\u0980-\u09FF]/.test(query);
-    const plan = getTourPlan(requestedDestination, isBn);
-    if (plan) {
-      return plan;
-    }
   }
 
   // Priority checks for specific info types
@@ -1767,7 +1790,7 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
     lowerQuery.includes("বাস");
 
   if (isIntercityQuery) {
-    const intercityRes = findIntercityRoute(query);
+    const intercityRes = findIntercityRoute(query, _gpsDistrict);
     if (intercityRes) responseParts.push(intercityRes);
   }
 
@@ -1905,6 +1928,12 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   recordAndLearn(query, finalResponse);
 
   return finalResponse;
+  } catch (_err) {
+    const _isBn = /[ঀ-৿]/.test(userQuery);
+    return _isBn
+      ? '😔 দুঃখিত, উত্তর দিতে সমস্যা হয়েছে। প্রশ্নটি একটু ভিন্নভাবে লিখুন অথবা আবার চেষ্টা করুন।'
+      : '😔 Sorry, I had trouble processing that. Please try rephrasing your question.';
+  }
 };
 
 /**

@@ -112,9 +112,9 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
         setTimeout(() => setCopied(false), 2000);
     };
 
-    const shareWhatsApp = () => window.open(`https://wa.me/?text=${encodeURIComponent(postTitle + '\n' + postUrl)}`, '_blank');
-    const shareFacebook = () => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}`, '_blank');
-    const shareTwitter = () => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(postTitle)}&url=${encodeURIComponent(postUrl)}&via=koyjabo`, '_blank');
+    const shareWhatsApp = () => window.open(`https://wa.me/?text=${encodeURIComponent(postTitle + '\n' + postUrl)}`, '_blank', 'noopener,noreferrer');
+    const shareFacebook = () => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}`, '_blank', 'noopener,noreferrer');
+    const shareTwitter = () => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(postTitle)}&url=${encodeURIComponent(postUrl)}&via=koyjabo`, '_blank', 'noopener,noreferrer');
 
     if (!post) {
         return (

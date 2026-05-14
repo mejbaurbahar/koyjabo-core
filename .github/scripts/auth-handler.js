@@ -22,8 +22,14 @@ const APP_OWNER  = 'mejbaurbahar';
 const APP_REPO   = 'Dhaka-Commute';
 
 // User data — all written here (users, avatars, devices, history, stats)
-const DATA_OWNER = 'mejbaurbahar';
-const DATA_REPO  = 'koyjabo';
+const DATA_OWNER   = 'mejbaurbahar';
+const DATA_REPO    = 'koyjabo';
+// Legacy user data repo (same as DATA for current setup)
+const LEGACY_OWNER = 'mejbaurbahar';
+const LEGACY_REPO  = 'koyjabo';
+
+// Current app repo — GITHUB_TOKEN always has write access here (auto per-run token)
+const [CORE_REPO_OWNER, CORE_REPO_NAME] = (process.env.GITHUB_REPOSITORY || 'mejbaurbahar/koyjabo-core').split('/');
 
 // GITHUB_TOKEN: auto per-run token (write access to koyjabo-core only)
 const CORE_TOKEN = process.env.AUTH_GITHUB_TOKEN;
@@ -38,9 +44,11 @@ const APP_URL        = process.env.APP_URL        || 'https://koyjabo.com';
 
 // octokitData: user data    → koyjabo (PAT has write access)
 // octokitApp:  result files → Dhaka-Commute (PAT has write access)
+// octokitCore: result fallback → koyjabo-core (GITHUB_TOKEN always valid)
 const octokitData   = new Octokit({ auth: DATA_TOKEN });
 const octokitApp    = new Octokit({ auth: DATA_TOKEN });
 const octokitLegacy = new Octokit({ auth: DATA_TOKEN });
+const octokitCore   = new Octokit({ auth: CORE_TOKEN });
 
 // ── Disposable / temp-mail domain blocklist ───────────────────────────────────
 const TEMP_MAIL_DOMAINS = new Set([
@@ -445,6 +453,30 @@ async function writeAppFile(path, content, sha, message = 'Auth result') {
   };
   if (sha) params.sha = sha;
   await octokitApp.repos.createOrUpdateFileContents(params);
+}
+
+// ── Core Repo File Operations (koyjabo-core — result fallback, GITHUB_TOKEN only) ──
+async function readCoreFile(path) {
+  try {
+    const res = await octokitCore.repos.getContent({ owner: CORE_REPO_OWNER, repo: CORE_REPO_NAME, path });
+    if (res.data.type !== 'file') return null;
+    const content = JSON.parse(Buffer.from(res.data.content, 'base64').toString('utf8'));
+    return { content, sha: res.data.sha };
+  } catch (err) {
+    if (err.status === 404) return null;
+    throw err;
+  }
+}
+
+async function writeCoreFile(path, content, sha, message = 'Auth result') {
+  const encoded = Buffer.from(JSON.stringify(content, null, 2)).toString('base64');
+  const params = {
+    owner: CORE_REPO_OWNER, repo: CORE_REPO_NAME, path, message,
+    content: encoded,
+    committer: { name: 'KoyJabo Auth Bot', email: 'noreply@koyjabo.com' }
+  };
+  if (sha) params.sha = sha;
+  await octokitCore.repos.createOrUpdateFileContents(params);
 }
 
 // ── Legacy Repo File Operations (koyjabo — read old user data) ────────────────
@@ -1248,34 +1280,37 @@ async function handleSetGooglePassword({ userId, newPasswordHash }) {
 }
 
 // ── Result Writer ─────────────────────────────────────────────────────────────
-// Primary: Dhaka-Commute (public repo — Cloudflare Worker reads this FIRST, no private-token needed)
-// Fallback: koyjabo-core (Cloudflare Worker has a fallback for this)
+// Primary:   Dhaka-Commute  — DATA_TOKEN (PAT). Worker reads this first.
+// Secondary: koyjabo        — DATA_TOKEN (PAT). Worker fallback.
+// Last-resort: koyjabo-core — CORE_TOKEN (GITHUB_TOKEN). Always valid, never expires mid-run.
 async function writeResult(requestId, result) {
   const content = { ...result, completedAt: Date.now() };
   const path = `data/results/${requestId}.json`;
 
-  // Try Dhaka-Commute first (DATA_TOKEN has write access)
+  // Primary: Dhaka-Commute (DATA_TOKEN)
   try {
     const existing = await readAppFile(path);
     await writeAppFile(path, content, existing?.sha, `Auth result: ${requestId}`);
     console.log(`Result written to ${APP_REPO}/${path}`);
     return;
   } catch (err) {
-    console.warn(`[writeResult] ${APP_REPO} write failed (${err.message}), falling back to ${DATA_REPO}`);
+    console.warn(`[writeResult] ${APP_REPO} write failed (${err.status || err.message}), trying ${DATA_REPO}`);
   }
 
-  // Fallback: koyjabo-core (GITHUB_TOKEN always has access here)
+  // Secondary: koyjabo private repo (DATA_TOKEN)
   try {
     const existing = await readDataFile(path);
     await writeDataFile(path, content, existing?.sha, `Auth result: ${requestId}`);
     console.log(`Result written to ${DATA_REPO}/${path}`);
+    return;
   } catch (err) {
-    if (err.status === 403) {
-      console.warn('[writeResult] Rate limited on fallback — result not persisted.');
-      return;
-    }
-    throw err;
+    console.warn(`[writeResult] ${DATA_REPO} write failed (${err.status || err.message}), falling back to ${CORE_REPO_NAME}`);
   }
+
+  // Last-resort: koyjabo-core (CORE_TOKEN / GITHUB_TOKEN — always valid for this repo)
+  const existing = await readCoreFile(path).catch(() => null);
+  await writeCoreFile(path, content, existing?.sha, `Auth result: ${requestId}`);
+  console.log(`Result written to ${CORE_REPO_NAME}/${path} (core fallback)`);
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
