@@ -1,10 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { DISTRICT_COORDINATES } from '../constants';
-import * as Cesium from 'cesium';
-import 'cesium/Build/Cesium/Widgets/widgets.css';
-
-// Suppress Cesium default token warning
-Cesium.Ion.defaultAccessToken = '';
 
 interface MapComponentProps {
   from: string;
@@ -72,26 +67,10 @@ const BENGALI_TO_ENGLISH_NAMES: { [key: string]: string } = {
 const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTitle = '', userLocation }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<any>(null);
+  const tileLayerRef = useRef<any>(null);
   const layerGroup = useRef<any>(null);
   const animationRef = useRef<number | null>(null);
-  const [is3D, setIs3D] = React.useState(false);
   const [isTraffic, setIsTraffic] = React.useState(false);
-  const cesiumContainerRef = useRef<HTMLDivElement>(null);
-  const cesiumViewerRef = useRef<Cesium.Viewer | null>(null);
-
-  // Build Google Maps embed URL with traffic layer — free, no API key needed.
-  // Uses district coordinates when available for precision, falls back to name-based query.
-  const trafficIframeSrc = React.useMemo(() => {
-    const fromEn = BENGALI_TO_ENGLISH_NAMES[from] || from;
-    const toEn = BENGALI_TO_ENGLISH_NAMES[to] || to;
-    const coordF = DISTRICT_COORDINATES[fromEn];
-    const coordT = DISTRICT_COORDINATES[toEn];
-    const base = 'https://maps.google.com/maps';
-    if (coordF && coordT) {
-      return `${base}?saddr=${coordF[0]},${coordF[1]}&daddr=${coordT[0]},${coordT[1]}&layer=traffic&output=embed`;
-    }
-    return `${base}?saddr=${encodeURIComponent(fromEn + ', Bangladesh')}&daddr=${encodeURIComponent(toEn + ', Bangladesh')}&layer=traffic&output=embed`;
-  }, [from, to]);
 
   useEffect(() => {
     if (!window.L || !mapRef.current) return;
@@ -100,7 +79,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
     if (!mapInstance.current) {
       mapInstance.current = window.L.map(mapRef.current).setView([23.8103, 90.4125], 7);
 
-      window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      tileLayerRef.current = window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
       }).addTo(mapInstance.current);
 
@@ -350,193 +329,43 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
 
-  }, [from, to, via, modeTitle, is3D]);
+  }, [from, to, via, modeTitle]);
 
-  // Cesium 3D Globe Logic
+  // Swap tile layer between OSM and Google Maps traffic
   useEffect(() => {
-    if (!is3D || !cesiumContainerRef.current) {
-      if (cesiumViewerRef.current) {
-        cesiumViewerRef.current.destroy();
-        cesiumViewerRef.current = null;
-      }
-      return;
-    }
-
-    const initCesium = async () => {
-      if (!cesiumContainerRef.current) return;
-      
-      try {
-        const viewer = new Cesium.Viewer(cesiumContainerRef.current, {
-          terrain: Cesium.Terrain.fromWorldTerrain(),
-          animation: false,
-          timeline: false,
-          baseLayerPicker: false,
-          geocoder: false,
-          homeButton: false,
-          infoBox: false,
-          sceneModePicker: false,
-          selectionIndicator: false,
-          navigationHelpButton: false,
-          navigationInstructionsInitiallyVisible: false,
-          fullscreenButton: false,
-          skyAtmosphere: new Cesium.SkyAtmosphere(),
-          msaaSamples: 4,
-        });
-
-        // High-end visuals
-        viewer.scene.fog.enabled = true;
-        viewer.scene.fog.density = 0.0001;
-        viewer.scene.light = new Cesium.DirectionalLight({
-          direction: new Cesium.Cartesian3(0.5, -0.2, -1.0),
-          intensity: 2.0
-        });
-
-        // Add 3D Buildings
-        const buildingTileset = await Cesium.createOsmBuildingsAsync({
-          defaultColor: Cesium.Color.fromCssColorString('#f1f5f9'),
-        });
-        viewer.scene.primitives.add(buildingTileset);
-
-        // Draw routes in 3D
-        const getCoords = (name: string): [number, number] | null => {
-          if (!name) return null;
-          let searchName = name;
-          const bnMatch = Object.keys(BENGALI_TO_ENGLISH_NAMES).find(bn => name && name.includes(bn));
-          if (bnMatch) searchName = BENGALI_TO_ENGLISH_NAMES[bnMatch];
-          const key = Object.keys(DISTRICT_COORDINATES).find(k => {
-            const sName = (searchName || '').toLowerCase();
-            const kName = k.toLowerCase();
-            return sName.includes(kName) || kName.includes(sName);
-          });
-          return key ? DISTRICT_COORDINATES[key] : null;
-        };
-
-        const start = getCoords(from);
-        const end = getCoords(to);
-
-        if (start && end) {
-          // Route line
-          viewer.entities.add({
-            polyline: {
-              positions: [
-                Cesium.Cartesian3.fromDegrees(start[1], start[0]),
-                Cesium.Cartesian3.fromDegrees(end[1], end[0])
-              ],
-              width: 8,
-              material: Cesium.Color.fromCssColorString('#2563eb'),
-              clampToGround: true
-            }
-          });
-
-          // Destination marker
-          viewer.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(end[1], end[0]),
-            point: { pixelSize: 15, color: Cesium.Color.RED, outlineColor: Cesium.Color.WHITE, outlineWidth: 3, disableDepthTestDistance: Number.POSITIVE_INFINITY },
-            label: {
-              text: to,
-              font: 'bold 14px sans-serif',
-              verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-              pixelOffset: new Cesium.Cartesian2(0, -15),
-              fillColor: Cesium.Color.WHITE,
-              outlineColor: Cesium.Color.BLACK,
-              outlineWidth: 2,
-              showBackground: true,
-              backgroundColor: Cesium.Color.fromCssColorString('rgba(0,0,0,0.5)'),
-              disableDepthTestDistance: Number.POSITIVE_INFINITY
-            }
-          });
-          
-          if (userLocation) {
-            viewer.camera.flyTo({
-              destination: Cesium.Cartesian3.fromDegrees(userLocation.lng, userLocation.lat, 500000), // Regional view
-              duration: 3
-            });
-          } else {
-            viewer.zoomTo(viewer.entities);
-          }
-        }
-
-        cesiumViewerRef.current = viewer;
-      } catch (e) {
-        console.error('Cesium init error:', e);
-      }
-    };
-
-    initCesium();
-
-    return () => {
-      if (cesiumViewerRef.current) {
-        cesiumViewerRef.current.destroy();
-        cesiumViewerRef.current = null;
-      }
-    };
-  }, [is3D, from, to]);
+    if (!mapInstance.current || !tileLayerRef.current || !window.L) return;
+    const map = mapInstance.current;
+    map.removeLayer(tileLayerRef.current);
+    const url = isTraffic
+      ? 'https://mt1.google.com/vt/lyrs=m@221097413,traffic&x={x}&y={y}&z={z}'
+      : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    tileLayerRef.current = window.L.tileLayer(url, { attribution: '', maxZoom: 19 }).addTo(map);
+  }, [isTraffic]);
 
   return (
     <div className="w-full h-full relative z-0">
-      {/* 2D Leaflet Map — always visible so route/waypoints never disappear */}
-      <div
-        className={`w-full h-full transition-opacity duration-500 ${is3D ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
-      >
+      <div className="w-full h-full">
         <div ref={mapRef} className="w-full h-full bg-slate-100" />
       </div>
 
-      {/* 3D Cesium Globe */}
-      {is3D && (
-        <div
-          ref={cesiumContainerRef}
-          className="absolute inset-0 z-[10] animate-in fade-in duration-700"
-        />
-      )}
-
-      {/* Google Maps Traffic panel — slides up over the bottom 45%, route stays visible above */}
+      {/* Traffic active indicator */}
       {isTraffic && (
-        <div className="absolute bottom-14 left-0 right-0 z-[300] animate-in slide-in-from-bottom duration-350" style={{ height: '46%' }}>
-          <div className="relative w-full h-full shadow-2xl">
-            {/* Header bar */}
-            <div className="flex items-center gap-2 bg-orange-500 text-white text-[10px] font-bold px-3 py-1.5">
-              <span>🚦 Live Traffic · Google Maps</span>
-              <span className="ml-auto opacity-60 font-normal">free embed · no API key</span>
-              <button
-                onClick={() => setIsTraffic(false)}
-                className="ml-2 opacity-80 hover:opacity-100 font-black text-xs leading-none"
-                aria-label="Close traffic"
-              >✕</button>
-            </div>
-            <iframe
-              src={trafficIframeSrc}
-              title="Live Traffic"
-              className="w-full border-0"
-              style={{ height: 'calc(100% - 26px)' }}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </div>
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 z-[500] px-3 py-1.5 bg-orange-500 text-white text-[10px] font-bold rounded-full shadow-lg flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+          Live Traffic · Google Maps
         </div>
       )}
 
-      {/* Controls row */}
-      <div className="absolute bottom-3 right-3 z-[500] flex flex-col items-end gap-2">
-        {/* Traffic toggle */}
+      {/* Controls */}
+      <div className="absolute bottom-3 right-3 z-[500]">
         <button
-          onClick={() => { setIsTraffic(v => !v); if (is3D) setIs3D(false); }}
+          onClick={() => setIsTraffic(v => !v)}
           className={`flex items-center gap-2 px-3 py-2 rounded-xl shadow-xl border hover:scale-105 transition-all ${isTraffic ? 'bg-orange-500 border-orange-600 text-white' : 'bg-kj-panel border-kj-line'}`}
         >
           <span className="text-[10px] font-black uppercase tracking-widest" style={isTraffic ? {} : { background: 'linear-gradient(to right,#f97316,#ef4444)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             Traffic
           </span>
           <div className={`w-2 h-2 rounded-full animate-pulse ${isTraffic ? 'bg-white' : 'bg-orange-500'}`} />
-        </button>
-
-        {/* 3D Globe toggle */}
-        <button
-          onClick={() => { setIs3D(v => !v); if (isTraffic) setIsTraffic(false); }}
-          className="flex items-center gap-2 px-3 py-2 bg-kj-panel rounded-xl shadow-xl border border-kj-line hover:scale-105 transition-all"
-        >
-          <span className="text-[10px] font-black uppercase tracking-widest bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-            {is3D ? '2D Map' : '3D Globe'}
-          </span>
-          <div className={`w-2 h-2 rounded-full ${is3D ? 'bg-blue-600' : 'bg-kj-primary'} animate-pulse`} />
         </button>
       </div>
     </div>

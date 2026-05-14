@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import type { BusRoute, UserLocation } from '../types';
 import { STATIONS, METRO_STATIONS, RAILWAY_STATIONS, AIRPORTS } from '../constants';
 import { Navigation, Layers, Train, Plane, X } from 'lucide-react';
@@ -72,6 +72,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
 }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
+  const tileLayerRef = useRef<any>(null);
   const routeLayerRef = useRef<any>(null);
   const overlayLayerRef = useRef<any>(null);
   const userMarkerRef = useRef<any>(null);
@@ -92,17 +93,6 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
   const drawableStops = stops.filter(id => !!STATIONS[id]);
   const stopCoords: [number, number][] = drawableStops.map(id => [STATIONS[id].lat, STATIONS[id].lng]);
 
-  // Google Maps embed URL with traffic — free, no API key needed.
-  const trafficIframeSrc = useMemo(() => {
-    const base = 'https://maps.google.com/maps';
-    if (stopCoords.length >= 2) {
-      const [sLat, sLng] = stopCoords[0];
-      const [eLat, eLng] = stopCoords[stopCoords.length - 1];
-      return `${base}?saddr=${sLat},${sLng}&daddr=${eLat},${eLng}&layer=traffic&output=embed`;
-    }
-    // Fallback: Dhaka city traffic view
-    return `${base}?q=Dhaka,Bangladesh&layer=traffic&output=embed&zoom=13`;
-  }, [stopCoords]);
 
   // Compute highlight indices against the drawable stops array (not validStopIds)
   let highlightStartIdx = -1;
@@ -198,7 +188,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
       map.boxZoom.disable();
       map.keyboard.disable();
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      tileLayerRef.current = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '',
         maxZoom: 19,
         crossOrigin: true,
@@ -512,38 +502,23 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
     });
   }, [userLocation, mapReady]);
 
-
-  const TRAFFIC_H = 220;
+  // Swap tile layer between OSM and Google Maps traffic
+  useEffect(() => {
+    if (!mapInstanceRef.current || !tileLayerRef.current) return;
+    const map = mapInstanceRef.current;
+    import('leaflet').then(L => {
+      if (tileLayerRef.current) map.removeLayer(tileLayerRef.current);
+      const url = isTraffic
+        ? 'https://mt1.google.com/vt/lyrs=m@221097413,traffic&x={x}&y={y}&z={z}'
+        : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+      tileLayerRef.current = L.tileLayer(url, { attribution: '', maxZoom: 19 }).addTo(map);
+    });
+  }, [isTraffic]);
 
   return (
-    <div
-      className="relative z-0 isolate w-full rounded-b-2xl overflow-hidden bg-kj-chip-bg"
-      style={{ height: isTraffic ? 310 + TRAFFIC_H : 310, transition: 'height 0.35s ease' }}
-    >
-      {/* Leaflet map — always at full size so route/stops never disappear */}
-      <div style={{ height: 310 }} className="w-full relative">
+    <div className="relative z-0 isolate w-full rounded-b-2xl overflow-hidden bg-kj-chip-bg" style={{ height: 310 }}>
+      <div className="w-full h-full relative">
         <div ref={mapRef} className="w-full h-full" /></div>
-
-      {/* Google Maps Traffic panel — expands below the route map */}
-      {isTraffic && (
-        <div
-          style={{ height: TRAFFIC_H }}
-          className="w-full border-t-2 border-orange-400 animate-in slide-in-from-bottom duration-300"
-        >
-          <div className="bg-orange-500 text-white text-[10px] font-bold px-3 py-1 flex items-center gap-2">
-            <span>🚦 Live Traffic · Google Maps</span>
-            <span className="ml-auto opacity-60 font-normal">free embed</span>
-          </div>
-          <iframe
-            src={trafficIframeSrc}
-            title="Live Traffic"
-            className="w-full border-0"
-            style={{ height: TRAFFIC_H - 22 }}
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
-        </div>
-      )}
 
 
       {/* Route badge */}

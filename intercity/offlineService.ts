@@ -924,7 +924,7 @@ const buildViaHubSuggestions = (from: string, to: string): Array<{
         if (hubCoord) {
             const leg1Dist = calculateDistance(fromLat, fromLng, hubCoord[0], hubCoord[1]);
             const leg2Dist = calculateDistance(hubCoord[0], hubCoord[1], toLat, toLng);
-            if (leg1Dist + leg2Dist > directDist * 1.9) continue;
+            if (leg1Dist + leg2Dist > directDist * 1.5) continue;
         }
 
         const leg1Modes: string[] = [];
