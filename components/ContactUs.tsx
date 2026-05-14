@@ -2,7 +2,7 @@ import React from 'react';
 import { Mail, Linkedin, Facebook, MapPin, Send, MessageSquare, Bug, Lightbulb, Share2 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { AppView } from '../types';
-// import AdSenseAd from './AdSenseAd';
+import AdSenseAd from './AdSenseAd';
 
 
 interface ContactUsProps {
@@ -15,27 +15,27 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
 
     return (
         <div className="flex flex-col flex-1 min-h-0 bg-kj-panel overflow-y-auto overscroll-y-contain touch-pan-y w-full relative" style={{ WebkitOverflowScrolling: 'touch' }}>
-            <div className="max-w-4xl mx-auto p-6 md:p-12 pt-6 md:pt-32 pb-32 md:pb-12 w-full">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-12 py-6 md:py-12 pt-6 md:pt-20 pb-24 md:pb-12 w-full">
 
                 {/* Header Section */}
-                <div className="text-center mb-16">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-kj-accent/10 text-kj-accent rounded-full text-xs font-bold uppercase tracking-widest mb-4">
+                <div className="text-center mb-8 sm:mb-12">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-kj-accent/10 text-kj-accent rounded-full text-xs font-bold uppercase tracking-widest mb-3 sm:mb-4">
                         <MessageSquare className="w-4 h-4" /> {t('contactUs.getInTouch')}
                     </div>
-                    <h1 className="text-4xl md:text-6xl font-black mb-6 text-kj-text italic">
+                    <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-3 sm:mb-6 text-kj-text italic">
                         {t('contactUs.subtitle')}
                     </h1>
-                    <p className="text-xl text-kj-text-dim max-w-2xl mx-auto">
+                    <p className="text-base sm:text-lg xl:text-xl text-kj-text-dim max-w-2xl mx-auto">
                         {t('contactUs.description')}
                     </p>
                 </div>
 
-                {/* <AdSenseAd adSlot="auto" className="mb-12 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+                <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="mb-12 max-w-[728px] mx-auto" />
 
 
-                <div className="grid md:grid-cols-2 gap-6 mb-16 max-w-2xl mx-auto">
+                <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 mb-8 sm:mb-12 max-w-2xl mx-auto">
                     {/* Feedback */}
-                    <div className="bg-slate-50 dark:bg-kj-chip-bg/50 p-8 rounded-3xl border border-kj-line text-center hover:shadow-xl transition-all hover:-translate-y-1">
+                    <div className="bg-slate-50 dark:bg-kj-chip-bg/50 p-5 sm:p-8 rounded-3xl border border-kj-line text-center hover:shadow-xl transition-all hover:-translate-y-1">
                         <div className="w-16 h-16 bg-kj-primary-soft text-kj-primary rounded-2xl flex items-center justify-center mx-auto mb-6">
                             <Lightbulb className="w-8 h-8" />
                         </div>
@@ -47,7 +47,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
                     </div>
 
                     {/* Partnership */}
-                    <div className="bg-slate-50 dark:bg-kj-chip-bg/50 p-8 rounded-3xl border border-kj-line text-center hover:shadow-xl transition-all hover:-translate-y-1">
+                    <div className="bg-slate-50 dark:bg-kj-chip-bg/50 p-5 sm:p-8 rounded-3xl border border-kj-line text-center hover:shadow-xl transition-all hover:-translate-y-1">
                         <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center mx-auto mb-6">
                             <Share2 className="w-8 h-8" />
                         </div>
@@ -59,13 +59,13 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
                     </div>
                 </div>
 
-                <div className="bg-kj-panel border border-kj-line rounded-[2.5rem] p-8 md:p-12 shadow-2xl relative overflow-hidden">
+                <div className="bg-kj-panel border border-kj-line rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-8 md:p-12 shadow-2xl relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-kj-primary/5 rounded-full -mr-32 -mt-32 blur-3xl"></div>
                     <div className="absolute bottom-0 left-0 w-64 h-64 bg-kj-accent/5 rounded-full -ml-32 -mb-32 blur-3xl"></div>
 
-                    <div className="flex flex-col md:flex-row gap-12 items-center relative z-10">
+                    <div className="flex flex-col md:flex-row gap-6 sm:gap-8 md:gap-12 items-center relative z-10">
                         <div className="shrink-0">
-                            <div className="w-32 h-32 md:w-48 md:h-48 rounded-[2.5rem] overflow-hidden shadow-2xl rotate-3 border-4 border-white dark:border-kj-line">
+                            <div className="w-24 h-24 xs:w-28 xs:h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 rounded-2xl sm:rounded-[2.5rem] overflow-hidden shadow-2xl rotate-3 border-4 border-white dark:border-kj-line">
                                 <img
                                     src="https://media.licdn.com/dms/image/v2/D5603AQEU8R2MLGhUlg/profile-displayphoto-scale_200_200/B56Zk6N_ckHcAY-/0/1757618372796?e=1777507200&v=beta&t=ATjuFSUVIoqhudnqT9ZVUjdmLMCr75XaIxz--WayDik"
                                     alt="Mejbaur Bahar Fagun"
@@ -74,8 +74,8 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
                             </div>
                         </div>
                         <div className="flex-1 text-center md:text-left">
-                            <h2 className="text-3xl font-black text-kj-text mb-2">Mejbaur Bahar Fagun</h2>
-                            <p className="text-kj-primary dark:text-kj-primary font-bold mb-6 text-lg tracking-wide uppercase">{t('contactUs.founder')}</p>
+                            <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-kj-text mb-2">Mejbaur Bahar Fagun</h2>
+                            <p className="text-kj-primary dark:text-kj-primary font-bold mb-4 sm:mb-6 text-sm sm:text-base lg:text-lg tracking-wide uppercase">{t('contactUs.founder')}</p>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 text-left">
                                 <a href="https://linkedin.com/in/mejbaur/" target="_blank" rel="noreferrer" className="flex items-center gap-4 p-4 bg-slate-50 dark:bg-kj-chip-bg rounded-2xl hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors group border border-transparent hover:border-blue-200 sm:col-span-2">
@@ -99,7 +99,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
                             </div>
 
                             <div className="flex justify-center md:justify-start gap-4">
-                                <a href="https://facebook.com/koyjabo" target="_blank" rel="noreferrer" className="px-6 py-3 bg-blue-600 text-white font-bold rounded-xl flex items-center gap-2 hover:scale-105 transition-transform shadow-lg shadow-blue-500/20">
+                                <a href="https://facebook.com/koyjabo" target="_blank" rel="noreferrer" className="px-4 sm:px-6 py-2.5 sm:py-3 bg-blue-600 text-white font-bold rounded-xl flex items-center gap-2 hover:scale-105 transition-transform shadow-lg shadow-blue-500/20 text-sm sm:text-base">
                                     <Facebook className="w-5 h-5" /> <span>{t('contactUs.socialPage')}</span>
                                 </a>
                             </div>

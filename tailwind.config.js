@@ -10,6 +10,11 @@ export default {
     ],
     theme: {
         extend: {
+            screens: {
+                'xs': '360px',
+                '3xl': '1920px',
+                '4xl': '2560px',
+            },
             colors: {
                 'dhaka-red': '#EF4444',
                 'dhaka-green': '#10B981',

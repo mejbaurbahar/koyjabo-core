@@ -15,14 +15,14 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
 
     return (
         <div className="flex flex-col flex-1 min-h-0 bg-kj-panel overflow-y-auto overscroll-y-contain touch-pan-y overflow-x-hidden w-full relative max-w-full" style={{ WebkitOverflowScrolling: 'touch' }}>
-            <div className="max-w-4xl mx-auto p-6 md:p-12 pt-6 md:pt-28 pb-32 md:pb-12">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-12 py-6 md:py-12 pt-6 md:pt-20 pb-24 md:pb-12">
 
                 <div className="text-center mb-12">
                     <div className="w-16 h-16 bg-kj-primary/10 text-kj-primary rounded-2xl flex items-center justify-center mx-auto mb-4 border border-kj-primary/20">
                         <Shield className="w-8 h-8" />
                     </div>
-                    <h1 className="text-3xl md:text-5xl font-bold mb-4 text-kj-text">🔒 {t('privacy.title')}</h1>
-                    <p className="text-lg text-kj-text-dim">কই যাবো (KoyJabo) - Bangladesh's Smart Transport Route Finder</p>
+                    <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-kj-text">🔒 {t('privacy.title')}</h1>
+                    <p className="text-sm sm:text-base lg:text-lg text-kj-text-dim">কই যাবো (KoyJabo) - Bangladesh's Smart Transport Route Finder</p>
                     {/* <AdSenseAd adSlot="auto" className="mt-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
                 </div>
 
@@ -34,7 +34,7 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
                     <p className="text-sm text-amber-700 dark:text-amber-300">{t('privacy.lastUpdated')}: April 17, 2026</p>
                 </div>
 
-                <div className="space-y-12 text-kj-text-dim leading-relaxed text-lg">
+                <div className="space-y-8 sm:space-y-12 text-kj-text-dim leading-relaxed text-sm sm:text-base lg:text-lg">
                     <section>
                         <h2 className="text-2xl font-bold mb-4 text-kj-primary dark:text-kj-primary border-b border-kj-line pb-2">{t('privacy.introduction')}</h2>
                         <p>
@@ -43,8 +43,8 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
                         </p>
                     </section>
 
-                    <section className="bg-slate-50 dark:bg-kj-chip-bg/50 p-6 md:p-8 rounded-[2rem] border border-kj-line shadow-sm">
-                        <h2 className="text-2xl font-bold mb-6 text-kj-text flex items-center gap-3">
+                    <section className="bg-slate-50 dark:bg-kj-chip-bg/50 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-[2rem] border border-kj-line shadow-sm">
+                        <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-kj-text flex items-center gap-3">
                             <Eye className="w-6 h-6 text-blue-500" /> {t('privacy.collectInfo')}
                         </h2>
 
@@ -79,8 +79,8 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
                         </ol>
                     </section>
 
-                    <section className="bg-slate-50 dark:bg-kj-chip-bg/50 p-6 md:p-8 rounded-[2rem] border border-kj-line shadow-sm">
-                        <h2 className="text-2xl font-bold mb-6 text-kj-text flex items-center gap-3">
+                    <section className="bg-slate-50 dark:bg-kj-chip-bg/50 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-[2rem] border border-kj-line shadow-sm">
+                        <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-kj-text flex items-center gap-3">
                             <UserCheck className="w-6 h-6 text-kj-primary" /> {t('authInfo.title')}
                         </h2>
                         <div className="space-y-3 text-sm text-kj-text-dim">
@@ -95,7 +95,7 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
                         </div>
                     </section>
 
-                    <section className="bg-kj-primary-soft dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/20 p-8 rounded-3xl">
+                    <section className="bg-kj-primary-soft dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/20 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl">
                         <h2 className="text-2xl font-bold mb-4 text-emerald-700 dark:text-kj-primary flex items-center gap-2">
                             <WifiOff className="w-6 h-6" /> {t('donts.title')}
                         </h2>
@@ -108,7 +108,7 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
                         </ul>
                     </section>
 
-                    <section className="grid md:grid-cols-2 gap-6">
+                    <section className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                         <div className="p-6 bg-kj-panel rounded-2xl border border-kj-line hover:shadow-md transition-shadow">
                             <h3 className="font-bold text-kj-text mb-3 flex items-center gap-2">
                                 <ExternalLink className="w-5 h-5 text-blue-500" /> {t('privacy.thirdParty')}
@@ -122,8 +122,8 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
                     <section>
                         <h2 className="text-2xl font-bold mb-4 text-kj-text border-b border-kj-line pb-2">{t('privacy.contactUsTitle')}</h2>
                         <p className="mb-6">{t('privacy.contactUsDesc')}</p>
-                        <div className="bg-slate-50 dark:bg-kj-chip-bg p-8 rounded-3xl border border-kj-line">
-                            <div className="flex flex-col md:flex-row gap-8 items-center">
+                        <div className="bg-slate-50 dark:bg-kj-chip-bg p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-kj-line">
+                            <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 items-center">
                                 <div className="w-20 h-20 rounded-2xl overflow-hidden shrink-0 shadow-lg border-2 border-white dark:border-kj-line">
                                     <img
                                         src="https://media.licdn.com/dms/image/v2/D5603AQEU8R2MLGhUlg/profile-displayphoto-scale_200_200/B56Zk6N_ckHcAY-/0/1757618372796?e=1777507200&v=beta&t=ATjuFSUVIoqhudnqT9ZVUjdmLMCr75XaIxz--WayDik"

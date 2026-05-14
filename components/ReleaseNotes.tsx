@@ -16,7 +16,7 @@ const ReleaseNotes: React.FC = () => {
   return (
     <div className="absolute inset-0 z-10 flex flex-col bg-kj-bg font-sans overflow-hidden">
       {/* Premium Header */}
-      <div className="shrink-0 bg-kj-panel border-b border-kj-line pt-safe px-6 py-5 flex items-center gap-5 shadow-sm relative z-10">
+      <div className="shrink-0 bg-kj-panel border-b border-kj-line pt-safe px-4 sm:px-6 py-4 sm:py-5 flex items-center gap-4 sm:gap-5 shadow-sm relative z-10">
         <div>
           <h1 className="text-2xl font-black text-kj-text tracking-tight flex items-center gap-2">
             {t('releaseNotes.title')}
@@ -48,20 +48,20 @@ const ReleaseNotes: React.FC = () => {
                 {/* Accordion Trigger */}
                 <button
                   onClick={() => toggleVersion(note.version)}
-                  className="w-full text-left px-6 py-6 flex items-center justify-between gap-4"
+                  className="w-full text-left px-4 sm:px-6 py-4 sm:py-6 flex items-center justify-between gap-3 sm:gap-4"
                 >
-                  <div className="flex items-center gap-5">
+                  <div className="flex items-center gap-3 sm:gap-5">
                     <div className={`
-                      w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg transform transition-transform group-hover:rotate-6
+                      w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg transform transition-transform group-hover:rotate-6 shrink-0
                       ${note.type === 'major' ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white' : 
                         note.type === 'minor' ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white' : 
                         'bg-gradient-to-br from-slate-500 to-slate-700 text-white'}
                     `}>
-                      {note.type === 'major' ? <Sparkles className="w-7 h-7" /> : <Rocket className="w-7 h-7" />}
+                      {note.type === 'major' ? <Sparkles className="w-5 h-5 sm:w-7 sm:h-7" /> : <Rocket className="w-5 h-5 sm:w-7 sm:h-7" />}
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-xl font-black text-kj-text">v{note.version}</span>
+                        <span className="text-base sm:text-xl font-black text-kj-text">v{note.version}</span>
                         {isLatest && (
                           <span className="px-2.5 py-0.5 rounded-full bg-kj-primary-soft text-kj-primary text-[10px] font-black uppercase tracking-wider">
                             Latest

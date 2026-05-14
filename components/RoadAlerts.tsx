@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, AlertTriangle, Clock, ChevronDown, ChevronUp, Plus, ExternalLink } from 'lucide-react';
-// import AdSenseAd from './AdSenseAd';
+import AdSenseAd from './AdSenseAd';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useToast } from '../contexts/ToastContext';
 import { submitTrafficReport, getTodayTrafficReports, upvoteTrafficReport, TrafficReport, getAuthUser } from '../services/communityDataService';
@@ -142,8 +142,8 @@ export default function RoadAlerts({ onBack }: Props) {
           </p>
         </div>
         <button onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-1.5 px-3 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold rounded-xl transition-colors">
-          <Plus className="w-4 h-4" /> {t('roadAlerts.reportBtn')}
+          className="flex items-center gap-1.5 px-2.5 sm:px-3 py-2 bg-orange-500 hover:bg-orange-600 text-white text-xs sm:text-sm font-semibold rounded-xl transition-colors shrink-0">
+          <Plus className="w-4 h-4 shrink-0" /> <span className="hidden xs:inline">{t('roadAlerts.reportBtn')}</span>
         </button>
       </div>
 
@@ -183,7 +183,7 @@ export default function RoadAlerts({ onBack }: Props) {
           </form>
         )}
 
-        {/* <AdSenseAd adSlot="auto" className="my-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+        <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-4 max-w-[728px] mx-auto" />
 
 
 

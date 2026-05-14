@@ -164,10 +164,36 @@
       background: #f5f3ee;
     }
 
+    /* CSS variable fallbacks — ensures text is always visible even before index.css loads */
+    :root {
+      --kj-text: #0e1a1f;
+      --kj-text-dim: #5a6b6f;
+      --kj-text-faint: #8a9a9c;
+      --kj-panel: #ffffff;
+      --kj-chip-bg: #eae5d8;
+      --kj-line: #e2ddd0;
+      --kj-primary: #006a4e;
+      --kj-primary-soft: #e3efe9;
+      --kj-primary-ink: #ffffff;
+    }
+
     /* Match main app dark palette exactly */
     .dark body,
     .dark html {
       background: #10181c;
+      color: #e8efe9;
+    }
+
+    .dark {
+      --kj-text: #e8efe9;
+      --kj-text-dim: #8d9b9d;
+      --kj-text-faint: #5e6d70;
+      --kj-panel: #16222a;
+      --kj-chip-bg: #172226;
+      --kj-line: #1c272c;
+      --kj-primary: #10b981;
+      --kj-primary-soft: #0f2a22;
+      --kj-primary-ink: #04130d;
     }
 
     /* Modern Glassmorphism Utilities */

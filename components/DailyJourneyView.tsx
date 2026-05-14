@@ -9,7 +9,7 @@ import {
     ChevronRight,
     Circle,
 } from 'lucide-react';
-// import AdSenseAd from './AdSenseAd';
+import AdSenseAd from './AdSenseAd';
 import {
     getTodayJourney,
     getJourneyHistory,
@@ -111,7 +111,7 @@ const DailyJourneyView: React.FC<DailyJourneyViewProps> = ({ onBack }) => {
             </div>
             {/* Main Content */}
             <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-24" style={{ WebkitOverflowScrolling: 'touch' }}>
-                {/* <AdSenseAd adSlot="auto" className="mt-4 mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+                <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="mt-4 mb-2 max-w-[728px] mx-auto" />
                 {/* Today's Journey */}
                 <div className="px-4 py-6">
                     <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
@@ -122,28 +122,28 @@ const DailyJourneyView: React.FC<DailyJourneyViewProps> = ({ onBack }) => {
                     {todayJourney && todayJourney.points.length > 0 ? (
                         <>
                             {/* Stats Cards */}
-                            <div className="grid grid-cols-3 gap-3 mb-6">
-                                <div className="bg-kj-panel p-3 rounded-xl border border-kj-line">
-                                    <div className="text-xs text-kj-text-dim mb-1">
+                            <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-6">
+                                <div className="bg-kj-panel p-2 sm:p-3 rounded-xl border border-kj-line">
+                                    <div className="text-[10px] sm:text-xs text-kj-text-dim mb-1 truncate">
                                         {t('journey.distance')}
                                     </div>
-                                    <div className="text-lg font-bold text-kj-text">
+                                    <div className="text-sm sm:text-base font-bold text-kj-text truncate">
                                         {formatNumber(formatDistance(todayJourney.totalDistance))}
                                     </div>
                                 </div>
-                                <div className="bg-kj-panel p-3 rounded-xl border border-kj-line">
-                                    <div className="text-xs text-kj-text-dim mb-1">
+                                <div className="bg-kj-panel p-2 sm:p-3 rounded-xl border border-kj-line">
+                                    <div className="text-[10px] sm:text-xs text-kj-text-dim mb-1 truncate">
                                         {t('journey.duration')}
                                     </div>
-                                    <div className="text-lg font-bold text-kj-text">
+                                    <div className="text-sm sm:text-base font-bold text-kj-text truncate">
                                         {formatNumber(formatDuration(todayJourney.totalDuration))}
                                     </div>
                                 </div>
-                                <div className="bg-kj-panel p-3 rounded-xl border border-kj-line">
-                                    <div className="text-xs text-kj-text-dim mb-1">
+                                <div className="bg-kj-panel p-2 sm:p-3 rounded-xl border border-kj-line">
+                                    <div className="text-[10px] sm:text-xs text-kj-text-dim mb-1 truncate">
                                         {t('journey.stops')}
                                     </div>
-                                    <div className="text-lg font-bold text-kj-text">
+                                    <div className="text-sm sm:text-base font-bold text-kj-text truncate">
                                         {formatNumber(todayJourney.stops.filter((s) => s.isSignificant).length)}
                                     </div>
                                 </div>

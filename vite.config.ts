@@ -131,10 +131,28 @@ export default defineConfig(({ mode }) => {
           skipWaiting: true,
           clientsClaim: true,
           // Cache versioning for proper updates
-          cacheId: 'dhaka-commute-v14',
+          cacheId: 'dhaka-commute-v15',
           maximumFileSizeToCacheInBytes: 10485760, // 10 MB
 
           runtimeCaching: [
+            // Google AdSense / DoubleClick — ALWAYS NetworkOnly; never cache ad scripts or impressions
+            {
+              urlPattern: /^https:\/\/(?:pagead2|adservice|partner|tpc)\.googlesyndication\.com\/.*/i,
+              handler: 'NetworkOnly',
+            },
+            {
+              urlPattern: /^https:\/\/googlesyndication\.com\/.*/i,
+              handler: 'NetworkOnly',
+            },
+            {
+              urlPattern: /^https:\/\/(?:googleads|doubleclick)\.(?:g\.doubleclick\.net|net)\/.*/i,
+              handler: 'NetworkOnly',
+            },
+            {
+              urlPattern: /^https:\/\/www\.googletagservices\.com\/.*/i,
+              handler: 'NetworkOnly',
+            },
+
             // Cache Intercity App - StaleWhileRevalidate: serve from cache instantly, update in background
             {
               urlPattern: ({ request, url }) => {

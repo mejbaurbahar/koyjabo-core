@@ -23,7 +23,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
 import { getTrainRatings, TrainRatingSummary } from '../services/communityDataService';
 import TrainImageViewer from './TrainImageViewer';
-// import AdSenseAd from './AdSenseAd';
+import AdSenseAd from './AdSenseAd';
 
 
 
@@ -180,7 +180,7 @@ export function TrainDetail({
 
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
         {/* Map */}
-        <div className="h-[280px] md:h-[340px] bg-kj-panel relative">
+        <div className="h-[220px] xs:h-[260px] sm:h-[280px] md:h-[340px] bg-kj-panel relative">
           <TrainRouteMap
             route={route}
             userLocation={userLocation}
@@ -191,7 +191,7 @@ export function TrainDetail({
           />
         </div>
 
-        {/* <AdSenseAd adSlot="auto" className="my-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+        <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-4 max-w-[728px] mx-auto" />
 
 
 
@@ -990,6 +990,8 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
           </span>
         </div>
 
+        <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-2 max-w-[728px] mx-auto" />
+
         {filtered.length === 0 ? (
           <div className="text-center py-16 text-kj-text-faint">
             <Train className="w-12 h-12 mx-auto mb-3 opacity-30" />
@@ -999,7 +1001,9 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
         ) : (
           filtered.map((route, idx) => (
             <React.Fragment key={route.id}>
-              {/* <AdSenseAd adSlot="auto" adFormat="fluid" className="my-3 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+              {idx > 0 && idx % 8 === 0 && (
+                <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-1 max-w-[728px] mx-auto" />
+              )}
               <TrainCard
                 route={route}
                 onClick={() => onSelectTrain ? onSelectTrain(route) : setSelectedTrain(route)}

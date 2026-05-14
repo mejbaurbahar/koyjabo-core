@@ -250,7 +250,7 @@ const DhakaAlive: React.FC<{ hideIndicator?: boolean }> = ({ hideIndicator = fal
             {/* --- Info Modal (Z-50) --- */}
             {selectedLandmark && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-[fade-in_0.2s_ease-out]">
-                    <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all scale-100 border border-stone-100">
+                    <div className="bg-white dark:bg-kj-panel rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all scale-100 border border-stone-100 dark:border-kj-line">
                         {/* Modal Header */}
                         <div className="bg-gradient-to-r from-green-600 to-green-700 p-4 flex justify-between items-center text-white">
                             <h2 className="text-xl font-bold flex items-center gap-2">
@@ -265,7 +265,7 @@ const DhakaAlive: React.FC<{ hideIndicator?: boolean }> = ({ hideIndicator = fal
                         {/* Modal Body */}
                         <div className="p-6">
                             <div className="prose prose-stone">
-                                <p className="text-lg leading-relaxed text-stone-700 font-light">
+                                <p className="text-lg leading-relaxed text-stone-700 dark:text-kj-text-dim font-light">
                                     {description}
                                 </p>
                             </div>

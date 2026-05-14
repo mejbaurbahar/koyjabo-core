@@ -3,7 +3,7 @@ import { ArrowLeft, Ticket, ExternalLink, Train, Search, ChevronLeft, Star } fro
 import { BD_TRAIN_ROUTES, BDTrainRoute } from '../data/bangladeshTrainData';
 import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
-// import AdSenseAd from './AdSenseAd';
+import AdSenseAd from './AdSenseAd';
 
 
 
@@ -73,18 +73,18 @@ export default function SeatAvailability({ onBack }: Props) {
             <div className="flex items-center justify-between mb-3">
               <div className="text-center">
                 <p className="text-xs text-kj-text-dim">{lbl('Departs', 'ছাড়বে')}</p>
-                <p className="text-2xl font-black text-kj-text">{selected.dhakaDepart}</p>
-                <p className="text-sm font-semibold text-blue-600 dark:text-blue-400">{selected.from}</p>
+                <p className="text-xl sm:text-2xl font-black text-kj-text">{selected.dhakaDepart}</p>
+                <p className="text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 truncate max-w-[80px] sm:max-w-none">{selected.from}</p>
               </div>
-              <div className="flex-1 flex items-center px-4">
+              <div className="flex-1 flex items-center px-2 sm:px-4">
                 <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
-                <Train className="w-5 h-5 text-kj-text-faint mx-2 shrink-0" />
+                <Train className="w-4 h-4 sm:w-5 sm:h-5 text-kj-text-faint mx-1 sm:mx-2 shrink-0" />
                 <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
               </div>
               <div className="text-center">
                 <p className="text-xs text-kj-text-dim">{lbl('Arrives', 'পৌঁছাবে')}</p>
-                <p className="text-2xl font-black text-kj-text">{selected.destinationArrive}</p>
-                <p className="text-sm font-semibold text-green-600 dark:text-green-400">{selected.to}</p>
+                <p className="text-xl sm:text-2xl font-black text-kj-text">{selected.destinationArrive}</p>
+                <p className="text-xs sm:text-sm font-semibold text-green-600 dark:text-green-400 truncate max-w-[80px] sm:max-w-none">{selected.to}</p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-kj-line">
@@ -109,7 +109,7 @@ export default function SeatAvailability({ onBack }: Props) {
 
           <div className="bg-kj-panel rounded-2xl p-4 border border-kj-line">
             <h3 className="font-bold text-kj-text text-sm mb-2">{lbl('Fare (approx.)', 'আনুমানিক ভাড়া')}</h3>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 xs:grid-cols-3 gap-2">
               {selected.fare.shuvan && <div className="bg-gray-50 dark:bg-slate-700 rounded-xl p-2 text-center"><p className="text-xs text-kj-text-dim">{lbl('Shuvan', 'শুভন')}</p><p className="text-sm font-bold text-kj-text">৳{selected.fare.shuvan}</p></div>}
               {selected.fare.shuvanChair && <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-2 text-center"><p className="text-xs text-blue-600 dark:text-blue-400">{lbl('Shuvan Chair', 'শুভন চেয়ার')}</p><p className="text-sm font-bold text-blue-800 dark:text-blue-200">৳{selected.fare.shuvanChair}</p></div>}
               {selected.fare.snigdha && <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-2 text-center"><p className="text-xs text-purple-600 dark:text-purple-400">{lbl('Snigdha', 'স্নিগ্ধা')}</p><p className="text-sm font-bold text-purple-800 dark:text-purple-200">৳{selected.fare.snigdha}</p></div>}
@@ -171,7 +171,7 @@ export default function SeatAvailability({ onBack }: Props) {
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y px-4 pb-nav-safe space-y-2" style={{ WebkitOverflowScrolling: 'touch' }}>
-        {/* <AdSenseAd adSlot="auto" native className="mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+        <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="mb-2 max-w-[728px] mx-auto" />
         {/* Favorites section */}
         {!search && favoriteRoutes.length > 0 && (
           <div className="mb-2">

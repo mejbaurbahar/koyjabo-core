@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Clock, Tag, Calendar, ArrowRight, Search, X } from 'lucide-react';
 import { BLOG_POSTS } from '../data/blogPosts';
 import { useLanguage } from '../contexts/LanguageContext';
-// import AdSenseAd from './AdSenseAd';
+import AdSenseAd from './AdSenseAd';
 import NewsletterBanner from './NewsletterBanner';
 
 interface BlogProps {
@@ -149,7 +149,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                         </div>
                     )}
 
-                    {/* <AdSenseAd adSlot="auto" native className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+                    <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-8 max-w-[728px] mx-auto" />
 
                     {/* Regular Posts Grid — injected in-feed ad after every 6 posts */}
                     {regularPosts.length > 0 && (
@@ -161,7 +161,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                                 const chunk = regularPosts.slice(chunkIdx * 6, (chunkIdx + 1) * 6);
                                 return (
                                     <React.Fragment key={chunkIdx}>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                                             {chunk.map((post) => (
                                                 <div
                                                     key={post.id}
@@ -200,7 +200,9 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                                             ))}
                                         </div>
                                         {/* In-feed ad between chunks */}
-                                        {/* <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" native className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+                                        {chunkIdx > 0 && (
+                                          <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-6 max-w-[728px] mx-auto" />
+                                        )}
                                     </React.Fragment>
                                 );
                             })}

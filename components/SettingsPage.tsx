@@ -14,7 +14,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ isDarkMode, toggleTheme, on
 
     return (
         <div
-            className={`flex flex-col flex-1 min-h-0 w-full max-h-full bg-kj-panel p-6 md:p-12 pb-28 md:pb-12 overflow-y-auto overscroll-y-contain touch-pan-y ${embedded ? 'pt-4' : 'pt-4 md:pt-8'}`}
+            className={`flex flex-col flex-1 min-h-0 w-full max-h-full bg-kj-panel px-4 sm:px-6 md:px-12 py-4 pb-24 md:pb-12 overflow-y-auto overscroll-y-contain touch-pan-y ${embedded ? '' : 'sm:pb-12 md:pt-8'}`}
             style={{ WebkitOverflowScrolling: 'touch' }}
         >
             <div className="max-w-3xl mx-auto w-full">
