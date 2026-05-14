@@ -101,7 +101,10 @@ export const getAdvancedKnowledgeAnswer = (query: string): KnowledgeMatchResult 
     .sort((a, b) => b.score - a.score);
 
   const top = ranked[0];
-  if (!top || top.score < 0.45) return null;
+  const second = ranked[1];
+  // Require a clear winner — ambiguous matches (top and second too close) are unreliable
+  const margin = second ? top.score - second.score : top.score;
+  if (!top || top.score < 0.50 || margin < 0.12) return null;
 
   const isTimeSensitive =
     RANGE_HINT_PATTERN.test(top.item.answer_en) ||
