@@ -70,7 +70,16 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
   const tileLayerRef = useRef<any>(null);
   const layerGroup = useRef<any>(null);
   const animationRef = useRef<number | null>(null);
-  const [isTraffic, setIsTraffic] = React.useState(false);
+  const [isTraffic, setIsTraffic] = React.useState(true);
+  const [isOnline, setIsOnline] = React.useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
+
+  useEffect(() => {
+    const up = () => setIsOnline(true);
+    const down = () => setIsOnline(false);
+    window.addEventListener('online', up);
+    window.addEventListener('offline', down);
+    return () => { window.removeEventListener('online', up); window.removeEventListener('offline', down); };
+  }, []);
 
   useEffect(() => {
     if (!window.L || !mapRef.current) return;
@@ -173,36 +182,19 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
 
     // --- 3. Draw Elements ---
 
+    // Escape HTML special chars to prevent XSS in Leaflet popup/icon templates
+    const esc = (s: string) => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');
+
     const addMarker = (coords: [number, number], label: string, color: string, isStartOrEnd = false) => {
-      const iconHtml = `
-        <div class="relative flex items-center justify-center">
-          ${isStartOrEnd ? `<div class="absolute w-8 h-8 bg-${color === '#22c55e' ? 'green' : 'red'}-400/30 rounded-full animate-ping"></div>` : ''}
-          <div style="
-            background-color: ${color};
-            width: ${isStartOrEnd ? '16px' : '12px'};
-            height: ${isStartOrEnd ? '16px' : '12px'};
-            border-radius: 50%;
-            border: 2px solid white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-          "></div>
-        </div>
-      `;
-      const icon = window.L.divIcon({
-        className: 'custom-div-icon',
-        html: iconHtml,
-        iconSize: [32, 32],
-        iconAnchor: [16, 16]
-      });
-      window.L.marker(coords, { icon }).bindPopup(`
-        <div class="p-2 font-sans">
-          <p class="font-bold text-kj-text">${label}</p>
-        </div>
-      `).addTo(layers);
+      const safeColor = color === '#22c55e' ? 'green' : 'red';
+      const iconHtml = `<div class="relative flex items-center justify-center">${isStartOrEnd ? `<div class="absolute w-8 h-8 bg-${safeColor}-400/30 rounded-full animate-ping"></div>` : ''}<div style="background-color:${color};width:${isStartOrEnd ? '16px' : '12px'};height:${isStartOrEnd ? '16px' : '12px'};border-radius:50%;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.3)"></div></div>`;
+      const icon = window.L.divIcon({ className: 'custom-div-icon', html: iconHtml, iconSize: [32, 32], iconAnchor: [16, 16] });
+      window.L.marker(coords, { icon }).bindPopup(`<div class="p-2 font-sans"><p class="font-bold">${esc(label)}</p></div>`).addTo(layers);
     };
 
-    addMarker(startCoords, `Start: ${from}`, '#22c55e', true); // Green
-    viaWithCoords.forEach((v, idx) => addMarker(v.coords, `${idx + 1}. ${v.name}`, '#3b82f6')); // Blue
-    addMarker(endCoords, `Destination: ${to}`, '#ef4444', true); // Red
+    addMarker(startCoords, `Start: ${from}`, '#22c55e', true);
+    viaWithCoords.forEach((v, idx) => addMarker(v.coords, `${idx + 1}. ${v.name}`, '#3b82f6'));
+    addMarker(endCoords, `Destination: ${to}`, '#ef4444', true);
 
     // Fetch road-following route from OSRM, fall back to straight lines
     const abortCtrl = new AbortController();
@@ -331,16 +323,16 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
 
   }, [from, to, via, modeTitle]);
 
-  // Swap tile layer between OSM and Google Maps traffic
+  // Swap tile layer between OSM and Google Maps traffic — falls back to OSM when offline
   useEffect(() => {
     if (!mapInstance.current || !tileLayerRef.current || !window.L) return;
     const map = mapInstance.current;
     map.removeLayer(tileLayerRef.current);
-    const url = isTraffic
+    const url = (isTraffic && isOnline)
       ? 'https://mt1.google.com/vt/lyrs=m@221097413,traffic&x={x}&y={y}&z={z}'
       : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     tileLayerRef.current = window.L.tileLayer(url, { attribution: '', maxZoom: 19 }).addTo(map);
-  }, [isTraffic]);
+  }, [isTraffic, isOnline]);
 
   return (
     <div className="w-full h-full relative z-0">
@@ -350,9 +342,9 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
 
       {/* Traffic active indicator */}
       {isTraffic && (
-        <div className="absolute top-3 left-1/2 -translate-x-1/2 z-[500] px-3 py-1.5 bg-orange-500 text-white text-[10px] font-bold rounded-full shadow-lg flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-          Live Traffic · Google Maps
+        <div className={`absolute top-3 left-1/2 -translate-x-1/2 z-[500] px-3 py-1.5 text-white text-[10px] font-bold rounded-full shadow-lg flex items-center gap-2 ${isOnline ? 'bg-orange-500' : 'bg-slate-500'}`}>
+          <span className={`w-1.5 h-1.5 rounded-full bg-white ${isOnline ? 'animate-pulse' : ''}`} />
+          {isOnline ? 'Live Traffic · Google Maps' : 'Traffic (offline — OSM)'}
         </div>
       )}
 
@@ -360,12 +352,12 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
       <div className="absolute bottom-3 right-3 z-[500]">
         <button
           onClick={() => setIsTraffic(v => !v)}
-          className={`flex items-center gap-2 px-3 py-2 rounded-xl shadow-xl border hover:scale-105 transition-all ${isTraffic ? 'bg-orange-500 border-orange-600 text-white' : 'bg-kj-panel border-kj-line'}`}
+          className={`flex items-center gap-2 px-3 py-2 rounded-xl shadow-xl border hover:scale-105 transition-all ${isTraffic && isOnline ? 'bg-orange-500 border-orange-600 text-white' : isTraffic && !isOnline ? 'bg-slate-500 border-slate-600 text-white' : 'bg-kj-panel border-kj-line'}`}
         >
           <span className="text-[10px] font-black uppercase tracking-widest" style={isTraffic ? {} : { background: 'linear-gradient(to right,#f97316,#ef4444)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             Traffic
           </span>
-          <div className={`w-2 h-2 rounded-full animate-pulse ${isTraffic ? 'bg-white' : 'bg-orange-500'}`} />
+          <div className={`w-2 h-2 rounded-full ${isTraffic && isOnline ? 'animate-pulse bg-white' : isTraffic ? 'bg-white/60' : 'animate-pulse bg-orange-500'}`} />
         </button>
       </div>
     </div>

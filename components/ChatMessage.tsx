@@ -10,7 +10,8 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ text, role }) => {
     const buttonMatch = cleanText.match(/\[LINKEDIN_BUTTON:(.*?)\]/);
 
     if (buttonMatch && role === 'assistant') {
-        const url = buttonMatch[1];
+        const rawUrl = buttonMatch[1];
+        const url = /^https:\/\//i.test(rawUrl) ? rawUrl : '#';
         const textBeforeButton = cleanText.substring(0, buttonMatch.index);
 
         return (
