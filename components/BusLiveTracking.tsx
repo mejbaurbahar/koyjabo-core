@@ -82,8 +82,9 @@ export default function BusLiveTracking({ busId, busName, stops = [], onBack }: 
           <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
         </button>
         <button onClick={() => setShowForm(!showForm)}
-          className="px-3 py-2 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold rounded-xl">
-          {t('community.reportNow')}
+          className="px-2.5 sm:px-3 py-2 bg-green-500 hover:bg-green-600 text-white text-xs sm:text-sm font-semibold rounded-xl shrink-0">
+          <span className="hidden xs:inline">{t('community.reportNow')}</span>
+          <Radio className="w-4 h-4 xs:hidden" />
         </button>
       </div>
 

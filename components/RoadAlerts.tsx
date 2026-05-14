@@ -142,8 +142,8 @@ export default function RoadAlerts({ onBack }: Props) {
           </p>
         </div>
         <button onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-1.5 px-3 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold rounded-xl transition-colors">
-          <Plus className="w-4 h-4" /> {t('roadAlerts.reportBtn')}
+          className="flex items-center gap-1.5 px-2.5 sm:px-3 py-2 bg-orange-500 hover:bg-orange-600 text-white text-xs sm:text-sm font-semibold rounded-xl transition-colors shrink-0">
+          <Plus className="w-4 h-4 shrink-0" /> <span className="hidden xs:inline">{t('roadAlerts.reportBtn')}</span>
         </button>
       </div>
 

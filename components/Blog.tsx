@@ -161,7 +161,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                                 const chunk = regularPosts.slice(chunkIdx * 6, (chunkIdx + 1) * 6);
                                 return (
                                     <React.Fragment key={chunkIdx}>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                                             {chunk.map((post) => (
                                                 <div
                                                     key={post.id}

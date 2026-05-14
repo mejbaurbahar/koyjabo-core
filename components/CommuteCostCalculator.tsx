@@ -181,15 +181,15 @@ export default function CommuteCostCalculator({ onBack }: Props) {
 
         {legs.length > 0 && (
           <>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
               {[
                 { label: lbl('Daily', 'দৈনিক'), value: dailyCost },
                 { label: lbl('Monthly', 'মাসিক'), value: monthlyCost },
                 { label: lbl('Yearly', 'বার্ষিক'), value: yearlyCost },
               ].map(({ label, value }) => (
-                <div key={label} className="bg-kj-panel rounded-2xl p-3 border border-kj-line text-center">
+                <div key={label} className="bg-kj-panel rounded-2xl p-2 sm:p-3 border border-kj-line text-center">
                   <p className="text-xs text-kj-text-dim mb-1">{label}</p>
-                  <p className="text-lg font-black text-kj-text">৳{value.toLocaleString()}</p>
+                  <p className="text-sm sm:text-base font-black text-kj-text">৳{value.toLocaleString()}</p>
                 </div>
               ))}
             </div>

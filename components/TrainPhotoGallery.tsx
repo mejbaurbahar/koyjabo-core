@@ -23,7 +23,7 @@ function timeAgo(ts: number, t: (key: string, params?: Record<string, string | n
 
 function PhotoSkeleton() {
   return (
-    <div className="grid grid-cols-2 gap-2 animate-pulse">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3 animate-pulse">
       {[1, 2, 3, 4].map(i => (
         <div key={i} className="aspect-square rounded-2xl bg-gray-200 dark:bg-slate-700" />
       ))}
@@ -101,7 +101,7 @@ export default function TrainPhotoGallery({ trainId, trainName, onBack }: Props)
               </div>
             )}
 
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3">
               {photos.map(p => (
                 <div key={p.id} className="relative rounded-2xl overflow-hidden aspect-square">
                   <button onClick={() => setLightbox(p)} className="absolute inset-0 w-full h-full">

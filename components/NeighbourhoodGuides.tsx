@@ -760,14 +760,14 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y px-4 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
         {/* <AdSenseAd adSlot="auto" className="mt-2 mb-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
         {search ? (
-          <div className="grid grid-cols-2 gap-3 content-start">
+          <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3 content-start">
             {filtered.map(g => (
               <button key={g.area} onClick={() => setSelected(g)}
-                className="bg-kj-panel rounded-2xl p-4 text-left shadow-sm border border-kj-line hover:border-purple-300 dark:hover:border-purple-700 transition-colors active:scale-95">
-                <span className="text-3xl block mb-2">{g.icon}</span>
-                <h3 className="font-bold text-kj-text text-sm">{language === 'bn' ? g.area : g.areaEn}</h3>
-                <p className="text-xs text-kj-text-dim">{language === 'bn' ? g.areaEn : g.area}</p>
-                <p className="text-xs text-purple-600 dark:text-purple-400 mt-1">{g.division}</p>
+                className="bg-kj-panel rounded-2xl p-3 sm:p-4 text-left shadow-sm border border-kj-line hover:border-purple-300 dark:hover:border-purple-700 transition-colors active:scale-95">
+                <span className="text-2xl sm:text-3xl block mb-1.5 sm:mb-2">{g.icon}</span>
+                <h3 className="font-bold text-kj-text text-xs sm:text-sm">{language === 'bn' ? g.area : g.areaEn}</h3>
+                <p className="text-[10px] sm:text-xs text-kj-text-dim">{language === 'bn' ? g.areaEn : g.area}</p>
+                <p className="text-[10px] sm:text-xs text-purple-600 dark:text-purple-400 mt-0.5 sm:mt-1">{g.division}</p>
               </button>
             ))}
             {filtered.length === 0 && (

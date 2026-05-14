@@ -451,7 +451,7 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
   const startPos = (startIdx >= 0 && startIdx < nodePositions.length) ? nodePositions[startIdx] : null;
 
   return (
-    <div className="w-full h-80 md:h-[500px] bg-kj-bg border-t border-b border-kj-line relative group overflow-hidden">
+    <div className="w-full h-64 xs:h-72 sm:h-[380px] md:h-[500px] bg-kj-bg border-t border-b border-kj-line relative group overflow-hidden">
 
       {/* Connection Line Info Badge */}
       {isUserFar && (userStationIndex !== -1 || hasHighlight) && (

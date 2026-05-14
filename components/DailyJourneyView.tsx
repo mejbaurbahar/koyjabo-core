@@ -122,28 +122,28 @@ const DailyJourneyView: React.FC<DailyJourneyViewProps> = ({ onBack }) => {
                     {todayJourney && todayJourney.points.length > 0 ? (
                         <>
                             {/* Stats Cards */}
-                            <div className="grid grid-cols-3 gap-3 mb-6">
-                                <div className="bg-kj-panel p-3 rounded-xl border border-kj-line">
-                                    <div className="text-xs text-kj-text-dim mb-1">
+                            <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-6">
+                                <div className="bg-kj-panel p-2 sm:p-3 rounded-xl border border-kj-line">
+                                    <div className="text-[10px] sm:text-xs text-kj-text-dim mb-1 truncate">
                                         {t('journey.distance')}
                                     </div>
-                                    <div className="text-lg font-bold text-kj-text">
+                                    <div className="text-sm sm:text-base font-bold text-kj-text truncate">
                                         {formatNumber(formatDistance(todayJourney.totalDistance))}
                                     </div>
                                 </div>
-                                <div className="bg-kj-panel p-3 rounded-xl border border-kj-line">
-                                    <div className="text-xs text-kj-text-dim mb-1">
+                                <div className="bg-kj-panel p-2 sm:p-3 rounded-xl border border-kj-line">
+                                    <div className="text-[10px] sm:text-xs text-kj-text-dim mb-1 truncate">
                                         {t('journey.duration')}
                                     </div>
-                                    <div className="text-lg font-bold text-kj-text">
+                                    <div className="text-sm sm:text-base font-bold text-kj-text truncate">
                                         {formatNumber(formatDuration(todayJourney.totalDuration))}
                                     </div>
                                 </div>
-                                <div className="bg-kj-panel p-3 rounded-xl border border-kj-line">
-                                    <div className="text-xs text-kj-text-dim mb-1">
+                                <div className="bg-kj-panel p-2 sm:p-3 rounded-xl border border-kj-line">
+                                    <div className="text-[10px] sm:text-xs text-kj-text-dim mb-1 truncate">
                                         {t('journey.stops')}
                                     </div>
-                                    <div className="text-lg font-bold text-kj-text">
+                                    <div className="text-sm sm:text-base font-bold text-kj-text truncate">
                                         {formatNumber(todayJourney.stops.filter((s) => s.isSignificant).length)}
                                     </div>
                                 </div>

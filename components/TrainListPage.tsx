@@ -180,7 +180,7 @@ export function TrainDetail({
 
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
         {/* Map */}
-        <div className="h-[280px] md:h-[340px] bg-kj-panel relative">
+        <div className="h-[220px] xs:h-[260px] sm:h-[280px] md:h-[340px] bg-kj-panel relative">
           <TrainRouteMap
             route={route}
             userLocation={userLocation}

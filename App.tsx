@@ -2408,32 +2408,32 @@ const App: React.FC = () => {
   );
 
   const renderAbout = () => (
-    <div className="absolute inset-0 z-10 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 pb-nav-safe bg-kj-bg" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="absolute inset-0 z-10 overflow-y-auto overscroll-y-contain touch-pan-y px-4 sm:px-6 md:px-10 py-6 pb-nav-safe bg-kj-bg" style={{ WebkitOverflowScrolling: 'touch' }}>
       <div className="max-w-5xl mx-auto text-center">
-        <div className="w-20 h-20 bg-kj-accent rounded-3xl flex items-center justify-center text-white mx-auto mb-6 shadow-xl shadow-red-200 rotate-3 hover:rotate-6 transition-transform">
-          <Bus className="w-10 h-10" />
+        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-kj-accent rounded-3xl flex items-center justify-center text-white mx-auto mb-4 sm:mb-6 shadow-xl shadow-red-200 rotate-3 hover:rotate-6 transition-transform">
+          <Bus className="w-8 h-8 sm:w-10 sm:h-10" />
         </div>
-        <h1 className="text-3xl font-bold text-kj-text mb-2">🚍 {t('about.title')}</h1>
-        <h2 className="text-2xl font-bold mb-2 text-kj-text">কই<span className="text-kj-accent ml-2">যাবো</span> <span className="text-kj-text-dim text-lg">(KoyJabo)</span></h2>
-        <p className="text-kj-text-dim mb-8">{t('settings.version')} 2.5.0 • {t('common.tagline') || 'Bangladesh\'s Smart Transport Route Finder — Bus, Train, Metro, AI & More'}</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-kj-text mb-2">🚍 {t('about.title')}</h1>
+        <h2 className="text-xl sm:text-2xl font-bold mb-2 text-kj-text">কই<span className="text-kj-accent ml-2">যাবো</span> <span className="text-kj-text-dim text-base sm:text-lg">(KoyJabo)</span></h2>
+        <p className="text-sm sm:text-base text-kj-text-dim mb-6 sm:mb-8">{t('settings.version')} 2.5.0 • {t('common.tagline') || 'Bangladesh\'s Smart Transport Route Finder — Bus, Train, Metro, AI & More'}</p>
 
         {/* <AdSenseAd adSlot="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
 
-        <div className="text-left space-y-8 bg-kj-chip-bg p-6 md:p-10 rounded-[2rem] border border-kj-line shadow-sm">
+        <div className="text-left space-y-6 sm:space-y-8 bg-kj-chip-bg p-4 sm:p-6 md:p-10 rounded-2xl sm:rounded-[2rem] border border-kj-line shadow-sm">
           <section>
-            <h2 className="text-3xl font-bold text-kj-primary dark:text-kj-primary mb-4 border-b-2 border-kj-primary/20 pb-2">{t('about.ourStoryTitle')}</h2>
-            <p className="leading-relaxed text-kj-text-dim text-lg mb-4">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-kj-primary dark:text-kj-primary mb-4 border-b-2 border-kj-primary/20 pb-2">{t('about.ourStoryTitle')}</h2>
+            <p className="leading-relaxed text-kj-text-dim text-sm sm:text-base lg:text-lg mb-4">
               {t('about.ourStoryPara1')}
             </p>
-            <p className="leading-relaxed text-kj-text-dim text-lg">
+            <p className="leading-relaxed text-kj-text-dim text-sm sm:text-base lg:text-lg">
               {t('about.ourStoryPara2')}
             </p>
           </section>
 
-          <div className="grid md:grid-cols-2 gap-8 mb-16">
-            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-8 rounded-2xl border-l-6 border-kj-primary">
-              <h3 className="text-2xl font-bold text-kj-primary dark:text-kj-primary mb-3 flex items-center gap-2">
+          <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-12">
+            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-5 sm:p-6 md:p-8 rounded-2xl border-l-4 border-kj-primary">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-kj-primary dark:text-kj-primary mb-3 flex items-center gap-2">
                 <Flag className="w-6 h-6" /> {t('about.mission')}
               </h3>
               <p className="text-kj-text font-bold mb-3 italic">{t('about.missionMotto')}</p>
@@ -2441,8 +2441,8 @@ const App: React.FC = () => {
                 {t('about.missionDesc')}
               </p>
             </div>
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-8 rounded-2xl border-l-6 border-blue-600">
-              <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-3 flex items-center gap-2">
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-5 sm:p-6 md:p-8 rounded-2xl border-l-4 border-blue-600">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-blue-600 dark:text-blue-400 mb-3 flex items-center gap-2">
                 <Eye className="w-6 h-6" /> {t('about.vision')}
               </h3>
               <p className="text-kj-text font-bold mb-3 italic">{t('about.visionMotto')}</p>
@@ -2453,8 +2453,8 @@ const App: React.FC = () => {
           </div>
 
           <section>
-            <h2 className="text-3xl font-bold text-kj-text mb-6">{t('about.allInOne')}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-kj-text mb-4 sm:mb-6">{t('about.allInOne')}</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div className="bg-kj-panel p-6 rounded-2xl border border-kj-line shadow-sm hover:shadow-md transition-shadow">
                 <div className="w-12 h-12 bg-kj-primary-soft dark:bg-emerald-900/40 text-kj-primary rounded-xl flex items-center justify-center mb-4">
                   <Bus className="w-6 h-6" />
@@ -2526,8 +2526,8 @@ const App: React.FC = () => {
           </section>
 
           <section>
-            <h2 className="text-3xl font-bold text-kj-text mb-6">{t('about.impactTitle')}</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-kj-text mb-4 sm:mb-6">{t('about.impactTitle')}</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
               <div className="bg-kj-primary dark:bg-emerald-800 p-4 md:p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
                 <span className="text-xl md:text-3xl font-bold block mb-1">{t('about.impactMonthlyVal')}</span>
                 <span className="text-[9px] md:text-[10px] uppercase font-bold opacity-80">{t('about.impactMonthly')}</span>
@@ -2547,11 +2547,11 @@ const App: React.FC = () => {
             </div>
           </section>
 
-          <section className="bg-kj-panel p-8 rounded-3xl border border-kj-line shadow-sm">
-            <h2 className="text-2xl font-bold text-kj-text mb-6 flex items-center gap-2">
+          <section className="bg-kj-panel p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-kj-line shadow-sm">
+            <h2 className="text-xl sm:text-2xl font-bold text-kj-text mb-4 sm:mb-6 flex items-center gap-2">
               <Users className="w-6 h-6 text-kj-primary" /> {t('about.meetDev')}
             </h2>
-            <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
               <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden shadow-xl shrink-0 border-4 border-kj-primary/20">
                 <img
                   src="https://media.licdn.com/dms/image/v2/D5603AQEU8R2MLGhUlg/profile-displayphoto-scale_200_200/B56Zk6N_ckHcAY-/0/1757618372796?e=1777507200&v=beta&t=ATjuFSUVIoqhudnqT9ZVUjdmLMCr75XaIxz--WayDik"
@@ -2734,10 +2734,10 @@ const App: React.FC = () => {
   );
 
   const renderWhyUse = () => (
-    <div className="absolute inset-0 z-10 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 pb-nav-safe bg-kj-panel" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="absolute inset-0 z-10 overflow-y-auto overscroll-y-contain touch-pan-y px-4 sm:px-6 md:px-10 py-6 pb-nav-safe bg-kj-panel" style={{ WebkitOverflowScrolling: 'touch' }}>
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-kj-text leading-tight">{t('whyUse.title')}</h1>
-        <p className="text-kj-text-dim mb-8">{t('whyUse.subtitle')}</p>
+        <p className="text-sm sm:text-base text-kj-text-dim mb-6 sm:mb-8">{t('whyUse.subtitle')}</p>
 
         <div className="space-y-6">
           {/* Benefit 1 */}
@@ -2920,14 +2920,14 @@ const App: React.FC = () => {
   );
 
   const renderFAQ = () => (
-    <div className="absolute inset-0 z-10 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 pb-nav-safe bg-kj-panel" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="absolute inset-0 z-10 overflow-y-auto overscroll-y-contain touch-pan-y px-4 sm:px-6 md:px-10 py-6 pb-nav-safe bg-kj-panel" style={{ WebkitOverflowScrolling: 'touch' }}>
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-kj-text leading-tight">{t('faq.title')}</h1>
-        <p className="text-kj-text-dim mb-8">{t('faq.subtitle')}</p>
+        <p className="text-sm sm:text-base text-kj-text-dim mb-6 sm:mb-8">{t('faq.subtitle')}</p>
 
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {/* FAQ 1 */}
-          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
+          <div className="bg-kj-panel border border-kj-line rounded-xl p-4 sm:p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
             <h3 className="text-lg font-bold text-kj-text mb-2 flex items-start gap-2">
               <span className="text-kj-primary">Q:</span>
               <span>{t('faq.q1')}</span>
@@ -3091,10 +3091,10 @@ const App: React.FC = () => {
   );
 
   const renderForAi = () => (
-    <div className="absolute inset-0 z-10 overflow-y-auto overscroll-y-contain touch-pan-y p-6 md:p-10 pt-6 md:pt-8 pb-nav-safe bg-kj-panel" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="absolute inset-0 z-10 overflow-y-auto overscroll-y-contain touch-pan-y px-4 sm:px-6 md:px-10 py-6 pb-nav-safe bg-kj-panel" style={{ WebkitOverflowScrolling: 'touch' }}>
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl md:text-5xl font-bold mb-6 text-kj-text leading-tight">AI Dataset & Integration</h1>
-        <div className="flex items-center gap-2 text-sm text-kj-text-dim mb-8">
+        <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 sm:mb-6 text-kj-text leading-tight">AI Dataset & Integration</h1>
+        <div className="flex flex-wrap items-center gap-2 text-sm text-kj-text-dim mb-6 sm:mb-8">
           <span className="bg-kj-primary-soft text-emerald-700 px-3 py-1 rounded-full text-xs font-bold">For AI Agents</span>
           <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold">Schema Ready</span>
           <span>Last Updated: December 6, 2025</span>
@@ -3109,9 +3109,9 @@ const App: React.FC = () => {
           </section>
 
           {/* Data Overview */}
-          <section className="bg-slate-50 p-6 rounded-2xl border border-kj-line">
-            <h2 className="text-2xl font-bold text-kj-text mb-4">📂 Dataset Overview</h2>
-            <div className="grid md:grid-cols-2 gap-4">
+          <section className="bg-slate-50 dark:bg-kj-chip-bg/50 p-4 sm:p-6 rounded-2xl border border-kj-line">
+            <h2 className="text-xl sm:text-2xl font-bold text-kj-text mb-4">📂 Dataset Overview</h2>
+            <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
               <div className="bg-white p-4 rounded-xl shadow-sm border border-kj-line">
                 <h3 className="font-bold text-kj-text flex items-center gap-2">🚌 Local Bus Routes</h3>
                 <p className="text-sm text-kj-text-dim mt-1">300+ detailed routes covering Dhaka City (Mirpur, Uttara, Farmgate, Motijheel, etc).</p>
