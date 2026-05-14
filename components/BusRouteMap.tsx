@@ -513,26 +513,35 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
   }, [userLocation, mapReady]);
 
 
-  return (
-    <div className="relative z-0 isolate w-full rounded-b-2xl overflow-hidden bg-kj-chip-bg" style={{ height: 310 }}>
-      {/* 2D Leaflet Map */}
-      <div className={`w-full h-full transition-opacity duration-400 ${isTraffic ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-        <div ref={mapRef} className="w-full h-full" />
-      </div>
+  const TRAFFIC_H = 220;
 
-      {/* Google Maps Traffic Embed — free, no API key required */}
+  return (
+    <div
+      className="relative z-0 isolate w-full rounded-b-2xl overflow-hidden bg-kj-chip-bg"
+      style={{ height: isTraffic ? 310 + TRAFFIC_H : 310, transition: 'height 0.35s ease' }}
+    >
+      {/* Leaflet map — always at full size so route/stops never disappear */}
+      <div style={{ height: 310 }} className="w-full relative">
+        <div ref={mapRef} className="w-full h-full" /></div>
+
+      {/* Google Maps Traffic panel — expands below the route map */}
       {isTraffic && (
-        <div className="absolute inset-0 z-[20] animate-in fade-in duration-400">
+        <div
+          style={{ height: TRAFFIC_H }}
+          className="w-full border-t-2 border-orange-400 animate-in slide-in-from-bottom duration-300"
+        >
+          <div className="bg-orange-500 text-white text-[10px] font-bold px-3 py-1 flex items-center gap-2">
+            <span>🚦 Live Traffic · Google Maps</span>
+            <span className="ml-auto opacity-60 font-normal">free embed</span>
+          </div>
           <iframe
             src={trafficIframeSrc}
             title="Live Traffic"
-            className="w-full h-full border-0"
+            className="w-full border-0"
+            style={{ height: TRAFFIC_H - 22 }}
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
           />
-          <div className="absolute top-2 left-[120px] z-10 bg-black/60 text-white text-[10px] font-semibold px-2 py-1 rounded-lg backdrop-blur-sm pointer-events-none">
-            🚦 Live Traffic · Google Maps
-          </div>
         </div>
       )}
 

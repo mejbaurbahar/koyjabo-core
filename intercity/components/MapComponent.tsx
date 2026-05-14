@@ -226,12 +226,13 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
     addMarker(endCoords, `Destination: ${to}`, '#ef4444', true); // Red
 
     // Fetch road-following route from OSRM, fall back to straight lines
+    const abortCtrl = new AbortController();
     const drawRoute = async () => {
       let roadPoints: [number, number][] = routePoints;
       try {
         const coordStr = routePoints.map(p => `${p[1]},${p[0]}`).join(';');
         const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${coordStr}?overview=full&geometries=geojson`;
-        const resp = await fetch(osrmUrl, { signal: AbortSignal.timeout(6000) });
+        const resp = await fetch(osrmUrl, { signal: abortCtrl.signal });
         if (resp.ok) {
           const data = await resp.json() as { routes?: { geometry?: { coordinates?: [number, number][] } }[] };
           const coords = data?.routes?.[0]?.geometry?.coordinates;
@@ -239,7 +240,9 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
             roadPoints = coords.map(c => [c[1], c[0]] as [number, number]);
           }
         }
-      } catch { /* use straight lines if OSRM unavailable */ }
+      } catch { /* use straight lines if OSRM unavailable or aborted */ }
+      // If the effect was cleaned up (from/to changed again), don't paint stale route
+      if (abortCtrl.signal.aborted) return;
 
       // 1. Shadow/Glow Layer
       window.L.polyline(roadPoints, {
@@ -343,6 +346,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
     animationRef.current = requestAnimationFrame(animate);
 
     return () => {
+      abortCtrl.abort();
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
 
@@ -470,34 +474,43 @@ const MapComponent: React.FC<MapComponentProps> = ({ from, to, via = [], modeTit
 
   return (
     <div className="w-full h-full relative z-0">
-      {/* 2D Leaflet Map */}
+      {/* 2D Leaflet Map — always visible so route/waypoints never disappear */}
       <div
-        className={`w-full h-full transition-opacity duration-500 ${is3D || isTraffic ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+        className={`w-full h-full transition-opacity duration-500 ${is3D ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
       >
         <div ref={mapRef} className="w-full h-full bg-slate-100" />
       </div>
 
       {/* 3D Cesium Globe */}
-      {is3D && !isTraffic && (
+      {is3D && (
         <div
           ref={cesiumContainerRef}
           className="absolute inset-0 z-[10] animate-in fade-in duration-700"
         />
       )}
 
-      {/* Google Maps Traffic Embed — free, no API key required */}
+      {/* Google Maps Traffic panel — slides up over the bottom 45%, route stays visible above */}
       {isTraffic && (
-        <div className="absolute inset-0 z-[20] animate-in fade-in duration-400">
-          <iframe
-            src={trafficIframeSrc}
-            title="Live Traffic"
-            className="w-full h-full border-0"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
-          {/* Small attribution badge */}
-          <div className="absolute top-2 left-2 z-10 bg-black/60 text-white text-[10px] font-semibold px-2 py-1 rounded-lg backdrop-blur-sm pointer-events-none">
-            🚦 Live Traffic · Google Maps
+        <div className="absolute bottom-14 left-0 right-0 z-[300] animate-in slide-in-from-bottom duration-350" style={{ height: '46%' }}>
+          <div className="relative w-full h-full shadow-2xl">
+            {/* Header bar */}
+            <div className="flex items-center gap-2 bg-orange-500 text-white text-[10px] font-bold px-3 py-1.5">
+              <span>🚦 Live Traffic · Google Maps</span>
+              <span className="ml-auto opacity-60 font-normal">free embed · no API key</span>
+              <button
+                onClick={() => setIsTraffic(false)}
+                className="ml-2 opacity-80 hover:opacity-100 font-black text-xs leading-none"
+                aria-label="Close traffic"
+              >✕</button>
+            </div>
+            <iframe
+              src={trafficIframeSrc}
+              title="Live Traffic"
+              className="w-full border-0"
+              style={{ height: 'calc(100% - 26px)' }}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
           </div>
         </div>
       )}
