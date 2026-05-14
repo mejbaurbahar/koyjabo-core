@@ -4559,7 +4559,7 @@ const App: React.FC = () => {
               <Menu className="w-[22px] h-[22px]" />
             </button>
             <div className="cursor-pointer" onClick={() => setView(AppView.HOME)}>
-              <img src="/logo.png" alt="KoyJabo" className="h-9 w-9 rounded-xl" />
+              <img src="/logo.png" alt="KoyJabo" className="h-11 w-11 rounded-xl" />
             </div>
             <div className="flex-1" />
             <div className="flex items-center gap-2 shrink-0">
@@ -4919,6 +4919,14 @@ const App: React.FC = () => {
                 <Train className="w-5 h-5" />
                 <span>{language === 'bn' ? 'ট্রেন' : 'Train'}</span>
               </button>
+              {/* Intercity */}
+              <button
+                onClick={() => { window.location.href = '/intercity/'; }}
+                className="flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold text-kj-text-faint"
+              >
+                <Plane className="w-5 h-5" />
+                <span>{language === 'bn' ? 'আন্তঃজেলা' : 'Intercity'}</span>
+              </button>
               {/* AI */}
               <button
                 onClick={() => setView(AppView.AI_ASSISTANT)}
@@ -4929,17 +4937,6 @@ const App: React.FC = () => {
                 )}
                 <Sparkles className="w-5 h-5" />
                 <span>{language === 'bn' ? 'AI' : 'AI'}</span>
-              </button>
-              {/* Profile */}
-              <button
-                onClick={() => user ? setView(AppView.PROFILE) : setView(AppView.LOGIN)}
-                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${(view === AppView.PROFILE || view === AppView.LOGIN) ? 'text-kj-primary' : 'text-kj-text-faint'}`}
-              >
-                {(view === AppView.PROFILE || view === AppView.LOGIN) && (
-                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-[22px] h-[3px] rounded-full bg-kj-primary" />
-                )}
-                <User className="w-5 h-5" />
-                <span>{language === 'bn' ? 'প্রোফাইল' : 'You'}</span>
               </button>
             </div>
           </nav>
@@ -4952,7 +4949,7 @@ const App: React.FC = () => {
             <div className="absolute top-0 right-0 bottom-0 w-[280px] bg-kj-panel border-l border-kj-line flex flex-col animate-in slide-in-from-right duration-200">
               {/* Drawer header */}
               <div className="flex items-center gap-3 px-5 py-4 border-b border-kj-line shrink-0">
-                <img src="/logo.png" alt="KoyJabo" className="h-9 w-9 rounded-xl flex-shrink-0" />
+                <img src="/logo.png" alt="KoyJabo" className="h-11 w-11 rounded-xl flex-shrink-0" />
                 <div className="flex-1" />
                 <button onClick={() => setIsMenuOpen(false)} className="w-8 h-8 rounded-lg flex items-center justify-center text-kj-text-dim hover:bg-kj-chip-bg transition-colors" aria-label="Close menu">
                   <X className="w-4 h-4" />
