@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { ArrowLeft, CreditCard, CheckCircle2, ExternalLink, Info } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
-// import AdSenseAd from './AdSenseAd';
+import AdSenseAd from './AdSenseAd';
 
 
 
@@ -175,7 +175,7 @@ export default function BusPassInfo({ onBack }: Props) {
           </div>
         </div>
 
-        {/* <AdSenseAd adSlot="auto" native className="w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+        <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="max-w-[728px] mx-auto" />
 
         {passes.map((pass) => (
           <div key={pass.name} className="bg-kj-panel rounded-2xl overflow-hidden shadow-sm border border-kj-line">

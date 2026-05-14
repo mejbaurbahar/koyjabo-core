@@ -2,7 +2,7 @@ import React from 'react';
 import { Mail, Linkedin, Facebook, MapPin, Send, MessageSquare, Bug, Lightbulb, Share2 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { AppView } from '../types';
-// import AdSenseAd from './AdSenseAd';
+import AdSenseAd from './AdSenseAd';
 
 
 interface ContactUsProps {
@@ -30,7 +30,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
                     </p>
                 </div>
 
-                {/* <AdSenseAd adSlot="auto" className="mb-12 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+                <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="mb-12 max-w-[728px] mx-auto" />
 
 
                 <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 mb-8 sm:mb-12 max-w-2xl mx-auto">

@@ -67,7 +67,7 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
 import ContactUs from './components/ContactUs';
 import OfflineIndicator from './components/OfflineIndicator';
-// import AdSenseAd from './components/AdSenseAd';
+import AdSenseAd from './components/AdSenseAd';
 import TrainListPage, { TrainDetail } from './components/TrainListPage';
 import TrainRating from './components/TrainRating';
 import { BDTrainRoute, BD_TRAIN_ROUTES, TRAIN_STATIONS } from './data/bangladeshTrainData';
@@ -2363,9 +2363,7 @@ const App: React.FC = () => {
           chatHistory.map((msg, idx) => (
             <React.Fragment key={idx}>
               {idx > 0 && idx % 10 === 0 && (
-                <div className="flex justify-center my-4">
-                  {/* <AdSenseAd adSlot="auto" adFormat="fluid" className="w-full max-w-[728px] mx-auto px-2 md:px-0" /> */}
-                </div>
+                <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-2 max-w-[728px] mx-auto" />
               )}
 
               <div className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -2577,9 +2575,7 @@ const App: React.FC = () => {
             </div>
           </section>
 
-          {/* <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-
-
+          <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-10 max-w-[728px] mx-auto" />
 
         </div>
       </div>
@@ -2908,9 +2904,7 @@ const App: React.FC = () => {
           </button>
         </div>
 
-        {/* <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-
-
+        <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-10 max-w-[728px] mx-auto" />
 
         {/* Bottom padding for mobile */}
 
@@ -3053,8 +3047,7 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* <AdSenseAd adSlot="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-
+        <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-6 max-w-[728px] mx-auto" />
 
         {/* Still have questions? */}
         <div className="mt-12 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-slate-800 dark:to-slate-900 rounded-2xl p-8 text-center border border-blue-100 dark:border-kj-line">
@@ -3592,6 +3585,7 @@ const App: React.FC = () => {
             )}
           </div>
 
+          <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-4 max-w-[728px] mx-auto" />
 
           {/* Full Route List */}
           <div className="bg-kj-panel rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-kj-line overflow-hidden">
@@ -4280,8 +4274,8 @@ const App: React.FC = () => {
           style={{ overflowAnchor: 'none', WebkitOverflowScrolling: 'touch' }}
         >
 
-          {/* Ad Banner - in scrollable area so it doesn't shrink bus list */}
-          {/* <AdSenseAd adSlot="auto" className="mb-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+          {/* Top banner — inside scroll container, scrolls with content */}
+          <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="mb-2 max-w-[728px] mx-auto" />
 
           {/* Intelligent Route Suggestions - Hide in Favorites Mode */}
           {(suggestedRoutes.length > 0 && listFilter !== 'FAVORITES') && (
@@ -4397,7 +4391,9 @@ const App: React.FC = () => {
 
             return (
               <React.Fragment key={bus.id}>
-                {/* <AdSenseAd adSlot="auto" adFormat="fluid" className="my-4 w-full max-w-full md:max-w-[728px] md:mx-auto shrink-0" /> */}
+              {busIdx > 0 && busIdx % 8 === 0 && (
+                <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-1 max-w-[728px] mx-auto" />
+              )}
 
                 <div
                   onClick={() => handleBusSelect(bus)}

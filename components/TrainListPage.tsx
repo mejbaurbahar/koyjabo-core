@@ -23,7 +23,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
 import { getTrainRatings, TrainRatingSummary } from '../services/communityDataService';
 import TrainImageViewer from './TrainImageViewer';
-// import AdSenseAd from './AdSenseAd';
+import AdSenseAd from './AdSenseAd';
 
 
 
@@ -191,7 +191,7 @@ export function TrainDetail({
           />
         </div>
 
-        {/* <AdSenseAd adSlot="auto" className="my-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+        <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-4 max-w-[728px] mx-auto" />
 
 
 
@@ -999,7 +999,9 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
         ) : (
           filtered.map((route, idx) => (
             <React.Fragment key={route.id}>
-              {/* <AdSenseAd adSlot="auto" adFormat="fluid" className="my-3 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+              {idx > 0 && idx % 8 === 0 && (
+                <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-1 max-w-[728px] mx-auto" />
+              )}
               <TrainCard
                 route={route}
                 onClick={() => onSelectTrain ? onSelectTrain(route) : setSelectedTrain(route)}
