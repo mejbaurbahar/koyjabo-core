@@ -199,7 +199,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ data, userLocation }) => {
         </div>
 
         {/* Sidebar (Right) */}
-        <div className="lg:col-span-4 bg-slate-50/50 dark:bg-kj-panel/50 border-t lg:border-t-0 lg:border-l border-slate-100 dark:border-kj-line p-4 md:p-8 lg:p-12 space-y-6 md:space-y-12">
+        <div className="lg:col-span-4 bg-slate-50/50 dark:bg-[#16222A] border-t lg:border-t-0 lg:border-l border-slate-100 dark:border-kj-line p-4 md:p-8 lg:p-12 space-y-6 md:space-y-12">
 
 
           {/* Quick Stats Overlay - Visual Flair */}
