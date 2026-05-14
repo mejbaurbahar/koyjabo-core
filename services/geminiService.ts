@@ -1396,9 +1396,13 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   const _hasRoutingKeyword =
     lowerQuery.includes(' to ') ||
     lowerQuery.includes(' from ') ||
-    /\b(go to|get to|reach|route|direction|jabo|yabo|kivabe|kemne)\b/i.test(lowerQuery) ||
+    /\b(go to|get to|going to|how go|want to go|need to go|reach|route|direction|jabo|yabo|kivabe|kemne)\b/i.test(lowerQuery) ||
+    /\bgo\s+\w/i.test(lowerQuery) ||
     lowerQuery.includes('থেকে') ||
-    lowerQuery.includes('যাব');
+    lowerQuery.includes('যাব') ||
+    lowerQuery.includes('জাব') ||
+    lowerQuery.includes('কিভাবে') ||
+    lowerQuery.includes('কেমনে');
   const _stationNameWords = (name: string) =>
     name.toLowerCase().split(/[\s(),/-]+/).filter(w => w.length >= 4);
   const _mentionsKnownStation = _hasRoutingKeyword &&
@@ -1407,13 +1411,13 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
       (s.bnName && lowerQuery.includes(s.bnName)) ||
       _stationNameWords(s.name).some(w => lowerQuery.includes(w))
     );
-  const normalize = (s: string) => s.toLowerCase().replace(/['']/g, '');
+  const _normLoc = (s: string) => s.toLowerCase().replace(/['’]/g, '');
   const _mentionsIntercityLocation = MAJOR_LOCATIONS.some(loc =>
-    lowerQuery.includes(normalize(loc)) ||
-    (MAJOR_LOCATIONS_BN[loc] && lowerQuery.includes(normalize(MAJOR_LOCATIONS_BN[loc])))
+    lowerQuery.includes(_normLoc(loc)) ||
+    (MAJOR_LOCATIONS_BN[loc] && lowerQuery.includes(_normLoc(MAJOR_LOCATIONS_BN[loc])))
   );
   const advancedMatch = (_mentionsKnownStation || _mentionsIntercityLocation) ? null : getAdvancedKnowledgeAnswer(query);
-  if (advancedMatch && advancedMatch.confidence >= 0.62) {
+  if (advancedMatch && advancedMatch.confidence >= 0.68) {
     return advancedMatch.answer;
   }
 
