@@ -766,7 +766,7 @@ function App() {
                           <div className="grid grid-cols-2 gap-2">
                             {mode.details.map(item => (
                               <div key={item.l} className={`${item.color} rounded-xl p-2.5`}>
-                                <p className="font-bold text-xs leading-tight">{item.l}</p>
+                                <p className="font-bold text-xs leading-tight text-kj-text">{item.l}</p>
                                 <p className="text-kj-text-dim text-[10px] mt-0.5">{item.d}</p>
                               </div>
                             ))}
