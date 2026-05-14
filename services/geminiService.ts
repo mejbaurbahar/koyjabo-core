@@ -135,6 +135,14 @@ const TOURIST_DESTINATIONS: Record<string, { en: string; bn: string; howToReach:
       en: "🌅 **Kuakata:**\n🚢 **Launch:** Dhaka (Sadarghat) to Patuakhali (8-10 hours), then bus\n🚌 **Bus:** Sakura, Sohagh, Suravi (10-12 hours from Dhaka)\n**Route:** Via Barishal or direct\n💰 **Cost:** Launch ৳400-800, Bus ৳600-1000\n**Special:** Only beach to see both sunrise and sunset!",
       bn: "🌅 **কুয়াকাটা:**\n🚢 **লঞ্চ:** ঢাকা (সদরঘাট) থেকে পটুয়াখালী (৮-১০ ঘন্টা), তারপর বাস\n🚌 **বাস:** সাকুরা, সোহাগ, সুরভি (ঢাকা থেকে ১০-১২ ঘন্টা)\n**রুট:** বরিশাল হয়ে বা সরাসরি\n💰 **খরচ:** লঞ্চ ৳৪০০-৮০০, বাস ৳৬০০-১০০০\n**বিশেষত্ব:** একমাত্র সৈকত যেখানে সূর্যোদয় এবং সূর্যাস্ত দুটোই দেখা যায়!"
     }
+  },
+  "Benapole": {
+    en: "Benapole - Bangladesh-India Land Border",
+    bn: "বেনাপোল - বাংলাদেশ-ভারত স্থলবন্দর",
+    howToReach: {
+      en: "🚉 **Benapole (Jashore district, SW Bangladesh):**\n🚂 **Train:** Benapole Express (Dhaka Kamalapur → Benapole, departs 6:20 AM, ~8 hrs) · Rupashi Bangla Express\n🚌 **Bus:** S Alam, Shyamoli, Hanif (Dhaka Kalyanpur/Gabtoli → Benapole, 6-8 hrs via Padma Bridge)\n🚗 **From Jashore:** Local bus/CNG, ~30 mins\n💰 **Cost:** Train ৳200-600, Bus ৳500-900\n🛂 **India Border:** Bangladesh Immigration open daily · Petrapole side (India)",
+      bn: "🚉 **বেনাপোল (যশোর জেলা, দক্ষিণ-পশ্চিম বাংলাদেশ):**\n🚂 **ট্রেন:** বেনাপোল এক্সপ্রেস (ঢাকা কমলাপুর → বেনাপোল, সকাল ৬:২০, ~৮ ঘন্টা) · রূপসী বাংলা এক্সপ্রেস\n🚌 **বাস:** এস আলম, শ্যামলী, হানিফ (ঢাকা কল্যাণপুর/গাবতলী → বেনাপোল, পদ্মা সেতু হয়ে ৬-৮ ঘন্টা)\n🚗 **যশোর থেকে:** লোকাল বাস/সিএনজি, ~৩০ মিনিট\n💰 **খরচ:** ট্রেন ৳২০০-৬০০, বাস ৳৫০০-৯০০\n🛂 **ভারত সীমান্ত:** বাংলাদেশ ইমিগ্রেশন প্রতিদিন খোলা · পেট্রাপোল (ভারত)"
+    }
   }
 };
 
@@ -1338,7 +1346,7 @@ function buildDataMissingResponse(query: string, isBn: boolean): string {
     : `🤔 I couldn't find specific data for "${query}".\n\n${suggest}`;
 }
 
-export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, chatHistory: ChatMessage[] = []): Promise<string> => {
+export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, chatHistory: ChatMessage[] = [], userName?: string): Promise<string> => {
 
   const [actualQueryPart, contextPart] = userQuery.split('[Context:');
   const isOffline = userQuery.includes('[OfflineMode]');
@@ -1367,9 +1375,10 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
 
   // Greeting / help command
   if (lowerQuery.match(/^(hi|hello|hey|salam|assalamu|হাই|হেলো|হ্যালো)\b/) || lowerQuery === 'help' || lowerQuery === 'সাহায্য') {
+    const nameGreet = userName ? `, **${userName}**` : '';
     return isBn
-      ? '👋 হ্যালো! আমি **কই যাবো AI**। বলুন কোথায় যেতে চান —\n🚌 বাস · 🚇 মেট্রো · 🚂 ট্রেন · ✈️ বিমান · 🚢 লঞ্চ · 🗺️ ট্যুর প্ল্যান — সব বিষয়ে সাহায্য করব!\n\n_উদাহরণ: "মিরপুর ১০ থেকে ধানমন্ডি" অথবা "ঢাকা থেকে সিলেট ট্রেন"_'
-      : '👋 Hello! I\'m **KoyJabo AI**. Tell me where you want to go —\n🚌 Bus · 🚇 Metro · 🚂 Train · ✈️ Flight · 🚢 Launch · 🗺️ Tour Plans — I\'ll help with it all!\n\n_Example: "Farmgate to Mirpur 10" or "Dhaka to Sylhet train"_';
+      ? `👋 হ্যালো${nameGreet}! আমি **কই যাবো AI**। বলুন কোথায় যেতে চান —\n🚌 বাস · 🚇 মেট্রো · 🚂 ট্রেন · ✈️ বিমান · 🚢 লঞ্চ · 🗺️ ট্যুর প্ল্যান — সব বিষয়ে সাহায্য করব!\n\n_উদাহরণ: "মিরপুর ১০ থেকে ধানমন্ডি" অথবা "ঢাকা থেকে সিলেট ট্রেন"_`
+      : `👋 Hello${nameGreet}! I'm **KoyJabo AI**. Tell me where you want to go —\n🚌 Bus · 🚇 Metro · 🚂 Train · ✈️ Flight · 🚢 Launch · 🗺️ Tour Plans — I'll help with it all!\n\n_Example: "Farmgate to Mirpur 10" or "Dhaka to Sylhet train"_`;
   }
 
   // General conversation fallback for non-travel one-word queries
@@ -1398,7 +1407,12 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
       (s.bnName && lowerQuery.includes(s.bnName)) ||
       _stationNameWords(s.name).some(w => lowerQuery.includes(w))
     );
-  const advancedMatch = _mentionsKnownStation ? null : getAdvancedKnowledgeAnswer(query);
+  const normalize = (s: string) => s.toLowerCase().replace(/['']/g, '');
+  const _mentionsIntercityLocation = MAJOR_LOCATIONS.some(loc =>
+    lowerQuery.includes(normalize(loc)) ||
+    (MAJOR_LOCATIONS_BN[loc] && lowerQuery.includes(normalize(MAJOR_LOCATIONS_BN[loc])))
+  );
+  const advancedMatch = (_mentionsKnownStation || _mentionsIntercityLocation) ? null : getAdvancedKnowledgeAnswer(query);
   if (advancedMatch && advancedMatch.confidence >= 0.62) {
     return advancedMatch.answer;
   }
