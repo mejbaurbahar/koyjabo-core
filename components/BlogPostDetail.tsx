@@ -138,7 +138,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
         .slice(0, 3);
 
     return (
-        <div className="flex flex-col flex-1 min-h-0 w-full bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-x-hidden">
+        <div className="absolute inset-0 z-10 overflow-hidden flex flex-col bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
             {/* Reading Progress Bar */}
             <div className="h-1 w-full bg-gray-200 dark:bg-kj-chip-bg shrink-0">
                 <div
@@ -150,7 +150,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
             <div
                 ref={scrollContainerRef}
                 onScroll={handleScroll}
-                className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-32"
+                className="flex-1 overflow-y-auto overscroll-y-contain touch-pan-y pb-32"
                 style={{ WebkitOverflowScrolling: 'touch' }}
             >
                 {/* Hero Image */}

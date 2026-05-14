@@ -61,14 +61,28 @@ function extractTrainSlugs() {
   return [...slugs];
 }
 
+function extractBlogSlugs() {
+  const content = fs.readFileSync(path.join(root, 'data', 'blogPosts.ts'), 'utf8');
+  const slugs = [];
+  const dates = [];
+  for (const m of content.matchAll(/slug:\s*'([^']+)'/g)) {
+    slugs.push(m[1]);
+  }
+  for (const m of content.matchAll(/publishDate:\s*'([^']+)'/g)) {
+    dates.push(m[1]);
+  }
+  return slugs.map((slug, i) => ({ slug, date: dates[i] || TODAY }));
+}
+
 function urlEntry(loc, lastmod, changefreq, priority) {
   return `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
 }
 
 const busSlugs = extractBusSlugs();
 const trainSlugs = extractTrainSlugs();
+const blogEntries = extractBlogSlugs();
 
-console.log(`Extracted ${busSlugs.length} bus slugs, ${trainSlugs.length} train slugs`);
+console.log(`Extracted ${busSlugs.length} bus slugs, ${trainSlugs.length} train slugs, ${blogEntries.length} blog entries`);
 
 const staticPages = [
   urlEntry(`${BASE}/`, TODAY, 'daily', '1.0'),
@@ -86,11 +100,9 @@ const staticPages = [
   urlEntry(`${BASE}/train`, TODAY, 'weekly', '0.8'),
 ];
 
-const blogPages = [
-  urlEntry(`${BASE}/blog/best-bus-routes-dhaka`, '2026-03-20', 'monthly', '0.8'),
-  urlEntry(`${BASE}/blog/dhaka-metro-guide`, '2026-03-20', 'monthly', '0.8'),
-  urlEntry(`${BASE}/blog/uttara-to-motijheel-bus-guide`, '2026-03-20', 'monthly', '0.8'),
-];
+const blogPages = blogEntries.map(({ slug, date }) =>
+  urlEntry(`${BASE}/blog/${slug}`, date, 'monthly', '0.8')
+);
 
 const busPages = busSlugs.map(slug =>
   urlEntry(`${BASE}/bus/${slug}`, TODAY, 'monthly', '0.7')
@@ -121,4 +133,4 @@ const xml = [
 
 const out = path.join(root, 'public', 'sitemap.xml');
 fs.writeFileSync(out, xml, 'utf8');
-console.log(`✅ sitemap.xml written — ${staticPages.length} static, ${blogPages.length} blog, ${busPages.length} bus, ${trainPages.length} train`);
+console.log(`✅ sitemap.xml written — ${staticPages.length} static, ${blogPages.length} blog, ${busPages.length} bus, ${trainPages.length} train entries`);
