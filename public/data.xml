@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- KoyJabo Transport Data – XML | License: CC-BY-4.0 | https://koyjabo.com | Updated: 2026-05-20 -->
+<transportData source="https://koyjabo.com" license="https://creativecommons.org/licenses/by/4.0/" updated="2026-05-20" country="BD">
+
+  <section id="metro" label="Dhaka Metro Rail (MRT Line-6)">
+    <route id="mrt-line6">
+      <name>Dhaka MRT Line-6 (Uttara North – Motijheel)</name>
+      <type>metro</type>
+      <operator>DMTCL (Dhaka Mass Transit Company Limited)</operator>
+      <origin>Uttara North</origin>
+      <destination>Motijheel</destination>
+      <length_km>20.1</length_km>
+      <stations total="16">
+        <station seq="1">Uttara North</station>
+        <station seq="2">Uttara Center</station>
+        <station seq="3">Uttara South</station>
+        <station seq="4">Pallabi</station>
+        <station seq="5">Mirpur-11</station>
+        <station seq="6">Mirpur-10</station>
+        <station seq="7">Kazipara</station>
+        <station seq="8">Shewrapara</station>
+        <station seq="9">Agargaon</station>
+        <station seq="10">Bijoy Sarani</station>
+        <station seq="11">Farmgate</station>
+        <station seq="12">Karwan Bazar</station>
+        <station seq="13">Shahbag</station>
+        <station seq="14">Dhaka University</station>
+        <station seq="15">Bangladesh Secretariat</station>
+        <station seq="16">Motijheel</station>
+      </stations>
+      <fare_min_bdt>20</fare_min_bdt>
+      <fare_max_bdt>100</fare_max_bdt>
+      <hours weekday="07:00–20:00" friday="08:00–20:00"/>
+      <frequency_peak_min>8</frequency_peak_min>
+      <ticketing>Single-journey token or Rapid Pass RFID card</ticketing>
+    </route>
+  </section>
+
+  <section id="intercity-bus" label="Intercity Buses from Dhaka">
+    <route id="dhk-ctg">
+      <name>Dhaka – Chittagong</name>
+      <type>intercity_bus</type>
+      <origin>Dhaka (Arambagh / Sayedabad)</origin>
+      <destination>Chittagong</destination>
+      <duration_hrs>4.5</duration_hrs>
+      <fare_non_ac_bdt>680</fare_non_ac_bdt>
+      <fare_ac_min_bdt>900</fare_ac_min_bdt>
+      <fare_ac_max_bdt>1500</fare_ac_max_bdt>
+      <operators>Hanif Enterprise, Shyamoli, GreenLine, Soudia, SR Travels, Ena</operators>
+    </route>
+    <route id="dhk-syl">
+      <name>Dhaka – Sylhet</name>
+      <type>intercity_bus</type>
+      <origin>Dhaka (Mohakhali)</origin>
+      <destination>Sylhet</destination>
+      <duration_hrs>5.5</duration_hrs>
+      <fare_non_ac_bdt>570</fare_non_ac_bdt>
+      <fare_ac_max_bdt>1400</fare_ac_max_bdt>
+      <operators>Shyamoli, Hanif, GreenLine, London Express, Al-Mobaraka</operators>
+    </route>
+    <route id="dhk-cxb">
+      <name>Dhaka – Cox's Bazar</name>
+      <type>intercity_bus</type>
+      <origin>Dhaka (Arambagh / Sayedabad)</origin>
+      <destination>Cox's Bazar</destination>
+      <duration_hrs>11</duration_hrs>
+      <fare_non_ac_bdt>900</fare_non_ac_bdt>
+      <fare_ac_max_bdt>2500</fare_ac_max_bdt>
+      <operators>SR Travels, Soudia, GreenLine, Hanif, Ena Transport</operators>
+      <notes>Night coaches available</notes>
+    </route>
+    <route id="dhk-khu">
+      <name>Dhaka – Khulna</name>
+      <type>intercity_bus</type>
+      <origin>Dhaka (Gabtoli)</origin>
+      <destination>Khulna</destination>
+      <duration_hrs>7.5</duration_hrs>
+      <fare_non_ac_bdt>600</fare_non_ac_bdt>
+      <fare_ac_max_bdt>1200</fare_ac_max_bdt>
+      <operators>Soudia, Shyamoli, Hanif</operators>
+    </route>
+    <route id="dhk-raj">
+      <name>Dhaka – Rajshahi</name>
+      <type>intercity_bus</type>
+      <origin>Dhaka (Gabtoli/Kalyanpur)</origin>
+      <destination>Rajshahi</destination>
+      <duration_hrs>5</duration_hrs>
+      <fare_non_ac_bdt>600</fare_non_ac_bdt>
+      <fare_ac_max_bdt>1300</fare_ac_max_bdt>
+      <operators>Hanif, Shyamoli, Desh Travels</operators>
+    </route>
+  </section>
+
+  <section id="trains" label="Bangladesh Railway Intercity Trains">
+    <route id="subarna">
+      <name>Subarna Express</name>
+      <type>intercity_train</type>
+      <operator>Bangladesh Railway</operator>
+      <origin>Dhaka Kamalapur</origin>
+      <destination>Chittagong</destination>
+      <duration_hrs>6.5</duration_hrs>
+      <classes>
+        <class name="S_CHAIR" fare_bdt="165"/>
+        <class name="F_CHAIR" fare_bdt="220"/>
+        <class name="SNIGDHA" fare_bdt="777"/>
+        <class name="AC_BERTH" fare_bdt="1591"/>
+      </classes>
+      <booking>https://eticket.railway.gov.bd</booking>
+    </route>
+    <route id="coxsbazar-express">
+      <name>Cox's Bazar Express</name>
+      <type>intercity_train</type>
+      <operator>Bangladesh Railway</operator>
+      <origin>Dhaka Kamalapur</origin>
+      <destination>Cox's Bazar</destination>
+      <departs>22:30</departs>
+      <duration_hrs>10</duration_hrs>
+      <classes>
+        <class name="SHOVAN_CHAIR" fare_bdt="745"/>
+        <class name="SNIGDHA" fare_bdt="1428"/>
+        <class name="AC_BERTH" fare_bdt="2656"/>
+      </classes>
+      <notes>Direct train available since 2023</notes>
+      <booking>https://eticket.railway.gov.bd</booking>
+    </route>
+    <route id="parabat">
+      <name>Parabat Express</name>
+      <type>intercity_train</type>
+      <operator>Bangladesh Railway</operator>
+      <origin>Dhaka Kamalapur</origin>
+      <destination>Sylhet</destination>
+      <departs>06:40</departs>
+      <duration_hrs>6.5</duration_hrs>
+      <offdays>Tuesday</offdays>
+      <classes>
+        <class name="SHOVAN_CHAIR" fare_bdt="375"/>
+        <class name="SNIGDHA" fare_bdt="719"/>
+        <class name="AC_BERTH" fare_bdt="1678"/>
+      </classes>
+    </route>
+  </section>
+
+  <section id="river" label="River Launches from Dhaka Sadarghat">
+    <route id="dhaka-barisal">
+      <name>Dhaka – Barisal Night Launch</name>
+      <type>river_launch</type>
+      <operator>BIWTC / Sundarban / Parabat / Kirtankhola</operator>
+      <origin>Dhaka Sadarghat Terminal</origin>
+      <destination>Barisal Launch Terminal</destination>
+      <departs_typical>21:00</departs_typical>
+      <duration_hrs>8</duration_hrs>
+      <classes>
+        <class name="Deck" fare_approx_bdt="150"/>
+        <class name="Single_Cabin" fare_approx_bdt="800"/>
+        <class name="Double_Cabin" fare_approx_bdt="1500"/>
+        <class name="VIP_Cabin" fare_approx_bdt="2000"/>
+      </classes>
+    </route>
+    <route id="dhaka-khulna">
+      <name>Dhaka – Khulna Night Launch</name>
+      <type>river_launch</type>
+      <operator>BIWTC / Private</operator>
+      <origin>Dhaka Sadarghat Terminal</origin>
+      <destination>Khulna</destination>
+      <duration_hrs>12</duration_hrs>
+    </route>
+    <route id="dhaka-chandpur">
+      <name>Dhaka – Chandpur Launch</name>
+      <type>river_launch</type>
+      <operator>BIWTC / Private</operator>
+      <origin>Dhaka Sadarghat Terminal</origin>
+      <destination>Chandpur</destination>
+      <duration_hrs>4</duration_hrs>
+    </route>
+  </section>
+
+</transportData>

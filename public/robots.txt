@@ -1,6 +1,6 @@
 # KoyJabo (কই যাবো) - Dhaka Bus Route Finder
 # Robots.txt for SEO Optimization
-# Updated: December 28, 2025
+# Updated: 2026-05-20
 
 # Google AdSense Crawlers - MUST be explicitly allowed for AdSense approval
 User-agent: Mediapartners-Google
@@ -74,16 +74,108 @@ Allow: /
 Disallow: /api/
 Crawl-delay: 10
 
-# Anthropic Claude (Search)
+# Anthropic / Claude – all variants
 User-agent: anthropic-ai
 Allow: /
-Disallow: /api/
-Crawl-delay: 10
+Crawl-delay: 5
 
 User-agent: Claude-Web
 Allow: /
-Disallow: /api/
-Crawl-delay: 10
+Crawl-delay: 5
+
+User-agent: ClaudeBot
+Allow: /
+Crawl-delay: 5
+
+User-agent: Claude-SearchBot
+Allow: /
+Crawl-delay: 5
+
+User-agent: Claude-User
+Allow: /
+Crawl-delay: 5
+
+# OpenAI additional
+User-agent: OAI-SearchBot
+Allow: /
+Crawl-delay: 5
+
+# Google additional AI crawlers
+User-agent: Google-CloudVertexBot
+Allow: /
+Crawl-delay: 5
+
+User-agent: GoogleOther
+Allow: /
+Crawl-delay: 5
+
+# Meta AI
+User-agent: Meta-ExternalAgent
+Allow: /
+Crawl-delay: 5
+
+User-agent: Meta-ExternalFetcher
+Allow: /
+Crawl-delay: 5
+
+# Amazon Alexa / Lex
+User-agent: Amazonbot
+Allow: /
+Crawl-delay: 5
+
+# Apple (Siri suggestions)
+User-agent: Applebot
+Allow: /
+Crawl-delay: 5
+
+User-agent: Applebot-Extended
+Allow: /
+Crawl-delay: 5
+
+# Mistral AI
+User-agent: MistralAI-User
+Allow: /
+Crawl-delay: 5
+
+# DeepSeek
+User-agent: DeepSeekBot
+Allow: /
+Crawl-delay: 5
+
+# xAI (Grok)
+User-agent: Grok Web Crawler
+Allow: /
+Crawl-delay: 5
+
+# DuckDuckGo AI
+User-agent: DuckAssistBot
+Allow: /
+Crawl-delay: 5
+
+# Perplexity user
+User-agent: Perplexity-User
+Allow: /
+Crawl-delay: 5
+
+# Timpi
+User-agent: Timpibot
+Allow: /
+Crawl-delay: 5
+
+# ProRata
+User-agent: ProRataInc
+Allow: /
+Crawl-delay: 5
+
+# Novellum
+User-agent: Novellum AI Crawl
+Allow: /
+Crawl-delay: 5
+
+# Anchor Browser
+User-agent: Anchor Browser
+Allow: /
+Crawl-delay: 5
 
 # Cohere AI
 User-agent: cohere-ai

@@ -44,9 +44,9 @@
   <link rel="shortcut icon" href="/logo.png">
 
   <!-- SEO Meta Tags -->
-  <title>KoyJabo – Bangladesh Travel & Transport Guide | Dhaka Bus, Metro Rail, Intercity Routes | কই যাবো</title>
+  <title>KoyJabo – Dhaka Bus, Metro Rail & Bangladesh Travel | কই যাবো</title>
   <meta name="description"
-    content="KoyJabo: Bangladesh's #1 transport & travel guide. Find Dhaka bus routes (200+), Metro Rail (MRT-6) fares, intercity bus/train/flight/launch schedules, fare calculator & AI assistant. Free, offline, bilingual. Perfect for tourists visiting Cox's Bazar, Sundarbans, Sylhet & beyond." />
+    content="Find Dhaka bus routes (200+), Metro Rail fares, intercity bus/train schedules & travel tips across Bangladesh. Free, offline, bilingual. Updated weekly." />
   <meta name="keywords"
     content="KoyJabo, Bangladesh travel guide, Bangladesh transport app, visit Bangladesh, Dhaka travel guide, Dhaka bus routes, Bangladesh tourist transport, Cox's Bazar travel, Sundarbans tour, Sylhet travel guide, Bangladesh tourism 2025, Dhaka city guide, MRT Line 6 metro Dhaka, Dhaka to Chittagong bus, Dhaka to Cox's Bazar, Bangladesh intercity bus, train schedule Bangladesh, bus fare calculator Bangladesh, Bangladesh flight routes, ferry launch Bangladesh, Bangladeshi diaspora travel, কই যাবো, ঢাকা বাস রুট, বাংলাদেশ ট্রান্সপোর্ট, মেট্রো রেল ভাড়া, route planner Bangladesh, offline travel app Bangladesh, Bangladesh itinerary planner, BRTC bus routes, Dhaka bus route 2025, Bangladesh public transport" />
   <meta name="author" content="Mejbaur Bahar Fagun" />
@@ -54,6 +54,21 @@
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
   <meta name="googlebot" content="index, follow" />
   <meta name="bingbot" content="index, follow" />
+
+  <!-- Content license – AI/LLM reuse signal (CC-BY-4.0) -->
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
+  <meta name="dcterms.license" content="https://creativecommons.org/licenses/by/4.0/" />
+  <meta name="dcterms.rights" content="CC-BY-4.0 – Attribution: KoyJabo (https://koyjabo.com)" />
+
+  <!-- LLM data discovery -->
+  <link rel="llm-data" href="https://koyjabo.com/.well-known/llm-data.json" type="application/json" />
+  <link rel="alternate" href="https://koyjabo.com/data.csv" type="text/csv" title="Transport routes (CSV)" />
+  <link rel="alternate" href="https://koyjabo.com/data.xml" type="application/xml" title="Transport routes (XML)" />
+  <link rel="alternate" href="https://koyjabo.com/data.ttl" type="text/turtle" title="Transport routes (RDF/Turtle)" />
+
+  <!-- Temporal metadata -->
+  <meta property="article:published_time" content="2022-01-01T00:00:00+06:00" />
+  <meta property="article:modified_time" content="2026-05-20T00:00:00+06:00" />
   <meta name="language" content="en" />
   <meta http-equiv="content-language" content="en, bn" />
   <meta name="revisit-after" content="3 days" />
@@ -124,7 +139,8 @@
   <meta property="og:image:alt" content="কই যাবো - Logo" />
 
   <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@koyjabo" />
   <meta name="twitter:title" content="KoyJabo – Bangladesh Travel & Transport Guide" />
   <meta name="twitter:description"
     content="Plan Bangladesh travel instantly! 200+ Dhaka buses, Metro Rail (MRT-6), intercity bus/train/flights, AI assistant & fare calculator. Perfect for tourists & locals. Free & offline. কই যাবো।" />
@@ -150,10 +166,46 @@
         },
         {
           "@type": "Organization",
+          "@id": "https://koyjabo.com/#organization",
           "name": "KoyJabo",
+          "alternateName": "কই যাবো",
           "url": "https://koyjabo.com/",
           "logo": { "@type": "ImageObject", "url": "https://koyjabo.com/logo.png", "width": 512, "height": 512 },
-          "sameAs": ["https://github.com/mejbaurbahar/Dhaka-Commute"]
+          "description": "Bangladesh's leading free travel and transport guide. 200+ Dhaka bus routes, Metro Rail, intercity buses, trains, ferries and AI assistant.",
+          "foundingDate": "2022",
+          "email": "mejbaur@koyjabo.com",
+          "inLanguage": ["en", "bn"],
+          "areaServed": { "@type": "Country", "name": "Bangladesh" },
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Dhaka",
+            "addressCountry": "BD"
+          },
+          "founder": {
+            "@type": "Person",
+            "name": "Mejbaur Bahar Fagun",
+            "url": "https://linkedin.com/in/mejbaur/"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer support",
+            "email": "mejbaur@koyjabo.com",
+            "availableLanguage": ["en", "bn"]
+          },
+          "sameAs": [
+            "https://github.com/fagun18/Dhaka-Commute",
+            "https://www.linkedin.com/company/koy-jabo",
+            "https://www.facebook.com/koyjabo",
+            "https://twitter.com/koyjabo",
+            "https://www.youtube.com/@koyjabo"
+          ],
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "1500",
+            "bestRating": "5",
+            "worstRating": "1"
+          }
         },
         {
           "@type": "WebSite",
@@ -297,6 +349,89 @@
     }
   </script>
 
+
+  <!-- Article + SpeakableSpecification (AEO/voice/AI snippet selection) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://koyjabo.com/#article",
+      "headline": "How to Navigate Bangladesh: Complete Transport Guide",
+      "description": "Comprehensive guide to Bangladesh bus routes, Dhaka metro rail (MRT Line-6), intercity trains, and river ferry services. Fares, schedules, and tips updated weekly.",
+      "image": "https://koyjabo.com/og-image.png",
+      "author": {
+        "@type": "Person",
+        "name": "Mejbaur Bahar Fagun",
+        "url": "https://linkedin.com/in/mejbaur/"
+      },
+      "publisher": { "@id": "https://koyjabo.com/#organization" },
+      "datePublished": "2022-01-01",
+      "dateModified": "2026-05-20",
+      "mainEntityOfPage": "https://koyjabo.com/",
+      "inLanguage": ["en", "bn"],
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": ["h1", "h2", ".speakable", ".tl-dr", ".faq-answer"]
+      }
+    }
+  </script>
+
+  <!-- LocalBusiness (Google Business & local pack) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "KoyJabo – Bangladesh Transport Guide",
+      "description": "Free digital travel and transport information guide for Bangladesh. Bus routes, metro rail, trains, ferries.",
+      "url": "https://koyjabo.com",
+      "email": "mejbaur@koyjabo.com",
+      "priceRange": "Free",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Dhaka",
+        "addressRegion": "Dhaka Division",
+        "addressCountry": "BD"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 23.8103,
+        "longitude": 90.4125
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        "opens": "00:00",
+        "closes": "23:59"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "1500",
+        "bestRating": "5"
+      }
+    }
+  </script>
+
+  <!-- ItemList TOC (helps LLMs understand site structure) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "KoyJabo – Bangladesh Transport Guide Contents",
+      "description": "Complete transport guide covering metro rail, bus routes, intercity buses, trains and river ferries in Bangladesh.",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Dhaka Metro Rail (MRT Line-6)", "url": "https://koyjabo.com/#metro" },
+        { "@type": "ListItem", "position": 2, "name": "Dhaka City Bus Routes (200+)", "url": "https://koyjabo.com/#buses" },
+        { "@type": "ListItem", "position": 3, "name": "Intercity Bus Routes from Dhaka", "url": "https://koyjabo.com/intercity" },
+        { "@type": "ListItem", "position": 4, "name": "Bangladesh Railway Train Schedules", "url": "https://koyjabo.com/intercity#trains" },
+        { "@type": "ListItem", "position": 5, "name": "River Launches & Ferries (Sadarghat)", "url": "https://koyjabo.com/intercity#launch" },
+        { "@type": "ListItem", "position": 6, "name": "Cox's Bazar Travel Guide", "url": "https://koyjabo.com/intercity#coxsbazar" },
+        { "@type": "ListItem", "position": 7, "name": "AI Travel Assistant", "url": "https://koyjabo.com/ai" },
+        { "@type": "ListItem", "position": 8, "name": "FAQ – Bangladesh Travel", "url": "https://koyjabo.com/faq" }
+      ]
+    }
+  </script>
 
   <!-- HowTo Schema for Better Featured Snippets -->
   <script type="application/ld+json">

@@ -1,0 +1,88 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "KoyJabo – Bangladesh Travel & Transport Data",
+  "description": "Structured data about bus routes, metro rail, intercity transport, trains, ferries and travel guides for Bangladesh. 200+ Dhaka routes, MRT Line-6, intercity across all 64 districts.",
+  "url": "https://koyjabo.com/.well-known/llm-data.json",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "creator": {
+    "@type": "Person",
+    "name": "Mejbaur Bahar Fagun",
+    "url": "https://linkedin.com/in/mejbaur/",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "KoyJabo",
+      "url": "https://koyjabo.com"
+    }
+  },
+  "inLanguage": ["en", "bn"],
+  "dateModified": "2026-05-20",
+  "keywords": [
+    "Bangladesh transport", "Dhaka bus routes", "Dhaka metro rail", "MRT Line 6",
+    "intercity bus Bangladesh", "Bangladesh railway", "river launch Bangladesh",
+    "কই যাবো", "ঢাকা বাস", "মেট্রো রেল", "বাংলাদেশ পরিবহন"
+  ],
+  "alternateFormats": [
+    { "url": "https://koyjabo.com/data.csv", "encodingFormat": "text/csv", "name": "Transport routes CSV" },
+    { "url": "https://koyjabo.com/data.xml", "encodingFormat": "application/xml", "name": "Transport routes XML" },
+    { "url": "https://koyjabo.com/data.ttl", "encodingFormat": "text/turtle", "name": "Transport routes RDF/Turtle" }
+  ],
+  "chunks": [
+    {
+      "id": "about",
+      "title": "What is KoyJabo (কই যাবো)?",
+      "text": "KoyJabo (কই যাবো, meaning 'Where to go?' in Bengali) is Bangladesh's most comprehensive free travel and transport guide. It covers 200+ Dhaka city bus routes, Metro Rail (MRT Line-6), intercity buses to all 64 districts, Bangladesh Railway trains, river launches from Sadarghat, and domestic flights. The app works offline and supports both English and Bengali. Developed by Mejbaur Bahar Fagun.",
+      "url": "https://koyjabo.com/",
+      "language": ["en", "bn"]
+    },
+    {
+      "id": "dhaka-metro",
+      "title": "Dhaka Metro Rail (MRT Line-6) Guide",
+      "text": "Dhaka MRT Line-6 runs from Uttara North (Station 1) to Motijheel (Station 16), covering 20.1 km across 16 stations: Uttara North, Uttara Center, Uttara South, Pallabi, Mirpur-11, Mirpur-10, Kazipara, Shewrapara, Agargaon, Bijoy Sarani, Farmgate, Karwan Bazar, Shahbag, Dhaka University, Bangladesh Secretariat, Motijheel. Fare: BDT 20 (1-2 stations) to BDT 100 (full route). Operating hours: 7:00 AM – 8:00 PM (weekdays), 8:00 AM – 8:00 PM (Friday). Rapid Pass (RFID card) or single-journey token required. Trains run every 8-10 minutes at peak.",
+      "url": "https://koyjabo.com/#metro",
+      "language": ["en", "bn"]
+    },
+    {
+      "id": "dhaka-buses",
+      "title": "Dhaka City Bus Routes (200+)",
+      "text": "KoyJabo covers 200+ Dhaka local bus routes. Key corridors: Mirpur–Motijheel, Gulshan–Sadarghat, Uttara–Farmgate, Dhanmondi–Motijheel, Mohakhali–Gabtoli. Operated by BRTC and private companies. Standard fare BDT 5–30. Useful tip: Combine metro rail (MRT Line-6) with local buses for faster commutes across the city.",
+      "url": "https://koyjabo.com/#buses",
+      "language": ["en", "bn"]
+    },
+    {
+      "id": "intercity-buses",
+      "title": "Intercity Bus Routes from Dhaka",
+      "text": "Major intercity bus routes from Dhaka: Dhaka–Chittagong (4-5 hrs, BDT 680–1500 AC, operators: Hanif, Shyamoli, GreenLine, Soudia; from Arambagh/Sayedabad), Dhaka–Sylhet (5-6 hrs, BDT 570–1400 AC; from Mohakhali), Dhaka–Cox's Bazar (10-12 hrs, BDT 900–2500 AC; from Arambagh/Sayedabad), Dhaka–Rajshahi (5 hrs, BDT 600–1300), Dhaka–Khulna (7-8 hrs, BDT 600–1200), Dhaka–Barisal (4-5 hrs, BDT 400–700). All 64 districts covered.",
+      "url": "https://koyjabo.com/intercity",
+      "language": ["en", "bn"]
+    },
+    {
+      "id": "trains",
+      "title": "Bangladesh Railway Intercity Trains from Dhaka",
+      "text": "Bangladesh Railway trains from Dhaka Kamalapur: Subarna Express/Sonnar Bangla to Chittagong (5-6.5 hrs, from BDT 405), Parabat Express / Upaban Express to Sylhet (6.5-8 hrs, from BDT 375), Silk City Express to Rajshahi (5.5 hrs), Sundarban Express to Khulna (9 hrs), Cox's Bazar Express (direct, since 2023, 9-10 hrs). Online tickets: eticket.railway.gov.bd or Rail Sheba app. Available 5 days in advance.",
+      "url": "https://koyjabo.com/intercity#trains",
+      "language": ["en", "bn"]
+    },
+    {
+      "id": "river-transport",
+      "title": "River Launches & Ferries from Dhaka Sadarghat",
+      "text": "From Dhaka Sadarghat Launch Terminal: Barisal (8 hrs overnight, BDT 150–2000, operators: Sundarban/Parabat/Kirtankhola, departs ~9 PM), Khulna (10-12 hrs), Chandpur (3-4 hrs), Bhola (5-6 hrs), Patuakhali (8-10 hrs). Classes: Deck (cheapest), Single Cabin, Double Cabin, VIP Cabin. Overnight launches are a popular, scenic budget option.",
+      "url": "https://koyjabo.com/intercity#launch",
+      "language": ["en", "bn"]
+    },
+    {
+      "id": "coxs-bazar",
+      "title": "Travelling to Cox's Bazar from Dhaka",
+      "text": "Cox's Bazar has the world's longest natural sea beach (120 km). From Dhaka: Bus (10-12 hrs, BDT 900–2500, from Arambagh/Sayedabad, night coaches available), Train — Cox's Bazar Express from Kamalapur (direct, ~10 hrs, Shovan Chair BDT 745), Flight (1 hr, from BDT 4500, Biman/US-Bangla/NovoAir). Best season: November–March. Key spots: Inani Beach, Himchari, Teknaf, Saint Martin's Island.",
+      "url": "https://koyjabo.com/intercity#coxsbazar",
+      "language": ["en", "bn"]
+    },
+    {
+      "id": "faq",
+      "title": "Frequently Asked Questions – KoyJabo Bangladesh Transport",
+      "text": "Q: How do I use the Dhaka metro rail? A: Buy a token at the station vending machine or get a Rapid Pass card. Trains run 7 AM–8 PM on weekdays. Q: Which bus goes from Mirpur to Motijheel? A: Many routes including the MRT Line-6 metro from Mirpur-10 (~25 min). Q: Is there a direct train to Cox's Bazar? A: Yes, Cox's Bazar Express from Dhaka Kamalapur, operational since 2023. Q: What time does the Dhaka metro start? A: 7:00 AM weekdays, 8:00 AM Fridays. Q: Can I book Bangladesh train tickets online? A: Yes — eticket.railway.gov.bd or Rail Sheba app, up to 5 days in advance.",
+      "url": "https://koyjabo.com/faq",
+      "language": ["en", "bn"]
+    }
+  ]
+}

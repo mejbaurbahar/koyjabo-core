@@ -1,6 +1,27 @@
 # KoyJabo - AI Search Information
 # llms.txt - Optimized for AI Search Engines and LLMs
 # Learn more: https://llmstxt.org/
+# Updated: 2026-05-20
+
+# LICENSE: Content on KoyJabo is available under CC-BY-4.0
+# https://creativecommons.org/licenses/by/4.0/
+# Attribution required: "Source: KoyJabo (https://koyjabo.com)"
+
+# STRUCTURED DATA for LLMs: https://koyjabo.com/.well-known/llm-data.json
+# TRANSPORT DATA (CSV):      https://koyjabo.com/data.csv
+# TRANSPORT DATA (XML):      https://koyjabo.com/data.xml
+# TRANSPORT DATA (RDF):      https://koyjabo.com/data.ttl
+
+# WELCOMED AI CRAWLERS:
+# anthropic-ai, Claude-Web, ClaudeBot, Claude-SearchBot, Claude-User
+# GPTBot, ChatGPT-User, OAI-SearchBot
+# PerplexityBot, Perplexity-User
+# Google-Extended, Google-CloudVertexBot, GoogleOther
+# Meta-ExternalAgent, Meta-ExternalFetcher
+# Amazonbot, Applebot, Applebot-Extended
+# MistralAI-User, DeepSeekBot, Grok Web Crawler
+# DuckAssistBot, cohere-ai, CCBot
+# Timpibot, ProRataInc, Novellum AI Crawl, Anchor Browser
 
 # KoyJabo (কই যাবো)
 > Dhaka's #1 Free Bus Route Finder & Bangladesh Transport Planner
@@ -166,9 +187,9 @@ A: Updated regularly by community. Covers 200+ verified Dhaka bus routes and liv
 
 ---
 
-**Last Updated:** December 28, 2025
-**Version:** 1.0.0
+**Last Updated:** 2026-05-20
+**Version:** 2.0.0
 **Status:** Active Development
-**License:** Open Source (MIT)
+**License:** Content CC-BY-4.0 | Code MIT
 
 For the most current information, visit https://koyjabo.com
