@@ -69,6 +69,7 @@ import TermsOfService from './components/TermsOfService';
 import ContactUs from './components/ContactUs';
 import OfflineIndicator from './components/OfflineIndicator';
 import AdSenseAd from './components/AdSenseAd';
+import StickyBottomBannerAd from './components/StickyBottomBannerAd';
 import TrainListPage, { TrainDetail } from './components/TrainListPage';
 import TrainRating from './components/TrainRating';
 import { BDTrainRoute, BD_TRAIN_ROUTES, TRAIN_STATIONS } from './data/bangladeshTrainData';
@@ -2406,7 +2407,7 @@ const App: React.FC = () => {
           chatHistory.map((msg, idx) => (
             <React.Fragment key={idx}>
               {idx > 0 && idx % 10 === 0 && (
-                <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-2 max-w-[728px] mx-auto" />
+                <AdSenseAd adSlot="auto" adFormat="auto" className="my-2 max-w-[728px] mx-auto" />
               )}
 
               <div className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -2458,8 +2459,7 @@ const App: React.FC = () => {
         <h2 className="text-xl sm:text-2xl font-bold mb-2 text-kj-text">কই<span className="text-kj-accent ml-2">যাবো</span> <span className="text-kj-text-dim text-base sm:text-lg">(KoyJabo)</span></h2>
         <p className="text-sm sm:text-base text-kj-text-dim mb-6 sm:mb-8">{t('settings.version')} 2.5.0 • {t('common.tagline') || 'Bangladesh\'s Smart Transport Route Finder — Bus, Train, Metro, AI & More'}</p>
 
-        {/* <AdSenseAd adSlot="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-
+        <AdSenseAd adSlot="auto" adFormat="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
         <div className="text-left space-y-6 sm:space-y-8 bg-kj-chip-bg p-4 sm:p-6 md:p-10 rounded-2xl sm:rounded-[2rem] border border-kj-line shadow-sm">
           <section>
@@ -2618,7 +2618,7 @@ const App: React.FC = () => {
             </div>
           </section>
 
-          <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-10 max-w-[728px] mx-auto" />
+          <AdSenseAd adSlot="auto" adFormat="auto" className="my-10 max-w-[728px] mx-auto" />
 
         </div>
       </div>
@@ -2824,9 +2824,7 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-
-
+          <AdSenseAd adSlot="auto" adFormat="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
           {/* Benefit 4 */}
 
@@ -2947,7 +2945,7 @@ const App: React.FC = () => {
           </button>
         </div>
 
-        <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-10 max-w-[728px] mx-auto" />
+        <AdSenseAd adSlot="auto" adFormat="auto" className="my-10 max-w-[728px] mx-auto" />
 
         {/* Bottom padding for mobile */}
 
@@ -3029,9 +3027,7 @@ const App: React.FC = () => {
             </p>
           </div>
 
-          {/* <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-
-
+          <AdSenseAd adSlot="auto" adFormat="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
           {/* FAQ 7 - Emergency Helpline */}
 
@@ -3090,7 +3086,7 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-6 max-w-[728px] mx-auto" />
+        <AdSenseAd adSlot="auto" adFormat="auto" className="my-6 max-w-[728px] mx-auto" />
 
         {/* Still have questions? */}
         <div className="mt-12 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-slate-800 dark:to-slate-900 rounded-2xl p-8 text-center border border-blue-100 dark:border-kj-line">
@@ -3116,8 +3112,7 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-
+        <AdSenseAd adSlot="auto" adFormat="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
 
         {/* Bottom padding for mobile */}
         <div className="h-20"></div>
@@ -3628,7 +3623,7 @@ const App: React.FC = () => {
             )}
           </div>
 
-          <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-4 max-w-[728px] mx-auto" />
+          <AdSenseAd adSlot="auto" adFormat="auto" className="my-4 max-w-[728px] mx-auto" />
 
           {/* Full Route List */}
           <div className="bg-kj-panel rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-kj-line overflow-hidden">
@@ -4332,7 +4327,7 @@ const App: React.FC = () => {
         >
 
           {/* Top banner — inside scroll container, scrolls with content */}
-          <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="mb-2 max-w-[728px] mx-auto" />
+          <AdSenseAd adSlot="auto" adFormat="auto" className="mb-2 max-w-[728px] mx-auto" />
 
           {/* Intelligent Route Suggestions - Hide in Favorites Mode */}
           {(suggestedRoutes.length > 0 && listFilter !== 'FAVORITES') && (
@@ -4437,7 +4432,7 @@ const App: React.FC = () => {
             </div>
           )}
           {filteredBuses.length > 0 && (
-            <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="mb-3 max-w-[728px] mx-auto" />
+            <AdSenseAd adSlot="auto" adFormat="auto" className="mb-3 max-w-[728px] mx-auto" />
           )}
           {filteredBuses.map((bus, busIdx) => {
             const isFav = favorites.includes(bus.id);
@@ -4452,7 +4447,7 @@ const App: React.FC = () => {
             return (
               <React.Fragment key={bus.id}>
               {busIdx > 0 && busIdx % 5 === 0 && (
-                <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-2 max-w-[728px] mx-auto" />
+                <AdSenseAd adSlot="auto" adFormat="auto" className="my-2 max-w-[728px] mx-auto" />
               )}
 
                 <div
@@ -4937,6 +4932,11 @@ const App: React.FC = () => {
             {view === AppView.SERVER_ERROR && renderServerError()}
           </div>
         </main>
+
+        {/* Sticky bottom banner ad — above mobile nav, excluded from views with their own bottom UI */}
+        {view !== AppView.LIVE_NAV && view !== AppView.AI_ASSISTANT && view !== AppView.LOGIN && view !== AppView.SIGNUP && view !== AppView.FORGOT_PASSWORD && view !== AppView.RESET_PASSWORD && (
+          <StickyBottomBannerAd />
+        )}
 
         {/* Mobile Bottom Navigation */}
         {view !== AppView.BUS_DETAILS && view !== AppView.LIVE_NAV && (

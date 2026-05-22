@@ -433,9 +433,16 @@ textarea {
 }
 
 
-/* Content scrollable area bottom padding: nav height (4rem) + safe area inset */
+/* Content scrollable area bottom padding: nav height (4rem) + sticky ad (~3.5rem) + safe area inset */
 .pb-nav-safe {
-  padding-bottom: calc(4rem + env(safe-area-inset-bottom));
+  padding-bottom: calc(7.5rem + env(safe-area-inset-bottom));
+}
+
+/* Desktop: no sticky ad, just a comfortable bottom gap */
+@media (min-width: 768px) {
+  .pb-nav-safe {
+    padding-bottom: 1rem;
+  }
 }
 
 /* Reduce motion for users who prefer it */
