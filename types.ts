@@ -104,6 +104,10 @@ export enum AppView {
   BUS_LIVE_TRACKING = 'BUS_LIVE_TRACKING',
   SEAT_AVAILABILITY = 'SEAT_AVAILABILITY',
   RELEASE_NOTES = 'RELEASE_NOTES',
+  // Mode hub views
+  LOCAL_BUS_HUB = 'LOCAL_BUS_HUB',
+  METRO_HUB = 'METRO_HUB',
+  LAUNCH_HUB = 'LAUNCH_HUB',
 }
 
 export interface ChatMessage {

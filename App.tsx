@@ -85,6 +85,9 @@ import BusPhotoGallery from './components/BusPhotoGallery';
 import TrainPhotoGallery from './components/TrainPhotoGallery';
 import { getBusRatings, BusRatingSummary } from './services/communityDataService';
 import ReleaseNotes from './components/ReleaseNotes';
+import LocalBusHub from './components/LocalBusHub';
+import MetroRailHub from './components/MetroRailHub';
+import LaunchHub from './components/LaunchHub';
 
 
 
@@ -169,6 +172,11 @@ const getStoredView = (): AppView => {
         'release-notes': AppView.RELEASE_NOTES,
         'updates': AppView.RELEASE_NOTES,
         'intercity': AppView.HOME,
+        'local-bus': AppView.LOCAL_BUS_HUB,
+        'metro': AppView.METRO_HUB,
+        'metro-rail': AppView.METRO_HUB,
+        'launch': AppView.LAUNCH_HUB,
+        'launch-steamer': AppView.LAUNCH_HUB,
       };
 
       if (viewMap[target]) {
@@ -640,11 +648,11 @@ const App: React.FC = () => {
     if (isDarkMode) {
       root.classList.add('dark');
       localStorage.setItem('theme', 'dark');
-      document.body.style.backgroundColor = '#0f172a'; // slate-900
+      document.body.style.backgroundColor = '#040814';
     } else {
       root.classList.remove('dark');
       localStorage.setItem('theme', 'light');
-      document.body.style.backgroundColor = '#f8fafc'; // slate-50
+      document.body.style.backgroundColor = '#eef3f7';
     }
   }, [isDarkMode]);
 
@@ -4295,6 +4303,71 @@ const App: React.FC = () => {
                 <ArrowLeft className="w-4 h-4 text-white rotate-180" />
               </div>
             </button>
+            {/* ── How are you traveling? Mode Tiles ── */}
+            {searchMode === 'TEXT' && (
+              <div className="mb-2">
+                <p className="text-[10px] font-bold text-kj-text-faint tracking-[1.2px] uppercase mb-2 px-1">
+                  {language === 'bn' ? 'কীভাবে যাচ্ছেন?' : 'How are you traveling?'}
+                </p>
+                <div className="grid grid-cols-3 gap-2">
+                  {/* Local Bus */}
+                  <button
+                    onClick={() => setView(AppView.LOCAL_BUS_HUB)}
+                    className="kj-mode-tile flex flex-col items-center gap-1.5 p-3 rounded-2xl text-white active:scale-95 transition-transform"
+                    style={{ background: 'linear-gradient(135deg, #006a4e 0%, #00b8d9 100%)', boxShadow: '0 6px 20px -8px rgba(0,184,217,0.5)' }}
+                  >
+                    <span className="text-xl kj-bob">🚌</span>
+                    <span className="text-[10px] font-bold leading-tight text-center">{language === 'bn' ? 'লোকাল বাস' : 'Local Bus'}</span>
+                  </button>
+                  {/* Metro Rail */}
+                  <button
+                    onClick={() => setView(AppView.METRO_HUB)}
+                    className="kj-mode-tile flex flex-col items-center gap-1.5 p-3 rounded-2xl text-white active:scale-95 transition-transform"
+                    style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #00f5ff 100%)', boxShadow: '0 6px 20px -8px rgba(0,245,255,0.4)' }}
+                  >
+                    <span className="text-xl kj-bob" style={{ animationDelay: '0.4s' }}>🚇</span>
+                    <span className="text-[10px] font-bold leading-tight text-center">{language === 'bn' ? 'মেট্রো রেল' : 'Metro Rail'}</span>
+                  </button>
+                  {/* Train */}
+                  <button
+                    onClick={() => setView(AppView.TRAIN_LIST)}
+                    className="kj-mode-tile flex flex-col items-center gap-1.5 p-3 rounded-2xl text-white active:scale-95 transition-transform"
+                    style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #f59e0b 100%)', boxShadow: '0 6px 20px -8px rgba(124,58,237,0.4)' }}
+                  >
+                    <span className="text-xl kj-bob" style={{ animationDelay: '0.8s' }}>🚆</span>
+                    <span className="text-[10px] font-bold leading-tight text-center">{language === 'bn' ? 'ট্রেন' : 'Train'}</span>
+                  </button>
+                  {/* Intercity */}
+                  <button
+                    onClick={() => { localStorage.setItem('dhaka_commute_view', JSON.stringify(AppView.HOME)); window.location.href = '/intercity/'; }}
+                    className="kj-mode-tile flex flex-col items-center gap-1.5 p-3 rounded-2xl text-white active:scale-95 transition-transform"
+                    style={{ background: 'linear-gradient(135deg, #b45309 0%, #f59e0b 100%)', boxShadow: '0 6px 20px -8px rgba(245,158,11,0.4)' }}
+                  >
+                    <span className="text-xl kj-bob" style={{ animationDelay: '1.2s' }}>🚌</span>
+                    <span className="text-[10px] font-bold leading-tight text-center">{language === 'bn' ? 'আন্তঃজেলা' : 'Intercity'}</span>
+                  </button>
+                  {/* Launch */}
+                  <button
+                    onClick={() => setView(AppView.LAUNCH_HUB)}
+                    className="kj-mode-tile flex flex-col items-center gap-1.5 p-3 rounded-2xl text-white active:scale-95 transition-transform"
+                    style={{ background: 'linear-gradient(135deg, #0c4a6e 0%, #38bdf8 100%)', boxShadow: '0 6px 20px -8px rgba(56,189,248,0.4)' }}
+                  >
+                    <span className="text-xl kj-bob" style={{ animationDelay: '1.6s' }}>⛵</span>
+                    <span className="text-[10px] font-bold leading-tight text-center">{language === 'bn' ? 'লঞ্চ' : 'Launch'}</span>
+                  </button>
+                  {/* AI */}
+                  <button
+                    onClick={() => setView(AppView.AI_ASSISTANT)}
+                    className="kj-mode-tile flex flex-col items-center gap-1.5 p-3 rounded-2xl text-white active:scale-95 transition-transform"
+                    style={{ background: 'linear-gradient(135deg, #6d28d9 0%, #ff2a6d 100%)', boxShadow: '0 6px 20px -8px rgba(109,40,217,0.4)' }}
+                  >
+                    <span className="text-xl kj-bob" style={{ animationDelay: '2s' }}>🤖</span>
+                    <span className="text-[10px] font-bold leading-tight text-center">{language === 'bn' ? 'AI সহকারী' : 'AI Chat'}</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
             {/* List Filter Tabs */}
             <div className="flex p-1 bg-kj-chip-bg rounded-xl border border-kj-line">
               <button
@@ -4659,6 +4732,7 @@ const App: React.FC = () => {
           {/* Left Sidebar (Desktop) / Main View (Mobile Home) */}
           <div
             className={`flex flex-col flex-1 min-h-0 w-full md:flex-none md:w-1/3 md:min-w-[320px] md:max-w-md border-r border-kj-line dark:border-kj-line bg-kj-panel dark:bg-kj-panel z-0 overflow-hidden ${view !== AppView.HOME && view !== AppView.TRAIN_LIST && 'hidden md:flex'}`}
+            style={undefined}
             style={(view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? { display: 'none' } : undefined}
           >
             <div className="flex-1 min-h-0 flex flex-col md:pt-0">
@@ -4670,6 +4744,7 @@ const App: React.FC = () => {
           <div className={`
             ${'flex-1 min-h-0 w-full min-w-0 bg-kj-bg dark:bg-kj-bg relative overflow-hidden flex flex-col'}
             ${(view === AppView.HOME || view === AppView.TRAIN_LIST) && 'hidden md:flex'}
+            ${(view === AppView.LOCAL_BUS_HUB || view === AppView.METRO_HUB || view === AppView.LAUNCH_HUB) && 'flex'}
 `}>
             <div className={`hidden md:block absolute inset-0 w-full h-full min-h-0 transition-opacity duration-500 ${(view === AppView.HOME || view === AppView.TRAIN_LIST) ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}><DhakaAlive /></div>
             {view === AppView.TRAIN_DETAILS && (
@@ -4696,6 +4771,23 @@ const App: React.FC = () => {
             {view === AppView.BUS_DETAILS && (user ? renderBusDetails() : <LoginWall setView={setView} />)}
             {view === AppView.LIVE_NAV && renderLiveNav()}
             {view === AppView.AI_ASSISTANT && (user ? renderAiAssistant() : <LoginWall setView={setView} />)}
+
+            {/* Mode hub views */}
+            {view === AppView.LOCAL_BUS_HUB && (
+              <div className="flex-1 min-h-0 overflow-y-auto bg-kj-bg">
+                <LocalBusHub onBack={() => setView(AppView.HOME)} language={language} />
+              </div>
+            )}
+            {view === AppView.METRO_HUB && (
+              <div className="flex-1 min-h-0 overflow-y-auto bg-kj-bg">
+                <MetroRailHub onBack={() => setView(AppView.HOME)} language={language} />
+              </div>
+            )}
+            {view === AppView.LAUNCH_HUB && (
+              <div className="flex-1 min-h-0 overflow-y-auto bg-kj-bg">
+                <LaunchHub onBack={() => setView(AppView.HOME)} language={language} />
+              </div>
+            )}
 
             {view === AppView.ABOUT && renderAbout()}
             {view === AppView.WHY_USE && renderWhyUse()}
@@ -4945,9 +5037,9 @@ const App: React.FC = () => {
               {/* Home */}
               <button
                 onClick={() => { setView(AppView.HOME); setPrimarySearch('LOCAL'); setSearchMode('TEXT'); }}
-                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${view === AppView.HOME && searchMode === 'TEXT' ? 'text-kj-primary' : 'text-kj-text-faint'}`}
+                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${(view === AppView.HOME && searchMode === 'TEXT') || view === AppView.LOCAL_BUS_HUB ? 'text-kj-primary' : 'text-kj-text-faint'}`}
               >
-                {view === AppView.HOME && searchMode === 'TEXT' && (
+                {((view === AppView.HOME && searchMode === 'TEXT') || view === AppView.LOCAL_BUS_HUB) && (
                   <span className="absolute top-0 left-1/2 -translate-x-1/2 w-[22px] h-[3px] rounded-full bg-kj-primary" />
                 )}
                 <Home className="w-5 h-5" />
