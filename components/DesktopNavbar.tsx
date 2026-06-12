@@ -1,10 +1,18 @@
 import React from 'react';
-import { Home, Map, Bot, Heart, Info, Train, Menu, Sparkles, Navigation, Clock, MapPin, User, LogIn, Bus, BookOpen, Rocket } from 'lucide-react';
+import { Home, Map, Bot, Heart, Info, Train, Menu, Sparkles, Navigation, Clock, MapPin, User, LogIn, Bus, BookOpen, Rocket, TramFront, Calculator, Anchor } from 'lucide-react';
 import { AppView } from '../types';
 import ThemeToggle from './ThemeToggle';
 import { AnimatedLogo } from './AnimatedLogo';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../src/contexts/AuthContext';
+
+interface NavItem {
+    label: string;
+    icon: React.ElementType;
+    isActive: boolean;
+    onClick: () => void;
+    badge?: string;
+}
 
 interface DesktopNavbarProps {
     view: AppView;
@@ -44,66 +52,48 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
 
     const navItems = [
         {
-            label: isInDhaka ? t('nav.home') : t('nav.home'),
+            label: language === 'bn' ? 'হোম' : 'Home',
             icon: Home,
             isActive: view === AppView.HOME && primarySearch === 'LOCAL' && listFilter !== 'FAVORITES',
-            onClick: () => {
-                setView(AppView.HOME);
-                setPrimarySearch('LOCAL');
-                setListFilter('ALL');
-            }
+            onClick: () => { setView(AppView.HOME); setPrimarySearch('LOCAL'); setListFilter('ALL'); }
         },
         {
-            label: t('intercity.title'),
+            label: language === 'bn' ? 'মেট্রো' : 'Metro',
+            icon: TramFront,
+            isActive: view === AppView.METRO_HUB,
+            onClick: () => setView(AppView.METRO_HUB),
+            badge: 'LIVE'
+        },
+        {
+            label: language === 'bn' ? 'আন্তঃজেলা' : 'Intercity',
             icon: Bus,
-            // Active when outside Dhaka and in intercity search mode (main app intercity view)
             isActive: !isInDhaka && view === AppView.HOME && primarySearch === 'INTERCITY',
             onClick: () => {
                 if (!isInDhaka) {
-                    // Outside Dhaka: show intercity search within the main app
                     setView(AppView.HOME);
                     setPrimarySearch('INTERCITY');
                 } else {
-                    // Inside Dhaka: navigate to the dedicated intercity app
                     window.location.href = '/intercity';
                 }
             }
         },
         {
-            label: t('nav.train'),
-            icon: Train,
-            isActive: view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS,
-            onClick: () => setView(AppView.TRAIN_LIST)
+            label: language === 'bn' ? 'ভাড়া হিসাব' : 'Fare',
+            icon: Calculator,
+            isActive: view === AppView.COMMUTE_COST,
+            onClick: () => setView(AppView.COMMUTE_COST)
         },
         {
-            label: t('ai.title'),
+            label: language === 'bn' ? 'AI সহায়ক' : 'AI Assistant',
             icon: Sparkles,
             isActive: view === AppView.AI_ASSISTANT,
-            onClick: () => setView(AppView.AI_ASSISTANT)
+            onClick: () => setView(AppView.AI_ASSISTANT),
+            badge: 'NEW'
         },
-
-        {
-            label: t('nav.blog') || 'Blog',
-            icon: BookOpen,
-            isActive: view === AppView.BLOG,
-            onClick: () => setView(AppView.BLOG)
-        },
-        {
-            label: t('nav.about'),
-            icon: Info,
-            isActive: view === AppView.ABOUT,
-            onClick: () => setView(AppView.ABOUT)
-        },
-        {
-            label: t('releaseNotes.title') || (language === 'bn' ? 'রিলিজ নোটস' : 'Release Notes'),
-            icon: Rocket,
-            isActive: view === AppView.RELEASE_NOTES,
-            onClick: () => setView(AppView.RELEASE_NOTES)
-        }
     ];
 
     return (
-        <nav className="hidden md:flex fixed top-0 left-0 right-0 h-20 bg-kj-panel/90 backdrop-blur-md border-b border-kj-line z-[100] px-8 items-center justify-between transition-all duration-300">
+        <nav className="hidden md:flex fixed top-0 left-0 right-0 h-16 bg-kj-panel/90 backdrop-blur-xl border-b border-kj-line z-[100] px-6 items-center justify-between transition-all duration-300 kj-glass">
             {/* Logo Section */}
             <div
                 className="flex items-center gap-3 cursor-pointer group"
@@ -120,15 +110,20 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
             </div>
 
             {/* Navigation Links */}
-            <div className="flex items-center gap-1 bg-kj-chip-bg p-1.5 rounded-2xl border border-kj-line">
-                {navItems.map((item) => (
+            <div className="flex items-center gap-0.5 bg-kj-chip-bg p-1 rounded-2xl border border-kj-line">
+                {(navItems as NavItem[]).map((item) => (
                     <button
                         key={item.label}
                         onClick={item.onClick}
-                        className={`relative px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition-all duration-200 ${item.isActive ? 'bg-kj-panel text-kj-primary shadow-sm' : 'text-kj-text-dim hover:text-kj-text hover:bg-kj-panel/60'}`}
+                        className={`relative px-3 py-1.5 rounded-xl text-[13px] font-semibold flex items-center gap-1.5 transition-all duration-200 ${item.isActive ? 'bg-kj-panel text-kj-primary shadow-sm kj-glass' : 'text-kj-text-dim hover:text-kj-text hover:bg-kj-panel/60'}`}
                     >
-                        <item.icon className="w-4 h-4" />
+                        <item.icon className="w-3.5 h-3.5" />
                         {item.label}
+                        {item.badge && (
+                            <span className="ml-0.5 text-[8px] font-bold px-1 py-0.5 rounded-full bg-kj-accent text-white leading-none">
+                                {item.badge}
+                            </span>
+                        )}
                     </button>
                 ))}
             </div>

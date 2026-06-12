@@ -442,19 +442,19 @@ const SettingsView: React.FC<{
 
       <div className="space-y-8 max-w-xl">
         {/* AI Assistant Info */}
-        <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/30 p-6 rounded-2xl border border-kj-primary/30">
+        <div className="bg-gradient-to-br bg-kj-primary-soft dark:bg-kj-primary-soft p-6 rounded-2xl border border-kj-primary/30">
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 bg-kj-primary rounded-xl flex items-center justify-center text-white shrink-0">
               <Bot className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="font-bold text-emerald-900 dark:text-emerald-100 mb-2 text-lg">🤖 Koy Jabo AI Assistant</h3>
-              <p className="text-sm text-emerald-800 dark:text-emerald-200 leading-relaxed">
+              <h3 className="font-bold text-kj-text mb-2 text-lg">🤖 Koy Jabo AI Assistant</h3>
+              <p className="text-sm text-kj-text-dim leading-relaxed">
                 Our intelligent AI assistant is built-in and ready to help you find the best routes across Bangladesh. No API keys needed - just ask your questions naturally in English or Bengali!
               </p>
               <div className="mt-4 flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-kj-primary" />
-                <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300">{lbl('Always Available • No Setup Required • Completely Free', 'সবসময় উপলব্ধ • কোনো সেটআপ লাগবে না • সম্পূর্ণ বিনামূল্যে')}</span>
+                <span className="text-xs font-bold text-kj-primary">{lbl('Always Available • No Setup Required • Completely Free', 'সবসময় উপলব্ধ • কোনো সেটআপ লাগবে না • সম্পূর্ণ বিনামূল্যে')}</span>
               </div>
             </div>
           </div>
@@ -2326,7 +2326,7 @@ const App: React.FC = () => {
           <div>
             <h2 className="text-lg font-bold text-kj-text flex items-center gap-2">
               Live Navigation
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+              <span className="w-2 h-2 rounded-full bg-kj-primary animate-pulse"></span>
             </h2>
             <p className="text-xs text-kj-text-dim">{formatBusName(selectedBus.name)}</p>
           </div>
@@ -2343,7 +2343,7 @@ const App: React.FC = () => {
           <div>
             <h2 className="text-lg font-bold text-kj-text flex items-center gap-2">
               Live Navigation
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+              <span className="w-2 h-2 rounded-full bg-kj-primary animate-pulse"></span>
             </h2>
             <p className="text-xs text-kj-text-dim">{formatBusName(selectedBus.name)}</p>
           </div>
@@ -2373,8 +2373,8 @@ const App: React.FC = () => {
         </div>
         <div className="flex-1">
           <h2 className="text-lg font-bold text-kj-text">{t('common.appName')} {t('nav.aiAssistant')}</h2>
-          <p className="text-xs font-bold flex items-center gap-1 text-green-600">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> {t('common.ready')}
+          <p className="text-xs font-bold flex items-center gap-1 text-kj-primary">
+            <span className="w-1.5 h-1.5 rounded-full bg-kj-primary animate-pulse"></span> {t('common.ready')}
           </p>
         </div>
 
@@ -2388,8 +2388,8 @@ const App: React.FC = () => {
         </div>
         <div className="flex-1">
           <h2 className="text-lg font-bold text-kj-text">{t('common.appName')} {t('nav.aiAssistant')}</h2>
-          <p className="text-xs font-bold flex items-center gap-1 text-green-600">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> {t('common.ready')}
+          <p className="text-xs font-bold flex items-center gap-1 text-kj-primary">
+            <span className="w-1.5 h-1.5 rounded-full bg-kj-primary animate-pulse"></span> {t('common.ready')}
           </p>
         </div>
 
@@ -2418,7 +2418,7 @@ const App: React.FC = () => {
               )}
 
               <div className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-dhaka-dark dark:bg-emerald-700 text-white rounded-br-none' : 'bg-kj-panel text-kj-text border border-kj-line rounded-bl-none'}`}>
+                <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-kj-primary dark:bg-kj-primary text-kj-primary-ink rounded-br-none' : 'bg-kj-panel text-kj-text border border-kj-line rounded-bl-none'}`}>
                   <div className="whitespace-pre-wrap">{msg.text.split(/(\*\*[^*]+\*\*)/).map((part, i) =>
                     /^\*\*[^*]+\*\*$/.test(part)
                       ? <strong key={i}>{part.slice(2, -2)}</strong>
@@ -2481,7 +2481,7 @@ const App: React.FC = () => {
           </section>
 
           <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-12">
-            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-5 sm:p-6 md:p-8 rounded-2xl border-l-4 border-kj-primary">
+            <div className="bg-gradient-to-br bg-kj-primary-soft dark:bg-kj-primary-soft p-5 sm:p-6 md:p-8 rounded-2xl border-l-4 border-kj-primary">
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-kj-primary dark:text-kj-primary mb-3 flex items-center gap-2">
                 <Flag className="w-6 h-6" /> {t('about.mission')}
               </h3>
@@ -2505,7 +2505,7 @@ const App: React.FC = () => {
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-kj-text mb-4 sm:mb-6">{t('about.allInOne')}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div className="bg-kj-panel p-6 rounded-2xl border border-kj-line shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-12 h-12 bg-kj-primary-soft dark:bg-emerald-900/40 text-kj-primary rounded-xl flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-kj-primary-soft text-kj-primary rounded-xl flex items-center justify-center mb-4">
                   <Bus className="w-6 h-6" />
                 </div>
                 <h4 className="font-bold text-xl text-kj-text mb-2">{t('about.busRoutesTitle')}</h4>
@@ -2577,7 +2577,7 @@ const App: React.FC = () => {
           <section>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-kj-text mb-4 sm:mb-6">{t('about.impactTitle')}</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-              <div className="bg-kj-primary dark:bg-emerald-800 p-4 md:p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
+              <div className="bg-kj-primary p-4 md:p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
                 <span className="text-xl md:text-3xl font-bold block mb-1">{t('about.impactMonthlyVal')}</span>
                 <span className="text-[9px] md:text-[10px] uppercase font-bold opacity-80">{t('about.impactMonthly')}</span>
               </div>
@@ -2788,7 +2788,7 @@ const App: React.FC = () => {
 
         <div className="space-y-6">
           {/* Benefit 1 */}
-          <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/30 p-6 rounded-2xl border border-emerald-100 dark:border-emerald-800">
+          <div className="bg-kj-primary-soft p-6 rounded-2xl border border-kj-primary/20">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 bg-kj-primary rounded-xl flex items-center justify-center text-white shrink-0">
                 <Zap className="w-6 h-6" />
@@ -2853,9 +2853,9 @@ const App: React.FC = () => {
           </div>
 
           {/* Benefit 5 */}
-          <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 p-6 rounded-2xl border border-green-100 dark:border-green-800">
+          <div className="bg-gradient-to-br bg-kj-primary-soft p-6 rounded-2xl border border-kj-primary/20">
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white shrink-0">
+              <div className="w-12 h-12 bg-kj-primary rounded-xl flex items-center justify-center text-kj-primary-ink shrink-0">
                 <Navigation className="w-6 h-6" />
               </div>
               <div>
@@ -2944,7 +2944,7 @@ const App: React.FC = () => {
         </div>
 
         {/* CTA Section */}
-        <div className="mt-12 bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 rounded-2xl p-8 text-white text-center shadow-lg dark:shadow-emerald-900/20">
+        <div className="mt-12 bg-gradient-to-br from-kj-primary to-kj-primary-deep rounded-2xl p-8 text-white text-center shadow-lg">
           <h2 className="text-2xl font-bold mb-3">{t('whyUse.readyToNavigate')}</h2>
           <p className="mb-6 opacity-90">{t('whyUse.readyToNavigateDesc')}</p>
           <button
@@ -2972,7 +2972,7 @@ const App: React.FC = () => {
 
         <div className="space-y-3 sm:space-y-4">
           {/* FAQ 1 */}
-          <div className="bg-kj-panel border border-kj-line rounded-xl p-4 sm:p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
+          <div className="bg-kj-panel border border-kj-line rounded-xl p-4 sm:p-6 hover:border-kj-primary transition-colors">
             <h3 className="text-lg font-bold text-kj-text mb-2 flex items-start gap-2">
               <span className="text-kj-primary">Q:</span>
               <span>{t('faq.q1')}</span>
@@ -2983,7 +2983,7 @@ const App: React.FC = () => {
           </div>
 
           {/* FAQ 2 */}
-          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
+          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-kj-primary transition-colors">
             <h3 className="text-lg font-bold text-kj-text mb-2 flex items-start gap-2">
               <span className="text-kj-primary">Q:</span>
               <span>{t('faq.q2')}</span>
@@ -2994,7 +2994,7 @@ const App: React.FC = () => {
           </div>
 
           {/* FAQ 3 */}
-          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
+          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-kj-primary transition-colors">
             <h3 className="text-lg font-bold text-kj-text mb-2 flex items-start gap-2">
               <span className="text-kj-primary">Q:</span>
               <span>{t('faq.q3')}</span>
@@ -3005,7 +3005,7 @@ const App: React.FC = () => {
           </div>
 
           {/* FAQ 4 */}
-          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
+          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-kj-primary transition-colors">
             <h3 className="text-lg font-bold text-kj-text mb-2 flex items-start gap-2">
               <span className="text-kj-primary">Q:</span>
               <span>{t('faq.q4')}</span>
@@ -3016,7 +3016,7 @@ const App: React.FC = () => {
           </div>
 
           {/* FAQ 5 */}
-          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
+          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-kj-primary transition-colors">
             <h3 className="text-lg font-bold text-kj-text mb-2 flex items-start gap-2">
               <span className="text-kj-primary">Q:</span>
               <span>{t('faq.q5')}</span>
@@ -3027,7 +3027,7 @@ const App: React.FC = () => {
           </div>
 
           {/* FAQ 6 */}
-          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
+          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-kj-primary transition-colors">
             <h3 className="text-lg font-bold text-kj-text mb-2 flex items-start gap-2">
               <span className="text-kj-primary">Q:</span>
               <span>{t('faq.q6')}</span>
@@ -3054,7 +3054,7 @@ const App: React.FC = () => {
           </div>
 
           {/* FAQ 8 */}
-          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
+          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-kj-primary transition-colors">
             <h3 className="text-lg font-bold text-kj-text mb-2 flex items-start gap-2">
               <span className="text-kj-primary">Q:</span>
               <span>{t('faq.q8')}</span>
@@ -3065,7 +3065,7 @@ const App: React.FC = () => {
           </div>
 
           {/* FAQ 9 */}
-          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
+          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-kj-primary transition-colors">
             <h3 className="text-lg font-bold text-kj-text mb-2 flex items-start gap-2">
               <span className="text-kj-primary">Q:</span>
               <span>{t('faq.q9')}</span>
@@ -3076,7 +3076,7 @@ const App: React.FC = () => {
           </div>
 
           {/* FAQ 11 */}
-          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
+          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-kj-primary transition-colors">
             <h3 className="text-lg font-bold text-kj-text mb-2 flex items-start gap-2">
               <span className="text-kj-primary">Q:</span>
               <span>{t('faq.q10')}</span>
@@ -3087,7 +3087,7 @@ const App: React.FC = () => {
           </div>
 
           {/* FAQ 12 */}
-          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
+          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-kj-primary transition-colors">
             <h3 className="text-lg font-bold text-kj-text mb-2 flex items-start gap-2">
               <span className="text-kj-primary">Q:</span>
               <span>{t('faq.q11')}</span>
@@ -3139,7 +3139,7 @@ const App: React.FC = () => {
       <div className="max-w-3xl mx-auto">
         <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 sm:mb-6 text-kj-text leading-tight">AI Dataset & Integration</h1>
         <div className="flex flex-wrap items-center gap-2 text-sm text-kj-text-dim mb-6 sm:mb-8">
-          <span className="bg-kj-primary-soft text-emerald-700 px-3 py-1 rounded-full text-xs font-bold">For AI Agents</span>
+          <span className="bg-kj-primary-soft text-kj-primary px-3 py-1 rounded-full text-xs font-bold">For AI Agents</span>
           <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold">Schema Ready</span>
           <span>Last Updated: December 6, 2025</span>
         </div>
@@ -3354,7 +3354,7 @@ const App: React.FC = () => {
             </button>
             <button
               onClick={() => setView(AppView.BUS_LIVE_TRACKING)}
-              className="flex items-center justify-center gap-1.5 p-2 bg-kj-chip-bg rounded-xl border border-kj-line hover:border-green-300 dark:hover:border-green-700 transition-colors active:scale-95"
+              className="flex items-center justify-center gap-1.5 p-2 bg-kj-chip-bg rounded-xl border border-kj-line hover:border-kj-primary/40 transition-colors active:scale-95"
               aria-label={language === 'bn' ? 'লাইভ অবস্থান' : 'Live Location'}
             >
               <span className="text-base">📍</span>
@@ -3382,7 +3382,7 @@ const App: React.FC = () => {
           <BusImageViewer key={`desk-${selectedBus.id}`} busId={selectedBus.id} busName={selectedBus.name} busBnName={selectedBus.bnName} />
           <button
             onClick={() => setView(AppView.LIVE_NAV)}
-            className="bg-kj-primary text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-green-700 transition-colors flex items-center gap-2 mr-2"
+            className="bg-kj-primary text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-kj-primary-deep transition-colors flex items-center gap-2 mr-2"
           >
             <Navigation className="w-4 h-4" />
             {t('liveNav.startNavigation')}
@@ -3406,7 +3406,7 @@ const App: React.FC = () => {
             </button>
             <button
               onClick={() => setView(AppView.BUS_LIVE_TRACKING)}
-              className="flex items-center justify-center gap-1.5 p-2 bg-kj-chip-bg rounded-xl border border-kj-line hover:border-green-300 dark:hover:border-green-700 transition-colors active:scale-95"
+              className="flex items-center justify-center gap-1.5 p-2 bg-kj-chip-bg rounded-xl border border-kj-line hover:border-kj-primary/40 transition-colors active:scale-95"
             >
               <span className="text-base">📍</span>
               <span className="text-xs font-semibold text-kj-text-dim">{language === 'bn' ? 'লাইভ অবস্থান' : 'Live Location'}</span>
@@ -3487,7 +3487,7 @@ const App: React.FC = () => {
                       <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold shadow-sm
                                          ${step.type === 'walk' ? 'bg-gray-200 text-kj-text-dim' :
                           step.type === 'metro' ? 'bg-blue-200 text-blue-700' :
-                            'bg-green-200 text-green-700'
+                            'bg-kj-primary-soft text-kj-primary'
                         }
    `}>
                         {formatNumber(idx + 1)}
@@ -3497,7 +3497,7 @@ const App: React.FC = () => {
                     <div className="pb-2 flex-1">
                       <p className="text-sm font-semibold text-kj-text leading-tight">{step.instruction}</p>
                       {step.type === 'bus' && step.busRoute?.id === selectedBus.id && (
-                        <span className="inline-block mt-1 text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">{t('busDetails.currentViewing')}</span>
+                        <span className="inline-block mt-1 text-[10px] bg-kj-primary-soft text-kj-primary px-2 py-0.5 rounded-full font-bold">{t('busDetails.currentViewing')}</span>
                       )}
                       {step.type === 'bus' && step.busRoute?.id !== selectedBus.id && (
                         <span className="inline-block mt-1 text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold">{t('busDetails.clickToView')}</span>
@@ -3542,7 +3542,7 @@ const App: React.FC = () => {
                   </span>
                 </div>
                 <div className="bg-kj-panel p-2.5 sm:p-3 rounded-2xl border border-kj-line shadow-[0_2px_8px_rgba(0,0,0,0.02)] min-h-[96px] sm:min-h-[120px] flex flex-col items-center text-center justify-center">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white mb-2 shadow-lg shadow-emerald-500/30">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br bg-kj-primary flex items-center justify-center text-kj-primary-ink mb-2 shadow-lg">
                     <Clock className="w-5 h-5" />
                   </div>
                   <span className="text-[10px] text-kj-text-faint uppercase font-bold tracking-wider">{t('busDetails.eta')}</span>
@@ -3558,7 +3558,7 @@ const App: React.FC = () => {
           <div className="bg-kj-panel rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-kj-line overflow-hidden w-full">
             <div className="px-4 py-3 border-b border-gray-50 dark:border-gray-700 flex justify-between items-center bg-gray-50/30 dark:bg-slate-700/30">
               <h3 className="font-bold text-kj-text-dim text-sm flex items-center gap-2">
-                <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div> {t('busDetails.liveView')}
+                <div className="w-1.5 h-1.5 bg-kj-primary rounded-full animate-pulse"></div> {t('busDetails.liveView')}
               </h3>
               <span className="text-[10px] bg-kj-primary-soft border border-kj-primary/30 px-2 py-0.5 rounded text-kj-primary font-medium">OpenStreetMap</span>
             </div>
@@ -3622,12 +3622,12 @@ const App: React.FC = () => {
             </div>
             {/* <AdSenseAd adSlot="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
             {fareInfo ? (
-              <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-xl border border-green-100 dark:border-green-800 flex justify-between items-center animate-in fade-in slide-in-from-top-2">
+              <div className="bg-kj-primary-soft p-3 rounded-xl border border-kj-primary/20 flex justify-between items-center animate-in fade-in slide-in-from-top-2">
                 <div>
-                  <p className="text-[10px] text-green-600 dark:text-green-400 font-bold uppercase">{t('busDetails.estimatedCost')}</p>
-                  <p className="text-xs text-green-600 dark:text-green-400">{t('busDetails.awayFrom')}: {formatNumber(fareInfo.distance.toFixed(1))} km</p>
+                  <p className="text-[10px] text-kj-primary font-bold uppercase">{t('busDetails.estimatedCost')}</p>
+                  <p className="text-xs text-kj-primary">{t('busDetails.awayFrom')}: {formatNumber(fareInfo.distance.toFixed(1))} km</p>
                 </div>
-                <span className="text-xl font-bold text-green-800 dark:text-green-300">৳{formatNumber(fareInfo.min)} - {formatNumber(fareInfo.max)}</span>
+                <span className="text-xl font-bold text-kj-text">৳{formatNumber(fareInfo.min)} - {formatNumber(fareInfo.max)}</span>
               </div>
             ) : (
               <div className="bg-gray-50 dark:bg-slate-700 p-3 rounded-xl border border-kj-line dark:border-gray-600 text-center">
@@ -3679,7 +3679,7 @@ const App: React.FC = () => {
                     return (
                       <div key={stopId} className={`px-4 py-3.5 hover:bg-kj-chip-bg dark:hover:bg-slate-700/50 flex items-center gap-4 relative z-10 group border-b border-gray-50 dark:border-gray-700 last:border-0 transition-colors 
                       ${isNearest && isWithinRange ? 'bg-blue-50/50 dark:bg-blue-900/10' : ''}
-                      ${isHighlighted ? 'bg-green-50 dark:bg-green-900/10 border-l-4 border-l-green-500 -ml-[1px]' : ''}
+                      ${isHighlighted ? 'bg-kj-primary-soft/20 border-l-4 border-l-kj-primary -ml-[1px]' : ''}
 `}>
                         <div className={`w-4 h-4 rounded-full border-2 border-white shadow-sm flex items-center justify-center shrink-0 transition-all
                         ${isNearest && isWithinRange
@@ -3689,7 +3689,7 @@ const App: React.FC = () => {
                               : isHighlighted
                                 ? 'bg-kj-primary w-5 h-5 ring-2 ring-green-100 scale-110'
                                 : isFirst
-                                  ? 'bg-green-600 w-5 h-5 ring-2 ring-green-100'
+                                  ? 'bg-kj-primary w-5 h-5 ring-2 ring-kj-primary/30'
                                   : isLast
                                     ? 'bg-red-500 w-5 h-5 ring-2 ring-red-100'
                                     : isNearest
@@ -3709,7 +3709,7 @@ const App: React.FC = () => {
                               {isNearest && !isWithinRange && <span className="ml-2 text-[10px] bg-orange-100 text-orange-600 px-1.5 py-0.5 rounded-full uppercase tracking-wide">{formatNumber((nearestStopDistance / 1000).toFixed(1))} km {t('emergency.away')}</span>}
 
                               {/* Start Badge */}
-                              {isUserStart && !isTransfer && <span className="ml-2 text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full uppercase tracking-wide font-bold">{t('busDetails.start')}</span>}
+                              {isUserStart && !isTransfer && <span className="ml-2 text-[10px] bg-kj-primary-soft text-kj-primary px-1.5 py-0.5 rounded-full uppercase tracking-wide font-bold">{t('busDetails.start')}</span>}
 
                               {/* Destination Badge */}
                               {isUserEnd && !isTransfer && <span className="ml-2 text-[10px] bg-red-100 text-red-700 px-1.5 py-0.5 rounded-full uppercase tracking-wide font-bold">{t('busDetails.destination')}</span>}
@@ -3815,7 +3815,7 @@ const App: React.FC = () => {
                           window.location.href = `/intercity/?from=${encodeURIComponent(pendingIntercityNav.from)}&to=${encodeURIComponent(pendingIntercityNav.to)}`;
                         }
                       }}
-                      className="w-full bg-kj-primary text-white font-bold py-3 rounded-xl hover:bg-green-700 transition-all flex items-center justify-center gap-2"
+                      className="w-full bg-kj-primary text-white font-bold py-3 rounded-xl hover:bg-kj-primary-deep transition-all flex items-center justify-center gap-2"
                     >
                       <span>Proceed Anyway</span>
                       <ArrowLeft className="w-4 h-4 rotate-180" />
@@ -3941,7 +3941,7 @@ const App: React.FC = () => {
                     <button
                       onClick={handleSearchCommit}
                       disabled={isIntercityRedirecting}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center p-2 bg-kj-primary-soft rounded-lg text-emerald-700 dark:text-kj-primary hover:bg-emerald-200 dark:hover:bg-emerald-900/50 transition-colors disabled:opacity-60"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center p-2 bg-kj-primary-soft rounded-lg text-kj-primary hover:bg-kj-primary-soft transition-colors disabled:opacity-60"
                       title="Click to Search"
                       aria-label="Search"
                     >
@@ -4165,7 +4165,7 @@ const App: React.FC = () => {
           // The user wants to use the inline search primarily.
           setPrimarySearch('INTERCITY');
         }}
-        className="hidden w-full items-center justify-between bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 border border-teal-500/30 p-4 rounded-2xl shadow-lg shadow-emerald-500/20 active:scale-[0.98] transition-all hover:shadow-xl hover:shadow-emerald-500/30 group mb-4"
+        className="hidden w-full items-center justify-between bg-gradient-to-br from-kj-primary to-kj-primary-deep border border-kj-primary/30 p-4 rounded-2xl shadow-lg active:scale-[0.98] transition-all hover:shadow-xl group mb-4"
       >
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white group-hover:scale-110 transition-transform">
@@ -4188,7 +4188,7 @@ const App: React.FC = () => {
           e.preventDefault();
           setPrimarySearch('LOCAL');
         }}
-        className="hidden w-full items-center justify-between bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 border border-teal-500/30 p-4 rounded-2xl shadow-lg shadow-emerald-500/20 active:scale-[0.98] transition-all hover:shadow-xl hover:shadow-emerald-500/30 group mb-4"
+        className="hidden w-full items-center justify-between bg-gradient-to-br from-kj-primary to-kj-primary-deep border border-kj-primary/30 p-4 rounded-2xl shadow-lg active:scale-[0.98] transition-all hover:shadow-xl group mb-4"
       >
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white group-hover:scale-110 transition-transform">
@@ -4309,60 +4309,63 @@ const App: React.FC = () => {
                 <p className="text-[10px] font-bold text-kj-text-faint tracking-[1.2px] uppercase mb-2 px-1">
                   {language === 'bn' ? 'কীভাবে যাচ্ছেন?' : 'How are you traveling?'}
                 </p>
-                <div className="grid grid-cols-3 gap-2">
-                  {/* Local Bus */}
-                  <button
-                    onClick={() => setView(AppView.LOCAL_BUS_HUB)}
-                    className="kj-mode-tile flex flex-col items-center gap-1.5 p-3 rounded-2xl text-white active:scale-95 transition-transform"
-                    style={{ background: 'linear-gradient(135deg, #006a4e 0%, #00b8d9 100%)', boxShadow: '0 6px 20px -8px rgba(0,184,217,0.5)' }}
-                  >
-                    <span className="text-xl kj-bob">🚌</span>
-                    <span className="text-[10px] font-bold leading-tight text-center">{language === 'bn' ? 'লোকাল বাস' : 'Local Bus'}</span>
+                <div className="grid grid-cols-2 gap-2">
+                  {/* Popular / Local Bus */}
+                  <button onClick={() => setView(AppView.LOCAL_BUS_HUB)}
+                    className="kj-mode-tile relative overflow-hidden rounded-2xl p-3.5 text-left active:scale-95"
+                    style={{ background: 'linear-gradient(135deg, #0c8a62 0%, #00b8d9 100%)', boxShadow: '0 6px 20px -8px rgba(0,184,217,0.45)' }}>
+                    <div className="text-white/75 text-[9px] font-bold uppercase tracking-widest mb-0.5">{language === 'bn' ? 'সবচেয়ে জনপ্রিয়' : 'Popular'}</div>
+                    <div className="text-white font-bold text-[13px] leading-tight">{language === 'bn' ? 'লোকাল বাস' : 'Local bus'}</div>
+                    <div className="text-white/65 text-[10px] mt-0.5">{language === 'bn' ? '২,৪০০+ রুট' : '200+ routes'}</div>
+                    <span className="absolute right-2.5 bottom-2.5 text-xl kj-bob">🚌</span>
                   </button>
                   {/* Metro Rail */}
-                  <button
-                    onClick={() => setView(AppView.METRO_HUB)}
-                    className="kj-mode-tile flex flex-col items-center gap-1.5 p-3 rounded-2xl text-white active:scale-95 transition-transform"
-                    style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #00f5ff 100%)', boxShadow: '0 6px 20px -8px rgba(0,245,255,0.4)' }}
-                  >
-                    <span className="text-xl kj-bob" style={{ animationDelay: '0.4s' }}>🚇</span>
-                    <span className="text-[10px] font-bold leading-tight text-center">{language === 'bn' ? 'মেট্রো রেল' : 'Metro Rail'}</span>
+                  <button onClick={() => setView(AppView.METRO_HUB)}
+                    className="kj-mode-tile relative overflow-hidden rounded-2xl p-3.5 text-left active:scale-95"
+                    style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #0ea5e9 100%)', boxShadow: '0 6px 20px -8px rgba(14,165,233,0.45)' }}>
+                    <div className="text-white/75 text-[9px] font-bold uppercase tracking-widest mb-0.5">{language === 'bn' ? 'লাইভ' : 'Live tracking'}</div>
+                    <div className="text-white font-bold text-[13px] leading-tight">{language === 'bn' ? 'মেট্রো রেল' : 'Metro Rail'}</div>
+                    <div className="text-white/65 text-[10px] mt-0.5">{language === 'bn' ? 'MRT-6 · ১৭ স্টেশন' : 'MRT-6 · 17 stations'}</div>
+                    <span className="absolute right-2.5 bottom-2 text-lg font-black text-white/25 leading-none">M6</span>
                   </button>
-                  {/* Train */}
-                  <button
-                    onClick={() => setView(AppView.TRAIN_LIST)}
-                    className="kj-mode-tile flex flex-col items-center gap-1.5 p-3 rounded-2xl text-white active:scale-95 transition-transform"
-                    style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #f59e0b 100%)', boxShadow: '0 6px 20px -8px rgba(124,58,237,0.4)' }}
-                  >
-                    <span className="text-xl kj-bob" style={{ animationDelay: '0.8s' }}>🚆</span>
-                    <span className="text-[10px] font-bold leading-tight text-center">{language === 'bn' ? 'ট্রেন' : 'Train'}</span>
+                  {/* BD Railway / Train */}
+                  <button onClick={() => setView(AppView.TRAIN_LIST)}
+                    className="kj-mode-tile relative overflow-hidden rounded-2xl p-3.5 text-left active:scale-95"
+                    style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #f59e0b 100%)', boxShadow: '0 6px 20px -8px rgba(124,58,237,0.4)' }}>
+                    <div className="text-white/75 text-[9px] font-bold uppercase tracking-widest mb-0.5">{language === 'bn' ? 'বাংলাদেশ রেলওয়ে' : 'BD Railway'}</div>
+                    <div className="text-white font-bold text-[13px] leading-tight">{language === 'bn' ? 'সব রুট' : 'All routes'}</div>
+                    <div className="text-white/65 text-[10px] mt-0.5">{language === 'bn' ? 'সময়সূচি ও ভাড়া' : 'Schedule & fares'}</div>
+                    <span className="absolute right-2.5 bottom-2.5 text-xl kj-bob">🚆</span>
                   </button>
                   {/* Intercity */}
-                  <button
-                    onClick={() => { localStorage.setItem('dhaka_commute_view', JSON.stringify(AppView.HOME)); window.location.href = '/intercity/'; }}
-                    className="kj-mode-tile flex flex-col items-center gap-1.5 p-3 rounded-2xl text-white active:scale-95 transition-transform"
-                    style={{ background: 'linear-gradient(135deg, #b45309 0%, #f59e0b 100%)', boxShadow: '0 6px 20px -8px rgba(245,158,11,0.4)' }}
-                  >
-                    <span className="text-xl kj-bob" style={{ animationDelay: '1.2s' }}>🚌</span>
-                    <span className="text-[10px] font-bold leading-tight text-center">{language === 'bn' ? 'আন্তঃজেলা' : 'Intercity'}</span>
+                  <button onClick={() => { localStorage.setItem('dhaka_commute_view', JSON.stringify(AppView.HOME)); window.location.href = '/intercity/'; }}
+                    className="kj-mode-tile relative overflow-hidden rounded-2xl p-3.5 text-left active:scale-95"
+                    style={{ background: 'linear-gradient(135deg, #b45309 0%, #fbbf24 100%)', boxShadow: '0 6px 20px -8px rgba(245,158,11,0.4)' }}>
+                    <div className="text-white/75 text-[9px] font-bold uppercase tracking-widest mb-0.5">{language === 'bn' ? '৬৪ জেলা' : '64 districts'}</div>
+                    <div className="text-white font-bold text-[13px] leading-tight">{language === 'bn' ? 'বাস/ট্রেন/ফ্লাইট' : 'Bus/train/flight'}</div>
+                    <div className="text-white/65 text-[10px] mt-0.5">{language === 'bn' ? 'সারা বাংলাদেশ' : 'All Bangladesh'}</div>
+                    <span className="absolute right-2.5 bottom-2.5 text-xl kj-bob">✈️</span>
                   </button>
-                  {/* Launch */}
-                  <button
-                    onClick={() => setView(AppView.LAUNCH_HUB)}
-                    className="kj-mode-tile flex flex-col items-center gap-1.5 p-3 rounded-2xl text-white active:scale-95 transition-transform"
-                    style={{ background: 'linear-gradient(135deg, #0c4a6e 0%, #38bdf8 100%)', boxShadow: '0 6px 20px -8px rgba(56,189,248,0.4)' }}
-                  >
-                    <span className="text-xl kj-bob" style={{ animationDelay: '1.6s' }}>⛵</span>
-                    <span className="text-[10px] font-bold leading-tight text-center">{language === 'bn' ? 'লঞ্চ' : 'Launch'}</span>
+                  {/* Launch & Steamer */}
+                  <button onClick={() => setView(AppView.LAUNCH_HUB)}
+                    className="kj-mode-tile relative overflow-hidden rounded-2xl p-3.5 text-left active:scale-95"
+                    style={{ background: 'linear-gradient(135deg, #0c4a6e 0%, #38bdf8 100%)', boxShadow: '0 6px 20px -8px rgba(56,189,248,0.4)' }}>
+                    <div className="text-white/75 text-[9px] font-bold uppercase tracking-widest mb-0.5">{language === 'bn' ? 'নদীপথ' : 'River route'}</div>
+                    <div className="text-white font-bold text-[13px] leading-tight">{language === 'bn' ? 'লঞ্চ ও স্টিমার' : 'Launch & Steamer'}</div>
+                    <div className="text-white/65 text-[10px] mt-0.5">{language === 'bn' ? 'সদরঘাট → বরিশাল' : 'Sadarghat → Barisal'}</div>
+                    <span className="absolute right-2.5 bottom-2.5 text-xl kj-bob">⛵</span>
                   </button>
-                  {/* AI */}
-                  <button
-                    onClick={() => setView(AppView.AI_ASSISTANT)}
-                    className="kj-mode-tile flex flex-col items-center gap-1.5 p-3 rounded-2xl text-white active:scale-95 transition-transform"
-                    style={{ background: 'linear-gradient(135deg, #6d28d9 0%, #ff2a6d 100%)', boxShadow: '0 6px 20px -8px rgba(109,40,217,0.4)' }}
-                  >
-                    <span className="text-xl kj-bob" style={{ animationDelay: '2s' }}>🤖</span>
-                    <span className="text-[10px] font-bold leading-tight text-center">{language === 'bn' ? 'AI সহকারী' : 'AI Chat'}</span>
+                  {/* AI Assistant */}
+                  <button onClick={() => setView(AppView.AI_ASSISTANT)}
+                    className="kj-mode-tile relative overflow-hidden rounded-2xl p-3.5 text-left active:scale-95"
+                    style={{ background: 'linear-gradient(135deg, #6d28d9 0%, #ff2a6d 100%)', boxShadow: '0 6px 20px -8px rgba(109,40,217,0.4)' }}>
+                    <div className="flex items-center gap-1 mb-0.5">
+                      <span className="text-white/75 text-[9px] font-bold uppercase tracking-widest">{language === 'bn' ? 'নতুন' : 'New'}</span>
+                      <span className="text-[8px] font-bold bg-white/25 text-white px-1 rounded-full leading-none py-0.5">AI</span>
+                    </div>
+                    <div className="text-white font-bold text-[13px] leading-tight">{language === 'bn' ? 'AI সহকারী' : 'AI Assistant'}</div>
+                    <div className="text-white/65 text-[10px] mt-0.5">{language === 'bn' ? 'বাংলায় জিজ্ঞেস করুন' : 'Ask in Bangla'}</div>
+                    <span className="absolute right-2.5 bottom-2.5 text-xl kj-bob">🤖</span>
                   </button>
                 </div>
               </div>
@@ -4539,7 +4542,7 @@ const App: React.FC = () => {
                   }
                 }}
                 aria-label={`Select ${bus.name} bus route from ${bus.routeString} `}
-                className={`w-full text-left bg-kj-panel p-2 md:p-3 rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border transition-all group relative overflow-hidden cursor-pointer ${selectedBus?.id === bus.id ? 'border-kj-primary ring-1 ring-dhaka-green' : 'border-transparent hover:border-green-100 dark:hover:border-green-800'} `}
+                className={`w-full text-left bg-kj-panel p-2 md:p-3 rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border transition-all group relative overflow-hidden cursor-pointer ${selectedBus?.id === bus.id ? 'border-kj-primary ring-1 ring-kj-primary/40' : 'border-transparent hover:border-kj-primary/30'} `}
               >
                 {selectedBus?.id === bus.id && <div className="absolute left-0 top-0 bottom-0 w-1 bg-kj-primary"></div>}
                 <div className="flex justify-between items-start mb-1 md:mb-1.5">
@@ -4728,7 +4731,7 @@ const App: React.FC = () => {
 
 
 
-        <main className="flex flex-1 min-h-0 overflow-hidden relative w-full max-w-full mx-auto bg-kj-bg dark:bg-kj-bg md:pt-20">
+        <main className="flex flex-1 min-h-0 overflow-hidden relative w-full max-w-full mx-auto bg-kj-bg dark:bg-kj-bg md:pt-16">
           {/* Left Sidebar (Desktop) / Main View (Mobile Home) */}
           <div
             className={`flex flex-col flex-1 min-h-0 w-full md:flex-none md:w-1/3 md:min-w-[320px] md:max-w-md border-r border-kj-line dark:border-kj-line bg-kj-panel dark:bg-kj-panel z-0 overflow-hidden ${view !== AppView.HOME && view !== AppView.TRAIN_LIST && 'hidden md:flex'}`}
@@ -4921,8 +4924,8 @@ const App: React.FC = () => {
                   {/* Check if already installed */}
                   {/* Check if already installed - Only check display-mode: standalone, ignore localStorage to allow reinstall */}
                   {(window.matchMedia('(display-mode: standalone)').matches) ? (
-                    <div className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-2xl p-8 mb-8">
-                      <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
+                    <div className="bg-kj-primary-soft border border-kj-primary/30 rounded-2xl p-8 mb-8">
+                      <CheckCircle2 className="w-16 h-16 text-kj-primary mx-auto mb-4" />
                       <h2 className="text-2xl font-bold text-kj-text mb-3">{t('install.alreadyInstalled')}</h2>
                       <p className="text-kj-text-dim mb-6">
                         {t('install.enjoyFullApp')}
@@ -4958,7 +4961,7 @@ const App: React.FC = () => {
                       {/* Top Install Button */}
                       <button
                         onClick={handleInstallClick}
-                        className="w-full md:w-auto px-12 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl font-bold text-white text-lg shadow-2xl shadow-emerald-500/40 hover:shadow-3xl hover:scale-105 transition-all active:scale-95 flex items-center justify-center gap-3 mx-auto mb-8"
+                        className="w-full md:w-auto px-12 py-4 bg-gradient-to-r bg-kj-primary rounded-2xl font-bold text-kj-primary-ink text-lg shadow-2xl hover:shadow-3xl hover:scale-105 transition-all active:scale-95 flex items-center justify-center gap-3 mx-auto mb-8"
                       >
                         <Download className="w-6 h-6" />
                         {isInstalling ? t('install.installing') : t('install.installButton')}
@@ -4966,7 +4969,7 @@ const App: React.FC = () => {
 
                       {/* Benefits */}
                       <div className="grid md:grid-cols-2 gap-4 mb-8 text-left">
-                        <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-6 rounded-2xl border border-emerald-100">
+                        <div className="bg-kj-primary-soft p-6 rounded-2xl border border-kj-primary/20">
                           <CheckCircle2 className="w-8 h-8 text-kj-primary mb-3" />
                           <h3 className="font-bold text-kj-text mb-2">{t('install.worksOffline')}</h3>
                           <p className="text-sm text-kj-text-dim">{t('install.worksOfflineDesc')}</p>
@@ -4994,7 +4997,7 @@ const App: React.FC = () => {
                           <button
                             onClick={handleInstallClick}
                             disabled={isInstalling}
-                            className={`w-full md: w-auto px-12 py-4 bg-gradient - to-r from-emerald - 500 to-teal - 600 rounded-2xl font-bold text-white text-lg shadow-2xl shadow-emerald - 500 / 40 hover: shadow-3xl hover: scale-105 transition-all active: scale-95 flex items-center justify-center gap-3 mx-auto mb-4 ${isInstalling ? 'opacity-75 cursor-not-allowed' : ''} `}
+                            className={`w-full md: w-auto px-12 py-4 bg-kj-primary rounded-2xl font-bold text-kj-primary-ink text-lg shadow-2xl hover:shadow-3xl hover:scale-105 transition-all active:scale-95 flex items-center justify-center gap-3 mx-auto mb-4 ${isInstalling ? 'opacity-75 cursor-not-allowed' : ''} `}
                           >
                             {isInstalling ? (
                               <>
@@ -5157,7 +5160,7 @@ const App: React.FC = () => {
                   <>
                     <button
                       onClick={() => { setView(AppView.HISTORY); setIsMenuOpen(false); }}
-                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.HISTORY ? 'bg-kj-primary-soft dark:bg-emerald-900/20 border border-kj-primary/30' : ''}`}
+                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.HISTORY ? 'bg-kj-primary-soft border border-kj-primary/30' : ''}`}
                     >
                       <Clock className="w-5 h-5 text-kj-primary" /> {t('nav.history') || 'History'}
                     </button>
@@ -5202,7 +5205,7 @@ const App: React.FC = () => {
                   <Navigation className="w-5 h-5 text-cyan-500" /> {language === 'bn' ? 'মাল্টি-স্টপ প্ল্যানার' : 'Multi-Stop Planner'}
                 </button>
                 <button onClick={() => { setView(AppView.COMMUTE_COST); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.COMMUTE_COST ? 'bg-kj-primary-soft dark:bg-emerald-900/20 border border-kj-primary/30' : ''}`}>
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.COMMUTE_COST ? 'bg-kj-primary-soft border border-kj-primary/30' : ''}`}>
                   <Calculator className="w-5 h-5 text-kj-primary" /> {language === 'bn' ? 'খরচ ক্যালকুলেটর' : 'Cost Calculator'}
                 </button>
                 <button onClick={() => { setView(AppView.SEAT_AVAILABILITY); setIsMenuOpen(false); }}
@@ -5236,14 +5239,14 @@ const App: React.FC = () => {
                 </button>
                 <button
                   onClick={() => { setView(AppView.RELEASE_NOTES); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.RELEASE_NOTES ? 'bg-kj-primary-soft dark:bg-emerald-900/20 border border-kj-primary/30' : ''}`}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.RELEASE_NOTES ? 'bg-kj-primary-soft border border-kj-primary/30' : ''}`}
                 >
                   <Rocket className="w-5 h-5 text-kj-primary" /> {language === 'bn' ? 'রিলিজ নোটস' : 'Release Notes'}
                 </button>
                 {/* Install/Uninstall App - Always show */}
                 <button
                   onClick={() => { setView(AppView.INSTALL_APP); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.INSTALL_APP ? 'bg-kj-primary-soft dark:bg-emerald-900/20 border border-kj-primary/30' : ''}`}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.INSTALL_APP ? 'bg-kj-primary-soft border border-kj-primary/30' : ''}`}
                 >
                   <Download className="w-5 h-5 text-kj-primary" /> {t('home.installApp')}
                 </button>
@@ -5304,7 +5307,7 @@ const App: React.FC = () => {
               <p className="text-kj-text-faint text-sm mb-8 text-center font-medium">Finding the best intercity routes for you...</p>
 
               <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden mb-4">
-                <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 w-[40%] rounded-full animate-[loading-progress_2s_infinite_ease-in-out]"></div>
+                <div className="h-full bg-gradient-to-r from-kj-primary to-kj-primary-deep w-[40%] rounded-full animate-[loading-progress_2s_infinite_ease-in-out]"></div>
               </div>
               <span className="text-[10px] font-bold text-kj-text-dim uppercase tracking-widest animate-pulse">Initializing Data</span>
             </div>
@@ -5323,7 +5326,7 @@ const App: React.FC = () => {
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-end md:items-center justify-center p-4 animate-in fade-in">
             <div className="bg-kj-panel rounded-t-3xl md:rounded-3xl p-6 max-w-md w-full shadow-2xl animate-in slide-in-from-bottom md:slide-in-from-bottom-0 pb-safe">
               <div className="flex items-start gap-4 mb-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shrink-0 shadow-lg">
+                <div className="w-16 h-16 bg-gradient-to-br bg-kj-primary rounded-2xl flex items-center justify-center shrink-0 shadow-lg">
                   <Bus className="w-8 h-8 text-white" />
                 </div>
                 <div className="flex-1">
@@ -5369,7 +5372,7 @@ const App: React.FC = () => {
                 </button>
                 <button
                   onClick={handleInstallClick}
-                  className="flex-1 px-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl font-bold text-white shadow-lg shadow-emerald-500/30 dark:shadow-emerald-900/40 hover:shadow-xl hover:shadow-emerald-500/40 transition-all active:scale-95"
+                  className="flex-1 px-4 py-3 bg-gradient-to-r bg-kj-primary rounded-xl font-bold text-kj-primary-ink shadow-lg hover:shadow-xl transition-all active:scale-95"
                 >
                   Install Now
                 </button>
@@ -5409,7 +5412,7 @@ const App: React.FC = () => {
 
               <button
                 onClick={() => setShowStaleOfflineWarning(false)}
-                className="w-full bg-kj-primary hover:bg-kj-primary-deep text-white font-bold py-3 rounded-xl transition-colors shadow-lg shadow-emerald-500/20"
+                className="w-full bg-kj-primary hover:bg-kj-primary-deep text-kj-primary-ink font-bold py-3 rounded-xl transition-colors shadow-lg"
               >
                 {t('offline.continueOffline')}
               </button>
