@@ -3,7 +3,7 @@ import { ArrowLeft, Clock, Calendar, Tag, Copy, Check, ArrowUp, List } from 'luc
 import { BLOG_POSTS } from '../data/blogPosts';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import NewsletterBanner from './NewsletterBanner';
+import SponsoredAdSlot from './SponsoredAdSlot';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface BlogPostProps {
@@ -320,8 +320,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                                 </div>
                             </div>
 
-                            {/* Newsletter — appears after user finishes reading */}
-                            <NewsletterBanner className="mt-8" />
+                            <SponsoredAdSlot language={language} size="728x90" compact />
                         </div>
 
                         {/* Sticky Sidebar (Desktop) */}
@@ -413,7 +412,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                         </div>
                     )}
 
-                    {/* <AdSenseAd adSlot="auto" className="my-12 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+                    <SponsoredAdSlot language={language} size="728x90" compact />
 
                     {/* CTA */}
                     <div className="mt-12 bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 rounded-3xl p-8 text-center shadow-2xl">

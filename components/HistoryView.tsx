@@ -22,7 +22,7 @@ import { BUS_DATA, STATIONS } from '../constants';
 import { BusRoute } from '../types';
 import { BD_TRAIN_ROUTES, BDTrainRoute } from '../data/bangladeshTrainData';
 import { useLanguage } from '../contexts/LanguageContext';
-// import AdSenseAd from './AdSenseAd';
+import SponsoredAdSlot from './SponsoredAdSlot';
 
 interface HistoryViewProps {
     onBack: () => void;
@@ -48,7 +48,7 @@ const FEATURE_LABELS: Record<string, string> = {
 };
 
 const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainSelect, onViewJourney, embedded = false }) => {
-    const { t, formatNumber } = useLanguage();
+    const { t, formatNumber, language } = useLanguage();
     const [activeTab, setActiveTab] = useState<'personal' | 'global'>('personal');
     const [globalStats, setGlobalStats] = useState<GlobalStats>(getGlobalStats());
     const [showClearConfirm, setShowClearConfirm] = useState(false);
@@ -237,7 +237,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
             </div>
             {/* Content */}
             <div className="relative z-10 flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 md:p-6 space-y-6 pb-24 md:pb-6" style={{ WebkitOverflowScrolling: 'touch' }}>
-                {/* <AdSenseAd adSlot="auto" className="my-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+                <SponsoredAdSlot language={language as 'en' | 'bn'} size="728x90" compact />
                 {activeTab === 'personal' ? (
                     <>
                         {/* Clear History Button */}

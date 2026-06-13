@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ArrowLeft, Rocket, CheckCircle, Wrench, Zap, Calendar, ChevronRight, ChevronDown, Sparkles } from 'lucide-react';
 import { RELEASE_NOTES } from '../data/releaseNotes';
 import { useLanguage } from '../contexts/LanguageContext';
-// import AdSenseAd from './AdSenseAd';
+import SponsoredAdSlot from './SponsoredAdSlot';
 
 
 const ReleaseNotes: React.FC = () => {
@@ -161,7 +161,7 @@ const ReleaseNotes: React.FC = () => {
             );
           })}
         </div>
-        {/* <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+        <SponsoredAdSlot language={language} size="728x90" compact />
       </div>
     </div>
 

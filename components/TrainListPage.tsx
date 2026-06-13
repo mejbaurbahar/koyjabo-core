@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import SponsoredAdSlot from './SponsoredAdSlot';
 import {
   Train, Search, ArrowRight, Clock, CalendarX, Info,
   ArrowLeft, MapPin, Navigation,
@@ -358,7 +359,7 @@ export function TrainDetail({
             </div>
           </div>
 
-          {/* <AdSenseAd adSlot="auto" className="my-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+          <SponsoredAdSlot language={language as 'en' | 'bn'} size="728x90" compact />
 
 
 

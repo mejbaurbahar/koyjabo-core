@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Clock, Tag, Calendar, ArrowRight, Search, X } from 'lucide-react';
 import { BLOG_POSTS } from '../data/blogPosts';
 import { useLanguage } from '../contexts/LanguageContext';
-import NewsletterBanner from './NewsletterBanner';
+import SponsoredAdSlot from './SponsoredAdSlot';
 
 interface BlogProps {
     onBack: () => void;
@@ -84,8 +84,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                 </div>
 
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-8">
-                    {/* Top leaderboard — high visibility, above the fold */}
-                    {/* <AdSenseAd adSlot="auto" adFormat="horizontal" className="w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+                    <SponsoredAdSlot language={language} size="728x90" compact />
 
                     {/* No results */}
                     {filteredPosts.length === 0 && (
@@ -202,8 +201,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                         </div>
                     )}
 
-                    {/* Newsletter */}
-                    <NewsletterBanner className="mt-8" />
+                    <SponsoredAdSlot language={language} size="728x90" compact />
 
                     {/* SEO Footer */}
                     <div className="mt-6 bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-slate-800 dark:to-slate-700 rounded-2xl p-6 text-center border border-teal-100 dark:border-teal-800">

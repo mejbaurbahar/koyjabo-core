@@ -1,6 +1,7 @@
 import React from 'react';
 import { Mail, Linkedin, Facebook, MapPin, Send, MessageSquare, Bug, Lightbulb, Share2 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import SponsoredAdSlot from './SponsoredAdSlot';
 import { AppView } from '../types';
 
 
@@ -10,7 +11,7 @@ interface ContactUsProps {
 }
 
 const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
 
     return (
         <div className="flex flex-col flex-1 min-h-0 bg-kj-panel overflow-y-auto overscroll-y-contain touch-pan-y w-full relative" style={{ WebkitOverflowScrolling: 'touch' }}>
@@ -103,7 +104,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
                     </div>
                 </div>
 
-                {/* <AdSenseAd adSlot="auto" className="mt-12 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+                <SponsoredAdSlot language={language as 'en' | 'bn'} size="728x90" compact />
 
                 {/* Mobile Bottom Spacer */}
 

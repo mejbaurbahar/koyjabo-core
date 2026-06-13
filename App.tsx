@@ -70,6 +70,7 @@ import ContactUs from './components/ContactUs';
 import OfflineIndicator from './components/OfflineIndicator';
 import GlobalFooter from './components/GlobalFooter';
 import PageAdSection from './components/PageAdSection';
+import SponsoredAdSlot from './components/SponsoredAdSlot';
 import TrainListPage, { TrainDetail } from './components/TrainListPage';
 import TrainRating from './components/TrainRating';
 import { BDTrainRoute, BD_TRAIN_ROUTES, TRAIN_STATIONS } from './data/bangladeshTrainData';
@@ -2480,8 +2481,7 @@ const App: React.FC = () => {
         <h2 className="text-xl sm:text-2xl font-bold mb-2 text-kj-text">কই<span className="text-kj-accent ml-2">যাবো</span> <span className="text-kj-text-dim text-base sm:text-lg">(KoyJabo)</span></h2>
         <p className="text-sm sm:text-base text-kj-text-dim mb-6 sm:mb-8">{t('settings.version')} 2.5.0 • {t('common.tagline') || 'Bangladesh\'s Smart Transport Route Finder — Bus, Train, Metro, AI & More'}</p>
 
-        {/* <AdSenseAd adSlot="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-
+        <SponsoredAdSlot language={language} size="728x90" compact />
 
         <div className="text-left space-y-6 sm:space-y-8 bg-kj-chip-bg p-4 sm:p-6 md:p-10 rounded-2xl sm:rounded-[2rem] border border-kj-line shadow-sm">
           <section>
@@ -2844,7 +2844,7 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+          <SponsoredAdSlot language={language} size="728x90" compact />
 
 
 
@@ -3047,9 +3047,7 @@ const App: React.FC = () => {
             </p>
           </div>
 
-          {/* <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-
-
+          <SponsoredAdSlot language={language} size="728x90" compact />
 
           {/* FAQ 7 - Emergency Helpline */}
 
@@ -3211,7 +3209,7 @@ const App: React.FC = () => {
             </ul>
           </section>
 
-          {/* <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+          <SponsoredAdSlot language={language} size="728x90" compact />
 
           {/* Integration Info */}
           <section className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-2xl border border-blue-100 dark:border-blue-800/50">
@@ -4272,7 +4270,7 @@ const App: React.FC = () => {
 
                   <h1 className="text-3xl font-bold text-kj-text mb-2">{t('install.title')}</h1>
                   <p className="text-kj-text-dim mb-8">{t('install.subtitle')}</p>
-                  {/* <AdSenseAd adSlot="auto" className="mb-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+                  <SponsoredAdSlot language={language} size="728x90" compact />
 
 
                   {/* Check if already installed */}
@@ -4423,8 +4421,7 @@ const App: React.FC = () => {
                     </div>
                   )}
 
-                  {/* <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-
+                  <SponsoredAdSlot language={language} size="728x90" compact />
 
 
                   {/* Bottom padding */}
@@ -4441,7 +4438,7 @@ const App: React.FC = () => {
           </div>
           </div>
           {!rightPanelUsesOuterScroll && showPageAd && <PageAdSection />}
-          {!rightPanelUsesOuterScroll && !hideSiteChrome && <GlobalFooter setView={setView} />}
+          {!rightPanelUsesOuterScroll && !hideSiteChrome && view !== AppView.AI_ASSISTANT && <GlobalFooter setView={setView} />}
           </div>
           )}
         </main>
