@@ -163,7 +163,8 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
                 )}
                 <button
                     onClick={onOpenMenu}
-                    className="p-2 hover:bg-kj-chip-bg rounded-xl transition-colors text-kj-text-dim hover:text-kj-text xl:hidden"
+                    className="p-2 hover:bg-kj-chip-bg rounded-xl transition-colors text-kj-text-dim hover:text-kj-text"
+                    aria-label={language === 'bn' ? 'মেনু খুলুন' : 'Open menu'}
                 >
                     <Menu className="w-5 h-5" />
                 </button>

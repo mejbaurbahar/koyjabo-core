@@ -2471,7 +2471,7 @@ const App: React.FC = () => {
   );
 
   const renderAbout = () => (
-    <div className="absolute inset-0 z-10 overflow-y-auto overscroll-y-contain touch-pan-y px-4 sm:px-6 md:px-10 py-6 pb-nav-safe bg-kj-bg" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="w-full px-4 sm:px-6 md:px-10 py-6 bg-kj-bg">
       <div className="max-w-5xl mx-auto text-center">
         <div className="w-16 h-16 sm:w-20 sm:h-20 bg-kj-accent rounded-3xl flex items-center justify-center text-white mx-auto mb-4 sm:mb-6 shadow-xl shadow-red-200 rotate-3 hover:rotate-6 transition-transform">
           <Bus className="w-8 h-8 sm:w-10 sm:h-10" />
@@ -2793,7 +2793,7 @@ const App: React.FC = () => {
   );
 
   const renderWhyUse = () => (
-    <div className="absolute inset-0 z-10 overflow-y-auto overscroll-y-contain touch-pan-y px-4 sm:px-6 md:px-10 py-6 pb-nav-safe bg-kj-panel" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="w-full px-4 sm:px-6 md:px-10 py-6 bg-kj-panel">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-kj-text leading-tight">{t('whyUse.title')}</h1>
         <p className="text-sm sm:text-base text-kj-text-dim mb-6 sm:mb-8">{t('whyUse.subtitle')}</p>
@@ -2975,7 +2975,7 @@ const App: React.FC = () => {
   );
 
   const renderFAQ = () => (
-    <div className="absolute inset-0 z-10 overflow-y-auto overscroll-y-contain touch-pan-y px-4 sm:px-6 md:px-10 py-6 pb-nav-safe bg-kj-panel" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="w-full px-4 sm:px-6 md:px-10 py-6 bg-kj-panel">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-kj-text leading-tight">{t('faq.title')}</h1>
         <p className="text-sm sm:text-base text-kj-text-dim mb-6 sm:mb-8">{t('faq.subtitle')}</p>
@@ -3143,7 +3143,7 @@ const App: React.FC = () => {
   );
 
   const renderForAi = () => (
-    <div className="absolute inset-0 z-10 overflow-y-auto overscroll-y-contain touch-pan-y px-4 sm:px-6 md:px-10 py-6 pb-nav-safe bg-kj-panel" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="w-full px-4 sm:px-6 md:px-10 py-6 bg-kj-panel">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 sm:mb-6 text-kj-text leading-tight">AI Dataset & Integration</h1>
         <div className="flex flex-wrap items-center gap-2 text-sm text-kj-text-dim mb-6 sm:mb-8">
@@ -3888,10 +3888,27 @@ const App: React.FC = () => {
     || view === AppView.FORGOT_PASSWORD
     || view === AppView.RESET_PASSWORD;
   const showPageAd = !hideSiteChrome && view !== AppView.HOME;
+  const rightPanelUsesOuterScroll = [
+    AppView.ABOUT,
+    AppView.WHY_USE,
+    AppView.FAQ,
+    AppView.FOR_AI,
+    AppView.CONTACT,
+    AppView.PRIVACY,
+    AppView.TERMS,
+    AppView.RELEASE_NOTES,
+    AppView.INSTALL_APP,
+    AppView.LOCAL_BUS_HUB,
+    AppView.METRO_HUB,
+    AppView.LAUNCH_HUB,
+    AppView.INTERCITY_HUB,
+    AppView.NOT_FOUND,
+    AppView.SERVER_ERROR,
+  ].includes(view);
 
   return (
     <NotificationProvider>
-      <div className="flex flex-col h-screen min-h-0 supports-[height:100dvh]:h-[100dvh] bg-kj-bg dark:bg-kj-bg font-sans text-kj-text overflow-hidden max-w-full kj-future-bg">
+      <div className="flex flex-col flex-1 min-h-0 w-full h-full max-h-[100dvh] supports-[height:100dvh]:max-h-[100dvh] bg-kj-bg dark:bg-kj-bg font-sans text-kj-text overflow-hidden max-w-full kj-future-bg">
         <NotificationBanner />
 
         {/* PWA Update Banner */}
@@ -3968,8 +3985,8 @@ const App: React.FC = () => {
 
         <main className="flex flex-1 min-h-0 flex-col overflow-hidden relative z-10 w-full max-w-[1440px] mx-auto bg-transparent md:pt-16 md:px-4">
           {view === AppView.HOME ? (
-            <div className="flex-1 min-h-0 w-full flex flex-col overflow-hidden">
-            <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-nav-safe md:pb-4" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <div className="flex-1 min-h-0 h-0 w-full flex flex-col overflow-hidden">
+            <div className="flex-1 min-h-0 h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-nav-safe md:pb-4" style={{ WebkitOverflowScrolling: 'touch' }}>
             <HomePage
               language={language}
               t={t}
@@ -4047,7 +4064,8 @@ const App: React.FC = () => {
             {!hideSiteChrome && <GlobalFooter setView={setView} />}
             </div>
           ) : (
-          <div className="flex-1 min-h-0 min-w-0 overflow-hidden flex relative w-full">
+          <div className="flex-1 min-h-0 h-0 flex flex-col overflow-hidden w-full">
+          <div className="flex-1 min-h-0 h-0 min-w-0 overflow-hidden flex relative w-full">
           {(view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) && (
           <div className="flex flex-col flex-1 min-h-0 w-full md:flex-none md:w-[420px] md:max-w-[420px] md:shrink-0 z-0 overflow-hidden">
             <div className="flex-1 min-h-0 flex flex-col md:pt-0">
@@ -4058,10 +4076,11 @@ const App: React.FC = () => {
 
           {/* Right Content Area */}
           <div className={`
-            ${'flex-1 min-h-0 w-full min-w-0 bg-transparent relative overflow-hidden flex flex-col'}
-            ${view === AppView.TRAIN_LIST && 'hidden md:flex'}
+            ${'flex-1 min-h-0 w-full min-w-0 bg-transparent relative flex flex-col'}
+            ${view === AppView.TRAIN_LIST ? 'hidden md:flex' : ''}
+            ${rightPanelUsesOuterScroll ? 'overflow-y-auto overscroll-y-contain touch-pan-y pb-nav-safe md:pb-4' : 'overflow-hidden'}
             ${(view === AppView.LOCAL_BUS_HUB || view === AppView.METRO_HUB || view === AppView.LAUNCH_HUB || view === AppView.INTERCITY_HUB) && 'flex'}
-`}>
+`} style={rightPanelUsesOuterScroll ? { WebkitOverflowScrolling: 'touch' } : undefined}>
             <div className={`hidden md:block absolute inset-0 w-full h-full min-h-0 transition-opacity duration-500 ${view === AppView.TRAIN_LIST ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}><DhakaAlive /></div>
             {view === AppView.TRAIN_DETAILS && (
               user && selectedTrain ? (
@@ -4090,19 +4109,13 @@ const App: React.FC = () => {
 
             {/* Mode hub views */}
             {view === AppView.LOCAL_BUS_HUB && (
-              <div className="flex-1 min-h-0 overflow-y-auto bg-kj-bg">
                 <LocalBusHub onBack={() => setView(AppView.HOME)} language={language} />
-              </div>
             )}
             {view === AppView.METRO_HUB && (
-              <div className="flex-1 min-h-0 overflow-y-auto bg-kj-bg">
                 <MetroRailHub onBack={() => setView(AppView.HOME)} language={language} />
-              </div>
             )}
             {view === AppView.LAUNCH_HUB && (
-              <div className="flex-1 min-h-0 overflow-y-auto bg-kj-bg">
                 <LaunchHub onBack={() => setView(AppView.HOME)} language={language} />
-              </div>
             )}
             {view === AppView.INTERCITY_HUB && (
               <IntercityHub
@@ -4406,13 +4419,15 @@ const App: React.FC = () => {
             )}
             {view === AppView.NOT_FOUND && renderNotFound()}
             {view === AppView.SERVER_ERROR && renderServerError()}
+            {showPageAd && rightPanelUsesOuterScroll && <PageAdSection />}
+            {!hideSiteChrome && rightPanelUsesOuterScroll && <GlobalFooter setView={setView} />}
           </div>
+          </div>
+          {!rightPanelUsesOuterScroll && showPageAd && <PageAdSection />}
+          {!rightPanelUsesOuterScroll && !hideSiteChrome && <GlobalFooter setView={setView} />}
           </div>
           )}
         </main>
-
-        {showPageAd && <PageAdSection />}
-        {!hideSiteChrome && view !== AppView.HOME && <GlobalFooter setView={setView} />}
 
         {/* Mobile Bottom Navigation */}
         {view !== AppView.BUS_DETAILS && view !== AppView.LIVE_NAV && (
