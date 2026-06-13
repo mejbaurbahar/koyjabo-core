@@ -3,6 +3,7 @@ import { Bus, Heart, Wifi } from 'lucide-react';
 import HomeSearchPanel, { HomeSearchPanelProps } from './HomeSearchPanel';
 import HomeRightPanel from './HomeRightPanel';
 import TravelHeroScene from './design/Vehicles3D';
+import GlobalFooter from './GlobalFooter';
 import { BusRoute } from '../types';
 
 interface HomePageProps extends Omit<HomeSearchPanelProps, 'onSuggestionSelect'> {
@@ -176,6 +177,8 @@ const HomePage: React.FC<HomePageProps> = (props) => {
             user={user}
           />
         </div>
+
+        <GlobalFooter setView={(v) => onNavigate(v)} />
       </div>
     </div>
   );

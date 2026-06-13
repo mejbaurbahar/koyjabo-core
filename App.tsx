@@ -68,7 +68,8 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
 import ContactUs from './components/ContactUs';
 import OfflineIndicator from './components/OfflineIndicator';
-import AdSenseAd from './components/AdSenseAd';
+import GlobalFooter from './components/GlobalFooter';
+import PageAdSection from './components/PageAdSection';
 import TrainListPage, { TrainDetail } from './components/TrainListPage';
 import TrainRating from './components/TrainRating';
 import { BDTrainRoute, BD_TRAIN_ROUTES, TRAIN_STATIONS } from './data/bangladeshTrainData';
@@ -2395,7 +2396,7 @@ const App: React.FC = () => {
 
 
 
-      <div className="hidden md:flex items-center gap-3 p-4 bg-kj-panel border-b border-kj-line shadow-sm z-20">
+      <div className="hidden md:flex items-center gap-3 p-4 bg-kj-panel border-b border-kj-line shadow-sm z-20 shrink-0 md:sticky md:top-16">
         <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-200 ">
           <Bot className="w-6 h-6" />
         </div>
@@ -2425,12 +2426,7 @@ const App: React.FC = () => {
           </div>
         ) : (
           chatHistory.map((msg, idx) => (
-            <React.Fragment key={idx}>
-              {idx > 0 && idx % 10 === 0 && (
-                <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-2 max-w-[728px] mx-auto" />
-              )}
-
-              <div className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+            <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-kj-primary dark:bg-kj-primary text-kj-primary-ink rounded-br-none' : 'bg-kj-panel text-kj-text border border-kj-line rounded-bl-none'}`}>
                   <div className="whitespace-pre-wrap">{msg.text.split(/(\*\*[^*]+\*\*)/).map((part, i) =>
                     /^\*\*[^*]+\*\*$/.test(part)
@@ -2439,7 +2435,6 @@ const App: React.FC = () => {
                   )}</div>
                 </div>
               </div>
-            </React.Fragment>
           ))
         )}
 
@@ -2638,8 +2633,6 @@ const App: React.FC = () => {
               </div>
             </div>
           </section>
-
-          <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-10 max-w-[728px] mx-auto" />
 
         </div>
       </div>
@@ -2968,8 +2961,6 @@ const App: React.FC = () => {
           </button>
         </div>
 
-        <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-10 max-w-[728px] mx-auto" />
-
         {/* Bottom padding for mobile */}
 
         <div className="h-20"></div>
@@ -3110,8 +3101,6 @@ const App: React.FC = () => {
             </p>
           </div>
         </div>
-
-        <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-6 max-w-[728px] mx-auto" />
 
         {/* Still have questions? */}
         <div className="mt-12 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-slate-800 dark:to-slate-900 rounded-2xl p-8 text-center border border-blue-100 dark:border-kj-line">
@@ -3649,8 +3638,6 @@ const App: React.FC = () => {
             )}
           </div>
 
-          <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-4 max-w-[728px] mx-auto" />
-
           {/* Full Route List */}
           <div className="bg-kj-panel rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-kj-line overflow-hidden">
             <h3 className="font-bold text-kj-text-dim px-4 py-3 border-b border-kj-line bg-gray-50/30 dark:bg-slate-700/30 text-sm">{t('busDetails.fullRouteList')}</h3>
@@ -3889,7 +3876,12 @@ const App: React.FC = () => {
     return null;
   };
 
-
+  const hideSiteChrome = view === AppView.LIVE_NAV
+    || view === AppView.LOGIN
+    || view === AppView.SIGNUP
+    || view === AppView.FORGOT_PASSWORD
+    || view === AppView.RESET_PASSWORD;
+  const showPageAd = !hideSiteChrome && view !== AppView.HOME;
 
   return (
     <NotificationProvider>
@@ -4047,7 +4039,7 @@ const App: React.FC = () => {
           <>
           {/* Left Sidebar — train list only */}
           <div
-            className={`flex flex-col flex-1 min-h-0 w-full md:flex-none md:w-[420px] md:max-w-[420px] md:shrink-0 z-0 overflow-hidden ${view !== AppView.TRAIN_LIST && 'hidden md:flex'}`}
+            className={`flex flex-col flex-1 min-h-0 w-full md:flex-none md:w-[420px] md:max-w-[420px] md:shrink-0 z-0 overflow-hidden ${view !== AppView.TRAIN_LIST && view !== AppView.AI_ASSISTANT && 'hidden md:flex'}`}
             style={(view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? { display: 'none' } : undefined}
           >
             <div className="flex-1 min-h-0 flex flex-col md:pt-0">
@@ -4272,11 +4264,18 @@ const App: React.FC = () => {
                     <div>
                       {/* Top Install Button */}
                       <button
-                        onClick={handleInstallClick}
+                        type="button"
+                        onClick={() => {
+                          if (deferredPrompt) {
+                            handleInstallClick();
+                          } else {
+                            document.getElementById('install-steps')?.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }}
                         className="w-full md:w-auto px-12 py-4 bg-gradient-to-r bg-kj-primary rounded-2xl font-bold text-kj-primary-ink text-lg shadow-2xl hover:shadow-3xl hover:scale-105 transition-all active:scale-95 flex items-center justify-center gap-3 mx-auto mb-8"
                       >
                         <Download className="w-6 h-6" />
-                        {isInstalling ? t('install.installing') : t('install.installButton')}
+                        {isInstalling ? t('install.installing') : (deferredPrompt ? t('install.installButton') : (language === 'bn' ? 'ইনস্টল গাইড দেখুন' : 'See install guide'))}
                       </button>
 
                       {/* Benefits */}
@@ -4286,34 +4285,34 @@ const App: React.FC = () => {
                           <h3 className="font-bold text-kj-text mb-2">{t('install.worksOffline')}</h3>
                           <p className="text-sm text-kj-text-dim">{t('install.worksOfflineDesc')}</p>
                         </div>
-                        <div className="bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-2xl border border-blue-100">
+                        <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-slate-800 dark:to-slate-900 p-6 rounded-2xl border border-blue-100 dark:border-kj-line">
                           <CheckCircle2 className="w-8 h-8 text-blue-600 mb-3" />
                           <h3 className="font-bold text-kj-text mb-2">{t('install.fasterLoading')}</h3>
-                          <p className="text-sm text-kj-text-dim">{t('install.fasterLoadingDesc')}</p>
+                          <p className="text-sm text-kj-text-dim">{language === 'bn' ? 'হোম স্ক্রিন থেকে তাৎক্ষণিক অ্যাক্সেস' : 'Instant access from your home screen'}</p>
                         </div>
-                        <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-2xl border border-purple-100">
+                        <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-slate-800 dark:to-slate-900 p-6 rounded-2xl border border-purple-100 dark:border-kj-line">
                           <CheckCircle2 className="w-8 h-8 text-purple-600 mb-3" />
                           <h3 className="font-bold text-kj-text mb-2">{t('install.nativeExperience')}</h3>
                           <p className="text-sm text-kj-text-dim">{t('install.nativeExperienceDesc')}</p>
                         </div>
-                        <div className="bg-gradient-to-br from-orange-50 to-amber-50 p-6 rounded-2xl border border-orange-100">
+                        <div className="bg-gradient-to-br from-orange-50 to-amber-50 dark:from-slate-800 dark:to-slate-900 p-6 rounded-2xl border border-orange-100 dark:border-kj-line">
                           <CheckCircle2 className="w-8 h-8 text-orange-600 mb-3" />
                           <h3 className="font-bold text-kj-text mb-2">{t('install.noAppStore')}</h3>
                           <p className="text-sm text-kj-text-dim">{t('install.noAppStoreDesc')}</p>
                         </div>
                       </div>
 
-                      {/* Install Button */}
                       {deferredPrompt && (
-                        <div>
+                        <div className="mb-8">
                           <button
+                            type="button"
                             onClick={handleInstallClick}
                             disabled={isInstalling}
-                            className={`w-full md: w-auto px-12 py-4 bg-kj-primary rounded-2xl font-bold text-kj-primary-ink text-lg shadow-2xl hover:shadow-3xl hover:scale-105 transition-all active:scale-95 flex items-center justify-center gap-3 mx-auto mb-4 ${isInstalling ? 'opacity-75 cursor-not-allowed' : ''} `}
+                            className={`w-full md:w-auto px-12 py-4 bg-kj-primary rounded-2xl font-bold text-kj-primary-ink text-lg shadow-2xl hover:shadow-3xl hover:scale-105 transition-all active:scale-95 flex items-center justify-center gap-3 mx-auto mb-4 ${isInstalling ? 'opacity-75 cursor-not-allowed' : ''}`}
                           >
                             {isInstalling ? (
                               <>
-                                <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
+                                <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin" />
                                 {t('install.installing')}
                               </>
                             ) : (
@@ -4326,6 +4325,51 @@ const App: React.FC = () => {
                           <p className="text-xs text-kj-text-faint text-center">{t('install.freeNoRegistration')}</p>
                         </div>
                       )}
+
+                      <div id="install-steps" className="bg-kj-panel rounded-2xl border border-kj-line p-6 md:p-8 text-left mb-8">
+                        <h2 className="text-xl font-bold text-kj-text mb-6 flex items-center gap-2">
+                          <Download className="w-5 h-5 text-kj-primary" />
+                          {language === 'bn' ? 'কীভাবে ইনস্টল করবেন' : 'How to install'}
+                        </h2>
+                        <div className="space-y-6 text-sm text-kj-text-dim">
+                          <div>
+                            <p className="font-bold text-kj-text mb-2">{t('install.onAndroid')}</p>
+                            <ol className="list-decimal list-inside space-y-1.5 ml-2">
+                              <li>{language === 'bn' ? 'Chrome ব্রাউজারে koyjabo.com খুলুন' : 'Open koyjabo.com in Chrome'}</li>
+                              <li>{language === 'bn' ? 'মেনু (⋮) → "অ্যাপ ইনস্টল করুন" বা "হোম স্ক্রিনে যোগ করুন" ট্যাপ করুন' : 'Tap menu (⋮) → "Install app" or "Add to Home screen"'}</li>
+                              <li>{language === 'bn' ? 'ইনস্টল নিশ্চিত করুন' : 'Confirm install'}</li>
+                            </ol>
+                          </div>
+                          <div>
+                            <p className="font-bold text-kj-text mb-2">{t('install.onIOS')}</p>
+                            <ol className="list-decimal list-inside space-y-1.5 ml-2">
+                              <li>{language === 'bn' ? 'Safari ব্রাউজারে koyjabo.com খুলুন' : 'Open koyjabo.com in Safari'}</li>
+                              <li>{language === 'bn' ? 'শেয়ার বাটন (□↑) ট্যাপ করুন' : 'Tap the Share button (□↑)'}</li>
+                              <li>{language === 'bn' ? '"হোম স্ক্রিনে যোগ করুন" → "যোগ করুন" ট্যাপ করুন' : 'Tap "Add to Home Screen" → "Add"'}</li>
+                            </ol>
+                          </div>
+                          <div>
+                            <p className="font-bold text-kj-text mb-2">{language === 'bn' ? 'ডেস্কটপ (Chrome / Edge):' : 'Desktop (Chrome / Edge):'}</p>
+                            <ol className="list-decimal list-inside space-y-1.5 ml-2">
+                              <li>{language === 'bn' ? 'ঠিকানা বারে ইনস্টল আইকন (⊕) ক্লিক করুন' : 'Click the install icon (⊕) in the address bar'}</li>
+                              <li>{language === 'bn' ? 'অথবা মেনু → "কই যাবো ইনস্টল করুন" বেছে নিন' : 'Or use menu → "Install KoyJabo"'}</li>
+                            </ol>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-kj-chip-bg rounded-2xl border border-kj-line p-6 md:p-8 text-left">
+                        <h2 className="text-xl font-bold text-kj-text mb-4 flex items-center gap-2">
+                          <Zap className="w-5 h-5 text-kj-accent" />
+                          {language === 'bn' ? 'ইনস্টলের পর কীভাবে ব্যবহার করবেন' : 'How to use after installing'}
+                        </h2>
+                        <ul className="space-y-3 text-sm text-kj-text-dim">
+                          <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-kj-primary shrink-0 mt-0.5" />{language === 'bn' ? 'হোম স্ক্রিন থেকে অ্যাপ খুলুন — ব্রাউজার ছাড়াই' : 'Open from home screen — no browser needed'}</li>
+                          <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-kj-primary shrink-0 mt-0.5" />{language === 'bn' ? 'অফলাইনে বাস, ট্রেন ও মেট্রো রুট খুঁজুন' : 'Search bus, train and metro routes offline'}</li>
+                          <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-kj-primary shrink-0 mt-0.5" />{language === 'bn' ? 'AI সহায়ক, ট্রিপ রিমাইন্ডার ও ফেভারিট রুট সেভ করুন' : 'Use AI assistant, trip reminders and saved routes'}</li>
+                          <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-kj-primary shrink-0 mt-0.5" />{language === 'bn' ? 'আন্তঃজেলা ভ্রমণের জন্য ইন্টারসিটি মোড ব্যবহার করুন' : 'Use Intercity mode for travel across districts'}</li>
+                        </ul>
+                      </div>
                     </div>
                   )}
 
@@ -4346,6 +4390,9 @@ const App: React.FC = () => {
           </>
           )}
         </main>
+
+        {showPageAd && <PageAdSection />}
+        {!hideSiteChrome && view !== AppView.HOME && <GlobalFooter setView={setView} />}
 
         {/* Mobile Bottom Navigation */}
         {view !== AppView.BUS_DETAILS && view !== AppView.LIVE_NAV && (
@@ -4685,10 +4732,10 @@ const App: React.FC = () => {
                   Maybe Later
                 </button>
                 <button
-                  onClick={handleInstallClick}
+                  onClick={() => { setShowInstallPrompt(false); setView(AppView.INSTALL_APP); }}
                   className="flex-1 px-4 py-3 bg-gradient-to-r bg-kj-primary rounded-xl font-bold text-kj-primary-ink shadow-lg hover:shadow-xl transition-all active:scale-95"
                 >
-                  Install Now
+                  {language === 'bn' ? 'বিস্তারিত দেখুন' : 'View install guide'}
                 </button>
               </div>
 

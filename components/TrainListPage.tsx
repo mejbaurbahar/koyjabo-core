@@ -23,8 +23,6 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
 import { getTrainRatings, TrainRatingSummary } from '../services/communityDataService';
 import TrainImageViewer from './TrainImageViewer';
-import AdSenseAd from './AdSenseAd';
-
 
 
 interface TrainListPageProps {
@@ -190,10 +188,6 @@ export function TrainDetail({
             currentStopId={nearestStopIdx >= 0 ? route.stops[nearestStopIdx] : undefined}
           />
         </div>
-
-        <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-4 max-w-[728px] mx-auto" />
-
-
 
         <div className="p-4 space-y-4">
 
@@ -990,8 +984,6 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
           </span>
         </div>
 
-        <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-2 max-w-[728px] mx-auto" />
-
         {filtered.length === 0 ? (
           <div className="text-center py-16 text-kj-text-faint">
             <Train className="w-12 h-12 mx-auto mb-3 opacity-30" />
@@ -1001,9 +993,6 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
         ) : (
           filtered.map((route, idx) => (
             <React.Fragment key={route.id}>
-              {idx > 0 && idx % 8 === 0 && (
-                <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-1 max-w-[728px] mx-auto" />
-              )}
               <TrainCard
                 route={route}
                 onClick={() => onSelectTrain ? onSelectTrain(route) : setSelectedTrain(route)}

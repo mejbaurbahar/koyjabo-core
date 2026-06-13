@@ -3,7 +3,6 @@ import { ArrowLeft, Clock, Calendar, Tag, Copy, Check, ArrowUp, List } from 'luc
 import { BLOG_POSTS } from '../data/blogPosts';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import AdSenseAd from './AdSenseAd';
 import NewsletterBanner from './NewsletterBanner';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -267,8 +266,6 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
 
                     <div className="lg:grid lg:grid-cols-12 lg:gap-10">
                         <div className="lg:col-span-8">
-                            <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="mb-8 max-w-[728px] mx-auto" />
-
                             {/* Content */}
                             <div className="prose prose-lg md:prose-xl dark:prose-invert max-w-none
                                 prose-headings:font-black prose-headings:text-kj-text dark:prose-headings:text-gray-100 prose-headings:scroll-mt-20
@@ -300,27 +297,13 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                                         <>
                                             <ReactMarkdown remarkPlugins={[remarkGfm]}>{part1}</ReactMarkdown>
 
-                                            {paragraphs.length > cut1 && (
-                                                <div className="my-10 p-2 bg-gray-50 dark:bg-kj-chip-bg/50 rounded-2xl border border-dashed border-kj-line overflow-hidden">
-                                                    <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="w-full" />
-                                                </div>
-                                            )}
-
                                             {part2 && <ReactMarkdown remarkPlugins={[remarkGfm]}>{part2}</ReactMarkdown>}
-
-                                            {paragraphs.length > cut2 && (
-                                                <div className="my-10 p-2 bg-gray-50 dark:bg-kj-chip-bg/50 rounded-2xl border border-dashed border-kj-line overflow-hidden">
-                                                    <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="w-full" />
-                                                </div>
-                                            )}
 
                                             {part3 && <ReactMarkdown remarkPlugins={[remarkGfm]}>{part3}</ReactMarkdown>}
                                         </>
                                     );
                                 })()}
                             </div>
-
-                            <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-12 max-w-[728px] mx-auto" />
 
                             {/* Tags */}
                             <div className="mt-12 pt-8 border-t-2 border-kj-line">
@@ -337,9 +320,6 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                                 </div>
                             </div>
 
-                            {/* Post-tags rectangle — high-intent readers, good CPA */}
-                            <AdSenseAd adSlot="auto" adFormat="rectangle" className="mt-10 max-w-[336px] mx-auto" />
-
                             {/* Newsletter — appears after user finishes reading */}
                             <NewsletterBanner className="mt-8" />
                         </div>
@@ -347,10 +327,6 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                         {/* Sticky Sidebar (Desktop) */}
                         <aside className="hidden lg:block lg:col-span-4 space-y-8">
                             <div className="sticky top-24">
-                                <div className="bg-kj-panel rounded-2xl p-6 border border-kj-line shadow-sm mb-6 overflow-hidden">
-                                    <AdSenseAd adSlot="auto" adFormat="vertical" className="w-full max-w-[300px] mx-auto" />
-                                </div>
-                                
                                 {toc.length > 2 && (
                                     <div className="bg-teal-50/50 dark:bg-kj-chip-bg/50 rounded-2xl p-6 border border-teal-100 dark:border-teal-800">
                                         <h4 className="font-bold text-teal-900 dark:text-teal-100 mb-4 flex items-center gap-2">

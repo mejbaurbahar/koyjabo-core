@@ -9,7 +9,6 @@ import {
     ChevronRight,
     Circle,
 } from 'lucide-react';
-import AdSenseAd from './AdSenseAd';
 import {
     getTodayJourney,
     getJourneyHistory,
@@ -111,7 +110,6 @@ const DailyJourneyView: React.FC<DailyJourneyViewProps> = ({ onBack }) => {
             </div>
             {/* Main Content */}
             <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-24" style={{ WebkitOverflowScrolling: 'touch' }}>
-                <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="mt-4 mb-2 max-w-[728px] mx-auto" />
                 {/* Today's Journey */}
                 <div className="px-4 py-6">
                     <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">

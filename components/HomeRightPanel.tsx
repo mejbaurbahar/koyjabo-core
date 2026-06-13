@@ -1,6 +1,7 @@
 import React from 'react';
 import { Bus, Clock, Zap, Bot, Sparkles, ArrowRight } from 'lucide-react';
 import { MiniVehicle, type VehicleKind } from './design/Vehicles3D';
+import SponsoredAdSlot from './SponsoredAdSlot';
 
 interface HomeRightPanelProps {
   language: 'en' | 'bn';
@@ -12,18 +13,6 @@ interface HomeRightPanelProps {
   isInDhaka: boolean;
   user: { displayName: string; avatarUrl?: string } | null;
 }
-
-const AdSlot: React.FC<{ language: 'en' | 'bn'; size: string }> = ({ language, size }) => (
-  <div className="flex justify-center my-6 md:my-8">
-    <div className="w-full max-w-[728px] rounded-2xl border border-dashed border-kj-line/80 bg-kj-panel-muted/40 p-3 flex flex-col items-center justify-center min-h-[72px]">
-      <span className="text-[9px] font-bold text-kj-text-faint uppercase tracking-widest mb-0.5">
-        {language === 'bn' ? 'বিজ্ঞাপন' : 'Sponsored'}
-      </span>
-      <span className="text-[10px] text-kj-text-faint">Google AdSense · {size}</span>
-      <span className="text-[9px] text-kj-text-faint/70 mt-0.5">{language === 'bn' ? 'রিজার্ভড স্পেস' : 'reserved'}</span>
-    </div>
-  </div>
-);
 
 const metroStops = [
   { en: 'Uttara North', bn: 'উত্তরা উত্তর' },
@@ -97,7 +86,7 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
 
   return (
     <div className="pb-28 md:pb-8">
-      <AdSlot language={language} size="728 × 90" />
+      <SponsoredAdSlot language={language} size="728x90" />
 
       <div className="mb-6 md:mb-8">
         <SectionHeader title={lbl('How are you traveling?', 'কী খুঁজছেন?')} />
@@ -131,7 +120,7 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
         </div>
       </div>
 
-      <AdSlot language={language} size="728 × 90" />
+      <SponsoredAdSlot language={language} size="728x90" />
 
       {/* Metro Live — dark timeline panel */}
       <div className="mb-6 md:mb-8">
@@ -176,7 +165,7 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
         </div>
       </div>
 
-      <AdSlot language={language} size="728 × 90" />
+      <SponsoredAdSlot language={language} size="728x90" />
 
       <div className="mb-6 md:mb-8">
         <SectionHeader title={lbl('Your saved routes', 'আপনার সেভ করা রুট')} action={lbl('Edit', 'সম্পাদনা')} />
@@ -194,7 +183,7 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
         </div>
       </div>
 
-      <AdSlot language={language} size="728 × 90" />
+      <SponsoredAdSlot language={language} size="728x90" />
 
       {/* Trending + AI sidebar grid (desktop) */}
       <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-6 md:gap-8 mb-6 md:mb-8">
@@ -258,7 +247,7 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
             </div>
           </div>
 
-          <AdSlot language={language} size="300 × 250" />
+          <SponsoredAdSlot language={language} size="300x250" />
 
           <div className="dc-card rounded-[20px] p-[18px]">
             <div className="flex items-center gap-2.5 mb-3">
@@ -287,11 +276,6 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
         </div>
       </div>
 
-      <div className="pt-5 border-t border-kj-line flex flex-col md:flex-row gap-3 items-start md:items-center text-xs text-kj-text-faint">
-        <span>{lbl('KoyJabo · Open source · Free forever', 'কই যাবো · ওপেন সোর্স · বিনামূল্যে')}</span>
-        <div className="flex-1 hidden md:block" />
-        <span>v 1.0.0 · {lbl('Updated May 2026', 'মে ২০২৬ আপডেট')}</span>
-      </div>
     </div>
   );
 };
