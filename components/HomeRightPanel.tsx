@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import DhakaAlive from './DhakaAlive';
+import HomeHeroStrip from './HomeHeroStrip';
 import { Wifi, ChevronRight, Clock, Zap, Bot, Shield } from 'lucide-react';
 
 interface HomeRightPanelProps {
@@ -77,9 +77,7 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
 
   return (
     <div className="overflow-y-auto pb-28 md:pb-6 h-full">
-      <div className="w-full h-[180px] md:h-[200px] relative overflow-hidden shrink-0 md:rounded-2xl border-b md:border border-kj-line">
-        <DhakaAlive hideIndicator />
-      </div>
+      <HomeHeroStrip language={language} />
 
       {showPWABanner && (
         <div className="dc-card kj-glass rounded-2xl p-4 mx-4 mt-4 flex items-center gap-3">

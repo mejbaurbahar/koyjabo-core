@@ -57,7 +57,7 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
     busRouteSort, setBusRouteSort, nonAcOnly, setNonAcOnly,
     showSuggestions, setShowSuggestions, searchSuggestions, isIntercityRedirecting,
     globalNearestStationName, stationOptions, setView, setSuggestedRoutes,
-    setSearchContext, scrollContainerRef,     onSearchCommit, onKeyDown, onInputChange,
+    setSearchContext, scrollContainerRef, onSearchCommit, onKeyDown, onInputChange,
     onIntercityRedirect, onSuggestionSelect, formatBusName, formatNumber,
   } = props;
 
@@ -82,6 +82,14 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
     { icon: '✈️', action: () => { localStorage.setItem('dhaka_commute_view', JSON.stringify(AppView.HOME)); window.location.href = '/intercity/'; } },
     { icon: '📍', action: () => { if (globalNearestStationName) { setInputValue(globalNearestStationName); setSearchMode('TEXT'); } } },
   ];
+
+  const handleFindRoute = () => {
+    if (!fromStation || !toStation) return;
+    setSearchQuery('');
+    setInputValue('');
+    setSearchMode('ROUTE');
+    scrollContainerRef.current && (scrollContainerRef.current.scrollTop = 0);
+  };
 
   return (
     <div className="dc-card kj-glass rounded-[24px] overflow-visible shrink-0">
@@ -139,7 +147,7 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
           <kbd className="hidden sm:inline-flex h-6 px-2 rounded-md border border-kj-line bg-kj-panel-muted text-[10px] font-semibold text-kj-text-faint items-center">⌘ K</kbd>
         </div>
 
-        <div className="relative mb-3 isolate z-50">
+        <div className="relative mb-4 isolate z-50">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-kj-primary pointer-events-none" />
           <input
             type="text"
@@ -186,31 +194,53 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
             <span className="w-1 h-3 rounded-full bg-kj-primary" />
             {lbl('Or · plan a route', 'অথবা · রুট প্ল্যান করুন')}
           </div>
-          <div className="flex flex-col gap-3 relative">
-            <div>
-              <p className="text-[10px] font-bold text-kj-text-faint uppercase tracking-wider mb-1">{lbl('From', 'কোথা থেকে')}</p>
-              <SearchableSelect placeholder={t('home.from')} value={fromStation} onChange={setFromStation} options={stationOptions} />
-              {globalNearestStationName && (
-                <p className="text-[10px] text-kj-text-faint mt-1">· {lbl('Current location', 'বর্তমান অবস্থান')}</p>
-              )}
+
+          <div className="flex flex-col md:flex-row gap-2 md:gap-2.5 relative">
+            <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-2.5">
+              <div className="relative">
+                <p className="text-[10px] font-bold text-kj-text-faint uppercase tracking-wider mb-1">{lbl('From', 'কোথা থেকে')}</p>
+                <SearchableSelect
+                  placeholder={lbl('Gulshan 1', 'গুলশান ১')}
+                  value={fromStation}
+                  onChange={setFromStation}
+                  options={stationOptions}
+                />
+                {globalNearestStationName && (
+                  <p className="text-[10px] text-kj-text-faint mt-1">· {lbl('Current location', 'বর্তমান অবস্থান')}</p>
+                )}
+              </div>
+              <div className="relative">
+                <p className="text-[10px] font-bold text-kj-text-faint uppercase tracking-wider mb-1">{lbl('To', 'কোথায়')}</p>
+                <SearchableSelect
+                  placeholder={lbl('Motijheel', 'মতিঝিল')}
+                  value={toStation}
+                  onChange={setToStation}
+                  options={stationOptions}
+                />
+              </div>
             </div>
-            <button type="button" onClick={() => { const tmp = fromStation; setFromStation(toStation); setToStation(tmp); }}
-              className="absolute right-0 top-[calc(50%-4px)] -translate-y-1/2 w-8 h-8 rounded-full border border-kj-line bg-kj-panel flex items-center justify-center text-kj-text-dim z-10">
+
+            <button
+              type="button"
+              onClick={() => { const tmp = fromStation; setFromStation(toStation); setToStation(tmp); }}
+              className="hidden sm:flex absolute left-1/2 top-[calc(50%+6px)] -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full border border-kj-line bg-kj-panel items-center justify-center text-kj-text-dim z-10 hover:border-kj-primary/50"
+              aria-label={lbl('Swap stations', 'স্টেশন অদলবদল')}
+            >
               <ArrowRightLeft className="w-3.5 h-3.5" />
             </button>
-            <div>
-              <p className="text-[10px] font-bold text-kj-text-faint uppercase tracking-wider mb-1">{lbl('To', 'কোথায়')}</p>
-              <SearchableSelect placeholder={t('home.to')} value={toStation} onChange={setToStation} options={stationOptions} />
-            </div>
+
+            <button
+              type="button"
+              onClick={handleFindRoute}
+              disabled={!fromStation || !toStation}
+              className="md:w-[108px] md:shrink-0 md:self-end h-[46px] md:h-[52px] bg-kj-primary text-kj-primary-ink font-bold text-[13px] rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 shadow-[0_0_20px_rgba(0,245,255,0.22)] hover:brightness-105 transition-all"
+            >
+              <Search className="w-3.5 h-3.5 shrink-0" />
+              <span className="whitespace-nowrap">{lbl('Find routes', 'রুট খুঁজুন')}</span>
+            </button>
           </div>
-          <button type="button"
-            onClick={() => { if (fromStation && toStation) { setSearchQuery(''); setInputValue(''); setSearchMode('ROUTE'); scrollContainerRef.current && (scrollContainerRef.current.scrollTop = 0); } }}
-            disabled={!fromStation || !toStation}
-            className="mt-3 w-full bg-kj-primary text-kj-primary-ink font-bold text-[13px] py-2.5 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 shadow-[0_0_20px_rgba(0,245,255,0.22)]">
-            <Search className="w-3.5 h-3.5" />
-            {lbl('Find routes', 'রুট খুঁজুন')}
-          </button>
-          {fromStation && toStation && (
+
+          {(fromStation || toStation) && (
             <div className="flex items-center gap-1.5 flex-wrap mt-2.5">
               {([
                 ['DEFAULT', lbl(`Leave now · ${leaveTime}`, `এখনই · ${leaveTime}`)],

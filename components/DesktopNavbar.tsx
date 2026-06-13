@@ -1,8 +1,6 @@
 import React from 'react';
-import { Home, Map, Bot, Heart, Info, Train, Menu, Sparkles, Navigation, Clock, MapPin, User, LogIn, Bus, BookOpen, Rocket, TramFront, Calculator, Anchor } from 'lucide-react';
+import { Home, Menu, Sparkles, LogIn, Bus, TramFront, Calculator, Sun, Moon } from 'lucide-react';
 import { AppView } from '../types';
-import ThemeToggle from './ThemeToggle';
-import { AnimatedLogo } from './AnimatedLogo';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../src/contexts/AuthContext';
 
@@ -143,7 +141,13 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
                 >
                     {language === 'bn' ? 'অ্যাপ ইনস্টল' : 'Install app'}
                 </button>
-                <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+                <button
+                    onClick={toggleTheme}
+                    className="w-9 h-9 rounded-[10px] border border-kj-line bg-kj-panel-muted flex items-center justify-center text-kj-text hover:bg-kj-chip-bg transition-colors"
+                    aria-label={language === 'bn' ? 'থিম পরিবর্তন' : 'Toggle theme'}
+                >
+                    {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                </button>
                 {user ? (
                     <button
                         onClick={() => setView(AppView.PROFILE)}

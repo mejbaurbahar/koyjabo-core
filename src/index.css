@@ -1118,6 +1118,24 @@ footer {
 }
 .kj-bob { animation: kj-bob 3s ease-in-out infinite; }
 
+/* Home hero strip (design handoff) */
+@keyframes kj-drive-soft {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(12px); }
+}
+@keyframes kj-fly-soft {
+  0% { transform: translateX(0) translateY(0); opacity: 0.7; }
+  50% { transform: translateX(-8px) translateY(-3px); opacity: 1; }
+  100% { transform: translateX(0) translateY(0); opacity: 0.7; }
+}
+@keyframes kj-glow-soft {
+  0%, 100% { box-shadow: 0 0 24px rgba(245,215,110,0.45); }
+  50% { box-shadow: 0 0 32px rgba(245,215,110,0.65); }
+}
+.kj-anim-drive-soft { animation: kj-drive-soft 4s ease-in-out infinite; }
+.kj-anim-fly-soft { animation: kj-fly-soft 6s ease-in-out infinite; }
+.kj-anim-glow-soft { animation: kj-glow-soft 3s ease-in-out infinite; }
+
 /* Scan line CRT overlay */
 .kj-scanlines::after {
   content: '';
