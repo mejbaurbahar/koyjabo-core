@@ -1029,6 +1029,17 @@ footer {
   -webkit-backdrop-filter: blur(18px) saturate(140%);
 }
 
+/* Design handoff card shell */
+.dc-card {
+  background: var(--kj-panel);
+  border: 1px solid var(--kj-line);
+  box-shadow: var(--kj-shadow-lg);
+}
+
+.kj-home-shell {
+  background: transparent;
+}
+
 /* Neon glow halo */
 .kj-glow {
   box-shadow:

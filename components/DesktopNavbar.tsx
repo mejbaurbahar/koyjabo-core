@@ -93,7 +93,7 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
     ];
 
     return (
-        <nav className="hidden md:flex fixed top-0 left-0 right-0 h-16 bg-kj-panel/90 backdrop-blur-xl border-b border-kj-line z-[100] px-6 items-center justify-between transition-all duration-300 kj-glass">
+        <nav className="hidden md:flex fixed top-0 left-0 right-0 h-16 bg-[rgba(4,8,20,0.85)] backdrop-blur-xl border-b border-kj-line z-[100] px-6 items-center justify-between transition-all duration-300 kj-glass">
             {/* Logo Section */}
             <div
                 className="flex items-center gap-3 cursor-pointer group"
@@ -166,7 +166,7 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
                 )}
                 <button
                     onClick={onOpenMenu}
-                    className="p-2 hover:bg-kj-chip-bg rounded-xl transition-colors text-kj-text-dim hover:text-kj-text"
+                    className="p-2 hover:bg-kj-chip-bg rounded-xl transition-colors text-kj-text-dim hover:text-kj-text xl:hidden"
                 >
                     <Menu className="w-5 h-5" />
                 </button>

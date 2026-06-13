@@ -3878,10 +3878,10 @@ const App: React.FC = () => {
     }
 
     return (
-      <div className="flex flex-col flex-1 min-h-0 w-full overflow-hidden">
-        {/* ── Compact Search Panel (sticky) ── */}
-        <div className="flex-none bg-kj-bg z-20 md:pt-2 relative isolate z-50">
-          <div className="p-4 pb-3">
+      <div className="flex flex-col flex-1 min-h-0 w-full overflow-hidden md:overflow-y-auto kj-home-shell md:p-4 md:pt-3">
+        <div className="flex-none z-20 relative isolate z-50">
+          <div className="dc-card kj-glass rounded-[24px] overflow-visible mx-0 md:mx-0">
+            <div className="p-4 md:p-5 pb-3">
             {/* Greeting header */}
             <div className="mb-3">
               <div className="flex items-center gap-1.5 mb-1">
@@ -3892,13 +3892,18 @@ const App: React.FC = () => {
                     : (language === 'bn' ? 'বাংলাদেশ' : 'Bangladesh')}
                 </span>
               </div>
-              <h2 className="font-bengali font-bold text-kj-text text-xl leading-tight tracking-tight">
+              <h2 className="font-bengali font-bold text-kj-text text-[22px] md:text-[26px] leading-tight tracking-tight">
                 {user
                   ? (language === 'bn'
-                      ? `কোথায় যেতে চান, ${user.displayName.split(' ')[0]}?`
-                      : `Where are you headed, ${user.displayName.split(' ')[0]}?`)
+                      ? `কোথায় যেতে চান, ${user.displayName?.split(' ')[0] || ''}?`
+                      : `Where are you headed, ${user.displayName?.split(' ')[0] || 'friend'}?`)
                   : (isInDhaka ? t('home.whereToGo') : t('home.whereToGoInDhaka'))}
               </h2>
+              <p className="text-kj-text-dim text-[12px] leading-relaxed mt-2">
+                {language === 'bn'
+                  ? '২,৪০০+ ঢাকা লোকাল বাস, মেট্রো রেল ও বাংলাদেশের ৬৪ জেলার সব রুট — অফলাইনেও কাজ করে।'
+                  : '2,400+ Dhaka local buses, metro rail & routes across all 64 districts — works offline too.'}
+              </p>
             </div>
 
             {/* Mode chips */}
@@ -3911,7 +3916,7 @@ const App: React.FC = () => {
                 { label: language === 'bn' ? 'লঞ্চ' : 'Launch', active: false, onClick: () => setView(AppView.LAUNCH_HUB) },
               ].map((chip) => (
                 <button key={chip.label} onClick={chip.onClick}
-                  className={`px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap shrink-0 transition-all border ${chip.active ? 'bg-kj-primary text-kj-primary-ink border-kj-primary' : 'bg-kj-panel text-kj-text border-kj-line hover:border-kj-primary/40'}`}>
+                  className={`px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap shrink-0 transition-all border ${chip.active ? 'bg-kj-primary text-kj-primary-ink border-kj-primary shadow-[0_0_12px_rgba(0,245,255,0.25)]' : 'bg-kj-panel-muted text-kj-text-dim border-kj-line hover:border-kj-primary/40 hover:text-kj-text'}`}>
                   {chip.label}
                 </button>
               ))}
@@ -3921,13 +3926,27 @@ const App: React.FC = () => {
             <p className="text-[10px] font-bold text-kj-text-faint tracking-[1.2px] uppercase mb-1.5 px-0.5">
               {language === 'bn' ? 'যেকোনো কিছু খুঁজুন' : 'Search anything'}
             </p>
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-1">
+                {[
+                  { icon: '🚌', action: () => setSearchMode('TEXT') },
+                  { icon: '🚇', action: () => setView(AppView.METRO_HUB) },
+                  { icon: '🚆', action: () => setView(AppView.TRAIN_LIST) },
+                  { icon: '✈️', action: () => { localStorage.setItem('dhaka_commute_view', JSON.stringify(AppView.HOME)); window.location.href = '/intercity/'; } },
+                  { icon: '📍', action: () => { if (globalNearestStationName) { setInputValue(globalNearestStationName); setSearchMode('TEXT'); } } },
+                ].map((q) => (
+                  <button key={q.icon} type="button" onClick={q.action} className="w-7 h-7 rounded-lg bg-kj-chip-bg border border-kj-line flex items-center justify-center text-[13px] hover:border-kj-primary/50 transition-colors">{q.icon}</button>
+                ))}
+              </div>
+              <kbd className="hidden sm:inline-flex h-6 px-2 rounded-md border border-kj-line bg-kj-panel-muted text-[10px] font-semibold text-kj-text-faint items-center">⌘ K</kbd>
+            </div>
             <div className="relative mb-2">
               <div className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
                 <Search className="w-4 h-4 text-kj-primary" />
               </div>
               <input type="text"
                 placeholder={language === 'bn' ? 'বাস, ট্রেন, স্টপ বা স্থান লিখুন...' : 'Search bus, train, stop, place, district...'}
-                className="w-full pl-9 pr-[4.5rem] py-2.5 bg-kj-input-bg text-kj-text border border-kj-line rounded-xl focus:outline-none focus:ring-2 focus:ring-kj-primary/30 text-sm font-medium placeholder:text-kj-text-faint"
+                className="w-full pl-9 pr-10 py-3 bg-kj-input-bg text-kj-text border border-kj-line rounded-xl focus:outline-none focus:ring-2 focus:ring-kj-primary/30 text-sm font-medium placeholder:text-kj-text-faint"
                 value={inputValue}
                 onChange={(e) => {
                   setInputValue(e.target.value);
@@ -3945,20 +3964,15 @@ const App: React.FC = () => {
               />
               {(inputValue || searchQuery) ? (
                 <button onClick={() => { setInputValue(''); setSearchQuery(''); setSuggestedRoutes([]); setSearchContext(undefined); setShowSuggestions(false); }}
-                  className="absolute right-12 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-500">
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-500">
                   <X className="w-3.5 h-3.5" />
                 </button>
               ) : (
                 <button onClick={handleSearchCommit} disabled={isIntercityRedirecting}
-                  className="absolute right-12 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-kj-primary-soft text-kj-primary">
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-kj-primary-soft text-kj-primary">
                   <Search className="w-3.5 h-3.5" />
                 </button>
               )}
-              <button
-                onClick={() => { localStorage.setItem('dhaka_commute_view', JSON.stringify(AppView.HOME)); window.location.href = '/intercity/'; }}
-                className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg bg-kj-chip-bg border border-kj-line flex items-center justify-center text-sm"
-                aria-label={language === 'bn' ? 'আন্তঃজেলা' : 'Intercity'}
-              >✈️</button>
               {/* Autocomplete dropdown */}
               {showSuggestions && searchSuggestions.length > 0 && (
                 <div className="absolute top-full left-0 right-0 mt-1 bg-kj-panel rounded-xl shadow-2xl max-h-72 overflow-y-auto z-[9999] border border-kj-line">
@@ -3991,22 +4005,31 @@ const App: React.FC = () => {
             </div>
 
             {/* Route planner */}
-            <div className="bg-kj-panel border border-kj-line rounded-xl p-3">
-              <div className="text-[10px] font-bold text-kj-text-faint uppercase tracking-[1.2px] mb-2 flex items-center gap-1.5">
+            <div className="bg-kj-panel-muted/80 border border-kj-line rounded-2xl p-3.5 mt-1">
+              <div className="text-[10px] font-bold text-kj-text-faint uppercase tracking-[1.2px] mb-3 flex items-center gap-1.5">
                 <span className="w-1 h-3 rounded-full bg-kj-primary" />
                 {language === 'bn' ? 'অথবা · রুট প্ল্যান করুন' : 'Or · plan a route'}
               </div>
-              <div className="flex flex-col gap-1.5 relative">
-                <SearchableSelect placeholder={t('home.from')} value={fromStation} onChange={setFromStation} options={Object.keys(STATIONS).map(id => ({ id, name: (STATIONS as any)[id]?.name ?? id, bnName: (STATIONS as any)[id]?.bnName }))} />
+              <div className="flex flex-col gap-3 relative">
+                <div>
+                  <p className="text-[10px] font-bold text-kj-text-faint uppercase tracking-wider mb-1">{language === 'bn' ? 'কোথা থেকে' : 'From'}</p>
+                  <SearchableSelect placeholder={t('home.from')} value={fromStation} onChange={setFromStation} options={Object.keys(STATIONS).map(id => ({ id, name: (STATIONS as any)[id]?.name ?? id, bnName: (STATIONS as any)[id]?.bnName }))} />
+                  {globalNearestStationName && (
+                    <p className="text-[10px] text-kj-text-faint mt-1">· {language === 'bn' ? 'বর্তমান অবস্থান' : 'Current location'}</p>
+                  )}
+                </div>
                 <button onClick={() => { const tmp = fromStation; setFromStation(toStation); setToStation(tmp); }}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 -translate-x-1 w-7 h-7 rounded-full border border-kj-line bg-kj-panel flex items-center justify-center text-kj-text-dim z-10">
-                  <ArrowRightLeft className="w-3 h-3" />
+                  className="absolute right-0 top-[calc(50%-4px)] -translate-y-1/2 w-8 h-8 rounded-full border border-kj-line bg-kj-panel flex items-center justify-center text-kj-text-dim z-10 shadow-sm">
+                  <ArrowRightLeft className="w-3.5 h-3.5" />
                 </button>
-                <SearchableSelect placeholder={t('home.to')} value={toStation} onChange={setToStation} options={Object.keys(STATIONS).map(id => ({ id, name: (STATIONS as any)[id]?.name ?? id, bnName: (STATIONS as any)[id]?.bnName }))} />
+                <div>
+                  <p className="text-[10px] font-bold text-kj-text-faint uppercase tracking-wider mb-1">{language === 'bn' ? 'কোথায়' : 'To'}</p>
+                  <SearchableSelect placeholder={t('home.to')} value={toStation} onChange={setToStation} options={Object.keys(STATIONS).map(id => ({ id, name: (STATIONS as any)[id]?.name ?? id, bnName: (STATIONS as any)[id]?.bnName }))} />
+                </div>
               </div>
               <button onClick={() => { if (fromStation && toStation) { setSearchQuery(''); setInputValue(''); setSearchMode('ROUTE'); if (scrollContainerRef.current) scrollContainerRef.current.scrollTop = 0; } }}
                 disabled={!fromStation || !toStation}
-                className="mt-2 w-full bg-kj-primary text-kj-primary-ink font-bold text-[13px] py-2 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 active:opacity-90">
+                className="mt-3 w-full bg-kj-primary text-kj-primary-ink font-bold text-[13px] py-2.5 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 active:opacity-90 shadow-[0_0_20px_rgba(0,245,255,0.2)]">
                 <Search className="w-3.5 h-3.5" />
                 {language === 'bn' ? 'রুট খুঁজুন' : 'Find routes'}
               </button>
@@ -4031,11 +4054,12 @@ const App: React.FC = () => {
             </div>
 
             {/* Live counter */}
-            <div className="flex items-center gap-1.5 mt-2 px-1">
+            <div className="flex items-center gap-1.5 mt-3 px-0.5">
               <span className="w-1.5 h-1.5 rounded-full bg-kj-primary animate-pulse" />
               <span className="text-[10px] font-bold text-kj-text-faint">
                 {language === 'bn' ? '২,৪১২ রুট লাইভ' : '2,412 routes live'}
               </span>
+            </div>
             </div>
           </div>
         </div>
@@ -4154,7 +4178,7 @@ const App: React.FC = () => {
         )}
 
         {/* Mobile Header */}
-        <header className={`sticky top-0 left-0 right-0 bg-kj-panel border-b border-kj-line z-[100] md:hidden transition-transform duration-300 pt-safe ${(view === AppView.LIVE_NAV || view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? '-translate-y-full h-0 overflow-hidden py-0 border-none' : 'translate-y-0 h-auto'}`}>
+        <header className={`sticky top-0 left-0 right-0 bg-kj-panel/85 backdrop-blur-xl border-b border-kj-line z-[100] md:hidden kj-glass transition-transform duration-300 pt-safe ${(view === AppView.LIVE_NAV || view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? '-translate-y-full h-0 overflow-hidden py-0 border-none' : 'translate-y-0 h-auto'}`}>
           <div className="flex items-center gap-3 px-[18px] py-[14px]">
             <button onClick={() => setIsMenuOpen(true)} className="p-0 flex items-center justify-center shrink-0 text-kj-text active:opacity-70" aria-label="Open menu">
               <Menu className="w-[22px] h-[22px]" />
@@ -4200,10 +4224,10 @@ const App: React.FC = () => {
 
 
 
-        <main className="flex flex-1 min-h-0 overflow-hidden relative z-10 w-full max-w-full mx-auto bg-transparent md:pt-16">
+        <main className="flex flex-1 min-h-0 overflow-hidden relative z-10 w-full max-w-[1440px] mx-auto bg-transparent md:pt-16 md:px-4 md:gap-4">
           {/* Left Sidebar (Desktop) / Main View (Mobile Home) */}
           <div
-            className={`flex flex-col flex-1 min-h-0 w-full md:flex-none md:w-1/3 md:min-w-[320px] md:max-w-md border-r border-kj-line dark:border-kj-line bg-kj-bg dark:bg-kj-bg z-0 overflow-hidden ${view !== AppView.HOME && view !== AppView.TRAIN_LIST && 'hidden md:flex'}`}
+            className={`flex flex-col flex-1 min-h-0 w-full md:flex-none md:w-[420px] md:max-w-[420px] md:shrink-0 z-0 overflow-hidden kj-home-shell ${view !== AppView.HOME && view !== AppView.TRAIN_LIST && 'hidden md:flex'}`}
             style={(view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? { display: 'none' } : undefined}
           >
             <div className="flex-1 min-h-0 flex flex-col md:pt-0">
@@ -4213,7 +4237,7 @@ const App: React.FC = () => {
 
           {/* Right Content Area (Desktop) / Views (Mobile) */}
           <div className={`
-            ${'flex-1 min-h-0 w-full min-w-0 bg-kj-bg dark:bg-kj-bg relative overflow-hidden flex flex-col'}
+            ${'flex-1 min-h-0 w-full min-w-0 bg-transparent relative overflow-hidden flex flex-col'}
             ${(view === AppView.HOME || view === AppView.TRAIN_LIST) && 'hidden md:flex'}
             ${(view === AppView.LOCAL_BUS_HUB || view === AppView.METRO_HUB || view === AppView.LAUNCH_HUB) && 'flex'}
 `}>

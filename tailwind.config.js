@@ -59,8 +59,8 @@ export default {
             },
             boxShadow: {
                 'card': '0 2px 8px rgba(0, 0, 0, 0.04)',
-                'kj': '0 1px 2px rgba(8,30,24,0.05), 0 12px 32px -16px rgba(8,30,24,0.12)',
-                'kj-lg': '0 1px 2px rgba(8,30,24,0.06), 0 24px 60px -28px rgba(8,30,24,0.25)',
+                'kj': 'var(--kj-shadow)',
+                'kj-lg': 'var(--kj-shadow-lg)',
             }
         },
     },

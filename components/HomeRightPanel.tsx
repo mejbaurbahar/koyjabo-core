@@ -99,10 +99,10 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
   }, []);
 
   return (
-    <div className="overflow-y-auto pb-32 md:pb-16">
+    <div className="overflow-y-auto pb-32 md:pb-8 h-full">
 
       {/* 1. DhakaAlive animation strip */}
-      <div className="w-full h-[200px] relative overflow-hidden shrink-0">
+      <div className="w-full h-[180px] md:h-[200px] relative overflow-hidden shrink-0 rounded-b-2xl md:rounded-2xl md:mx-0 md:mt-0 border-b md:border border-kj-line">
         <DhakaAlive hideIndicator />
       </div>
 
@@ -138,7 +138,7 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
 
       {/* 4. "How are you traveling?" 6 cards */}
       <div className="px-4 mt-4">
-        <h2 className="text-kj-text font-bold text-sm mb-3">
+        <h2 className="text-kj-text font-bold text-sm mb-3 tracking-tight">
           {lbl('How are you traveling?', 'কী খুঁজছেন?')}
         </h2>
         <div className="grid grid-cols-2 gap-2">
