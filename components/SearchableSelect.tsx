@@ -48,7 +48,7 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({ options, val
     }, [wrapperRef, value, options]);
 
     const filteredOptions = options.filter(option =>
-        option.name.toLowerCase().includes(searchTerm.toLowerCase())
+        (option.name || '').toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (

@@ -3997,12 +3997,12 @@ const App: React.FC = () => {
                 {language === 'bn' ? 'অথবা · রুট প্ল্যান করুন' : 'Or · plan a route'}
               </div>
               <div className="flex flex-col gap-1.5 relative">
-                <SearchableSelect placeholder={t('home.from')} value={fromStation} onChange={setFromStation} options={Object.keys(STATIONS).map(id => ({ value: id, label: (STATIONS as any)[id]?.name ?? id, bnLabel: (STATIONS as any)[id]?.bnName }))} language={language} />
+                <SearchableSelect placeholder={t('home.from')} value={fromStation} onChange={setFromStation} options={Object.keys(STATIONS).map(id => ({ id, name: (STATIONS as any)[id]?.name ?? id, bnName: (STATIONS as any)[id]?.bnName }))} />
                 <button onClick={() => { const tmp = fromStation; setFromStation(toStation); setToStation(tmp); }}
                   className="absolute right-0 top-1/2 -translate-y-1/2 -translate-x-1 w-7 h-7 rounded-full border border-kj-line bg-kj-panel flex items-center justify-center text-kj-text-dim z-10">
                   <ArrowRightLeft className="w-3 h-3" />
                 </button>
-                <SearchableSelect placeholder={t('home.to')} value={toStation} onChange={setToStation} options={Object.keys(STATIONS).map(id => ({ value: id, label: (STATIONS as any)[id]?.name ?? id, bnLabel: (STATIONS as any)[id]?.bnName }))} language={language} />
+                <SearchableSelect placeholder={t('home.to')} value={toStation} onChange={setToStation} options={Object.keys(STATIONS).map(id => ({ id, name: (STATIONS as any)[id]?.name ?? id, bnName: (STATIONS as any)[id]?.bnName }))} />
               </div>
               <button onClick={() => { if (fromStation && toStation) { setSearchQuery(''); setInputValue(''); setSearchMode('ROUTE'); if (scrollContainerRef.current) scrollContainerRef.current.scrollTop = 0; } }}
                 disabled={!fromStation || !toStation}
