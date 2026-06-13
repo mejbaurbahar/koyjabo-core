@@ -91,7 +91,7 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
     ];
 
     return (
-        <nav className="hidden md:flex fixed top-0 left-0 right-0 h-16 bg-[rgba(4,8,20,0.85)] backdrop-blur-xl border-b border-kj-line z-[100] px-6 items-center justify-between transition-all duration-300 kj-glass">
+        <nav className="hidden md:flex fixed top-0 left-0 right-0 h-[68px] bg-kj-panel/90 backdrop-blur-[14px] border-b border-kj-line z-[100] px-6 md:px-10 items-center justify-between transition-all duration-300 kj-glass">
             {/* Logo Section */}
             <div
                 className="flex items-center gap-3 cursor-pointer group"
@@ -108,12 +108,12 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
             </div>
 
             {/* Navigation Links */}
-            <div className="flex items-center gap-0.5 bg-kj-chip-bg p-1 rounded-2xl border border-kj-line">
+            <div className="flex items-center gap-1 ml-8">
                 {(navItems as NavItem[]).map((item) => (
                     <button
                         key={item.label}
                         onClick={item.onClick}
-                        className={`relative px-3 py-1.5 rounded-xl text-[13px] font-semibold flex items-center gap-1.5 transition-all duration-200 ${item.isActive ? 'bg-kj-panel text-kj-primary shadow-sm kj-glass' : 'text-kj-text-dim hover:text-kj-text hover:bg-kj-panel/60'}`}
+                        className={`relative px-3.5 py-2 rounded-[10px] text-sm font-medium flex items-center gap-1.5 transition-all duration-200 ${item.isActive ? 'bg-kj-chip-bg text-kj-text' : 'text-kj-text-dim hover:text-kj-text hover:bg-kj-chip-bg/60'}`}
                     >
                         <item.icon className="w-3.5 h-3.5" />
                         {item.label}
@@ -137,7 +137,7 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
                 </button>
                 <button
                     onClick={() => setView(AppView.INSTALL_APP)}
-                    className="hidden lg:flex items-center gap-1.5 h-9 px-3 rounded-[10px] border border-kj-line bg-kj-panel-muted text-kj-text text-[12px] font-semibold hover:bg-kj-chip-bg transition-colors"
+                    className="hidden lg:flex items-center gap-1.5 h-9 px-3.5 rounded-[10px] border-0 bg-kj-text text-kj-bg text-[13px] font-semibold hover:opacity-90 transition-opacity"
                 >
                     {language === 'bn' ? 'অ্যাপ ইনস্টল' : 'Install app'}
                 </button>

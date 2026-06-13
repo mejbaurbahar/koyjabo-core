@@ -1118,7 +1118,9 @@ footer {
 }
 .kj-bob { animation: kj-bob 3s ease-in-out infinite; }
 
-/* Home hero strip (design handoff) */
+@keyframes kjpulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* Home hero strip (legacy soft animations) */
 @keyframes kj-drive-soft {
   0%, 100% { transform: translateX(0); }
   50% { transform: translateX(12px); }
@@ -1135,6 +1137,33 @@ footer {
 .kj-anim-drive-soft { animation: kj-drive-soft 4s ease-in-out infinite; }
 .kj-anim-fly-soft { animation: kj-fly-soft 6s ease-in-out infinite; }
 .kj-anim-glow-soft { animation: kj-glow-soft 3s ease-in-out infinite; }
+
+/* 3D vehicle scene (design handoff) */
+@keyframes kj-drive   { 0% { transform: translateX(-30%); } 100% { transform: translateX(130%); } }
+@keyframes kj-fly     { 0% { transform: translate(-20%, 18%) rotate(-6deg); } 50% { transform: translate(40%, 8%) rotate(-4deg); } 100% { transform: translate(130%, 18%) rotate(-6deg); } }
+@keyframes kj-train   { 0% { transform: translateX(-40%); } 100% { transform: translateX(140%); } }
+@keyframes kj-bob-sm  { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes kj-shake   { 0%, 100% { transform: translateY(0); } 25% { transform: translateY(-0.6px); } 75% { transform: translateY(0.6px); } }
+@keyframes kj-cloud   { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+@keyframes kj-spin    { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+@keyframes kj-pulse   { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.08); } }
+@keyframes kj-glow    { 0%, 100% { filter: drop-shadow(0 4px 14px rgba(16,185,129,0.45)); } 50% { filter: drop-shadow(0 6px 22px rgba(16,185,129,0.75)); } }
+@keyframes kj-dash    { to { stroke-dashoffset: -40; } }
+@keyframes kj-track   { 0% { background-position: 0 0; } 100% { background-position: -40px 0; } }
+@keyframes kj-blink   { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+@keyframes kj-smoke   { 0% { transform: translateY(0) scale(1); opacity: 0.7; } 100% { transform: translateY(-30px) scale(2); opacity: 0; } }
+.kj-anim-drive  { animation: kj-drive 9s linear infinite; transform-origin: center; }
+.kj-anim-fly    { animation: kj-fly 11s ease-in-out infinite; }
+.kj-anim-train  { animation: kj-train 7s linear infinite; }
+.kj-anim-bob-sm { animation: kj-bob-sm 1.6s ease-in-out infinite; }
+.kj-anim-shake  { animation: kj-shake 0.18s linear infinite; }
+.kj-anim-cloud  { animation: kj-cloud 28s linear infinite; }
+.kj-anim-spin   { animation: kj-spin 0.6s linear infinite; transform-origin: 50% 50%; transform-box: fill-box; }
+.kj-anim-pulse  { animation: kj-pulse 2s ease-in-out infinite; transform-origin: center; }
+.kj-anim-glow   { animation: kj-glow 2.4s ease-in-out infinite; }
+.kj-anim-dash   { stroke-dasharray: 12 8; animation: kj-dash 1.6s linear infinite; }
+.kj-anim-blink  { animation: kj-blink 1.3s ease-in-out infinite; }
+.kj-anim-smoke  { animation: kj-smoke 2.5s ease-out infinite; }
 
 /* Scan line CRT overlay */
 .kj-scanlines::after {

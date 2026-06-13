@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, X, ArrowRightLeft } from 'lucide-react';
+import { Search, X, ArrowLeftRight, MapPin, Flag, Clock, Zap, Banknote } from 'lucide-react';
 import { SearchableSelect } from './SearchableSelect';
 import { AppView } from '../types';
 import type { SearchSuggestion } from '../services/searchService';
@@ -51,14 +51,14 @@ export interface HomeSearchPanelProps {
 
 const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
   const {
-    language, t, user, isInDhaka, view, searchMode, setSearchMode,
+    language, view, searchMode, setSearchMode,
     inputValue, setInputValue, searchQuery, setSearchQuery,
     fromStation, setFromStation, toStation, setToStation,
     busRouteSort, setBusRouteSort, nonAcOnly, setNonAcOnly,
     showSuggestions, setShowSuggestions, searchSuggestions, isIntercityRedirecting,
     globalNearestStationName, stationOptions, setView, setSuggestedRoutes,
     setSearchContext, scrollContainerRef, onSearchCommit, onKeyDown, onInputChange,
-    onIntercityRedirect, onSuggestionSelect, formatBusName, formatNumber,
+    onSuggestionSelect, formatBusName, formatNumber,
   } = props;
 
   const lbl = (en: string, bn: string) => (language === 'bn' ? bn : en);
@@ -91,88 +91,82 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
     scrollContainerRef.current && (scrollContainerRef.current.scrollTop = 0);
   };
 
-  return (
-    <div className="dc-card kj-glass rounded-[24px] overflow-visible shrink-0">
-      <div className="p-4 md:p-5">
-        <div className="mb-4">
-          <div className="flex items-center gap-1.5 mb-1.5">
-            <span className="w-2 h-2 rounded-full bg-kj-primary kj-live-dot relative shrink-0" />
-            <span className="text-[10px] font-bold text-kj-text-faint tracking-[1.4px] uppercase">
-              {isInDhaka
-                ? lbl('Dhaka · 31°C · Moderate traffic', 'ঢাকা · ৩১°C · জ্যাম মাঝারি')
-                : lbl('Bangladesh', 'বাংলাদেশ')}
-            </span>
-          </div>
-          <h1 className="font-bengali font-bold text-kj-text text-[22px] md:text-[26px] leading-tight tracking-tight">
-            {user
-              ? lbl(`Where are you headed, ${user.displayName?.split(' ')[0] || 'friend'}?`, `কোথায় যেতে চান, ${user.displayName?.split(' ')[0] || ''}?`)
-              : (isInDhaka ? t('home.whereToGo') : t('home.whereToGoInDhaka'))}
-          </h1>
-          <p className="text-kj-text-dim text-[12px] leading-relaxed mt-2">
-            {lbl(
-              '2,400+ Dhaka local buses, metro rail & routes across all 64 districts — works offline too.',
-              '২,৪০০+ ঢাকা লোকাল বাস, মেট্রো রেল ও বাংলাদেশের ৬৪ জেলার সব রুট — অফলাইনেও কাজ করে।'
-            )}
-          </p>
-        </div>
+  const chipBtn = (active: boolean) =>
+    `inline-flex items-center gap-1.5 h-8 px-3 rounded-full border text-xs font-medium transition-colors ${
+      active ? 'bg-kj-primary text-kj-primary-ink border-kj-primary' : 'bg-kj-panel-muted border-kj-line text-kj-text hover:border-kj-primary/40'
+    }`;
 
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-2 mb-4 no-scrollbar">
+  return (
+    <div className="dc-card kj-glass rounded-[24px] border border-kj-line shadow-[0_4px_12px_rgba(0,0,0,0.6),0_30px_90px_-25px_rgba(0,245,255,0.25)] overflow-visible shrink-0">
+      <div className="p-4 md:p-[22px]">
+        {/* Mode chips + search anything pill */}
+        <div className="flex items-center gap-2 flex-wrap mb-3.5">
           {modeChips.map((chip) => (
             <button
               key={chip.label}
               type="button"
               onClick={chip.onClick}
-              className={`px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap shrink-0 border transition-all ${
+              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold whitespace-nowrap shrink-0 border transition-all ${
                 chip.active
-                  ? 'bg-kj-primary text-kj-primary-ink border-kj-primary shadow-[0_0_14px_rgba(0,245,255,0.28)]'
-                  : 'bg-kj-panel-muted text-kj-text-dim border-kj-line hover:border-kj-primary/40 hover:text-kj-text'
+                  ? 'bg-kj-primary-soft text-kj-primary-deep border-kj-primary/30'
+                  : 'bg-kj-chip-bg text-kj-chip-text border-transparent hover:border-kj-line'
               }`}
             >
+              {chip.active && <span className="w-1.5 h-1.5 rounded-full bg-kj-primary shrink-0" />}
               {chip.label}
             </button>
           ))}
+          <div className="hidden md:block flex-1" />
+          <button
+            type="button"
+            onClick={() => document.querySelector<HTMLInputElement>('[data-kj-universal-search]')?.focus()}
+            className="hidden md:inline-flex items-center gap-1.5 bg-kj-text text-kj-bg border-0 rounded-full px-3 py-1.5 text-[11px] font-bold tracking-wide hover:opacity-90 transition-opacity"
+          >
+            <Search className="w-3 h-3" />
+            {lbl('Search anything', 'যেকোনো কিছু খুঁজুন')}
+          </button>
         </div>
 
-        <p className="text-[10px] font-bold text-kj-text-faint tracking-[1.2px] uppercase mb-2">
-          {lbl('Search anything', 'যেকোনো কিছু খুঁজুন')}
-        </p>
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-1">
-            {quickIcons.map((q) => (
-              <button key={q.icon} type="button" onClick={q.action} className="w-7 h-7 rounded-lg bg-kj-chip-bg border border-kj-line flex items-center justify-center text-[13px] hover:border-kj-primary/50 transition-colors">
-                {q.icon}
-              </button>
-            ))}
-          </div>
-          <kbd className="hidden sm:inline-flex h-6 px-2 rounded-md border border-kj-line bg-kj-panel-muted text-[10px] font-semibold text-kj-text-faint items-center">⌘ K</kbd>
-        </div>
-
-        <div className="relative mb-4 isolate z-50">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-kj-primary pointer-events-none" />
-          <input
-            type="text"
-            placeholder={lbl('Search bus, train, stop, place, district...', 'বাস, ট্রেন, স্টপ বা স্থান লিখুন...')}
-            className="w-full pl-9 pr-10 py-3 bg-kj-input-bg text-kj-text border border-kj-line rounded-xl focus:outline-none focus:ring-2 focus:ring-kj-primary/30 text-sm font-medium placeholder:text-kj-text-faint"
-            value={inputValue}
-            onChange={(e) => {
-              setInputValue(e.target.value);
-              onInputChange(e.target.value);
-            }}
-            onKeyDown={onKeyDown}
-            onFocus={() => { if (searchSuggestions.length > 0) setShowSuggestions(true); }}
-            onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-          />
-          {(inputValue || searchQuery) ? (
-            <button type="button" onClick={() => { setInputValue(''); setSearchQuery(''); setSuggestedRoutes([]); setSearchContext(undefined); setShowSuggestions(false); }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-red-500/10 text-red-400">
-              <X className="w-3.5 h-3.5" />
-            </button>
-          ) : (
-            <button type="button" onClick={onSearchCommit} disabled={isIntercityRedirecting}
-              className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-kj-primary-soft text-kj-primary">
+        {/* Universal search bar */}
+        <div className="relative mb-2.5 isolate z-50">
+          <div className="relative bg-kj-input-bg border border-kj-line rounded-[14px] px-3.5 py-3 flex items-center gap-3">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-kj-primary to-kj-primary-deep text-white flex items-center justify-center shrink-0 kj-anim-glow">
               <Search className="w-3.5 h-3.5" />
-            </button>
-          )}
+            </div>
+            <input
+              data-kj-universal-search
+              type="text"
+              placeholder={lbl('Search bus, train, stop, place, district...', 'বাস, ট্রেন, স্টপ বা স্থান লিখুন...')}
+              className="flex-1 min-w-0 bg-transparent text-kj-text text-sm font-bengali font-medium focus:outline-none placeholder:text-kj-text-dim"
+              value={inputValue}
+              onChange={(e) => {
+                setInputValue(e.target.value);
+                onInputChange(e.target.value);
+              }}
+              onKeyDown={onKeyDown}
+              onFocus={() => { if (searchSuggestions.length > 0) setShowSuggestions(true); }}
+              onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+            />
+            <div className="hidden sm:flex items-center gap-1 shrink-0">
+              {quickIcons.map((q) => (
+                <button key={q.icon} type="button" onClick={q.action} className="w-[26px] h-[26px] rounded-lg bg-kj-chip-bg flex items-center justify-center text-[13px] hover:bg-kj-primary-soft transition-colors">
+                  {q.icon}
+                </button>
+              ))}
+            </div>
+            <kbd className="hidden lg:inline-flex h-6 px-1.5 rounded-md border border-kj-line bg-kj-panel text-[10px] font-bold text-kj-text-faint items-center shrink-0">⌘ K</kbd>
+            {(inputValue || searchQuery) ? (
+              <button type="button" onClick={() => { setInputValue(''); setSearchQuery(''); setSuggestedRoutes([]); setSearchContext(undefined); setShowSuggestions(false); }}
+                className="p-1.5 rounded-lg bg-red-500/10 text-red-400 shrink-0">
+                <X className="w-3.5 h-3.5" />
+              </button>
+            ) : (
+              <button type="button" onClick={onSearchCommit} disabled={isIntercityRedirecting}
+                className="p-1.5 rounded-lg bg-kj-primary-soft text-kj-primary shrink-0 sm:hidden">
+                <Search className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
           {showSuggestions && searchSuggestions.length > 0 && (
             <div className="absolute top-full left-0 right-0 mt-1 bg-kj-panel rounded-xl shadow-2xl max-h-72 overflow-y-auto z-[9999] border border-kj-line">
               {searchSuggestions.map((suggestion, idx) => (
@@ -189,80 +183,92 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
           )}
         </div>
 
-        <div className="bg-kj-panel-muted/80 border border-kj-line rounded-2xl p-3.5">
-          <div className="text-[10px] font-bold text-kj-text-faint uppercase tracking-[1.2px] mb-3 flex items-center gap-1.5">
-            <span className="w-1 h-3 rounded-full bg-kj-primary" />
+        {/* Divider */}
+        <div className="flex items-center gap-2 mb-2.5">
+          <span className="h-px flex-1 bg-kj-line" />
+          <span className="text-[10px] font-bold text-kj-text-faint tracking-[1.4px] uppercase whitespace-nowrap">
             {lbl('Or · plan a route', 'অথবা · রুট প্ল্যান করুন')}
-          </div>
-
-          <div className="flex flex-col md:flex-row gap-2 md:gap-2.5 relative">
-            <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-2.5">
-              <div className="relative">
-                <p className="text-[10px] font-bold text-kj-text-faint uppercase tracking-wider mb-1">{lbl('From', 'কোথা থেকে')}</p>
-                <SearchableSelect
-                  placeholder={lbl('Gulshan 1', 'গুলশান ১')}
-                  value={fromStation}
-                  onChange={setFromStation}
-                  options={stationOptions}
-                />
-                {globalNearestStationName && (
-                  <p className="text-[10px] text-kj-text-faint mt-1">· {lbl('Current location', 'বর্তমান অবস্থান')}</p>
-                )}
-              </div>
-              <div className="relative">
-                <p className="text-[10px] font-bold text-kj-text-faint uppercase tracking-wider mb-1">{lbl('To', 'কোথায়')}</p>
-                <SearchableSelect
-                  placeholder={lbl('Motijheel', 'মতিঝিল')}
-                  value={toStation}
-                  onChange={setToStation}
-                  options={stationOptions}
-                />
-              </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => { const tmp = fromStation; setFromStation(toStation); setToStation(tmp); }}
-              className="hidden sm:flex absolute left-1/2 top-[calc(50%+6px)] -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full border border-kj-line bg-kj-panel items-center justify-center text-kj-text-dim z-10 hover:border-kj-primary/50"
-              aria-label={lbl('Swap stations', 'স্টেশন অদলবদল')}
-            >
-              <ArrowRightLeft className="w-3.5 h-3.5" />
-            </button>
-
-            <button
-              type="button"
-              onClick={handleFindRoute}
-              disabled={!fromStation || !toStation}
-              className="md:w-[108px] md:shrink-0 md:self-end h-[46px] md:h-[52px] bg-kj-primary text-kj-primary-ink font-bold text-[13px] rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 shadow-[0_0_20px_rgba(0,245,255,0.22)] hover:brightness-105 transition-all"
-            >
-              <Search className="w-3.5 h-3.5 shrink-0" />
-              <span className="whitespace-nowrap">{lbl('Find routes', 'রুট খুঁজুন')}</span>
-            </button>
-          </div>
-
-          {(fromStation || toStation) && (
-            <div className="flex items-center gap-1.5 flex-wrap mt-2.5">
-              {([
-                ['DEFAULT', lbl(`Leave now · ${leaveTime}`, `এখনই · ${leaveTime}`)],
-                ['FASTEST', lbl('Fastest', 'দ্রুততম')],
-                ['CHEAPEST', lbl('Cheapest', 'সস্তা')],
-              ] as const).map(([val, chipLbl]) => (
-                <button key={val} type="button" onClick={() => setBusRouteSort(busRouteSort === val ? 'DEFAULT' : val)}
-                  className={`h-7 px-2.5 rounded-full border text-[10px] font-medium ${busRouteSort === val ? 'bg-kj-primary text-kj-primary-ink border-kj-primary' : 'border-kj-line bg-kj-panel text-kj-text-dim'}`}>
-                  {chipLbl}
-                </button>
-              ))}
-              <button type="button" onClick={() => setNonAcOnly(!nonAcOnly)}
-                className={`h-7 px-2.5 rounded-full border text-[10px] font-medium ${nonAcOnly ? 'bg-kj-primary text-kj-primary-ink border-kj-primary' : 'border-kj-line bg-kj-panel text-kj-text-dim'}`}>
-                {lbl('Non-AC only', 'AC ছাড়া')}
-              </button>
-            </div>
-          )}
+          </span>
+          <span className="h-px flex-1 bg-kj-line" />
         </div>
 
-        <div className="flex items-center gap-1.5 mt-3">
-          <span className="w-1.5 h-1.5 rounded-full bg-kj-primary animate-pulse" />
-          <span className="text-[10px] font-bold text-kj-text-faint">
+        {/* Route planner grid */}
+        <div className="relative grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-2 md:gap-2.5 items-stretch">
+          <div className="bg-kj-input-bg border border-kj-line rounded-[14px] px-3.5 py-2.5 flex items-center gap-3">
+            <div className="w-7 h-7 rounded-lg bg-kj-primary-soft text-kj-primary-deep flex items-center justify-center shrink-0">
+              <MapPin className="w-4 h-4" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-[10px] font-semibold text-kj-text-faint uppercase tracking-[1.2px]">{lbl('From', 'কোথা থেকে')}</div>
+              <SearchableSelect
+                variant="embedded"
+                placeholder={lbl('Gulshan 1', 'গুলশান ১')}
+                value={fromStation}
+                onChange={setFromStation}
+                options={stationOptions}
+              />
+              {globalNearestStationName && (
+                <p className="text-[10px] text-kj-text-faint mt-0.5">· {lbl('Current location', 'বর্তমান অবস্থান')}</p>
+              )}
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => { const tmp = fromStation; setFromStation(toStation); setToStation(tmp); }}
+            className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 rounded-full border border-kj-line bg-kj-panel items-center justify-center text-kj-text z-10 shadow-sm hover:border-kj-primary/50"
+            aria-label={lbl('Swap stations', 'স্টেশন অদলবদল')}
+          >
+            <ArrowLeftRight className="w-4 h-4" />
+          </button>
+
+          <div className="bg-kj-input-bg border border-kj-line rounded-[14px] px-3.5 py-2.5 flex items-center gap-3">
+            <div className="w-7 h-7 rounded-lg bg-kj-accent-soft text-kj-accent flex items-center justify-center shrink-0">
+              <Flag className="w-4 h-4" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-[10px] font-semibold text-kj-text-faint uppercase tracking-[1.2px]">{lbl('To', 'কোথায়')}</div>
+              <SearchableSelect
+                variant="embedded"
+                placeholder={lbl('Motijheel', 'মতিঝিল')}
+                value={toStation}
+                onChange={setToStation}
+                options={stationOptions}
+              />
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleFindRoute}
+            disabled={!fromStation || !toStation}
+            className="md:w-auto md:px-5 h-12 md:h-auto md:min-h-[72px] bg-kj-primary text-kj-primary-ink font-bold text-sm rounded-[14px] flex items-center justify-center gap-2 disabled:opacity-50 shadow-[0_6px_16px_-6px_rgba(0,245,255,0.6)] hover:brightness-105 transition-all"
+          >
+            <Search className="w-4 h-4 shrink-0" />
+            <span className="whitespace-nowrap">{lbl('Find routes', 'রুট খুঁজুন')}</span>
+          </button>
+        </div>
+
+        {/* Sort / filter chips */}
+        <div className="flex flex-wrap items-center gap-2 mt-3.5">
+          <button type="button" onClick={() => setBusRouteSort('DEFAULT')} className={chipBtn(busRouteSort === 'DEFAULT')}>
+            <Clock className="w-3 h-3" />
+            {lbl(`Leave now · ${leaveTime}`, `এখনই · ${leaveTime}`)}
+          </button>
+          <button type="button" onClick={() => setBusRouteSort(busRouteSort === 'FASTEST' ? 'DEFAULT' : 'FASTEST')} className={chipBtn(busRouteSort === 'FASTEST')}>
+            <Zap className="w-3 h-3" />
+            {lbl('Fastest', 'দ্রুততম')}
+          </button>
+          <button type="button" onClick={() => setBusRouteSort(busRouteSort === 'CHEAPEST' ? 'DEFAULT' : 'CHEAPEST')} className={chipBtn(busRouteSort === 'CHEAPEST')}>
+            <Banknote className="w-3 h-3" />
+            {lbl('Cheapest', 'সস্তা')}
+          </button>
+          <button type="button" onClick={() => setNonAcOnly(!nonAcOnly)} className={`hidden md:inline-flex ${chipBtn(nonAcOnly)}`}>
+            {lbl('Non-AC only', 'AC ছাড়া')}
+          </button>
+          <div className="flex-1 hidden md:block" />
+          <span className="inline-flex items-center gap-1.5 text-xs text-kj-text-faint ml-auto">
+            <span className="w-1.5 h-1.5 rounded-full bg-kj-primary shadow-[0_0_0_3px_rgba(0,245,255,0.14)]" />
             {lbl('2,412 routes live', '২,৪১২ রুট লাইভ')}
           </span>
         </div>
