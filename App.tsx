@@ -3967,9 +3967,9 @@ const App: React.FC = () => {
 
 
         <main className="flex flex-1 min-h-0 flex-col overflow-hidden relative z-10 w-full max-w-[1440px] mx-auto bg-transparent md:pt-16 md:px-4">
-          <div className="flex-1 min-h-0 min-w-0 overflow-hidden flex relative w-full">
           {view === AppView.HOME ? (
-            <div className="flex-1 min-h-0 w-full overflow-y-auto overscroll-y-contain touch-pan-y" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <div className="flex-1 min-h-0 w-full flex flex-col overflow-hidden">
+            <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-nav-safe md:pb-4" style={{ WebkitOverflowScrolling: 'touch' }}>
             <HomePage
               language={language}
               t={t}
@@ -4043,19 +4043,18 @@ const App: React.FC = () => {
               onFilterChange={handleFilterChange}
               getStationSlug={getStationSlug}
             />
+            </div>
             {!hideSiteChrome && <GlobalFooter setView={setView} />}
             </div>
           ) : (
-          <>
-          {/* Left Sidebar — train list only */}
-          <div
-            className={`flex flex-col flex-1 min-h-0 w-full md:flex-none md:w-[420px] md:max-w-[420px] md:shrink-0 z-0 overflow-hidden ${view !== AppView.TRAIN_LIST && view !== AppView.AI_ASSISTANT && 'hidden md:flex'}`}
-            style={(view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? { display: 'none' } : undefined}
-          >
+          <div className="flex-1 min-h-0 min-w-0 overflow-hidden flex relative w-full">
+          {(view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) && (
+          <div className="flex flex-col flex-1 min-h-0 w-full md:flex-none md:w-[420px] md:max-w-[420px] md:shrink-0 z-0 overflow-hidden">
             <div className="flex-1 min-h-0 flex flex-col md:pt-0">
               {renderHomeContent()}
             </div>
           </div>
+          )}
 
           {/* Right Content Area */}
           <div className={`
@@ -4408,9 +4407,8 @@ const App: React.FC = () => {
             {view === AppView.NOT_FOUND && renderNotFound()}
             {view === AppView.SERVER_ERROR && renderServerError()}
           </div>
-          </>
-          )}
           </div>
+          )}
         </main>
 
         {showPageAd && <PageAdSection />}
