@@ -40,10 +40,10 @@
 }
 
 .dark {
-  /* Futuristic dark theme */
+  /* Futuristic dark theme — design handoff */
   --kj-bg: #040814;
-  --kj-panel: rgba(13, 22, 42, 0.82);
-  --kj-panel-muted: rgba(7, 14, 28, 0.65);
+  --kj-panel: rgba(13, 22, 42, 0.72);
+  --kj-panel-muted: rgba(7, 14, 28, 0.6);
   --kj-line: rgba(0, 245, 255, 0.14);
   --kj-text: #e0f7ff;
   --kj-text-dim: #8da4c4;

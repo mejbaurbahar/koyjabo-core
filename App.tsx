@@ -85,7 +85,7 @@ import BusPhotoGallery from './components/BusPhotoGallery';
 import TrainPhotoGallery from './components/TrainPhotoGallery';
 import { getBusRatings, BusRatingSummary } from './services/communityDataService';
 import ReleaseNotes from './components/ReleaseNotes';
-import HomeRightPanel from './components/HomeRightPanel';
+import HomePage from './components/HomePage';
 import LocalBusHub from './components/LocalBusHub';
 import MetroRailHub from './components/MetroRailHub';
 import LaunchHub from './components/LaunchHub';
@@ -816,6 +816,15 @@ const App: React.FC = () => {
     const nearest = findNearestStation(userLocation, allStationIds);
     return nearest ? nearest.station.name : null;
   }, [userLocation]);
+
+  const stationOptions = useMemo(
+    () => Object.keys(STATIONS).map(id => ({
+      id,
+      name: (STATIONS as Record<string, { name?: string; bnName?: string }>)[id]?.name ?? id,
+      bnName: (STATIONS as Record<string, { name?: string; bnName?: string }>)[id]?.bnName,
+    })),
+    []
+  );
 
   const isInDhaka = useMemo(() => checkIfInDhaka(userLocation), [userLocation]);
   const [primarySearch, setPrimarySearch] = useState<'LOCAL' | 'INTERCITY'>(() =>
@@ -3877,274 +3886,9 @@ const App: React.FC = () => {
       );
     }
 
-    return (
-      <div className="flex flex-col flex-1 min-h-0 w-full overflow-hidden md:overflow-y-auto kj-home-shell md:p-4 md:pt-3">
-        <div className="flex-none z-20 relative isolate z-50">
-          <div className="dc-card kj-glass rounded-[24px] overflow-visible mx-0 md:mx-0">
-            <div className="p-4 md:p-5 pb-3">
-            {/* Greeting header */}
-            <div className="mb-3">
-              <div className="flex items-center gap-1.5 mb-1">
-                <span className="w-2 h-2 rounded-full bg-kj-primary relative kj-live-dot shrink-0" />
-                <span className="text-[10px] font-bold text-kj-text-faint tracking-[1.4px] uppercase">
-                  {isInDhaka
-                    ? (language === 'bn' ? 'ঢাকা · ৩১°C · জ্যাম মাঝারি' : 'Dhaka · 31°C · Moderate traffic')
-                    : (language === 'bn' ? 'বাংলাদেশ' : 'Bangladesh')}
-                </span>
-              </div>
-              <h2 className="font-bengali font-bold text-kj-text text-[22px] md:text-[26px] leading-tight tracking-tight">
-                {user
-                  ? (language === 'bn'
-                      ? `কোথায় যেতে চান, ${user.displayName?.split(' ')[0] || ''}?`
-                      : `Where are you headed, ${user.displayName?.split(' ')[0] || 'friend'}?`)
-                  : (isInDhaka ? t('home.whereToGo') : t('home.whereToGoInDhaka'))}
-              </h2>
-              <p className="text-kj-text-dim text-[12px] leading-relaxed mt-2">
-                {language === 'bn'
-                  ? '২,৪০০+ ঢাকা লোকাল বাস, মেট্রো রেল ও বাংলাদেশের ৬৪ জেলার সব রুট — অফলাইনেও কাজ করে।'
-                  : '2,400+ Dhaka local buses, metro rail & routes across all 64 districts — works offline too.'}
-              </p>
-            </div>
-
-            {/* Mode chips */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-2 mb-3 no-scrollbar">
-              {[
-                { label: language === 'bn' ? 'লোকাল বাস' : 'Local bus', active: searchMode === 'TEXT' || (searchMode === 'ROUTE' && view === AppView.HOME), onClick: () => { setSearchMode('TEXT'); setSuggestedRoutes([]); setBusRouteSort('DEFAULT'); } },
-                { label: language === 'bn' ? 'মেট্রো' : 'Metro', active: false, onClick: () => setView(AppView.METRO_HUB) },
-                { label: language === 'bn' ? 'আন্তঃজেলা' : 'Intercity', active: false, onClick: () => { localStorage.setItem('dhaka_commute_view', JSON.stringify(AppView.HOME)); window.location.href = '/intercity/'; } },
-                { label: language === 'bn' ? 'ট্রেন' : 'Train', active: view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS, onClick: () => setView(AppView.TRAIN_LIST) },
-                { label: language === 'bn' ? 'লঞ্চ' : 'Launch', active: false, onClick: () => setView(AppView.LAUNCH_HUB) },
-              ].map((chip) => (
-                <button key={chip.label} onClick={chip.onClick}
-                  className={`px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap shrink-0 transition-all border ${chip.active ? 'bg-kj-primary text-kj-primary-ink border-kj-primary shadow-[0_0_12px_rgba(0,245,255,0.25)]' : 'bg-kj-panel-muted text-kj-text-dim border-kj-line hover:border-kj-primary/40 hover:text-kj-text'}`}>
-                  {chip.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Universal search */}
-            <p className="text-[10px] font-bold text-kj-text-faint tracking-[1.2px] uppercase mb-1.5 px-0.5">
-              {language === 'bn' ? 'যেকোনো কিছু খুঁজুন' : 'Search anything'}
-            </p>
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-1">
-                {[
-                  { icon: '🚌', action: () => setSearchMode('TEXT') },
-                  { icon: '🚇', action: () => setView(AppView.METRO_HUB) },
-                  { icon: '🚆', action: () => setView(AppView.TRAIN_LIST) },
-                  { icon: '✈️', action: () => { localStorage.setItem('dhaka_commute_view', JSON.stringify(AppView.HOME)); window.location.href = '/intercity/'; } },
-                  { icon: '📍', action: () => { if (globalNearestStationName) { setInputValue(globalNearestStationName); setSearchMode('TEXT'); } } },
-                ].map((q) => (
-                  <button key={q.icon} type="button" onClick={q.action} className="w-7 h-7 rounded-lg bg-kj-chip-bg border border-kj-line flex items-center justify-center text-[13px] hover:border-kj-primary/50 transition-colors">{q.icon}</button>
-                ))}
-              </div>
-              <kbd className="hidden sm:inline-flex h-6 px-2 rounded-md border border-kj-line bg-kj-panel-muted text-[10px] font-semibold text-kj-text-faint items-center">⌘ K</kbd>
-            </div>
-            <div className="relative mb-2">
-              <div className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
-                <Search className="w-4 h-4 text-kj-primary" />
-              </div>
-              <input type="text"
-                placeholder={language === 'bn' ? 'বাস, ট্রেন, স্টপ বা স্থান লিখুন...' : 'Search bus, train, stop, place, district...'}
-                className="w-full pl-9 pr-10 py-3 bg-kj-input-bg text-kj-text border border-kj-line rounded-xl focus:outline-none focus:ring-2 focus:ring-kj-primary/30 text-sm font-medium placeholder:text-kj-text-faint"
-                value={inputValue}
-                onChange={(e) => {
-                  setInputValue(e.target.value);
-                  setSearchMode('TEXT');
-                  if (e.target.value.trim().length > 0) {
-                    setSearchSuggestions(generateSearchSuggestions(e.target.value));
-                    setShowSuggestions(true);
-                  } else {
-                    setSearchSuggestions([]); setShowSuggestions(false);
-                  }
-                }}
-                onKeyDown={handleKeyDown}
-                onFocus={() => { if (searchSuggestions.length > 0) setShowSuggestions(true); }}
-                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-              />
-              {(inputValue || searchQuery) ? (
-                <button onClick={() => { setInputValue(''); setSearchQuery(''); setSuggestedRoutes([]); setSearchContext(undefined); setShowSuggestions(false); }}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-500">
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              ) : (
-                <button onClick={handleSearchCommit} disabled={isIntercityRedirecting}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-kj-primary-soft text-kj-primary">
-                  <Search className="w-3.5 h-3.5" />
-                </button>
-              )}
-              {/* Autocomplete dropdown */}
-              {showSuggestions && searchSuggestions.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-kj-panel rounded-xl shadow-2xl max-h-72 overflow-y-auto z-[9999] border border-kj-line">
-                  {searchSuggestions.map((suggestion, idx) => (
-                    <div key={`${suggestion.type}-${suggestion.id}-${idx}`}
-                      className="px-4 py-3 hover:bg-kj-primary-soft cursor-pointer border-b border-kj-line last:border-b-0 transition-colors"
-                      onMouseDown={(e) => {
-                        e.preventDefault(); e.stopPropagation();
-                        if (suggestion.type === 'intercity') { setInputValue(suggestion.name); handleIntercityRedirect(suggestion.name); return; }
-                        setInputValue(suggestion.name); setShowSuggestions(false);
-                        setTimeout(() => { const result = enhancedBusSearch(suggestion.name); setSearchContext(result.searchContext); setSearchQuery(suggestion.name); }, 100);
-                      }}>
-                      <div className="flex items-start gap-2">
-                        {suggestion.type === 'station' ? <MapPin className="w-4 h-4 text-kj-primary shrink-0 mt-0.5" /> : suggestion.type === 'intercity' ? <Navigation className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" /> : <Bus className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />}
-                        <div className="flex-1 min-w-0">
-                          <div className="font-semibold text-kj-text truncate text-sm">{suggestion.type === 'bus' ? formatBusName(suggestion.name) : formatNumber(suggestion.name)}</div>
-                          {suggestion.bnName && <div className="text-xs text-kj-text-dim truncate">{suggestion.bnName}</div>}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-              {isIntercityRedirecting && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-kj-panel rounded-xl shadow-2xl z-[9999] border border-kj-line px-4 py-3 flex items-center gap-2">
-                  <Navigation className="w-4 h-4 text-orange-500 animate-pulse" />
-                  <span className="text-sm text-kj-text">Detecting location…</span>
-                </div>
-              )}
-            </div>
-
-            {/* Route planner */}
-            <div className="bg-kj-panel-muted/80 border border-kj-line rounded-2xl p-3.5 mt-1">
-              <div className="text-[10px] font-bold text-kj-text-faint uppercase tracking-[1.2px] mb-3 flex items-center gap-1.5">
-                <span className="w-1 h-3 rounded-full bg-kj-primary" />
-                {language === 'bn' ? 'অথবা · রুট প্ল্যান করুন' : 'Or · plan a route'}
-              </div>
-              <div className="flex flex-col gap-3 relative">
-                <div>
-                  <p className="text-[10px] font-bold text-kj-text-faint uppercase tracking-wider mb-1">{language === 'bn' ? 'কোথা থেকে' : 'From'}</p>
-                  <SearchableSelect placeholder={t('home.from')} value={fromStation} onChange={setFromStation} options={Object.keys(STATIONS).map(id => ({ id, name: (STATIONS as any)[id]?.name ?? id, bnName: (STATIONS as any)[id]?.bnName }))} />
-                  {globalNearestStationName && (
-                    <p className="text-[10px] text-kj-text-faint mt-1">· {language === 'bn' ? 'বর্তমান অবস্থান' : 'Current location'}</p>
-                  )}
-                </div>
-                <button onClick={() => { const tmp = fromStation; setFromStation(toStation); setToStation(tmp); }}
-                  className="absolute right-0 top-[calc(50%-4px)] -translate-y-1/2 w-8 h-8 rounded-full border border-kj-line bg-kj-panel flex items-center justify-center text-kj-text-dim z-10 shadow-sm">
-                  <ArrowRightLeft className="w-3.5 h-3.5" />
-                </button>
-                <div>
-                  <p className="text-[10px] font-bold text-kj-text-faint uppercase tracking-wider mb-1">{language === 'bn' ? 'কোথায়' : 'To'}</p>
-                  <SearchableSelect placeholder={t('home.to')} value={toStation} onChange={setToStation} options={Object.keys(STATIONS).map(id => ({ id, name: (STATIONS as any)[id]?.name ?? id, bnName: (STATIONS as any)[id]?.bnName }))} />
-                </div>
-              </div>
-              <button onClick={() => { if (fromStation && toStation) { setSearchQuery(''); setInputValue(''); setSearchMode('ROUTE'); if (scrollContainerRef.current) scrollContainerRef.current.scrollTop = 0; } }}
-                disabled={!fromStation || !toStation}
-                className="mt-3 w-full bg-kj-primary text-kj-primary-ink font-bold text-[13px] py-2.5 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 active:opacity-90 shadow-[0_0_20px_rgba(0,245,255,0.2)]">
-                <Search className="w-3.5 h-3.5" />
-                {language === 'bn' ? 'রুট খুঁজুন' : 'Find routes'}
-              </button>
-              {fromStation && toStation && (
-                <div className="flex items-center gap-1.5 flex-wrap mt-1.5">
-                  {[
-                    ['DEFAULT', language === 'bn' ? 'এখনই' : 'Leave now'],
-                    ['FASTEST', language === 'bn' ? 'দ্রুততম' : 'Fastest'],
-                    ['CHEAPEST', language === 'bn' ? 'সস্তা' : 'Cheapest'],
-                  ].map(([val, chipLbl]) => (
-                    <button key={val} onClick={() => setBusRouteSort(busRouteSort === val ? 'DEFAULT' : val as any)}
-                      className={`h-7 px-2.5 rounded-full border text-[10px] font-medium transition-colors ${busRouteSort === val ? 'bg-kj-primary text-kj-primary-ink border-kj-primary' : 'border-kj-line bg-kj-panel text-kj-text'}`}>
-                      {chipLbl}
-                    </button>
-                  ))}
-                  <button onClick={() => setNonAcOnly(!nonAcOnly)}
-                    className={`h-7 px-2.5 rounded-full border text-[10px] font-medium transition-colors ${nonAcOnly ? 'bg-kj-primary text-kj-primary-ink border-kj-primary' : 'border-kj-line bg-kj-panel text-kj-text'}`}>
-                    {language === 'bn' ? 'AC ছাড়া' : 'Non-AC only'}
-                  </button>
-                </div>
-              )}
-            </div>
-
-            {/* Live counter */}
-            <div className="flex items-center gap-1.5 mt-3 px-0.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-kj-primary animate-pulse" />
-              <span className="text-[10px] font-bold text-kj-text-faint">
-                {language === 'bn' ? '২,৪১২ রুট লাইভ' : '2,412 routes live'}
-              </span>
-            </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ── Search Results (shown when user has searched) ── */}
-        {(searchQuery || (searchMode === 'ROUTE' && fromStation && toStation)) && (
-          <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto">
-            <div className="px-4 pb-4">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-bold text-kj-text">{listFilter === 'FAVORITES' ? t('home.savedRoutes') : t('home.allBuses')}</h3>
-                <span className="text-[10px] bg-kj-chip-bg px-2 py-0.5 rounded-full text-kj-text-dim font-bold">{formatNumber(filteredBuses.length)}</span>
-              </div>
-              <div className="flex p-1 bg-kj-chip-bg rounded-xl border border-kj-line mb-3">
-                <button onClick={() => handleFilterChange('ALL')} className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${listFilter === 'ALL' ? 'bg-kj-panel shadow-sm text-kj-text' : 'text-kj-text-dim'}`}>{t('home.allDhakaLocalBuses')}</button>
-                <button onClick={() => handleFilterChange('FAVORITES')} className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1 ${listFilter === 'FAVORITES' ? 'bg-kj-panel shadow-sm text-kj-accent' : 'text-kj-text-dim'}`}>
-                  <Heart className="w-4 h-4 fill-current" /> {t('home.favorites')}
-                </button>
-              </div>
-              {filteredBuses.slice(0, 30).map((bus) => {
-                const isFav = favorites.includes(bus.id);
-                const hasRating = busRatingsMap[bus.id] !== null && busRatingsMap[bus.id] !== undefined;
-                const avgRating = hasRating ? (busRatingsMap[bus.id]?.averageRating ?? 0) : 0;
-                const ratingPercent = hasRating ? Math.round(((busRatingsMap[bus.id]?.recommendPercent ?? 0))) : 0;
-                const isHighlighted = searchMode === 'ROUTE' && fromStation && toStation && bus.stops.includes(fromStation) && bus.stops.includes(toStation);
-                const isUnavailable = bus.operatingHours === 'none';
-                return (
-                  <React.Fragment key={bus.id}>
-                    <button
-                      onClick={() => handleBusSelect(bus)}
-                      className={`w-full text-left bg-kj-panel p-3 rounded-2xl border transition-all mb-2 relative overflow-hidden ${selectedBus?.id === bus.id ? 'border-kj-primary ring-1 ring-kj-primary/40' : 'border-transparent hover:border-kj-primary/30'} ${isHighlighted ? 'bg-kj-primary-soft/20 border-l-4 border-l-kj-primary' : ''}`}
-                    >
-                      <div className="flex items-start gap-2">
-                        <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-xs shrink-0" style={{ background: `linear-gradient(135deg, ${bus.color || '#00b8d9'}, #0070ad)` }}>
-                          {(formatBusName(bus.name) || 'BUS').slice(0, 2).toUpperCase()}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="font-bold text-kj-text text-sm truncate">{formatBusName(bus.name)}</div>
-                          <div className="text-xs text-kj-text-dim truncate mt-0.5">
-                            {bus.stops.length > 0 ? `${getStationSlug(bus.stops[0])} → ${getStationSlug(bus.stops[bus.stops.length-1])}` : ''}
-                          </div>
-                          {hasRating && <div className="text-[10px] text-kj-primary mt-0.5">★ {formatNumber(avgRating.toFixed(1))}</div>}
-                        </div>
-                        <div className="flex flex-col items-end gap-1 shrink-0">
-                          <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${bus.type === 'AC' ? 'bg-blue-50 text-blue-700' : 'bg-kj-chip-bg text-kj-chip-text'}`}>{bus.type}</span>
-                          <button onClick={(e) => toggleFavorite(e, bus.id)} className="p-1">
-                            <Heart className={`w-4 h-4 ${isFav ? 'fill-pink-500 text-pink-500' : 'text-kj-text-faint'}`} />
-                          </button>
-                        </div>
-                      </div>
-                    </button>
-                  </React.Fragment>
-                );
-              })}
-              {filteredBuses.length === 0 && (
-                <div className="text-center py-12 text-kj-text-faint">
-                  <Bus className="w-10 h-10 opacity-30 mx-auto mb-2" />
-                  <p className="text-sm">{searchMode === 'ROUTE' ? t('home.noBusesBetweenStations') : `${t('home.noBusesMatching')} "${searchQuery}"`}</p>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* ── Mobile home content (hidden on desktop, right panel shows it) ── */}
-        {!searchQuery && !(searchMode === 'ROUTE' && fromStation && toStation) && (
-          <div className="flex-1 min-h-0 overflow-y-auto md:hidden">
-            {homeRightPanel}
-          </div>
-        )}
-      </div>
-    );
+    return null;
   };
 
-  const homeRightPanel = (
-    <HomeRightPanel
-      language={language}
-      isDarkMode={isDarkMode}
-      onNavigate={(v) => setView(v as AppView)}
-      onIntercity={() => { localStorage.setItem('dhaka_commute_view', JSON.stringify(AppView.HOME)); window.location.href = '/intercity/'; }}
-      onEmergency={() => setShowEmergencyModal(true)}
-      favorites={favorites}
-      isInDhaka={isInDhaka}
-      user={user}
-    />
-  );
 
 
   return (
@@ -4224,10 +3968,86 @@ const App: React.FC = () => {
 
 
 
-        <main className="flex flex-1 min-h-0 overflow-hidden relative z-10 w-full max-w-[1440px] mx-auto bg-transparent md:pt-16 md:px-4 md:gap-4">
-          {/* Left Sidebar (Desktop) / Main View (Mobile Home) */}
+        <main className="flex flex-1 min-h-0 overflow-hidden relative z-10 w-full max-w-[1440px] mx-auto bg-transparent md:pt-16 md:px-4">
+          {view === AppView.HOME ? (
+            <HomePage
+              language={language}
+              t={t}
+              user={user}
+              isInDhaka={isInDhaka}
+              isDarkMode={isDarkMode}
+              view={view}
+              searchMode={searchMode}
+              setSearchMode={setSearchMode}
+              inputValue={inputValue}
+              setInputValue={setInputValue}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              fromStation={fromStation}
+              setFromStation={setFromStation}
+              toStation={toStation}
+              setToStation={setToStation}
+              busRouteSort={busRouteSort}
+              setBusRouteSort={setBusRouteSort}
+              nonAcOnly={nonAcOnly}
+              setNonAcOnly={setNonAcOnly}
+              showSuggestions={showSuggestions}
+              setShowSuggestions={setShowSuggestions}
+              searchSuggestions={searchSuggestions}
+              isIntercityRedirecting={isIntercityRedirecting}
+              globalNearestStationName={globalNearestStationName}
+              stationOptions={stationOptions}
+              setView={setView}
+              setSuggestedRoutes={setSuggestedRoutes}
+              setSearchContext={setSearchContext}
+              scrollContainerRef={scrollContainerRef}
+              onSearchCommit={handleSearchCommit}
+              onKeyDown={handleKeyDown}
+              onInputChange={(value) => {
+                setSearchMode('TEXT');
+                if (value.trim().length > 0) {
+                  setSearchSuggestions(generateSearchSuggestions(value));
+                  setShowSuggestions(true);
+                } else {
+                  setSearchSuggestions([]);
+                  setShowSuggestions(false);
+                }
+              }}
+              onIntercityRedirect={handleIntercityRedirect}
+              onSuggestionSelect={(suggestion) => {
+                if (suggestion.type === 'intercity') {
+                  setInputValue(suggestion.name);
+                  handleIntercityRedirect(suggestion.name);
+                  return;
+                }
+                setInputValue(suggestion.name);
+                setShowSuggestions(false);
+                setTimeout(() => {
+                  const result = enhancedBusSearch(suggestion.name);
+                  setSearchContext(result.searchContext);
+                  setSearchQuery(suggestion.name);
+                }, 100);
+              }}
+              formatBusName={formatBusName}
+              formatNumber={formatNumber}
+              favorites={favorites}
+              filteredBuses={filteredBuses}
+              busRatingsMap={busRatingsMap}
+              listFilter={listFilter}
+              selectedBus={selectedBus}
+              onNavigate={(v) => setView(v as AppView)}
+              onIntercity={() => { localStorage.setItem('dhaka_commute_view', JSON.stringify(AppView.HOME)); window.location.href = '/intercity/'; }}
+              onEmergency={() => setShowEmergencyModal(true)}
+              onBusSelect={handleBusSelect}
+              onToggleFavorite={toggleFavorite}
+              onFilterChange={handleFilterChange}
+              getStationSlug={getStationSlug}
+            />
+          ) : (
+          <>
+          {/* Left Sidebar — train list only */}
           <div
-            className={`flex flex-col flex-1 min-h-0 w-full md:flex-none md:w-[420px] md:max-w-[420px] md:shrink-0 z-0 overflow-hidden kj-home-shell ${view !== AppView.HOME && view !== AppView.TRAIN_LIST && 'hidden md:flex'}`}
+            className={`flex flex-col flex-1 min-h-0 w-full md:flex-none md:w-[420px] md:max-w-[420px] md:shrink-0 z-0 overflow-hidden ${view !== AppView.TRAIN_LIST && 'hidden md:flex'}`}
             style={(view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? { display: 'none' } : undefined}
           >
             <div className="flex-1 min-h-0 flex flex-col md:pt-0">
@@ -4235,18 +4055,13 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Content Area (Desktop) / Views (Mobile) */}
+          {/* Right Content Area */}
           <div className={`
             ${'flex-1 min-h-0 w-full min-w-0 bg-transparent relative overflow-hidden flex flex-col'}
-            ${(view === AppView.HOME || view === AppView.TRAIN_LIST) && 'hidden md:flex'}
+            ${view === AppView.TRAIN_LIST && 'hidden md:flex'}
             ${(view === AppView.LOCAL_BUS_HUB || view === AppView.METRO_HUB || view === AppView.LAUNCH_HUB) && 'flex'}
 `}>
             <div className={`hidden md:block absolute inset-0 w-full h-full min-h-0 transition-opacity duration-500 ${view === AppView.TRAIN_LIST ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}><DhakaAlive /></div>
-            {view === AppView.HOME && (
-              <div className="hidden md:flex flex-1 min-h-0 overflow-hidden relative z-10">
-                {homeRightPanel}
-              </div>
-            )}
             {view === AppView.TRAIN_DETAILS && (
               user && selectedTrain ? (
                 <TrainDetail
@@ -4528,6 +4343,8 @@ const App: React.FC = () => {
             {view === AppView.NOT_FOUND && renderNotFound()}
             {view === AppView.SERVER_ERROR && renderServerError()}
           </div>
+          </>
+          )}
         </main>
 
         {/* Mobile Bottom Navigation */}
