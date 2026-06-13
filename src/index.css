@@ -793,6 +793,30 @@ ins.adsbygoogle {
   box-sizing: border-box;
 }
 
+/* Fixed-size ad slots — prevent responsive units from stealing viewport */
+.adsense-slot-leaderboard {
+  max-height: 118px;
+  overflow: hidden;
+}
+
+.adsense-slot-rectangle {
+  max-height: 278px;
+  overflow: hidden;
+}
+
+.adsense-slot-leaderboard .adsbygoogle,
+.adsense-slot-leaderboard ins.adsbygoogle,
+.adsense-slot-rectangle .adsbygoogle,
+.adsense-slot-rectangle ins.adsbygoogle {
+  max-height: 100% !important;
+  overflow: hidden !important;
+}
+
+.adsense-slot-leaderboard iframe,
+.adsense-slot-rectangle iframe {
+  max-height: 100% !important;
+}
+
 /* AdSense container styling */
 .adsense-container {
   padding: 0.75rem;

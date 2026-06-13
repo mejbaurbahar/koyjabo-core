@@ -3887,7 +3887,23 @@ const App: React.FC = () => {
     || view === AppView.SIGNUP
     || view === AppView.FORGOT_PASSWORD
     || view === AppView.RESET_PASSWORD;
-  const showPageAd = !hideSiteChrome && view !== AppView.HOME;
+  const pageAdViews: AppView[] = [
+    AppView.ABOUT,
+    AppView.WHY_USE,
+    AppView.FAQ,
+    AppView.FOR_AI,
+    AppView.CONTACT,
+    AppView.PRIVACY,
+    AppView.TERMS,
+    AppView.RELEASE_NOTES,
+    AppView.INSTALL_APP,
+    AppView.BLOG,
+    AppView.LOCAL_BUS_HUB,
+    AppView.METRO_HUB,
+    AppView.LAUNCH_HUB,
+    AppView.INTERCITY_HUB,
+  ];
+  const showPageAd = pageAdViews.includes(view);
   const rightPanelUsesOuterScroll = [
     AppView.ABOUT,
     AppView.WHY_USE,
@@ -3898,6 +3914,7 @@ const App: React.FC = () => {
     AppView.TERMS,
     AppView.RELEASE_NOTES,
     AppView.INSTALL_APP,
+    AppView.BLOG,
     AppView.LOCAL_BUS_HUB,
     AppView.METRO_HUB,
     AppView.LAUNCH_HUB,

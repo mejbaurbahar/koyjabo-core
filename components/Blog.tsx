@@ -34,7 +34,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
     const regularPosts = filteredPosts.slice(1);
 
     return (
-        <div className="absolute inset-0 z-10 overflow-y-auto overscroll-y-contain touch-pan-y pb-32 bg-kj-bg" style={{ WebkitOverflowScrolling: 'touch' }}>
+        <div className="w-full pb-nav-safe bg-kj-bg">
                 {/* Header */}
                 <div className="sticky top-0 z-10 bg-kj-panel/90 backdrop-blur-md border-b border-kj-line pt-safe">
                     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 space-y-3">

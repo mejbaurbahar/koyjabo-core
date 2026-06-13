@@ -7,6 +7,7 @@ interface AdSenseAdProps {
   responsive?: boolean;
   layoutKey?: string;
   native?: boolean; // accepted for API compat, no visual effect
+  style?: React.CSSProperties;
 }
 
 const isValidSlot = (slot: string) => slot === 'auto' || /^\d{9,11}$/.test(slot);
@@ -18,6 +19,7 @@ const AdSenseAd: React.FC<AdSenseAdProps> = React.memo(({
   className = '',
   responsive = true,
   layoutKey,
+  style,
 }) => {
   const insRef = useRef<HTMLModElement>(null);
   const pushed = useRef(false);
@@ -75,8 +77,8 @@ const AdSenseAd: React.FC<AdSenseAdProps> = React.memo(({
 
   return (
     <div
-      className={`w-full shrink-0 overflow-x-hidden ${className}`}
-      style={{ minHeight: 0 }}
+      className={`w-full shrink-0 overflow-hidden ${className}`}
+      style={{ minHeight: 0, maxHeight: style?.maxHeight, height: style?.height, ...style }}
     >
       <ins
         ref={insRef}
