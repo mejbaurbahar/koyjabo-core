@@ -86,8 +86,6 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
 
   return (
     <div className="pb-28 md:pb-8">
-      <SponsoredAdSlot language={language} size="728x90" />
-
       <div className="mb-6 md:mb-8">
         <SectionHeader title={lbl('How are you traveling?', 'কী খুঁজছেন?')} />
         <div className="grid grid-cols-2 md:grid-cols-6 gap-2.5 md:gap-3">
@@ -119,8 +117,6 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
           ))}
         </div>
       </div>
-
-      <SponsoredAdSlot language={language} size="728x90" />
 
       {/* Metro Live — dark timeline panel */}
       <div className="mb-6 md:mb-8">
@@ -164,8 +160,6 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
           </div>
         </div>
       </div>
-
-      <SponsoredAdSlot language={language} size="728x90" />
 
       <div className="mb-6 md:mb-8">
         <SectionHeader title={lbl('Your saved routes', 'আপনার সেভ করা রুট')} action={lbl('Edit', 'সম্পাদনা')} />

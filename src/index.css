@@ -794,14 +794,26 @@ ins.adsbygoogle {
 }
 
 /* Fixed-size ad slots — prevent responsive units from stealing viewport */
+/* leaderboard: 12px pad × 2 + ~15px label + 90px ad = 129px; add buffer → 140px */
 .adsense-slot-leaderboard {
-  max-height: 118px;
+  max-height: 140px;
   overflow: hidden;
 }
 
+/* rectangle: 12px pad × 2 + ~15px label + 250px ad = 289px; add buffer → 300px */
 .adsense-slot-rectangle {
-  max-height: 278px;
+  max-height: 300px;
   overflow: hidden;
+}
+
+/* Collapse entire slot when Google marks the unit as unfilled */
+.adsense-wrapper:has(.adsbygoogle[data-ad-status="unfilled"]) {
+  display: none !important;
+}
+
+/* Hide the label text until ad actually fills — avoids "বিজ্ঞাপন Google AdSense · 728 × 90" showing in blank space */
+.adsense-wrapper:not(:has(.adsbygoogle[data-ad-status="filled"])) .adsense-label {
+  visibility: hidden;
 }
 
 .adsense-slot-leaderboard .adsbygoogle,

@@ -20,9 +20,9 @@ const SponsoredAdSlot: React.FC<SponsoredAdSlotProps> = ({
   const adHeight = isLeaderboard ? 90 : 250;
 
   return (
-    <div className={`flex justify-center shrink-0 ${compact ? 'my-2' : 'my-6 md:my-8'} ${className}`}>
+    <div className={`adsense-wrapper flex justify-center shrink-0 ${compact ? 'my-2' : 'my-6 md:my-8'} ${className}`}>
       <div className={`w-full max-w-[728px] rounded-xl border border-kj-line/60 bg-kj-panel-muted/30 p-2 adsense-container ${slotClass}`}>
-        <div className="flex items-center justify-center gap-2 mb-1.5">
+        <div className="adsense-label flex items-center justify-center gap-2 mb-1.5">
           <span className="text-[9px] font-bold text-kj-text-faint uppercase tracking-widest">
             {lbl('Sponsored', 'বিজ্ঞাপন')}
           </span>
