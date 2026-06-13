@@ -42,7 +42,7 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
     toggleTheme,
     isInDhaka
 }) => {
-    const { t, language } = useLanguage();
+    const { t, language, setLanguage } = useLanguage();
     const { user } = useAuth();
 
     // Navbar should be visible on all views for desktop now
@@ -128,7 +128,21 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
                 ))}
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+                <button
+                    onClick={() => setLanguage(language === 'bn' ? 'en' : 'bn')}
+                    className="h-9 px-2.5 rounded-[10px] border border-kj-line bg-kj-panel-muted flex items-center gap-1.5 text-kj-text text-[12px] font-semibold tracking-[0.4px] hover:bg-kj-chip-bg transition-colors"
+                    aria-label="Toggle language"
+                >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a13.5 13.5 0 0 1 0 18"/><path d="M12 3a13.5 13.5 0 0 0 0 18"/></svg>
+                    <span>{language === 'bn' ? 'বাং' : 'EN'}</span>
+                </button>
+                <button
+                    onClick={() => setView(AppView.INSTALL_APP)}
+                    className="hidden lg:flex items-center gap-1.5 h-9 px-3 rounded-[10px] border border-kj-line bg-kj-panel-muted text-kj-text text-[12px] font-semibold hover:bg-kj-chip-bg transition-colors"
+                >
+                    {language === 'bn' ? 'অ্যাপ ইনস্টল' : 'Install app'}
+                </button>
                 <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
                 {user ? (
                     <button
