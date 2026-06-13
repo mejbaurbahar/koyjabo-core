@@ -65,15 +65,8 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
         {
             label: language === 'bn' ? 'আন্তঃজেলা' : 'Intercity',
             icon: Bus,
-            isActive: !isInDhaka && view === AppView.HOME && primarySearch === 'INTERCITY',
-            onClick: () => {
-                if (!isInDhaka) {
-                    setView(AppView.HOME);
-                    setPrimarySearch('INTERCITY');
-                } else {
-                    window.location.href = '/intercity';
-                }
-            }
+            isActive: view === AppView.INTERCITY_HUB,
+            onClick: () => setView(AppView.INTERCITY_HUB),
         },
         {
             label: language === 'bn' ? 'ভাড়া হিসাব' : 'Fare',

@@ -19,7 +19,7 @@ const GlobalFooter: React.FC<GlobalFooterProps> = ({ setView }) => {
     { href: '/privacy', label: t('nav.privacy') || 'Privacy', onClick: (e) => { e.preventDefault(); setView(AppView.PRIVACY); } },
     { href: '/terms', label: t('nav.terms') || 'Terms', onClick: (e) => { e.preventDefault(); setView(AppView.TERMS); } },
     { href: '/release-notes', label: lbl('Release notes', 'রিলিজ নোট'), onClick: (e) => { e.preventDefault(); setView(AppView.RELEASE_NOTES); } },
-    { href: '/intercity', label: t('intercity.title') || 'Intercity' },
+    { href: '/intercity-hub', label: t('intercity.title') || 'Intercity', onClick: (e) => { e.preventDefault(); setView(AppView.INTERCITY_HUB); } },
   ];
 
   return (

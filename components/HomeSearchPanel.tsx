@@ -70,7 +70,7 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
   const modeChips = [
     { label: lbl('Local bus', 'লোকাল বাস'), active: searchMode === 'TEXT' || (searchMode === 'ROUTE' && view === AppView.HOME), onClick: () => { setSearchMode('TEXT'); setSuggestedRoutes([]); setBusRouteSort('DEFAULT'); } },
     { label: lbl('Metro', 'মেট্রো'), onClick: () => setView(AppView.METRO_HUB) },
-    { label: lbl('Intercity', 'আন্তঃজেলা'), onClick: () => { localStorage.setItem('dhaka_commute_view', JSON.stringify(AppView.HOME)); window.location.href = '/intercity/'; } },
+    { label: lbl('Intercity', 'আন্তঃজেলা'), onClick: () => setView(AppView.INTERCITY_HUB) },
     { label: lbl('Train', 'ট্রেন'), onClick: () => setView(AppView.TRAIN_LIST) },
     { label: lbl('Launch', 'লঞ্চ'), onClick: () => setView(AppView.LAUNCH_HUB) },
   ];
@@ -79,7 +79,7 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
     { icon: '🚌', action: () => setSearchMode('TEXT') },
     { icon: '🚇', action: () => setView(AppView.METRO_HUB) },
     { icon: '🚆', action: () => setView(AppView.TRAIN_LIST) },
-    { icon: '✈️', action: () => { localStorage.setItem('dhaka_commute_view', JSON.stringify(AppView.HOME)); window.location.href = '/intercity/'; } },
+    { icon: '✈️', action: () => setView(AppView.INTERCITY_HUB) },
     { icon: '📍', action: () => { if (globalNearestStationName) { setInputValue(globalNearestStationName); setSearchMode('TEXT'); } } },
   ];
 
@@ -192,9 +192,9 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
           <span className="h-px flex-1 bg-kj-line" />
         </div>
 
-        {/* Route planner grid */}
-        <div className="relative grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-2 md:gap-2.5 items-stretch">
-          <div className="bg-kj-input-bg border border-kj-line rounded-[14px] px-3.5 py-2.5 flex items-center gap-3">
+        {/* Route planner */}
+        <div className="flex flex-col md:flex-row gap-2.5 md:gap-3 md:items-stretch">
+          <div className="flex-1 bg-kj-input-bg border border-kj-line rounded-[14px] px-3.5 py-2.5 flex items-center gap-3">
             <div className="w-7 h-7 rounded-lg bg-kj-primary-soft text-kj-primary-deep flex items-center justify-center shrink-0">
               <MapPin className="w-4 h-4" />
             </div>
@@ -213,16 +213,18 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={() => { const tmp = fromStation; setFromStation(toStation); setToStation(tmp); }}
-            className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 rounded-full border border-kj-line bg-kj-panel items-center justify-center text-kj-text z-10 shadow-sm hover:border-kj-primary/50"
-            aria-label={lbl('Swap stations', 'স্টেশন অদলবদল')}
-          >
-            <ArrowLeftRight className="w-4 h-4" />
-          </button>
+          <div className="flex items-center justify-center shrink-0 -my-1 md:my-0 md:px-0.5">
+            <button
+              type="button"
+              onClick={() => { const tmp = fromStation; setFromStation(toStation); setToStation(tmp); }}
+              className="w-9 h-9 rounded-full border border-kj-line bg-kj-panel flex items-center justify-center text-kj-text z-10 shadow-sm hover:border-kj-primary/50"
+              aria-label={lbl('Swap stations', 'স্টেশন অদলবদল')}
+            >
+              <ArrowLeftRight className="w-4 h-4" />
+            </button>
+          </div>
 
-          <div className="bg-kj-input-bg border border-kj-line rounded-[14px] px-3.5 py-2.5 flex items-center gap-3">
+          <div className="flex-1 bg-kj-input-bg border border-kj-line rounded-[14px] px-3.5 py-2.5 flex items-center gap-3">
             <div className="w-7 h-7 rounded-lg bg-kj-accent-soft text-kj-accent flex items-center justify-center shrink-0">
               <Flag className="w-4 h-4" />
             </div>
@@ -242,7 +244,7 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
             type="button"
             onClick={handleFindRoute}
             disabled={!fromStation || !toStation}
-            className="md:w-auto md:px-5 h-12 md:h-auto md:min-h-[72px] bg-kj-primary text-kj-primary-ink font-bold text-sm rounded-[14px] flex items-center justify-center gap-2 disabled:opacity-50 shadow-[0_6px_16px_-6px_rgba(0,245,255,0.6)] hover:brightness-105 transition-all"
+            className="md:w-auto md:px-5 h-12 md:min-h-[72px] bg-kj-primary text-kj-primary-ink font-bold text-sm rounded-[14px] flex items-center justify-center gap-2 disabled:opacity-50 shadow-[0_6px_16px_-6px_rgba(0,245,255,0.6)] hover:brightness-105 transition-all shrink-0"
           >
             <Search className="w-4 h-4 shrink-0" />
             <span className="whitespace-nowrap">{lbl('Find routes', 'রুট খুঁজুন')}</span>

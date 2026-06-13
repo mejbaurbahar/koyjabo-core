@@ -108,6 +108,7 @@ export enum AppView {
   LOCAL_BUS_HUB = 'LOCAL_BUS_HUB',
   METRO_HUB = 'METRO_HUB',
   LAUNCH_HUB = 'LAUNCH_HUB',
+  INTERCITY_HUB = 'INTERCITY_HUB',
 }
 
 export interface ChatMessage {

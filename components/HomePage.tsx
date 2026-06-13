@@ -3,7 +3,6 @@ import { Bus, Heart, Wifi } from 'lucide-react';
 import HomeSearchPanel, { HomeSearchPanelProps } from './HomeSearchPanel';
 import HomeRightPanel from './HomeRightPanel';
 import TravelHeroScene from './design/Vehicles3D';
-import GlobalFooter from './GlobalFooter';
 import { BusRoute } from '../types';
 
 interface HomePageProps extends Omit<HomeSearchPanelProps, 'onSuggestionSelect'> {
@@ -65,8 +64,8 @@ const HomePage: React.FC<HomePageProps> = (props) => {
     : (isInDhaka ? t('home.whereToGo') : t('home.whereToGoInDhaka'));
 
   return (
-    <div className="flex flex-1 min-h-0 w-full overflow-y-auto">
-      <div className="flex-1 w-full px-4 md:px-10 py-5 md:py-8">
+    <div className="w-full">
+      <div className="w-full px-4 md:px-10 py-5 md:py-8">
         {/* Hero grid — design layout */}
         <div className="grid grid-cols-1 md:grid-cols-[1.3fr_0.7fr] gap-5 md:gap-8 mb-6 md:mb-8 items-stretch">
           <div className="flex flex-col gap-4 md:gap-[18px]">
@@ -177,8 +176,6 @@ const HomePage: React.FC<HomePageProps> = (props) => {
             user={user}
           />
         </div>
-
-        <GlobalFooter setView={(v) => onNavigate(v)} />
       </div>
     </div>
   );

@@ -90,6 +90,7 @@ import HomePage from './components/HomePage';
 import LocalBusHub from './components/LocalBusHub';
 import MetroRailHub from './components/MetroRailHub';
 import LaunchHub from './components/LaunchHub';
+import IntercityHub from './components/IntercityHub';
 
 
 
@@ -173,7 +174,8 @@ const getStoredView = (): AppView => {
         'seat-availability': AppView.SEAT_AVAILABILITY,
         'release-notes': AppView.RELEASE_NOTES,
         'updates': AppView.RELEASE_NOTES,
-        'intercity': AppView.HOME,
+        'intercity': AppView.INTERCITY_HUB,
+        'intercity-hub': AppView.INTERCITY_HUB,
         'local-bus': AppView.LOCAL_BUS_HUB,
         'metro': AppView.METRO_HUB,
         'metro-rail': AppView.METRO_HUB,
@@ -1487,6 +1489,10 @@ const App: React.FC = () => {
     [AppView.TRAFFIC_REPORTS]: 'traffic-reports',
     [AppView.TRAIN_PHOTOS]: 'train-photos',
     [AppView.RELEASE_NOTES]: 'release-notes',
+    [AppView.LOCAL_BUS_HUB]: 'local-bus',
+    [AppView.METRO_HUB]: 'metro',
+    [AppView.LAUNCH_HUB]: 'launch',
+    [AppView.INTERCITY_HUB]: 'intercity-hub',
   };
 
   useEffect(() => {
@@ -3960,8 +3966,10 @@ const App: React.FC = () => {
 
 
 
-        <main className="flex flex-1 min-h-0 overflow-hidden relative z-10 w-full max-w-[1440px] mx-auto bg-transparent md:pt-16 md:px-4">
+        <main className="flex flex-1 min-h-0 flex-col overflow-hidden relative z-10 w-full max-w-[1440px] mx-auto bg-transparent md:pt-16 md:px-4">
+          <div className="flex-1 min-h-0 min-w-0 overflow-hidden flex relative w-full">
           {view === AppView.HOME ? (
+            <div className="flex-1 min-h-0 w-full overflow-y-auto overscroll-y-contain touch-pan-y" style={{ WebkitOverflowScrolling: 'touch' }}>
             <HomePage
               language={language}
               t={t}
@@ -4028,13 +4036,15 @@ const App: React.FC = () => {
               listFilter={listFilter}
               selectedBus={selectedBus}
               onNavigate={(v) => setView(v as AppView)}
-              onIntercity={() => { localStorage.setItem('dhaka_commute_view', JSON.stringify(AppView.HOME)); window.location.href = '/intercity/'; }}
+              onIntercity={() => setView(AppView.INTERCITY_HUB)}
               onEmergency={() => setShowEmergencyModal(true)}
               onBusSelect={handleBusSelect}
               onToggleFavorite={toggleFavorite}
               onFilterChange={handleFilterChange}
               getStationSlug={getStationSlug}
             />
+            {!hideSiteChrome && <GlobalFooter setView={setView} />}
+            </div>
           ) : (
           <>
           {/* Left Sidebar — train list only */}
@@ -4051,7 +4061,7 @@ const App: React.FC = () => {
           <div className={`
             ${'flex-1 min-h-0 w-full min-w-0 bg-transparent relative overflow-hidden flex flex-col'}
             ${view === AppView.TRAIN_LIST && 'hidden md:flex'}
-            ${(view === AppView.LOCAL_BUS_HUB || view === AppView.METRO_HUB || view === AppView.LAUNCH_HUB) && 'flex'}
+            ${(view === AppView.LOCAL_BUS_HUB || view === AppView.METRO_HUB || view === AppView.LAUNCH_HUB || view === AppView.INTERCITY_HUB) && 'flex'}
 `}>
             <div className={`hidden md:block absolute inset-0 w-full h-full min-h-0 transition-opacity duration-500 ${view === AppView.TRAIN_LIST ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}><DhakaAlive /></div>
             {view === AppView.TRAIN_DETAILS && (
@@ -4094,6 +4104,17 @@ const App: React.FC = () => {
               <div className="flex-1 min-h-0 overflow-y-auto bg-kj-bg">
                 <LaunchHub onBack={() => setView(AppView.HOME)} language={language} />
               </div>
+            )}
+            {view === AppView.INTERCITY_HUB && (
+              <IntercityHub
+                onBack={() => setView(AppView.HOME)}
+                language={language}
+                onSearch={(from, to) => {
+                  setIsIntercityRedirecting(true);
+                  const params = new URLSearchParams({ from, to });
+                  window.location.href = `/intercity/?${params.toString()}`;
+                }}
+              />
             )}
 
             {view === AppView.ABOUT && renderAbout()}
@@ -4389,6 +4410,7 @@ const App: React.FC = () => {
           </div>
           </>
           )}
+          </div>
         </main>
 
         {showPageAd && <PageAdSection />}
@@ -4433,9 +4455,12 @@ const App: React.FC = () => {
               </button>
               {/* Intercity */}
               <button
-                onClick={() => { localStorage.setItem('dhaka_commute_view', JSON.stringify(AppView.HOME)); window.location.href = '/intercity/'; }}
-                className="flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold text-kj-text-faint"
+                onClick={() => setView(AppView.INTERCITY_HUB)}
+                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${view === AppView.INTERCITY_HUB ? 'text-kj-primary' : 'text-kj-text-faint'}`}
               >
+                {view === AppView.INTERCITY_HUB && (
+                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-[22px] h-[3px] rounded-full bg-kj-primary" />
+                )}
                 <Plane className="w-5 h-5" />
                 <span>{language === 'bn' ? 'আন্তঃজেলা' : 'Intercity'}</span>
               </button>
