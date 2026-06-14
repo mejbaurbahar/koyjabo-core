@@ -3322,523 +3322,178 @@ const App: React.FC = () => {
 
     const generalFareInfo = calculateFare(selectedBus);
     return (
-      <div className="flex flex-col flex-1 min-h-0 w-full bg-kj-bg overflow-hidden max-w-full">
-        {/* Mobile sub-header — back + bus name (main app header above handles logo/avatar/menu) */}
-        <div className="block md:hidden w-full z-40 bg-kj-panel border-b border-kj-line shrink-0">
-          <div className="px-4 py-2 flex items-center justify-between">
-            <button onClick={() => setView(AppView.HOME)} className="p-2 -ml-2 hover:bg-kj-chip-bg rounded-full transition-colors" aria-label="Go back to home">
-              <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
-            </button>
-            <div className="flex-1 ml-3">
-              <h2 className="text-lg font-bold text-kj-text truncate max-w-[160px]">{formatBusName(selectedBus.name)}</h2>
-              <p className="text-xs text-kj-text-dim">{selectedBus.bnName}</p>
-            </div>
-            <button
-              onClick={(e) => toggleFavorite(e, selectedBus.id)}
-              className="p-2 hover:bg-kj-chip-bg rounded-full transition-colors"
-              aria-label={favorites.includes(selectedBus.id) ? "Remove from favorites" : "Add to favorites"}
-            >
-              <Heart className={`w-5 h-5 transition-all ${favorites.includes(selectedBus.id) ? 'fill-pink-500 text-pink-500 scale-110 drop-shadow-lg' : 'text-kj-text-faint'} `} />
-            </button>
-            <div className="flex items-center gap-1">
-              <BusImageViewer key={`mob-${selectedBus.id}`} busId={selectedBus.id} busName={selectedBus.name} busBnName={selectedBus.bnName} isCompact />
-              <button
-                onClick={() => setView(AppView.LIVE_NAV)}
-                className="bg-gradient-to-r from-dhaka-green to-[#005c44] text-white p-2.5 rounded-xl font-bold shadow-lg shadow-green-900/20 active:scale-[0.98] transition-all flex items-center justify-center"
-                aria-label={t('liveNav.startNavigation')}
-              >
-                <Navigation className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-          <div className="px-4 pb-2 grid grid-cols-3 gap-2">
-            <button
-              onClick={() => setView(AppView.RATE_BUS)}
-              className="flex items-center justify-center gap-1.5 p-2 bg-kj-chip-bg rounded-xl border border-kj-line hover:border-amber-300 dark:hover:border-amber-700 transition-colors active:scale-95"
-              aria-label={language === 'bn' ? 'রেটিং দিন' : 'Rate'}
-            >
-              <span className="text-base">⭐</span>
-            </button>
-            <button
-              onClick={() => setView(AppView.BUS_LIVE_TRACKING)}
-              className="flex items-center justify-center gap-1.5 p-2 bg-kj-chip-bg rounded-xl border border-kj-line hover:border-kj-primary/40 transition-colors active:scale-95"
-              aria-label={language === 'bn' ? 'লাইভ অবস্থান' : 'Live Location'}
-            >
-              <span className="text-base">📍</span>
-            </button>
-            <button
-              onClick={() => setView(AppView.BUS_PHOTOS)}
-              className="flex items-center justify-center gap-1.5 p-2 bg-kj-chip-bg rounded-xl border border-kj-line hover:border-pink-300 dark:hover:border-pink-700 transition-colors active:scale-95"
-              aria-label={language === 'bn' ? 'ছবি' : 'Photos'}
-            >
-              <span className="text-base">📷</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Desktop Header + Stats Bar — sticky together so stats bar never hides under header */}
-        <div className="hidden md:block sticky top-0 z-50 shrink-0">
-        <div className="flex items-center gap-3 p-4 border-b border-kj-line bg-kj-panel">
-          <button onClick={() => setView(AppView.HOME)} className="p-2 -ml-2 hover:bg-kj-chip-bg rounded-full transition-colors" aria-label="Go back to home">
-            <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
+      <div className="flex flex-col flex-1 min-h-0 w-full bg-kj-bg overflow-hidden">
+        {/* Back nav row — unified mobile+desktop */}
+        <div className="sticky top-0 z-40 shrink-0 bg-kj-panel/90 backdrop-blur-[14px] border-b border-kj-line px-4 py-3 flex items-center gap-3 kj-glass">
+          <button onClick={() => setView(AppView.HOME)} className="w-9 h-9 rounded-[10px] border border-kj-line bg-kj-panel-muted flex items-center justify-center text-kj-text-dim hover:text-kj-text transition-colors shrink-0">
+            <ArrowLeft className="w-4 h-4" />
           </button>
-          <div className="flex-1">
-            <h2 className="text-lg font-bold text-kj-text truncate max-w-[220px]">{formatBusName(selectedBus.name)}</h2>
-            <p className="text-xs text-kj-text-dim">{selectedBus.bnName}</p>
+          <div className="flex-1 min-w-0">
+            <h2 className="font-bengali font-bold text-[16px] text-kj-text truncate leading-tight">{formatBusName(selectedBus.name)}</h2>
+            <p className="text-[11px] text-kj-text-dim">{selectedBus.bnName}</p>
           </div>
-          <BusImageViewer key={`desk-${selectedBus.id}`} busId={selectedBus.id} busName={selectedBus.name} busBnName={selectedBus.bnName} />
-          <button
-            onClick={() => setView(AppView.LIVE_NAV)}
-            className="bg-kj-primary text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-kj-primary-deep transition-colors flex items-center gap-2 mr-2"
-          >
-            <Navigation className="w-4 h-4" />
-            {t('liveNav.startNavigation')}
+          <button onClick={(e) => toggleFavorite(e, selectedBus.id)} className="w-9 h-9 rounded-full bg-kj-panel-muted border border-kj-line flex items-center justify-center">
+            <Heart className={`w-4 h-4 ${favorites.includes(selectedBus.id) ? 'fill-pink-500 text-pink-500' : 'text-kj-text-faint'}`} />
           </button>
-          <button
-            onClick={(e) => toggleFavorite(e, selectedBus.id)}
-            className="p-2 hover:bg-kj-chip-bg rounded-full transition-colors"
-            aria-label={favorites.includes(selectedBus.id) ? "Remove from favorites" : "Add to favorites"}
-          >
-            <Heart className={`w-5 h-5 ${favorites.includes(selectedBus.id) ? 'fill-red-500 text-red-500' : 'text-kj-text-faint'} `} />
-          </button>
-        </div>
-        <div className="px-4 pb-3 bg-kj-panel border-b border-kj-line">
-          <div className="grid grid-cols-3 gap-2">
-            <button
-              onClick={() => setView(AppView.RATE_BUS)}
-              className="flex items-center justify-center gap-1.5 p-2 bg-kj-chip-bg rounded-xl border border-kj-line hover:border-amber-300 dark:hover:border-amber-700 transition-colors active:scale-95"
-            >
-              <span className="text-base">⭐</span>
-              <span className="text-xs font-semibold text-kj-text-dim">{language === 'bn' ? 'রেটিং দিন' : 'Rate'}</span>
-            </button>
-            <button
-              onClick={() => setView(AppView.BUS_LIVE_TRACKING)}
-              className="flex items-center justify-center gap-1.5 p-2 bg-kj-chip-bg rounded-xl border border-kj-line hover:border-kj-primary/40 transition-colors active:scale-95"
-            >
-              <span className="text-base">📍</span>
-              <span className="text-xs font-semibold text-kj-text-dim">{language === 'bn' ? 'লাইভ অবস্থান' : 'Live Location'}</span>
-            </button>
-            <button
-              onClick={() => setView(AppView.BUS_PHOTOS)}
-              className="flex items-center justify-center gap-1.5 p-2 bg-kj-chip-bg rounded-xl border border-kj-line hover:border-pink-300 dark:hover:border-pink-700 transition-colors active:scale-95"
-            >
-              <span className="text-base">📷</span>
-              <span className="text-xs font-semibold text-kj-text-dim">{language === 'bn' ? 'ছবি' : 'Photos'}</span>
-            </button>
-          </div>
+          <BusImageViewer key={`hdr-${selectedBus.id}`} busId={selectedBus.id} busName={selectedBus.name} busBnName={selectedBus.bnName} isCompact />
         </div>
 
-        {/* Stats Bar — Sleek & Integrated */}
-        <div className="shrink-0 grid grid-cols-3 gap-2 px-4 py-3 bg-kj-panel border-b border-kj-line">
-          <div className="bg-kj-chip-bg/60 rounded-2xl px-3 py-3 border border-kj-line flex flex-col items-center text-center transition-all hover:bg-kj-chip-bg hover:shadow-sm">
-            <div className="w-9 h-9 rounded-xl bg-kj-primary-soft flex items-center justify-center text-kj-primary mb-2">
-              <Info className="w-5 h-5" />
-            </div>
-            <span className="text-[10px] text-kj-text-faint uppercase font-black tracking-widest leading-none mb-1">{t('common.type')}</span>
-            <p className="font-extrabold text-kj-text text-sm leading-none">
-              {selectedBus.type === 'Local' ? t('common.local') :
-                selectedBus.type === 'Sitting' ? t('common.sitting') :
-                  selectedBus.type === 'Semi-Sitting' ? t('common.semiSitting') :
-                    selectedBus.type === 'AC' ? t('common.ac') : selectedBus.type}
-            </p>
-          </div>
-          <div className="bg-kj-chip-bg/60 rounded-2xl px-3 py-3 border border-kj-line flex flex-col items-center text-center transition-all hover:bg-kj-chip-bg hover:shadow-sm">
-            <div className="w-9 h-9 rounded-xl bg-kj-primary-soft flex items-center justify-center text-kj-primary mb-2">
-              <Bus className="w-5 h-5" />
-            </div>
-            <span className="text-[10px] text-kj-text-faint uppercase font-black tracking-widest leading-none mb-1">{t('busDetails.totalStops')}</span>
-            <p className="font-extrabold text-kj-text text-sm leading-none">{formatNumber(selectedBus.stops.length)}</p>
-          </div>
-          <div className="bg-kj-chip-bg/60 rounded-2xl px-3 py-3 border border-kj-line flex flex-col items-center text-center transition-all hover:bg-kj-chip-bg hover:shadow-sm">
-            <div className="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center text-amber-600 dark:text-amber-400 mb-2">
-              <Coins className="w-5 h-5" />
-            </div>
-            <span className="text-[10px] text-kj-text-faint uppercase font-black tracking-widest leading-none mb-1">{fareStart && fareEnd ? t('home.fare') : t('busDetails.maxFare')}</span>
-            <p className="font-extrabold text-kj-text text-sm leading-none">
-              {fareStart && fareEnd && fareInfo ? (
-                `৳${formatNumber(fareInfo.min)}${fareInfo.max !== fareInfo.min ? `-${formatNumber(fareInfo.max)}` : ''}`
-              ) : (
-                `~৳${formatNumber(generalFareInfo.max)}`
-              )}
-            </p>
-          </div>
-        </div>
-        </div>{/* end sticky desktop header+stats wrapper */}
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-32" style={{ WebkitOverflowScrolling: 'touch' }}>
+          <div className="px-4 py-4 space-y-3">
 
-        {/* Scrollable Container for everything else */}
-        <div
-          className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain w-full pb-nav-safe md:pb-4 touch-pan-y"
-          style={{ WebkitOverflowScrolling: 'touch' }}
-        >
-
-        {/* Pinned Trip Info */}
-        {selectedTrip && (
-          <div className="bg-kj-bg px-4 pb-0 pt-4">
-            <div className="bg-kj-primary-soft p-4 rounded-2xl border border-kj-primary/20 shadow-sm relative overflow-hidden">
-              <h3 className="font-bold text-kj-primary text-sm uppercase tracking-wider mb-3 relative z-10 flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-kj-primary animate-pulse"></div>
-                Your Trip Plan
-              </h3>
-              <div className="space-y-3 relative z-10">
-                {selectedTrip.steps.map((step, idx) => (
-                  <div
-                    key={idx}
-                    onClick={() => {
-                      if (step.type === 'bus' && step.busRoute) {
-                        handleBusSelect(step.busRoute, false, selectedTrip);
-                      }
-                    }}
-                    className={`flex gap-3 transitions-all duration-300 ${step.type === 'bus' ? 'cursor-pointer hover:bg-white/50 dark:hover:bg-white/10 p-2 rounded-lg -mx-2' : ''} ${step.type === 'bus' && step.busRoute?.id === selectedBus.id ? 'opacity-100 bg-white/80 dark:bg-kj-chip-bg shadow-sm' : 'opacity-70'} `}
-                  >
-                    <div className="flex flex-col items-center">
-                      <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold shadow-sm
-                                         ${step.type === 'walk' ? 'bg-kj-chip-bg text-kj-text-dim' :
-                          step.type === 'metro' ? 'bg-kj-primary-soft text-kj-primary' :
-                            'bg-kj-primary-soft text-kj-primary'
-                        }
-   `}>
-                        {formatNumber(idx + 1)}
-                      </div>
-                      {idx < selectedTrip.steps.length - 1 && <div className="w-0.5 h-full bg-kj-line my-1"></div>}
-                    </div>
-                    <div className="pb-2 flex-1">
-                      <p className="text-sm font-semibold text-kj-text leading-tight">{step.instruction}</p>
-                      {step.type === 'bus' && step.busRoute?.id === selectedBus.id && (
-                        <span className="inline-block mt-1 text-[10px] bg-kj-primary-soft text-kj-primary px-2 py-0.5 rounded-full font-bold">{t('busDetails.currentViewing')}</span>
-                      )}
-                      {step.type === 'bus' && step.busRoute?.id !== selectedBus.id && (
-                        <span className="inline-block mt-1 text-[10px] bg-kj-primary-soft text-kj-primary px-2 py-0.5 rounded-full font-bold">{t('busDetails.clickToView')}</span>
-                      )}
-                    </div>
+            {/* Hero card — green gradient matching design */}
+            <div className="rounded-2xl p-4 text-white" style={{ background: 'linear-gradient(135deg, #006a4e, #10b981)' }}>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center font-sans font-black text-sm shrink-0" style={{ background: 'rgba(255,255,255,0.15)' }}>
+                  {formatBusName(selectedBus.name).slice(0, 2).toUpperCase()}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-bengali font-bold text-[17px] leading-tight">{formatBusName(selectedBus.name)}</div>
+                  <div className="text-[12px] opacity-85 mt-0.5">{selectedBus.type} · {selectedBus.stops.length} {language === 'bn' ? 'স্টপ' : 'stops'}</div>
+                </div>
+                <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold" style={{ background: 'rgba(255,255,255,0.18)' }}>
+                  <span className="w-1.5 h-1.5 rounded-full bg-white animate-[kjpulse_1.5s_ease-in-out_infinite]" />{language === 'bn' ? 'লাইভ' : 'Live'}
+                </span>
+              </div>
+              <div className="grid grid-cols-4 gap-2 pt-3 border-t border-white/15">
+                {[
+                  { lbl: language === 'bn' ? 'পরবর্তী' : 'Next', v: language === 'bn' ? '৩ মি' : '~3 min' },
+                  { lbl: language === 'bn' ? 'সময়' : 'Duration', v: fareInfo ? `${Math.round((fareInfo.distance/15)*60)}m` : `~${generalFareInfo.distance > 0 ? Math.round((generalFareInfo.distance/15)*60) : '--'}m` },
+                  { lbl: language === 'bn' ? 'দূরত্ব' : 'Distance', v: fareInfo ? `${fareInfo.distance.toFixed(1)} km` : `${generalFareInfo.distance > 0 ? generalFareInfo.distance.toFixed(1) : '--'} km` },
+                  { lbl: language === 'bn' ? 'ভাড়া' : 'Fare', v: `৳ ${generalFareInfo.min > 0 ? generalFareInfo.min : '--'}` },
+                ].map((s, i) => (
+                  <div key={i} className="text-center">
+                    <div className="font-sans font-black text-base tracking-tight">{s.v}</div>
+                    <div className="font-sans text-[9px] font-bold tracking-[1.2px] uppercase opacity-70 mt-0.5">{s.lbl}</div>
                   </div>
                 ))}
               </div>
             </div>
-          </div>
-        )}
 
-        {/* Scrollable Content */}
-        <div className="p-4 pt-5 space-y-4 bg-kj-bg pb-4 overflow-visible">
+            {/* Tab chips */}
+            <div className="flex gap-2 flex-wrap">
+              {[
+                { label: language === 'bn' ? 'স্টপ' : 'Stops', active: true },
+                { label: language === 'bn' ? 'টাইমটেবিল' : 'Schedule' },
+                { label: language === 'bn' ? 'ভাড়া' : 'Fares' },
+                { label: language === 'bn' ? 'রিভিউ' : 'Reviews' },
+              ].map((tab, i) => (
+                <button key={i} className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${tab.active ? 'bg-kj-text text-kj-bg border-kj-text' : 'bg-kj-panel text-kj-text border-kj-line hover:border-kj-primary/40'}`}>
+                  {tab.label}
+                </button>
+              ))}
+            </div>
 
-
-
-          {/* Additional Stats when fare is selected */}
-          {
-            fareStart && fareEnd && (
-              <div className="relative z-20 mt-2 md:mt-3 grid grid-cols-3 gap-2 sm:gap-3">
-                <div className="bg-kj-panel p-2.5 sm:p-3 rounded-2xl border border-kj-line shadow-[0_2px_8px_rgba(0,0,0,0.02)] min-h-[96px] sm:min-h-[120px] flex flex-col items-center text-center justify-center">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-kj-primary to-kj-primary-deep flex items-center justify-center text-kj-primary-ink mb-2 shadow-lg shadow-indigo-500/30">
-                    <Gauge className="w-5 h-5" />
-                  </div>
-                  <span className="text-[10px] text-kj-text-faint uppercase font-bold tracking-wider">{userLocation ? t('busDetails.speed') : t('busDetails.stops')}</span>
-                  <span className="font-bold text-kj-text text-[13px] sm:text-sm mt-0.5">
-                    {userLocation ? (
-                      `${formatNumber((speed || 0).toFixed(0))} km / h`
-                    ) : (
-                      formatNumber(Math.abs(selectedBus.stops.indexOf(fareEnd) - selectedBus.stops.indexOf(fareStart)) + 1)
-                    )}
-                  </span>
-                </div>
-                <div className="bg-kj-panel p-2.5 sm:p-3 rounded-2xl border border-kj-line shadow-[0_2px_8px_rgba(0,0,0,0.02)] min-h-[96px] sm:min-h-[120px] flex flex-col items-center text-center justify-center">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-kj-accent to-kj-neon-magenta flex items-center justify-center text-white mb-2 shadow-lg shadow-pink-500/30">
-                    <Flag className="w-5 h-5" />
-                  </div>
-                  <span className="text-[10px] text-kj-text-faint uppercase font-bold tracking-wider">{t('busDetails.awayFrom')}</span>
-                  <span className="font-bold text-kj-text text-[13px] sm:text-sm mt-0.5">
-                    {fareInfo ? `${formatNumber(fareInfo.distance.toFixed(1))} km` : '-- km'}
-                  </span>
-                </div>
-                <div className="bg-kj-panel p-2.5 sm:p-3 rounded-2xl border border-kj-line shadow-[0_2px_8px_rgba(0,0,0,0.02)] min-h-[96px] sm:min-h-[120px] flex flex-col items-center text-center justify-center">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br bg-kj-primary flex items-center justify-center text-kj-primary-ink mb-2 shadow-lg">
-                    <Clock className="w-5 h-5" />
-                  </div>
-                  <span className="text-[10px] text-kj-text-faint uppercase font-bold tracking-wider">{t('busDetails.eta')}</span>
-                  <span className="font-bold text-kj-text text-[13px] sm:text-sm mt-0.5">
-                    {fareInfo ? formatETA((fareInfo.distance / 15) * 60, formatNumber) : '--'}
-                  </span>
-                </div>
-              </div>
-            )
-          }
-
-          {/* Real OSM Route Map */}
-          <div className="bg-kj-panel rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-kj-line overflow-hidden w-full">
-            <div className="px-4 py-3 border-b border-kj-line flex justify-between items-center bg-kj-chip-bg/30">
-              <h3 className="font-bold text-kj-text-dim text-sm flex items-center gap-2">
-                <div className="w-1.5 h-1.5 bg-kj-primary rounded-full animate-pulse"></div> {t('busDetails.liveView')}
+            {/* Fare Calculator */}
+            <div className="dc-card kj-glass rounded-2xl p-4">
+              <h3 className="font-bold text-kj-text text-sm mb-3 flex items-center gap-2">
+                <Coins className="w-4 h-4 text-kj-amber" /> {t('busDetails.stopToStopFare')}
               </h3>
-              <span className="text-[10px] bg-kj-primary-soft border border-kj-primary/30 px-2 py-0.5 rounded text-kj-primary font-medium">OpenStreetMap</span>
-            </div>
-            <BusRouteMap
-              route={selectedBus}
-              userLocation={userLocation}
-              highlightStartId={fareStart || undefined}
-              highlightEndId={fareEnd || undefined}
-              isReversed={isReversed}
-              onOpenFullMap={() => setView(AppView.LIVE_NAV)}
-            />
-          </div>
-
-          {/* Fare Calculator */}
-          <div className="bg-kj-panel p-4 rounded-2xl border border-kj-line shadow-sm">
-            <h3 className="font-bold text-kj-text mb-3 flex items-center gap-2 text-sm">
-              <Coins className="w-4 h-4 text-yellow-500" /> {t('busDetails.stopToStopFare')}
-            </h3>
-            <div className="grid grid-cols-2 gap-3 mb-3">
-              <div>
-                <label className="text-[10px] font-bold text-kj-text-faint dark:text-kj-text-faint uppercase mb-1 block">{t('liveNav.homeFrom')}</label>
-                <select
-                  className="w-full bg-kj-input-bg border border-kj-line rounded-lg p-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-dhaka-green/20 dark:text-gray-200"
-                  value={fareStart}
-                  onChange={e => {
-                    const newStart = e.target.value;
-                    setFareStart(newStart);
-                    if (newStart && fareEnd) {
-                      requestIdleCallback(() => trackRouteSearch(newStart, fareEnd));
-                    }
-                  }}
-                >
-                  <option value="">{t('common.select')}</option>
-                  {selectedBus.stops.map(id => {
-                    const s = STATIONS[id] || METRO_STATIONS[id] || RAILWAY_STATIONS[id] || AIRPORTS[id];
-                    return s ? <option key={id} value={id}>{s.name}</option> : null;
-                  })}
-                </select>
-              </div>
-              <div>
-                <label className="text-[10px] font-bold text-kj-text-faint dark:text-kj-text-faint uppercase mb-1 block">{t('liveNav.homeTo')}</label>
-                <select
-                  className="w-full bg-kj-input-bg border border-kj-line rounded-lg p-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-dhaka-green/20 disabled:opacity-50 disabled:cursor-not-allowed dark:text-gray-200"
-                  value={fareEnd}
-                  onChange={e => {
-                    const newEnd = e.target.value;
-                    setFareEnd(newEnd);
-                    if (fareStart && newEnd) {
-                      requestIdleCallback(() => trackRouteSearch(fareStart, newEnd));
-                    }
-                  }}
-                  disabled={!fareStart}
-                >
-                  <option value="">{fareStart ? t('common.select') : t('busDetails.selectFromFirst')}</option>
-                  {selectedBus.stops.map(id => {
-                    const s = STATIONS[id] || METRO_STATIONS[id] || RAILWAY_STATIONS[id] || AIRPORTS[id];
-                    return s ? <option key={id} value={id}>{s.name}</option> : null;
-                  })}
-                </select>
-              </div>
-            </div>
-            {/* <AdSenseAd adSlot="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-            {fareInfo ? (
-              <div className="bg-kj-primary-soft p-3 rounded-xl border border-kj-primary/20 flex justify-between items-center animate-in fade-in slide-in-from-top-2">
+              <div className="grid grid-cols-2 gap-3 mb-3">
                 <div>
-                  <p className="text-[10px] text-kj-primary font-bold uppercase">{t('busDetails.estimatedCost')}</p>
-                  <p className="text-xs text-kj-primary">{t('busDetails.awayFrom')}: {formatNumber(fareInfo.distance.toFixed(1))} km</p>
+                  <label className="text-[10px] font-bold text-kj-text-faint uppercase mb-1 block">{t('liveNav.homeFrom')}</label>
+                  <select className="w-full bg-kj-input-bg border border-kj-line rounded-xl px-3 py-2 text-sm text-kj-text focus:outline-none focus:border-kj-primary"
+                    value={fareStart} onChange={e => { setFareStart(e.target.value); if (e.target.value && fareEnd) requestIdleCallback(() => trackRouteSearch(e.target.value, fareEnd)); }}>
+                    <option value="">{t('common.select')}</option>
+                    {selectedBus.stops.map(id => { const s = STATIONS[id] || METRO_STATIONS[id]; return s ? <option key={id} value={id}>{s.name}</option> : null; })}
+                  </select>
                 </div>
-                <span className="text-xl font-bold text-kj-text">৳{formatNumber(fareInfo.min)} - {formatNumber(fareInfo.max)}</span>
+                <div>
+                  <label className="text-[10px] font-bold text-kj-text-faint uppercase mb-1 block">{t('liveNav.homeTo')}</label>
+                  <select className="w-full bg-kj-input-bg border border-kj-line rounded-xl px-3 py-2 text-sm text-kj-text focus:outline-none focus:border-kj-primary disabled:opacity-50"
+                    value={fareEnd} onChange={e => { setFareEnd(e.target.value); if (fareStart && e.target.value) requestIdleCallback(() => trackRouteSearch(fareStart, e.target.value)); }} disabled={!fareStart}>
+                    <option value="">{fareStart ? t('common.select') : t('busDetails.selectFromFirst')}</option>
+                    {selectedBus.stops.map(id => { const s = STATIONS[id] || METRO_STATIONS[id]; return s ? <option key={id} value={id}>{s.name}</option> : null; })}
+                  </select>
+                </div>
               </div>
-            ) : (
-              <div className="bg-kj-chip-bg p-3 rounded-xl border border-kj-line text-center">
-                <p className="text-xs text-kj-text-faint dark:text-kj-text-faint">{t('busDetails.selectStartEnd')}</p>
+              {fareInfo && (
+                <div className="bg-kj-primary-soft rounded-xl p-3 border border-kj-primary/20 flex justify-between items-center">
+                  <div>
+                    <p className="text-[10px] text-kj-primary font-bold uppercase">{t('busDetails.estimatedCost')}</p>
+                    <p className="text-xs text-kj-primary">{fareInfo.distance.toFixed(1)} km</p>
+                  </div>
+                  <span className="text-xl font-bold text-kj-text">৳ {fareInfo.min}–{fareInfo.max}</span>
+                </div>
+              )}
+            </div>
+
+            {/* Stops list */}
+            <div className="dc-card kj-glass rounded-2xl overflow-hidden">
+              <div className="px-4 py-3 flex items-center gap-2 border-b border-kj-line">
+                <span className="font-bengali font-bold text-[14px] text-kj-text">{language === 'bn' ? `${selectedBus.stops.length}টি স্টপ` : `${selectedBus.stops.length} stops`}</span>
               </div>
-            )}
-          </div>
-
-          {/* Full Route List */}
-          <div className="bg-kj-panel rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-kj-line overflow-hidden">
-            <h3 className="font-bold text-kj-text-dim px-4 py-3 border-b border-kj-line bg-kj-chip-bg/30 text-sm">{t('busDetails.fullRouteList')}</h3>
-            <div className="relative">
-              <div className="absolute left-6 top-4 bottom-4 w-0.5 bg-kj-chip-bg"></div>
-              <div className="space-y-0">
-                {(() => {
-                  // Determine transfer point for the Trip
-                  const tripTransferPoint = selectedTrip?.steps.find(s => s.type === 'walk' && s.instruction.includes('Transfer'))?.fromId || selectedTrip?.steps.find((s, i) => i > 0 && s.type === 'bus')?.fromId;
-
-                  return selectedBus.stops.map((stopId, idx) => {
-                    const station = STATIONS[stopId] || METRO_STATIONS[stopId] || RAILWAY_STATIONS[stopId] || AIRPORTS[stopId];
-                    if (!station) return null;
-
-                    // Check if this stop is highlighted (part of the selected route)
-                    const fareStartIdx = fareStart ? selectedBus.stops.indexOf(fareStart) : -1;
-                    const fareEndIdx = fareEnd ? selectedBus.stops.indexOf(fareEnd) : -1;
-
-                    const isHighlighted = fareStartIdx !== -1 && fareEndIdx !== -1 &&
-                      ((fareStartIdx <= idx && idx <= fareEndIdx) ||
-                        (fareEndIdx <= idx && idx <= fareStartIdx));
-
-                    // Check if this is the user's selected start or end station
-                    const isUserStart = fareStart === stopId;
-                    const isUserEnd = fareEnd === stopId;
-
-                    // Check if this is a transfer point (Transit)
-                    const isTransfer = stopId === tripTransferPoint;
-
-                    const isLast = idx === selectedBus.stops.length - 1;
-                    const isFirst = idx === 0;
-
-                    const validStopIds = selectedBus.stops.filter(id => !!STATIONS[id]);
-                    const filteredIdx = validStopIds.indexOf(stopId);
-                    const isNearest = nearestStopIndex !== -1 && nearestStopIndex === filteredIdx;
-
-                    const isWithinRange = nearestStopDistance < 2000;
-
-                    return (
-                      <div key={stopId} className={`px-4 py-3.5 hover:bg-kj-chip-bg flex items-center gap-4 relative z-10 group border-b border-kj-line last:border-0 transition-colors 
-                      ${isNearest && isWithinRange ? 'bg-kj-primary-soft/30' : ''}
-                      ${isHighlighted ? 'bg-kj-primary-soft/20 border-l-4 border-l-kj-primary -ml-[1px]' : ''}
-`}>
-                        <div className={`w-4 h-4 rounded-full border-2 border-white shadow-sm flex items-center justify-center shrink-0 transition-all
-                        ${isNearest && isWithinRange
-                            ? 'bg-kj-accent w-6 h-6 ring-2 ring-red-100 animate-pulse'
-                            : isUserStart || isUserEnd
-                              ? 'bg-kj-primary w-5 h-5 ring-2 ring-green-100 scale-110'
-                              : isHighlighted
-                                ? 'bg-kj-primary w-5 h-5 ring-2 ring-green-100 scale-110'
-                                : isFirst
-                                  ? 'bg-kj-primary w-5 h-5 ring-2 ring-kj-primary/30'
-                                  : isLast
-                                    ? 'bg-red-500 w-5 h-5 ring-2 ring-red-100'
-                                    : isNearest
-                                      ? 'bg-orange-400 w-5 h-5'
-                                      : 'bg-kj-line'
-                          }
-`}>
-                          {(isFirst || isLast) && !isNearest && !isHighlighted && !isUserStart && !isUserEnd && <div className="w-1.5 h-1.5 bg-white rounded-full"></div>}
-                          {isNearest && isWithinRange && <MapPin className="w-3 h-3 text-white" />}
-                          {(isHighlighted || isUserStart || isUserEnd) && !isNearest && <div className="w-1.5 h-1.5 bg-white rounded-full"></div>}
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between gap-2">
-                            <p className={`text-sm group-hover:text-kj-primary transition-colors ${isFirst || isLast || isNearest || isHighlighted || isUserStart || isUserEnd ? 'font-bold text-kj-text' : 'font-medium text-kj-text-dim'} ${isNearest && isWithinRange && idx < (nearestStopIndex !== -1 ? selectedBus.stops.indexOf(validStopIds[nearestStopIndex]) : -1) ? 'text-kj-text-faint line-through decoration-gray-300' : ''} `}>
-                              {station.name}
-                              {isNearest && isWithinRange && <span className="ml-2 text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full uppercase tracking-wide">{t('busDetails.you')}</span>}
-                              {isNearest && !isWithinRange && <span className="ml-2 text-[10px] bg-orange-100 text-orange-600 px-1.5 py-0.5 rounded-full uppercase tracking-wide">{formatNumber((nearestStopDistance / 1000).toFixed(1))} km {t('emergency.away')}</span>}
-
-                              {/* Start Badge */}
-                              {isUserStart && !isTransfer && <span className="ml-2 text-[10px] bg-kj-primary-soft text-kj-primary px-1.5 py-0.5 rounded-full uppercase tracking-wide font-bold">{t('busDetails.start')}</span>}
-
-                              {/* Destination Badge */}
-                              {isUserEnd && !isTransfer && <span className="ml-2 text-[10px] bg-red-100 text-red-700 px-1.5 py-0.5 rounded-full uppercase tracking-wide font-bold">{t('busDetails.destination')}</span>}
-
-                              {/* Transit Badge */}
-                              {isTransfer && (isUserStart || isUserEnd) && <span className="ml-2 text-[10px] bg-kj-neon-violet/10 text-kj-neon-violet px-1.5 py-0.5 rounded-full uppercase tracking-wide font-bold">{t('busDetails.transit')}</span>}
-                            </p>
-                            {/* Helpline Button - Show beside current location */}
-                            {isNearest && isWithinRange && userLocation && (
-                              <button
-                                onClick={() => setShowEmergencyModal(true)}
-                                className="shrink-0 bg-kj-accent hover:bg-red-600 text-white px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all shadow-md hover:shadow-lg active:scale-95 flex items-center gap-1"
-                                aria-label={t('liveNav.emergencyHelplines')}
-                              >
-                                <Phone className="w-3 h-3" />
-                                {t('busDetails.help')}
-                              </button>
-                            )}
-                          </div>
+              <div className="px-4 py-3">
+                {selectedBus.stops.map((id, i) => {
+                  const s = STATIONS[id] || METRO_STATIONS[id] || RAILWAY_STATIONS[id] || AIRPORTS[id];
+                  if (!s) return null;
+                  const isStart = i === 0;
+                  const isEnd = i === selectedBus.stops.length - 1;
+                  const isCurrent = id === fareStart || id === fareEnd;
+                  return (
+                    <div key={id} className="flex gap-3 relative" style={{ paddingBottom: isEnd ? 0 : 10 }}>
+                      <div className="w-4 shrink-0 flex flex-col items-center relative">
+                        {!isEnd && <div className={`absolute top-4 bottom-0 w-0.5 ${isCurrent ? 'bg-kj-primary' : 'bg-kj-line'}`} style={{ left: '50%', transform: 'translateX(-50%)' }} />}
+                        <div className={`rounded-full mt-1 relative z-10 ${
+                          isCurrent ? 'w-4 h-4 bg-white border-[2.5px] border-kj-primary shadow-[0_0_0_4px_rgba(0,245,255,0.2)]' :
+                          isStart ? 'w-3.5 h-3.5 bg-kj-primary border-2 border-kj-primary' :
+                          isEnd ? 'w-3.5 h-3.5 bg-kj-accent border-2 border-kj-accent' :
+                          'w-2.5 h-2.5 bg-kj-panel border-2 border-kj-line'
+                        }`} />
+                      </div>
+                      <div className="flex-1 min-w-0 pb-1">
+                        <div className={`font-bengali text-[14px] text-kj-text ${isStart || isEnd || isCurrent ? 'font-bold' : 'font-medium'}`}>
+                          {language === 'bn' ? (s as any).bnName || s.name : s.name}
+                          {isCurrent && <span className="ml-2 text-[10px] font-bold text-kj-primary tracking-wider uppercase">● now</span>}
                         </div>
                       </div>
-                    );
-                  });
-                })()}
-
-                {/* Show connected route option if available */}
-                {selectedTrip && selectedTrip.steps.length > 1 && (
-                  <div className="bg-kj-primary-soft border-t border-kj-primary/20 p-4">
-                    <p className="text-xs font-bold text-kj-primary uppercase mb-2">Connected Routes</p>
-                    <div className="space-y-2">
-                      {selectedTrip.steps.map((step, sIdx) => {
-                        if (step.type === 'bus' && step.busRoute && step.busRoute.id !== selectedBus.id) {
-                          return (
-                            <button
-                              key={sIdx}
-                              onClick={() => {
-                                // Switch to this bus
-                                setSelectedBus(step.busRoute!);
-                                // Update fare start/end for this leg
-                                const startId = Object.keys(STATIONS).find(key => STATIONS[key].name === step.from);
-                                const endId = Object.keys(STATIONS).find(key => STATIONS[key].name === step.to);
-                                if (startId) setFareStart(startId);
-                                if (endId) setFareEnd(endId);
-                              }}
-                              className="w-full text-left bg-white dark:bg-kj-chip-bg p-3 rounded-xl border border-blue-200 dark:border-kj-line shadow-sm hover:shadow-md transition-all flex items-center justify-between group"
-                            >
-                              <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-full bg-kj-primary-soft text-kj-primary flex items-center justify-center">
-                                  <Bus className="w-4 h-4" />
-                                </div>
-                                <div>
-                                  <p className="text-sm font-bold text-kj-text group-hover:text-blue-700">{step.busRoute.name}</p>
-                                  <p className="text-xs text-kj-text-dim">From {step.from}</p>
-                                </div>
-                              </div>
-                              <ChevronRight className="w-4 h-4 text-kj-text-faint group-hover:text-blue-500" />
-                            </button>
-                          )
-                        }
-                        return null;
-                      })}
                     </div>
-                  </div>
-                )}
+                  );
+                })}
               </div>
+            </div>
+
+            {/* OSM Route Map */}
+            <div className="dc-card kj-glass rounded-2xl overflow-hidden">
+              <div className="px-4 py-3 border-b border-kj-line flex justify-between items-center">
+                <h3 className="font-bold text-kj-text text-sm flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 bg-kj-primary rounded-full animate-pulse" />{t('busDetails.liveView')}
+                </h3>
+                <span className="text-[10px] bg-kj-primary-soft border border-kj-primary/30 px-2 py-0.5 rounded text-kj-primary font-medium">OpenStreetMap</span>
+              </div>
+              <BusRouteMap route={selectedBus} userLocation={userLocation} highlightStartId={fareStart || undefined} highlightEndId={fareEnd || undefined} isReversed={isReversed} onOpenFullMap={() => setView(AppView.LIVE_NAV)} />
+            </div>
+
+            {/* Community actions */}
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { label: language === 'bn' ? 'রেট করুন' : 'Rate', icon: '⭐', action: () => setView(AppView.RATE_BUS) },
+                { label: language === 'bn' ? 'লাইভ ট্র্যাক' : 'Live Track', icon: '📍', action: () => setView(AppView.BUS_LIVE_TRACKING) },
+                { label: language === 'bn' ? 'ছবি' : 'Photos', icon: '📷', action: () => setView(AppView.BUS_PHOTOS) },
+              ].map((btn, i) => (
+                <button key={i} onClick={btn.action} className="dc-card kj-glass rounded-xl py-3 flex flex-col items-center gap-1.5 border border-kj-line hover:border-kj-primary/40 transition-colors active:scale-95">
+                  <span className="text-xl">{btn.icon}</span>
+                  <span className="text-[11px] font-semibold text-kj-text-dim">{btn.label}</span>
+                </button>
+              ))}
             </div>
           </div>
-
-          {/* <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-
         </div>
 
-
-        {/* Emergency Helpline Modal */}
-        <EmergencyHelplineModal
-          isOpen={showEmergencyModal}
-          onClose={() => setShowEmergencyModal(false)}
-          userLocation={userLocation}
-          currentLocationName={globalNearestStationName || undefined}
-        />
-
-        {/* Offline Navigation Warning Modal */}
-        {
-          showOfflineNavModal && (
-            <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
-              <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowOfflineNavModal(false)}></div>
-              <div className="relative bg-white dark:bg-kj-panel rounded-3xl shadow-2xl p-6 max-w-sm w-full animate-in fade-in zoom-in border border-kj-line">
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4 border-4 border-white shadow-lg animate-pulse-slow">
-                    <WifiOff className="w-8 h-8 text-orange-600" />
-                  </div>
-                  <h3 className="text-xl font-bold text-kj-text mb-2">You are Offline</h3>
-                  <p className="text-kj-text-dim mb-6 text-sm leading-relaxed">
-                    Intercity search requires an internet connection. <br />
-                    If you have viewed this route before, you may proceed to see cached results.
-                  </p>
-
-                  <div className="flex flex-col w-full gap-3">
-                    <button
-                      onClick={() => {
-                        setShowOfflineNavModal(false);
-                        if (pendingIntercityNav) {
-                          window.location.href = `/intercity/?from=${encodeURIComponent(pendingIntercityNav.from)}&to=${encodeURIComponent(pendingIntercityNav.to)}`;
-                        }
-                      }}
-                      className="w-full bg-kj-primary text-white font-bold py-3 rounded-xl hover:bg-kj-primary-deep transition-all flex items-center justify-center gap-2"
-                    >
-                      <span>Proceed Anyway</span>
-                      <ArrowLeft className="w-4 h-4 rotate-180" />
-                    </button>
-                    <button
-                      onClick={() => setShowOfflineNavModal(false)}
-                      className="w-full bg-kj-chip-bg text-kj-text-dim font-bold py-3 rounded-xl hover:bg-kj-panel transition-all"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )
-        }
+        {/* Sticky bottom action bar */}
+        <div className="sticky bottom-0 shrink-0 bg-kj-panel/90 backdrop-blur-[14px] border-t border-kj-line p-3 flex items-center gap-2 kj-glass" style={{ paddingBottom: 'calc(12px + env(safe-area-inset-bottom))' }}>
+          <button onClick={(e) => toggleFavorite(e, selectedBus.id)} className={`flex items-center gap-1.5 px-3 py-2.5 rounded-xl border text-xs font-bold transition-colors ${favorites.includes(selectedBus.id) ? 'bg-kj-accent-soft text-kj-accent border-kj-accent' : 'bg-kj-panel-muted text-kj-text border-kj-line hover:border-kj-accent/40'}`}>
+            ❤️ {language === 'bn' ? 'প্রিয়' : 'Save'}
+          </button>
+          <button onClick={() => setView(AppView.RATE_BUS)} className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-kj-line bg-kj-panel-muted text-kj-text text-xs font-bold hover:border-kj-amber/40 transition-colors">
+            ⭐ {language === 'bn' ? 'রেট' : 'Rate'}
+          </button>
+          <button onClick={() => setView(AppView.LIVE_NAV)} className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-kj-primary text-kj-primary-ink font-bold text-sm hover:brightness-105 transition-all">
+            <Navigation className="w-4 h-4" />
+            {language === 'bn' ? 'নেভিগেট শুরু' : 'Start navigation'}
+          </button>
         </div>
-      </div >
+      </div>
     );
   };
 

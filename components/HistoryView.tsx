@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ArrowLeft, Clock, TrendingUp, Calendar, Users, Eye, Trash2, Bus, MapPin, ArrowRight, Activity, Train, Zap, Leaf, ChevronRight } from 'lucide-react';
 import {
     getUserHistory,
@@ -50,18 +50,10 @@ const FEATURE_LABELS: Record<string, string> = {
 // --- Inline SVG chart components ---
 
 // Weekly stacked bar chart (Mon-Sun)
-const WeeklyBarChart: React.FC = () => {
+interface WeeklyBarData { bus: number; metro: number; ride: number; }
+const WeeklyBarChart: React.FC<{ data: WeeklyBarData[] }> = ({ data }) => {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    const data = [
-        { bus: 60, metro: 40, ride: 20 },
-        { bus: 80, metro: 30, ride: 10 },
-        { bus: 50, metro: 60, ride: 30 },
-        { bus: 90, metro: 50, ride: 15 },
-        { bus: 70, metro: 45, ride: 25 },
-        { bus: 40, metro: 20, ride: 10 },
-        { bus: 55, metro: 35, ride: 5 },
-    ];
-    const maxVal = 160;
+    const maxVal = Math.max(1, ...data.map(d => d.bus + d.metro + d.ride));
     const chartH = 120;
     const barW = 22;
     const gap = 16;
@@ -100,12 +92,17 @@ const WeeklyBarChart: React.FC = () => {
 };
 
 // Donut chart — transport mode split
-const DonutChart: React.FC = () => {
+interface DonutCounts { bus: number; trainIntercity: number; route: number; }
+const DonutChart: React.FC<{ counts: DonutCounts }> = ({ counts }) => {
+    const total = counts.bus + counts.trainIntercity + counts.route || 1;
+    const toPct = (n: number) => Math.round((n / total) * 100);
+    const busP = toPct(counts.bus);
+    const trainP = toPct(counts.trainIntercity);
+    const routeP = 100 - busP - trainP;
     const segments = [
-        { label: 'Bus', pct: 50, color: '#10b981' },
-        { label: 'Metro', pct: 30, color: '#3b82f6' },
-        { label: 'Rideshare', pct: 12, color: '#8b5cf6' },
-        { label: 'Walking', pct: 8, color: '#f59e0b' },
+        { label: 'Bus', pct: busP, color: '#10b981' },
+        { label: 'Train/IC', pct: trainP, color: '#3b82f6' },
+        { label: 'Route', pct: routeP, color: '#8b5cf6' },
     ];
     const r = 46;
     const cx = 60;
@@ -155,11 +152,10 @@ const DonutChart: React.FC = () => {
 };
 
 // Monthly line chart — 12 months
-const MonthlyLineChart: React.FC = () => {
+const MonthlyLineChart: React.FC<{ values: number[] }> = ({ values }) => {
     const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
-    const values = [120, 145, 160, 138, 172, 190, 210, 185, 220, 240, 210, 251];
-    const maxV = 260;
-    const minV = 100;
+    const maxV = Math.max(1, ...values);
+    const minV = 0;
     const W = 260;
     const H = 100;
     const stepX = W / (values.length - 1);
@@ -191,20 +187,13 @@ const MonthlyLineChart: React.FC = () => {
 };
 
 // Busy hours heatmap
-const HeatmapGrid: React.FC = () => {
+const HeatmapGrid: React.FC<{ data: number[][] }> = ({ data }) => {
     const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
     const hours = ['6a', '8a', '10a', '12p', '2p', '4p', '6p', '8p'];
-    const heatData: number[][] = [
-        [3, 8, 4, 2, 3, 7, 9, 5],
-        [4, 9, 3, 2, 4, 8, 9, 4],
-        [3, 8, 5, 3, 3, 7, 8, 3],
-        [4, 9, 4, 2, 4, 8, 9, 4],
-        [5, 9, 3, 2, 3, 7, 10, 6],
-        [2, 4, 5, 6, 5, 4, 3, 2],
-        [1, 2, 3, 4, 3, 2, 2, 1],
-    ];
+    const heatData = data;
+    const maxVal = Math.max(1, ...data.flat());
     const colors = ['#1a3a2a', '#1d5c3b', '#1e7a4e', '#10b981', '#34d399', '#6ee7b7', '#a7f3d0', '#d1fae5'];
-    const getColor = (v: number) => colors[Math.min(Math.floor(v * 0.8), colors.length - 1)];
+    const getColor = (v: number) => colors[Math.min(Math.floor((v / maxVal) * (colors.length - 1)), colors.length - 1)];
 
     return (
         <div className="w-full overflow-x-auto">
@@ -345,6 +334,65 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
 
         return formatNumber(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
     };
+
+    // ── Real chart data computed from analytics arrays ──
+
+    const weeklyChartData = useMemo((): WeeklyBarData[] => {
+        // Mon=0 … Sun=6 (getDay returns 0=Sun, so we map: Sun→6, Mon→0)
+        const grid: WeeklyBarData[] = Array.from({ length: 7 }, () => ({ bus: 0, metro: 0, ride: 0 }));
+        const toSlot = (ts: number) => { const d = new Date(ts).getDay(); return d === 0 ? 6 : d - 1; };
+        recentBusSearches.forEach(r => { const i = toSlot(r.timestamp); grid[i].bus += 1; });
+        recentTrainSearches.forEach(r => { const i = toSlot(r.timestamp); grid[i].metro += 1; });
+        recentIntercitySearches.forEach(r => { const ts = (r as any).timestamp || Date.now(); const i = toSlot(ts); grid[i].ride += 1; });
+        return grid;
+    }, [recentBusSearches, recentTrainSearches, recentIntercitySearches]);
+
+    const donutCounts = useMemo((): DonutCounts => ({
+        bus: recentBusSearches.length,
+        trainIntercity: recentTrainSearches.length + recentIntercitySearches.length,
+        route: recentRouteSearches.length,
+    }), [recentBusSearches, recentTrainSearches, recentIntercitySearches, recentRouteSearches]);
+
+    const monthlyValues = useMemo((): number[] => {
+        const now = new Date();
+        const counts = Array(12).fill(0);
+        const allSearches = [
+            ...recentBusSearches.map(r => r.timestamp),
+            ...recentTrainSearches.map(r => r.timestamp),
+            ...recentRouteSearches.map(r => r.timestamp),
+            ...recentIntercitySearches.map(r => (r as any).timestamp || 0),
+        ];
+        allSearches.forEach(ts => {
+            const d = new Date(ts);
+            // month offset relative to 12 months ago
+            const diffMonths = (now.getFullYear() - d.getFullYear()) * 12 + (now.getMonth() - d.getMonth());
+            if (diffMonths >= 0 && diffMonths < 12) counts[11 - diffMonths] += 1;
+        });
+        return counts;
+    }, [recentBusSearches, recentTrainSearches, recentRouteSearches, recentIntercitySearches]);
+
+    const heatmapData = useMemo((): number[][] => {
+        // 7 rows (Mon-Sun) × 8 cols (6am,8am,10am,12pm,2pm,4pm,6pm,8pm)
+        const grid: number[][] = Array.from({ length: 7 }, () => Array(8).fill(0));
+        const toDay = (ts: number) => { const d = new Date(ts).getDay(); return d === 0 ? 6 : d - 1; };
+        const toHourSlot = (ts: number) => {
+            const h = new Date(ts).getHours();
+            if (h < 6 || h >= 22) return -1;
+            return Math.min(Math.floor((h - 6) / 2), 7);
+        };
+        const allTs = [
+            ...recentBusSearches.map(r => r.timestamp),
+            ...recentTrainSearches.map(r => r.timestamp),
+            ...recentRouteSearches.map(r => r.timestamp),
+            ...recentIntercitySearches.map(r => (r as any).timestamp || 0),
+        ];
+        allTs.forEach(ts => {
+            const day = toDay(ts);
+            const slot = toHourSlot(ts);
+            if (slot >= 0) grid[day][slot] += 1;
+        });
+        return grid;
+    }, [recentBusSearches, recentTrainSearches, recentRouteSearches, recentIntercitySearches]);
 
     const hasPersonalData =
         recentBusSearches.length > 0 ||
@@ -504,7 +552,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                         {lbl('↓18% vs last wk', 'গত সপ্তাহের চেয়ে ↓১৮%')}
                                     </span>
                                 </div>
-                                <WeeklyBarChart />
+                                <WeeklyBarChart data={weeklyChartData} />
                             </div>
 
                             {/* Donut chart */}
@@ -517,7 +565,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                         {lbl('Mode distribution', 'মোড বিতরণ')}
                                     </p>
                                 </div>
-                                <DonutChart />
+                                <DonutChart counts={donutCounts} />
                             </div>
                         </div>
 
@@ -539,7 +587,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                         ↑24%
                                     </span>
                                 </div>
-                                <MonthlyLineChart />
+                                <MonthlyLineChart values={monthlyValues} />
                             </div>
 
                             {/* Busy hours heatmap */}
@@ -552,7 +600,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                         {lbl('Mon–Sun × 6am–9pm', 'সোম–রবি × সকাল ৬টা–রাত ৯টা')}
                                     </p>
                                 </div>
-                                <HeatmapGrid />
+                                <HeatmapGrid data={heatmapData} />
                             </div>
                         </div>
 
