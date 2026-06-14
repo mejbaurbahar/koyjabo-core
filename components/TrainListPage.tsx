@@ -3,7 +3,7 @@ import SponsoredAdSlot from './SponsoredAdSlot';
 import {
   Train, Search, ArrowRight, Clock, CalendarX, Info,
   ArrowLeft, MapPin, Navigation,
-  Coins, AlertCircle, X, CheckCircle2, SlidersHorizontal, ChevronDown, Star, Heart
+  Coins, AlertCircle, X, CheckCircle2, SlidersHorizontal, Star, Heart, Ticket, Radio, Map
 } from 'lucide-react';
 
 function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
@@ -65,6 +65,97 @@ function getStoredTrainFavorites(): string[] {
     return [];
   }
 }
+
+// Featured trains for the hero section
+const FEATURED_TRAINS = [
+  {
+    number: '813',
+    name: "Cox's Bazar Express",
+    bnName: 'কক্সবাজার এক্সপ্রেস',
+    route: 'Dhaka → Cox\'s Bazar',
+    bnRoute: 'ঢাকা → কক্সবাজার',
+    depart: '10:30 PM',
+    arrive: '09:30 AM',
+    duration: '11h',
+    fare: '৳745–2,656',
+    gradient: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
+    badgeBg: '#7c3aed',
+  },
+  {
+    number: '786',
+    name: 'Sonar Bangla Express',
+    bnName: 'সোনার বাংলা এক্সপ্রেস',
+    route: 'Dhaka → Chittagong',
+    bnRoute: 'ঢাকা → চট্টগ্রাম',
+    depart: '07:00 AM',
+    arrive: '12:30 PM',
+    duration: '5h 30m',
+    fare: '৳405–1,591',
+    gradient: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
+    badgeBg: '#059669',
+  },
+  {
+    number: '709',
+    name: 'Parabat Express',
+    bnName: 'পারাবত এক্সপ্রেস',
+    route: 'Dhaka → Sylhet',
+    bnRoute: 'ঢাকা → সিলেট',
+    depart: '06:30 AM',
+    arrive: '01:00 PM',
+    duration: '6h 30m',
+    fare: '৳375–1,678',
+    gradient: 'linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%)',
+    badgeBg: '#1d4ed8',
+  },
+  {
+    number: '729',
+    name: 'Jahanabad Express',
+    bnName: 'জাহানাবাদ এক্সপ্রেস',
+    route: 'Dhaka → Khulna',
+    bnRoute: 'ঢাকা → খুলনা',
+    depart: '06:00 AM',
+    arrive: '09:45 AM',
+    duration: '3h 45m',
+    fare: '৳310–1,450',
+    gradient: 'linear-gradient(135deg, #b45309 0%, #f59e0b 100%)',
+    badgeBg: '#b45309',
+    badge: 'Padma Bridge',
+  },
+  {
+    number: '801',
+    name: 'Upaban Express',
+    bnName: 'উপবন এক্সপ্রেস',
+    route: 'Dhaka → Sylhet',
+    bnRoute: 'ঢাকা → সিলেট',
+    depart: '10:00 PM',
+    arrive: '05:00 AM',
+    duration: '7h',
+    fare: '৳375–1,678',
+    gradient: 'linear-gradient(135deg, #b91c1c 0%, #ef4444 100%)',
+    badgeBg: '#b91c1c',
+  },
+];
+
+// Popular stations for the bottom grid
+const POPULAR_STATIONS = [
+  { emoji: '🏙️', name: 'Dhaka', bnName: 'ঢাকা' },
+  { emoji: '⚓', name: 'Chittagong', bnName: 'চট্টগ্রাম' },
+  { emoji: '🌿', name: 'Sylhet', bnName: 'সিলেট' },
+  { emoji: '🌊', name: 'Cox\'s Bazar', bnName: 'কক্সবাজার' },
+  { emoji: '🏔️', name: 'Khulna', bnName: 'খুলনা' },
+  { emoji: '🌾', name: 'Rajshahi', bnName: 'রাজশাহী' },
+  { emoji: '🎋', name: 'Mymensingh', bnName: 'ময়মনসিংহ' },
+  { emoji: '🌅', name: 'Comilla', bnName: 'কুমিল্লা' },
+];
+
+// Coach classes data
+const COACH_CLASSES = [
+  { name: 'AC Berth', bnName: 'এসি বার্থ', price: '৳2,656', color: '#7c3aed' },
+  { name: 'Snigdha', bnName: 'স্নিগ্ধা', price: '৳1,591', color: '#059669' },
+  { name: 'AC Chair', bnName: 'এসি চেয়ার', price: '৳1,200', color: '#1d4ed8' },
+  { name: 'Shovon Chair', bnName: 'শোভন চেয়ার', price: '৳745', color: '#b45309' },
+  { name: 'Shovon', bnName: 'শোভন', price: '৳405', color: '#6b7280' },
+];
 
 // ── Train Detail View ─────────────────────────────────────────────────────────
 export function TrainDetail({
@@ -130,7 +221,6 @@ export function TrainDetail({
   const nearestStopDistKm = nearestStopResult.distKm;
 
   return (
-    /* Light: white bg — Dark: deep navy gradient */
     <div className="flex flex-col flex-1 min-h-0 w-full bg-kj-bg overflow-hidden">
 
       {/* Sub-header */}
@@ -192,7 +282,7 @@ export function TrainDetail({
 
         <div className="p-4 space-y-4">
 
-          {/* ── Schedule ─────────────────────────────────────────────────── */}
+          {/* Schedule */}
           <div className="bg-kj-chip-bg rounded-2xl p-4 border border-kj-line dark:border-kj-line">
             <h3 className="text-sm font-bold text-kj-text mb-3 flex items-center gap-2">
               <Clock className="w-4 h-4 text-kj-primary" />
@@ -234,7 +324,7 @@ export function TrainDetail({
             </div>
           </div>
 
-          {/* ── Station timeline ──────────────────────────────────────────── */}
+          {/* Station timeline */}
           <div className="bg-kj-chip-bg rounded-2xl border border-kj-line dark:border-kj-line overflow-hidden">
             <div className="px-4 py-3 border-b border-kj-line dark:border-kj-line">
               <h3 className="text-sm font-bold text-kj-text flex items-center gap-2">
@@ -263,18 +353,14 @@ export function TrainDetail({
 
                 return (
                   <React.Fragment key={id}>
-                    {/* ── Virtual "You are here" row injected before nearest station ── */}
                     {isNearUser && userLocation && (
                       <div className="flex gap-3">
                         <div className="flex flex-col items-center" style={{ width: 20 }}>
-                          {/* Top connector into this virtual row (solid from above if passed, else gray) */}
                           <div className={`w-px flex-none h-2 ${isPassed ? 'bg-emerald-400 dark:bg-kj-primary' : 'bg-gray-300 dark:bg-white/25'}`} />
-                          {/* Pulsing blue user dot */}
                           <div className="relative shrink-0 z-10">
                             <div className="w-4 h-4 rounded-full bg-kj-primary border-2 border-kj-panel shadow-lg" />
                             <div className="absolute inset-0 rounded-full bg-blue-400 animate-ping opacity-60" />
                           </div>
-                          {/* Dashed connector from user-dot down to nearest station */}
                           <div className="flex-1 min-h-[24px] flex flex-col items-center gap-0.5 py-0.5">
                             {[0,1,2,3].map(i => (
                               <div key={i} className="w-px h-1.5 bg-kj-primary/60 rounded" />
@@ -293,11 +379,8 @@ export function TrainDetail({
                       </div>
                     )}
 
-                    {/* ── Actual stop row ── */}
                     <div className="flex gap-3">
-                      {/* Timeline column */}
                       <div className="flex flex-col items-center" style={{ width: 20 }}>
-                        {/* Top connector — hide it when the virtual row already drew the dashed line */}
                         {!(isNearUser && userLocation) && (
                           <div className={`w-px flex-none h-2 ${
                             isFirst ? 'bg-transparent'
@@ -306,9 +389,7 @@ export function TrainDetail({
                           }`} />
                         )}
                         {isNearUser && userLocation && <div className="flex-none h-0" />}
-                        {/* Dot */}
                         {isNearUser ? (
-                          /* Nearest station: orange pin dot */
                           <div className="w-4 h-4 rounded-full bg-orange-500 border-2 border-orange-300 shadow-md shadow-orange-500/40 shrink-0 z-10" />
                         ) : isPassed ? (
                           <div className="w-4 h-4 rounded-full bg-kj-primary dark:bg-emerald-400 border-2 border-emerald-300 flex items-center justify-center shrink-0 z-10">
@@ -321,7 +402,6 @@ export function TrainDetail({
                         ) : (
                           <div className="w-2.5 h-2.5 rounded-full bg-gray-300 dark:bg-white/20 border border-gray-400 dark:border-white/35 shrink-0 z-10 mt-0.5" />
                         )}
-                        {/* Bottom connector */}
                         {!isLast && (
                           <div className={`w-px flex-1 min-h-[20px] ${
                             isPassed ? 'bg-emerald-400 dark:bg-kj-primary'
@@ -330,7 +410,6 @@ export function TrainDetail({
                           }`} />
                         )}
                       </div>
-                      {/* Stop name */}
                       <div className={`pb-3 flex-1 min-w-0 ${isMid && !isNearUser ? 'pt-0.5' : 'pt-0'}`}>
                         <span className={`leading-snug ${
                           isNearUser ? 'text-sm font-bold text-orange-600 dark:text-orange-400'
@@ -361,10 +440,7 @@ export function TrainDetail({
 
           <SponsoredAdSlot language={language as 'en' | 'bn'} size="728x90" compact />
 
-
-
-          {/* ── Fare Calculator ───────────────────────────────────────────── */}
-          {/* No overflow-hidden so SearchableSelect dropdown isn't clipped */}
+          {/* Fare Calculator */}
           <div className="bg-kj-chip-bg rounded-2xl border border-kj-line dark:border-kj-line">
             <div className="px-4 py-3 border-b border-kj-line dark:border-kj-line rounded-t-2xl">
               <h3 className="text-sm font-bold text-kj-text flex items-center gap-2">
@@ -447,8 +523,6 @@ export function TrainDetail({
                         : 'Fare is approximate. Check Bangladesh Railway website for exact fares.'}
                     </p>
                   </div>
-
-                  {/* <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
                 </>
               ) : (
                 <p className="text-xs text-kj-text-faint text-center py-2">
@@ -458,10 +532,6 @@ export function TrainDetail({
             </div>
           </div>
 
-
-
-          {/* Spacer for mobile bottom nav */}
-
           <div className="h-24 md:h-4" />
         </div>
       </div>
@@ -469,118 +539,73 @@ export function TrainDetail({
   );
 }
 
-// ── Train Card ────────────────────────────────────────────────────────────────
-function TrainCard({
-  route, onClick, onRateClick, language, ratingSummary, isFavorite, onToggleFavorite
+// ── Featured Train Card (for the hero list) ───────────────────────────────────
+function FeaturedTrainCard({
+  train,
+  language,
+  onDetails,
 }: {
-  route: BDTrainRoute;
-  onClick: () => void;
-  onRateClick?: () => void;
+  train: typeof FEATURED_TRAINS[number];
   language: string;
-  ratingSummary?: TrainRatingSummary | null;
-  isFavorite?: boolean;
-  onToggleFavorite?: () => void;
+  onDetails: () => void;
 }) {
   const bn = language === 'bn';
-  const fromStation = TRAIN_STATIONS[route.from];
-  const toStation   = TRAIN_STATIONS[route.to];
-
-  const hasRating = (ratingSummary?.count ?? 0) > 0;
-  const avgRating = ratingSummary?.average ?? 0;
-  const ratingPercent = Math.round((avgRating / 5) * 100);
-
   return (
-    <div
-      onClick={onClick}
-      className="dc-card rounded-2xl p-4 cursor-pointer hover:border-emerald-300 dark:hover:border-emerald-600 hover:shadow-md transition-all active:scale-[0.99]"
-    >
-      <div className="flex items-start justify-between gap-2 mb-3">
+    <div className="rounded-2xl overflow-hidden border border-white/10 bg-kj-panel" style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.13)' }}>
+      {/* Gradient header strip */}
+      <div className="px-4 py-3 flex items-center gap-3" style={{ background: train.gradient }}>
+        <span
+          className="text-xs font-black px-2.5 py-1 rounded-lg text-white"
+          style={{ background: 'rgba(0,0,0,0.25)', letterSpacing: '0.05em' }}
+        >
+          #{train.number}
+        </span>
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap mb-1">
-            <h3 className="font-bold text-kj-text text-sm truncate">
-              {bn ? route.bnName : route.name}
-            </h3>
-            <span className="text-[10px] font-bold px-1.5 py-0.5 bg-kj-chip-bg text-kj-text-dim rounded shrink-0">
-              #{route.number}
-            </span>
-          </div>
-          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${TYPE_COLORS[route.type] || TYPE_COLORS.Local}`}>
-            {bn ? (TYPE_BN[route.type] ?? route.type) : route.type}
+          <p className="font-bold text-white text-sm leading-tight truncate">
+            {bn ? train.bnName : train.name}
+          </p>
+          <p className="text-white/75 text-xs truncate">{bn ? train.bnRoute : train.route}</p>
+        </div>
+        {train.badge && (
+          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/20 text-white shrink-0">
+            {train.badge}
           </span>
-        </div>
-        <div className="flex items-center gap-1 shrink-0">
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              onToggleFavorite?.();
-            }}
-            className="w-8 h-8 flex items-center justify-center leading-none rounded-full bg-kj-chip-bg border border-kj-line dark:border-kj-line hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg transition-colors shrink-0"
-            aria-label={isFavorite ? `Remove ${route.name} from favorites` : `Add ${route.name} to favorites`}
-          >
-            <Heart className={`w-4 h-4 ${isFavorite ? 'fill-pink-500 text-pink-500' : 'text-kj-text-faint'}`} />
-          </button>
-          <div
-            className="w-8 h-8 rounded-full flex items-center justify-center"
-            style={{ backgroundColor: route.color + '20', color: route.color }}
-          >
-            <Train className="w-4 h-4" />
-          </div>
-        </div>
-      </div>
-
-      {/* Route */}
-      <div className="flex items-center gap-2 mb-3 text-sm">
-        <div className="flex-1 min-w-0">
-          <p className="font-semibold text-kj-text truncate">
-            {bn ? fromStation?.bnName : fromStation?.name}
-          </p>
-        </div>
-        <ArrowRight className="w-4 h-4 text-kj-text-faint shrink-0" />
-        <div className="flex-1 min-w-0 text-right">
-          <p className="font-semibold text-kj-text truncate">
-            {bn ? toStation?.bnName : toStation?.name}
-          </p>
-        </div>
-      </div>
-
-      {/* Times */}
-      <div className="flex items-center justify-between text-xs text-kj-text-dim">
-        <div className="flex items-center gap-1">
-          <Clock className="w-3 h-3 text-kj-primary" />
-          <span className="font-medium text-kj-text-dim">{route.dhakaDepart}</span>
-          <span>→</span>
-          <span className="font-medium text-kj-text-dim">{route.destinationArrive}</span>
-        </div>
-        {route.offDay !== 'No Off Day' && route.offDay !== 'No Off' && (
-          <div className="flex items-center gap-1 text-amber-600 dark:text-amber-400">
-            <CalendarX className="w-3 h-3 shrink-0" />
-            <span className="truncate max-w-[100px]">{route.offDay.split(',')[0]}</span>
-          </div>
         )}
       </div>
-
-      {/* Fare range */}
-      <div className="mt-2 flex items-center justify-between gap-2">
-        <div className="flex items-center gap-1 text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 px-2 py-1 rounded-lg w-fit">
-          <Coins className="w-3 h-3 shrink-0" />
-          <span>৳{route.fare.shuvan}{route.fare.acBerth ? ` – ৳${route.fare.acBerth.toLocaleString()}` : ''}</span>
+      {/* Body */}
+      <div className="px-4 py-3">
+        {/* Departure → Arrival */}
+        <div className="flex items-center gap-2 mb-3">
+          <div className="text-center">
+            <p className="text-base font-black text-kj-text leading-none">{train.depart}</p>
+            <p className="text-[10px] text-kj-text-faint mt-0.5">{bn ? 'ছাড়ে' : 'Dep'}</p>
+          </div>
+          <div className="flex-1 flex flex-col items-center gap-0.5">
+            <div className="flex items-center gap-1 w-full">
+              <div className="flex-1 h-px bg-kj-line" />
+              <span className="text-[10px] font-semibold text-kj-text-dim px-1 shrink-0">{train.duration}</span>
+              <div className="flex-1 h-px bg-kj-line" />
+            </div>
+            <ArrowRight className="w-3 h-3 text-kj-text-faint" />
+          </div>
+          <div className="text-center">
+            <p className="text-base font-black text-kj-text leading-none">{train.arrive}</p>
+            <p className="text-[10px] text-kj-text-faint mt-0.5">{bn ? 'পৌঁছায়' : 'Arr'}</p>
+          </div>
         </div>
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            onRateClick?.();
-          }}
-          className={`px-2 py-1 rounded-md border text-[10px] font-bold leading-none transition-colors ${hasRating
-            ? 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100'
-            : 'bg-gray-50 text-kj-text-dim border-kj-line hover:bg-kj-chip-bg'}`}
-          aria-label={hasRating ? `View rating for ${route.name}` : `Rate ${route.name}`}
-        >
-          {hasRating
-            ? `★ ${avgRating.toFixed(1)} · ${ratingPercent}%`
-            : (bn ? '☆ রেটিং' : '☆ Rate')}
-        </button>
+        {/* Fare + Details */}
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-bold text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 px-2.5 py-1 rounded-lg">
+            {train.fare}
+          </span>
+          <button
+            onClick={onDetails}
+            className="text-xs font-bold px-3 py-1.5 rounded-xl text-white transition-opacity hover:opacity-90 active:scale-95"
+            style={{ background: train.gradient }}
+          >
+            {bn ? 'বিস্তারিত' : 'Details'}
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -615,6 +640,7 @@ const ALL_STATION_OPTIONS = (() => {
   return result.sort((a, b) => a.name.localeCompare(b.name));
 })();
 
+type SearchTab = 'eticket' | 'pnr' | 'live' | 'routemap';
 type SortOption = 'name' | 'depart' | 'distance';
 
 // ── Main Export ───────────────────────────────────────────────────────────────
@@ -622,21 +648,21 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
   const { language } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTrain, setSelectedTrain] = useState<BDTrainRoute | null>(null);
-  const [filterType, setFilterType] = useState<string>('');
-  const [filterDivision, setFilterDivision] = useState<string>('');
   const [filterFrom, setFilterFrom] = useState<string>('');
   const [filterTo, setFilterTo] = useState<string>('');
+  const [travelDate, setTravelDate] = useState('');
+  const [activeTab, setActiveTab] = useState<SearchTab>('eticket');
+  const [pnrInput, setPnrInput] = useState('');
   const [sortBy, setSortBy] = useState<SortOption>('name');
-  const [showFilters, setShowFilters] = useState(false);
   const [trainRatingsMap, setTrainRatingsMap] = useState<Record<string, TrainRatingSummary | null>>({});
   const [favoriteTrainIds, setFavoriteTrainIds] = useState<string[]>(getStoredTrainFavorites);
-  const [listFilter, setListFilter] = useState<'ALL' | 'FAVORITES'>('ALL');
   const bn = language === 'bn';
+
+  const lbl = (en: string, bnStr: string) => language === 'bn' ? bnStr : en;
 
   useEffect(() => { trackFeatureUsage('train_list'); }, []);
 
   const filtered = useMemo(() => {
-    // Deduplicate by id (keep first occurrence)
     const seen = new Set<string>();
     const unique = BD_TRAIN_ROUTES.filter(r => {
       if (seen.has(r.id)) return false;
@@ -646,7 +672,6 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
 
     let results = unique;
 
-    // Text search across name, number, bnName, all stop names
     const q = searchQuery.toLowerCase().trim();
     if (q) {
       results = results.filter(r =>
@@ -660,16 +685,8 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
       );
     }
 
-    // Type filter
-    if (filterType) results = results.filter(r => r.type === filterType);
-
-    // Division filter
-    if (filterDivision) results = results.filter(r => r.division === filterDivision);
-
-    // From station filter — train must stop at this station
     if (filterFrom) results = results.filter(r => r.stops.includes(filterFrom));
 
-    // To station filter — train must stop at this station AND after filterFrom if both set
     if (filterTo) {
       results = results.filter(r => {
         if (!r.stops.includes(filterTo)) return false;
@@ -680,21 +697,12 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
       });
     }
 
-    // Sort
-    const sorted = [...results].sort((a, b) => {
+    return [...results].sort((a, b) => {
       if (sortBy === 'depart') return a.dhakaDepart.localeCompare(b.dhakaDepart);
       if (sortBy === 'distance') return a.distanceKm - b.distanceKm;
       return a.name.localeCompare(b.name);
     });
-
-    if (listFilter === 'FAVORITES') {
-      return sorted.filter(r => favoriteTrainIds.includes(r.id));
-    }
-
-    return sorted;
-  }, [searchQuery, filterType, filterDivision, filterFrom, filterTo, sortBy, listFilter, favoriteTrainIds]);
-
-  const activeFilterCount = [filterType, filterDivision, filterFrom, filterTo].filter(Boolean).length;
+  }, [searchQuery, filterFrom, filterTo, sortBy]);
 
   useEffect(() => {
     let cancelled = false;
@@ -717,21 +725,6 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
     return () => { cancelled = true; };
   }, [filtered, trainRatingsMap]);
 
-  const nearestStation = useMemo(() => {
-    if (!userLocation) return null;
-    let minDist = Infinity;
-    let nearest: { station: (typeof TRAIN_STATIONS)[string]; distKm: number } | null = null;
-    Object.values(TRAIN_STATIONS).forEach(st => {
-      const d = haversineKm(userLocation.lat, userLocation.lng, st.lat, st.lng);
-      if (d < minDist) { minDist = d; nearest = { station: st, distKm: d }; }
-    });
-    return nearest;
-  }, [userLocation]);
-
-  const clearAllFilters = () => {
-    setFilterType(''); setFilterDivision(''); setFilterFrom(''); setFilterTo(''); setSearchQuery('');
-  };
-
   const toggleFavoriteTrain = (trainId: string) => {
     setFavoriteTrainIds(prev => {
       const next = prev.includes(trainId) ? prev.filter(id => id !== trainId) : [...prev, trainId];
@@ -740,7 +733,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
     });
   };
 
-  // Inline detail fallback (when no external handler)
+  // Inline detail fallback
   if (!onSelectTrain && selectedTrain) {
     return (
       <TrainDetail
@@ -749,263 +742,317 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
         onBack={() => setSelectedTrain(null)}
         language={language}
         onOpenRating={() => onRateTrain?.(selectedTrain)}
-        onOpenPhotos={() => window.location.hash = `train-photos`}
+        onOpenPhotos={() => window.location.hash = 'train-photos'}
         isFavorite={favoriteTrainIds.includes(selectedTrain.id)}
         onToggleFavorite={() => toggleFavoriteTrain(selectedTrain.id)}
       />
     );
   }
 
+  const SEARCH_TABS: { id: SearchTab; label: string; bnLabel: string; icon: React.ReactNode }[] = [
+    { id: 'eticket',  label: 'E-ticket',      bnLabel: 'ই-টিকেট',    icon: <Ticket className="w-3 h-3" /> },
+    { id: 'pnr',      label: 'PNR status',    bnLabel: 'PNR স্ট্যাটাস', icon: <Search className="w-3 h-3" /> },
+    { id: 'live',     label: 'Live location', bnLabel: 'লাইভ অবস্থান', icon: <Radio className="w-3 h-3" /> },
+    { id: 'routemap', label: 'Route map',     bnLabel: 'রুট ম্যাপ',   icon: <Map className="w-3 h-3" /> },
+  ];
+
   return (
     <div className="flex flex-col flex-1 min-h-0 w-full bg-kj-bg overflow-hidden">
-      {/* Header */}
-      <div className="shrink-0 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 dark:from-[#10181c] dark:via-[#16222a] dark:to-[#10181c] shadow-xl shadow-emerald-500/30 dark:shadow-none">
-          <div className="absolute top-0 right-0 -mr-12 -mt-12 w-40 h-40 rounded-full bg-white/10 blur-2xl" />
-          <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-32 h-32 rounded-full bg-white/10 blur-2xl" />
-        </div>
+      {/* ── Scrollable body ── */}
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y" style={{ WebkitOverflowScrolling: 'touch' }}>
 
-        <div className="relative z-10 px-4 pt-4 pb-4">
-          {/* Title */}
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-              <Train className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h1 className="font-bold text-white text-xl leading-tight drop-shadow-md">
-                {bn ? 'বাংলাদেশ রেলওয়ে' : 'Bangladesh Railway'}
-              </h1>
-              <p className="text-white/80 text-xs">
-                {bn ? `${UNIQUE_TRAIN_COUNT}টি ট্রেন` : `${UNIQUE_TRAIN_COUNT} Trains`}
-              </p>
-            </div>
-          </div>
-          {/* AdSense removed from fixed header to prevent blocking content */}
+        {/* ── HERO ── */}
+        <div
+          className="relative overflow-hidden"
+          style={{ background: 'linear-gradient(135deg, #5b21b6 0%, #7c3aed 50%, #f59e0b 100%)' }}
+        >
+          {/* Decorative blobs */}
+          <div className="absolute top-0 right-0 w-56 h-56 rounded-full opacity-20 blur-3xl" style={{ background: '#f59e0b', transform: 'translate(30%,-30%)' }} />
+          <div className="absolute bottom-0 left-0 w-40 h-40 rounded-full opacity-15 blur-2xl" style={{ background: '#a855f7', transform: 'translate(-30%,30%)' }} />
 
-
-
-
-          {/* Search + filter toggle row */}
-
-          <div className="flex gap-2">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                placeholder={bn ? 'ট্রেন বা স্টেশন খুঁজুন...' : 'Search train, station, number...'}
-                className="w-full pl-9 pr-9 py-2.5 rounded-xl bg-white/15 text-white placeholder-white/60 text-sm focus:outline-none focus:ring-2 focus:ring-white/30 border border-white/10"
-              />
-              {searchQuery && (
-                <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white">
-                  <X className="w-4 h-4" />
-                </button>
-              )}
-            </div>
-            <button
-              onClick={() => setShowFilters(v => !v)}
-              className={`relative px-3 py-2.5 rounded-xl border text-sm font-bold flex items-center gap-1.5 transition-all ${showFilters ? 'bg-white text-emerald-700 border-white' : 'bg-white/15 text-white border-white/20 hover:bg-white/25'}`}
-            >
-              <SlidersHorizontal className="w-4 h-4" />
-              {bn ? 'ফিল্টার' : 'Filter'}
-              {activeFilterCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
-                  {activeFilterCount}
-                </span>
-              )}
-            </button>
-          </div>
-
-          {/* Expandable filter panel */}
-          {showFilters && (
-            <div className="mt-3 p-3 bg-white/15 rounded-xl border border-white/20 space-y-2 animate-in slide-in-from-top-2 duration-200">
-              {/* Row 1: From → To */}
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="text-[10px] font-bold text-white/70 block mb-1">{bn ? 'কোথায় থেকে' : 'From'}</label>
-                  <select
-                    value={filterFrom}
-                    onChange={e => setFilterFrom(e.target.value)}
-                    className="w-full text-xs px-2 py-1.5 rounded-lg bg-white/20 text-white border border-white/20 focus:outline-none"
-                  >
-                    <option value="" className="text-kj-text">{bn ? 'সব স্টেশন' : 'Any station'}</option>
-                    {ALL_STATION_OPTIONS.map(st => (
-                      <option key={st.id} value={st.id} className="text-kj-text">{bn ? st.bnName : st.name}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="text-[10px] font-bold text-white/70 block mb-1">{bn ? 'কোথায় যাবেন' : 'To'}</label>
-                  <select
-                    value={filterTo}
-                    onChange={e => setFilterTo(e.target.value)}
-                    className="w-full text-xs px-2 py-1.5 rounded-lg bg-white/20 text-white border border-white/20 focus:outline-none"
-                  >
-                    <option value="" className="text-kj-text">{bn ? 'সব স্টেশন' : 'Any station'}</option>
-                    {ALL_STATION_OPTIONS.map(st => (
-                      <option key={st.id} value={st.id} className="text-kj-text">{bn ? st.bnName : st.name}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              {/* Row 2: Type + Division */}
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="text-[10px] font-bold text-white/70 block mb-1">{bn ? 'ট্রেনের ধরন' : 'Type'}</label>
-                  <select
-                    value={filterType}
-                    onChange={e => setFilterType(e.target.value)}
-                    className="w-full text-xs px-2 py-1.5 rounded-lg bg-white/20 text-white border border-white/20 focus:outline-none"
-                  >
-                    <option value="" className="text-kj-text">{bn ? 'সব ধরন' : 'All types'}</option>
-                    {(['Express', 'Intercity', 'Mail', 'Local'] as const).map(t => (
-                      <option key={t} value={t} className="text-kj-text">{bn ? (TYPE_BN[t] ?? t) : t}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="text-[10px] font-bold text-white/70 block mb-1">{bn ? 'বিভাগ' : 'Division'}</label>
-                  <select
-                    value={filterDivision}
-                    onChange={e => setFilterDivision(e.target.value)}
-                    className="w-full text-xs px-2 py-1.5 rounded-lg bg-white/20 text-white border border-white/20 focus:outline-none"
-                  >
-                    <option value="" className="text-kj-text">{bn ? 'সব বিভাগ' : 'All divisions'}</option>
-                    {ALL_DIVISIONS.map(d => (
-                      <option key={d} value={d} className="text-kj-text">{d}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              {/* Row 3: Sort */}
-              <div>
-                <label className="text-[10px] font-bold text-white/70 block mb-1">{bn ? 'সাজানো' : 'Sort by'}</label>
-                <div className="flex gap-1.5">
-                  {([['name', bn ? 'নাম' : 'Name'], ['depart', bn ? 'সময়' : 'Depart'], ['distance', bn ? 'দূরত্ব' : 'Distance']] as [SortOption, string][]).map(([val, label]) => (
-                    <button
-                      key={val}
-                      onClick={() => setSortBy(val)}
-                      className={`flex-1 text-xs py-1 rounded-lg font-bold transition-colors ${sortBy === val ? 'bg-white text-emerald-700' : 'bg-white/20 text-white'}`}
-                    >
-                      {label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              {/* Clear */}
-              {activeFilterCount > 0 && (
+          <div className="relative z-10 px-4 pt-5 pb-6">
+            {/* Back button + title */}
+            <div className="flex items-center gap-3 mb-5">
+              {onBack && (
                 <button
-                  onClick={clearAllFilters}
-                  className="w-full text-xs py-1.5 rounded-lg text-white/80 hover:text-white font-bold border border-white/20 hover:border-white/40 transition-colors"
+                  onClick={onBack}
+                  className="w-9 h-9 flex items-center justify-center rounded-full bg-white/15 hover:bg-white/25 transition-colors shrink-0"
+                  aria-label={bn ? 'ফিরুন' : 'Back'}
                 >
-                  {bn ? 'সব ফিল্টার মুছুন' : 'Clear all filters'}
+                  <ArrowLeft className="w-5 h-5 text-white" />
                 </button>
               )}
+              <div>
+                <h1 className="font-black text-white text-xl leading-tight">
+                  {bn ? 'বাংলাদেশ রেলওয়ে · সকল রুট' : 'Bangladesh Railway · all routes'}
+                </h1>
+                <p className="text-white/70 text-xs mt-0.5">
+                  {bn ? 'সকল ট্রেন ও রুটের তথ্য' : 'Complete train & route information'}
+                </p>
+              </div>
             </div>
-          )}
-        </div>
-      </div>
 
-      {/* Nearest station banner — only show when within Bangladesh (~500 km radius) */}
-      {nearestStation && nearestStation.distKm < 500 && (
-        <div className="shrink-0 px-4 py-2.5 bg-blue-50 dark:bg-blue-950/30 border-b border-blue-100 dark:border-blue-900/40">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1 shrink-0">
-              <div className="w-2.5 h-2.5 rounded-full bg-kj-primary border-2 border-kj-panel shadow-sm" />
-              <div className="flex gap-0.5">
-                {[0,1,2,3].map(i => (
-                  <div key={i} className="w-1.5 h-px bg-kj-primary/40 rounded" />
+            {/* Stats row */}
+            <div className="grid grid-cols-4 gap-2 mb-5">
+              {[
+                { value: '350+', label: lbl('Trains', 'ট্রেন') },
+                { value: '64',   label: lbl('Districts', 'জেলা') },
+                { value: '5',    label: lbl('days Advance booking', 'দিন অগ্রিম বুকিং') },
+                { value: '★ 4.5', label: lbl('Avg rating', 'গড় রেটিং') },
+              ].map((stat) => (
+                <div
+                  key={stat.label}
+                  className="rounded-xl px-2 py-2.5 text-center"
+                  style={{ background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(8px)' }}
+                >
+                  <p className="font-black text-white text-sm leading-none">{stat.value}</p>
+                  <p className="text-white/65 text-[9px] mt-1 leading-tight">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Search card */}
+            <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.2)' }}>
+              {/* Tab chips */}
+              <div className="flex gap-1.5 p-3 pb-0">
+                {SEARCH_TABS.map(tab => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition-all whitespace-nowrap ${
+                      activeTab === tab.id
+                        ? 'bg-white text-purple-700'
+                        : 'text-white/80 hover:bg-white/15'
+                    }`}
+                  >
+                    {tab.icon}
+                    {bn ? tab.bnLabel : tab.label}
+                  </button>
                 ))}
               </div>
-              <div className="w-6 h-6 rounded-full bg-kj-primary flex items-center justify-center shadow-sm">
-                <Train className="w-3 h-3 text-white" />
+
+              <div className="p-3 space-y-2">
+                {activeTab === 'eticket' && (
+                  <>
+                    {/* Name search */}
+                    <div className="relative">
+                      <div
+                        className="absolute left-3 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg flex items-center justify-center"
+                        style={{ background: 'linear-gradient(135deg, #7c3aed, #a855f7)' }}
+                      >
+                        <Search className="w-3.5 h-3.5 text-white" />
+                      </div>
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)}
+                        placeholder={bn ? 'ট্রেনের নাম বা নম্বর খুঁজুন...' : 'Search train name or number...'}
+                        className="w-full pl-12 pr-9 py-2.5 rounded-xl text-white placeholder-white/50 text-sm focus:outline-none focus:ring-2 focus:ring-white/30"
+                        style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.15)' }}
+                      />
+                      {searchQuery && (
+                        <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white">
+                          <X className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+
+                    {/* From / To / Date row */}
+                    <div className="grid grid-cols-3 gap-2">
+                      <select
+                        value={filterFrom}
+                        onChange={e => setFilterFrom(e.target.value)}
+                        className="col-span-1 text-xs px-2.5 py-2.5 rounded-xl text-white focus:outline-none"
+                        style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.15)' }}
+                      >
+                        <option value="" className="text-kj-text">{bn ? 'কোথায় থেকে' : 'From'}</option>
+                        {ALL_STATION_OPTIONS.map(st => (
+                          <option key={st.id} value={st.id} className="text-kj-text">{bn ? st.bnName : st.name}</option>
+                        ))}
+                      </select>
+                      <select
+                        value={filterTo}
+                        onChange={e => setFilterTo(e.target.value)}
+                        className="col-span-1 text-xs px-2.5 py-2.5 rounded-xl text-white focus:outline-none"
+                        style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.15)' }}
+                      >
+                        <option value="" className="text-kj-text">{bn ? 'কোথায় যাবেন' : 'To'}</option>
+                        {ALL_STATION_OPTIONS.map(st => (
+                          <option key={st.id} value={st.id} className="text-kj-text">{bn ? st.bnName : st.name}</option>
+                        ))}
+                      </select>
+                      <input
+                        type="date"
+                        value={travelDate}
+                        onChange={e => setTravelDate(e.target.value)}
+                        className="col-span-1 text-xs px-2.5 py-2.5 rounded-xl text-white/80 focus:outline-none"
+                        style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.15)' }}
+                      />
+                    </div>
+
+                    {/* Search button */}
+                    <button
+                      className="w-full py-2.5 rounded-xl font-bold text-sm text-white transition-opacity hover:opacity-90 active:scale-[0.98]"
+                      style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)' }}
+                    >
+                      {bn ? 'ট্রেন খুঁজুন' : 'Search Trains'}
+                    </button>
+                  </>
+                )}
+
+                {activeTab === 'pnr' && (
+                  <div className="space-y-2">
+                    <input
+                      type="text"
+                      value={pnrInput}
+                      onChange={e => setPnrInput(e.target.value)}
+                      placeholder={bn ? 'PNR নম্বর দিন...' : 'Enter PNR number...'}
+                      className="w-full px-3 py-2.5 rounded-xl text-white placeholder-white/50 text-sm focus:outline-none focus:ring-2 focus:ring-white/30"
+                      style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.15)' }}
+                    />
+                    <button
+                      className="w-full py-2.5 rounded-xl font-bold text-sm text-white"
+                      style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)' }}
+                    >
+                      {bn ? 'স্ট্যাটাস দেখুন' : 'Check Status'}
+                    </button>
+                  </div>
+                )}
+
+                {(activeTab === 'live' || activeTab === 'routemap') && (
+                  <div className="py-4 text-center">
+                    <p className="text-white/70 text-sm">
+                      {activeTab === 'live'
+                        ? lbl('Select a train to view live location', 'লাইভ অবস্থান দেখতে ট্রেন বেছে নিন')
+                        : lbl('Select a train to view route map', 'রুট ম্যাপ দেখতে ট্রেন বেছে নিন')}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-xs font-bold text-kj-text truncate leading-tight">
-                {bn ? nearestStation.station.bnName : nearestStation.station.name}
-              </p>
-              <p className="text-[10px] text-kj-primary leading-tight">
-                {bn ? 'নিকটতম রেল স্টেশন' : 'Nearest train station'}
-              </p>
+          </div>
+        </div>
+
+        {/* ── Two-column content area ── */}
+        <div className="px-4 py-5 grid gap-4 md:grid-cols-[1.5fr_1fr]">
+
+          {/* ── LEFT: Popular trains list ── */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between mb-1">
+              <h2 className="font-black text-kj-text text-base">
+                {bn ? 'জনপ্রিয় ট্রেনসমূহ' : 'Popular Trains'}
+              </h2>
+              <span className="text-[10px] bg-kj-chip-bg text-kj-text-dim font-bold px-2 py-0.5 rounded-full">
+                {filtered.length} {bn ? 'টি' : 'total'}
+              </span>
             </div>
-            <span className="text-[11px] font-bold text-blue-700 dark:text-blue-300 bg-kj-primary-soft dark:bg-blue-900/50 px-2 py-0.5 rounded-full shrink-0">
-              {nearestStation.distKm < 1
-                ? `${Math.round(nearestStation.distKm * 1000)} m`
-                : `${nearestStation.distKm.toFixed(1)} km`}
-            </span>
+
+            {/* Featured train cards */}
+            {FEATURED_TRAINS.map(train => {
+              const matchedRoute = BD_TRAIN_ROUTES.find(r => r.number === train.number);
+              return (
+                <FeaturedTrainCard
+                  key={train.number}
+                  train={train}
+                  language={language}
+                  onDetails={() => {
+                    if (matchedRoute) {
+                      onSelectTrain ? onSelectTrain(matchedRoute) : setSelectedTrain(matchedRoute);
+                    }
+                  }}
+                />
+              );
+            })}
+
+            {/* Disclaimer */}
+            <div className="flex items-start gap-2 p-3 bg-kj-primary-soft dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800 text-xs text-emerald-700 dark:text-emerald-300 mt-2">
+              <Info className="w-4 h-4 shrink-0 mt-0.5 text-kj-primary" />
+              <span>
+                {bn
+                  ? 'সময়সূচি পরিবর্তন হতে পারে। সর্বশেষ তথ্যের জন্য বাংলাদেশ রেলওয়ে ওয়েবসাইট দেখুন।'
+                  : 'Schedules may change. Check Bangladesh Railway website for latest information.'}
+              </span>
+            </div>
+          </div>
+
+          {/* ── RIGHT: Coach classes + PNR card ── */}
+          <div className="space-y-4">
+            {/* Coach classes card */}
+            <div className="rounded-2xl overflow-hidden border border-kj-line bg-kj-panel">
+              <div
+                className="px-4 py-3"
+                style={{ background: 'linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%)' }}
+              >
+                <h3 className="font-bold text-white text-sm">{bn ? 'কোচ শ্রেণী ও ভাড়া' : 'Coach Classes'}</h3>
+                <p className="text-white/70 text-[11px] mt-0.5">{bn ? 'আনুমানিক ন্যূনতম ভাড়া' : 'Approximate minimum fares'}</p>
+              </div>
+              <div className="divide-y divide-kj-line">
+                {COACH_CLASSES.map(cls => (
+                  <div key={cls.name} className="flex items-center justify-between px-4 py-3 hover:bg-kj-chip-bg transition-colors">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: cls.color }} />
+                      <span className="text-sm font-semibold text-kj-text">{bn ? cls.bnName : cls.name}</span>
+                    </div>
+                    <span className="text-sm font-black" style={{ color: cls.color }}>{cls.price}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* PNR status card */}
+            <div className="rounded-2xl border border-kj-line bg-kj-panel overflow-hidden">
+              <div className="px-4 py-3 border-b border-kj-line">
+                <h3 className="font-bold text-kj-text text-sm flex items-center gap-2">
+                  <Search className="w-4 h-4 text-purple-600" />
+                  {bn ? 'PNR স্ট্যাটাস চেক' : 'PNR Status Check'}
+                </h3>
+              </div>
+              <div className="p-4 space-y-3">
+                <p className="text-xs text-kj-text-dim">
+                  {bn
+                    ? 'আপনার টিকিটের PNR নম্বর দিয়ে বুকিং স্ট্যাটাস জানুন।'
+                    : 'Enter your ticket PNR number to check booking status.'}
+                </p>
+                <input
+                  type="text"
+                  placeholder={bn ? 'PNR নম্বর...' : 'PNR number...'}
+                  className="w-full px-3 py-2.5 rounded-xl text-sm bg-kj-chip-bg text-kj-text border border-kj-line focus:outline-none focus:ring-2 focus:ring-purple-500/30"
+                />
+                <button
+                  className="w-full py-2.5 rounded-xl font-bold text-sm text-white"
+                  style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)' }}
+                >
+                  {bn ? 'স্ট্যাটাস দেখুন' : 'Check Status'}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      )}
 
-      {/* Count row */}
-      <div className="shrink-0 flex items-center justify-between px-5 py-2 bg-kj-panel border-b border-kj-line">
-        <h3 className="font-bold text-kj-text text-sm">
-          {listFilter === 'FAVORITES' ? (bn ? 'সংরক্ষিত ট্রেন' : 'Saved Trains') : (bn ? 'ট্রেনের তালিকা' : 'Train List')}
-        </h3>
-        <div className="flex items-center gap-2">
-          {activeFilterCount > 0 && (
-            <button onClick={clearAllFilters} className="text-[10px] text-red-500 font-bold hover:underline">
-              {bn ? 'ক্লিয়ার' : 'Clear'}
-            </button>
-          )}
-          <span className="text-[10px] bg-gray-200 dark:bg-kj-chip-bg px-2 py-0.5 rounded-full text-kj-text-dim font-bold">
-            {filtered.length}
-          </span>
-        </div>
-      </div>
-
-      <div className="shrink-0 px-4 py-2 bg-kj-panel border-b border-kj-line">
-        <div className="flex p-1 bg-kj-chip-bg rounded-xl">
-          <button
-            onClick={() => setListFilter('ALL')}
-            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${listFilter === 'ALL' ? 'bg-white dark:bg-kj-chip-bg shadow-sm text-kj-text' : 'text-kj-text-dim dark:text-kj-text-faint hover:text-kj-text dark:hover:text-gray-200'}`}
-          >
-            {bn ? 'সব ট্রেন' : 'All Trains'}
-          </button>
-          <button
-            onClick={() => setListFilter('FAVORITES')}
-            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1 ${listFilter === 'FAVORITES' ? 'bg-white dark:bg-kj-chip-bg shadow-sm text-red-500' : 'text-kj-text-dim dark:text-kj-text-faint hover:text-kj-text dark:hover:text-gray-200'}`}
-          >
-            <Heart className="w-4 h-4 fill-current" />
-            {bn ? 'প্রিয়' : 'Favorites'}
-          </button>
-        </div>
-      </div>
-
-      {/* Train list */}
-      <div className="relative z-10 flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y px-4 py-3 space-y-3 pb-28 md:pb-4" style={{ WebkitOverflowScrolling: 'touch' }}>
-        <div className="flex items-start gap-2 p-3 bg-kj-primary-soft dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800 text-xs text-emerald-700 dark:text-emerald-300">
-          <Info className="w-4 h-4 shrink-0 mt-0.5 text-kj-primary" />
-          <span>
-            {bn
-              ? 'সময়সূচি পরিবর্তন হতে পারে। সর্বশেষ তথ্যের জন্য বাংলাদেশ রেলওয়ে ওয়েবসাইট দেখুন।'
-              : 'Schedules may change. Check Bangladesh Railway website for latest information.'}
-          </span>
-        </div>
-
-        {filtered.length === 0 ? (
-          <div className="text-center py-16 text-kj-text-faint">
-            <Train className="w-12 h-12 mx-auto mb-3 opacity-30" />
-            <p className="font-medium">{bn ? 'কোনো ট্রেন পাওয়া যায়নি' : 'No trains found'}</p>
-            <p className="text-sm mt-1">{bn ? 'অন্য কীওয়ার্ড দিয়ে খুঁজুন' : 'Try a different keyword'}</p>
+        {/* ── Stations grid ── */}
+        <div className="px-4 pb-6">
+          <h2 className="font-black text-kj-text text-base mb-3">
+            {bn ? 'প্রধান স্টেশনসমূহ' : 'Major Stations'}
+          </h2>
+          <div className="grid grid-cols-4 gap-2">
+            {POPULAR_STATIONS.map(station => (
+              <button
+                key={station.name}
+                onClick={() => {
+                  setSearchQuery(bn ? station.bnName : station.name);
+                }}
+                className="flex flex-col items-center gap-1.5 p-3 rounded-2xl border border-kj-line bg-kj-panel hover:border-purple-400 dark:hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all active:scale-95"
+              >
+                <span className="text-2xl leading-none">{station.emoji}</span>
+                <span className="text-[11px] font-bold text-kj-text text-center leading-tight">
+                  {bn ? station.bnName : station.name}
+                </span>
+              </button>
+            ))}
           </div>
-        ) : (
-          filtered.map((route, idx) => (
-            <React.Fragment key={route.id}>
-              <TrainCard
-                route={route}
-                onClick={() => onSelectTrain ? onSelectTrain(route) : setSelectedTrain(route)}
-                onRateClick={() => onRateTrain ? onRateTrain(route) : setSelectedTrain(route)}
-                ratingSummary={trainRatingsMap[route.id]}
-                isFavorite={favoriteTrainIds.includes(route.id)}
-                onToggleFavorite={() => toggleFavoriteTrain(route.id)}
-                language={language}
-              />
-            </React.Fragment>
-          ))
-        )}
+        </div>
+
+        <div className="h-24 md:h-4" />
       </div>
     </div>
   );

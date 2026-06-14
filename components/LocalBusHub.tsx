@@ -24,6 +24,8 @@ const POPULAR_ROUTES = [
   {
     id: 1,
     operator: 'Green Line',
+    initials: 'GL',
+    logoGradient: 'linear-gradient(135deg, #10b981, #059669)',
     route: 'Route 6',
     from: 'Gulshan',
     to: 'Motijheel',
@@ -34,11 +36,14 @@ const POPULAR_ROUTES = [
     durationBn: '৪২ মিনিট',
     stops: 9,
     rating: 4.6,
+    reviews: 312,
     tags: ['AC'],
   },
   {
     id: 2,
     operator: 'Hanif',
+    initials: 'HF',
+    logoGradient: 'linear-gradient(135deg, #f59e0b, #d97706)',
     route: 'Route 11',
     from: 'Uttara',
     to: 'Paltan',
@@ -49,11 +54,14 @@ const POPULAR_ROUTES = [
     durationBn: '১ ঘণ্টা ১০ মিনিট',
     stops: 18,
     rating: 4.1,
+    reviews: 189,
     tags: [],
   },
   {
     id: 3,
     operator: 'BRTC',
+    initials: 'BR',
+    logoGradient: 'linear-gradient(135deg, #3b82f6, #1d4ed8)',
     route: 'Double Decker',
     from: 'Motijheel',
     to: 'Gabtoli',
@@ -64,11 +72,14 @@ const POPULAR_ROUTES = [
     durationBn: '৫২ মিনিট',
     stops: 14,
     rating: 4.3,
+    reviews: 241,
     tags: ['AC'],
   },
   {
     id: 4,
-    operator: 'Projapoti Paribahan',
+    operator: 'Projapoti',
+    initials: 'PR',
+    logoGradient: 'linear-gradient(135deg, #8b5cf6, #6d28d9)',
     route: '',
     from: 'Mirpur',
     to: 'Sadarghat',
@@ -77,13 +88,16 @@ const POPULAR_ROUTES = [
     fare: 30,
     duration: '45min',
     durationBn: '৪৫ মিনিট',
-    stops: 0,
+    stops: 12,
     rating: 3.9,
+    reviews: 97,
     tags: [],
   },
   {
     id: 5,
     operator: 'Anabil Super',
+    initials: 'AB',
+    logoGradient: 'linear-gradient(135deg, #ef4444, #dc2626)',
     route: '',
     from: 'Gulistan',
     to: 'Savar',
@@ -92,26 +106,59 @@ const POPULAR_ROUTES = [
     fare: 70,
     duration: '1h 30m',
     durationBn: '১ ঘণ্টা ৩০ মিনিট',
-    stops: 0,
+    stops: 8,
     rating: 3.8,
+    reviews: 74,
     tags: [],
   },
 ];
 
 const NEARBY_BUSES = [
-  { name: 'GL #6', mins: 2, dist: '400m' },
-  { name: 'BRTC Double', mins: 5, dist: '900m' },
-  { name: 'Hanif #11', mins: 8, dist: '1.4km' },
-  { name: 'Projapoti', mins: 12, dist: '2.1km' },
+  { name: 'GL #6', mins: 2, dist: '400m', status: 'green' },
+  { name: 'BRTC Double', mins: 5, dist: '900m', status: 'green' },
+  { name: 'Hanif #11', mins: 8, dist: '1.4km', status: 'yellow' },
+  { name: 'Projapoti', mins: 12, dist: '2.1km', status: 'red' },
 ];
 
 const OPERATORS = ['Green Line', 'Hanif', 'BRTC', 'Projapoti', 'Anabil', 'Unique'];
 
 const BUS_TYPES = [
-  { en: 'Local', bn: 'লোকাল', icon: '🚌', desc: 'All stops', descBn: 'সব স্টপে থামে' },
-  { en: 'AC Seating', bn: 'এসি সিটিং', icon: '❄️', desc: 'Air conditioned', descBn: 'শীতাতপ নিয়ন্ত্রিত' },
-  { en: 'Double Decker', bn: 'ডাবল ডেকার', icon: '🚍', desc: 'Two floors', descBn: 'দ্বিতল বাস' },
-  { en: 'Gulshan Chaka', bn: 'গুলশান চাকা', icon: '🔄', desc: 'Circular route', descBn: 'বৃত্তাকার রুট' },
+  {
+    en: 'Local',
+    bn: 'লোকাল',
+    icon: '🚌',
+    fare: '৳15–40',
+    desc: 'All stops · high frequency',
+    descBn: 'সব স্টপে থামে · বেশি ফ্রিকোয়েন্সি',
+    blob: '#10b981',
+  },
+  {
+    en: 'AC Seating',
+    bn: 'এসি সিটিং',
+    icon: '❄️',
+    fare: '৳40–80',
+    desc: 'Air conditioned comfort',
+    descBn: 'শীতাতপ নিয়ন্ত্রিত আরামদায়ক',
+    blob: '#3b82f6',
+  },
+  {
+    en: 'Double Decker',
+    bn: 'ডাবল ডেকার',
+    icon: '🚍',
+    fare: '৳35–60',
+    desc: 'Two floors · scenic upper deck',
+    descBn: 'দ্বিতল · উপরের ডেকে দৃশ্য উপভোগ',
+    blob: '#f59e0b',
+  },
+  {
+    en: 'Gulshan Chaka',
+    bn: 'গুলশান চাকা',
+    icon: '🔄',
+    fare: '৳20–30',
+    desc: 'Circular · frequent loops',
+    descBn: 'বৃত্তাকার রুট · ঘন ঘন লুপ',
+    blob: '#8b5cf6',
+  },
 ];
 
 const SORT_CHIPS = [
@@ -128,11 +175,14 @@ const FILTER_CHIPS = [
   { id: 'operator', en: 'Operator', bn: 'অপারেটর' },
 ];
 
-function StarRating({ rating }: { rating: number }) {
+function StarRating({ rating, reviews }: { rating: number; reviews?: number }) {
   return (
     <span className="flex items-center gap-0.5 text-kj-amber text-xs font-semibold">
       <Star size={11} fill="currentColor" />
       {rating.toFixed(1)}
+      {reviews !== undefined && (
+        <span className="text-kj-text-faint font-normal ml-0.5">({reviews})</span>
+      )}
     </span>
   );
 }
@@ -300,35 +350,53 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language }) => {
                 key={r.id}
                 className="dc-card rounded-2xl p-3 flex items-start gap-3"
               >
-                <div className="p-2 bg-kj-primary-soft rounded-xl mt-0.5">
-                  <Bus size={16} className="text-kj-primary" />
+                {/* Brand logo — 44×44 rounded with gradient initials */}
+                <div
+                  className="shrink-0 w-11 h-11 rounded-xl flex items-center justify-center text-white text-xs font-bold shadow-sm"
+                  style={{ background: r.logoGradient }}
+                >
+                  {r.initials}
                 </div>
+
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="text-sm font-semibold text-kj-text truncate">
-                      {r.operator}
-                      {r.route ? ` · ${r.route}` : ''}
-                    </span>
-                    {r.tags.includes('AC') && (
-                      <span className="px-1.5 py-0.5 bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 text-xs rounded-full font-medium">
-                        ❄️ AC
+                  {/* Top row: name + AC pill + fare right-aligned */}
+                  <div className="flex items-start justify-between gap-1">
+                    <div className="flex items-center gap-1.5 flex-wrap min-w-0">
+                      <span className="text-sm font-semibold text-kj-text truncate">
+                        {r.operator}
+                        {r.route ? ` · ${r.route}` : ''}
                       </span>
-                    )}
+                      {r.tags.includes('AC') && (
+                        <span className="px-1.5 py-0.5 bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 text-xs rounded-full font-medium shrink-0">
+                          ❄️ AC
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-[18px] font-bold text-kj-primary leading-tight shrink-0">
+                      ৳{r.fare}
+                    </span>
                   </div>
+
+                  {/* Route text */}
                   <div className="flex items-center gap-1 text-xs text-kj-text-dim mt-0.5">
                     <span>{L(r.from, r.fromBn)}</span>
                     <span className="text-kj-text-faint">↔</span>
                     <span>{L(r.to, r.toBn)}</span>
                   </div>
+
+                  {/* Stars + reviews + duration + stops */}
                   <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-                    <span className="text-xs font-semibold text-kj-primary">৳{r.fare}</span>
+                    <StarRating rating={r.rating} reviews={r.reviews} />
+                    <span className="text-kj-text-faint text-xs">·</span>
                     <span className="text-xs text-kj-text-dim">
                       🕐 {L(r.duration, r.durationBn)}
                     </span>
                     {r.stops > 0 && (
-                      <span className="text-xs text-kj-text-faint">{r.stops} {L('stops', 'স্টপ')}</span>
+                      <>
+                        <span className="text-kj-text-faint text-xs">·</span>
+                        <span className="text-xs text-kj-text-faint">{r.stops} {L('stops', 'স্টপ')}</span>
+                      </>
                     )}
-                    <StarRating rating={r.rating} />
                   </div>
                 </div>
               </div>
@@ -347,20 +415,34 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language }) => {
               {L('Buses near you · live', 'আপনার কাছের বাস · লাইভ')}
             </h3>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-1">
             {NEARBY_BUSES.map((bus) => (
-              <div key={bus.name} className="flex items-center justify-between py-1.5 border-b border-kj-line last:border-0">
-                <div className="flex items-center gap-2">
-                  <Navigation size={13} className="text-kj-primary" />
+              <div key={bus.name} className="flex items-center justify-between py-2 border-b border-kj-line last:border-0">
+                <div className="flex items-center gap-2.5">
+                  {/* Status dot: green = approaching, yellow = delayed, red = far */}
+                  <span
+                    className="w-2.5 h-2.5 rounded-full shrink-0"
+                    style={{
+                      background:
+                        bus.status === 'green' ? '#10b981' :
+                        bus.status === 'yellow' ? '#f59e0b' : '#ef4444',
+                    }}
+                  />
                   <span className="text-sm font-medium text-kj-text">{bus.name}</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-kj-text-dim">
-                  <span className="font-semibold text-kj-primary">{bus.mins} {L('min', 'মিনিট')}</span>
+                <div className="flex items-center gap-2 text-xs">
+                  <span className="font-bold text-kj-primary text-sm">
+                    {bus.mins} {L('min', 'মিনিট')}
+                  </span>
                   <span className="text-kj-text-faint">{bus.dist}</span>
                 </div>
               </div>
             ))}
           </div>
+          <button className="mt-3 w-full flex items-center justify-center gap-1.5 py-2 rounded-xl border border-kj-line text-xs font-medium text-kj-primary hover:bg-kj-primary-soft active:scale-[0.98] transition-all">
+            <Navigation size={12} />
+            {L('View all on map', 'ম্যাপে সব দেখুন')}
+          </button>
         </section>
 
         {/* Bus operators grid */}
@@ -385,16 +467,22 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language }) => {
           <h3 className="text-sm font-semibold text-kj-text mb-2">
             {L('Bus Types', 'বাসের ধরন')}
           </h3>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {BUS_TYPES.map((type) => (
               <div
                 key={type.en}
-                className="dc-card rounded-2xl p-3 flex items-center gap-3"
+                className="dc-card rounded-2xl p-3 relative overflow-hidden"
               >
+                {/* Colored accent blob */}
+                <div
+                  className="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-15 blur-xl"
+                  style={{ background: type.blob }}
+                />
                 <span className="text-2xl">{type.icon}</span>
-                <div className="min-w-0">
+                <div className="mt-2">
                   <div className="text-sm font-semibold text-kj-text">{L(type.en, type.bn)}</div>
-                  <div className="text-xs text-kj-text-dim truncate">{L(type.desc, type.descBn)}</div>
+                  <div className="text-xs font-bold mt-0.5" style={{ color: type.blob }}>{type.fare}</div>
+                  <div className="text-xs text-kj-text-dim mt-0.5 leading-tight">{L(type.desc, type.descBn)}</div>
                 </div>
               </div>
             ))}

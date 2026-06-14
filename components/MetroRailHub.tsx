@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Clock, MapPin, Zap, CreditCard, Info, ChevronRight, Train } from 'lucide-react';
+import { ArrowLeft, Train, CreditCard, MapPin, Clock, Zap } from 'lucide-react';
 
 interface Props {
   onBack: () => void;
@@ -29,18 +29,20 @@ const STATIONS = [
   { name: 'Kamalapur', bn: 'কমলাপুর', fare: 100 },
 ];
 
+// Current station index (Farmgate = index 10)
+const CURRENT_STATION_IDX = 10;
+
 const UPCOMING_TRAINS = [
-  { time: '2:15', crowd: 80, crowdLabel: { en: 'Crowded', bn: 'ভিড়' } },
-  { time: '12:15', crowd: 45, crowdLabel: { en: 'Moderate', bn: 'মাঝামাঝি' } },
-  { time: '22:15', crowd: 20, crowdLabel: { en: 'Light', bn: 'কম' } },
+  { label: '2:15', pct: 35, crowdEn: 'Light', crowdBn: 'কম' },
+  { label: '10:15', pct: 55, crowdEn: 'Moderate', crowdBn: 'মাঝামাঝি' },
+  { label: '18:15', pct: 70, crowdEn: 'Crowded', crowdBn: 'ভিড়' },
 ];
 
-const POPULAR_FARES = [
-  { from: 'Uttara North', fromBn: 'উত্তরা নর্থ', to: 'Motijheel', toBn: 'মতিঝিল', fare: 100 },
-  { from: 'Mirpur-10', fromBn: 'মিরপুর-১০', to: 'Farmgate', toBn: 'ফার্মগেট', fare: 30 },
-  { from: 'Agargaon', fromBn: 'আগারগাঁও', to: 'Shahbag', toBn: 'শাহবাগ', fare: 30 },
-  { from: 'Pallabi', fromBn: 'পল্লবী', to: 'Dhaka University', toBn: 'ঢাকা বিশ্ববিদ্যালয়', fare: 60 },
-];
+function crowdColor(pct: number) {
+  if (pct >= 65) return '#ef4444';
+  if (pct >= 45) return '#f59e0b';
+  return '#10b981';
+}
 
 function calcFare(fromIdx: number, toIdx: number): number {
   const diff = Math.abs(fromIdx - toIdx);
@@ -53,33 +55,19 @@ function calcFare(fromIdx: number, toIdx: number): number {
   return 100;
 }
 
-function CrowdBar({ pct, color }: { pct: number; color: string }) {
-  return (
-    <div className="h-1.5 w-full bg-kj-panel-muted rounded-full overflow-hidden">
-      <div className={`h-full rounded-full ${color}`} style={{ width: `${pct}%` }} />
-    </div>
-  );
-}
-
-function crowdColor(pct: number) {
-  if (pct >= 70) return 'bg-red-500';
-  if (pct >= 40) return 'bg-kj-amber';
-  return 'bg-green-500';
-}
-
 const MetroRailHub: React.FC<Props> = ({ onBack, language }) => {
   const t = (en: string, bn: string) => lbl(language, en, bn);
 
+  const [countdown, setCountdown] = useState({ m: 2, s: 15 });
   const [fromIdx, setFromIdx] = useState(0);
   const [toIdx, setToIdx] = useState(15);
-  const [countdown, setCountdown] = useState({ m: 2, s: 15 });
 
   useEffect(() => {
     const id = setInterval(() => {
       setCountdown(prev => {
         if (prev.s > 0) return { ...prev, s: prev.s - 1 };
         if (prev.m > 0) return { m: prev.m - 1, s: 59 };
-        return { m: 12, s: 15 };
+        return { m: 8, s: 0 };
       });
     }, 1000);
     return () => clearInterval(id);
@@ -88,8 +76,9 @@ const MetroRailHub: React.FC<Props> = ({ onBack, language }) => {
   const calculatedFare = calcFare(fromIdx, toIdx);
 
   return (
-    <div className="min-h-screen bg-kj-bg text-kj-text pb-20">
-      {/* Back button row */}
+    <div className="min-h-screen bg-kj-bg text-kj-text pb-24">
+
+      {/* Back nav */}
       <div className="sticky top-0 z-10 bg-kj-bg border-b border-kj-line px-4 py-3 flex items-center gap-3">
         <button onClick={onBack} className="text-kj-text-dim hover:text-kj-text transition-colors">
           <ArrowLeft size={20} />
@@ -99,263 +88,232 @@ const MetroRailHub: React.FC<Props> = ({ onBack, language }) => {
 
       <div className="px-4 py-4 space-y-4">
 
-        {/* Hero card */}
-        <div className="rounded-2xl p-5 text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #00130e 0%, #003822 100%)' }}>
-          <div className="flex items-center gap-2 mb-1">
+        {/* Hero */}
+        <div
+          className="rounded-2xl p-5 text-white relative overflow-hidden"
+          style={{ background: 'linear-gradient(135deg, #00130e 0%, #00543c 50%, #10b981 100%)' }}
+        >
+          <div className="flex items-center gap-2 mb-2">
             <Train size={18} className="opacity-80" />
-            <span className="text-xs font-medium tracking-wide uppercase opacity-70">MRT Line 6</span>
+            <span className="text-xs font-medium tracking-widest uppercase opacity-70">MRT Line 6</span>
           </div>
-          <h1 className="text-xl font-bold mb-1">
-            {t('Dhaka Metro Rail', 'ঢাকা মেট্রো')}
-          </h1>
-          <p className="text-sm opacity-70 mb-4">
-            {t('Uttara North → Kamalapur', 'উত্তরা নর্থ → কমলাপুর')}
-          </p>
+          <h1 className="text-2xl font-bold mb-1">{t('Dhaka Metro Rail', 'ঢাকা মেট্রো রেল')}</h1>
+          <p className="text-sm opacity-70 mb-5">{t('Uttara North → Kamalapur', 'উত্তরা নর্থ → কমলাপুর')}</p>
+
           <div className="grid grid-cols-4 gap-2">
             {[
               { val: '17', label: t('Stations', 'স্টেশন') },
-              { val: '20.1', label: t('km', 'কিমি') },
-              { val: '40', label: t('km/h avg', 'কিমি/ঘন্টা') },
-              { val: '৳20–100', label: t('Fare', 'ভাড়া') },
+              { val: '8 min', label: t('Frequency', 'বিরতি') },
+              { val: '৳20-100', label: t('Fare', 'ভাড়া') },
+              { val: '7am-9pm', label: t('Operating', 'সময়') },
             ].map(item => (
-              <div key={item.label} className="bg-white/10 rounded-xl p-2 text-center">
-                <div className="text-base font-bold">{item.val}</div>
-                <div className="text-xs opacity-70">{item.label}</div>
+              <div key={item.label} className="rounded-xl p-2 text-center" style={{ background: 'rgba(255,255,255,0.12)' }}>
+                <div className="text-sm font-bold leading-tight">{item.val}</div>
+                <div className="text-xs opacity-70 leading-tight mt-0.5">{item.label}</div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Next train countdown */}
-        <div className="dc-card rounded-2xl p-4">
-          <div className="flex items-center gap-2 mb-3">
-            <Zap size={16} className="text-kj-primary" />
-            <span className="font-semibold text-sm">{t('Next Train', 'পরবর্তী ট্রেন')}</span>
-          </div>
+        {/* Two-column: countdown LEFT + ticket/fare RIGHT */}
+        <div className="grid grid-cols-2 gap-3">
 
-          {/* Big countdown */}
-          <div className="text-center mb-4">
-            <div className="text-kj-primary text-6xl font-bold tabular-nums leading-none">
-              {String(countdown.m).padStart(2, '0')}:{String(countdown.s).padStart(2, '0')}
-            </div>
-            <div className="text-kj-text-dim text-sm mt-2">
-              {t('Next Uttara-bound train', 'পরবর্তী উত্তরা গামী ট্রেন')}
-            </div>
-          </div>
-
-          {/* Upcoming trains list */}
-          <div className="space-y-2">
-            {UPCOMING_TRAINS.map((train, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <span className="text-kj-text font-medium text-sm w-12 tabular-nums">{train.time}</span>
-                <div className="flex-1">
-                  <CrowdBar pct={train.crowd} color={crowdColor(train.crowd)} />
-                </div>
-                <span className="text-kj-text-dim text-xs w-16 text-right">
-                  {t(train.crowdLabel.en, train.crowdLabel.bn)} {train.crowd}%
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Ticket info card */}
-        <div className="dc-card rounded-2xl p-4">
-          <div className="flex items-center gap-2 mb-3">
-            <CreditCard size={16} className="text-kj-accent" />
-            <span className="font-semibold text-sm">{t('Tickets & Passes', 'টিকিট ও পাস')}</span>
-          </div>
-
-          <div className="space-y-3">
-            <div className="flex justify-between items-start">
-              <div>
-                <div className="text-sm font-medium">{t('Single Journey', 'একক যাত্রা')}</div>
-                <div className="text-xs text-kj-text-dim">{t('Distance-based pricing', 'দূরত্ব অনুযায়ী মূল্য')}</div>
-              </div>
-              <span className="text-kj-primary font-semibold text-sm">৳20–100</span>
+          {/* Next train countdown card */}
+          <div className="rounded-2xl p-4 text-white flex flex-col" style={{ background: 'linear-gradient(160deg, #00130e 0%, #00543c 100%)' }}>
+            <div className="text-xs font-semibold uppercase tracking-wider opacity-60 mb-1">MRT-6</div>
+            <div className="text-xs opacity-70 mb-3 leading-tight">
+              {t('Farmgate → Motijheel', 'ফার্মগেট → মতিঝিল')}
             </div>
 
-            <div className="border-t border-kj-line" />
-
-            <div className="flex justify-between items-start">
-              <div>
-                <div className="text-sm font-medium">{t('MRT Pass (Rapid Pass)', 'র‍্যাপিড পাস')}</div>
-                <div className="text-xs text-kj-text-dim">{t('Rechargeable, 10% discount', 'রিচার্জযোগ্য, ১০% ছাড়')}</div>
-              </div>
-              <span className="text-kj-primary font-semibold text-sm">৳200</span>
-            </div>
-          </div>
-
-          <div className="mt-3 flex items-start gap-2 bg-kj-accent-soft rounded-xl p-3">
-            <Info size={14} className="text-kj-accent mt-0.5 shrink-0" />
-            <p className="text-xs text-kj-text-dim">
-              {t(
-                'Buy tickets at station counters or token vending machines. No online booking available.',
-                'স্টেশন কাউন্টার বা টোকেন ভেন্ডিং মেশিনে টিকিট কিনুন। অনলাইন বুকিং নেই।'
-              )}
-            </p>
-          </div>
-        </div>
-
-        {/* Fare calculator */}
-        <div className="dc-card rounded-2xl p-4">
-          <div className="flex items-center gap-2 mb-3">
-            <MapPin size={16} className="text-kj-primary" />
-            <span className="font-semibold text-sm">{t('Fare Calculator', 'ভাড়া হিসাব')}</span>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3 mb-3">
-            <div>
-              <label className="text-xs text-kj-text-dim mb-1 block">{t('From', 'থেকে')}</label>
-              <select
-                value={fromIdx}
-                onChange={e => setFromIdx(Number(e.target.value))}
-                className="w-full bg-kj-panel-muted border border-kj-line rounded-xl px-3 py-2 text-sm text-kj-text focus:outline-none focus:border-kj-primary"
+            {/* Big countdown */}
+            <div className="text-center mb-3">
+              <div
+                className="font-bold tabular-nums leading-none"
+                style={{ fontSize: '60px', color: '#10b981' }}
               >
-                {STATIONS.map((s, i) => (
-                  <option key={i} value={i}>
-                    {language === 'bn' ? s.bn : s.name}
-                  </option>
-                ))}
-              </select>
+                {String(countdown.m).padStart(2, '0')}:{String(countdown.s).padStart(2, '0')}
+              </div>
+              <div className="text-xs opacity-50 mt-1">{t('minutes away', 'মিনিট বাকি')}</div>
             </div>
-            <div>
-              <label className="text-xs text-kj-text-dim mb-1 block">{t('To', 'পর্যন্ত')}</label>
-              <select
-                value={toIdx}
-                onChange={e => setToIdx(Number(e.target.value))}
-                className="w-full bg-kj-panel-muted border border-kj-line rounded-xl px-3 py-2 text-sm text-kj-text focus:outline-none focus:border-kj-primary"
-              >
-                {STATIONS.map((s, i) => (
-                  <option key={i} value={i}>
-                    {language === 'bn' ? s.bn : s.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
 
-          {fromIdx === toIdx ? (
-            <div className="text-center text-kj-text-faint text-sm py-2">
-              {t('Select different stations', 'ভিন্ন স্টেশন বেছে নিন')}
-            </div>
-          ) : (
-            <div className="bg-kj-primary-soft rounded-xl p-3 text-center">
-              <span className="text-kj-text-dim text-sm">{t('Estimated fare', 'আনুমানিক ভাড়া')} </span>
-              <span className="text-kj-primary font-bold text-xl">৳{calculatedFare}</span>
-            </div>
-          )}
-
-          {/* Popular fare examples */}
-          <div className="mt-3">
-            <div className="text-xs text-kj-text-faint mb-2">{t('Popular routes', 'জনপ্রিয় রুট')}</div>
-            <div className="space-y-1.5">
-              {POPULAR_FARES.map((r, i) => (
-                <div key={i} className="flex items-center justify-between text-xs">
-                  <span className="text-kj-text-dim">
-                    {language === 'bn' ? r.fromBn : r.from}
-                    <ChevronRight size={10} className="inline mx-0.5 opacity-50" />
-                    {language === 'bn' ? r.toBn : r.to}
-                  </span>
-                  <span className="text-kj-text font-medium">৳{r.fare}</span>
+            {/* Upcoming trains */}
+            <div className="space-y-2 mt-auto">
+              {UPCOMING_TRAINS.map((tr, i) => (
+                <div key={i}>
+                  <div className="flex justify-between text-xs mb-1">
+                    <span className="tabular-nums opacity-80">{tr.label}</span>
+                    <span style={{ color: crowdColor(tr.pct) }}>
+                      {t(tr.crowdEn, tr.crowdBn)} {tr.pct}%
+                    </span>
+                  </div>
+                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.1)' }}>
+                    <div
+                      className="h-full rounded-full"
+                      style={{ width: `${tr.pct}%`, background: crowdColor(tr.pct) }}
+                    />
+                  </div>
                 </div>
               ))}
             </div>
           </div>
+
+          {/* Right column: Buy ticket + Fare calculator stacked */}
+          <div className="flex flex-col gap-3">
+
+            {/* Buy ticket card */}
+            <div
+              className="rounded-2xl p-4 text-white"
+              style={{ background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)' }}
+            >
+              <div className="flex items-center gap-1.5 mb-3">
+                <CreditCard size={15} />
+                <span className="text-xs font-bold uppercase tracking-wide">{t('Buy Ticket', 'টিকিট কিনুন')}</span>
+              </div>
+              <div className="space-y-2">
+                <button className="w-full rounded-xl py-1.5 text-xs font-semibold text-center" style={{ background: 'rgba(0,0,0,0.18)' }}>
+                  {t('Single Journey', 'একক যাত্রা')}
+                </button>
+                <button className="w-full rounded-xl py-1.5 text-xs font-semibold text-center" style={{ background: 'rgba(0,0,0,0.18)' }}>
+                  {t('MRT Pass', 'র‍্যাপিড পাস')}
+                </button>
+              </div>
+            </div>
+
+            {/* Fare calculator mini card */}
+            <div className="dc-card rounded-2xl p-3 flex-1">
+              <div className="flex items-center gap-1.5 mb-2">
+                <MapPin size={13} className="text-kj-primary" />
+                <span className="text-xs font-semibold">{t('Fare Calc', 'ভাড়া হিসাব')}</span>
+              </div>
+              <div className="space-y-1.5 mb-2">
+                <select
+                  value={fromIdx}
+                  onChange={e => setFromIdx(Number(e.target.value))}
+                  className="w-full bg-kj-panel-muted border border-kj-line rounded-lg px-2 py-1 text-xs text-kj-text focus:outline-none focus:border-kj-primary"
+                >
+                  {STATIONS.map((s, i) => (
+                    <option key={i} value={i}>{language === 'bn' ? s.bn : s.name}</option>
+                  ))}
+                </select>
+                <select
+                  value={toIdx}
+                  onChange={e => setToIdx(Number(e.target.value))}
+                  className="w-full bg-kj-panel-muted border border-kj-line rounded-lg px-2 py-1 text-xs text-kj-text focus:outline-none focus:border-kj-primary"
+                >
+                  {STATIONS.map((s, i) => (
+                    <option key={i} value={i}>{language === 'bn' ? s.bn : s.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="bg-kj-primary-soft rounded-lg py-1.5 text-center">
+                {fromIdx === toIdx
+                  ? <span className="text-kj-text-faint text-xs">{t('Pick stations', 'স্টেশন বেছে নিন')}</span>
+                  : <span className="text-kj-primary font-bold text-base">৳{calculatedFare}</span>
+                }
+              </div>
+            </div>
+
+          </div>
         </div>
 
-        {/* 17 stations horizontal scroll */}
+        {/* MRT-6 Line map: horizontal scroll */}
         <div className="dc-card rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-3">
-            <Train size={16} className="text-kj-primary" />
-            <span className="font-semibold text-sm">
-              {t('All 17 Stations', 'সব ১৭টি স্টেশন')}
-            </span>
+            <Train size={15} className="text-kj-primary" />
+            <span className="font-semibold text-sm">{t('MRT-6 Line Map', 'MRT-৬ লাইন মানচিত্র')}</span>
           </div>
           <div className="overflow-x-auto -mx-1 px-1">
-            <div className="flex gap-2 pb-1" style={{ width: 'max-content' }}>
-              {STATIONS.map((s, i) => (
-                <div
-                  key={i}
-                  className="bg-kj-panel-muted border border-kj-line rounded-xl px-3 py-2 text-center shrink-0"
-                  style={{ minWidth: '90px' }}
-                >
-                  <div className="text-xs font-medium text-kj-text leading-tight">
-                    {language === 'bn' ? s.bn : s.name}
+            <div className="flex items-start gap-0 pb-2" style={{ width: 'max-content' }}>
+              {STATIONS.map((s, i) => {
+                const isCurrent = i === CURRENT_STATION_IDX;
+                return (
+                  <div key={i} className="flex flex-col items-center" style={{ width: '72px' }}>
+                    {/* Connector line + dot row */}
+                    <div className="flex items-center w-full" style={{ height: '24px' }}>
+                      {/* Left line */}
+                      <div
+                        className="flex-1 h-0.5"
+                        style={{ background: i === 0 ? 'transparent' : '#00543c' }}
+                      />
+                      {/* Dot */}
+                      {isCurrent ? (
+                        <div className="relative shrink-0" style={{ width: '16px', height: '16px' }}>
+                          <div
+                            className="absolute inset-0 rounded-full animate-ping"
+                            style={{ background: '#10b981', opacity: 0.5 }}
+                          />
+                          <div
+                            className="absolute inset-1 rounded-full"
+                            style={{ background: '#10b981' }}
+                          />
+                        </div>
+                      ) : (
+                        <div
+                          className="rounded-full shrink-0 border-2"
+                          style={{
+                            width: '10px',
+                            height: '10px',
+                            borderColor: '#00543c',
+                            background: '#00130e',
+                          }}
+                        />
+                      )}
+                      {/* Right line */}
+                      <div
+                        className="flex-1 h-0.5"
+                        style={{ background: i === STATIONS.length - 1 ? 'transparent' : '#00543c' }}
+                      />
+                    </div>
+
+                    {/* Station name */}
+                    <div
+                      className="text-center leading-tight mt-1 px-0.5"
+                      style={{
+                        fontSize: '9px',
+                        color: isCurrent ? '#10b981' : undefined,
+                        fontWeight: isCurrent ? 700 : 400,
+                      }}
+                    >
+                      <span className={isCurrent ? 'text-emerald-400' : 'text-kj-text-dim'}>
+                        {language === 'bn' ? s.bn : s.name}
+                      </span>
+                    </div>
+
+                    {/* Fare */}
+                    <div
+                      className="mt-0.5"
+                      style={{ fontSize: '9px', color: isCurrent ? '#10b981' : '#6b7280' }}
+                    >
+                      ৳{s.fare}
+                    </div>
                   </div>
-                  <div className="text-kj-primary text-xs font-semibold mt-1">৳{s.fare}</div>
-                  <div className="text-kj-text-faint text-xs">{t('from start', 'শুরু থেকে')}</div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
 
-        {/* Key info tiles */}
+        {/* Info grid */}
         <div className="grid grid-cols-2 gap-3">
           {[
-            {
-              icon: <Clock size={18} />,
-              label: t('Operating Hours', 'পরিচালনার সময়'),
-              value: '7am – 8pm',
-              color: 'text-kj-primary',
-              bg: 'bg-kj-primary-soft',
-            },
-            {
-              icon: <Zap size={18} />,
-              label: t('Frequency', 'ট্রেন বিরতি'),
-              value: t('Every 10 min', 'প্রতি ১০ মিনিট'),
-              color: 'text-kj-accent',
-              bg: 'bg-kj-accent-soft',
-            },
-            {
-              icon: <MapPin size={18} />,
-              label: t('Total Stations', 'মোট স্টেশন'),
-              value: '17',
-              color: 'text-kj-primary',
-              bg: 'bg-kj-primary-soft',
-            },
-            {
-              icon: <CreditCard size={18} />,
-              label: t('Payment', 'পেমেন্ট'),
-              value: t('Cashless preferred', 'কার্ড পেমেন্ট'),
-              color: 'text-kj-accent',
-              bg: 'bg-kj-accent-soft',
-            },
-          ].map((tile, i) => (
-            <div key={i} className="dc-card rounded-2xl p-3 flex items-start gap-3">
-              <div className={`${tile.bg} ${tile.color} rounded-xl p-2 shrink-0`}>
-                {tile.icon}
+            { icon: <Clock size={16} />, label: t('Operating Times', 'পরিচালনার সময়'), value: '7am – 9pm', color: '#10b981' },
+            { icon: <Zap size={16} />, label: t('Closed', 'বন্ধ'), value: t('Friday', 'শুক্রবার'), color: '#ef4444' },
+            { icon: <CreditCard size={16} />, label: t('Fare Range', 'ভাড়া পরিসীমা'), value: '৳20 – 100', color: '#f59e0b' },
+            { icon: <Train size={16} />, label: t('Top Speed', 'সর্বোচ্চ গতি'), value: '100 km/h', color: '#3b82f6' },
+          ].map((item, i) => (
+            <div key={i} className="dc-card rounded-2xl p-3 flex items-center gap-3">
+              <div
+                className="rounded-xl p-2 shrink-0"
+                style={{ background: item.color + '22', color: item.color }}
+              >
+                {item.icon}
               </div>
               <div className="min-w-0">
-                <div className="text-xs text-kj-text-dim leading-tight">{tile.label}</div>
-                <div className="text-sm font-semibold text-kj-text mt-0.5 leading-tight">{tile.value}</div>
+                <div className="text-xs text-kj-text-dim leading-tight">{item.label}</div>
+                <div className="text-sm font-semibold text-kj-text mt-0.5">{item.value}</div>
               </div>
             </div>
           ))}
-        </div>
-
-        {/* News/updates card */}
-        <div className="bg-kj-amber-soft border border-kj-line rounded-2xl p-4">
-          <div className="flex items-start gap-3">
-            <div className="bg-kj-amber rounded-xl p-2 shrink-0">
-              <Info size={16} className="text-white" />
-            </div>
-            <div>
-              <div className="text-xs text-kj-text-faint mb-1 uppercase tracking-wide font-medium">
-                {t('Latest Update', 'সর্বশেষ আপডেট')}
-              </div>
-              <div className="text-sm font-semibold text-kj-text">
-                {t('MRT Line 6 extended to Kamalapur', 'মেট্রো রেল লাইন ৬ কমলাপুর পর্যন্ত বিস্তৃত')}
-              </div>
-              <div className="text-xs text-kj-text-dim mt-1">
-                {t(
-                  'The full 20.1 km corridor from Uttara North to Kamalapur is now operational.',
-                  'উত্তরা নর্থ থেকে কমলাপুর পর্যন্ত পুরো ২০.১ কিমি করিডোর এখন চালু আছে।'
-                )}
-              </div>
-            </div>
-          </div>
         </div>
 
       </div>

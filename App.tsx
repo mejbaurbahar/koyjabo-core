@@ -4524,21 +4524,25 @@ const App: React.FC = () => {
         {/* Menu Overlay - Works on all pages */}
         {isMenuOpen && (
           <div className="fixed inset-0 z-[100]">
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={() => setIsMenuOpen(false)}/>
-            <div className="absolute top-0 right-0 bottom-0 w-[280px] bg-kj-panel border-l border-kj-line flex flex-col animate-in slide-in-from-right duration-200">
+            <div className="absolute inset-0 bg-black/50 backdrop-blur-[3px]" onClick={() => setIsMenuOpen(false)}/>
+            <div className="absolute top-0 right-0 bottom-0 w-[min(360px,86vw)] bg-kj-bg border-l border-kj-line flex flex-col" style={{ boxShadow: '-30px 0 80px -20px rgba(0,0,0,0.5)', transform: 'translateX(0)', transition: 'transform .3s cubic-bezier(.2,.8,.2,1)' }}>
               {/* Drawer header */}
-              <div className="flex items-center gap-3 px-5 py-4 border-b border-kj-line shrink-0">
-                <img src="/logo.png" alt="KoyJabo" className="h-11 w-11 rounded-xl flex-shrink-0" />
-                <div className="flex-1" />
-                <button onClick={() => setIsMenuOpen(false)} className="w-8 h-8 rounded-lg flex items-center justify-center text-kj-text-dim hover:bg-kj-chip-bg transition-colors" aria-label="Close menu">
+              <div className="flex items-center gap-3 px-5 py-[18px] border-b border-kj-line shrink-0 sticky top-0 bg-kj-bg z-10">
+                <img src="/logo.png" alt="KoyJabo" className="h-[34px] w-[34px] rounded-xl flex-shrink-0" />
+                <div className="flex flex-col leading-none flex-1">
+                  <span className="font-bengali font-bold text-[17px] text-kj-text">কই যাবো</span>
+                  <span className="font-sans font-medium text-kj-text-faint text-[10px] tracking-[1.4px] uppercase mt-0.5">{language === 'bn' ? 'মেনু' : 'Menu'}</span>
+                </div>
+                <button onClick={() => setIsMenuOpen(false)} className="w-9 h-9 rounded-[10px] border border-kj-line bg-kj-panel-muted flex items-center justify-center text-kj-text cursor-pointer hover:bg-kj-chip-bg transition-colors" aria-label="Close menu">
                   <X className="w-4 h-4" />
                 </button>
               </div>
 
-              <div className="space-y-2 flex-1 overflow-y-auto overscroll-contain" style={{scrollbarWidth:'thin'}}>
-                {/* Auth Section */}
+              <div className="flex-1 overflow-y-auto overscroll-contain" style={{scrollbarWidth:'thin'}}>
+                <div className="px-[14px] pb-7">
+                {/* Auth user card */}
                 {user ? (
-                  <div className="p-3 rounded-xl bg-kj-primary-soft border border-kj-primary/20 mb-2">
+                  <div className="mt-3 mb-2 p-3 rounded-xl bg-kj-primary-soft border border-kj-primary/20">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-kj-primary to-kj-primary-deep flex items-center justify-center text-kj-primary-ink text-sm font-bold shrink-0">
                         {user.avatarUrl
@@ -4552,168 +4556,91 @@ const App: React.FC = () => {
                       </div>
                     </div>
                     <div className="flex gap-2 mt-3">
-                      <button
-                        onClick={() => { setProfileSection('profile'); setView(AppView.PROFILE); setIsMenuOpen(false); }}
-                        className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-kj-primary text-kj-primary-ink text-xs font-bold transition-colors hover:brightness-105"
-                      >
-                        <User className="w-3.5 h-3.5" /> {t('nav.profile') || t('profile.title')}
+                      <button onClick={() => { setProfileSection('profile'); setView(AppView.PROFILE); setIsMenuOpen(false); }}
+                        className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-kj-primary text-kj-primary-ink text-xs font-bold transition-colors hover:brightness-105">
+                        <User className="w-3.5 h-3.5" /> {language === 'bn' ? 'প্রোফাইল' : 'Profile'}
                       </button>
-                      <button
-                        onClick={() => { logout(); setIsMenuOpen(false); setView(AppView.HOME); }}
-                        className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-kj-panel-muted border border-kj-line text-kj-text-dim text-xs font-semibold transition-colors hover:bg-kj-chip-bg"
-                      >
-                        <LogOut className="w-3.5 h-3.5" /> {t('common.logout')}
+                      <button onClick={() => { logout(); setIsMenuOpen(false); setView(AppView.HOME); }}
+                        className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-kj-panel-muted border border-kj-line text-kj-text-dim text-xs font-semibold hover:bg-kj-chip-bg">
+                        <LogOut className="w-3.5 h-3.5" /> {language === 'bn' ? 'লগআউট' : 'Log out'}
                       </button>
                     </div>
                   </div>
                 ) : (
-                  <div className="flex gap-2 mb-2">
-                    <button
-                      onClick={() => { setView(AppView.LOGIN); setIsMenuOpen(false); }}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-kj-text text-kj-bg text-sm font-semibold transition-colors hover:opacity-90"
-                    >
+                  <div className="flex gap-2 mt-3 mb-2">
+                    <button onClick={() => { setView(AppView.LOGIN); setIsMenuOpen(false); }}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-kj-text text-kj-bg text-sm font-semibold hover:opacity-90">
                       <LogIn className="w-4 h-4" /> {t('nav.login')}
                     </button>
-                    <button
-                      onClick={() => { setView(AppView.SIGNUP); setIsMenuOpen(false); }}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-kj-primary text-kj-primary-ink text-sm font-semibold transition-colors hover:brightness-105"
-                    >
-                      <UserPlus className="w-4 h-4" /> {t('nav.signup')}
+                    <button onClick={() => { setView(AppView.SIGNUP); setIsMenuOpen(false); }}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-kj-primary text-kj-primary-ink text-sm font-semibold hover:brightness-105">
+                      <UserPlus className="w-4 h-4" /> {language === 'bn' ? 'সাইন আপ' : 'Sign up'}
                     </button>
                   </div>
                 )}
 
-                {/* History & Settings — only for logged-in users */}
-                {user && (
-                  <>
-                    <button
-                      onClick={() => { setView(AppView.HISTORY); setIsMenuOpen(false); }}
-                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.HISTORY ? 'bg-kj-primary-soft border border-kj-primary/30' : ''}`}
-                    >
-                      <Clock className="w-5 h-5 text-kj-primary" /> {t('nav.history') || 'History'}
-                    </button>
-                    <button
-                      onClick={() => { setView(AppView.SETTINGS); setIsMenuOpen(false); }}
-                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.SETTINGS ? 'bg-kj-chip-bg border border-kj-line' : ''}`}
-                    >
-                      <Settings className="w-5 h-5 text-kj-text-dim" /> {t('nav.settings') || 'Settings'}
-                    </button>
-                  </>
-                )}
+                {/* Grouped navigation — design system */}
+                {([
+                  { h: language === 'bn' ? 'এক্সপ্লোর' : 'Explore', items: [
+                    { label: language === 'bn' ? 'হোম' : 'Home', action: () => { setView(AppView.HOME); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'লোকাল বাস' : 'Local bus', action: () => { setView(AppView.LOCAL_BUS_HUB); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'মেট্রো রেল' : 'Metro Rail', action: () => { setView(AppView.METRO_HUB); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'ট্রেন' : 'Train', action: () => { setView(AppView.TRAIN_LIST); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'আন্তঃজেলা' : 'Intercity', action: () => { setView(AppView.INTERCITY_HUB); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'লঞ্চ ও স্টিমার' : 'Launch & Steamer', action: () => { setView(AppView.LAUNCH_HUB); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'ভাড়া ক্যালকুলেটর' : 'Fare calculator', action: () => { setView(AppView.COMMUTE_COST); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'AI সহায়ক' : 'AI Assistant', action: () => { setView(AppView.AI_ASSISTANT); setIsMenuOpen(false); } },
+                  ]},
+                  { h: language === 'bn' ? 'অ্যাকাউন্ট' : 'Account', items: [
+                    { label: language === 'bn' ? 'প্রোফাইল' : 'Profile', action: () => { setView(AppView.PROFILE); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'প্রিয় রুট' : 'Favorites', action: () => { setView(AppView.HOME); setListFilter('FAVORITES'); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'যাত্রার ইতিহাস' : 'Trip history', action: () => { setView(AppView.HISTORY); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'সেটিংস' : 'Settings', action: () => { setView(AppView.SETTINGS); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'সাইন ইন' : 'Sign in', action: () => { setView(AppView.LOGIN); setIsMenuOpen(false); } },
+                  ]},
+                  { h: language === 'bn' ? 'কমিউনিটি' : 'Community', items: [
+                    { label: language === 'bn' ? 'যাত্রা রিমাইন্ডার' : 'Trip Reminders', action: () => { setView(AppView.TRIP_REMINDERS); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'মাল্টি-স্টপ প্ল্যানার' : 'Multi-Stop Planner', action: () => { setView(AppView.MULTI_STOP_PLANNER); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'সিট প্রাপ্যতা' : 'Seat Availability', action: () => { setView(AppView.SEAT_AVAILABILITY); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'রাস্তা সতর্কতা' : 'Road Alerts', action: () => { setView(AppView.ROAD_ALERTS); setIsMenuOpen(false); } },
+                  ]},
+                  { h: language === 'bn' ? 'কোম্পানি' : 'Company', items: [
+                    { label: language === 'bn' ? 'কেন কই যাবো' : 'Why KoyJabo', action: () => { setView(AppView.WHY_USE); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'আমাদের সম্পর্কে' : 'About', action: () => { setView(AppView.ABOUT); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'ব্লগ' : 'Blog', action: () => { setView(AppView.BLOG); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'প্রশ্নোত্তর' : 'Q & A', action: () => { setView(AppView.FAQ); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'যোগাযোগ' : 'Contact', action: () => { setView(AppView.CONTACT); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'রিলিজ নোট' : 'Release notes', action: () => { setView(AppView.RELEASE_NOTES); setIsMenuOpen(false); } },
+                  ]},
+                  { h: language === 'bn' ? 'আইনি' : 'Legal', items: [
+                    { label: language === 'bn' ? 'গোপনীয়তা নীতি' : 'Privacy policy', action: () => { setView(AppView.PRIVACY); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'সেবার শর্তাবলি' : 'Terms of service', action: () => { setView(AppView.TERMS); setIsMenuOpen(false); } },
+                  ]},
+                ] as Array<{h: string, items: Array<{label: string, action: () => void}>}>).map((group, gi) => (
+                  <div key={gi} className="mt-[18px] first:mt-2.5">
+                    <p className="text-[10px] font-bold text-kj-text-faint tracking-[1.4px] uppercase px-2 pb-1.5">{group.h}</p>
+                    {group.items.map((item, ii) => (
+                      <button key={ii} onClick={item.action}
+                        className="flex items-center gap-2.5 w-full px-[10px] py-[11px] border-0 rounded-xl cursor-pointer bg-transparent text-left font-bengali font-semibold text-[14.5px] text-kj-text hover:bg-kj-chip-bg transition-colors">
+                        <span className="w-1.5 h-1.5 rounded-full bg-kj-primary shrink-0 opacity-55" />
+                        <span className="flex-1">{item.label}</span>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-kj-text-faint shrink-0"><path d="m9 6 6 6-6 6"/></svg>
+                      </button>
+                    ))}
+                  </div>
+                ))}
 
-                <button
-                  onClick={() => { setView(AppView.BLOG); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.BLOG ? 'bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800' : ''}`}
-                >
-                  <BookOpen className="w-5 h-5 text-orange-600 dark:text-orange-400" /> {t('nav.blog') || 'Blog'}
-                </button>
-
-                {/* ── Community Features — always visible, LoginWall if not logged in ── */}
-                <div className="px-3 pt-2 pb-1">
-                  <p className="text-xs font-bold text-kj-text-faint uppercase tracking-wider">{language === 'bn' ? 'কমিউনিটি ফিচার' : 'Community'}</p>
+                {/* Language + version footer */}
+                <div className="mt-6 pt-4 border-t border-kj-line space-y-3">
+                  <div className="flex gap-2">
+                    <button onClick={() => setLanguage('bn')}
+                      className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${language === 'bn' ? 'bg-kj-primary text-kj-primary-ink' : 'bg-kj-chip-bg text-kj-text-dim'}`}>বাংলা</button>
+                    <button onClick={() => setLanguage('en')}
+                      className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${language === 'en' ? 'bg-kj-primary text-kj-primary-ink' : 'bg-kj-chip-bg text-kj-text-dim'}`}>English</button>
+                  </div>
+                  <p className="text-[11px] text-center text-kj-text-faint font-sans">KoyJabo · v1.4.2</p>
                 </div>
-                <button onClick={() => { setView(AppView.TRIP_REMINDERS); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.TRIP_REMINDERS ? 'bg-violet-50 dark:bg-violet-900/20 border border-violet-200 dark:border-violet-800' : ''}`}>
-                  <span className="w-5 h-5 text-center leading-5 text-violet-600">🔔</span> {language === 'bn' ? 'যাত্রা রিমাইন্ডার' : 'Trip Reminders'}
-                </button>
-                <button onClick={() => { setView(AppView.ROAD_ALERTS); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.ROAD_ALERTS ? 'bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800' : ''}`}>
-                  <AlertTriangle className="w-5 h-5 text-orange-500" /> {language === 'bn' ? 'রাস্তা সতর্কতা' : 'Road Alerts'}
-                </button>
-                <button onClick={() => { setView(AppView.NEIGHBOURHOOD_GUIDES); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.NEIGHBOURHOOD_GUIDES ? 'bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800' : ''}`}>
-                  <MapPin className="w-5 h-5 text-purple-500" /> {language === 'bn' ? 'এলাকাভিত্তিক গাইড' : 'Area Guides'}
-                </button>
-                <button onClick={() => { setView(AppView.BUS_PASS_INFO); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.BUS_PASS_INFO ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800' : ''}`}>
-                  <span className="w-5 h-5 text-center leading-5 text-blue-600">💳</span> {language === 'bn' ? 'বাস পাস তথ্য' : 'Bus Pass Info'}
-                </button>
-                <button onClick={() => { setView(AppView.MULTI_STOP_PLANNER); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.MULTI_STOP_PLANNER ? 'bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800' : ''}`}>
-                  <Navigation className="w-5 h-5 text-cyan-500" /> {language === 'bn' ? 'মাল্টি-স্টপ প্ল্যানার' : 'Multi-Stop Planner'}
-                </button>
-                <button onClick={() => { setView(AppView.COMMUTE_COST); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.COMMUTE_COST ? 'bg-kj-primary-soft border border-kj-primary/30' : ''}`}>
-                  <Calculator className="w-5 h-5 text-kj-primary" /> {language === 'bn' ? 'খরচ ক্যালকুলেটর' : 'Cost Calculator'}
-                </button>
-                <button onClick={() => { setView(AppView.SEAT_AVAILABILITY); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.SEAT_AVAILABILITY ? 'bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800' : ''}`}>
-                  <Ticket className="w-5 h-5 text-indigo-500" /> {language === 'bn' ? 'সিট প্রাপ্যতা' : 'Seat Availability'}
-                </button>
-
-                <button
-                  onClick={() => { setView(AppView.AI_ASSISTANT); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.AI_ASSISTANT ? 'bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800' : ''} `}
-                >
-                  <Bot className="w-5 h-5 text-purple-600 dark:text-purple-400" /> {t('ai.title')}
-                </button>
-                <button
-                  onClick={() => { setView(AppView.ABOUT); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.ABOUT ? 'bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800' : ''} `}
-                >
-                  <Info className="w-5 h-5 text-purple-500" /> {t('nav.about')}
-                </button>
-                <button
-                  onClick={() => { setView(AppView.WHY_USE); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.WHY_USE ? 'bg-pink-50 dark:bg-pink-900/20 border border-pink-200 dark:border-pink-800' : ''} `}
-                >
-                  <Sparkles className="w-5 h-5 text-pink-600 dark:text-pink-400" /> {t('home.whyUse')}
-                </button>
-                <button
-                  onClick={() => { setView(AppView.FAQ); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.FAQ ? 'bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800' : ''} `}
-                >
-                  <HelpCircle className="w-5 h-5 text-cyan-600 dark:text-cyan-400" /> {t('nav.faq')}
-                </button>
-                <button
-                  onClick={() => { setView(AppView.RELEASE_NOTES); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.RELEASE_NOTES ? 'bg-kj-primary-soft border border-kj-primary/30' : ''}`}
-                >
-                  <Rocket className="w-5 h-5 text-kj-primary" /> {language === 'bn' ? 'রিলিজ নোটস' : 'Release Notes'}
-                </button>
-                {/* Install/Uninstall App - Always show */}
-                <button
-                  onClick={() => { setView(AppView.INSTALL_APP); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.INSTALL_APP ? 'bg-kj-primary-soft border border-kj-primary/30' : ''}`}
-                >
-                  <Download className="w-5 h-5 text-kj-primary" /> {t('home.installApp')}
-                </button>
-
-                <button
-                  onClick={() => { setView(AppView.PRIVACY); setIsMenuOpen(false); }}
-                  className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
-                >
-                  <Shield className="w-5 h-5 text-indigo-600 dark:text-indigo-400" /> {t('nav.privacy')}
-                </button>
-                <button
-                  onClick={() => { setView(AppView.TERMS); setIsMenuOpen(false); }}
-                  className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
-                >
-                  <FileText className="w-5 h-5 text-orange-600 dark:text-orange-400" /> {t('nav.terms')}
-                </button>
-                <button
-                  onClick={() => { setView(AppView.CONTACT); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.CONTACT ? 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800' : ''}`}
-                >
-                  <Phone className="w-5 h-5 text-red-600 dark:text-red-400" /> {t('nav.contact') || 'Contact Us'}
-                </button>
-              </div>
-
-              <div className="pt-4 border-t border-kj-line space-y-3">
-                {/* Language Toggle */}
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setLanguage('bn')}
-                    className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${language === 'bn' ? 'bg-kj-primary text-white' : 'bg-kj-chip-bg text-kj-text-dim hover:bg-kj-chip-bg'}`}
-                  >বাংলা</button>
-                  <button
-                    onClick={() => setLanguage('en')}
-                    className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${language === 'en' ? 'bg-kj-primary text-kj-primary-ink' : 'bg-kj-chip-bg text-kj-text-dim hover:bg-kj-chip-bg'}`}
-                  >English</button>
                 </div>
-                <p className="text-xs text-center text-kj-text-faint">
-                  {t('common.appName')} v2.5.0
-                </p>
               </div>
             </div>
           </div>
