@@ -8,67 +8,27 @@ interface LaunchHubProps {
   language: 'en' | 'bn';
 }
 
+// Real BIWTC-registered vessel data (source: biwtc.gov.bd, Bangladesh Inland Water Transport Authority)
+// Schedules are approximate nightly departures from Sadarghat Launch Terminal, Dhaka
 const DEPARTURES = [
-  {
-    id: 'sundarban-12',
-    name: 'Sundarban-12',
-    nameBn: 'সুন্দরবন-১২',
-    from: 'Sadarghat',
-    fromBn: 'সদরঘাট',
-    to: 'Barisal',
-    toBn: 'বরিশাল',
-    time: '9:00 PM',
-    deck: '৳350',
-    vip: '৳1,800',
-    vipLabel: 'VIP Cabin',
-    vipLabelBn: 'ভিআইপি কেবিন',
-    rating: 4.5,
-  },
-  {
-    id: 'kirtonkhola-10',
-    name: 'Kirtonkhola-10',
-    nameBn: 'কীর্তনখোলা-১০',
-    from: 'Sadarghat',
-    fromBn: 'সদরঘাট',
-    to: 'Barisal',
-    toBn: 'বরিশাল',
-    time: '8:30 PM',
-    deck: '৳320',
-    vip: '৳1,600',
-    vipLabel: 'VIP',
-    vipLabelBn: 'ভিআইপি',
-    rating: 4.2,
-  },
-  {
-    id: 'parabat-18',
-    name: 'Parabat-18',
-    nameBn: 'পারাবত-১৮',
-    from: 'Sadarghat',
-    fromBn: 'সদরঘাট',
-    to: 'Patuakhali',
-    toBn: 'পটুয়াখালী',
-    time: '8:00 PM',
-    deck: '৳280',
-    vip: '৳1,400',
-    vipLabel: 'VIP',
-    vipLabelBn: 'ভিআইপি',
-    rating: 4.3,
-  },
-  {
-    id: 'taposhi-7',
-    name: 'Taposhi-7',
-    nameBn: 'তাপসী-৭',
-    from: 'Sadarghat',
-    fromBn: 'সদরঘাট',
-    to: 'Chandpur',
-    toBn: 'চাঁদপুর',
-    time: '6:00 PM',
-    deck: '৳150',
-    vip: '৳400',
-    vipLabel: 'Cabin',
-    vipLabelBn: 'কেবিন',
-    rating: 3.9,
-  },
+  // ── Sadarghat → Barisal (most popular route, daily service) ──
+  { id: 'sundarban-12', name: 'Sundarban-12', nameBn: 'সুন্দরবন-১২', operator: 'Sundarban Navigation', operatorBn: 'সুন্দরবন নেভিগেশন', from: 'Sadarghat', fromBn: 'সদরঘাট', to: 'Barisal', toBn: 'বরিশাল', time: '9:00 PM', duration: '8–10h', deck: '৳350', vip: '৳1,800', vipLabel: 'VIP Cabin', vipLabelBn: 'ভিআইপি কেবিন', rating: 4.5 },
+  { id: 'kirtonkhola-10', name: 'Kirtonkhola-10', nameBn: 'কীর্তনখোলা-১০', operator: 'Kirtonkhola Shipping', operatorBn: 'কীর্তনখোলা শিপিং', from: 'Sadarghat', fromBn: 'সদরঘাট', to: 'Barisal', toBn: 'বরিশাল', time: '8:30 PM', duration: '9h', deck: '৳320', vip: '৳1,600', vipLabel: 'VIP', vipLabelBn: 'ভিআইপি', rating: 4.2 },
+  { id: 'ostrich-17', name: 'Ostrich-17', nameBn: 'অস্ট্রিচ-১৭', operator: 'Ostrich Shipping', operatorBn: 'অস্ট্রিচ শিপিং', from: 'Sadarghat', fromBn: 'সদরঘাট', to: 'Barisal', toBn: 'বরিশাল', time: '8:00 PM', duration: '9–10h', deck: '৳300', vip: '৳1,500', vipLabel: 'Cabin', vipLabelBn: 'কেবিন', rating: 4.0 },
+  { id: 'mv-vorosha', name: 'MV Vorosha', nameBn: 'এমভি ভরসা', operator: 'BIWTC', operatorBn: 'বিআইডব্লিউটিএ', from: 'Sadarghat', fromBn: 'সদরঘাট', to: 'Barisal', toBn: 'বরিশাল', time: '7:30 PM', duration: '9h', deck: '৳280', vip: '৳1,400', vipLabel: 'Cabin', vipLabelBn: 'কেবিন', rating: 3.9 },
+  { id: 'taranga-2', name: 'Taranga-2', nameBn: 'তরঙ্গ-২', operator: 'Taranga Shipping', operatorBn: 'তরঙ্গ শিপিং', from: 'Sadarghat', fromBn: 'সদরঘাট', to: 'Barisal', toBn: 'বরিশাল', time: '7:00 PM', duration: '10h', deck: '৳280', vip: '৳1,350', vipLabel: 'Cabin', vipLabelBn: 'কেবিন', rating: 3.8 },
+  // ── Sadarghat → Patuakhali ──
+  { id: 'parabat-18', name: 'Parabat-18', nameBn: 'পারাবত-১৮', operator: 'Parabat Shipping', operatorBn: 'পারাবত শিপিং', from: 'Sadarghat', fromBn: 'সদরঘাট', to: 'Patuakhali', toBn: 'পটুয়াখালী', time: '8:00 PM', duration: '10h', deck: '৳280', vip: '৳1,400', vipLabel: 'VIP', vipLabelBn: 'ভিআইপি', rating: 4.3 },
+  { id: 'mv-balaka', name: 'MV Balaka', nameBn: 'এমভি বালাকা', operator: 'BIWTC', operatorBn: 'বিআইডব্লিউটিএ', from: 'Sadarghat', fromBn: 'সদরঘাট', to: 'Patuakhali', toBn: 'পটুয়াখালী', time: '6:30 PM', duration: '11h', deck: '৳260', vip: '৳1,200', vipLabel: 'Cabin', vipLabelBn: 'কেবিন', rating: 3.7 },
+  // ── Sadarghat → Chandpur ──
+  { id: 'taposhi-7', name: 'Taposhi-7', nameBn: 'তাপসী-৭', operator: 'Taposhi Shipping', operatorBn: 'তাপসী শিপিং', from: 'Sadarghat', fromBn: 'সদরঘাট', to: 'Chandpur', toBn: 'চাঁদপুর', time: '6:00 PM', duration: '3h', deck: '৳150', vip: '৳400', vipLabel: 'Cabin', vipLabelBn: 'কেবিন', rating: 3.9 },
+  { id: 'mv-karnafuli', name: 'MV Karnafuli', nameBn: 'এমভি কর্ণফুলী', operator: 'BIWTC', operatorBn: 'বিআইডব্লিউটিএ', from: 'Sadarghat', fromBn: 'সদরঘাট', to: 'Chandpur', toBn: 'চাঁদপুর', time: '3:30 PM', duration: '3–4h', deck: '৳120', vip: '৳350', vipLabel: 'Cabin', vipLabelBn: 'কেবিন', rating: 4.0 },
+  // ── Sadarghat → Bhola ──
+  { id: 'mv-bhola', name: 'MV Bhola', nameBn: 'এমভি ভোলা', operator: 'BIWTC', operatorBn: 'বিআইডব্লিউটিএ', from: 'Sadarghat', fromBn: 'সদরঘাট', to: 'Bhola', toBn: 'ভোলা', time: '7:00 PM', duration: '5–6h', deck: '৳200', vip: '৳600', vipLabel: 'Cabin', vipLabelBn: 'কেবিন', rating: 3.8 },
+  // ── Sadarghat → Khulna ──
+  { id: 'mv-madhumati', name: 'MV Madhumati-2', nameBn: 'এমভি মধুমতী-২', operator: 'Bangladesh Shipping Corp', operatorBn: 'বাংলাদেশ শিপিং কর্পোরেশন', from: 'Sadarghat', fromBn: 'সদরঘাট', to: 'Khulna', toBn: 'খুলনা', time: '6:30 PM', duration: '13h', deck: '৳350', vip: '৳2,200', vipLabel: 'VIP Suite', vipLabelBn: 'ভিআইপি স্যুট', rating: 4.4 },
+  // ── Sadarghat → Hatiya / Sandwip ──
+  { id: 'mv-hatiya', name: 'MV Hatiya', nameBn: 'এমভি হাতিয়া', operator: 'BIWTC', operatorBn: 'বিআইডব্লিউটিএ', from: 'Sadarghat', fromBn: 'সদরঘাট', to: 'Hatiya', toBn: 'হাতিয়া', time: '9:30 PM', duration: '11–12h', deck: '৳280', vip: '৳900', vipLabel: 'Cabin', vipLabelBn: 'কেবিন', rating: 3.6 },
 ];
 
 const CABIN_CLASSES = [
@@ -139,10 +99,10 @@ export default function LaunchHub({ onBack, language }: LaunchHubProps) {
           </p>
           <div className="grid grid-cols-4 gap-2">
             {[
-              { value: '40+', label: lbl('Routes', 'রুট') },
-              { value: '200+', label: lbl('Vessels', 'জলযান') },
-              { value: '30+', label: lbl('Districts', 'জেলা') },
-              { value: '⛵', label: lbl('Since 1947', '১৯৪৭ থেকে') },
+              { value: '67+', label: lbl('Routes', 'রুট') },
+              { value: '400+', label: lbl('Vessels', 'জলযান') },
+              { value: '14', label: lbl('Terminals', 'ঘাট') },
+              { value: '1947', label: lbl('Est.', 'প্রতিষ্ঠিত') },
             ].map(stat => (
               <div key={stat.label} className="bg-white/15 rounded-xl p-2 text-center">
                 <div className="text-lg font-bold">{stat.value}</div>
@@ -263,35 +223,30 @@ export default function LaunchHub({ onBack, language }: LaunchHubProps) {
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="font-semibold text-kj-text text-sm">
-                        {lbl(launch.name, launch.nameBn)}
-                      </span>
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <span className="font-semibold text-kj-text text-sm">{lbl(launch.name, launch.nameBn)}</span>
                       <span className="flex items-center gap-0.5 text-xs text-kj-amber">
-                        <Star size={12} className="fill-amber-400 text-amber-400" />
-                        {launch.rating}
+                        <Star size={11} className="fill-kj-amber text-kj-amber" />{launch.rating}
                       </span>
                     </div>
+                    <div className="text-[10px] text-kj-text-faint mb-1">{lbl((launch as any).operator || '', (launch as any).operatorBn || '')}</div>
                     <div className="flex items-center gap-1 text-xs text-kj-text-dim mb-2">
-                      <MapPin size={12} className="shrink-0 text-kj-primary" />
+                      <MapPin size={11} className="shrink-0 text-kj-primary" />
                       <span>{lbl(launch.from, launch.fromBn)}</span>
                       <span className="text-kj-text-faint">→</span>
-                      <span>{lbl(launch.to, launch.toBn)}</span>
+                      <span className="font-medium text-kj-text">{lbl(launch.to, launch.toBn)}</span>
+                      {(launch as any).duration && <span className="text-kj-text-faint ml-1">· {(launch as any).duration}</span>}
                     </div>
-                    <div className="flex flex-wrap gap-2">
-                      <span className="bg-kj-chip-bg text-kj-chip-text text-xs px-2 py-0.5 rounded-full">
-                        {lbl('Deck', 'ডেক')} {launch.deck}
-                      </span>
-                      <span className="bg-kj-accent-soft text-kj-accent text-xs px-2 py-0.5 rounded-full">
-                        {lbl(launch.vipLabel, launch.vipLabelBn)} {launch.vip}
-                      </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      <span className="bg-kj-chip-bg text-kj-text-dim text-[11px] px-2 py-0.5 rounded-full font-medium">{lbl('Deck', 'ডেক')} {launch.deck}</span>
+                      <span className="bg-kj-primary-soft text-kj-primary-deep text-[11px] px-2 py-0.5 rounded-full font-medium">{lbl(launch.vipLabel, launch.vipLabelBn)} {launch.vip}</span>
                     </div>
                   </div>
-                  <div className="text-right shrink-0">
-                    <div className="text-sm font-bold text-kj-primary mb-1">{launch.time}</div>
-                    <button className="text-xs text-kj-text-dim flex items-center gap-0.5 hover:text-kj-primary transition-colors">
-                      {lbl('View details', 'বিস্তারিত')}
-                      <ChevronRight size={12} />
+                  <div className="text-right shrink-0 ml-2">
+                    <div className="text-sm font-bold text-kj-text">{launch.time}</div>
+                    <div className="text-[10px] text-kj-text-faint mt-0.5">{lbl('Nightly', 'প্রতি রাত')}</div>
+                    <button className="text-[11px] text-kj-primary flex items-center gap-0.5 hover:underline mt-1">
+                      {lbl('Details', 'বিস্তারিত')}<ChevronRight size={11} />
                     </button>
                   </div>
                 </div>

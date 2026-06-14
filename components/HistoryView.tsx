@@ -452,19 +452,25 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                     )}
                                 </div>
                                 <h2 className="text-3xl font-black text-white mb-1">
-                                    {lbl('247 trips · ৳ 12,400 saved', '২৪৭ যাত্রা · ৳ ১২,৪০০ সাশ্রয়')}
+                                    {(() => {
+                                        const total = recentBusSearches.length + recentRouteSearches.length + recentIntercitySearches.length + recentTrainSearches.length;
+                                        const saved = total * 15;
+                                        return total > 0
+                                            ? lbl(`${total} searches · ৳ ${saved.toLocaleString()} saved est.`, `${total} অনুসন্ধান · আনু. ৳ ${saved.toLocaleString()} সাশ্রয়`)
+                                            : lbl('Start searching to track your journeys', 'যাত্রা ট্র্যাক করতে অনুসন্ধান শুরু করুন');
+                                    })()}
                                 </h2>
                                 <p className="text-emerald-200 text-sm mb-6 opacity-90">
-                                    {lbl('This month vs last month', 'এই মাস বনাম গত মাস')}
+                                    {lbl('Your personal search & journey history', 'আপনার ব্যক্তিগত অনুসন্ধান ও যাত্রা ইতিহাস')}
                                 </p>
 
-                                {/* Hero stats 4-col grid */}
+                                {/* Hero stats 4-col grid — real computed from analytics */}
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                                     {[
-                                        { icon: <Bus className="w-5 h-5" />, value: formatNumber(todayBuses.length + 124), label: lbl('Bus Rides', 'বাস যাত্রা'), color: '#10b981' },
-                                        { icon: <Train className="w-5 h-5" />, value: formatNumber((history.todayTrains || []).length + 78), label: lbl('Metro Trips', 'মেট্রো যাত্রা'), color: '#3b82f6' },
-                                        { icon: <Leaf className="w-5 h-5" />, value: '48 kg', label: lbl('CO₂ Saved', 'CO₂ সাশ্রয়'), color: '#34d399' },
-                                        { icon: <Clock className="w-5 h-5" />, value: '142 h', label: lbl('Time Saved', 'সময় সাশ্রয়'), color: '#f59e0b' },
+                                        { icon: <Bus className="w-5 h-5" />, value: formatNumber(recentBusSearches.length), label: lbl('Bus Searches', 'বাস অনুসন্ধান'), color: '#10b981' },
+                                        { icon: <Train className="w-5 h-5" />, value: formatNumber(recentTrainSearches.length + recentIntercitySearches.length), label: lbl('Train/Intercity', 'ট্রেন/আন্তঃজেলা'), color: '#3b82f6' },
+                                        { icon: <Leaf className="w-5 h-5" />, value: `${((recentBusSearches.length + recentRouteSearches.length) * 0.18).toFixed(1)} kg`, label: lbl('CO₂ Saved est.', 'আনু. CO₂ সাশ্রয়'), color: '#34d399' },
+                                        { icon: <Clock className="w-5 h-5" />, value: `${Math.round((recentBusSearches.length + recentRouteSearches.length) * 12 / 60)} h`, label: lbl('Time Saved est.', 'আনু. সময় সাশ্রয়'), color: '#f59e0b' },
                                     ].map((stat, i) => (
                                         <div key={i} className="bg-white/15 backdrop-blur-sm border border-white/20 rounded-xl p-3 flex items-center gap-3">
                                             <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 text-white" style={{ background: stat.color + '44' }}>

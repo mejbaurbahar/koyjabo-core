@@ -1,0 +1,225 @@
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5] [cursor=pointer]:
+      - img "KoyJabo" [ref=e6]
+      - generic [ref=e7]:
+        - generic [ref=e8]: কই যাবো
+        - generic [ref=e9]: KoyJabo · BD
+    - generic [ref=e10]:
+      - button "হোম" [ref=e11] [cursor=pointer]:
+        - img [ref=e12]
+        - text: হোম
+      - button "মেট্রো LIVE" [ref=e15] [cursor=pointer]:
+        - img [ref=e16]
+        - text: মেট্রো
+        - generic [ref=e20]: LIVE
+      - button "আন্তঃজেলা" [ref=e21] [cursor=pointer]:
+        - img [ref=e22]
+        - text: আন্তঃজেলা
+      - button "ভাড়া হিসাব" [ref=e26] [cursor=pointer]:
+        - img [ref=e27]
+        - text: ভাড়া হিসাব
+      - button "AI সহায়ক NEW" [ref=e29] [cursor=pointer]:
+        - img [ref=e30]
+        - text: AI সহায়ক
+        - generic [ref=e33]: NEW
+    - generic [ref=e34]:
+      - button "Toggle language" [ref=e35] [cursor=pointer]:
+        - img [ref=e36]
+        - generic [ref=e40]: বাং
+      - button "অ্যাপ ইনস্টল" [ref=e41] [cursor=pointer]
+      - button "থিম পরিবর্তন" [ref=e42] [cursor=pointer]:
+        - img [ref=e43]
+      - button "লগইন" [ref=e49] [cursor=pointer]:
+        - img [ref=e50]
+        - text: লগইন
+      - button "মেনু খুলুন" [ref=e53] [cursor=pointer]:
+        - img [ref=e54]
+  - main [ref=e55]:
+    - generic [ref=e58]:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - img
+                - generic:
+                  - generic:
+                    - generic:
+                      - paragraph: "\"After I land, how do I go to Gulshan 2?\""
+          - generic "National Martyrs' Memorial" [ref=e59] [cursor=pointer]
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - paragraph: "\"Uttara to Motijheel: 100 Taka well spent.\""
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic "Lalbagh Fort"
+                - generic:
+                  - generic "Ahsan Manzil (Pink Palace)"
+              - generic:
+                - generic:
+                  - generic "Shaheed Minar"
+              - generic:
+                - generic:
+                  - generic "Curzon Hall"
+                - generic:
+                  - generic "National Parliament House"
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - paragraph: "\"How do I go to New Market from here?\""
+            - generic "Dhaka Metropolitan Police" [ref=e66]
+          - generic:
+            - generic:
+              - img
+              - img
+            - generic:
+              - img
+              - img
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - paragraph: "\"পারাপার ভাড়া ১০ টাকা হলো কবে?\""
+          - generic:
+            - generic:
+              - generic: "Live Simulation: Dhaka"
+      - generic [ref=e85]:
+        - img [ref=e87]
+        - heading "🚍 কই যাবো সম্পর্কে" [level=1] [ref=e95]
+        - heading "কইযাবো (KoyJabo)" [level=2] [ref=e96]
+        - paragraph [ref=e97]: সংস্করণ 2.5.0 • বাংলাদেশে গণপরিবহন নেভিগেশনে বিপ্লব নিয়ে আসছে
+        - insertion [ref=e102]:
+          - iframe [ref=e104]:
+            
+        - generic [ref=e105]:
+          - generic [ref=e106]:
+            - heading "আমাদের গল্প" [level=2] [ref=e107]
+            - paragraph [ref=e108]: কই যাবো (KoyJabo) - যা বাংলা ভাষায় "আমি কোথায় যেতে চাই?" তার একটি সহজ প্রকাশ - এটি ঢাকা শহরের জটিল গণপরিবহন ব্যবস্থার সহজ সমাধানের এক অদম্য আগ্রহ থেকে তৈরি। বিশ্বের অন্যতম জনবহুল এই শহরে একজন নিয়মিত যাত্রী হিসেবে আমাদের প্রতিষ্ঠাতা সরাসরি অনুভব করেছেন সঠিক বাস রুট খুঁজে পাওয়া, মেট্রোরেলের সংযোগ বোঝা কিংবা আন্তঃজেলা ভ্রমণের পরিকল্পনা করার চ্যালেঞ্জগুলো।
+            - paragraph [ref=e109]: ২০২৪ সালের শুরুতে একটি উইকএন্ড প্রজেক্ট হিসেবে শুরু হলেও আজ এটি বাংলাদেশের সবচেয়ে স্বয়ংসম্পূর্ণ পরিবহন রুট ফাইন্ডার অ্যাপ। বর্তমানে প্রতি মাসে ১০,০০০+ মানুষ "কই যাবো" ব্যবহার করে আত্মবিশ্বাসের সাথে তাদের যাতায়াত এবং আন্তঃজেলা ভ্রমণ পরিকল্পনা করছেন।
+          - generic [ref=e110]:
+            - generic [ref=e111]:
+              - heading "আমাদের লক্ষ্য" [level=3] [ref=e112]:
+                - img [ref=e113]
+                - text: আমাদের লক্ষ্য
+              - paragraph [ref=e115]: বাংলাদেশের প্রত্যেকের জন্য গণপরিবহনকে সহজলভ্য, অনুমানযোগ্য এবং চাপমুক্ত করা।
+              - paragraph [ref=e116]: আমরা বিশ্বাস করি যে নির্ভরযোগ্য যাতায়াতের তথ্য একটি মৌলিক অধিকার। আপনি বিশ্ববিদ্যালয়ে যাতায়াতকারী শিক্ষার্থী হোন বা কোনো পর্যটক, কই যাবো নিশ্চিত করে যে আপনি আপনার গন্তব্যে পৌঁছানোর সেরা পথটি জানেন।
+            - generic [ref=e117]:
+              - heading "আমাদের ভিশন" [level=3] [ref=e118]:
+                - img [ref=e119]
+                - text: আমাদের ভিশন
+              - paragraph [ref=e122]: পুরো বাংলাদেশের জন্য সবচেয়ে বিশ্বস্ত পরিবহন সঙ্গী হয়ে ওঠা।
+              - paragraph [ref=e123]: আমরা এমন একটি ভবিষ্যৎ কল্পনা করি যেখানে আপনার নিজের ভাষায় সঠিক এবং রিয়েল-টাইম যাতায়াতের তথ্য পাওয়া যাবে। এআই এবং আধুনিক প্রযুক্তির মাধ্যমে আমরা বাংলাদেশের স্মার্ট যাতায়াতের অবকাঠামো তৈরি করছি।
+          - generic [ref=e124]:
+            - heading "🚀 আপনার সর্বাত্মক বাংলাদেশ রুট ফাইন্ডার" [level=2] [ref=e125]
+            - generic [ref=e126]:
+              - generic [ref=e127]:
+                - img [ref=e129]
+                - heading "🚌 বাস রুট" [level=4] [ref=e133]
+                - paragraph [ref=e134]: বাংলাদেশের স্থানীয় বাস রুট এবং আন্তঃশহর বাস রুটের সম্পূর্ণ ডাটাবেস (ঢাকা থেকে চট্টগ্রাম, সিলেট, কক্সবাজার ইত্যাদি)।
+                - list [ref=e135]:
+                  - listitem [ref=e136]: • ঢাকার সকল এলাকায় ৩০০+ বাস রুট, রুট ম্যাপ ও ভাড়া
+                  - listitem [ref=e137]: • বিস্তারিত স্টপেজ তথ্য এবং ভাড়ার তালিকা
+                  - listitem [ref=e138]: • রিয়েল-টাইম অটো-কমপ্লিট সার্চ সুবিধা
+              - generic [ref=e139]:
+                - img [ref=e141]
+                - heading "🚆 ট্রেন ও মেট্রো" [level=4] [ref=e145]
+                - paragraph [ref=e146]: ১০০+ আন্তঃজেলা ট্রেন, ইন্টারেক্টিভ রুট ম্যাপ, স্টপ টাইমলাইন এবং আপনার নিকটবর্তী স্টেশন ডিটেকশন। সাথে ঢাকা মেট্রো (এমআরটি লাইন ৬) সময়সূচী ও স্টেশন-টু-স্টেশন ভাড়া।
+                - list [ref=e147]:
+                  - listitem [ref=e148]: • ১০০+ আন্তঃজেলা ট্রেন, রুট ম্যাপ ও স্টপ টাইমলাইন
+                  - listitem [ref=e149]: • স্টেশন টু স্টেশন ভাড়া ক্যালকুলেটর
+                  - listitem [ref=e150]: • এমআরটি লাইন ৬ সহ স্টেশন-টু-স্টেশন ভাড়া
+              - generic [ref=e151]:
+                - img [ref=e153]
+                - heading "🤖 এআই ভ্রমণ সহায়ক" [level=4] [ref=e156]
+                - paragraph [ref=e157]: "সম্পূর্ণ অফলাইন এআই সহকারী — বাংলা, ইংরেজি এবং বাংলিশ (যেমন: \"ফার্মগেট থেকে মিরপুর বাস আছে?\") সব ভাষায় প্রশ্ন করুন। কোনো বাইরের এআই এপিআই ব্যবহার করা হয় না।"
+                - list [ref=e158]:
+                  - listitem [ref=e159]: • বাংলা, ইংরেজি ও বাংলিশে প্রশ্ন করুন
+                  - listitem [ref=e160]: • সম্পূর্ণ অফলাইন — কোনো বাইরের এআই এপিআই নেই
+                  - listitem [ref=e161]: • স্মার্ট ভ্রমণ টিপস, পর্যটন গাইড ও রুট তথ্য
+              - generic [ref=e162]:
+                - img [ref=e164]
+                - heading "অফলাইন সুবিধা" [level=4] [ref=e166]
+                - paragraph [ref=e167]: কাশ হয়ে গেলে ইন্টারনেট সংযোগ ছাড়াই দ্রুত এবং নির্ভরযোগ্য ফলাফল পাবেন।
+                - list [ref=e168]:
+                  - listitem [ref=e169]: • যেকোনো ডিভাইসে পিডাব্লউএ (PWA) হিসেবে ইনস্টল করুন
+                  - listitem [ref=e170]: • সার্চ করা রুটের জন্য ১০০% অফলাইন কাজ করে
+                  - listitem [ref=e171]: • দ্রুত লোড এবং কম ডেটা খরচ
+              - generic [ref=e172]:
+                - img [ref=e174]
+                - heading "👤 ইউজার অ্যাকাউন্টস" [level=4] [ref=e179]
+                - paragraph [ref=e180]: আপনার সার্চ হিস্ট্রি সেভ করতে, ডিভাইস ম্যানেজ করতে এবং ভালো অভিজ্ঞতার জন্য সাইন ইন করুন।
+                - list [ref=e181]:
+                  - listitem [ref=e182]: • নিরাপদ লগইন — কোনো পাসওয়ার্ডের প্রয়োজন নেই
+                  - listitem [ref=e183]: • সার্চ হিস্ট্রি ডিভাইসের লোকালি সেভ হয়
+                  - listitem [ref=e184]: • প্রোফাইল, সিকিউরিটি এবং ডিভাইস ম্যানেজমেন্ট
+              - generic [ref=e185]:
+                - img [ref=e187]
+                - heading "🗺️ ডেইলি জার্নি ট্র্যাকার" [level=4] [ref=e190]
+                - paragraph [ref=e191]: আপনার দৈনিক যাতায়াতের স্টপেজগুলো লগ করুন, যাত্রার হিস্ট্রি ট্র্যাক করুন এবং আপনার যাতায়াতের ধরন অনুযায়ী রুটের সাজেশন পান — যা ব্যক্তিগতভাবে শুধুমাত্র আপনার ডিভাইসে সেভ থাকে।
+          - generic [ref=e192]:
+            - heading "আমাদের প্রভাব" [level=2] [ref=e193]
+            - generic [ref=e194]:
+              - generic [ref=e195]:
+                - generic [ref=e196]: ১০ হাজার+
+                - text: মাসিক ব্যবহারকারী
+              - generic [ref=e197]:
+                - generic [ref=e198]: ৩০০+
+                - text: লোকাল বাস
+              - generic [ref=e199]:
+                - generic [ref=e200]: ৬৪
+                - text: জেলা
+              - generic [ref=e201]:
+                - generic [ref=e202]: ১০০+
+                - text: আন্তঃজেলা ট্রেন
+          - generic [ref=e203]:
+            - heading "প্রতিষ্ঠাতার সাথে দেখা করুন" [level=2] [ref=e204]:
+              - img [ref=e205]
+              - text: প্রতিষ্ঠাতার সাথে দেখা করুন
+            - generic [ref=e210]:
+              - img "Mejbaur Bahar Fagun" [ref=e212]
+              - generic [ref=e213]:
+                - heading "Mejbaur Bahar Fagun" [level=3] [ref=e214]
+                - paragraph [ref=e215]: প্রতিষ্ঠাতা, কই যাবো
+                - paragraph [ref=e216]: মেজবাউর একজন সিনিয়র সফটওয়্যার টেস্ট ইঞ্জিনিয়ার, যিনি বর্তমানে বাংলাদেশের ঢাকায় বসবাস করছেন। প্রযুক্তির মাধ্যমে বাস্তব জীবনের বিভিন্ন সমস্যার সমাধান করার অদম্য উৎসাহ থেকেই তিনি "কই যাবো" তৈরি করেছেন যেন পুরো বাংলাদেশের যাতায়াতের তথ্য সবার জন্য সহজলভ্য হয়।
+                - generic [ref=e217]:
+                  - link [ref=e218] [cursor=pointer]:
+                    - /url: https://linkedin.com/in/mejbaur/
+                    - img [ref=e219]
+                  - link [ref=e223] [cursor=pointer]:
+                    - /url: https://github.com/fagun18
+                    - img [ref=e224]
+      - insertion [ref=e232]
+      - generic [ref=e236]:
+        - generic [ref=e237]:
+          - img "KoyJabo" [ref=e238]
+          - generic [ref=e239]: কইযাবো
+        - navigation [ref=e240]:
+          - link "হোম" [ref=e241] [cursor=pointer]:
+            - /url: /
+          - link "পরিচয়" [ref=e242] [cursor=pointer]:
+            - /url: /about
+          - link "প্রশ্ন ও উত্তর" [ref=e243] [cursor=pointer]:
+            - /url: /faq
+          - link "অ্যাপ ইনস্টল" [ref=e244] [cursor=pointer]:
+            - /url: /install
+          - link "যোগাযোগ" [ref=e245] [cursor=pointer]:
+            - /url: /contact
+          - link "গোপনীয়তা নীতি" [ref=e246] [cursor=pointer]:
+            - /url: /privacy
+          - link "শর্তাবলী" [ref=e247] [cursor=pointer]:
+            - /url: /terms
+          - link "রিলিজ নোট" [ref=e248] [cursor=pointer]:
+            - /url: /release-notes
+          - link "আন্তঃশহর যাত্রা" [ref=e249] [cursor=pointer]:
+            - /url: /intercity-hub
+        - paragraph [ref=e250]: © 2024–2026 KoyJabo

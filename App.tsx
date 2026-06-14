@@ -74,6 +74,7 @@ import SponsoredAdSlot from './components/SponsoredAdSlot';
 import TrainListPage, { TrainDetail } from './components/TrainListPage';
 import TrainRating from './components/TrainRating';
 import { BDTrainRoute, BD_TRAIN_ROUTES, TRAIN_STATIONS } from './data/bangladeshTrainData';
+import transportCache from './data/transport-cache.json';
 import TripReminders from './components/TripReminders';
 import RoadAlerts from './components/RoadAlerts';
 import NeighbourhoodGuides from './components/NeighbourhoodGuides';
@@ -374,8 +375,8 @@ const calculateFare = (route: BusRoute, fromId?: string, toId?: string): { min: 
 
   const distanceKm = totalDistance / 1000;
 
-  // Official BRTA rate as of April 2, 2024
-  const ratePerKm = 2.42; // Tk per kilometer for city buses
+  // Official BRTA rate — sourced from transport-cache.json (auto-refreshed weekly)
+  const ratePerKm = (transportCache as any).brtaFares?.cityBusRatePerKm ?? 2.42;
   const minFare = 10; // Minimum fare for buses
 
   let estimated = Math.ceil(distanceKm * ratePerKm);

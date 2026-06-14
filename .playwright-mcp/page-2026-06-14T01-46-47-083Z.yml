@@ -1,0 +1,3458 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - button "Open menu" [ref=e6] [cursor=pointer]:
+        - img [ref=e7]
+      - img "KoyJabo" [ref=e9] [cursor=pointer]
+      - generic [ref=e10]:
+        - button "Toggle language" [ref=e11] [cursor=pointer]:
+          - img [ref=e12]
+          - generic [ref=e16]: বাং
+        - button "Toggle theme" [ref=e17] [cursor=pointer]:
+          - img [ref=e18]
+        - button "লগইন" [ref=e24] [cursor=pointer]:
+          - img [ref=e25]
+  - main [ref=e28]:
+    - generic [ref=e29]:
+      - generic [ref=e33]:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - img
+                  - generic:
+                    - generic:
+                      - generic:
+                        - paragraph: "\"After I land, how do I go to Gulshan 2?\""
+            - generic "National Martyrs' Memorial" [ref=e34] [cursor=pointer]
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - paragraph: "\"Uttara to Motijheel: 100 Taka well spent.\""
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic "Lalbagh Fort"
+                  - generic:
+                    - generic "Ahsan Manzil (Pink Palace)"
+                - generic:
+                  - generic:
+                    - generic "Shaheed Minar"
+                - generic:
+                  - generic:
+                    - generic "Curzon Hall"
+                  - generic:
+                    - generic "National Parliament House"
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - paragraph: "\"How do I go to New Market from here?\""
+              - generic "Dhaka Metropolitan Police" [ref=e41]
+            - generic:
+              - generic:
+                - img
+                - img
+              - generic:
+                - img
+                - img
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - paragraph: "\"পারাপার ভাড়া ১০ টাকা হলো কবে?\""
+        - generic [ref=e60]:
+          - generic [ref=e65]:
+            - generic [ref=e66]:
+              - img [ref=e68]
+              - generic [ref=e72]:
+                - heading "বাংলাদেশ রেলওয়ে" [level=1] [ref=e73]
+                - paragraph [ref=e74]: 123টি ট্রেন
+            - generic [ref=e75]:
+              - generic [ref=e76]:
+                - img [ref=e77]
+                - textbox "ট্রেন বা স্টেশন খুঁজুন..." [ref=e80]
+              - button "ফিল্টার" [ref=e81] [cursor=pointer]:
+                - img [ref=e82]
+                - text: ফিল্টার
+          - generic [ref=e84]:
+            - img [ref=e93]
+            - generic [ref=e97]:
+              - paragraph [ref=e98]: তেজগাঁও
+              - paragraph [ref=e99]: নিকটতম রেল স্টেশন
+            - generic [ref=e100]: 12.7 km
+          - generic [ref=e101]:
+            - heading "ট্রেনের তালিকা" [level=3] [ref=e102]
+            - generic [ref=e104]: "123"
+          - generic [ref=e106]:
+            - button "সব ট্রেন" [ref=e107] [cursor=pointer]
+            - button "প্রিয়" [ref=e108] [cursor=pointer]:
+              - img [ref=e109]
+              - text: প্রিয়
+          - generic [ref=e111]:
+            - generic [ref=e112]:
+              - img [ref=e113]
+              - generic [ref=e115]: সময়সূচি পরিবর্তন হতে পারে। সর্বশেষ তথ্যের জন্য বাংলাদেশ রেলওয়ে ওয়েবসাইট দেখুন।
+            - generic [ref=e116] [cursor=pointer]:
+              - generic [ref=e117]:
+                - generic [ref=e118]:
+                  - generic [ref=e119]:
+                    - heading "অগ্নিবীণা এক্সপ্রেস" [level=3] [ref=e120]
+                    - generic [ref=e121]: "#735/736"
+                  - text: আন্তঃনগর
+                - generic [ref=e122]:
+                  - button "Add Agnibina Express to favorites" [ref=e123]:
+                    - img [ref=e124]
+                  - img [ref=e127]
+              - generic [ref=e131]:
+                - paragraph [ref=e133]: ঢাকা (কমলাপুর)
+                - img [ref=e134]
+                - paragraph [ref=e137]: তারাকান্দি
+              - generic [ref=e139]:
+                - img [ref=e140]
+                - generic [ref=e143]: 11:00
+                - generic [ref=e144]: →
+                - generic [ref=e145]: 16:30
+              - generic [ref=e146]:
+                - generic [ref=e147]:
+                  - img [ref=e148]
+                  - generic [ref=e153]: ৳215 – ৳940
+                - button "Rate Agnibina Express" [ref=e154]: ☆ রেটিং
+            - generic [ref=e155] [cursor=pointer]:
+              - generic [ref=e156]:
+                - generic [ref=e157]:
+                  - generic [ref=e158]:
+                    - heading "বলাকা এক্সপ্রেস" [level=3] [ref=e159]
+                    - generic [ref=e160]: "#803/804"
+                  - text: এক্সপ্রেস
+                - generic [ref=e161]:
+                  - button "Add Balaka Express to favorites" [ref=e162]:
+                    - img [ref=e163]
+                  - img [ref=e166]
+              - generic [ref=e170]:
+                - paragraph [ref=e172]: ঢাকা (কমলাপুর)
+                - img [ref=e173]
+                - paragraph [ref=e176]: রাজশাহী
+              - generic [ref=e177]:
+                - generic [ref=e178]:
+                  - img [ref=e179]
+                  - generic [ref=e182]: 20:00
+                  - generic [ref=e183]: →
+                  - generic [ref=e184]: 02:30
+                - generic [ref=e185]:
+                  - img [ref=e186]
+                  - generic [ref=e190]: Sat (from Dhk)
+              - generic [ref=e191]:
+                - generic [ref=e192]:
+                  - img [ref=e193]
+                  - generic [ref=e198]: ৳265 – ৳1,160
+                - button "Rate Balaka Express" [ref=e199]: ☆ রেটিং
+            - generic [ref=e200] [cursor=pointer]:
+              - generic [ref=e201]:
+                - generic [ref=e202]:
+                  - generic [ref=e203]:
+                    - heading "বনলতা এক্সপ্রেস" [level=3] [ref=e204]
+                    - generic [ref=e205]: "#791/792"
+                  - text: এক্সপ্রেস
+                - generic [ref=e206]:
+                  - button "Add Banalata Express to favorites" [ref=e207]:
+                    - img [ref=e208]
+                  - img [ref=e211]
+              - generic [ref=e215]:
+                - paragraph [ref=e217]: ঢাকা (কমলাপুর)
+                - img [ref=e218]
+                - paragraph [ref=e221]: চাঁপাইনবাবগঞ্জ
+              - generic [ref=e222]:
+                - generic [ref=e223]:
+                  - img [ref=e224]
+                  - generic [ref=e227]: 13:30
+                  - generic [ref=e228]: →
+                  - generic [ref=e229]: 19:15
+                - generic [ref=e230]:
+                  - img [ref=e231]
+                  - generic [ref=e235]: Fri
+              - generic [ref=e236]:
+                - generic [ref=e237]:
+                  - img [ref=e238]
+                  - generic [ref=e243]: ৳265 – ৳1,160
+                - button "Rate Banalata Express" [ref=e244]: ☆ রেটিং
+            - generic [ref=e245] [cursor=pointer]:
+              - generic [ref=e246]:
+                - generic [ref=e247]:
+                  - generic [ref=e248]:
+                    - heading "বন্ধন এক্সপ্রেস" [level=3] [ref=e249]
+                    - generic [ref=e250]: "#13129/13130"
+                  - text: আন্তঃনগর
+                - generic [ref=e251]:
+                  - button "Add Bandhan Express to favorites" [ref=e252]:
+                    - img [ref=e253]
+                  - img [ref=e256]
+              - generic [ref=e260]:
+                - paragraph [ref=e262]: খুলনা
+                - img [ref=e263]
+                - generic:
+                  - paragraph
+              - generic [ref=e265]:
+                - generic [ref=e266]:
+                  - img [ref=e267]
+                  - generic [ref=e270]: 13:30
+                  - generic [ref=e271]: →
+                  - generic [ref=e272]: 18:10
+                - generic [ref=e273]:
+                  - img [ref=e274]
+                  - generic [ref=e278]: Thu
+              - generic [ref=e279]:
+                - generic [ref=e280]:
+                  - img [ref=e281]
+                  - generic [ref=e286]: ৳1500 – ৳3,000
+                - button "Rate Bandhan Express" [ref=e287]: ☆ রেটিং
+            - generic [ref=e288] [cursor=pointer]:
+              - generic [ref=e289]:
+                - generic [ref=e290]:
+                  - generic [ref=e291]:
+                    - heading "বাংলাবান্ধা এক্সপ্রেস" [level=3] [ref=e292]
+                    - generic [ref=e293]: "#803/804"
+                  - text: এক্সপ্রেস
+                - generic [ref=e294]:
+                  - button "Add Banglabandha Express to favorites" [ref=e295]:
+                    - img [ref=e296]
+                  - img [ref=e299]
+              - generic [ref=e303]:
+                - paragraph [ref=e305]: রাজশাহী
+                - img [ref=e306]
+                - paragraph [ref=e309]: পঞ্চগড়
+              - generic [ref=e310]:
+                - generic [ref=e311]:
+                  - img [ref=e312]
+                  - generic [ref=e315]: 21:00
+                  - generic [ref=e316]: →
+                  - generic [ref=e317]: 04:40
+                - generic [ref=e318]:
+                  - img [ref=e319]
+                  - generic [ref=e323]: Fri (from Raj)
+              - generic [ref=e324]:
+                - generic [ref=e325]:
+                  - img [ref=e326]
+                  - generic [ref=e331]: ৳280 – ৳1,200
+                - button "Rate Banglabandha Express" [ref=e332]: ☆ রেটিং
+            - generic [ref=e333] [cursor=pointer]:
+              - generic [ref=e334]:
+                - generic [ref=e335]:
+                  - generic [ref=e336]:
+                    - heading "বরেন্দ্র এক্সপ্রেস" [level=3] [ref=e337]
+                    - generic [ref=e338]: "#731/732"
+                  - text: আন্তঃনগর
+                - generic [ref=e339]:
+                  - button "Add Barendra Express to favorites" [ref=e340]:
+                    - img [ref=e341]
+                  - img [ref=e344]
+              - generic [ref=e348]:
+                - paragraph [ref=e350]: রাজশাহী
+                - img [ref=e351]
+                - paragraph [ref=e354]: চিলাহাটি
+              - generic [ref=e355]:
+                - generic [ref=e356]:
+                  - img [ref=e357]
+                  - generic [ref=e360]: 15:00
+                  - generic [ref=e361]: →
+                  - generic [ref=e362]: 21:30
+                - generic [ref=e363]:
+                  - img [ref=e364]
+                  - generic [ref=e368]: Sun
+              - generic [ref=e369]:
+                - generic [ref=e370]:
+                  - img [ref=e371]
+                  - generic [ref=e376]: ৳200 – ৳1,090
+                - button "Rate Barendra Express" [ref=e377]: ☆ রেটিং
+            - generic [ref=e378] [cursor=pointer]:
+              - generic [ref=e379]:
+                - generic [ref=e380]:
+                  - generic [ref=e381]:
+                    - heading "বেনাপোল এক্সপ্রেস" [level=3] [ref=e382]
+                    - generic [ref=e383]: "#795/796"
+                  - text: এক্সপ্রেস
+                - generic [ref=e384]:
+                  - button "Add Benapole Express to favorites" [ref=e385]:
+                    - img [ref=e386]
+                  - img [ref=e389]
+              - generic [ref=e393]:
+                - paragraph [ref=e395]: ঢাকা (কমলাপুর)
+                - img [ref=e396]
+                - paragraph [ref=e399]: বেনাপোল
+              - generic [ref=e400]:
+                - generic [ref=e401]:
+                  - img [ref=e402]
+                  - generic [ref=e405]: 23:45
+                  - generic [ref=e406]: →
+                  - generic [ref=e407]: 07:20
+                - generic [ref=e408]:
+                  - img [ref=e409]
+                  - generic [ref=e413]: Wed
+              - generic [ref=e414]:
+                - generic [ref=e415]:
+                  - img [ref=e416]
+                  - generic [ref=e421]: ৳310 – ৳1,370
+                - button "Rate Benapole Express" [ref=e422]: ☆ রেটিং
+            - generic [ref=e423] [cursor=pointer]:
+              - generic [ref=e424]:
+                - generic [ref=e425]:
+                  - generic [ref=e426]:
+                    - heading "বেতনা এক্সপ্রেস" [level=3] [ref=e427]
+                    - generic [ref=e428]: "#95/96"
+                  - text: লোকাল
+                - generic [ref=e429]:
+                  - button "Add Betna Express to favorites" [ref=e430]:
+                    - img [ref=e431]
+                  - img [ref=e434]
+              - generic [ref=e438]:
+                - paragraph [ref=e440]: বেনাপোল
+                - img [ref=e441]
+                - paragraph [ref=e444]: খুলনা
+              - generic [ref=e446]:
+                - img [ref=e447]
+                - generic [ref=e450]: 09:30
+                - generic [ref=e451]: →
+                - generic [ref=e452]: 11:45
+              - generic [ref=e453]:
+                - generic [ref=e454]:
+                  - img [ref=e455]
+                  - generic [ref=e460]: ৳35
+                - button "Rate Betna Express" [ref=e461]: ☆ রেটিং
+            - generic [ref=e462] [cursor=pointer]:
+              - generic [ref=e463]:
+                - generic [ref=e464]:
+                  - generic [ref=e465]:
+                    - heading "ভৈরব কমিউটার" [level=3] [ref=e466]
+                    - generic [ref=e467]: "#51/52"
+                  - text: লোকাল
+                - generic [ref=e468]:
+                  - button "Add Bhairab Commuter to favorites" [ref=e469]:
+                    - img [ref=e470]
+                  - img [ref=e473]
+              - generic [ref=e477]:
+                - paragraph [ref=e479]: ঢাকা (কমলাপুর)
+                - img [ref=e480]
+                - paragraph [ref=e483]: ভৈরব বাজার
+              - generic [ref=e485]:
+                - img [ref=e486]
+                - generic [ref=e489]: 07:30
+                - generic [ref=e490]: →
+                - generic [ref=e491]: 10:30
+              - generic [ref=e492]:
+                - generic [ref=e493]:
+                  - img [ref=e494]
+                  - generic [ref=e499]: ৳55
+                - button "Rate Bhairab Commuter" [ref=e500]: ☆ রেটিং
+            - generic [ref=e501] [cursor=pointer]:
+              - generic [ref=e502]:
+                - generic [ref=e503]:
+                  - generic [ref=e504]:
+                    - heading "বিজয় এক্সপ্রেস" [level=3] [ref=e505]
+                    - generic [ref=e506]: "#767/768"
+                  - text: আন্তঃনগর
+                - generic [ref=e507]:
+                  - button "Add Bijoy Express to favorites" [ref=e508]:
+                    - img [ref=e509]
+                  - img [ref=e512]
+              - generic [ref=e516]:
+                - paragraph [ref=e518]: ঢাকা (কমলাপুর)
+                - img [ref=e519]
+                - paragraph [ref=e522]: ময়মনসিংহ
+              - generic [ref=e524]:
+                - img [ref=e525]
+                - generic [ref=e528]: 14:00
+                - generic [ref=e529]: →
+                - generic [ref=e530]: 18:30
+              - generic [ref=e531]:
+                - generic [ref=e532]:
+                  - img [ref=e533]
+                  - generic [ref=e538]: ৳105
+                - button "Rate Bijoy Express" [ref=e539]: ☆ রেটিং
+            - generic [ref=e540] [cursor=pointer]:
+              - generic [ref=e541]:
+                - generic [ref=e542]:
+                  - generic [ref=e543]:
+                    - heading "বঙ্গবন্ধু এক্সপ্রেস" [level=3] [ref=e544]
+                    - generic [ref=e545]: "#809/810"
+                  - text: আন্তঃনগর
+                - generic [ref=e546]:
+                  - button "Add Bongobandhu Express to favorites" [ref=e547]:
+                    - img [ref=e548]
+                  - img [ref=e551]
+              - generic [ref=e555]:
+                - paragraph [ref=e557]: ঢাকা (কমলাপুর)
+                - img [ref=e558]
+                - paragraph [ref=e561]: সিরাজগঞ্জ বাজার
+              - generic [ref=e562]:
+                - generic [ref=e563]:
+                  - img [ref=e564]
+                  - generic [ref=e567]: 08:00
+                  - generic [ref=e568]: →
+                  - generic [ref=e569]: 12:00
+                - generic [ref=e570]:
+                  - img [ref=e571]
+                  - generic [ref=e575]: Thu
+              - generic [ref=e576]:
+                - generic [ref=e577]:
+                  - img [ref=e578]
+                  - generic [ref=e583]: ৳120 – ৳525
+                - button "Rate Bongobandhu Express" [ref=e584]: ☆ রেটিং
+            - generic [ref=e585] [cursor=pointer]:
+              - generic [ref=e586]:
+                - generic [ref=e587]:
+                  - generic [ref=e588]:
+                    - heading "ব্রাহ্মণবাড়িয়া কমিউটার" [level=3] [ref=e589]
+                    - generic [ref=e590]: "#33/34"
+                  - text: লোকাল
+                - generic [ref=e591]:
+                  - button "Add Brahmanbaria Commuter to favorites" [ref=e592]:
+                    - img [ref=e593]
+                  - img [ref=e596]
+              - generic [ref=e600]:
+                - paragraph [ref=e602]: ঢাকা (কমলাপুর)
+                - img [ref=e603]
+                - paragraph [ref=e606]: ব্রাহ্মণবাড়িয়া
+              - generic [ref=e608]:
+                - img [ref=e609]
+                - generic [ref=e612]: 16:00
+                - generic [ref=e613]: →
+                - generic [ref=e614]: 19:00
+              - generic [ref=e615]:
+                - generic [ref=e616]:
+                  - img [ref=e617]
+                  - generic [ref=e622]: ৳60
+                - button "Rate Brahmanbaria Commuter" [ref=e623]: ☆ রেটিং
+            - generic [ref=e624] [cursor=pointer]:
+              - generic [ref=e625]:
+                - generic [ref=e626]:
+                  - generic [ref=e627]:
+                    - heading "ব্রহ্মপুত্র এক্সপ্রেস" [level=3] [ref=e628]
+                    - generic [ref=e629]: "#245/246"
+                  - text: আন্তঃনগর
+                - generic [ref=e630]:
+                  - button "Add Brahmaputra Express to favorites" [ref=e631]:
+                    - img [ref=e632]
+                  - img [ref=e635]
+              - generic [ref=e639]:
+                - paragraph [ref=e641]: ঢাকা (কমলাপুর)
+                - img [ref=e642]
+                - paragraph [ref=e645]: দেওয়ানগঞ্জ বাজার
+              - generic [ref=e646]:
+                - generic [ref=e647]:
+                  - img [ref=e648]
+                  - generic [ref=e651]: 07:30
+                  - generic [ref=e652]: →
+                  - generic [ref=e653]: 14:00
+                - generic [ref=e654]:
+                  - img [ref=e655]
+                  - generic [ref=e659]: Wed (from Dhk)
+              - generic [ref=e660]:
+                - generic [ref=e661]:
+                  - img [ref=e662]
+                  - generic [ref=e667]: ৳230 – ৳1,010
+                - button "Rate Brahmaputra Express" [ref=e668]: ☆ রেটিং
+            - generic [ref=e669] [cursor=pointer]:
+              - generic [ref=e670]:
+                - generic [ref=e671]:
+                  - generic [ref=e672]:
+                    - heading "বুড়িমারী কমিউটার" [level=3] [ref=e673]
+                    - generic [ref=e674]: "#71/72"
+                  - text: লোকাল
+                - generic [ref=e675]:
+                  - button "Add Burimari Commuter to favorites" [ref=e676]:
+                    - img [ref=e677]
+                  - img [ref=e680]
+              - generic [ref=e684]:
+                - paragraph [ref=e686]: লালমনিরহাট
+                - img [ref=e687]
+                - paragraph [ref=e690]: বুড়িমারী
+              - generic [ref=e692]:
+                - img [ref=e693]
+                - generic [ref=e696]: 06:00
+                - generic [ref=e697]: →
+                - generic [ref=e698]: 09:00
+              - generic [ref=e699]:
+                - generic [ref=e700]:
+                  - img [ref=e701]
+                  - generic [ref=e706]: ৳40
+                - button "Rate Burimari Commuter" [ref=e707]: ☆ রেটিং
+            - generic [ref=e708] [cursor=pointer]:
+              - generic [ref=e709]:
+                - generic [ref=e710]:
+                  - generic [ref=e711]:
+                    - heading "বুড়িমারী এক্সপ্রেস" [level=3] [ref=e712]
+                    - generic [ref=e713]: "#809/810"
+                  - text: এক্সপ্রেস
+                - generic [ref=e714]:
+                  - button "Add Burimari Express to favorites" [ref=e715]:
+                    - img [ref=e716]
+                  - img [ref=e719]
+              - generic [ref=e723]:
+                - paragraph [ref=e725]: ঢাকা (কমলাপুর)
+                - img [ref=e726]
+                - paragraph [ref=e729]: বুড়িমারী
+              - generic [ref=e730]:
+                - generic [ref=e731]:
+                  - img [ref=e732]
+                  - generic [ref=e735]: 08:30
+                  - generic [ref=e736]: →
+                  - generic [ref=e737]: 21:45
+                - generic [ref=e738]:
+                  - img [ref=e739]
+                  - generic [ref=e743]: Wed (to Burimari)
+              - generic [ref=e744]:
+                - generic [ref=e745]:
+                  - img [ref=e746]
+                  - generic [ref=e751]: ৳480 – ৳1,950
+                - button "Rate Burimari Express" [ref=e752]: ☆ রেটিং
+            - generic [ref=e753] [cursor=pointer]:
+              - generic [ref=e754]:
+                - generic [ref=e755]:
+                  - generic [ref=e756]:
+                    - heading "চাঁদপুর কমিউটার" [level=3] [ref=e757]
+                    - generic [ref=e758]: "#19/20"
+                  - text: লোকাল
+                - generic [ref=e759]:
+                  - button "Add Chandpur Commuter to favorites" [ref=e760]:
+                    - img [ref=e761]
+                  - img [ref=e764]
+              - generic [ref=e768]:
+                - paragraph [ref=e770]: ঢাকা (কমলাপুর)
+                - img [ref=e771]
+                - paragraph [ref=e774]: চাঁদপুর
+              - generic [ref=e776]:
+                - img [ref=e777]
+                - generic [ref=e780]: 07:00
+                - generic [ref=e781]: →
+                - generic [ref=e782]: 10:30
+              - generic [ref=e783]:
+                - generic [ref=e784]:
+                  - img [ref=e785]
+                  - generic [ref=e790]: ৳65
+                - button "Rate Chandpur Commuter" [ref=e791]: ☆ রেটিং
+            - generic [ref=e792] [cursor=pointer]:
+              - generic [ref=e793]:
+                - generic [ref=e794]:
+                  - generic [ref=e795]:
+                    - heading "চাঁদপুর এক্সপ্রেস" [level=3] [ref=e796]
+                    - generic [ref=e797]: "#61/62"
+                  - text: লোকাল
+                - generic [ref=e798]:
+                  - button "Add Chandpur Express to favorites" [ref=e799]:
+                    - img [ref=e800]
+                  - img [ref=e803]
+              - generic [ref=e807]:
+                - paragraph [ref=e809]: ঢাকা (কমলাপুর)
+                - img [ref=e810]
+                - paragraph [ref=e813]: চাঁদপুর
+              - generic [ref=e815]:
+                - img [ref=e816]
+                - generic [ref=e819]: 07:00
+                - generic [ref=e820]: →
+                - generic [ref=e821]: 11:30
+              - generic [ref=e822]:
+                - generic [ref=e823]:
+                  - img [ref=e824]
+                  - generic [ref=e829]: ৳95
+                - button "Rate Chandpur Express" [ref=e830]: ☆ রেটিং
+            - generic [ref=e831] [cursor=pointer]:
+              - generic [ref=e832]:
+                - generic [ref=e833]:
+                  - generic [ref=e834]:
+                    - heading "চট্টলা এক্সপ্রেস" [level=3] [ref=e835]
+                    - generic [ref=e836]: "#801/802"
+                  - text: আন্তঃনগর
+                - generic [ref=e837]:
+                  - button "Add Chattala Express to favorites" [ref=e838]:
+                    - img [ref=e839]
+                  - img [ref=e842]
+              - generic [ref=e846]:
+                - paragraph [ref=e848]: ঢাকা (কমলাপুর)
+                - img [ref=e849]
+                - paragraph [ref=e852]: চট্টগ্রাম
+              - generic [ref=e853]:
+                - generic [ref=e854]:
+                  - img [ref=e855]
+                  - generic [ref=e858]: 14:15
+                  - generic [ref=e859]: →
+                  - generic [ref=e860]: 20:30
+                - generic [ref=e861]:
+                  - img [ref=e862]
+                  - generic [ref=e866]: Tue
+              - generic [ref=e867]:
+                - generic [ref=e868]:
+                  - img [ref=e869]
+                  - generic [ref=e874]: ৳265
+                - button "Rate Chattala Express" [ref=e875]: ☆ রেটিং
+            - generic [ref=e876] [cursor=pointer]:
+              - generic [ref=e877]:
+                - generic [ref=e878]:
+                  - generic [ref=e879]:
+                    - heading "চট্টগ্রাম মেইল" [level=3] [ref=e880]
+                    - generic [ref=e881]: "#1/2"
+                  - text: মেইল
+                - generic [ref=e882]:
+                  - button "Add Chattogram Mail to favorites" [ref=e883]:
+                    - img [ref=e884]
+                  - img [ref=e887]
+              - generic [ref=e891]:
+                - paragraph [ref=e893]: ঢাকা (কমলাপুর)
+                - img [ref=e894]
+                - paragraph [ref=e897]: চট্টগ্রাম
+              - generic [ref=e899]:
+                - img [ref=e900]
+                - generic [ref=e903]: 22:30
+                - generic [ref=e904]: →
+                - generic [ref=e905]: 06:00
+              - generic [ref=e906]:
+                - generic [ref=e907]:
+                  - img [ref=e908]
+                  - generic [ref=e913]: ৳180 – ৳835
+                - button "Rate Chattogram Mail" [ref=e914]: ☆ রেটিং
+            - generic [ref=e915] [cursor=pointer]:
+              - generic [ref=e916]:
+                - generic [ref=e917]:
+                  - generic [ref=e918]:
+                    - heading "চিলাহাটি এক্সপ্রেস" [level=3] [ref=e919]
+                    - generic [ref=e920]: "#765/766"
+                  - text: আন্তঃনগর
+                - generic [ref=e921]:
+                  - button "Add Chilahati Express to favorites" [ref=e922]:
+                    - img [ref=e923]
+                  - img [ref=e926]
+              - generic [ref=e930]:
+                - paragraph [ref=e932]: ঢাকা (কমলাপুর)
+                - img [ref=e933]
+                - paragraph [ref=e936]: চিলাহাটি
+              - generic [ref=e937]:
+                - generic [ref=e938]:
+                  - img [ref=e939]
+                  - generic [ref=e942]: 19:40
+                  - generic [ref=e943]: →
+                  - generic [ref=e944]: 06:00
+                - generic [ref=e945]:
+                  - img [ref=e946]
+                  - generic [ref=e950]: Mon
+              - generic [ref=e951]:
+                - generic [ref=e952]:
+                  - img [ref=e953]
+                  - generic [ref=e958]: ৳240 – ৳1,125
+                - button "Rate Chilahati Express" [ref=e959]: ☆ রেটিং
+            - generic [ref=e960] [cursor=pointer]:
+              - generic [ref=e961]:
+                - generic [ref=e962]:
+                  - generic [ref=e963]:
+                    - heading "চিত্রা এক্সপ্রেস" [level=3] [ref=e964]
+                    - generic [ref=e965]: "#763/764"
+                  - text: এক্সপ্রেস
+                - generic [ref=e966]:
+                  - button "Add Chitra Express to favorites" [ref=e967]:
+                    - img [ref=e968]
+                  - img [ref=e971]
+              - generic [ref=e975]:
+                - paragraph [ref=e977]: ঢাকা (কমলাপুর)
+                - img [ref=e978]
+                - paragraph [ref=e981]: খুলনা
+              - generic [ref=e982]:
+                - generic [ref=e983]:
+                  - img [ref=e984]
+                  - generic [ref=e987]: 19:30
+                  - generic [ref=e988]: →
+                  - generic [ref=e989]: 04:40
+                - generic [ref=e990]:
+                  - img [ref=e991]
+                  - generic [ref=e995]: Mon
+              - generic [ref=e996]:
+                - generic [ref=e997]:
+                  - img [ref=e998]
+                  - generic [ref=e1003]: ৳290 – ৳1,270
+                - button "Rate Chitra Express" [ref=e1004]: ☆ রেটিং
+            - generic [ref=e1005] [cursor=pointer]:
+              - generic [ref=e1006]:
+                - generic [ref=e1007]:
+                  - generic [ref=e1008]:
+                    - heading "কুমিল্লা কমিউটার" [level=3] [ref=e1009]
+                    - generic [ref=e1010]: "#13/14"
+                  - text: লোকাল
+                - generic [ref=e1011]:
+                  - button "Add Comilla Commuter to favorites" [ref=e1012]:
+                    - img [ref=e1013]
+                  - img [ref=e1016]
+              - generic [ref=e1020]:
+                - paragraph [ref=e1022]: ঢাকা (কমলাপুর)
+                - img [ref=e1023]
+                - paragraph [ref=e1026]: কুমিল্লা
+              - generic [ref=e1028]:
+                - img [ref=e1029]
+                - generic [ref=e1032]: 07:00
+                - generic [ref=e1033]: →
+                - generic [ref=e1034]: 11:00
+              - generic [ref=e1035]:
+                - generic [ref=e1036]:
+                  - img [ref=e1037]
+                  - generic [ref=e1042]: ৳95
+                - button "Rate Comilla Commuter" [ref=e1043]: ☆ রেটিং
+            - generic [ref=e1044] [cursor=pointer]:
+              - generic [ref=e1045]:
+                - generic [ref=e1046]:
+                  - generic [ref=e1047]:
+                    - heading "কুমিল্লা কমিউটার ২" [level=3] [ref=e1048]
+                    - generic [ref=e1049]: "#27/28"
+                  - text: লোকাল
+                - generic [ref=e1050]:
+                  - button "Add Comilla Commuter 2 to favorites" [ref=e1051]:
+                    - img [ref=e1052]
+                  - img [ref=e1055]
+              - generic [ref=e1059]:
+                - paragraph [ref=e1061]: ঢাকা (কমলাপুর)
+                - img [ref=e1062]
+                - paragraph [ref=e1065]: কুমিল্লা
+              - generic [ref=e1067]:
+                - img [ref=e1068]
+                - generic [ref=e1071]: 17:30
+                - generic [ref=e1072]: →
+                - generic [ref=e1073]: 20:30
+              - generic [ref=e1074]:
+                - generic [ref=e1075]:
+                  - img [ref=e1076]
+                  - generic [ref=e1081]: ৳95
+                - button "Rate Comilla Commuter 2" [ref=e1082]: ☆ রেটিং
+            - generic [ref=e1083] [cursor=pointer]:
+              - generic [ref=e1084]:
+                - generic [ref=e1085]:
+                  - generic [ref=e1086]:
+                    - heading "কুমিল্লা ইন্টারসিটি" [level=3] [ref=e1087]
+                    - generic [ref=e1088]: "#33/34"
+                  - text: আন্তঃনগর
+                - generic [ref=e1089]:
+                  - button "Add Comilla Intercity to favorites" [ref=e1090]:
+                    - img [ref=e1091]
+                  - img [ref=e1094]
+              - generic [ref=e1098]:
+                - paragraph [ref=e1100]: ঢাকা (কমলাপুর)
+                - img [ref=e1101]
+                - paragraph [ref=e1104]: কুমিল্লা
+              - generic [ref=e1106]:
+                - img [ref=e1107]
+                - generic [ref=e1110]: 15:00
+                - generic [ref=e1111]: →
+                - generic [ref=e1112]: 18:30
+              - generic [ref=e1113]:
+                - generic [ref=e1114]:
+                  - img [ref=e1115]
+                  - generic [ref=e1120]: ৳145
+                - button "Rate Comilla Intercity" [ref=e1121]: ☆ রেটিং
+            - generic [ref=e1122] [cursor=pointer]:
+              - generic [ref=e1123]:
+                - generic [ref=e1124]:
+                  - generic [ref=e1125]:
+                    - heading "কক্সবাজার এক্সপ্রেস" [level=3] [ref=e1126]
+                    - generic [ref=e1127]: "#813/814"
+                  - text: এক্সপ্রেস
+                - generic [ref=e1128]:
+                  - button "Add Cox's Bazar Express to favorites" [ref=e1129]:
+                    - img [ref=e1130]
+                  - img [ref=e1133]
+              - generic [ref=e1137]:
+                - paragraph [ref=e1139]: ঢাকা (কমলাপুর)
+                - img [ref=e1140]
+                - paragraph [ref=e1143]: কক্সবাজার
+              - generic [ref=e1144]:
+                - generic [ref=e1145]:
+                  - img [ref=e1146]
+                  - generic [ref=e1149]: 23:00
+                  - generic [ref=e1150]: →
+                  - generic [ref=e1151]: 07:20
+                - generic [ref=e1152]:
+                  - img [ref=e1153]
+                  - generic [ref=e1157]: Mon (from Dhk)
+              - generic [ref=e1158]:
+                - generic [ref=e1159]:
+                  - img [ref=e1160]
+                  - generic [ref=e1165]: ৳505 – ৳2,100
+                - button "Rate Cox's Bazar Express" [ref=e1166]: ☆ রেটিং
+            - generic [ref=e1167] [cursor=pointer]:
+              - generic [ref=e1168]:
+                - generic [ref=e1169]:
+                  - generic [ref=e1170]:
+                    - heading "দেওয়ানগঞ্জ কমিউটার" [level=3] [ref=e1171]
+                    - generic [ref=e1172]: "#65/66"
+                  - text: লোকাল
+                - generic [ref=e1173]:
+                  - button "Add Dewanganj Commuter to favorites" [ref=e1174]:
+                    - img [ref=e1175]
+                  - img [ref=e1178]
+              - generic [ref=e1182]:
+                - paragraph [ref=e1184]: ঢাকা (কমলাপুর)
+                - img [ref=e1185]
+                - paragraph [ref=e1188]: দেওয়ানগঞ্জ বাজার
+              - generic [ref=e1190]:
+                - img [ref=e1191]
+                - generic [ref=e1194]: 06:30
+                - generic [ref=e1195]: →
+                - generic [ref=e1196]: 13:30
+              - generic [ref=e1197]:
+                - generic [ref=e1198]:
+                  - img [ref=e1199]
+                  - generic [ref=e1204]: ৳115
+                - button "Rate Dewanganj Commuter" [ref=e1205]: ☆ রেটিং
+            - generic [ref=e1206] [cursor=pointer]:
+              - generic [ref=e1207]:
+                - generic [ref=e1208]:
+                  - generic [ref=e1209]:
+                    - heading "ধূমকেতু এক্সপ্রেস" [level=3] [ref=e1210]
+                    - generic [ref=e1211]: "#769/770"
+                  - text: এক্সপ্রেস
+                - generic [ref=e1212]:
+                  - button "Add Dhumketu Express to favorites" [ref=e1213]:
+                    - img [ref=e1214]
+                  - img [ref=e1217]
+              - generic [ref=e1221]:
+                - paragraph [ref=e1223]: ঢাকা (কমলাপুর)
+                - img [ref=e1224]
+                - paragraph [ref=e1227]: রাজশাহী
+              - generic [ref=e1228]:
+                - generic [ref=e1229]:
+                  - img [ref=e1230]
+                  - generic [ref=e1233]: 06:00
+                  - generic [ref=e1234]: →
+                  - generic [ref=e1235]: 11:40
+                - generic [ref=e1236]:
+                  - img [ref=e1237]
+                  - generic [ref=e1241]: Thu (from Raj)
+              - generic [ref=e1242]:
+                - generic [ref=e1243]:
+                  - img [ref=e1244]
+                  - generic [ref=e1249]: ৳265 – ৳1,160
+                - button "Rate Dhumketu Express" [ref=e1250]: ☆ রেটিং
+            - generic [ref=e1251] [cursor=pointer]:
+              - generic [ref=e1252]:
+                - generic [ref=e1253]:
+                  - generic [ref=e1254]:
+                    - heading "দিনাজপুর এক্সপ্রেস" [level=3] [ref=e1255]
+                    - generic [ref=e1256]: "#773/774"
+                  - text: আন্তঃনগর
+                - generic [ref=e1257]:
+                  - button "Add Dinajpur Express to favorites" [ref=e1258]:
+                    - img [ref=e1259]
+                  - img [ref=e1262]
+              - generic [ref=e1266]:
+                - paragraph [ref=e1268]: ঢাকা (কমলাপুর)
+                - img [ref=e1269]
+                - paragraph [ref=e1272]: দিনাজপুর
+              - generic [ref=e1274]:
+                - img [ref=e1275]
+                - generic [ref=e1278]: 20:00
+                - generic [ref=e1279]: →
+                - generic [ref=e1280]: 06:00
+              - generic [ref=e1281]:
+                - generic [ref=e1282]:
+                  - img [ref=e1283]
+                  - generic [ref=e1288]: ৳215 – ৳995
+                - button "Rate Dinajpur Express" [ref=e1289]: ☆ রেটিং
+            - generic [ref=e1290] [cursor=pointer]:
+              - generic [ref=e1291]:
+                - generic [ref=e1292]:
+                  - generic [ref=e1293]:
+                    - heading "দ্রুতযান এক্সপ্রেস" [level=3] [ref=e1294]
+                    - generic [ref=e1295]: "#757/758"
+                  - text: এক্সপ্রেস
+                - generic [ref=e1296]:
+                  - button "Add Drutojan Express to favorites" [ref=e1297]:
+                    - img [ref=e1298]
+                  - img [ref=e1301]
+              - generic [ref=e1305]:
+                - paragraph [ref=e1307]: ঢাকা (কমলাপুর)
+                - img [ref=e1308]
+                - paragraph [ref=e1311]: পঞ্চগড়
+              - generic [ref=e1312]:
+                - generic [ref=e1313]:
+                  - img [ref=e1314]
+                  - generic [ref=e1317]: 20:45
+                  - generic [ref=e1318]: →
+                  - generic [ref=e1319]: 07:10
+                - generic [ref=e1320]:
+                  - img [ref=e1321]
+                  - generic [ref=e1325]: Wed
+              - generic [ref=e1326]:
+                - generic [ref=e1327]:
+                  - img [ref=e1328]
+                  - generic [ref=e1333]: ৳440 – ৳2,548
+                - button "Rate Drutojan Express" [ref=e1334]: ☆ রেটিং
+            - generic [ref=e1335] [cursor=pointer]:
+              - generic [ref=e1336]:
+                - generic [ref=e1337]:
+                  - generic [ref=e1338]:
+                    - heading "একতা এক্সপ্রেস" [level=3] [ref=e1339]
+                    - generic [ref=e1340]: "#705/706"
+                  - text: এক্সপ্রেস
+                - generic [ref=e1341]:
+                  - button "Add Ekota Express to favorites" [ref=e1342]:
+                    - img [ref=e1343]
+                  - img [ref=e1346]
+              - generic [ref=e1350]:
+                - paragraph [ref=e1352]: ঢাকা (কমলাপুর)
+                - img [ref=e1353]
+                - paragraph [ref=e1356]: পঞ্চগড়
+              - generic [ref=e1357]:
+                - generic [ref=e1358]:
+                  - img [ref=e1359]
+                  - generic [ref=e1362]: 10:15
+                  - generic [ref=e1363]: →
+                  - generic [ref=e1364]: 21:00
+                - generic [ref=e1365]:
+                  - img [ref=e1366]
+                  - generic [ref=e1370]: Tue
+              - generic [ref=e1371]:
+                - generic [ref=e1372]:
+                  - img [ref=e1373]
+                  - generic [ref=e1378]: ৳440 – ৳2,548
+                - button "Rate Ekota Express" [ref=e1379]: ☆ রেটিং
+            - generic [ref=e1380] [cursor=pointer]:
+              - generic [ref=e1381]:
+                - generic [ref=e1382]:
+                  - generic [ref=e1383]:
+                    - heading "ফেনী কমিউটার" [level=3] [ref=e1384]
+                    - generic [ref=e1385]: "#29/30"
+                  - text: লোকাল
+                - generic [ref=e1386]:
+                  - button "Add Feni Commuter to favorites" [ref=e1387]:
+                    - img [ref=e1388]
+                  - img [ref=e1391]
+              - generic [ref=e1395]:
+                - paragraph [ref=e1397]: ঢাকা (কমলাপুর)
+                - img [ref=e1398]
+                - paragraph [ref=e1401]: ফেনী
+              - generic [ref=e1403]:
+                - img [ref=e1404]
+                - generic [ref=e1407]: 07:00
+                - generic [ref=e1408]: →
+                - generic [ref=e1409]: 11:30
+              - generic [ref=e1410]:
+                - generic [ref=e1411]:
+                  - img [ref=e1412]
+                  - generic [ref=e1417]: ৳130
+                - button "Rate Feni Commuter" [ref=e1418]: ☆ রেটিং
+            - generic [ref=e1419] [cursor=pointer]:
+              - generic [ref=e1420]:
+                - generic [ref=e1421]:
+                  - generic [ref=e1422]:
+                    - heading "গাইবান্ধা এক্সপ্রেস" [level=3] [ref=e1423]
+                    - generic [ref=e1424]: "#43/44"
+                  - text: লোকাল
+                - generic [ref=e1425]:
+                  - button "Add Gaibandha Express to favorites" [ref=e1426]:
+                    - img [ref=e1427]
+                  - img [ref=e1430]
+              - generic [ref=e1434]:
+                - paragraph [ref=e1436]: ঢাকা (কমলাপুর)
+                - img [ref=e1437]
+                - paragraph [ref=e1440]: গাইবান্ধা
+              - generic [ref=e1442]:
+                - img [ref=e1443]
+                - generic [ref=e1446]: 09:00
+                - generic [ref=e1447]: →
+                - generic [ref=e1448]: 16:30
+              - generic [ref=e1449]:
+                - generic [ref=e1450]:
+                  - img [ref=e1451]
+                  - generic [ref=e1456]: ৳160
+                - button "Rate Gaibandha Express" [ref=e1457]: ☆ রেটিং
+            - generic [ref=e1458] [cursor=pointer]:
+              - generic [ref=e1459]:
+                - generic [ref=e1460]:
+                  - generic [ref=e1461]:
+                    - heading "গাইবান্ধা এক্সপ্রেস" [level=3] [ref=e1462]
+                    - generic [ref=e1463]: "#779G/780G"
+                  - text: লোকাল
+                - generic [ref=e1464]:
+                  - button "Add Gaibandha Express to favorites" [ref=e1465]:
+                    - img [ref=e1466]
+                  - img [ref=e1469]
+              - generic [ref=e1473]:
+                - paragraph [ref=e1475]: বগুড়া
+                - img [ref=e1476]
+                - paragraph [ref=e1479]: রংপুর
+              - generic [ref=e1481]:
+                - img [ref=e1482]
+                - generic [ref=e1485]: 08:00
+                - generic [ref=e1486]: →
+                - generic [ref=e1487]: 10:00
+              - generic [ref=e1488]:
+                - generic [ref=e1489]:
+                  - img [ref=e1490]
+                  - generic [ref=e1495]: ৳50
+                - button "Rate Gaibandha Express" [ref=e1496]: ☆ রেটিং
+            - generic [ref=e1497] [cursor=pointer]:
+              - generic [ref=e1498]:
+                - generic [ref=e1499]:
+                  - generic [ref=e1500]:
+                    - heading "গোলাপ শাহ এক্সপ্রেস" [level=3] [ref=e1501]
+                    - generic [ref=e1502]: "#811/812"
+                  - text: আন্তঃনগর
+                - generic [ref=e1503]:
+                  - button "Add Golap Shah Express to favorites" [ref=e1504]:
+                    - img [ref=e1505]
+                  - img [ref=e1508]
+              - generic [ref=e1512]:
+                - paragraph [ref=e1514]: ঢাকা (কমলাপুর)
+                - img [ref=e1515]
+                - paragraph [ref=e1518]: সিলেট
+              - generic [ref=e1520]:
+                - img [ref=e1521]
+                - generic [ref=e1524]: 14:45
+                - generic [ref=e1525]: →
+                - generic [ref=e1526]: 20:30
+              - generic [ref=e1527]:
+                - generic [ref=e1528]:
+                  - img [ref=e1529]
+                  - generic [ref=e1534]: ৳355 – ৳1,555
+                - button "Rate Golap Shah Express" [ref=e1535]: ☆ রেটিং
+            - generic [ref=e1536] [cursor=pointer]:
+              - generic [ref=e1537]:
+                - generic [ref=e1538]:
+                  - generic [ref=e1539]:
+                    - heading "হবিগঞ্জ এক্সপ্রেস" [level=3] [ref=e1540]
+                    - generic [ref=e1541]: "#783/784"
+                  - text: আন্তঃনগর
+                - generic [ref=e1542]:
+                  - button "Add Habiganj Express to favorites" [ref=e1543]:
+                    - img [ref=e1544]
+                  - img [ref=e1547]
+              - generic [ref=e1551]:
+                - paragraph [ref=e1553]: ঢাকা (কমলাপুর)
+                - img [ref=e1554]
+                - paragraph [ref=e1557]: হবিগঞ্জ
+              - generic [ref=e1559]:
+                - img [ref=e1560]
+                - generic [ref=e1563]: 15:30
+                - generic [ref=e1564]: →
+                - generic [ref=e1565]: 19:30
+              - generic [ref=e1566]:
+                - generic [ref=e1567]:
+                  - img [ref=e1568]
+                  - generic [ref=e1573]: ৳110 – ৳515
+                - button "Rate Habiganj Express" [ref=e1574]: ☆ রেটিং
+            - generic [ref=e1575] [cursor=pointer]:
+              - generic [ref=e1576]:
+                - generic [ref=e1577]:
+                  - generic [ref=e1578]:
+                    - heading "হাওর এক্সপ্রেস" [level=3] [ref=e1579]
+                    - generic [ref=e1580]: "#775/776"
+                  - text: আন্তঃনগর
+                - generic [ref=e1581]:
+                  - button "Add Haor Express to favorites" [ref=e1582]:
+                    - img [ref=e1583]
+                  - img [ref=e1586]
+              - generic [ref=e1590]:
+                - paragraph [ref=e1592]: ঢাকা (কমলাপুর)
+                - img [ref=e1593]
+                - paragraph [ref=e1596]: মোহনগঞ্জ
+              - generic [ref=e1598]:
+                - img [ref=e1599]
+                - generic [ref=e1602]: 22:00
+                - generic [ref=e1603]: →
+                - generic [ref=e1604]: 05:30
+              - generic [ref=e1605]:
+                - generic [ref=e1606]:
+                  - img [ref=e1607]
+                  - generic [ref=e1612]: ৳145
+                - button "Rate Haor Express" [ref=e1613]: ☆ রেটিং
+            - generic [ref=e1614] [cursor=pointer]:
+              - generic [ref=e1615]:
+                - generic [ref=e1616]:
+                  - generic [ref=e1617]:
+                    - heading "জাহানাবাদ এক্সপ্রেস" [level=3] [ref=e1618]
+                    - generic [ref=e1619]: "#825/826"
+                  - text: এক্সপ্রেস
+                - generic [ref=e1620]:
+                  - button "Add Jahanabad Express to favorites" [ref=e1621]:
+                    - img [ref=e1622]
+                  - img [ref=e1625]
+              - generic [ref=e1629]:
+                - paragraph [ref=e1631]: ঢাকা (কমলাপুর)
+                - img [ref=e1632]
+                - paragraph [ref=e1635]: খুলনা
+              - generic [ref=e1636]:
+                - generic [ref=e1637]:
+                  - img [ref=e1638]
+                  - generic [ref=e1641]: 20:00
+                  - generic [ref=e1642]: →
+                  - generic [ref=e1643]: 23:45
+                - generic [ref=e1644]:
+                  - img [ref=e1645]
+                  - generic [ref=e1649]: Mon
+              - generic [ref=e1650]:
+                - generic [ref=e1651]:
+                  - img [ref=e1652]
+                  - generic [ref=e1657]: ৳220 – ৳1,050
+                - button "Rate Jahanabad Express" [ref=e1658]: ☆ রেটিং
+            - generic [ref=e1659] [cursor=pointer]:
+              - generic [ref=e1660]:
+                - generic [ref=e1661]:
+                  - generic [ref=e1662]:
+                    - heading "জালালাবাদ এক্সপ্রেস" [level=3] [ref=e1663]
+                    - generic [ref=e1664]: "#739/740"
+                  - text: এক্সপ্রেস
+                - generic [ref=e1665]:
+                  - button "Add Jalalabad Express to favorites" [ref=e1666]:
+                    - img [ref=e1667]
+                  - img [ref=e1670]
+              - generic [ref=e1674]:
+                - paragraph [ref=e1676]: ঢাকা (কমলাপুর)
+                - img [ref=e1677]
+                - paragraph [ref=e1680]: চট্টগ্রাম
+              - generic [ref=e1681]:
+                - generic [ref=e1682]:
+                  - img [ref=e1683]
+                  - generic [ref=e1686]: 09:50
+                  - generic [ref=e1687]: →
+                  - generic [ref=e1688]: 15:50
+                - generic [ref=e1689]:
+                  - img [ref=e1690]
+                  - generic [ref=e1694]: Sat (from Dhk)
+              - generic [ref=e1695]:
+                - generic [ref=e1696]:
+                  - img [ref=e1697]
+                  - generic [ref=e1702]: ৳340 – ৳1,580
+                - button "Rate Jalalabad Express" [ref=e1703]: ☆ রেটিং
+            - generic [ref=e1704] [cursor=pointer]:
+              - generic [ref=e1705]:
+                - generic [ref=e1706]:
+                  - generic [ref=e1707]:
+                    - heading "জামালপুর এক্সপ্রেস" [level=3] [ref=e1708]
+                    - generic [ref=e1709]: "#77/78"
+                  - text: আন্তঃনগর
+                - generic [ref=e1710]:
+                  - button "Add Jamalpur Express to favorites" [ref=e1711]:
+                    - img [ref=e1712]
+                  - img [ref=e1715]
+              - generic [ref=e1719]:
+                - paragraph [ref=e1721]: ঢাকা (কমলাপুর)
+                - img [ref=e1722]
+                - paragraph [ref=e1725]: জামালপুর
+              - generic [ref=e1727]:
+                - img [ref=e1728]
+                - generic [ref=e1731]: 16:30
+                - generic [ref=e1732]: →
+                - generic [ref=e1733]: 21:30
+              - generic [ref=e1734]:
+                - generic [ref=e1735]:
+                  - img [ref=e1736]
+                  - generic [ref=e1741]: ৳110 – ৳515
+                - button "Rate Jamalpur Express" [ref=e1742]: ☆ রেটিং
+            - generic [ref=e1743] [cursor=pointer]:
+              - generic [ref=e1744]:
+                - generic [ref=e1745]:
+                  - generic [ref=e1746]:
+                    - heading "যমুনা এক্সপ্রেস" [level=3] [ref=e1747]
+                    - generic [ref=e1748]: "#745/746"
+                  - text: আন্তঃনগর
+                - generic [ref=e1749]:
+                  - button "Add Jamuna Express to favorites" [ref=e1750]:
+                    - img [ref=e1751]
+                  - img [ref=e1754]
+              - generic [ref=e1758]:
+                - paragraph [ref=e1760]: ঢাকা (কমলাপুর)
+                - img [ref=e1761]
+                - paragraph [ref=e1764]: জামালপুর
+              - generic [ref=e1766]:
+                - img [ref=e1767]
+                - generic [ref=e1770]: 19:30
+                - generic [ref=e1771]: →
+                - generic [ref=e1772]: 24:00
+              - generic [ref=e1773]:
+                - generic [ref=e1774]:
+                  - img [ref=e1775]
+                  - generic [ref=e1780]: ৳200 – ৳880
+                - button "Rate Jamuna Express" [ref=e1781]: ☆ রেটিং
+            - generic [ref=e1782] [cursor=pointer]:
+              - generic [ref=e1783]:
+                - generic [ref=e1784]:
+                  - generic [ref=e1785]:
+                    - heading "জয়ন্তিকা এক্সপ্রেস" [level=3] [ref=e1786]
+                    - generic [ref=e1787]: "#717/718"
+                  - text: এক্সপ্রেস
+                - generic [ref=e1788]:
+                  - button "Add Joyantika Express to favorites" [ref=e1789]:
+                    - img [ref=e1790]
+                  - img [ref=e1793]
+              - generic [ref=e1797]:
+                - paragraph [ref=e1799]: ঢাকা (কমলাপুর)
+                - img [ref=e1800]
+                - paragraph [ref=e1803]: সিলেট
+              - generic [ref=e1804]:
+                - generic [ref=e1805]:
+                  - img [ref=e1806]
+                  - generic [ref=e1809]: 11:15
+                  - generic [ref=e1810]: →
+                  - generic [ref=e1811]: 17:30
+                - generic [ref=e1812]:
+                  - img [ref=e1813]
+                  - generic [ref=e1817]: Tue (from Sylhet)
+              - generic [ref=e1818]:
+                - generic [ref=e1819]:
+                  - img [ref=e1820]
+                  - generic [ref=e1825]: ৳270 – ৳1,195
+                - button "Rate Joyantika Express" [ref=e1826]: ☆ রেটিং
+            - generic [ref=e1827] [cursor=pointer]:
+              - generic [ref=e1828]:
+                - generic [ref=e1829]:
+                  - generic [ref=e1830]:
+                    - heading "জয়দেবপুর কমিউটার" [level=3] [ref=e1831]
+                    - generic [ref=e1832]: "#21/22"
+                  - text: লোকাল
+                - generic [ref=e1833]:
+                  - button "Add Joydebpur Commuter to favorites" [ref=e1834]:
+                    - img [ref=e1835]
+                  - img [ref=e1838]
+              - generic [ref=e1842]:
+                - paragraph [ref=e1844]: ঢাকা (কমলাপুর)
+                - img [ref=e1845]
+                - paragraph [ref=e1848]: জয়দেবপুর
+              - generic [ref=e1850]:
+                - img [ref=e1851]
+                - generic [ref=e1854]: 06:00
+                - generic [ref=e1855]: →
+                - generic [ref=e1856]: 07:15
+              - generic [ref=e1857]:
+                - generic [ref=e1858]:
+                  - img [ref=e1859]
+                  - generic [ref=e1864]: ৳30
+                - button "Rate Joydebpur Commuter" [ref=e1865]: ☆ রেটিং
+            - generic [ref=e1866] [cursor=pointer]:
+              - generic [ref=e1867]:
+                - generic [ref=e1868]:
+                  - generic [ref=e1869]:
+                    - heading "জয়পুরহাট এক্সপ্রেস" [level=3] [ref=e1870]
+                    - generic [ref=e1871]: "#785/786"
+                  - text: আন্তঃনগর
+                - generic [ref=e1872]:
+                  - button "Add Joypurhat Express to favorites" [ref=e1873]:
+                    - img [ref=e1874]
+                  - img [ref=e1877]
+              - generic [ref=e1881]:
+                - paragraph [ref=e1883]: ঢাকা (কমলাপুর)
+                - img [ref=e1884]
+                - paragraph [ref=e1887]: জয়পুরহাট
+              - generic [ref=e1888]:
+                - generic [ref=e1889]:
+                  - img [ref=e1890]
+                  - generic [ref=e1893]: 20:50
+                  - generic [ref=e1894]: →
+                  - generic [ref=e1895]: 05:30
+                - generic [ref=e1896]:
+                  - img [ref=e1897]
+                  - generic [ref=e1901]: Tue
+              - generic [ref=e1902]:
+                - generic [ref=e1903]:
+                  - img [ref=e1904]
+                  - generic [ref=e1909]: ৳160 – ৳750
+                - button "Rate Joypurhat Express" [ref=e1910]: ☆ রেটিং
+            - generic [ref=e1911] [cursor=pointer]:
+              - generic [ref=e1912]:
+                - generic [ref=e1913]:
+                  - generic [ref=e1914]:
+                    - heading "কালনী এক্সপ্রেস" [level=3] [ref=e1915]
+                    - generic [ref=e1916]: "#773/774"
+                  - text: এক্সপ্রেস
+                - generic [ref=e1917]:
+                  - button "Add Kalni Express to favorites" [ref=e1918]:
+                    - img [ref=e1919]
+                  - img [ref=e1922]
+              - generic [ref=e1926]:
+                - paragraph [ref=e1928]: ঢাকা (কমলাপুর)
+                - img [ref=e1929]
+                - paragraph [ref=e1932]: সিলেট
+              - generic [ref=e1933]:
+                - generic [ref=e1934]:
+                  - img [ref=e1935]
+                  - generic [ref=e1938]: 13:00
+                  - generic [ref=e1939]: →
+                  - generic [ref=e1940]: 19:30
+                - generic [ref=e1941]:
+                  - img [ref=e1942]
+                  - generic [ref=e1946]: Fri
+              - generic [ref=e1947]:
+                - generic [ref=e1948]:
+                  - img [ref=e1949]
+                  - generic [ref=e1954]: ৳270 – ৳1,195
+                - button "Rate Kalni Express" [ref=e1955]: ☆ রেটিং
+            - generic [ref=e1956] [cursor=pointer]:
+              - generic [ref=e1957]:
+                - generic [ref=e1958]:
+                  - generic [ref=e1959]:
+                    - heading "কাঞ্চন কমিউটার" [level=3] [ref=e1960]
+                    - generic [ref=e1961]: "#41/42"
+                  - text: লোকাল
+                - generic [ref=e1962]:
+                  - button "Add Kanchan Commuter to favorites" [ref=e1963]:
+                    - img [ref=e1964]
+                  - img [ref=e1967]
+              - generic [ref=e1971]:
+                - paragraph [ref=e1973]: পার্বতীপুর
+                - img [ref=e1974]
+                - paragraph [ref=e1977]: পঞ্চগড়
+              - generic [ref=e1979]:
+                - img [ref=e1980]
+                - generic [ref=e1983]: 07:40
+                - generic [ref=e1984]: →
+                - generic [ref=e1985]: 12:00
+              - generic [ref=e1986]:
+                - generic [ref=e1987]:
+                  - img [ref=e1988]
+                  - generic [ref=e1993]: ৳70
+                - button "Rate Kanchan Commuter" [ref=e1994]: ☆ রেটিং
+            - generic [ref=e1995] [cursor=pointer]:
+              - generic [ref=e1996]:
+                - generic [ref=e1997]:
+                  - generic [ref=e1998]:
+                    - heading "কপোতাক্ষ এক্সপ্রেস" [level=3] [ref=e1999]
+                    - generic [ref=e2000]: "#737/738"
+                  - text: আন্তঃনগর
+                - generic [ref=e2001]:
+                  - button "Add Kapotaksha Express to favorites" [ref=e2002]:
+                    - img [ref=e2003]
+                  - img [ref=e2006]
+              - generic [ref=e2010]:
+                - paragraph [ref=e2012]: ঢাকা (কমলাপুর)
+                - img [ref=e2013]
+                - paragraph [ref=e2016]: খুলনা
+              - generic [ref=e2018]:
+                - img [ref=e2019]
+                - generic [ref=e2022]: 23:00
+                - generic [ref=e2023]: →
+                - generic [ref=e2024]: 07:30
+              - generic [ref=e2025]:
+                - generic [ref=e2026]:
+                  - img [ref=e2027]
+                  - generic [ref=e2032]: ৳325 – ৳1,430
+                - button "Rate Kapotaksha Express" [ref=e2033]: ☆ রেটিং
+            - generic [ref=e2034] [cursor=pointer]:
+              - generic [ref=e2035]:
+                - generic [ref=e2036]:
+                  - generic [ref=e2037]:
+                    - heading "করতোয়া এক্সপ্রেস" [level=3] [ref=e2038]
+                    - generic [ref=e2039]: "#793/794"
+                  - text: আন্তঃনগর
+                - generic [ref=e2040]:
+                  - button "Add Karatoa Express to favorites" [ref=e2041]:
+                    - img [ref=e2042]
+                  - img [ref=e2045]
+              - generic [ref=e2049]:
+                - paragraph [ref=e2051]: ঢাকা (কমলাপুর)
+                - img [ref=e2052]
+                - paragraph [ref=e2055]: পার্বতীপুর
+              - generic [ref=e2057]:
+                - img [ref=e2058]
+                - generic [ref=e2061]: 22:00
+                - generic [ref=e2062]: →
+                - generic [ref=e2063]: 06:30
+              - generic [ref=e2064]:
+                - generic [ref=e2065]:
+                  - img [ref=e2066]
+                  - generic [ref=e2071]: ৳185 – ৳865
+                - button "Rate Karatoa Express" [ref=e2072]: ☆ রেটিং
+            - generic [ref=e2073] [cursor=pointer]:
+              - generic [ref=e2074]:
+                - generic [ref=e2075]:
+                  - generic [ref=e2076]:
+                    - heading "কর্ণফুলী এক্সপ্রেস" [level=3] [ref=e2077]
+                    - generic [ref=e2078]: "#799/800"
+                  - text: এক্সপ্রেস
+                - generic [ref=e2079]:
+                  - button "Add Karnaphuli Express to favorites" [ref=e2080]:
+                    - img [ref=e2081]
+                  - img [ref=e2084]
+              - generic [ref=e2088]:
+                - paragraph [ref=e2090]: ঢাকা (কমলাপুর)
+                - img [ref=e2091]
+                - paragraph [ref=e2094]: চট্টগ্রাম
+              - generic [ref=e2095]:
+                - generic [ref=e2096]:
+                  - img [ref=e2097]
+                  - generic [ref=e2100]: 22:00
+                  - generic [ref=e2101]: →
+                  - generic [ref=e2102]: 04:00
+                - generic [ref=e2103]:
+                  - img [ref=e2104]
+                  - generic [ref=e2108]: Wed (from Dhk)
+              - generic [ref=e2109]:
+                - generic [ref=e2110]:
+                  - img [ref=e2111]
+                  - generic [ref=e2116]: ৳340 – ৳1,580
+                - button "Rate Karnaphuli Express" [ref=e2117]: ☆ রেটিং
+            - generic [ref=e2118] [cursor=pointer]:
+              - generic [ref=e2119]:
+                - generic [ref=e2120]:
+                  - generic [ref=e2121]:
+                    - heading "খুলনা মেইল" [level=3] [ref=e2122]
+                    - generic [ref=e2123]: "#25/26"
+                  - text: মেইল
+                - generic [ref=e2124]:
+                  - button "Add Khulna Mail to favorites" [ref=e2125]:
+                    - img [ref=e2126]
+                  - img [ref=e2129]
+              - generic [ref=e2133]:
+                - paragraph [ref=e2135]: ঢাকা (কমলাপুর)
+                - img [ref=e2136]
+                - paragraph [ref=e2139]: খুলনা
+              - generic [ref=e2141]:
+                - img [ref=e2142]
+                - generic [ref=e2145]: 21:30
+                - generic [ref=e2146]: →
+                - generic [ref=e2147]: 06:30
+              - generic [ref=e2148]:
+                - generic [ref=e2149]:
+                  - img [ref=e2150]
+                  - generic [ref=e2155]: ৳220 – ৳1,025
+                - button "Rate Khulna Mail" [ref=e2156]: ☆ রেটিং
+            - generic [ref=e2157] [cursor=pointer]:
+              - generic [ref=e2158]:
+                - generic [ref=e2159]:
+                  - generic [ref=e2160]:
+                    - heading "কিশোরগঞ্জ কমিউটার" [level=3] [ref=e2161]
+                    - generic [ref=e2162]: "#53/54"
+                  - text: লোকাল
+                - generic [ref=e2163]:
+                  - button "Add Kishoreganj Commuter to favorites" [ref=e2164]:
+                    - img [ref=e2165]
+                  - img [ref=e2168]
+              - generic [ref=e2172]:
+                - paragraph [ref=e2174]: ঢাকা (কমলাপুর)
+                - img [ref=e2175]
+                - paragraph [ref=e2178]: কিশোরগঞ্জ
+              - generic [ref=e2180]:
+                - img [ref=e2181]
+                - generic [ref=e2184]: 16:30
+                - generic [ref=e2185]: →
+                - generic [ref=e2186]: 19:30
+              - generic [ref=e2187]:
+                - generic [ref=e2188]:
+                  - img [ref=e2189]
+                  - generic [ref=e2194]: ৳65
+                - button "Rate Kishoreganj Commuter" [ref=e2195]: ☆ রেটিং
+            - generic [ref=e2196] [cursor=pointer]:
+              - generic [ref=e2197]:
+                - generic [ref=e2198]:
+                  - generic [ref=e2199]:
+                    - heading "কিশোরগঞ্জ এক্সপ্রেস" [level=3] [ref=e2200]
+                    - generic [ref=e2201]: "#781/782"
+                  - text: আন্তঃনগর
+                - generic [ref=e2202]:
+                  - button "Add Kishoreganj Express to favorites" [ref=e2203]:
+                    - img [ref=e2204]
+                  - img [ref=e2207]
+              - generic [ref=e2211]:
+                - paragraph [ref=e2213]: ঢাকা (কমলাপুর)
+                - img [ref=e2214]
+                - paragraph [ref=e2217]: কিশোরগঞ্জ
+              - generic [ref=e2218]:
+                - generic [ref=e2219]:
+                  - img [ref=e2220]
+                  - generic [ref=e2223]: 10:45
+                  - generic [ref=e2224]: →
+                  - generic [ref=e2225]: 13:30
+                - generic [ref=e2226]:
+                  - img [ref=e2227]
+                  - generic [ref=e2231]: Fri
+              - generic [ref=e2232]:
+                - generic [ref=e2233]:
+                  - img [ref=e2234]
+                  - generic [ref=e2239]: ৳130 – ৳570
+                - button "Rate Kishoreganj Express" [ref=e2240]: ☆ রেটিং
+            - generic [ref=e2241] [cursor=pointer]:
+              - generic [ref=e2242]:
+                - generic [ref=e2243]:
+                  - generic [ref=e2244]:
+                    - heading "কিশোরগঞ্জ লোকাল" [level=3] [ref=e2245]
+                    - generic [ref=e2246]: "#31/32"
+                  - text: লোকাল
+                - generic [ref=e2247]:
+                  - button "Add Kishoreganj Local to favorites" [ref=e2248]:
+                    - img [ref=e2249]
+                  - img [ref=e2252]
+              - generic [ref=e2256]:
+                - paragraph [ref=e2258]: ঢাকা (কমলাপুর)
+                - img [ref=e2259]
+                - paragraph [ref=e2262]: কিশোরগঞ্জ
+              - generic [ref=e2264]:
+                - img [ref=e2265]
+                - generic [ref=e2268]: 09:00
+                - generic [ref=e2269]: →
+                - generic [ref=e2270]: 12:30
+              - generic [ref=e2271]:
+                - generic [ref=e2272]:
+                  - img [ref=e2273]
+                  - generic [ref=e2278]: ৳65
+                - button "Rate Kishoreganj Local" [ref=e2279]: ☆ রেটিং
+            - generic [ref=e2280] [cursor=pointer]:
+              - generic [ref=e2281]:
+                - generic [ref=e2282]:
+                  - generic [ref=e2283]:
+                    - heading "কুড়িগ্রাম এক্সপ্রেস" [level=3] [ref=e2284]
+                    - generic [ref=e2285]: "#797/798"
+                  - text: এক্সপ্রেস
+                - generic [ref=e2286]:
+                  - button "Add Kurigram Express to favorites" [ref=e2287]:
+                    - img [ref=e2288]
+                  - img [ref=e2291]
+              - generic [ref=e2295]:
+                - paragraph [ref=e2297]: ঢাকা (কমলাপুর)
+                - img [ref=e2298]
+                - paragraph [ref=e2301]: কুড়িগ্রাম
+              - generic [ref=e2302]:
+                - generic [ref=e2303]:
+                  - img [ref=e2304]
+                  - generic [ref=e2307]: 20:45
+                  - generic [ref=e2308]: →
+                  - generic [ref=e2309]: 08:30
+                - generic [ref=e2310]:
+                  - img [ref=e2311]
+                  - generic [ref=e2315]: Wed
+              - generic [ref=e2316]:
+                - generic [ref=e2317]:
+                  - img [ref=e2318]
+                  - generic [ref=e2323]: ৳490 – ৳2,155
+                - button "Rate Kurigram Express" [ref=e2324]: ☆ রেটিং
+            - generic [ref=e2325] [cursor=pointer]:
+              - generic [ref=e2326]:
+                - generic [ref=e2327]:
+                  - generic [ref=e2328]:
+                    - heading "লালমণি এক্সপ্রেস" [level=3] [ref=e2329]
+                    - generic [ref=e2330]: "#751/752"
+                  - text: এক্সপ্রেস
+                - generic [ref=e2331]:
+                  - button "Add Lalmoni Express to favorites" [ref=e2332]:
+                    - img [ref=e2333]
+                  - img [ref=e2336]
+              - generic [ref=e2340]:
+                - paragraph [ref=e2342]: ঢাকা (কমলাপুর)
+                - img [ref=e2343]
+                - paragraph [ref=e2346]: লালমনিরহাট
+              - generic [ref=e2347]:
+                - generic [ref=e2348]:
+                  - img [ref=e2349]
+                  - generic [ref=e2352]: 21:45
+                  - generic [ref=e2353]: →
+                  - generic [ref=e2354]: 09:30
+                - generic [ref=e2355]:
+                  - img [ref=e2356]
+                  - generic [ref=e2360]: Fri
+              - generic [ref=e2361]:
+                - generic [ref=e2362]:
+                  - img [ref=e2363]
+                  - generic [ref=e2368]: ৳510 – ৳2,235
+                - button "Rate Lalmoni Express" [ref=e2369]: ☆ রেটিং
+            - generic [ref=e2370] [cursor=pointer]:
+              - generic [ref=e2371]:
+                - generic [ref=e2372]:
+                  - generic [ref=e2373]:
+                    - heading "লালমনিরহাট এক্সপ্রেস" [level=3] [ref=e2374]
+                    - generic [ref=e2375]: "#753/754"
+                  - text: আন্তঃনগর
+                - generic [ref=e2376]:
+                  - button "Add Lalmonirhat Express to favorites" [ref=e2377]:
+                    - img [ref=e2378]
+                  - img [ref=e2381]
+              - generic [ref=e2385]:
+                - paragraph [ref=e2387]: ঢাকা (কমলাপুর)
+                - img [ref=e2388]
+                - paragraph [ref=e2391]: লালমনিরহাট
+              - generic [ref=e2392]:
+                - generic [ref=e2393]:
+                  - img [ref=e2394]
+                  - generic [ref=e2397]: 22:30
+                  - generic [ref=e2398]: →
+                  - generic [ref=e2399]: 08:30
+                - generic [ref=e2400]:
+                  - img [ref=e2401]
+                  - generic [ref=e2405]: Wed
+              - generic [ref=e2406]:
+                - generic [ref=e2407]:
+                  - img [ref=e2408]
+                  - generic [ref=e2413]: ৳215 – ৳1,000
+                - button "Rate Lalmonirhat Express" [ref=e2414]: ☆ রেটিং
+            - generic [ref=e2415] [cursor=pointer]:
+              - generic [ref=e2416]:
+                - generic [ref=e2417]:
+                  - generic [ref=e2418]:
+                    - heading "মধুমতি এক্সপ্রেস" [level=3] [ref=e2419]
+                    - generic [ref=e2420]: "#755/756"
+                  - text: আন্তঃনগর
+                - generic [ref=e2421]:
+                  - button "Add Madhumati Express to favorites" [ref=e2422]:
+                    - img [ref=e2423]
+                  - img [ref=e2426]
+              - generic [ref=e2430]:
+                - paragraph [ref=e2432]: ঢাকা (কমলাপুর)
+                - img [ref=e2433]
+                - paragraph [ref=e2436]: রাজশাহী
+              - generic [ref=e2437]:
+                - generic [ref=e2438]:
+                  - img [ref=e2439]
+                  - generic [ref=e2442]: 15:00
+                  - generic [ref=e2443]: →
+                  - generic [ref=e2444]: 22:30
+                - generic [ref=e2445]:
+                  - img [ref=e2446]
+                  - generic [ref=e2450]: Sat
+              - generic [ref=e2451]:
+                - generic [ref=e2452]:
+                  - img [ref=e2453]
+                  - generic [ref=e2458]: ৳260 – ৳1,150
+                - button "Rate Madhumati Express" [ref=e2459]: ☆ রেটিং
+            - generic [ref=e2460] [cursor=pointer]:
+              - generic [ref=e2461]:
+                - generic [ref=e2462]:
+                  - generic [ref=e2463]:
+                    - heading "মহানগর এক্সপ্রেস" [level=3] [ref=e2464]
+                    - generic [ref=e2465]: "#721/722"
+                  - text: আন্তঃনগর
+                - generic [ref=e2466]:
+                  - button "Add Mahanagar Express to favorites" [ref=e2467]:
+                    - img [ref=e2468]
+                  - img [ref=e2471]
+              - generic [ref=e2475]:
+                - paragraph [ref=e2477]: ঢাকা (কমলাপুর)
+                - img [ref=e2478]
+                - paragraph [ref=e2481]: চট্টগ্রাম
+              - generic [ref=e2482]:
+                - generic [ref=e2483]:
+                  - img [ref=e2484]
+                  - generic [ref=e2487]: 21:20
+                  - generic [ref=e2488]: →
+                  - generic [ref=e2489]: 03:30
+                - generic [ref=e2490]:
+                  - img [ref=e2491]
+                  - generic [ref=e2495]: Sun
+              - generic [ref=e2496]:
+                - generic [ref=e2497]:
+                  - img [ref=e2498]
+                  - generic [ref=e2503]: ৳345 – ৳1,560
+                - button "Rate Mahanagar Express" [ref=e2504]: ☆ রেটিং
+            - generic [ref=e2505] [cursor=pointer]:
+              - generic [ref=e2506]:
+                - generic [ref=e2507]:
+                  - generic [ref=e2508]:
+                    - heading "মহানগর গোধূলি" [level=3] [ref=e2509]
+                    - generic [ref=e2510]: "#705/706"
+                  - text: আন্তঃনগর
+                - generic [ref=e2511]:
+                  - button "Add Mahanagar Godhuli to favorites" [ref=e2512]:
+                    - img [ref=e2513]
+                  - img [ref=e2516]
+              - generic [ref=e2520]:
+                - paragraph [ref=e2522]: ঢাকা (কমলাপুর)
+                - img [ref=e2523]
+                - paragraph [ref=e2526]: চট্টগ্রাম
+              - generic [ref=e2528]:
+                - img [ref=e2529]
+                - generic [ref=e2532]: 14:40
+                - generic [ref=e2533]: →
+                - generic [ref=e2534]: 21:00
+              - generic [ref=e2535]:
+                - generic [ref=e2536]:
+                  - img [ref=e2537]
+                  - generic [ref=e2542]: ৳340 – ৳1,580
+                - button "Rate Mahanagar Godhuli" [ref=e2543]: ☆ রেটিং
+            - generic [ref=e2544] [cursor=pointer]:
+              - generic [ref=e2545]:
+                - generic [ref=e2546]:
+                  - generic [ref=e2547]:
+                    - heading "মহানগর প্রভাতী" [level=3] [ref=e2548]
+                    - generic [ref=e2549]: "#703/704"
+                  - text: আন্তঃনগর
+                - generic [ref=e2550]:
+                  - button "Add Mahanagar Provati to favorites" [ref=e2551]:
+                    - img [ref=e2552]
+                  - img [ref=e2555]
+              - generic [ref=e2559]:
+                - paragraph [ref=e2561]: ঢাকা (কমলাপুর)
+                - img [ref=e2562]
+                - paragraph [ref=e2565]: চট্টগ্রাম
+              - generic [ref=e2567]:
+                - img [ref=e2568]
+                - generic [ref=e2571]: 07:45
+                - generic [ref=e2572]: →
+                - generic [ref=e2573]: 13:35
+              - generic [ref=e2574]:
+                - generic [ref=e2575]:
+                  - img [ref=e2576]
+                  - generic [ref=e2581]: ৳340 – ৳1,580
+                - button "Rate Mahanagar Provati" [ref=e2582]: ☆ রেটিং
+            - generic [ref=e2583] [cursor=pointer]:
+              - generic [ref=e2584]:
+                - generic [ref=e2585]:
+                  - generic [ref=e2586]:
+                    - heading "মৈত্রী এক্সপ্রেস" [level=3] [ref=e2587]
+                    - generic [ref=e2588]: "#3107/3108"
+                  - text: আন্তঃনগর
+                - generic [ref=e2589]:
+                  - button "Add Maitree Express to favorites" [ref=e2590]:
+                    - img [ref=e2591]
+                  - img [ref=e2594]
+              - generic [ref=e2598]:
+                - paragraph [ref=e2600]: ঢাকা ক্যান্টনমেন্ট
+                - img [ref=e2601]
+                - generic:
+                  - paragraph
+              - generic [ref=e2603]:
+                - generic [ref=e2604]:
+                  - img [ref=e2605]
+                  - generic [ref=e2608]: 08:15
+                  - generic [ref=e2609]: →
+                  - generic [ref=e2610]: 16:00
+                - generic [ref=e2611]:
+                  - img [ref=e2612]
+                  - generic [ref=e2616]: Mon
+              - generic [ref=e2617]:
+                - generic [ref=e2618]:
+                  - img [ref=e2619]
+                  - generic [ref=e2624]: ৳2500 – ৳4,900
+                - button "Rate Maitree Express" [ref=e2625]: ☆ রেটিং
+            - generic [ref=e2626] [cursor=pointer]:
+              - generic [ref=e2627]:
+                - generic [ref=e2628]:
+                  - generic [ref=e2629]:
+                    - heading "ময়ূরাক্ষী এক্সপ্রেস" [level=3] [ref=e2630]
+                    - generic [ref=e2631]: "#747/748"
+                  - text: আন্তঃনগর
+                - generic [ref=e2632]:
+                  - button "Add Mayurakkhi Express to favorites" [ref=e2633]:
+                    - img [ref=e2634]
+                  - img [ref=e2637]
+              - generic [ref=e2641]:
+                - paragraph [ref=e2643]: খুলনা
+                - img [ref=e2644]
+                - paragraph [ref=e2647]: রাজশাহী
+              - generic [ref=e2648]:
+                - generic [ref=e2649]:
+                  - img [ref=e2650]
+                  - generic [ref=e2653]: 07:00
+                  - generic [ref=e2654]: →
+                  - generic [ref=e2655]: 13:30
+                - generic [ref=e2656]:
+                  - img [ref=e2657]
+                  - generic [ref=e2661]: Wed
+              - generic [ref=e2662]:
+                - generic [ref=e2663]:
+                  - img [ref=e2664]
+                  - generic [ref=e2669]: ৳140 – ৳660
+                - button "Rate Mayurakkhi Express" [ref=e2670]: ☆ রেটিং
+            - generic [ref=e2671] [cursor=pointer]:
+              - generic [ref=e2672]:
+                - generic [ref=e2673]:
+                  - generic [ref=e2674]:
+                    - heading "মেঘনা এক্সপ্রেস" [level=3] [ref=e2675]
+                    - generic [ref=e2676]: "#805/806"
+                  - text: আন্তঃনগর
+                - generic [ref=e2677]:
+                  - button "Add Meghna Express to favorites" [ref=e2678]:
+                    - img [ref=e2679]
+                  - img [ref=e2682]
+              - generic [ref=e2686]:
+                - paragraph [ref=e2688]: ঢাকা (কমলাপুর)
+                - img [ref=e2689]
+                - paragraph [ref=e2692]: কুমিল্লা
+              - generic [ref=e2694]:
+                - img [ref=e2695]
+                - generic [ref=e2698]: 06:30
+                - generic [ref=e2699]: →
+                - generic [ref=e2700]: 10:00
+              - generic [ref=e2701]:
+                - generic [ref=e2702]:
+                  - img [ref=e2703]
+                  - generic [ref=e2708]: ৳145
+                - button "Rate Meghna Express" [ref=e2709]: ☆ রেটিং
+            - generic [ref=e2710] [cursor=pointer]:
+              - generic [ref=e2711]:
+                - generic [ref=e2712]:
+                  - generic [ref=e2713]:
+                    - heading "মিতালী এক্সপ্রেস" [level=3] [ref=e2714]
+                    - generic [ref=e2715]: "#3131/3132"
+                  - text: আন্তঃনগর
+                - generic [ref=e2716]:
+                  - button "Add Mitali Express to favorites" [ref=e2717]:
+                    - img [ref=e2718]
+                  - img [ref=e2721]
+              - generic [ref=e2725]:
+                - paragraph [ref=e2727]: ঢাকা ক্যান্টনমেন্ট
+                - img [ref=e2728]
+                - generic:
+                  - paragraph
+              - generic [ref=e2730]:
+                - generic [ref=e2731]:
+                  - img [ref=e2732]
+                  - generic [ref=e2735]: 21:50
+                  - generic [ref=e2736]: →
+                  - generic [ref=e2737]: 07:15
+                - generic [ref=e2738]:
+                  - img [ref=e2739]
+                  - generic [ref=e2743]: Mon
+              - generic [ref=e2744]:
+                - generic [ref=e2745]:
+                  - img [ref=e2746]
+                  - generic [ref=e2751]: ৳3500 – ৳6,000
+                - button "Rate Mitali Express" [ref=e2752]: ☆ রেটিং
+            - generic [ref=e2753] [cursor=pointer]:
+              - generic [ref=e2754]:
+                - generic [ref=e2755]:
+                  - generic [ref=e2756]:
+                    - heading "মহানন্দা এক্সপ্রেস" [level=3] [ref=e2757]
+                    - generic [ref=e2758]: "#777/778"
+                  - text: আন্তঃনগর
+                - generic [ref=e2759]:
+                  - button "Add Mohananda Express to favorites" [ref=e2760]:
+                    - img [ref=e2761]
+                  - img [ref=e2764]
+              - generic [ref=e2768]:
+                - paragraph [ref=e2770]: ঢাকা (কমলাপুর)
+                - img [ref=e2771]
+                - paragraph [ref=e2774]: চাঁপাইনবাবগঞ্জ
+              - generic [ref=e2775]:
+                - generic [ref=e2776]:
+                  - img [ref=e2777]
+                  - generic [ref=e2780]: 07:40
+                  - generic [ref=e2781]: →
+                  - generic [ref=e2782]: 15:30
+                - generic [ref=e2783]:
+                  - img [ref=e2784]
+                  - generic [ref=e2788]: Tue (from Dhk)
+              - generic [ref=e2789]:
+                - generic [ref=e2790]:
+                  - img [ref=e2791]
+                  - generic [ref=e2796]: ৳325 – ৳1,430
+                - button "Rate Mohananda Express" [ref=e2797]: ☆ রেটিং
+            - generic [ref=e2798] [cursor=pointer]:
+              - generic [ref=e2799]:
+                - generic [ref=e2800]:
+                  - generic [ref=e2801]:
+                    - heading "মোহনগঞ্জ এক্সপ্রেস" [level=3] [ref=e2802]
+                    - generic [ref=e2803]: "#789/790"
+                  - text: আন্তঃনগর
+                - generic [ref=e2804]:
+                  - button "Add Mohanganj Express to favorites" [ref=e2805]:
+                    - img [ref=e2806]
+                  - img [ref=e2809]
+              - generic [ref=e2813]:
+                - paragraph [ref=e2815]: ঢাকা (কমলাপুর)
+                - img [ref=e2816]
+                - paragraph [ref=e2819]: মোহনগঞ্জ
+              - generic [ref=e2820]:
+                - generic [ref=e2821]:
+                  - img [ref=e2822]
+                  - generic [ref=e2825]: 13:15
+                  - generic [ref=e2826]: →
+                  - generic [ref=e2827]: 19:00
+                - generic [ref=e2828]:
+                  - img [ref=e2829]
+                  - generic [ref=e2833]: Mon (from Dhk)
+              - generic [ref=e2834]:
+                - generic [ref=e2835]:
+                  - img [ref=e2836]
+                  - generic [ref=e2841]: ৳210 – ৳920
+                - button "Rate Mohanganj Express" [ref=e2842]: ☆ রেটিং
+            - generic [ref=e2843] [cursor=pointer]:
+              - generic [ref=e2844]:
+                - generic [ref=e2845]:
+                  - generic [ref=e2846]:
+                    - heading "মংলা কমিউটার" [level=3] [ref=e2847]
+                    - generic [ref=e2848]: "#97/98"
+                  - text: লোকাল
+                - generic [ref=e2849]:
+                  - button "Add Mongla Commuter to favorites" [ref=e2850]:
+                    - img [ref=e2851]
+                  - img [ref=e2854]
+              - generic [ref=e2858]:
+                - paragraph [ref=e2860]: বেনাপোল
+                - img [ref=e2861]
+                - paragraph [ref=e2864]: মংলা
+              - generic [ref=e2865]:
+                - generic [ref=e2866]:
+                  - img [ref=e2867]
+                  - generic [ref=e2870]: 09:15
+                  - generic [ref=e2871]: →
+                  - generic [ref=e2872]: 12:30
+                - generic [ref=e2873]:
+                  - img [ref=e2874]
+                  - generic [ref=e2878]: Tue
+              - generic [ref=e2879]:
+                - generic [ref=e2880]:
+                  - img [ref=e2881]
+                  - generic [ref=e2886]: ৳65
+                - button "Rate Mongla Commuter" [ref=e2887]: ☆ রেটিং
+            - generic [ref=e2888] [cursor=pointer]:
+              - generic [ref=e2889]:
+                - generic [ref=e2890]:
+                  - generic [ref=e2891]:
+                    - heading "মংলা এক্সপ্রেস" [level=3] [ref=e2892]
+                    - generic [ref=e2893]: "#799/800"
+                  - text: লোকাল
+                - generic [ref=e2894]:
+                  - button "Add Mongla Express to favorites" [ref=e2895]:
+                    - img [ref=e2896]
+                  - img [ref=e2899]
+              - generic [ref=e2903]:
+                - paragraph [ref=e2905]: বেনাপোল
+                - img [ref=e2906]
+                - paragraph [ref=e2909]: মংলা
+              - generic [ref=e2911]:
+                - img [ref=e2912]
+                - generic [ref=e2915]: 09:00
+                - generic [ref=e2916]: →
+                - generic [ref=e2917]: 10:30
+              - generic [ref=e2918]:
+                - generic [ref=e2919]:
+                  - img [ref=e2920]
+                  - generic [ref=e2925]: ৳35
+                - button "Rate Mongla Express" [ref=e2926]: ☆ রেটিং
+            - generic [ref=e2927] [cursor=pointer]:
+              - generic [ref=e2928]:
+                - generic [ref=e2929]:
+                  - generic [ref=e2930]:
+                    - heading "মৌলভীবাজার ইন্টারসিটি" [level=3] [ref=e2931]
+                    - generic [ref=e2932]: "#769/770"
+                  - text: আন্তঃনগর
+                - generic [ref=e2933]:
+                  - button "Add Moulvibazar Intercity to favorites" [ref=e2934]:
+                    - img [ref=e2935]
+                  - img [ref=e2938]
+              - generic [ref=e2942]:
+                - paragraph [ref=e2944]: ঢাকা (কমলাপুর)
+                - img [ref=e2945]
+                - paragraph [ref=e2948]: মৌলভীবাজার
+              - generic [ref=e2949]:
+                - generic [ref=e2950]:
+                  - img [ref=e2951]
+                  - generic [ref=e2954]: 08:00
+                  - generic [ref=e2955]: →
+                  - generic [ref=e2956]: 13:30
+                - generic [ref=e2957]:
+                  - img [ref=e2958]
+                  - generic [ref=e2962]: Thu
+              - generic [ref=e2963]:
+                - generic [ref=e2964]:
+                  - img [ref=e2965]
+                  - generic [ref=e2970]: ৳135 – ৳615
+                - button "Rate Moulvibazar Intercity" [ref=e2971]: ☆ রেটিং
+            - generic [ref=e2972] [cursor=pointer]:
+              - generic [ref=e2973]:
+                - generic [ref=e2974]:
+                  - generic [ref=e2975]:
+                    - heading "ময়মনসিংহ ইন্টারসিটি" [level=3] [ref=e2976]
+                    - generic [ref=e2977]: "#35/36"
+                  - text: আন্তঃনগর
+                - generic [ref=e2978]:
+                  - button "Add Mymensingh Intercity to favorites" [ref=e2979]:
+                    - img [ref=e2980]
+                  - img [ref=e2983]
+              - generic [ref=e2987]:
+                - paragraph [ref=e2989]: ঢাকা (কমলাপুর)
+                - img [ref=e2990]
+                - paragraph [ref=e2993]: ময়মনসিংহ
+              - generic [ref=e2995]:
+                - img [ref=e2996]
+                - generic [ref=e2999]: 18:00
+                - generic [ref=e3000]: →
+                - generic [ref=e3001]: 22:30
+              - generic [ref=e3002]:
+                - generic [ref=e3003]:
+                  - img [ref=e3004]
+                  - generic [ref=e3009]: ৳105
+                - button "Rate Mymensingh Intercity" [ref=e3010]: ☆ রেটিং
+            - generic [ref=e3011] [cursor=pointer]:
+              - generic [ref=e3012]:
+                - generic [ref=e3013]:
+                  - generic [ref=e3014]:
+                    - heading "ময়মনসিংহ লোকাল" [level=3] [ref=e3015]
+                    - generic [ref=e3016]: "#11/12"
+                  - text: লোকাল
+                - generic [ref=e3017]:
+                  - button "Add Mymensingh Local to favorites" [ref=e3018]:
+                    - img [ref=e3019]
+                  - img [ref=e3022]
+              - generic [ref=e3026]:
+                - paragraph [ref=e3028]: ঢাকা (কমলাপুর)
+                - img [ref=e3029]
+                - paragraph [ref=e3032]: ময়মনসিংহ
+              - generic [ref=e3034]:
+                - img [ref=e3035]
+                - generic [ref=e3038]: 07:15
+                - generic [ref=e3039]: →
+                - generic [ref=e3040]: 11:30
+              - generic [ref=e3041]:
+                - generic [ref=e3042]:
+                  - img [ref=e3043]
+                  - generic [ref=e3048]: ৳80
+                - button "Rate Mymensingh Local" [ref=e3049]: ☆ রেটিং
+            - generic [ref=e3050] [cursor=pointer]:
+              - generic [ref=e3051]:
+                - generic [ref=e3052]:
+                  - generic [ref=e3053]:
+                    - heading "নাফ এক্সপ্রেস" [level=3] [ref=e3054]
+                    - generic [ref=e3055]: "#815/816"
+                  - text: আন্তঃনগর
+                - generic [ref=e3056]:
+                  - button "Add Naf Express to favorites" [ref=e3057]:
+                    - img [ref=e3058]
+                  - img [ref=e3061]
+              - generic [ref=e3065]:
+                - paragraph [ref=e3067]: ঢাকা (কমলাপুর)
+                - img [ref=e3068]
+                - paragraph [ref=e3071]: কক্সবাজার
+              - generic [ref=e3072]:
+                - generic [ref=e3073]:
+                  - img [ref=e3074]
+                  - generic [ref=e3077]: 14:00
+                  - generic [ref=e3078]: →
+                  - generic [ref=e3079]: 23:30
+                - generic [ref=e3080]:
+                  - img [ref=e3081]
+                  - generic [ref=e3085]: Sat (from Dhk)
+              - generic [ref=e3086]:
+                - generic [ref=e3087]:
+                  - img [ref=e3088]
+                  - generic [ref=e3093]: ৳530 – ৳2,330
+                - button "Rate Naf Express" [ref=e3094]: ☆ রেটিং
+            - generic [ref=e3095] [cursor=pointer]:
+              - generic [ref=e3096]:
+                - generic [ref=e3097]:
+                  - generic [ref=e3098]:
+                    - heading "নকশীকাঁথা এক্সপ্রেস" [level=3] [ref=e3099]
+                    - generic [ref=e3100]: "#807/808"
+                  - text: এক্সপ্রেস
+                - generic [ref=e3101]:
+                  - button "Add Nakshikantha Express to favorites" [ref=e3102]:
+                    - img [ref=e3103]
+                  - img [ref=e3106]
+              - generic [ref=e3110]:
+                - paragraph [ref=e3112]: ঢাকা (কমলাপুর)
+                - img [ref=e3113]
+                - paragraph [ref=e3116]: খুলনা
+              - generic [ref=e3118]:
+                - img [ref=e3119]
+                - generic [ref=e3122]: 10:00
+                - generic [ref=e3123]: →
+                - generic [ref=e3124]: 19:00
+              - generic [ref=e3125]:
+                - generic [ref=e3126]:
+                  - img [ref=e3127]
+                  - generic [ref=e3132]: ৳150 – ৳900
+                - button "Rate Nakshikantha Express" [ref=e3133]: ☆ রেটিং
+            - generic [ref=e3134] [cursor=pointer]:
+              - generic [ref=e3135]:
+                - generic [ref=e3136]:
+                  - generic [ref=e3137]:
+                    - heading "নারায়ণগঞ্জ কমিউটার ১" [level=3] [ref=e3138]
+                    - generic [ref=e3139]: "#1/2"
+                  - text: লোকাল
+                - generic [ref=e3140]:
+                  - button "Add Narayanganj Commuter 1 to favorites" [ref=e3141]:
+                    - img [ref=e3142]
+                  - img [ref=e3145]
+              - generic [ref=e3149]:
+                - paragraph [ref=e3151]: ঢাকা (কমলাপুর)
+                - img [ref=e3152]
+                - paragraph [ref=e3155]: নারায়ণগঞ্জ
+              - generic [ref=e3157]:
+                - img [ref=e3158]
+                - generic [ref=e3161]: 06:30
+                - generic [ref=e3162]: →
+                - generic [ref=e3163]: 07:30
+              - generic [ref=e3164]:
+                - generic [ref=e3165]:
+                  - img [ref=e3166]
+                  - generic [ref=e3171]: ৳20
+                - button "Rate Narayanganj Commuter 1" [ref=e3172]: ☆ রেটিং
+            - generic [ref=e3173] [cursor=pointer]:
+              - generic [ref=e3174]:
+                - generic [ref=e3175]:
+                  - generic [ref=e3176]:
+                    - heading "নারায়ণগঞ্জ কমিউটার ২" [level=3] [ref=e3177]
+                    - generic [ref=e3178]: "#3/4"
+                  - text: লোকাল
+                - generic [ref=e3179]:
+                  - button "Add Narayanganj Commuter 2 to favorites" [ref=e3180]:
+                    - img [ref=e3181]
+                  - img [ref=e3184]
+              - generic [ref=e3188]:
+                - paragraph [ref=e3190]: ঢাকা (কমলাপুর)
+                - img [ref=e3191]
+                - paragraph [ref=e3194]: নারায়ণগঞ্জ
+              - generic [ref=e3196]:
+                - img [ref=e3197]
+                - generic [ref=e3200]: 10:00
+                - generic [ref=e3201]: →
+                - generic [ref=e3202]: 11:00
+              - generic [ref=e3203]:
+                - generic [ref=e3204]:
+                  - img [ref=e3205]
+                  - generic [ref=e3210]: ৳20
+                - button "Rate Narayanganj Commuter 2" [ref=e3211]: ☆ রেটিং
+            - generic [ref=e3212] [cursor=pointer]:
+              - generic [ref=e3213]:
+                - generic [ref=e3214]:
+                  - generic [ref=e3215]:
+                    - heading "নারায়ণগঞ্জ কমিউটার ৩" [level=3] [ref=e3216]
+                    - generic [ref=e3217]: "#5/6"
+                  - text: লোকাল
+                - generic [ref=e3218]:
+                  - button "Add Narayanganj Commuter 3 to favorites" [ref=e3219]:
+                    - img [ref=e3220]
+                  - img [ref=e3223]
+              - generic [ref=e3227]:
+                - paragraph [ref=e3229]: ঢাকা (কমলাপুর)
+                - img [ref=e3230]
+                - paragraph [ref=e3233]: নারায়ণগঞ্জ
+              - generic [ref=e3235]:
+                - img [ref=e3236]
+                - generic [ref=e3239]: 17:30
+                - generic [ref=e3240]: →
+                - generic [ref=e3241]: 18:30
+              - generic [ref=e3242]:
+                - generic [ref=e3243]:
+                  - img [ref=e3244]
+                  - generic [ref=e3249]: ৳20
+                - button "Rate Narayanganj Commuter 3" [ref=e3250]: ☆ রেটিং
+            - generic [ref=e3251] [cursor=pointer]:
+              - generic [ref=e3252]:
+                - generic [ref=e3253]:
+                  - generic [ref=e3254]:
+                    - heading "নেত্রকোণা এক্সপ্রেস" [level=3] [ref=e3255]
+                    - generic [ref=e3256]: "#781/782"
+                  - text: আন্তঃনগর
+                - generic [ref=e3257]:
+                  - button "Add Netrokona Express to favorites" [ref=e3258]:
+                    - img [ref=e3259]
+                  - img [ref=e3262]
+              - generic [ref=e3266]:
+                - paragraph [ref=e3268]: ঢাকা (কমলাপুর)
+                - img [ref=e3269]
+                - paragraph [ref=e3272]: নেত্রকোণা
+              - generic [ref=e3274]:
+                - img [ref=e3275]
+                - generic [ref=e3278]: 10:00
+                - generic [ref=e3279]: →
+                - generic [ref=e3280]: 15:30
+              - generic [ref=e3281]:
+                - generic [ref=e3282]:
+                  - img [ref=e3283]
+                  - generic [ref=e3288]: ৳120
+                - button "Rate Netrokona Express" [ref=e3289]: ☆ রেটিং
+            - generic [ref=e3290] [cursor=pointer]:
+              - generic [ref=e3291]:
+                - generic [ref=e3292]:
+                  - generic [ref=e3293]:
+                    - heading "নেত্রকোণা লোকাল" [level=3] [ref=e3294]
+                    - generic [ref=e3295]: "#81/82"
+                  - text: লোকাল
+                - generic [ref=e3296]:
+                  - button "Add Netrokona Local to favorites" [ref=e3297]:
+                    - img [ref=e3298]
+                  - img [ref=e3301]
+              - generic [ref=e3305]:
+                - paragraph [ref=e3307]: ময়মনসিংহ
+                - img [ref=e3308]
+                - paragraph [ref=e3311]: নেত্রকোণা
+              - generic [ref=e3313]:
+                - img [ref=e3314]
+                - generic [ref=e3317]: 09:00
+                - generic [ref=e3318]: →
+                - generic [ref=e3319]: 11:00
+              - generic [ref=e3320]:
+                - generic [ref=e3321]:
+                  - img [ref=e3322]
+                  - generic [ref=e3327]: ৳35
+                - button "Rate Netrokona Local" [ref=e3328]: ☆ রেটিং
+            - generic [ref=e3329] [cursor=pointer]:
+              - generic [ref=e3330]:
+                - generic [ref=e3331]:
+                  - generic [ref=e3332]:
+                    - heading "নীলসাগর এক্সপ্রেস" [level=3] [ref=e3333]
+                    - generic [ref=e3334]: "#765/766"
+                  - text: আন্তঃনগর
+                - generic [ref=e3335]:
+                  - button "Add Nilsagar Express to favorites" [ref=e3336]:
+                    - img [ref=e3337]
+                  - img [ref=e3340]
+              - generic [ref=e3344]:
+                - paragraph [ref=e3346]: ঢাকা (কমলাপুর)
+                - img [ref=e3347]
+                - paragraph [ref=e3350]: নীলফামারী
+              - generic [ref=e3351]:
+                - generic [ref=e3352]:
+                  - img [ref=e3353]
+                  - generic [ref=e3356]: 07:00
+                  - generic [ref=e3357]: →
+                  - generic [ref=e3358]: 17:30
+                - generic [ref=e3359]:
+                  - img [ref=e3360]
+                  - generic [ref=e3364]: Sun
+              - generic [ref=e3365]:
+                - generic [ref=e3366]:
+                  - img [ref=e3367]
+                  - generic [ref=e3372]: ৳250 – ৳1,160
+                - button "Rate Nilsagar Express" [ref=e3373]: ☆ রেটিং
+            - generic [ref=e3374] [cursor=pointer]:
+              - generic [ref=e3375]:
+                - generic [ref=e3376]:
+                  - generic [ref=e3377]:
+                    - heading "নোয়াখালী এক্সপ্রেস" [level=3] [ref=e3378]
+                    - generic [ref=e3379]: "#785/786"
+                  - text: এক্সপ্রেস
+                - generic [ref=e3380]:
+                  - button "Add Noakhali Express to favorites" [ref=e3381]:
+                    - img [ref=e3382]
+                  - img [ref=e3385]
+              - generic [ref=e3389]:
+                - paragraph [ref=e3391]: ঢাকা (কমলাপুর)
+                - img [ref=e3392]
+                - paragraph [ref=e3395]: নোয়াখালী
+              - generic [ref=e3396]:
+                - generic [ref=e3397]:
+                  - img [ref=e3398]
+                  - generic [ref=e3401]: 09:00
+                  - generic [ref=e3402]: →
+                  - generic [ref=e3403]: 15:30
+                - generic [ref=e3404]:
+                  - img [ref=e3405]
+                  - generic [ref=e3409]: Fri (from Dhk)
+              - generic [ref=e3410]:
+                - generic [ref=e3411]:
+                  - img [ref=e3412]
+                  - generic [ref=e3417]: ৳250 – ৳1,090
+                - button "Rate Noakhali Express" [ref=e3418]: ☆ রেটিং
+            - generic [ref=e3419] [cursor=pointer]:
+              - generic [ref=e3420]:
+                - generic [ref=e3421]:
+                  - generic [ref=e3422]:
+                    - heading "নোয়াখালী লোকাল" [level=3] [ref=e3423]
+                    - generic [ref=e3424]: "#71/72"
+                  - text: লোকাল
+                - generic [ref=e3425]:
+                  - button "Add Noakhali Local to favorites" [ref=e3426]:
+                    - img [ref=e3427]
+                  - img [ref=e3430]
+              - generic [ref=e3434]:
+                - paragraph [ref=e3436]: ঢাকা (কমলাপুর)
+                - img [ref=e3437]
+                - paragraph [ref=e3440]: মাইজদী কোর্ট
+              - generic [ref=e3442]:
+                - img [ref=e3443]
+                - generic [ref=e3446]: 08:00
+                - generic [ref=e3447]: →
+                - generic [ref=e3448]: 14:00
+              - generic [ref=e3449]:
+                - generic [ref=e3450]:
+                  - img [ref=e3451]
+                  - generic [ref=e3456]: ৳110
+                - button "Rate Noakhali Local" [ref=e3457]: ☆ রেটিং
+            - generic [ref=e3458] [cursor=pointer]:
+              - generic [ref=e3459]:
+                - generic [ref=e3460]:
+                  - generic [ref=e3461]:
+                    - heading "নোয়াখালী মেইল" [level=3] [ref=e3462]
+                    - generic [ref=e3463]: "#13/14"
+                  - text: মেইল
+                - generic [ref=e3464]:
+                  - button "Add Noakhali Mail to favorites" [ref=e3465]:
+                    - img [ref=e3466]
+                  - img [ref=e3469]
+              - generic [ref=e3473]:
+                - paragraph [ref=e3475]: ঢাকা (কমলাপুর)
+                - img [ref=e3476]
+                - paragraph [ref=e3479]: নোয়াখালী
+              - generic [ref=e3481]:
+                - img [ref=e3482]
+                - generic [ref=e3485]: 22:30
+                - generic [ref=e3486]: →
+                - generic [ref=e3487]: 05:30
+              - generic [ref=e3488]:
+                - generic [ref=e3489]:
+                  - img [ref=e3490]
+                  - generic [ref=e3495]: ৳110
+                - button "Rate Noakhali Mail" [ref=e3496]: ☆ রেটিং
+            - generic [ref=e3497] [cursor=pointer]:
+              - generic [ref=e3498]:
+                - generic [ref=e3499]:
+                  - generic [ref=e3500]:
+                    - heading "পদাতিক এক্সপ্রেস" [level=3] [ref=e3501]
+                    - generic [ref=e3502]: "#769/770"
+                  - text: আন্তঃনগর
+                - generic [ref=e3503]:
+                  - button "Add Padatik Express to favorites" [ref=e3504]:
+                    - img [ref=e3505]
+                  - img [ref=e3508]
+              - generic [ref=e3512]:
+                - paragraph [ref=e3514]: ঢাকা (কমলাপুর)
+                - img [ref=e3515]
+                - paragraph [ref=e3518]: রাজশাহী
+              - generic [ref=e3520]:
+                - img [ref=e3521]
+                - generic [ref=e3524]: 16:30
+                - generic [ref=e3525]: →
+                - generic [ref=e3526]: 22:45
+              - generic [ref=e3527]:
+                - generic [ref=e3528]:
+                  - img [ref=e3529]
+                  - generic [ref=e3534]: ৳265 – ৳1,160
+                - button "Rate Padatik Express" [ref=e3535]: ☆ রেটিং
+            - generic [ref=e3536] [cursor=pointer]:
+              - generic [ref=e3537]:
+                - generic [ref=e3538]:
+                  - generic [ref=e3539]:
+                    - heading "পদ্মা এক্সপ্রেস" [level=3] [ref=e3540]
+                    - generic [ref=e3541]: "#759/760"
+                  - text: এক্সপ্রেস
+                - generic [ref=e3542]:
+                  - button "Add Padma Express to favorites" [ref=e3543]:
+                    - img [ref=e3544]
+                  - img [ref=e3547]
+              - generic [ref=e3551]:
+                - paragraph [ref=e3553]: ঢাকা (কমলাপুর)
+                - img [ref=e3554]
+                - paragraph [ref=e3557]: রাজশাহী
+              - generic [ref=e3558]:
+                - generic [ref=e3559]:
+                  - img [ref=e3560]
+                  - generic [ref=e3563]: 23:00
+                  - generic [ref=e3564]: →
+                  - generic [ref=e3565]: 05:30
+                - generic [ref=e3566]:
+                  - img [ref=e3567]
+                  - generic [ref=e3571]: Tue
+              - generic [ref=e3572]:
+                - generic [ref=e3573]:
+                  - img [ref=e3574]
+                  - generic [ref=e3579]: ৳265 – ৳1,160
+                - button "Rate Padma Express" [ref=e3580]: ☆ রেটিং
+            - generic [ref=e3581] [cursor=pointer]:
+              - generic [ref=e3582]:
+                - generic [ref=e3583]:
+                  - generic [ref=e3584]:
+                    - heading "পাহাড়িকা এক্সপ্রেস" [level=3] [ref=e3585]
+                    - generic [ref=e3586]: "#733/734"
+                  - text: আন্তঃনগর
+                - generic [ref=e3587]:
+                  - button "Add Paharika Express to favorites" [ref=e3588]:
+                    - img [ref=e3589]
+                  - img [ref=e3592]
+              - generic [ref=e3596]:
+                - paragraph [ref=e3598]: ঢাকা (কমলাপুর)
+                - img [ref=e3599]
+                - paragraph [ref=e3602]: সিলেট
+              - generic [ref=e3604]:
+                - img [ref=e3605]
+                - generic [ref=e3608]: 07:00
+                - generic [ref=e3609]: →
+                - generic [ref=e3610]: 12:45
+              - generic [ref=e3611]:
+                - generic [ref=e3612]:
+                  - img [ref=e3613]
+                  - generic [ref=e3618]: ৳355 – ৳1,555
+                - button "Rate Paharika Express" [ref=e3619]: ☆ রেটিং
+            - generic [ref=e3620] [cursor=pointer]:
+              - generic [ref=e3621]:
+                - generic [ref=e3622]:
+                  - generic [ref=e3623]:
+                    - heading "পঞ্চগড় এক্সপ্রেস" [level=3] [ref=e3624]
+                    - generic [ref=e3625]: "#793/794"
+                  - text: এক্সপ্রেস
+                - generic [ref=e3626]:
+                  - button "Add Panchagarh Express to favorites" [ref=e3627]:
+                    - img [ref=e3628]
+                  - img [ref=e3631]
+              - generic [ref=e3635]:
+                - paragraph [ref=e3637]: ঢাকা (কমলাপুর)
+                - img [ref=e3638]
+                - paragraph [ref=e3641]: পঞ্চগড়
+              - generic [ref=e3643]:
+                - img [ref=e3644]
+                - generic [ref=e3647]: 23:30
+                - generic [ref=e3648]: →
+                - generic [ref=e3649]: 09:50
+              - generic [ref=e3650]:
+                - generic [ref=e3651]:
+                  - img [ref=e3652]
+                  - generic [ref=e3657]: ৳440 – ৳2,548
+                - button "Rate Panchagarh Express" [ref=e3658]: ☆ রেটিং
+            - generic [ref=e3659] [cursor=pointer]:
+              - generic [ref=e3660]:
+                - generic [ref=e3661]:
+                  - generic [ref=e3662]:
+                    - heading "পারাবত এক্সপ্রেস" [level=3] [ref=e3663]
+                    - generic [ref=e3664]: "#709/710"
+                  - text: এক্সপ্রেস
+                - generic [ref=e3665]:
+                  - button "Add Parabat Express to favorites" [ref=e3666]:
+                    - img [ref=e3667]
+                  - img [ref=e3670]
+              - generic [ref=e3674]:
+                - paragraph [ref=e3676]: ঢাকা (কমলাপুর)
+                - img [ref=e3677]
+                - paragraph [ref=e3680]: সিলেট
+              - generic [ref=e3681]:
+                - generic [ref=e3682]:
+                  - img [ref=e3683]
+                  - generic [ref=e3686]: 06:20
+                  - generic [ref=e3687]: →
+                  - generic [ref=e3688]: 12:30
+                - generic [ref=e3689]:
+                  - img [ref=e3690]
+                  - generic [ref=e3694]: Tue
+              - generic [ref=e3695]:
+                - generic [ref=e3696]:
+                  - img [ref=e3697]
+                  - generic [ref=e3702]: ৳270 – ৳1,195
+                - button "Rate Parabat Express" [ref=e3703]: ☆ রেটিং
+            - generic [ref=e3704] [cursor=pointer]:
+              - generic [ref=e3705]:
+                - generic [ref=e3706]:
+                  - generic [ref=e3707]:
+                    - heading "পর্যটক এক্সপ্রেস" [level=3] [ref=e3708]
+                    - generic [ref=e3709]: "#815/816"
+                  - text: এক্সপ্রেস
+                - generic [ref=e3710]:
+                  - button "Add Parjotak Express to favorites" [ref=e3711]:
+                    - img [ref=e3712]
+                  - img [ref=e3715]
+              - generic [ref=e3719]:
+                - paragraph [ref=e3721]: ঢাকা (কমলাপুর)
+                - img [ref=e3722]
+                - paragraph [ref=e3725]: কক্সবাজার
+              - generic [ref=e3726]:
+                - generic [ref=e3727]:
+                  - img [ref=e3728]
+                  - generic [ref=e3731]: 06:15
+                  - generic [ref=e3732]: →
+                  - generic [ref=e3733]: 14:40
+                - generic [ref=e3734]:
+                  - img [ref=e3735]
+                  - generic [ref=e3739]: Wed
+              - generic [ref=e3740]:
+                - generic [ref=e3741]:
+                  - img [ref=e3742]
+                  - generic [ref=e3747]: ৳505 – ৳2,100
+                - button "Rate Parjotak Express" [ref=e3748]: ☆ রেটিং
+            - generic [ref=e3749] [cursor=pointer]:
+              - generic [ref=e3750]:
+                - generic [ref=e3751]:
+                  - generic [ref=e3752]:
+                    - heading "রাজবাড়ী লোকাল" [level=3] [ref=e3753]
+                    - generic [ref=e3754]: "#51/52"
+                  - text: লোকাল
+                - generic [ref=e3755]:
+                  - button "Add Rajbari Local to favorites" [ref=e3756]:
+                    - img [ref=e3757]
+                  - img [ref=e3760]
+              - generic [ref=e3764]:
+                - paragraph [ref=e3766]: ঢাকা (কমলাপুর)
+                - img [ref=e3767]
+                - paragraph [ref=e3770]: রাজবাড়ী
+              - generic [ref=e3772]:
+                - img [ref=e3773]
+                - generic [ref=e3776]: 08:00
+                - generic [ref=e3777]: →
+                - generic [ref=e3778]: 12:30
+              - generic [ref=e3779]:
+                - generic [ref=e3780]:
+                  - img [ref=e3781]
+                  - generic [ref=e3786]: ৳70
+                - button "Rate Rajbari Local" [ref=e3787]: ☆ রেটিং
+            - generic [ref=e3788] [cursor=pointer]:
+              - generic [ref=e3789]:
+                - generic [ref=e3790]:
+                  - generic [ref=e3791]:
+                    - heading "রাজশাহী মেইল" [level=3] [ref=e3792]
+                    - generic [ref=e3793]: "#7/8"
+                  - text: মেইল
+                - generic [ref=e3794]:
+                  - button "Add Rajshahi Mail to favorites" [ref=e3795]:
+                    - img [ref=e3796]
+                  - img [ref=e3799]
+              - generic [ref=e3803]:
+                - paragraph [ref=e3805]: ঢাকা (কমলাপুর)
+                - img [ref=e3806]
+                - paragraph [ref=e3809]: রাজশাহী
+              - generic [ref=e3811]:
+                - img [ref=e3812]
+                - generic [ref=e3815]: 23:00
+                - generic [ref=e3816]: →
+                - generic [ref=e3817]: 06:00
+              - generic [ref=e3818]:
+                - generic [ref=e3819]:
+                  - img [ref=e3820]
+                  - generic [ref=e3825]: ৳190 – ৳895
+                - button "Rate Rajshahi Mail" [ref=e3826]: ☆ রেটিং
+            - generic [ref=e3827] [cursor=pointer]:
+              - generic [ref=e3828]:
+                - generic [ref=e3829]:
+                  - generic [ref=e3830]:
+                    - heading "রাজশাহী নাইট এক্সপ্রেস" [level=3] [ref=e3831]
+                    - generic [ref=e3832]: "#729/730"
+                  - text: আন্তঃনগর
+                - generic [ref=e3833]:
+                  - button "Add Rajshahi Night Express to favorites" [ref=e3834]:
+                    - img [ref=e3835]
+                  - img [ref=e3838]
+              - generic [ref=e3842]:
+                - paragraph [ref=e3844]: ঢাকা (কমলাপুর)
+                - img [ref=e3845]
+                - paragraph [ref=e3848]: রাজশাহী
+              - generic [ref=e3850]:
+                - img [ref=e3851]
+                - generic [ref=e3854]: 23:00
+                - generic [ref=e3855]: →
+                - generic [ref=e3856]: 06:30
+              - generic [ref=e3857]:
+                - generic [ref=e3858]:
+                  - img [ref=e3859]
+                  - generic [ref=e3864]: ৳145 – ৳680
+                - button "Rate Rajshahi Night Express" [ref=e3865]: ☆ রেটিং
+            - generic [ref=e3866] [cursor=pointer]:
+              - generic [ref=e3867]:
+                - generic [ref=e3868]:
+                  - generic [ref=e3869]:
+                    - heading "রংপুর এক্সপ্রেস" [level=3] [ref=e3870]
+                    - generic [ref=e3871]: "#771/772"
+                  - text: এক্সপ্রেস
+                - generic [ref=e3872]:
+                  - button "Add Rangpur Express to favorites" [ref=e3873]:
+                    - img [ref=e3874]
+                  - img [ref=e3877]
+              - generic [ref=e3881]:
+                - paragraph [ref=e3883]: ঢাকা (কমলাপুর)
+                - img [ref=e3884]
+                - paragraph [ref=e3887]: রংপুর
+              - generic [ref=e3888]:
+                - generic [ref=e3889]:
+                  - img [ref=e3890]
+                  - generic [ref=e3893]: 09:10
+                  - generic [ref=e3894]: →
+                  - generic [ref=e3895]: 17:30
+                - generic [ref=e3896]:
+                  - img [ref=e3897]
+                  - generic [ref=e3901]: Sun (from Dhk)
+              - generic [ref=e3902]:
+                - generic [ref=e3903]:
+                  - img [ref=e3904]
+                  - generic [ref=e3909]: ৳375 – ৳1,660
+                - button "Rate Rangpur Express" [ref=e3910]: ☆ রেটিং
+            - generic [ref=e3911] [cursor=pointer]:
+              - generic [ref=e3912]:
+                - generic [ref=e3913]:
+                  - generic [ref=e3914]:
+                    - heading "রংপুর মেইল" [level=3] [ref=e3915]
+                    - generic [ref=e3916]: "#769/770"
+                  - text: মেইল
+                - generic [ref=e3917]:
+                  - button "Add Rangpur Mail to favorites" [ref=e3918]:
+                    - img [ref=e3919]
+                  - img [ref=e3922]
+              - generic [ref=e3926]:
+                - paragraph [ref=e3928]: ঢাকা (কমলাপুর)
+                - img [ref=e3929]
+                - paragraph [ref=e3932]: রংপুর
+              - generic [ref=e3934]:
+                - img [ref=e3935]
+                - generic [ref=e3938]: 22:00
+                - generic [ref=e3939]: →
+                - generic [ref=e3940]: 07:30
+              - generic [ref=e3941]:
+                - generic [ref=e3942]:
+                  - img [ref=e3943]
+                  - generic [ref=e3948]: ৳190 – ৳885
+                - button "Rate Rangpur Mail" [ref=e3949]: ☆ রেটিং
+            - generic [ref=e3950] [cursor=pointer]:
+              - generic [ref=e3951]:
+                - generic [ref=e3952]:
+                  - generic [ref=e3953]:
+                    - heading "রকেট এক্সপ্রেস" [level=3] [ref=e3954]
+                    - generic [ref=e3955]: "#11/12"
+                  - text: মেইল
+                - generic [ref=e3956]:
+                  - button "Add Rocket Express to favorites" [ref=e3957]:
+                    - img [ref=e3958]
+                  - img [ref=e3961]
+              - generic [ref=e3965]:
+                - paragraph [ref=e3967]: খুলনা
+                - img [ref=e3968]
+                - paragraph [ref=e3971]: পার্বতীপুর
+              - generic [ref=e3973]:
+                - img [ref=e3974]
+                - generic [ref=e3977]: 09:00
+                - generic [ref=e3978]: →
+                - generic [ref=e3979]: 19:30
+              - generic [ref=e3980]:
+                - generic [ref=e3981]:
+                  - img [ref=e3982]
+                  - generic [ref=e3987]: ৳150
+                - button "Rate Rocket Express" [ref=e3988]: ☆ রেটিং
+            - generic [ref=e3989] [cursor=pointer]:
+              - generic [ref=e3990]:
+                - generic [ref=e3991]:
+                  - generic [ref=e3992]:
+                    - heading "রুপসী বাংলা এক্সপ্রেস" [level=3] [ref=e3993]
+                    - generic [ref=e3994]: "#827/828"
+                  - text: এক্সপ্রেস
+                - generic [ref=e3995]:
+                  - button "Add Ruposhi Bangla Express to favorites" [ref=e3996]:
+                    - img [ref=e3997]
+                  - img [ref=e4000]
+              - generic [ref=e4004]:
+                - paragraph [ref=e4006]: ঢাকা (কমলাপুর)
+                - img [ref=e4007]
+                - paragraph [ref=e4010]: বেনাপোল
+              - generic [ref=e4011]:
+                - generic [ref=e4012]:
+                  - img [ref=e4013]
+                  - generic [ref=e4016]: 10:45
+                  - generic [ref=e4017]: →
+                  - generic [ref=e4018]: 14:30
+                - generic [ref=e4019]:
+                  - img [ref=e4020]
+                  - generic [ref=e4024]: Mon
+              - generic [ref=e4025]:
+                - generic [ref=e4026]:
+                  - img [ref=e4027]
+                  - generic [ref=e4032]: ৳240 – ৳1,100
+                - button "Rate Ruposhi Bangla Express" [ref=e4033]: ☆ রেটিং
+            - generic [ref=e4034] [cursor=pointer]:
+              - generic [ref=e4035]:
+                - generic [ref=e4036]:
+                  - generic [ref=e4037]:
+                    - heading "রূপসা এক্সপ্রেস" [level=3] [ref=e4038]
+                    - generic [ref=e4039]: "#747/748"
+                  - text: আন্তঃনগর
+                - generic [ref=e4040]:
+                  - button "Add Rupsha Express to favorites" [ref=e4041]:
+                    - img [ref=e4042]
+                  - img [ref=e4045]
+              - generic [ref=e4049]:
+                - paragraph [ref=e4051]: ঢাকা (কমলাপুর)
+                - img [ref=e4052]
+                - paragraph [ref=e4055]: খুলনা
+              - generic [ref=e4056]:
+                - generic [ref=e4057]:
+                  - img [ref=e4058]
+                  - generic [ref=e4061]: 09:00
+                  - generic [ref=e4062]: →
+                  - generic [ref=e4063]: 16:30
+                - generic [ref=e4064]:
+                  - img [ref=e4065]
+                  - generic [ref=e4069]: Sun (from Dhk)
+              - generic [ref=e4070]:
+                - generic [ref=e4071]:
+                  - img [ref=e4072]
+                  - generic [ref=e4077]: ৳320 – ৳1,410
+                - button "Rate Rupsha Express" [ref=e4078]: ☆ রেটিং
+            - generic [ref=e4079] [cursor=pointer]:
+              - generic [ref=e4080]:
+                - generic [ref=e4081]:
+                  - generic [ref=e4082]:
+                    - heading "সাগর এক্সপ্রেস" [level=3] [ref=e4083]
+                    - generic [ref=e4084]: "#755/756"
+                  - text: আন্তঃনগর
+                - generic [ref=e4085]:
+                  - button "Add Sagar Express to favorites" [ref=e4086]:
+                    - img [ref=e4087]
+                  - img [ref=e4090]
+              - generic [ref=e4094]:
+                - paragraph [ref=e4096]: ঢাকা (কমলাপুর)
+                - img [ref=e4097]
+                - paragraph [ref=e4100]: দিনাজপুর
+              - generic [ref=e4102]:
+                - img [ref=e4103]
+                - generic [ref=e4106]: 19:30
+                - generic [ref=e4107]: →
+                - generic [ref=e4108]: 06:00
+              - generic [ref=e4109]:
+                - generic [ref=e4110]:
+                  - img [ref=e4111]
+                  - generic [ref=e4116]: ৳245 – ৳1,135
+                - button "Rate Sagar Express" [ref=e4117]: ☆ রেটিং
+            - generic [ref=e4118] [cursor=pointer]:
+              - generic [ref=e4119]:
+                - generic [ref=e4120]:
+                  - generic [ref=e4121]:
+                    - heading "সাগরদাঁড়ি এক্সপ্রেস" [level=3] [ref=e4122]
+                    - generic [ref=e4123]: "#747/748"
+                  - text: আন্তঃনগর
+                - generic [ref=e4124]:
+                  - button "Add Sagardari Express to favorites" [ref=e4125]:
+                    - img [ref=e4126]
+                  - img [ref=e4129]
+              - generic [ref=e4133]:
+                - paragraph [ref=e4135]: ঢাকা (কমলাপুর)
+                - img [ref=e4136]
+                - paragraph [ref=e4139]: খুলনা
+              - generic [ref=e4140]:
+                - generic [ref=e4141]:
+                  - img [ref=e4142]
+                  - generic [ref=e4145]: 23:00
+                  - generic [ref=e4146]: →
+                  - generic [ref=e4147]: 07:00
+                - generic [ref=e4148]:
+                  - img [ref=e4149]
+                  - generic [ref=e4153]: Wed
+              - generic [ref=e4154]:
+                - generic [ref=e4155]:
+                  - img [ref=e4156]
+                  - generic [ref=e4161]: ৳220 – ৳1,025
+                - button "Rate Sagardari Express" [ref=e4162]: ☆ রেটিং
+            - generic [ref=e4163] [cursor=pointer]:
+              - generic [ref=e4164]:
+                - generic [ref=e4165]:
+                  - generic [ref=e4166]:
+                    - heading "সাতক্ষীরা এক্সপ্রেস" [level=3] [ref=e4167]
+                    - generic [ref=e4168]: "#757/758"
+                  - text: আন্তঃনগর
+                - generic [ref=e4169]:
+                  - button "Add Satkhira Express to favorites" [ref=e4170]:
+                    - img [ref=e4171]
+                  - img [ref=e4174]
+              - generic [ref=e4178]:
+                - paragraph [ref=e4180]: ঢাকা (কমলাপুর)
+                - img [ref=e4181]
+                - paragraph [ref=e4184]: সাতক্ষীরা
+              - generic [ref=e4186]:
+                - img [ref=e4187]
+                - generic [ref=e4190]: 23:00
+                - generic [ref=e4191]: →
+                - generic [ref=e4192]: 08:30
+              - generic [ref=e4193]:
+                - generic [ref=e4194]:
+                  - img [ref=e4195]
+                  - generic [ref=e4200]: ৳190 – ৳875
+                - button "Rate Satkhira Express" [ref=e4201]: ☆ রেটিং
+            - generic [ref=e4202] [cursor=pointer]:
+              - generic [ref=e4203]:
+                - generic [ref=e4204]:
+                  - generic [ref=e4205]:
+                    - heading "সৌদিয়া এক্সপ্রেস" [level=3] [ref=e4206]
+                    - generic [ref=e4207]: "#779/780"
+                  - text: এক্সপ্রেস
+                - generic [ref=e4208]:
+                  - button "Add Saudia Express to favorites" [ref=e4209]:
+                    - img [ref=e4210]
+                  - img [ref=e4213]
+              - generic [ref=e4217]:
+                - paragraph [ref=e4219]: খুলনা
+                - img [ref=e4220]
+                - paragraph [ref=e4223]: চাঁপাইনবাবগঞ্জ
+              - generic [ref=e4224]:
+                - generic [ref=e4225]:
+                  - img [ref=e4226]
+                  - generic [ref=e4229]: 08:30
+                  - generic [ref=e4230]: →
+                  - generic [ref=e4231]: 16:00
+                - generic [ref=e4232]:
+                  - img [ref=e4233]
+                  - generic [ref=e4237]: Thu
+              - generic [ref=e4238]:
+                - generic [ref=e4239]:
+                  - img [ref=e4240]
+                  - generic [ref=e4245]: ৳175 – ৳810
+                - button "Rate Saudia Express" [ref=e4246]: ☆ রেটিং
+            - generic [ref=e4247] [cursor=pointer]:
+              - generic [ref=e4248]:
+                - generic [ref=e4249]:
+                  - generic [ref=e4250]:
+                    - heading "সিল্ক সিটি এক্সপ্রেস" [level=3] [ref=e4251]
+                    - generic [ref=e4252]: "#753/754"
+                  - text: এক্সপ্রেস
+                - generic [ref=e4253]:
+                  - button "Add Silk City Express to favorites" [ref=e4254]:
+                    - img [ref=e4255]
+                  - img [ref=e4258]
+              - generic [ref=e4262]:
+                - paragraph [ref=e4264]: ঢাকা (কমলাপুর)
+                - img [ref=e4265]
+                - paragraph [ref=e4268]: রাজশাহী
+              - generic [ref=e4269]:
+                - generic [ref=e4270]:
+                  - img [ref=e4271]
+                  - generic [ref=e4274]: 14:30
+                  - generic [ref=e4275]: →
+                  - generic [ref=e4276]: 20:20
+                - generic [ref=e4277]:
+                  - img [ref=e4278]
+                  - generic [ref=e4282]: Sun
+              - generic [ref=e4283]:
+                - generic [ref=e4284]:
+                  - img [ref=e4285]
+                  - generic [ref=e4290]: ৳265 – ৳1,160
+                - button "Rate Silk City Express" [ref=e4291]: ☆ রেটিং
+            - generic [ref=e4292] [cursor=pointer]:
+              - generic [ref=e4293]:
+                - generic [ref=e4294]:
+                  - generic [ref=e4295]:
+                    - heading "সীমান্ত এক্সপ্রেস" [level=3] [ref=e4296]
+                    - generic [ref=e4297]: "#749/750"
+                  - text: এক্সপ্রেস
+                - generic [ref=e4298]:
+                  - button "Add Simanta Express to favorites" [ref=e4299]:
+                    - img [ref=e4300]
+                  - img [ref=e4303]
+              - generic [ref=e4307]:
+                - paragraph [ref=e4309]: ঢাকা (কমলাপুর)
+                - img [ref=e4310]
+                - paragraph [ref=e4313]: খুলনা
+              - generic [ref=e4315]:
+                - img [ref=e4316]
+                - generic [ref=e4319]: 23:00
+                - generic [ref=e4320]: →
+                - generic [ref=e4321]: 07:00
+              - generic [ref=e4322]:
+                - generic [ref=e4323]:
+                  - img [ref=e4324]
+                  - generic [ref=e4329]: ৳320 – ৳1,410
+                - button "Rate Simanta Express" [ref=e4330]: ☆ রেটিং
+            - generic [ref=e4331] [cursor=pointer]:
+              - generic [ref=e4332]:
+                - generic [ref=e4333]:
+                  - generic [ref=e4334]:
+                    - heading "সোনার বাংলা এক্সপ্রেস" [level=3] [ref=e4335]
+                    - generic [ref=e4336]: "#787/788"
+                  - text: এক্সপ্রেস
+                - generic [ref=e4337]:
+                  - button "Add Sonar Bangla Express to favorites" [ref=e4338]:
+                    - img [ref=e4339]
+                  - img [ref=e4342]
+              - generic [ref=e4346]:
+                - paragraph [ref=e4348]: ঢাকা (কমলাপুর)
+                - img [ref=e4349]
+                - paragraph [ref=e4352]: চট্টগ্রাম
+              - generic [ref=e4353]:
+                - generic [ref=e4354]:
+                  - img [ref=e4355]
+                  - generic [ref=e4358]: 07:00
+                  - generic [ref=e4359]: →
+                  - generic [ref=e4360]: 11:55
+                - generic [ref=e4361]:
+                  - img [ref=e4362]
+                  - generic [ref=e4366]: Tue (from Ctg)
+              - generic [ref=e4367]:
+                - generic [ref=e4368]:
+                  - img [ref=e4369]
+                  - generic [ref=e4374]: ৳365 – ৳1,645
+                - button "Rate Sonar Bangla Express" [ref=e4375]: ☆ রেটিং
+            - generic [ref=e4376] [cursor=pointer]:
+              - generic [ref=e4377]:
+                - generic [ref=e4378]:
+                  - generic [ref=e4379]:
+                    - heading "সুবর্ণ এক্সপ্রেস" [level=3] [ref=e4380]
+                    - generic [ref=e4381]: "#701/702"
+                  - text: এক্সপ্রেস
+                - generic [ref=e4382]:
+                  - button "Add Suborno Express to favorites" [ref=e4383]:
+                    - img [ref=e4384]
+                  - img [ref=e4387]
+              - generic [ref=e4391]:
+                - paragraph [ref=e4393]: ঢাকা (কমলাপুর)
+                - img [ref=e4394]
+                - paragraph [ref=e4397]: চট্টগ্রাম
+              - generic [ref=e4398]:
+                - generic [ref=e4399]:
+                  - img [ref=e4400]
+                  - generic [ref=e4403]: 16:30
+                  - generic [ref=e4404]: →
+                  - generic [ref=e4405]: 21:25
+                - generic [ref=e4406]:
+                  - img [ref=e4407]
+                  - generic [ref=e4411]: Mon (from Ctg)
+              - generic [ref=e4412]:
+                - generic [ref=e4413]:
+                  - img [ref=e4414]
+                  - generic [ref=e4419]: ৳340 – ৳985
+                - button "Rate Suborno Express" [ref=e4420]: ☆ রেটিং
+            - generic [ref=e4421] [cursor=pointer]:
+              - generic [ref=e4422]:
+                - generic [ref=e4423]:
+                  - generic [ref=e4424]:
+                    - heading "সুনামগঞ্জ এক্সপ্রেস" [level=3] [ref=e4425]
+                    - generic [ref=e4426]: "#791/792"
+                  - text: আন্তঃনগর
+                - generic [ref=e4427]:
+                  - button "Add Sunamganj Express to favorites" [ref=e4428]:
+                    - img [ref=e4429]
+                  - img [ref=e4432]
+              - generic [ref=e4436]:
+                - paragraph [ref=e4438]: ঢাকা (কমলাপুর)
+                - img [ref=e4439]
+                - paragraph [ref=e4442]: সিলেট
+              - generic [ref=e4443]:
+                - generic [ref=e4444]:
+                  - img [ref=e4445]
+                  - generic [ref=e4448]: 09:50
+                  - generic [ref=e4449]: →
+                  - generic [ref=e4450]: 15:30
+                - generic [ref=e4451]:
+                  - img [ref=e4452]
+                  - generic [ref=e4456]: Wed
+              - generic [ref=e4457]:
+                - generic [ref=e4458]:
+                  - img [ref=e4459]
+                  - generic [ref=e4464]: ৳160 – ৳735
+                - button "Rate Sunamganj Express" [ref=e4465]: ☆ রেটিং
+            - generic [ref=e4466] [cursor=pointer]:
+              - generic [ref=e4467]:
+                - generic [ref=e4468]:
+                  - generic [ref=e4469]:
+                    - heading "সুন্দরবন এক্সপ্রেস" [level=3] [ref=e4470]
+                    - generic [ref=e4471]: "#725/726"
+                  - text: এক্সপ্রেস
+                - generic [ref=e4472]:
+                  - button "Add Sundarban Express to favorites" [ref=e4473]:
+                    - img [ref=e4474]
+                  - img [ref=e4477]
+              - generic [ref=e4481]:
+                - paragraph [ref=e4483]: ঢাকা (কমলাপুর)
+                - img [ref=e4484]
+                - paragraph [ref=e4487]: খুলনা
+              - generic [ref=e4488]:
+                - generic [ref=e4489]:
+                  - img [ref=e4490]
+                  - generic [ref=e4493]: 08:00
+                  - generic [ref=e4494]: →
+                  - generic [ref=e4495]: 15:40
+                - generic [ref=e4496]:
+                  - img [ref=e4497]
+                  - generic [ref=e4501]: Tue
+              - generic [ref=e4502]:
+                - generic [ref=e4503]:
+                  - img [ref=e4504]
+                  - generic [ref=e4509]: ৳290 – ৳1,270
+                - button "Rate Sundarban Express" [ref=e4510]: ☆ রেটিং
+            - generic [ref=e4511] [cursor=pointer]:
+              - generic [ref=e4512]:
+                - generic [ref=e4513]:
+                  - generic [ref=e4514]:
+                    - heading "সুন্দরবন এক্সপ্রেস (রাজশাহী-খুলনা)" [level=3] [ref=e4515]
+                    - generic [ref=e4516]: "#725R/726R"
+                  - text: আন্তঃনগর
+                - generic [ref=e4517]:
+                  - button "Add Sundarbans Express (Rajshahi–Khulna) to favorites" [ref=e4518]:
+                    - img [ref=e4519]
+                  - img [ref=e4522]
+              - generic [ref=e4526]:
+                - paragraph [ref=e4528]: রাজশাহী
+                - img [ref=e4529]
+                - paragraph [ref=e4532]: খুলনা
+              - generic [ref=e4533]:
+                - generic [ref=e4534]:
+                  - img [ref=e4535]
+                  - generic [ref=e4538]: 08:00
+                  - generic [ref=e4539]: →
+                  - generic [ref=e4540]: 14:30
+                - generic [ref=e4541]:
+                  - img [ref=e4542]
+                  - generic [ref=e4546]: Wed
+              - generic [ref=e4547]:
+                - generic [ref=e4548]:
+                  - img [ref=e4549]
+                  - generic [ref=e4554]: ৳130 – ৳600
+                - button "Rate Sundarbans Express (Rajshahi–Khulna)" [ref=e4555]: ☆ রেটিং
+            - generic [ref=e4556] [cursor=pointer]:
+              - generic [ref=e4557]:
+                - generic [ref=e4558]:
+                  - generic [ref=e4559]:
+                    - heading "সূর্যদয় এক্সপ্রেস" [level=3] [ref=e4560]
+                    - generic [ref=e4561]: "#725/726"
+                  - text: আন্তঃনগর
+                - generic [ref=e4562]:
+                  - button "Add Surjadoy Express to favorites" [ref=e4563]:
+                    - img [ref=e4564]
+                  - img [ref=e4567]
+              - generic [ref=e4571]:
+                - paragraph [ref=e4573]: ঢাকা (কমলাপুর)
+                - img [ref=e4574]
+                - paragraph [ref=e4577]: রাজশাহী
+              - generic [ref=e4579]:
+                - img [ref=e4580]
+                - generic [ref=e4583]: 06:40
+                - generic [ref=e4584]: →
+                - generic [ref=e4585]: 13:00
+              - generic [ref=e4586]:
+                - generic [ref=e4587]:
+                  - img [ref=e4588]
+                  - generic [ref=e4593]: ৳145 – ৳680
+                - button "Rate Surjadoy Express" [ref=e4594]: ☆ রেটিং
+            - generic [ref=e4595] [cursor=pointer]:
+              - generic [ref=e4596]:
+                - generic [ref=e4597]:
+                  - generic [ref=e4598]:
+                    - heading "সুরমা মেইল" [level=3] [ref=e4599]
+                    - generic [ref=e4600]: "#21/22"
+                  - text: মেইল
+                - generic [ref=e4601]:
+                  - button "Add Surma Mail to favorites" [ref=e4602]:
+                    - img [ref=e4603]
+                  - img [ref=e4606]
+              - generic [ref=e4610]:
+                - paragraph [ref=e4612]: ঢাকা (কমলাপুর)
+                - img [ref=e4613]
+                - paragraph [ref=e4616]: সিলেট
+              - generic [ref=e4618]:
+                - img [ref=e4619]
+                - generic [ref=e4622]: 22:00
+                - generic [ref=e4623]: →
+                - generic [ref=e4624]: 07:00
+              - generic [ref=e4625]:
+                - generic [ref=e4626]:
+                  - img [ref=e4627]
+                  - generic [ref=e4632]: ৳175 – ৳825
+                - button "Rate Surma Mail" [ref=e4633]: ☆ রেটিং
+            - generic [ref=e4634] [cursor=pointer]:
+              - generic [ref=e4635]:
+                - generic [ref=e4636]:
+                  - generic [ref=e4637]:
+                    - heading "সিলেট মেইল" [level=3] [ref=e4638]
+                    - generic [ref=e4639]: "#9/10"
+                  - text: মেইল
+                - generic [ref=e4640]:
+                  - button "Add Sylhet Mail to favorites" [ref=e4641]:
+                    - img [ref=e4642]
+                  - img [ref=e4645]
+              - generic [ref=e4649]:
+                - paragraph [ref=e4651]: ঢাকা (কমলাপুর)
+                - img [ref=e4652]
+                - paragraph [ref=e4655]: সিলেট
+              - generic [ref=e4657]:
+                - img [ref=e4658]
+                - generic [ref=e4661]: 21:45
+                - generic [ref=e4662]: →
+                - generic [ref=e4663]: 05:30
+              - generic [ref=e4664]:
+                - generic [ref=e4665]:
+                  - img [ref=e4666]
+                  - generic [ref=e4671]: ৳175 – ৳825
+                - button "Rate Sylhet Mail" [ref=e4672]: ☆ রেটিং
+            - generic [ref=e4673] [cursor=pointer]:
+              - generic [ref=e4674]:
+                - generic [ref=e4675]:
+                  - generic [ref=e4676]:
+                    - heading "সিলেট নাইট মেইল" [level=3] [ref=e4677]
+                    - generic [ref=e4678]: "#5/6"
+                  - text: মেইল
+                - generic [ref=e4679]:
+                  - button "Add Sylhet Night Mail to favorites" [ref=e4680]:
+                    - img [ref=e4681]
+                  - img [ref=e4684]
+              - generic [ref=e4688]:
+                - paragraph [ref=e4690]: ঢাকা (কমলাপুর)
+                - img [ref=e4691]
+                - paragraph [ref=e4694]: সিলেট
+              - generic [ref=e4696]:
+                - img [ref=e4697]
+                - generic [ref=e4700]: 21:40
+                - generic [ref=e4701]: →
+                - generic [ref=e4702]: 04:30
+              - generic [ref=e4703]:
+                - generic [ref=e4704]:
+                  - img [ref=e4705]
+                  - generic [ref=e4710]: ৳160
+                - button "Rate Sylhet Night Mail" [ref=e4711]: ☆ রেটিং
+            - generic [ref=e4712] [cursor=pointer]:
+              - generic [ref=e4713]:
+                - generic [ref=e4714]:
+                  - generic [ref=e4715]:
+                    - heading "ঠাকুরগাঁও এক্সপ্রেস" [level=3] [ref=e4716]
+                    - generic [ref=e4717]: "#771/772"
+                  - text: আন্তঃনগর
+                - generic [ref=e4718]:
+                  - button "Add Thakurgaon Express to favorites" [ref=e4719]:
+                    - img [ref=e4720]
+                  - img [ref=e4723]
+              - generic [ref=e4727]:
+                - paragraph [ref=e4729]: ঢাকা (কমলাপুর)
+                - img [ref=e4730]
+                - paragraph [ref=e4733]: ঠাকুরগাঁও
+              - generic [ref=e4735]:
+                - img [ref=e4736]
+                - generic [ref=e4739]: 21:30
+                - generic [ref=e4740]: →
+                - generic [ref=e4741]: 07:30
+              - generic [ref=e4742]:
+                - generic [ref=e4743]:
+                  - img [ref=e4744]
+                  - generic [ref=e4749]: ৳235 – ৳1,085
+                - button "Rate Thakurgaon Express" [ref=e4750]: ☆ রেটিং
+            - generic [ref=e4751] [cursor=pointer]:
+              - generic [ref=e4752]:
+                - generic [ref=e4753]:
+                  - generic [ref=e4754]:
+                    - heading "তিস্তা এক্সপ্রেস" [level=3] [ref=e4755]
+                    - generic [ref=e4756]: "#707/708"
+                  - text: আন্তঃনগর
+                - generic [ref=e4757]:
+                  - button "Add Tista Express to favorites" [ref=e4758]:
+                    - img [ref=e4759]
+                  - img [ref=e4762]
+              - generic [ref=e4766]:
+                - paragraph [ref=e4768]: ঢাকা (কমলাপুর)
+                - img [ref=e4769]
+                - paragraph [ref=e4772]: দেওয়ানগঞ্জ বাজার
+              - generic [ref=e4773]:
+                - generic [ref=e4774]:
+                  - img [ref=e4775]
+                  - generic [ref=e4778]: 07:30
+                  - generic [ref=e4779]: →
+                  - generic [ref=e4780]: 13:00
+                - generic [ref=e4781]:
+                  - img [ref=e4782]
+                  - generic [ref=e4786]: Mon
+              - generic [ref=e4787]:
+                - generic [ref=e4788]:
+                  - img [ref=e4789]
+                  - generic [ref=e4794]: ৳220 – ৳970
+                - button "Rate Tista Express" [ref=e4795]: ☆ রেটিং
+            - generic [ref=e4796] [cursor=pointer]:
+              - generic [ref=e4797]:
+                - generic [ref=e4798]:
+                  - generic [ref=e4799]:
+                    - heading "তিতাস কমিউটার" [level=3] [ref=e4800]
+                    - generic [ref=e4801]: "#17/18"
+                  - text: লোকাল
+                - generic [ref=e4802]:
+                  - button "Add Titash Commuter to favorites" [ref=e4803]:
+                    - img [ref=e4804]
+                  - img [ref=e4807]
+              - generic [ref=e4811]:
+                - paragraph [ref=e4813]: ঢাকা (কমলাপুর)
+                - img [ref=e4814]
+                - paragraph [ref=e4817]: ব্রাহ্মণবাড়িয়া
+              - generic [ref=e4819]:
+                - img [ref=e4820]
+                - generic [ref=e4823]: 08:30
+                - generic [ref=e4824]: →
+                - generic [ref=e4825]: 12:00
+              - generic [ref=e4826]:
+                - generic [ref=e4827]:
+                  - img [ref=e4828]
+                  - generic [ref=e4833]: ৳65
+                - button "Rate Titash Commuter" [ref=e4834]: ☆ রেটিং
+            - generic [ref=e4835] [cursor=pointer]:
+              - generic [ref=e4836]:
+                - generic [ref=e4837]:
+                  - generic [ref=e4838]:
+                    - heading "তিতাস এক্সপ্রেস" [level=3] [ref=e4839]
+                    - generic [ref=e4840]: "#807/808"
+                  - text: আন্তঃনগর
+                - generic [ref=e4841]:
+                  - button "Add Titash Express to favorites" [ref=e4842]:
+                    - img [ref=e4843]
+                  - img [ref=e4846]
+              - generic [ref=e4850]:
+                - paragraph [ref=e4852]: ঢাকা (কমলাপুর)
+                - img [ref=e4853]
+                - paragraph [ref=e4856]: ব্রাহ্মণবাড়িয়া
+              - generic [ref=e4857]:
+                - generic [ref=e4858]:
+                  - img [ref=e4859]
+                  - generic [ref=e4862]: 15:30
+                  - generic [ref=e4863]: →
+                  - generic [ref=e4864]: 19:00
+                - generic [ref=e4865]:
+                  - img [ref=e4866]
+                  - generic [ref=e4870]: Fri
+              - generic [ref=e4871]:
+                - generic [ref=e4872]:
+                  - img [ref=e4873]
+                  - generic [ref=e4878]: ৳100
+                - button "Rate Titash Express" [ref=e4879]: ☆ রেটিং
+            - generic [ref=e4880] [cursor=pointer]:
+              - generic [ref=e4881]:
+                - generic [ref=e4882]:
+                  - generic [ref=e4883]:
+                    - heading "তিতুমীর এক্সপ্রেস" [level=3] [ref=e4884]
+                    - generic [ref=e4885]: "#733/734"
+                  - text: আন্তঃনগর
+                - generic [ref=e4886]:
+                  - button "Add Titumir Express to favorites" [ref=e4887]:
+                    - img [ref=e4888]
+                  - img [ref=e4891]
+              - generic [ref=e4895]:
+                - paragraph [ref=e4897]: রাজশাহী
+                - img [ref=e4898]
+                - paragraph [ref=e4901]: চিলাহাটি
+              - generic [ref=e4902]:
+                - generic [ref=e4903]:
+                  - img [ref=e4904]
+                  - generic [ref=e4907]: 06:20
+                  - generic [ref=e4908]: →
+                  - generic [ref=e4909]: 12:30
+                - generic [ref=e4910]:
+                  - img [ref=e4911]
+                  - generic [ref=e4915]: Wed
+              - generic [ref=e4916]:
+                - generic [ref=e4917]:
+                  - img [ref=e4918]
+                  - generic [ref=e4923]: ৳200 – ৳1,090
+                - button "Rate Titumir Express" [ref=e4924]: ☆ রেটিং
+            - generic [ref=e4925] [cursor=pointer]:
+              - generic [ref=e4926]:
+                - generic [ref=e4927]:
+                  - generic [ref=e4928]:
+                    - heading "টুঙ্গিপাড়া এক্সপ্রেস" [level=3] [ref=e4929]
+                    - generic [ref=e4930]: "#783/784"
+                  - text: আন্তঃনগর
+                - generic [ref=e4931]:
+                  - button "Add Tungipara Express to favorites" [ref=e4932]:
+                    - img [ref=e4933]
+                  - img [ref=e4936]
+              - generic [ref=e4940]:
+                - paragraph [ref=e4942]: ঢাকা (কমলাপুর)
+                - img [ref=e4943]
+                - generic:
+                  - paragraph
+              - generic [ref=e4945]:
+                - generic [ref=e4946]:
+                  - img [ref=e4947]
+                  - generic [ref=e4950]: 10:30
+                  - generic [ref=e4951]: →
+                  - generic [ref=e4952]: 15:15
+                - generic [ref=e4953]:
+                  - img [ref=e4954]
+                  - generic [ref=e4958]: Tue (from Dhk)
+              - generic [ref=e4959]:
+                - generic [ref=e4960]:
+                  - img [ref=e4961]
+                  - generic [ref=e4966]: ৳220 – ৳1,050
+                - button "Rate Tungipara Express" [ref=e4967]: ☆ রেটিং
+            - generic [ref=e4968] [cursor=pointer]:
+              - generic [ref=e4969]:
+                - generic [ref=e4970]:
+                  - generic [ref=e4971]:
+                    - heading "তুরাগ এক্সপ্রেস ১" [level=3] [ref=e4972]
+                    - generic [ref=e4973]: "#T1"
+                  - text: লোকাল
+                - generic [ref=e4974]:
+                  - button "Add Turag Express 1 to favorites" [ref=e4975]:
+                    - img [ref=e4976]
+                  - img [ref=e4979]
+              - generic [ref=e4983]:
+                - paragraph [ref=e4985]: ঢাকা (কমলাপুর)
+                - img [ref=e4986]
+                - paragraph [ref=e4989]: জয়দেবপুর
+              - generic [ref=e4991]:
+                - img [ref=e4992]
+                - generic [ref=e4995]: 05:00
+                - generic [ref=e4996]: →
+                - generic [ref=e4997]: 06:15
+              - generic [ref=e4998]:
+                - generic [ref=e4999]:
+                  - img [ref=e5000]
+                  - generic [ref=e5005]: ৳30
+                - button "Rate Turag Express 1" [ref=e5006]: ☆ রেটিং
+            - generic [ref=e5007] [cursor=pointer]:
+              - generic [ref=e5008]:
+                - generic [ref=e5009]:
+                  - generic [ref=e5010]:
+                    - heading "তুরাগ এক্সপ্রেস ২" [level=3] [ref=e5011]
+                    - generic [ref=e5012]: "#T2"
+                  - text: লোকাল
+                - generic [ref=e5013]:
+                  - button "Add Turag Express 2 to favorites" [ref=e5014]:
+                    - img [ref=e5015]
+                  - img [ref=e5018]
+              - generic [ref=e5022]:
+                - paragraph [ref=e5024]: ঢাকা (কমলাপুর)
+                - img [ref=e5025]
+                - paragraph [ref=e5028]: জয়দেবপুর
+              - generic [ref=e5030]:
+                - img [ref=e5031]
+                - generic [ref=e5034]: 17:30
+                - generic [ref=e5035]: →
+                - generic [ref=e5036]: 18:45
+              - generic [ref=e5037]:
+                - generic [ref=e5038]:
+                  - img [ref=e5039]
+                  - generic [ref=e5044]: ৳30
+                - button "Rate Turag Express 2" [ref=e5045]: ☆ রেটিং
+            - generic [ref=e5046] [cursor=pointer]:
+              - generic [ref=e5047]:
+                - generic [ref=e5048]:
+                  - generic [ref=e5049]:
+                    - heading "তূর্ণা নিশিথা এক্সপ্রেস" [level=3] [ref=e5050]
+                    - generic [ref=e5051]: "#741/742"
+                  - text: এক্সপ্রেস
+                - generic [ref=e5052]:
+                  - button "Add Turna Nishita Express to favorites" [ref=e5053]:
+                    - img [ref=e5054]
+                  - img [ref=e5057]
+              - generic [ref=e5061]:
+                - paragraph [ref=e5063]: ঢাকা (কমলাপুর)
+                - img [ref=e5064]
+                - paragraph [ref=e5067]: চট্টগ্রাম
+              - generic [ref=e5069]:
+                - img [ref=e5070]
+                - generic [ref=e5073]: 23:15
+                - generic [ref=e5074]: →
+                - generic [ref=e5075]: 05:15
+              - generic [ref=e5076]:
+                - generic [ref=e5077]:
+                  - img [ref=e5078]
+                  - generic [ref=e5083]: ৳340 – ৳1,580
+                - button "Rate Turna Nishita Express" [ref=e5084]: ☆ রেটিং
+            - generic [ref=e5085] [cursor=pointer]:
+              - generic [ref=e5086]:
+                - generic [ref=e5087]:
+                  - generic [ref=e5088]:
+                    - heading "উদয়ন এক্সপ্রেস" [level=3] [ref=e5089]
+                    - generic [ref=e5090]: "#719/720"
+                  - text: এক্সপ্রেস
+                - generic [ref=e5091]:
+                  - button "Add Udayan Express to favorites" [ref=e5092]:
+                    - img [ref=e5093]
+                  - img [ref=e5096]
+              - generic [ref=e5100]:
+                - paragraph [ref=e5102]: ঢাকা (কমলাপুর)
+                - img [ref=e5103]
+                - paragraph [ref=e5106]: সিলেট
+              - generic [ref=e5107]:
+                - generic [ref=e5108]:
+                  - img [ref=e5109]
+                  - generic [ref=e5112]: 21:30
+                  - generic [ref=e5113]: →
+                  - generic [ref=e5114]: 06:30
+                - generic [ref=e5115]:
+                  - img [ref=e5116]
+                  - generic [ref=e5120]: Tue (from Dhk)
+              - generic [ref=e5121]:
+                - generic [ref=e5122]:
+                  - img [ref=e5123]
+                  - generic [ref=e5128]: ৳330 – ৳1,450
+                - button "Rate Udayan Express" [ref=e5129]: ☆ রেটিং
+            - generic [ref=e5130] [cursor=pointer]:
+              - generic [ref=e5131]:
+                - generic [ref=e5132]:
+                  - generic [ref=e5133]:
+                    - heading "উপবন এক্সপ্রেস" [level=3] [ref=e5134]
+                    - generic [ref=e5135]: "#739/740"
+                  - text: এক্সপ্রেস
+                - generic [ref=e5136]:
+                  - button "Add Upaban Express to favorites" [ref=e5137]:
+                    - img [ref=e5138]
+                  - img [ref=e5141]
+              - generic [ref=e5145]:
+                - paragraph [ref=e5147]: ঢাকা (কমলাপুর)
+                - img [ref=e5148]
+                - paragraph [ref=e5151]: সিলেট
+              - generic [ref=e5152]:
+                - generic [ref=e5153]:
+                  - img [ref=e5154]
+                  - generic [ref=e5157]: 20:30
+                  - generic [ref=e5158]: →
+                  - generic [ref=e5159]: 03:30
+                - generic [ref=e5160]:
+                  - img [ref=e5161]
+                  - generic [ref=e5165]: Wed (from Sylhet)
+              - generic [ref=e5166]:
+                - generic [ref=e5167]:
+                  - img [ref=e5168]
+                  - generic [ref=e5173]: ৳270 – ৳1,195
+                - button "Rate Upaban Express" [ref=e5174]: ☆ রেটিং
+            - generic [ref=e5175] [cursor=pointer]:
+              - generic [ref=e5176]:
+                - generic [ref=e5177]:
+                  - generic [ref=e5178]:
+                    - heading "উপকূল এক্সপ্রেস" [level=3] [ref=e5179]
+                    - generic [ref=e5180]: "#711/712"
+                  - text: এক্সপ্রেস
+                - generic [ref=e5181]:
+                  - button "Add Upakul Express to favorites" [ref=e5182]:
+                    - img [ref=e5183]
+                  - img [ref=e5186]
+              - generic [ref=e5190]:
+                - paragraph [ref=e5192]: ঢাকা (কমলাপুর)
+                - img [ref=e5193]
+                - paragraph [ref=e5196]: নোয়াখালী
+              - generic [ref=e5197]:
+                - generic [ref=e5198]:
+                  - img [ref=e5199]
+                  - generic [ref=e5202]: 15:20
+                  - generic [ref=e5203]: →
+                  - generic [ref=e5204]: 22:30
+                - generic [ref=e5205]:
+                  - img [ref=e5206]
+                  - generic [ref=e5210]: Tue (from Dhk)
+              - generic [ref=e5211]:
+                - generic [ref=e5212]:
+                  - img [ref=e5213]
+                  - generic [ref=e5218]: ৳250 – ৳1,090
+                - button "Rate Upakul Express" [ref=e5219]: ☆ রেটিং
+            - generic [ref=e5220] [cursor=pointer]:
+              - generic [ref=e5221]:
+                - generic [ref=e5222]:
+                  - generic [ref=e5223]:
+                    - heading "উত্তরা এক্সপ্রেস" [level=3] [ref=e5224]
+                    - generic [ref=e5225]: "#31/32"
+                  - text: মেইল
+                - generic [ref=e5226]:
+                  - button "Add Uttara Express to favorites" [ref=e5227]:
+                    - img [ref=e5228]
+                  - img [ref=e5231]
+              - generic [ref=e5235]:
+                - paragraph [ref=e5237]: রাজশাহী
+                - img [ref=e5238]
+                - paragraph [ref=e5241]: পার্বতীপুর
+              - generic [ref=e5243]:
+                - img [ref=e5244]
+                - generic [ref=e5247]: 13:00
+                - generic [ref=e5248]: →
+                - generic [ref=e5249]: 18:30
+              - generic [ref=e5250]:
+                - generic [ref=e5251]:
+                  - img [ref=e5252]
+                  - generic [ref=e5257]: ৳110
+                - button "Rate Uttara Express" [ref=e5258]: ☆ রেটিং
+      - generic [ref=e5261]:
+        - generic [ref=e5262]:
+          - img "KoyJabo" [ref=e5263]
+          - generic [ref=e5264]: কইযাবো
+        - navigation [ref=e5265]:
+          - link "হোম" [ref=e5266] [cursor=pointer]:
+            - /url: /
+          - link "পরিচয়" [ref=e5267] [cursor=pointer]:
+            - /url: /about
+          - link "প্রশ্ন ও উত্তর" [ref=e5268] [cursor=pointer]:
+            - /url: /faq
+          - link "অ্যাপ ইনস্টল" [ref=e5269] [cursor=pointer]:
+            - /url: /install
+          - link "যোগাযোগ" [ref=e5270] [cursor=pointer]:
+            - /url: /contact
+          - link "গোপনীয়তা নীতি" [ref=e5271] [cursor=pointer]:
+            - /url: /privacy
+          - link "শর্তাবলী" [ref=e5272] [cursor=pointer]:
+            - /url: /terms
+          - link "রিলিজ নোট" [ref=e5273] [cursor=pointer]:
+            - /url: /release-notes
+          - link "আন্তঃশহর যাত্রা" [ref=e5274] [cursor=pointer]:
+            - /url: /intercity-hub
+        - paragraph [ref=e5275]: © 2024–2026 KoyJabo
+  - navigation [ref=e5276]:
+    - generic [ref=e5277]:
+      - button "হোম" [ref=e5278] [cursor=pointer]:
+        - img [ref=e5279]
+        - generic [ref=e5282]: হোম
+      - button "খুঁজুন" [ref=e5283] [cursor=pointer]:
+        - img [ref=e5284]
+        - generic [ref=e5287]: খুঁজুন
+      - button "ট্রেন" [ref=e5288] [cursor=pointer]:
+        - img [ref=e5290]
+        - generic [ref=e5294]: ট্রেন
+      - button "আন্তঃজেলা" [ref=e5295] [cursor=pointer]:
+        - img [ref=e5296]
+        - generic [ref=e5298]: আন্তঃজেলা
+      - button "AI" [ref=e5299] [cursor=pointer]:
+        - img [ref=e5300]
+        - generic [ref=e5303]: AI

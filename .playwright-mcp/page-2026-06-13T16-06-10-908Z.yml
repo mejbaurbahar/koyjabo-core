@@ -1,0 +1,395 @@
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5] [cursor=pointer]:
+      - img "KoyJabo" [ref=e6]
+      - generic [ref=e7]:
+        - generic [ref=e8]: কই যাবো
+        - generic [ref=e9]: KoyJabo · BD
+    - generic [ref=e10]:
+      - button "হোম" [ref=e11] [cursor=pointer]:
+        - img [ref=e12]
+        - text: হোম
+      - button "মেট্রো LIVE" [ref=e15] [cursor=pointer]:
+        - img [ref=e16]
+        - text: মেট্রো
+        - generic [ref=e20]: LIVE
+      - button "আন্তঃজেলা" [ref=e21] [cursor=pointer]:
+        - img [ref=e22]
+        - text: আন্তঃজেলা
+      - button "ভাড়া হিসাব" [ref=e26] [cursor=pointer]:
+        - img [ref=e27]
+        - text: ভাড়া হিসাব
+      - button "AI সহায়ক NEW" [ref=e29] [cursor=pointer]:
+        - img [ref=e30]
+        - text: AI সহায়ক
+        - generic [ref=e33]: NEW
+    - generic [ref=e34]:
+      - button "Toggle language" [ref=e35] [cursor=pointer]:
+        - img [ref=e36]
+        - generic [ref=e40]: বাং
+      - button "অ্যাপ ইনস্টল" [ref=e41] [cursor=pointer]
+      - button "থিম পরিবর্তন" [ref=e42] [cursor=pointer]:
+        - img [ref=e43]
+      - button "লগইন" [ref=e49] [cursor=pointer]:
+        - img [ref=e50]
+        - text: লগইন
+      - button "মেনু খুলুন" [ref=e53] [cursor=pointer]:
+        - img [ref=e54]
+  - main [ref=e55]:
+    - generic [ref=e56]:
+      - generic [ref=e59]:
+        - generic [ref=e60]:
+          - generic [ref=e61]:
+            - generic [ref=e62]:
+              - generic [ref=e65]: ঢাকা · ৩১°C · জ্যাম মাঝারি
+              - heading "কোথায় যেতে চান?" [level=1] [ref=e66]
+              - paragraph [ref=e67]: ২,৪০০+ ঢাকা লোকাল বাস, মেট্রো রেল ও বাংলাদেশের ৬৪ জেলার সব রুট — অফলাইনেও কাজ করে।
+            - generic [ref=e69]:
+              - generic [ref=e70]:
+                - button "লোকাল বাস" [ref=e71] [cursor=pointer]: লোকাল বাস
+                - button "মেট্রো" [ref=e73] [cursor=pointer]
+                - button "আন্তঃজেলা" [ref=e74] [cursor=pointer]
+                - button "ট্রেন" [ref=e75] [cursor=pointer]
+                - button "লঞ্চ" [ref=e76] [cursor=pointer]
+                - button "যেকোনো কিছু খুঁজুন" [ref=e77] [cursor=pointer]:
+                  - img [ref=e78]
+                  - text: যেকোনো কিছু খুঁজুন
+              - generic [ref=e82]:
+                - img [ref=e84]
+                - textbox "বাস, ট্রেন, স্টপ বা স্থান লিখুন..." [ref=e87]
+                - generic [ref=e88]:
+                  - button "🚌" [ref=e89] [cursor=pointer]
+                  - button "🚇" [ref=e90] [cursor=pointer]
+                  - button "🚆" [ref=e91] [cursor=pointer]
+                  - button "✈️" [ref=e92] [cursor=pointer]
+                  - button "📍" [ref=e93] [cursor=pointer]
+                - generic [ref=e94]: ⌘ K
+              - generic [ref=e97]: অথবা · রুট প্ল্যান করুন
+              - generic [ref=e99]:
+                - generic [ref=e100]:
+                  - img [ref=e102]
+                  - generic [ref=e105]:
+                    - generic [ref=e106]: কোথা থেকে
+                    - textbox "গুলশান ১" [ref=e109]
+                - button "স্টেশন অদলবদল" [ref=e111] [cursor=pointer]:
+                  - img [ref=e112]
+                - generic [ref=e115]:
+                  - img [ref=e117]
+                  - generic [ref=e119]:
+                    - generic [ref=e120]: কোথায়
+                    - textbox "মতিঝিল" [ref=e123]
+                - button "রুট খুঁজুন" [disabled] [ref=e124]:
+                  - img [ref=e125]
+                  - generic [ref=e128]: রুট খুঁজুন
+              - generic [ref=e129]:
+                - button "এখনই · ১০:০৬ PM" [ref=e130] [cursor=pointer]:
+                  - img [ref=e131]
+                  - text: এখনই · ১০:০৬ PM
+                - button "দ্রুততম" [ref=e134] [cursor=pointer]:
+                  - img [ref=e135]
+                  - text: দ্রুততম
+                - button "সস্তা" [ref=e137] [cursor=pointer]:
+                  - img [ref=e138]
+                  - text: সস্তা
+                - button "AC ছাড়া" [ref=e141] [cursor=pointer]
+                - generic [ref=e142]: ২,৪১২ রুট লাইভ
+          - generic [ref=e144]:
+            - generic [ref=e145]:
+              - generic:
+                - generic:
+                  - img
+                  - img
+                  - img
+                  - img
+                  - img
+                  - img
+                  - img
+                  - img
+                  - img
+                  - img
+              - img [ref=e149]
+              - img [ref=e173]
+              - img [ref=e224]:
+                - generic [ref=e241]: MOTIJHEEL
+              - generic [ref=e250]: LIVE · DHAKA
+            - generic [ref=e252]:
+              - img [ref=e254]
+              - generic [ref=e258]:
+                - paragraph [ref=e259]: নেট নেই? সমস্যা নেই।
+                - paragraph [ref=e260]: PWA ইনস্টল করুন · সব রুট অফলাইনে কাজ করে
+              - button "ইনস্টল" [ref=e261] [cursor=pointer]
+        - generic [ref=e263]:
+          - generic [ref=e265]:
+            - generic [ref=e266]:
+              - generic [ref=e267]: বিজ্ঞাপন
+              - generic [ref=e268]: Google AdSense · 728 × 90
+            - insertion [ref=e271]:
+              - iframe [ref=e273]:
+                
+          - generic [ref=e274]:
+            - heading "কী খুঁজছেন?" [level=2] [ref=e276]
+            - generic [ref=e277]:
+              - button "জনপ্রিয় লোকাল বাস ২০০+ রুট" [ref=e278] [cursor=pointer]:
+                - generic [ref=e279]:
+                  - img [ref=e281]
+                  - generic [ref=e285]: জনপ্রিয়
+                - generic [ref=e286]:
+                  - paragraph [ref=e287]: লোকাল বাস
+                  - paragraph [ref=e288]: ২০০+ রুট
+                - generic:
+                  - generic:
+                    - img:
+                      - generic:
+                        - generic: MOTIJHEEL
+              - button "M6 মেট্রো রেল MRT-6 · ১৫ স্টেশন" [ref=e289] [cursor=pointer]:
+                - generic [ref=e292]: M6
+                - generic [ref=e293]:
+                  - paragraph [ref=e294]: মেট্রো রেল
+                  - paragraph [ref=e295]: MRT-6 · ১৫ স্টেশন
+                - generic:
+                  - generic:
+                    - img:
+                      - generic:
+                        - generic: M6
+              - button "🚆 ট্রেন BD রেলওয়ে · সব রুট" [ref=e296] [cursor=pointer]:
+                - generic [ref=e299]: 🚆
+                - generic [ref=e300]:
+                  - paragraph [ref=e301]: ট্রেন
+                  - paragraph [ref=e302]: BD রেলওয়ে · সব রুট
+                - generic:
+                  - generic:
+                    - img:
+                      - generic:
+                        - generic: M6
+              - button "✈️ আন্তঃজেলা ৬৪ জেলা · বাস/ট্রেন/ফ্লাইট" [ref=e303] [cursor=pointer]:
+                - generic [ref=e306]: ✈️
+                - generic [ref=e307]:
+                  - paragraph [ref=e308]: আন্তঃজেলা
+                  - paragraph [ref=e309]: ৬৪ জেলা · বাস/ট্রেন/ফ্লাইট
+                - generic:
+                  - generic:
+                    - img
+              - button "⛵ লঞ্চ ও স্টিমার সদরঘাট → বরিশাল" [ref=e310] [cursor=pointer]:
+                - generic [ref=e313]: ⛵
+                - generic [ref=e314]:
+                  - paragraph [ref=e315]: লঞ্চ ও স্টিমার
+                  - paragraph [ref=e316]: সদরঘাট → বরিশাল
+                - generic:
+                  - generic:
+                    - img
+              - button "নতুন AI সহায়ক বাংলায় জিজ্ঞেস করুন" [ref=e317] [cursor=pointer]:
+                - generic [ref=e318]:
+                  - img [ref=e320]
+                  - generic [ref=e323]: নতুন
+                - generic [ref=e324]:
+                  - paragraph [ref=e325]: AI সহায়ক
+                  - paragraph [ref=e326]: বাংলায় জিজ্ঞেস করুন
+                - generic:
+                  - generic:
+                    - img
+          - generic [ref=e328]:
+            - generic [ref=e329]:
+              - generic [ref=e330]: বিজ্ঞাপন
+              - generic [ref=e331]: Google AdSense · 728 × 90
+            - insertion [ref=e334]:
+              - iframe [ref=e336]:
+                
+          - generic [ref=e337]:
+            - generic [ref=e338]:
+              - heading "মেট্রো · লাইভ" [level=2] [ref=e339]
+              - button "সব স্টেশন দেখুন" [ref=e340] [cursor=pointer]:
+                - text: সব স্টেশন দেখুন
+                - img [ref=e341]
+            - generic [ref=e343]:
+              - generic [ref=e345]:
+                - generic [ref=e346]: M6
+                - generic [ref=e347]:
+                  - generic [ref=e348]: লাইভ · মেট্রো রেল
+                  - generic [ref=e349]: উত্তরা উত্তর → মতিঝিল
+                - generic [ref=e350]:
+                  - generic [ref=e351]: পরবর্তী ট্রেন
+                  - generic [ref=e352]: ২ মিনিট
+              - generic [ref=e355]:
+                - generic [ref=e358]: উত্তরা উত্তর
+                - generic [ref=e361]: উত্তরা সেন্টার
+                - generic [ref=e364]: পল্লবী
+                - generic [ref=e367]: মিরপুর ১১
+                - generic [ref=e370]: মিরপুর ১০
+                - generic [ref=e373]: কাজীপাড়া
+                - generic [ref=e376]: শেওড়াপাড়া
+                - generic [ref=e379]: আগারগাঁও
+                - generic [ref=e382]: বিজয় সরণি
+                - generic [ref=e385]: ফার্মগেট
+                - generic [ref=e388]: কারওয়ান বাজার
+                - generic [ref=e391]: শাহবাগ
+                - generic [ref=e394]: ঢাকা বিশ্ববিদ্যালয়
+                - generic [ref=e397]: বাংলাদেশ সচিবালয়
+                - generic [ref=e400]: মতিঝিল
+              - generic [ref=e401]:
+                - generic [ref=e402]: ৳ ২০-১০০ · ভাড়া
+                - generic [ref=e403]: ৭:১০ AM – ৯:৪০ PM · চলমান
+                - generic [ref=e404]: ● কোনো বিলম্ব নেই
+          - generic [ref=e406]:
+            - generic [ref=e407]:
+              - generic [ref=e408]: বিজ্ঞাপন
+              - generic [ref=e409]: Google AdSense · 728 × 90
+            - insertion [ref=e412]:
+              - iframe [ref=e414]:
+                
+          - generic [ref=e415]:
+            - generic [ref=e416]:
+              - heading "আপনার সেভ করা রুট" [level=2] [ref=e417]
+              - button "সম্পাদনা" [ref=e418] [cursor=pointer]:
+                - text: সম্পাদনা
+                - img [ref=e419]
+            - generic [ref=e421]:
+              - generic [ref=e422] [cursor=pointer]:
+                - generic [ref=e425]: বাসা → অফিস
+                - paragraph [ref=e426]: বনানী → কারওয়ান বাজার
+                - paragraph [ref=e427]:
+                  - img [ref=e428]
+                  - text: ২৮ মিনিট · ৳ ৪০
+              - generic [ref=e431] [cursor=pointer]:
+                - generic [ref=e434]: অফিস → বাসা
+                - paragraph [ref=e435]: কারওয়ান বাজার → বনানী
+                - paragraph [ref=e436]:
+                  - img [ref=e437]
+                  - text: ৩৫ মিনিট · ৳ ৪০
+              - generic [ref=e440] [cursor=pointer]:
+                - generic [ref=e443]: সাপ্তাহান্তে
+                - paragraph [ref=e444]: বনানী → ধানমন্ডি ৩২
+                - paragraph [ref=e445]:
+                  - img [ref=e446]
+                  - text: ৪২ মিনিট · ৳ ৬০
+              - generic [ref=e449] [cursor=pointer]:
+                - generic [ref=e452]: বাবার বাসা
+                - paragraph [ref=e453]: বনানী → মিরপুর ডিওএইচএস
+                - paragraph [ref=e454]:
+                  - img [ref=e455]
+                  - text: ৫৫ মিনিট · ৳ ৭৫
+          - generic [ref=e459]:
+            - generic [ref=e460]:
+              - generic [ref=e461]: বিজ্ঞাপন
+              - generic [ref=e462]: Google AdSense · 728 × 90
+            - insertion [ref=e465]:
+              - iframe [ref=e467]:
+                
+          - generic [ref=e468]:
+            - generic [ref=e469]:
+              - generic [ref=e470]:
+                - heading "ট্রেন্ডিং রুট আজ" [level=2] [ref=e471]
+                - button "সব দেখুন" [ref=e472] [cursor=pointer]:
+                  - text: সব দেখুন
+                  - img [ref=e473]
+              - generic [ref=e475]:
+                - generic [ref=e476] [cursor=pointer]:
+                  - generic [ref=e477]: GL
+                  - generic [ref=e478]:
+                    - generic [ref=e479]:
+                      - paragraph [ref=e480]: গ্রীন লাইন পরিবহন
+                      - generic [ref=e481]: AC
+                    - paragraph [ref=e482]: গুলশান ২ → বাড্ডা → রামপুরা → মালিবাগ → মতিঝিল
+                  - generic [ref=e483]:
+                    - paragraph [ref=e484]: ৳ ৬০
+                    - paragraph [ref=e485]: ৪৮ মি · ১২ স্টপ
+                - generic [ref=e486] [cursor=pointer]:
+                  - generic [ref=e487]: HF
+                  - generic [ref=e488]:
+                    - paragraph [ref=e490]: হানিফ এন্টারপ্রাইজ
+                    - paragraph [ref=e491]: উত্তরা সেক্টর ৭ → এয়ারপোর্ট → বনানী → ফার্মগেট → পল্টন
+                  - generic [ref=e492]:
+                    - paragraph [ref=e493]: ৳ ৭৫
+                    - paragraph [ref=e494]: ১ ঘ ১৫ মি · ১৮ স্টপ
+                - generic [ref=e495] [cursor=pointer]:
+                  - generic [ref=e496]: SH
+                  - generic [ref=e497]:
+                    - generic [ref=e498]:
+                      - paragraph [ref=e499]: শ্যামলী এনআর ট্রাভেলস
+                      - generic [ref=e500]: AC
+                      - generic [ref=e501]: আন্তঃজেলা
+                    - paragraph [ref=e502]: সায়েদাবাদ → যাত্রাবাড়ি → কাঁচপুর → চট্টগ্রাম
+                  - generic [ref=e503]:
+                    - paragraph [ref=e504]: ৳ ৬৮০
+                    - paragraph [ref=e505]: ৬ ঘ ৩০ মি · ৪ স্টপ
+                - generic [ref=e506] [cursor=pointer]:
+                  - generic [ref=e507]: BR
+                  - generic [ref=e508]:
+                    - paragraph [ref=e510]: বিআরটিসি আর্টিকুলেটেড
+                    - paragraph [ref=e511]: মতিঝিল → শাহবাগ → ফার্মগেট → মহাখালী → আবদুল্লাহপুর
+                  - generic [ref=e512]:
+                    - paragraph [ref=e513]: ৳ ৪৫
+                    - paragraph [ref=e514]: ৫২ মি · ১৪ স্টপ
+                - generic [ref=e515] [cursor=pointer]:
+                  - generic [ref=e516]: PR
+                  - generic [ref=e517]:
+                    - paragraph [ref=e519]: প্রজাপতি পরিবহন
+                    - paragraph [ref=e520]: মিরপুর ১২ → শ্যামলী → কলেজ গেট → আজিমপুর → সদরঘাট
+                  - generic [ref=e521]:
+                    - paragraph [ref=e522]: ৳ ৩০
+                    - paragraph [ref=e523]: ৪৫ মি · ১১ স্টপ
+            - generic [ref=e524]:
+              - button "AI সহায়ক Beta বাংলায় জিজ্ঞেস করুন — \"কোন বাস গুলশান থেকে মতিঝিল যায়?\" কক্সবাজার যেতে কত খরচ? বিমানবন্দর থেকে ফার্মগেট সদরঘাট লঞ্চ সময়সূচী আপনার প্রশ্ন লিখুন..." [ref=e525] [cursor=pointer]:
+                - generic [ref=e527]:
+                  - img [ref=e529]
+                  - generic [ref=e532]: AI সহায়ক
+                  - generic [ref=e533]: Beta
+                - paragraph [ref=e534]: বাংলায় জিজ্ঞেস করুন — "কোন বাস গুলশান থেকে মতিঝিল যায়?"
+                - generic [ref=e535]:
+                  - generic [ref=e536]: কক্সবাজার যেতে কত খরচ?
+                  - generic [ref=e537]: বিমানবন্দর থেকে ফার্মগেট
+                  - generic [ref=e538]: সদরঘাট লঞ্চ সময়সূচী
+                - generic [ref=e539]:
+                  - img [ref=e540]
+                  - generic [ref=e543]: আপনার প্রশ্ন লিখুন...
+                  - button [ref=e544]:
+                    - img [ref=e545]
+              - generic [ref=e548]:
+                - generic [ref=e549]:
+                  - generic [ref=e550]: বিজ্ঞাপন
+                  - generic [ref=e551]: Google AdSense · 300 × 250
+                - insertion [ref=e554]:
+                  - iframe [ref=e556]:
+                    
+              - generic [ref=e557]:
+                - generic [ref=e558]:
+                  - img [ref=e560]
+                  - generic [ref=e562]:
+                    - heading "জরুরি সহায়তা" [level=2] [ref=e563]
+                    - paragraph [ref=e564]: ৮০+ যাচাইকৃত নম্বর
+                - generic [ref=e565]:
+                  - button "পুলিশ 999" [ref=e566] [cursor=pointer]:
+                    - paragraph [ref=e567]: পুলিশ
+                    - paragraph [ref=e568]: "999"
+                  - button "অ্যাম্বুলেন্স 199" [ref=e569] [cursor=pointer]:
+                    - paragraph [ref=e570]: অ্যাম্বুলেন্স
+                    - paragraph [ref=e571]: "199"
+                  - button "ফায়ার 102" [ref=e572] [cursor=pointer]:
+                    - paragraph [ref=e573]: ফায়ার
+                    - paragraph [ref=e574]: "102"
+                  - button "হাইওয়ে +880-2" [ref=e575] [cursor=pointer]:
+                    - paragraph [ref=e576]: হাইওয়ে
+                    - paragraph [ref=e577]: +880-2
+      - generic [ref=e580]:
+        - generic [ref=e581]:
+          - img "KoyJabo" [ref=e582]
+          - generic [ref=e583]: কইযাবো
+        - navigation [ref=e584]:
+          - link "হোম" [ref=e585] [cursor=pointer]:
+            - /url: /
+          - link "পরিচয়" [ref=e586] [cursor=pointer]:
+            - /url: /about
+          - link "প্রশ্ন ও উত্তর" [ref=e587] [cursor=pointer]:
+            - /url: /faq
+          - link "অ্যাপ ইনস্টল" [ref=e588] [cursor=pointer]:
+            - /url: /install
+          - link "যোগাযোগ" [ref=e589] [cursor=pointer]:
+            - /url: /contact
+          - link "গোপনীয়তা নীতি" [ref=e590] [cursor=pointer]:
+            - /url: /privacy
+          - link "শর্তাবলী" [ref=e591] [cursor=pointer]:
+            - /url: /terms
+          - link "রিলিজ নোট" [ref=e592] [cursor=pointer]:
+            - /url: /release-notes
+          - link "আন্তঃশহর যাত্রা" [ref=e593] [cursor=pointer]:
+            - /url: /intercity-hub
+        - paragraph [ref=e594]: © 2024–2026 KoyJabo

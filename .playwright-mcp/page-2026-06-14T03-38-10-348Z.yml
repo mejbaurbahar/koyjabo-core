@@ -1,0 +1,195 @@
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5] [cursor=pointer]:
+      - img "KoyJabo" [ref=e6]
+      - generic [ref=e7]:
+        - generic [ref=e8]: কই যাবো
+        - generic [ref=e9]: KoyJabo · BD
+    - generic [ref=e10]:
+      - button "হোম" [ref=e11] [cursor=pointer]:
+        - img [ref=e12]
+        - text: হোম
+      - button "মেট্রো LIVE" [ref=e15] [cursor=pointer]:
+        - img [ref=e16]
+        - text: মেট্রো
+        - generic [ref=e20]: LIVE
+      - button "আন্তঃজেলা" [ref=e21] [cursor=pointer]:
+        - img [ref=e22]
+        - text: আন্তঃজেলা
+      - button "ভাড়া হিসাব" [ref=e26] [cursor=pointer]:
+        - img [ref=e27]
+        - text: ভাড়া হিসাব
+      - button "AI সহায়ক NEW" [ref=e29] [cursor=pointer]:
+        - img [ref=e30]
+        - text: AI সহায়ক
+        - generic [ref=e33]: NEW
+    - generic [ref=e34]:
+      - button "Toggle language" [ref=e35] [cursor=pointer]:
+        - img [ref=e36]
+        - generic [ref=e40]: বাং
+      - button "অ্যাপ ইনস্টল" [ref=e41] [cursor=pointer]
+      - button "থিম পরিবর্তন" [ref=e42] [cursor=pointer]:
+        - img [ref=e43]
+      - button "লগইন" [ref=e49] [cursor=pointer]:
+        - img [ref=e50]
+        - text: লগইন
+      - button "মেনু খুলুন" [ref=e53] [cursor=pointer]:
+        - img [ref=e54]
+  - main [ref=e55]:
+    - generic [ref=e58]:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - img
+                - generic:
+                  - generic:
+                    - generic:
+                      - paragraph: "\"After I land, how do I go to Gulshan 2?\""
+          - generic "National Martyrs' Memorial" [ref=e59] [cursor=pointer]
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - paragraph: "\"Uttara to Motijheel: 100 Taka well spent.\""
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic "Lalbagh Fort"
+                - generic:
+                  - generic "Ahsan Manzil (Pink Palace)"
+              - generic:
+                - generic:
+                  - generic "Shaheed Minar"
+              - generic:
+                - generic:
+                  - generic "Curzon Hall"
+                - generic:
+                  - generic "National Parliament House"
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - paragraph: "\"How do I go to New Market from here?\""
+            - generic "Dhaka Metropolitan Police" [ref=e66]
+          - generic:
+            - generic:
+              - img
+              - img
+            - generic:
+              - img
+              - img
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - paragraph: "\"পারাপার ভাড়া ১০ টাকা হলো কবে?\""
+          - generic:
+            - generic:
+              - generic: "Live Simulation: Dhaka"
+      - generic [ref=e85]:
+        - heading "প্রায়শই জিজ্ঞাসিত প্রশ্ন" [level=1] [ref=e86]
+        - paragraph [ref=e87]: কই যাবো সম্পর্কে আপনার যা জানা দরকার
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - 'heading "Q: কই যাবো কী?" [level=3] [ref=e90]':
+              - generic [ref=e91]: "Q:"
+              - generic [ref=e92]: কই যাবো কী?
+            - paragraph [ref=e93]: কই যাবো মানে "কোথায় যাবেন?" বাংলায়। এটি একটি বিনামূল্যের ওয়েব অ্যাপ যা আপনাকে বাংলাদেশ জুড়ে বাস রুট খুঁজে পেতে সাহায্য করে।
+          - generic [ref=e94]:
+            - 'heading "Q: কীভাবে বাস রুট খুঁজবো?" [level=3] [ref=e95]':
+              - generic [ref=e96]: "Q:"
+              - generic [ref=e97]: কীভাবে বাস রুট খুঁজবো?
+            - paragraph [ref=e98]: "আপনি দুটি উপায়ে খুঁজতে পারেন: (১) সার্চ বক্সে বাস, স্টেশন বা এলাকার নাম টাইপ করুন, অথবা (২) রুট ফাইন্ডার ব্যবহার করুন।"
+          - generic [ref=e99]:
+            - 'heading "Q: অ্যাপটি কি বিনামূল্যে?" [level=3] [ref=e100]':
+              - generic [ref=e101]: "Q:"
+              - generic [ref=e102]: অ্যাপটি কি বিনামূল্যে?
+            - paragraph [ref=e103]: হ্যাঁ! কই যাবো সম্পূর্ণ বিনামূল্যে। কোনো রেজিস্ট্রেশন, সাবস্ক্রিপশন বা লুকানো ফি নেই।
+          - generic [ref=e104]:
+            - 'heading "Q: এটি কি অফলাইনে কাজ করে?" [level=3] [ref=e105]':
+              - generic [ref=e106]: "Q:"
+              - generic [ref=e107]: এটি কি অফলাইনে কাজ করে?
+            - paragraph [ref=e108]: হ্যাঁ! সব বাস রুট এবং স্টেশন ডেটা আপনার ডিভাইসে স্থানীয়ভাবে সংরক্ষিত, তাই ইন্টারনেট ছাড়াও রুট খুঁজতে পারবেন।
+          - generic [ref=e109]:
+            - 'heading "Q: বাস ভাড়া কতটা সঠিক?" [level=3] [ref=e110]':
+              - generic [ref=e111]: "Q:"
+              - generic [ref=e112]: বাস ভাড়া কতটা সঠিক?
+            - paragraph [ref=e113]: আমাদের ভাড়া ক্যালকুলেটর সরকার অনুমোদিত ২০২২ ভাড়া কাঠামো ব্যবহার করে। প্রকৃত ভাড়া সামান্য পরিবর্তিত হতে পারে।
+          - generic [ref=e114]:
+            - 'heading "Q: এআই সহায়ক কী?" [level=3] [ref=e115]':
+              - generic [ref=e116]: "Q:"
+              - generic [ref=e117]: এআই সহায়ক কী?
+            - paragraph [ref=e118]: এআই সহায়ক আমাদের বুদ্ধিমান রুট খুঁজে পাওয়ার সিস্টেম। এটি বাস রুট সম্পর্কে প্রশ্নের উত্তর দিতে পারে।
+          - insertion [ref=e123]:
+            - iframe [ref=e125]:
+              
+          - generic [ref=e126]:
+            - 'heading "Q: জরুরি হেল্পলাইন কীভাবে অ্যাক্সেস করবো?" [level=3] [ref=e127]':
+              - generic [ref=e128]: "Q:"
+              - generic [ref=e129]: জরুরি হেল্পলাইন কীভাবে অ্যাক্সেস করবো?
+            - paragraph [ref=e130]: লাইভ নেভিগেশনের সময়, আপনি আপনার বর্তমান অবস্থানের পাশে একটি লাল "হেল্প লাইন" বোতাম দেখতে পাবেন।
+          - generic [ref=e131]:
+            - 'heading "Q: লাইভ নেভিগেশন কীভাবে ব্যবহার করবো?" [level=3] [ref=e132]':
+              - generic [ref=e133]: "Q:"
+              - generic [ref=e134]: লাইভ নেভিগেশন কীভাবে ব্যবহার করবো?
+            - paragraph [ref=e135]: একটি বাস রুট নির্বাচন করুন, তারপর "নেভিগেশন শুরু করুন" ক্লিক করুন। অবস্থান অ্যাক্সেসের অনুমতি দিন।
+          - generic [ref=e136]:
+            - 'heading "Q: বাংলায় খুঁজতে পারি?" [level=3] [ref=e137]':
+              - generic [ref=e138]: "Q:"
+              - generic [ref=e139]: বাংলায় খুঁজতে পারি?
+            - paragraph [ref=e140]: অবশ্যই! আপনি ইংরেজি এবং বাংলা উভয় ভাষায় খুঁজতে পারেন। উদাহরণস্বরূপ "ফার্মগেট" বা "Farmgate"।
+          - generic [ref=e141]:
+            - 'heading "Q: আমার অবস্থান ডেটা কি নিরাপদ?" [level=3] [ref=e142]':
+              - generic [ref=e143]: "Q:"
+              - generic [ref=e144]: আমার অবস্থান ডেটা কি নিরাপদ?
+            - paragraph [ref=e145]: হ্যাঁ! আপনার অবস্থান ডেটা শুধুমাত্র আপনার ডিভাইসে স্থানীয়ভাবে নেভিগেশনের জন্য ব্যবহৃত হয়।
+          - generic [ref=e146]:
+            - 'heading "Q: কে এই অ্যাপটি তৈরি করেছেন?" [level=3] [ref=e147]':
+              - generic [ref=e148]: "Q:"
+              - generic [ref=e149]: কে এই অ্যাপটি তৈরি করেছেন?
+            - paragraph [ref=e150]: কই যাবো মেজবাউর বাহার ফাগুন দ্বারা তৈরি করা হয়েছে, একজন সফটওয়্যার ইঞ্জিনিয়ার।
+        - generic [ref=e151]:
+          - heading "এখনও প্রশ্ন আছে?" [level=2] [ref=e152]
+          - paragraph [ref=e153]: আমাদের এআই সহায়ককে জিজ্ঞাসা করুন অথবা আমাদের সাথে যোগাযোগ করুন!
+          - generic [ref=e154]:
+            - button "এআই সহায়ককে জিজ্ঞাসা করুন" [ref=e155] [cursor=pointer]:
+              - img [ref=e156]
+              - text: এআই সহায়ককে জিজ্ঞাসা করুন
+            - link "ডেভেলপারের সাথে যোগাযোগ করুন" [ref=e159] [cursor=pointer]:
+              - /url: https://linkedin.com/in/mejbaur/
+              - img [ref=e160]
+              - text: ডেভেলপারের সাথে যোগাযোগ করুন
+      - insertion [ref=e170]:
+        - iframe [ref=e172]:
+          
+      - generic [ref=e175]:
+        - generic [ref=e176]:
+          - img "KoyJabo" [ref=e177]
+          - generic [ref=e178]: কইযাবো
+        - navigation [ref=e179]:
+          - link "হোম" [ref=e180] [cursor=pointer]:
+            - /url: /
+          - link "পরিচয়" [ref=e181] [cursor=pointer]:
+            - /url: /about
+          - link "প্রশ্ন ও উত্তর" [ref=e182] [cursor=pointer]:
+            - /url: /faq
+          - link "অ্যাপ ইনস্টল" [ref=e183] [cursor=pointer]:
+            - /url: /install
+          - link "যোগাযোগ" [ref=e184] [cursor=pointer]:
+            - /url: /contact
+          - link "গোপনীয়তা নীতি" [ref=e185] [cursor=pointer]:
+            - /url: /privacy
+          - link "শর্তাবলী" [ref=e186] [cursor=pointer]:
+            - /url: /terms
+          - link "রিলিজ নোট" [ref=e187] [cursor=pointer]:
+            - /url: /release-notes
+          - link "আন্তঃশহর যাত্রা" [ref=e188] [cursor=pointer]:
+            - /url: /intercity-hub
+        - paragraph [ref=e189]: © 2024–2026 KoyJabo
