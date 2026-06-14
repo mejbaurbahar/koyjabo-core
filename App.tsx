@@ -3752,11 +3752,10 @@ const App: React.FC = () => {
           {/* Right Content Area */}
           <div className={`
             ${'flex-1 min-h-0 w-full min-w-0 bg-transparent relative flex flex-col'}
-            ${view === AppView.TRAIN_LIST ? 'hidden md:flex' : ''}
             ${rightPanelUsesOuterScroll ? 'overflow-y-auto overscroll-y-contain touch-pan-y pb-nav-safe md:pb-4' : 'overflow-hidden'}
             ${(view === AppView.LOCAL_BUS_HUB || view === AppView.METRO_HUB || view === AppView.LAUNCH_HUB || view === AppView.INTERCITY_HUB) && 'flex'}
 `} style={rightPanelUsesOuterScroll ? { WebkitOverflowScrolling: 'touch' } : undefined}>
-            <div className={`hidden md:block absolute inset-0 w-full h-full min-h-0 transition-opacity duration-500 ${view === AppView.TRAIN_LIST ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}><DhakaAlive /></div>
+            {/* DhakaAlive animation removed — TrainListPage has its own purple gradient hero */}
             {view === AppView.TRAIN_DETAILS && (
               user && selectedTrain ? (
                 <TrainDetail
@@ -3784,7 +3783,12 @@ const App: React.FC = () => {
 
             {/* Mode hub views */}
             {view === AppView.LOCAL_BUS_HUB && (
-                <LocalBusHub onBack={() => setView(AppView.HOME)} language={language} />
+                <LocalBusHub
+                  onBack={() => setView(AppView.HOME)}
+                  language={language}
+                  initialFromId={fromStation || undefined}
+                  initialToId={toStation || undefined}
+                />
             )}
             {view === AppView.METRO_HUB && (
                 <MetroRailHub onBack={() => setView(AppView.HOME)} language={language} />

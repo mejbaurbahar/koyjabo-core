@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Train, CreditCard, MapPin, Clock, Zap } from 'lucide-react';
-import SponsoredAdSlot from './SponsoredAdSlot';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface Props {
@@ -318,9 +317,6 @@ const MetroRailHub: React.FC<Props> = ({ onBack, language }) => {
             </div>
           ))}
         </div>
-
-        {/* Ad slot — after info grid, inside content */}
-        <SponsoredAdSlot language={lang as 'en' | 'bn'} size="728x90" compact />
 
       </div>
     </div>

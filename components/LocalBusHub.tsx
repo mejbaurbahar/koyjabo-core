@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   ArrowLeft,
   Search,
@@ -11,10 +11,13 @@ import {
   Navigation,
   Info,
 } from 'lucide-react';
+import { BUS_DATA, STATIONS, METRO_STATIONS } from '../constants';
 
 interface LocalBusHubProps {
   onBack: () => void;
   language: 'en' | 'bn';
+  initialFromId?: string;
+  initialToId?: string;
 }
 
 const lbl = (language: 'en' | 'bn', en: string, bn: string) =>
@@ -187,14 +190,29 @@ function StarRating({ rating, reviews }: { rating: number; reviews?: number }) {
   );
 }
 
-const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language }) => {
+const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFromId, initialToId }) => {
   const L = (en: string, bn: string) => lbl(language, en, bn);
 
+  const getStationName = (id: string) => {
+    const s = (STATIONS as any)[id] || (METRO_STATIONS as any)[id];
+    return language === 'bn' ? (s?.bnName || s?.name || id) : (s?.name || id);
+  };
+
   const [searchQuery, setSearchQuery] = useState('');
-  const [fromField, setFromField] = useState('');
-  const [toField, setToField] = useState('');
+  const [fromField, setFromField] = useState(() => initialFromId ? getStationName(initialFromId) : '');
+  const [toField, setToField] = useState(() => initialToId ? getStationName(initialToId) : '');
   const [activeFilter, setActiveFilter] = useState<string>('name');
   const [activeSort, setActiveSort] = useState<string | null>(null);
+
+  // Filter real BUS_DATA when from/to IDs are provided from home search
+  const searchResults = useMemo(() => {
+    if (!initialFromId || !initialToId) return null;
+    return BUS_DATA.filter(bus => {
+      const fromIdx = bus.stops.indexOf(initialFromId);
+      const toIdx = bus.stops.indexOf(initialToId);
+      return fromIdx !== -1 && toIdx !== -1 && fromIdx < toIdx;
+    });
+  }, [initialFromId, initialToId]);
 
   const handleSwap = () => {
     setFromField(toField);
@@ -339,8 +357,69 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language }) => {
           </div>
         </div>
 
-        {/* Popular routes */}
-        <section>
+        {/* Search results — shown when from/to provided from home search */}
+        {searchResults !== null && (
+          <section>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-bengali font-bold text-[15px] text-kj-text">
+                {searchResults.length > 0
+                  ? L(`${searchResults.length} buses found`, `${searchResults.length}টি বাস পাওয়া গেছে`)
+                  : L('No buses found', 'কোনো বাস পাওয়া যায়নি')}
+              </h3>
+              <span className="text-[11px] text-kj-text-faint font-sans">
+                {fromField || L('From', 'থেকে')} → {toField || L('To', 'পর্যন্ত')}
+              </span>
+            </div>
+            {searchResults.length === 0 ? (
+              <div className="dc-card rounded-2xl p-6 text-center">
+                <Bus size={32} className="mx-auto text-kj-text-faint mb-2" />
+                <p className="font-bengali text-sm text-kj-text-dim">
+                  {L('No direct buses between these stops. Try different stations.', 'এই স্টপের মধ্যে কোনো সরাসরি বাস নেই। অন্য স্টেশন চেষ্টা করুন।')}
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {searchResults.slice(0, 15).map((bus) => {
+                  const initials = bus.name.slice(0, 2).toUpperCase();
+                  const fromIdx = bus.stops.indexOf(initialFromId!);
+                  const toIdx = bus.stops.indexOf(initialToId!);
+                  const stopsCount = toIdx - fromIdx;
+                  return (
+                    <div key={bus.id} className="dc-card kj-glass rounded-2xl p-3.5 flex items-center gap-3 border border-kj-primary/20" style={{ boxShadow: '0 0 0 1px rgba(0,245,255,0.08)' }}>
+                      <div className="w-11 h-11 rounded-xl flex items-center justify-center text-white text-xs font-bold shrink-0"
+                        style={{ background: bus.color ? `linear-gradient(135deg, ${bus.color}, #0070ad)` : 'linear-gradient(135deg, #006a4e, #10b981)' }}>
+                        {initials}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="font-bengali font-semibold text-[14px] text-kj-text truncate">
+                            {language === 'bn' ? (bus.bnName || bus.name) : bus.name}
+                          </span>
+                          {bus.type === 'AC' && <span className="px-1.5 py-0.5 bg-kj-primary-soft text-kj-primary-deep text-[10px] rounded-full font-semibold shrink-0">AC</span>}
+                        </div>
+                        <p className="text-[11px] text-kj-text-faint mt-0.5">
+                          {stopsCount} {L('stops between', 'স্টপ মাঝে')} · {bus.type}
+                        </p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <div className="font-sans font-bold text-[14px] text-kj-primary">
+                          ৳ {Math.max(10, Math.round(stopsCount * 3.5))}
+                        </div>
+                        <div className="text-[10px] text-kj-text-faint">{L('approx', 'আনু.')}</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            <div className="mt-3 border-t border-kj-line pt-3">
+              <h3 className="text-sm font-semibold text-kj-text mb-2">{L('Popular Routes', 'জনপ্রিয় রুট')}</h3>
+            </div>
+          </section>
+        )}
+
+        {/* Popular routes — only when no from/to search active */}
+        {searchResults === null && (<section>
           <h3 className="text-sm font-semibold text-kj-text mb-2">
             {L('Popular Routes', 'জনপ্রিয় রুট')}
           </h3>
@@ -402,7 +481,7 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language }) => {
               </div>
             ))}
           </div>
-        </section>
+        </section>)}
 
         {/* Live buses nearby */}
         <section className="dc-card rounded-2xl p-4">

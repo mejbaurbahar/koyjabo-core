@@ -85,10 +85,8 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
 
   const handleFindRoute = () => {
     if (!fromStation || !toStation) return;
-    setSearchQuery('');
-    setInputValue('');
-    setSearchMode('ROUTE');
-    scrollContainerRef.current && (scrollContainerRef.current.scrollTop = 0);
+    // Navigate to local bus hub — it receives fromStation/toStation via App.tsx props
+    setView(AppView.LOCAL_BUS_HUB);
   };
 
   const chipBtn = (active: boolean) =>
