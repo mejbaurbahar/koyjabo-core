@@ -83,7 +83,7 @@ const SystemStateScreen: React.FC<SystemStateConfig> = ({
   const toneSoftVar = tone === 'accent' ? 'var(--kj-accent-soft)' : tone === 'amber' ? 'var(--kj-amber-soft)' : 'var(--kj-primary-soft)';
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 w-full bg-kj-bg items-center justify-between">
+    <div className="flex flex-col flex-1 min-h-0 w-full bg-kj-bg items-center justify-between overflow-y-auto overscroll-y-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
       {/* Body */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-10 text-center max-w-sm mx-auto w-full">
 

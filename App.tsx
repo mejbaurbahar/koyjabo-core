@@ -3573,8 +3573,6 @@ const App: React.FC = () => {
     AppView.METRO_HUB,
     AppView.LAUNCH_HUB,
     AppView.INTERCITY_HUB,
-    AppView.NOT_FOUND,
-    AppView.SERVER_ERROR,
   ].includes(view) && !(view === AppView.BLOG && !!selectedBlogPost);
 
   return (
