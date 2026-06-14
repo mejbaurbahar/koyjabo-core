@@ -780,11 +780,22 @@ textarea {
 
 /* ===== GOOGLE ADSENSE INTEGRATION ===== */
 
-/* Prevent ads from breaking layout — avoid overflow:hidden on ins (hurts nested iframes / touch) */
-.adsbygoogle {
+/* Hard-contain all AdSense iframes so they NEVER escape their parent container */
+.adsbygoogle,
+ins.adsbygoogle {
   display: block !important;
   margin: 0 auto;
   text-align: center;
+  /* Prevent expandable/anchor creatives from breaking page layout */
+  max-height: inherit !important;
+  overflow: hidden !important;
+}
+
+/* Clamp iframes injected by AdSense to their parent's height */
+.adsbygoogle > iframe,
+ins.adsbygoogle > iframe {
+  max-height: inherit !important;
+  height: inherit !important;
 }
 
 /* Ensure ads don't cause horizontal scroll */

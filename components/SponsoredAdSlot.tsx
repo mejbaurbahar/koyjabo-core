@@ -31,8 +31,8 @@ const SponsoredAdSlot: React.FC<SponsoredAdSlotProps> = ({
           </span>
         </div>
         <div
-          className="w-full mx-auto overflow-hidden flex items-center justify-center"
-          style={{ height: adHeight, maxHeight: adHeight }}
+          className="w-full mx-auto flex items-center justify-center"
+          style={{ height: adHeight, maxHeight: adHeight, overflow: 'hidden', contain: 'strict' }}
         >
           <AdSenseAd
             adSlot="auto"

@@ -3546,22 +3546,16 @@ const App: React.FC = () => {
     || view === AppView.FORGOT_PASSWORD
     || view === AppView.RESET_PASSWORD;
   const pageAdViews: AppView[] = [
+    // Only pages WITHOUT their own SponsoredAdSlot get PageAdSection from App level
     AppView.ABOUT,
     AppView.WHY_USE,
     AppView.FAQ,
     AppView.FOR_AI,
-    AppView.CONTACT,
-    AppView.PRIVACY,
-    AppView.TERMS,
-    AppView.RELEASE_NOTES,
     AppView.INSTALL_APP,
-    AppView.BLOG,
-    // Hub pages have SponsoredAdSlot inside their own components — no duplicate PageAdSection
-    // AppView.LOCAL_BUS_HUB,
-    // AppView.METRO_HUB,   ← removed: ads overlap issue
-    // AppView.LAUNCH_HUB,
     AppView.INTERCITY_HUB,
-    AppView.TRAIN_LIST,
+    // Removed: CONTACT, PRIVACY, TERMS, RELEASE_NOTES, BLOG, TRAIN_LIST
+    // — all have SponsoredAdSlot inside their own component → double ads covered content
+    // — LOCAL_BUS_HUB, METRO_HUB, LAUNCH_HUB — hubs have own ads, removed earlier
   ];
   const showPageAd = pageAdViews.includes(view);
   const rightPanelUsesOuterScroll = [
