@@ -501,5 +501,5 @@ function MiniVehicle({ kind, palette }: MiniVehicleProps) {
     </div>
   );
 }
-export { TravelHeroScene, MiniVehicle };
+export { TravelHeroScene, MiniVehicle, Bus3D, Train3D, Launch3D, Plane3D };
 export default TravelHeroScene;

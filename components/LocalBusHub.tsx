@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { BUS_DATA, STATIONS, METRO_STATIONS } from '../constants';
 import { useAuth } from '../src/contexts/AuthContext';
+import { Bus3D } from './design/Vehicles3D';
 
 interface LocalBusHubProps {
   onBack: () => void;
@@ -196,33 +197,40 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
 
       <div className="px-4 py-4 space-y-4 max-w-2xl mx-auto">
 
-        {/* Hero gradient card */}
-        <div className="rounded-2xl p-5 text-white relative overflow-hidden shadow-kj-lg" style={{ background: 'linear-gradient(135deg, #006a4e 0%, #10b981 60%, #fbbf24 100%)' }}>
-          <div className="flex items-start gap-3 mb-4">
-            <div className="p-2 bg-white/20 rounded-xl">
-              <Bus size={24} className="text-white" />
-            </div>
-            <div>
-              <h2 className="text-lg font-bold leading-tight">
+        {/* ModeHero */}
+        <div className="rounded-[24px] overflow-hidden relative text-white shadow-kj-lg" style={{
+          background: 'linear-gradient(135deg, #006a4e 0%, #10b981 60%, #fbbf24 100%)',
+          minHeight: 240,
+          padding: '18px 18px 0',
+        }}>
+          <div className="absolute -right-12 -top-14 w-60 h-60 rounded-full pointer-events-none kj-anim-pulse" style={{ background: 'rgba(255,255,255,0.15)' }} />
+          <div className="absolute left-1/3 -bottom-20 w-52 h-52 rounded-full pointer-events-none" style={{ background: 'rgba(255,255,255,0.08)' }} />
+          <div className="relative flex items-start justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <span className="font-sans text-[11px] font-bold uppercase tracking-[1.4px] opacity-85">✦ KoyJabo · bus</span>
+              <h1 className="font-bengali font-bold text-white leading-[1.1] tracking-tight text-balance mt-1.5 mb-2" style={{ fontSize: 26 }}>
                 {L('Every Dhaka bus · in one app', 'ঢাকার সব বাস · এক অ্যাপে')}
-              </h2>
-              <p className="text-white/80 text-xs mt-0.5">
-                {L('Find, compare, and plan your bus journey', 'বাস খুঁজুন, তুলনা করুন, যাত্রা পরিকল্পনা করুন')}
+              </h1>
+              <p className="font-bengali text-[13px] opacity-90 leading-relaxed max-w-[380px]">
+                {L('2,412 live routes, 1,000+ stops, 140+ operators — works offline too.', '২,৪১২টি লাইভ রুট, ১,০০০+ স্টপ, ১৪০+ অপারেটর — অফলাইনেও কাজ করে।')}
               </p>
-            </div>
-          </div>
-          <div className="grid grid-cols-4 gap-2">
-            {[
-              { value: '2,412', label: L('Routes', 'রুট') },
-              { value: '1,043', label: L('Stops', 'স্টপ') },
-              { value: '140+', label: L('Operators', 'অপারেটর') },
-              { value: '★4.4', label: L('Avg rating', 'গড় রেটিং') },
-            ].map((stat) => (
-              <div key={stat.label} className="bg-white/20 rounded-xl p-2 text-center">
-                <div className="text-sm font-bold">{stat.value}</div>
-                <div className="text-white/80 text-xs">{stat.label}</div>
+              <div className="flex gap-3.5 mt-4 flex-wrap">
+                {[
+                  { v: '2,412', l: L('Routes', 'রুট') },
+                  { v: '1,043', l: L('Stops', 'স্টপ') },
+                  { v: '140+', l: L('Operators', 'অপারেটর') },
+                  { v: '★ 4.4', l: L('Avg rating', 'গড় রেটিং') },
+                ].map(s => (
+                  <div key={s.l} style={{ minWidth: 68 }}>
+                    <div className="font-sans font-extrabold text-[18px] tracking-tight leading-none">{s.v}</div>
+                    <div className="font-sans text-[9px] font-bold uppercase tracking-[1.2px] opacity-85 mt-1">{s.l}</div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+            <div className="shrink-0 self-end" style={{ marginBottom: -10 }}>
+              <Bus3D size={160} palette={['#ffffff', 'rgba(255,255,255,0.45)', '#04130d', '#fbbf24']} />
+            </div>
           </div>
         </div>
 

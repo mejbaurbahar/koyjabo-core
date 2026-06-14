@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { SearchableSelect } from './SearchableSelect';
 import { INTERCITY_BUS_ROUTES } from '../data/intercityData';
+import { Plane3D } from './design/Vehicles3D';
 
 interface IntercityHubProps {
   onBack: () => void;
@@ -45,7 +46,7 @@ const IntercityHub: React.FC<IntercityHubProps> = ({ onBack, language, onSearch 
   return (
     <div className="min-h-screen bg-kj-bg text-kj-text overflow-y-auto pb-32">
 
-      {/* Sticky back header */}
+      {/* Sticky back bar */}
       <div className="sticky top-0 z-10 bg-kj-bg/90 backdrop-blur-sm border-b border-kj-line flex items-center gap-3 px-4 py-3">
         <button
           onClick={onBack}
@@ -53,17 +54,48 @@ const IntercityHub: React.FC<IntercityHubProps> = ({ onBack, language, onSearch 
         >
           <ArrowLeft className="w-4 h-4" />
         </button>
-        <div className="flex-1">
-          <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint">
-            {L('INTERCITY · 64 DISTRICTS', 'আন্তঃজেলা · ৬৪ জেলা')}
-          </p>
-          <h1 className="text-base font-bold text-kj-text leading-none mt-0.5">
-            {L('Travel anywhere in Bangladesh', 'বাংলাদেশের যেকোনো প্রান্তে যান')}
-          </h1>
-        </div>
+        <span className="font-bengali font-bold text-base text-kj-text">
+          {L('Intercity', 'আন্তঃজেলা')}
+        </span>
       </div>
 
       <div className="px-4 py-4 space-y-4 max-w-2xl mx-auto w-full">
+
+        {/* ModeHero */}
+        <div className="rounded-[24px] overflow-hidden relative text-white shadow-kj-lg" style={{
+          background: 'linear-gradient(135deg, #78350f 0%, #f59e0b 60%, #fde68a 100%)',
+          minHeight: 240,
+          padding: '18px 18px 0',
+        }}>
+          <div className="absolute -right-12 -top-14 w-60 h-60 rounded-full pointer-events-none kj-anim-pulse" style={{ background: 'rgba(255,255,255,0.15)' }} />
+          <div className="relative flex items-start justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <span className="font-sans text-[11px] font-bold uppercase tracking-[1.4px] opacity-85">✦ KoyJabo · intercity</span>
+              <h1 className="font-bengali font-bold text-white leading-[1.1] tracking-tight text-balance mt-1.5 mb-2" style={{ fontSize: 26 }}>
+                {L('Travel anywhere in Bangladesh', 'বাংলাদেশের যেকোনো প্রান্তে যান')}
+              </h1>
+              <p className="font-bengali text-[13px] opacity-90 leading-relaxed max-w-[380px]">
+                {L('64 districts · bus, train, flight & launch — all in one search.', '৬৪ জেলা · বাস, ট্রেন, ফ্লাইট ও লঞ্চ — একটি খোঁজেই।')}
+              </p>
+              <div className="flex gap-3.5 mt-4 flex-wrap">
+                {[
+                  { v: '64', l: L('Districts', 'জেলা') },
+                  { v: '4', l: L('Modes', 'মাধ্যম') },
+                  { v: '500+', l: L('Routes', 'রুট') },
+                  { v: '✦', l: L('All year', 'সারাবছর') },
+                ].map(s => (
+                  <div key={s.l} style={{ minWidth: 60 }}>
+                    <div className="font-sans font-extrabold text-[18px] tracking-tight leading-none">{s.v}</div>
+                    <div className="font-sans text-[9px] font-bold uppercase tracking-[1.2px] opacity-85 mt-1">{s.l}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="shrink-0 self-end" style={{ marginBottom: -10 }}>
+              <Plane3D size={150} palette={['#ffffff', '#3b82f6', '#ef4444']} />
+            </div>
+          </div>
+        </div>
 
         {/* Search card */}
         <div className="dc-card rounded-[22px] p-4 space-y-3 border border-kj-line shadow-kj-lg">

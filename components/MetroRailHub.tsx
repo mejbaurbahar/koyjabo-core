@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Train, CreditCard, MapPin, Clock, Zap } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { Train3D } from './design/Vehicles3D';
 
 interface Props {
   onBack: () => void;
@@ -90,30 +91,40 @@ const MetroRailHub: React.FC<Props> = ({ onBack, language }) => {
 
       <div className="px-4 py-4 space-y-4">
 
-        {/* Hero */}
-        <div
-          className="rounded-2xl p-5 text-white relative overflow-hidden"
-          style={{ background: 'linear-gradient(135deg, #00130e 0%, #00543c 50%, #10b981 100%)' }}
-        >
-          <div className="flex items-center gap-2 mb-2">
-            <Train size={18} className="opacity-80" />
-            <span className="text-xs font-medium tracking-widest uppercase opacity-70">MRT Line 6</span>
-          </div>
-          <h1 className="text-2xl font-bold mb-1">{t('Dhaka Metro Rail', 'ঢাকা মেট্রো রেল')}</h1>
-          <p className="text-sm opacity-70 mb-5">{t('Uttara North → Kamalapur', 'উত্তরা নর্থ → কমলাপুর')}</p>
-
-          <div className="grid grid-cols-4 gap-2">
-            {[
-              { val: '17', label: t('Stations', 'স্টেশন') },
-              { val: '8 min', label: t('Frequency', 'বিরতি') },
-              { val: '৳20-100', label: t('Fare', 'ভাড়া') },
-              { val: '7am-9pm', label: t('Operating', 'সময়') },
-            ].map(item => (
-              <div key={item.label} className="rounded-xl p-2 text-center" style={{ background: 'rgba(255,255,255,0.12)' }}>
-                <div className="text-sm font-bold leading-tight">{item.val}</div>
-                <div className="text-xs opacity-70 leading-tight mt-0.5">{item.label}</div>
+        {/* ModeHero */}
+        <div className="rounded-[24px] overflow-hidden relative text-white shadow-kj-lg" style={{
+          background: 'linear-gradient(135deg, #00130e 0%, #00543c 50%, #10b981 100%)',
+          minHeight: 240,
+          padding: '18px 18px 0',
+        }}>
+          <div className="absolute -right-12 -top-14 w-60 h-60 rounded-full pointer-events-none kj-anim-pulse" style={{ background: 'rgba(255,255,255,0.15)' }} />
+          <div className="absolute left-1/3 -bottom-20 w-52 h-52 rounded-full pointer-events-none" style={{ background: 'rgba(255,255,255,0.08)' }} />
+          <div className="relative flex items-start justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <span className="font-sans text-[11px] font-bold uppercase tracking-[1.4px] opacity-85">✦ KoyJabo · metro</span>
+              <h1 className="font-bengali font-bold text-white leading-[1.1] tracking-tight text-balance mt-1.5 mb-2" style={{ fontSize: 26 }}>
+                {t('Dhaka Metro · MRT-6 live', 'ঢাকা মেট্রো · MRT-6 লাইভ')}
+              </h1>
+              <p className="font-bengali text-[13px] opacity-90 leading-relaxed max-w-[380px]">
+                {t('17 stations from Uttara to Kamalapur · trains every 8 min · 45 min end-to-end.', 'উত্তরা থেকে কমলাপুর পর্যন্ত ১৭টি স্টেশন · প্রতি ৮ মিনিটে ট্রেন।')}
+              </p>
+              <div className="flex gap-3.5 mt-4 flex-wrap">
+                {[
+                  { v: '17', l: t('Stations', 'স্টেশন') },
+                  { v: '8 min', l: t('Frequency', 'বিরতি') },
+                  { v: '৳20-100', l: t('Fare', 'ভাড়া') },
+                  { v: '7am–9pm', l: t('Operating', 'সময়') },
+                ].map(s => (
+                  <div key={s.l} style={{ minWidth: 68 }}>
+                    <div className="font-sans font-extrabold text-[18px] tracking-tight leading-none">{s.v}</div>
+                    <div className="font-sans text-[9px] font-bold uppercase tracking-[1.2px] opacity-85 mt-1">{s.l}</div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+            <div className="shrink-0 self-end" style={{ marginBottom: -10 }}>
+              <Train3D size={160} palette={['#ffffff', 'rgba(255,255,255,0.4)', '#fbbf24']} />
+            </div>
           </div>
         </div>
 

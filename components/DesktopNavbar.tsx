@@ -3,6 +3,7 @@ import { Home, Menu, Sparkles, LogIn, Bus, TramFront, Calculator, Sun, Moon, Tra
 import { AppView } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../src/contexts/AuthContext';
+import KoyJaboLogo from './KoyJaboLogo';
 
 interface NavItem {
     label: string;
@@ -99,7 +100,7 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
                     setPrimarySearch('LOCAL');
                 }}
             >
-                <img src="/logo.png" alt="KoyJabo" className="w-11 h-11 rounded-[11px] shrink-0 group-hover:scale-105 transition-transform" />
+                <KoyJaboLogo size={38} isDarkMode={isDarkMode} className="group-hover:scale-105 transition-transform" />
                 <div className="flex flex-col leading-none gap-0.5">
                     <span className="font-bengali font-bold text-kj-text text-[18px] leading-tight tracking-tight">কই যাবো</span>
                     <span className="font-sans font-medium text-kj-text-faint text-[9px] tracking-[0.14em] uppercase">KoyJabo · BD</span>

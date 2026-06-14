@@ -5,6 +5,7 @@ import {
   ArrowLeft, MapPin, Navigation,
   Coins, AlertCircle, X, CheckCircle2, SlidersHorizontal, Star, Heart, Ticket, Radio, Map
 } from 'lucide-react';
+import { Train3D } from './design/Vehicles3D';
 
 function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
   const R = 6371;
@@ -761,55 +762,57 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
       {/* ── Scrollable body ── */}
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y" style={{ WebkitOverflowScrolling: 'touch' }}>
 
-        {/* ── HERO ── */}
+        {/* ── HERO (ModeHero) ── */}
         <div
           className="relative overflow-hidden"
-          style={{ background: 'linear-gradient(135deg, #5b21b6 0%, #7c3aed 50%, #f59e0b 100%)' }}
+          style={{
+            background: 'linear-gradient(135deg, #5b21b6 0%, #7c3aed 50%, #f59e0b 100%)',
+            minHeight: 240,
+            padding: '18px 18px 0',
+          }}
         >
-          {/* Decorative blobs */}
-          <div className="absolute top-0 right-0 w-56 h-56 rounded-full opacity-20 blur-3xl" style={{ background: '#f59e0b', transform: 'translate(30%,-30%)' }} />
-          <div className="absolute bottom-0 left-0 w-40 h-40 rounded-full opacity-15 blur-2xl" style={{ background: '#a855f7', transform: 'translate(-30%,30%)' }} />
+          <div className="absolute -right-12 -top-14 w-60 h-60 rounded-full pointer-events-none kj-anim-pulse" style={{ background: 'rgba(255,255,255,0.15)' }} />
+          <div className="absolute left-1/3 -bottom-20 w-52 h-52 rounded-full pointer-events-none" style={{ background: 'rgba(255,255,255,0.08)' }} />
 
-          <div className="relative z-10 px-4 pt-5 pb-6">
-            {/* Back button + title */}
-            <div className="flex items-center gap-3 mb-5">
+          <div className="relative flex items-start justify-between gap-3 mb-5">
+            {/* Text side */}
+            <div className="flex-1 min-w-0">
               {onBack && (
                 <button
                   onClick={onBack}
-                  className="w-9 h-9 flex items-center justify-center rounded-full bg-white/15 hover:bg-white/25 transition-colors shrink-0"
+                  className="w-9 h-9 flex items-center justify-center rounded-full bg-white/15 hover:bg-white/25 transition-colors shrink-0 mb-3"
                   aria-label={bn ? 'ফিরুন' : 'Back'}
                 >
                   <ArrowLeft className="w-5 h-5 text-white" />
                 </button>
               )}
-              <div>
-                <h1 className="font-black text-white text-xl leading-tight">
-                  {bn ? 'বাংলাদেশ রেলওয়ে · সকল রুট' : 'Bangladesh Railway · all routes'}
-                </h1>
-                <p className="text-white/70 text-xs mt-0.5">
-                  {bn ? 'সকল ট্রেন ও রুটের তথ্য' : 'Complete train & route information'}
-                </p>
+              <span className="font-sans text-[11px] font-bold uppercase tracking-[1.4px] text-white/85">✦ KoyJabo · train</span>
+              <h1 className="font-bengali font-bold text-white leading-[1.1] tracking-tight text-balance mt-1.5 mb-2" style={{ fontSize: 26 }}>
+                {bn ? 'বাংলাদেশ রেলওয়ে · সকল রুট' : 'Bangladesh Railway · all routes'}
+              </h1>
+              <p className="font-bengali text-[13px] text-white/90 leading-relaxed max-w-[380px]">
+                {bn ? '৩৫০+ আন্তঃনগর ট্রেন, ই-টিকেট বুকিং, লাইভ অবস্থান ট্র্যাকিং — পদ্মা সেতু রুট সহ।' : '350+ intercity trains, e-ticket booking, live position tracking — including Padma Bridge route.'}
+              </p>
+              {/* Stats flex row */}
+              <div className="flex gap-3.5 mt-4 flex-wrap">
+                {[
+                  { v: '350+', l: lbl('Trains', 'ট্রেন') },
+                  { v: '64',   l: lbl('Districts', 'জেলা') },
+                  { v: '5 days', l: lbl('Advance booking', 'অগ্রিম বুকিং') },
+                  { v: '★ 4.5', l: lbl('Avg rating', 'গড় রেটিং') },
+                ].map(s => (
+                  <div key={s.l} style={{ minWidth: 68 }}>
+                    <div className="font-sans font-extrabold text-[18px] tracking-tight leading-none text-white">{s.v}</div>
+                    <div className="font-sans text-[9px] font-bold uppercase tracking-[1.2px] text-white/85 mt-1">{s.l}</div>
+                  </div>
+                ))}
               </div>
             </div>
-
-            {/* Stats row */}
-            <div className="grid grid-cols-4 gap-2 mb-5">
-              {[
-                { value: '350+', label: lbl('Trains', 'ট্রেন') },
-                { value: '64',   label: lbl('Districts', 'জেলা') },
-                { value: '5',    label: lbl('days Advance booking', 'দিন অগ্রিম বুকিং') },
-                { value: '★ 4.5', label: lbl('Avg rating', 'গড় রেটিং') },
-              ].map((stat) => (
-                <div
-                  key={stat.label}
-                  className="rounded-xl px-2 py-2.5 text-center"
-                  style={{ background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(8px)' }}
-                >
-                  <p className="font-black text-white text-sm leading-none">{stat.value}</p>
-                  <p className="text-white/65 text-[9px] mt-1 leading-tight">{stat.label}</p>
-                </div>
-              ))}
+            {/* 3D Train vehicle */}
+            <div className="shrink-0 self-end hidden sm:block" style={{ marginBottom: -10 }}>
+              <Train3D size={200} palette={['#ffffff', 'rgba(255,255,255,0.4)', '#fef3c7']} />
             </div>
+          </div>
 
             {/* Search card */}
             <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.2)' }}>
@@ -930,7 +933,6 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
                 )}
               </div>
             </div>
-          </div>
         </div>
 
         {/* ── Two-column content area ── */}

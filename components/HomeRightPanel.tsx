@@ -290,8 +290,8 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
             onKeyDown={(e) => e.key === 'Enter' && onNavigate('AI_ASSISTANT')}
             role="button"
             tabIndex={0}
-            className="rounded-[20px] p-5 text-white relative overflow-hidden cursor-pointer shadow-[0_4px_12px_rgba(0,0,0,0.6),0_30px_90px_-25px_rgba(0,245,255,0.35)]"
-            style={{ background: 'linear-gradient(135deg, var(--kj-primary) 0%, var(--kj-primary-deep) 100%)' }}
+            className="rounded-[20px] p-5 text-white relative overflow-hidden cursor-pointer shadow-[0_4px_12px_rgba(0,0,0,0.6),0_30px_90px_-25px_rgba(162,89,255,0.35)]"
+            style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #5b21b6 52%, #4338ca 100%)' }}
           >
             <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/8" />
             <div className="absolute right-8 -bottom-10 w-30 h-30 rounded-full bg-white/5" />
@@ -315,7 +315,7 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
             <div className="relative bg-black/20 rounded-[14px] px-3.5 py-2.5 flex items-center gap-2.5 border border-white/10">
               <Bot className="w-4 h-4 shrink-0 opacity-80" />
               <span className="flex-1 font-bengali text-sm opacity-70">{lbl('Type your question...', 'আপনার প্রশ্ন লিখুন...')}</span>
-              <button type="button" className="w-8 h-8 rounded-lg bg-kj-primary-ink text-kj-primary flex items-center justify-center shrink-0">
+              <button type="button" className="w-8 h-8 rounded-lg bg-white text-[#5b21b6] flex items-center justify-center shrink-0">
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>

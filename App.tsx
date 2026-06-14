@@ -91,6 +91,7 @@ import TrainPhotoGallery from './components/TrainPhotoGallery';
 import { getBusRatings, BusRatingSummary } from './services/communityDataService';
 import ReleaseNotes from './components/ReleaseNotes';
 import HomePage from './components/HomePage';
+import KoyJaboLogo from './components/KoyJaboLogo';
 import LocalBusHub from './components/LocalBusHub';
 import MetroRailHub from './components/MetroRailHub';
 import LaunchHub from './components/LaunchHub';
@@ -3611,8 +3612,12 @@ const App: React.FC = () => {
             <button onClick={() => setIsMenuOpen(true)} className="p-0 flex items-center justify-center shrink-0 text-kj-text active:opacity-70" aria-label="Open menu">
               <Menu className="w-[22px] h-[22px]" />
             </button>
-            <div className="cursor-pointer" onClick={() => setView(AppView.HOME)}>
-              <img src="/logo.png" alt="KoyJabo" className="h-11 w-11 rounded-xl" />
+            <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => setView(AppView.HOME)}>
+              <KoyJaboLogo size={34} isDarkMode={isDarkMode} />
+              <div className="flex flex-col leading-none gap-[3px]">
+                <span className="font-bengali font-bold text-kj-text text-[17px] leading-tight tracking-tight">কই যাবো</span>
+                <span className="font-sans font-medium text-kj-text-faint text-[9px] tracking-[0.14em] uppercase">KoyJabo · BD</span>
+              </div>
             </div>
             <div className="flex-1" />
             <div className="flex items-center gap-2 shrink-0">

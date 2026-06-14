@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   ArrowLeft, Search, Ship, MapPin, Clock, Star, Shield, Phone, Info, ChevronRight,
 } from 'lucide-react';
+import { Launch3D } from './design/Vehicles3D';
 
 interface LaunchHubProps {
   onBack: () => void;
@@ -79,36 +80,40 @@ export default function LaunchHub({ onBack, language }: LaunchHubProps) {
 
       <div className="max-w-2xl mx-auto px-4 pt-4 space-y-4">
 
-        {/* Hero card */}
-        <div className="rounded-2xl p-5 text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0c4a6e 0%, #0ea5e9 50%, #fbbf24 100%)' }}>
-          <div className="absolute right-0 top-0 w-40 h-40 rounded-full translate-x-12 -translate-y-10" style={{ background: 'rgba(255,255,255,0.15)' }} />
-          <div className="flex items-center gap-2 mb-1">
-            <Ship size={20} className="opacity-90" />
-            <span className="text-sm font-medium opacity-90">
-              {lbl('River Transport', 'নৌ-পরিবহন')}
-            </span>
-          </div>
-          <h2 className="text-xl font-bold mb-1 leading-snug">
-            {lbl('Sadarghat to everywhere', 'সদরঘাট থেকে সারা বাংলাদেশ')}
-          </h2>
-          <p className="text-sm opacity-85 mb-4">
-            {lbl(
-              'Bangladesh Inland Water Transport Authority (BIWTC)',
-              'বাংলাদেশ অভ্যন্তরীণ নৌ-পরিবহন কর্তৃপক্ষ (বিআইডব্লিউটিএ)',
-            )}
-          </p>
-          <div className="grid grid-cols-4 gap-2">
-            {[
-              { value: '67+', label: lbl('Routes', 'রুট') },
-              { value: '400+', label: lbl('Vessels', 'জলযান') },
-              { value: '14', label: lbl('Terminals', 'ঘাট') },
-              { value: '1947', label: lbl('Est.', 'প্রতিষ্ঠিত') },
-            ].map(stat => (
-              <div key={stat.label} className="bg-white/15 rounded-xl p-2 text-center">
-                <div className="text-lg font-bold">{stat.value}</div>
-                <div className="text-xs opacity-75 leading-tight">{stat.label}</div>
+        {/* ModeHero */}
+        <div className="rounded-[24px] overflow-hidden relative text-white shadow-kj-lg" style={{
+          background: 'linear-gradient(135deg, #0c4a6e 0%, #0ea5e9 50%, #fbbf24 100%)',
+          minHeight: 240,
+          padding: '18px 18px 0',
+        }}>
+          <div className="absolute -right-12 -top-14 w-60 h-60 rounded-full pointer-events-none kj-anim-pulse" style={{ background: 'rgba(255,255,255,0.15)' }} />
+          <div className="absolute left-1/3 -bottom-20 w-52 h-52 rounded-full pointer-events-none" style={{ background: 'rgba(255,255,255,0.08)' }} />
+          <div className="relative flex items-start justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <span className="font-sans text-[11px] font-bold uppercase tracking-[1.4px] opacity-85">✦ KoyJabo · launch</span>
+              <h1 className="font-bengali font-bold text-white leading-[1.1] tracking-tight text-balance mt-1.5 mb-2" style={{ fontSize: 26 }}>
+                {lbl('River journeys · from Sadarghat to everywhere', 'নদীপথে যাত্রা · সদরঘাট থেকে সারাদেশে')}
+              </h1>
+              <p className="font-bengali text-[13px] opacity-90 leading-relaxed max-w-[380px]">
+                {lbl('60+ launch routes, overnight cabin service across Padma and Meghna — Barisal, Bhola, Patuakhali, Chandpur.', '৬০+ লঞ্চ রুট, রাতের কেবিন সার্ভিস, পদ্মা ও মেঘনা পার হয়ে — বরিশাল, ভোলা, পটুয়াখালী, চাঁদপুর।')}
+              </p>
+              <div className="flex gap-3.5 mt-4 flex-wrap">
+                {[
+                  { v: '60+', l: lbl('Routes', 'রুট') },
+                  { v: '14', l: lbl('Terminals', 'ঘাট') },
+                  { v: '৳300+', l: lbl('From', 'শুরু থেকে') },
+                  { v: '6–12h', l: lbl('Duration', 'যাত্রাকাল') },
+                ].map(s => (
+                  <div key={s.l} style={{ minWidth: 68 }}>
+                    <div className="font-sans font-extrabold text-[18px] tracking-tight leading-none">{s.v}</div>
+                    <div className="font-sans text-[9px] font-bold uppercase tracking-[1.2px] opacity-85 mt-1">{s.l}</div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+            <div className="shrink-0 self-end" style={{ marginBottom: -10 }}>
+              <Launch3D size={160} palette={['#ffffff', 'rgba(255,255,255,0.4)', '#fbbf24']} />
+            </div>
           </div>
         </div>
 
