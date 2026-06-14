@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AdSenseAd from './AdSenseAd';
 
 interface SponsoredAdSlotProps {
@@ -18,27 +18,33 @@ const SponsoredAdSlot: React.FC<SponsoredAdSlotProps> = ({
   const isLeaderboard = size === '728x90';
   const slotClass = isLeaderboard ? 'adsense-slot-leaderboard' : 'adsense-slot-rectangle';
   const adHeight = isLeaderboard ? 90 : 250;
+  const [filled, setFilled] = useState(false);
 
   return (
-    <div className={`adsense-wrapper flex justify-center shrink-0 ${compact ? 'my-2' : 'my-6 md:my-8'} ${className}`}>
+    <div
+      className={`adsense-wrapper flex justify-center shrink-0 ${compact ? 'my-2' : 'my-6 md:my-8'} ${className} ${filled ? '' : 'h-0 overflow-hidden'}`}
+    >
       <div className={`w-full max-w-[728px] rounded-xl border border-kj-line/60 bg-kj-panel-muted/30 p-2 adsense-container ${slotClass}`}>
-        <div className="adsense-label flex items-center justify-center gap-2 mb-1.5">
-          <span className="text-[9px] font-bold text-kj-text-faint uppercase tracking-widest">
-            {lbl('Sponsored', 'বিজ্ঞাপন')}
-          </span>
-          <span className="text-[9px] text-kj-text-faint">
-            Google AdSense · {size.replace('x', ' × ')}
-          </span>
-        </div>
+        {filled && (
+          <div className="adsense-label flex items-center justify-center gap-2 mb-1.5">
+            <span className="text-[9px] font-bold text-kj-text-faint uppercase tracking-widest">
+              {lbl('Sponsored', 'বিজ্ঞাপন')}
+            </span>
+            <span className="text-[9px] text-kj-text-faint">
+              Google AdSense · {size.replace('x', ' × ')}
+            </span>
+          </div>
+        )}
         <div
           className="w-full mx-auto flex items-center justify-center"
-          style={{ height: adHeight, maxHeight: adHeight, overflow: 'hidden', contain: 'strict' }}
+          style={{ height: filled ? adHeight : 0, maxHeight: adHeight, overflow: 'hidden', contain: 'strict' }}
         >
           <AdSenseAd
             adSlot="auto"
             adFormat={isLeaderboard ? 'horizontal' : 'rectangle'}
             responsive={isLeaderboard}
             className="w-full max-w-full"
+            onFilled={setFilled}
           />
         </div>
       </div>

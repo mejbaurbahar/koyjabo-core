@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface AdSenseAdProps {
   adSlot: string;
@@ -6,8 +6,9 @@ interface AdSenseAdProps {
   className?: string;
   responsive?: boolean;
   layoutKey?: string;
-  native?: boolean; // accepted for API compat, no visual effect
+  native?: boolean;
   style?: React.CSSProperties;
+  onFilled?: (filled: boolean) => void;
 }
 
 const isValidSlot = (slot: string) => slot === 'auto' || /^\d{9,11}$/.test(slot);
@@ -20,10 +21,12 @@ const AdSenseAd: React.FC<AdSenseAdProps> = React.memo(({
   responsive = true,
   layoutKey,
   style,
+  onFilled,
 }) => {
   const insRef = useRef<HTMLModElement>(null);
   const pushed = useRef(false);
   const retryTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const checkTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const tryPush = () => {
     if (!navigator.onLine) return;
@@ -33,7 +36,6 @@ const AdSenseAd: React.FC<AdSenseAdProps> = React.memo(({
     const status = ins.getAttribute('data-adsbygoogle-status');
     if (status === 'done' || status === 'filled') return;
 
-    // If the AdSense script hasn't loaded yet, retry after 2 s
     if (typeof (window as any).adsbygoogle === 'undefined') {
       if (!retryTimer.current) {
         retryTimer.current = setTimeout(() => {
@@ -50,26 +52,35 @@ const AdSenseAd: React.FC<AdSenseAdProps> = React.memo(({
     } catch {
       pushed.current = false;
     }
+
+    // Check after 3s if ad filled and notify parent
+    if (onFilled) {
+      checkTimer.current = setTimeout(() => {
+        const ins = insRef.current;
+        if (!ins) return;
+        const status = ins.getAttribute('data-adsbygoogle-status');
+        const hasHeight = (ins.offsetHeight ?? 0) > 0;
+        onFilled(status === 'filled' || hasHeight);
+      }, 3000);
+    }
   };
 
   useEffect(() => {
     pushed.current = false;
-    if (retryTimer.current) {
-      clearTimeout(retryTimer.current);
-      retryTimer.current = null;
-    }
+    if (retryTimer.current) { clearTimeout(retryTimer.current); retryTimer.current = null; }
+    if (checkTimer.current) { clearTimeout(checkTimer.current); checkTimer.current = null; }
   }, [adSlot]);
 
   useEffect(() => {
     tryPush();
 
-    // Re-try when the browser comes back online (PWA offline → online transition)
     const handleOnline = () => { pushed.current = false; tryPush(); };
     window.addEventListener('online', handleOnline);
 
     return () => {
       window.removeEventListener('online', handleOnline);
       if (retryTimer.current) clearTimeout(retryTimer.current);
+      if (checkTimer.current) clearTimeout(checkTimer.current);
     };
   }, [adSlot]); // eslint-disable-line react-hooks/exhaustive-deps
 
