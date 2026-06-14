@@ -1,7 +1,10 @@
 import React from 'react';
-import { Bus, Clock, Zap, Bot, Sparkles, ArrowRight } from 'lucide-react';
+import { Bus, Zap, Bot, Sparkles, ArrowRight, Heart } from 'lucide-react';
 import { MiniVehicle, type VehicleKind } from './design/Vehicles3D';
 import SponsoredAdSlot from './SponsoredAdSlot';
+import { BUS_DATA } from '../constants';
+import { getRecentBusSearches } from '../services/analyticsService';
+import type { BusRoute } from '../types';
 
 interface HomeRightPanelProps {
   language: 'en' | 'bn';
@@ -33,20 +36,6 @@ const metroStops = [
 ];
 const METRO_CURRENT_IDX = 9;
 
-const savedRoutes = [
-  { label: { en: 'HOME → WORK', bn: 'বাসা → অফিস' }, route: { en: 'Banani → Karwan Bazar', bn: 'বনানী → কারওয়ান বাজার' }, meta: { en: '28 min · ৳ 40', bn: '২৮ মিনিট · ৳ ৪০' }, color: 'var(--kj-primary)' },
-  { label: { en: 'WORK → HOME', bn: 'অফিস → বাসা' }, route: { en: 'Karwan Bazar → Banani', bn: 'কারওয়ান বাজার → বনানী' }, meta: { en: '35 min · ৳ 40', bn: '৩৫ মিনিট · ৳ ৪০' }, color: 'var(--kj-accent)' },
-  { label: { en: 'WEEKENDS', bn: 'সাপ্তাহান্তে' }, route: { en: 'Banani → Dhanmondi 32', bn: 'বনানী → ধানমন্ডি ৩২' }, meta: { en: '42 min · ৳ 60', bn: '৪২ মিনিট · ৳ ৬০' }, color: 'var(--kj-amber)' },
-  { label: { en: "DAD'S HOUSE", bn: 'বাবার বাসা' }, route: { en: 'Banani → Mirpur DOHS', bn: 'বনানী → মিরপুর ডিওএইচএস' }, meta: { en: '55 min · ৳ 75', bn: '৫৫ মিনিট · ৳ ৭৫' }, color: 'var(--kj-primary-deep)' },
-];
-
-const trendingRoutes = [
-  { brand: ['#006a4e', '#10b981', 'GL'], name: { en: 'Green Line Paribahan', bn: 'গ্রীন লাইন পরিবহন' }, ac: true, intercity: false, route: { en: 'Gulshan 2 → Badda → Rampura → Malibagh → Motijheel', bn: 'গুলশান ২ → বাড্ডা → রামপুরা → মালিবাগ → মতিঝিল' }, fare: '৬০', time: { en: '48 min', bn: '৪৮ মি' }, stops: { en: '12 stops', bn: '১২ স্টপ' } },
-  { brand: ['#d92644', '#ff7a3a', 'HF'], name: { en: 'Hanif Enterprise', bn: 'হানিফ এন্টারপ্রাইজ' }, ac: false, intercity: false, route: { en: 'Uttara Sector 7 → Airport → Banani → Farmgate → Paltan', bn: 'উত্তরা সেক্টর ৭ → এয়ারপোর্ট → বনানী → ফার্মগেট → পল্টন' }, fare: '৭৫', time: { en: '1h 15 min', bn: '১ ঘ ১৫ মি' }, stops: { en: '18 stops', bn: '১৮ স্টপ' } },
-  { brand: ['#b46a13', '#f7b955', 'SH'], name: { en: 'Shyamoli NR Travels', bn: 'শ্যামলী এনআর ট্রাভেলস' }, ac: true, intercity: true, route: { en: 'Sayedabad → Jatrabari → Kachpur → Chittagong', bn: 'সায়েদাবাদ → যাত্রাবাড়ি → কাঁচপুর → চট্টগ্রাম' }, fare: '৬৮০', time: { en: '6h 30 min', bn: '৬ ঘ ৩০ মি' }, stops: { en: '4 stops', bn: '৪ স্টপ' } },
-  { brand: ['#0c8a62', '#1a3a8b', 'BR'], name: { en: 'BRTC Articulated', bn: 'বিআরটিসি আর্টিকুলেটেড' }, ac: false, intercity: false, route: { en: 'Motijheel → Shahbag → Farmgate → Mohakhali → Abdullahpur', bn: 'মতিঝিল → শাহবাগ → ফার্মগেট → মহাখালী → আবদুল্লাহপুর' }, fare: '৪৫', time: { en: '52 min', bn: '৫২ মি' }, stops: { en: '14 stops', bn: '১৪ স্টপ' } },
-  { brand: ['#2c5e1a', '#7eb344', 'PR'], name: { en: 'Projapoti Paribahan', bn: 'প্রজাপতি পরিবহন' }, ac: false, intercity: false, route: { en: 'Mirpur 12 → Shyamoli → College Gate → Azimpur → Sadarghat', bn: 'মিরপুর ১২ → শ্যামলী → কলেজ গেট → আজিমপুর → সদরঘাট' }, fare: '৩০', time: { en: '45 min', bn: '৪৫ মি' }, stops: { en: '11 stops', bn: '১১ স্টপ' } },
-];
 
 interface ModeTileDef {
   title: { en: string; bn: string };
@@ -71,9 +60,39 @@ const SectionHeader: React.FC<{ title: string; action?: string; onAction?: () =>
 );
 
 const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
-  language, isDarkMode, onNavigate, onIntercity, onEmergency,
+  language, isDarkMode, onNavigate, onIntercity, onEmergency, favorites,
 }) => {
   const lbl = (en: string, bn: string) => (language === 'bn' ? bn : en);
+
+  // Real favorites — buses the user has saved
+  const favoriteBuses: BusRoute[] = React.useMemo(
+    () => favorites.map(id => BUS_DATA.find(b => b.id === id)).filter((b): b is BusRoute => !!b).slice(0, 8),
+    [favorites]
+  );
+
+  // Real trending — most searched buses from analytics, fall back to popular static list
+  const [recentSearches] = React.useState(() => getRecentBusSearches(200));
+  const trendingBuses: Array<{ bus: BusRoute; count: number }> = React.useMemo(() => {
+    // Count searches per bus
+    const counts: Record<string, number> = {};
+    recentSearches.forEach(r => { counts[r.busId] = (counts[r.busId] || 0) + 1; });
+    // Sort by count
+    const sorted = Object.entries(counts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([busId, count]) => ({ bus: BUS_DATA.find(b => b.id === busId) as BusRoute, count }))
+      .filter(x => x.bus);
+    // Fallback to popular static buses if analytics is empty
+    if (sorted.length === 0) {
+      const fallback = ['green-line-ac', 'hanif-paribahan', 'brtc-double-decker', 'projapoti', 'shyamoli-nr'];
+      return fallback
+        .map(id => BUS_DATA.find(b => b.id === id))
+        .filter((b): b is BusRoute => !!b)
+        .slice(0, 5)
+        .map(bus => ({ bus, count: 0 }));
+    }
+    return sorted;
+  }, [recentSearches]);
 
   const modeTiles: ModeTileDef[] = [
     { title: { en: 'Local bus', bn: 'লোকাল বাস' }, sub: { en: '200+ routes', bn: '২০০+ রুট' }, badge: { en: 'Popular', bn: 'জনপ্রিয়' }, grad: 'linear-gradient(135deg, var(--kj-primary) 0%, var(--kj-primary-deep) 100%)', vehicle: 'bus', palette: ['#ffffff', 'rgba(255,255,255,0.45)', '#04130d', '#fbbf24'], icon: <Bus className="w-5 h-5" />, action: () => onNavigate('LOCAL_BUS_HUB') },
@@ -162,19 +181,40 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
       </div>
 
       <div className="mb-6 md:mb-8">
-        <SectionHeader title={lbl('Your saved routes', 'আপনার সেভ করা রুট')} action={lbl('Edit', 'সম্পাদনা')} />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          {savedRoutes.map((r) => (
-            <div key={r.label.en} className="dc-card rounded-2xl p-3.5 flex flex-col gap-2 cursor-pointer hover:border-kj-primary/30 transition-colors">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded shrink-0" style={{ background: r.color }} />
-                <span className="text-[10px] font-bold text-kj-text-faint uppercase tracking-wider">{lbl(r.label.en, r.label.bn)}</span>
-              </div>
-              <p className="font-bengali font-bold text-sm text-kj-text leading-snug">{lbl(r.route.en, r.route.bn)}</p>
-              <p className="text-kj-primary text-xs flex items-center gap-1"><Clock className="w-3 h-3" />{lbl(r.meta.en, r.meta.bn)}</p>
-            </div>
-          ))}
-        </div>
+        <SectionHeader
+          title={favoriteBuses.length > 0
+            ? lbl('Your saved routes', 'আপনার সেভ করা রুট')
+            : lbl('Saved buses', 'সেভ করা বাস')}
+          action={favoriteBuses.length > 0 ? lbl('View all', 'সব দেখুন') : undefined}
+        />
+        {favoriteBuses.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {favoriteBuses.map((bus) => {
+              const colors = ['var(--kj-primary)', 'var(--kj-accent)', 'var(--kj-amber)', 'var(--kj-primary-deep)'];
+              const idx = favoriteBuses.indexOf(bus) % colors.length;
+              return (
+                <div key={bus.id} className="dc-card rounded-2xl p-3.5 flex flex-col gap-2 cursor-pointer hover:border-kj-primary/30 transition-colors">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded shrink-0" style={{ background: bus.color || colors[idx] }} />
+                    <span className="text-[10px] font-bold text-kj-text-faint uppercase tracking-wider truncate">{bus.bnName || bus.name}</span>
+                  </div>
+                  <p className="font-bengali font-bold text-sm text-kj-text leading-snug truncate">
+                    {language === 'bn' ? (bus.bnName || bus.name) : bus.name}
+                  </p>
+                  <div className="flex items-center gap-1 text-[11px] text-kj-text-faint">
+                    <Heart className="w-3 h-3 fill-pink-500 text-pink-500 shrink-0" />
+                    <span className="truncate">{bus.stops.length} {lbl('stops', 'স্টপ')}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="dc-card rounded-2xl p-6 text-center">
+            <Heart className="w-8 h-8 text-kj-text-faint mx-auto mb-2" />
+            <p className="font-bengali text-sm text-kj-text-dim">{lbl('No saved routes yet. Tap ❤ on any bus to save it here.', 'এখনো কোনো রুট সেভ হয়নি। যেকোনো বাসে ❤ চাপলে এখানে সেভ হবে।')}</p>
+          </div>
+        )}
       </div>
 
       <SponsoredAdSlot language={language} size="728x90" />
@@ -182,25 +222,34 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
       {/* Trending + AI sidebar grid (desktop) */}
       <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-6 md:gap-8 mb-6 md:mb-8">
         <div>
-          <SectionHeader title={lbl('Trending routes today', 'ট্রেন্ডিং রুট আজ')} action={lbl('View all', 'সব দেখুন')} onAction={() => onNavigate('LOCAL_BUS_HUB')} />
+          <SectionHeader
+            title={lbl('Trending routes today', 'ট্রেন্ডিং রুট আজ')}
+            action={lbl('View all', 'সব দেখুন')}
+            onAction={() => onNavigate('LOCAL_BUS_HUB')}
+          />
           <div className="flex flex-col gap-2">
-            {trendingRoutes.map((r) => (
-              <div key={r.brand[2]} className="dc-card rounded-[14px] p-3.5 md:p-4 flex items-center gap-3.5 cursor-pointer hover:border-kj-primary/30 transition-colors">
-                <div className="w-9 h-9 rounded-[10px] flex items-center justify-center shrink-0 text-white font-bold text-xs" style={{ background: `linear-gradient(135deg, ${r.brand[0]}, ${r.brand[1]})` }}>{r.brand[2]}</div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <p className="font-bengali font-bold text-[15px] text-kj-text">{lbl(r.name.en, r.name.bn)}</p>
-                    {r.ac && <span className="bg-kj-primary-soft text-kj-primary-deep text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full">AC</span>}
-                    {r.intercity && <span className="bg-kj-accent-soft text-kj-accent text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full">{lbl('Intercity', 'আন্তঃজেলা')}</span>}
+            {trendingBuses.map(({ bus, count }) => {
+              const initials = bus.name.slice(0, 2).toUpperCase();
+              return (
+                <div key={bus.id} className="dc-card rounded-[14px] p-3.5 md:p-4 flex items-center gap-3.5 cursor-pointer hover:border-kj-primary/30 transition-colors">
+                  <div
+                    className="w-9 h-9 rounded-[10px] flex items-center justify-center shrink-0 text-white font-bold text-xs"
+                    style={{ background: bus.color ? `linear-gradient(135deg, ${bus.color}, #0070ad)` : 'linear-gradient(135deg, #006a4e, #10b981)' }}
+                  >{initials}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <p className="font-bengali font-bold text-[15px] text-kj-text truncate">{language === 'bn' ? (bus.bnName || bus.name) : bus.name}</p>
+                      {bus.type === 'AC' && <span className="bg-kj-primary-soft text-kj-primary-deep text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full shrink-0">AC</span>}
+                      {count > 0 && <span className="bg-kj-amber-soft text-kj-amber text-[10px] font-semibold px-2 py-0.5 rounded-full shrink-0">{count}× {lbl('today', 'আজ')}</span>}
+                    </div>
+                    <p className="text-kj-text-dim text-xs truncate mt-0.5">{bus.stops.length} {lbl('stops', 'স্টপ')} · {bus.type}</p>
                   </div>
-                  <p className="text-kj-text-dim text-xs truncate mt-0.5">{lbl(r.route.en, r.route.bn)}</p>
+                  <div className="text-right shrink-0">
+                    <ArrowRight className="w-4 h-4 text-kj-text-faint" />
+                  </div>
                 </div>
-                <div className="text-right shrink-0">
-                  <p className="font-bold text-[15px] text-kj-text tracking-tight">৳ {r.fare}</p>
-                  <p className="text-[11px] text-kj-text-faint">{lbl(r.time.en, r.time.bn)} · {lbl(r.stops.en, r.stops.bn)}</p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 

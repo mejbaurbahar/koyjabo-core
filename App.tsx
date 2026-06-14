@@ -75,6 +75,7 @@ import TrainListPage, { TrainDetail } from './components/TrainListPage';
 import TrainRating from './components/TrainRating';
 import { BDTrainRoute, BD_TRAIN_ROUTES, TRAIN_STATIONS } from './data/bangladeshTrainData';
 import transportCache from './data/transport-cache.json';
+import SystemStateScreen, { Icons, BtnIcons } from './components/SystemStateScreen';
 import TripReminders from './components/TripReminders';
 import RoadAlerts from './components/RoadAlerts';
 import NeighbourhoodGuides from './components/NeighbourhoodGuides';
@@ -2749,48 +2750,53 @@ const App: React.FC = () => {
 
 
   const renderNotFound = () => (
-    <div className="flex flex-col items-center justify-center h-full text-center p-6 bg-sky-50 dark:bg-kj-panel overflow-hidden relative w-full">
-      {/* Clouds */}
-      <div className="absolute top-10 left-10 text-white/60 dark:text-kj-text-dim/60 animate-cloud-1">
-        <div className="w-20 h-8 bg-kj-panel rounded-full relative">
-          <div className="w-10 h-10 bg-kj-panel rounded-full absolute -top-5 left-2"></div>
-          <div className="w-8 h-8 bg-kj-panel rounded-full absolute -top-3 left-8"></div>
-        </div>
-      </div>
-      <div className="absolute top-24 right-10 text-white/40 dark:text-kj-text-dim/40 animate-cloud-2 scale-75">
-        <div className="w-20 h-8 bg-kj-panel rounded-full relative">
-          <div className="w-10 h-10 bg-kj-panel rounded-full absolute -top-5 left-2"></div>
-          <div className="w-8 h-8 bg-kj-panel rounded-full absolute -top-3 left-8"></div>
-        </div>
-      </div>
-
-      <div className="relative z-10 w-full max-w-md mx-auto aspect-video flex items-center justify-center mb-8">
-        <div className="animate-drive animate-bounce-bus">
-          <div className="text-kj-primary filter drop-shadow-xl relative">
-            <Bus className="w-32 h-32" />
-            <div className="w-full h-2 bg-black/20 rounded-full blur-sm absolute bottom-0 translate-y-2"></div>
-          </div>
-        </div>
-        {/* Road */}
-        <div className="absolute bottom-6 left-0 right-0 h-20 bg-kj-panel w-full overflow-hidden border-t-4 border-kj-line flex items-center -z-10">
-          <div className="w-full h-2 bg-transparent border-t-2 border-dashed border-white/50 animate-road-move [background-size:40px_100%]"></div>
-        </div>
-      </div>
-
-      <h1 className="text-3xl font-bold text-kj-text mb-3">Off Route?</h1>
-      <p className="text-kj-text-dim mb-8 max-w-xs mx-auto leading-relaxed">
-        Looks like you've wandered off the map. Don't worry, we can get you back on track!
-      </p>
-    </div>
+    <SystemStateScreen
+      code="404"
+      tone="primary"
+      icon={Icons.pinOff}
+      titleBn="রুট খুঁজে পাওয়া যায়নি"
+      titleEn="Route not found"
+      descBn="আপনি যে পেজটি খুঁজছেন সেটি সরে গেছে বা স্টপটি আর নেই। চলুন আবার শুরু করি।"
+      descEn="The page you're after has moved, or this stop no longer exists. Let's get you back on route."
+      chips={[
+        { bn: 'ঢাকা → চট্টগ্রাম', en: 'Dhaka → Ctg' },
+        { bn: 'মেট্রো রেল', en: 'Metro Rail' },
+        { bn: 'লোকাল বাস', en: 'Local bus' },
+      ]}
+      primaryLabel={{ bn: 'হোমে ফিরে যান', en: 'Back to home' }}
+      primaryIcon={BtnIcons.home}
+      onPrimary={() => setView(AppView.HOME)}
+      secondaryLabel={{ bn: 'রুট খুঁজুন', en: 'Search routes' }}
+      secondaryIcon={BtnIcons.search}
+      onSecondary={() => setView(AppView.HOME)}
+      footerBn="ভুল মনে হচ্ছে?"
+      footerEn="Looks wrong?"
+      footerLinkBn="রিপোর্ট করুন"
+      footerLinkEn="Report it"
+      onFooterLink={() => setView(AppView.CONTACT)}
+    />
   );
 
   const renderServerError = () => (
-    <div className="flex flex-col items-center justify-center h-full text-center p-6 bg-kj-panel">
-      <AlertTriangle className="w-12 h-12 text-red-500 mb-4" />
-      <h1 className="text-2xl font-bold text-kj-text mb-2">Server Error</h1>
-      <p className="text-kj-text-dim mb-6">Something went wrong.</p>
-      <button onClick={() => window.location.reload()} className="bg-kj-primary text-white px-6 py-2 rounded-xl font-bold">Reload</button>
-    </div>
+    <SystemStateScreen
+      code="500"
+      tone="accent"
+      icon={Icons.alertTriangle}
+      titleBn="কিছু একটা বিকল হয়েছে"
+      titleEn="Something broke down"
+      descBn="আমাদের সার্ভার রাস্তায় একটু ঝামেলায় পড়েছে। আমরা ঠিক করছি — একটু পরে আবার চেষ্টা করুন।"
+      descEn="Our server hit a bump on the road. We're already on it — give it another go in a moment."
+      primaryLabel={{ bn: 'আবার চেষ্টা করুন', en: 'Try again' }}
+      primaryIcon={BtnIcons.refresh}
+      onPrimary={() => window.location.reload()}
+      secondaryLabel={{ bn: 'সমস্যা জানান', en: 'Report issue' }}
+      onSecondary={() => setView(AppView.CONTACT)}
+      footerBn="বারবার হচ্ছে?"
+      footerEn="Keeps happening?"
+      footerLinkBn="স্ট্যাটাস দেখুন"
+      footerLinkEn="Status page"
+      onFooterLink={() => setView(AppView.CONTACT)}
+    />
   );
 
   const renderWhyUse = () => (
@@ -4477,40 +4483,35 @@ function AuthHeaderButton({ setView }: { setView: (v: AppView) => void }) {
 function LoginWall({ setView, message }: { setView: (v: AppView) => void; message?: string }) {
   const { t } = useLanguage();
   const POST_LOGIN_REDIRECT_KEY = 'koyjabo_post_login_redirect';
+  const doLogin = () => {
+    sessionStorage.setItem(POST_LOGIN_REDIRECT_KEY, window.location.pathname + window.location.search + window.location.hash);
+    setView(AppView.LOGIN);
+  };
+  const doSignup = () => {
+    sessionStorage.setItem(POST_LOGIN_REDIRECT_KEY, window.location.pathname + window.location.search + window.location.hash);
+    setView(AppView.SIGNUP);
+  };
+  void message; void t;
   return (
-    <div className="flex flex-col flex-1 min-h-0 w-full overflow-y-auto overscroll-y-contain touch-pan-y items-center justify-center gap-6 p-8 text-center" style={{ WebkitOverflowScrolling: 'touch' }}>
-      <div className="w-20 h-20 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-        <User className="w-10 h-10 text-blue-600 dark:text-blue-400" />
-      </div>
-      <div>
-        <h2 className="text-xl font-bold text-kj-text mb-2">
-          {message || t('common.loginRequired')}
-        </h2>
-        <p className="text-sm text-kj-text-dim">
-          {t('auth.hasAccount')} {t('common.loginBtn')}
-        </p>
-      </div>
-      <div className="flex gap-3">
-        <button
-          onClick={() => {
-            sessionStorage.setItem(POST_LOGIN_REDIRECT_KEY, window.location.pathname + window.location.search + window.location.hash);
-            setView(AppView.LOGIN);
-          }}
-          className="px-6 py-2.5 rounded-xl bg-kj-primary text-kj-primary-ink font-semibold text-sm transition-colors hover:brightness-105 shadow-sm"
-        >
-          {t('common.loginBtn')}
-        </button>
-        <button
-          onClick={() => {
-            sessionStorage.setItem(POST_LOGIN_REDIRECT_KEY, window.location.pathname + window.location.search + window.location.hash);
-            setView(AppView.SIGNUP);
-          }}
-          className="px-6 py-2.5 rounded-xl bg-kj-primary hover:bg-kj-primary-deep text-white font-semibold text-sm transition-colors shadow-sm"
-        >
-          {t('common.signupBtn')}
-        </button>
-      </div>
-    </div>
+    <SystemStateScreen
+      code="403"
+      tone="amber"
+      icon={Icons.lock}
+      titleBn="প্রবেশ সীমাবদ্ধ"
+      titleEn="Access restricted"
+      descBn="এই পেজটি দেখার অনুমতি আপনার নেই। সঠিক অ্যাকাউন্ট দিয়ে সাইন ইন করে চালিয়ে যান।"
+      descEn="You don't have permission to view this page. Sign in with the right account to continue."
+      primaryLabel={{ bn: 'সাইন ইন করুন', en: 'Sign in' }}
+      primaryIcon={BtnIcons.user}
+      onPrimary={doLogin}
+      secondaryLabel={{ bn: 'সাইন আপ করুন', en: 'Create account' }}
+      onSecondary={doSignup}
+      footerBn="এটা ভুল?"
+      footerEn="Think this is a mistake?"
+      footerLinkBn="সাপোর্ট"
+      footerLinkEn="Contact support"
+      onFooterLink={() => setView(AppView.CONTACT)}
+    />
   );
 }
 
