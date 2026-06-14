@@ -6,6 +6,18 @@ import remarkGfm from 'remark-gfm';
 import SponsoredAdSlot from './SponsoredAdSlot';
 import { useLanguage } from '../contexts/LanguageContext';
 
+const CAT_COLORS: Record<string, [string, string]> = {
+    'Travel Guide':    ['#10b981', '#006a4e'],
+    'Metro Rail':      ['#3b82f6', '#1d4ed8'],
+    'Bus & Transport': ['#10b981', '#006a4e'],
+    'Tips & Tricks':   ['#0ea5e9', '#0369a1'],
+    'App Guide':       ['#8b5cf6', '#5b21b6'],
+};
+
+function getCatColors(cat: string): [string, string] {
+    return CAT_COLORS[cat] ?? ['#10b981', '#006a4e'];
+}
+
 interface BlogPostProps {
     postSlug: string;
     onBack: () => void;
@@ -152,17 +164,28 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                 className="flex-1 overflow-y-auto overscroll-y-contain touch-pan-y pb-32"
                 style={{ WebkitOverflowScrolling: 'touch' }}
             >
-                {/* Hero Image */}
-                <div className="w-full bg-gradient-to-br from-teal-500 to-cyan-600">
-                    <div className="max-w-5xl mx-auto">
-                        <img
-                            src={post.coverImage}
-                            alt={language === 'bn' ? post.bnTitle : post.title}
-                            className="w-full h-56 sm:h-72 md:h-96 object-cover"
-                            onError={(e) => { (e.target as HTMLImageElement).src = '/logo.png'; }}
-                        />
-                    </div>
-                </div>
+                {/* Hero Gradient Banner */}
+                {(() => {
+                    const [gradColor1, gradColor2] = getCatColors(post.category);
+                    return (
+                        <div
+                            className="w-full relative overflow-hidden"
+                            style={{ height: '200px', background: `linear-gradient(135deg, ${gradColor1}, ${gradColor2})` }}
+                        >
+                            <svg viewBox="0 0 400 160" className="w-full h-full absolute inset-0" preserveAspectRatio="xMidYMid slice">
+                                <circle cx="80" cy="120" r="40" fill="rgba(255,255,255,0.15)"/>
+                                <circle cx="320" cy="40" r="60" fill="rgba(255,255,255,0.1)"/>
+                                <g transform="translate(160, 60) scale(0.5)">
+                                    <rect width="180" height="80" rx="14" fill="rgba(255,255,255,0.9)"/>
+                                    <rect x="20" y="20" width="40" height="30" rx="4" fill={gradColor1}/>
+                                    <rect x="120" y="20" width="40" height="30" rx="4" fill={gradColor1}/>
+                                    <circle cx="40" cy="90" r="14" fill="rgba(0,0,0,0.3)"/>
+                                    <circle cx="140" cy="90" r="14" fill="rgba(0,0,0,0.3)"/>
+                                </g>
+                            </svg>
+                        </div>
+                    );
+                })()}
 
                 <article className="max-w-5xl mx-auto px-4 sm:px-6 py-8 md:py-10 w-full">
                     <button
@@ -194,6 +217,30 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                         <p className="text-lg text-kj-text-dim mb-6 leading-relaxed">
                             {language === 'bn' ? post.bnExcerpt : post.excerpt}
                         </p>
+
+                        {/* Author card */}
+                        <div className="dc-card rounded-2xl p-3 flex items-center gap-3 mb-6">
+                            <div
+                                className="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0"
+                                style={{ background: 'var(--kj-primary, #10b981)' }}
+                            >
+                                {post.author.charAt(0).toUpperCase()}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <p className="font-bengali font-bold text-kj-text leading-none" style={{ fontSize: '13px' }}>
+                                    {post.author}
+                                </p>
+                                <p className="text-kj-text-faint mt-0.5" style={{ fontSize: '11px' }}>
+                                    {new Date(post.publishDate).toLocaleDateString(
+                                        language === 'bn' ? 'bn-BD' : 'en-US',
+                                        { year: 'numeric', month: 'long', day: 'numeric' }
+                                    )}
+                                </p>
+                            </div>
+                            <button className="shrink-0 px-3 py-1.5 rounded-full text-xs font-bold border border-kj-line bg-kj-chip-bg text-kj-text-dim hover:border-kj-primary hover:text-kj-primary transition-colors">
+                                {language === 'bn' ? 'ফলো' : 'Follow'}
+                            </button>
+                        </div>
 
                         {/* Author + Share row */}
                         <div className="flex items-center justify-between flex-wrap gap-3 pb-6 border-b-2 border-kj-line">
@@ -355,8 +402,24 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                     </div>
 
 
+                    {/* Reaction bar */}
+                    <div className="mt-8 flex items-center gap-2 flex-wrap">
+                        <button className="bg-kj-chip-bg border border-kj-line rounded-full px-3 py-1.5 text-xs font-bold text-kj-text hover:border-kj-primary transition-colors">
+                            ❤️ 234
+                        </button>
+                        <button className="bg-kj-chip-bg border border-kj-line rounded-full px-3 py-1.5 text-xs font-bold text-kj-text hover:border-kj-primary transition-colors">
+                            💬 18
+                        </button>
+                        <button className="bg-kj-chip-bg border border-kj-line rounded-full px-3 py-1.5 text-xs font-bold text-kj-text hover:border-kj-primary transition-colors">
+                            🔖 {language === 'bn' ? 'সেভ' : 'Save'}
+                        </button>
+                        <button onClick={shareWhatsApp} className="bg-kj-chip-bg border border-kj-line rounded-full px-3 py-1.5 text-xs font-bold text-kj-text hover:border-kj-primary transition-colors">
+                            ↗ {language === 'bn' ? 'শেয়ার' : 'Share'}
+                        </button>
+                    </div>
+
                     {/* Share again (bottom) */}
-                    <div className="mt-8 p-5 bg-gray-50 dark:bg-kj-chip-bg rounded-2xl border border-kj-line">
+                    <div className="mt-4 p-5 bg-gray-50 dark:bg-kj-chip-bg rounded-2xl border border-kj-line">
                         <p className="text-sm font-bold text-kj-text-dim mb-3">{t('blog.sharePost')}</p>
                         <div className="flex items-center gap-2 flex-wrap">
                             <button onClick={shareWhatsApp} className="flex items-center gap-1.5 px-3 py-2 bg-green-500 hover:bg-green-600 text-white text-xs font-semibold rounded-xl transition-colors">

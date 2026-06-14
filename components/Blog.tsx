@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Clock, Tag, Calendar, ArrowRight, Search, X } from 'lucide-react';
+import { Clock, Search, X, ArrowLeft } from 'lucide-react';
 import { BLOG_POSTS } from '../data/blogPosts';
 import { useLanguage } from '../contexts/LanguageContext';
 import SponsoredAdSlot from './SponsoredAdSlot';
@@ -12,8 +12,22 @@ interface BlogProps {
 
 const CATEGORIES = ['All', 'Travel Guide', 'Metro Rail', 'Bus & Transport', 'App Guide', 'Tips & Tricks'];
 
+const CAT_COLORS: Record<string, [string, string]> = {
+    'Travel Guide':   ['#10b981', '#006a4e'],
+    'Metro Rail':     ['#3b82f6', '#1d4ed8'],
+    'Bus & Transport':['#10b981', '#006a4e'],
+    'Tips & Tricks':  ['#0ea5e9', '#0369a1'],
+    'App Guide':      ['#8b5cf6', '#5b21b6'],
+    'All':            ['#ef4444', '#b91c1c'],
+};
+
+function getCatColors(cat: string): [string, string] {
+    return CAT_COLORS[cat] ?? CAT_COLORS['All'];
+}
+
 const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
     const { t } = useLanguage();
+    const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
 
@@ -35,187 +49,204 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
 
     return (
         <div className="w-full pb-nav-safe bg-kj-bg">
-                {/* Header */}
-                <div className="sticky top-0 z-10 bg-kj-panel/90 backdrop-blur-md border-b border-kj-line pt-safe">
-                    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 space-y-3">
-                        <div>
-                            <h1 className="text-2xl sm:text-3xl font-bold text-kj-text">
-                                {t('blog.title')}
-                            </h1>
-                            <p className="text-sm text-kj-text-dim">
-                                {t('blog.subtitle')}
-                            </p>
-                        </div>
+            <div className="max-w-2xl mx-auto px-4 pt-safe">
 
-                        {/* Search */}
-                        <div className="relative">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-kj-text-faint" />
-                            <input
-                                type="text"
-                                value={searchQuery}
-                                onChange={e => setSearchQuery(e.target.value)}
-                                placeholder={t('blog.searchPlaceholder')}
-                                className="w-full pl-9 pr-9 py-2.5 bg-kj-chip-bg border border-kj-line rounded-xl text-sm text-kj-text placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-kj-primary/40"
-                            />
-                            {searchQuery && (
-                                <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2">
-                                    <X className="w-4 h-4 text-kj-text-faint hover:text-kj-text-dim" />
-                                </button>
-                            )}
-                        </div>
-
-                        {/* Category Filters */}
-                        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-                            {CATEGORIES.map(cat => (
-                                <button
-                                    key={cat}
-                                    onClick={() => setSelectedCategory(cat)}
-                                    className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                                        selectedCategory === cat
-                                            ? 'bg-kj-primary text-white shadow-sm'
-                                            : 'bg-kj-chip-bg text-kj-text-dim hover:bg-teal-50 dark:hover:bg-teal-900/20'
-                                    }`}
-                                >
-                                    {cat === 'All' ? t('blog.allCategories') : cat}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+                {/* Back button row */}
+                <div className="flex items-center gap-2 py-4">
+                    <button
+                        onClick={onBack}
+                        className="flex items-center gap-1.5 text-kj-text-dim hover:text-kj-text transition-colors"
+                    >
+                        <ArrowLeft className="w-4 h-4" />
+                        <span className="text-sm font-semibold">{lbl('Back', 'ফিরে যান')}</span>
+                    </button>
+                    <h1 className="ml-auto text-base font-bold text-kj-text">
+                        {t('blog.title')}
+                    </h1>
                 </div>
 
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-8">
-                    <SponsoredAdSlot language={language} size="728x90" compact />
-
-                    {/* No results */}
-                    {filteredPosts.length === 0 && (
-                        <div className="text-center py-16">
-                            <Search className="w-12 h-12 text-kj-text-faint mx-auto mb-3" />
-                            <p className="text-kj-text-dim font-medium">{t('blog.noResults')}</p>
-                            <button onClick={() => { setSearchQuery(''); setSelectedCategory('All'); }}
-                                className="mt-3 text-sm text-kj-primary underline">
-                                {t('blog.clearFilters')}
-                            </button>
-                        </div>
+                {/* Search */}
+                <div className="relative mb-4">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-kj-text-faint" />
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)}
+                        placeholder={t('blog.searchPlaceholder')}
+                        className="w-full pl-9 pr-9 py-2.5 bg-kj-chip-bg border border-kj-line rounded-xl text-sm text-kj-text placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-kj-primary/40"
+                    />
+                    {searchQuery && (
+                        <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2">
+                            <X className="w-4 h-4 text-kj-text-faint hover:text-kj-text-dim" />
+                        </button>
                     )}
+                </div>
 
-                    {/* Featured Post */}
-                    {featuredPost && (
-                        <div>
-                            <h2 className="text-lg font-bold text-kj-primary mb-4 flex items-center gap-2">
-                                <span className="bg-teal-100 dark:bg-teal-900/30 px-3 py-1 rounded-full text-sm">
-                                    {searchQuery || selectedCategory !== 'All' ? `${filteredPosts.length} ${t('blog.results')}` : t('blog.featured')}
-                                </span>
-                            </h2>
+                {/* Category filter chips */}
+                <div className="flex gap-2 overflow-x-auto pb-2 mb-5 scrollbar-hide">
+                    {CATEGORIES.map(cat => (
+                        <button
+                            key={cat}
+                            onClick={() => setSelectedCategory(cat)}
+                            className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
+                                selectedCategory === cat
+                                    ? 'bg-kj-text text-kj-bg border-kj-text'
+                                    : 'bg-kj-panel border-kj-line text-kj-text-dim hover:border-kj-text-dim'
+                            }`}
+                        >
+                            {cat === 'All' ? t('blog.allCategories') : cat}
+                        </button>
+                    ))}
+                </div>
+
+                {/* No results */}
+                {filteredPosts.length === 0 && (
+                    <div className="text-center py-16">
+                        <Search className="w-12 h-12 text-kj-text-faint mx-auto mb-3" />
+                        <p className="text-kj-text-dim font-medium">{t('blog.noResults')}</p>
+                        <button
+                            onClick={() => { setSearchQuery(''); setSelectedCategory('All'); }}
+                            className="mt-3 text-sm text-kj-primary underline"
+                        >
+                            {t('blog.clearFilters')}
+                        </button>
+                    </div>
+                )}
+
+                {/* Featured post card */}
+                {featuredPost && (() => {
+                    const [gradColor1, gradColor2] = getCatColors(featuredPost.category);
+                    return (
+                        <div
+                            onClick={() => onSelectPost(featuredPost.slug)}
+                            className="dc-card rounded-2xl overflow-hidden cursor-pointer mb-4 border border-kj-line"
+                        >
+                            {/* Gradient banner with SVG */}
                             <div
-                                onClick={() => onSelectPost(featuredPost.slug)}
-                                className="group bg-kj-panel rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer border border-kj-line"
+                                className="relative h-40 w-full overflow-hidden"
+                                style={{ background: `linear-gradient(135deg, ${gradColor1}, ${gradColor2})` }}
                             >
-                                <div className="relative overflow-hidden bg-kj-chip-bg h-56 sm:h-72">
-                                    <img
-                                        src={featuredPost.coverImage}
-                                        alt={language === 'bn' ? featuredPost.bnTitle : featuredPost.title}
-                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                        onError={(e) => { (e.target as HTMLImageElement).src = '/logo.png'; }}
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-                                    <span className="absolute top-3 left-3 inline-flex items-center gap-1 px-3 py-1 bg-kj-primary text-white rounded-full text-xs font-semibold shadow">
-                                        <Tag className="w-3 h-3" />{featuredPost.category}
+                                <svg viewBox="0 0 400 160" className="w-full h-full absolute inset-0">
+                                    <circle cx="80" cy="120" r="40" fill="rgba(255,255,255,0.15)"/>
+                                    <circle cx="320" cy="40" r="60" fill="rgba(255,255,255,0.1)"/>
+                                    <g transform="translate(160, 60) scale(0.5)">
+                                        <rect width="180" height="80" rx="14" fill="rgba(255,255,255,0.9)"/>
+                                        <rect x="20" y="20" width="40" height="30" rx="4" fill={gradColor1}/>
+                                        <rect x="120" y="20" width="40" height="30" rx="4" fill={gradColor1}/>
+                                        <circle cx="40" cy="90" r="14" fill="rgba(0,0,0,0.3)"/>
+                                        <circle cx="140" cy="90" r="14" fill="rgba(0,0,0,0.3)"/>
+                                    </g>
+                                </svg>
+                                {/* Featured badge */}
+                                <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-xs font-bold bg-black/60 text-white">
+                                    ★ {lbl('Featured', 'ফিচার্ড')}
+                                </span>
+                            </div>
+
+                            {/* Card content */}
+                            <div className="p-4">
+                                <div className="flex items-center gap-2 mb-2">
+                                    <span
+                                        className="px-2 py-0.5 rounded-full text-xs font-semibold"
+                                        style={{ background: `${gradColor1}22`, color: gradColor1 }}
+                                    >
+                                        {featuredPost.category}
+                                    </span>
+                                    <span className="text-xs text-kj-text-faint flex items-center gap-1">
+                                        <Clock className="w-3 h-3" />{featuredPost.readTime}
+                                    </span>
+                                    <span className="text-xs text-kj-text-faint ml-auto">
+                                        {new Date(featuredPost.publishDate).toLocaleDateString(
+                                            language === 'bn' ? 'bn-BD' : 'en-US',
+                                            { year: 'numeric', month: 'short', day: 'numeric' }
+                                        )}
                                     </span>
                                 </div>
-                                <div className="p-5 sm:p-7">
-                                    <div className="flex flex-wrap items-center gap-3 mb-3 text-xs text-kj-text-dim">
-                                        <span className="inline-flex items-center gap-1"><Clock className="w-3 h-3" />{featuredPost.readTime}</span>
-                                        <span className="inline-flex items-center gap-1">
-                                            <Calendar className="w-3 h-3" />
-                                            {new Date(featuredPost.publishDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-                                        </span>
-                                    </div>
-                                    <h3 className="text-xl sm:text-2xl font-bold text-kj-text mb-2 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
-                                        {language === 'bn' ? featuredPost.bnTitle : featuredPost.title}
-                                    </h3>
-                                    <p className="text-kj-text-dim mb-5 leading-relaxed text-sm sm:text-base line-clamp-3">
-                                        {language === 'bn' ? featuredPost.bnExcerpt : featuredPost.excerpt}
-                                    </p>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-sm text-kj-text-dim">{t('blog.by')}: {featuredPost.author}</span>
-                                        <button className="inline-flex items-center gap-2 px-4 py-2 bg-kj-primary hover:brightness-110 text-kj-primary-ink rounded-xl font-medium text-sm transition-all group-hover:gap-3">
-                                            {t('blog.readMore')}<ArrowRight className="w-4 h-4" />
-                                        </button>
-                                    </div>
-                                </div>
+                                <h2 className="font-bengali font-bold text-kj-text leading-snug"
+                                    style={{ fontSize: '17px' }}>
+                                    {language === 'bn' ? featuredPost.bnTitle : featuredPost.title}
+                                </h2>
                             </div>
                         </div>
-                    )}
+                    );
+                })()}
 
-                    {/* Regular Posts Grid — injected in-feed ad after every 6 posts */}
-                    {regularPosts.length > 0 && (
-                        <div>
-                            <h2 className="text-xl font-bold text-kj-text mb-5">
-                                {searchQuery || selectedCategory !== 'All' ? '' : t('blog.allPosts')}
-                            </h2>
-                            {Array.from({ length: Math.ceil(regularPosts.length / 6) }, (_, chunkIdx) => {
-                                const chunk = regularPosts.slice(chunkIdx * 6, (chunkIdx + 1) * 6);
-                                return (
-                                    <React.Fragment key={chunkIdx}>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-                                            {chunk.map((post) => (
-                                                <div
-                                                    key={post.id}
-                                                    onClick={() => onSelectPost(post.slug)}
-                                                    className="group bg-kj-panel rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer border border-kj-line hover:-translate-y-1 flex flex-col"
-                                                >
-                                                    <div className="relative h-44 overflow-hidden bg-kj-chip-bg">
-                                                        <img
-                                                            src={post.coverImage}
-                                                            alt={language === 'bn' ? post.bnTitle : post.title}
-                                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                                            onError={(e) => { (e.target as HTMLImageElement).src = '/logo.png'; }}
-                                                        />
-                                                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
-                                                        <span className="absolute top-2 left-2 inline-flex items-center gap-1 px-2 py-1 bg-kj-panel/90 backdrop-blur-sm text-kj-primary rounded-lg text-xs font-semibold">
-                                                            <Tag className="w-3 h-3" />{post.category}
-                                                        </span>
-                                                    </div>
-                                                    <div className="p-4 flex-1 flex flex-col">
-                                                        <div className="flex items-center gap-2 mb-2 text-xs text-kj-text-dim">
-                                                            <Clock className="w-3 h-3" />{post.readTime}
-                                                            <span className="ml-auto">{new Date(post.publishDate).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US', { month: 'short', day: 'numeric' })}</span>
-                                                        </div>
-                                                        <h3 className="text-base font-bold text-kj-text mb-2 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors line-clamp-2">
-                                                            {language === 'bn' ? post.bnTitle : post.title}
-                                                        </h3>
-                                                        <p className="text-sm text-kj-text-dim line-clamp-2 flex-1">
-                                                            {language === 'bn' ? post.bnExcerpt : post.excerpt}
-                                                        </p>
-                                                        <div className="flex items-center justify-between mt-3 pt-3 border-t border-kj-line text-xs text-kj-text-dim">
-                                                            <span>{post.author}</span>
-                                                            <span className="text-kj-primary font-semibold">{t('blog.readMore')} →</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
+                {/* Ad between featured and list */}
+                <SponsoredAdSlot language={language} size="728x90" compact />
+
+                {/* List of remaining posts */}
+                {regularPosts.length > 0 && (
+                    <div className="mt-4 space-y-3">
+                        {regularPosts.map(post => {
+                            const [gradColor1, gradColor2] = getCatColors(post.category);
+                            return (
+                                <div
+                                    key={post.id}
+                                    onClick={() => onSelectPost(post.slug)}
+                                    className="dc-card rounded-xl cursor-pointer border border-kj-line p-3 flex items-center gap-3"
+                                >
+                                    {/* Thumbnail */}
+                                    <div
+                                        className="shrink-0 w-20 h-20 rounded-xl overflow-hidden"
+                                        style={{ background: `linear-gradient(135deg, ${gradColor1}, ${gradColor2})` }}
+                                    >
+                                        <svg viewBox="0 0 80 80" className="w-full h-full">
+                                            <circle cx="15" cy="60" r="18" fill="rgba(255,255,255,0.15)"/>
+                                            <circle cx="65" cy="20" r="24" fill="rgba(255,255,255,0.1)"/>
+                                            <g transform="translate(18, 24) scale(0.24)">
+                                                <rect width="180" height="80" rx="14" fill="rgba(255,255,255,0.9)"/>
+                                                <rect x="20" y="20" width="40" height="30" rx="4" fill={gradColor1}/>
+                                                <rect x="120" y="20" width="40" height="30" rx="4" fill={gradColor1}/>
+                                                <circle cx="40" cy="90" r="14" fill="rgba(0,0,0,0.3)"/>
+                                                <circle cx="140" cy="90" r="14" fill="rgba(0,0,0,0.3)"/>
+                                            </g>
+                                        </svg>
+                                    </div>
+
+                                    {/* Content */}
+                                    <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-1.5 mb-1">
+                                            <span
+                                                className="text-xs font-bold uppercase tracking-wide"
+                                                style={{ color: gradColor1 }}
+                                            >
+                                                {post.category}
+                                            </span>
+                                            <span className="text-xs text-kj-text-faint ml-auto">
+                                                {new Date(post.publishDate).toLocaleDateString(
+                                                    language === 'bn' ? 'bn-BD' : 'en-US',
+                                                    { month: 'short', day: 'numeric' }
+                                                )}
+                                            </span>
                                         </div>
-                                    </React.Fragment>
-                                );
-                            })}
-                        </div>
-                    )}
-
-                    <SponsoredAdSlot language={language} size="728x90" compact />
-
-                    {/* SEO Footer */}
-                    <div className="mt-6 bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-kj-panel dark:to-kj-panel-muted rounded-2xl p-6 text-center border border-teal-100 border-kj-primary/30">
-                        <p className="text-sm font-semibold text-teal-700 dark:text-teal-300 mb-1">koyjabo.com</p>
-                        <p className="text-xs text-kj-text-dim">
-                            {language === 'bn'
-                                ? 'বাংলাদেশের সেরা পাবলিক ট্রান্সপোর্ট গাইড — ঢাকার বাস, মেট্রোরেল, ট্রেন এবং আন্তঃনগর ভ্রমণ'
-                                : "Bangladesh's best public transport guide — Dhaka buses, metro rail, trains & intercity travel"}
-                        </p>
+                                        <h3 className="font-bold text-kj-text text-sm leading-snug line-clamp-2">
+                                            {language === 'bn' ? post.bnTitle : post.title}
+                                        </h3>
+                                        <span className="text-xs text-kj-text-faint flex items-center gap-1 mt-1">
+                                            <Clock className="w-3 h-3" />{post.readTime}
+                                        </span>
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
-                    
-                    {/* <AdSenseAd adSlot="auto" className="mt-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-                    <div className="h-4" />
+                )}
+
+                <SponsoredAdSlot language={language} size="728x90" compact />
+
+                {/* SEO Footer */}
+                <div className="mt-6 mb-4 bg-kj-panel rounded-2xl p-5 text-center border border-kj-line">
+                    <p className="text-sm font-semibold text-kj-primary mb-1">koyjabo.com</p>
+                    <p className="text-xs text-kj-text-dim">
+                        {lbl(
+                            "Bangladesh's best public transport guide — Dhaka buses, metro rail, trains & intercity travel",
+                            'বাংলাদেশের সেরা পাবলিক ট্রান্সপোর্ট গাইড — ঢাকার বাস, মেট্রোরেল, ট্রেন এবং আন্তঃনগর ভ্রমণ'
+                        )}
+                    </p>
                 </div>
+
+                <div className="h-4" />
+            </div>
         </div>
     );
 };
