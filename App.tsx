@@ -3846,11 +3846,8 @@ const App: React.FC = () => {
     // Train/Train details view (renders in left sidebar on desktop)
     if (view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) {
       return (
-        <div className="relative flex flex-col flex-1 min-h-0 w-full overflow-hidden">
-          <div className="absolute inset-0 z-0 pointer-events-none">
-            <DhakaAlive hideIndicator />
-          </div>
-          <div className="relative z-10 flex flex-col flex-1 min-h-0 w-full overflow-hidden">
+        <div className="flex flex-col flex-1 min-h-0 w-full overflow-hidden">
+          <div className="flex flex-col flex-1 min-h-0 w-full overflow-hidden">
             <TrainListPage
               userLocation={userLocation}
               onBack={() => setView(AppView.HOME)}
@@ -3900,6 +3897,7 @@ const App: React.FC = () => {
     AppView.METRO_HUB,
     AppView.LAUNCH_HUB,
     AppView.INTERCITY_HUB,
+    AppView.TRAIN_LIST,
   ];
   const showPageAd = pageAdViews.includes(view);
   const rightPanelUsesOuterScroll = [
@@ -4444,7 +4442,7 @@ const App: React.FC = () => {
           </div>
           </div>
           {!rightPanelUsesOuterScroll && showPageAd && <PageAdSection />}
-          {!rightPanelUsesOuterScroll && !hideSiteChrome && view !== AppView.AI_ASSISTANT && <GlobalFooter setView={setView} />}
+          {!rightPanelUsesOuterScroll && !hideSiteChrome && <GlobalFooter setView={setView} />}
           </div>
           )}
         </main>
@@ -4592,11 +4590,15 @@ const App: React.FC = () => {
                     { label: language === 'bn' ? 'AI সহায়ক' : 'AI Assistant', action: () => { setView(AppView.AI_ASSISTANT); setIsMenuOpen(false); } },
                   ]},
                   { h: language === 'bn' ? 'অ্যাকাউন্ট' : 'Account', items: [
-                    { label: language === 'bn' ? 'প্রোফাইল' : 'Profile', action: () => { setView(AppView.PROFILE); setIsMenuOpen(false); } },
-                    { label: language === 'bn' ? 'প্রিয় রুট' : 'Favorites', action: () => { setView(AppView.HOME); setListFilter('FAVORITES'); setIsMenuOpen(false); } },
-                    { label: language === 'bn' ? 'যাত্রার ইতিহাস' : 'Trip history', action: () => { setView(AppView.HISTORY); setIsMenuOpen(false); } },
-                    { label: language === 'bn' ? 'সেটিংস' : 'Settings', action: () => { setView(AppView.SETTINGS); setIsMenuOpen(false); } },
-                    { label: language === 'bn' ? 'সাইন ইন' : 'Sign in', action: () => { setView(AppView.LOGIN); setIsMenuOpen(false); } },
+                    ...(user ? [
+                      { label: language === 'bn' ? 'প্রোফাইল' : 'Profile', action: () => { setView(AppView.PROFILE); setIsMenuOpen(false); } },
+                      { label: language === 'bn' ? 'প্রিয় রুট' : 'Favorites', action: () => { setView(AppView.HOME); setListFilter('FAVORITES'); setIsMenuOpen(false); } },
+                      { label: language === 'bn' ? 'যাত্রার ইতিহাস' : 'Trip history', action: () => { setView(AppView.HISTORY); setIsMenuOpen(false); } },
+                      { label: language === 'bn' ? 'সেটিংস' : 'Settings', action: () => { setView(AppView.SETTINGS); setIsMenuOpen(false); } },
+                    ] : [
+                      { label: language === 'bn' ? 'সাইন ইন' : 'Sign in', action: () => { setView(AppView.LOGIN); setIsMenuOpen(false); } },
+                      { label: language === 'bn' ? 'সাইন আপ' : 'Sign up', action: () => { setView(AppView.SIGNUP); setIsMenuOpen(false); } },
+                    ]),
                   ]},
                   { h: language === 'bn' ? 'কমিউনিটি' : 'Community', items: [
                     { label: language === 'bn' ? 'যাত্রা রিমাইন্ডার' : 'Trip Reminders', action: () => { setView(AppView.TRIP_REMINDERS); setIsMenuOpen(false); } },

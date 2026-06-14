@@ -72,51 +72,11 @@ const DEPARTURES = [
 ];
 
 const CABIN_CLASSES = [
-  {
-    icon: '🛏️',
-    title: 'VIP Suite',
-    titleBn: 'ভিআইপি স্যুট',
-    desc: 'Private room, AC, attached bath',
-    descBn: 'প্রাইভেট রুম, এসি, সংযুক্ত বাথরুম',
-    fare: '৳1,800–3,500',
-    color: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300',
-  },
-  {
-    icon: '🛋️',
-    title: 'First Class Cabin',
-    titleBn: 'প্রথম শ্রেণির কেবিন',
-    desc: 'Semi-private, comfortable',
-    descBn: 'আধা-প্রাইভেট, আরামদায়ক',
-    fare: '৳800–1,500',
-    color: 'bg-kj-primary-soft dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
-  },
-  {
-    icon: '🪑',
-    title: 'Second Class Cabin',
-    titleBn: 'দ্বিতীয় শ্রেণির কেবিন',
-    desc: 'Shared cabin',
-    descBn: 'শেয়ার্ড কেবিন',
-    fare: '৳400–800',
-    color: 'bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300',
-  },
-  {
-    icon: '💺',
-    title: 'Deck (Chair)',
-    titleBn: 'ডেক (চেয়ার)',
-    desc: 'Seated deck space',
-    descBn: 'বসার আসন',
-    fare: '৳200–400',
-    color: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300',
-  },
-  {
-    icon: '🛖',
-    title: 'Deck (Floor)',
-    titleBn: 'ডেক (মেঝে)',
-    desc: 'Budget open deck',
-    descBn: 'সাশ্রয়ী খোলা ডেক',
-    fare: '৳100–250',
-    color: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300',
-  },
+  { icon: '🛏️', title: 'VIP Suite', titleBn: 'ভিআইপি স্যুট', desc: 'Private room, AC, attached bath', descBn: 'প্রাইভেট রুম, এসি, সংযুক্ত বাথরুম', fare: '৳1,800–3,500', accent: '#7c3aed' },
+  { icon: '🛋️', title: 'First Class Cabin', titleBn: 'প্রথম শ্রেণির কেবিন', desc: 'Semi-private, comfortable', descBn: 'আধা-প্রাইভেট, আরামদায়ক', fare: '৳800–1,500', accent: '#3b82f6' },
+  { icon: '🪑', title: 'Second Class Cabin', titleBn: 'দ্বিতীয় শ্রেণির কেবিন', desc: 'Shared cabin', descBn: 'শেয়ার্ড কেবিন', fare: '৳400–800', accent: '#0ea5e9' },
+  { icon: '💺', title: 'Deck (Chair)', titleBn: 'ডেক (চেয়ার)', desc: 'Seated deck space', descBn: 'বসার আসন', fare: '৳200–400', accent: '#10b981' },
+  { icon: '🛖', title: 'Deck (Floor)', titleBn: 'ডেক (মেঝে)', desc: 'Budget open deck', descBn: 'সাশ্রয়ী খোলা ডেক', fare: '৳100–250', accent: '#f59e0b' },
 ];
 
 const ROUTES = [
@@ -160,7 +120,8 @@ export default function LaunchHub({ onBack, language }: LaunchHubProps) {
       <div className="max-w-2xl mx-auto px-4 pt-4 space-y-4">
 
         {/* Hero card */}
-        <div className="bg-gradient-to-br from-blue-900 to-sky-600 rounded-2xl p-5 text-white">
+        <div className="rounded-2xl p-5 text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0c4a6e 0%, #0ea5e9 50%, #fbbf24 100%)' }}>
+          <div className="absolute right-0 top-0 w-40 h-40 rounded-full translate-x-12 -translate-y-10" style={{ background: 'rgba(255,255,255,0.15)' }} />
           <div className="flex items-center gap-2 mb-1">
             <Ship size={20} className="opacity-90" />
             <span className="text-sm font-medium opacity-90">
@@ -170,7 +131,7 @@ export default function LaunchHub({ onBack, language }: LaunchHubProps) {
           <h2 className="text-xl font-bold mb-1 leading-snug">
             {lbl('Sadarghat to everywhere', 'সদরঘাট থেকে সারা বাংলাদেশ')}
           </h2>
-          <p className="text-sm text-blue-100 mb-4">
+          <p className="text-sm opacity-85 mb-4">
             {lbl(
               'Bangladesh Inland Water Transport Authority (BIWTC)',
               'বাংলাদেশ অভ্যন্তরীণ নৌ-পরিবহন কর্তৃপক্ষ (বিআইডব্লিউটিএ)',
@@ -185,7 +146,7 @@ export default function LaunchHub({ onBack, language }: LaunchHubProps) {
             ].map(stat => (
               <div key={stat.label} className="bg-white/15 rounded-xl p-2 text-center">
                 <div className="text-lg font-bold">{stat.value}</div>
-                <div className="text-xs text-blue-100 leading-tight">{stat.label}</div>
+                <div className="text-xs opacity-75 leading-tight">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -345,21 +306,15 @@ export default function LaunchHub({ onBack, language }: LaunchHubProps) {
             <Info size={16} className="text-kj-primary" />
             {lbl('Cabin Classes', 'কেবিন শ্রেণী')}
           </h3>
-          <div className="dc-card rounded-2xl divide-y divide-kj-line">
+          <div className="dc-card rounded-2xl overflow-hidden">
             {CABIN_CLASSES.map((cls, i) => (
-              <div key={i} className="flex items-center gap-3 px-4 py-3">
-                <span className="text-xl w-7 text-center">{cls.icon}</span>
+              <div key={i} className={`flex items-center gap-3 px-4 py-3 ${i > 0 ? 'border-t border-kj-line' : ''}`}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-base shrink-0" style={{ background: cls.accent + '22' }}>{cls.icon}</div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium text-kj-text">
-                    {lbl(cls.title, cls.titleBn)}
-                  </div>
-                  <div className="text-xs text-kj-text-dim truncate">
-                    {lbl(cls.desc, cls.descBn)}
-                  </div>
+                  <div className="text-sm font-semibold text-kj-text">{lbl(cls.title, cls.titleBn)}</div>
+                  <div className="text-xs text-kj-text-dim truncate">{lbl(cls.desc, cls.descBn)}</div>
                 </div>
-                <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${cls.color}`}>
-                  {cls.fare}
-                </span>
+                <span className="text-sm font-bold" style={{ color: cls.accent }}>{cls.fare}</span>
               </div>
             ))}
           </div>
@@ -396,8 +351,8 @@ export default function LaunchHub({ onBack, language }: LaunchHubProps) {
         </div>
 
         {/* Safety info card */}
-        <div className="bg-kj-amber-soft border border-amber-300/50 rounded-2xl p-4 flex gap-3">
-          <Shield size={20} className="text-amber-600 shrink-0 mt-0.5" />
+        <div className="bg-kj-amber-soft border border-kj-amber/30 rounded-2xl p-4 flex gap-3">
+          <Shield size={20} className="text-kj-amber shrink-0 mt-0.5" />
           <div>
             <div className="text-sm font-semibold text-kj-text mb-1">
               {lbl('Safety Information', 'নিরাপত্তা তথ্য')}
@@ -409,7 +364,7 @@ export default function LaunchHub({ onBack, language }: LaunchHubProps) {
               )}{' '}
               <a
                 href="tel:16123"
-                className="font-bold text-amber-700 hover:underline"
+                className="font-bold text-kj-amber hover:underline"
               >
                 16123
               </a>
@@ -419,7 +374,7 @@ export default function LaunchHub({ onBack, language }: LaunchHubProps) {
                 'যাত্রার আগে সবসময় আবহাওয়া পরীক্ষা করুন।',
               )}
             </p>
-            <div className="mt-2 flex items-center gap-1 text-xs text-amber-700">
+            <div className="mt-2 flex items-center gap-1 text-xs text-kj-amber">
               <Phone size={12} />
               <span>BIWTC Hotline: 16123</span>
             </div>

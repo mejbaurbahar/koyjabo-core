@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Train, CreditCard, MapPin, Clock, Zap } from 'lucide-react';
+import SponsoredAdSlot from './SponsoredAdSlot';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface Props {
   onBack: () => void;
@@ -57,6 +59,7 @@ function calcFare(fromIdx: number, toIdx: number): number {
 
 const MetroRailHub: React.FC<Props> = ({ onBack, language }) => {
   const t = (en: string, bn: string) => lbl(language, en, bn);
+  const { language: lang } = useLanguage();
 
   const [countdown, setCountdown] = useState({ m: 2, s: 15 });
   const [fromIdx, setFromIdx] = useState(0);
@@ -315,6 +318,9 @@ const MetroRailHub: React.FC<Props> = ({ onBack, language }) => {
             </div>
           ))}
         </div>
+
+        {/* Ad slot — after info grid, inside content */}
+        <SponsoredAdSlot language={lang as 'en' | 'bn'} size="728x90" compact />
 
       </div>
     </div>
