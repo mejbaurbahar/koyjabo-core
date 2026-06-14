@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   ArrowLeft,
   Search,
@@ -10,8 +10,11 @@ import {
   Bus,
   Navigation,
   Info,
+  LogIn,
+  Loader2,
 } from 'lucide-react';
 import { BUS_DATA, STATIONS, METRO_STATIONS } from '../constants';
+import { useAuth } from '../src/contexts/AuthContext';
 
 interface LocalBusHubProps {
   onBack: () => void;
@@ -22,6 +25,21 @@ interface LocalBusHubProps {
 
 const lbl = (language: 'en' | 'bn', en: string, bn: string) =>
   language === 'bn' ? bn : en;
+
+interface NearbyBus {
+  name: string;
+  mins: number;
+  dist: string;
+  status: 'green' | 'yellow' | 'red';
+}
+
+function getDistanceKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
 
 const POPULAR_ROUTES = [
   {
@@ -116,7 +134,7 @@ const POPULAR_ROUTES = [
   },
 ];
 
-const NEARBY_BUSES = [
+const NEARBY_BUSES: NearbyBus[] = [
   { name: 'GL #6', mins: 2, dist: '400m', status: 'green' },
   { name: 'BRTC Double', mins: 5, dist: '900m', status: 'green' },
   { name: 'Hanif #11', mins: 8, dist: '1.4km', status: 'yellow' },
@@ -192,6 +210,7 @@ function StarRating({ rating, reviews }: { rating: number; reviews?: number }) {
 
 const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFromId, initialToId }) => {
   const L = (en: string, bn: string) => lbl(language, en, bn);
+  const { user } = useAuth();
 
   const getStationName = (id: string) => {
     const s = (STATIONS as any)[id] || (METRO_STATIONS as any)[id];
@@ -203,6 +222,65 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
   const [toField, setToField] = useState(() => initialToId ? getStationName(initialToId) : '');
   const [activeFilter, setActiveFilter] = useState<string>('name');
   const [activeSort, setActiveSort] = useState<string | null>(null);
+
+  // Real geolocation for nearby buses
+  const [nearbyBuses, setNearbyBuses] = useState<NearbyBus[]>(NEARBY_BUSES);
+  const [locationLoading, setLocationLoading] = useState(false);
+  const [locationError, setLocationError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+    setLocationLoading(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude: userLat, longitude: userLng } = pos.coords;
+        // Find nearest stations within 3km
+        const nearStations: { id: string; dist: number }[] = [];
+        const allStations = STATIONS as Record<string, { id: string; lat?: number; lng?: number; name: string }>;
+        for (const sid of Object.keys(allStations)) {
+          const st = allStations[sid];
+          if (!st.lat || !st.lng) continue;
+          const d = getDistanceKm(userLat, userLng, st.lat, st.lng);
+          if (d < 3) nearStations.push({ id: sid, dist: d });
+        }
+        nearStations.sort((a, b) => a.dist - b.dist);
+        const nearIds = new Set(nearStations.slice(0, 5).map(s => s.id));
+
+        // Find buses passing through nearest stations
+        const busMap: Map<string, number> = new Map();
+        for (const bus of BUS_DATA as any[]) {
+          if (!bus.stops) continue;
+          let minDist = Infinity;
+          for (const stop of bus.stops) {
+            if (nearIds.has(stop)) {
+              const st = allStations[stop];
+              if (st?.lat && st?.lng) {
+                const d = getDistanceKm(userLat, userLng, st.lat, st.lng);
+                if (d < minDist) minDist = d;
+              }
+            }
+          }
+          if (minDist < Infinity) busMap.set(bus.name || bus.id, minDist);
+        }
+
+        const sorted = Array.from(busMap.entries()).sort((a, b) => a[1] - b[1]).slice(0, 4);
+        if (sorted.length > 0) {
+          setNearbyBuses(sorted.map(([name, dist]) => ({
+            name,
+            mins: Math.max(1, Math.round(dist * 3)),
+            dist: dist < 1 ? `${Math.round(dist * 1000)}m` : `${dist.toFixed(1)}km`,
+            status: dist < 0.5 ? 'green' : dist < 1.5 ? 'yellow' : 'red',
+          })));
+        }
+        setLocationLoading(false);
+      },
+      () => {
+        setLocationError(L('Location unavailable', 'লোকেশন পাওয়া যায়নি'));
+        setLocationLoading(false);
+      },
+      { timeout: 8000, maximumAge: 60000 }
+    );
+  }, []);
 
   // Filter real BUS_DATA when from/to IDs are provided from home search
   const searchResults = useMemo(() => {
@@ -360,6 +438,26 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
         {/* Search results — shown when from/to provided from home search */}
         {searchResults !== null && (
           <section>
+            {!user ? (
+              <div className="dc-card rounded-2xl p-6 text-center border border-kj-primary/30">
+                <LogIn size={32} className="mx-auto text-kj-primary mb-3" />
+                <p className="font-bengali font-bold text-[15px] text-kj-text mb-1">
+                  {L('Login required', 'লগইন প্রয়োজন')}
+                </p>
+                <p className="font-bengali text-sm text-kj-text-dim mb-4">
+                  {L('Please login to search bus routes', 'বাস রুট খুঁজতে প্রথমে লগইন করুন')}
+                </p>
+                <a
+                  href="/login"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-kj-primary text-kj-primary-ink rounded-xl text-sm font-bold active:scale-95 transition-all"
+                  onClick={(e) => { e.preventDefault(); window.location.hash = 'login'; }}
+                >
+                  <LogIn size={14} />
+                  {L('Login now', 'এখনই লগইন করুন')}
+                </a>
+              </div>
+            ) : (
+            <>
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-bengali font-bold text-[15px] text-kj-text">
                 {searchResults.length > 0
@@ -415,6 +513,8 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
             <div className="mt-3 border-t border-kj-line pt-3">
               <h3 className="text-sm font-semibold text-kj-text mb-2">{L('Popular Routes', 'জনপ্রিয় রুট')}</h3>
             </div>
+            </>
+            )}
           </section>
         )}
 
@@ -493,12 +593,15 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
             <h3 className="text-sm font-semibold text-kj-text">
               {L('Buses near you · live', 'আপনার কাছের বাস · লাইভ')}
             </h3>
+            {locationLoading && <Loader2 size={12} className="animate-spin text-kj-text-faint ml-auto" />}
           </div>
+          {locationError && (
+            <p className="text-xs text-kj-text-faint mb-2">{locationError}</p>
+          )}
           <div className="space-y-1">
-            {NEARBY_BUSES.map((bus) => (
+            {nearbyBuses.map((bus) => (
               <div key={bus.name} className="flex items-center justify-between py-2 border-b border-kj-line last:border-0">
                 <div className="flex items-center gap-2.5">
-                  {/* Status dot: green = approaching, yellow = delayed, red = far */}
                   <span
                     className="w-2.5 h-2.5 rounded-full shrink-0"
                     style={{
@@ -511,7 +614,7 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
                 </div>
                 <div className="flex items-center gap-2 text-xs">
                   <span className="font-bold text-kj-primary text-sm">
-                    {bus.mins} {L('min', 'মিনিট')}
+                    ~{bus.mins} {L('min', 'মিনিট')}
                   </span>
                   <span className="text-kj-text-faint">{bus.dist}</span>
                 </div>

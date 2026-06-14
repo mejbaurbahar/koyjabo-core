@@ -3575,7 +3575,7 @@ const App: React.FC = () => {
     AppView.INTERCITY_HUB,
     AppView.NOT_FOUND,
     AppView.SERVER_ERROR,
-  ].includes(view);
+  ].includes(view) && !(view === AppView.BLOG && !!selectedBlogPost);
 
   return (
     <NotificationProvider>
