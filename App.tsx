@@ -3556,9 +3556,10 @@ const App: React.FC = () => {
     AppView.RELEASE_NOTES,
     AppView.INSTALL_APP,
     AppView.BLOG,
-    AppView.LOCAL_BUS_HUB,
-    AppView.METRO_HUB,
-    AppView.LAUNCH_HUB,
+    // Hub pages have SponsoredAdSlot inside their own components — no duplicate PageAdSection
+    // AppView.LOCAL_BUS_HUB,
+    // AppView.METRO_HUB,   ← removed: ads overlap issue
+    // AppView.LAUNCH_HUB,
     AppView.INTERCITY_HUB,
     AppView.TRAIN_LIST,
   ];
@@ -3742,21 +3743,27 @@ const App: React.FC = () => {
           ) : (
           <div className="flex-1 min-h-0 h-0 flex flex-col overflow-hidden w-full">
           <div className="flex-1 min-h-0 h-0 min-w-0 overflow-hidden flex relative w-full">
+          {/* Train views render here ONLY on mobile; on desktop they go to the full right panel */}
           {(view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) && (
-          <div className="flex flex-col flex-1 min-h-0 w-full md:flex-none md:w-[420px] md:max-w-[420px] md:shrink-0 z-0 overflow-hidden">
-            <div className="flex-1 min-h-0 flex flex-col md:pt-0">
+          <div className="flex flex-col flex-1 min-h-0 w-full md:hidden z-0 overflow-hidden">
+            <div className="flex-1 min-h-0 flex flex-col">
               {renderHomeContent()}
             </div>
           </div>
           )}
 
-          {/* Right Content Area */}
+          {/* Right Content Area — full width on desktop for train, hub pages */}
           <div className={`
             ${'flex-1 min-h-0 w-full min-w-0 bg-transparent relative flex flex-col'}
             ${rightPanelUsesOuterScroll ? 'overflow-y-auto overscroll-y-contain touch-pan-y pb-nav-safe md:pb-4' : 'overflow-hidden'}
             ${(view === AppView.LOCAL_BUS_HUB || view === AppView.METRO_HUB || view === AppView.LAUNCH_HUB || view === AppView.INTERCITY_HUB) && 'flex'}
 `} style={rightPanelUsesOuterScroll ? { WebkitOverflowScrolling: 'touch' } : undefined}>
-            {/* DhakaAlive animation removed — TrainListPage has its own purple gradient hero */}
+            {/* Train list — full width on desktop, hidden on mobile (mobile uses left panel) */}
+            {view === AppView.TRAIN_LIST && (
+              <div className="hidden md:flex flex-col flex-1 min-h-0 w-full overflow-hidden">
+                {renderHomeContent()}
+              </div>
+            )}
             {view === AppView.TRAIN_DETAILS && (
               user && selectedTrain ? (
                 <TrainDetail
@@ -3778,9 +3785,9 @@ const App: React.FC = () => {
                 />
               ) : <LoginWall setView={setView} />
             )}
-            {view === AppView.BUS_DETAILS && (user ? renderBusDetails() : <LoginWall setView={setView} />)}
+            {view === AppView.BUS_DETAILS && renderBusDetails()}
             {view === AppView.LIVE_NAV && renderLiveNav()}
-            {view === AppView.AI_ASSISTANT && (user ? renderAiAssistant() : <LoginWall setView={setView} />)}
+            {view === AppView.AI_ASSISTANT && renderAiAssistant()}
 
             {/* Mode hub views */}
             {view === AppView.LOCAL_BUS_HUB && (

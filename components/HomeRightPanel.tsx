@@ -252,7 +252,14 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
             onAction={() => onNavigate('LOCAL_BUS_HUB')}
           />
           <div className="flex flex-col gap-2">
-            {trendingBuses.map(({ bus, count }) => {
+            {trendingBuses.length === 0 ? (
+              <div className="dc-card rounded-xl p-5 text-center">
+                <Bus className="w-8 h-8 text-kj-text-faint mx-auto mb-2 opacity-40" />
+                <p className="font-bengali text-sm text-kj-text-dim">
+                  {lbl('No trending data yet. Search for buses to build your trends.', 'এখনো কোনো ট্রেন্ডিং ডেটা নেই। বাস খুঁজলে ট্রেন্ড তৈরি হবে।')}
+                </p>
+              </div>
+            ) : trendingBuses.map(({ bus, count }) => {
               const initials = bus.name.slice(0, 2).toUpperCase();
               return (
                 <div key={bus.id} className="dc-card rounded-[14px] p-3.5 md:p-4 flex items-center gap-3.5 cursor-pointer hover:border-kj-primary/30 transition-colors">

@@ -14,7 +14,7 @@ const ReleaseNotes: React.FC = () => {
   };
 
   return (
-    <div className="absolute inset-0 z-10 flex flex-col bg-kj-bg font-sans overflow-hidden">
+    <div className="flex flex-col w-full bg-kj-bg font-sans">
       {/* Premium Header */}
       <div className="shrink-0 bg-kj-panel border-b border-kj-line pt-safe px-4 sm:px-6 py-4 sm:py-5 flex items-center gap-4 sm:gap-5 shadow-sm relative z-10">
         <div>
@@ -29,7 +29,7 @@ const ReleaseNotes: React.FC = () => {
       </div>
 
       {/* Content */}
-      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-24 scroll-smooth" style={{ WebkitOverflowScrolling: 'touch' }}>
+      <div className="pb-24 scroll-smooth">
         <div className="max-w-3xl mx-auto px-4 py-10 space-y-4">
           {RELEASE_NOTES.map((note, index) => {
             const isExpanded = expandedVersion === note.version;

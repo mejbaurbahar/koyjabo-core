@@ -78,7 +78,7 @@ const MetroRailHub: React.FC<Props> = ({ onBack, language }) => {
   const calculatedFare = calcFare(fromIdx, toIdx);
 
   return (
-    <div className="min-h-screen bg-kj-bg text-kj-text pb-24">
+    <div className="w-full bg-kj-bg text-kj-text pb-32">
 
       {/* Back nav */}
       <div className="sticky top-0 z-10 bg-kj-bg border-b border-kj-line px-4 py-3 flex items-center gap-3">
