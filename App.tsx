@@ -76,6 +76,7 @@ import TrainRating from './components/TrainRating';
 import { BDTrainRoute, BD_TRAIN_ROUTES, TRAIN_STATIONS } from './data/bangladeshTrainData';
 import transportCache from './data/transport-cache.json';
 import SystemStateScreen, { Icons, BtnIcons } from './components/SystemStateScreen';
+import FloatingAdBanner from './components/FloatingAdBanner';
 import TripReminders from './components/TripReminders';
 import RoadAlerts from './components/RoadAlerts';
 import NeighbourhoodGuides from './components/NeighbourhoodGuides';
@@ -4114,6 +4115,9 @@ const App: React.FC = () => {
         </main>
 
         {/* Mobile Bottom Navigation */}
+        {/* Floating sticky ad banner — above mobile nav, below desktop content */}
+        <FloatingAdBanner bottomOffset={view !== AppView.BUS_DETAILS && view !== AppView.LIVE_NAV ? 70 : 0} />
+
         {view !== AppView.BUS_DETAILS && view !== AppView.LIVE_NAV && (
           <nav className="fixed bottom-0 left-0 right-0 bg-kj-panel/90 backdrop-blur-[14px] border-t border-kj-line z-50 md:hidden pb-safe kj-glass" style={{ padding: '8px 10px 14px' }}>
             <div className="grid grid-cols-5 gap-1">

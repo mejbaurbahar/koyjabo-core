@@ -1,9 +1,94 @@
 # KoyJabo - AI Search Information
 # llms.txt - Optimized for AI Search Engines and LLMs
 # Learn more: https://llmstxt.org/
+# Last updated: 2026-06-14
+
+# ── AI Crawler Directives ──────────────────────────────────────────
+# These mirror robots.txt but are included here for LLM-aware crawlers
+# that parse llms.txt for permission signals.
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Google-CloudVertexBot
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Meta-ExternalFetcher
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: PetalBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: MistralAI-User
+Allow: /
+
+User-agent: Timpibot
+Allow: /
+
+User-agent: DeepSeekBot
+Allow: /
+
+User-agent: Grok Web Crawler
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: Cohere-ai
+Allow: /
+
+User-agent: Gemini-Extended
+Allow: /
+
+# ─────────────────────────────────────────────────────────────────
 
 # KoyJabo (কই যাবো)
-> Dhaka's #1 Free Bus Route Finder & Bangladesh Transport Planner
+> Bangladesh's #1 Free Transport Guide — Dhaka buses, Metro Rail, trains, intercity routes, fare calculator & AI assistant
 
 ## What is KoyJabo?
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Bus, Zap, Bot, Sparkles, ArrowRight, Heart } from 'lucide-react';
 import { MiniVehicle, type VehicleKind } from './design/Vehicles3D';
 import SponsoredAdSlot from './SponsoredAdSlot';
@@ -137,8 +137,28 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
         </div>
       </div>
 
-      {/* Metro Live — dark timeline panel */}
+      {/* Ad slot — after mode tiles */}
+      <div className="mb-6 md:mb-8 flex justify-center">
+        <SponsoredAdSlot language={language} size="728x90" compact />
+      </div>
+
+      {/* How KoyJabo helps — 4-scene story animation (replaced Metro Live) */}
       <div className="mb-6 md:mb-8">
+        <SectionHeader
+          title={lbl('How KoyJabo helps', 'কই যাবো কীভাবে সাহায্য করে')}
+          action={lbl('Try it now', 'এখনি চেষ্টা করুন')}
+          onAction={() => onNavigate('LOCAL_BUS_HUB')}
+        />
+        <KoyJaboStory language={language} onNavigate={onNavigate} isDarkMode={isDarkMode} />
+      </div>
+
+      {/* Ad slot — after story, before saved routes */}
+      <div className="mb-6 md:mb-8 flex justify-center">
+        <SponsoredAdSlot language={language} size="728x90" compact />
+      </div>
+
+      {/* OLD Metro Live — now moved to Metro Hub page */}
+      <div className="mb-6 md:mb-8 hidden">
         <SectionHeader title={lbl('Metro · Live', 'মেট্রো · লাইভ')} action={lbl('See all stations', 'সব স্টেশন দেখুন')} onAction={() => onNavigate('METRO_HUB')} />
         <div className="rounded-[22px] p-5 md:p-[22px] text-[#e9f3ed] relative overflow-hidden shadow-[0_2px_4px_rgba(0,0,0,0.5),0_18px_50px_-20px_rgba(0,245,255,0.25)]" style={{ background: isDarkMode ? '#000814' : '#001b2e' }}>
           <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_80%_-20%,rgba(0,245,255,0.6)_0%,transparent_60%)]" />
@@ -179,6 +199,7 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
           </div>
         </div>
       </div>
+      {/* end hidden old Metro Live */}
 
       <div className="mb-6 md:mb-8">
         <SectionHeader
@@ -217,7 +238,10 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
         )}
       </div>
 
-      <SponsoredAdSlot language={language} size="728x90" />
+      {/* Ad slot — before trending routes */}
+      <div className="mb-6 md:mb-8 flex justify-center">
+        <SponsoredAdSlot language={language} size="728x90" compact />
+      </div>
 
       {/* Trending + AI sidebar grid (desktop) */}
       <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-6 md:gap-8 mb-6 md:mb-8">
@@ -290,7 +314,9 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
             </div>
           </div>
 
-          <SponsoredAdSlot language={language} size="300x250" />
+          <div className="hidden lg:block">
+            <SponsoredAdSlot language={language} size="300x250" />
+          </div>
 
           <div className="dc-card rounded-[20px] p-[18px]">
             <div className="flex items-center gap-2.5 mb-3">
@@ -319,6 +345,122 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
         </div>
       </div>
 
+    </div>
+  );
+};
+
+// ── KoyJabo Story — "How KoyJabo helps" animated 4-scene section ──────────────
+const KoyJaboStory: React.FC<{ language: 'en' | 'bn'; onNavigate: (v: string) => void; isDarkMode: boolean }> = ({ language, onNavigate, isDarkMode }) => {
+  const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
+  const [scene, setScene] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => setScene(s => (s + 1) % 4), 3600);
+    return () => clearInterval(id);
+  }, []);
+
+  const captions = [
+    { bn: 'লোকাল বাসস্ট্যান্ডে — কোন বাসে উঠবো? সব তো একরকম! 😕', en: 'At the bus stand — which bus do I take? They all look the same! 😕' },
+    { bn: 'ফোনে koyjabo.com খুলে গন্তব্য লিখুন', en: 'Open koyjabo.com and type your destination' },
+    { bn: 'সঠিক বাস, ভাড়া আর সময় — সাথে সাথে ✅', en: 'The right bus, fare & time — instantly ✅' },
+    { bn: 'নিশ্চিন্তে সঠিক বাসে উঠে যাত্রা শুরু! 🎉', en: 'Hop on the right bus, stress-free! 🎉' },
+  ];
+
+  const sceneContent = () => {
+    if (scene === 0) return (
+      <>
+        <div className="absolute right-[9%] bottom-14 flex flex-col items-center">
+          <div className="bg-kj-primary text-white text-[11px] font-black px-2.5 py-1 rounded-lg shadow-md">🚏 BUS</div>
+          <div className="w-1 h-11 bg-[#9aa3b2]" />
+        </div>
+        <div className="absolute left-[11%] bottom-12 flex flex-col items-center">
+          <div className="animate-[kjFloatY_2.2s_ease-in-out_infinite] bg-white rounded-xl px-2.5 py-1.5 shadow-lg font-black text-base text-[#0a1626] mb-1.5">🤔 ?</div>
+          <span className="text-4xl">🧑</span>
+        </div>
+        <div className="absolute bottom-4 left-0 animate-[kjDriveBy_3.4s_linear]">
+          <div className="text-5xl">🚌</div>
+        </div>
+        <div className="absolute bottom-3 left-0 animate-[kjDriveBy_3.4s_linear_1.6s_both]">
+          <div className="text-5xl opacity-70">🚌</div>
+        </div>
+      </>
+    );
+    if (scene === 1) return (
+      <>
+        <div className="absolute left-[8%] bottom-12"><span className="text-4xl">🧑</span></div>
+        <div className="absolute right-[10%] top-1/2 -translate-y-1/2 animate-[kjPopIn_.55s_cubic-bezier(.2,.8,.3,1)_both]">
+          <div className="bg-white rounded-2xl p-3 shadow-xl border border-gray-100 w-36">
+            <div className="flex items-center gap-1 bg-gray-50 rounded-lg px-2 py-1 text-[9px] text-gray-500 mb-2 border">🔒 koyjabo.com</div>
+            <div className="font-bold text-[12px] text-[#0a1626] mb-2">কই যাবো</div>
+            <div className="border rounded-lg overflow-hidden text-[10px]">
+              <div className="px-2 py-1.5 border-b flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-kj-primary shrink-0"/><span className="text-[#0a1626]">Gulshan 1</span></div>
+              <div className="px-2 py-1.5 flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-kj-accent shrink-0"/><span className="text-[#0a1626]">Motijheel</span></div>
+            </div>
+            <div className="mt-2 bg-gradient-to-br from-kj-primary to-kj-primary-deep text-white text-[11px] font-bold rounded-lg py-1.5 text-center animate-[kjBobY_1.4s_ease-in-out_infinite]">🔍 Find bus</div>
+          </div>
+        </div>
+      </>
+    );
+    if (scene === 2) return (
+      <>
+        <div className="absolute right-[9%] bottom-12"><span className="text-4xl">🧑</span></div>
+        <div className="absolute left-[8%] top-1/2 -translate-y-1/2 animate-[kjPopIn_.5s_cubic-bezier(.2,.8,.3,1)_both]">
+          <div className="bg-white rounded-2xl p-3 shadow-xl border border-gray-100 w-36">
+            <div className="text-[10px] font-bold text-gray-500 mb-2">Gulshan → Motijheel · 3</div>
+            {[{l:'GL',n:'Green Line · 6',m:'৳60 · 42m',c:'#10b981',hi:true},{l:'HF',n:'Hanif',m:'৳35 · 58m',c:'#9aa3b2'},{l:'BR',n:'BRTC',m:'৳45 · 52m',c:'#9aa3b2'}].map((r,i)=>(
+              <div key={i} className={`flex items-center gap-1.5 p-1.5 rounded-lg border mb-1.5 ${r.hi ? 'bg-green-50 border-green-400' : 'bg-white border-gray-200 opacity-60'}`}>
+                <span className="w-5 h-5 rounded flex items-center justify-center text-white text-[9px] font-black shrink-0" style={{background:r.c}}>{r.l}</span>
+                <span className="flex-1 min-w-0"><span className="block text-[10px] font-bold text-[#0a1626]">{r.n}</span><span className="text-[9px] text-gray-500">{r.m}</span></span>
+                {r.hi && <span className="text-green-500 font-bold text-xs">✓</span>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </>
+    );
+    return (
+      <>
+        {[['18%',40,0],['78%',80,0.5],['60%',30,1],['30%',70,0.8]].map((s,i)=>(
+          <span key={i} className="absolute text-xl animate-[kjSpark_1.6s_ease-in-out_infinite]" style={{left:s[0] as string, bottom:s[1] as number, animationDelay:`${s[2]}s`}}>✨</span>
+        ))}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 animate-[kjRollIn_1s_cubic-bezier(.2,.8,.3,1)_both] flex items-end gap-1">
+          <span className="text-5xl">🚌</span>
+          <div className="bg-kj-primary text-white text-[10px] font-black px-2 py-0.5 rounded-lg mb-1">Motijheel ✓</div>
+        </div>
+        <div className="absolute bottom-10 left-1/2 translate-x-4 animate-[kjBobY_1.2s_ease-in-out_infinite]"><span className="text-3xl">🧑</span></div>
+      </>
+    );
+  };
+
+  return (
+    <div className="rounded-[22px] overflow-hidden border border-kj-line shadow-kj">
+      {/* Stage */}
+      <div className="relative h-[220px] overflow-hidden" style={{ background: 'linear-gradient(180deg,#bfe6ff 0%, #e6f5ff 58%, #b9e3c6 58%, #a3d6b2 100%)' }}>
+        <div className="absolute top-4 right-6 w-10 h-10 rounded-full" style={{ background: 'radial-gradient(circle,#fff4c2,#ffd34d)', boxShadow: '0 0 30px rgba(255,211,77,0.6)' }} />
+        <div className="absolute top-7 left-[20%] w-14 h-4 rounded-full bg-white/85" />
+        <div className="absolute top-12 left-[46%] w-10 h-3 rounded-full bg-white/70" />
+        <div className="absolute left-0 right-0 bottom-0 h-12" style={{ background: 'linear-gradient(180deg,#5b6472,#4a525e)' }}>
+          <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-0.5" style={{ backgroundImage: 'repeating-linear-gradient(90deg,#ffd34d 0 20px,transparent 20px 40px)' }} />
+        </div>
+        <div key={scene} className="kj-story-scene absolute inset-0">{sceneContent()}</div>
+        <div className="absolute top-2.5 left-2.5 text-white text-[10px] font-black tracking-wide px-2.5 py-1 rounded-full backdrop-blur-md" style={{ background: 'rgba(10,22,38,0.55)', letterSpacing: 1 }}>
+          {lbl('HOW KOYJABO WORKS', 'কই যাবো কীভাবে কাজ করে')} · {scene + 1}/4
+        </div>
+      </div>
+      {/* Caption bar */}
+      <div className="p-4" style={{ background: isDarkMode ? '#000814' : '#001b2e' }}>
+        <div className="flex gap-1.5 mb-2.5">
+          {[0,1,2,3].map(i => (
+            <div key={i} className="flex-1 h-1 rounded-full transition-colors duration-300" style={{ background: i <= scene ? '#10b981' : 'rgba(255,255,255,0.18)' }} />
+          ))}
+        </div>
+        <div className="flex items-center gap-3 flex-wrap">
+          <span className="font-bengali font-semibold text-sm text-white leading-snug flex-1 min-w-[200px]">{lbl(captions[scene].en, captions[scene].bn)}</span>
+          <button type="button" onClick={() => onNavigate('LOCAL_BUS_HUB')} className="bg-kj-primary text-kj-primary-ink font-bold text-xs px-4 py-2 rounded-full whitespace-nowrap hover:brightness-105 transition-all shrink-0">
+            {lbl('Try it now', 'এখনি চেষ্টা করুন')} →
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

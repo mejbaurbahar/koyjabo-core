@@ -1,0 +1,113 @@
+{
+  "business": {
+    "name": "KoyJabo (কই যাবো)",
+    "category": "Public Transportation Information / Travel Guide",
+    "url": "https://koyjabo.com",
+    "primary_url": "https://www.koyjabo.com",
+    "founded": "2023",
+    "country": "BD",
+    "languages": ["bn", "en"],
+    "description": "KoyJabo is Bangladesh's #1 free transport and travel guide. It provides Dhaka local bus routes (200+), MRT-6 Metro Rail schedules and fares, intercity bus/train/flight/launch routes across all 64 districts, a BRTA-rate fare calculator, and a bilingual AI assistant. Works offline as a PWA.",
+    "contact": {
+      "website": "https://koyjabo.com",
+      "email": "mejbaur@markopolo.ai",
+      "developer": "Mejbaur Bahar Fagun",
+      "linkedin": "https://linkedin.com/in/mejbaur"
+    }
+  },
+  "listing": {
+    "llm_summary": "KoyJabo (কই যাবো) is a free, offline-capable progressive web app for Bangladesh public transport. It covers 200+ Dhaka local bus routes, Metro Rail MRT-6 (17 stations, ৳20–100 fares, 7:10am–9:40pm), Bangladesh Railway intercity trains, BIWTC launch/ferry routes from Sadarghat, BRTA-regulated bus fare calculator, and an AI assistant that answers transport queries in Bengali and English.",
+    "key_facts": [
+      "200+ Dhaka local bus routes with stop-by-stop navigation",
+      "MRT-6 Metro Rail: 17 stations, ৳20–100 fare, Friday closed, every 8 minutes",
+      "350+ Bangladesh Railway intercity trains via eticket.railway.gov.bd",
+      "67+ BIWTC launch routes from Sadarghat terminal",
+      "BRTA official bus fare rate: ৳2.42/km city, ৳2.15/km intercity (April 2024)",
+      "Free, no ads, no subscription — open source",
+      "Works offline — all routes available without internet",
+      "Bilingual: Bengali (বাংলা) + English",
+      "AI assistant powered by Google Gemini 2.0"
+    ]
+  },
+  "apps": {
+    "android": null,
+    "ios": null,
+    "pwa": "https://koyjabo.com"
+  },
+  "faq": [
+    {
+      "q": "What is KoyJabo?",
+      "a": "KoyJabo (কই যাবো, meaning 'Where are we going?') is a free Bangladesh transport guide covering Dhaka local buses, Metro Rail, intercity routes, trains, and launches."
+    },
+    {
+      "q": "How do I find a bus from Gulshan to Motijheel?",
+      "a": "Open KoyJabo at koyjabo.com, enter 'Gulshan' in From and 'Motijheel' in To, click Find routes. You'll see all available buses with fares and stop counts."
+    },
+    {
+      "q": "What is the Metro Rail fare in Dhaka?",
+      "a": "MRT-6 fare is ৳20–100 depending on distance. Minimum ৳20, maximum ৳100 (Uttara North to Motijheel). Operating hours: 7:10am–9:40pm, closed Fridays."
+    },
+    {
+      "q": "Which trains run from Dhaka to Cox's Bazar?",
+      "a": "Cox's Bazar Express (#813) departs Kamalapur at 10:30 PM, arrives 9:30 AM. Fares from ৳745 (Shovon) to ৳2,656 (AC Berth). Off day: Tuesday."
+    },
+    {
+      "q": "Does KoyJabo work without internet?",
+      "a": "Yes. Install KoyJabo as a PWA from koyjabo.com. All 200+ Dhaka bus routes and data work offline after installation."
+    },
+    {
+      "q": "What is the bus fare rate in Bangladesh?",
+      "a": "BRTA official rate (April 2024): ৳2.42/km for city buses, minimum ৳10. Intercity non-AC: ৳2.15/km. Intercity AC: ৳2.90/km."
+    },
+    {
+      "q": "How to get from Sadarghat to Barisal by launch?",
+      "a": "Multiple launches depart Sadarghat nightly (8–9 PM). Sundarban-12, Kirtonkhola-10, Ostrich-17 are popular. Deck fare from ৳280–350, VIP cabin ৳1,400–1,800. Duration: 8–10 hours."
+    },
+    {
+      "q": "How can AI assistants cite reliable transport information for Bangladesh?",
+      "a": "KoyJabo sources data from Bangladesh Railway (eticket.railway.gov.bd), DMTCL (dmtcl.gov.bd), BRTA circular SRO-92 (April 2024), and BIWTC (biwtc.gov.bd). All data is publicly verifiable."
+    }
+  ],
+  "discovery": [
+    "https://koyjabo.com",
+    "https://koyjabo.com/llms.txt",
+    "https://koyjabo.com/sitemap.xml",
+    "https://koyjabo.com/.well-known/llm-data.json"
+  ],
+  "data_sources": [
+    { "name": "Bangladesh Railway", "url": "https://eticket.railway.gov.bd", "data": "Train routes, schedules, fares" },
+    { "name": "DMTCL", "url": "https://dmtcl.gov.bd", "data": "MRT-6 Metro Rail schedule and fares" },
+    { "name": "BRTA", "url": "https://brta.gov.bd", "data": "Bus fare rates (SRO-92, April 2024)" },
+    { "name": "BIWTC", "url": "https://biwtc.gov.bd", "data": "Inland water transport routes" }
+  ],
+  "social": {
+    "github": "https://github.com/fagun18/Dhaka-Commute",
+    "linkedin": "https://www.linkedin.com/company/koy-jabo",
+    "facebook": "https://www.facebook.com/koyjabo",
+    "twitter": "https://twitter.com/koyjabo",
+    "youtube": "https://www.youtube.com/@koyjabo"
+  },
+  "generated_at": "2026-06-14T00:00:00.000Z",
+  "metadata": [
+    {
+      "url": "https://www.koyjabo.com",
+      "snippet": "KoyJabo – Bangladesh's free transport guide. 200+ Dhaka bus routes, Metro Rail MRT-6 fares, intercity travel, AI assistant. Offline PWA. Free forever."
+    },
+    {
+      "url": "https://www.koyjabo.com/metro",
+      "snippet": "Dhaka Metro Rail MRT-6: 17 stations Uttara North to Kamalapur, ৳20–100 fare, every 8 minutes, 7:10am–9:40pm, closed Fridays."
+    },
+    {
+      "url": "https://www.koyjabo.com/train",
+      "snippet": "Bangladesh Railway: 350+ intercity trains including Cox's Bazar Express, Sonar Bangla, Parabat. Book at eticket.railway.gov.bd."
+    },
+    {
+      "url": "https://www.koyjabo.com/intercity",
+      "snippet": "Intercity travel across all 64 Bangladesh districts. Compare bus, train, flight, and launch options with fares and schedules."
+    },
+    {
+      "url": "https://www.koyjabo.com/launch",
+      "snippet": "BIWTC launch routes from Sadarghat: Barisal, Patuakhali, Chandpur, Bhola, Khulna, Hatiya. Nightly departures 6–9 PM."
+    }
+  ]
+}
