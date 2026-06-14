@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Menu, Sparkles, LogIn, Bus, TramFront, Calculator, Sun, Moon } from 'lucide-react';
+import { Home, Menu, Sparkles, LogIn, Bus, TramFront, Calculator, Sun, Moon, Train } from 'lucide-react';
 import { AppView } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../src/contexts/AuthContext';
@@ -61,6 +61,12 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
             isActive: view === AppView.METRO_HUB,
             onClick: () => setView(AppView.METRO_HUB),
             badge: 'LIVE'
+        },
+        {
+            label: language === 'bn' ? 'ট্রেন' : 'Train',
+            icon: Train,
+            isActive: view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS,
+            onClick: () => setView(AppView.TRAIN_LIST),
         },
         {
             label: language === 'bn' ? 'আন্তঃজেলা' : 'Intercity',

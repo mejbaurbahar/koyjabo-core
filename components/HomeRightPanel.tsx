@@ -235,7 +235,7 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
             <div className="relative bg-black/20 rounded-[14px] px-3.5 py-2.5 flex items-center gap-2.5 border border-white/10">
               <Bot className="w-4 h-4 shrink-0 opacity-80" />
               <span className="flex-1 font-bengali text-sm opacity-70">{lbl('Type your question...', 'আপনার প্রশ্ন লিখুন...')}</span>
-              <button type="button" className="w-8 h-8 rounded-lg bg-white text-kj-primary-deep flex items-center justify-center shrink-0">
+              <button type="button" className="w-8 h-8 rounded-lg bg-kj-primary-ink text-kj-primary flex items-center justify-center shrink-0">
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>

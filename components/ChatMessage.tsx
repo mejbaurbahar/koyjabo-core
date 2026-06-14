@@ -15,7 +15,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ text, role }) => {
         const textBeforeButton = cleanText.substring(0, buttonMatch.index);
 
         return (
-            <div className="max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm bg-white dark:bg-kj-chip-bg text-kj-text border border-kj-line rounded-bl-none">
+            <div className="max-w-[85%] rounded-2xl rounded-bl-sm px-4 py-3 text-sm leading-relaxed bg-kj-panel border border-kj-line text-kj-text">
                 <div className="whitespace-pre-wrap">{textBeforeButton}</div>
                 <a
                     href={url}
@@ -30,9 +30,9 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ text, role }) => {
     }
 
     return (
-        <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${role === 'user'
-                ? 'bg-dhaka-dark text-white rounded-br-none'
-                : 'bg-white dark:bg-kj-chip-bg text-kj-text border border-kj-line rounded-bl-none'
+        <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${role === 'user'
+                ? 'bg-kj-primary text-kj-primary-ink rounded-br-sm'
+                : 'bg-kj-panel border border-kj-line text-kj-text rounded-bl-sm'
             }`}>
             <div className="whitespace-pre-wrap">{cleanText}</div>
         </div>

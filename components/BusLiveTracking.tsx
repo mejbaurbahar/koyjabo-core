@@ -109,17 +109,17 @@ export default function BusLiveTracking({ busId, busName, stops = [], onBack }: 
             <h3 className="font-bold text-kj-text text-sm">{t('community.shareBusLocation')}</h3>
             {stops.length > 0 ? (
               <select value={stopId} onChange={e => setStopId(e.target.value)}
-                className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm dark:text-white">
+                className="w-full bg-kj-input-bg border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm text-kj-text">
                 <option value="">{t('community.pickStop')}</option>
                 {stops.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
               </select>
             ) : (
               <input value={stopName} onChange={e => setStopName(e.target.value)}
                 placeholder={t('community.typeStopName')}
-                className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm dark:text-white" required />
+                className="w-full bg-kj-input-bg border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm text-kj-text" required />
             )}
             <select value={heading} onChange={e => setHeading(e.target.value)}
-              className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm dark:text-white">
+              className="w-full bg-kj-input-bg border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm text-kj-text">
               <option value="">{t('community.pickDirectionOptional')}</option>
               {HEADING_OPTS.map(h => <option key={h} value={h}>{t('community.headingTowards', { heading: h })}</option>)}
             </select>

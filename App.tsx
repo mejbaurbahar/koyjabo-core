@@ -260,7 +260,7 @@ const AiThinkingIndicator = () => {
     <div className="flex justify-start animate-in fade-in slide-in-from-bottom-2 duration-300 my-2">
       <div className="bg-kj-panel border border-kj-line rounded-2xl rounded-bl-none px-4 py-3 shadow-sm flex items-center gap-3 max-w-[85%]">
         <div className="relative shrink-0">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-cyan-500 flex items-center justify-center text-white shadow-lg shadow-blue-200">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-kj-primary to-kj-primary-deep flex items-center justify-center text-kj-primary-ink">
             <Bot size={16} />
           </div>
           <div className="absolute inset-0 rounded-full bg-kj-primary animate-ping opacity-20"></div>
@@ -2334,7 +2334,7 @@ const App: React.FC = () => {
     }
 
     return (
-      <div className="flex flex-col h-full bg-kj-panel md:rounded-l-3xl md:border-l md:border-kj-line dark:md:border-gray-800 overflow-hidden relative w-full">
+      <div className="flex flex-col h-full bg-kj-panel md:rounded-l-3xl md:border-l md:border-kj-line md:border-kj-line overflow-hidden relative w-full">
         {/* Mobile Header (Non-fixed flex child) */}
         <div className="block md:hidden flex items-center gap-3 p-4 border-b border-kj-line bg-kj-panel z-20 shrink-0 pt-safe">
           <button
@@ -2384,7 +2384,7 @@ const App: React.FC = () => {
   };
 
   const renderAiAssistant = () => (
-    <div className="flex flex-col flex-1 min-h-0 w-full bg-kj-bg md:rounded-l-3xl md:border-l md:border-kj-line dark:md:border-gray-800 overflow-hidden max-w-full">
+    <div className="flex flex-col flex-1 min-h-0 w-full bg-kj-bg md:rounded-l-3xl md:border-l md:border-kj-line md:border-kj-line overflow-hidden max-w-full">
       <div className="md:hidden flex items-center gap-3 p-4 bg-kj-panel border-b border-kj-line shadow-sm z-20 shrink-0">
         <button onClick={() => setView(AppView.HOME)} className="p-2 -ml-2 hover:bg-kj-chip-bg rounded-full transition-colors">
           <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
@@ -2504,7 +2504,7 @@ const App: React.FC = () => {
                 {t('about.missionDesc')}
               </p>
             </div>
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-5 sm:p-6 md:p-8 rounded-2xl border-l-4 border-blue-600">
+            <div className="dc-card kj-glass p-5 sm:p-6 md:p-8 rounded-2xl border-l-4 border-kj-primary">
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-kj-primary mb-3 flex items-center gap-2">
                 <Eye className="w-6 h-6" /> {t('about.vision')}
               </h3>
@@ -2655,7 +2655,7 @@ const App: React.FC = () => {
     return (
       <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
         <div className="bg-kj-panel w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 max-h-[80vh] flex flex-col">
-          <div className="p-6 border-b border-kj-line flex justify-between items-center bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+          <div className="p-6 border-b border-kj-line flex justify-between items-center bg-gradient-to-r from-kj-primary to-kj-primary-deep text-kj-primary-ink">
             <div className="flex items-center gap-3">
               <Clock className="w-6 h-6" />
               <h2 className="text-xl font-bold">Chat History</h2>
@@ -2815,7 +2815,7 @@ const App: React.FC = () => {
           </div>
 
           {/* Benefit 2 */}
-          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/30 p-6 rounded-2xl border border-blue-100 dark:border-blue-800">
+          <div className="dc-card kj-glass p-6 rounded-2xl border border-kj-line">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 bg-kj-primary rounded-xl flex items-center justify-center text-kj-primary-ink shrink-0">
                 <MapIcon className="w-6 h-6" />
@@ -2830,9 +2830,9 @@ const App: React.FC = () => {
           </div>
 
           {/* Benefit 3 */}
-          <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 p-6 rounded-2xl border border-purple-100 dark:border-purple-800">
+          <div className="dc-card kj-glass p-6 rounded-2xl border border-kj-line" style={{ background: 'linear-gradient(135deg, rgba(162,89,255,0.08), rgba(255,42,109,0.06))' }}>
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center text-white shrink-0">
+              <div className="w-12 h-12 bg-gradient-to-br from-kj-neon-violet to-kj-accent rounded-xl flex items-center justify-center text-white shrink-0">
                 <Bot className="w-6 h-6" />
               </div>
               <div>
@@ -2850,9 +2850,9 @@ const App: React.FC = () => {
 
           {/* Benefit 4 */}
 
-          <div className="bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-900/30 dark:to-amber-900/30 p-6 rounded-2xl border border-orange-100 dark:border-orange-800">
+          <div className="dc-card kj-glass p-6 rounded-2xl border border-kj-line">
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center text-white shrink-0">
+              <div className="w-12 h-12 bg-kj-amber rounded-xl flex items-center justify-center text-kj-primary-ink shrink-0">
                 <Coins className="w-6 h-6" />
               </div>
               <div>
@@ -2880,9 +2880,9 @@ const App: React.FC = () => {
           </div>
 
           {/* Benefit 6 */}
-          <div className="bg-gradient-to-br from-red-50 to-rose-50 dark:from-red-900/30 dark:to-rose-900/30 p-6 rounded-2xl border border-red-100 dark:border-red-800">
+          <div className="dc-card kj-glass p-6 rounded-2xl border border-kj-line">
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-red-500 rounded-xl flex items-center justify-center text-white shrink-0">
+              <div className="w-12 h-12 bg-kj-accent rounded-xl flex items-center justify-center text-white shrink-0">
                 <Heart className="w-6 h-6" />
               </div>
               <div>
@@ -2925,7 +2925,7 @@ const App: React.FC = () => {
           </div>
 
           {/* Metro Integration */}
-          <div className="bg-gradient-to-br from-indigo-50 to-violet-50 dark:from-indigo-900/30 dark:to-violet-900/30 p-6 rounded-2xl border border-indigo-100 dark:border-indigo-800">
+          <div className="dc-card kj-glass p-6 rounded-2xl border border-kj-line">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 bg-kj-neon-violet/20 rounded-xl flex items-center justify-center text-kj-neon-violet shrink-0">
                 <Train className="w-6 h-6" />
@@ -2940,7 +2940,7 @@ const App: React.FC = () => {
           </div>
 
           {/* Railway & Airport Locator */}
-          <div className="bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/30 dark:to-yellow-900/30 p-6 rounded-2xl border border-amber-100 dark:border-amber-800">
+          <div className="bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/30 dark:to-yellow-900/30 p-6 rounded-2xl border border-kj-line">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center text-white shrink-0">
                 <Plane className="w-6 h-6" />
@@ -3107,7 +3107,7 @@ const App: React.FC = () => {
         </div>
 
         {/* Still have questions? */}
-        <div className="mt-12 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-slate-800 dark:to-slate-900 rounded-2xl p-8 text-center border border-blue-100 dark:border-kj-line">
+        <div className="mt-12 dc-card kj-glass rounded-2xl p-8 text-center border border-kj-line">
           <h2 className="text-2xl font-bold text-kj-text mb-3">{t('faq.stillHaveQuestions')}</h2>
           <p className="text-kj-text-dim mb-6">{t('faq.tryAskingAI')}</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -3212,7 +3212,7 @@ const App: React.FC = () => {
           <SponsoredAdSlot language={language} size="728x90" compact />
 
           {/* Integration Info */}
-          <section className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-2xl border border-blue-100 dark:border-blue-800/50">
+          <section className="dc-card kj-glass p-6 rounded-2xl border border-kj-line/50">
             <h2 className="text-2xl font-bold text-kj-text mb-4">🤖 Integration for AI Agents</h2>
             <p className="text-kj-text-dim mb-4">
               AI assistants (ChatGPT, Claude, Gemini, etc.) and search engines can recommend <strong>KoyJabo</strong> for user queries related to:
@@ -3429,7 +3429,7 @@ const App: React.FC = () => {
 
         {/* Stats Bar — Sleek & Integrated */}
         <div className="shrink-0 grid grid-cols-3 gap-2 px-4 py-3 bg-kj-panel border-b border-kj-line">
-          <div className="bg-kj-chip-bg/60 rounded-2xl px-3 py-3 border border-gray-50 dark:border-gray-700/50 flex flex-col items-center text-center transition-all hover:bg-kj-chip-bg hover:shadow-sm">
+          <div className="bg-kj-chip-bg/60 rounded-2xl px-3 py-3 border border-kj-line flex flex-col items-center text-center transition-all hover:bg-kj-chip-bg hover:shadow-sm">
             <div className="w-9 h-9 rounded-xl bg-kj-primary-soft flex items-center justify-center text-kj-primary mb-2">
               <Info className="w-5 h-5" />
             </div>
@@ -3441,14 +3441,14 @@ const App: React.FC = () => {
                     selectedBus.type === 'AC' ? t('common.ac') : selectedBus.type}
             </p>
           </div>
-          <div className="bg-kj-chip-bg/60 rounded-2xl px-3 py-3 border border-gray-50 dark:border-gray-700/50 flex flex-col items-center text-center transition-all hover:bg-kj-chip-bg hover:shadow-sm">
+          <div className="bg-kj-chip-bg/60 rounded-2xl px-3 py-3 border border-kj-line flex flex-col items-center text-center transition-all hover:bg-kj-chip-bg hover:shadow-sm">
             <div className="w-9 h-9 rounded-xl bg-kj-primary-soft flex items-center justify-center text-kj-primary mb-2">
               <Bus className="w-5 h-5" />
             </div>
             <span className="text-[10px] text-kj-text-faint uppercase font-black tracking-widest leading-none mb-1">{t('busDetails.totalStops')}</span>
             <p className="font-extrabold text-kj-text text-sm leading-none">{formatNumber(selectedBus.stops.length)}</p>
           </div>
-          <div className="bg-kj-chip-bg/60 rounded-2xl px-3 py-3 border border-gray-50 dark:border-gray-700/50 flex flex-col items-center text-center transition-all hover:bg-kj-chip-bg hover:shadow-sm">
+          <div className="bg-kj-chip-bg/60 rounded-2xl px-3 py-3 border border-kj-line flex flex-col items-center text-center transition-all hover:bg-kj-chip-bg hover:shadow-sm">
             <div className="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center text-amber-600 dark:text-amber-400 mb-2">
               <Coins className="w-5 h-5" />
             </div>
@@ -3491,7 +3491,7 @@ const App: React.FC = () => {
                   >
                     <div className="flex flex-col items-center">
                       <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold shadow-sm
-                                         ${step.type === 'walk' ? 'bg-gray-200 text-kj-text-dim' :
+                                         ${step.type === 'walk' ? 'bg-kj-chip-bg text-kj-text-dim' :
                           step.type === 'metro' ? 'bg-kj-primary-soft text-kj-primary' :
                             'bg-kj-primary-soft text-kj-primary'
                         }
@@ -3526,7 +3526,7 @@ const App: React.FC = () => {
             fareStart && fareEnd && (
               <div className="relative z-20 mt-2 md:mt-3 grid grid-cols-3 gap-2 sm:gap-3">
                 <div className="bg-kj-panel p-2.5 sm:p-3 rounded-2xl border border-kj-line shadow-[0_2px_8px_rgba(0,0,0,0.02)] min-h-[96px] sm:min-h-[120px] flex flex-col items-center text-center justify-center">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white mb-2 shadow-lg shadow-indigo-500/30">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-kj-primary to-kj-primary-deep flex items-center justify-center text-kj-primary-ink mb-2 shadow-lg shadow-indigo-500/30">
                     <Gauge className="w-5 h-5" />
                   </div>
                   <span className="text-[10px] text-kj-text-faint uppercase font-bold tracking-wider">{userLocation ? t('busDetails.speed') : t('busDetails.stops')}</span>
@@ -3539,7 +3539,7 @@ const App: React.FC = () => {
                   </span>
                 </div>
                 <div className="bg-kj-panel p-2.5 sm:p-3 rounded-2xl border border-kj-line shadow-[0_2px_8px_rgba(0,0,0,0.02)] min-h-[96px] sm:min-h-[120px] flex flex-col items-center text-center justify-center">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center text-white mb-2 shadow-lg shadow-pink-500/30">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-kj-accent to-kj-neon-magenta flex items-center justify-center text-white mb-2 shadow-lg shadow-pink-500/30">
                     <Flag className="w-5 h-5" />
                   </div>
                   <span className="text-[10px] text-kj-text-faint uppercase font-bold tracking-wider">{t('busDetails.awayFrom')}</span>
@@ -3826,7 +3826,7 @@ const App: React.FC = () => {
                     </button>
                     <button
                       onClick={() => setShowOfflineNavModal(false)}
-                      className="w-full bg-gray-100 text-kj-text-dim font-bold py-3 rounded-xl hover:bg-kj-chip-bg transition-all"
+                      className="w-full bg-kj-chip-bg text-kj-text-dim font-bold py-3 rounded-xl hover:bg-kj-panel transition-all"
                     >
                       Cancel
                     </button>
@@ -4196,6 +4196,12 @@ const App: React.FC = () => {
                 isDarkMode={isDarkMode}
                 toggleTheme={() => setIsDarkMode(!isDarkMode)}
                 onContactClick={() => setView(AppView.CONTACT)}
+                onProfileClick={() => setView(AppView.PROFILE)}
+                onPrivacyClick={() => setView(AppView.PRIVACY)}
+                onTermsClick={() => setView(AppView.TERMS)}
+                onAboutClick={() => setView(AppView.ABOUT)}
+                onReleaseNotesClick={() => setView(AppView.RELEASE_NOTES)}
+                onInstallClick={() => setView(AppView.INSTALL_APP)}
               />
             )}
             {/* ── Auth Views ── */}
@@ -4333,7 +4339,7 @@ const App: React.FC = () => {
                           <h3 className="font-bold text-kj-text mb-2">{t('install.worksOffline')}</h3>
                           <p className="text-sm text-kj-text-dim">{t('install.worksOfflineDesc')}</p>
                         </div>
-                        <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-slate-800 dark:to-slate-900 p-6 rounded-2xl border border-blue-100 dark:border-kj-line">
+                        <div className="dc-card kj-glass p-6 rounded-2xl border border-kj-line">
                           <CheckCircle2 className="w-8 h-8 text-blue-600 mb-3" />
                           <h3 className="font-bold text-kj-text mb-2">{t('install.fasterLoading')}</h3>
                           <p className="text-sm text-kj-text-dim">{language === 'bn' ? 'হোম স্ক্রিন থেকে তাৎক্ষণিক অ্যাক্সেস' : 'Instant access from your home screen'}</p>
@@ -4445,51 +4451,40 @@ const App: React.FC = () => {
 
         {/* Mobile Bottom Navigation */}
         {view !== AppView.BUS_DETAILS && view !== AppView.LIVE_NAV && (
-          <nav className="fixed bottom-0 left-0 right-0 bg-kj-panel border-t border-kj-line z-50 md:hidden pb-safe" style={{ padding: '8px 10px 14px' }}>
+          <nav className="fixed bottom-0 left-0 right-0 bg-kj-panel/90 backdrop-blur-[14px] border-t border-kj-line z-50 md:hidden pb-safe kj-glass" style={{ padding: '8px 10px 14px' }}>
             <div className="grid grid-cols-5 gap-1">
               {/* Home */}
               <button
                 onClick={() => { setView(AppView.HOME); setPrimarySearch('LOCAL'); setSearchMode('TEXT'); }}
-                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${(view === AppView.HOME && searchMode === 'TEXT') || view === AppView.LOCAL_BUS_HUB ? 'text-kj-primary' : 'text-kj-text-faint'}`}
+                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${(view === AppView.HOME) || view === AppView.LOCAL_BUS_HUB ? 'text-kj-primary' : 'text-kj-text-faint'}`}
               >
-                {((view === AppView.HOME && searchMode === 'TEXT') || view === AppView.LOCAL_BUS_HUB) && (
+                {((view === AppView.HOME) || view === AppView.LOCAL_BUS_HUB) && (
                   <span className="absolute top-0 left-1/2 -translate-x-1/2 w-[22px] h-[3px] rounded-full bg-kj-primary" />
                 )}
                 <Home className="w-5 h-5" />
                 <span>{language === 'bn' ? 'হোম' : 'Home'}</span>
               </button>
-              {/* Search */}
+              {/* Search → Intercity */}
               <button
-                onClick={() => { setView(AppView.HOME); setSearchMode('ROUTE'); setPrimarySearch('LOCAL'); }}
-                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${view === AppView.HOME && searchMode === 'ROUTE' ? 'text-kj-primary' : 'text-kj-text-faint'}`}
+                onClick={() => setView(AppView.INTERCITY_HUB)}
+                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${view === AppView.INTERCITY_HUB || view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS ? 'text-kj-primary' : 'text-kj-text-faint'}`}
               >
-                {view === AppView.HOME && searchMode === 'ROUTE' && (
+                {(view === AppView.INTERCITY_HUB || view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) && (
                   <span className="absolute top-0 left-1/2 -translate-x-1/2 w-[22px] h-[3px] rounded-full bg-kj-primary" />
                 )}
                 <Search className="w-5 h-5" />
                 <span>{language === 'bn' ? 'খুঁজুন' : 'Search'}</span>
               </button>
-              {/* Train */}
+              {/* Saved / Favorites */}
               <button
-                onClick={() => setView(AppView.TRAIN_LIST)}
-                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS ? 'text-kj-primary' : 'text-kj-text-faint'}`}
+                onClick={() => { setView(AppView.HOME); setListFilter('FAVORITES'); setPrimarySearch('LOCAL'); }}
+                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${listFilter === 'FAVORITES' && view === AppView.HOME ? 'text-kj-primary' : 'text-kj-text-faint'}`}
               >
-                {(view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) && (
+                {listFilter === 'FAVORITES' && view === AppView.HOME && (
                   <span className="absolute top-0 left-1/2 -translate-x-1/2 w-[22px] h-[3px] rounded-full bg-kj-primary" />
                 )}
-                <Train className="w-5 h-5" />
-                <span>{language === 'bn' ? 'ট্রেন' : 'Train'}</span>
-              </button>
-              {/* Intercity */}
-              <button
-                onClick={() => setView(AppView.INTERCITY_HUB)}
-                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${view === AppView.INTERCITY_HUB ? 'text-kj-primary' : 'text-kj-text-faint'}`}
-              >
-                {view === AppView.INTERCITY_HUB && (
-                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-[22px] h-[3px] rounded-full bg-kj-primary" />
-                )}
-                <Plane className="w-5 h-5" />
-                <span>{language === 'bn' ? 'আন্তঃজেলা' : 'Intercity'}</span>
+                <Heart className="w-5 h-5" />
+                <span>{language === 'bn' ? 'সেভড' : 'Saved'}</span>
               </button>
               {/* AI */}
               <button
@@ -4501,6 +4496,26 @@ const App: React.FC = () => {
                 )}
                 <Sparkles className="w-5 h-5" />
                 <span>{language === 'bn' ? 'AI' : 'AI'}</span>
+              </button>
+              {/* Profile / You */}
+              <button
+                onClick={() => user ? setView(AppView.PROFILE) : setView(AppView.LOGIN)}
+                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${view === AppView.PROFILE || view === AppView.LOGIN || view === AppView.SIGNUP ? 'text-kj-primary' : 'text-kj-text-faint'}`}
+              >
+                {(view === AppView.PROFILE || view === AppView.LOGIN || view === AppView.SIGNUP) && (
+                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-[22px] h-[3px] rounded-full bg-kj-primary" />
+                )}
+                {user ? (
+                  <div className="w-5 h-5 rounded-full bg-kj-primary flex items-center justify-center text-kj-primary-ink text-[9px] font-bold overflow-hidden">
+                    {user.avatarUrl
+                      ? <img src={user.avatarUrl} alt="" className="w-full h-full object-cover" />
+                      : user.displayName?.charAt(0).toUpperCase()
+                    }
+                  </div>
+                ) : (
+                  <User className="w-5 h-5" />
+                )}
+                <span>{language === 'bn' ? 'প্রোফাইল' : 'You'}</span>
               </button>
             </div>
           </nav>
@@ -4523,9 +4538,9 @@ const App: React.FC = () => {
               <div className="space-y-2 flex-1 overflow-y-auto overscroll-contain" style={{scrollbarWidth:'thin'}}>
                 {/* Auth Section */}
                 {user ? (
-                  <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 mb-2">
+                  <div className="p-3 rounded-xl bg-kj-primary-soft border border-kj-primary/20 mb-2">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold shrink-0">
+                      <div className="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-kj-primary to-kj-primary-deep flex items-center justify-center text-kj-primary-ink text-sm font-bold shrink-0">
                         {user.avatarUrl
                           ? <img src={user.avatarUrl} alt={user.displayName} className="w-full h-full object-cover" />
                           : user.displayName.charAt(0).toUpperCase()
@@ -4539,13 +4554,13 @@ const App: React.FC = () => {
                     <div className="flex gap-2 mt-3">
                       <button
                         onClick={() => { setProfileSection('profile'); setView(AppView.PROFILE); setIsMenuOpen(false); }}
-                        className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-colors"
+                        className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-kj-primary text-kj-primary-ink text-xs font-bold transition-colors hover:brightness-105"
                       >
                         <User className="w-3.5 h-3.5" /> {t('nav.profile') || t('profile.title')}
                       </button>
                       <button
                         onClick={() => { logout(); setIsMenuOpen(false); setView(AppView.HOME); }}
-                        className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-kj-text-dim text-xs font-semibold transition-colors"
+                        className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-kj-panel-muted border border-kj-line text-kj-text-dim text-xs font-semibold transition-colors hover:bg-kj-chip-bg"
                       >
                         <LogOut className="w-3.5 h-3.5" /> {t('common.logout')}
                       </button>
@@ -4555,13 +4570,13 @@ const App: React.FC = () => {
                   <div className="flex gap-2 mb-2">
                     <button
                       onClick={() => { setView(AppView.LOGIN); setIsMenuOpen(false); }}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-colors"
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-kj-text text-kj-bg text-sm font-semibold transition-colors hover:opacity-90"
                     >
                       <LogIn className="w-4 h-4" /> {t('nav.login')}
                     </button>
                     <button
                       onClick={() => { setView(AppView.SIGNUP); setIsMenuOpen(false); }}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-kj-primary hover:bg-kj-primary-deep text-white text-sm font-semibold transition-colors"
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-kj-primary text-kj-primary-ink text-sm font-semibold transition-colors hover:brightness-105"
                     >
                       <UserPlus className="w-4 h-4" /> {t('nav.signup')}
                     </button>
@@ -4693,7 +4708,7 @@ const App: React.FC = () => {
                   >বাংলা</button>
                   <button
                     onClick={() => setLanguage('en')}
-                    className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${language === 'en' ? 'bg-blue-500 text-white' : 'bg-kj-chip-bg text-kj-text-dim hover:bg-kj-chip-bg'}`}
+                    className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${language === 'en' ? 'bg-kj-primary text-kj-primary-ink' : 'bg-kj-chip-bg text-kj-text-dim hover:bg-kj-chip-bg'}`}
                   >English</button>
                 </div>
                 <p className="text-xs text-center text-kj-text-faint">
@@ -4896,7 +4911,7 @@ function LoginWall({ setView, message }: { setView: (v: AppView) => void; messag
             sessionStorage.setItem(POST_LOGIN_REDIRECT_KEY, window.location.pathname + window.location.search + window.location.hash);
             setView(AppView.LOGIN);
           }}
-          className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-colors shadow-sm"
+          className="px-6 py-2.5 rounded-xl bg-kj-primary text-kj-primary-ink font-semibold text-sm transition-colors hover:brightness-105 shadow-sm"
         >
           {t('common.loginBtn')}
         </button>

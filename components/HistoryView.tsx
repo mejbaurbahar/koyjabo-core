@@ -180,7 +180,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                         <div className="flex gap-3">
                             <button
                                 onClick={() => setShowClearConfirm(false)}
-                                className="flex-1 py-2.5 rounded-xl font-bold text-kj-text-dim bg-kj-chip-bg hover:bg-kj-chip-bg dark:hover:bg-slate-600 transition-colors"
+                                className="flex-1 py-2.5 rounded-xl font-bold text-kj-text-dim bg-kj-chip-bg hover:bg-kj-chip-bg hover:bg-kj-chip-bg transition-colors"
                             >
                                 {t('history.cancel')}
                             </button>
@@ -295,7 +295,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                             <div
                                                 key={`bus-${idx}-${busId}`}
                                                 onClick={() => onBusSelect(bus, true)}
-                                                className="flex items-center justify-between p-4 bg-gray-50 bg-kj-chip-bg hover:bg-kj-chip-bg rounded-xl cursor-pointer transition-colors group flex-shrink-0"
+                                                className="flex items-center justify-between p-4 bg-kj-chip-bg hover:bg-kj-chip-bg rounded-xl cursor-pointer transition-colors group flex-shrink-0"
                                             >
                                                 <div className="flex items-center gap-3">
                                                     <div className="w-10 h-10 bg-kj-primary rounded-lg flex items-center justify-center">
@@ -335,7 +335,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                         return (
                                             <div
                                                 key={index}
-                                                className="flex items-center justify-between p-4 bg-gray-50 bg-kj-chip-bg rounded-xl flex-shrink-0"
+                                                className="flex items-center justify-between p-4 bg-kj-chip-bg rounded-xl flex-shrink-0"
                                             >
                                                 <div className="flex items-center gap-3 flex-1">
                                                     <div className="w-10 h-10 bg-kj-accent rounded-lg flex items-center justify-center">
@@ -437,7 +437,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                                 className="flex items-center justify-between p-3 hover:bg-kj-chip-bg dark:hover:bg-slate-700/50 rounded-lg transition-colors flex-shrink-0"
                                             >
                                                 <div className="flex items-center gap-2 flex-1 min-w-0">
-                                                    <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                    <div className="w-8 h-8 bg-kj-chip-bg rounded-lg flex items-center justify-center flex-shrink-0">
                                                         {record.transportType === 'AIR' ? <TrendingUp className="w-4 h-4 text-purple-600" /> : <Bus className="w-4 h-4 text-purple-600" />}
                                                     </div>
                                                     <div className="flex items-center gap-2 text-sm min-w-0">
@@ -468,7 +468,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                             <div
                                                 key={idx}
                                                 onClick={() => train && onTrainSelect && onTrainSelect(train)}
-                                                className={`flex items-center justify-between p-4 bg-gray-50 bg-kj-chip-bg rounded-xl transition-colors group ${train && onTrainSelect ? 'cursor-pointer hover:bg-kj-chip-bg' : ''}`}
+                                                className={`flex items-center justify-between p-4 bg-kj-chip-bg rounded-xl transition-colors group ${train && onTrainSelect ? 'cursor-pointer hover:bg-kj-chip-bg' : ''}`}
                                             >
                                                 <div className="flex items-center gap-3">
                                                     <div className="w-10 h-10 bg-kj-primary rounded-lg flex items-center justify-center">
@@ -594,7 +594,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
 
                                 <div className="bg-white dark:bg-slate-700 p-5 rounded-xl">
                                     <div className="flex items-center gap-3 mb-1">
-                                        <div className="w-10 h-10 bg-kj-primary-soft dark:bg-blue-900/30 rounded-lg flex items-center justify-center shrink-0">
+                                        <div className="w-10 h-10 bg-kj-primary-soft rounded-lg flex items-center justify-center shrink-0">
                                             <Calendar className="w-5 h-5 text-kj-primary" />
                                         </div>
                                         <div>
@@ -610,7 +610,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                         {/* <AdSenseAd adSlot="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
                         {/* Info Card */}
-                        <div className="bg-blue-50 dark:bg-kj-chip-bg border border-blue-100 dark:border-kj-line rounded-2xl p-6">
+                        <div className="bg-kj-chip-bg border border-kj-line rounded-2xl p-6">
                             <div className="flex gap-3">
                                 <div className="w-10 h-10 bg-kj-primary-soft rounded-lg flex items-center justify-center flex-shrink-0">
                                     <Eye className="w-5 h-5 text-kj-primary" />

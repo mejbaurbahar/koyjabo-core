@@ -1,220 +1,197 @@
 import React from 'react';
-import { Settings as SettingsIcon, Sun, Moon, Monitor, Globe, Mail, ChevronRight, Rocket } from 'lucide-react';
+import {
+    Settings as SettingsIcon, Sun, Moon, Globe, Mail, ChevronRight,
+    Bell, MapPin, Download, User, Shield, Smartphone, CreditCard,
+    HelpCircle, MessageSquare, Bug, FileText, Info, Rocket
+} from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface SettingsPageProps {
     isDarkMode: boolean;
     toggleTheme: () => void;
     onContactClick: () => void;
+    onProfileClick?: () => void;
+    onPrivacyClick?: () => void;
+    onTermsClick?: () => void;
+    onAboutClick?: () => void;
+    onReleaseNotesClick?: () => void;
+    onInstallClick?: () => void;
     embedded?: boolean;
 }
 
-const SettingsPage: React.FC<SettingsPageProps> = ({ isDarkMode, toggleTheme, onContactClick, embedded = false }) => {
+function ToggleSwitch({ on }: { on: boolean }) {
+    return (
+        <div className={`w-9 h-[22px] rounded-full relative transition-colors duration-200 ${on ? 'bg-kj-primary' : 'bg-kj-line'}`}>
+            <div className={`absolute top-[2px] w-[18px] h-[18px] rounded-full bg-white shadow transition-all duration-200 ${on ? 'left-[18px]' : 'left-[2px]'}`} />
+        </div>
+    );
+}
+
+const SettingsPage: React.FC<SettingsPageProps> = ({
+    isDarkMode, toggleTheme, onContactClick,
+    onProfileClick, onPrivacyClick, onTermsClick, onAboutClick,
+    onReleaseNotesClick, onInstallClick, embedded = false
+}) => {
     const { language, setLanguage, t } = useLanguage();
+    const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
+
+    const groups = [
+        {
+            title: lbl('App', 'অ্যাপ'),
+            items: [
+                {
+                    icon: <Globe className="w-4 h-4" />,
+                    label: lbl('Language', 'ভাষা'),
+                    sub: language === 'bn' ? 'বাংলা' : 'English',
+                    action: () => setLanguage(language === 'bn' ? 'en' : 'bn'),
+                    arrow: true,
+                },
+                {
+                    icon: isDarkMode ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />,
+                    label: lbl('Theme', 'থিম'),
+                    sub: isDarkMode ? lbl('Dark', 'ডার্ক') : lbl('Light', 'লাইট'),
+                    action: toggleTheme,
+                    toggle: isDarkMode,
+                },
+                {
+                    icon: <Bell className="w-4 h-4" />,
+                    label: lbl('Notifications', 'নোটিফিকেশন'),
+                    sub: lbl('Trip delays, deals', 'ট্রিপ বিলম্ব, অফার'),
+                    toggle: true,
+                },
+                {
+                    icon: <MapPin className="w-4 h-4" />,
+                    label: lbl('Location', 'অবস্থান'),
+                    sub: lbl('Always', 'সর্বদা'),
+                    toggle: true,
+                },
+                {
+                    icon: <Download className="w-4 h-4" />,
+                    label: lbl('Offline data', 'অফলাইন ডেটা'),
+                    sub: lbl('124 MB downloaded', '১২৪ MB ডাউনলোড করা'),
+                    arrow: true,
+                },
+            ],
+        },
+        {
+            title: lbl('Support', 'সহায়তা'),
+            items: [
+                {
+                    icon: <HelpCircle className="w-4 h-4" />,
+                    label: lbl('Q & A', 'প্রশ্নোত্তর'),
+                    arrow: true,
+                },
+                {
+                    icon: <Mail className="w-4 h-4" />,
+                    label: lbl('Contact us', 'যোগাযোগ'),
+                    action: onContactClick,
+                    arrow: true,
+                },
+                {
+                    icon: <MessageSquare className="w-4 h-4" />,
+                    label: lbl('Send feedback', 'প্রতিক্রিয়া পাঠান'),
+                    arrow: true,
+                },
+                {
+                    icon: <Bug className="w-4 h-4" />,
+                    label: lbl('Report a bug', 'বাগ রিপোর্ট'),
+                    arrow: true,
+                },
+            ],
+        },
+        {
+            title: lbl('Legal', 'আইনি'),
+            items: [
+                {
+                    icon: <Shield className="w-4 h-4" />,
+                    label: lbl('Privacy policy', 'গোপনীয়তা নীতি'),
+                    action: onPrivacyClick,
+                    arrow: true,
+                },
+                {
+                    icon: <FileText className="w-4 h-4" />,
+                    label: lbl('Terms of service', 'সেবার শর্তাবলি'),
+                    action: onTermsClick,
+                    arrow: true,
+                },
+                {
+                    icon: <Info className="w-4 h-4" />,
+                    label: lbl('About KoyJabo', 'অ্যাপ সম্পর্কে'),
+                    action: onAboutClick,
+                    arrow: true,
+                },
+                {
+                    icon: <Rocket className="w-4 h-4" />,
+                    label: lbl('Release notes', 'রিলিজ নোট'),
+                    sub: 'v1.4.2',
+                    action: onReleaseNotesClick,
+                    arrow: true,
+                },
+            ],
+        },
+    ];
 
     return (
         <div
-            className={`flex flex-col flex-1 min-h-0 w-full max-h-full bg-transparent px-4 sm:px-6 md:px-12 py-4 pb-24 md:pb-12 overflow-y-auto overscroll-y-contain touch-pan-y ${embedded ? '' : 'sm:pb-12 md:pt-8'}`}
+            className={`flex flex-col flex-1 min-h-0 w-full max-h-full bg-transparent px-4 sm:px-6 md:px-10 py-4 pb-24 md:pb-12 overflow-y-auto overscroll-y-contain touch-pan-y ${embedded ? '' : 'md:pt-8'}`}
             style={{ WebkitOverflowScrolling: 'touch' }}
         >
-            <div className="max-w-3xl mx-auto w-full">
-                <h1 className="text-2xl md:text-3xl font-bold mb-3 text-kj-text flex items-center gap-2">
-                    <SettingsIcon className="w-6 h-6 text-kj-text-dim" />
-                    {t('settings.title')}
-                </h1>
-                <p className="text-kj-text-dim mb-8">{t('settings.subtitle')}</p>
+            <div className="max-w-2xl mx-auto w-full">
+                <div className="mb-6">
+                    <p className="text-[11px] font-bold text-kj-text-faint tracking-[1.4px] uppercase mb-1">{lbl('Settings', 'সেটিংস')}</p>
+                    <h1 className="font-bengali font-bold text-[22px] md:text-[28px] text-kj-text tracking-tight">
+                        {lbl('Preferences & Options', 'পছন্দ ও বিকল্প')}
+                    </h1>
+                </div>
 
-                <div className="space-y-6">
-                    {/* Language Settings */}
-                    <div className="dc-card kj-glass border border-kj-line rounded-2xl p-6">
-                        <h2 className="text-lg font-bold text-kj-text mb-4">
-                            {t('settings.languagePreference')}
-                        </h2>
-                        <p className="text-sm text-kj-text-dim mb-4">
-                            {t('settings.languageDescription')}
-                        </p>
-
-                        {/* Language Options */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            {/* Bangla */}
-                            <button
-                                onClick={() => setLanguage('bn')}
-                                className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all ${language === 'bn'
-                                    ? 'border-kj-primary bg-kj-primary-soft'
-                                    : 'border-kj-line hover:border-kj-primary/30'
-                                    }`}
-                            >
-                                <div className={`p-2 rounded-lg ${language === 'bn' ? 'bg-kj-primary' : 'bg-kj-chip-bg'}`}>
-                                    <Globe className={`w-5 h-5 ${language === 'bn' ? 'text-white' : 'text-kj-text-dim'}`} />
-                                </div>
-                                <div className="text-left flex-1">
-                                    <div className={`font-bold text-sm ${language === 'bn' ? 'text-kj-primary' : 'text-kj-text'}`}>
-                                        বাংলা
-                                    </div>
-                                    <div className="text-xs text-kj-text-dim">
-                                        Bangla
-                                    </div>
-                                </div>
-                                {language === 'bn' && (
-                                    <div className="w-5 h-5 bg-kj-primary rounded-full flex items-center justify-center">
-                                        <div className="w-2 h-2 bg-white rounded-full"></div>
-                                    </div>
-                                )}
-                            </button>
-
-                            {/* English */}
-                            <button
-                                onClick={() => setLanguage('en')}
-                                className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all ${language === 'en'
-                                    ? 'border-kj-primary bg-kj-primary-soft'
-                                    : 'border-kj-line hover:border-kj-primary/30'
-                                    }`}
-                            >
-                                <div className={`p-2 rounded-lg ${language === 'en' ? 'bg-kj-primary' : 'bg-kj-chip-bg'}`}>
-                                    <Globe className={`w-5 h-5 ${language === 'en' ? 'text-kj-primary-ink' : 'text-kj-text-dim'}`} />
-                                </div>
-                                <div className="text-left flex-1">
-                                    <div className={`font-bold text-sm ${language === 'en' ? 'text-kj-primary' : 'text-kj-text'}`}>
-                                        English
-                                    </div>
-                                    <div className="text-xs text-kj-text-dim">
-                                        ইংরেজি
-                                    </div>
-                                </div>
-                                {language === 'en' && (
-                                    <div className="w-5 h-5 bg-kj-primary rounded-full flex items-center justify-center">
-                                        <div className="w-2 h-2 bg-kj-primary-ink rounded-full"></div>
-                                    </div>
-                                )}
-                            </button>
+                {/* Install PWA card */}
+                {onInstallClick && (
+                    <button
+                        onClick={onInstallClick}
+                        className="w-full dc-card kj-glass rounded-[18px] border border-kj-primary/30 p-4 flex items-center gap-3 mb-5 text-left group hover:border-kj-primary/60 transition-colors"
+                    >
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-kj-primary to-kj-primary-deep flex items-center justify-center text-kj-primary-ink kj-anim-glow shrink-0">
+                            <Smartphone className="w-5 h-5" />
                         </div>
+                        <div className="flex-1 min-w-0">
+                            <div className="font-bengali font-bold text-[14px] text-kj-text">{lbl('Install app', 'অ্যাপ ইনস্টল করুন')}</div>
+                            <div className="text-[11px] text-kj-text-dim mt-0.5">{lbl('Works offline · all routes', 'অফলাইনে কাজ করে · সব রুট')}</div>
+                        </div>
+                        <ChevronRight className="w-4 h-4 text-kj-text-faint group-hover:text-kj-primary group-hover:translate-x-0.5 transition-all shrink-0" />
+                    </button>
+                )}
 
-                        {/* Current Status */}
-                        <div className="mt-4 p-3 bg-kj-chip-bg rounded-lg">
-                            <div className="flex items-center gap-2 text-sm">
-                                <Globe className="w-4 h-4 text-kj-text-dim" />
-                                <span className="text-kj-text-dim">
-                                    {t('settings.currentLanguage')}: <span className="font-bold text-kj-text">{language === 'bn' ? 'বাংলা (Bangla)' : 'English (ইংরেজি)'}</span>
-                                </span>
-                            </div>
+                {groups.map((group, gi) => (
+                    <div key={gi} className="mb-5">
+                        <p className="text-[10px] font-bold text-kj-text-faint tracking-[1.4px] uppercase mb-2 px-1">{group.title}</p>
+                        <div className="dc-card kj-glass rounded-[16px] border border-kj-line overflow-hidden">
+                            {group.items.map((item, ii) => (
+                                <button
+                                    key={ii}
+                                    onClick={item.action || undefined}
+                                    disabled={!item.action && item.toggle === undefined}
+                                    className={`w-full flex items-center gap-3 px-[14px] py-[13px] text-left transition-colors ${ii > 0 ? 'border-t border-kj-line' : ''} ${item.action ? 'hover:bg-kj-chip-bg/60 cursor-pointer' : 'cursor-default'}`}
+                                >
+                                    <div className="w-8 h-8 rounded-lg bg-kj-chip-bg text-kj-text flex items-center justify-center shrink-0">
+                                        {item.icon}
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="font-bengali font-semibold text-[14px] text-kj-text">{item.label}</div>
+                                        {item.sub && <div className="text-[11px] text-kj-text-faint mt-0.5">{item.sub}</div>}
+                                    </div>
+                                    {item.toggle !== undefined ? (
+                                        <ToggleSwitch on={item.toggle} />
+                                    ) : item.arrow ? (
+                                        <ChevronRight className="w-[14px] h-[14px] text-kj-text-faint shrink-0" />
+                                    ) : null}
+                                </button>
+                            ))}
                         </div>
                     </div>
-                    {/* Theme Settings */}
-                    <div className="dc-card kj-glass border border-kj-line rounded-2xl p-6">
-                        <h2 className="text-lg font-bold text-kj-text mb-4">
-                            {t('settings.themePreference')}
-                        </h2>
-                        <p className="text-sm text-kj-text-dim mb-4">
-                            {t('settings.themeDescription')}
-                        </p>
+                ))}
 
-                        {/* Theme Options */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            {/* Light Mode */}
-                            <button
-                                onClick={() => {
-                                    if (isDarkMode) toggleTheme();
-                                }}
-                                className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all ${!isDarkMode
-                                    ? 'border-kj-amber bg-kj-amber-soft'
-                                    : 'border-kj-line hover:border-kj-amber/30'
-                                    }`}
-                            >
-                                <div className={`p-2 rounded-lg ${!isDarkMode ? 'bg-kj-amber' : 'bg-kj-chip-bg'}`}>
-                                    <Sun className={`w-5 h-5 ${!isDarkMode ? 'text-white' : 'text-kj-text-dim'}`} />
-                                </div>
-                                <div className="text-left flex-1">
-                                    <div className={`font-bold text-sm ${!isDarkMode ? 'text-kj-amber' : 'text-kj-text'}`}>
-                                        {t('settings.lightMode')}
-                                    </div>
-                                    <div className="text-xs text-kj-text-dim">
-                                        {t('settings.brightTheme')}
-                                    </div>
-                                </div>
-                                {!isDarkMode && (
-                                    <div className="w-5 h-5 bg-kj-amber rounded-full flex items-center justify-center">
-                                        <div className="w-2 h-2 bg-white rounded-full"></div>
-                                    </div>
-                                )}
-                            </button>
-
-                            {/* Dark Mode */}
-                            <button
-                                onClick={() => {
-                                    if (!isDarkMode) toggleTheme();
-                                }}
-                                className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all ${isDarkMode
-                                    ? 'border-kj-neon-violet bg-kj-primary-soft'
-                                    : 'border-kj-line hover:border-kj-neon-violet/30'
-                                    }`}
-                            >
-                                <div className={`p-2 rounded-lg ${isDarkMode ? 'bg-kj-neon-violet/20' : 'bg-kj-chip-bg'}`}>
-                                    <Moon className={`w-5 h-5 ${isDarkMode ? 'text-kj-neon-violet' : 'text-kj-text-dim'}`} />
-                                </div>
-                                <div className="text-left flex-1">
-                                    <div className={`font-bold text-sm ${isDarkMode ? 'text-kj-neon-violet' : 'text-kj-text'}`}>
-                                        {t('settings.darkMode')}
-                                    </div>
-                                    <div className="text-xs text-kj-text-dim">
-                                        {t('settings.easyOnEyes')}
-                                    </div>
-                                </div>
-                                {isDarkMode && (
-                                    <div className="w-5 h-5 bg-kj-neon-violet/30 rounded-full flex items-center justify-center border border-kj-neon-violet">
-                                        <div className="w-2 h-2 bg-kj-neon-violet rounded-full"></div>
-                                    </div>
-                                )}
-                            </button>
-                        </div>
-
-                        {/* Current Status */}
-                        <div className="mt-4 p-3 bg-kj-chip-bg rounded-lg">
-                            <div className="flex items-center gap-2 text-sm">
-                                <Monitor className="w-4 h-4 text-kj-text-dim" />
-                                <span className="text-kj-text-dim">
-                                    {t('settings.currentTheme')}: <span className="font-bold text-kj-text">{isDarkMode ? t('settings.dark') : t('settings.light')}</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Support & Contact */}
-                    <div className="dc-card kj-glass border border-kj-line rounded-2xl p-6">
-                        <h2 className="text-lg font-bold text-kj-text mb-4">
-                            {t('settings.supportFeedback')}
-                        </h2>
-
-                        <button
-                            onClick={onContactClick}
-                            className="w-full flex items-center gap-4 p-4 rounded-xl border-2 border-kj-line hover:border-kj-primary/40 hover:bg-kj-primary-soft transition-all text-left group"
-                        >
-                            <div className="p-3 bg-kj-primary-soft rounded-xl text-kj-primary group-hover:scale-110 transition-transform">
-                                <Mail className="w-6 h-6" />
-                            </div>
-                            <div className="flex-1">
-                                <h3 className="font-bold text-kj-text group-hover:text-kj-primary transition-colors">{t('settings.contactUsBtn')}</h3>
-                                <p className="text-sm text-kj-text-dim">{t('settings.contactUsDesc')}</p>
-                            </div>
-                            <ChevronRight className="w-5 h-5 text-kj-text-faint group-hover:text-kj-primary group-hover:translate-x-1 transition-all" />
-                        </button>
-                    </div>
-
-                    {/* App Info */}
-                    <div className="bg-kj-chip-bg border border-kj-line rounded-2xl p-6">
-                        <h2 className="text-lg font-bold text-kj-text mb-2">
-                            {t('settings.appInfo')}
-                        </h2>
-                        <div className="space-y-2 text-sm">
-                            <div className="flex justify-between">
-                                <span className="text-kj-text-dim">{t('settings.version')}</span>
-                                <span className="font-medium text-kj-text">1.0.0</span>
-                            </div>
-                            <div className="flex justify-between">
-                                <span className="text-kj-text-dim">{t('settings.lastUpdated')}</span>
-                                <span className="font-medium text-kj-text">January 2026</span>
-                            </div>
-                        </div>
-                    </div>
+                <div className="text-center mt-4 mb-2 text-[11px] text-kj-text-faint font-sans">
+                    KoyJabo · v1.4.2 · Build 2412.28
                 </div>
             </div>
         </div>

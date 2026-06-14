@@ -100,7 +100,7 @@ const MetroRailHub: React.FC<Props> = ({ onBack, language }) => {
       <div className="px-4 py-4 space-y-4">
 
         {/* Hero card */}
-        <div className="bg-gradient-to-br from-slate-900 to-green-900 rounded-2xl p-5 text-white">
+        <div className="rounded-2xl p-5 text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #00130e 0%, #003822 100%)' }}>
           <div className="flex items-center gap-2 mb-1">
             <Train size={18} className="opacity-80" />
             <span className="text-xs font-medium tracking-wide uppercase opacity-70">MRT Line 6</span>

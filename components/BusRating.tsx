@@ -24,16 +24,16 @@ function RatingSkeleton() {
     <div className="space-y-4 animate-pulse">
       <div className="bg-kj-panel rounded-2xl p-5 border border-kj-line flex items-center gap-6">
         <div className="text-center space-y-2">
-          <div className="w-16 h-12 bg-gray-200 dark:bg-slate-700 rounded-lg mx-auto" />
-          <div className="flex gap-1 justify-center">{Array.from({ length: 5 }, (_, i) => <div key={i} className="w-4 h-4 bg-gray-200 dark:bg-slate-700 rounded" />)}</div>
-          <div className="w-16 h-3 bg-gray-200 dark:bg-slate-700 rounded mx-auto" />
+          <div className="w-16 h-12 bg-kj-chip-bg rounded-lg mx-auto" />
+          <div className="flex gap-1 justify-center">{Array.from({ length: 5 }, (_, i) => <div key={i} className="w-4 h-4 bg-kj-chip-bg rounded" />)}</div>
+          <div className="w-16 h-3 bg-kj-chip-bg rounded mx-auto" />
         </div>
         <div className="flex-1 space-y-2">
           {[5, 4, 3, 2, 1].map(s => (
             <div key={s} className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-gray-200 dark:bg-slate-700 rounded" />
-              <div className="flex-1 h-2 bg-gray-200 dark:bg-slate-700 rounded-full" />
-              <div className="w-4 h-3 bg-gray-200 dark:bg-slate-700 rounded" />
+              <div className="w-3 h-3 bg-kj-chip-bg rounded" />
+              <div className="flex-1 h-2 bg-kj-chip-bg rounded-full" />
+              <div className="w-4 h-3 bg-kj-chip-bg rounded" />
             </div>
           ))}
         </div>
@@ -42,13 +42,13 @@ function RatingSkeleton() {
         <div key={i} className="bg-kj-panel rounded-2xl p-4 border border-kj-line space-y-2">
           <div className="flex justify-between">
             <div className="space-y-1">
-              <div className="w-24 h-3.5 bg-gray-200 dark:bg-slate-700 rounded" />
-              <div className="flex gap-1">{Array.from({ length: 5 }, (_, j) => <div key={j} className="w-3 h-3 bg-gray-200 dark:bg-slate-700 rounded" />)}</div>
+              <div className="w-24 h-3.5 bg-kj-chip-bg rounded" />
+              <div className="flex gap-1">{Array.from({ length: 5 }, (_, j) => <div key={j} className="w-3 h-3 bg-kj-chip-bg rounded" />)}</div>
             </div>
-            <div className="w-16 h-3 bg-gray-200 dark:bg-slate-700 rounded" />
+            <div className="w-16 h-3 bg-kj-chip-bg rounded" />
           </div>
-          <div className="w-full h-3 bg-gray-200 dark:bg-slate-700 rounded" />
-          <div className="w-3/4 h-3 bg-gray-200 dark:bg-slate-700 rounded" />
+          <div className="w-full h-3 bg-kj-chip-bg rounded" />
+          <div className="w-3/4 h-3 bg-kj-chip-bg rounded" />
         </div>
       ))}
     </div>
@@ -190,7 +190,7 @@ export default function BusRating({ busId, busName, onBack }: Props) {
                 </div>
                 <textarea value={comment} onChange={e => setComment(e.target.value.slice(0, 500))}
                   placeholder={t('community.writeExperienceOptional')} rows={3} maxLength={500}
-                  className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm dark:text-white resize-none" />
+                  className="w-full bg-kj-input-bg border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm text-kj-text resize-none" />
                 <div className="flex gap-2">
                   <button type="submit" disabled={submitting}
                     className="flex-1 py-2.5 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white font-semibold text-sm rounded-xl flex items-center justify-center gap-2">

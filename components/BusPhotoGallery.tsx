@@ -56,7 +56,7 @@ function PhotoSkeleton() {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3 animate-pulse">
       {[1, 2, 3, 4].map(i => (
-        <div key={i} className="aspect-square rounded-2xl bg-gray-200 dark:bg-slate-700" />
+        <div key={i} className="aspect-square rounded-2xl bg-kj-chip-bg" />
       ))}
     </div>
   );
@@ -212,7 +212,7 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
 
             <input value={caption} onChange={e => setCaption(e.target.value.slice(0, 200))}
               placeholder={t('community.photoCaptionOptional')} maxLength={200}
-              className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm dark:text-white" />
+              className="w-full bg-kj-input-bg border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm text-kj-text" />
 
             <div className="flex gap-2">
               <button type="submit" disabled={!previewUrl || submitting || compressing}

@@ -580,7 +580,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
                 { key: 'railway', label: 'Railway', active: showRailway, set: setShowRailway, color: 'from-green-500 to-emerald-600', Icon: Train },
                 { key: 'airport', label: 'Airport', active: showAirport, set: setShowAirport, color: 'from-orange-500 to-red-500', Icon: Plane },
               ].map(({ key, label, active, set, color, Icon }) => (
-                <label key={key} className="flex items-center gap-2 cursor-pointer hover:bg-kj-chip-bg dark:hover:bg-slate-700 p-1.5 rounded-lg transition-colors">
+                <label key={key} className="flex items-center gap-2 cursor-pointer hover:bg-kj-chip-bg hover:bg-kj-chip-bg p-1.5 rounded-lg transition-colors">
                   <div className={`w-5 h-5 rounded-md flex items-center justify-center border-2 transition-all ${active ? `bg-gradient-to-br ${color} border-transparent shadow-sm` : 'border-kj-line dark:border-slate-500 bg-white dark:bg-slate-700'}`}>
                     {active && <Icon className="w-3 h-3 text-white" />}
                   </div>
@@ -593,7 +593,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
         )}
         <button
           onClick={() => setShowLayers(v => !v)}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border transition-all ${showLayers ? 'bg-kj-panel dark:bg-white text-white dark:text-kj-text border-slate-900 dark:border-white' : 'bg-white/90 dark:bg-kj-chip-bg/90 text-kj-text-dim border-kj-line border-kj-line backdrop-blur-sm hover:bg-white dark:hover:bg-slate-700'}`}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border transition-all ${showLayers ? 'bg-kj-panel dark:bg-white text-white dark:text-kj-text border-slate-900 dark:border-white' : 'bg-white/90 dark:bg-kj-chip-bg/90 text-kj-text-dim border-kj-line border-kj-line backdrop-blur-sm hover:bg-white hover:bg-kj-chip-bg'}`}
         >
           <Layers className="w-3.5 h-3.5" />
           Layers
@@ -617,12 +617,12 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
         <div className="absolute bottom-[72px] right-3 z-[600] flex flex-col gap-1">
           <button
             onClick={() => mapInstanceRef.current?.zoomIn()}
-            className="w-7 h-7 bg-white/95 dark:bg-kj-chip-bg/95 border border-kj-line border-kj-line rounded-lg shadow-md flex items-center justify-center text-kj-text-dim hover:bg-kj-chip-bg dark:hover:bg-slate-700 text-base font-bold leading-none transition-colors"
+            className="w-7 h-7 bg-white/95 dark:bg-kj-chip-bg/95 border border-kj-line border-kj-line rounded-lg shadow-md flex items-center justify-center text-kj-text-dim hover:bg-kj-chip-bg hover:bg-kj-chip-bg text-base font-bold leading-none transition-colors"
             aria-label="Zoom in"
           >+</button>
           <button
             onClick={() => mapInstanceRef.current?.zoomOut()}
-            className="w-7 h-7 bg-white/95 dark:bg-kj-chip-bg/95 border border-kj-line border-kj-line rounded-lg shadow-md flex items-center justify-center text-kj-text-dim hover:bg-kj-chip-bg dark:hover:bg-slate-700 text-base font-bold leading-none transition-colors"
+            className="w-7 h-7 bg-white/95 dark:bg-kj-chip-bg/95 border border-kj-line border-kj-line rounded-lg shadow-md flex items-center justify-center text-kj-text-dim hover:bg-kj-chip-bg hover:bg-kj-chip-bg text-base font-bold leading-none transition-colors"
             aria-label="Zoom out"
           >−</button>
         </div>

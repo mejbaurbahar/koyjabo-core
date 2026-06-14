@@ -171,7 +171,7 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language }) => {
       <div className="px-4 py-4 space-y-4">
 
         {/* Hero card */}
-        <div className="bg-gradient-to-br from-emerald-600 to-cyan-500 rounded-2xl p-5 text-white shadow-lg">
+        <div className="rounded-2xl p-5 text-white relative overflow-hidden shadow-kj-lg" style={{ background: 'linear-gradient(135deg, #006a4e 0%, #10b981 60%, #fbbf24 100%)' }}>
           <div className="flex items-start gap-3 mb-4">
             <div className="p-2 bg-white/20 rounded-xl">
               <Bus size={24} className="text-white" />
