@@ -3747,7 +3747,8 @@ const App: React.FC = () => {
           )}
 
           {/* Right Content Area — full width on desktop for train, hub pages */}
-          <div className={`
+          {/* key forces remount on view change — fixes stale flex layout (AI page broken after Train navigation) */}
+          <div key={view} className={`
             ${'flex-1 min-h-0 w-full min-w-0 bg-transparent relative flex flex-col'}
             ${rightPanelUsesOuterScroll ? 'overflow-y-auto overscroll-y-contain touch-pan-y pb-nav-safe md:pb-4' : 'overflow-hidden'}
             ${(view === AppView.LOCAL_BUS_HUB || view === AppView.METRO_HUB || view === AppView.LAUNCH_HUB || view === AppView.INTERCITY_HUB) && 'flex'}

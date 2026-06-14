@@ -146,10 +146,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                             {/* Card content */}
                             <div className="p-4">
                                 <div className="flex items-center gap-2 mb-2">
-                                    <span
-                                        className="px-2 py-0.5 rounded-full text-xs font-semibold"
-                                        style={{ background: `${gradColor1}22`, color: gradColor1 }}
-                                    >
+                                    <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-kj-primary-soft text-kj-primary-deep dark:text-kj-primary">
                                         {featuredPost.category}
                                     </span>
                                     <span className="text-xs text-kj-text-faint flex items-center gap-1">
@@ -207,8 +204,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-1.5 mb-1">
                                             <span
-                                                className="text-xs font-bold uppercase tracking-wide"
-                                                style={{ color: gradColor1 }}
+                                                className="text-xs font-bold uppercase tracking-wide text-kj-primary"
                                             >
                                                 {post.category}
                                             </span>
