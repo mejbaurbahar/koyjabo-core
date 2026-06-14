@@ -152,14 +152,14 @@ export default function RoadAlerts({ onBack }: Props) {
             <h3 className="font-bold text-kj-text text-sm">{t('roadAlerts.newReport')}</h3>
             <input value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))}
               placeholder={t('roadAlerts.locationPlaceholder')}
-              className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white" required />
+              className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm dark:text-white" required />
             <div className="grid grid-cols-2 gap-2">
               <select value={form.type} onChange={e => setForm(f => ({ ...f, type: e.target.value as TrafficReport['type'] }))}
-                className="bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white">
+                className="bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm dark:text-white">
                 {ALERT_TYPES.map(at => <option key={at.value} value={at.value}>{at.icon} {getTypeLabel(at.value)}</option>)}
               </select>
               <select value={form.severity} onChange={e => setForm(f => ({ ...f, severity: e.target.value as TrafficReport['severity'] }))}
-                className="bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white">
+                className="bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm dark:text-white">
                 <option value="low">{t('roadAlerts.severityOptLow')}</option>
                 <option value="medium">{t('roadAlerts.severityOptMedium')}</option>
                 <option value="high">{t('roadAlerts.severityOptHigh')}</option>
@@ -168,7 +168,7 @@ export default function RoadAlerts({ onBack }: Props) {
             <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
               placeholder={t('roadAlerts.descPlaceholder')}
               rows={2}
-              className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white resize-none" required />
+              className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm dark:text-white resize-none" required />
             <div className="flex gap-2">
               <button type="submit" disabled={submitting}
                 className="flex-1 py-2.5 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white font-semibold text-sm rounded-xl transition-colors">
@@ -184,11 +184,11 @@ export default function RoadAlerts({ onBack }: Props) {
 
         {ADMIN_ALERTS.length > 0 && (
           <div className="space-y-2">
-            <p className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wide px-1">
+            <p className="text-xs font-semibold text-kj-primary uppercase tracking-wide px-1">
               {language === 'bn' ? '📌 সরকারি নোটিশ' : '📌 Official Notices'}
             </p>
             {ADMIN_ALERTS.map(alert => (
-              <div key={alert.id} className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-200 dark:border-blue-800 overflow-hidden">
+              <div key={alert.id} className="bg-kj-primary-soft rounded-2xl border border-kj-primary/20 overflow-hidden">
                 <div className="p-4">
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-start gap-3 flex-1">
@@ -198,25 +198,25 @@ export default function RoadAlerts({ onBack }: Props) {
                           {language === 'bn' ? alert.titleBn : alert.titleEn}
                         </p>
                         {alert.source && (
-                          <p className="text-xs text-blue-500 dark:text-blue-400 mt-0.5">{alert.source}</p>
+                          <p className="text-xs text-kj-primary mt-0.5">{alert.source}</p>
                         )}
                       </div>
                     </div>
                     <button onClick={() => setExpanded(expanded === alert.id ? null : alert.id)}
-                      className="p-1 text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 shrink-0">
+                      className="p-1 text-kj-primary hover:brightness-110 shrink-0">
                       {expanded === alert.id ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                     </button>
                   </div>
                   {expanded === alert.id && (
                     <div className="mt-3 pt-3 border-t border-blue-200 dark:border-blue-700">
                       {(language === 'bn' ? alert.descriptionBn : alert.descriptionEn) && (
-                        <p className="text-sm text-blue-800 dark:text-blue-200 mb-2">
+                        <p className="text-sm text-kj-primary text-kj-primary mb-2">
                           {language === 'bn' ? alert.descriptionBn : alert.descriptionEn}
                         </p>
                       )}
                       {alert.url && (
                         <a href={alert.url} target="_blank" rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-kj-primary hover:underline">
                           <ExternalLink className="w-3.5 h-3.5" />
                           {language === 'bn' ? 'সম্পূর্ণ নোটিশ দেখুন' : 'View full notice'}
                         </a>

@@ -45,7 +45,7 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
 
                     <section className="bg-slate-50 dark:bg-kj-chip-bg/50 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-[2rem] border border-kj-line shadow-sm">
                         <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-kj-text flex items-center gap-3">
-                            <Eye className="w-6 h-6 text-blue-500" /> {t('privacy.collectInfo')}
+                            <Eye className="w-6 h-6 text-kj-primary" /> {t('privacy.collectInfo')}
                         </h2>
 
                         <div className="space-y-6">
@@ -111,7 +111,7 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
                     <section className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                         <div className="p-6 bg-kj-panel rounded-2xl border border-kj-line hover:shadow-md transition-shadow">
                             <h3 className="font-bold text-kj-text mb-3 flex items-center gap-2">
-                                <ExternalLink className="w-5 h-5 text-blue-500" /> {t('privacy.thirdParty')}
+                                <ExternalLink className="w-5 h-5 text-kj-primary" /> {t('privacy.thirdParty')}
                             </h3>
                             <p className="text-sm text-kj-text-dim">
                                 {t('privacy.thirdPartyText')}

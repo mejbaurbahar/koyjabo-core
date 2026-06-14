@@ -130,7 +130,7 @@ const FILTER_CHIPS = [
 
 function StarRating({ rating }: { rating: number }) {
   return (
-    <span className="flex items-center gap-0.5 text-amber-500 text-xs font-semibold">
+    <span className="flex items-center gap-0.5 text-kj-amber text-xs font-semibold">
       <Star size={11} fill="currentColor" />
       {rating.toFixed(1)}
     </span>
@@ -201,7 +201,7 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language }) => {
         </div>
 
         {/* Search card */}
-        <div className="bg-kj-panel border border-kj-line rounded-2xl p-4 space-y-3">
+        <div className="dc-card rounded-2xl p-4 space-y-3">
           {/* Name search */}
           <div className="relative">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-kj-text-faint" />
@@ -298,7 +298,7 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language }) => {
             {POPULAR_ROUTES.map((r) => (
               <div
                 key={r.id}
-                className="bg-kj-panel border border-kj-line rounded-2xl p-3 flex items-start gap-3"
+                className="dc-card rounded-2xl p-3 flex items-start gap-3"
               >
                 <div className="p-2 bg-kj-primary-soft rounded-xl mt-0.5">
                   <Bus size={16} className="text-kj-primary" />
@@ -337,7 +337,7 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language }) => {
         </section>
 
         {/* Live buses nearby */}
-        <section className="bg-kj-panel border border-kj-line rounded-2xl p-4">
+        <section className="dc-card rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-3">
             <span className="relative flex h-2.5 w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -372,7 +372,7 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language }) => {
             {OPERATORS.map((op) => (
               <div
                 key={op}
-                className="bg-kj-panel border border-kj-line rounded-xl p-3 flex items-center justify-center text-center"
+                className="dc-card rounded-xl p-3 flex items-center justify-center text-center"
               >
                 <span className="text-xs font-medium text-kj-text-dim">{op}</span>
               </div>
@@ -389,7 +389,7 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language }) => {
             {BUS_TYPES.map((type) => (
               <div
                 key={type.en}
-                className="bg-kj-panel border border-kj-line rounded-2xl p-3 flex items-center gap-3"
+                className="dc-card rounded-2xl p-3 flex items-center gap-3"
               >
                 <span className="text-2xl">{type.icon}</span>
                 <div className="min-w-0">

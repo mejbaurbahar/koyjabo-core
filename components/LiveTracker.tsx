@@ -317,7 +317,7 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setShowSearch(true)}
-                className="flex-1 flex items-center gap-2 px-3 py-2 bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl text-sm text-kj-text-dim hover:border-teal-300 dark:hover:border-teal-600 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors"
+                className="flex-1 flex items-center gap-2 px-3 py-2 bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl text-sm text-kj-text-dim hover:border-teal-300 dark:hover:border-teal-600 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors"
               >
                 <Search className="w-4 h-4 text-teal-500 shrink-0" />
                 <span className="flex-1 text-left truncate">
@@ -336,7 +336,7 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
               )}
               <button
                 onClick={() => setShowAllStops(v => !v)}
-                className="p-2 bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl text-kj-text-dim hover:border-teal-300 dark:hover:border-teal-600 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors"
+                className="p-2 bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl text-kj-text-dim hover:border-teal-300 dark:hover:border-teal-600 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors"
                 title="Show all stops"
               >
                 {showAllStops ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -346,7 +346,7 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
 
           {/* All stops panel */}
           {showAllStops && !showSearch && (
-            <div className="mt-2 bg-gray-50 dark:bg-slate-700/50 border border-kj-line dark:border-gray-600 rounded-xl overflow-hidden max-h-48 overflow-y-auto">
+            <div className="mt-2 bg-gray-50 bg-kj-chip-bg border border-kj-line border-kj-line rounded-xl overflow-hidden max-h-48 overflow-y-auto">
               <div className="sticky top-0 bg-kj-chip-bg px-3 py-1.5 flex items-center justify-between">
                 <p className="text-[10px] font-bold text-kj-text-dim uppercase tracking-wider">
                   {t('liveTracker.allStops')} · {bus.stops.length}
@@ -354,7 +354,7 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
               </div>
               {routeStops.map(s => (
                 <button key={s.idx} onClick={() => { selectStop(s.idx); setShowAllStops(false); }}
-                  className={`w-full text-left px-3 py-2 flex items-center gap-2.5 border-b border-kj-line dark:border-slate-600 last:border-0 transition-colors
+                  className={`w-full text-left px-3 py-2 flex items-center gap-2.5 border-b border-kj-line border-kj-line last:border-0 transition-colors
                     ${s.idx === effectiveNearestIndex ? 'bg-teal-50 dark:bg-teal-900/20' : 'hover:bg-white dark:hover:bg-slate-700'}`}>
                   <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold shrink-0
                     ${s.idx === 0 ? 'bg-green-500 text-white' : s.idx === bus.stops.length - 1 ? 'bg-red-500 text-white' : s.idx === effectiveNearestIndex ? 'bg-kj-primary text-white' : 'bg-gray-200 dark:bg-slate-600 text-kj-text-dim'}`}>
@@ -436,14 +436,14 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
           )}
           <div className="flex gap-2">
             <button onClick={onViewLiveMap}
-              className="flex-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 px-3 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors">
+              className="flex-1 bg-kj-primary-soft text-kj-primary px-3 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 hover:bg-kj-primary-soft dark:hover:bg-blue-900/40 transition-colors">
               <Users className="w-4 h-4" />
               {t('map.liveLocation') || 'Live Map'}
             </button>
             <button onClick={toggleBroadcast}
               disabled={!isOnline && !isBroadcasting}
               className={`flex-1 px-3 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-sm ${!isOnline && !isBroadcasting
-                ? 'bg-gray-300 dark:bg-gray-700 text-kj-text-dim cursor-not-allowed opacity-50'
+                ? 'bg-gray-300 bg-kj-panel-muted text-kj-text-dim cursor-not-allowed opacity-50'
                 : isBroadcasting
                   ? 'bg-red-500 text-white animate-pulse shadow-red-200'
                   : 'bg-kj-primary text-white shadow-green-200 dark:shadow-green-900/30 hover:bg-green-700'
@@ -453,9 +453,9 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
             </button>
           </div>
           {isDesktop && (
-            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 px-3 py-2 rounded-lg flex items-start gap-2">
-              <AlertCircle className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
-              <div className="text-xs text-blue-600 dark:text-blue-400">
+            <div className="bg-kj-primary-soft border border-kj-primary/20 px-3 py-2 rounded-lg flex items-start gap-2">
+              <AlertCircle className="w-4 h-4 text-kj-primary shrink-0 mt-0.5" />
+              <div className="text-xs text-kj-primary">
                 <p className="font-bold">{t('liveTracker.desktopMode')}</p>
                 <p className="text-[10px] mt-0.5 leading-tight">{t('liveTracker.desktopWarning')}</p>
               </div>
@@ -466,12 +466,12 @@ const LiveTracker: React.FC<LiveTrackerProps> = ({ bus, highlightStartIdx, highl
         {/* Trip Stats */}
         {hasDestination && !isManualMode ? (
           <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-kj-line">
-            <div className="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-xl text-center">
-              <div className="flex items-center justify-center gap-1 text-blue-600 dark:text-blue-400 mb-1">
+            <div className="bg-kj-primary-soft p-2 rounded-xl text-center">
+              <div className="flex items-center justify-center gap-1 text-kj-primary mb-1">
                 <Gauge className="w-3 h-3" />
                 <span className="text-[10px] font-bold uppercase">{t('liveNav.speed')}</span>
               </div>
-              <p className="text-lg font-bold text-blue-900 dark:text-blue-100">{formatNumber((speed || 0).toFixed(0))} <span className="text-[10px] font-normal text-blue-600 dark:text-blue-400">km/h</span></p>
+              <p className="text-lg font-bold text-blue-900 dark:text-blue-100">{formatNumber((speed || 0).toFixed(0))} <span className="text-[10px] font-normal text-kj-primary">km/h</span></p>
             </div>
             <div className="bg-purple-50 dark:bg-purple-900/20 p-2 rounded-xl text-center">
               <div className="flex items-center justify-center gap-1 text-purple-600 dark:text-purple-400 mb-1">

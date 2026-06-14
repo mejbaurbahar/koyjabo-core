@@ -67,8 +67,8 @@ function ProcessingOverlay({ message }: { message: string }) {
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-kj-panel rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center">
         <div className="relative w-14 h-14 mx-auto mb-4">
-          <div className="w-14 h-14 rounded-full border-4 border-blue-100 dark:border-slate-600 animate-spin border-t-blue-600" />
-          <Clock className="absolute inset-0 m-auto text-blue-600" size={18} />
+          <div className="w-14 h-14 rounded-full border-4 border-blue-100 border-kj-line animate-spin border-t-blue-600" />
+          <Clock className="absolute inset-0 m-auto text-kj-primary" size={18} />
         </div>
         <p className="text-kj-text-dim font-medium">{message}</p>
         <p className="text-kj-text-dim text-sm mt-1">{t('auth.forgotPasswordPage.maxWait')}</p>
@@ -222,8 +222,8 @@ export default function ProfilePage({
           onClick={() => setActiveSection(key)}
           className={`flex-shrink-0 px-3 py-2 rounded-xl text-xs font-medium flex items-center gap-1.5 transition whitespace-nowrap ${
             activeSection === key
-              ? 'bg-blue-600 text-white shadow-sm'
-              : 'text-kj-text-dim hover:bg-kj-chip-bg dark:hover:bg-slate-700'
+              ? 'bg-kj-primary text-kj-primary-ink shadow-sm'
+              : 'text-kj-text-dim hover:bg-kj-chip-bg hover:bg-kj-chip-bg'
           }`}
         >
           <Icon size={14} />
@@ -266,7 +266,7 @@ export default function ProfilePage({
               <div className="flex items-center gap-5">
                 {/* Avatar */}
                 <div className="relative">
-                  <div className="w-20 h-20 rounded-2xl overflow-hidden bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center">
+                  <div className="w-20 h-20 rounded-2xl overflow-hidden bg-gradient-to-tr from-kj-primary to-kj-primary-deep flex items-center justify-center">
                     {user.avatarUrl ? (
                       <img src={user.avatarUrl} alt={user.displayName} className="w-full h-full object-cover" />
                     ) : (
@@ -275,7 +275,7 @@ export default function ProfilePage({
                   </div>
                   <button
                     onClick={() => fileInputRef.current?.click()}
-                    className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center shadow-md hover:bg-blue-700 transition"
+                    className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-kj-primary flex items-center justify-center shadow-md hover:brightness-110 transition"
                   >
                     <Camera size={13} className="text-white" />
                   </button>
@@ -299,7 +299,7 @@ export default function ProfilePage({
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-50 dark:border-kj-line">
               <h3 className="font-semibold text-kj-text">{t('profile.profileInfo')}</h3>
               {!editMode ? (
-                <button onClick={() => setEditMode(true)} className="flex items-center gap-1.5 text-blue-600 dark:text-blue-400 text-sm font-medium">
+                <button onClick={() => setEditMode(true)} className="flex items-center gap-1.5 text-kj-primary text-sm font-medium">
                   <Edit3 size={15} /> {t('profile.edit')}
                 </button>
               ) : (
@@ -328,10 +328,10 @@ export default function ProfilePage({
                     type="text"
                     value={editName}
                     onChange={e => setEditName(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border border-kj-line dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-kj-text focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                    className="w-full px-4 py-3 rounded-xl border border-kj-line border-kj-line bg-kj-input-bg text-kj-text focus:outline-none focus:ring-2 focus:ring-kj-primary/40 transition"
                   />
                 ) : (
-                  <p className="text-kj-text font-medium px-4 py-3 bg-gray-50 dark:bg-slate-700 rounded-xl">{user.displayName}</p>
+                  <p className="text-kj-text font-medium px-4 py-3 bg-kj-input-bg rounded-xl">{user.displayName}</p>
                 )}
               </div>
 
@@ -343,7 +343,7 @@ export default function ProfilePage({
                     {t('profile.usernameFixed')}
                   </span>
                 </label>
-                <div className="flex items-center gap-2 px-4 py-3 bg-kj-chip-bg/60 rounded-xl border border-dashed border-kj-line dark:border-slate-600 cursor-not-allowed">
+                <div className="flex items-center gap-2 px-4 py-3 bg-kj-chip-bg/60 rounded-xl border border-dashed border-kj-line border-kj-line cursor-not-allowed">
                   <AtSign size={14} className="text-kj-text-faint shrink-0" />
                   <span className="text-kj-text-dim font-medium">{user.username}</span>
                   <span className="ml-auto text-[10px] text-kj-text-faint italic">{t('profile.notChangeable')}</span>
@@ -355,14 +355,14 @@ export default function ProfilePage({
                 <label className="block text-sm font-medium text-kj-text-dim mb-1.5 flex items-center gap-1.5">
                   <Mail size={14} /> {t('profile.email')} <span className="text-xs text-kj-text-faint">{t('profile.notChangeable')}</span>
                 </label>
-                <p className="text-kj-text-dim px-4 py-3 bg-gray-50 dark:bg-slate-700 rounded-xl">{user.email}</p>
+                <p className="text-kj-text-dim px-4 py-3 bg-kj-input-bg rounded-xl">{user.email}</p>
               </div>
 
               {editMode && (
                 <button
                   onClick={handleSaveProfile}
                   disabled={!editName.trim()}
-                  className="w-full py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 disabled:opacity-50 transition flex items-center justify-center gap-2"
+                  className="w-full py-3 rounded-xl bg-kj-primary text-kj-primary-ink font-semibold hover:brightness-110 disabled:opacity-50 transition flex items-center justify-center gap-2"
                 >
                   <Save size={16} />
                   {t('profile.save')}
@@ -380,7 +380,7 @@ export default function ProfilePage({
               <>
                 <div className="px-6 py-4 border-b border-gray-50 dark:border-kj-line">
                   <h3 className="font-semibold text-kj-text flex items-center gap-2">
-                    <Key size={18} className="text-blue-600" /> {t('profile.setPasswordTitle')}
+                    <Key size={18} className="text-kj-primary" /> {t('profile.setPasswordTitle')}
                   </h3>
                   <p className="text-sm text-kj-text-dim mt-1">{t('profile.setPasswordDesc')}</p>
                 </div>
@@ -410,7 +410,7 @@ export default function ProfilePage({
                           onChange={e => setSetPassForm(prev => ({ ...prev, [key]: e.target.value }))}
                           placeholder={placeholder}
                           autoComplete={autoComplete}
-                          className="w-full px-4 py-3 pr-12 rounded-xl border border-kj-line dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-kj-text placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                          className="w-full px-4 py-3 pr-12 rounded-xl border border-kj-line border-kj-line bg-kj-input-bg text-kj-text placeholder:text-kj-text-faint focus:outline-none focus:ring-2 focus:ring-kj-primary/40 transition"
                         />
                         <button
                           type="button"
@@ -425,7 +425,7 @@ export default function ProfilePage({
                   <button
                     onClick={handleSetPassword}
                     disabled={!setPassForm.newPass || !setPassForm.confirm || setPassOp.state === 'loading'}
-                    className="w-full py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 disabled:opacity-50 transition flex items-center justify-center gap-2 mt-2"
+                    className="w-full py-3 rounded-xl bg-kj-primary text-kj-primary-ink font-semibold hover:brightness-110 disabled:opacity-50 transition flex items-center justify-center gap-2 mt-2"
                   >
                     <Shield size={16} />
                     {t('auth.setPasswordBtn')}
@@ -437,7 +437,7 @@ export default function ProfilePage({
               <>
                 <div className="px-6 py-4 border-b border-gray-50 dark:border-kj-line">
                   <h3 className="font-semibold text-kj-text flex items-center gap-2">
-                    <Key size={18} className="text-blue-600" /> {t('profile.passwordChange')}
+                    <Key size={18} className="text-kj-primary" /> {t('profile.passwordChange')}
                   </h3>
                 </div>
                 <div className="p-6 space-y-4">
@@ -461,7 +461,7 @@ export default function ProfilePage({
                           onChange={e => setPwForm(prev => ({ ...prev, [key]: e.target.value }))}
                           placeholder={placeholder}
                           autoComplete={autoComplete}
-                          className="w-full px-4 py-3 pr-12 rounded-xl border border-kj-line dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-kj-text placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                          className="w-full px-4 py-3 pr-12 rounded-xl border border-kj-line border-kj-line bg-kj-input-bg text-kj-text placeholder:text-kj-text-faint focus:outline-none focus:ring-2 focus:ring-kj-primary/40 transition"
                         />
                         <button
                           type="button"
@@ -476,7 +476,7 @@ export default function ProfilePage({
                   <button
                     onClick={handleChangePassword}
                     disabled={!pwForm.current || !pwForm.newPass || !pwForm.confirm}
-                    className="w-full py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 disabled:opacity-50 transition flex items-center justify-center gap-2 mt-2"
+                    className="w-full py-3 rounded-xl bg-kj-primary text-kj-primary-ink font-semibold hover:brightness-110 disabled:opacity-50 transition flex items-center justify-center gap-2 mt-2"
                   >
                     <Shield size={16} />
                     {t('profile.updatePasswordBtn')}
@@ -492,7 +492,7 @@ export default function ProfilePage({
           <div className="bg-kj-panel rounded-2xl shadow-sm border border-kj-line overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-50 dark:border-kj-line">
               <h3 className="font-semibold text-kj-text flex items-center gap-2">
-                <Monitor size={18} className="text-blue-600" /> {t('profile.loginDevices')}
+                <Monitor size={18} className="text-kj-primary" /> {t('profile.loginDevices')}
               </h3>
               <p className="text-sm text-kj-text-dim mt-0.5">{t('profile.activeDevicesList')}</p>
             </div>
@@ -500,7 +500,7 @@ export default function ProfilePage({
             <div className="divide-y divide-gray-50 dark:divide-slate-700">
               {devicesLoading ? (
                 <div className="p-8 text-center">
-                  <Loader2 size={24} className="animate-spin text-blue-500 mx-auto mb-2" />
+                  <Loader2 size={24} className="animate-spin text-kj-primary mx-auto mb-2" />
                   <p className="text-kj-text-dim text-sm">{t('profile.loadingDevices')}</p>
                 </div>
               ) : devices.length === 0 ? (
@@ -554,7 +554,7 @@ export default function ProfilePage({
             </div>
 
             {devices.length > 0 && (
-              <div className="px-6 py-4 bg-gray-50 dark:bg-slate-700/50">
+              <div className="px-6 py-4 bg-gray-50 bg-kj-chip-bg">
                 <p className="text-xs text-kj-text-dim">
                   {t('profile.securityWarning')}
                 </p>

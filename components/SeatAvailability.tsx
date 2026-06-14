@@ -57,13 +57,13 @@ export default function SeatAvailability({ onBack }: Props) {
             <ChevronLeft className="w-5 h-5" />
             {lbl('Back', 'ফিরে যান')}
           </button>
-          <Train className="w-5 h-5 text-blue-500 shrink-0" />
+          <Train className="w-5 h-5 text-kj-primary shrink-0" />
           <div className="flex-1 min-w-0">
             <h1 className="text-base font-bold text-kj-text truncate">{language === 'bn' ? selected.bnName : selected.name}</h1>
             <p className="text-xs text-kj-text-dim">{lbl('Train No.', 'ট্রেন নং')} {selected.number}</p>
           </div>
           <button onClick={(e) => toggleFavorite(selected.id, e)}
-            className={`p-2 rounded-full transition-colors ${favorites.includes(selected.id) ? 'text-yellow-500' : 'text-kj-text-faint'}`}>
+            className={`p-2 rounded-full transition-colors ${favorites.includes(selected.id) ? 'text-kj-amber' : 'text-kj-text-faint'}`}>
             <Star className="w-5 h-5" fill={favorites.includes(selected.id) ? 'currentColor' : 'none'} />
           </button>
         </div>
@@ -73,12 +73,12 @@ export default function SeatAvailability({ onBack }: Props) {
               <div className="text-center">
                 <p className="text-xs text-kj-text-dim">{lbl('Departs', 'ছাড়বে')}</p>
                 <p className="text-xl sm:text-2xl font-black text-kj-text">{selected.dhakaDepart}</p>
-                <p className="text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 truncate max-w-[80px] sm:max-w-none">{selected.from}</p>
+                <p className="text-xs sm:text-sm font-semibold text-kj-primary truncate max-w-[80px] sm:max-w-none">{selected.from}</p>
               </div>
               <div className="flex-1 flex items-center px-2 sm:px-4">
-                <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+                <div className="flex-1 h-px bg-gray-200 bg-kj-panel-muted" />
                 <Train className="w-4 h-4 sm:w-5 sm:h-5 text-kj-text-faint mx-1 sm:mx-2 shrink-0" />
-                <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+                <div className="flex-1 h-px bg-gray-200 bg-kj-panel-muted" />
               </div>
               <div className="text-center">
                 <p className="text-xs text-kj-text-dim">{lbl('Arrives', 'পৌঁছাবে')}</p>
@@ -110,10 +110,10 @@ export default function SeatAvailability({ onBack }: Props) {
             <h3 className="font-bold text-kj-text text-sm mb-2">{lbl('Fare (approx.)', 'আনুমানিক ভাড়া')}</h3>
             <div className="grid grid-cols-2 xs:grid-cols-3 gap-2">
               {selected.fare.shuvan && <div className="bg-gray-50 dark:bg-slate-700 rounded-xl p-2 text-center"><p className="text-xs text-kj-text-dim">{lbl('Shuvan', 'শুভন')}</p><p className="text-sm font-bold text-kj-text">৳{selected.fare.shuvan}</p></div>}
-              {selected.fare.shuvanChair && <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-2 text-center"><p className="text-xs text-blue-600 dark:text-blue-400">{lbl('Shuvan Chair', 'শুভন চেয়ার')}</p><p className="text-sm font-bold text-blue-800 dark:text-blue-200">৳{selected.fare.shuvanChair}</p></div>}
+              {selected.fare.shuvanChair && <div className="bg-kj-primary-soft rounded-xl p-2 text-center"><p className="text-xs text-kj-primary">{lbl('Shuvan Chair', 'শুভন চেয়ার')}</p><p className="text-sm font-bold text-kj-primary text-kj-primary">৳{selected.fare.shuvanChair}</p></div>}
               {selected.fare.snigdha && <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-2 text-center"><p className="text-xs text-purple-600 dark:text-purple-400">{lbl('Snigdha', 'স্নিগ্ধা')}</p><p className="text-sm font-bold text-purple-800 dark:text-purple-200">৳{selected.fare.snigdha}</p></div>}
               {selected.fare.firstClassBerth && <div className="bg-amber-50 dark:bg-amber-900/20 rounded-xl p-2 text-center"><p className="text-xs text-amber-600 dark:text-amber-400">{lbl('1st Class Berth', '১ম শ্রেণী বার্থ')}</p><p className="text-sm font-bold text-amber-800 dark:text-amber-200">৳{selected.fare.firstClassBerth}</p></div>}
-              {selected.fare.acBerth && <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-xl p-2 text-center"><p className="text-xs text-indigo-600 dark:text-indigo-400">{lbl('AC Berth', 'এসি বার্থ')}</p><p className="text-sm font-bold text-indigo-800 dark:text-indigo-200">৳{selected.fare.acBerth}</p></div>}
+              {selected.fare.acBerth && <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-xl p-2 text-center"><p className="text-xs text-kj-neon-violet dark:text-indigo-400">{lbl('AC Berth', 'এসি বার্থ')}</p><p className="text-sm font-bold text-indigo-800 dark:text-indigo-200">৳{selected.fare.acBerth}</p></div>}
             </div>
           </div>
 
@@ -123,7 +123,7 @@ export default function SeatAvailability({ onBack }: Props) {
               {lbl('Book your seat on the official Bangladesh Railway portal:', 'বাংলাদেশ রেলওয়ের অফিসিয়াল পোর্টালে সিট বুক করুন:')}
             </p>
             <a href={railwayLink} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-kj-panel border border-amber-200 dark:border-amber-700 rounded-xl px-3 py-2.5 text-sm text-blue-600 dark:text-blue-400 hover:bg-amber-50 dark:hover:bg-amber-900/30">
+              className="flex items-center gap-2 bg-kj-panel border border-amber-200 dark:border-amber-700 rounded-xl px-3 py-2.5 text-sm text-kj-primary hover:bg-amber-50 dark:hover:bg-amber-900/30">
               <ExternalLink className="w-4 h-4 shrink-0" /> {lbl('Bangladesh Railway e-Ticketing', 'বাংলাদেশ রেলওয়ে ই-টিকেটিং')}
             </a>
           </div>
@@ -185,8 +185,8 @@ export default function SeatAvailability({ onBack }: Props) {
                     <p className="text-xs text-kj-text-dim mt-0.5">{t.from} → {t.to} · #{t.number}</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <p className="text-sm font-semibold text-blue-600 dark:text-blue-400">{t.dhakaDepart}</p>
-                    <button onClick={(e) => toggleFavorite(t.id, e)} className="text-yellow-500">
+                    <p className="text-sm font-semibold text-kj-primary">{t.dhakaDepart}</p>
+                    <button onClick={(e) => toggleFavorite(t.id, e)} className="text-kj-amber">
                       <Star className="w-4 h-4 fill-current" />
                     </button>
                   </div>
@@ -208,11 +208,11 @@ export default function SeatAvailability({ onBack }: Props) {
               </div>
               <div className="flex items-center gap-2 shrink-0">
                 <div className="text-right">
-                  <p className="text-sm font-semibold text-blue-600 dark:text-blue-400">{t.dhakaDepart}</p>
+                  <p className="text-sm font-semibold text-kj-primary">{t.dhakaDepart}</p>
                   <p className="text-xs text-kj-text-faint">{lbl('departs', 'ছাড়বে')}</p>
                 </div>
                 <button onClick={(e) => toggleFavorite(t.id, e)}
-                  className={`p-1.5 rounded-full transition-colors ${favorites.includes(t.id) ? 'text-yellow-500' : 'text-gray-200 dark:text-kj-text-dim hover:text-yellow-400'}`}>
+                  className={`p-1.5 rounded-full transition-colors ${favorites.includes(t.id) ? 'text-kj-amber' : 'text-gray-200 dark:text-kj-text-dim hover:text-yellow-400'}`}>
                   <Star className="w-4 h-4" fill={favorites.includes(t.id) ? 'currentColor' : 'none'} />
                 </button>
               </div>

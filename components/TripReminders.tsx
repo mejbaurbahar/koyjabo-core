@@ -172,20 +172,20 @@ export default function TripReminders({ onBack }: Props) {
               value={form.label}
               onChange={e => setForm(f => ({ ...f, label: e.target.value }))}
               placeholder={lbl('Reminder name (e.g. Go to office)', 'রিমাইন্ডার নাম (যেমন: অফিসে যাওয়া)')}
-              className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white"
+              className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm dark:text-white"
               required
             />
             <input
               value={form.busName}
               onChange={e => setForm(f => ({ ...f, busName: e.target.value }))}
               placeholder={lbl('Bus name (optional)', 'বাসের নাম (ঐচ্ছিক)')}
-              className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white"
+              className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm dark:text-white"
             />
             <div className="grid grid-cols-2 gap-2">
               <input value={form.fromStop} onChange={e => setForm(f => ({ ...f, fromStop: e.target.value }))}
-                placeholder={lbl('From stop', 'যাত্রা শুরু')} className="bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white" />
+                placeholder={lbl('From stop', 'যাত্রা শুরু')} className="bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm dark:text-white" />
               <input value={form.toStop} onChange={e => setForm(f => ({ ...f, toStop: e.target.value }))}
-                placeholder={lbl('To stop', 'গন্তব্য')} className="bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white" />
+                placeholder={lbl('To stop', 'গন্তব্য')} className="bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm dark:text-white" />
             </div>
             <div>
               <p className="text-xs font-bold text-kj-text-dim mb-2">{lbl('Select days', 'দিন নির্বাচন করুন')}</p>
@@ -203,12 +203,12 @@ export default function TripReminders({ onBack }: Props) {
               <div>
                 <p className="text-xs font-bold text-kj-text-dim mb-1">{lbl('Trip time', 'যাত্রার সময়')}</p>
                 <input type="time" value={form.time} onChange={e => setForm(f => ({ ...f, time: e.target.value }))}
-                  className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white" />
+                  className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm dark:text-white" />
               </div>
               <div>
                 <p className="text-xs font-bold text-kj-text-dim mb-1">{lbl('Notify before', 'আগে সতর্ক করুন')}</p>
                 <select value={form.minutesBefore} onChange={e => setForm(f => ({ ...f, minutesBefore: Number(e.target.value) }))}
-                  className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white">
+                  className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm dark:text-white">
                   {BEFORE_OPTIONS.map(m => <option key={m} value={m}>{m} {lbl('min before', 'মিনিট আগে')}</option>)}
                 </select>
               </div>

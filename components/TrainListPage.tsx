@@ -241,8 +241,8 @@ export function TrainDetail({
                 <MapPin className="w-4 h-4 text-kj-primary" />
                 {bn ? `স্টেশন (${route.stops.length}টি)` : `Stations (${route.stops.length})`}
                 {nearestStopIdx >= 0 && (
-                  <span className="ml-auto text-[10px] font-semibold text-blue-600 dark:text-blue-400 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse inline-block" />
+                  <span className="ml-auto text-[10px] font-semibold text-kj-primary flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 bg-kj-primary rounded-full animate-pulse inline-block" />
                     {bn ? 'লাইভ অবস্থান' : 'Live location'}
                   </span>
                 )}
@@ -271,22 +271,22 @@ export function TrainDetail({
                           <div className={`w-px flex-none h-2 ${isPassed ? 'bg-emerald-400 dark:bg-kj-primary' : 'bg-gray-300 dark:bg-white/25'}`} />
                           {/* Pulsing blue user dot */}
                           <div className="relative shrink-0 z-10">
-                            <div className="w-4 h-4 rounded-full bg-blue-500 border-2 border-white dark:border-slate-900 shadow-lg shadow-blue-500/50" />
+                            <div className="w-4 h-4 rounded-full bg-kj-primary border-2 border-kj-panel shadow-lg" />
                             <div className="absolute inset-0 rounded-full bg-blue-400 animate-ping opacity-60" />
                           </div>
                           {/* Dashed connector from user-dot down to nearest station */}
                           <div className="flex-1 min-h-[24px] flex flex-col items-center gap-0.5 py-0.5">
                             {[0,1,2,3].map(i => (
-                              <div key={i} className="w-px h-1.5 bg-blue-400 dark:bg-blue-500 rounded" />
+                              <div key={i} className="w-px h-1.5 bg-kj-primary/60 rounded" />
                             ))}
                           </div>
                         </div>
                         <div className="pb-1 flex-1 min-w-0 pt-0">
-                          <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
+                          <span className="text-sm font-bold text-kj-primary">
                             {bn ? 'আপনার বর্তমান অবস্থান' : 'Your current location'}
                           </span>
-                          <p className="text-[10px] text-blue-500 dark:text-blue-400 font-semibold mt-0.5 flex items-center gap-1">
-                            <span className="w-1 h-1 bg-blue-500 rounded-full animate-pulse inline-block" />
+                          <p className="text-[10px] text-kj-primary font-semibold mt-0.5 flex items-center gap-1">
+                            <span className="w-1 h-1 bg-kj-primary rounded-full animate-pulse inline-block" />
                             {bn ? 'আপনি এখানে আছেন' : 'You are here'}
                           </p>
                         </div>
@@ -368,7 +368,7 @@ export function TrainDetail({
           <div className="bg-kj-chip-bg rounded-2xl border border-kj-line dark:border-kj-line">
             <div className="px-4 py-3 border-b border-kj-line dark:border-kj-line rounded-t-2xl">
               <h3 className="text-sm font-bold text-kj-text flex items-center gap-2">
-                <Coins className="w-4 h-4 text-amber-500 dark:text-amber-400" />
+                <Coins className="w-4 h-4 text-kj-amber dark:text-amber-400" />
                 {bn ? 'ভাড়া ও সময় ক্যালকুলেটর' : 'Fare & Time Calculator'}
               </h3>
             </div>
@@ -492,7 +492,7 @@ function TrainCard({
   return (
     <div
       onClick={onClick}
-      className="bg-kj-panel border border-kj-line rounded-2xl p-4 cursor-pointer hover:border-emerald-300 dark:hover:border-emerald-600 hover:shadow-md transition-all active:scale-[0.99]"
+      className="dc-card rounded-2xl p-4 cursor-pointer hover:border-emerald-300 dark:hover:border-emerald-600 hover:shadow-md transition-all active:scale-[0.99]"
     >
       <div className="flex items-start justify-between gap-2 mb-3">
         <div className="flex-1 min-w-0">
@@ -912,10 +912,10 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
         <div className="shrink-0 px-4 py-2.5 bg-blue-50 dark:bg-blue-950/30 border-b border-blue-100 dark:border-blue-900/40">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1 shrink-0">
-              <div className="w-2.5 h-2.5 rounded-full bg-blue-500 border-2 border-white dark:border-slate-900 shadow-sm" />
+              <div className="w-2.5 h-2.5 rounded-full bg-kj-primary border-2 border-kj-panel shadow-sm" />
               <div className="flex gap-0.5">
                 {[0,1,2,3].map(i => (
-                  <div key={i} className="w-1.5 h-px bg-blue-300 dark:bg-blue-600 rounded" />
+                  <div key={i} className="w-1.5 h-px bg-kj-primary/40 rounded" />
                 ))}
               </div>
               <div className="w-6 h-6 rounded-full bg-kj-primary flex items-center justify-center shadow-sm">
@@ -926,11 +926,11 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
               <p className="text-xs font-bold text-kj-text truncate leading-tight">
                 {bn ? nearestStation.station.bnName : nearestStation.station.name}
               </p>
-              <p className="text-[10px] text-blue-600 dark:text-blue-400 leading-tight">
+              <p className="text-[10px] text-kj-primary leading-tight">
                 {bn ? 'নিকটতম রেল স্টেশন' : 'Nearest train station'}
               </p>
             </div>
-            <span className="text-[11px] font-bold text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/50 px-2 py-0.5 rounded-full shrink-0">
+            <span className="text-[11px] font-bold text-blue-700 dark:text-blue-300 bg-kj-primary-soft dark:bg-blue-900/50 px-2 py-0.5 rounded-full shrink-0">
               {nearestStation.distKm < 1
                 ? `${Math.round(nearestStation.distKm * 1000)} m`
                 : `${nearestStation.distKm.toFixed(1)} km`}

@@ -263,11 +263,11 @@ const AiThinkingIndicator = () => {
           <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-cyan-500 flex items-center justify-center text-white shadow-lg shadow-blue-200">
             <Bot size={16} />
           </div>
-          <div className="absolute inset-0 rounded-full bg-blue-400 animate-ping opacity-20"></div>
+          <div className="absolute inset-0 rounded-full bg-kj-primary animate-ping opacity-20"></div>
         </div>
 
         <div className="flex flex-col">
-          <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-0.5">{t('nav.aiAssistant')}</span>
+          <span className="text-[10px] font-bold text-kj-primary uppercase tracking-wider mb-0.5">{t('nav.aiAssistant')}</span>
           <span key={step} className="text-sm text-kj-text-dim animate-in fade-in slide-in-from-bottom-1 duration-300 leading-snug">
             {steps[step]}
           </span>
@@ -466,9 +466,9 @@ const SettingsView: React.FC<{
         </div>
 
         {/* About the App */}
-        <div className="bg-slate-50 dark:bg-kj-chip-bg/50 p-6 rounded-2xl border border-kj-line">
+        <div className="bg-kj-chip-bg p-6 rounded-2xl border border-kj-line">
           <h3 className="font-bold text-kj-text mb-2 flex items-center gap-2">
-            <Info className="w-4 h-4 text-blue-500" /> App Info
+            <Info className="w-4 h-4 text-kj-primary" /> App Info
           </h3>
           <p className="text-sm text-kj-text-dim">
             Version 2.5.0. Use this app to find routes and estimate fares in Dhaka City.
@@ -2389,7 +2389,7 @@ const App: React.FC = () => {
         <button onClick={() => setView(AppView.HOME)} className="p-2 -ml-2 hover:bg-kj-chip-bg rounded-full transition-colors">
           <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
         </button>
-        <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-200 ">
+        <div className="w-10 h-10 rounded-full bg-kj-primary flex items-center justify-center text-kj-primary-ink shadow-lg ">
           <Bot className="w-6 h-6" />
         </div>
         <div className="flex-1">
@@ -2404,7 +2404,7 @@ const App: React.FC = () => {
 
 
       <div className="hidden md:flex items-center gap-3 p-4 bg-kj-panel border-b border-kj-line shadow-sm z-20 shrink-0 md:sticky md:top-16">
-        <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-200 ">
+        <div className="w-10 h-10 rounded-full bg-kj-primary flex items-center justify-center text-kj-primary-ink shadow-lg ">
           <Bot className="w-6 h-6" />
         </div>
         <div className="flex-1">
@@ -2505,7 +2505,7 @@ const App: React.FC = () => {
               </p>
             </div>
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-5 sm:p-6 md:p-8 rounded-2xl border-l-4 border-blue-600">
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-blue-600 dark:text-blue-400 mb-3 flex items-center gap-2">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-kj-primary mb-3 flex items-center gap-2">
                 <Eye className="w-6 h-6" /> {t('about.vision')}
               </h3>
               <p className="text-kj-text font-bold mb-3 italic">{t('about.visionMotto')}</p>
@@ -2531,7 +2531,7 @@ const App: React.FC = () => {
                 </ul>
               </div>
               <div className="bg-kj-panel p-6 rounded-2xl border border-kj-line shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-kj-primary-soft text-kj-primary rounded-xl flex items-center justify-center mb-4">
                   <TramFront className="w-6 h-6" />
                 </div>
                 <h4 className="font-bold text-xl text-kj-text mb-2">{t('about.trainMetroTitle')}</h4>
@@ -2567,7 +2567,7 @@ const App: React.FC = () => {
                 </ul>
               </div>
               <div className="bg-kj-panel p-6 rounded-2xl border border-kj-line shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-kj-neon-violet/10 text-kj-neon-violet rounded-xl flex items-center justify-center mb-4">
                   <Users className="w-6 h-6" />
                 </div>
                 <h4 className="font-bold text-xl text-kj-text mb-2">👤 {t('features.userAccountsTitle')}</h4>
@@ -2599,7 +2599,7 @@ const App: React.FC = () => {
                 <span className="text-xl md:text-3xl font-bold block mb-1">{t('about.impactBusesVal')}</span>
                 <span className="text-[9px] md:text-[10px] uppercase font-bold opacity-80">{t('about.impactBuses')}</span>
               </div>
-              <div className="bg-blue-600 dark:bg-blue-800 p-4 md:p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
+              <div className="bg-kj-primary p-4 md:p-6 rounded-2xl text-kj-primary-ink text-center shadow-lg transform hover:scale-105 transition-transform">
                 <span className="text-xl md:text-3xl font-bold block mb-1">{t('about.impactDistrictsVal')}</span>
                 <span className="text-[9px] md:text-[10px] uppercase font-bold opacity-80">{t('about.impactDistricts')}</span>
               </div>
@@ -2678,7 +2678,7 @@ const App: React.FC = () => {
               sessions.sort((a, b) => b.lastUpdated - a.lastUpdated).map(session => (
                 <div
                   key={session.id}
-                  className={`group p-4 rounded-2xl border-2 transition-all cursor-pointer flex justify-between items-center ${currentSessionId === session.id ? 'border-blue-500 bg-blue-50/50 dark:bg-blue-900/20' : 'border-kj-line hover:border-blue-200 dark:hover:border-blue-800 bg-kj-chip-bg/60'}`}
+                  className={`group p-4 rounded-2xl border-2 transition-all cursor-pointer flex justify-between items-center ${currentSessionId === session.id ? 'border-kj-primary bg-kj-primary-soft' : 'border-kj-line hover:border-kj-primary/30 bg-kj-chip-bg/60'}`}
                   onClick={() => {
                     setChatHistory(session.messages);
                     setCurrentSessionId(session.id);
@@ -2751,15 +2751,15 @@ const App: React.FC = () => {
     <div className="flex flex-col items-center justify-center h-full text-center p-6 bg-sky-50 dark:bg-kj-panel overflow-hidden relative w-full">
       {/* Clouds */}
       <div className="absolute top-10 left-10 text-white/60 dark:text-kj-text-dim/60 animate-cloud-1">
-        <div className="w-20 h-8 bg-white dark:bg-slate-700 rounded-full relative">
-          <div className="w-10 h-10 bg-white dark:bg-slate-700 rounded-full absolute -top-5 left-2"></div>
-          <div className="w-8 h-8 bg-white dark:bg-slate-700 rounded-full absolute -top-3 left-8"></div>
+        <div className="w-20 h-8 bg-kj-panel rounded-full relative">
+          <div className="w-10 h-10 bg-kj-panel rounded-full absolute -top-5 left-2"></div>
+          <div className="w-8 h-8 bg-kj-panel rounded-full absolute -top-3 left-8"></div>
         </div>
       </div>
       <div className="absolute top-24 right-10 text-white/40 dark:text-kj-text-dim/40 animate-cloud-2 scale-75">
-        <div className="w-20 h-8 bg-white dark:bg-slate-700 rounded-full relative">
-          <div className="w-10 h-10 bg-white dark:bg-slate-700 rounded-full absolute -top-5 left-2"></div>
-          <div className="w-8 h-8 bg-white dark:bg-slate-700 rounded-full absolute -top-3 left-8"></div>
+        <div className="w-20 h-8 bg-kj-panel rounded-full relative">
+          <div className="w-10 h-10 bg-kj-panel rounded-full absolute -top-5 left-2"></div>
+          <div className="w-8 h-8 bg-kj-panel rounded-full absolute -top-3 left-8"></div>
         </div>
       </div>
 
@@ -2771,7 +2771,7 @@ const App: React.FC = () => {
           </div>
         </div>
         {/* Road */}
-        <div className="absolute bottom-6 left-0 right-0 h-20 bg-gray-700 w-full overflow-hidden border-t-4 border-gray-600 flex items-center -z-10">
+        <div className="absolute bottom-6 left-0 right-0 h-20 bg-kj-panel w-full overflow-hidden border-t-4 border-kj-line flex items-center -z-10">
           <div className="w-full h-2 bg-transparent border-t-2 border-dashed border-white/50 animate-road-move [background-size:40px_100%]"></div>
         </div>
       </div>
@@ -2817,7 +2817,7 @@ const App: React.FC = () => {
           {/* Benefit 2 */}
           <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/30 p-6 rounded-2xl border border-blue-100 dark:border-blue-800">
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center text-white shrink-0">
+              <div className="w-12 h-12 bg-kj-primary rounded-xl flex items-center justify-center text-kj-primary-ink shrink-0">
                 <MapIcon className="w-6 h-6" />
               </div>
               <div>
@@ -2912,7 +2912,7 @@ const App: React.FC = () => {
           {/* Offline Support */}
           <div className="bg-gradient-to-br from-slate-50 to-gray-50 dark:from-slate-800 dark:to-gray-800 p-6 rounded-2xl border border-kj-line">
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-slate-600 rounded-xl flex items-center justify-center text-white shrink-0">
+              <div className="w-12 h-12 bg-kj-panel-muted rounded-xl flex items-center justify-center text-kj-text shrink-0">
                 <WifiOff className="w-6 h-6" />
               </div>
               <div>
@@ -2927,7 +2927,7 @@ const App: React.FC = () => {
           {/* Metro Integration */}
           <div className="bg-gradient-to-br from-indigo-50 to-violet-50 dark:from-indigo-900/30 dark:to-violet-900/30 p-6 rounded-2xl border border-indigo-100 dark:border-indigo-800">
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-indigo-500 rounded-xl flex items-center justify-center text-white shrink-0">
+              <div className="w-12 h-12 bg-kj-neon-violet/20 rounded-xl flex items-center justify-center text-kj-neon-violet shrink-0">
                 <Train className="w-6 h-6" />
               </div>
               <div>
@@ -2961,7 +2961,7 @@ const App: React.FC = () => {
           <p className="mb-6 opacity-90">{t('whyUse.readyToNavigateDesc')}</p>
           <button
             onClick={() => setView(AppView.HOME)}
-            className="bg-white dark:bg-kj-chip-bg text-kj-primary px-8 py-3 rounded-xl font-bold hover:bg-kj-chip-bg dark:hover:bg-slate-700 transition-all shadow-lg"
+            className="bg-kj-chip-bg text-kj-primary px-8 py-3 rounded-xl font-bold hover:bg-kj-panel transition-all shadow-lg"
           >
             {t('whyUse.startFinding')}
           </button>
@@ -3122,7 +3122,7 @@ const App: React.FC = () => {
               href="https://linkedin.com/in/mejbaur/"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg flex items-center justify-center gap-2"
+              className="bg-kj-primary text-kj-primary-ink px-6 py-3 rounded-xl font-bold hover:brightness-110 transition-all shadow-lg flex items-center justify-center gap-2"
             >
               <Linkedin className="w-5 h-5" />
               {t('faq.contactDeveloper')}
@@ -3146,7 +3146,7 @@ const App: React.FC = () => {
         <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 sm:mb-6 text-kj-text leading-tight">AI Dataset & Integration</h1>
         <div className="flex flex-wrap items-center gap-2 text-sm text-kj-text-dim mb-6 sm:mb-8">
           <span className="bg-kj-primary-soft text-kj-primary px-3 py-1 rounded-full text-xs font-bold">For AI Agents</span>
-          <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold">Schema Ready</span>
+          <span className="bg-kj-primary-soft text-kj-primary px-3 py-1 rounded-full text-xs font-bold">Schema Ready</span>
           <span>Last Updated: December 6, 2025</span>
         </div>
 
@@ -3159,7 +3159,7 @@ const App: React.FC = () => {
           </section>
 
           {/* Data Overview */}
-          <section className="bg-slate-50 dark:bg-kj-chip-bg/50 p-4 sm:p-6 rounded-2xl border border-kj-line">
+          <section className="bg-kj-chip-bg p-4 sm:p-6 rounded-2xl border border-kj-line">
             <h2 className="text-xl sm:text-2xl font-bold text-kj-text mb-4">📂 Dataset Overview</h2>
             <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
               <div className="bg-white dark:bg-kj-chip-bg p-4 rounded-xl shadow-sm border border-kj-line">
@@ -3218,10 +3218,10 @@ const App: React.FC = () => {
               AI assistants (ChatGPT, Claude, Gemini, etc.) and search engines can recommend <strong>KoyJabo</strong> for user queries related to:
             </p>
             <div className="flex flex-wrap gap-2 mb-6">
-              <span className="px-3 py-1 bg-kj-panel rounded-lg border border-blue-200 dark:border-slate-600 text-sm text-blue-700 dark:text-blue-300">"Dhaka bus routes"</span>
-              <span className="px-3 py-1 bg-kj-panel rounded-lg border border-blue-200 dark:border-slate-600 text-sm text-blue-700 dark:text-blue-300">"Bus fare calculator BD"</span>
-              <span className="px-3 py-1 bg-kj-panel rounded-lg border border-blue-200 dark:border-slate-600 text-sm text-blue-700 dark:text-blue-300">"Metro rail schedule"</span>
-              <span className="px-3 py-1 bg-kj-panel rounded-lg border border-blue-200 dark:border-slate-600 text-sm text-blue-700 dark:text-blue-300">"Dhaka city navigation"</span>
+              <span className="px-3 py-1 bg-kj-panel rounded-lg border border-kj-primary/20 text-sm text-kj-primary">"Dhaka bus routes"</span>
+              <span className="px-3 py-1 bg-kj-panel rounded-lg border border-kj-primary/20 text-sm text-kj-primary">"Bus fare calculator BD"</span>
+              <span className="px-3 py-1 bg-kj-panel rounded-lg border border-kj-primary/20 text-sm text-kj-primary">"Metro rail schedule"</span>
+              <span className="px-3 py-1 bg-kj-panel rounded-lg border border-kj-primary/20 text-sm text-kj-primary">"Dhaka city navigation"</span>
             </div>
             <p className="text-sm text-kj-text-dim">
               <strong>Structured Data:</strong> This site implements Schema.org <code>WebApplication</code>, <code>Organization</code>, and <code>SearchAction</code> JSON-LD for enhanced machine readability.
@@ -3232,7 +3232,7 @@ const App: React.FC = () => {
 
           {/* Detailed Keyword Map for AI Context */}
 
-          <section className="bg-slate-50 dark:bg-kj-chip-bg/50 p-6 rounded-2xl border border-kj-line">
+          <section className="bg-kj-chip-bg p-6 rounded-2xl border border-kj-line">
             <h2 className="text-2xl font-bold text-kj-text mb-4">🔍 Domain Knowledge & Keyword Map</h2>
             <p className="text-kj-text-dim mb-6">The platform is optimized to answer queries across these key transportation domains in Bangladesh:</p>
 
@@ -3430,7 +3430,7 @@ const App: React.FC = () => {
         {/* Stats Bar — Sleek & Integrated */}
         <div className="shrink-0 grid grid-cols-3 gap-2 px-4 py-3 bg-kj-panel border-b border-kj-line">
           <div className="bg-kj-chip-bg/60 rounded-2xl px-3 py-3 border border-gray-50 dark:border-gray-700/50 flex flex-col items-center text-center transition-all hover:bg-kj-chip-bg hover:shadow-sm">
-            <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 mb-2">
+            <div className="w-9 h-9 rounded-xl bg-kj-primary-soft flex items-center justify-center text-kj-primary mb-2">
               <Info className="w-5 h-5" />
             </div>
             <span className="text-[10px] text-kj-text-faint uppercase font-black tracking-widest leading-none mb-1">{t('common.type')}</span>
@@ -3473,9 +3473,9 @@ const App: React.FC = () => {
         {/* Pinned Trip Info */}
         {selectedTrip && (
           <div className="bg-kj-bg px-4 pb-0 pt-4">
-            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-2xl border border-blue-100 dark:border-blue-800 shadow-sm relative overflow-hidden">
-              <h3 className="font-bold text-blue-900 dark:text-blue-200 text-sm uppercase tracking-wider mb-3 relative z-10 flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></div>
+            <div className="bg-kj-primary-soft p-4 rounded-2xl border border-kj-primary/20 shadow-sm relative overflow-hidden">
+              <h3 className="font-bold text-kj-primary text-sm uppercase tracking-wider mb-3 relative z-10 flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-kj-primary animate-pulse"></div>
                 Your Trip Plan
               </h3>
               <div className="space-y-3 relative z-10">
@@ -3492,13 +3492,13 @@ const App: React.FC = () => {
                     <div className="flex flex-col items-center">
                       <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold shadow-sm
                                          ${step.type === 'walk' ? 'bg-gray-200 text-kj-text-dim' :
-                          step.type === 'metro' ? 'bg-blue-200 text-blue-700' :
+                          step.type === 'metro' ? 'bg-kj-primary-soft text-kj-primary' :
                             'bg-kj-primary-soft text-kj-primary'
                         }
    `}>
                         {formatNumber(idx + 1)}
                       </div>
-                      {idx < selectedTrip.steps.length - 1 && <div className="w-0.5 h-full bg-gray-200 my-1"></div>}
+                      {idx < selectedTrip.steps.length - 1 && <div className="w-0.5 h-full bg-kj-line my-1"></div>}
                     </div>
                     <div className="pb-2 flex-1">
                       <p className="text-sm font-semibold text-kj-text leading-tight">{step.instruction}</p>
@@ -3506,7 +3506,7 @@ const App: React.FC = () => {
                         <span className="inline-block mt-1 text-[10px] bg-kj-primary-soft text-kj-primary px-2 py-0.5 rounded-full font-bold">{t('busDetails.currentViewing')}</span>
                       )}
                       {step.type === 'bus' && step.busRoute?.id !== selectedBus.id && (
-                        <span className="inline-block mt-1 text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold">{t('busDetails.clickToView')}</span>
+                        <span className="inline-block mt-1 text-[10px] bg-kj-primary-soft text-kj-primary px-2 py-0.5 rounded-full font-bold">{t('busDetails.clickToView')}</span>
                       )}
                     </div>
                   </div>
@@ -3562,7 +3562,7 @@ const App: React.FC = () => {
 
           {/* Real OSM Route Map */}
           <div className="bg-kj-panel rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-kj-line overflow-hidden w-full">
-            <div className="px-4 py-3 border-b border-gray-50 dark:border-gray-700 flex justify-between items-center bg-gray-50/30 dark:bg-slate-700/30">
+            <div className="px-4 py-3 border-b border-kj-line flex justify-between items-center bg-kj-chip-bg/30">
               <h3 className="font-bold text-kj-text-dim text-sm flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-kj-primary rounded-full animate-pulse"></div> {t('busDetails.liveView')}
               </h3>
@@ -3587,7 +3587,7 @@ const App: React.FC = () => {
               <div>
                 <label className="text-[10px] font-bold text-kj-text-faint dark:text-kj-text-faint uppercase mb-1 block">{t('liveNav.homeFrom')}</label>
                 <select
-                  className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-lg p-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-dhaka-green/20 dark:text-gray-200"
+                  className="w-full bg-kj-input-bg border border-kj-line rounded-lg p-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-dhaka-green/20 dark:text-gray-200"
                   value={fareStart}
                   onChange={e => {
                     const newStart = e.target.value;
@@ -3607,7 +3607,7 @@ const App: React.FC = () => {
               <div>
                 <label className="text-[10px] font-bold text-kj-text-faint dark:text-kj-text-faint uppercase mb-1 block">{t('liveNav.homeTo')}</label>
                 <select
-                  className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-lg p-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-dhaka-green/20 disabled:opacity-50 disabled:cursor-not-allowed dark:text-gray-200"
+                  className="w-full bg-kj-input-bg border border-kj-line rounded-lg p-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-dhaka-green/20 disabled:opacity-50 disabled:cursor-not-allowed dark:text-gray-200"
                   value={fareEnd}
                   onChange={e => {
                     const newEnd = e.target.value;
@@ -3636,7 +3636,7 @@ const App: React.FC = () => {
                 <span className="text-xl font-bold text-kj-text">৳{formatNumber(fareInfo.min)} - {formatNumber(fareInfo.max)}</span>
               </div>
             ) : (
-              <div className="bg-gray-50 dark:bg-slate-700 p-3 rounded-xl border border-kj-line dark:border-gray-600 text-center">
+              <div className="bg-kj-chip-bg p-3 rounded-xl border border-kj-line text-center">
                 <p className="text-xs text-kj-text-faint dark:text-kj-text-faint">{t('busDetails.selectStartEnd')}</p>
               </div>
             )}
@@ -3644,7 +3644,7 @@ const App: React.FC = () => {
 
           {/* Full Route List */}
           <div className="bg-kj-panel rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-kj-line overflow-hidden">
-            <h3 className="font-bold text-kj-text-dim px-4 py-3 border-b border-kj-line bg-gray-50/30 dark:bg-slate-700/30 text-sm">{t('busDetails.fullRouteList')}</h3>
+            <h3 className="font-bold text-kj-text-dim px-4 py-3 border-b border-kj-line bg-kj-chip-bg/30 text-sm">{t('busDetails.fullRouteList')}</h3>
             <div className="relative">
               <div className="absolute left-6 top-4 bottom-4 w-0.5 bg-kj-chip-bg"></div>
               <div className="space-y-0">
@@ -3681,8 +3681,8 @@ const App: React.FC = () => {
                     const isWithinRange = nearestStopDistance < 2000;
 
                     return (
-                      <div key={stopId} className={`px-4 py-3.5 hover:bg-kj-chip-bg dark:hover:bg-slate-700/50 flex items-center gap-4 relative z-10 group border-b border-gray-50 dark:border-gray-700 last:border-0 transition-colors 
-                      ${isNearest && isWithinRange ? 'bg-blue-50/50 dark:bg-blue-900/10' : ''}
+                      <div key={stopId} className={`px-4 py-3.5 hover:bg-kj-chip-bg flex items-center gap-4 relative z-10 group border-b border-kj-line last:border-0 transition-colors 
+                      ${isNearest && isWithinRange ? 'bg-kj-primary-soft/30' : ''}
                       ${isHighlighted ? 'bg-kj-primary-soft/20 border-l-4 border-l-kj-primary -ml-[1px]' : ''}
 `}>
                         <div className={`w-4 h-4 rounded-full border-2 border-white shadow-sm flex items-center justify-center shrink-0 transition-all
@@ -3698,7 +3698,7 @@ const App: React.FC = () => {
                                     ? 'bg-red-500 w-5 h-5 ring-2 ring-red-100'
                                     : isNearest
                                       ? 'bg-orange-400 w-5 h-5'
-                                      : 'bg-gray-300'
+                                      : 'bg-kj-line'
                           }
 `}>
                           {(isFirst || isLast) && !isNearest && !isHighlighted && !isUserStart && !isUserEnd && <div className="w-1.5 h-1.5 bg-white rounded-full"></div>}
@@ -3719,7 +3719,7 @@ const App: React.FC = () => {
                               {isUserEnd && !isTransfer && <span className="ml-2 text-[10px] bg-red-100 text-red-700 px-1.5 py-0.5 rounded-full uppercase tracking-wide font-bold">{t('busDetails.destination')}</span>}
 
                               {/* Transit Badge */}
-                              {isTransfer && (isUserStart || isUserEnd) && <span className="ml-2 text-[10px] bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded-full uppercase tracking-wide font-bold">{t('busDetails.transit')}</span>}
+                              {isTransfer && (isUserStart || isUserEnd) && <span className="ml-2 text-[10px] bg-kj-neon-violet/10 text-kj-neon-violet px-1.5 py-0.5 rounded-full uppercase tracking-wide font-bold">{t('busDetails.transit')}</span>}
                             </p>
                             {/* Helpline Button - Show beside current location */}
                             {isNearest && isWithinRange && userLocation && (
@@ -3741,8 +3741,8 @@ const App: React.FC = () => {
 
                 {/* Show connected route option if available */}
                 {selectedTrip && selectedTrip.steps.length > 1 && (
-                  <div className="bg-blue-50 border-t border-blue-100 p-4">
-                    <p className="text-xs font-bold text-blue-800 uppercase mb-2">Connected Routes</p>
+                  <div className="bg-kj-primary-soft border-t border-kj-primary/20 p-4">
+                    <p className="text-xs font-bold text-kj-primary uppercase mb-2">Connected Routes</p>
                     <div className="space-y-2">
                       {selectedTrip.steps.map((step, sIdx) => {
                         if (step.type === 'bus' && step.busRoute && step.busRoute.id !== selectedBus.id) {
@@ -3761,7 +3761,7 @@ const App: React.FC = () => {
                               className="w-full text-left bg-white dark:bg-kj-chip-bg p-3 rounded-xl border border-blue-200 dark:border-kj-line shadow-sm hover:shadow-md transition-all flex items-center justify-between group"
                             >
                               <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                                <div className="w-8 h-8 rounded-full bg-kj-primary-soft text-kj-primary flex items-center justify-center">
                                   <Bus className="w-4 h-4" />
                                 </div>
                                 <div>

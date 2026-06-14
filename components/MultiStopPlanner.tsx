@@ -252,7 +252,7 @@ export default function MultiStopPlanner({ onBack }: Props) {
         <button onClick={onBack} className="p-2 -ml-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full">
           <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
         </button>
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shrink-0">
+        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-kj-primary to-kj-neon-cyan flex items-center justify-center shrink-0">
           <Navigation className="w-5 h-5 text-white" />
         </div>
         <div>
@@ -266,7 +266,7 @@ export default function MultiStopPlanner({ onBack }: Props) {
           {stops.map((stop, i) => (
             <div key={stop.id} className="flex items-center gap-2">
               <div className="flex flex-col items-center shrink-0">
-                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${i === 0 ? 'bg-blue-500 text-white' : i === stops.length - 1 ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-slate-600 text-kj-text-dim'}`}>
+                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${i === 0 ? 'bg-kj-primary text-kj-primary-ink' : i === stops.length - 1 ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-slate-600 text-kj-text-dim'}`}>
                   {i + 1}
                 </div>
                 {i < stops.length - 1 && <div className="w-0.5 h-4 bg-gray-200 dark:bg-slate-600 my-0.5" />}
@@ -278,7 +278,7 @@ export default function MultiStopPlanner({ onBack }: Props) {
                   onFocus={() => setFocusedId(stop.id)}
                   onBlur={() => setTimeout(() => setFocusedId(prev => prev === stop.id ? null : prev), 200)}
                   placeholder={i === 0 ? lbl('From (start)', 'যাত্রা শুরু') : i === stops.length - 1 ? lbl('To (destination)', 'গন্তব্য') : `${lbl('Stop', 'স্টপ')} ${i + 1}`}
-                  className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2 text-sm dark:text-white"
+                  className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl px-3 py-2 text-sm dark:text-white"
                 />
                 {focusedId === stop.id && filtered.length > 0 && (
                   <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-kj-panel border border-kj-line rounded-xl overflow-hidden shadow-lg max-h-48 overflow-y-auto">
@@ -301,12 +301,12 @@ export default function MultiStopPlanner({ onBack }: Props) {
           ))}
 
           <div className="flex gap-2 pt-1">
-            <button onClick={addStop} className="flex items-center gap-1.5 px-3 py-2 text-blue-600 dark:text-blue-400 text-sm font-medium hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-xl">
+            <button onClick={addStop} className="flex items-center gap-1.5 px-3 py-2 text-kj-primary text-sm font-medium hover:bg-blue-50 dark:hover:bg-kj-primary-soft rounded-xl">
               <Plus className="w-4 h-4" /> {lbl('Add stop', 'স্টপ যোগ করুন')}
             </button>
             <button onClick={plan}
               disabled={stops.filter(s => s.name.trim()).length < 2}
-              className="flex-1 py-2 bg-blue-500 hover:bg-blue-600 disabled:opacity-40 text-white font-semibold text-sm rounded-xl">
+              className="flex-1 py-2 bg-kj-primary hover:brightness-110 disabled:opacity-40 text-kj-primary-ink font-semibold text-sm rounded-xl">
               {lbl('Plan Route', 'রুট পরিকল্পনা করুন')}
             </button>
           </div>
@@ -321,7 +321,7 @@ export default function MultiStopPlanner({ onBack }: Props) {
             {legs.map((leg, i) => (
               <div key={i} className="bg-kj-panel rounded-2xl p-4 border border-kj-line">
                 <div className="flex items-center gap-2 text-sm font-semibold text-kj-text flex-wrap">
-                  <span className="text-blue-600 dark:text-blue-400">{leg.from}</span>
+                  <span className="text-kj-primary">{leg.from}</span>
                   <ChevronRight className="w-4 h-4 text-kj-text-faint shrink-0" />
                   <span className="text-green-600 dark:text-green-400">{leg.to}</span>
                 </div>
@@ -331,9 +331,9 @@ export default function MultiStopPlanner({ onBack }: Props) {
                 </div>
               </div>
             ))}
-            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 border border-blue-100 dark:border-blue-800">
+            <div className="bg-kj-primary-soft rounded-2xl p-4 border border-blue-100 dark:border-blue-800">
               <p className="text-xs font-bold text-blue-700 dark:text-blue-400 mb-1">{lbl('Total journey', 'মোট যাত্রা')}</p>
-              <p className="text-sm text-blue-800 dark:text-blue-200">
+              <p className="text-sm text-kj-primary text-kj-primary">
                 {legs.length} {lbl('legs', 'পর্যায়')} · {stops.filter(s => s.name).length} {lbl('stops', 'স্টপ')}
               </p>
             </div>

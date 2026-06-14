@@ -88,7 +88,7 @@ const CABIN_CLASSES = [
     desc: 'Semi-private, comfortable',
     descBn: 'আধা-প্রাইভেট, আরামদায়ক',
     fare: '৳800–1,500',
-    color: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
+    color: 'bg-kj-primary-soft dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
   },
   {
     icon: '🪑',
@@ -192,7 +192,7 @@ export default function LaunchHub({ onBack, language }: LaunchHubProps) {
         </div>
 
         {/* Search card */}
-        <div className="bg-kj-panel border border-kj-line rounded-2xl p-4 space-y-3">
+        <div className="dc-card rounded-2xl p-4 space-y-3">
           <h3 className="font-semibold text-kj-text text-sm">
             {lbl('Search Launch', 'লঞ্চ খুঁজুন')}
           </h3>
@@ -298,7 +298,7 @@ export default function LaunchHub({ onBack, language }: LaunchHubProps) {
             {DEPARTURES.map(launch => (
               <div
                 key={launch.id}
-                className="bg-kj-panel border border-kj-line rounded-2xl p-4"
+                className="dc-card rounded-2xl p-4"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex-1 min-w-0">
@@ -306,7 +306,7 @@ export default function LaunchHub({ onBack, language }: LaunchHubProps) {
                       <span className="font-semibold text-kj-text text-sm">
                         {lbl(launch.name, launch.nameBn)}
                       </span>
-                      <span className="flex items-center gap-0.5 text-xs text-amber-500">
+                      <span className="flex items-center gap-0.5 text-xs text-kj-amber">
                         <Star size={12} className="fill-amber-400 text-amber-400" />
                         {launch.rating}
                       </span>
@@ -345,7 +345,7 @@ export default function LaunchHub({ onBack, language }: LaunchHubProps) {
             <Info size={16} className="text-kj-primary" />
             {lbl('Cabin Classes', 'কেবিন শ্রেণী')}
           </h3>
-          <div className="bg-kj-panel border border-kj-line rounded-2xl divide-y divide-kj-line">
+          <div className="dc-card rounded-2xl divide-y divide-kj-line">
             {CABIN_CLASSES.map((cls, i) => (
               <div key={i} className="flex items-center gap-3 px-4 py-3">
                 <span className="text-xl w-7 text-center">{cls.icon}</span>
@@ -371,7 +371,7 @@ export default function LaunchHub({ onBack, language }: LaunchHubProps) {
             <Ship size={16} className="text-kj-primary" />
             {lbl('Popular River Routes', 'জনপ্রিয় নদীপথ')}
           </h3>
-          <div className="bg-kj-panel border border-kj-line rounded-2xl divide-y divide-kj-line">
+          <div className="dc-card rounded-2xl divide-y divide-kj-line">
             {ROUTES.map((route, i) => (
               <div key={i} className="flex items-center gap-3 px-4 py-3">
                 <div className="flex-1 min-w-0">

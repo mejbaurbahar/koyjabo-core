@@ -10,7 +10,7 @@ const passes = [
   {
     name: 'Rapid Pass (MRT)',
     bnName: 'র‍্যাপিড পাস (মেট্রো)',
-    color: 'from-blue-500 to-indigo-600',
+    color: 'from-kj-primary to-kj-neon-violet',
     icon: '🚇',
     price: '৳200',
     priceNote: 'Rechargeable / রিচার্জযোগ্য',
@@ -151,7 +151,7 @@ export default function BusPassInfo({ onBack }: Props) {
         <button onClick={onBack} className="p-2 -ml-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full transition-colors">
           <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
         </button>
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shrink-0">
+        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-kj-primary to-kj-neon-violet flex items-center justify-center shrink-0">
           <CreditCard className="w-5 h-5 text-white" />
         </div>
         <div>
@@ -161,10 +161,10 @@ export default function BusPassInfo({ onBack }: Props) {
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 space-y-4 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
-        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-2xl p-4">
+        <div className="bg-kj-primary-soft border border-kj-primary/20 rounded-2xl p-4">
           <div className="flex items-start gap-3">
-            <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
-            <p className="text-sm text-blue-800 dark:text-blue-200">
+            <Info className="w-5 h-5 text-kj-primary shrink-0 mt-0.5" />
+            <p className="text-sm text-kj-primary text-kj-primary">
               {lbl(
                 'Using a transit pass in Dhaka can save you ৳500–৳2,000 per month.',
                 'ঢাকায় পরিবহন পাস ব্যবহার করে প্রতি মাসে ৳500–৳2,000 পর্যন্ত সাশ্রয় করা সম্ভব।'
@@ -203,7 +203,7 @@ export default function BusPassInfo({ onBack }: Props) {
                   ))}
                 </ul>
               </div>
-              <div className="bg-gray-50 dark:bg-slate-700/50 rounded-xl p-3">
+              <div className="bg-gray-50 bg-kj-chip-bg rounded-xl p-3">
                 <p className="text-xs font-bold text-kj-text-dim mb-1">{lbl('Where to get it', 'কোথায় পাবেন')}</p>
                 <p className="text-sm text-kj-text-dim">{language === 'bn' ? pass.wherebn : pass.where}</p>
               </div>
@@ -213,7 +213,7 @@ export default function BusPassInfo({ onBack }: Props) {
               </div>
               {pass.link && (
                 <a href={pass.link} target="_blank" rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                  className="flex items-center gap-2 text-sm text-kj-primary hover:underline">
                   <ExternalLink className="w-4 h-4" />{pass.linkLabel}
                 </a>
               )}

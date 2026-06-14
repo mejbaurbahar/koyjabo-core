@@ -127,7 +127,7 @@ const TrainSearch: React.FC = () => {
                             onChange={(e) => setFrom(e.target.value)}
                             onBlur={() => setTimeout(() => setShowFromSuggestions(false), 200)}
                             placeholder={t('trainSearch.fromPlaceholder')}
-                            className="w-full px-4 py-3 rounded-xl border-2 border-kj-line dark:border-slate-600 bg-gray-50 dark:bg-slate-700 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none transition-colors"
+                            className="w-full px-4 py-3 rounded-xl border-2 border-kj-line border-kj-line bg-gray-50 dark:bg-slate-700 focus:border-kj-primary dark:focus:border-blue-400 focus:outline-none transition-colors"
                             required
                         />
                         {showFromSuggestions && fromSuggestions.length > 0 && (
@@ -158,7 +158,7 @@ const TrainSearch: React.FC = () => {
                             onChange={(e) => setTo(e.target.value)}
                             onBlur={() => setTimeout(() => setShowToSuggestions(false), 200)}
                             placeholder={t('trainSearch.toPlaceholder')}
-                            className="w-full px-4 py-3 rounded-xl border-2 border-kj-line dark:border-slate-600 bg-gray-50 dark:bg-slate-700 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none transition-colors"
+                            className="w-full px-4 py-3 rounded-xl border-2 border-kj-line border-kj-line bg-gray-50 dark:bg-slate-700 focus:border-kj-primary dark:focus:border-blue-400 focus:outline-none transition-colors"
                             required
                         />
                         {showToSuggestions && toSuggestions.length > 0 && (
@@ -188,7 +188,7 @@ const TrainSearch: React.FC = () => {
                             type="date"
                             value={date}
                             onChange={(e) => setDate(e.target.value)}
-                            className="w-full px-4 py-3 rounded-xl border-2 border-kj-line dark:border-slate-600 bg-gray-50 dark:bg-slate-700 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none transition-colors"
+                            className="w-full px-4 py-3 rounded-xl border-2 border-kj-line border-kj-line bg-gray-50 dark:bg-slate-700 focus:border-kj-primary dark:focus:border-blue-400 focus:outline-none transition-colors"
                         />
                     </div>
 
@@ -259,7 +259,7 @@ const TrainSearch: React.FC = () => {
                                         <h3 className="text-xl font-bold text-kj-text">
                                             {train.trainName}
                                         </h3>
-                                        <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 rounded-full text-sm font-semibold">
+                                        <span className="px-3 py-1 bg-kj-primary-soft dark:bg-blue-900/30 text-kj-primary text-kj-primary rounded-full text-sm font-semibold">
                                             {formatNumber(train.trainNumber)}
                                         </span>
                                     </div>

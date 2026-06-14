@@ -212,7 +212,7 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
 
             <input value={caption} onChange={e => setCaption(e.target.value.slice(0, 200))}
               placeholder={t('community.photoCaptionOptional')} maxLength={200}
-              className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white" />
+              className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm dark:text-white" />
 
             <div className="flex gap-2">
               <button type="submit" disabled={!previewUrl || submitting || compressing}

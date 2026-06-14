@@ -190,7 +190,7 @@ export default function BusRating({ busId, busName, onBack }: Props) {
                 </div>
                 <textarea value={comment} onChange={e => setComment(e.target.value.slice(0, 500))}
                   placeholder={t('community.writeExperienceOptional')} rows={3} maxLength={500}
-                  className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white resize-none" />
+                  className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm dark:text-white resize-none" />
                 <div className="flex gap-2">
                   <button type="submit" disabled={submitting}
                     className="flex-1 py-2.5 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white font-semibold text-sm rounded-xl flex items-center justify-center gap-2">

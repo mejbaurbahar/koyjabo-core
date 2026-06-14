@@ -1068,11 +1068,13 @@ footer {
   -webkit-backdrop-filter: blur(18px) saturate(140%);
 }
 
-/* Design handoff card shell */
+/* Design handoff card shell — glass by default */
 .dc-card {
   background: var(--kj-panel);
   border: 1px solid var(--kj-line);
   box-shadow: var(--kj-shadow-lg);
+  backdrop-filter: blur(16px) saturate(138%);
+  -webkit-backdrop-filter: blur(16px) saturate(138%);
 }
 
 .kj-home-shell {

@@ -193,9 +193,9 @@ const DailyJourneyView: React.FC<DailyJourneyViewProps> = ({ onBack }) => {
                                 {/* Current Location (if still tracking) */}
                                 {todayJourney.stops.length > 0 &&
                                     !todayJourney.stops[todayJourney.stops.length - 1].departureTime && (
-                                        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border-2 border-blue-200 dark:border-blue-800">
+                                        <div className="bg-kj-primary-soft rounded-xl p-4 border-2 border-kj-primary/20">
                                             <div className="flex items-center gap-2 mb-1">
-                                                <Circle className="w-3 h-3 text-blue-600 dark:text-blue-400 animate-pulse" />
+                                                <Circle className="w-3 h-3 text-kj-primary animate-pulse" />
                                                 <span className="text-sm font-bold text-blue-900 dark:text-blue-100">
                                                     {t('journey.currentLocation')}
                                                 </span>

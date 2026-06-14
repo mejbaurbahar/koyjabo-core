@@ -127,7 +127,7 @@ const MetroRailHub: React.FC<Props> = ({ onBack, language }) => {
         </div>
 
         {/* Next train countdown */}
-        <div className="bg-kj-panel border border-kj-line rounded-2xl p-4">
+        <div className="dc-card rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-3">
             <Zap size={16} className="text-kj-primary" />
             <span className="font-semibold text-sm">{t('Next Train', 'পরবর্তী ট্রেন')}</span>
@@ -160,7 +160,7 @@ const MetroRailHub: React.FC<Props> = ({ onBack, language }) => {
         </div>
 
         {/* Ticket info card */}
-        <div className="bg-kj-panel border border-kj-line rounded-2xl p-4">
+        <div className="dc-card rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-3">
             <CreditCard size={16} className="text-kj-accent" />
             <span className="font-semibold text-sm">{t('Tickets & Passes', 'টিকিট ও পাস')}</span>
@@ -198,7 +198,7 @@ const MetroRailHub: React.FC<Props> = ({ onBack, language }) => {
         </div>
 
         {/* Fare calculator */}
-        <div className="bg-kj-panel border border-kj-line rounded-2xl p-4">
+        <div className="dc-card rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-3">
             <MapPin size={16} className="text-kj-primary" />
             <span className="font-semibold text-sm">{t('Fare Calculator', 'ভাড়া হিসাব')}</span>
@@ -265,7 +265,7 @@ const MetroRailHub: React.FC<Props> = ({ onBack, language }) => {
         </div>
 
         {/* 17 stations horizontal scroll */}
-        <div className="bg-kj-panel border border-kj-line rounded-2xl p-4">
+        <div className="dc-card rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-3">
             <Train size={16} className="text-kj-primary" />
             <span className="font-semibold text-sm">
@@ -323,7 +323,7 @@ const MetroRailHub: React.FC<Props> = ({ onBack, language }) => {
               bg: 'bg-kj-accent-soft',
             },
           ].map((tile, i) => (
-            <div key={i} className="bg-kj-panel border border-kj-line rounded-2xl p-3 flex items-start gap-3">
+            <div key={i} className="dc-card rounded-2xl p-3 flex items-start gap-3">
               <div className={`${tile.bg} ${tile.color} rounded-xl p-2 shrink-0`}>
                 {tile.icon}
               </div>

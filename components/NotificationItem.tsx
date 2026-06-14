@@ -39,8 +39,8 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onClo
                 };
             default: // info
                 return {
-                    bg: 'bg-blue-50 dark:bg-blue-900/20',
-                    icon: <Info className="w-4 h-4 text-blue-600 dark:text-blue-400" />,
+                    bg: 'bg-kj-primary-soft',
+                    icon: <Info className="w-4 h-4 text-kj-primary" />,
                 };
         }
     };
@@ -103,7 +103,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onClo
         <div
             onClick={handleClick}
             className={`px-4 py-3 transition-colors cursor-pointer group ${!isRead
-                ? 'bg-blue-50/30 dark:bg-blue-900/10 hover:bg-blue-50/50 dark:hover:bg-blue-900/20'
+                ? 'bg-blue-50/30 dark:bg-blue-900/10 hover:bg-blue-50/50 dark:hover:bg-kj-primary-soft'
                 : 'hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg'
                 }`}
         >
@@ -134,7 +134,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onClo
                             {displayTitle}
                         </h4>
                         {notification.link && (
-                            <ExternalLink className="w-3.5 h-3.5 text-blue-500 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <ExternalLink className="w-3.5 h-3.5 text-kj-primary shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
                         )}
                     </div>
                     <p className="text-xs text-kj-text-dim leading-relaxed line-clamp-2 mb-2">
@@ -149,7 +149,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onClo
                         {sourceDomain && (
                             <>
                                 <span className="text-kj-text-faint">•</span>
-                                <span className="text-blue-500 dark:text-blue-400 font-medium flex items-center gap-1">
+                                <span className="text-kj-primary font-medium flex items-center gap-1">
                                     {sourceDomain}
                                     <ExternalLink className="w-2.5 h-2.5" />
                                 </span>

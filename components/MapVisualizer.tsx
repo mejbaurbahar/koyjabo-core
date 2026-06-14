@@ -496,7 +496,7 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
 
             <div className="space-y-2">
               <label className="flex items-center gap-2.5 cursor-pointer hover:bg-kj-chip-bg dark:hover:bg-slate-700 p-1.5 rounded-lg transition-colors group">
-                <div className={`w-5 h-5 rounded-md flex items-center justify-center border-2 transition-all ${showMetro ? 'bg-gradient-to-br from-blue-500 to-indigo-600 border-blue-500 shadow-lg shadow-blue-500/30' : 'border-kj-line bg-white dark:bg-slate-700'}`}>
+                <div className={`w-5 h-5 rounded-md flex items-center justify-center border-2 transition-all ${showMetro ? 'bg-gradient-to-br from-kj-primary to-kj-neon-violet border-kj-primary shadow-lg shadow-kj-primary/30' : 'border-kj-line bg-white dark:bg-slate-700'}`}>
                   {showMetro && <Train className="w-3 h-3 text-white" />}
                 </div>
                 <input
@@ -816,7 +816,7 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                               {isAirport ? (
                                 <Plane className={isCurrent || isStartHereTarget ? "text-white" : "text-orange-600"} size={iconSize} strokeWidth={3} />
                               ) : (
-                                <Train className={isCurrent || isStartHereTarget ? "text-white" : "text-blue-600"} size={iconSize} strokeWidth={3} />
+                                <Train className={isCurrent || isStartHereTarget ? "text-white" : "text-kj-primary"} size={iconSize} strokeWidth={3} />
                               )}
                             </g>
                           )}
@@ -1318,7 +1318,7 @@ const MapVisualizer: React.FC<MapVisualizerProps> = ({
                       className="pointer-events-none"
                     >
                       <div className="text-center flex flex-col items-center justify-center h-full">
-                        <span className="px-2 py-0.5 rounded bg-blue-600 text-white text-[10px] font-bold shadow-lg truncate max-w-full">
+                        <span className="px-2 py-0.5 rounded bg-kj-primary text-kj-primary-ink text-[10px] font-bold shadow-lg truncate max-w-full">
                           {globalNearestName || "You are here"}
                         </span>
                       </div>

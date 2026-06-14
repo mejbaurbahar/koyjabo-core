@@ -54,7 +54,7 @@ const ReleaseNotes: React.FC = () => {
                     <div className={`
                       w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg transform transition-transform group-hover:rotate-6 shrink-0
                       ${note.type === 'major' ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white' : 
-                        note.type === 'minor' ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white' : 
+                        note.type === 'minor' ? 'bg-gradient-to-br from-kj-primary to-kj-neon-violet text-white' : 
                         'bg-gradient-to-br from-slate-500 to-slate-700 text-white'}
                     `}>
                       {note.type === 'major' ? <Sparkles className="w-5 h-5 sm:w-7 sm:h-7" /> : <Rocket className="w-5 h-5 sm:w-7 sm:h-7" />}
@@ -117,7 +117,7 @@ const ReleaseNotes: React.FC = () => {
                       <div className="animate-in fade-in slide-in-from-top-4 duration-500 delay-200">
                         <div className="flex items-center gap-2.5 mb-5">
                           <div className="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-xl">
-                            <Rocket className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                            <Rocket className="w-4 h-4 text-kj-primary" />
                           </div>
                           <h3 className="font-black text-kj-text tracking-tight uppercase text-xs">
                             {t('releaseNotes.improvements')}

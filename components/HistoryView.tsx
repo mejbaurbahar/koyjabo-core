@@ -254,18 +254,18 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                         )}
 
                         {/* Today's Activity */}
-                        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-800 p-6 rounded-2xl border border-blue-100 dark:border-kj-line">
+                        <div className="bg-gradient-to-br kj-primary-soft p-6 rounded-2xl border border-kj-primary/20">
                             <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
-                                <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                                <Calendar className="w-5 h-5 text-kj-primary" />
                                 {t('history.todayActivity')}
                             </h2>
                             <div className="grid grid-cols-3 gap-3">
                                 <div className="bg-white dark:bg-slate-700 p-4 rounded-xl">
-                                    <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{formatNumber(todayBuses.length)}</div>
+                                    <div className="text-3xl font-bold text-kj-primary">{formatNumber(todayBuses.length)}</div>
                                     <div className="text-sm text-kj-text-dim mt-1">{t('history.busesSearched')}</div>
                                 </div>
                                 <div className="bg-white dark:bg-slate-700 p-4 rounded-xl">
-                                    <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">{formatNumber(todayRoutes.length)}</div>
+                                    <div className="text-3xl font-bold text-kj-neon-violet dark:text-indigo-400">{formatNumber(todayRoutes.length)}</div>
                                     <div className="text-sm text-kj-text-dim mt-1">{t('history.routesSearched')}</div>
                                 </div>
                                 <div className="bg-white dark:bg-slate-700 p-4 rounded-xl">
@@ -280,7 +280,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
 
                         {/* Most Used Buses */}
                         {mostUsedBuses.length > 0 && (
-                            <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
+                            <div className="dc-card rounded-2xl p-6">
                                 <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
                                     <TrendingUp className="w-5 h-5 text-kj-primary" />
                                     {t('history.mostUsedBuses')}
@@ -295,7 +295,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                             <div
                                                 key={`bus-${idx}-${busId}`}
                                                 onClick={() => onBusSelect(bus, true)}
-                                                className="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700/50 hover:bg-kj-chip-bg rounded-xl cursor-pointer transition-colors group flex-shrink-0"
+                                                className="flex items-center justify-between p-4 bg-gray-50 bg-kj-chip-bg hover:bg-kj-chip-bg rounded-xl cursor-pointer transition-colors group flex-shrink-0"
                                             >
                                                 <div className="flex items-center gap-3">
                                                     <div className="w-10 h-10 bg-kj-primary rounded-lg flex items-center justify-center">
@@ -323,7 +323,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
 
                         {/* Most Used Routes */}
                         {mostUsedRoutes.length > 0 && (
-                            <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
+                            <div className="dc-card rounded-2xl p-6">
                                 <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
                                     <TrendingUp className="w-5 h-5 text-kj-accent" />
                                     {t('history.mostUsedRoutes')}
@@ -335,7 +335,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                         return (
                                             <div
                                                 key={index}
-                                                className="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700/50 rounded-xl flex-shrink-0"
+                                                className="flex items-center justify-between p-4 bg-gray-50 bg-kj-chip-bg rounded-xl flex-shrink-0"
                                             >
                                                 <div className="flex items-center gap-3 flex-1">
                                                     <div className="w-10 h-10 bg-kj-accent rounded-lg flex items-center justify-center">
@@ -361,7 +361,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
 
                         {/* Recent Bus Searches */}
                         {recentBusSearches.length > 0 && (
-                            <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
+                            <div className="dc-card rounded-2xl p-6">
                                 <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
                                     <Clock className="w-5 h-5 text-kj-text-dim" />
                                     {t('history.recentBusSearches')}
@@ -394,7 +394,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
 
                         {/* Recent Route Searches */}
                         {recentRouteSearches.length > 0 && (
-                            <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
+                            <div className="dc-card rounded-2xl p-6">
                                 <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
                                     <Clock className="w-5 h-5 text-kj-text-dim" />
                                     {t('history.recentRouteSearches')}
@@ -422,7 +422,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
 
                         {/* Recent Intercity Searches */}
                         {(recentIntercitySearches || []).length > 0 && (
-                            <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
+                            <div className="dc-card rounded-2xl p-6">
                                 <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
                                     <TrendingUp className="w-5 h-5 text-purple-600" />
                                     {t('history.recentIntercityTrips')}
@@ -456,7 +456,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
 
                         {/* Most Used Trains */}
                         {mostUsedTrains.length > 0 && (
-                            <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
+                            <div className="dc-card rounded-2xl p-6">
                                 <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
                                     <TrendingUp className="w-5 h-5 text-kj-primary" />
                                     {t('history.mostUsedTrains') || 'Most Viewed Trains'}
@@ -468,7 +468,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                             <div
                                                 key={idx}
                                                 onClick={() => train && onTrainSelect && onTrainSelect(train)}
-                                                className={`flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700/50 rounded-xl transition-colors group ${train && onTrainSelect ? 'cursor-pointer hover:bg-kj-chip-bg' : ''}`}
+                                                className={`flex items-center justify-between p-4 bg-gray-50 bg-kj-chip-bg rounded-xl transition-colors group ${train && onTrainSelect ? 'cursor-pointer hover:bg-kj-chip-bg' : ''}`}
                                             >
                                                 <div className="flex items-center gap-3">
                                                     <div className="w-10 h-10 bg-kj-primary rounded-lg flex items-center justify-center">
@@ -494,7 +494,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
 
                         {/* Recent Train Views */}
                         {recentTrainSearches.length > 0 && (
-                            <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
+                            <div className="dc-card rounded-2xl p-6">
                                 <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
                                     <Train className="w-5 h-5 text-kj-primary" />
                                     {t('history.recentTrainViews') || 'Recent Train Views'}
@@ -530,9 +530,9 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
 
                         {/* Feature Activity */}
                         {(history.communityFeatureHistory || []).length > 0 && (
-                            <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
+                            <div className="dc-card rounded-2xl p-6">
                                 <h2 className="text-lg font-bold text-kj-text mb-4 flex items-center gap-2">
-                                    <Zap className="w-5 h-5 text-amber-500" />
+                                    <Zap className="w-5 h-5 text-kj-amber" />
                                     {t('history.featureActivity') || 'Feature Activity'}
                                 </h2>
                                 <div className="space-y-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
@@ -594,11 +594,11 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
 
                                 <div className="bg-white dark:bg-slate-700 p-5 rounded-xl">
                                     <div className="flex items-center gap-3 mb-1">
-                                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center shrink-0">
-                                            <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                                        <div className="w-10 h-10 bg-kj-primary-soft dark:bg-blue-900/30 rounded-lg flex items-center justify-center shrink-0">
+                                            <Calendar className="w-5 h-5 text-kj-primary" />
                                         </div>
                                         <div>
-                                            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                                            <div className="text-2xl font-bold text-kj-primary">
                                                 {formatNumber(globalStats.todayVisits)}
                                             </div>
                                             <div className="text-xs text-kj-text-dim">{t('history.todayVisits')}</div>
@@ -612,8 +612,8 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                         {/* Info Card */}
                         <div className="bg-blue-50 dark:bg-kj-chip-bg border border-blue-100 dark:border-kj-line rounded-2xl p-6">
                             <div className="flex gap-3">
-                                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <Eye className="w-5 h-5 text-blue-600" />
+                                <div className="w-10 h-10 bg-kj-primary-soft rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <Eye className="w-5 h-5 text-kj-primary" />
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-kj-text mb-2">{t('history.realtimeUpdates')}</h3>
@@ -625,7 +625,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                         </div>
 
                         {/* Community Impact */}
-                        <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
+                        <div className="dc-card rounded-2xl p-6">
                             <h2 className="text-lg font-bold text-kj-text mb-4">{t('history.communityImpact')}</h2>
                             <div className="space-y-4">
                                 <div className="flex items-start gap-3">
@@ -640,8 +640,8 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                     </div>
                                 </div>
                                 <div className="flex items-start gap-3">
-                                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                                        <MapPin className="w-4 h-4 text-blue-600" />
+                                    <div className="w-8 h-8 bg-kj-primary-soft rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                                        <MapPin className="w-4 h-4 text-kj-primary" />
                                     </div>
                                     <div>
                                         <div className="font-bold text-kj-text">{t('history.growingCommunity')}</div>

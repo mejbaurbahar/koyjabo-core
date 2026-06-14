@@ -96,11 +96,11 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
 
   if (loading) {
     return (
-      <div className="flex-1 min-h-0 w-full flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 p-4">
-        <div className="bg-kj-panel rounded-2xl shadow-xl p-10 max-w-xs w-full text-center">
+      <div className="flex-1 min-h-0 w-full flex flex-col items-center justify-center bg-kj-bg p-4">
+        <div className="dc-card kj-glass rounded-2xl p-10 max-w-xs w-full text-center border border-kj-line">
           <div className="relative w-16 h-16 mx-auto mb-5">
-            <div className="w-16 h-16 rounded-full border-4 border-blue-100 dark:border-slate-600 animate-spin border-t-blue-600" />
-            <Lock className="absolute inset-0 m-auto text-blue-600" size={20} />
+            <div className="w-16 h-16 rounded-full border-4 border-kj-line animate-spin border-t-kj-primary" />
+            <Lock className="absolute inset-0 m-auto text-kj-primary" size={20} />
           </div>
           <h2 className="text-lg font-bold text-kj-text mb-1">{t('auth.verifying')}</h2>
           <p className="text-kj-text-dim text-sm">{t('auth.processingWait')}</p>
@@ -110,11 +110,11 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
   }
 
   return (
-    <div className="flex-1 min-h-0 w-full overflow-y-auto overscroll-y-contain touch-pan-y bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-28 md:pt-safe md:pb-safe relative" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="flex-1 min-h-0 w-full overflow-y-auto overscroll-y-contain touch-pan-y bg-kj-bg flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-28 md:pt-safe md:pb-safe relative" style={{ WebkitOverflowScrolling: 'touch' }}>
       {onClose && (
         <button
           onClick={onClose}
-          className="md:hidden absolute top-4 right-4 p-2 rounded-full bg-white/80 dark:bg-kj-chip-bg/80 hover:bg-white dark:hover:bg-slate-700 text-kj-text-dim shadow-sm transition-colors z-10"
+          className="md:hidden absolute top-4 right-4 p-2 rounded-full bg-kj-chip-bg hover:bg-kj-panel text-kj-text-dim shadow-sm transition-colors z-10"
           aria-label="Close"
         >
           <X size={20} />
@@ -123,19 +123,19 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 shadow-lg shadow-blue-200 dark:shadow-blue-900 mb-4">
-            <LogIn className="text-white" size={28} />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-kj-primary to-kj-primary-deep kj-glow mb-4">
+            <LogIn className="text-kj-primary-ink" size={28} />
           </div>
-          <h1 className="text-2xl font-bold text-kj-text">{t('auth.welcome')}</h1>
+          <h1 className="text-2xl font-bold text-kj-text font-bengali">{t('auth.welcome')}</h1>
           <p className="text-kj-text-dim mt-1">{t('auth.loginToAccount')}</p>
         </div>
 
         {/* Card */}
-        <div className="bg-kj-panel rounded-2xl shadow-xl p-8 border border-kj-line">
+        <div className="dc-card kj-glass rounded-2xl p-8 border border-kj-line">
           {error && (
-            <div className="mb-5 p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 flex items-start gap-2">
-              <AlertCircle size={16} className="text-red-500 mt-0.5 shrink-0" />
-              <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
+            <div className="mb-5 p-3 rounded-xl bg-kj-accent-soft border border-kj-accent/30 flex items-start gap-2">
+              <AlertCircle size={16} className="text-kj-accent mt-0.5 shrink-0" />
+              <p className="text-sm text-kj-accent">{error}</p>
             </div>
           )}
 
@@ -151,12 +151,12 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
                 onBlur={() => setEmailTouched(true)}
                 placeholder={t('auth.emailPlaceholder')}
                 autoComplete="email"
-                className={`w-full px-4 py-3 rounded-xl border bg-gray-50 dark:bg-slate-700 text-kj-text placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition ${
-                  emailError ? 'border-red-400 dark:border-red-500' : 'border-kj-line dark:border-slate-600'
+                className={`w-full px-4 py-3 rounded-xl border bg-kj-input-bg text-kj-text placeholder:text-kj-text-faint focus:outline-none focus:ring-2 focus:ring-kj-primary/40 focus:border-kj-primary transition ${
+                  emailError ? 'border-kj-accent' : 'border-kj-line'
                 }`}
               />
               {emailError && (
-                <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
+                <p className="mt-1 text-xs text-kj-accent flex items-center gap-1">
                   <AlertCircle size={12} /> {emailError}
                 </p>
               )}
@@ -174,27 +174,27 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
                   onBlur={() => setPasswordTouched(true)}
                   placeholder="••••••••"
                   autoComplete="current-password"
-                  className={`w-full px-4 py-3 pr-12 rounded-xl border bg-gray-50 dark:bg-slate-700 text-kj-text placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition ${
-                    passwordError ? 'border-red-400 dark:border-red-500' : 'border-kj-line dark:border-slate-600'
+                  className={`w-full px-4 py-3 pr-12 rounded-xl border bg-kj-input-bg text-kj-text placeholder:text-kj-text-faint focus:outline-none focus:ring-2 focus:ring-kj-primary/40 focus:border-kj-primary transition ${
+                    passwordError ? 'border-kj-accent' : 'border-kj-line'
                   }`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPass(p => !p)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-kj-text-faint hover:text-kj-text-dim dark:hover:text-kj-text-faint p-1"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-kj-text-faint hover:text-kj-text-dim p-1"
                 >
                   {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
               <div className="flex justify-between items-center mt-1.5">
                 {passwordError
-                  ? <p className="text-xs text-red-500 flex items-center gap-1"><AlertCircle size={12} /> {passwordError}</p>
+                  ? <p className="text-xs text-kj-accent flex items-center gap-1"><AlertCircle size={12} /> {passwordError}</p>
                   : <span />
                 }
                 <button
                   type="button"
                   onClick={onForgotPassword}
-                  className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                  className="text-sm text-kj-primary hover:underline"
                 >
                   {t('auth.forgotPassword')}
                 </button>
@@ -204,7 +204,7 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
             <button
               type="submit"
               disabled={loading || !canSubmit}
-              className="w-full py-3 px-6 rounded-xl font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 dark:disabled:bg-slate-600 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 shadow-sm"
+              className="w-full py-3 px-6 rounded-xl font-semibold text-kj-primary-ink bg-kj-primary hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 shadow-sm kj-glow"
             >
               {loading ? (
                 <>
@@ -223,7 +223,7 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
           {false /* Google sign-in temporarily hidden on production — enabled on dev */ && (
           <><div className="mt-5 relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-kj-line dark:border-slate-600" />
+              <div className="w-full border-t border-kj-line" />
             </div>
             <div className="relative flex justify-center text-xs">
               <span className="px-3 bg-kj-panel text-kj-text-faint">{t('auth.orContinueWith')}</span>
@@ -234,7 +234,7 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
             type="button"
             onClick={handleGoogleLogin}
             disabled={googleLoading || loading}
-            className="mt-4 w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-kj-line dark:border-slate-600 bg-white dark:bg-slate-700 hover:bg-kj-chip-bg dark:hover:bg-slate-600 text-kj-text-dim font-medium transition disabled:opacity-60 disabled:cursor-not-allowed"
+            className="mt-4 w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-kj-line bg-kj-chip-bg hover:bg-kj-panel text-kj-text-dim font-medium transition disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {googleLoading ? (
               <Loader2 size={18} className="animate-spin" />
@@ -253,7 +253,7 @@ export default function LoginPage({ onSignup, onForgotPassword, onSuccess, onClo
             {t('auth.noAccount')}{' '}
             <button
               onClick={onSignup}
-              className="text-blue-600 dark:text-blue-400 font-semibold hover:underline"
+              className="text-kj-primary font-semibold hover:underline"
             >
               {t('auth.register')}
             </button>

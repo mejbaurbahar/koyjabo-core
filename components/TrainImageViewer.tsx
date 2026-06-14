@@ -55,7 +55,7 @@ export const TrainImageViewer: React.FC<TrainImageViewerProps> = ({ trainId, tra
             {/* Image Icon Button */}
             <button
                 onClick={() => setIsModalOpen(true)}
-                className={`flex items-center justify-center gap-2 ${isCompact ? 'p-2.5 rounded-xl' : 'px-3 py-2 rounded-lg'} bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-md hover:shadow-lg transition-all duration-200 text-sm font-medium active:scale-95`}
+                className={`flex items-center justify-center gap-2 ${isCompact ? 'p-2.5 rounded-xl' : 'px-3 py-2 rounded-lg'} bg-gradient-to-r from-kj-primary to-kj-neon-violet hover:from-kj-primary-deep hover:to-kj-neon-violet text-white shadow-md hover:shadow-lg transition-all duration-200 text-sm font-medium active:scale-95`}
                 title={t('busDetails.viewBusImage')}
             >
                 {isCompact && displayImage !== '/default-bus.svg' ? (
@@ -82,7 +82,7 @@ export const TrainImageViewer: React.FC<TrainImageViewerProps> = ({ trainId, tra
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* Header */}
-                        <div className="flex items-center justify-between p-4 border-b border-kj-line bg-gradient-to-r from-blue-500 to-indigo-600">
+                        <div className="flex items-center justify-between p-4 border-b border-kj-line bg-gradient-to-r from-kj-primary to-kj-neon-violet">
                             <div>
                                 <h3 className="text-xl font-bold text-white">{trainName}</h3>
                                 {trainBnName && (

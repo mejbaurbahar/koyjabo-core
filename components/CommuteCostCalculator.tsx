@@ -121,13 +121,13 @@ export default function CommuteCostCalculator({ onBack }: Props) {
 
           {legs.length === 0 && (
             <button onClick={addLeg}
-              className="w-full py-8 border-2 border-dashed border-kj-line dark:border-slate-600 rounded-xl text-kj-text-faint hover:border-emerald-400 hover:text-kj-primary transition-colors text-sm">
+              className="w-full py-8 border-2 border-dashed border-kj-line border-kj-line rounded-xl text-kj-text-faint hover:border-emerald-400 hover:text-kj-primary transition-colors text-sm">
               + {lbl('Tap to add your first transport leg', 'যাতায়াতের তথ্য যোগ করুন')}
             </button>
           )}
 
           {legs.map((leg, i) => (
-            <div key={i} className="space-y-2 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-xl">
+            <div key={i} className="space-y-2 p-3 bg-gray-50 bg-kj-chip-bg rounded-xl">
               <div className="flex items-center gap-2">
                 <span className="text-lg">{TRANSPORT_MODES.find(m => m.id === leg.mode)?.icon}</span>
                 <select value={leg.mode}
@@ -136,7 +136,7 @@ export default function CommuteCostCalculator({ onBack }: Props) {
                     updateLeg(i, 'mode', e.target.value);
                     if (mode) updateLeg(i, 'fare', mode.avgPerTrip);
                   }}
-                  className="flex-1 bg-white dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-lg px-2 py-1.5 text-sm dark:text-white">
+                  className="flex-1 bg-white dark:bg-slate-700 border border-kj-line border-kj-line rounded-lg px-2 py-1.5 text-sm dark:text-white">
                   {TRANSPORT_MODES.map(m => (
                     <option key={m.id} value={m.id}>{language === 'bn' ? m.label : m.labelEn}</option>
                   ))}
@@ -150,13 +150,13 @@ export default function CommuteCostCalculator({ onBack }: Props) {
                   <p className="text-xs text-kj-text-dim mb-1">{lbl('Fare per trip (৳)', 'প্রতি যাত্রায় ভাড়া (৳)')}</p>
                   <input type="number" min={0} value={leg.fare}
                     onChange={e => updateLeg(i, 'fare', Number(e.target.value))}
-                    className="w-full bg-white dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-lg px-2 py-1.5 text-sm dark:text-white" />
+                    className="w-full bg-white dark:bg-slate-700 border border-kj-line border-kj-line rounded-lg px-2 py-1.5 text-sm dark:text-white" />
                 </div>
                 <div>
                   <p className="text-xs text-kj-text-dim mb-1">{lbl('Trips per day', 'দৈনিক যাত্রার সংখ্যা')}</p>
                   <input type="number" min={1} max={10} value={leg.trips}
                     onChange={e => updateLeg(i, 'trips', Number(e.target.value))}
-                    className="w-full bg-white dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-lg px-2 py-1.5 text-sm dark:text-white" />
+                    className="w-full bg-white dark:bg-slate-700 border border-kj-line border-kj-line rounded-lg px-2 py-1.5 text-sm dark:text-white" />
                 </div>
               </div>
             </div>
@@ -167,7 +167,7 @@ export default function CommuteCostCalculator({ onBack }: Props) {
               <p className="text-xs text-kj-text-dim mb-1">{lbl('Working days per month', 'মাসে কর্মদিবস')}</p>
               <input type="number" min={1} max={31} value={workDays}
                 onChange={e => updateWorkDays(Number(e.target.value))}
-                className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2 text-sm dark:text-white" />
+                className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl px-3 py-2 text-sm dark:text-white" />
             </div>
           )}
         </div>

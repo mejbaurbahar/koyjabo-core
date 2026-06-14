@@ -18,7 +18,7 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ view, setView }) => {
             <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-12 py-6 md:py-12 pt-6 md:pt-20 pb-24 md:pb-12">
 
                 <div className="text-center mb-12">
-                    <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <div className="w-16 h-16 bg-kj-primary-soft dark:bg-blue-900/30 text-kj-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
                         <FileText className="w-8 h-8" />
                     </div>
                     <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-kj-text">📜 {t('terms.title')}</h1>
@@ -26,8 +26,8 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ view, setView }) => {
                     <SponsoredAdSlot language={language} size="728x90" compact />
                 </div>
 
-                <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-400 p-6 rounded-r-xl mb-10 shadow-sm">
-                    <div className="flex items-center gap-3 text-blue-800 dark:text-blue-200 font-bold mb-2">
+                <div className="bg-kj-primary-soft border-l-4 border-blue-400 p-6 rounded-r-xl mb-10 shadow-sm">
+                    <div className="flex items-center gap-3 text-kj-primary text-kj-primary font-bold mb-2">
                         <CheckCircle2 className="w-5 h-5" />
                         <span>{lbl('Effective Date: January 1, 2024', 'কার্যকর তারিখ: ১ জানুয়ারি ২০২৪')}</span>
                     </div>
@@ -36,7 +36,7 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ view, setView }) => {
 
                 <div className="space-y-8 sm:space-y-12 text-kj-text-dim leading-relaxed text-sm sm:text-base lg:text-lg text-left">
                     <section>
-                        <h2 className="text-2xl font-bold mb-4 text-blue-600 dark:text-blue-400 border-b border-kj-line pb-2">{t('terms.acceptance')}</h2>
+                        <h2 className="text-2xl font-bold mb-4 text-kj-primary border-b border-kj-line pb-2">{t('terms.acceptance')}</h2>
                         <p>
                             {t('terms.acceptanceText')}
                         </p>
@@ -71,7 +71,7 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ view, setView }) => {
                         </div>
                         <div className="p-6 bg-kj-panel rounded-2xl border border-kj-line">
                             <h3 className="font-bold text-kj-text mb-3 flex items-center gap-2">
-                                <Train className="w-5 h-5 text-blue-500" /> {t('terms.trainDataTitle')}
+                                <Train className="w-5 h-5 text-kj-primary" /> {t('terms.trainDataTitle')}
                             </h3>
                             <p className="text-sm text-kj-text-dim">
                                 {t('terms.trainDataDesc')}
@@ -112,7 +112,7 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ view, setView }) => {
                         </div>
                         <div className="p-4 sm:p-6 bg-kj-panel rounded-2xl border border-kj-line">
                             <h3 className="font-bold text-kj-text mb-3 flex items-center gap-2">
-                                <ExternalLink className="w-5 h-5 text-blue-500" /> {t('terms.modificationsTitle')}
+                                <ExternalLink className="w-5 h-5 text-kj-primary" /> {t('terms.modificationsTitle')}
                             </h3>
                             <p className="text-sm text-kj-text-dim">
                                 {t('terms.modificationsDesc')}

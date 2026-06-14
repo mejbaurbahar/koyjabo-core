@@ -39,6 +39,12 @@ export default {
                 'kj-amber': 'var(--kj-amber)',
                 'kj-amber-soft': 'var(--kj-amber-soft)',
                 'kj-metro-bg': 'var(--kj-metro-bg)',
+                // Neon futuristic extras
+                'kj-neon-cyan': 'var(--kj-neon-cyan)',
+                'kj-neon-magenta': 'var(--kj-neon-magenta)',
+                'kj-neon-violet': 'var(--kj-neon-violet)',
+                'kj-neon-amber': 'var(--kj-neon-amber)',
+                'kj-grid': 'var(--kj-grid)',
             },
             fontFamily: {
                 sans: ["'Inter'", 'system-ui', '-apple-system', 'sans-serif'],

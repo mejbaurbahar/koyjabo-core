@@ -77,7 +77,7 @@ export default function TrainPhotoGallery({ trainId, trainName, onBack }: Props)
         <button onClick={onBack} className="p-2 -ml-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full">
           <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
         </button>
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-kj-primary to-kj-neon-violet flex items-center justify-center">
           <Train className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1">

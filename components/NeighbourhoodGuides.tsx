@@ -695,9 +695,9 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
           <div className="bg-kj-panel rounded-2xl p-4 border border-kj-line">
             <p className="text-sm text-kj-text-dim">{desc}</p>
           </div>
-          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 border border-blue-100 dark:border-blue-800">
+          <div className="bg-kj-primary-soft rounded-2xl p-4 border border-blue-100 dark:border-blue-800">
             <h3 className="font-bold text-blue-900 dark:text-blue-300 mb-2 flex items-center gap-2"><span>🚇</span> {lbl('Metro / MRT Access', 'মেট্রো স্টেশন')}</h3>
-            {metro.map(m => <p key={m} className="text-sm text-blue-800 dark:text-blue-200 py-0.5">• {m}</p>)}
+            {metro.map(m => <p key={m} className="text-sm text-kj-primary text-kj-primary py-0.5">• {m}</p>)}
           </div>
           <div className="bg-green-50 dark:bg-green-900/20 rounded-2xl p-4 border border-green-100 dark:border-green-800">
             <h3 className="font-bold text-green-900 dark:text-green-300 mb-2 flex items-center gap-2"><Bus className="w-4 h-4" /> {lbl('Bus Routes', 'বাস রুট')}</h3>
@@ -747,7 +747,7 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder={lbl('Search areas...', 'এলাকা খুঁজুন...')}
-            className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl pl-9 pr-3 py-2.5 text-sm text-kj-text dark:text-white placeholder-kj-text-faint focus:outline-none focus:ring-2 focus:ring-purple-400"
+            className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl pl-9 pr-3 py-2.5 text-sm text-kj-text dark:text-white placeholder-kj-text-faint focus:outline-none focus:ring-2 focus:ring-purple-400"
           />
           {search && (
             <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-kj-text-faint hover:text-kj-text">

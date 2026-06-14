@@ -378,7 +378,7 @@ const TrainRouteMap: React.FC<TrainRouteMapProps> = ({
       {showLayers && (
         <div className="absolute top-20 right-2 z-[500] bg-kj-panel rounded-xl shadow-lg p-3 w-40 text-xs font-medium text-kj-text-dim">
           <div className="flex items-center gap-2 mb-1">
-            <Train className="w-3.5 h-3.5 text-blue-500" />
+            <Train className="w-3.5 h-3.5 text-kj-primary" />
             <span>{bn ? 'রেল রুট ম্যাপ' : 'Rail Route Map'}</span>
           </div>
           <p className="text-kj-text-faint text-[10px] leading-tight mt-1">

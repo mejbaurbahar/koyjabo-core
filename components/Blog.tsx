@@ -55,7 +55,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                                 value={searchQuery}
                                 onChange={e => setSearchQuery(e.target.value)}
                                 placeholder={t('blog.searchPlaceholder')}
-                                className="w-full pl-9 pr-9 py-2.5 bg-kj-chip-bg border border-kj-line rounded-xl text-sm text-kj-text placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                                className="w-full pl-9 pr-9 py-2.5 bg-kj-chip-bg border border-kj-line rounded-xl text-sm text-kj-text placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-kj-primary/40"
                             />
                             {searchQuery && (
                                 <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -138,7 +138,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                                     </p>
                                     <div className="flex items-center justify-between">
                                         <span className="text-sm text-kj-text-dim">{t('blog.by')}: {featuredPost.author}</span>
-                                        <button className="inline-flex items-center gap-2 px-4 py-2 bg-kj-primary hover:bg-teal-700 text-white rounded-xl font-medium text-sm transition-all group-hover:gap-3">
+                                        <button className="inline-flex items-center gap-2 px-4 py-2 bg-kj-primary hover:brightness-110 text-kj-primary-ink rounded-xl font-medium text-sm transition-all group-hover:gap-3">
                                             {t('blog.readMore')}<ArrowRight className="w-4 h-4" />
                                         </button>
                                     </div>
@@ -204,7 +204,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                     <SponsoredAdSlot language={language} size="728x90" compact />
 
                     {/* SEO Footer */}
-                    <div className="mt-6 bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-slate-800 dark:to-slate-700 rounded-2xl p-6 text-center border border-teal-100 dark:border-teal-800">
+                    <div className="mt-6 bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-kj-panel dark:to-kj-panel-muted rounded-2xl p-6 text-center border border-teal-100 border-kj-primary/30">
                         <p className="text-sm font-semibold text-teal-700 dark:text-teal-300 mb-1">koyjabo.com</p>
                         <p className="text-xs text-kj-text-dim">
                             {language === 'bn'

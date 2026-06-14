@@ -84,7 +84,7 @@ const ApiKeyManagement: React.FC<ApiKeyManagementProps> = ({ onClose }) => {
 
                     {/* Info */}
                     <div className="bg-blue-50 dark:bg-blue-900/30 rounded-xl p-4 mb-6 border border-blue-100 dark:border-blue-800">
-                        <p className="text-sm text-blue-900 dark:text-blue-200 text-center">
+                        <p className="text-sm text-blue-900 text-kj-primary text-center">
                             <strong>Note:</strong> The Koy Jabo AI Assistant is our official intelligent route-finding system. No API key management needed!
                         </p>
                     </div>

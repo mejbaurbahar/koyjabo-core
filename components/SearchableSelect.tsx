@@ -127,7 +127,7 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({ options, val
                                     setSearchTerm(option.name);
                                     setIsOpen(false);
                                 }}
-                                className="px-4 py-3 hover:bg-kj-chip-bg dark:hover:bg-slate-700 cursor-pointer border-b border-gray-50 dark:border-gray-700 last:border-0 flex items-center justify-between group"
+                                className="px-4 py-3 hover:bg-kj-chip-bg dark:hover:bg-slate-700 cursor-pointer border-b border-gray-50 border-kj-line last:border-0 flex items-center justify-between group"
                             >
                                 <div className="flex-1">
                                     <div className="text-sm font-semibold text-kj-text">

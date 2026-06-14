@@ -131,7 +131,7 @@ export default function TrainRating({ trainId, trainName, onBack }: Props) {
         <button onClick={onBack} className="p-2 -ml-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full">
           <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
         </button>
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-kj-primary to-kj-neon-violet flex items-center justify-center">
           <Train className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1">
@@ -190,7 +190,7 @@ export default function TrainRating({ trainId, trainName, onBack }: Props) {
                 </div>
                 <textarea value={comment} onChange={e => setComment(e.target.value.slice(0, 500))}
                   placeholder={t('community.writeExperienceOptional')} rows={3} maxLength={500}
-                  className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white resize-none" />
+                  className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm dark:text-white resize-none" />
                 <div className="flex gap-2">
                   <button type="submit" disabled={submitting}
                     className="flex-1 py-2.5 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white font-semibold text-sm rounded-xl flex items-center justify-center gap-2">
@@ -227,7 +227,7 @@ export default function TrainRating({ trainId, trainName, onBack }: Props) {
               <div key={r.userId + r.timestamp} className="bg-kj-panel rounded-2xl p-4 border border-kj-line">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-kj-primary to-kj-neon-violet flex items-center justify-center text-white text-xs font-bold shrink-0">
                       {(r.displayName || 'U').charAt(0).toUpperCase()}
                     </div>
                     <div>
