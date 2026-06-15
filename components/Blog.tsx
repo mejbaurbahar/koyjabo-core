@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Clock, Search, X, ArrowLeft } from 'lucide-react';
+import { Clock, ArrowLeft, Search, X } from 'lucide-react';
 import { BLOG_POSTS } from '../data/blogPosts';
 import { useLanguage } from '../contexts/LanguageContext';
 import SponsoredAdSlot from './SponsoredAdSlot';
@@ -13,12 +13,21 @@ interface BlogProps {
 const CATEGORIES = ['All', 'Travel Guide', 'Metro Rail', 'Bus & Transport', 'App Guide', 'Tips & Tricks'];
 
 const CAT_COLORS: Record<string, [string, string]> = {
-    'Travel Guide':   ['#10b981', '#006a4e'],
-    'Metro Rail':     ['#3b82f6', '#1d4ed8'],
-    'Bus & Transport':['#10b981', '#006a4e'],
-    'Tips & Tricks':  ['#0ea5e9', '#0369a1'],
-    'App Guide':      ['#8b5cf6', '#5b21b6'],
-    'All':            ['#ef4444', '#b91c1c'],
+    'Travel Guide':    ['#10b981', '#006a4e'],
+    'Metro Rail':      ['#3b82f6', '#1d4ed8'],
+    'Bus & Transport': ['#10b981', '#006a4e'],
+    'Tips & Tricks':   ['#0ea5e9', '#0369a1'],
+    'App Guide':       ['#8b5cf6', '#5b21b6'],
+    'All':             ['#ef4444', '#b91c1c'],
+};
+
+const CAT_LABEL: Record<string, [string, string]> = {
+    'All':             ['All', 'সব'],
+    'Travel Guide':    ['Guides', 'গাইড'],
+    'Metro Rail':      ['Metro', 'মেট্রো'],
+    'Bus & Transport': ['Tips', 'টিপস'],
+    'App Guide':       ['Reviews', 'রিভিউ'],
+    'Tips & Tricks':   ['News', 'খবর'],
 };
 
 function getCatColors(cat: string): [string, string] {
@@ -48,32 +57,32 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
     const regularPosts = filteredPosts.slice(1);
 
     return (
-        <div className="w-full pb-nav-safe bg-kj-bg">
-            <div className="max-w-2xl mx-auto px-4 pt-safe">
+        <div className="min-h-screen bg-kj-bg text-kj-text overflow-y-auto pb-32">
 
-                {/* Back button row */}
-                <div className="flex items-center gap-2 py-4">
-                    <button
-                        onClick={onBack}
-                        className="flex items-center gap-1.5 text-kj-text-dim hover:text-kj-text transition-colors"
-                    >
-                        <ArrowLeft className="w-4 h-4" />
-                        <span className="text-sm font-semibold">{lbl('Back', 'ফিরে যান')}</span>
-                    </button>
-                    <h1 className="ml-auto text-base font-bold text-kj-text">
-                        {t('blog.title')}
-                    </h1>
-                </div>
+            {/* Sticky back bar */}
+            <div className="sticky top-0 z-20 bg-kj-bg/90 backdrop-blur-md border-b border-kj-line flex items-center gap-3 px-4 py-3">
+                <button
+                    onClick={onBack}
+                    className="w-9 h-9 rounded-xl border border-kj-line bg-kj-panel text-kj-text-dim flex items-center justify-center active:scale-90 transition-all hover:border-kj-primary/40 hover:text-kj-primary"
+                >
+                    <ArrowLeft className="w-4 h-4" />
+                </button>
+                <span className="font-bengali font-bold text-base text-kj-text">
+                    {lbl('KoyJabo Blog', 'কই যাবো ব্লগ')}
+                </span>
+            </div>
+
+            <div className="px-4 py-5 space-y-4 max-w-2xl mx-auto w-full">
 
                 {/* Search */}
-                <div className="relative mb-4">
+                <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-kj-text-faint" />
                     <input
                         type="text"
                         value={searchQuery}
                         onChange={e => setSearchQuery(e.target.value)}
                         placeholder={t('blog.searchPlaceholder')}
-                        className="w-full pl-9 pr-9 py-2.5 bg-kj-chip-bg border border-kj-line rounded-xl text-sm text-kj-text placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-kj-primary/40"
+                        className="w-full pl-9 pr-9 py-2.5 bg-kj-input-bg border border-kj-line rounded-xl text-sm text-kj-text placeholder-kj-text-faint focus:outline-none focus:border-kj-primary/50 transition-colors"
                     />
                     {searchQuery && (
                         <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -82,21 +91,30 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                     )}
                 </div>
 
-                {/* Category filter chips */}
-                <div className="flex gap-2 overflow-x-auto pb-2 mb-5 scrollbar-hide">
-                    {CATEGORIES.map(cat => (
-                        <button
-                            key={cat}
-                            onClick={() => setSelectedCategory(cat)}
-                            className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
-                                selectedCategory === cat
-                                    ? 'bg-kj-text text-kj-bg border-kj-text'
-                                    : 'bg-kj-panel border-kj-line text-kj-text-dim hover:border-kj-text-dim'
-                            }`}
-                        >
-                            {cat === 'All' ? t('blog.allCategories') : cat}
-                        </button>
-                    ))}
+                {/* Filter chips */}
+                <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                    {CATEGORIES.map(cat => {
+                        const [en, bn] = CAT_LABEL[cat] ?? [cat, cat];
+                        const isActive = selectedCategory === cat;
+                        return (
+                            <button
+                                key={cat}
+                                onClick={() => setSelectedCategory(cat)}
+                                className="shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold border transition-all active:scale-95 font-bengali"
+                                style={isActive ? {
+                                    background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))',
+                                    color: 'var(--kj-primary-ink)',
+                                    borderColor: 'var(--kj-primary)',
+                                } : {
+                                    background: 'var(--kj-panel)',
+                                    color: 'var(--kj-text-dim)',
+                                    borderColor: 'var(--kj-line)',
+                                }}
+                            >
+                                {lbl(en, bn)}
+                            </button>
+                        );
+                    })}
                 </div>
 
                 {/* No results */}
@@ -113,54 +131,55 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                     </div>
                 )}
 
-                {/* Featured post card */}
+                {/* Featured post */}
                 {featuredPost && (() => {
-                    const [gradColor1, gradColor2] = getCatColors(featuredPost.category);
+                    const [c1, c2] = getCatColors(featuredPost.category);
                     return (
                         <div
                             onClick={() => onSelectPost(featuredPost.slug)}
-                            className="dc-card rounded-2xl overflow-hidden cursor-pointer mb-4 border border-kj-line"
+                            className="dc-card rounded-2xl overflow-hidden cursor-pointer border border-kj-line active:scale-[0.99] transition-all"
                         >
-                            {/* Gradient banner with SVG */}
+                            {/* Hero gradient */}
                             <div
                                 className="relative h-40 w-full overflow-hidden"
-                                style={{ background: `linear-gradient(135deg, ${gradColor1}, ${gradColor2})` }}
+                                style={{ background: `linear-gradient(135deg, ${c1}, ${c2})` }}
                             >
-                                <svg viewBox="0 0 400 160" className="w-full h-full absolute inset-0">
-                                    <circle cx="80" cy="120" r="40" fill="rgba(255,255,255,0.15)"/>
-                                    <circle cx="320" cy="40" r="60" fill="rgba(255,255,255,0.1)"/>
-                                    <g transform="translate(160, 60) scale(0.5)">
-                                        <rect width="180" height="80" rx="14" fill="rgba(255,255,255,0.9)"/>
-                                        <rect x="20" y="20" width="40" height="30" rx="4" fill={gradColor1}/>
-                                        <rect x="120" y="20" width="40" height="30" rx="4" fill={gradColor1}/>
-                                        <circle cx="40" cy="90" r="14" fill="rgba(0,0,0,0.3)"/>
-                                        <circle cx="140" cy="90" r="14" fill="rgba(0,0,0,0.3)"/>
-                                    </g>
+                                <svg viewBox="0 0 400 160" className="w-full h-full absolute inset-0" preserveAspectRatio="xMidYMid slice">
+                                    <circle cx="60" cy="130" r="50" fill="rgba(255,255,255,0.12)" />
+                                    <circle cx="340" cy="30" r="70" fill="rgba(255,255,255,0.08)" />
+                                    <circle cx="200" cy="80" r="30" fill="rgba(255,255,255,0.07)" />
                                 </svg>
-                                {/* Featured badge */}
-                                <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-xs font-bold bg-black/60 text-white">
+                                <span
+                                    className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[11px] font-bold"
+                                    style={{ background: 'rgba(0,0,0,0.55)', color: '#fff' }}
+                                >
                                     ★ {lbl('Featured', 'ফিচার্ড')}
                                 </span>
                             </div>
 
                             {/* Card content */}
                             <div className="p-4">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-kj-primary-soft text-kj-primary-deep dark:text-kj-primary">
+                                <div className="flex items-center gap-2 mb-2 flex-wrap">
+                                    <span
+                                        className="px-2.5 py-0.5 rounded-full text-[11px] font-bold"
+                                        style={{ background: `${c1}22`, color: c1 }}
+                                    >
                                         {featuredPost.category}
                                     </span>
-                                    <span className="text-xs text-kj-text-faint flex items-center gap-1">
+                                    <span className="text-[11px] text-kj-text-faint flex items-center gap-1">
                                         <Clock className="w-3 h-3" />{featuredPost.readTime}
                                     </span>
-                                    <span className="text-xs text-kj-text-faint ml-auto">
+                                    <span className="text-[11px] text-kj-text-faint ml-auto">
                                         {new Date(featuredPost.publishDate).toLocaleDateString(
                                             language === 'bn' ? 'bn-BD' : 'en-US',
                                             { year: 'numeric', month: 'short', day: 'numeric' }
                                         )}
                                     </span>
                                 </div>
-                                <h2 className="font-bengali font-bold text-kj-text leading-snug"
-                                    style={{ fontSize: '17px' }}>
+                                <h2
+                                    className="font-bengali font-bold text-kj-text leading-snug"
+                                    style={{ fontSize: '17px' }}
+                                >
                                     {language === 'bn' ? featuredPost.bnTitle : featuredPost.title}
                                 </h2>
                             </div>
@@ -168,35 +187,28 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                     );
                 })()}
 
-                {/* Ad between featured and list */}
-                <SponsoredAdSlot language={language} size="728x90" compact />
+                {/* Ad */}
+                <SponsoredAdSlot language={language} size="300x250" compact />
 
-                {/* List of remaining posts */}
+                {/* Post list */}
                 {regularPosts.length > 0 && (
-                    <div className="mt-4 space-y-3">
+                    <div className="space-y-3">
                         {regularPosts.map(post => {
-                            const [gradColor1, gradColor2] = getCatColors(post.category);
+                            const [c1, c2] = getCatColors(post.category);
                             return (
                                 <div
                                     key={post.id}
                                     onClick={() => onSelectPost(post.slug)}
-                                    className="dc-card rounded-xl cursor-pointer border border-kj-line p-3 flex items-center gap-3"
+                                    className="dc-card rounded-xl cursor-pointer border border-kj-line p-3 flex items-center gap-3 active:scale-[0.99] transition-all hover:border-kj-primary/40"
                                 >
                                     {/* Thumbnail */}
                                     <div
-                                        className="shrink-0 w-20 h-20 rounded-xl overflow-hidden"
-                                        style={{ background: `linear-gradient(135deg, ${gradColor1}, ${gradColor2})` }}
+                                        className="shrink-0 w-20 h-20 rounded-xl overflow-hidden relative"
+                                        style={{ background: `linear-gradient(135deg, ${c1}, ${c2})` }}
                                     >
-                                        <svg viewBox="0 0 80 80" className="w-full h-full">
-                                            <circle cx="15" cy="60" r="18" fill="rgba(255,255,255,0.15)"/>
-                                            <circle cx="65" cy="20" r="24" fill="rgba(255,255,255,0.1)"/>
-                                            <g transform="translate(18, 24) scale(0.24)">
-                                                <rect width="180" height="80" rx="14" fill="rgba(255,255,255,0.9)"/>
-                                                <rect x="20" y="20" width="40" height="30" rx="4" fill={gradColor1}/>
-                                                <rect x="120" y="20" width="40" height="30" rx="4" fill={gradColor1}/>
-                                                <circle cx="40" cy="90" r="14" fill="rgba(0,0,0,0.3)"/>
-                                                <circle cx="140" cy="90" r="14" fill="rgba(0,0,0,0.3)"/>
-                                            </g>
+                                        <svg viewBox="0 0 80 80" className="w-full h-full absolute inset-0">
+                                            <circle cx="15" cy="65" r="22" fill="rgba(255,255,255,0.12)" />
+                                            <circle cx="65" cy="15" r="28" fill="rgba(255,255,255,0.08)" />
                                         </svg>
                                     </div>
 
@@ -204,21 +216,22 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-1.5 mb-1">
                                             <span
-                                                className="text-xs font-bold uppercase tracking-wide text-kj-primary"
+                                                className="text-[10px] font-bold uppercase tracking-wide"
+                                                style={{ color: c1 }}
                                             >
                                                 {post.category}
                                             </span>
-                                            <span className="text-xs text-kj-text-faint ml-auto">
+                                            <span className="text-[10px] text-kj-text-faint ml-auto">
                                                 {new Date(post.publishDate).toLocaleDateString(
                                                     language === 'bn' ? 'bn-BD' : 'en-US',
                                                     { month: 'short', day: 'numeric' }
                                                 )}
                                             </span>
                                         </div>
-                                        <h3 className="font-bold text-kj-text text-sm leading-snug line-clamp-2">
+                                        <h3 className="font-bengali font-bold text-kj-text text-sm leading-snug line-clamp-2">
                                             {language === 'bn' ? post.bnTitle : post.title}
                                         </h3>
-                                        <span className="text-xs text-kj-text-faint flex items-center gap-1 mt-1">
+                                        <span className="text-[10px] text-kj-text-faint flex items-center gap-1 mt-1">
                                             <Clock className="w-3 h-3" />{post.readTime}
                                         </span>
                                     </div>
@@ -231,7 +244,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                 <SponsoredAdSlot language={language} size="728x90" compact />
 
                 {/* SEO Footer */}
-                <div className="mt-6 mb-4 bg-kj-panel rounded-2xl p-5 text-center border border-kj-line">
+                <div className="bg-kj-panel rounded-2xl p-5 text-center border border-kj-line">
                     <p className="text-sm font-semibold text-kj-primary mb-1">koyjabo.com</p>
                     <p className="text-xs text-kj-text-dim">
                         {lbl(

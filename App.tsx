@@ -2387,93 +2387,271 @@ const App: React.FC = () => {
     );
   };
 
-  const renderAiAssistant = () => (
-    <div className="flex flex-col flex-1 min-h-0 w-full bg-kj-bg md:rounded-l-3xl md:border-l md:border-kj-line md:border-kj-line overflow-hidden max-w-full">
-      <div className="md:hidden flex items-center gap-3 p-4 bg-kj-panel border-b border-kj-line shadow-sm z-20 shrink-0">
-        <button onClick={() => setView(AppView.HOME)} className="p-2 -ml-2 hover:bg-kj-chip-bg rounded-full transition-colors">
-          <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
-        </button>
-        <div className="w-10 h-10 rounded-full bg-kj-primary flex items-center justify-center text-kj-primary-ink shadow-lg ">
-          <Bot className="w-6 h-6" />
-        </div>
-        <div className="flex-1">
-          <h2 className="text-lg font-bold text-kj-text">{t('common.appName')} {t('nav.aiAssistant')}</h2>
-          <p className="text-xs font-bold flex items-center gap-1 text-kj-primary">
-            <span className="w-1.5 h-1.5 rounded-full bg-kj-primary animate-pulse"></span> {t('common.ready')}
-          </p>
-        </div>
+  const AI_QUICK_CHIPS = language === 'bn'
+    ? ['⚡ দ্রুত রুট খুঁজুন', '🚆 ট্রেনের সময়সূচী', '💰 ভাড়া হিসাব', '📍 কাছাকাছি স্টপ']
+    : ['⚡ Quick route', '🚆 Train schedule', '💰 Calc fare', '📍 Nearby stops'];
 
-      </div>
+  const renderAiAssistant = () => {
+    const recentSessions = getAllSessions()
+      .sort((a, b) => b.lastUpdated - a.lastUpdated)
+      .slice(0, 5);
 
+    const AI_CAPABILITIES = language === 'bn'
+      ? ['রুট ও ভাড়া বের করা', 'ট্রিপ প্ল্যান করা', 'লাইভ ডিলে চেক', 'বাস/ট্রেন সময়সূচী']
+      : ['Find routes & fares', 'Plan multi-leg trips', 'Check live delays', 'Bus / train schedules'];
 
+    return (
+      <div className="flex flex-1 min-h-0 w-full overflow-hidden bg-kj-bg">
 
-      <div className="hidden md:flex items-center gap-3 p-4 bg-kj-panel border-b border-kj-line shadow-sm z-20 shrink-0 md:sticky md:top-16">
-        <div className="w-10 h-10 rounded-full bg-kj-primary flex items-center justify-center text-kj-primary-ink shadow-lg ">
-          <Bot className="w-6 h-6" />
-        </div>
-        <div className="flex-1">
-          <h2 className="text-lg font-bold text-kj-text">{t('common.appName')} {t('nav.aiAssistant')}</h2>
-          <p className="text-xs font-bold flex items-center gap-1 text-kj-primary">
-            <span className="w-1.5 h-1.5 rounded-full bg-kj-primary animate-pulse"></span> {t('common.ready')}
-          </p>
-        </div>
-
-      </div>
-
-
-
-      <div
-        ref={chatMessagesContainerRef}
-        className="flex-1 min-h-0 p-4 space-y-4 bg-kj-bg overflow-y-auto overscroll-y-contain touch-pan-y"
-        style={{ WebkitOverflowScrolling: 'touch' }}
-      >
-        {/* <AdSenseAd adSlot="auto" className="mb-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-
-
-        {chatHistory.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-center p-8 opacity-50">
-            <Bot className="w-16 h-16 text-kj-text-faint mb-4" />
-            <p className="text-sm font-medium text-kj-text-dim">{t('ai.emptyState')}</p>
-          </div>
-        ) : (
-          chatHistory.map((msg, idx) => (
-            <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-kj-primary dark:bg-kj-primary text-kj-primary-ink rounded-br-none' : 'bg-kj-panel text-kj-text border border-kj-line rounded-bl-none'}`}>
-                  <div className="whitespace-pre-wrap">{msg.text.split(/(\*\*[^*]+\*\*)/).map((part, i) =>
-                    /^\*\*[^*]+\*\*$/.test(part)
-                      ? <strong key={i}>{part.slice(2, -2)}</strong>
-                      : part
-                  )}</div>
-                </div>
-              </div>
-          ))
-        )}
-
-
-        {aiLoading && <AiThinkingIndicator />}
-        <div ref={chatEndRef}></div>
-      </div>
-
-      <div className="shrink-0 p-4 bg-kj-panel border-t border-kj-line pb-safe mb-16 md:mb-0">
-        <form onSubmit={handleAiSubmit} className="flex gap-2 relative">
-          <input
-            type="text"
-            value={aiQuery}
-            onChange={(e) => setAiQuery(e.target.value)}
-            placeholder={t('ai.placeholder')}
-            className="w-full bg-kj-chip-bg border-0 rounded-xl pl-4 pr-12 py-3 text-sm dark:text-gray-100 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/40 focus:bg-kj-panel dark:focus:bg-kj-chip-bg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-          />
+        {/* ── Left sidebar (desktop only, fixed) ── */}
+        <aside
+          className="hidden md:flex flex-col w-[260px] shrink-0 border-r border-kj-line bg-kj-panel overflow-y-auto p-4 gap-4"
+          style={{ position: 'sticky', top: 0, alignSelf: 'flex-start', height: '100vh' }}
+        >
+          {/* New conversation */}
           <button
-            type="submit"
-            disabled={!aiQuery.trim() || aiLoading}
-            className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 text-white rounded-xl disabled:opacity-40 disabled:bg-gray-400 transition-all hover:shadow-lg hover:shadow-blue-500/50 hover:scale-105 active:scale-95 disabled:hover:scale-100 disabled:hover:shadow-none group"
+            onClick={() => { setChatHistory([]); setCurrentSessionId(null); }}
+            className="w-full flex items-center gap-2 px-4 py-3 rounded-[14px] font-bold text-sm font-bengali text-kj-primary-ink active:scale-95 transition-all"
+            style={{
+              background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))',
+              boxShadow: '0 6px 18px -8px var(--kj-primary)',
+            }}
           >
-            <Navigation className="w-5 h-5 rotate-90 group-hover:rotate-[100deg] transition-transform" />
+            <Sparkles className="w-4 h-4 shrink-0" />
+            {language === 'bn' ? 'নতুন কথোপকথন' : 'New conversation'}
           </button>
-        </form>
+
+          {/* Recent chats */}
+          {recentSessions.length > 0 && (
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans px-1 mb-2">
+                {language === 'bn' ? 'সম্প্রতি' : 'Recent'}
+              </p>
+              <div className="flex flex-col gap-0.5">
+                {recentSessions.map((session) => {
+                  const firstMsg = session.messages.find(m => m.role === 'user');
+                  const label = firstMsg
+                    ? firstMsg.text.slice(0, 38) + (firstMsg.text.length > 38 ? '…' : '')
+                    : (language === 'bn' ? 'কথোপকথন' : 'Conversation');
+                  const isActive = currentSessionId === session.id;
+                  return (
+                    <button
+                      key={session.id}
+                      onClick={() => { setChatHistory(session.messages); setCurrentSessionId(session.id); }}
+                      className={`text-left px-3 py-2 rounded-[10px] transition-all ${isActive ? 'bg-kj-chip-bg' : 'hover:bg-kj-chip-bg/50'}`}
+                    >
+                      <p className={`text-[13px] font-bengali truncate ${isActive ? 'font-bold text-kj-text' : 'font-medium text-kj-text-dim'}`}>
+                        {label}
+                      </p>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* What can AI do */}
+          <div className="dc-card rounded-[14px] p-3.5 mt-auto">
+            <p className="font-bengali font-bold text-[13px] text-kj-text mb-2">
+              {language === 'bn' ? 'AI কী করতে পারে?' : 'What can the AI do?'}
+            </p>
+            <ul className="space-y-1.5">
+              {AI_CAPABILITIES.map((cap, i) => (
+                <li key={i} className="flex items-start gap-1.5 font-bengali text-[12px] text-kj-text-dim">
+                  <span className="text-kj-primary mt-0.5">•</span> {cap}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </aside>
+
+        {/* ── Right chat area ── */}
+        <div className="flex flex-col flex-1 min-h-0">
+
+          {/* Mobile back bar */}
+          <div className="md:hidden flex items-center gap-3 px-4 py-3 bg-kj-panel border-b border-kj-line shrink-0 z-20">
+            <button
+              onClick={() => setView(AppView.HOME)}
+              className="w-9 h-9 rounded-xl border border-kj-line flex items-center justify-center text-kj-text-dim hover:text-kj-primary transition-colors active:scale-90"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+            <div
+              className="w-9 h-9 rounded-full flex items-center justify-center text-kj-primary-ink shrink-0"
+              style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))' }}
+            >
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <div className="flex-1">
+              <p className="font-bengali font-bold text-[15px] text-kj-text leading-tight">
+                {language === 'bn' ? 'কই যাবো AI' : 'KoyJabo AI'}
+              </p>
+              <p className="text-[11px] text-kj-text-dim font-sans flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-kj-primary kj-anim-glow" />
+                {language === 'bn' ? 'অনলাইন · বাংলা ও ইংরেজি' : 'Online · Bangla & English'}
+              </p>
+            </div>
+            <span
+              className="text-[10px] font-bold px-2 py-0.5 rounded-full font-sans"
+              style={{ background: 'var(--kj-amber-soft)', color: 'var(--kj-amber)' }}
+            >
+              Gemini 2.0
+            </span>
+          </div>
+
+          {/* Desktop chat header */}
+          <div className="hidden md:flex items-center gap-3 px-5 py-3.5 bg-kj-panel border-b border-kj-line shrink-0 z-20">
+            <div
+              className="w-11 h-11 rounded-[14px] flex items-center justify-center text-kj-primary-ink shrink-0"
+              style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))' }}
+            >
+              <Sparkles className="w-6 h-6" />
+            </div>
+            <div className="flex-1">
+              <p className="font-bengali font-bold text-[18px] text-kj-text leading-tight tracking-tight">
+                {language === 'bn' ? 'কই যাবো AI' : 'KoyJabo AI'}
+              </p>
+              <p className="text-[12px] text-kj-text-dim font-sans flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-kj-primary kj-anim-glow" />
+                {language === 'bn' ? 'অনলাইন · বাংলা ও ইংরেজি' : 'Online · Bangla & English'}
+              </p>
+            </div>
+            <span
+              className="text-[10px] font-bold px-2.5 py-1 rounded-full font-sans"
+              style={{ background: 'var(--kj-amber-soft)', color: 'var(--kj-amber)' }}
+            >
+              Gemini 2.0
+            </span>
+          </div>
+
+          {/* Messages */}
+          <div
+            ref={chatMessagesContainerRef}
+            className="flex-1 min-h-0 px-4 py-5 space-y-4 bg-kj-bg overflow-y-auto overscroll-y-contain touch-pan-y"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
+            {chatHistory.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-full text-center p-8">
+                <div
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 text-kj-primary-ink"
+                  style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))' }}
+                >
+                  <Sparkles className="w-8 h-8" />
+                </div>
+                <p className="font-bengali font-bold text-base text-kj-text mb-1">
+                  {language === 'bn' ? 'কই যাবো AI' : 'KoyJabo AI'}
+                </p>
+                <p className="text-sm font-bengali text-kj-text-dim max-w-[260px] leading-relaxed">
+                  {language === 'bn'
+                    ? 'যেকোনো ভাষায় জিজ্ঞেস করুন — বাংলায় বা ইংরেজিতে'
+                    : 'Ask in Bangla or English — route, fare, schedule, anything'}
+                </p>
+              </div>
+            ) : (
+              chatHistory.map((msg, idx) => (
+                <div
+                  key={idx}
+                  className={`flex gap-2.5 ${msg.role === 'user' ? 'justify-end flex-row-reverse' : 'justify-start'}`}
+                >
+                  {/* Avatar */}
+                  {msg.role === 'assistant' && (
+                    <div
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-kj-primary-ink shrink-0 self-end"
+                      style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))' }}
+                    >
+                      <Sparkles className="w-3.5 h-3.5" />
+                    </div>
+                  )}
+                  {msg.role === 'user' && (
+                    <div
+                      className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 self-end font-bold text-xs font-sans"
+                      style={{ background: 'var(--kj-accent-soft)', color: 'var(--kj-accent)' }}
+                    >
+                      {t('common.you') || 'You'}
+                    </div>
+                  )}
+                  {/* Bubble */}
+                  <div
+                    className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+                      msg.role === 'user'
+                        ? 'text-kj-primary-ink rounded-br-[4px]'
+                        : 'bg-kj-panel text-kj-text border border-kj-line rounded-bl-[4px]'
+                    }`}
+                    style={msg.role === 'user' ? {
+                      background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))',
+                    } : undefined}
+                  >
+                    <div className="whitespace-pre-wrap font-bengali">
+                      {msg.text.split(/(\*\*[^*]+\*\*)/).map((part, i) =>
+                        /^\*\*[^*]+\*\*$/.test(part)
+                          ? <strong key={i}>{part.slice(2, -2)}</strong>
+                          : part
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+
+            {aiLoading && <AiThinkingIndicator />}
+            <div ref={chatEndRef} />
+          </div>
+
+          {/* Composer */}
+          <div className="shrink-0 p-4 bg-kj-panel border-t border-kj-line pb-safe mb-16 md:mb-0">
+            {/* Quick chips */}
+            <div className="flex gap-2 mb-3 flex-wrap">
+              {AI_QUICK_CHIPS.map((chip, i) => (
+                <button
+                  key={i}
+                  onClick={() => setAiQuery(chip.replace(/^[^\s]+\s/, ''))}
+                  className="px-3 py-1.5 rounded-full text-xs font-bengali font-medium bg-kj-panel-muted text-kj-text-dim border border-kj-line hover:border-kj-primary/40 hover:text-kj-primary transition-all active:scale-95"
+                >
+                  {chip}
+                </button>
+              ))}
+            </div>
+
+            {/* Input row */}
+            <form onSubmit={handleAiSubmit}>
+              <div
+                className="flex items-end gap-2 rounded-[18px] border border-kj-line p-3"
+                style={{ background: 'var(--kj-input-bg)' }}
+              >
+                <textarea
+                  value={aiQuery}
+                  onChange={(e) => setAiQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      if (aiQuery.trim() && !aiLoading) handleAiSubmit(e as unknown as React.FormEvent);
+                    }
+                  }}
+                  placeholder={language === 'bn' ? 'যেকোনো ভাষায় জিজ্ঞেস করুন...' : 'Ask in any language...'}
+                  rows={1}
+                  className="flex-1 bg-transparent border-0 outline-none text-[14px] text-kj-text placeholder:text-kj-text-faint font-bengali resize-none leading-relaxed"
+                  style={{ minHeight: 22 }}
+                />
+                <button
+                  type="submit"
+                  disabled={!aiQuery.trim() || aiLoading}
+                  className="w-9 h-9 rounded-[10px] flex items-center justify-center text-kj-primary-ink shrink-0 disabled:opacity-40 active:scale-90 transition-all"
+                  style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))' }}
+                >
+                  <Navigation className="w-4 h-4 rotate-90" />
+                </button>
+              </div>
+              <p className="text-center text-[10px] text-kj-text-faint font-sans mt-2">
+                {language === 'bn'
+                  ? 'AI ভুল করতে পারে · গুরুত্বপূর্ণ তথ্য যাচাই করুন'
+                  : 'AI can make mistakes · verify important info'}
+              </p>
+            </form>
+          </div>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderAbout = () => (
     <div className="w-full px-4 sm:px-6 md:px-10 py-6 bg-kj-bg">
@@ -2802,186 +2980,66 @@ const App: React.FC = () => {
   );
 
   const renderWhyUse = () => (
-    <div className="w-full px-4 sm:px-6 md:px-10 py-6 bg-kj-panel">
+    <div className="w-full px-4 sm:px-6 md:px-10 py-6 bg-kj-bg">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-kj-text leading-tight">{t('whyUse.title')}</h1>
-        <p className="text-sm sm:text-base text-kj-text-dim mb-6 sm:mb-8">{t('whyUse.subtitle')}</p>
-
-        <div className="space-y-6">
-          {/* Benefit 1 */}
-          <div className="bg-kj-primary-soft p-6 rounded-2xl border border-kj-primary/20">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-kj-primary rounded-xl flex items-center justify-center text-white shrink-0">
-                <Zap className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-kj-text mb-2">{t('whyUse.lightningFast')}</h3>
-                <p className="text-kj-text-dim leading-relaxed">
-                  {t('whyUse.lightningFastDesc')}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Benefit 2 */}
-          <div className="dc-card kj-glass p-6 rounded-2xl border border-kj-line">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-kj-primary rounded-xl flex items-center justify-center text-kj-primary-ink shrink-0">
-                <MapIcon className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-kj-text mb-2">{t('whyUse.completeRoute')}</h3>
-                <p className="text-kj-text-dim leading-relaxed">
-                  {t('whyUse.completeRouteDesc')}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Benefit 3 */}
-          <div className="dc-card kj-glass p-6 rounded-2xl border border-kj-line" style={{ background: 'linear-gradient(135deg, rgba(162,89,255,0.08), rgba(255,42,109,0.06))' }}>
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-kj-neon-violet to-kj-accent rounded-xl flex items-center justify-center text-white shrink-0">
-                <Bot className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-kj-text mb-2">{t('whyUse.aiPowered')}</h3>
-                <p className="text-kj-text-dim leading-relaxed">
-                  {t('whyUse.aiPoweredDesc')}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <SponsoredAdSlot language={language} size="728x90" compact />
-
-
-
-          {/* Benefit 4 */}
-
-          <div className="dc-card kj-glass p-6 rounded-2xl border border-kj-line">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-kj-amber rounded-xl flex items-center justify-center text-kj-primary-ink shrink-0">
-                <Coins className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-kj-text mb-2">{t('whyUse.accurateFare')}</h3>
-                <p className="text-kj-text-dim leading-relaxed">
-                  {t('whyUse.accurateFareDesc')}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Benefit 5 */}
-          <div className="bg-gradient-to-br bg-kj-primary-soft p-6 rounded-2xl border border-kj-primary/20">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-kj-primary rounded-xl flex items-center justify-center text-kj-primary-ink shrink-0">
-                <Navigation className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-kj-text mb-2">{t('whyUse.liveNavigation')}</h3>
-                <p className="text-kj-text-dim leading-relaxed">
-                  {t('whyUse.liveNavigationDesc')}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Benefit 6 */}
-          <div className="dc-card kj-glass p-6 rounded-2xl border border-kj-line">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-kj-accent rounded-xl flex items-center justify-center text-white shrink-0">
-                <Heart className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-kj-text mb-2">{t('whyUse.saveFavorites')}</h3>
-                <p className="text-kj-text-dim leading-relaxed">
-                  {t('whyUse.saveFavoritesDesc')}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Emergency Helpline */}
-          <div className="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/30 dark:to-orange-900/30 p-6 rounded-2xl border border-red-200 dark:border-red-800">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center text-white shrink-0">
-                <Phone className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-kj-text mb-2">{t('whyUse.emergencyHelp')}</h3>
-                <p className="text-kj-text-dim leading-relaxed">
-                  {t('whyUse.emergencyHelpDesc')}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Offline Support */}
-          <div className="bg-gradient-to-br from-slate-50 to-gray-50 dark:from-slate-800 dark:to-gray-800 p-6 rounded-2xl border border-kj-line">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-kj-panel-muted rounded-xl flex items-center justify-center text-kj-text shrink-0">
-                <WifiOff className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-kj-text mb-2">{t('whyUse.worksOffline')}</h3>
-                <p className="text-kj-text-dim leading-relaxed">
-                  {t('whyUse.worksOfflineDesc')}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Metro Integration */}
-          <div className="dc-card kj-glass p-6 rounded-2xl border border-kj-line">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-kj-neon-violet/20 rounded-xl flex items-center justify-center text-kj-neon-violet shrink-0">
-                <Train className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-kj-text mb-2">{t('whyUse.metroIntegration')}</h3>
-                <p className="text-kj-text-dim leading-relaxed">
-                  {t('whyUse.metroIntegrationDesc')}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Railway & Airport Locator */}
-          <div className="bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/30 dark:to-yellow-900/30 p-6 rounded-2xl border border-kj-line">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center text-white shrink-0">
-                <Plane className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-kj-text mb-2">{t('whyUse.railwayAirport')}</h3>
-                <p className="text-kj-text-dim leading-relaxed">
-                  {t('whyUse.railwayAirportDesc')}
-                </p>
-              </div>
-            </div>
-          </div>
+        {/* Hero card */}
+        <div className="dc-card rounded-[22px] p-6 text-center mb-6" style={{ background: `linear-gradient(150deg, var(--kj-primary-soft), var(--kj-panel))` }}>
+          <div className="inline-flex w-14 h-14 rounded-[15px] items-center justify-center text-kj-primary-ink text-2xl font-bold font-bengali mb-4"
+            style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))' }}>ক</div>
+          <h1 className="font-bengali font-bold text-[26px] text-kj-text leading-tight tracking-tight mb-2">
+            {language === 'bn' ? 'কেন কই যাবো?' : 'Why KoyJabo?'}
+          </h1>
+          <p className="font-bengali text-sm text-kj-text-dim leading-relaxed max-w-lg mx-auto">
+            {language === 'bn'
+              ? 'ঢাকার রাস্তায় চলাচল কঠিন হতে পারে। কই যাবো সেটা সহজ করে — কোনো ফি ছাড়াই, আপনার ভাষায়, এমনকি নেট ছাড়াও।'
+              : 'Getting around Bangladesh is hard. KoyJabo makes it simple — no fees, in your language, even without internet.'}
+          </p>
         </div>
 
-        {/* CTA Section */}
-        <div className="mt-12 bg-gradient-to-br from-kj-primary to-kj-primary-deep rounded-2xl p-8 text-white text-center shadow-lg">
-          <h2 className="text-2xl font-bold mb-3">{t('whyUse.readyToNavigate')}</h2>
-          <p className="mb-6 opacity-90">{t('whyUse.readyToNavigateDesc')}</p>
-          <button
-            onClick={() => setView(AppView.HOME)}
-            className="bg-kj-chip-bg text-kj-primary px-8 py-3 rounded-xl font-bold hover:bg-kj-panel transition-all shadow-lg"
-          >
-            {t('whyUse.startFinding')}
+        {/* 6-reason grid */}
+        <div className="grid grid-cols-2 gap-3 mb-5">
+          {[
+            { ic: '🆓', bn: 'সম্পূর্ণ ফ্রি, চিরকাল', en: 'Free, forever', d: language === 'bn' ? 'কোনো সাবস্ক্রিপশন নেই, কোনো লুকানো ফি নেই।' : 'No subscription, no hidden fees — open to everyone.' },
+            { ic: '📡', bn: 'অফলাইনেও কাজ করে', en: 'Works offline', d: language === 'bn' ? 'নেট ছাড়াই সব রুট ও ভাড়া দেখুন।' : 'Install once — see every route and fare with zero internet.' },
+            { ic: '🇧🇩', bn: 'দুই ভাষায়', en: 'Bilingual', d: language === 'bn' ? 'বাংলা ও ইংরেজি — যেভাবে স্বাচ্ছন্দ্য।' : 'Bangla and English — search the way you think.' },
+            { ic: '🗺️', bn: '২,৪০০+ রুট · ৬৪ জেলা', en: '2,400+ routes · 64 districts', d: language === 'bn' ? 'লোকাল বাস, মেট্রো, ট্রেন, লঞ্চ — এক জায়গায়।' : 'Bus, metro, train, launch — all in one place.' },
+            { ic: '✨', bn: 'AI সহায়ক', en: 'AI assistant', d: language === 'bn' ? 'বাংলায় প্রশ্ন করুন, তাৎক্ষণিক রুট ও ভাড়া পান।' : 'Ask in Bangla, get instant routes and fares.' },
+            { ic: '⭐', bn: 'কমিউনিটি রেটিং', en: 'Community-rated', d: language === 'bn' ? 'আসল যাত্রীদের রিভিউ — কোন বাস ভালো, আগেই জানুন।' : 'Reviews from real commuters — know which bus is good.' },
+          ].map((r, i) => (
+            <div key={i} className="dc-card rounded-[16px] p-4">
+              <div className="text-[26px] mb-2">{r.ic}</div>
+              <div className="font-bengali font-bold text-sm text-kj-text leading-snug mb-1">{language === 'bn' ? r.bn : r.en}</div>
+              <p className="font-bengali text-[11px] text-kj-text-dim leading-relaxed">{r.d}</p>
+            </div>
+          ))}
+        </div>
+
+        <SponsoredAdSlot language={language} size="728x90" compact />
+
+        {/* CTA card */}
+        <div className="dc-card rounded-[18px] p-5 flex items-center gap-4 mt-5" style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))', border: 0 }}>
+          <div className="w-11 h-11 rounded-[14px] shrink-0 flex items-center justify-center text-xl"
+            style={{ background: 'rgba(0,0,0,0.2)' }}>↗</div>
+          <div className="flex-1">
+            <div className="font-bengali font-bold text-[15px] text-kj-primary-ink">
+              {language === 'bn' ? 'আজই শুরু করুন' : 'Start your first trip'}
+            </div>
+            <div className="font-bengali text-xs text-kj-primary-ink opacity-80 mt-0.5">
+              {language === 'bn' ? 'কোথা থেকে কোথায় — লিখুন, রুট পান।' : 'From where to where — type it, get routes.'}
+            </div>
+          </div>
+          <button onClick={() => setView(AppView.HOME)}
+            className="shrink-0 px-4 py-2 rounded-xl font-bold text-sm font-sans text-kj-primary"
+            style={{ background: 'rgba(0,0,0,0.25)' }}>
+            {language === 'bn' ? 'শুরু' : 'Go'}
           </button>
         </div>
 
-        {/* Bottom padding for mobile */}
-
         <div className="h-20"></div>
       </div>
-      </div>
+    </div>
   );
+
 
   const renderFAQ = () => (
     <div className="w-full px-4 sm:px-6 md:px-10 py-6 bg-kj-panel">

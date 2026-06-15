@@ -5,7 +5,6 @@ import {
   ArrowLeftRight,
   MapPin,
   Zap,
-  Users,
   Star,
   Bus,
   Navigation,
@@ -17,6 +16,7 @@ import {
 import { BUS_DATA, STATIONS, METRO_STATIONS } from '../constants';
 import { useAuth } from '../src/contexts/AuthContext';
 import { Bus3D } from './design/Vehicles3D';
+import SponsoredAdSlot from './SponsoredAdSlot';
 
 interface LocalBusHubProps {
   onBack: () => void;
@@ -60,18 +60,18 @@ const POPULAR_ROUTES = [
 
 const OPERATORS = [
   { op: 'Green Line', init: 'GL', grad: ['#006a4e', '#10b981'] as [string, string] },
-  { op: 'Hanif', init: 'HF', grad: ['#d92644', '#ff7a3a'] as [string, string] },
   { op: 'BRTC', init: 'BR', grad: ['#1a3a8b', '#0c8a62'] as [string, string] },
+  { op: 'Hanif', init: 'HF', grad: ['#d92644', '#ff7a3a'] as [string, string] },
+  { op: 'Shyamoli', init: 'SH', grad: ['#b46a13', '#f7b955'] as [string, string] },
   { op: 'Projapoti', init: 'PR', grad: ['#2c5e1a', '#7eb344'] as [string, string] },
   { op: 'Anabil', init: 'AB', grad: ['#7c2d12', '#f59e0b'] as [string, string] },
-  { op: 'Unique', init: 'UQ', grad: ['#5b21b6', '#8b5cf6'] as [string, string] },
 ];
 
 const BUS_TYPES = [
-  { en: 'Local', bn: 'লোকাল', icon: '🚌', fare: '৳15–40', desc: 'All stops · high frequency', descBn: 'সব স্টপে থামে · বেশি ফ্রিকোয়েন্সি', blob: '#10b981' },
-  { en: 'AC Seating', bn: 'এসি সিটিং', icon: '❄️', fare: '৳40–80', desc: 'Air conditioned comfort', descBn: 'শীতাতপ নিয়ন্ত্রিত আরামদায়ক', blob: '#3b82f6' },
-  { en: 'Double Decker', bn: 'ডাবল ডেকার', icon: '🚍', fare: '৳35–60', desc: 'Two floors · scenic upper deck', descBn: 'দ্বিতল · উপরের ডেকে দৃশ্য উপভোগ', blob: '#f59e0b' },
-  { en: 'Gulshan Chaka', bn: 'গুলশান চাকা', icon: '🔄', fare: '৳20–30', desc: 'Circular · frequent loops', descBn: 'বৃত্তাকার রুট · ঘন ঘন লুপ', blob: '#8b5cf6' },
+  { en: 'Local', bn: 'লোকাল', icon: '🚌', fare: '৳10–30', desc: 'Non-AC · all stops', descBn: 'নন-এসি · সব স্টপে থামে', blob: '#10b981' },
+  { en: 'AC Seating', bn: 'এসি সিটিং', icon: '❄️', fare: '৳40–80', desc: 'Comfortable · fewer stops', descBn: 'আরামদায়ক · কম স্টপ', blob: '#3b82f6' },
+  { en: 'Double Decker', bn: 'ডাবল ডেকার', icon: '🚍', fare: '৳30–60', desc: 'Upper deck view', descBn: 'উপরের ডেকে দৃশ্য', blob: '#f59e0b' },
+  { en: 'Gulshan Chaka', bn: 'গুলশান চাকা', icon: '⚡', fare: '৳25', desc: 'Express · woman-friendly', descBn: 'এক্সপ্রেস · নারীবান্ধব', blob: '#ec4899' },
 ];
 
 const SORT_CHIPS = [
@@ -83,9 +83,9 @@ const SORT_CHIPS = [
 ];
 
 const FILTER_CHIPS = [
-  { id: 'name', en: 'Name', bn: 'নাম' },
-  { id: 'route', en: 'Route', bn: 'রুট' },
-  { id: 'operator', en: 'Operator', bn: 'অপারেটর' },
+  { id: 'name', en: 'Name', bn: 'নাম', color: '#10b981' },
+  { id: 'route', en: 'Route', bn: 'রুট', color: '#3b82f6' },
+  { id: 'operator', en: 'Operator', bn: 'অপারেটর', color: '#8b5cf6' },
 ];
 
 const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFromId, initialToId }) => {
@@ -177,33 +177,36 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
     <div className="min-h-screen bg-kj-bg text-kj-text overflow-y-auto pb-32">
 
       {/* Sticky back bar */}
-      <div className="sticky top-0 z-10 bg-kj-bg border-b border-kj-line flex items-center gap-3 px-4 py-3">
+      <div className="sticky top-0 z-20 bg-kj-bg/90 backdrop-blur-md border-b border-kj-line flex items-center gap-3 px-4 py-3">
         <button
           onClick={onBack}
-          className="p-2 rounded-xl bg-kj-panel border border-kj-line text-kj-text-dim hover:text-kj-text active:scale-95 transition-all"
+          className="w-9 h-9 rounded-xl border border-kj-line bg-kj-panel text-kj-text-dim flex items-center justify-center active:scale-90 transition-all hover:border-kj-primary/40 hover:text-kj-primary"
           aria-label="Back"
         >
-          <ArrowLeft size={18} />
+          <ArrowLeft className="w-4 h-4" />
         </button>
         <div>
-          <h1 className="text-base font-semibold text-kj-text leading-tight">
+          <span className="font-bengali font-bold text-base text-kj-text">
             {L('Local Bus', 'লোকাল বাস')}
-          </h1>
-          <p className="text-[11px] text-kj-text-faint leading-tight">
+          </span>
+          <p className="text-[11px] text-kj-text-faint leading-tight font-sans">
             {L('Dhaka city bus network', 'ঢাকা সিটি বাস নেটওয়ার্ক')}
           </p>
         </div>
       </div>
 
-      <div className="px-4 py-4 space-y-4 max-w-2xl mx-auto">
+      <div className="px-4 py-5 space-y-5 max-w-2xl mx-auto w-full">
 
-        {/* ModeHero */}
-        <div className="rounded-[24px] overflow-hidden relative text-white shadow-kj-lg" style={{
-          background: 'linear-gradient(135deg, #006a4e 0%, #10b981 60%, #fbbf24 100%)',
-          minHeight: 240,
-          padding: '18px 18px 0',
-        }}>
-          <div className="absolute -right-12 -top-14 w-60 h-60 rounded-full pointer-events-none kj-anim-pulse" style={{ background: 'rgba(255,255,255,0.15)' }} />
+        {/* Hero section */}
+        <div
+          className="rounded-[24px] overflow-hidden relative text-white shadow-kj-lg"
+          style={{
+            background: 'linear-gradient(135deg, #006a4e 0%, #10b981 60%, #fbbf24 100%)',
+            minHeight: 240,
+            padding: '20px 20px 0',
+          }}
+        >
+          <div className="absolute -right-12 -top-14 w-64 h-64 rounded-full pointer-events-none kj-anim-pulse" style={{ background: 'rgba(255,255,255,0.15)' }} />
           <div className="absolute left-1/3 -bottom-20 w-52 h-52 rounded-full pointer-events-none" style={{ background: 'rgba(255,255,255,0.08)' }} />
           <div className="relative flex items-start justify-between gap-3">
             <div className="flex-1 min-w-0">
@@ -214,14 +217,15 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
               <p className="font-bengali text-[13px] opacity-90 leading-relaxed max-w-[380px]">
                 {L('2,412 live routes, 1,000+ stops, 140+ operators — works offline too.', '২,৪১২টি লাইভ রুট, ১,০০০+ স্টপ, ১৪০+ অপারেটর — অফলাইনেও কাজ করে।')}
               </p>
-              <div className="flex gap-3.5 mt-4 flex-wrap">
+              {/* Stat strip */}
+              <div className="flex gap-4 mt-4 flex-wrap">
                 {[
                   { v: '2,412', l: L('Routes', 'রুট') },
                   { v: '1,043', l: L('Stops', 'স্টপ') },
                   { v: '140+', l: L('Operators', 'অপারেটর') },
                   { v: '★ 4.4', l: L('Avg rating', 'গড় রেটিং') },
                 ].map(s => (
-                  <div key={s.l} style={{ minWidth: 68 }}>
+                  <div key={s.l} style={{ minWidth: 60 }}>
                     <div className="font-sans font-extrabold text-[18px] tracking-tight leading-none">{s.v}</div>
                     <div className="font-sans text-[9px] font-bold uppercase tracking-[1.2px] opacity-85 mt-1">{s.l}</div>
                   </div>
@@ -235,88 +239,123 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
         </div>
 
         {/* Search card */}
-        <div className="dc-card rounded-[22px] p-4 space-y-3">
-          {/* Name search with gradient icon bg */}
-          <div className="relative">
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #006a4e, #10b981)' }}>
-              <Search size={13} className="text-white" />
+        <div className="dc-card rounded-[22px] p-5 space-y-4">
+
+          {/* Name search row */}
+          <div className="bg-kj-input-bg border border-kj-line rounded-[14px] px-3.5 py-3 flex items-center gap-3">
+            <div
+              className="w-8 h-8 rounded-[10px] flex items-center justify-center text-white shrink-0 kj-anim-glow"
+              style={{ background: 'linear-gradient(135deg, #006a4e, #10b981)' }}
+            >
+              <Search className="w-4 h-4" />
             </div>
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={L(
-                'Green Line, Raida #7, BRTC Double, Route 6…',
-                'গ্রিন লাইন, রাইদা #৭, বিআরটিসি ডাবল, রুট ৬…'
-              )}
-              className="w-full pl-11 pr-3 py-2.5 bg-kj-input-bg border border-kj-line rounded-xl text-sm text-kj-text placeholder:text-kj-text-faint focus:outline-none focus:border-kj-primary"
-            />
+            <div className="flex-1 min-w-0">
+              <p className="text-[10px] font-bold uppercase tracking-[1.2px] text-kj-text-faint font-sans">
+                {L('Search by name or number', 'নাম বা নম্বর দিয়ে খুঁজুন')}
+              </p>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder={L(
+                  'e.g. Green Line, Raida #7, BRTC Double, Route 6…',
+                  'যেমন: গ্রিন লাইন, রাইদা #৭, বিআরটিসি ডাবল, রুট ৬…'
+                )}
+                className="w-full bg-transparent text-sm text-kj-text placeholder:text-kj-text-faint focus:outline-none mt-0.5 font-bengali"
+              />
+            </div>
+            <div className="hidden sm:flex gap-1 shrink-0">
+              {FILTER_CHIPS.map((chip) => (
+                <button
+                  key={chip.id}
+                  onClick={() => setActiveFilter(chip.id)}
+                  className="px-1.5 py-0.5 rounded text-[9px] font-bold tracking-wide font-sans transition-all"
+                  style={{
+                    background: activeFilter === chip.id ? `${chip.color}33` : `${chip.color}18`,
+                    color: chip.color,
+                    outline: activeFilter === chip.id ? `1px solid ${chip.color}55` : 'none',
+                  }}
+                >
+                  {L(chip.en, chip.bn)}
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* Quick filter chips */}
-          <div className="flex gap-2">
-            {FILTER_CHIPS.map((chip) => (
-              <button
-                key={chip.id}
-                onClick={() => setActiveFilter(chip.id)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                  activeFilter === chip.id
-                    ? 'bg-kj-primary text-kj-primary-ink'
-                    : 'bg-kj-chip-bg text-kj-chip-text'
-                }`}
-              >
-                {L(chip.en, chip.bn)}
-              </button>
-            ))}
-          </div>
-
-          {/* From / To in responsive grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] gap-2 items-center">
-            <div className="relative">
-              <MapPin size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-500" />
+          {/* From / To grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] gap-2.5 items-center">
+            <div className="bg-kj-input-bg border border-kj-line rounded-[14px] px-3.5 py-2.5 hover:border-kj-primary/40 transition-colors">
+              <div className="flex items-center gap-1.5 mb-1">
+                <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{ background: 'var(--kj-primary-soft)' }}>
+                  <MapPin className="w-3 h-3 text-kj-primary" />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-[1.2px] text-kj-text-faint font-sans">
+                  {L('From', 'কোথা থেকে')}
+                </span>
+              </div>
               <input
                 type="text"
                 value={fromField}
                 onChange={(e) => setFromField(e.target.value)}
-                placeholder={L('From…', 'কোথা থেকে…')}
-                className="w-full pl-8 pr-3 py-2.5 bg-kj-input-bg border border-kj-line rounded-xl text-sm text-kj-text placeholder:text-kj-text-faint focus:outline-none focus:border-kj-primary"
+                placeholder={L('Gulshan 1', 'গুলশান ১')}
+                className="w-full bg-transparent text-sm font-semibold text-kj-text placeholder:text-kj-text-faint focus:outline-none font-bengali"
               />
             </div>
+
             <button
               onClick={handleSwap}
-              className="mx-auto flex items-center justify-center p-1.5 bg-kj-panel border border-kj-line rounded-lg text-kj-text-dim hover:text-kj-primary active:scale-95 transition-all"
+              className="w-9 h-9 rounded-full border border-kj-line bg-kj-panel flex items-center justify-center text-kj-text-dim hover:border-kj-primary/50 hover:text-kj-primary active:scale-90 transition-all mx-auto shrink-0"
               aria-label={L('Swap from and to', 'অদলবদল করুন')}
             >
-              <ArrowLeftRight size={14} />
+              <ArrowLeftRight className="w-4 h-4" />
             </button>
-            <div className="relative">
-              <MapPin size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-rose-500" />
+
+            <div className="bg-kj-input-bg border border-kj-line rounded-[14px] px-3.5 py-2.5 hover:border-kj-primary/40 transition-colors">
+              <div className="flex items-center gap-1.5 mb-1">
+                <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{ background: 'var(--kj-accent-soft)' }}>
+                  <MapPin className="w-3 h-3 text-kj-accent" />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-[1.2px] text-kj-text-faint font-sans">
+                  {L('To', 'কোথায়')}
+                </span>
+              </div>
               <input
                 type="text"
                 value={toField}
                 onChange={(e) => setToField(e.target.value)}
-                placeholder={L('To…', 'কোথায় যাবেন…')}
-                className="w-full pl-8 pr-3 py-2.5 bg-kj-input-bg border border-kj-line rounded-xl text-sm text-kj-text placeholder:text-kj-text-faint focus:outline-none focus:border-kj-primary"
+                placeholder={L('Motijheel', 'মতিঝিল')}
+                className="w-full bg-transparent text-sm font-semibold text-kj-text placeholder:text-kj-text-faint focus:outline-none font-bengali"
               />
             </div>
           </div>
 
-          {/* Find Bus button with glow */}
-          <button className="w-full bg-kj-primary text-kj-primary-ink font-semibold py-3 rounded-xl text-sm active:scale-[0.98] transition-all shadow-[0_0_16px_rgba(16,185,129,0.35)]">
+          {/* Find Bus button */}
+          <button
+            className="w-full h-12 font-bold text-sm rounded-[14px] flex items-center justify-center gap-2 active:scale-[0.98] transition-all font-bengali text-kj-primary-ink"
+            style={{
+              background: 'linear-gradient(135deg, #006a4e, #10b981)',
+              boxShadow: '0 8px 22px -10px #10b981',
+            }}
+          >
+            <Search className="w-4 h-4" />
             {L('Find Bus', 'বাস খুঁজুন')}
           </button>
 
-          {/* Sort chips */}
+          {/* Filter sort chips */}
           <div className="flex gap-2 flex-wrap">
             {SORT_CHIPS.map((chip) => (
               <button
                 key={chip.id}
                 onClick={() => setActiveSort(activeSort === chip.id ? null : chip.id)}
-                className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all font-sans border ${
                   activeSort === chip.id
-                    ? 'bg-kj-accent-soft text-kj-accent'
-                    : 'bg-kj-chip-bg text-kj-chip-text'
+                    ? 'text-kj-primary-ink border-kj-primary'
+                    : 'bg-kj-chip-bg text-kj-chip-text border-kj-line hover:border-kj-primary/40'
                 }`}
+                style={activeSort === chip.id ? {
+                  background: 'linear-gradient(135deg, #006a4e, #10b981)',
+                  boxShadow: '0 4px 12px -4px #10b981',
+                } : undefined}
               >
                 <span>{chip.icon}</span>
                 {L(chip.en, chip.bn)}
@@ -373,7 +412,7 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
                       const toIdx = bus.stops.indexOf(initialToId!);
                       const stopsCount = toIdx - fromIdx;
                       return (
-                        <div key={bus.id} className="dc-card kj-glass rounded-2xl p-3.5 flex items-center gap-3 border border-kj-primary/20" style={{ boxShadow: '0 0 0 1px rgba(0,245,255,0.08)' }}>
+                        <div key={bus.id} className="dc-card rounded-2xl p-3.5 flex items-center gap-3 border border-kj-primary/20" style={{ boxShadow: '0 0 0 1px rgba(0,245,255,0.08)' }}>
                           <div className="w-11 h-11 rounded-xl flex items-center justify-center text-white text-xs font-bold shrink-0"
                             style={{ background: bus.color ? `linear-gradient(135deg, ${bus.color}, #0070ad)` : 'linear-gradient(135deg, #006a4e, #10b981)' }}>
                             {initials}
@@ -400,34 +439,37 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
                     })}
                   </div>
                 )}
-                <div className="mt-3 border-t border-kj-line pt-3">
-                  <h3 className="text-sm font-semibold text-kj-text mb-2">{L('Popular Routes', 'জনপ্রিয় রুট')}</h3>
-                </div>
               </>
             )}
           </section>
         )}
 
-        {/* Main content — 2-col desktop layout when no search */}
+        {/* Main two-column layout — shown when no search results mode */}
         {searchResults === null && (
           <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-6">
 
-            {/* LEFT COLUMN */}
+            {/* LEFT COLUMN — Popular routes */}
             <div className="space-y-4">
-              {/* Popular routes */}
               <section>
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-bengali font-bold text-[15px] text-kj-text">
-                    {L('Popular Bus Routes', 'জনপ্রিয় বাস রুট')}
-                  </h3>
-                  <button className="flex items-center gap-0.5 text-xs font-medium text-kj-primary">
+                  <div className="flex items-center gap-2">
+                    <Star className="w-4 h-4 text-kj-amber" fill="currentColor" />
+                    <h2 className="font-bengali font-bold text-[15px] text-kj-text">
+                      {L('Popular bus routes', 'জনপ্রিয় বাস রুট')}
+                    </h2>
+                  </div>
+                  <button className="flex items-center gap-0.5 text-xs font-semibold text-kj-primary font-bengali">
                     {L('See all', 'সব দেখুন')}
-                    <ChevronRight size={13} />
+                    <ChevronRight className="w-3 h-3" />
                   </button>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2.5">
                   {POPULAR_ROUTES.map((r) => (
-                    <div key={r.name_en} className="dc-card rounded-2xl p-3 flex items-start gap-3">
+                    <div
+                      key={r.name_en}
+                      className="dc-card rounded-2xl p-3.5 flex items-center gap-3 border border-kj-line hover:border-kj-primary/40 active:scale-[0.99] transition-all cursor-pointer"
+                    >
+                      {/* Brand badge */}
                       <div
                         className="shrink-0 w-11 h-11 rounded-xl flex items-center justify-center text-white text-xs font-bold shadow-sm"
                         style={{ background: `linear-gradient(135deg, ${r.brand[0]}, ${r.brand[1]})` }}
@@ -435,34 +477,31 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
                         {r.brand[2]}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-1">
-                          <div className="flex items-center gap-1.5 flex-wrap min-w-0">
-                            <span className="font-bengali text-sm font-semibold text-kj-text truncate">
-                              {L(r.name_en, r.name_bn)}
-                            </span>
-                            {r.ac && (
-                              <span className="px-1.5 py-0.5 bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 text-xs rounded-full font-medium shrink-0">
-                                ❄️ AC
-                              </span>
-                            )}
-                          </div>
-                          <span className="text-[18px] font-bold text-kj-primary leading-tight shrink-0">
-                            ৳{r.fare}
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="font-bengali text-sm font-semibold text-kj-text truncate">
+                            {L(r.name_en, r.name_bn)}
                           </span>
+                          {r.ac && (
+                            <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold font-sans shrink-0" style={{ background: '#3b82f622', color: '#3b82f6' }}>
+                              ❄️ AC
+                            </span>
+                          )}
                         </div>
-                        <div className="flex items-center gap-1 text-xs text-kj-text-dim mt-0.5">
-                          <span className="font-bengali">{L(r.route_en, r.route_bn)}</span>
-                        </div>
+                        <p className="font-bengali text-xs text-kj-text-dim mt-0.5">{L(r.route_en, r.route_bn)}</p>
                         <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-                          <span className="flex items-center gap-0.5 text-kj-amber text-xs font-semibold">
+                          <span className="flex items-center gap-0.5 text-kj-amber text-xs font-bold">
                             ★ {r.rating.toFixed(1)}
-                            <span className="text-kj-text-faint font-normal ml-0.5">({r.reviews})</span>
+                            <span className="text-kj-text-faint font-normal ml-0.5 text-[10px]">({r.reviews})</span>
                           </span>
                           <span className="text-kj-text-faint text-xs">·</span>
                           <span className="text-xs text-kj-text-dim">🕐 {r.dur}</span>
                           <span className="text-kj-text-faint text-xs">·</span>
                           <span className="text-xs text-kj-text-faint">{r.stops} {L('stops', 'স্টপ')}</span>
                         </div>
+                      </div>
+                      <div className="shrink-0 flex flex-col items-end gap-1">
+                        <span className="font-sans font-bold text-[18px] text-kj-primary leading-tight">৳{r.fare}</span>
+                        <ChevronRight className="w-4 h-4 text-kj-text-faint" />
                       </div>
                     </div>
                   ))}
@@ -472,19 +511,19 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
 
             {/* RIGHT COLUMN */}
             <div className="space-y-4">
-              {/* Live nearby section */}
-              <section className="dc-card rounded-2xl p-4">
+
+              {/* Live nearby card */}
+              <section className="dc-card rounded-2xl p-4 border border-kj-line">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="relative flex h-2.5 w-2.5 shrink-0">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                     <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
                   </span>
-                  <h3 className="text-sm font-semibold text-kj-text flex-1">
+                  <h3 className="text-sm font-semibold text-kj-text flex-1 font-bengali">
                     {L('Buses near you · live', 'আপনার কাছের বাস · লাইভ')}
                   </h3>
                   {locationLoading && <Loader2 size={12} className="animate-spin text-kj-text-faint" />}
                 </div>
-                {/* Location label */}
                 <div className="flex items-center gap-1 mb-2">
                   <MapPin size={11} className="text-kj-text-faint" />
                   <span className="font-bengali text-[11px] text-kj-text-faint">
@@ -494,9 +533,9 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
                 {locationError && (
                   <p className="text-xs text-kj-text-faint mb-2">{locationError}</p>
                 )}
-                <div className="space-y-1">
+                <div className="space-y-0">
                   {nearbyBuses.map((bus) => (
-                    <div key={bus.name} className="flex items-center justify-between py-2 border-b border-kj-line last:border-0">
+                    <div key={bus.name} className="flex items-center justify-between py-2.5 border-b border-kj-line last:border-0">
                       <div className="flex items-center gap-2.5">
                         <span
                           className="w-2.5 h-2.5 rounded-full shrink-0"
@@ -506,38 +545,46 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
                               bus.status === 'yellow' ? '#f59e0b' : '#ef4444',
                           }}
                         />
-                        <span className="text-sm font-medium text-kj-text">{bus.name}</span>
+                        <span className="text-sm font-medium text-kj-text font-bengali">{bus.name}</span>
                       </div>
                       <div className="flex items-center gap-2 text-xs">
-                        <span className="font-bold text-kj-primary text-sm">
-                          ~{bus.mins} {L('min', 'মিনিট')}
+                        <span className="font-bold text-kj-primary text-sm font-sans">
+                          ~{bus.mins} {L('min', 'মি')}
                         </span>
-                        <span className="text-kj-text-faint">{bus.dist}</span>
+                        <span className="text-kj-text-faint font-sans">{bus.dist}</span>
                       </div>
                     </div>
                   ))}
                 </div>
-                <button className="mt-3 w-full flex items-center justify-center gap-1.5 py-2 rounded-xl border border-kj-line text-xs font-medium text-kj-primary hover:bg-kj-primary-soft active:scale-[0.98] transition-all">
+                <button className="mt-3 w-full flex items-center justify-center gap-1.5 py-2.5 rounded-[10px] border border-kj-line text-xs font-semibold text-kj-primary hover:bg-kj-primary-soft active:scale-[0.98] transition-all font-bengali">
                   <Navigation size={12} />
-                  {L('View all on map', 'ম্যাপে সব দেখুন')}
+                  {L('View all on map →', 'ম্যাপে সব দেখুন →')}
                 </button>
               </section>
 
-              {/* Bus types 2x2 */}
+              {/* Ad slot */}
+              <SponsoredAdSlot language={language} size="300x250" compact />
+
+              {/* Top operators */}
               <section>
-                <div className="grid grid-cols-2 gap-2">
-                  {BUS_TYPES.map((type) => (
-                    <div key={type.en} className="dc-card rounded-2xl p-3 relative overflow-hidden">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-bengali font-bold text-[14px] text-kj-text">
+                    {L('Top operators', 'শীর্ষ অপারেটর')}
+                  </h3>
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  {OPERATORS.map((item) => (
+                    <div
+                      key={item.op}
+                      className="dc-card rounded-xl p-3 flex flex-col items-center gap-1.5 border border-kj-line hover:border-kj-primary/40 transition-all cursor-pointer"
+                    >
                       <div
-                        className="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-15 blur-xl"
-                        style={{ background: type.blob }}
-                      />
-                      <span className="text-2xl">{type.icon}</span>
-                      <div className="mt-2">
-                        <div className="font-bengali text-sm font-semibold text-kj-text">{L(type.en, type.bn)}</div>
-                        <div className="text-xs font-bold mt-0.5" style={{ color: type.blob }}>{type.fare}</div>
-                        <div className="font-bengali text-xs text-kj-text-dim mt-0.5 leading-tight">{L(type.desc, type.descBn)}</div>
+                        className="w-10 h-10 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
+                        style={{ background: `linear-gradient(135deg, ${item.grad[0]}, ${item.grad[1]})` }}
+                      >
+                        {item.init}
                       </div>
+                      <span className="text-[11px] font-semibold text-kj-text-dim text-center truncate w-full text-center font-sans">{item.op}</span>
                     </div>
                   ))}
                 </div>
@@ -546,31 +593,31 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
           </div>
         )}
 
-        {/* Bus Operators grid */}
+        {/* Bus types section */}
         <section>
-          <h3 className="text-sm font-semibold text-kj-text mb-2">
-            {L('Bus Operators', 'বাস অপারেটর')}
+          <h3 className="font-bengali font-bold text-[14px] text-kj-text mb-3">
+            {L('Bus types', 'বাসের ধরন')}
           </h3>
-          <div className="grid grid-cols-3 gap-2">
-            {OPERATORS.map((item) => (
-              <div
-                key={item.op}
-                className="dc-card rounded-xl p-3 flex items-center gap-2.5"
-              >
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+            {BUS_TYPES.map((type) => (
+              <div key={type.en} className="dc-card rounded-2xl p-3.5 relative overflow-hidden border border-kj-line hover:border-kj-primary/40 transition-all cursor-pointer">
                 <div
-                  className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
-                  style={{ background: `linear-gradient(135deg, ${item.grad[0]}, ${item.grad[1]})` }}
-                >
-                  {item.init}
+                  className="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-20 blur-xl pointer-events-none"
+                  style={{ background: type.blob }}
+                />
+                <span className="text-2xl leading-none">{type.icon}</span>
+                <div className="mt-2.5">
+                  <div className="font-bengali text-sm font-semibold text-kj-text">{L(type.en, type.bn)}</div>
+                  <div className="text-xs font-bold mt-0.5 font-sans" style={{ color: type.blob }}>{type.fare}</div>
+                  <div className="font-bengali text-xs text-kj-text-dim mt-1 leading-tight">{L(type.desc, type.descBn)}</div>
                 </div>
-                <span className="text-xs font-bold text-kj-text-dim truncate">{item.op}</span>
               </div>
             ))}
           </div>
         </section>
 
         {/* Info notice */}
-        <div className="flex items-start gap-2 bg-kj-panel-muted border border-kj-line rounded-xl p-3">
+        <div className="flex items-start gap-2.5 bg-kj-panel-muted border border-kj-line rounded-xl p-3.5">
           <Info size={14} className="text-kj-text-faint mt-0.5 shrink-0" />
           <p className="font-bengali text-xs text-kj-text-faint leading-relaxed">
             {L(

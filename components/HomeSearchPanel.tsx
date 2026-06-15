@@ -85,19 +85,29 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
 
   const handleFindRoute = () => {
     if (!fromStation || !toStation) return;
-    // Navigate to local bus hub — it receives fromStation/toStation via App.tsx props
     setView(AppView.LOCAL_BUS_HUB);
   };
 
   const chipBtn = (active: boolean) =>
-    `inline-flex items-center gap-1.5 h-8 px-3 rounded-full border text-xs font-medium transition-colors ${
-      active ? 'bg-kj-primary text-kj-primary-ink border-kj-primary' : 'bg-kj-panel-muted border-kj-line text-kj-text hover:border-kj-primary/40'
+    `inline-flex items-center gap-1.5 h-8 px-3 rounded-full border text-xs font-medium transition-all ${
+      active
+        ? 'bg-gradient-to-r from-kj-primary to-kj-primary-deep text-kj-primary-ink border-transparent shadow-[0_2px_10px_rgba(0,245,255,0.35)]'
+        : 'bg-kj-panel-muted border-kj-line text-kj-text hover:border-kj-primary/40 hover:text-kj-primary'
     }`;
 
   return (
-    <div className="dc-card kj-glass rounded-[24px] border border-kj-line shadow-[0_4px_12px_rgba(0,0,0,0.6),0_30px_90px_-25px_rgba(0,245,255,0.25)] overflow-visible shrink-0">
+    <div
+      className="rounded-[24px] border border-kj-line overflow-visible shrink-0"
+      style={{
+        background: 'linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(0,245,255,0.03) 100%)',
+        backdropFilter: 'blur(24px)',
+        WebkitBackdropFilter: 'blur(24px)',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.6), 0 30px 90px -25px rgba(0,245,255,0.22), inset 0 1px 0 rgba(255,255,255,0.06)',
+      }}
+    >
       <div className="p-4 md:p-[22px]">
-        {/* Mode chips + search anything pill */}
+
+        {/* Mode chips row */}
         <div className="flex items-center gap-2 flex-wrap mb-3.5">
           {modeChips.map((chip) => (
             <button
@@ -106,11 +116,11 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
               onClick={chip.onClick}
               className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold whitespace-nowrap shrink-0 border transition-all ${
                 chip.active
-                  ? 'bg-kj-primary-soft text-kj-primary-deep border-kj-primary/30'
-                  : 'bg-kj-chip-bg text-kj-chip-text border-transparent hover:border-kj-line'
+                  ? 'bg-gradient-to-r from-kj-primary to-kj-primary-deep text-kj-primary-ink border-transparent shadow-[0_2px_8px_rgba(0,245,255,0.3)]'
+                  : 'bg-kj-chip-bg text-kj-chip-text border-transparent hover:border-kj-line hover:text-kj-primary'
               }`}
             >
-              {chip.active && <span className="w-1.5 h-1.5 rounded-full bg-kj-primary shrink-0" />}
+              {chip.active && <span className="w-1.5 h-1.5 rounded-full bg-kj-primary-ink/80 shrink-0" />}
               {chip.label}
             </button>
           ))}
@@ -127,9 +137,15 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
 
         {/* Universal search bar */}
         <div className="relative mb-2.5 isolate z-50">
-          <div className="relative bg-kj-input-bg border border-kj-line rounded-[14px] px-3.5 py-3 flex items-center gap-3">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-kj-primary to-kj-primary-deep text-white flex items-center justify-center shrink-0 kj-anim-glow">
-              <Search className="w-3.5 h-3.5" />
+          <div
+            className="relative border border-kj-line rounded-[14px] px-3.5 py-3 flex items-center gap-3 transition-all focus-within:border-kj-primary/50 focus-within:shadow-[0_0_0_3px_rgba(0,245,255,0.08)]"
+            style={{ background: 'var(--kj-input-bg)' }}
+          >
+            <div
+              className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 kj-anim-glow"
+              style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))' }}
+            >
+              <Search className="w-3.5 h-3.5 text-kj-primary-ink" />
             </div>
             <input
               data-kj-universal-search
@@ -147,30 +163,46 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
             />
             <div className="hidden sm:flex items-center gap-1 shrink-0">
               {quickIcons.map((q) => (
-                <button key={q.icon} type="button" onClick={q.action} className="w-[26px] h-[26px] rounded-lg bg-kj-chip-bg flex items-center justify-center text-[13px] hover:bg-kj-primary-soft transition-colors">
+                <button
+                  key={q.icon}
+                  type="button"
+                  onClick={q.action}
+                  className="w-[26px] h-[26px] rounded-lg bg-kj-chip-bg flex items-center justify-center text-[13px] hover:bg-kj-primary-soft transition-colors"
+                >
                   {q.icon}
                 </button>
               ))}
             </div>
             <kbd className="hidden lg:inline-flex h-6 px-1.5 rounded-md border border-kj-line bg-kj-panel text-[10px] font-bold text-kj-text-faint items-center shrink-0">⌘ K</kbd>
             {(inputValue || searchQuery) ? (
-              <button type="button" onClick={() => { setInputValue(''); setSearchQuery(''); setSuggestedRoutes([]); setSearchContext(undefined); setShowSuggestions(false); }}
-                className="p-1.5 rounded-lg bg-red-500/10 text-red-400 shrink-0">
+              <button
+                type="button"
+                onClick={() => { setInputValue(''); setSearchQuery(''); setSuggestedRoutes([]); setSearchContext(undefined); setShowSuggestions(false); }}
+                className="p-1.5 rounded-lg bg-red-500/10 text-red-400 shrink-0"
+              >
                 <X className="w-3.5 h-3.5" />
               </button>
             ) : (
-              <button type="button" onClick={onSearchCommit} disabled={isIntercityRedirecting}
-                className="p-1.5 rounded-lg bg-kj-primary-soft text-kj-primary shrink-0 sm:hidden">
+              <button
+                type="button"
+                onClick={onSearchCommit}
+                disabled={isIntercityRedirecting}
+                className="p-1.5 rounded-lg bg-kj-primary-soft text-kj-primary shrink-0 sm:hidden"
+              >
                 <Search className="w-3.5 h-3.5" />
               </button>
             )}
           </div>
+
+          {/* Suggestions dropdown */}
           {showSuggestions && searchSuggestions.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-1 bg-kj-panel rounded-xl shadow-2xl max-h-72 overflow-y-auto z-[9999] border border-kj-line">
+            <div className="absolute top-full left-0 right-0 mt-1.5 rounded-2xl shadow-2xl max-h-72 overflow-y-auto z-[9999] border border-kj-line" style={{ background: 'var(--kj-panel)' }}>
               {searchSuggestions.map((suggestion, idx) => (
-                <div key={`${suggestion.type}-${suggestion.id}-${idx}`}
-                  className="px-4 py-3 hover:bg-kj-primary-soft cursor-pointer border-b border-kj-line last:border-b-0"
-                  onMouseDown={(e) => { e.preventDefault(); onSuggestionSelect(suggestion); }}>
+                <div
+                  key={`${suggestion.type}-${suggestion.id}-${idx}`}
+                  className="px-4 py-3 hover:bg-kj-primary-soft cursor-pointer border-b border-kj-line last:border-b-0 transition-colors"
+                  onMouseDown={(e) => { e.preventDefault(); onSuggestionSelect(suggestion); }}
+                >
                   <div className="font-semibold text-kj-text text-sm truncate">
                     {suggestion.type === 'bus' ? formatBusName(suggestion.name) : formatNumber(suggestion.name)}
                   </div>
@@ -192,8 +224,13 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
 
         {/* Route planner */}
         <div className="flex flex-col md:flex-row gap-2.5 md:gap-3 md:items-stretch">
-          <div className="flex-1 bg-kj-input-bg border border-kj-line rounded-[14px] px-3.5 py-2.5 flex items-center gap-3">
-            <div className="w-7 h-7 rounded-lg bg-kj-primary-soft text-kj-primary-deep flex items-center justify-center shrink-0">
+
+          {/* From field */}
+          <div
+            className="flex-1 border border-kj-line rounded-[14px] px-3.5 py-2.5 flex items-center gap-3 transition-all focus-within:border-kj-primary/50"
+            style={{ background: 'var(--kj-input-bg)' }}
+          >
+            <div className="w-7 h-7 rounded-lg bg-kj-primary-soft text-kj-primary flex items-center justify-center shrink-0">
               <MapPin className="w-4 h-4" />
             </div>
             <div className="flex-1 min-w-0">
@@ -211,18 +248,23 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
             </div>
           </div>
 
+          {/* Swap button */}
           <div className="flex items-center justify-center shrink-0 -my-1 md:my-0 md:px-0.5">
             <button
               type="button"
               onClick={() => { const tmp = fromStation; setFromStation(toStation); setToStation(tmp); }}
-              className="w-9 h-9 rounded-full border border-kj-line bg-kj-panel flex items-center justify-center text-kj-text z-10 shadow-sm hover:border-kj-primary/50"
+              className="w-9 h-9 rounded-full border border-kj-line bg-kj-panel flex items-center justify-center text-kj-text z-10 shadow-sm hover:border-kj-primary/50 hover:text-kj-primary hover:shadow-[0_0_0_4px_rgba(0,245,255,0.08)] transition-all"
               aria-label={lbl('Swap stations', 'স্টেশন অদলবদল')}
             >
               <ArrowLeftRight className="w-4 h-4" />
             </button>
           </div>
 
-          <div className="flex-1 bg-kj-input-bg border border-kj-line rounded-[14px] px-3.5 py-2.5 flex items-center gap-3">
+          {/* To field */}
+          <div
+            className="flex-1 border border-kj-line rounded-[14px] px-3.5 py-2.5 flex items-center gap-3 transition-all focus-within:border-kj-primary/50"
+            style={{ background: 'var(--kj-input-bg)' }}
+          >
             <div className="w-7 h-7 rounded-lg bg-kj-accent-soft text-kj-accent flex items-center justify-center shrink-0">
               <Flag className="w-4 h-4" />
             </div>
@@ -238,11 +280,16 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
             </div>
           </div>
 
+          {/* Find route CTA */}
           <button
             type="button"
             onClick={handleFindRoute}
             disabled={!fromStation || !toStation}
-            className="md:w-auto md:px-5 h-12 md:min-h-[72px] bg-kj-primary text-kj-primary-ink font-bold text-sm rounded-[14px] flex items-center justify-center gap-2 disabled:opacity-50 shadow-[0_6px_16px_-6px_rgba(0,245,255,0.6)] hover:brightness-105 transition-all shrink-0"
+            className="md:w-auto md:px-5 h-12 md:min-h-[72px] font-bold text-sm rounded-[14px] flex items-center justify-center gap-2 disabled:opacity-40 transition-all shrink-0 text-kj-primary-ink"
+            style={{
+              background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))',
+              boxShadow: '0 6px 16px -6px rgba(0,245,255,0.55)',
+            }}
           >
             <Search className="w-4 h-4 shrink-0" />
             <span className="whitespace-nowrap">{lbl('Find routes', 'রুট খুঁজুন')}</span>
@@ -272,6 +319,7 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
             {lbl('2,412 routes live', '২,৪১২ রুট লাইভ')}
           </span>
         </div>
+
       </div>
     </div>
   );

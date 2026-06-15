@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Bus, Zap, Bot, Sparkles, ArrowRight, Heart } from 'lucide-react';
+import { Bus, Zap, Bot, Sparkles, ArrowRight, Heart, Phone } from 'lucide-react';
 import { MiniVehicle, type VehicleKind } from './design/Vehicles3D';
 import SponsoredAdSlot from './SponsoredAdSlot';
 import { BUS_DATA } from '../constants';
@@ -16,26 +16,6 @@ interface HomeRightPanelProps {
   isInDhaka: boolean;
   user: { displayName: string; avatarUrl?: string } | null;
 }
-
-const metroStops = [
-  { en: 'Uttara North', bn: 'উত্তরা উত্তর' },
-  { en: 'Uttara Center', bn: 'উত্তরা সেন্টার' },
-  { en: 'Pallabi', bn: 'পল্লবী' },
-  { en: 'Mirpur 11', bn: 'মিরপুর ১১' },
-  { en: 'Mirpur 10', bn: 'মিরপুর ১০' },
-  { en: 'Kazipara', bn: 'কাজীপাড়া' },
-  { en: 'Shewrapara', bn: 'শেওড়াপাড়া' },
-  { en: 'Agargaon', bn: 'আগারগাঁও' },
-  { en: 'Bijoy Sarani', bn: 'বিজয় সরণি' },
-  { en: 'Farmgate', bn: 'ফার্মগেট' },
-  { en: 'Karwan Bazar', bn: 'কারওয়ান বাজার' },
-  { en: 'Shahbag', bn: 'শাহবাগ' },
-  { en: 'Dhaka University', bn: 'ঢাকা বিশ্ববিদ্যালয়' },
-  { en: 'Secretariat', bn: 'বাংলাদেশ সচিবালয়' },
-  { en: 'Motijheel', bn: 'মতিঝিল' },
-];
-const METRO_CURRENT_IDX = 9;
-
 
 interface ModeTileDef {
   title: { en: string; bn: string };
@@ -64,25 +44,20 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
 }) => {
   const lbl = (en: string, bn: string) => (language === 'bn' ? bn : en);
 
-  // Real favorites — buses the user has saved
   const favoriteBuses: BusRoute[] = React.useMemo(
     () => favorites.map(id => BUS_DATA.find(b => b.id === id)).filter((b): b is BusRoute => !!b).slice(0, 8),
     [favorites]
   );
 
-  // Real trending — most searched buses from analytics, fall back to popular static list
   const [recentSearches] = React.useState(() => getRecentBusSearches(200));
   const trendingBuses: Array<{ bus: BusRoute; count: number }> = React.useMemo(() => {
-    // Count searches per bus
     const counts: Record<string, number> = {};
     recentSearches.forEach(r => { counts[r.busId] = (counts[r.busId] || 0) + 1; });
-    // Sort by count
     const sorted = Object.entries(counts)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 5)
       .map(([busId, count]) => ({ bus: BUS_DATA.find(b => b.id === busId) as BusRoute, count }))
       .filter(x => x.bus);
-    // Fallback to popular static buses if analytics is empty
     if (sorted.length === 0) {
       const fallback = ['green-line-ac', 'hanif-paribahan', 'brtc-double-decker', 'projapoti', 'shyamoli-nr'];
       return fallback
@@ -105,6 +80,7 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
 
   return (
     <div className="pb-28 md:pb-8">
+      {/* Mode tiles */}
       <div className="mb-6 md:mb-8">
         <SectionHeader title={lbl('How are you traveling?', 'কী খুঁজছেন?')} />
         <div className="grid grid-cols-2 md:grid-cols-6 gap-2.5 md:gap-3">
@@ -142,7 +118,7 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
         <SponsoredAdSlot language={language} size="728x90" compact />
       </div>
 
-      {/* How KoyJabo helps — 4-scene story animation (replaced Metro Live) */}
+      {/* KoyJabo Story */}
       <div className="mb-6 md:mb-8">
         <SectionHeader
           title={lbl('How KoyJabo helps', 'কই যাবো কীভাবে সাহায্য করে')}
@@ -152,55 +128,12 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
         <KoyJaboStory language={language} onNavigate={onNavigate} isDarkMode={isDarkMode} />
       </div>
 
-      {/* Ad slot — after story, before saved routes */}
+      {/* Ad slot — after story */}
       <div className="mb-6 md:mb-8 flex justify-center">
         <SponsoredAdSlot language={language} size="728x90" compact />
       </div>
 
-      {/* OLD Metro Live — now moved to Metro Hub page */}
-      <div className="mb-6 md:mb-8 hidden">
-        <SectionHeader title={lbl('Metro · Live', 'মেট্রো · লাইভ')} action={lbl('See all stations', 'সব স্টেশন দেখুন')} onAction={() => onNavigate('METRO_HUB')} />
-        <div className="rounded-[22px] p-5 md:p-[22px] text-[#e9f3ed] relative overflow-hidden shadow-[0_2px_4px_rgba(0,0,0,0.5),0_18px_50px_-20px_rgba(0,245,255,0.25)]" style={{ background: isDarkMode ? '#000814' : '#001b2e' }}>
-          <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_80%_-20%,rgba(0,245,255,0.6)_0%,transparent_60%)]" />
-          <div className="relative flex items-center gap-3 mb-4">
-            <div className="w-[42px] h-[42px] rounded-xl bg-kj-primary text-white flex items-center justify-center font-extrabold text-[13px] tracking-wide shrink-0">M6</div>
-            <div className="flex-1 min-w-0">
-              <div className="text-[11px] font-semibold tracking-[1.3px] text-[#7fb89c] uppercase">{lbl('Live · MRT Line 6', 'লাইভ · মেট্রো রেল')}</div>
-              <div className="font-bengali font-bold text-[17px] text-white mt-0.5">{lbl('Uttara North → Motijheel', 'উত্তরা উত্তর → মতিঝিল')}</div>
-            </div>
-            <div className="text-right shrink-0">
-              <div className="text-[11px] text-[#7fb89c] font-semibold">{lbl('Next train', 'পরবর্তী ট্রেন')}</div>
-              <div className="text-[22px] font-extrabold text-white tracking-tight">{lbl('2 min', '২ মিনিট')}</div>
-            </div>
-          </div>
-
-          <div className="relative pt-3.5 pb-1 overflow-x-auto no-scrollbar">
-            <div className="absolute left-2 right-2 top-[18px] h-[3px] rounded-full bg-gradient-to-r from-emerald-500 from-60% to-white/15 to-60%" />
-            <div className="flex justify-between relative min-w-[640px] md:min-w-0">
-              {metroStops.map((s, i) => {
-                const passed = i < METRO_CURRENT_IDX;
-                const current = i === METRO_CURRENT_IDX;
-                return (
-                  <div key={s.en} className="flex flex-col items-center gap-2 flex-1 min-w-0">
-                    <div className={`rounded-full shrink-0 ${current ? 'w-4 h-4 bg-white border-[3px] border-kj-primary shadow-[0_0_0_6px_rgba(0,245,255,0.2)] -mt-0.5' : passed ? 'w-2.5 h-2.5 bg-kj-primary mt-0.5' : 'w-2.5 h-2.5 bg-white/15 mt-0.5'}`} />
-                    <div className={`font-bengali text-[10px] text-center truncate max-w-[60px] ${current ? 'font-bold text-white' : passed ? 'text-white/55 font-medium' : 'text-white/40 font-medium'}`}>
-                      {lbl(s.en, s.bn)}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="relative flex flex-wrap gap-4 mt-3.5 text-xs text-white/70">
-            <span><span className="text-white font-bold">৳ ২০-১০০</span> · {lbl('Fare', 'ভাড়া')}</span>
-            <span><span className="text-white font-bold">৭:১০ AM – ৯:৪০ PM</span> · {lbl('Operating', 'চলমান')}</span>
-            <span className="text-[#7fb89c]">● {lbl('On time, no delays', 'কোনো বিলম্ব নেই')}</span>
-          </div>
-        </div>
-      </div>
-      {/* end hidden old Metro Live */}
-
+      {/* Saved routes */}
       <div className="mb-6 md:mb-8">
         <SectionHeader
           title={favoriteBuses.length > 0
@@ -238,13 +171,15 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
         )}
       </div>
 
-      {/* Ad slot — before trending routes */}
+      {/* Ad slot — before trending */}
       <div className="mb-6 md:mb-8 flex justify-center">
         <SponsoredAdSlot language={language} size="728x90" compact />
       </div>
 
-      {/* Trending + AI sidebar grid (desktop) */}
+      {/* Trending + sidebar grid */}
       <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-6 md:gap-8 mb-6 md:mb-8">
+
+        {/* Trending routes */}
         <div>
           <SectionHeader
             title={lbl('Trending routes today', 'ট্রেন্ডিং রুট আজ')}
@@ -262,21 +197,39 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
             ) : trendingBuses.map(({ bus, count }) => {
               const initials = bus.name.slice(0, 2).toUpperCase();
               return (
-                <div key={bus.id} className="dc-card rounded-[14px] p-3.5 md:p-4 flex items-center gap-3.5 cursor-pointer hover:border-kj-primary/30 transition-colors">
+                <div
+                  key={bus.id}
+                  className="dc-card rounded-[14px] p-3.5 md:p-4 flex items-center gap-3.5 cursor-pointer hover:border-kj-primary/40 transition-colors group"
+                >
+                  {/* 36px brand gradient badge */}
                   <div
-                    className="w-9 h-9 rounded-[10px] flex items-center justify-center shrink-0 text-white font-bold text-xs"
+                    className="w-9 h-9 rounded-[10px] flex items-center justify-center shrink-0 text-white font-bold text-xs shadow-[0_2px_8px_rgba(0,0,0,0.35)]"
                     style={{ background: bus.color ? `linear-gradient(135deg, ${bus.color}, #0070ad)` : 'linear-gradient(135deg, #006a4e, #10b981)' }}
                   >{initials}</div>
+
+                  {/* Name + route */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <p className="font-bengali font-bold text-[15px] text-kj-text truncate">{language === 'bn' ? (bus.bnName || bus.name) : bus.name}</p>
-                      {bus.type === 'AC' && <span className="bg-kj-primary-soft text-kj-primary-deep text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full shrink-0">AC</span>}
-                      {count > 0 && <span className="bg-kj-amber-soft text-kj-amber text-[10px] font-semibold px-2 py-0.5 rounded-full shrink-0">{count}× {lbl('today', 'আজ')}</span>}
-                    </div>
-                    <p className="text-kj-text-dim text-xs truncate mt-0.5">{bus.stops.length} {lbl('stops', 'স্টপ')} · {bus.type}</p>
+                    <p className="font-bengali font-bold text-[15px] text-kj-text truncate">
+                      {language === 'bn' ? (bus.bnName || bus.name) : bus.name}
+                    </p>
+                    <p className="text-kj-text-dim text-xs truncate mt-0.5">
+                        {bus.routeString} · {bus.stops.length} {lbl('stops', 'স্টপ')}
+                    </p>
                   </div>
-                  <div className="text-right shrink-0">
-                    <ArrowRight className="w-4 h-4 text-kj-text-faint" />
+
+                  {/* Fare badge + heart toggle */}
+                  <div className="flex flex-col items-end gap-1.5 shrink-0">
+                    {bus.type && (
+                      <span className="bg-kj-primary-soft text-kj-primary-deep text-[11px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap">
+                        {bus.type}
+                      </span>
+                    )}
+                    {count > 0 && (
+                      <span className="bg-kj-amber-soft text-kj-amber text-[10px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap">
+                        {count}× {lbl('today', 'আজ')}
+                      </span>
+                    )}
+                    <Heart className="w-3.5 h-3.5 text-kj-text-faint group-hover:text-pink-400 transition-colors" />
                   </div>
                 </div>
               );
@@ -284,55 +237,64 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
           </div>
         </div>
 
+        {/* Right column: AI card + Emergency + Ad */}
         <div className="flex flex-col gap-4">
+
+          {/* AI card */}
           <div
             onClick={() => onNavigate('AI_ASSISTANT')}
             onKeyDown={(e) => e.key === 'Enter' && onNavigate('AI_ASSISTANT')}
             role="button"
             tabIndex={0}
-            className="rounded-[20px] p-5 text-white relative overflow-hidden cursor-pointer shadow-[0_4px_12px_rgba(0,0,0,0.6),0_30px_90px_-25px_rgba(162,89,255,0.35)]"
-            style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #5b21b6 52%, #4338ca 100%)' }}
+            className="dc-card rounded-[20px] p-5 text-white relative overflow-hidden cursor-pointer border-0 shadow-[0_4px_12px_rgba(0,0,0,0.6),0_30px_90px_-25px_rgba(124,58,237,0.45)] hover:brightness-105 transition-all"
+            style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%)' }}
           >
-            <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/8" />
-            <div className="absolute right-8 -bottom-10 w-30 h-30 rounded-full bg-white/5" />
-            <div className="relative flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 rounded-[10px] bg-white/15 backdrop-blur-sm flex items-center justify-center"><Sparkles className="w-4 h-4" /></div>
-              <span className="text-[11px] font-bold tracking-[1.5px] uppercase opacity-85">{lbl('AI Assistant', 'AI সহায়ক')}</span>
-              <span className="bg-white/20 text-white text-[10px] font-bold uppercase px-2 py-0.5 rounded-full">Beta</span>
+            <div className="absolute -right-10 -top-10 w-44 h-44 rounded-full bg-white/8 pointer-events-none" />
+            <div className="absolute right-10 -bottom-12 w-32 h-32 rounded-full bg-white/5 pointer-events-none" />
+
+            {/* Heading */}
+            <div className="relative flex items-center gap-2 mb-2">
+              <div className="w-8 h-8 rounded-[10px] bg-white/15 backdrop-blur-sm flex items-center justify-center shrink-0">
+                <Sparkles className="w-4 h-4" />
+              </div>
+              <h2 className="font-bengali font-bold text-[17px] leading-tight">{lbl('KoyJabo AI', 'কই যাবো AI')}</h2>
+              <span className="ml-auto bg-white/20 text-white text-[10px] font-bold uppercase px-2 py-0.5 rounded-full">Beta</span>
             </div>
-            <p className="relative font-bengali font-bold text-lg md:text-[22px] leading-snug mb-2.5 max-w-md">
-              {lbl('Ask in Bangla or English — "Which bus goes from Gulshan to Motijheel?"', 'বাংলায় জিজ্ঞেস করুন — "কোন বাস গুলশান থেকে মতিঝিল যায়?"')}
+
+            <p className="relative font-bengali text-[13px] text-white/80 mb-3 leading-snug">
+              {lbl('Ask in Bangla or English', 'বাংলা বা ইংরেজিতে জিজ্ঞেস করুন')}
             </p>
+
+            {/* Quick-ask chips */}
             <div className="relative flex flex-wrap gap-1.5 mb-3.5">
               {[
-                { en: "How much to Cox's Bazar?", bn: 'কক্সবাজার যেতে কত খরচ?' },
-                { en: 'Airport → Farmgate', bn: 'বিমানবন্দর থেকে ফার্মগেট' },
-                { en: 'Sadarghat launch times', bn: 'সদরঘাট লঞ্চ সময়সূচী' },
+                { en: "Cox's Bazar fare?", bn: 'কক্সবাজার ভাড়া?' },
+                { en: 'Airport → Farmgate', bn: 'বিমানবন্দর → ফার্মগেট' },
+                { en: 'Sadarghat launch', bn: 'সদরঘাট লঞ্চ' },
               ].map((q) => (
-                <span key={q.en} className="px-2.5 py-1.5 rounded-full bg-white/12 border border-white/15 font-bengali text-[11.5px]">{lbl(q.en, q.bn)}</span>
+                <span key={q.en} className="px-2.5 py-1 rounded-full bg-white/12 border border-white/18 font-bengali text-[11px] text-white/90">
+                  {lbl(q.en, q.bn)}
+                </span>
               ))}
             </div>
+
+            {/* Ask button */}
             <div className="relative bg-black/20 rounded-[14px] px-3.5 py-2.5 flex items-center gap-2.5 border border-white/10">
-              <Bot className="w-4 h-4 shrink-0 opacity-80" />
-              <span className="flex-1 font-bengali text-sm opacity-70">{lbl('Type your question...', 'আপনার প্রশ্ন লিখুন...')}</span>
-              <button type="button" className="w-8 h-8 rounded-lg bg-white text-[#5b21b6] flex items-center justify-center shrink-0">
+              <Bot className="w-4 h-4 shrink-0 opacity-70" />
+              <span className="flex-1 font-bengali text-sm opacity-60">{lbl('Type your question...', 'আপনার প্রশ্ন লিখুন...')}</span>
+              <button type="button" className="w-8 h-8 rounded-lg bg-white text-[#5b21b6] flex items-center justify-center shrink-0 hover:scale-105 transition-transform">
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </div>
 
-          <div className="hidden lg:block">
-            <SponsoredAdSlot language={language} size="300x250" />
-          </div>
-
+          {/* Emergency card */}
           <div className="dc-card rounded-[20px] p-[18px]">
             <div className="flex items-center gap-2.5 mb-3">
-              <div className="w-9 h-9 rounded-[10px] bg-kj-accent-soft text-kj-accent flex items-center justify-center shrink-0">
-                <Zap className="w-[18px] h-[18px]" />
-              </div>
+              <span className="text-xl">🚨</span>
               <div>
-                <h2 className="font-bengali font-bold text-[15px] text-kj-text">{lbl('Emergency help', 'জরুরি সহায়তা')}</h2>
-                <p className="text-xs text-kj-text-dim">{lbl('80+ verified contacts', '৮০+ যাচাইকৃত নম্বর')}</p>
+                <h2 className="font-bengali font-bold text-[15px] text-kj-text">{lbl('Emergency Contacts', 'জরুরি নম্বর')}</h2>
+                <p className="text-xs text-kj-text-dim">{lbl('Tap to call', 'চাপুন কল করতে')}</p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-2">
@@ -342,13 +304,27 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
                 { label: { en: 'Fire service', bn: 'ফায়ার' }, num: '102', tone: 'amber' as const },
                 { label: { en: 'Highway', bn: 'হাইওয়ে' }, num: '+880-2', tone: 'primary' as const },
               ].map((e) => (
-                <button key={e.num} type="button" onClick={onEmergency} className="bg-kj-panel-muted border border-kj-line rounded-xl px-3 py-2.5 text-left hover:border-kj-primary/30 transition-colors">
-                  <p className="font-bengali font-semibold text-xs text-kj-text">{lbl(e.label.en, e.label.bn)}</p>
+                <button
+                  key={e.num}
+                  type="button"
+                  onClick={onEmergency}
+                  className="bg-kj-panel-muted border border-kj-line rounded-xl px-3 py-2.5 text-left hover:border-kj-primary/30 transition-colors flex flex-col gap-0.5"
+                >
+                  <div className="flex items-center gap-1.5">
+                    <Phone className="w-3 h-3 text-kj-text-faint shrink-0" />
+                    <p className="font-bengali font-semibold text-xs text-kj-text">{lbl(e.label.en, e.label.bn)}</p>
+                  </div>
                   <p className={`text-[15px] font-extrabold tracking-tight ${e.tone === 'accent' ? 'text-kj-accent' : e.tone === 'amber' ? 'text-kj-amber' : 'text-kj-primary'}`}>{e.num}</p>
                 </button>
               ))}
             </div>
           </div>
+
+          {/* Ad — desktop sidebar */}
+          <div className="hidden lg:block">
+            <SponsoredAdSlot language={language} size="300x250" compact />
+          </div>
+
         </div>
       </div>
 
@@ -356,7 +332,7 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
   );
 };
 
-// ── KoyJabo Story — "How KoyJabo helps" animated 4-scene section ──────────────
+// ── KoyJabo Story — 4-scene animation ────────────────────────────────────────
 const KoyJaboStory: React.FC<{ language: 'en' | 'bn'; onNavigate: (v: string) => void; isDarkMode: boolean }> = ({ language, onNavigate, isDarkMode }) => {
   const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
   const [scene, setScene] = useState(0);
@@ -440,7 +416,7 @@ const KoyJaboStory: React.FC<{ language: 'en' | 'bn'; onNavigate: (v: string) =>
   };
 
   return (
-    <div className="rounded-[22px] overflow-hidden border border-kj-line shadow-kj">
+    <div className="dc-card rounded-[22px] overflow-hidden">
       {/* Stage */}
       <div className="relative h-[220px] overflow-hidden" style={{ background: 'linear-gradient(180deg,#bfe6ff 0%, #e6f5ff 58%, #b9e3c6 58%, #a3d6b2 100%)' }}>
         <div className="absolute top-4 right-6 w-10 h-10 rounded-full" style={{ background: 'radial-gradient(circle,#fff4c2,#ffd34d)', boxShadow: '0 0 30px rgba(255,211,77,0.6)' }} />
@@ -454,11 +430,18 @@ const KoyJaboStory: React.FC<{ language: 'en' | 'bn'; onNavigate: (v: string) =>
           {lbl('HOW KOYJABO WORKS', 'কই যাবো কীভাবে কাজ করে')} · {scene + 1}/4
         </div>
       </div>
-      {/* Caption bar */}
+
+      {/* Caption bar + progress dots */}
       <div className="p-4" style={{ background: isDarkMode ? '#000814' : '#001b2e' }}>
         <div className="flex gap-1.5 mb-2.5">
           {[0,1,2,3].map(i => (
-            <div key={i} className="flex-1 h-1 rounded-full transition-colors duration-300" style={{ background: i <= scene ? '#10b981' : 'rgba(255,255,255,0.18)' }} />
+            <button
+              key={i}
+              type="button"
+              onClick={() => setScene(i)}
+              className="flex-1 h-1.5 rounded-full transition-colors duration-300"
+              style={{ background: i === scene ? 'var(--kj-primary)' : i < scene ? '#10b981' : 'rgba(255,255,255,0.18)' }}
+            />
           ))}
         </div>
         <div className="flex items-center gap-3 flex-wrap">

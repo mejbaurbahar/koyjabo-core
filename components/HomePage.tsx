@@ -3,6 +3,7 @@ import { Bus, Heart, Wifi } from 'lucide-react';
 import HomeSearchPanel, { HomeSearchPanelProps } from './HomeSearchPanel';
 import HomeRightPanel from './HomeRightPanel';
 import TravelHeroScene from './design/Vehicles3D';
+import SponsoredAdSlot from './SponsoredAdSlot';
 import { BusRoute } from '../types';
 
 interface HomePageProps extends Omit<HomeSearchPanelProps, 'onSuggestionSelect'> {
@@ -47,6 +48,63 @@ const PWABanner: React.FC<{ language: 'en' | 'bn'; onInstall: () => void }> = ({
   );
 };
 
+const MODE_TILES = [
+  {
+    key: 'local-bus',
+    grad: 'linear-gradient(135deg, #006a4e 0%, #10b981 100%)',
+    icon: '🚌',
+    titleEn: 'Local bus', titleBn: 'লোকাল বাস',
+    subEn: '200+ routes', subBn: '২০০+ রুট',
+    badgeEn: 'Popular', badgeBn: 'জনপ্রিয়',
+    nav: 'LOCAL_BUS_HUB',
+  },
+  {
+    key: 'metro',
+    grad: 'linear-gradient(135deg, #00130e 0%, #00543c 100%)',
+    icon: '🚇',
+    titleEn: 'Metro Rail', titleBn: 'মেট্রো রেল',
+    subEn: 'MRT-6 · 15 stations', subBn: 'MRT-6 · ১৫ স্টেশন',
+    badgeEn: '', badgeBn: '',
+    nav: 'METRO_HUB',
+  },
+  {
+    key: 'train',
+    grad: 'linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%)',
+    icon: '🚆',
+    titleEn: 'Train', titleBn: 'ট্রেন',
+    subEn: 'BD Railway · all routes', subBn: 'BD রেলওয়ে · সব রুট',
+    badgeEn: '', badgeBn: '',
+    nav: 'TRAIN_LIST',
+  },
+  {
+    key: 'intercity',
+    grad: 'linear-gradient(135deg, #78350f 0%, #f59e0b 100%)',
+    icon: '🚌',
+    titleEn: 'Intercity', titleBn: 'আন্তঃজেলা',
+    subEn: '64 districts', subBn: '৬৪ জেলা',
+    badgeEn: '', badgeBn: '',
+    nav: 'INTERCITY',
+  },
+  {
+    key: 'launch',
+    grad: 'linear-gradient(135deg, #0c4a6e 0%, #0ea5e9 100%)',
+    icon: '⛴',
+    titleEn: 'Launch & Steamer', titleBn: 'লঞ্চ ও স্টিমার',
+    subEn: 'Sadarghat → Barisal', subBn: 'সদরঘাট → বরিশাল',
+    badgeEn: '', badgeBn: '',
+    nav: 'LAUNCH_HUB',
+  },
+  {
+    key: 'ai',
+    grad: 'linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%)',
+    icon: '✨',
+    titleEn: 'AI Assistant', titleBn: 'AI সহায়ক',
+    subEn: 'Ask in Bangla', subBn: 'বাংলায় জিজ্ঞেস করুন',
+    badgeEn: 'New', badgeBn: 'নতুন',
+    nav: 'AI_ASSISTANT',
+  },
+];
+
 const HomePage: React.FC<HomePageProps> = (props) => {
   const {
     language, t, user, isInDhaka, filteredBuses, busRatingsMap, listFilter, selectedBus,
@@ -63,10 +121,16 @@ const HomePage: React.FC<HomePageProps> = (props) => {
     ? lbl(`Where are you headed, ${user.displayName?.split(' ')[0] || 'friend'}?`, `কোথায় যেতে চান, ${user.displayName?.split(' ')[0] || ''}?`)
     : (isInDhaka ? t('home.whereToGo') : t('home.whereToGoInDhaka'));
 
+  const greetingSub = lbl(
+    '2,400+ Dhaka bus routes, Metro Rail and intercity travel across all 64 districts — works offline too.',
+    '২,৪০০+ ঢাকা লোকাল বাস, মেট্রো রেল ও বাংলাদেশের ৬৪ জেলার সব রুট — অফলাইনেও কাজ করে।'
+  );
+
   return (
     <div className="w-full">
       <div className="w-full px-4 md:px-10 py-5 md:py-8">
-        {/* Hero grid — design layout */}
+
+        {/* ── Hero section ─────────────────────────────────────────── */}
         <div className="grid grid-cols-1 md:grid-cols-[1.3fr_0.7fr] gap-5 md:gap-8 mb-6 md:mb-8 items-stretch">
           <div className="flex flex-col gap-4 md:gap-[18px]">
             <div>
@@ -82,10 +146,7 @@ const HomePage: React.FC<HomePageProps> = (props) => {
                 {greeting}
               </h1>
               <p className="font-bengali text-kj-text-dim text-sm md:text-[15px] mt-2 leading-relaxed max-w-xl text-pretty">
-                {lbl(
-                  '2,400+ Dhaka bus routes, Metro Rail and intercity travel across all 64 districts — works offline too.',
-                  '২,৪০০+ ঢাকা লোকাল বাস, মেট্রো রেল ও বাংলাদেশের ৬৪ জেলার সব রুট — অফলাইনেও কাজ করে।'
-                )}
+                {greetingSub}
               </p>
             </div>
             <HomeSearchPanel
@@ -115,7 +176,51 @@ const HomePage: React.FC<HomePageProps> = (props) => {
           <TravelHeroScene isDarkMode={isDarkMode} height={200} />
         </div>
 
-        {/* Search results */}
+        {/* ── Ad slot (hero) ────────────────────────────────────────── */}
+        <div className="flex justify-center mb-6 md:mb-8">
+          <SponsoredAdSlot language={language} size="728x90" compact />
+        </div>
+
+        {/* ── How are you traveling? — mode tiles ──────────────────── */}
+        <div className="mb-6 md:mb-8">
+          <div className="flex items-baseline justify-between mb-3">
+            <h2 className="font-bengali font-bold text-lg text-kj-text tracking-tight">
+              {lbl('How are you traveling?', 'কীভাবে যাবেন?')}
+            </h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-2.5 md:gap-3">
+            {MODE_TILES.map((tile) => (
+              <button
+                key={tile.key}
+                type="button"
+                onClick={() => tile.key === 'intercity' ? onIntercity() : onNavigate(tile.nav)}
+                className="relative overflow-hidden rounded-[20px] p-4 text-left text-white min-h-[130px] md:min-h-[160px] flex flex-col gap-2 border border-white/10 hover:brightness-110 active:scale-[0.97] transition-all shadow-[0_2px_4px_rgba(0,0,0,0.4),0_12px_36px_-16px_rgba(0,245,255,0.2)]"
+                style={{ background: tile.grad }}
+              >
+                <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-white/10 pointer-events-none" />
+                <div className="relative flex items-center justify-between">
+                  <span className="text-[23px] leading-none">{tile.icon}</span>
+                  {tile.badgeEn && (
+                    <span className="bg-black/25 backdrop-blur-sm text-white text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full">
+                      {lbl(tile.badgeEn, tile.badgeBn)}
+                    </span>
+                  )}
+                </div>
+                <div className="relative mt-auto">
+                  <p className="font-bengali font-bold text-[13px] md:text-sm leading-tight">{lbl(tile.titleEn, tile.titleBn)}</p>
+                  <p className="text-white/75 text-[11px] mt-0.5 leading-snug">{lbl(tile.subEn, tile.subBn)}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Ad slot (second) ─────────────────────────────────────── */}
+        <div className="flex justify-center mb-6 md:mb-8">
+          <SponsoredAdSlot language={language} size="728x90" compact />
+        </div>
+
+        {/* ── Search results ────────────────────────────────────────── */}
         {hasSearch && (
           <div ref={scrollContainerRef} className="mb-6 md:mb-8">
             <div className="dc-card kj-glass rounded-[20px] p-3 md:p-4 border border-kj-line">
@@ -163,7 +268,7 @@ const HomePage: React.FC<HomePageProps> = (props) => {
           </div>
         )}
 
-        {/* Feed sections — hidden on mobile while searching */}
+        {/* ── Feed sections — hidden on mobile while searching ──────── */}
         <div className={hasSearch ? 'hidden md:block' : 'block'}>
           <HomeRightPanel
             language={language}

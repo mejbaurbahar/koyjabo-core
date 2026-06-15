@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Star, AlertCircle, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Star } from 'lucide-react';
 import { getBusRatings, submitBusRating, deleteBusRating, BusRatingSummary, getAuthUser } from '../services/communityDataService';
 import { trackFeatureUsage } from '../services/analyticsService';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -19,10 +19,29 @@ function timeAgo(ts: number, t: (key: string, params?: Record<string, string | n
   return `${formatNumber(Math.floor(diff / 1440))} ${t('history.daysAgo')}`;
 }
 
+const ASPECT_LABELS = [
+  { key: 'ontime',  en: 'On-time',       bn: 'সময়মতো' },
+  { key: 'clean',   en: 'Cleanliness',   bn: 'পরিষ্কার' },
+  { key: 'comfort', en: 'Comfort',        bn: 'আরামদায়ক' },
+  { key: 'staff',   en: 'Staff behavior', bn: 'কর্মীর ব্যবহার' },
+  { key: 'safety',  en: 'Safety',         bn: 'নিরাপত্তা' },
+];
+
+const TAGS = [
+  { emoji: '✨', en: 'Clean', bn: 'পরিষ্কার' },
+  { emoji: '❄️', en: 'Cool AC', bn: 'ঠান্ডা এসি' },
+  { emoji: '🕐', en: 'On time', bn: 'সময়মতো' },
+  { emoji: '🛋️', en: 'Comfortable', bn: 'আরামদায়ক' },
+  { emoji: '😊', en: 'Friendly staff', bn: 'ভালো কর্মী' },
+  { emoji: '💰', en: 'Good value', bn: 'দাম ঠিক' },
+];
+
+const STAR_LABELS = ['', 'খুব খারাপ / Very bad', 'খারাপ / Bad', 'ঠিকঠাক / Okay', 'ভালো / Good', 'খুব ভালো / Very good'];
+
 function RatingSkeleton() {
   return (
-    <div className="space-y-4 animate-pulse">
-      <div className="bg-kj-panel rounded-2xl p-5 border border-kj-line flex items-center gap-6">
+    <div className="space-y-4 animate-pulse px-4 pt-4">
+      <div className="dc-card rounded-2xl p-5 flex items-center gap-6">
         <div className="text-center space-y-2">
           <div className="w-16 h-12 bg-kj-chip-bg rounded-lg mx-auto" />
           <div className="flex gap-1 justify-center">{Array.from({ length: 5 }, (_, i) => <div key={i} className="w-4 h-4 bg-kj-chip-bg rounded" />)}</div>
@@ -39,7 +58,7 @@ function RatingSkeleton() {
         </div>
       </div>
       {[1, 2, 3].map(i => (
-        <div key={i} className="bg-kj-panel rounded-2xl p-4 border border-kj-line space-y-2">
+        <div key={i} className="dc-card rounded-2xl p-4 space-y-2">
           <div className="flex justify-between">
             <div className="space-y-1">
               <div className="w-24 h-3.5 bg-kj-chip-bg rounded" />
@@ -57,14 +76,18 @@ function RatingSkeleton() {
 
 export default function BusRating({ busId, busName, onBack }: Props) {
   const user = getAuthUser();
-  const { t, formatNumber } = useLanguage();
+  const { t, language, formatNumber } = useLanguage();
+  const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
   const [summary, setSummary] = useState<BusRatingSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [stars, setStars] = useState(5);
+  const [hovered, setHovered] = useState(0);
+  const [aspectStars, setAspectStars] = useState<Record<string, number>>({});
+  const [aspectHovered, setAspectHovered] = useState<Record<string, number>>({});
+  const [activeTags, setActiveTags] = useState<string[]>([]);
   const [comment, setComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [hovered, setHovered] = useState(0);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { showToast } = useToast();
 
@@ -83,13 +106,17 @@ export default function BusRating({ busId, busName, onBack }: Props) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    const ok = await submitBusRating(busId, stars, comment);
+    const tagString = activeTags.join(', ');
+    const fullComment = [comment.trim(), tagString].filter(Boolean).join(' · ');
+    const ok = await submitBusRating(busId, stars, fullComment);
     if (ok) {
       const fresh = await getBusRatings(busId);
       setSummary(fresh);
       setShowForm(false);
       setComment('');
       setStars(5);
+      setActiveTags([]);
+      setAspectStars({});
       showToast(t('community.ratingSubmitted') || 'Rating saved!', 'success');
     } else {
       showToast(t('community.submitError') || 'Failed to save. Please try again.', 'error');
@@ -106,6 +133,8 @@ export default function BusRating({ busId, busName, onBack }: Props) {
       setShowForm(false);
       setComment('');
       setStars(5);
+      setActiveTags([]);
+      setAspectStars({});
       showToast(t('community.ratingDeleted') || 'Rating removed.', 'success');
     } else {
       showToast(t('community.submitError') || 'Failed. Please try again.', 'error');
@@ -116,59 +145,85 @@ export default function BusRating({ busId, busName, onBack }: Props) {
 
   const handleOpenForm = () => {
     if (myRating) { setStars(myRating.stars); setComment((myRating.comment || '').trim()); }
-    else { setStars(5); setComment(''); }
+    else { setStars(5); setComment(''); setActiveTags([]); setAspectStars({}); }
     setShowForm(v => !v);
   };
 
-  const renderStars = (count: number, size = 'w-5 h-5') =>
+  const toggleTag = (tag: string) => {
+    setActiveTags(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]);
+  };
+
+  const renderMiniStars = (count: number, size = 'w-3.5 h-3.5') =>
     Array.from({ length: 5 }, (_, i) => (
       <Star key={i} className={`${size} ${i < count ? 'text-amber-400 fill-amber-400' : 'text-kj-text-faint'}`} />
     ));
 
   return (
     <div className="flex flex-col flex-1 min-h-0 bg-kj-bg overflow-hidden">
-      <div className="flex items-center gap-3 p-4 bg-kj-panel border-b border-kj-line shrink-0">
-        <button onClick={onBack} className="p-2 -ml-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full">
-          <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
+
+      {/* Sticky back bar */}
+      <div className="sticky top-0 z-20 bg-kj-bg/90 backdrop-blur-md border-b border-kj-line flex items-center gap-3 px-4 py-3 shrink-0">
+        <button
+          onClick={onBack}
+          className="w-9 h-9 rounded-xl border border-kj-line bg-kj-panel text-kj-text-dim flex items-center justify-center active:scale-90 transition-all hover:border-kj-primary/40 hover:text-kj-primary"
+        >
+          <ArrowLeft className="w-4 h-4" />
         </button>
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center">
-          <Star className="w-5 h-5 text-white fill-white" />
-        </div>
-        <div className="flex-1">
-          <h1 className="text-lg font-bold text-kj-text">{t('community.busRatingTitle')}</h1>
-          <p className="text-xs text-kj-text-dim">{busName}</p>
-        </div>
+        <span className="font-bengali font-bold text-base text-kj-text flex-1">
+          {lbl('Rate & Review', 'রেট ও রিভিউ')}
+        </span>
         {user && (
-          <button onClick={handleOpenForm}
-            className="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold rounded-xl">
-            {myRating ? t('community.editRating') : t('community.rateNow')}
+          <button
+            onClick={handleOpenForm}
+            className="px-3 py-1.5 rounded-xl text-xs font-bold font-bengali text-kj-primary-ink active:scale-95 transition-all"
+            style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))', boxShadow: '0 4px 12px -4px var(--kj-primary)' }}
+          >
+            {myRating ? lbl('Edit rating', 'রেটিং সম্পাদনা') : lbl('Rate now', 'রেট করুন')}
           </button>
         )}
       </div>
 
-      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 space-y-4 pb-6" style={{ WebkitOverflowScrolling: 'touch' }}>
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-8" style={{ WebkitOverflowScrolling: 'touch' }}>
         {loading ? (
           <RatingSkeleton />
         ) : (
-          <>
+          <div className="px-4 pt-4 space-y-4 max-w-2xl mx-auto w-full">
+
+            {/* Subject card */}
+            <div className="dc-card rounded-2xl p-4 flex items-center gap-4">
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
+                style={{ background: 'linear-gradient(135deg, #f59e0b, #ea580c)' }}
+              >
+                🚌
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-bengali font-bold text-kj-text text-base truncate">{busName}</p>
+                <p className="text-[11px] text-kj-text-faint font-sans mt-0.5">
+                  {lbl('Rate & review this bus service', 'এই বাস সার্ভিসটি রেট ও রিভিউ করুন')}
+                </p>
+              </div>
+            </div>
+
+            {/* Overall rating summary */}
             {summary && summary.count > 0 && (
-              <div className="bg-kj-panel rounded-2xl p-5 border border-kj-line flex items-center gap-6">
+              <div className="dc-card rounded-2xl p-5 flex items-center gap-6">
                 <div className="text-center">
                   <p className="text-5xl font-black text-kj-text">{summary.average.toFixed(1)}</p>
-                  <div className="flex mt-1">{renderStars(Math.round(summary.average), 'w-4 h-4')}</div>
-                  <p className="text-xs text-kj-text-dim mt-1">{t('community.ratingsCount', { count: formatNumber(summary.count) })}</p>
+                  <div className="flex mt-1 justify-center">{renderMiniStars(Math.round(summary.average), 'w-4 h-4')}</div>
+                  <p className="text-xs text-kj-text-dim mt-1 font-bengali">{t('community.ratingsCount', { count: formatNumber(summary.count) })}</p>
                 </div>
-                <div className="flex-1 space-y-1">
+                <div className="flex-1 space-y-1.5">
                   {[5, 4, 3, 2, 1].map(s => {
                     const cnt = summary.ratings.filter(r => r.stars === s).length;
                     const pct = summary.count ? (cnt / summary.count) * 100 : 0;
                     return (
                       <div key={s} className="flex items-center gap-2 text-xs">
-                        <span className="w-3 text-kj-text-dim">{s}</span>
+                        <span className="w-3 font-sans text-kj-text-dim">{s}</span>
                         <div className="flex-1 bg-kj-chip-bg rounded-full h-2">
                           <div className="bg-amber-400 h-2 rounded-full transition-all duration-500" style={{ width: `${pct}%` }} />
                         </div>
-                        <span className="w-5 text-kj-text-dim text-right">{cnt}</span>
+                        <span className="w-4 font-sans text-kj-text-dim text-right">{cnt}</span>
                       </div>
                     );
                   })}
@@ -176,90 +231,244 @@ export default function BusRating({ busId, busName, onBack }: Props) {
               </div>
             )}
 
+            {/* Rating form */}
             {showForm && (
-              <form onSubmit={handleSubmit} className="bg-kj-panel rounded-2xl p-4 border border-kj-line space-y-3">
-                <h3 className="font-bold text-kj-text text-sm">{t('community.giveYourRating')}</h3>
-                <div className="flex gap-1">
-                  {Array.from({ length: 5 }, (_, i) => (
-                    <button key={i} type="button"
-                      onMouseEnter={() => setHovered(i + 1)} onMouseLeave={() => setHovered(0)}
-                      onClick={() => setStars(i + 1)}>
-                      <Star className={`w-8 h-8 transition-colors ${i < (hovered || stars) ? 'text-amber-400 fill-amber-400' : 'text-kj-text-faint'}`} />
-                    </button>
+              <form onSubmit={handleSubmit} className="space-y-4">
+
+                {/* Overall star picker */}
+                <div className="dc-card rounded-2xl p-5 flex flex-col items-center gap-3">
+                  <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans">
+                    {lbl('Overall rating', 'সামগ্রিক রেটিং')}
+                  </p>
+                  <div className="flex gap-2">
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        onMouseEnter={() => setHovered(i + 1)}
+                        onMouseLeave={() => setHovered(0)}
+                        onClick={() => setStars(i + 1)}
+                        className="active:scale-90 transition-transform"
+                      >
+                        <Star
+                          className={`w-9 h-9 transition-colors ${i < (hovered || stars) ? 'text-amber-400 fill-amber-400' : 'text-kj-text-faint'}`}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                  {(hovered || stars) > 0 && (
+                    <p className="text-xs font-bold font-bengali" style={{ color: 'var(--kj-amber)' }}>
+                      ★ {hovered || stars} · {STAR_LABELS[hovered || stars]}
+                    </p>
+                  )}
+                </div>
+
+                {/* Aspect ratings */}
+                <div className="dc-card rounded-2xl p-4 space-y-3">
+                  <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans">
+                    {lbl('Rate aspects', 'বিস্তারিত রেট')}
+                  </p>
+                  {ASPECT_LABELS.map(a => (
+                    <div key={a.key} className="flex items-center gap-3">
+                      <span className="flex-1 text-sm font-bengali text-kj-text">{lbl(a.en, a.bn)}</span>
+                      <div className="flex gap-1">
+                        {Array.from({ length: 5 }, (_, i) => (
+                          <button
+                            key={i}
+                            type="button"
+                            onMouseEnter={() => setAspectHovered(prev => ({ ...prev, [a.key]: i + 1 }))}
+                            onMouseLeave={() => setAspectHovered(prev => ({ ...prev, [a.key]: 0 }))}
+                            onClick={() => setAspectStars(prev => ({ ...prev, [a.key]: i + 1 }))}
+                            className="active:scale-90 transition-transform"
+                          >
+                            <Star
+                              className={`w-4 h-4 transition-colors ${i < (aspectHovered[a.key] || aspectStars[a.key] || 0) ? 'text-amber-400 fill-amber-400' : 'text-kj-text-faint'}`}
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   ))}
                 </div>
-                <textarea value={comment} onChange={e => setComment(e.target.value.slice(0, 500))}
-                  placeholder={t('community.writeExperienceOptional')} rows={3} maxLength={500}
-                  className="w-full bg-kj-input-bg border border-kj-line border-kj-line rounded-xl px-3 py-2.5 text-sm text-kj-text resize-none" />
+
+                {/* Tags */}
+                <div className="dc-card rounded-2xl p-4 space-y-3">
+                  <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans">
+                    {lbl('What stood out?', 'কী ভালো লেগেছে?')}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {TAGS.map(tag => {
+                      const label = lbl(tag.en, tag.bn);
+                      const active = activeTags.includes(label);
+                      return (
+                        <button
+                          key={tag.en}
+                          type="button"
+                          onClick={() => toggleTag(label)}
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold font-bengali border transition-all active:scale-95 ${
+                            active
+                              ? 'text-kj-primary-ink border-transparent'
+                              : 'bg-kj-chip-bg text-kj-text border-kj-line hover:border-kj-primary/40'
+                          }`}
+                          style={active ? {
+                            background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))',
+                            boxShadow: '0 2px 8px -2px var(--kj-primary)',
+                          } : undefined}
+                        >
+                          <span>{tag.emoji}</span>
+                          <span>{label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Review text */}
+                <div className="dc-card rounded-2xl p-4 space-y-3">
+                  <textarea
+                    value={comment}
+                    onChange={e => setComment(e.target.value.slice(0, 500))}
+                    placeholder={lbl('Share your experience (optional)...', 'আপনার অভিজ্ঞতা লিখুন (ঐচ্ছিক)...')}
+                    rows={3}
+                    maxLength={500}
+                    className="w-full bg-kj-input-bg border border-kj-line rounded-xl px-3 py-2.5 text-sm text-kj-text placeholder:text-kj-text-faint resize-none focus:outline-none focus:border-kj-primary/40 font-bengali"
+                  />
+                  <div className="flex justify-end">
+                    <span className="text-[10px] font-sans text-kj-text-faint">{comment.length}/500</span>
+                  </div>
+                </div>
+
+                {/* Actions */}
                 <div className="flex gap-2">
-                  <button type="submit" disabled={submitting}
-                    className="flex-1 py-2.5 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white font-semibold text-sm rounded-xl flex items-center justify-center gap-2">
-                    {submitting ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />{t('community.submitting')}</> : t('community.submit')}
+                  <button
+                    type="button"
+                    onClick={() => setShowForm(false)}
+                    className="px-4 py-2.5 bg-kj-chip-bg text-kj-text-dim font-semibold text-sm rounded-xl font-bengali"
+                  >
+                    {lbl('Cancel', 'বাতিল')}
                   </button>
                   {myRating && (
-                    <button type="button" onClick={() => setShowDeleteModal(true)} disabled={submitting}
-                      className="px-4 py-2.5 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-300 border border-red-200 dark:border-red-800 font-semibold text-sm rounded-xl disabled:opacity-50">
-                      {t('community.deleteRating')}
+                    <button
+                      type="button"
+                      onClick={() => setShowDeleteModal(true)}
+                      disabled={submitting}
+                      className="px-4 py-2.5 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-300 border border-red-200 dark:border-red-800 font-semibold text-sm rounded-xl disabled:opacity-50 font-bengali"
+                    >
+                      {lbl('Delete', 'মুছুন')}
                     </button>
                   )}
-                  <button type="button" onClick={() => setShowForm(false)}
-                    className="px-4 py-2.5 bg-kj-chip-bg text-kj-text-dim font-semibold text-sm rounded-xl">
-                    {t('common.cancel')}
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="flex-1 py-2.5 font-bold text-sm rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 text-kj-primary-ink font-bengali active:scale-[0.98] transition-all"
+                    style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))', boxShadow: '0 6px 16px -6px var(--kj-primary)' }}
+                  >
+                    {submitting
+                      ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />{lbl('Posting...', 'পোস্ট হচ্ছে...')}</>
+                      : lbl('Post Review', 'রিভিউ পোস্ট করুন')}
                   </button>
                 </div>
               </form>
             )}
 
+            {/* Empty state */}
             {(!summary || summary.count === 0) && !showForm && (
-              <div className="text-center py-12">
-                <Star className="w-12 h-12 text-kj-text-faint mx-auto mb-3" />
-                <p className="text-kj-text-dim font-medium">{t('community.noRatingsYet')}</p>
-                <p className="text-sm text-kj-text-faint mt-1">{t('community.beFirstToRate')}</p>
+              <div className="dc-card rounded-2xl p-10 flex flex-col items-center gap-3 text-center">
+                <div
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl"
+                  style={{ background: 'linear-gradient(135deg, #f59e0b22, #ea580c22)' }}
+                >
+                  ⭐
+                </div>
+                <p className="font-bengali font-bold text-kj-text">{t('community.noRatingsYet')}</p>
+                <p className="text-sm text-kj-text-faint font-bengali">{t('community.beFirstToRate')}</p>
                 {user && (
-                  <button onClick={handleOpenForm} className="mt-4 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold rounded-xl">
-                    {t('community.rateNow')}
+                  <button
+                    onClick={handleOpenForm}
+                    className="mt-1 px-5 py-2.5 rounded-xl text-sm font-bold font-bengali text-kj-primary-ink active:scale-95 transition-all"
+                    style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))', boxShadow: '0 4px 12px -4px var(--kj-primary)' }}
+                  >
+                    {lbl('Rate now', 'রেট করুন')}
                   </button>
                 )}
               </div>
             )}
 
+            {/* Review list */}
             {summary?.ratings.map(r => (
-              <div key={r.userId + r.timestamp} className="bg-kj-panel rounded-2xl p-4 border border-kj-line">
+              <div key={r.userId + r.timestamp} className="dc-card rounded-2xl p-4">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
+                    <div
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0 font-sans"
+                      style={{ background: 'linear-gradient(135deg, #f59e0b, #ea580c)' }}
+                    >
                       {(r.displayName || 'U').charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <p className="font-semibold text-kj-text text-sm">{r.displayName || 'User'}</p>
-                      <div className="flex gap-0.5 mt-0.5">{renderStars(r.stars, 'w-3.5 h-3.5')}</div>
+                      <div className="flex items-center gap-2">
+                        <p className="font-semibold text-kj-text text-sm font-bengali">{r.displayName || 'User'}</p>
+                        {r.userId === user?.id && (
+                          <span
+                            className="text-[9px] font-bold px-1.5 py-0.5 rounded font-sans"
+                            style={{ background: 'var(--kj-primary-soft)', color: 'var(--kj-primary)' }}
+                          >
+                            YOU
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex gap-0.5 mt-0.5">{renderMiniStars(r.stars, 'w-3.5 h-3.5')}</div>
                     </div>
                   </div>
-                  <span className="text-xs text-kj-text-faint shrink-0">{timeAgo(r.timestamp, t, formatNumber)}</span>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="text-xs text-kj-text-faint font-sans">{timeAgo(r.timestamp, t, formatNumber)}</span>
+                    {r.userId === user?.id && (
+                      <button
+                        onClick={handleOpenForm}
+                        className="w-7 h-7 rounded-lg bg-kj-chip-bg flex items-center justify-center text-kj-text-dim hover:text-kj-primary transition-colors text-sm"
+                      >
+                        ⋯
+                      </button>
+                    )}
+                  </div>
                 </div>
-                {r.comment?.trim() && <p className="text-sm text-kj-text-dim mt-2 pl-10">{r.comment.trim()}</p>}
+                {r.comment?.trim() && (
+                  <p className="text-sm text-kj-text-dim mt-2.5 pl-10 font-bengali leading-relaxed">{r.comment.trim()}</p>
+                )}
+                <div className="flex items-center gap-2 mt-3 pl-10">
+                  <button className="text-[11px] text-kj-text-faint hover:text-kj-primary font-semibold font-bengali transition-colors">
+                    {lbl('👍 Helpful', '👍 সহায়ক')}
+                  </button>
+                </div>
               </div>
             ))}
-          </>
+
+            <div className="h-4" />
+          </div>
         )}
-        <div className="h-4" />
       </div>
 
+      {/* Delete modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/50" onClick={() => setShowDeleteModal(false)} />
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowDeleteModal(false)} />
           <div className="relative w-full max-w-sm bg-kj-panel rounded-2xl border border-kj-line p-5 shadow-2xl">
-            <h3 className="text-base font-bold text-kj-text mb-2">{t('community.deleteRating')}</h3>
-            <p className="text-sm text-kj-text-dim mb-4">{t('community.confirmDeleteRating')}</p>
+            <h3 className="text-base font-bold text-kj-text mb-2 font-bengali">{t('community.deleteRating')}</h3>
+            <p className="text-sm text-kj-text-dim mb-4 font-bengali">{t('community.confirmDeleteRating')}</p>
             <div className="flex gap-2 justify-end">
-              <button onClick={() => setShowDeleteModal(false)}
-                className="px-4 py-2 rounded-xl bg-kj-chip-bg text-kj-text-dim text-sm font-semibold">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="px-4 py-2 rounded-xl bg-kj-chip-bg text-kj-text-dim text-sm font-semibold font-bengali"
+              >
                 {t('common.cancel')}
               </button>
-              <button onClick={handleDelete} disabled={submitting}
-                className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-semibold disabled:opacity-50 flex items-center gap-2">
+              <button
+                onClick={handleDelete}
+                disabled={submitting}
+                className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-semibold disabled:opacity-50 flex items-center gap-2 font-bengali"
+              >
                 {submitting && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
-                {submitting ? t('community.submitting') : t('community.deleteRating')}
+                {submitting ? lbl('Deleting...', 'মুছছে...') : t('community.deleteRating')}
               </button>
             </div>
           </div>

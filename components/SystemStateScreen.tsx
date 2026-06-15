@@ -78,55 +78,137 @@ const SystemStateScreen: React.FC<SystemStateConfig> = ({
   const { language } = useLanguage();
   const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
 
-  // Tone → CSS variable
   const toneVar = tone === 'accent' ? 'var(--kj-accent)' : tone === 'amber' ? 'var(--kj-amber)' : 'var(--kj-primary)';
   const toneSoftVar = tone === 'accent' ? 'var(--kj-accent-soft)' : tone === 'amber' ? 'var(--kj-amber-soft)' : 'var(--kj-primary-soft)';
 
-  return (
-    <div className="flex flex-col flex-1 min-h-0 w-full bg-kj-bg items-center justify-between overflow-y-auto overscroll-y-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
-      {/* Body */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-10 text-center max-w-sm mx-auto w-full">
+  // Ring circumference for r=62: 2π×62 ≈ 389.6
+  const ringC = 389.6;
 
-        {/* Hero illustration — glow + dashed ring + icon disc + code */}
-        <div className="relative flex flex-col items-center mb-8">
+  return (
+    <div
+      className="flex flex-col flex-1 min-h-0 w-full items-center justify-between overflow-y-auto overscroll-y-contain"
+      style={{ background: 'var(--kj-bg)', WebkitOverflowScrolling: 'touch' }}
+    >
+      {/* Body */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 text-center max-w-sm mx-auto w-full">
+
+        {/* Hero: glow + animated dashed ring + icon disc */}
+        <div className="relative flex flex-col items-center mb-8" style={{ width: 210, height: 210 }}>
+
           {/* Radial glow */}
-          <div className="absolute w-[210px] h-[210px] rounded-full pointer-events-none animate-[kjpulse_3.4s_ease-in-out_infinite]"
-            style={{ background: `radial-gradient(circle, ${toneSoftVar} 0%, transparent 68%)`, filter: 'blur(4px)', top: -8 }} />
-          {/* Dashed ring SVG */}
-          <svg width="150" height="150" viewBox="0 0 150 150" className="relative animate-[kjbobsm_3.8s_ease-in-out_infinite]">
-            <circle cx="75" cy="75" r="62" fill="none" stroke="var(--kj-line)" strokeWidth="1.5" />
-            <circle cx="75" cy="75" r="62" fill="none" stroke={toneVar} strokeWidth="2.4"
-              strokeLinecap="round" strokeDasharray="3 25" opacity="0.85"
-              style={{ animation: 'kjdash 1.1s linear infinite' }} />
-            <circle cx="75" cy="13" r="4.5" fill={toneVar} />
+          <div
+            className="absolute inset-0 rounded-full pointer-events-none"
+            style={{
+              background: `radial-gradient(circle at 50% 50%, ${toneSoftVar} 0%, transparent 70%)`,
+              filter: 'blur(6px)',
+              animation: 'kjpulse 3.4s ease-in-out infinite',
+            }}
+          />
+
+          {/* Outer static orbit ring */}
+          <svg
+            width="210" height="210" viewBox="0 0 210 210"
+            className="absolute inset-0"
+            style={{ opacity: 0.18 }}
+          >
+            <circle cx="105" cy="105" r="98" fill="none" stroke={toneVar} strokeWidth="1" strokeDasharray="4 8" />
           </svg>
-          {/* Icon disc */}
-          <div className="absolute dc-card kj-glass rounded-[22px] flex items-center justify-center" style={{ width: 72, height: 72, top: 39, color: toneVar }}>
+
+          {/* Main dashed animated ring */}
+          <svg
+            width="210" height="210" viewBox="0 0 210 210"
+            className="absolute inset-0"
+          >
+            {/* Static track */}
+            <circle cx="105" cy="105" r="62" fill="none" stroke="var(--kj-line)" strokeWidth="1.5" />
+            {/* Animated dashes */}
+            <circle
+              cx="105" cy="105" r="62"
+              fill="none"
+              stroke={toneVar}
+              strokeWidth="2.4"
+              strokeLinecap="round"
+              strokeDasharray={`3 25`}
+              style={{
+                transformOrigin: '105px 105px',
+                animation: 'kjdash 2.2s linear infinite',
+              }}
+              opacity="0.9"
+            />
+            {/* Pulsing dot at top */}
+            <circle cx="105" cy="43" r="5" fill={toneVar} style={{ animation: 'kjpulse 1.8s ease-in-out infinite' }} />
+            {/* Subtle arc glow */}
+            <circle
+              cx="105" cy="105" r="62"
+              fill="none"
+              stroke={toneVar}
+              strokeWidth="8"
+              strokeLinecap="round"
+              strokeDasharray={`${ringC * 0.12} ${ringC * 0.88}`}
+              strokeDashoffset={ringC * 0.06}
+              opacity="0.15"
+              style={{
+                transformOrigin: '105px 105px',
+                animation: 'kjdash 2.2s linear infinite',
+              }}
+            />
+          </svg>
+
+          {/* Icon disc — centered in ring */}
+          <div
+            className="absolute dc-card kj-glass rounded-[22px] flex items-center justify-center"
+            style={{
+              width: 72,
+              height: 72,
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              color: toneVar,
+              boxShadow: `0 0 28px -8px ${toneVar}`,
+              border: `1px solid color-mix(in srgb, ${toneVar} 30%, transparent)`,
+            }}
+          >
             {icon}
           </div>
-          {/* Status code pill */}
+
+          {/* Status code pill — below ring */}
           {code && (
-            <div className="mt-4 font-sans font-black text-[13px] tracking-[3px] px-3.5 py-1.5 rounded-full" style={{ color: toneVar, background: toneSoftVar }}>
+            <div
+              className="absolute bottom-[-18px] font-sans font-black text-[12px] tracking-[3px] px-4 py-1.5 rounded-full"
+              style={{ color: toneVar, background: toneSoftVar, border: `1px solid color-mix(in srgb, ${toneVar} 25%, transparent)` }}
+            >
               {code}
             </div>
           )}
         </div>
 
+        {/* Spacer for pill */}
+        {code && <div className="h-6" />}
+
         {/* Title */}
-        <h1 className="font-bengali font-bold text-[22px] md:text-[26px] text-kj-text leading-snug mb-3 text-balance">
+        <h1 className="font-bengali font-bold text-[24px] md:text-[26px] text-kj-text leading-snug mb-3 text-balance">
           {lbl(titleEn, titleBn)}
         </h1>
 
         {/* Description */}
-        <p className="font-bengali text-[13px] text-kj-text-dim leading-[1.65] mb-5 text-pretty max-w-[280px] mx-auto">
+        <p className="font-bengali text-[13px] text-kj-text-dim leading-[1.68] mb-6 text-pretty max-w-[280px] mx-auto">
           {lbl(descEn, descBn)}
         </p>
 
-        {/* Chips */}
+        {/* Suggestion chips */}
         {chips && chips.length > 0 && (
-          <div className="flex flex-wrap justify-center gap-2 mb-6">
+          <div className="flex flex-wrap justify-center gap-2 mb-7 max-w-[300px] overflow-x-auto">
             {chips.map((chip, i) => (
-              <span key={i} className="px-3 py-1.5 rounded-full text-[12px] font-semibold font-bengali border border-kj-line bg-kj-chip-bg text-kj-chip-text">
+              <span
+                key={i}
+                className="px-3 py-1.5 rounded-full text-[12px] font-semibold font-bengali"
+                style={{
+                  background: toneSoftVar,
+                  color: toneVar,
+                  border: `1px solid color-mix(in srgb, ${toneVar} 20%, transparent)`,
+                  whiteSpace: 'nowrap',
+                }}
+              >
                 {lbl(chip.en, chip.bn)}
               </span>
             ))}
@@ -134,19 +216,28 @@ const SystemStateScreen: React.FC<SystemStateConfig> = ({
         )}
 
         {/* Buttons */}
-        <div className="flex flex-col gap-[9px] w-full">
+        <div className="flex flex-col gap-[10px] w-full">
           <button
             onClick={onPrimary}
             className="w-full flex items-center justify-center gap-2.5 py-[14px] px-[18px] rounded-[14px] font-bengali font-bold text-[15px] transition-all hover:-translate-y-px active:scale-[0.98]"
-            style={{ background: `linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))`, color: 'var(--kj-primary-ink)', boxShadow: `0 8px 22px -12px var(--kj-primary)` }}
+            style={{
+              background: `linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))`,
+              color: 'var(--kj-primary-ink)',
+              boxShadow: `0 8px 28px -10px ${toneVar === 'var(--kj-primary)' ? 'var(--kj-primary)' : toneVar}`,
+            }}
           >
             {primaryIcon}
             <span>{lbl(primaryLabel.en, primaryLabel.bn)}</span>
           </button>
+
           {secondaryLabel && onSecondary && (
             <button
               onClick={onSecondary}
-              className="w-full flex items-center justify-center gap-2.5 py-[13px] px-[18px] rounded-[14px] font-bengali font-semibold text-[14.5px] bg-kj-panel-muted border border-kj-line text-kj-text transition-colors hover:bg-kj-chip-bg active:scale-[0.98]"
+              className="w-full flex items-center justify-center gap-2.5 py-[13px] px-[18px] rounded-[14px] font-bengali font-semibold text-[14.5px] text-kj-text transition-all hover:-translate-y-px active:scale-[0.98]"
+              style={{
+                background: 'var(--kj-panel-muted)',
+                border: '1px solid var(--kj-line)',
+              }}
             >
               {secondaryIcon}
               <span>{lbl(secondaryLabel.en, secondaryLabel.bn)}</span>
@@ -157,11 +248,11 @@ const SystemStateScreen: React.FC<SystemStateConfig> = ({
 
       {/* Footer */}
       {(footerEn || footerBn) && (
-        <div className="w-full border-t border-kj-line py-4 px-6 text-center">
+        <div className="w-full border-t border-kj-line py-4 px-6 text-center" style={{ background: 'var(--kj-panel-muted)' }}>
           <p className="font-sans text-[12px] text-kj-text-dim">
             {lbl(footerEn || '', footerBn || '')}
             {footerLinkEn && onFooterLink && (
-              <> <button onClick={onFooterLink} className="font-semibold" style={{ color: 'var(--kj-primary)' }}>
+              <> <button onClick={onFooterLink} className="font-semibold" style={{ color: toneVar }}>
                 {lbl(footerLinkEn, footerLinkBn || footerLinkEn)}
               </button></>
             )}

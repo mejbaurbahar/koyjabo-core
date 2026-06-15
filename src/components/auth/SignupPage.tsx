@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Eye, EyeOff, UserPlus, AlertCircle, CheckCircle2, Clock, X, Check, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, AlertCircle, CheckCircle2, Clock, X, Check, Loader2 } from 'lucide-react';
 import { signupUser, loginWithGoogle, getAuthErrorKey, fetchAvatar } from '../../services/githubAuthService';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../../contexts/LanguageContext';
@@ -270,7 +270,10 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
   }
 
   return (
-    <div className="flex-1 min-h-0 w-full overflow-y-auto overscroll-y-contain touch-pan-y bg-kj-bg flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-36 md:pt-safe md:pb-safe relative" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div
+      className="flex-1 min-h-0 w-full overflow-y-auto overscroll-y-contain touch-pan-y bg-kj-bg flex flex-col items-center justify-start md:justify-center p-4 pt-10 pb-36 md:pt-safe md:pb-safe relative"
+      style={{ WebkitOverflowScrolling: 'touch' }}
+    >
       {onClose && (
         <button
           onClick={onClose}
@@ -280,16 +283,35 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
           <X size={20} />
         </button>
       )}
-      <div className="w-full max-w-md">
-        <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-kj-primary to-kj-primary-deep kj-glow mb-4">
-            <UserPlus className="text-kj-primary-ink" size={28} />
+
+      <div className="w-full max-w-sm mx-auto">
+        {/* Logo + step progress + heading */}
+        <div className="flex flex-col items-center mb-6">
+          <div className="w-14 h-14 rounded-[15px] bg-gradient-to-br from-kj-primary to-kj-primary-deep flex items-center justify-center mb-4 shadow-lg kj-glow">
+            <span className="text-white text-2xl font-bold font-bengali leading-none">ক</span>
           </div>
-          <h1 className="text-2xl font-bold text-kj-text font-bengali">{t('auth.createAccount')}</h1>
-          <p className="text-kj-text-dim mt-1">{t('auth.startJourney')}</p>
+
+          {/* Step indicator */}
+          <div className="w-full max-w-[200px] mb-4">
+            <div className="flex justify-between items-center mb-1.5">
+              <span className="text-[11px] text-kj-text-faint font-sans uppercase tracking-widest">Step 1 of 2</span>
+            </div>
+            <div className="flex gap-1.5">
+              <div className="flex-1 h-1 rounded-full bg-kj-primary" />
+              <div className="flex-1 h-1 rounded-full bg-kj-chip-bg" />
+            </div>
+          </div>
+
+          <h1 className="text-[26px] font-bold text-kj-text font-bengali leading-tight text-center">
+            কই যাবো-তে যোগ দিন / Join KoyJabo
+          </h1>
+          <p className="text-kj-text-faint text-sm mt-1.5 text-center font-sans">
+            {t('auth.startJourney')}
+          </p>
         </div>
 
-        <div className="dc-card kj-glass rounded-2xl p-8 border border-kj-line">
+        {/* Card */}
+        <div className="dc-card kj-glass rounded-2xl p-6 border border-kj-line">
           {serverError && (
             <div className="mb-5 p-3 rounded-xl bg-kj-accent-soft border border-kj-accent/30 flex items-start gap-2">
               <AlertCircle size={16} className="text-kj-accent mt-0.5 shrink-0" />
@@ -301,8 +323,10 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
             {/* Display Name */}
             <div>
               <div className="flex justify-between items-center mb-1.5">
-                <label className="block text-sm font-medium text-kj-text-dim">{t('auth.fullName')}</label>
-                <span className={`text-xs ${form.displayName.length > 45 ? 'text-orange-500' : 'text-kj-text-faint'}`}>
+                <label className="block text-[9px] font-semibold text-kj-text-faint uppercase tracking-widest font-sans">
+                  পূর্ণ নাম / FULL NAME
+                </label>
+                <span className={`text-xs font-sans ${form.displayName.length > 45 ? 'text-orange-500' : 'text-kj-text-faint'}`}>
                   {form.displayName.length}/50
                 </span>
               </div>
@@ -313,12 +337,12 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
                 onBlur={touch('displayName')}
                 placeholder={t('auth.namePlaceholder')}
                 maxLength={50}
-                className={`w-full px-4 py-3 rounded-xl border bg-kj-input-bg text-kj-text placeholder:text-kj-text-faint focus:outline-none focus:ring-2 focus:ring-kj-primary/40 focus:border-kj-primary transition ${
+                className={`w-full px-4 py-3 rounded-xl border bg-kj-input-bg text-kj-text placeholder:text-kj-text-faint focus:outline-none focus:ring-2 focus:ring-kj-primary/40 focus:border-kj-primary transition font-sans text-sm ${
                   showError('displayName') ? 'border-kj-accent' : 'border-kj-line'
                 }`}
               />
               {showError('displayName') && (
-                <p className="mt-1 text-xs text-kj-accent flex items-center gap-1">
+                <p className="mt-1 text-xs text-kj-accent flex items-center gap-1 font-sans">
                   <AlertCircle size={12} /> {showError('displayName')}
                 </p>
               )}
@@ -327,21 +351,20 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
             {/* Username */}
             <div>
               <div className="flex justify-between items-center mb-1.5">
-                <label className="block text-sm font-medium text-kj-text-dim">
-                  {t('auth.username')}
-                  <span className="ml-1.5 text-xs text-amber-600 dark:text-amber-400 font-normal">({t('auth.usernameCannotChange')})</span>
+                <label className="block text-[9px] font-semibold text-kj-text-faint uppercase tracking-widest font-sans">
+                  ইউজারনেম / USERNAME
+                  <span className="ml-1.5 text-[9px] text-amber-600 dark:text-amber-400 normal-case tracking-normal">({t('auth.usernameCannotChange')})</span>
                 </label>
-                <span className={`text-xs ${form.username.length > 27 ? 'text-orange-500' : 'text-kj-text-faint'}`}>
+                <span className={`text-xs font-sans ${form.username.length > 27 ? 'text-orange-500' : 'text-kj-text-faint'}`}>
                   {form.username.length}/30
                 </span>
               </div>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-kj-text-faint select-none">@</span>
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-kj-text-faint select-none font-sans">@</span>
                 <input
                   type="text"
                   value={form.username}
                   onChange={e => {
-                    // Auto-lowercase, strip disallowed chars
                     const cleaned = e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, '');
                     setForm(prev => ({ ...prev, username: cleaned }));
                   }}
@@ -349,7 +372,7 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
                   placeholder={t('auth.usernamePlaceholder')}
                   maxLength={30}
                   autoComplete="username"
-                  className={`w-full pl-8 pr-4 py-3 rounded-xl border bg-kj-input-bg text-kj-text placeholder:text-kj-text-faint focus:outline-none focus:ring-2 focus:ring-kj-primary/40 focus:border-kj-primary transition ${
+                  className={`w-full pl-8 pr-4 py-3 rounded-xl border bg-kj-input-bg text-kj-text placeholder:text-kj-text-faint focus:outline-none focus:ring-2 focus:ring-kj-primary/40 focus:border-kj-primary transition font-sans text-sm ${
                     showError('username') ? 'border-kj-accent' : touched.username && !errors.username ? 'border-green-400 dark:border-green-500' : 'border-kj-line'
                   }`}
                 />
@@ -358,17 +381,19 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
                 )}
               </div>
               {showError('username') ? (
-                <p className="mt-1 text-xs text-kj-accent flex items-center gap-1">
+                <p className="mt-1 text-xs text-kj-accent flex items-center gap-1 font-sans">
                   <AlertCircle size={12} /> {showError('username')}
                 </p>
               ) : (
-                <p className="mt-1 text-xs text-kj-text-faint">{t('auth.usernameHint')}</p>
+                <p className="mt-1 text-xs text-kj-text-faint font-sans">{t('auth.usernameHint')}</p>
               )}
             </div>
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-kj-text-dim mb-1.5">{t('auth.email')}</label>
+              <label className="block text-[9px] font-semibold text-kj-text-faint uppercase tracking-widest mb-1.5 font-sans">
+                ইমেইল / EMAIL
+              </label>
               <div className="relative">
                 <input
                   type="email"
@@ -377,7 +402,7 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
                   onBlur={handleEmailBlur}
                   placeholder={t('auth.emailPlaceholder')}
                   autoComplete="email"
-                  className={`w-full px-4 py-3 pr-10 rounded-xl border bg-kj-input-bg text-kj-text placeholder:text-kj-text-faint focus:outline-none focus:ring-2 focus:ring-kj-primary/40 focus:border-kj-primary transition ${
+                  className={`w-full px-4 py-3 pr-10 rounded-xl border bg-kj-input-bg text-kj-text placeholder:text-kj-text-faint focus:outline-none focus:ring-2 focus:ring-kj-primary/40 focus:border-kj-primary transition font-sans text-sm ${
                     (showError('email') || emailApiError) ? 'border-kj-accent' :
                     touched.email && !errors.email && !emailApiError && !emailChecking && form.email ? 'border-green-400 dark:border-green-500' :
                     'border-kj-line'
@@ -391,19 +416,21 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
                 )}
               </div>
               {(showError('email') || emailApiError) && (
-                <p className="mt-1 text-xs text-red-500 flex items-start gap-1">
+                <p className="mt-1 text-xs text-red-500 flex items-start gap-1 font-sans">
                   <AlertCircle size={12} className="shrink-0 mt-0.5" />
                   {showError('email') || emailApiError}
                 </p>
               )}
               {emailChecking && (
-                <p className="mt-1 text-xs text-blue-500">{t('auth.emailVerifying')}</p>
+                <p className="mt-1 text-xs text-blue-500 font-sans">{t('auth.emailVerifying')}</p>
               )}
             </div>
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-kj-text-dim mb-1.5">{t('auth.password')}</label>
+              <label className="block text-[9px] font-semibold text-kj-text-faint uppercase tracking-widest mb-1.5 font-sans">
+                পাসওয়ার্ড / PASSWORD
+              </label>
               <div className="relative">
                 <input
                   type={showPass ? 'text' : 'password'}
@@ -413,37 +440,41 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
                   onFocus={() => setShowPassRules(true)}
                   placeholder={t('auth.passPlaceholder')}
                   autoComplete="new-password"
-                  className={`w-full px-4 py-3 pr-12 rounded-xl border bg-kj-input-bg text-kj-text placeholder:text-kj-text-faint focus:outline-none focus:ring-2 focus:ring-kj-primary/40 focus:border-kj-primary transition ${
+                  className={`w-full px-4 py-3 pr-12 rounded-xl border bg-kj-input-bg text-kj-text placeholder:text-kj-text-faint focus:outline-none focus:ring-2 focus:ring-kj-primary/40 focus:border-kj-primary transition font-sans text-sm ${
                     showError('password') ? 'border-kj-accent' : 'border-kj-line'
                   }`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPass(p => !p)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-kj-text-faint hover:text-kj-text-dim dark:hover:text-kj-text-faint p-1"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-kj-text-faint hover:text-kj-text-dim p-1"
                 >
                   {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
 
-              {/* Password strength bar */}
+              {/* Password strength meter — 4 bars */}
               {form.password && (
                 <div className="mt-2">
                   <div className="flex gap-1 mb-1">
-                    {[1, 2, 3, 4, 5].map(i => (
+                    {[1, 2, 3, 4].map(i => (
                       <div
                         key={i}
                         className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-                          i <= strength.score ? strength.color : 'bg-gray-200 dark:bg-slate-600'
+                          i <= Math.min(strength.score, 4)
+                            ? strength.score <= 2 ? 'bg-kj-accent'
+                              : strength.score === 3 ? 'bg-kj-amber'
+                              : 'bg-green-500'
+                            : 'bg-kj-chip-bg'
                         }`}
                       />
                     ))}
                   </div>
                   {strength.label && (
-                    <p className={`text-xs font-medium ${
+                    <p className={`text-xs font-medium font-sans ${
                       strength.score <= 2 ? 'text-kj-accent' :
                       strength.score === 3 ? 'text-kj-amber' :
-                      'text-kj-primary'
+                      'text-green-500'
                     }`}>{t('auth.passwordStrength.label')} {strength.label}</p>
                   )}
                 </div>
@@ -453,7 +484,7 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
               {(showPassRules || form.password) && (
                 <div className="mt-2 p-3 rounded-xl bg-kj-chip-bg border border-kj-line space-y-1">
                   {passwordRules.map((rule, i) => (
-                    <div key={i} className="flex items-center gap-2 text-xs">
+                    <div key={i} className="flex items-center gap-2 text-xs font-sans">
                       {rule.met
                         ? <Check size={12} className="text-kj-primary shrink-0" />
                         : <X size={12} className="text-kj-text-faint shrink-0" />
@@ -469,7 +500,9 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
 
             {/* Confirm Password */}
             <div>
-              <label className="block text-sm font-medium text-kj-text-dim mb-1.5">{t('auth.confirmPass')}</label>
+              <label className="block text-[9px] font-semibold text-kj-text-faint uppercase tracking-widest mb-1.5 font-sans">
+                পাসওয়ার্ড নিশ্চিত করুন / CONFIRM PASSWORD
+              </label>
               <div className="relative">
                 <input
                   type={showPass ? 'text' : 'password'}
@@ -478,7 +511,7 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
                   onBlur={touch('confirmPassword')}
                   placeholder={t('auth.confirmPassPlaceholder')}
                   autoComplete="new-password"
-                  className={`w-full px-4 py-3 pr-12 rounded-xl border bg-kj-input-bg text-kj-text placeholder:text-kj-text-faint focus:outline-none focus:ring-2 focus:ring-kj-primary/40 focus:border-kj-primary transition ${
+                  className={`w-full px-4 py-3 pr-12 rounded-xl border bg-kj-input-bg text-kj-text placeholder:text-kj-text-faint focus:outline-none focus:ring-2 focus:ring-kj-primary/40 focus:border-kj-primary transition font-sans text-sm ${
                     showError('confirmPassword') ? 'border-kj-accent' :
                     form.confirmPassword && form.password === form.confirmPassword ? 'border-green-400 dark:border-green-500' :
                     'border-kj-line'
@@ -494,19 +527,26 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
                 )}
               </div>
               {showError('confirmPassword') && (
-                <p className="mt-1 text-xs text-kj-accent flex items-center gap-1">
+                <p className="mt-1 text-xs text-kj-accent flex items-center gap-1 font-sans">
                   <AlertCircle size={12} /> {showError('confirmPassword')}
                 </p>
               )}
             </div>
 
+            {/* Submit */}
             <button
               type="submit"
               disabled={loading || !isFormValid}
-              className="w-full py-3 px-6 rounded-xl font-semibold text-kj-primary-ink bg-kj-primary hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 shadow-sm mt-2 kj-glow"
+              className="w-full py-3 px-6 rounded-xl font-bold text-[15px] text-kj-primary-ink bg-gradient-to-r from-kj-primary to-kj-primary-deep hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 shadow-lg kj-glow font-sans mt-1"
             >
-              <UserPlus size={18} />
-              {t('auth.signupButton')}
+              {loading ? (
+                <>
+                  <Loader2 size={18} className="animate-spin" />
+                  {t('auth.verifying')}
+                </>
+              ) : (
+                <>{t('auth.signupButton')} &rarr;</>
+              )}
             </button>
           </form>
 
@@ -516,7 +556,7 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
               <div className="w-full border-t border-kj-line" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="px-3 bg-kj-panel text-kj-text-faint">{t('auth.orContinueWith')}</span>
+              <span className="px-3 bg-kj-panel text-kj-text-faint font-sans">{t('auth.orContinueWith')}</span>
             </div>
           </div>
 
@@ -524,7 +564,7 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
             type="button"
             onClick={handleGoogleSignup}
             disabled={googleLoading || loading}
-            className="mt-4 w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-kj-line bg-kj-chip-bg hover:bg-kj-panel text-kj-text-dim font-medium transition disabled:opacity-60 disabled:cursor-not-allowed"
+            className="mt-4 w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-kj-line bg-kj-chip-bg hover:bg-kj-panel text-kj-text-dim font-medium transition disabled:opacity-60 disabled:cursor-not-allowed font-sans"
           >
             {googleLoading ? (
               <Loader2 size={18} className="animate-spin" />
@@ -539,7 +579,8 @@ export default function SignupPage({ onLogin, onSuccess, onClose }: SignupPagePr
             {t('auth.continueWithGoogle')}
           </button></>)}
 
-          <div className="mt-5 text-center text-sm text-kj-text-dim">
+          {/* Sign in link */}
+          <div className="mt-5 text-center text-sm text-kj-text-faint font-sans">
             {t('auth.hasAccount')}{' '}
             <button onClick={onLogin} className="text-kj-primary font-semibold hover:underline">
               {t('auth.loginButton')}

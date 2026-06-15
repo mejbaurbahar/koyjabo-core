@@ -1,10 +1,7 @@
 import React from 'react';
-import {
-    Settings as SettingsIcon, Sun, Moon, Globe, Mail, ChevronRight,
-    Bell, MapPin, Download, User, Shield, Smartphone, CreditCard,
-    HelpCircle, MessageSquare, Bug, FileText, Info, Rocket
-} from 'lucide-react';
+import { ChevronRight, LogOut, Smartphone } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import SponsoredAdSlot from './SponsoredAdSlot';
 
 interface SettingsPageProps {
     isDarkMode: boolean;
@@ -21,9 +18,20 @@ interface SettingsPageProps {
 
 function ToggleSwitch({ on }: { on: boolean }) {
     return (
-        <div className={`w-9 h-[22px] rounded-full relative transition-colors duration-200 ${on ? 'bg-kj-primary' : 'bg-kj-line'}`}>
+        <div className={`w-9 h-[22px] rounded-full relative transition-colors duration-200 shrink-0 ${on ? 'bg-kj-primary' : 'bg-kj-line'}`}>
             <div className={`absolute top-[2px] w-[18px] h-[18px] rounded-full bg-white shadow transition-all duration-200 ${on ? 'left-[18px]' : 'left-[2px]'}`} />
         </div>
+    );
+}
+
+function Pill({ label }: { label: string }) {
+    return (
+        <span
+            className="text-[10px] font-bold px-2 py-0.5 rounded-full font-sans shrink-0"
+            style={{ background: 'var(--kj-primary-soft)', color: 'var(--kj-primary)' }}
+        >
+            {label}
+        </span>
     );
 }
 
@@ -32,100 +40,159 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
     onProfileClick, onPrivacyClick, onTermsClick, onAboutClick,
     onReleaseNotesClick, onInstallClick, embedded = false
 }) => {
-    const { language, setLanguage, t } = useLanguage();
+    const { language, setLanguage } = useLanguage();
     const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
 
-    const groups = [
+    type RowRight =
+        | { kind: 'toggle'; on: boolean }
+        | { kind: 'pill'; label: string }
+        | { kind: 'arrow' }
+        | { kind: 'none' };
+
+    interface Row {
+        emoji: string;
+        label: string;
+        sub?: string;
+        action?: () => void;
+        right: RowRight;
+    }
+
+    interface Group {
+        title: string;
+        rows: Row[];
+    }
+
+    const groups: Group[] = [
+        {
+            title: lbl('Account', 'অ্যাকাউন্ট'),
+            rows: [
+                {
+                    emoji: '👤',
+                    label: lbl('Profile', 'প্রোফাইল'),
+                    sub: lbl('Mejbaur Bahar Fagun · mejbaur@markopolo.ai', 'মেজবাউর বাহার ফাগুন · +880 17XX-XXXXXX'),
+                    action: onProfileClick,
+                    right: { kind: 'arrow' },
+                },
+                {
+                    emoji: '🔒',
+                    label: lbl('Password & Security', 'পাসওয়ার্ড ও নিরাপত্তা'),
+                    sub: lbl('Two-factor auth', 'দ্বি-স্তর যাচাইকরণ'),
+                    right: { kind: 'pill', label: lbl('2FA On', '২এফএ চালু') },
+                },
+                {
+                    emoji: '💻',
+                    label: lbl('Devices', 'ডিভাইস'),
+                    sub: lbl('3 active sessions', '৩টি সক্রিয় সেশন'),
+                    right: { kind: 'arrow' },
+                },
+                {
+                    emoji: '💳',
+                    label: lbl('Payment Methods', 'পেমেন্ট পদ্ধতি'),
+                    sub: lbl('bKash · Visa ··4521', 'বিকাশ · ভিসা ··৪৫২১'),
+                    right: { kind: 'arrow' },
+                },
+            ],
+        },
         {
             title: lbl('App', 'অ্যাপ'),
-            items: [
+            rows: [
                 {
-                    icon: <Globe className="w-4 h-4" />,
+                    emoji: '🌐',
                     label: lbl('Language', 'ভাষা'),
                     sub: language === 'bn' ? 'বাংলা' : 'English',
                     action: () => setLanguage(language === 'bn' ? 'en' : 'bn'),
-                    arrow: true,
+                    right: { kind: 'arrow' },
                 },
                 {
-                    icon: isDarkMode ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />,
+                    emoji: '🎨',
                     label: lbl('Theme', 'থিম'),
-                    sub: isDarkMode ? lbl('Dark', 'ডার্ক') : lbl('Light', 'লাইট'),
+                    sub: isDarkMode ? lbl('Dark mode', 'ডার্ক মোড') : lbl('Light mode', 'লাইট মোড'),
                     action: toggleTheme,
-                    toggle: isDarkMode,
+                    right: { kind: 'toggle', on: isDarkMode },
                 },
                 {
-                    icon: <Bell className="w-4 h-4" />,
+                    emoji: '🔔',
                     label: lbl('Notifications', 'নোটিফিকেশন'),
-                    sub: lbl('Trip delays, deals', 'ট্রিপ বিলম্ব, অফার'),
-                    toggle: true,
+                    sub: lbl('Trip delays, deals & alerts', 'ট্রিপ বিলম্ব, অফার ও সতর্কতা'),
+                    right: { kind: 'toggle', on: true },
                 },
                 {
-                    icon: <MapPin className="w-4 h-4" />,
+                    emoji: '📍',
                     label: lbl('Location', 'অবস্থান'),
-                    sub: lbl('Always', 'সর্বদা'),
-                    toggle: true,
+                    sub: lbl('Always · for route suggestions', 'সর্বদা · রুট পরামর্শের জন্য'),
+                    right: { kind: 'toggle', on: true },
                 },
                 {
-                    icon: <Download className="w-4 h-4" />,
-                    label: lbl('Offline data', 'অফলাইন ডেটা'),
-                    sub: lbl('124 MB downloaded', '১২৪ MB ডাউনলোড করা'),
-                    arrow: true,
+                    emoji: '📥',
+                    label: lbl('Offline Data', 'অফলাইন ডেটা'),
+                    sub: lbl('124 MB / 500 MB used', '১২৪ MB / ৫০০ MB ব্যবহৃত'),
+                    right: { kind: 'arrow' },
+                },
+                {
+                    emoji: '📊',
+                    label: lbl('Data Saver', 'ডেটা সেভার'),
+                    sub: lbl('Reduce image quality on mobile data', 'মোবাইল ডেটায় ছবির মান কমান'),
+                    right: { kind: 'toggle', on: false },
                 },
             ],
         },
         {
             title: lbl('Support', 'সহায়তা'),
-            items: [
+            rows: [
                 {
-                    icon: <HelpCircle className="w-4 h-4" />,
+                    emoji: '❓',
                     label: lbl('Q & A', 'প্রশ্নোত্তর'),
-                    arrow: true,
+                    sub: lbl('Frequently asked questions', 'সচরাচর জিজ্ঞাসা'),
+                    right: { kind: 'arrow' },
                 },
                 {
-                    icon: <Mail className="w-4 h-4" />,
-                    label: lbl('Contact us', 'যোগাযোগ'),
+                    emoji: '✉️',
+                    label: lbl('Contact Us', 'যোগাযোগ করুন'),
+                    sub: lbl('Email & phone support', 'ইমেইল ও ফোন সহায়তা'),
                     action: onContactClick,
-                    arrow: true,
+                    right: { kind: 'arrow' },
                 },
                 {
-                    icon: <MessageSquare className="w-4 h-4" />,
-                    label: lbl('Send feedback', 'প্রতিক্রিয়া পাঠান'),
-                    arrow: true,
+                    emoji: '📝',
+                    label: lbl('Send Feedback', 'প্রতিক্রিয়া পাঠান'),
+                    sub: lbl('Help us improve KoyJabo', 'কয়জাবো উন্নত করতে সাহায্য করুন'),
+                    right: { kind: 'arrow' },
                 },
                 {
-                    icon: <Bug className="w-4 h-4" />,
-                    label: lbl('Report a bug', 'বাগ রিপোর্ট'),
-                    arrow: true,
+                    emoji: '🐛',
+                    label: lbl('Report a Bug', 'বাগ রিপোর্ট করুন'),
+                    sub: lbl('Found something broken?', 'কিছু ভাঙা পেয়েছেন?'),
+                    right: { kind: 'arrow' },
                 },
             ],
         },
         {
             title: lbl('Legal', 'আইনি'),
-            items: [
+            rows: [
                 {
-                    icon: <Shield className="w-4 h-4" />,
-                    label: lbl('Privacy policy', 'গোপনীয়তা নীতি'),
+                    emoji: '🛡️',
+                    label: lbl('Privacy Policy', 'গোপনীয়তা নীতি'),
                     action: onPrivacyClick,
-                    arrow: true,
+                    right: { kind: 'arrow' },
                 },
                 {
-                    icon: <FileText className="w-4 h-4" />,
-                    label: lbl('Terms of service', 'সেবার শর্তাবলি'),
+                    emoji: '📄',
+                    label: lbl('Terms of Service', 'সেবার শর্তাবলি'),
                     action: onTermsClick,
-                    arrow: true,
+                    right: { kind: 'arrow' },
                 },
                 {
-                    icon: <Info className="w-4 h-4" />,
-                    label: lbl('About KoyJabo', 'অ্যাপ সম্পর্কে'),
+                    emoji: 'ℹ️',
+                    label: lbl('About KoyJabo', 'কয়জাবো সম্পর্কে'),
                     action: onAboutClick,
-                    arrow: true,
+                    right: { kind: 'arrow' },
                 },
                 {
-                    icon: <Rocket className="w-4 h-4" />,
-                    label: lbl('Release notes', 'রিলিজ নোট'),
+                    emoji: '🆕',
+                    label: lbl('Release Notes', 'রিলিজ নোট'),
                     sub: 'v1.4.2',
                     action: onReleaseNotesClick,
-                    arrow: true,
+                    right: { kind: 'arrow' },
                 },
             ],
         },
@@ -137,10 +204,16 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
             style={{ WebkitOverflowScrolling: 'touch' }}
         >
             <div className="max-w-2xl mx-auto w-full">
+
+                {/* Page header */}
                 <div className="mb-6">
-                    <p className="text-[11px] font-bold text-kj-text-faint tracking-[1.4px] uppercase mb-1">{lbl('Settings', 'সেটিংস')}</p>
-                    <h1 className="font-bengali font-bold text-[22px] md:text-[28px] text-kj-text tracking-tight">
-                        {lbl('Preferences & Options', 'পছন্দ ও বিকল্প')}
+                    <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-1">
+                        ✦ KoyJabo · {lbl('Preferences', 'পছন্দসমূহ')}
+                    </p>
+                    <h1 className="font-bengali font-bold leading-tight tracking-tight text-kj-text" style={{ fontSize: 26 }}>
+                        <span className="font-bengali">সেটিংস</span>
+                        <span className="text-kj-text-dim font-sans font-bold text-xl"> / </span>
+                        <span className="font-sans">Settings</span>
                     </h1>
                 </div>
 
@@ -148,51 +221,116 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                 {onInstallClick && (
                     <button
                         onClick={onInstallClick}
-                        className="w-full dc-card kj-glass rounded-[18px] border border-kj-primary/30 p-4 flex items-center gap-3 mb-5 text-left group hover:border-kj-primary/60 transition-colors"
+                        className="w-full dc-card rounded-[18px] border border-kj-primary/30 p-4 flex items-center gap-3 mb-5 text-left group hover:border-kj-primary/60 transition-colors"
                     >
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-kj-primary to-kj-primary-deep flex items-center justify-center text-kj-primary-ink kj-anim-glow shrink-0">
+                        <div
+                            className="w-10 h-10 rounded-xl flex items-center justify-center text-kj-primary-ink kj-anim-glow shrink-0"
+                            style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))' }}
+                        >
                             <Smartphone className="w-5 h-5" />
                         </div>
                         <div className="flex-1 min-w-0">
-                            <div className="font-bengali font-bold text-[14px] text-kj-text">{lbl('Install app', 'অ্যাপ ইনস্টল করুন')}</div>
-                            <div className="text-[11px] text-kj-text-dim mt-0.5">{lbl('Works offline · all routes', 'অফলাইনে কাজ করে · সব রুট')}</div>
+                            <div className="font-bengali font-bold text-[14px] text-kj-text">
+                                {lbl('Install App', 'অ্যাপ ইনস্টল করুন')}
+                            </div>
+                            <div className="text-[11px] text-kj-text-dim mt-0.5 font-bengali">
+                                {lbl('Works offline · all routes', 'অফলাইনে কাজ করে · সব রুট')}
+                            </div>
                         </div>
                         <ChevronRight className="w-4 h-4 text-kj-text-faint group-hover:text-kj-primary group-hover:translate-x-0.5 transition-all shrink-0" />
                     </button>
                 )}
 
-                {groups.map((group, gi) => (
+                {/* Account & App sections */}
+                {groups.slice(0, 2).map((group, gi) => (
                     <div key={gi} className="mb-5">
-                        <p className="text-[10px] font-bold text-kj-text-faint tracking-[1.4px] uppercase mb-2 px-1">{group.title}</p>
-                        <div className="dc-card kj-glass rounded-[16px] border border-kj-line overflow-hidden">
-                            {group.items.map((item, ii) => (
+                        <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans px-1 mb-2">
+                            {group.title}
+                        </p>
+                        <div className="dc-card rounded-[16px] overflow-hidden divide-y divide-kj-line">
+                            {group.rows.map((row, ri) => (
                                 <button
-                                    key={ii}
-                                    onClick={item.action || undefined}
-                                    disabled={!item.action && item.toggle === undefined}
-                                    className={`w-full flex items-center gap-3 px-[14px] py-[13px] text-left transition-colors ${ii > 0 ? 'border-t border-kj-line' : ''} ${item.action ? 'hover:bg-kj-chip-bg/60 cursor-pointer' : 'cursor-default'}`}
+                                    key={ri}
+                                    onClick={row.action || undefined}
+                                    disabled={!row.action && row.right.kind === 'none'}
+                                    className={`w-full flex items-center gap-3 px-[14px] py-[13px] text-left transition-colors ${row.action ? 'hover:bg-kj-chip-bg/60 cursor-pointer active:bg-kj-chip-bg' : 'cursor-default'}`}
                                 >
-                                    <div className="w-8 h-8 rounded-lg bg-kj-chip-bg text-kj-text flex items-center justify-center shrink-0">
-                                        {item.icon}
-                                    </div>
+                                    <span className="text-xl shrink-0 leading-none">{row.emoji}</span>
                                     <div className="flex-1 min-w-0">
-                                        <div className="font-bengali font-semibold text-[14px] text-kj-text">{item.label}</div>
-                                        {item.sub && <div className="text-[11px] text-kj-text-faint mt-0.5">{item.sub}</div>}
+                                        <div className="font-bengali font-semibold text-[14px] text-kj-text leading-snug">
+                                            {row.label}
+                                        </div>
+                                        {row.sub && (
+                                            <div className="text-[11px] text-kj-text-faint mt-0.5 font-bengali truncate">
+                                                {row.sub}
+                                            </div>
+                                        )}
                                     </div>
-                                    {item.toggle !== undefined ? (
-                                        <ToggleSwitch on={item.toggle} />
-                                    ) : item.arrow ? (
+                                    {row.right.kind === 'toggle' && <ToggleSwitch on={row.right.on} />}
+                                    {row.right.kind === 'pill' && <Pill label={row.right.label} />}
+                                    {row.right.kind === 'arrow' && (
                                         <ChevronRight className="w-[14px] h-[14px] text-kj-text-faint shrink-0" />
-                                    ) : null}
+                                    )}
                                 </button>
                             ))}
                         </div>
                     </div>
                 ))}
 
-                <div className="text-center mt-4 mb-2 text-[11px] text-kj-text-faint font-sans">
-                    KoyJabo · v1.4.2 · Build 2412.28
+                {/* Ad slot in the middle */}
+                <div className="mb-5">
+                    <SponsoredAdSlot language={language} size="300x250" compact />
                 </div>
+
+                {/* Support & Legal sections */}
+                {groups.slice(2).map((group, gi) => (
+                    <div key={gi + 2} className="mb-5">
+                        <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans px-1 mb-2">
+                            {group.title}
+                        </p>
+                        <div className="dc-card rounded-[16px] overflow-hidden divide-y divide-kj-line">
+                            {group.rows.map((row, ri) => (
+                                <button
+                                    key={ri}
+                                    onClick={row.action || undefined}
+                                    disabled={!row.action && row.right.kind === 'none'}
+                                    className={`w-full flex items-center gap-3 px-[14px] py-[13px] text-left transition-colors ${row.action ? 'hover:bg-kj-chip-bg/60 cursor-pointer active:bg-kj-chip-bg' : 'cursor-default'}`}
+                                >
+                                    <span className="text-xl shrink-0 leading-none">{row.emoji}</span>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="font-bengali font-semibold text-[14px] text-kj-text leading-snug">
+                                            {row.label}
+                                        </div>
+                                        {row.sub && (
+                                            <div className="text-[11px] text-kj-text-faint mt-0.5 font-bengali truncate">
+                                                {row.sub}
+                                            </div>
+                                        )}
+                                    </div>
+                                    {row.right.kind === 'toggle' && <ToggleSwitch on={row.right.on} />}
+                                    {row.right.kind === 'pill' && <Pill label={row.right.label} />}
+                                    {row.right.kind === 'arrow' && (
+                                        <ChevronRight className="w-[14px] h-[14px] text-kj-text-faint shrink-0" />
+                                    )}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+
+                {/* Sign out */}
+                <button className="w-full dc-card rounded-[16px] border border-red-500/30 bg-red-500/5 hover:bg-red-500/10 active:scale-[0.99] transition-all flex items-center justify-center gap-2.5 py-3.5 mb-5">
+                    <LogOut className="w-4 h-4 text-red-400 shrink-0" />
+                    <span className="font-bengali font-bold text-[14px] text-red-400">
+                        {lbl('Sign Out', 'সাইন আউট')}
+                    </span>
+                </button>
+
+                {/* Version footer */}
+                <p className="text-center text-[11px] text-kj-text-faint font-sans mb-2">
+                    KoyJabo · v2.5.0 · Build 2412.28
+                </p>
+
             </div>
         </div>
     );

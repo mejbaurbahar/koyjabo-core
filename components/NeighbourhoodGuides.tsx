@@ -571,7 +571,7 @@ const ALL_64_DISTRICTS: DistrictSeed[] = [
   { area: 'নওগাঁ', areaEn: 'Naogaon', division: 'Rajshahi', icon: '🛕', landmarks: ['পাহাড়পুর', 'আলতাদীঘি', 'কুসুম্বা মসজিদ'], landmarksEn: ['Paharpur', 'Altadighi', 'Kusumba Mosque'] },
   { area: 'চাঁপাইনবাবগঞ্জ', areaEn: 'Chapai Nawabganj', division: 'Rajshahi', icon: '🥭', landmarks: ['ছোট সোনা মসজিদ', 'আমবাগান', 'সোনা মসজিদ স্থলবন্দর'], landmarksEn: ['Choto Sona Mosque', 'Mango Orchards', 'Sona Mosque Land Port'] },
   { area: 'পাবনা', areaEn: 'Pabna', division: 'Rajshahi', icon: '🏞️', landmarks: ['হার্ডিঞ্জ ব্রিজ', 'লালন শাহ সেতু', 'ঈশ্বরদী'], landmarksEn: ['Hardinge Bridge', 'Lalon Shah Bridge', 'Ishwardi'] },
-  { area: 'সিরাজগঞ্জ', areaEn: 'Sirajganj', division: 'Rajshahi', icon: '🌉', landmarks: ['যমুনা সেতু', 'এনায়েতপুর', 'রবীন্দ্র কাচারী বাড়ি'], landmarksEn: ['Jamuna Bridge', 'Enayetpur', 'Rabindra Kachari Bari'] },
+  { area: 'সিরাজগঞ্জ', areaEn: 'Sirajganj', division: 'Rajshahi', icon: '🌉', landmarks: ['যমুনা সেতু', 'এনায়েতপুর', 'রবীন্দ্র কাচারী বাড়ি'], landmarksEn: ['Jamuna Bridge', 'Enayetpur', 'Rabindra Kachari Bari'] },
   { area: 'বগুড়া', areaEn: 'Bogra', division: 'Rajshahi', icon: '🏯', landmarks: ['মহাস্থানগড়', 'বগুড়া জাদুঘর', 'গোকুল মেধ'], landmarksEn: ['Mahasthangarh', 'Bogura Museum', 'Gokul Medh'] },
   { area: 'জয়পুরহাট', areaEn: 'Joypurhat', division: 'Rajshahi', icon: '🌾', landmarks: ['হিন্ডা কসবা শাহী মসজিদ', 'বারো শিবালয় মন্দির'], landmarksEn: ['Hinda Kasba Shahi Mosque', 'Baro Shibaloy Temple'] },
 
@@ -608,7 +608,7 @@ const ALL_64_DISTRICTS: DistrictSeed[] = [
   { area: 'পঞ্চগড়', areaEn: 'Panchagarh', division: 'Rangpur', icon: '🏔️', landmarks: ['তেঁতুলিয়া', 'কাঞ্চনজঙ্ঘা ভিউ পয়েন্ট', 'মহারাজার দিঘি'], landmarksEn: ['Tetulia', 'Kanchenjunga Viewpoint', 'Moharajar Dighi'] },
   { area: 'নীলফামারী', areaEn: 'Nilphamari', division: 'Rangpur', icon: '✈️', landmarks: ['সৈয়দপুর রেলওয়ে কারখানা', 'নীলসাগর', 'তিস্তা ব্যারাজ'], landmarksEn: ['Saidpur Railway Workshop', 'Nilsagar', 'Teesta Barrage'] },
   { area: 'লালমনিরহাট', areaEn: 'Lalmonirhat', division: 'Rangpur', icon: '🚂', landmarks: ['তিস্তা ব্যারেজ', 'তিন বিঘা করিডোর', 'বুড়িমারী স্থলবন্দর'], landmarksEn: ['Teesta Barrage', 'Tin Bigha Corridor', 'Burimari Land Port'] },
-  { area: 'কুড়িগ্রাম', areaEn: 'Kurigram', division: 'Rangpur', icon: '🌊', landmarks: ['ধরলা ব্রিজ', 'চিলমারী বন্দর', 'দাসীয়ারছড়া'], landmarksEn: ['Dharla Bridge', 'Chilmari Port', 'Dasiarchhara'] },
+  { area: 'কুড়িগ্রাম', areaEn: 'Kurigram', division: 'Rangpur', icon: '🌊', landmarks: ['ধরলা ব্রিজ', 'চিলমারী বন্দর', 'দাসীয়ারছড়া'], landmarksEn: ['Dharla Bridge', 'Chilmari Port', 'Dasiarchhara'] },
   { area: 'গাইবান্ধা', areaEn: 'Gaibandha', division: 'Rangpur', icon: '🚣', landmarks: ['বালাসী ঘাট', 'ফ্রেন্ডশিপ সেন্টার'], landmarksEn: ['Balasi Ghat', 'Friendship Centre'] },
 
   // Mymensingh Division
@@ -680,44 +680,93 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
 
     return (
       <div className="flex flex-col flex-1 min-h-0 bg-kj-bg overflow-hidden">
-        <div className="flex items-center gap-3 p-4 bg-kj-panel border-b border-kj-line shrink-0">
-          <button onClick={() => setSelected(null)} className="flex items-center gap-1 px-3 py-2 -ml-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-xl text-kj-text-dim font-medium text-sm">
-            <ChevronLeft className="w-5 h-5" />
-            {lbl('Back', 'ফিরে যান')}
+        {/* Sticky back bar */}
+        <div className="sticky top-0 z-20 bg-kj-bg/80 backdrop-blur-md border-b border-kj-line flex items-center gap-3 px-4 py-3 shrink-0">
+          <button
+            onClick={() => setSelected(null)}
+            className="w-9 h-9 rounded-xl border border-kj-line bg-kj-panel text-kj-text-dim flex items-center justify-center active:scale-90 transition-all hover:border-kj-primary/40 hover:text-kj-primary"
+          >
+            <ArrowLeft className="w-4 h-4" />
           </button>
           <span className="text-2xl">{selected.icon}</span>
-          <div>
-            <h1 className="text-lg font-bold text-kj-text">{language === 'bn' ? selected.area : selected.areaEn}</h1>
-            <p className="text-xs text-kj-text-dim">{language === 'bn' ? selected.areaEn : selected.area} · {selected.division}</p>
+          <div className="flex-1 min-w-0">
+            <h1 className="font-bengali font-bold text-base text-kj-text truncate">{language === 'bn' ? selected.area : selected.areaEn}</h1>
+            <p className="text-[11px] text-kj-text-faint">{language === 'bn' ? selected.areaEn : selected.area} · {selected.division}</p>
           </div>
         </div>
-        <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 space-y-4 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
-          <div className="bg-kj-panel rounded-2xl p-4 border border-kj-line">
-            <p className="text-sm text-kj-text-dim">{desc}</p>
+
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y px-4 py-4 space-y-3 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
+          {/* Description */}
+          <div className="dc-card rounded-[18px] p-4">
+            <p className="text-sm text-kj-text-dim leading-relaxed">{desc}</p>
           </div>
-          <div className="bg-kj-primary-soft rounded-2xl p-4 border border-blue-100 dark:border-blue-800">
-            <h3 className="font-bold text-blue-900 dark:text-blue-300 mb-2 flex items-center gap-2"><span>🚇</span> {lbl('Metro / MRT Access', 'মেট্রো স্টেশন')}</h3>
-            {metro.map(m => <p key={m} className="text-sm text-kj-primary text-kj-primary py-0.5">• {m}</p>)}
-          </div>
-          <div className="bg-green-50 dark:bg-green-900/20 rounded-2xl p-4 border border-green-100 dark:border-green-800">
-            <h3 className="font-bold text-green-900 dark:text-green-300 mb-2 flex items-center gap-2"><Bus className="w-4 h-4" /> {lbl('Bus Routes', 'বাস রুট')}</h3>
-            <div className="flex flex-wrap gap-2">
-              {buses.map(b => (
-                <span key={b} className="bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300 text-xs px-2.5 py-1 rounded-full font-medium">{b}</span>
+
+          {/* Metro */}
+          <div className="dc-card rounded-[18px] p-4 border-kj-primary/20">
+            <h3 className="font-bold text-kj-text mb-3 flex items-center gap-2 text-sm">
+              <span className="w-7 h-7 rounded-lg bg-kj-primary/15 flex items-center justify-center text-base shrink-0">🚇</span>
+              {lbl('Metro / MRT Access', 'মেট্রো স্টেশন')}
+            </h3>
+            <div className="space-y-1">
+              {metro.map(m => (
+                <p key={m} className="text-sm text-kj-primary flex items-start gap-1.5">
+                  <span className="mt-1.5 w-1 h-1 rounded-full bg-kj-primary shrink-0" />
+                  {m}
+                </p>
               ))}
             </div>
           </div>
-          <div className="bg-amber-50 dark:bg-amber-900/20 rounded-2xl p-4 border border-amber-100 dark:border-amber-800">
-            <h3 className="font-bold text-amber-900 dark:text-amber-300 mb-2">💡 {lbl('Travel Tips', 'ট্রাভেল টিপস')}</h3>
-            {tips.map((tip, i) => <p key={i} className="text-sm text-amber-800 dark:text-amber-200 py-0.5">• {tip}</p>)}
+
+          {/* Bus Routes */}
+          <div className="dc-card rounded-[18px] p-4">
+            <h3 className="font-bold text-kj-text mb-3 flex items-center gap-2 text-sm">
+              <span className="w-7 h-7 rounded-lg bg-green-500/15 flex items-center justify-center shrink-0">
+                <Bus className="w-4 h-4 text-green-400" />
+              </span>
+              {lbl('Bus Routes', 'বাস রুট')}
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {buses.map(b => (
+                <span key={b} className="bg-green-500/10 border border-green-500/20 text-green-400 text-xs px-2.5 py-1 rounded-full font-medium">{b}</span>
+              ))}
+            </div>
           </div>
-          <div className="bg-purple-50 dark:bg-purple-900/20 rounded-2xl p-4 border border-purple-100 dark:border-purple-800">
-            <h3 className="font-bold text-purple-900 dark:text-purple-300 mb-2 flex items-center gap-2"><MapPin className="w-4 h-4" /> {lbl('Landmarks', 'দর্শনীয় স্থান')}</h3>
-            {landmarks.map(l => <p key={l} className="text-sm text-purple-800 dark:text-purple-200 py-0.5">• {l}</p>)}
+
+          {/* Tips */}
+          <div className="dc-card rounded-[18px] p-4">
+            <h3 className="font-bold text-kj-text mb-3 flex items-center gap-2 text-sm">
+              <span className="w-7 h-7 rounded-lg bg-amber-500/15 flex items-center justify-center text-base shrink-0">💡</span>
+              {lbl('Travel Tips', 'ট্রাভেল টিপস')}
+            </h3>
+            <div className="space-y-1">
+              {tips.map((tip, i) => (
+                <p key={i} className="text-sm text-kj-text-dim flex items-start gap-1.5">
+                  <span className="mt-1.5 w-1 h-1 rounded-full bg-amber-400 shrink-0" />
+                  {tip}
+                </p>
+              ))}
+            </div>
+          </div>
+
+          {/* Landmarks */}
+          <div className="dc-card rounded-[18px] p-4">
+            <h3 className="font-bold text-kj-text mb-3 flex items-center gap-2 text-sm">
+              <span className="w-7 h-7 rounded-lg bg-purple-500/15 flex items-center justify-center shrink-0">
+                <MapPin className="w-4 h-4 text-purple-400" />
+              </span>
+              {lbl('Landmarks', 'দর্শনীয় স্থান')}
+            </h3>
+            <div className="space-y-1">
+              {landmarks.map(l => (
+                <p key={l} className="text-sm text-kj-text-dim flex items-start gap-1.5">
+                  <span className="mt-1.5 w-1 h-1 rounded-full bg-purple-400 shrink-0" />
+                  {l}
+                </p>
+              ))}
+            </div>
           </div>
 
           <div className="h-4" />
-
         </div>
       </div>
     );
@@ -725,79 +774,100 @@ export default function NeighbourhoodGuides({ onBack }: Props) {
 
   return (
     <div className="flex flex-col h-full min-h-0 bg-kj-bg overflow-hidden">
-      <div className="flex items-center gap-3 p-4 bg-kj-panel border-b border-kj-line shrink-0">
-        <button onClick={onBack} className="p-2 -ml-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full">
-          <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
+      {/* Sticky back bar */}
+      <div className="sticky top-0 z-20 bg-kj-bg/80 backdrop-blur-md border-b border-kj-line flex items-center gap-3 px-4 py-3 shrink-0">
+        <button
+          onClick={onBack}
+          className="w-9 h-9 rounded-xl border border-kj-line bg-kj-panel text-kj-text-dim flex items-center justify-center active:scale-90 transition-all hover:border-kj-primary/40 hover:text-kj-primary"
+        >
+          <ArrowLeft className="w-4 h-4" />
         </button>
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shrink-0">
-          <MapPin className="w-5 h-5 text-white" />
+        <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+          style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))' }}>
+          <MapPin className="w-4 h-4 text-white" />
         </div>
-        <div>
-          <h1 className="text-lg font-bold text-kj-text">{lbl('Area Guides', 'এলাকাভিত্তিক গাইড')}</h1>
-          <p className="text-xs text-kj-text-dim">{lbl('Bangladesh Transport Guides', 'বাংলাদেশ পরিবহন গাইড')} · {MERGED_GUIDES.length}</p>
+        <div className="flex-1 min-w-0">
+          <span className="font-bengali font-bold text-base text-kj-text">
+            {lbl('Neighbourhood Guides', 'এলাকা গাইড')}
+          </span>
+          <p className="text-[10px] font-bold uppercase tracking-[1.2px] text-kj-text-faint">
+            {lbl('Bangladesh · All Districts', 'বাংলাদেশ · সব জেলা')} · {MERGED_GUIDES.length}
+          </p>
         </div>
       </div>
 
-
-      <div className="px-4 pt-3 pb-2 bg-kj-panel border-b border-kj-line shrink-0">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-kj-text-dim pointer-events-none" />
+      {/* Search */}
+      <div className="px-4 pt-3 pb-3 bg-kj-bg border-b border-kj-line shrink-0">
+        <div className="bg-kj-input-bg border border-kj-line rounded-[14px] px-3.5 py-2.5 flex items-center gap-3">
+          <Search className="w-4 h-4 text-kj-text-faint shrink-0 pointer-events-none" />
           <input
             type="text"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder={lbl('Search areas...', 'এলাকা খুঁজুন...')}
-            className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line border-kj-line rounded-xl pl-9 pr-3 py-2.5 text-sm text-kj-text dark:text-white placeholder-kj-text-faint focus:outline-none focus:ring-2 focus:ring-purple-400"
+            placeholder={lbl('Search areas, districts...', 'এলাকা বা জেলা খুঁজুন...')}
+            className="flex-1 bg-transparent text-sm text-kj-text placeholder-kj-text-faint focus:outline-none"
           />
           {search && (
-            <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-kj-text-faint hover:text-kj-text">
+            <button onClick={() => setSearch('')} className="text-kj-text-faint hover:text-kj-text transition-colors">
               <X className="w-4 h-4" />
             </button>
           )}
         </div>
       </div>
+
+      {/* List */}
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y px-4 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
         {search ? (
-          <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3 content-start">
+          <div className="grid grid-cols-2 gap-3 content-start pt-3">
             {filtered.map(g => (
               <button key={g.area} onClick={() => setSelected(g)}
-                className="bg-kj-panel rounded-2xl p-3 sm:p-4 text-left shadow-sm border border-kj-line hover:border-purple-300 dark:hover:border-purple-700 transition-colors active:scale-95">
-                <span className="text-2xl sm:text-3xl block mb-1.5 sm:mb-2">{g.icon}</span>
-                <h3 className="font-bold text-kj-text text-xs sm:text-sm">{language === 'bn' ? g.area : g.areaEn}</h3>
-                <p className="text-[10px] sm:text-xs text-kj-text-dim">{language === 'bn' ? g.areaEn : g.area}</p>
-                <p className="text-[10px] sm:text-xs text-purple-600 dark:text-purple-400 mt-0.5 sm:mt-1">{g.division}</p>
+                className="dc-card rounded-[18px] p-4 text-left group relative overflow-hidden active:scale-95 transition-transform">
+                <span className="text-3xl block mb-2">{g.icon}</span>
+                <h3 className="font-bengali font-bold text-kj-text text-sm">{language === 'bn' ? g.area : g.areaEn}</h3>
+                <p className="text-xs text-kj-text-dim mt-0.5">{language === 'bn' ? g.areaEn : g.area}</p>
+                <p className="text-[10px] font-bold text-kj-primary mt-1 uppercase tracking-wide">{g.division}</p>
+                <div className="absolute inset-0 bg-kj-primary/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-[18px] flex items-end justify-end p-3">
+                  <span className="text-[11px] font-bold text-kj-primary bg-kj-primary/15 px-2.5 py-1 rounded-full">
+                    {lbl('View guide', 'গাইড দেখুন')} →
+                  </span>
+                </div>
               </button>
             ))}
             {filtered.length === 0 && (
               <div className="col-span-2 text-center py-12 text-kj-text-faint">
-                <MapPin className="w-10 h-10 mx-auto mb-2 opacity-40" />
-                <p>{lbl('No area found', 'কোনো এলাকা পাওয়া যায়নি')}</p>
+                <MapPin className="w-10 h-10 mx-auto mb-2 opacity-30" />
+                <p className="text-sm">{lbl('No area found', 'কোনো এলাকা পাওয়া যায়নি')}</p>
               </div>
             )}
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-5 pt-4">
             {divisions.map(div => {
               const divGuides = MERGED_GUIDES.filter(g => g.division === div);
               const isExpanded = expandedDivisions.has(div);
               const visible = isExpanded ? divGuides : divGuides.slice(0, 4);
               return (
                 <div key={div}>
-                  <p className="text-xs font-bold text-kj-text-faint uppercase tracking-wider mb-2">{div}</p>
+                  <p className="text-[10px] font-bold text-kj-text-faint uppercase tracking-[1.4px] mb-3">{div}</p>
                   <div className="grid grid-cols-2 gap-3">
                     {visible.map(g => (
                       <button key={g.area} onClick={() => setSelected(g)}
-                        className="bg-kj-panel rounded-2xl p-4 text-left shadow-sm border border-kj-line hover:border-purple-300 dark:hover:border-purple-700 transition-colors active:scale-95">
+                        className="dc-card rounded-[18px] p-4 text-left group relative overflow-hidden active:scale-95 transition-transform">
                         <span className="text-3xl block mb-2">{g.icon}</span>
-                        <h3 className="font-bold text-kj-text text-sm">{language === 'bn' ? g.area : g.areaEn}</h3>
-                        <p className="text-xs text-kj-text-dim">{language === 'bn' ? g.areaEn : g.area}</p>
+                        <h3 className="font-bengali font-bold text-kj-text text-sm">{language === 'bn' ? g.area : g.areaEn}</h3>
+                        <p className="text-xs text-kj-text-dim mt-0.5">{language === 'bn' ? g.areaEn : g.area}</p>
+                        <div className="absolute inset-0 bg-kj-primary/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-[18px] flex items-end justify-end p-3">
+                          <span className="text-[11px] font-bold text-kj-primary bg-kj-primary/15 px-2.5 py-1 rounded-full">
+                            {lbl('View guide', 'গাইড দেখুন')} →
+                          </span>
+                        </div>
                       </button>
                     ))}
                   </div>
                   {divGuides.length > 4 && (
                     <button
                       onClick={() => toggleDivision(div)}
-                      className="w-full mt-2 flex items-center justify-center gap-1.5 py-2 text-xs font-semibold text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-xl transition-colors"
+                      className="w-full mt-2 flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold text-kj-primary hover:bg-kj-primary/5 rounded-xl transition-colors"
                     >
                       {isExpanded ? (
                         <><ChevronUp className="w-4 h-4" /> {lbl('Show less', 'কম দেখুন')}</>
