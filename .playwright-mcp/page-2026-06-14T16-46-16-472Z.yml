@@ -1,0 +1,304 @@
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5] [cursor=pointer]:
+      - img "KoyJabo" [ref=e6]
+      - generic [ref=e7]:
+        - generic [ref=e8]: কই যাবো
+        - generic [ref=e9]: KoyJabo · BD
+    - generic [ref=e10]:
+      - button "হোম" [ref=e11] [cursor=pointer]:
+        - img [ref=e12]
+        - text: হোম
+      - button "মেট্রো LIVE" [ref=e15] [cursor=pointer]:
+        - img [ref=e16]
+        - text: মেট্রো
+        - generic [ref=e20]: LIVE
+      - button "ট্রেন" [ref=e21] [cursor=pointer]:
+        - img [ref=e22]
+        - text: ট্রেন
+      - button "আন্তঃজেলা" [ref=e26] [cursor=pointer]:
+        - img [ref=e27]
+        - text: আন্তঃজেলা
+      - button "ভাড়া হিসাব" [ref=e31] [cursor=pointer]:
+        - img [ref=e32]
+        - text: ভাড়া হিসাব
+      - button "AI সহায়ক NEW" [ref=e34] [cursor=pointer]:
+        - img [ref=e35]
+        - text: AI সহায়ক
+        - generic [ref=e38]: NEW
+    - generic [ref=e39]:
+      - button "Toggle language" [ref=e40] [cursor=pointer]:
+        - img [ref=e41]
+        - generic [ref=e45]: বাং
+      - button "অ্যাপ ইনস্টল" [ref=e46] [cursor=pointer]
+      - button "থিম পরিবর্তন" [ref=e47] [cursor=pointer]:
+        - img [ref=e48]
+      - button "লগইন" [ref=e54] [cursor=pointer]:
+        - img [ref=e55]
+        - text: লগইন
+      - button "মেনু খুলুন" [ref=e58] [cursor=pointer]:
+        - img [ref=e59]
+  - main [ref=e60]:
+    - generic [ref=e63]:
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - button "Back" [ref=e66] [cursor=pointer]:
+            - img [ref=e67]
+          - heading "লোকাল বাস" [level=1] [ref=e69]
+        - generic [ref=e70]:
+          - generic [ref=e71]:
+            - generic [ref=e72]:
+              - img [ref=e74]
+              - generic [ref=e78]:
+                - heading "ঢাকার সব বাস · এক অ্যাপে" [level=2] [ref=e79]
+                - paragraph [ref=e80]:
+                  - text: বাস খুঁজুন, তুলনা করুন, যাত্রা পরিকল্পনা করুন
+                  - link "City & Local Guides" [ref=e81] [cursor=pointer]:
+                    - img [ref=e83]
+                    - text: City & Local Guides
+            - generic [ref=e85]:
+              - generic [ref=e86]:
+                - generic [ref=e87]: 2,412
+                - generic [ref=e88]: রুট
+              - generic [ref=e89]:
+                - generic [ref=e90]: 1,043
+                - generic [ref=e91]: স্টপ
+              - generic [ref=e92]:
+                - generic [ref=e93]: 140+
+                - generic [ref=e94]: অপারেটর
+              - generic [ref=e95]:
+                - generic [ref=e96]: ★4.4
+                - generic [ref=e97]: গড় রেটিং
+          - generic [ref=e98]:
+            - generic [ref=e99]:
+              - img [ref=e100]
+              - 'textbox "গ্রিন লাইন, রাইদা #৭, বিআরটিসি ডাবল, রুট ৬…" [ref=e103]'
+            - generic [ref=e104]:
+              - button "নাম" [ref=e105] [cursor=pointer]
+              - button "রুট" [ref=e106] [cursor=pointer]
+              - button "অপারেটর" [ref=e107] [cursor=pointer]
+            - generic [ref=e108]:
+              - generic [ref=e109]:
+                - img [ref=e110]
+                - textbox "কোথা থেকে…" [ref=e113]
+              - button "অদলবদল করুন" [ref=e114] [cursor=pointer]:
+                - img [ref=e115]
+              - generic [ref=e118]:
+                - img [ref=e119]
+                - textbox "কোথায় যাবেন…" [ref=e122]
+            - button "বাস খুঁজুন" [ref=e123] [cursor=pointer]
+            - generic [ref=e124]:
+              - button "⚡ দ্রুততম" [ref=e125] [cursor=pointer]:
+                - generic [ref=e126]: ⚡
+                - text: দ্রুততম
+              - button "৳ সস্তা" [ref=e127] [cursor=pointer]:
+                - generic [ref=e128]: ৳
+                - text: সস্তা
+              - button "❄️ এসি" [ref=e129] [cursor=pointer]:
+                - generic [ref=e130]: ❄️
+                - text: এসি
+              - button "🚻 টয়লেট" [ref=e131] [cursor=pointer]:
+                - generic [ref=e132]: 🚻
+                - text: টয়লেট
+              - button "👥 কম ভিড়" [ref=e133] [cursor=pointer]:
+                - generic [ref=e134]: 👥
+                - text: কম ভিড়
+          - generic [ref=e135]:
+            - heading "জনপ্রিয় রুট" [level=3] [ref=e136]
+            - generic [ref=e137]:
+              - generic [ref=e138]:
+                - generic [ref=e139]: GL
+                - generic [ref=e140]:
+                  - generic [ref=e141]:
+                    - generic [ref=e142]:
+                      - generic [ref=e143]:
+                        - text: Green Line · Route 6
+                        - link "Long Distance Bus & Rail" [ref=e144] [cursor=pointer]:
+                          - img [ref=e146]
+                          - text: Long Distance Bus & Rail
+                      - generic [ref=e148]: ❄️ AC
+                    - generic [ref=e149]: ৳60
+                  - generic [ref=e150]:
+                    - generic [ref=e151]: গুলশান
+                    - generic [ref=e152]: ↔
+                    - generic [ref=e153]: মতিঝিল
+                  - generic [ref=e154]:
+                    - generic [ref=e155]:
+                      - img [ref=e156]
+                      - text: "4.6"
+                      - generic [ref=e158]: (312)
+                    - generic [ref=e159]: ·
+                    - generic [ref=e160]: 🕐 ৪২ মিনিট
+                    - generic [ref=e161]: ·
+                    - generic [ref=e162]: 9 স্টপ
+              - generic [ref=e163]:
+                - generic [ref=e164]: HF
+                - generic [ref=e165]:
+                  - generic [ref=e166]:
+                    - generic [ref=e168]: Hanif · Route 11
+                    - generic [ref=e169]: ৳50
+                  - generic [ref=e170]:
+                    - generic [ref=e171]: উত্তরা
+                    - generic [ref=e172]: ↔
+                    - generic [ref=e173]: পল্টন
+                  - generic [ref=e174]:
+                    - generic [ref=e175]:
+                      - img [ref=e176]
+                      - text: "4.1"
+                      - generic [ref=e178]: (189)
+                    - generic [ref=e179]: ·
+                    - generic [ref=e180]: 🕐 ১ ঘণ্টা ১০ মিনিট
+                    - generic [ref=e181]: ·
+                    - generic [ref=e182]: 18 স্টপ
+              - generic [ref=e183]:
+                - generic [ref=e184]: BR
+                - generic [ref=e185]:
+                  - generic [ref=e186]:
+                    - generic [ref=e187]:
+                      - generic [ref=e188]: BRTC · Double Decker
+                      - generic [ref=e189]: ❄️ AC
+                    - generic [ref=e190]: ৳45
+                  - generic [ref=e191]:
+                    - generic [ref=e192]: মতিঝিল
+                    - generic [ref=e193]: ↔
+                    - generic [ref=e194]: গাবতলী
+                  - generic [ref=e195]:
+                    - generic [ref=e196]:
+                      - img [ref=e197]
+                      - text: "4.3"
+                      - generic [ref=e199]: (241)
+                    - generic [ref=e200]: ·
+                    - generic [ref=e201]: 🕐 ৫২ মিনিট
+                    - generic [ref=e202]: ·
+                    - generic [ref=e203]: 14 স্টপ
+              - generic [ref=e204]:
+                - generic [ref=e205]: PR
+                - generic [ref=e206]:
+                  - generic [ref=e207]:
+                    - generic [ref=e209]: Projapoti
+                    - generic [ref=e210]: ৳30
+                  - generic [ref=e211]:
+                    - generic [ref=e212]: মিরপুর
+                    - generic [ref=e213]: ↔
+                    - generic [ref=e214]: সদরঘাট
+                  - generic [ref=e215]:
+                    - generic [ref=e216]:
+                      - img [ref=e217]
+                      - text: "3.9"
+                      - generic [ref=e219]: (97)
+                    - generic [ref=e220]: ·
+                    - generic [ref=e221]: 🕐 ৪৫ মিনিট
+                    - generic [ref=e222]: ·
+                    - generic [ref=e223]: 12 স্টপ
+              - generic [ref=e224]:
+                - generic [ref=e225]: AB
+                - generic [ref=e226]:
+                  - generic [ref=e227]:
+                    - generic [ref=e229]: Anabil Super
+                    - generic [ref=e230]: ৳70
+                  - generic [ref=e231]:
+                    - generic [ref=e232]:
+                      - text: গুলিস্তান
+                      - link "Maritime Transport" [ref=e233] [cursor=pointer]:
+                        - img [ref=e235]
+                        - text: Maritime Transport
+                    - generic [ref=e237]: ↔
+                    - generic [ref=e238]: সাভার
+                  - generic [ref=e239]:
+                    - generic [ref=e240]:
+                      - img [ref=e241]
+                      - text: "3.8"
+                      - generic [ref=e243]: (74)
+                    - generic [ref=e244]: ·
+                    - generic [ref=e245]: 🕐 ১ ঘণ্টা ৩০ মিনিট
+                    - generic [ref=e246]: ·
+                    - generic [ref=e247]: 8 স্টপ
+          - generic [ref=e248]:
+            - heading "আপনার কাছের বাস · লাইভ" [level=3] [ref=e253]
+            - generic [ref=e254]:
+              - generic [ref=e255]:
+                - generic [ref=e258]: Achim Paribahan
+                - generic [ref=e259]:
+                  - generic [ref=e260]: ~2 মিনিট
+                  - generic [ref=e261]: 552m
+              - generic [ref=e262]:
+                - generic [ref=e265]: Agradut
+                - generic [ref=e266]:
+                  - generic [ref=e267]: ~2 মিনিট
+                  - generic [ref=e268]: 552m
+              - generic [ref=e269]:
+                - generic [ref=e272]: Ajmi
+                - generic [ref=e273]:
+                  - generic [ref=e274]: ~2 মিনিট
+                  - generic [ref=e275]: 552m
+              - generic [ref=e276]:
+                - generic [ref=e279]: Al Madina Plus One
+                - generic [ref=e280]:
+                  - generic [ref=e281]: ~2 মিনিট
+                  - generic [ref=e282]: 552m
+            - button "ম্যাপে সব দেখুন" [ref=e283] [cursor=pointer]:
+              - img [ref=e284]
+              - text: ম্যাপে সব দেখুন
+          - generic [ref=e286]:
+            - heading "বাস অপারেটর" [level=3] [ref=e287]
+            - generic [ref=e288]:
+              - generic [ref=e290]: Green Line
+              - generic [ref=e292]: Hanif
+              - generic [ref=e294]: BRTC
+              - generic [ref=e296]: Projapoti
+              - generic [ref=e298]: Anabil
+              - generic [ref=e300]: Unique
+          - generic [ref=e301]:
+            - heading "বাসের ধরন" [level=3] [ref=e302]
+            - generic [ref=e303]:
+              - generic [ref=e304]:
+                - text: 🚌
+                - generic [ref=e306]:
+                  - generic [ref=e307]: লোকাল
+                  - generic [ref=e308]: ৳15–40
+                  - generic [ref=e309]: সব স্টপে থামে · বেশি ফ্রিকোয়েন্সি
+              - generic [ref=e310]:
+                - text: ❄️
+                - generic [ref=e312]:
+                  - generic [ref=e313]: এসি সিটিং
+                  - generic [ref=e314]: ৳40–80
+                  - generic [ref=e315]: শীতাতপ নিয়ন্ত্রিত আরামদায়ক
+              - generic [ref=e316]:
+                - text: 🚍
+                - generic [ref=e318]:
+                  - generic [ref=e319]: ডাবল ডেকার
+                  - generic [ref=e320]: ৳35–60
+                  - generic [ref=e321]: দ্বিতল · উপরের ডেকে দৃশ্য উপভোগ
+              - generic [ref=e322]:
+                - text: 🔄
+                - generic [ref=e324]:
+                  - generic [ref=e325]: গুলশান চাকা
+                  - generic [ref=e326]: ৳20–30
+                  - generic [ref=e327]: বৃত্তাকার রুট · ঘন ঘন লুপ
+          - generic [ref=e328]:
+            - img [ref=e329]
+            - paragraph [ref=e331]: কয়জাবো শুধু তথ্য দেখায় · টিকিট কিনতে অপারেটর কাউন্টারে যান
+      - generic [ref=e334]:
+        - generic [ref=e335]:
+          - img "KoyJabo" [ref=e336]
+          - generic [ref=e337]: কইযাবো
+        - navigation [ref=e338]:
+          - link "হোম" [ref=e339] [cursor=pointer]:
+            - /url: /
+          - link "পরিচয়" [ref=e340] [cursor=pointer]:
+            - /url: /about
+          - link "প্রশ্ন ও উত্তর" [ref=e341] [cursor=pointer]:
+            - /url: /faq
+          - link "অ্যাপ ইনস্টল" [ref=e342] [cursor=pointer]:
+            - /url: /install
+          - link "যোগাযোগ" [ref=e343] [cursor=pointer]:
+            - /url: /contact
+          - link "গোপনীয়তা নীতি" [ref=e344] [cursor=pointer]:
+            - /url: /privacy
+          - link "শর্তাবলী" [ref=e345] [cursor=pointer]:
+            - /url: /terms
+          - link "রিলিজ নোট" [ref=e346] [cursor=pointer]:
+            - /url: /release-notes
+          - link "আন্তঃশহর যাত্রা" [ref=e347] [cursor=pointer]:
+            - /url: /intercity-hub
+        - paragraph [ref=e348]: © 2024–2026 KoyJabo

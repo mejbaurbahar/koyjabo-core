@@ -29,7 +29,7 @@ const GlobalFooter: React.FC<GlobalFooterProps> = ({ setView }) => {
 
   return (
     <footer
-      className="shrink-0 border-t border-kj-line"
+      className="border-t border-kj-line mt-auto"
       style={{ background: 'color-mix(in srgb, var(--kj-panel) 90%, transparent)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' }}
     >
       {/* Main content */}

@@ -80,43 +80,6 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
 
   return (
     <div className="pb-28 md:pb-8">
-      {/* Mode tiles */}
-      <div className="mb-6 md:mb-8">
-        <SectionHeader title={lbl('How are you traveling?', 'কী খুঁজছেন?')} />
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-2.5 md:gap-3">
-          {modeTiles.map((tile) => (
-            <button
-              key={tile.title.en}
-              type="button"
-              onClick={tile.action}
-              className="relative overflow-hidden rounded-[18px] p-4 text-left text-white min-h-[180px] flex flex-col gap-2.5 shadow-[0_2px_4px_rgba(0,0,0,0.5),0_18px_50px_-20px_rgba(0,245,255,0.25)] border border-kj-line/30 hover:brightness-105 transition-all"
-              style={{ background: tile.grad }}
-            >
-              <div className="absolute -right-8 -top-8 w-[110px] h-[110px] rounded-full bg-white/18 pointer-events-none kj-anim-pulse" />
-              <div className="relative flex items-center justify-between">
-                <div className="w-[38px] h-[38px] rounded-xl bg-white/18 backdrop-blur-sm flex items-center justify-center">{tile.icon}</div>
-                {tile.badge && (
-                  <span className="bg-black/25 backdrop-blur-sm text-white text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full">
-                    {lbl(tile.badge.en, tile.badge.bn)}
-                  </span>
-                )}
-              </div>
-              <div className="relative">
-                <p className="font-bengali font-bold text-base leading-tight">{lbl(tile.title.en, tile.title.bn)}</p>
-                <p className="text-white/80 text-xs mt-0.5">{lbl(tile.sub.en, tile.sub.bn)}</p>
-              </div>
-              <div className="absolute left-0 right-0 bottom-[-10px] h-[86px] pointer-events-none overflow-hidden">
-                <MiniVehicle kind={tile.vehicle} palette={tile.palette} />
-              </div>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Ad slot — after mode tiles */}
-      <div className="mb-6 md:mb-8 flex justify-center">
-        <SponsoredAdSlot language={language} size="728x90" compact />
-      </div>
 
       {/* KoyJabo Story */}
       <div className="mb-6 md:mb-8">

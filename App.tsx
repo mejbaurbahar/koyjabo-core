@@ -2392,6 +2392,34 @@ const App: React.FC = () => {
     : ['⚡ Quick route', '🚆 Train schedule', '💰 Calc fare', '📍 Nearby stops'];
 
   const renderAiAssistant = () => {
+    // Require login to use AI chat
+    if (!user) {
+      return (
+        <div className="flex flex-col flex-1 min-h-0 w-full items-center justify-center p-8 bg-kj-bg">
+          <div className="dc-card rounded-[22px] p-8 text-center max-w-sm w-full">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-kj-primary-ink mx-auto mb-4"
+              style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))' }}>
+              <Sparkles className="w-8 h-8" />
+            </div>
+            <h2 className="font-bengali font-bold text-xl text-kj-text mb-2">
+              {language === 'bn' ? 'সাইন ইন করুন' : 'Sign in required'}
+            </h2>
+            <p className="font-bengali text-sm text-kj-text-dim leading-relaxed mb-6">
+              {language === 'bn'
+                ? 'AI সহায়ক ব্যবহার করতে আপনার অ্যাকাউন্টে সাইন ইন করুন।'
+                : 'Sign in to your account to use the AI Assistant.'}
+            </p>
+            <button
+              onClick={() => setView(AppView.LOGIN)}
+              className="w-full h-12 font-bold text-sm rounded-[14px] text-kj-primary-ink font-bengali"
+              style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))' }}>
+              {language === 'bn' ? 'সাইন ইন করুন' : 'Sign in'}
+            </button>
+          </div>
+        </div>
+      );
+    }
+
     const recentSessions = getAllSessions()
       .sort((a, b) => b.lastUpdated - a.lastUpdated)
       .slice(0, 5);
@@ -2567,7 +2595,7 @@ const App: React.FC = () => {
                       className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 self-end font-bold text-xs font-sans"
                       style={{ background: 'var(--kj-accent-soft)', color: 'var(--kj-accent)' }}
                     >
-                      {t('common.you') || 'You'}
+                      {user?.displayName?.charAt(0)?.toUpperCase() || (language === 'bn' ? 'আপনি' : 'You')}
                     </div>
                   )}
                   {/* Bubble */}
@@ -2799,7 +2827,7 @@ const App: React.FC = () => {
             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
               <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden shadow-xl shrink-0 border-4 border-kj-primary/20">
                 <img
-                  src="https://media.licdn.com/dms/image/v2/D5603AQEU8R2MLGhUlg/profile-displayphoto-scale_200_200/B56Zk6N_ckHcAY-/0/1757618372796?e=1777507200&v=beta&t=ATjuFSUVIoqhudnqT9ZVUjdmLMCr75XaIxz--WayDik"
+                  src="https://media.licdn.com/dms/image/v2/D5603AQEU8R2MLGhUlg/profile-displayphoto-scale_400_400/B56Zk6N_ckHcAg-/0/1757618372796?e=1782950400&v=beta&t=uB9rZMdBzlhIcY-ekmxYKhMJ3yeUyDzeVKOaTT1064Q"
                   alt="Mejbaur Bahar Fagun"
                   className="w-full h-full object-cover"
                 />
@@ -3671,7 +3699,7 @@ const App: React.FC = () => {
               <Menu className="w-[22px] h-[22px]" />
             </button>
             <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => setView(AppView.HOME)}>
-              <KoyJaboLogo size={34} isDarkMode={isDarkMode} />
+              <img src="/logo.png" alt="KoyJabo" className="w-[34px] h-[34px] rounded-xl object-cover shrink-0" />
               <div className="flex flex-col leading-none gap-[3px]">
                 <span className="font-bengali font-bold text-kj-text text-[17px] leading-tight tracking-tight">কই যাবো</span>
                 <span className="font-sans font-medium text-kj-text-faint text-[9px] tracking-[0.14em] uppercase">KoyJabo · BD</span>
@@ -3792,8 +3820,8 @@ const App: React.FC = () => {
               onFilterChange={handleFilterChange}
               getStationSlug={getStationSlug}
             />
-            </div>
             {!hideSiteChrome && <GlobalFooter setView={setView} />}
+            </div>
             </div>
           ) : (
           <div className="flex-1 min-h-0 h-0 flex flex-col overflow-hidden w-full">

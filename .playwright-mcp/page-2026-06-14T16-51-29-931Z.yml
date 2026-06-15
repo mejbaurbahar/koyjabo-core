@@ -1,0 +1,146 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - link "কই যাবো" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e7]:
+          - img [ref=e9]
+          - img "কই যাবো" [ref=e13]
+      - generic [ref=e14]:
+        - link "হোম" [ref=e15] [cursor=pointer]:
+          - /url: /
+          - img [ref=e16]
+          - text: হোম
+        - button "আন্তঃনগর" [ref=e19] [cursor=pointer]:
+          - img [ref=e20]
+          - text: আন্তঃনগর
+        - link "ট্রেন" [ref=e24] [cursor=pointer]:
+          - /url: /train
+          - img [ref=e25]
+          - text: ট্রেন
+        - link "এআই সহায়ক" [ref=e29] [cursor=pointer]:
+          - /url: /#ai-assistant
+          - img [ref=e30]
+          - text: এআই সহায়ক
+        - link "রিলিজ নোটস" [ref=e33] [cursor=pointer]:
+          - /url: /#release-notes
+          - img [ref=e34]
+          - text: রিলিজ নোটস
+        - link "সম্পর্কে" [ref=e39] [cursor=pointer]:
+          - /url: /#about
+          - img [ref=e40]
+          - text: সম্পর্কে
+      - generic [ref=e42]:
+        - button "লাইভ দৃশ্য" [ref=e43] [cursor=pointer]:
+          - img [ref=e44]
+          - generic [ref=e46]: লাইভ দৃশ্য
+        - button "Toggle Dark Mode" [ref=e47] [cursor=pointer]:
+          - img [ref=e54]
+          - img [ref=e67]
+        - button "লগইন" [ref=e73] [cursor=pointer]:
+          - img [ref=e74]
+          - text: লগইন
+        - button [ref=e77] [cursor=pointer]:
+          - img [ref=e78]
+    - generic [ref=e79]:
+      - generic [ref=e80]:
+        - generic [ref=e86]:
+          - generic [ref=e87]:
+            - heading "বাংলাদেশ ভ্রমণ" [level=2] [ref=e88]
+            - paragraph [ref=e89]:
+              - text: আপনার পছন্দের রুটে
+              - link "Travel & Transportation" [ref=e90] [cursor=pointer]:
+                - img [ref=e92]
+                - text: Travel & Transportation
+          - generic [ref=e94]:
+            - generic [ref=e95]:
+              - generic [ref=e96]: প্রস্থান
+              - generic [ref=e97]:
+                - generic:
+                  - img
+                - button "শুরুর স্থান" [ref=e98] [cursor=pointer]
+                - generic:
+                  - img
+            - button [ref=e101] [cursor=pointer]:
+              - img [ref=e102]
+            - generic [ref=e106]:
+              - generic [ref=e107]: গন্তব্য
+              - generic [ref=e108]:
+                - generic:
+                  - img
+                - button "গন্তব্যের নাম" [ref=e109] [cursor=pointer]
+                - generic:
+                  - img
+            - button "খুঁজুন" [disabled] [ref=e110]:
+              - img [ref=e111]
+              - generic [ref=e114]: খুঁজুন
+        - generic [ref=e115]:
+          - generic [ref=e118]:
+            - img [ref=e120]
+            - generic [ref=e123]:
+              - heading "কিভাবে কাজ করে দেখতে চান?" [level=4] [ref=e124]
+              - paragraph [ref=e125]: সার্চ না করেই রেজাল্ট কার্ডের ইন্টারফেস দেখতে ডেমো বাটনে ক্লিক করুন।
+              - button "ডেমো রেজাল্ট দেখুন" [ref=e126] [cursor=pointer]
+          - insertion [ref=e128]:
+            - generic [ref=e130]:
+              - generic "নিবন্ধের সাথে সম্পর্কযুক্ত এইসব বিষয়ে আপনার আগ্রহ থাকতে পারে।" [ref=e131]: আরও দেখুন
+              - link "Boats & Watercraft" [ref=e132] [cursor=pointer]:
+                - img [ref=e134]
+                - text: Boats & Watercraft
+      - generic [ref=e138]:
+        - generic:
+          - generic:
+            - generic:
+              - img
+              - generic:
+                - generic:
+                  - generic:
+                    - paragraph: "\"After I land, how do I go to Gulshan 2?\""
+        - generic "National Martyrs' Memorial" [ref=e139] [cursor=pointer]
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - paragraph: "\"Uttara to Motijheel: 100 Taka well spent.\""
+        - generic [ref=e147]:
+          - generic [ref=e148]:
+            - generic "Lalbagh Fort" [ref=e150] [cursor=pointer]
+            - generic "Ahsan Manzil (Pink Palace)" [ref=e159] [cursor=pointer]
+          - generic "Shaheed Minar" [ref=e177] [cursor=pointer]
+          - generic [ref=e185]:
+            - generic "Curzon Hall" [ref=e187] [cursor=pointer]
+            - generic "National Parliament House" [ref=e199] [cursor=pointer]
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - paragraph: "\"How do I go to New Market from here?\""
+          - generic "Dhaka Metropolitan Police" [ref=e212]
+        - generic [ref=e230]:
+          - generic [ref=e231]:
+            - img [ref=e232]
+            - img [ref=e234]
+          - generic [ref=e236]:
+            - img [ref=e237]
+            - img [ref=e239]
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - paragraph: "\"পারাপার ভাড়া ১০ টাকা হলো কবে?\""
+  - insertion [ref=e243]:
+    - generic [ref=e246]:
+      - heading "নিবন্ধের সাথে সম্পর্কযুক্ত এইসব বিষয়ে আপনার আগ্রহ থাকতে পারে।" [level=2] [ref=e248]: আরও দেখুন
+      - link "Tourist Destinations" [ref=e249] [cursor=pointer]:
+        - generic "Tourist Destinations" [ref=e250]
+        - img [ref=e252]
+      - link "Rail Freight" [ref=e254] [cursor=pointer]:
+        - generic "Rail Freight" [ref=e255]
+        - img [ref=e257]
+      - link "Long Distance Bus & Rail" [ref=e259] [cursor=pointer]:
+        - generic "Long Distance Bus & Rail" [ref=e260]
+        - img [ref=e262]

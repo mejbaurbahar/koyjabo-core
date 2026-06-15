@@ -25,7 +25,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
         {
             icon: '✉️',
             title: lbl('Email', 'ইমেইল'),
-            detail: 'hello@koyjabo.com',
+            detail: 'koyjabo.bd@gmail.com',
             pill: null,
             pillColor: '',
         },
@@ -171,7 +171,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
                             className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-black text-sm text-white shadow-lg hover:opacity-90 transition-opacity"
                             style={{ background: 'linear-gradient(135deg, var(--kj-primary) 0%, var(--kj-neon-violet, #7c3aed) 100%)' }}
                             onClick={() => {
-                                window.location.href = `mailto:hello@koyjabo.com?subject=${encodeURIComponent(form.subject)}&body=${encodeURIComponent(`From: ${form.name} <${form.email}>\n\n${form.message}`)}`;
+                                window.location.href = `mailto:koyjabo.bd@gmail.com?subject=${encodeURIComponent(form.subject)}&body=${encodeURIComponent(`From: ${form.name} <${form.email}>\n\n${form.message}`)}`;
                             }}
                         >
                             <Send className="w-4 h-4" />

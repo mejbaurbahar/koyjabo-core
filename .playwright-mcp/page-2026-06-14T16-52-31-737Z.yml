@@ -1,0 +1,293 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - navigation [ref=e4]:
+      - generic [ref=e5] [cursor=pointer]:
+        - img "KoyJabo" [ref=e6]
+        - generic [ref=e7]:
+          - generic [ref=e8]: কই যাবো
+          - generic [ref=e9]: KoyJabo · BD
+      - generic [ref=e10]:
+        - button "হোম" [ref=e11] [cursor=pointer]:
+          - img [ref=e12]
+          - text: হোম
+        - button "মেট্রো LIVE" [ref=e15] [cursor=pointer]:
+          - img [ref=e16]
+          - text: মেট্রো
+          - generic [ref=e20]: LIVE
+        - button "ট্রেন" [ref=e21] [cursor=pointer]:
+          - img [ref=e22]
+          - text: ট্রেন
+        - button "আন্তঃজেলা" [ref=e26] [cursor=pointer]:
+          - img [ref=e27]
+          - text: আন্তঃজেলা
+        - button "ভাড়া হিসাব" [ref=e31] [cursor=pointer]:
+          - img [ref=e32]
+          - text: ভাড়া হিসাব
+        - button "AI সহায়ক NEW" [ref=e34] [cursor=pointer]:
+          - img [ref=e35]
+          - text: AI সহায়ক
+          - generic [ref=e38]: NEW
+      - generic [ref=e39]:
+        - button "Toggle language" [ref=e40] [cursor=pointer]:
+          - img [ref=e41]
+          - generic [ref=e45]: বাং
+        - button "অ্যাপ ইনস্টল" [ref=e46] [cursor=pointer]
+        - button "থিম পরিবর্তন" [ref=e47] [cursor=pointer]:
+          - img [ref=e48]
+        - button "লগইন" [ref=e54] [cursor=pointer]:
+          - img [ref=e55]
+          - text: লগইন
+        - button "মেনু খুলুন" [ref=e58] [cursor=pointer]:
+          - img [ref=e59]
+    - main [ref=e60]:
+      - generic [ref=e61]:
+        - generic [ref=e739]:
+          - img [ref=e741]
+          - article [ref=e750]:
+            - button "ব্লগে ফিরে যান" [ref=e751] [cursor=pointer]:
+              - img [ref=e752]
+              - text: ব্লগে ফিরে যান
+            - generic [ref=e754]:
+              - generic [ref=e755]:
+                - generic [ref=e756]:
+                  - img [ref=e757]
+                  - text: Tips & Tricks
+                - generic [ref=e760]:
+                  - img [ref=e761]
+                  - text: 4 min read
+                - generic [ref=e764]:
+                  - img [ref=e765]
+                  - text: ৩০ এপ্রিল, ২০২৬
+              - heading "ঢাকার ট্রাফিক আইন, লঙ্ঘন ও জরিমানার তালিকা (২০২৬ গাইড)" [level=1] [ref=e767]
+              - paragraph [ref=e768]: ঢাকার ট্রাফিক সিস্টেমে বড় পরিবর্তন শুরু হয়ে গেছে। এখন থেকে শুধু ট্রাফিক পুলিশ না—AI-based system নিজেই শনাক্ত করবে কে আইন ভাঙছে।
+              - generic [ref=e769]:
+                - generic [ref=e770]: K
+                - generic [ref=e771]:
+                  - paragraph [ref=e772]: KoyJabo Team
+                  - paragraph [ref=e773]: ৩০ এপ্রিল, ২০২৬
+                - button "ফলো" [ref=e774] [cursor=pointer]
+              - generic [ref=e775]:
+                - generic [ref=e776]:
+                  - generic [ref=e777]: K
+                  - generic [ref=e778]:
+                    - paragraph [ref=e779]: KoyJabo Team
+                    - paragraph [ref=e780]: লেখক
+                - generic [ref=e781]:
+                  - button "Share on WhatsApp" [ref=e782] [cursor=pointer]:
+                    - img [ref=e783]
+                  - button "Share on Facebook" [ref=e785] [cursor=pointer]:
+                    - img [ref=e786]
+                  - button "Share on X" [ref=e788] [cursor=pointer]:
+                    - img [ref=e789]
+                  - button "Copy link" [ref=e791] [cursor=pointer]:
+                    - img [ref=e792]
+                    - text: লিংক কপি করুন
+            - button "সূচিপত্র ▼" [ref=e796] [cursor=pointer]:
+              - generic [ref=e797]:
+                - img [ref=e798]
+                - text: সূচিপত্র
+              - generic [ref=e799]: ▼
+            - generic [ref=e800]:
+              - generic [ref=e801]:
+                - generic [ref=e802]:
+                  - paragraph [ref=e803]:
+                    - text: ঢাকার ট্রাফিক সিস্টেমে বড় পরিবর্তন শুরু হয়ে গেছে। এখন থেকে শুধু ট্রাফিক পুলিশ না—
+                    - strong [ref=e804]: AI-based system নিজেই শনাক্ত করবে কে আইন ভাঙছে
+                    - text: ।
+                  - paragraph [ref=e805]: ডিএমপির নতুন উদ্যোগ অনুযায়ী, শহরের গুরুত্বপূর্ণ মোড়গুলোতে বসানো হচ্ছে স্মার্ট ক্যামেরা, যা অটোমেটিকভাবে ট্রাফিক ভায়োলেশন ডিটেক্ট করবে।
+                  - separator [ref=e806]
+                  - heading "🔍 কী কী পরিবর্তন আসছে?" [level=2] [ref=e807]
+                  - paragraph [ref=e808]: "✅ ২৫+ মোড়ে স্মার্ট ট্রাফিক সিগন্যাল ✅ ২৪/৭ ক্যামেরা মনিটরিং ✅ AI দিয়ে শনাক্ত করা হবে:"
+                  - list [ref=e809]:
+                    - listitem [ref=e810]: 🚫 সিগন্যাল ভাঙা
+                    - listitem [ref=e811]: 🚧 লেন পরিবর্তনের ভুল
+                    - listitem [ref=e812]: ⚠️ অন্যান্য ট্রাফিক আইন লঙ্ঘন
+                  - paragraph [ref=e813]: 👉 এরপর সরাসরি আইনগত ব্যবস্থা—কোনো ছাড় নেই।
+                  - separator [ref=e814]
+                  - heading "⚡ কেন এটা গেম চেঞ্জার?" [level=2] [ref=e815]
+                  - paragraph [ref=e816]:
+                    - strong [ref=e817]: "আগে:"
+                  - list [ref=e818]:
+                    - listitem [ref=e819]: ম্যানুয়াল চেক
+                    - listitem [ref=e820]: সময়সাপেক্ষ
+                    - listitem [ref=e821]: অনেক ক্ষেত্রে এড়িয়ে যাওয়া সম্ভব ছিল
+                  - paragraph [ref=e822]:
+                    - strong [ref=e823]: "এখন:"
+                  - list [ref=e824]:
+                    - listitem [ref=e825]: 🤖 অটোমেটেড AI নজরদারি
+                    - listitem [ref=e826]: ⚡ দ্রুত ব্যবস্থা
+                    - listitem [ref=e827]: 🔒 কম ফাঁকফোকর
+                  - separator [ref=e828]
+                  - heading "📱 আরও যেসব স্মার্ট সিস্টেম আসছে" [level=2] [ref=e829]
+                  - paragraph [ref=e830]:
+                    - text: 🔹
+                    - strong [ref=e831]: Hello DMP App
+                    - text: সরাসরি পুলিশ সেবা, অভিযোগ, ফিডব্যাক।
+                  - paragraph [ref=e832]:
+                    - text: 🔹
+                    - strong [ref=e833]: Hotel Information System
+                    - text: রিয়েল-টাইম গেস্ট ডাটা, উন্নত সিকিউরিটি।
+                  - paragraph [ref=e834]:
+                    - text: 🔹
+                    - strong [ref=e835]: ডিএমপির ৭+ নতুন সফটওয়্যার
+                    - text: অপারেশন হবে আরও দ্রুত, ট্রান্সপারেন্ট ও ডিজিটাল।
+                  - separator [ref=e836]
+                  - heading "🧠 এখানে KoyJabo.com কেন গুরুত্বপূর্ণ?" [level=2] [ref=e837]
+                  - paragraph [ref=e838]:
+                    - text: AI এখন ভুল ধরবে—কিন্তু
+                    - strong [ref=e839]: ভুল না করার প্ল্যানিংটা কে করবে?
+                  - paragraph [ref=e840]:
+                    - text: এখানেই আসে
+                    - strong [ref=e841]: KoyJabo.com
+                  - paragraph [ref=e842]:
+                    - strong [ref=e843]: KoyJabo.com
+                    - text: "আপনাকে আগে থেকেই হেল্প করে:"
+                  - list [ref=e844]:
+                    - listitem [ref=e845]: 🚌 সঠিক বাস রুট খুঁজতে
+                    - listitem [ref=e846]: 🚇 মেট্রো + বাস কম্বাইন করে স্মার্ট ট্রিপ বানাতে
+                    - listitem [ref=e847]: ⏱️ কম সময়ের রুট বেছে নিতে
+                    - listitem [ref=e848]: 💰 খরচ হিসাব করতে
+                  - paragraph [ref=e849]: "👉 মানে, আপনি আগে থেকেই জানবেন:"
+                  - list [ref=e850]:
+                    - listitem [ref=e851]: কোন রাস্তায় কম ঝামেলা
+                    - listitem [ref=e852]: কোথায় ট্রাফিক বেশি
+                    - listitem [ref=e853]: কোন রুটে রিস্ক কম
+                  - separator [ref=e854]
+                  - heading "🎯 Real Impact" [level=2] [ref=e855]
+                  - paragraph [ref=e856]:
+                    - strong [ref=e857]: AI + Smart Planning = 🚀 Smart City Movement
+                  - list [ref=e858]:
+                    - listitem [ref=e859]: ট্রাফিক আইন ভাঙা কমবে
+                    - listitem [ref=e860]: রাস্তায় ডিসিপ্লিন বাড়বে
+                    - listitem [ref=e861]: ঝামেলা ও জরিমানা কমবে
+                    - listitem [ref=e862]: কমিউটার লাইফ হবে সহজ
+                  - separator [ref=e863]
+                  - heading "🔥 শেষ কথা" [level=2] [ref=e864]
+                  - paragraph [ref=e865]:
+                    - text: ঢাকা এখন যাচ্ছে
+                    - strong [ref=e866]: AI-driven traffic system
+                    - text: "-এর দিকে। এখন স্মার্ট হওয়া আপনার হাতে:"
+                    - strong [ref=e867]: AI ধরার আগে, আপনি প্ল্যান করুন।
+                  - paragraph [ref=e868]:
+                    - text: "🌐 Plan your journey smartly with:"
+                    - strong [ref=e869]:
+                      - link "KoyJabo.com" [ref=e870] [cursor=pointer]:
+                        - /url: https://koyjabo.com
+                    - text: 🚀 Travel smart. Stay safe. Avoid violations.
+                  - paragraph [ref=e871]: "#ঢাকা #ট্রাফিক #AI #KoyJabo #নিরাপদ_ভ্রমণ #বাংলাদেশ"
+                - generic [ref=e872]:
+                  - heading "বিষয়সমূহ" [level=3] [ref=e873]:
+                    - img [ref=e874]
+                    - text: বিষয়সমূহ
+                  - generic [ref=e877]:
+                    - generic [ref=e878]: "#Dhaka AI traffic system"
+                    - generic [ref=e879]: "#DMP smart cameras Dhaka"
+                    - generic [ref=e880]: "#traffic fine Bangladesh"
+                    - generic [ref=e881]: "#automated traffic enforcement Dhaka"
+                    - generic [ref=e882]: "#Dhaka smart city"
+                    - generic [ref=e883]: "#KoyJabo traffic guide"
+                    - generic [ref=e884]: "#avoid traffic fines Dhaka"
+                    - generic [ref=e885]: "#DMP Hello app"
+                    - generic [ref=e886]: "#smart traffic signal Dhaka"
+                - insertion [ref=e891]
+              - complementary [ref=e893]:
+                - generic [ref=e895]:
+                  - heading "সূচিপত্র" [level=4] [ref=e896]:
+                    - img [ref=e897]
+                    - text: সূচিপত্র
+                  - list [ref=e898]:
+                    - listitem [ref=e899]:
+                      - link "1. 🔍 কী কী পরিবর্তন আসছে?" [ref=e900] [cursor=pointer]:
+                        - /url: "#----"
+                    - listitem [ref=e901]:
+                      - link "2. ⚡ কেন এটা গেম চেঞ্জার?" [ref=e902] [cursor=pointer]:
+                        - /url: "#----"
+                    - listitem [ref=e903]:
+                      - link "3. 📱 আরও যেসব স্মার্ট সিস্টেম আসছে" [ref=e904] [cursor=pointer]:
+                        - /url: "#-----"
+                    - listitem [ref=e905]:
+                      - link "4. 🧠 এখানে KoyJabo.com কেন গুরুত্বপূর্ণ?" [ref=e906] [cursor=pointer]:
+                        - /url: "#--koyjabocom--"
+                    - listitem [ref=e907]:
+                      - link "5. 🎯 Real Impact" [ref=e908] [cursor=pointer]:
+                        - /url: "#-real-impact"
+                    - listitem [ref=e909]:
+                      - link "6. 🔥 শেষ কথা" [ref=e910] [cursor=pointer]:
+                        - /url: "#--"
+            - generic [ref=e911]:
+              - button "❤️ 234" [ref=e912] [cursor=pointer]
+              - button "💬 18" [ref=e913] [cursor=pointer]
+              - button "🔖 সেভ" [ref=e914] [cursor=pointer]
+              - button "↗ শেয়ার" [ref=e915] [cursor=pointer]
+            - generic [ref=e916]:
+              - paragraph [ref=e917]: এই পোস্টটি শেয়ার করুন
+              - generic [ref=e918]:
+                - button "WhatsApp" [ref=e919] [cursor=pointer]:
+                  - img [ref=e920]
+                  - text: WhatsApp
+                - button "Facebook" [ref=e922] [cursor=pointer]:
+                  - img [ref=e923]
+                  - text: Facebook
+                - button "X / Twitter" [ref=e925] [cursor=pointer]:
+                  - img [ref=e926]
+                  - text: X / Twitter
+                - button "লিংক কপি করুন" [ref=e928] [cursor=pointer]:
+                  - img [ref=e929]
+                  - text: লিংক কপি করুন
+            - generic [ref=e932]:
+              - heading "আরও পড়ুন" [level=3] [ref=e933]
+              - generic [ref=e934]:
+                - generic [ref=e935] [cursor=pointer]:
+                  - 'img "ঢাকার ট্রাফিক: রাশ আওয়ার এড়ানোর ১০টি টিপস এবং প্রতি সপ্তাহে ঘণ্টা বাঁচান" [ref=e937]'
+                  - generic [ref=e938]:
+                    - text: Tips & Tricks
+                    - 'heading "ঢাকার ট্রাফিক: রাশ আওয়ার এড়ানোর ১০টি টিপস এবং প্রতি সপ্তাহে ঘণ্টা বাঁচান" [level=4] [ref=e939]'
+                    - paragraph [ref=e940]: 5 min read
+                - generic [ref=e941] [cursor=pointer]:
+                  - 'img "বাংলাদেশ ট্যুর খরচ: আপনার কত টাকা লাগবে? (২০২৬ আপডেট)" [ref=e943]'
+                  - generic [ref=e944]:
+                    - text: Tips & Tricks
+                    - 'heading "বাংলাদেশ ট্যুর খরচ: আপনার কত টাকা লাগবে? (২০২৬ আপডেট)" [level=4] [ref=e945]'
+                    - paragraph [ref=e946]: 7 min read
+                - generic [ref=e947] [cursor=pointer]:
+                  - 'img "কিভাবে ঢাকায় যাতায়াত করবেন: পর্যটকদের জন্য ট্রান্সপোর্ট গাইড (২০২৬)" [ref=e949]'
+                  - generic [ref=e950]:
+                    - text: Travel Guide
+                    - 'heading "কিভাবে ঢাকায় যাতায়াত করবেন: পর্যটকদের জন্য ট্রান্সপোর্ট গাইড (২০২৬)" [level=4] [ref=e951]'
+                    - paragraph [ref=e952]: 8 min read
+            - insertion [ref=e957]
+            - generic [ref=e959]:
+              - heading "এখনই রুট খুঁজুন!" [level=3] [ref=e960]
+              - paragraph [ref=e961]: কই যাবো — বাংলাদেশের সেরা ট্রান্সপোর্ট গাইড অ্যাপ
+              - button "হোমে যান" [ref=e962] [cursor=pointer]
+          - button "Scroll to top":
+            - img
+        - generic [ref=e966]:
+          - generic [ref=e967]:
+            - img "KoyJabo" [ref=e968]
+            - generic [ref=e969]: কইযাবো
+          - navigation [ref=e970]:
+            - link "হোম" [ref=e971] [cursor=pointer]:
+              - /url: /
+            - link "পরিচয়" [ref=e972] [cursor=pointer]:
+              - /url: /about
+            - link "প্রশ্ন ও উত্তর" [ref=e973] [cursor=pointer]:
+              - /url: /faq
+            - link "অ্যাপ ইনস্টল" [ref=e974] [cursor=pointer]:
+              - /url: /install
+            - link "যোগাযোগ" [ref=e975] [cursor=pointer]:
+              - /url: /contact
+            - link "গোপনীয়তা নীতি" [ref=e976] [cursor=pointer]:
+              - /url: /privacy
+            - link "শর্তাবলী" [ref=e977] [cursor=pointer]:
+              - /url: /terms
+            - link "রিলিজ নোট" [ref=e978] [cursor=pointer]:
+              - /url: /release-notes
+            - link "আন্তঃশহর যাত্রা" [ref=e979] [cursor=pointer]:
+              - /url: /intercity-hub
+          - paragraph [ref=e980]: © 2024–2026 KoyJabo
+  - generic [ref=e981]:
+    - generic [ref=e982] [cursor=pointer]:
+      - img [ref=e984]
+      - link "Car Rentals-এর জন্য শপিং বিকল্পে যান" [ref=e986]: Car Rentals
+    - button "শপিং অ্যাঙ্কর বন্ধ করুন" [ref=e987]

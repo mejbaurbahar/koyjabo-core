@@ -26,12 +26,9 @@ const SponsoredAdSlot: React.FC<SponsoredAdSlotProps> = ({
     >
       <div className={`w-full max-w-[728px] rounded-xl border border-kj-line/60 bg-kj-panel-muted/30 p-2 adsense-container ${slotClass}`}>
         {filled && (
-          <div className="adsense-label flex items-center justify-center gap-2 mb-1.5">
-            <span className="text-[9px] font-bold text-kj-text-faint uppercase tracking-widest">
-              {lbl('Sponsored', 'বিজ্ঞাপন')}
-            </span>
-            <span className="text-[9px] text-kj-text-faint">
-              Google AdSense · {size.replace('x', ' × ')}
+          <div className="adsense-label flex items-center justify-center mb-1">
+            <span className="text-[8px] font-medium text-kj-text-faint uppercase tracking-widest opacity-50">
+              {lbl('Ad', 'বিজ্ঞাপন')}
             </span>
           </div>
         )}

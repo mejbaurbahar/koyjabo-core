@@ -1,0 +1,301 @@
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5] [cursor=pointer]:
+      - generic [ref=e8]: ক
+      - generic [ref=e10]:
+        - generic [ref=e11]: কই যাবো
+        - generic [ref=e12]: KoyJabo · BD
+    - generic [ref=e13]:
+      - button "হোম" [active] [ref=e14] [cursor=pointer]:
+        - img [ref=e15]
+        - text: হোম
+      - button "মেট্রো LIVE" [ref=e18] [cursor=pointer]:
+        - img [ref=e19]
+        - text: মেট্রো
+        - generic [ref=e23]: LIVE
+      - button "ট্রেন" [ref=e24] [cursor=pointer]:
+        - img [ref=e25]
+        - text: ট্রেন
+      - button "আন্তঃজেলা" [ref=e29] [cursor=pointer]:
+        - img [ref=e30]
+        - text: আন্তঃজেলা
+      - button "ভাড়া হিসাব" [ref=e34] [cursor=pointer]:
+        - img [ref=e35]
+        - text: ভাড়া হিসাব
+      - button "AI সহায়ক NEW" [ref=e37] [cursor=pointer]:
+        - img [ref=e38]
+        - text: AI সহায়ক
+        - generic [ref=e41]: NEW
+    - generic [ref=e42]:
+      - button "Toggle language" [ref=e43] [cursor=pointer]:
+        - img [ref=e44]
+        - generic [ref=e48]: বাং
+      - button "অ্যাপ ইনস্টল" [ref=e49] [cursor=pointer]
+      - button "থিম পরিবর্তন" [ref=e50] [cursor=pointer]:
+        - img [ref=e51]
+      - button "লগইন" [ref=e57] [cursor=pointer]:
+        - img [ref=e58]
+        - text: লগইন
+      - button "মেনু খুলুন" [ref=e61] [cursor=pointer]:
+        - img [ref=e62]
+  - main [ref=e63]:
+    - generic [ref=e64]:
+      - generic [ref=e379]:
+        - generic [ref=e380]:
+          - generic [ref=e381]:
+            - generic [ref=e382]:
+              - generic [ref=e385]: ঢাকা · ৩১°C · জ্যাম মাঝারি
+              - heading "কোথায় যেতে চান?" [level=1] [ref=e386]
+              - paragraph [ref=e387]: ২,৪০০+ ঢাকা লোকাল বাস, মেট্রো রেল ও বাংলাদেশের ৬৪ জেলার সব রুট — অফলাইনেও কাজ করে।
+            - generic [ref=e389]:
+              - generic [ref=e390]:
+                - button "লোকাল বাস" [ref=e391] [cursor=pointer]: লোকাল বাস
+                - button "মেট্রো" [ref=e393] [cursor=pointer]
+                - button "আন্তঃজেলা" [ref=e394] [cursor=pointer]
+                - button "ট্রেন" [ref=e395] [cursor=pointer]
+                - button "লঞ্চ" [ref=e396] [cursor=pointer]
+                - button "যেকোনো কিছু খুঁজুন" [ref=e397] [cursor=pointer]:
+                  - img [ref=e398]
+                  - text: যেকোনো কিছু খুঁজুন
+              - generic [ref=e402]:
+                - img [ref=e404]
+                - textbox "বাস, ট্রেন, স্টপ বা স্থান লিখুন..." [ref=e407]
+                - generic [ref=e408]:
+                  - button "🚌" [ref=e409] [cursor=pointer]
+                  - button "🚇" [ref=e410] [cursor=pointer]
+                  - button "🚆" [ref=e411] [cursor=pointer]
+                  - button "✈️" [ref=e412] [cursor=pointer]
+                  - button "📍" [ref=e413] [cursor=pointer]
+                - generic [ref=e414]: ⌘ K
+              - generic [ref=e417]: অথবা · রুট প্ল্যান করুন
+              - generic [ref=e419]:
+                - generic [ref=e420]:
+                  - img [ref=e422]
+                  - generic [ref=e425]:
+                    - generic [ref=e426]: কোথা থেকে
+                    - textbox "গুলশান ১" [ref=e429]
+                - button "স্টেশন অদলবদল" [ref=e431] [cursor=pointer]:
+                  - img [ref=e432]
+                - generic [ref=e435]:
+                  - img [ref=e437]
+                  - generic [ref=e439]:
+                    - generic [ref=e440]: কোথায়
+                    - textbox "মতিঝিল" [ref=e443]
+                - button "রুট খুঁজুন" [disabled] [ref=e444]:
+                  - img [ref=e445]
+                  - generic [ref=e448]: রুট খুঁজুন
+              - generic [ref=e449]:
+                - button "এখনই · ১১:২৫ PM" [ref=e450] [cursor=pointer]:
+                  - img [ref=e451]
+                  - text: এখনই · ১১:২৫ PM
+                - button "দ্রুততম" [ref=e454] [cursor=pointer]:
+                  - img [ref=e455]
+                  - text: দ্রুততম
+                - button "সস্তা" [ref=e457] [cursor=pointer]:
+                  - img [ref=e458]
+                  - text: সস্তা
+                - button "AC ছাড়া" [ref=e461] [cursor=pointer]
+                - generic [ref=e462]: ২,৪১২ রুট লাইভ
+          - generic [ref=e464]:
+            - generic [ref=e465]:
+              - generic:
+                - generic:
+                  - img
+                  - img
+                  - img
+                  - img
+                  - img
+                  - img
+                  - img
+                  - img
+                  - img
+                  - img
+              - img [ref=e469]
+              - img [ref=e493]
+              - img [ref=e544]:
+                - generic [ref=e561]: MOTIJHEEL
+              - generic [ref=e570]: LIVE · DHAKA
+            - generic [ref=e572]:
+              - img [ref=e574]
+              - generic [ref=e578]:
+                - paragraph [ref=e579]: নেট নেই? সমস্যা নেই।
+                - paragraph [ref=e580]: PWA ইনস্টল করুন · সব রুট অফলাইনে কাজ করে
+              - button "ইনস্টল" [ref=e581] [cursor=pointer]
+        - generic [ref=e583]:
+          - generic [ref=e584]:
+            - heading "কী খুঁজছেন?" [level=2] [ref=e586]
+            - generic [ref=e587]:
+              - button "জনপ্রিয় লোকাল বাস ২০০+ রুট" [ref=e588] [cursor=pointer]:
+                - generic [ref=e589]:
+                  - img [ref=e591]
+                  - generic [ref=e595]: জনপ্রিয়
+                - generic [ref=e596]:
+                  - paragraph [ref=e597]: লোকাল বাস
+                  - paragraph [ref=e598]: ২০০+ রুট
+                - generic:
+                  - generic:
+                    - img:
+                      - generic:
+                        - generic: MOTIJHEEL
+              - button "M6 মেট্রো রেল MRT-6 · ১৫ স্টেশন" [ref=e599] [cursor=pointer]:
+                - generic [ref=e602]: M6
+                - generic [ref=e603]:
+                  - paragraph [ref=e604]: মেট্রো রেল
+                  - paragraph [ref=e605]: MRT-6 · ১৫ স্টেশন
+                - generic:
+                  - generic:
+                    - img:
+                      - generic:
+                        - generic: M6
+              - button "🚆 ট্রেন BD রেলওয়ে · সব রুট" [ref=e606] [cursor=pointer]:
+                - generic [ref=e609]: 🚆
+                - generic [ref=e610]:
+                  - paragraph [ref=e611]: ট্রেন
+                  - paragraph [ref=e612]: BD রেলওয়ে · সব রুট
+                - generic:
+                  - generic:
+                    - img:
+                      - generic:
+                        - generic: M6
+              - button "✈️ আন্তঃজেলা ৬৪ জেলা · বাস/ট্রেন/ফ্লাইট" [ref=e613] [cursor=pointer]:
+                - generic [ref=e616]: ✈️
+                - generic [ref=e617]:
+                  - paragraph [ref=e618]: আন্তঃজেলা
+                  - paragraph [ref=e619]: ৬৪ জেলা · বাস/ট্রেন/ফ্লাইট
+                - generic:
+                  - generic:
+                    - img
+              - button "⛵ লঞ্চ ও স্টিমার সদরঘাট → বরিশাল" [ref=e620] [cursor=pointer]:
+                - generic [ref=e623]: ⛵
+                - generic [ref=e624]:
+                  - paragraph [ref=e625]: লঞ্চ ও স্টিমার
+                  - paragraph [ref=e626]: সদরঘাট → বরিশাল
+                - generic:
+                  - generic:
+                    - img
+              - button "নতুন AI সহায়ক বাংলায় জিজ্ঞেস করুন" [ref=e627] [cursor=pointer]:
+                - generic [ref=e628]:
+                  - img [ref=e630]
+                  - generic [ref=e633]: নতুন
+                - generic [ref=e634]:
+                  - paragraph [ref=e635]: AI সহায়ক
+                  - paragraph [ref=e636]: বাংলায় জিজ্ঞেস করুন
+                - generic:
+                  - generic:
+                    - img
+          - generic [ref=e638]:
+            - generic:
+              - generic:
+                - insertion
+          - generic [ref=e639]:
+            - generic [ref=e640]:
+              - heading "কই যাবো কীভাবে সাহায্য করে" [level=2] [ref=e641]
+              - button "এখনি চেষ্টা করুন" [ref=e642] [cursor=pointer]:
+                - text: এখনি চেষ্টা করুন
+                - img [ref=e643]
+            - generic [ref=e645]:
+              - generic [ref=e646]:
+                - generic [ref=e652]:
+                  - generic [ref=e654]: 🚏 BUS
+                  - generic [ref=e656]:
+                    - generic [ref=e657]: 🤔 ?
+                    - generic [ref=e658]: 🧑
+                  - generic [ref=e660]: 🚌
+                  - generic [ref=e662]: 🚌
+                - generic [ref=e663]: কই যাবো কীভাবে কাজ করে · 1/4
+              - generic [ref=e670]:
+                - generic [ref=e671]: লোকাল বাসস্ট্যান্ডে — কোন বাসে উঠবো? সব তো একরকম! 😕
+                - button "এখনি চেষ্টা করুন →" [ref=e672] [cursor=pointer]
+          - generic [ref=e674]:
+            - generic:
+              - generic:
+                - insertion
+          - generic [ref=e675]:
+            - heading "সেভ করা বাস" [level=2] [ref=e677]
+            - generic [ref=e678]:
+              - img [ref=e679]
+              - paragraph [ref=e681]: এখনো কোনো রুট সেভ হয়নি। যেকোনো বাসে ❤ চাপলে এখানে সেভ হবে।
+          - generic [ref=e683]:
+            - generic:
+              - generic:
+                - insertion
+          - generic [ref=e684]:
+            - generic [ref=e685]:
+              - generic [ref=e686]:
+                - heading "ট্রেন্ডিং রুট আজ" [level=2] [ref=e687]
+                - button "সব দেখুন" [ref=e688] [cursor=pointer]:
+                  - text: সব দেখুন
+                  - img [ref=e689]
+              - generic [ref=e692]:
+                - img [ref=e693]
+                - paragraph [ref=e697]: এখনো কোনো ট্রেন্ডিং ডেটা নেই। বাস খুঁজলে ট্রেন্ড তৈরি হবে।
+            - generic [ref=e698]:
+              - button "AI সহায়ক Beta বাংলায় জিজ্ঞেস করুন — \"কোন বাস গুলশান থেকে মতিঝিল যায়?\" কক্সবাজার যেতে কত খরচ? বিমানবন্দর থেকে ফার্মগেট সদরঘাট লঞ্চ সময়সূচী আপনার প্রশ্ন লিখুন..." [ref=e699] [cursor=pointer]:
+                - generic [ref=e701]:
+                  - img [ref=e703]
+                  - generic [ref=e706]: AI সহায়ক
+                  - generic [ref=e707]: Beta
+                - paragraph [ref=e708]: বাংলায় জিজ্ঞেস করুন — "কোন বাস গুলশান থেকে মতিঝিল যায়?"
+                - generic [ref=e709]:
+                  - generic [ref=e710]: কক্সবাজার যেতে কত খরচ?
+                  - generic [ref=e711]: বিমানবন্দর থেকে ফার্মগেট
+                  - generic [ref=e712]: সদরঘাট লঞ্চ সময়সূচী
+                - generic [ref=e713]:
+                  - img [ref=e714]
+                  - generic [ref=e717]: আপনার প্রশ্ন লিখুন...
+                  - button [ref=e718]:
+                    - img [ref=e719]
+              - insertion [ref=e724]:
+                - iframe [ref=e726]:
+                  
+              - generic [ref=e727]:
+                - generic [ref=e728]:
+                  - img [ref=e730]
+                  - generic [ref=e732]:
+                    - heading "জরুরি সহায়তা" [level=2] [ref=e733]
+                    - paragraph [ref=e734]: ৮০+ যাচাইকৃত নম্বর
+                - generic [ref=e735]:
+                  - button "পুলিশ 999" [ref=e736] [cursor=pointer]:
+                    - paragraph [ref=e737]: পুলিশ
+                    - paragraph [ref=e738]: "999"
+                  - button "অ্যাম্বুলেন্স 199" [ref=e739] [cursor=pointer]:
+                    - paragraph [ref=e740]: অ্যাম্বুলেন্স
+                    - paragraph [ref=e741]: "199"
+                  - button "ফায়ার 102" [ref=e742] [cursor=pointer]:
+                    - paragraph [ref=e743]: ফায়ার
+                    - paragraph [ref=e744]: "102"
+                  - button "হাইওয়ে +880-2" [ref=e745] [cursor=pointer]:
+                    - paragraph [ref=e746]: হাইওয়ে
+                    - paragraph [ref=e747]: +880-2
+      - generic [ref=e750]:
+        - generic [ref=e751]:
+          - img "KoyJabo" [ref=e752]
+          - generic [ref=e753]: কইযাবো
+        - navigation [ref=e754]:
+          - link "হোম" [ref=e755] [cursor=pointer]:
+            - /url: /
+          - link "পরিচয়" [ref=e756] [cursor=pointer]:
+            - /url: /about
+          - link "প্রশ্ন ও উত্তর" [ref=e757] [cursor=pointer]:
+            - /url: /faq
+          - link "অ্যাপ ইনস্টল" [ref=e758] [cursor=pointer]:
+            - /url: /install
+          - link "যোগাযোগ" [ref=e759] [cursor=pointer]:
+            - /url: /contact
+          - link "গোপনীয়তা নীতি" [ref=e760] [cursor=pointer]:
+            - /url: /privacy
+          - link "শর্তাবলী" [ref=e761] [cursor=pointer]:
+            - /url: /terms
+          - link "রিলিজ নোট" [ref=e762] [cursor=pointer]:
+            - /url: /release-notes
+          - link "আন্তঃশহর যাত্রা" [ref=e763] [cursor=pointer]:
+            - /url: /intercity-hub
+        - paragraph [ref=e764]: © 2024–2026 KoyJabo
+  - generic [ref=e365]:
+    - generic [ref=e366]:
+      - generic [ref=e367]: বিজ্ঞাপন
+      - button "Close advertisement" [ref=e368] [cursor=pointer]:
+        - img [ref=e369]
+    - insertion [ref=e375]:
+      - iframe [ref=e377]:
+        

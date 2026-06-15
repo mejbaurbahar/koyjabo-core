@@ -182,7 +182,7 @@ const HomePage: React.FC<HomePageProps> = (props) => {
         </div>
 
         {/* ── How are you traveling? — mode tiles ──────────────────── */}
-        <div className="mb-6 md:mb-8">
+        <div className="mb-4">
           <div className="flex items-baseline justify-between mb-3">
             <h2 className="font-bengali font-bold text-lg text-kj-text tracking-tight">
               {lbl('How are you traveling?', 'কীভাবে যাবেন?')}
@@ -199,7 +199,7 @@ const HomePage: React.FC<HomePageProps> = (props) => {
               >
                 <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-white/10 pointer-events-none" />
                 <div className="relative flex items-center justify-between">
-                  <span className="text-[23px] leading-none">{tile.icon}</span>
+                  <span className="text-[28px] leading-none">{tile.icon}</span>
                   {tile.badgeEn && (
                     <span className="bg-black/25 backdrop-blur-sm text-white text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full">
                       {lbl(tile.badgeEn, tile.badgeBn)}

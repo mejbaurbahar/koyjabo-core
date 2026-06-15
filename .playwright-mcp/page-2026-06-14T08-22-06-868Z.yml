@@ -1,0 +1,29 @@
+- generic [ref=e16]:
+  - generic "Mascot welcoming AI crawler bots" [ref=e17]:
+    - img "Mascot welcoming AI crawler bots" [ref=e19]
+  - generic [ref=e20]: Welcome back
+  - generic [ref=e21]: Sign in with your Daamdekhi account to manage AEO.
+  - generic [ref=e23]:
+    - generic:
+      - generic:
+        - generic:
+          - generic: Email
+          - generic: Email
+    - textbox [ref=e24]
+  - generic [ref=e26]:
+    - generic:
+      - generic:
+        - generic:
+          - generic: Password
+          - generic: Password
+    - textbox [ref=e27]
+  - button "Sign In" [ref=e29] [cursor=pointer]:
+    - generic [ref=e31]: Sign In
+  - button "Continue with Google" [ref=e33] [cursor=pointer]:
+    - generic [ref=e35]: Continue with Google
+  - generic [ref=e36]:
+    - link "Forgot password?" [ref=e37] [cursor=pointer]:
+      - /url: /forgot
+    - generic [ref=e38]: Need an account?
+    - link "Create one" [ref=e39] [cursor=pointer]:
+      - /url: /register

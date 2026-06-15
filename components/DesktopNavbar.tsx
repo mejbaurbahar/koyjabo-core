@@ -99,17 +99,12 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
                 className="flex items-center gap-2.5 cursor-pointer group shrink-0"
                 onClick={() => { setView(AppView.HOME); setPrimarySearch('LOCAL'); }}
             >
-                {/* ক rounded square */}
-                <div
-                    className="w-9 h-9 rounded-[10px] flex items-center justify-center font-bengali font-black text-[20px] shrink-0 group-hover:scale-105 transition-transform"
-                    style={{
-                        background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))',
-                        color: 'var(--kj-primary-ink)',
-                        boxShadow: '0 4px 14px -4px var(--kj-primary)',
-                    }}
-                >
-                    ক
-                </div>
+                {/* KoyJabo logo */}
+                <img
+                    src="/logo.png"
+                    alt="KoyJabo"
+                    className="w-9 h-9 rounded-[10px] shrink-0 group-hover:scale-105 transition-transform object-cover"
+                />
                 <div className="flex flex-col leading-none gap-[3px]">
                     <span className="font-bengali font-bold text-kj-text text-[17px] leading-tight tracking-tight">
                         কই যাবো
