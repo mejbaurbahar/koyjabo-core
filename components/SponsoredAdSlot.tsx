@@ -16,25 +16,26 @@ const SponsoredAdSlot: React.FC<SponsoredAdSlotProps> = ({
 }) => {
   const lbl = (en: string, bn: string) => (language === 'bn' ? bn : en);
   const isLeaderboard = size === '728x90';
-  const slotClass = isLeaderboard ? 'adsense-slot-leaderboard' : 'adsense-slot-rectangle';
   const adHeight = isLeaderboard ? 90 : 250;
   const [filled, setFilled] = useState(false);
 
+  // When not filled, render nothing visible — no border, no background, no height
   return (
     <div
-      className={`adsense-wrapper flex justify-center shrink-0 ${compact ? 'my-2' : 'my-6 md:my-8'} ${className} ${filled ? '' : 'h-0 overflow-hidden'}`}
+      className={`adsense-wrapper flex justify-center shrink-0 ${compact ? 'my-2' : 'my-4 md:my-6'} ${className}`}
+      style={{ display: filled ? 'flex' : 'none' }}
     >
-      <div className={`w-full max-w-[728px] rounded-xl border border-kj-line/60 bg-kj-panel-muted/30 p-2 adsense-container ${slotClass}`}>
+      <div className="w-full max-w-[728px]">
         {filled && (
-          <div className="adsense-label flex items-center justify-center mb-1">
-            <span className="text-[8px] font-medium text-kj-text-faint uppercase tracking-widest opacity-50">
+          <div className="flex items-center justify-center mb-1">
+            <span className="text-[8px] font-medium text-kj-text-faint uppercase tracking-widest opacity-40">
               {lbl('Ad', 'বিজ্ঞাপন')}
             </span>
           </div>
         )}
         <div
-          className="w-full mx-auto flex items-center justify-center"
-          style={{ height: filled ? adHeight : 0, maxHeight: adHeight, overflow: 'hidden', contain: 'strict' }}
+          className="w-full mx-auto overflow-hidden rounded-xl"
+          style={{ height: adHeight, contain: 'strict' }}
         >
           <AdSenseAd
             adSlot="auto"

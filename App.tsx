@@ -3898,6 +3898,7 @@ const App: React.FC = () => {
                   language={language}
                   initialFromId={fromStation || undefined}
                   initialToId={toStation || undefined}
+                  onBusSelect={(bus) => handleBusSelect(bus)}
                 />
             )}
             {view === AppView.METRO_HUB && (

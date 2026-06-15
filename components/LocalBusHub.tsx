@@ -23,6 +23,7 @@ interface LocalBusHubProps {
   language: 'en' | 'bn';
   initialFromId?: string;
   initialToId?: string;
+  onBusSelect?: (bus: import('../types').BusRoute) => void;
 }
 
 const lbl = (language: 'en' | 'bn', en: string, bn: string) =>
@@ -88,7 +89,7 @@ const FILTER_CHIPS = [
   { id: 'operator', en: 'Operator', bn: 'অপারেটর', color: '#8b5cf6' },
 ];
 
-const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFromId, initialToId }) => {
+const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFromId, initialToId, onBusSelect }) => {
   const L = (en: string, bn: string) => lbl(language, en, bn);
   const { user } = useAuth();
 
@@ -410,9 +411,15 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
                       const initials = bus.name.slice(0, 2).toUpperCase();
                       const fromIdx = bus.stops.indexOf(initialFromId!);
                       const toIdx = bus.stops.indexOf(initialToId!);
-                      const stopsCount = toIdx - fromIdx;
+                      const stopsCount = Math.max(1, toIdx - fromIdx);
                       return (
-                        <div key={bus.id} className="dc-card rounded-2xl p-3.5 flex items-center gap-3 border border-kj-primary/20" style={{ boxShadow: '0 0 0 1px rgba(0,245,255,0.08)' }}>
+                        <button
+                          key={bus.id}
+                          type="button"
+                          onClick={() => onBusSelect?.(bus)}
+                          className="dc-card rounded-2xl p-3.5 flex items-center gap-3 border border-kj-primary/20 w-full text-left hover:border-kj-primary/60 active:scale-[0.99] transition-all cursor-pointer"
+                          style={{ boxShadow: '0 0 0 1px rgba(0,245,255,0.08)' }}
+                        >
                           <div className="w-11 h-11 rounded-xl flex items-center justify-center text-white text-xs font-bold shrink-0"
                             style={{ background: bus.color ? `linear-gradient(135deg, ${bus.color}, #0070ad)` : 'linear-gradient(135deg, #006a4e, #10b981)' }}>
                             {initials}
@@ -428,13 +435,16 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
                               {stopsCount} {L('stops between', 'স্টপ মাঝে')} · {bus.type}
                             </p>
                           </div>
-                          <div className="text-right shrink-0">
-                            <div className="font-sans font-bold text-[14px] text-kj-primary">
-                              ৳ {Math.max(10, Math.round(stopsCount * 3.5))}
+                          <div className="text-right shrink-0 flex items-center gap-2">
+                            <div>
+                              <div className="font-sans font-bold text-[14px] text-kj-primary">
+                                ৳ {Math.max(10, Math.round(stopsCount * 3.5))}
+                              </div>
+                              <div className="text-[10px] text-kj-text-faint">{L('approx', 'আনু.')}</div>
                             </div>
-                            <div className="text-[10px] text-kj-text-faint">{L('approx', 'আনু.')}</div>
+                            <ChevronRight className="w-4 h-4 text-kj-text-faint shrink-0" />
                           </div>
-                        </div>
+                        </button>
                       );
                     })}
                   </div>

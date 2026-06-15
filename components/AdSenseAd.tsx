@@ -53,15 +53,22 @@ const AdSenseAd: React.FC<AdSenseAdProps> = React.memo(({
       pushed.current = false;
     }
 
-    // Check after 3s if ad filled and notify parent
+    // Check if ad actually filled — use only the status attribute, not height
+    // (height can be >0 from a blank skeleton; status='filled' means real ad content)
     if (onFilled) {
-      checkTimer.current = setTimeout(() => {
-        const ins = insRef.current;
-        if (!ins) return;
-        const status = ins.getAttribute('data-adsbygoogle-status');
-        const hasHeight = (ins.offsetHeight ?? 0) > 0;
-        onFilled(status === 'filled' || hasHeight);
-      }, 3000);
+      const check = (delay: number) => {
+        checkTimer.current = setTimeout(() => {
+          const ins = insRef.current;
+          if (!ins) return;
+          const status = ins.getAttribute('data-adsbygoogle-status');
+          if (status === 'filled') { onFilled(true); return; }
+          // Google sometimes sets 'done' without 'filled' for non-filled slots
+          if (status === 'done') { onFilled(false); return; }
+          // Still pending — check once more after 2s
+          if (delay < 8000) check(2000);
+        }, delay);
+      };
+      check(3000);
     }
   };
 
