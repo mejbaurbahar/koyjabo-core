@@ -497,6 +497,33 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
   const [selectedTrain, setSelectedTrain] = useState<BDTrainRoute | null>(null);
   const [filterFrom, setFilterFrom] = useState<string>('');
   const [filterTo, setFilterTo] = useState<string>('');
+  const [autoLocDetected, setAutoLocDetected] = useState(false);
+
+  // Auto-detect nearest train station from user location
+  useEffect(() => {
+    if (filterFrom || autoLocDetected) return;
+    const loc = userLocation;
+    if (loc) {
+      let nearestId = '';
+      let minDist = Infinity;
+      Object.entries(TRAIN_STATIONS).forEach(([id, st]) => {
+        const d = haversineKm(loc.lat, loc.lng, st.lat, st.lng);
+        if (d < minDist) { minDist = d; nearestId = id; }
+      });
+      if (nearestId && minDist < 50) { setFilterFrom(nearestId); setAutoLocDetected(true); }
+    } else if (!autoLocDetected && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(pos => {
+        const { latitude: lat, longitude: lng } = pos.coords;
+        let nearestId = '';
+        let minDist = Infinity;
+        Object.entries(TRAIN_STATIONS).forEach(([id, st]) => {
+          const d = haversineKm(lat, lng, st.lat, st.lng);
+          if (d < minDist) { minDist = d; nearestId = id; }
+        });
+        if (nearestId && minDist < 80) { setFilterFrom(nearestId); setAutoLocDetected(true); }
+      }, () => {});
+    }
+  }, [userLocation, autoLocDetected, filterFrom]);
   const [travelDate, setTravelDate] = useState('');
   const [activeTab, setActiveTab] = useState<SearchTab>('eticket');
   const [pnrInput, setPnrInput] = useState('');
@@ -600,7 +627,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
   }
 
   const SEARCH_TABS: { id: SearchTab; label: string; bnLabel: string; icon: string }[] = [
-    { id: 'eticket',  label: 'E-ticket',  bnLabel: 'ই-টিকেট',      icon: '🚆' },
+    { id: 'eticket',  label: 'Search',    bnLabel: 'খুঁজুন',         icon: '🔍' },
     { id: 'pnr',      label: 'PNR',       bnLabel: 'PNR',           icon: '🔍' },
     { id: 'routemap', label: 'Route map', bnLabel: 'রুট ম্যাপ',     icon: '🛤' },
   ];
@@ -727,39 +754,52 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
                     ))}
                   </div>
 
-                  {/* To destination + Date row */}
-                  <div className="grid grid-cols-2 gap-2">
+                  {/* From station (auto from location) */}
+                  <div style={{ position: 'relative' }}>
                     <select
-                      value={filterTo}
-                      onChange={e => setFilterTo(e.target.value)}
-                      className="text-xs px-2.5 py-2.5 rounded-xl text-white focus:outline-none"
+                      value={filterFrom}
+                      onChange={e => { setFilterFrom(e.target.value); setAutoLocDetected(true); }}
+                      className="w-full text-xs px-2.5 py-2.5 rounded-xl text-white focus:outline-none"
                       style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)' }}
                     >
-                      <option value="" className="text-kj-text bg-kj-bg">{lbl('To destination','গন্তব্য বেছে নিন')}</option>
+                      <option value="" className="text-kj-text bg-kj-bg">📍 {lbl('From (auto-detecting...)', 'থেকে (স্বয়ংক্রিয়...)')}</option>
                       {ALL_STATION_OPTIONS.map(st => (
                         <option key={st.id} value={st.id} className="text-kj-text bg-kj-bg">{bn ? st.bnName : st.name}</option>
                       ))}
                     </select>
-                    <input
-                      type="date"
-                      value={travelDate}
-                      onChange={e => setTravelDate(e.target.value)}
-                      className="text-xs px-2.5 py-2.5 rounded-xl text-white/80 focus:outline-none"
-                      style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)' }}
-                    />
+                    {filterFrom && autoLocDetected && !userLocation && (
+                      <span style={{ position: 'absolute', right: 8, top: 8, fontSize: 9, color: 'rgba(255,255,255,0.6)' }}>📍</span>
+                    )}
                   </div>
+                  {/* Destination selector */}
+                  <select
+                    value={filterTo}
+                    onChange={e => setFilterTo(e.target.value)}
+                    className="w-full text-xs px-2.5 py-2.5 rounded-xl text-white focus:outline-none"
+                    style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)' }}
+                  >
+                    <option value="" className="text-kj-text bg-kj-bg">{lbl('To: select destination', 'গন্তব্য বেছে নিন')}</option>
+                    {ALL_STATION_OPTIONS.map(st => (
+                      <option key={st.id} value={st.id} className="text-kj-text bg-kj-bg">{bn ? st.bnName : st.name}</option>
+                    ))}
+                  </select>
 
                   {/* Search button */}
                   <button
                     onClick={() => {
-                      // Results already filter reactively via filterFrom/filterTo/searchQuery state
-                      // Scroll down to results
-                      document.querySelector('[data-train-results]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      // Auto-select first match if search query or destination set
+                      if (filtered.length > 0) {
+                        const firstMatch = filtered[0];
+                        if (onSelectTrain) onSelectTrain(firstMatch);
+                        else setSelectedTrain(firstMatch);
+                      } else {
+                        document.querySelector('[data-train-results]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }
                     }}
                     className="w-full py-2.5 rounded-xl font-bold text-sm text-white transition-opacity hover:opacity-90 active:scale-[0.98] font-bengali"
                     style={{ background: 'linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%)', boxShadow: '0 6px 20px -8px #7c3aed' }}
                   >
-                    {lbl('Search Trains', 'ট্রেন খুঁজুন')} ({filtered.length})
+                    {lbl('Search Trains', 'ট্রেন খুঁজুন')} {filtered.length > 0 ? `(${filtered.length})` : ''}
                   </button>
                 </>
               )}

@@ -104,6 +104,15 @@ const FEATURED_OPERATORS = [
   },
 ];
 
+// Parse Bengali/ASCII mixed fare string to number
+function parseFare(s: string): number {
+  const ascii = s
+    .replace(/[০-৯]/g, (d) => '০১২৩৪৫৬৭৮৯'.indexOf(d).toString())
+    .replace(/[^0-9]/g, '');
+  const n = Number(ascii);
+  return isNaN(n) ? 0 : n;
+}
+
 const MODES = [
   { key: 'bus', icon: '🚌', labelEn: 'Bus', labelBn: 'বাস' },
   { key: 'train', icon: '🚆', labelEn: 'Train', labelBn: 'ট্রেন' },
@@ -167,8 +176,8 @@ const IntercityHub: React.FC<IntercityHubProps> = ({ onBack, language }) => {
       { en: 'Chittagong', bn: 'চট্টগ্রাম', time: '6:00 AM', kind: 'stop' },
       { en: 'Kolatoli Terminal', bn: 'কলাতলী টার্মিনাল', time: op.arr, kind: 'arrival' },
     ];
-    const base = Number(op.fare.replace(',', '')) * 2;
-    const total = base + 50 + 40 - 150;
+    const base = parseFare(op.fare) * 2;
+    const total = base > 0 ? base + 50 + 40 - 150 : 0;
     const deckLabel = op.type.includes('Sleeper') ? L('Pick your berth', 'বার্থ নির্বাচন') : op.type.includes('Double') ? L('Pick seats · Lower deck', 'আসন · নিচতলা') : L('Pick your seats', 'আসন নির্বাচন');
 
     return (
@@ -408,7 +417,7 @@ const IntercityHub: React.FC<IntercityHubProps> = ({ onBack, language }) => {
               <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-4">{L('Price info', 'মূল্য তথ্য')}</p>
               <div className="space-y-2.5 mb-4">
                 {[
-                  { label: L('Base fare (×2)', 'মূল ভাড়া (×২)'), value: `৳ ${(Number(op.fare.replace(',','')) * 2).toLocaleString()}` },
+                  { label: L('Base fare (×2)', 'মূল ভাড়া (×২)'), value: base > 0 ? `৳ ${base.toLocaleString()}` : '৳ --' },
                   { label: L('Service fee', 'সার্ভিস ফি'), value: '৳ 50' },
                   { label: L('Insurance', 'বীমা'), value: '৳ 40' },
                   { label: L('Discount', 'ছাড়'), value: '−৳ 150', accent: true },
@@ -420,7 +429,7 @@ const IntercityHub: React.FC<IntercityHubProps> = ({ onBack, language }) => {
                 ))}
                 <div className="flex items-center justify-between pt-3 border-t border-kj-line">
                   <span className="font-bengali font-bold text-kj-text">{L('Total (2 seats)', 'মোট (২ সিট)')}</span>
-                  <span className="font-sans font-black text-2xl text-kj-primary">৳ {total.toLocaleString()}</span>
+                  <span className="font-sans font-black text-2xl text-kj-primary">৳ {total > 0 ? total.toLocaleString() : "--"}</span>
                 </div>
               </div>
 
