@@ -83,6 +83,7 @@ const MetroRailHub: React.FC<Props> = ({ onBack, language }) => {
   const [countdown, setCountdown] = useState({ m: 2, s: 15 });
   const [fromIdx, setFromIdx] = useState(0);
   const [toIdx, setToIdx] = useState(15);
+  const [showTicketDetails, setShowTicketDetails] = useState<'single'|'pass'|null>(null);
 
   useEffect(() => {
     const getNextTrainSecs = () => {
@@ -257,18 +258,18 @@ const MetroRailHub: React.FC<Props> = ({ onBack, language }) => {
               </div>
               <div className="space-y-2">
                 <button
-                  onClick={() => window.open('https://mrt.com.bd/', '_blank', 'noopener,noreferrer')}
+                  onClick={() => setShowTicketDetails('single')}
                   className="w-full rounded-xl py-1.5 text-[11px] font-semibold text-center transition-opacity hover:opacity-80 cursor-pointer"
                   style={{ background: 'rgba(0,0,0,0.18)' }}
                 >
-                  🎫 {t('Single Journey', 'একক যাত্রা')} ↗
+                  🎫 {t('Single Journey', 'একক যাত্রা')} →
                 </button>
                 <button
-                  onClick={() => window.open('https://mrt.com.bd/', '_blank', 'noopener,noreferrer')}
+                  onClick={() => setShowTicketDetails('pass')}
                   className="w-full rounded-xl py-1.5 text-[11px] font-semibold text-center transition-opacity hover:opacity-80 cursor-pointer"
                   style={{ background: 'rgba(0,0,0,0.18)' }}
                 >
-                  💳 {t('MRT Pass', 'র‍্যাপিড পাস')} ↗
+                  💳 {t('MRT Pass', 'র‍্যাপিড পাস')} →
                 </button>
               </div>
             </div>
@@ -428,6 +429,101 @@ const MetroRailHub: React.FC<Props> = ({ onBack, language }) => {
 
         <SponsoredAdSlot language={language as 'en' | 'bn'} size="728x90" compact />
         <HowKoyJaboHelps />
+
+        {/* MRT Ticket Detail Modal */}
+        {showTicketDetails && (
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[200] flex items-end sm:items-center justify-center p-4 animate-in fade-in duration-200">
+            <div className="dc-card rounded-[22px] w-full max-w-md animate-in slide-in-from-bottom-4 duration-300 max-h-[90vh] overflow-y-auto">
+              {/* Header */}
+              <div className="flex items-center justify-between p-5 border-b border-kj-line">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#00130e,#00543c)' }}>
+                    <span className="text-xl">{showTicketDetails === 'single' ? '🎫' : '💳'}</span>
+                  </div>
+                  <div>
+                    <p className="font-bengali font-bold text-kj-text">{showTicketDetails === 'single' ? t('Single Journey Ticket', 'একক যাত্রার টিকিট') : t('MRT Pass', 'এমআরটি র‍্যাপিড পাস')}</p>
+                    <p className="text-[11px] text-kj-text-faint font-sans">MRT-6 · DMTCL</p>
+                  </div>
+                </div>
+                <button onClick={() => setShowTicketDetails(null)} className="w-8 h-8 rounded-full bg-kj-chip-bg text-kj-text-dim flex items-center justify-center text-lg">✕</button>
+              </div>
+
+              <div className="p-5 space-y-4">
+                {showTicketDetails === 'single' ? (
+                  <>
+                    <div className="dc-card rounded-2xl p-4 space-y-3">
+                      <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans">{t('Fares by distance (2025)', 'দূরত্ব অনুযায়ী ভাড়া (২০২৫)')}</p>
+                      {[
+                        { stops: '1–2', fare: '৳20' },
+                        { stops: '3–4', fare: '৳30' },
+                        { stops: '5–6', fare: '৳40' },
+                        { stops: '7–8', fare: '৳60' },
+                        { stops: '9–11', fare: '৳80' },
+                        { stops: '12–16', fare: '৳100' },
+                      ].map((r, i) => (
+                        <div key={i} className="flex items-center justify-between py-2 border-b border-kj-line/50 last:border-0">
+                          <span className="font-bengali text-sm text-kj-text-dim">{t(`${r.stops} stations`, `${r.stops} স্টেশন`)}</span>
+                          <span className="font-sans font-black text-kj-primary">{r.fare}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="dc-card rounded-2xl p-4 space-y-2">
+                      <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans">{t('How to buy', 'কীভাবে কিনবেন')}</p>
+                      {[
+                        { icon: '🏧', en: 'Token vending machines at every station (cash & card)', bn: 'প্রতিটি স্টেশনে টোকেন ভেন্ডিং মেশিন (নগদ ও কার্ড)' },
+                        { icon: '📱', en: 'MRT app (iOS & Android) — scan QR at turnstile', bn: 'এমআরটি অ্যাপ (iOS ও Android) — টার্নস্টাইলে কিউআর স্ক্যান করুন' },
+                        { icon: '🪙', en: 'Token valid for 2 hours from purchase', bn: 'টোকেন ক্রয়ের ২ ঘণ্টার মধ্যে ব্যবহার করতে হবে' },
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-start gap-2.5">
+                          <span className="text-lg shrink-0">{item.icon}</span>
+                          <p className="font-bengali text-sm text-kj-text-dim">{t(item.en, item.bn)}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <a href="https://mrt.com.bd/" target="_blank" rel="noopener noreferrer" className="block w-full py-3 rounded-[14px] font-bold text-sm font-bengali text-kj-primary-ink text-center" style={{ background: 'linear-gradient(135deg,#00543c,#10b981)' }}>
+                      {t('Buy ticket online at mrt.com.bd ↗', 'mrt.com.bd থেকে অনলাইনে টিকিট কিনুন ↗')}
+                    </a>
+                  </>
+                ) : (
+                  <>
+                    <div className="dc-card rounded-2xl p-4 space-y-3">
+                      <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans">{t('MRT Pass types (2025)', 'এমআরটি পাসের ধরন (২০২৫)')}</p>
+                      {[
+                        { type: t('MRT Pass (20 trips)', 'এমআরটি পাস (২০ যাত্রা)'), price: '৳500', detail: t('20 single-journey trips, valid 30 days', '২০টি একক যাত্রা, ৩০ দিন বৈধ') },
+                        { type: t('Rapid Pass', 'র‍্যাপিড পাস'), price: '৳200+', detail: t('NFC rechargeable card, unlimited recharge', 'এনএফসি রিচার্জযোগ্য কার্ড, যেকোনো পরিমাণ রিচার্জ') },
+                      ].map((r, i) => (
+                        <div key={i} className="flex items-start justify-between gap-3 py-2 border-b border-kj-line/50 last:border-0">
+                          <div>
+                            <p className="font-bengali font-bold text-kj-text text-sm">{r.type}</p>
+                            <p className="font-bengali text-[11px] text-kj-text-dim mt-0.5">{r.detail}</p>
+                          </div>
+                          <span className="font-sans font-black text-kj-primary shrink-0">{r.price}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="dc-card rounded-2xl p-4 space-y-2">
+                      <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans">{t('Pass benefits', 'পাসের সুবিধা')}</p>
+                      {[
+                        { icon: '💰', en: '10% discount vs single journey tickets', bn: 'একক যাত্রার চেয়ে ১০% ছাড়' },
+                        { icon: '⚡', en: 'No queue at vending machines — tap & go', bn: 'ভেন্ডিং মেশিনে লাইন নেই — ট্যাপ করুন ও যান' },
+                        { icon: '📍', en: 'Buy at customer service centres (any MRT station)', bn: 'যেকোনো মেট্রো স্টেশনের কাস্টমার সার্ভিস সেন্টারে কিনুন' },
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-start gap-2.5">
+                          <span className="text-lg shrink-0">{item.icon}</span>
+                          <p className="font-bengali text-sm text-kj-text-dim">{t(item.en, item.bn)}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-[10px] text-kj-text-faint text-center font-bengali">{t('Source: DMTCL (dmtcl.gov.bd) · 2025', 'সূত্র: DMTCL (dmtcl.gov.bd) · ২০২৫')}</p>
+                    <a href="https://dmtcl.gov.bd/pages/static-pages/6922df35933eb65569e20980" target="_blank" rel="noopener noreferrer" className="block w-full py-3 rounded-[14px] font-bold text-sm font-bengali text-white text-center" style={{ background: 'linear-gradient(135deg,#fbbf24,#f59e0b)' }}>
+                      {t('More info at DMTCL website ↗', 'DMTCL ওয়েবসাইটে বিস্তারিত দেখুন ↗')}
+                    </a>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
     </div>
   );

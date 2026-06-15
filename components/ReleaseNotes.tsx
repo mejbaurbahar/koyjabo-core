@@ -2,9 +2,11 @@ import GlobalFooter from './GlobalFooter';
 import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { AppView } from '../types';
 import SponsoredAdSlot from './SponsoredAdSlot';
 
-const ReleaseNotes: React.FC = () => {
+interface ReleaseNotesProps { setView?: (view: AppView) => void; }
+const ReleaseNotes: React.FC<ReleaseNotesProps> = ({ setView }) => {
   const { language } = useLanguage();
   const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
 
@@ -67,7 +69,7 @@ const ReleaseNotes: React.FC = () => {
 
   return (
     <div
-      className="bg-kj-panel w-full"
+      className="flex flex-col flex-1 min-h-0 bg-kj-panel overflow-y-auto overscroll-y-contain"
       style={{ WebkitOverflowScrolling: 'touch' }}
     >
       {/* Sticky back bar */}
@@ -119,6 +121,7 @@ const ReleaseNotes: React.FC = () => {
             </ul>
           </div>
         ))}
+      <GlobalFooter setView={setView} />
       </div>
     </div>
   );

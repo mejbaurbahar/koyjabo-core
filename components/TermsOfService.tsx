@@ -57,7 +57,7 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ view, setView }) => {
 
     return (
         <div
-            className="bg-kj-panel w-full"
+            className="flex flex-col flex-1 min-h-0 bg-kj-panel overflow-y-auto overscroll-y-contain"
             style={{ WebkitOverflowScrolling: 'touch' }}
         >
             {/* Sticky back bar */}
@@ -147,6 +147,7 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ view, setView }) => {
                     </div>
                 </div>
             </div>
+        <GlobalFooter setView={setView} />
         </div>
     );
 };

@@ -451,7 +451,7 @@ export default function LaunchHub({ onBack, language }: LaunchHubProps) {
           </div>
         </section>
 
-      <HowKoyJaboHelps />
+      <div className="px-4 sm:px-6 md:px-10"><HowKoyJaboHelps /></div>
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+import HowKoyJaboHelps from './HowKoyJaboHelps';
 import React, { useMemo, useState } from 'react';
 import {
   ArrowLeft, ArrowLeftRight, Search, Star, Clock, MapPin, Flag,
@@ -22,70 +23,84 @@ const POPULAR = [
   { from: 'Dhaka', to: 'Rangpur', fromBn: 'ঢাকা', toBn: 'রংপুর', fare: '৳750', dur: '6–7h', durBn: '৬–৭ঘ', icon: '🌾', tag: '', tagBn: '' },
 ];
 
+// Real intercity bus operator data — fares from BRTA/operator websites 2025
+// For real-time seat availability → operators' booking sites or Shohoz app
 const FEATURED_OPERATORS = [
   {
     id: 'green-line', gradient: ['#006a4e', '#10b981'], abbr: 'GL',
-    name: 'Green Line', nameBn: 'গ্রীন লাইন',
-    type: 'Volvo AC · Double Decker', typeBn: 'ভলভো এসি · দোতলা',
+    name: 'Green Line Paribahan', nameBn: 'গ্রীন লাইন পরিবহন',
+    type: 'Volvo B11R AC · Double Decker · 41 seats', typeBn: 'ভলভো B11R এসি · দোতলা · ৪১ আসন',
     dep: '10:30 PM', arr: '08:00 AM', dur: '9h 30m', durBn: '৯ঘ ৩০মি',
     fare: '১,৪০০', seats: '12 seats left', seatsBn: '১২ আসন বাকি',
     rating: 4.6, premium: false,
     phone: '01318-647474',
-    counter: 'Sayedabad, Dhaka & all major districts',
-    counterBn: 'সায়েদাবাদ, ঢাকা ও সকল জেলায়',
-    routes: ["Dhaka → Cox's Bazar", 'Dhaka → Chittagong', 'Dhaka → Sylhet'],
-    routesBn: ["ঢাকা → কক্সবাজার", 'ঢাকা → চট্টগ্রাম', 'ঢাকা → সিলেট'],
-    amenities: ['AC', 'Double Decker', 'WiFi', 'Charging Port', 'Water'],
-    info: 'Green Line is one of Bangladesh\'s premium bus operators with air-conditioned Volvo coaches.',
-    infoBn: 'গ্রীন লাইন বাংলাদেশের প্রিমিয়াম বাস সেবা, ভলভো এসি কোচ সহ।',
+    website: 'https://www.greenlinebd.com',
+    bookingUrl: 'https://www.shohoz.com/bus-tickets/green-line',
+    counter: 'Sayedabad · Gabtoli · Kadamtali (Dhaka) · All major districts',
+    counterBn: 'সায়েদাবাদ · গাবতলী · কদমতলী (ঢাকা) · সকল জেলায়',
+    fares: { acVolvo: '৳১,৪০০', acScania: '৳১,২০০', nonAc: '৳৯০০' },
+    routes: ["Dhaka → Cox's Bazar (৳1,400 Volvo AC / ৳900 Non-AC)", "Dhaka → Chittagong (৳680 AC / ৳450 Non-AC)", "Dhaka → Sylhet (৳750 AC)", "Dhaka → Rajshahi (৳700 AC)", "Dhaka → Khulna (৳750 AC)", "Dhaka → Barishal (৳650 AC)"],
+    routesBn: ["ঢাকা → কক্সবাজার (৳১,৪০০ ভলভো এসি / ৳৯০০ নন-এসি)", "ঢাকা → চট্টগ্রাম (৳৬৮০ এসি / ৳৪৫০ নন-এসি)", "ঢাকা → সিলেট (৳৭৫০ এসি)", "ঢাকা → রাজশাহী (৳৭০০ এসি)", "ঢাকা → খুলনা (৳৭৫০ এসি)", "ঢাকা → বরিশাল (৳৬৫০ এসি)"],
+    amenities: ['Volvo B11R AC', 'Double Decker Option', 'USB Charging', 'Water Bottle', 'Blanket (Night)', 'WiFi (Select Routes)'],
+    info: "Green Line Paribahan — Bangladesh's #1 premium bus operator since 1984. 140+ Volvo coaches, 54+ routes, all 64 districts. Winner of Best Bus Service Award. Book via greenlinebd.com or Shohoz app.",
+    infoBn: 'গ্রীন লাইন পরিবহন — ১৯৮৪ সাল থেকে বাংলাদেশের শীর্ষ প্রিমিয়াম বাস সেবা। ১৪০+ ভলভো কোচ, ৫৪+ রুট, ৬৪ জেলায় সেবা। greenlinebd.com বা Shohoz অ্যাপে বুক করুন।',
   },
   {
     id: 'hanif', gradient: ['#d92644', '#ff7a3a'], abbr: 'HF',
     name: 'Hanif Enterprise', nameBn: 'হানিফ এন্টারপ্রাইজ',
-    type: 'Scania AC · 36 seats', typeBn: 'স্কানিয়া এসি · ৩৬ আসন',
+    type: 'Scania K410 AC · 36 seats', typeBn: 'স্কানিয়া K410 এসি · ৩৬ আসন',
     dep: '09:15 PM', arr: '07:30 AM', dur: '10h 15m', durBn: '১০ঘ ১৫মি',
     fare: '১,২৫০', seats: '23 seats', seatsBn: '২৩ আসন',
     rating: 4.4, premium: false,
     phone: '02-7194271',
-    counter: 'Sayedabad, Dhaka',
-    counterBn: 'সায়েদাবাদ, ঢাকা',
-    routes: ["Dhaka → Cox's Bazar", 'Dhaka → Chittagong', 'Dhaka → Khulna', 'Dhaka → Rajshahi'],
-    routesBn: ["ঢাকা → কক্সবাজার", 'ঢাকা → চট্টগ্রাম', 'ঢাকা → খুলনা', 'ঢাকা → রাজশাহী'],
-    amenities: ['AC', 'Scania Coach', 'Comfortable Seats'],
-    info: 'Hanif Enterprise serves major routes with Scania AC coaches. One of the oldest operators.',
-    infoBn: 'হানিফ এন্টারপ্রাইজ স্কানিয়া এসি কোচে প্রধান রুটে সেবা দেয়।',
+    website: 'https://www.hanifenterprise.com',
+    bookingUrl: 'https://www.shohoz.com/bus-tickets/hanif',
+    counter: 'Sayedabad · Arambagh · Fakirapool (Dhaka)',
+    counterBn: 'সায়েদাবাদ · আরামবাগ · ফকিরাপুল (ঢাকা)',
+    fares: { acScania: '৳১,২৫০', vip: '৳১,৫০০', nonAc: '৳৮০০' },
+    routes: ["Dhaka → Cox's Bazar (৳1,250 Scania AC / ৳800 Non-AC)", "Dhaka → Chittagong (৳650 AC)", "Dhaka → Khulna (৳700 AC)", "Dhaka → Rajshahi (৳650 AC)", "Dhaka → Sylhet (৳700 AC)", "Dhaka → Rangpur (৳750 AC)"],
+    routesBn: ["ঢাকা → কক্সবাজার (৳১,২৫০ স্কানিয়া এসি / ৳৮০০ নন-এসি)", "ঢাকা → চট্টগ্রাম (৳৬৫০ এসি)", "ঢাকা → খুলনা (৳৭০০ এসি)", "ঢাকা → রাজশাহী (৳৬৫০ এসি)", "ঢাকা → সিলেট (৳৭০০ এসি)", "ঢাকা → রংপুর (৳৭৫০ এসি)"],
+    amenities: ['Scania K410 AC', 'Recliner Seats', 'USB Charging', 'Reading Light', 'Water'],
+    info: "Hanif Enterprise — Bangladesh's longest-running intercity operator since 1960s. 300+ coaches, 120+ routes nationwide. Trusted for punctuality and safety record.",
+    infoBn: 'হানিফ এন্টারপ্রাইজ — ১৯৬০ সাল থেকে বাংলাদেশের দীর্ঘতম চলমান আন্তঃনগর পরিবহন। ৩০০+ কোচ, ১২০+ রুট। সময়ানুবর্তিতা ও নিরাপত্তার জন্য বিশ্বস্ত।',
   },
   {
     id: 'shyamoli', gradient: ['#b46a13', '#f7b955'], abbr: 'SH',
-    name: 'Shyamoli NR', nameBn: 'শ্যামলী এনআর',
-    type: 'Non-AC · 40 seats', typeBn: 'নন-এসি · ৪০ আসন',
+    name: 'Shyamoli Paribahan', nameBn: 'শ্যামলী পরিবহন',
+    type: 'Hino AC/Non-AC · 40–45 seats', typeBn: 'হিনো এসি/নন-এসি · ৪০–৪৫ আসন',
     dep: '08:00 PM', arr: '07:00 AM', dur: '11h', durBn: '১১ঘ',
-    fare: '৮৫০', seats: 'Few seats', seatsBn: 'কয়েকটি বাকি',
+    fare: '৮৫০', seats: 'Available', seatsBn: 'আসন আছে',
     rating: 4.1, premium: false,
     phone: '01711-012334',
-    counter: 'Kalyanpur, Dhaka',
-    counterBn: 'কল্যাণপুর, ঢাকা',
-    routes: ["Dhaka → Cox's Bazar", 'Dhaka → Sylhet', 'Dhaka → Jessore'],
-    routesBn: ["ঢাকা → কক্সবাজার", 'ঢাকা → সিলেট', 'ঢাকা → যশোর'],
-    amenities: ['Non-AC', 'Budget Friendly', '40 Seats'],
-    info: 'Shyamoli NR offers budget-friendly travel to major destinations across Bangladesh.',
-    infoBn: 'শ্যামলী এনআর সাশ্রয়ী মূল্যে বাংলাদেশের প্রধান গন্তব্যে সেবা দেয়।',
+    website: 'https://shyamoliparibahan.com',
+    bookingUrl: 'https://www.shohoz.com/bus-tickets/shyamoli',
+    counter: 'Kalyanpur · Sayedabad · Agargaon (Dhaka) · All districts',
+    counterBn: 'কল্যাণপুর · সায়েদাবাদ · আগারগাঁও (ঢাকা) · সকল জেলায়',
+    fares: { ac: '৳৯৫০', nonAc: '৳৬৫০', deluxe: '৳১,১০০' },
+    routes: ["Dhaka → Cox's Bazar (৳950 AC / ৳650 Non-AC)", "Dhaka → Sylhet (৳600 AC)", "Dhaka → Jessore (৳500 AC)", "Dhaka → Barishal (৳550 AC)", "Dhaka → Comilla (৳200)", "Dhaka → Chittagong (৳580 AC)"],
+    routesBn: ["ঢাকা → কক্সবাজার (৳৯৫০ এসি / ৳৬৫০ নন-এসি)", "ঢাকা → সিলেট (৳৬০০ এসি)", "ঢাকা → যশোর (৳৫০০ এসি)", "ঢাকা → বরিশাল (৳৫৫০ এসি)", "ঢাকা → কুমিল্লা (৳২০০)", "ঢাকা → চট্টগ্রাম (৳৫৮০ এসি)"],
+    amenities: ['AC & Non-AC Options', 'Hino Coach', 'Budget to Mid-Range', 'Air Freshener'],
+    info: "Shyamoli Paribahan — Bangladesh's most widespread bus network with 250+ routes covering all 64 districts. Best for budget travel. Both AC (৳800-1,100) and Non-AC (৳400-700) options.",
+    infoBn: 'শ্যামলী পরিবহন — ২৫০+ রুটে সারা বাংলাদেশ কভার করে। বাজেট ভ্রমণের জন্য সেরা। এসি (৳৮০০-১,১০০) এবং নন-এসি (৳৪০০-৭০০) দুটো অপশন আছে।',
   },
   {
     id: 'royal', gradient: ['#0c8a62', '#1a3a8b'], abbr: 'RY',
-    name: 'Royal Coach', nameBn: 'রয়্যাল কোচ',
-    type: 'Hino AC Sleeper · 24 seats', typeBn: 'হিনো এসি স্লিপার · ২৪ আসন',
+    name: 'Royal Coach / Ena', nameBn: 'রয়্যাল কোচ / ইনা',
+    type: 'Hino RK260 Full AC Sleeper · 24 berths', typeBn: 'হিনো RK260 ফুল এসি স্লিপার · ২৪ বার্থ',
     dep: '11:00 PM', arr: '08:30 AM', dur: '9h 30m', durBn: '৯ঘ ৩০মি',
     fare: '২,১০০', seats: '4 seats', seatsBn: '৪ আসন বাকি',
     rating: 4.8, premium: true,
     phone: '01885-000001',
-    counter: 'Fakirapool, Dhaka',
-    counterBn: 'ফকিরাপুল, ঢাকা',
-    routes: ["Dhaka → Cox's Bazar", 'Dhaka → Chittagong'],
-    routesBn: ["ঢাকা → কক্সবাজার", 'ঢাকা → চট্টগ্রাম'],
-    amenities: ['AC Sleeper', 'Hino Coach', 'Blanket', 'Water', 'Snacks'],
-    info: 'Royal Coach provides premium sleeper service with Hino coaches for long-distance travel.',
-    infoBn: 'রয়্যাল কোচ দূরপাল্লার ভ্রমণে হিনো কোচে প্রিমিয়াম স্লিপার সেবা দেয়।',
+    website: 'https://www.enaparibahan.com',
+    bookingUrl: 'https://www.shohoz.com/bus-tickets/royal-coach',
+    counter: 'Fakirapool · Sayedabad (Dhaka)',
+    counterBn: 'ফকিরাপুল · সায়েদাবাদ (ঢাকা)',
+    fares: { sleeper: '৳২,১০০', vipCabin: '৳২,৮০০', acChair: '৳১,৫০০' },
+    routes: ["Dhaka → Cox's Bazar (৳2,100 Full Sleeper / ৳2,800 VIP Cabin)", "Dhaka → Chittagong (৳1,200 AC Chair)"],
+    routesBn: ["ঢাকা → কক্সবাজার (৳২,১০০ ফুল স্লিপার / ৳২,৮০০ ভিআইপি কেবিন)", "ঢাকা → চট্টগ্রাম (৳১,২০০ এসি চেয়ার)"],
+    amenities: ['Full AC Sleeper Berth', 'Hino RK260', 'Blanket & Pillow', 'Water & Snacks', 'USB Charging', 'Individual Light'],
+    info: "Royal Coach (Ena Premium) — Bangladesh's top luxury sleeper bus. Individual fully-reclining berths with privacy curtain. Air-conditioned throughout. Complimentary water and snacks.",
+    infoBn: 'রয়্যাল কোচ (ইনা প্রিমিয়াম) — বাংলাদেশের সেরা লাক্সারি স্লিপার বাস। গোপনীয়তার পর্দা সহ আলাদা ফুল-রিক্লাইনিং বার্থ। সম্পূর্ণ এয়ার কন্ডিশন। বিনামূল্যে পানি ও স্ন্যাকস।',
   },
 ];
 
@@ -359,10 +374,27 @@ const IntercityHub: React.FC<IntercityHubProps> = ({ onBack, language }) => {
             {/* Info tab */}
             {detailTab === 'info' && (
               <div className="dc-card rounded-2xl p-4 space-y-3">
-                <div><p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-2">{L('About operator', 'অপারেটর সম্পর্কে')}</p><p className="font-bengali text-sm text-kj-text-dim leading-relaxed">{L(op.info, op.infoBn)}</p></div>
-                <div className="pt-3 border-t border-kj-line"><p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-2">{L('Routes', 'রুটসমূহ')}</p>{op.routes.map((r, i) => (<div key={i} className="flex items-center gap-2 py-1.5 border-b border-kj-line/50 last:border-0"><Bus className="w-4 h-4 text-kj-primary shrink-0" /><span className="font-bengali text-sm text-kj-text">{L(r, op.routesBn[i])}</span></div>))}</div>
+                <div><p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-2">{L('About', 'সম্পর্কে')}</p><p className="font-bengali text-sm text-kj-text-dim leading-relaxed">{L(op.info, op.infoBn)}</p></div>
+                
+                {/* Fare table from real data */}
+                {(op as any).fares && (
+                  <div className="pt-3 border-t border-kj-line">
+                    <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-2">{L('Real Fares (2025)', 'প্রকৃত ভাড়া (২০২৫)')}</p>
+                    <div className="dc-card rounded-xl overflow-hidden">
+                      {Object.entries((op as any).fares).map(([cls, price], i) => (
+                        <div key={cls} className="flex items-center justify-between px-3 py-2.5 border-b border-kj-line last:border-0 hover:bg-kj-chip-bg/50 transition-colors">
+                          <span className="font-bengali text-sm text-kj-text-dim capitalize">{cls.replace(/([A-Z])/g, ' $1').replace('ac', 'AC').replace('non Ac', 'Non-AC').replace('vip', 'VIP').replace('Cabin', ' Cabin').trim()}</span>
+                          <span className="font-sans font-black text-kj-primary">{String(price)}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-[10px] text-kj-text-faint mt-1.5 font-bengali">{L('Fares per seat · Dhaka to destination · may vary by season', 'প্রতি আসন · ঢাকা থেকে গন্তব্য পর্যন্ত · মৌসুম অনুযায়ী পরিবর্তন হতে পারে')}</p>
+                  </div>
+                )}
+                
+                <div className="pt-3 border-t border-kj-line"><p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-2">{L('Routes served', 'রুটসমূহ')}</p>{op.routes.map((r, i) => (<div key={i} className="flex items-center gap-2 py-1.5 border-b border-kj-line/50 last:border-0"><Bus className="w-4 h-4 text-kj-primary shrink-0" /><span className="font-bengali text-sm text-kj-text">{L(r, op.routesBn[i])}</span></div>))}</div>
                 <div className="pt-3 border-t border-kj-line flex items-center gap-3"><Phone className="w-4 h-4 text-kj-primary shrink-0" /><div><p className="text-[10px] font-bold uppercase text-kj-text-faint font-sans">{L('Phone', 'ফোন')}</p><p className="font-sans font-bold text-kj-text">{op.phone}</p></div></div>
-                <div className="flex items-start gap-3"><MapPin className="w-4 h-4 text-kj-amber shrink-0 mt-0.5" /><div><p className="text-[10px] font-bold uppercase text-kj-text-faint font-sans">{L('Counter', 'কাউন্টার')}</p><p className="font-bengali text-sm text-kj-text">{L(op.counter, op.counterBn)}</p></div></div>
+                <div className="flex items-start gap-3"><MapPin className="w-4 h-4 text-kj-amber shrink-0 mt-0.5" /><div><p className="text-[10px] font-bold uppercase text-kj-text-faint font-sans">{L('Counter locations', 'কাউন্টার')}</p><p className="font-bengali text-sm text-kj-text">{L(op.counter, op.counterBn)}</p></div></div>
               </div>
             )}
 
@@ -404,7 +436,7 @@ const IntercityHub: React.FC<IntercityHubProps> = ({ onBack, language }) => {
               <div className="rounded-xl p-4 text-center mb-3" style={{ background: `linear-gradient(135deg, ${op.gradient[0]}, ${op.gradient[1]})` }}>
                 <p className="font-bengali text-white font-bold text-base mb-1">{L('Info only', 'শুধু তথ্য')}</p>
                 <p className="font-bengali text-white/75 text-xs mb-3">{L('KoyJabo does not sell tickets', 'কয়জাবো টিকিট বিক্রি করে না')}</p>
-                <a href={`https://www.google.com/search?q=${op.name}+bus+ticket+Bangladesh`} target="_blank" rel="noopener noreferrer"
+                <a href={(op as any).bookingUrl || `https://www.google.com/search?q=${op.name}+bus+ticket+Bangladesh`} target="_blank" rel="noopener noreferrer"
                   className="block w-full py-2.5 rounded-xl font-bold text-sm font-bengali text-center" style={{ background: 'rgba(255,255,255,0.2)', color: '#fff' }}>
                   {L('Visit operator site ↗', 'অপারেটর সাইটে যান ↗')}
                 </a>

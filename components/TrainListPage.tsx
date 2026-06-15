@@ -1,3 +1,4 @@
+import HowKoyJaboHelps from './HowKoyJaboHelps';
 import React, { useState, useMemo, useEffect } from 'react';
 import SponsoredAdSlot from './SponsoredAdSlot';
 import GlobalFooter from './GlobalFooter';
@@ -1128,6 +1129,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
 
       <div className="h-8" />
 
+      <HowKoyJaboHelps />
       {/* Footer */}
       {!embedded && setView && (
         <GlobalFooter setView={setView} />

@@ -3726,15 +3726,13 @@ const App: React.FC = () => {
     // — LOCAL_BUS_HUB, METRO_HUB, LAUNCH_HUB — hubs have own ads, removed earlier
   ];
   const showPageAd = pageAdViews.includes(view);
+  // CONTACT, PRIVACY, TERMS, RELEASE_NOTES handle their own internal scroll+footer
+  // All other doc pages use the outer panel scroll with GlobalFooter after them
   const rightPanelUsesOuterScroll = [
     AppView.ABOUT,
     AppView.WHY_USE,
     AppView.FAQ,
     AppView.FOR_AI,
-    AppView.CONTACT,
-    AppView.PRIVACY,
-    AppView.TERMS,
-    AppView.RELEASE_NOTES,
     AppView.INSTALL_APP,
     AppView.BLOG,
     AppView.LOCAL_BUS_HUB,
@@ -3980,7 +3978,7 @@ const App: React.FC = () => {
             {view === AppView.WHY_USE && renderWhyUse()}
             {view === AppView.FAQ && renderFAQ()}
             {view === AppView.RELEASE_NOTES && (
-              <ReleaseNotes />
+              <ReleaseNotes setView={setView} />
             )}
 
             {view === AppView.BLOG && (

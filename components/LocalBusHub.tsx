@@ -655,7 +655,7 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
           </p>
         </div>
 
-      <HowKoyJaboHelps />
+        <HowKoyJaboHelps />
       </div>
     </div>
   );
