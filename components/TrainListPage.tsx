@@ -4,7 +4,7 @@ import GlobalFooter from './GlobalFooter';
 import { AppView } from '../types';
 import {
   Train, Search, ArrowRight, Clock, CalendarX, Info,
-  ArrowLeft, MapPin, Navigation,
+  ArrowLeft, MapPin, Navigation, ChevronRight,
   Coins, AlertCircle, X, CheckCircle2, SlidersHorizontal, Star, Heart, Ticket, Radio, Map
 } from 'lucide-react';
 import { Train3D } from './design/Vehicles3D';
@@ -596,6 +596,8 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
   const [activeTab, setActiveTab] = useState<SearchTab>('eticket');
   const [pnrInput, setPnrInput] = useState('');
   const [pnrSideInput, setPnrSideInput] = useState('');
+  const [selectedStation, setSelectedStation] = useState<string | null>(null);
+  const [routeMapTrain, setRouteMapTrain] = useState<BDTrainRoute | null>(null);
   const [sortBy, setSortBy] = useState<SortOption>('name');
   const [trainRatingsMap, setTrainRatingsMap] = useState<Record<string, TrainRatingSummary | null>>({});
   const [favoriteTrainIds, setFavoriteTrainIds] = useState<string[]>(getStoredTrainFavorites);
@@ -693,10 +695,9 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
   }
 
   const SEARCH_TABS: { id: SearchTab; label: string; bnLabel: string; icon: string }[] = [
-    { id: 'eticket',  label: 'E-ticket',      bnLabel: 'ই-টিকেট',      icon: '🚆' },
-    { id: 'pnr',      label: 'PNR status',    bnLabel: 'PNR স্ট্যাটাস', icon: '🔍' },
-    { id: 'live',     label: 'Live location', bnLabel: 'লাইভ অবস্থান',  icon: '📍' },
-    { id: 'routemap', label: 'Route map',     bnLabel: 'রুট ম্যাপ',     icon: '🛤' },
+    { id: 'eticket',  label: 'E-ticket',  bnLabel: 'ই-টিকেট',      icon: '🚆' },
+    { id: 'pnr',      label: 'PNR',       bnLabel: 'PNR',           icon: '🔍' },
+    { id: 'routemap', label: 'Route map', bnLabel: 'রুট ম্যাপ',     icon: '🛤' },
   ];
 
   return (
@@ -846,19 +847,14 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
                   {/* Search button */}
                   <button
                     onClick={() => {
-                      // Filter results from local data (already reactive via state)
-                      // Also open Bangladesh Railway official booking site in background tab
-                      const fromSt = filterFrom ? (TRAIN_STATIONS[filterFrom]?.name || '') : 'Dhaka';
-                      const toSt   = filterTo   ? (TRAIN_STATIONS[filterTo]?.name   || '') : '';
-                      if (toSt) {
-                        const url = `https://eticket.railway.gov.bd/booking/train/search?fromcity=${encodeURIComponent(fromSt)}&tocity=${encodeURIComponent(toSt)}&djourney=${travelDate || new Date().toISOString().split('T')[0]}&class=all&adult=1&child=0`;
-                        window.open(url, '_blank', 'noopener,noreferrer');
-                      }
+                      // Results already filter reactively via filterFrom/filterTo/searchQuery state
+                      // Scroll down to results
+                      document.querySelector('[data-train-results]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }}
                     className="w-full py-2.5 rounded-xl font-bold text-sm text-white transition-opacity hover:opacity-90 active:scale-[0.98] font-bengali"
                     style={{ background: 'linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%)', boxShadow: '0 6px 20px -8px #7c3aed' }}
                   >
-                    {lbl('Search Trains', 'ট্রেন খুঁজুন')}
+                    {lbl('Search Trains', 'ট্রেন খুঁজুন')} ({filtered.length})
                   </button>
                 </>
               )}
@@ -916,16 +912,31 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
 
               {activeTab === 'routemap' && (
                 <div className="space-y-2">
-                  <p className="text-white/70 text-sm font-bengali text-center py-2">
-                    {lbl('Select any train below to see its full route map', 'নিচে যেকোনো ট্রেন বেছে নিন — পূর্ণ রুট দেখাবে')}
-                  </p>
-                  <button
-                    onClick={() => window.open('https://eticket.railway.gov.bd/timetable', '_blank', 'noopener,noreferrer')}
-                    className="w-full py-2 rounded-xl font-bold text-xs text-white/80 font-bengali"
-                    style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)' }}
-                  >
-                    {lbl('View Full Timetable', 'সময়সূচী দেখুন')}
-                  </button>
+                  {routeMapTrain ? (
+                    <>
+                      <div className="text-white/90 text-sm font-bengali font-bold">{bn ? routeMapTrain.bnName : routeMapTrain.name}</div>
+                      <div className="text-white/60 text-[11px] font-sans">#{routeMapTrain.number} · {routeMapTrain.stops.length} stops</div>
+                      <div className="max-h-40 overflow-y-auto space-y-1 mt-2">
+                        {routeMapTrain.stops.map((stopId, idx) => {
+                          const st = TRAIN_STATIONS[stopId];
+                          return (
+                            <div key={stopId} className="flex items-center gap-2">
+                              <div className="flex flex-col items-center shrink-0">
+                                <div className="w-2 h-2 rounded-full" style={{ background: idx === 0 || idx === routeMapTrain.stops.length - 1 ? '#00f5ff' : 'rgba(255,255,255,0.4)' }} />
+                                {idx < routeMapTrain.stops.length - 1 && <div className="w-px h-4 bg-white/20" />}
+                              </div>
+                              <span className="text-white/80 text-[11px] font-bengali">{bn && st?.bnName ? st.bnName : (st?.name || stopId)}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <button onClick={() => setRouteMapTrain(null)} className="w-full py-1.5 rounded-xl text-xs text-white/60 font-sans" style={{ background: 'rgba(255,255,255,0.08)' }}>{lbl('Clear', 'মুছুন')}</button>
+                    </>
+                  ) : (
+                    <p className="text-white/70 text-sm font-bengali text-center py-2">
+                      {lbl('Click "Details" on any train below to view its route map', 'নিচে যেকোনো ট্রেনে "বিস্তারিত" ক্লিক করুন — পূর্ণ রুট দেখাবে')}
+                    </p>
+                  )}
                 </div>
               )}
             </div>
@@ -936,7 +947,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
       </div>
 
       {/* ── Two-column content area ── */}
-      <div className="px-4 py-5 grid gap-4 md:grid-cols-[1.5fr_1fr] max-w-5xl mx-auto w-full">
+      <div data-train-results className="px-4 py-5 grid gap-4 md:grid-cols-[1.5fr_1fr] max-w-5xl mx-auto w-full">
 
         {/* ── LEFT: Popular trains from Dhaka ── */}
         <div className="space-y-3">
@@ -1033,13 +1044,17 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
                     <button
                       onClick={() => {
                         if (matchedRoute) {
-                          onSelectTrain ? onSelectTrain(matchedRoute) : setSelectedTrain(matchedRoute);
+                          if (activeTab === 'routemap') {
+                            setRouteMapTrain(matchedRoute);
+                          } else {
+                            onSelectTrain ? onSelectTrain(matchedRoute) : setSelectedTrain(matchedRoute);
+                          }
                         }
                       }}
                       className="px-3 py-1.5 rounded-xl text-[11px] font-bold text-white transition-opacity hover:opacity-90 active:scale-95 font-sans"
                       style={{ background: train.gradient }}
                     >
-                      {lbl('Details', 'বিস্তারিত')}
+                      {activeTab === 'routemap' ? lbl('Route', 'রুট') : lbl('Details', 'বিস্তারিত')}
                     </button>
                   </div>
                 </div>
@@ -1146,21 +1161,65 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
           {MAJOR_STATIONS.map(station => (
             <button
               key={station.name}
-              onClick={() => setSearchQuery(bn ? station.bnName : station.name)}
-              className="dc-card rounded-2xl p-3.5 flex flex-col items-center gap-2 hover:border-purple-400 dark:hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all active:scale-95 text-center"
+              onClick={() => setSelectedStation(selectedStation === station.name ? null : station.name)}
+              className={`dc-card rounded-2xl p-3.5 flex flex-col items-center gap-2 transition-all active:scale-95 text-center ${selectedStation === station.name ? 'border-purple-400 dark:border-purple-500' : 'hover:border-purple-400 dark:hover:border-purple-500'}`}
             >
               <span className="text-2xl leading-none">{station.emoji}</span>
               <div>
-                <p className="font-bengali font-bold text-kj-text text-[12px] leading-tight">
-                  {bn ? station.bnName : station.name}
-                </p>
-                <p className="font-bengali text-[10px] text-kj-text-faint mt-0.5">
-                  {bn ? station.cityBn : station.city}
-                </p>
+                <p className="font-bengali font-bold text-kj-text text-[12px] leading-tight">{bn ? station.bnName : station.name}</p>
+                <p className="font-bengali text-[10px] text-kj-text-faint mt-0.5">{bn ? station.cityBn : station.city}</p>
               </div>
             </button>
           ))}
         </div>
+
+        {/* Station detail panel */}
+        {selectedStation && (() => {
+          const st = MAJOR_STATIONS.find(s => s.name === selectedStation);
+          if (!st) return null;
+          const stationId = Object.keys(TRAIN_STATIONS).find(id => TRAIN_STATIONS[id].name === st.name || TRAIN_STATIONS[id].bnName === st.bnName);
+          const trainsVia = stationId
+            ? BD_TRAIN_ROUTES.filter(r => r.stops.includes(stationId)).slice(0, 8)
+            : [];
+          return (
+            <div className="mt-4 dc-card rounded-2xl overflow-hidden">
+              <div className="px-5 py-4 flex items-center gap-3" style={{ background: 'linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%)' }}>
+                <span className="text-3xl">{st.emoji}</span>
+                <div className="flex-1">
+                  <p className="font-bengali font-bold text-white text-lg">{bn ? st.bnName : st.name}</p>
+                  <p className="text-white/70 text-sm font-bengali">{bn ? st.cityBn : st.city}</p>
+                </div>
+                <button onClick={() => setSelectedStation(null)} className="text-white/60 hover:text-white"><X className="w-5 h-5" /></button>
+              </div>
+              <div className="p-4">
+                <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-3">
+                  {lbl(`Trains via ${st.name}`, `${st.bnName} হয়ে ট্রেন`)} ({trainsVia.length})
+                </p>
+                {trainsVia.length === 0 ? (
+                  <p className="font-bengali text-sm text-kj-text-dim">{lbl('No trains found for this station', 'এই স্টেশনের জন্য কোনো ট্রেন পাওয়া যায়নি')}</p>
+                ) : (
+                  <div className="space-y-2">
+                    {trainsVia.map(r => (
+                      <button key={r.id} onClick={() => { onSelectTrain ? onSelectTrain(r) : setSelectedTrain(r); }}
+                        className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg transition-colors text-left">
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white text-[10px] font-bold shrink-0 font-sans" style={{ background: 'linear-gradient(135deg, #5b21b6, #7c3aed)' }}>
+                          #{r.number}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-bengali font-bold text-kj-text text-sm truncate">{bn ? r.bnName : r.name}</p>
+                          <p className="font-bengali text-[11px] text-kj-text-dim">{r.dhakaDepart} · {r.offDay ? `Off ${r.offDay}` : lbl('Runs daily', 'প্রতিদিন')}</p>
+                        </div>
+                        <ChevronRight className="w-4 h-4 text-kj-text-faint shrink-0" />
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })()}
+
+        <SponsoredAdSlot language={language as 'en' | 'bn'} size="728x90" compact />
       </div>
 
       <div className="h-8" />

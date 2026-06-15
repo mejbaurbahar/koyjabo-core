@@ -3912,11 +3912,7 @@ const App: React.FC = () => {
               <IntercityHub
                 onBack={() => setView(AppView.HOME)}
                 language={language}
-                onSearch={(from, to) => {
-                  setIsIntercityRedirecting(true);
-                  const params = new URLSearchParams({ from, to });
-                  window.location.href = `/intercity/?${params.toString()}`;
-                }}
+                onSearch={() => {}}
               />
             )}
 
