@@ -3771,8 +3771,8 @@ const App: React.FC = () => {
           </div>
         )}
 
-        {/* Mobile Header */}
-        <header className={`sticky top-0 left-0 right-0 bg-kj-panel/85 backdrop-blur-xl border-b border-kj-line z-[100] md:hidden kj-glass transition-transform duration-300 pt-safe ${(view === AppView.LIVE_NAV || view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? '-translate-y-full h-0 overflow-hidden py-0 border-none' : 'translate-y-0 h-auto'}`}>
+        {/* Mobile Header — fixed so ads can never push it down */}
+        <header className={`fixed top-0 left-0 right-0 bg-kj-panel/95 backdrop-blur-xl border-b border-kj-line z-[200] md:hidden kj-glass transition-transform duration-300 pt-safe ${(view === AppView.LIVE_NAV || view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? '-translate-y-full h-0 overflow-hidden py-0 border-none' : 'translate-y-0 h-auto'}`}>
           <div className="flex items-center gap-3 px-[18px] py-[14px]">
             <button onClick={() => setIsMenuOpen(true)} className="p-0 flex items-center justify-center shrink-0 text-kj-text active:opacity-70" aria-label="Open menu">
               <Menu className="w-[22px] h-[22px]" />
@@ -3822,7 +3822,7 @@ const App: React.FC = () => {
 
 
 
-        <main className="flex flex-1 min-h-0 flex-col overflow-hidden relative z-10 w-full max-w-[1440px] mx-auto bg-transparent md:pt-16 md:px-4">
+        <main className={`flex flex-1 min-h-0 flex-col overflow-hidden relative z-10 w-full max-w-[1440px] mx-auto bg-transparent md:pt-16 md:px-4 ${hideSiteChrome ? '' : 'pt-[62px]'}`}>
           {view === AppView.HOME ? (
             <div className="flex-1 min-h-0 h-0 w-full flex flex-col overflow-hidden">
             <div className="flex-1 min-h-0 h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-nav-safe md:pb-4" style={{ WebkitOverflowScrolling: 'touch' }}>
@@ -4296,27 +4296,27 @@ const App: React.FC = () => {
                 <Home className="w-5 h-5" />
                 <span>{language === 'bn' ? 'হোম' : 'Home'}</span>
               </button>
-              {/* Search → Intercity */}
+              {/* Train */}
+              <button
+                onClick={() => setView(AppView.TRAIN_LIST)}
+                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS ? 'text-kj-primary' : 'text-kj-text-faint'}`}
+              >
+                {(view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) && (
+                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-[22px] h-[3px] rounded-full bg-kj-primary" />
+                )}
+                <Train className="w-5 h-5" />
+                <span>{language === 'bn' ? 'ট্রেন' : 'Train'}</span>
+              </button>
+              {/* Intercity */}
               <button
                 onClick={() => setView(AppView.INTERCITY_HUB)}
-                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${view === AppView.INTERCITY_HUB || view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS ? 'text-kj-primary' : 'text-kj-text-faint'}`}
+                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${view === AppView.INTERCITY_HUB ? 'text-kj-primary' : 'text-kj-text-faint'}`}
               >
-                {(view === AppView.INTERCITY_HUB || view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) && (
+                {view === AppView.INTERCITY_HUB && (
                   <span className="absolute top-0 left-1/2 -translate-x-1/2 w-[22px] h-[3px] rounded-full bg-kj-primary" />
                 )}
-                <Search className="w-5 h-5" />
-                <span>{language === 'bn' ? 'খুঁজুন' : 'Search'}</span>
-              </button>
-              {/* Saved / Favorites */}
-              <button
-                onClick={() => { setView(AppView.HOME); setListFilter('FAVORITES'); setPrimarySearch('LOCAL'); }}
-                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${listFilter === 'FAVORITES' && view === AppView.HOME ? 'text-kj-primary' : 'text-kj-text-faint'}`}
-              >
-                {listFilter === 'FAVORITES' && view === AppView.HOME && (
-                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-[22px] h-[3px] rounded-full bg-kj-primary" />
-                )}
-                <Heart className="w-5 h-5" />
-                <span>{language === 'bn' ? 'সেভড' : 'Saved'}</span>
+                <Bus className="w-5 h-5" />
+                <span>{language === 'bn' ? 'আন্তঃজেলা' : 'Intercity'}</span>
               </button>
               {/* AI */}
               <button

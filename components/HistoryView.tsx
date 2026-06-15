@@ -49,10 +49,10 @@ const FEATURE_LABELS: Record<string, string> = {
 
 // ── Chart sub-components ──
 
-interface WeeklyBarData { bus: number; metro: number; ride: number; }
+interface WeeklyBarData { bus: number; metro: number; intercity: number; }
 const WeeklyBarChart: React.FC<{ data: WeeklyBarData[] }> = ({ data }) => {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    const maxVal = Math.max(1, ...data.map(d => d.bus + d.metro + d.ride));
+    const maxVal = Math.max(1, ...data.map(d => d.bus + d.metro + d.intercity));
     const chartH = 120;
     const barW = 22;
     const gap = 16;
@@ -65,10 +65,10 @@ const WeeklyBarChart: React.FC<{ data: WeeklyBarData[] }> = ({ data }) => {
                     const x = i * (barW + gap);
                     const busH = (d.bus / maxVal) * chartH;
                     const metroH = (d.metro / maxVal) * chartH;
-                    const rideH = (d.ride / maxVal) * chartH;
-                    const totalH = busH + metroH + rideH;
+                    const rideH = (d.intercity / maxVal) * chartH;
+                    const totalH = busH + metroH + rideH;  // rideH here = intercityH
                     const yBase = chartH;
-                    const total = Math.round(d.bus + d.metro + d.ride);
+                    const total = Math.round(d.bus + d.metro + d.intercity);
                     return (
                         <g key={i}>
                             <rect x={x} y={yBase - totalH} width={barW} height={rideH} rx={2} fill="#f59e0b" opacity={0.85} />
@@ -85,7 +85,7 @@ const WeeklyBarChart: React.FC<{ data: WeeklyBarData[] }> = ({ data }) => {
             <div className="flex items-center gap-4 mt-1 flex-wrap">
                 <span className="flex items-center gap-1 text-[11px] text-kj-text-dim font-sans"><span className="w-2.5 h-2.5 rounded-sm inline-block" style={{ background: '#06b6d4' }} />Bus</span>
                 <span className="flex items-center gap-1 text-[11px] text-kj-text-dim font-sans"><span className="w-2.5 h-2.5 rounded-sm inline-block" style={{ background: '#3b82f6' }} />Metro</span>
-                <span className="flex items-center gap-1 text-[11px] text-kj-text-dim font-sans"><span className="w-2.5 h-2.5 rounded-sm inline-block" style={{ background: '#f59e0b' }} />Rideshare</span>
+                <span className="flex items-center gap-1 text-[11px] text-kj-text-dim font-sans"><span className="w-2.5 h-2.5 rounded-sm inline-block" style={{ background: '#f59e0b' }} />Intercity</span>
             </div>
         </div>
     );
@@ -102,8 +102,8 @@ const DonutChart: React.FC<{ counts: DonutCounts; totalLabel: string }> = ({ cou
     const segments = [
         { label: 'Bus', pct: busP, color: '#06b6d4' },
         { label: 'Metro', pct: trainP, color: '#3b82f6' },
-        { label: 'Rideshare', pct: routeP - walkP, color: '#f59e0b' },
-        { label: 'Walking', pct: walkP, color: '#ef4444' },
+        { label: 'Intercity/Train', pct: routeP - walkP, color: '#f59e0b' },
+        { label: 'Train', pct: walkP, color: '#7c3aed' },
     ].filter(s => s.pct > 0);
     const r = 50;
     const cx = 64;
@@ -343,11 +343,11 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
     };
 
     const weeklyChartData = useMemo((): WeeklyBarData[] => {
-        const grid: WeeklyBarData[] = Array.from({ length: 7 }, () => ({ bus: 0, metro: 0, ride: 0 }));
+        const grid: WeeklyBarData[] = Array.from({ length: 7 }, () => ({ bus: 0, metro: 0, intercity: 0 }));
         const toSlot = (ts: number) => { const d = new Date(ts).getDay(); return d === 0 ? 6 : d - 1; };
         recentBusSearches.forEach(r => { const i = toSlot(r.timestamp); grid[i].bus += 1; });
         recentTrainSearches.forEach(r => { const i = toSlot(r.timestamp); grid[i].metro += 1; });
-        recentIntercitySearches.forEach(r => { const ts = (r as any).timestamp || Date.now(); const i = toSlot(ts); grid[i].ride += 1; });
+        recentIntercitySearches.forEach(r => { const ts = (r as any).timestamp || Date.now(); const i = toSlot(ts); grid[i].intercity += 1; });
         return grid;
     }, [recentBusSearches, recentTrainSearches, recentIntercitySearches]);
 
