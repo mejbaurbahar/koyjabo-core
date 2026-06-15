@@ -121,8 +121,8 @@ const ReleaseNotes: React.FC<ReleaseNotesProps> = ({ setView }) => {
             </ul>
           </div>
         ))}
-      <GlobalFooter setView={setView} />
       </div>
+      <GlobalFooter setView={setView} />
     </div>
   );
 };
