@@ -1,3 +1,4 @@
+import GlobalFooter from './GlobalFooter';
 import React from 'react';
 import { ArrowLeft, Mail } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -56,7 +57,7 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
 
     return (
         <div
-            className="flex flex-col flex-1 min-h-0 bg-kj-panel overflow-y-auto overscroll-y-contain touch-pan-y overflow-x-hidden w-full relative max-w-full"
+            className="flex flex-col flex-1 min-h-0 bg-kj-panel overflow-x-hidden w-full relative max-w-full"
             style={{ WebkitOverflowScrolling: 'touch' }}
         >
             {/* Sticky back bar */}
@@ -72,7 +73,7 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
                 </span>
             </div>
 
-            <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 pb-32 w-full space-y-8">
+            <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 pb-8 w-full space-y-8">
 
                 {/* Eyebrow + hero */}
                 <div className="pt-2">
@@ -138,10 +139,10 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
                             {lbl('Questions? Contact us', 'প্রশ্ন আছে? যোগাযোগ করুন')}
                         </p>
                         <a
-                            href="mailto:hello@koyjabo.com"
+                            href="mailto:koyjabo.bd@gmail.com"
                             className="text-xs text-kj-primary hover:underline font-semibold"
                         >
-                            hello@koyjabo.com
+                            koyjabo.bd@gmail.com
                         </a>
                     </div>
                 </div>

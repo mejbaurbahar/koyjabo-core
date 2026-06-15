@@ -29,7 +29,7 @@ const GlobalFooter: React.FC<GlobalFooterProps> = ({ setView }) => {
 
   return (
     <footer
-      className="border-t border-kj-line mt-auto"
+      className="border-t border-kj-line"
       style={{ background: 'color-mix(in srgb, var(--kj-panel) 90%, transparent)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' }}
     >
       {/* Main content */}
@@ -39,17 +39,12 @@ const GlobalFooter: React.FC<GlobalFooterProps> = ({ setView }) => {
           {/* Left: Brand */}
           <div className="flex flex-col gap-2.5 min-w-[160px]">
             <div className="flex items-center gap-2.5">
-              {/* ক logo square */}
-              <div
-                className="w-9 h-9 rounded-[10px] flex items-center justify-center font-bengali font-black text-[20px] shrink-0"
-                style={{
-                  background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))',
-                  color: 'var(--kj-primary-ink)',
-                  boxShadow: '0 4px 14px -4px var(--kj-primary)',
-                }}
-              >
-                ক
-              </div>
+              {/* KoyJabo logo */}
+              <img
+                src="/logo.png"
+                alt="KoyJabo"
+                className="w-9 h-9 rounded-[10px] shrink-0 object-cover"
+              />
               <span className="font-bengali font-bold text-kj-text text-[17px] tracking-tight">
                 কই<span style={{ color: 'var(--kj-accent)' }}>যাবো</span>
               </span>

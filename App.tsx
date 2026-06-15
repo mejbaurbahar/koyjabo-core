@@ -3429,6 +3429,8 @@ const App: React.FC = () => {
       </div>
   );
 
+  const [busDetailTab, setBusDetailTab] = React.useState<'stops'|'schedule'|'fares'|'reviews'>('stops');
+
   const renderBusDetails = () => {
     if (!selectedBus) return null;
 
@@ -3484,13 +3486,14 @@ const App: React.FC = () => {
 
             {/* Tab chips */}
             <div className="flex gap-2 flex-wrap">
-              {[
-                { label: language === 'bn' ? 'স্টপ' : 'Stops', active: true },
-                { label: language === 'bn' ? 'টাইমটেবিল' : 'Schedule' },
-                { label: language === 'bn' ? 'ভাড়া' : 'Fares' },
-                { label: language === 'bn' ? 'রিভিউ' : 'Reviews' },
-              ].map((tab, i) => (
-                <button key={i} className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${tab.active ? 'bg-kj-text text-kj-bg border-kj-text' : 'bg-kj-panel text-kj-text border-kj-line hover:border-kj-primary/40'}`}>
+              {([
+                { id: 'stops',    label: language === 'bn' ? 'স্টপ' : 'Stops' },
+                { id: 'schedule', label: language === 'bn' ? 'সময়সূচী' : 'Schedule' },
+                { id: 'fares',    label: language === 'bn' ? 'ভাড়া' : 'Fares' },
+                { id: 'reviews',  label: language === 'bn' ? 'রিভিউ' : 'Reviews' },
+              ] as const).map((tab) => (
+                <button key={tab.id} onClick={() => { setBusDetailTab(tab.id); if (tab.id === 'reviews') setView(AppView.RATE_BUS); }}
+                  className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${busDetailTab === tab.id ? 'bg-kj-text text-kj-bg border-kj-text' : 'bg-kj-panel text-kj-text border-kj-line hover:border-kj-primary/40'}`}>
                   {tab.label}
                 </button>
               ))}
@@ -3530,51 +3533,93 @@ const App: React.FC = () => {
               )}
             </div>
 
-            {/* Stops list */}
-            <div className="dc-card kj-glass rounded-2xl overflow-hidden">
-              <div className="px-4 py-3 flex items-center gap-2 border-b border-kj-line">
-                <span className="font-bengali font-bold text-[14px] text-kj-text">{language === 'bn' ? `${selectedBus.stops.length}টি স্টপ` : `${selectedBus.stops.length} stops`}</span>
-              </div>
-              <div className="px-4 py-3">
-                {selectedBus.stops.map((id, i) => {
-                  const s = STATIONS[id] || METRO_STATIONS[id] || RAILWAY_STATIONS[id] || AIRPORTS[id];
-                  if (!s) return null;
-                  const isStart = i === 0;
-                  const isEnd = i === selectedBus.stops.length - 1;
-                  const isCurrent = id === fareStart || id === fareEnd;
-                  return (
-                    <div key={id} className="flex gap-3 relative" style={{ paddingBottom: isEnd ? 0 : 10 }}>
-                      <div className="w-4 shrink-0 flex flex-col items-center relative">
-                        {!isEnd && <div className={`absolute top-4 bottom-0 w-0.5 ${isCurrent ? 'bg-kj-primary' : 'bg-kj-line'}`} style={{ left: '50%', transform: 'translateX(-50%)' }} />}
-                        <div className={`rounded-full mt-1 relative z-10 ${
-                          isCurrent ? 'w-4 h-4 bg-white border-[2.5px] border-kj-primary shadow-[0_0_0_4px_rgba(0,245,255,0.2)]' :
-                          isStart ? 'w-3.5 h-3.5 bg-kj-primary border-2 border-kj-primary' :
-                          isEnd ? 'w-3.5 h-3.5 bg-kj-accent border-2 border-kj-accent' :
-                          'w-2.5 h-2.5 bg-kj-panel border-2 border-kj-line'
-                        }`} />
-                      </div>
-                      <div className="flex-1 min-w-0 pb-1">
-                        <div className={`font-bengali text-[14px] text-kj-text ${isStart || isEnd || isCurrent ? 'font-bold' : 'font-medium'}`}>
-                          {language === 'bn' ? (s as any).bnName || s.name : s.name}
-                          {isCurrent && <span className="ml-2 text-[10px] font-bold text-kj-primary tracking-wider uppercase">● now</span>}
+            {/* Tab content */}
+            {busDetailTab === 'stops' && (
+              <>
+                {/* Stops list */}
+                <div className="dc-card kj-glass rounded-2xl overflow-hidden">
+                  <div className="px-4 py-3 flex items-center gap-2 border-b border-kj-line">
+                    <span className="font-bengali font-bold text-[14px] text-kj-text">{language === 'bn' ? `${selectedBus.stops.length}টি স্টপ` : `${selectedBus.stops.length} stops`}</span>
+                  </div>
+                  <div className="px-4 py-3">
+                    {selectedBus.stops.map((id, i) => {
+                      const s = STATIONS[id] || METRO_STATIONS[id] || RAILWAY_STATIONS[id] || AIRPORTS[id];
+                      if (!s) return null;
+                      const isStart = i === 0;
+                      const isEnd = i === selectedBus.stops.length - 1;
+                      const isCurrent = id === fareStart || id === fareEnd;
+                      return (
+                        <div key={id} className="flex gap-3 relative" style={{ paddingBottom: isEnd ? 0 : 10 }}>
+                          <div className="w-4 shrink-0 flex flex-col items-center relative">
+                            {!isEnd && <div className={`absolute top-4 bottom-0 w-0.5 ${isCurrent ? 'bg-kj-primary' : 'bg-kj-line'}`} style={{ left: '50%', transform: 'translateX(-50%)' }} />}
+                            <div className={`rounded-full mt-1 relative z-10 ${isCurrent ? 'w-4 h-4 bg-white border-[2.5px] border-kj-primary shadow-[0_0_0_4px_rgba(0,245,255,0.2)]' : isStart ? 'w-3.5 h-3.5 bg-kj-primary border-2 border-kj-primary' : isEnd ? 'w-3.5 h-3.5 bg-kj-accent border-2 border-kj-accent' : 'w-2.5 h-2.5 bg-kj-panel border-2 border-kj-line'}`} />
+                          </div>
+                          <div className="flex-1 min-w-0 pb-1">
+                            <div className={`font-bengali text-[14px] text-kj-text ${isStart || isEnd || isCurrent ? 'font-bold' : 'font-medium'}`}>
+                              {language === 'bn' ? (s as any).bnName || s.name : s.name}
+                              {isCurrent && <span className="ml-2 text-[10px] font-bold text-kj-primary tracking-wider uppercase">● now</span>}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+                      );
+                    })}
+                  </div>
+                </div>
+                {/* OSM Route Map */}
+                <div className="dc-card kj-glass rounded-2xl overflow-hidden">
+                  <div className="px-4 py-3 border-b border-kj-line flex justify-between items-center">
+                    <h3 className="font-bold text-kj-text text-sm flex items-center gap-2"><span className="w-1.5 h-1.5 bg-kj-primary rounded-full animate-pulse" />{t('busDetails.liveView')}</h3>
+                    <span className="text-[10px] bg-kj-primary-soft border border-kj-primary/30 px-2 py-0.5 rounded text-kj-primary font-medium">OpenStreetMap</span>
+                  </div>
+                  <BusRouteMap route={selectedBus} userLocation={userLocation} highlightStartId={fareStart || undefined} highlightEndId={fareEnd || undefined} isReversed={isReversed} onOpenFullMap={() => setView(AppView.LIVE_NAV)} />
+                </div>
+              </>
+            )}
 
-            {/* OSM Route Map */}
-            <div className="dc-card kj-glass rounded-2xl overflow-hidden">
-              <div className="px-4 py-3 border-b border-kj-line flex justify-between items-center">
-                <h3 className="font-bold text-kj-text text-sm flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-kj-primary rounded-full animate-pulse" />{t('busDetails.liveView')}
-                </h3>
-                <span className="text-[10px] bg-kj-primary-soft border border-kj-primary/30 px-2 py-0.5 rounded text-kj-primary font-medium">OpenStreetMap</span>
+            {busDetailTab === 'schedule' && (
+              <div className="dc-card kj-glass rounded-2xl p-4 space-y-3">
+                <h3 className="font-bold text-kj-text text-sm flex items-center gap-2"><Clock className="w-4 h-4 text-kj-primary" />{language === 'bn' ? 'সময়সূচী' : 'Schedule'}</h3>
+                <div className="bg-kj-chip-bg rounded-xl p-3">
+                  <p className="text-[10px] font-bold uppercase tracking-[1.2px] text-kj-text-faint mb-1">{language === 'bn' ? 'অপারেটিং সময়' : 'Operating Hours'}</p>
+                  <p className="font-bengali font-bold text-kj-text">{selectedBus.hours || (language === 'bn' ? 'সকাল ৬টা – রাত ১০টা (আনু.)' : '6:00 AM – 10:00 PM (approx)')}</p>
+                </div>
+                <div className="bg-kj-chip-bg rounded-xl p-3">
+                  <p className="text-[10px] font-bold uppercase tracking-[1.2px] text-kj-text-faint mb-1">{language === 'bn' ? 'বাস ধরন' : 'Service Type'}</p>
+                  <p className="font-bengali font-bold text-kj-text">{selectedBus.type}</p>
+                </div>
+                <div className="bg-kj-chip-bg rounded-xl p-3">
+                  <p className="text-[10px] font-bold uppercase tracking-[1.2px] text-kj-text-faint mb-1">{language === 'bn' ? 'মোট স্টপ' : 'Total Stops'}</p>
+                  <p className="font-bengali font-bold text-kj-text">{selectedBus.stops.length} {language === 'bn' ? 'টি স্টপ' : 'stops'}</p>
+                </div>
+                <div className="bg-kj-amber-soft border border-kj-amber/20 rounded-xl p-3">
+                  <p className="font-bengali text-xs text-kj-amber-deep leading-relaxed">{language === 'bn' ? '⚠️ সময়সূচী পরিস্থিতি অনুযায়ী পরিবর্তন হতে পারে। বাস কাউন্টারে যোগাযোগ করুন।' : '⚠️ Schedule may vary based on traffic. Contact the bus counter for exact timings.'}</p>
+                </div>
               </div>
-              <BusRouteMap route={selectedBus} userLocation={userLocation} highlightStartId={fareStart || undefined} highlightEndId={fareEnd || undefined} isReversed={isReversed} onOpenFullMap={() => setView(AppView.LIVE_NAV)} />
-            </div>
+            )}
+
+            {busDetailTab === 'fares' && (
+              <div className="dc-card kj-glass rounded-2xl p-4 space-y-3">
+                <h3 className="font-bold text-kj-text text-sm flex items-center gap-2"><Coins className="w-4 h-4 text-kj-amber" />{language === 'bn' ? 'ভাড়ার তথ্য' : 'Fare Information'}</h3>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { lbl: language === 'bn' ? 'ন্যূনতম ভাড়া' : 'Min fare', v: `৳ ${generalFareInfo.min > 0 ? generalFareInfo.min : '~10'}` },
+                    { lbl: language === 'bn' ? 'সর্বোচ্চ ভাড়া' : 'Max fare', v: `৳ ${generalFareInfo.max > 0 ? generalFareInfo.max : '~' + Math.round(selectedBus.stops.length * 3)}` },
+                    { lbl: language === 'bn' ? 'মোট দূরত্ব' : 'Total distance', v: `${generalFareInfo.distance > 0 ? generalFareInfo.distance.toFixed(1) : '--'} km` },
+                    { lbl: language === 'bn' ? 'আনু. সময়' : 'Est. duration', v: generalFareInfo.distance > 0 ? `${Math.round(generalFareInfo.distance / 15 * 60)} min` : '--' },
+                  ].map((s, i) => (
+                    <div key={i} className="bg-kj-chip-bg rounded-xl p-3 text-center">
+                      <p className="text-[10px] font-bold uppercase tracking-[1.2px] text-kj-text-faint mb-1">{s.lbl}</p>
+                      <p className="font-sans font-black text-kj-primary text-lg">{s.v}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="bg-kj-primary-soft border border-kj-primary/20 rounded-xl p-3">
+                  <p className="font-bengali text-xs text-kj-primary leading-relaxed">{language === 'bn' ? '💡 স্টপ-টু-স্টপ ভাড়া হিসাব করতে উপরের "Stop-to-Stop Fare" ক্যালকুলেটর ব্যবহার করুন।' : '💡 Use the Stop-to-Stop Fare calculator above to get the exact fare between specific stops.'}</p>
+                </div>
+              </div>
+            )}
+
+            <SponsoredAdSlot language={language} size="300x250" compact />
 
             {/* Community actions */}
             <div className="grid grid-cols-3 gap-2">

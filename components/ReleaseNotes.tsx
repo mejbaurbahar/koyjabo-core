@@ -1,3 +1,4 @@
+import GlobalFooter from './GlobalFooter';
 import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -66,7 +67,7 @@ const ReleaseNotes: React.FC = () => {
 
   return (
     <div
-      className="flex flex-col flex-1 min-h-0 bg-kj-panel overflow-y-auto overscroll-y-contain touch-pan-y w-full relative"
+      className="flex flex-col flex-1 min-h-0 bg-kj-panel w-full relative"
       style={{ WebkitOverflowScrolling: 'touch' }}
     >
       {/* Sticky back bar */}
@@ -76,7 +77,7 @@ const ReleaseNotes: React.FC = () => {
         </span>
       </div>
 
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 pb-32 w-full space-y-6">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 pb-8 w-full space-y-6">
 
         {/* Eyebrow + hero */}
         <div className="pt-2">

@@ -1,3 +1,4 @@
+import GlobalFooter from './GlobalFooter';
 import React, { useState } from 'react';
 import { ArrowLeft, MessageSquare, Mail, Phone, Github, Send } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -47,7 +48,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
 
     return (
         <div
-            className="flex flex-col flex-1 min-h-0 bg-transparent overflow-y-auto overscroll-y-contain touch-pan-y w-full relative"
+            className="flex flex-col flex-1 min-h-0 bg-transparent w-full relative"
             style={{ WebkitOverflowScrolling: 'touch' }}
         >
             {/* Sticky back bar */}
@@ -63,7 +64,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
                 </span>
             </div>
 
-            <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 pb-32 w-full space-y-8">
+            <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 pb-8 w-full space-y-8">
 
                 {/* Hero */}
                 <div className="text-center pt-2">
