@@ -506,7 +506,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                             }} />
                             <div className="relative z-10">
                                 <p className="text-[10px] font-bold uppercase tracking-[1.6px] text-white/70 font-sans mb-1">
-                                    {lbl('May 2026 · Summary', 'মে ২০২৬ · সারসংক্ষেপ')}
+                                    {new Date().toLocaleString(language === 'bn' ? 'bn-BD' : 'en-US', { month: 'long', year: 'numeric' }) + ' · ' + lbl('Summary', 'সারসংক্ষেপ')}
                                 </p>
                                 <h2 className="text-2xl md:text-3xl font-black text-white leading-tight font-sans mb-1">
                                     {totalSearches > 0
@@ -546,11 +546,9 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                             {lbl('This week\'s spend / এ সপ্তাহের খরচ', 'এ সপ্তাহের খরচ')}
                                         </p>
                                         <div className="flex items-baseline gap-2 mt-0.5">
-                                            <span className="text-2xl font-black text-kj-text font-sans">৳980</span>
-                                            <span className="flex items-center gap-0.5 text-xs font-bold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-full font-sans">
-                                                <TrendingUp className="w-3 h-3" />
-                                                ↓18%
-                                            </span>
+                                            <span className="text-2xl font-black text-kj-text font-sans">
+                                            {totalSearches > 0 ? `৳${Math.round(totalSearches * 8)}` : lbl('No data yet', 'কোনো ডেটা নেই')}
+                                        </span>
                                         </div>
                                         <p className="text-[11px] text-kj-text-faint font-sans mt-0.5">
                                             {lbl('vs last week', 'গত সপ্তাহের তুলনায়')}
@@ -570,7 +568,7 @@ const HistoryView: React.FC<HistoryViewProps> = ({ onBack, onBusSelect, onTrainS
                                 </p>
                                 <DonutChart
                                     counts={donutCounts}
-                                    totalLabel={String(totalSearches > 0 ? totalSearches : 247)}
+                                    totalLabel={String(totalSearches)}
                                 />
                             </div>
                         </div>

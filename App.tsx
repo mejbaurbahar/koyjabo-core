@@ -2420,9 +2420,16 @@ const App: React.FC = () => {
       );
     }
 
-    const recentSessions = getAllSessions()
+    const [sessionTick, setSessionTick] = React.useState(0);
+    const recentSessions = React.useMemo(() => getAllSessions()
       .sort((a, b) => b.lastUpdated - a.lastUpdated)
-      .slice(0, 5);
+      .slice(0, 10), [sessionTick]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    const handleDeleteSession = (id: string) => {
+      deleteSession(id);
+      if (currentSessionId === id) { setChatHistory([]); setCurrentSessionId(null); }
+      setSessionTick(t => t + 1);
+    };
 
     const AI_CAPABILITIES = language === 'bn'
       ? ['রুট ও ভাড়া বের করা', 'ট্রিপ প্ল্যান করা', 'লাইভ ডিলে চেক', 'বাস/ট্রেন সময়সূচী']
@@ -2459,19 +2466,30 @@ const App: React.FC = () => {
                 {recentSessions.map((session) => {
                   const firstMsg = session.messages.find(m => m.role === 'user');
                   const label = firstMsg
-                    ? firstMsg.text.slice(0, 38) + (firstMsg.text.length > 38 ? '…' : '')
+                    ? firstMsg.text.slice(0, 32) + (firstMsg.text.length > 32 ? '…' : '')
                     : (language === 'bn' ? 'কথোপকথন' : 'Conversation');
                   const isActive = currentSessionId === session.id;
                   return (
-                    <button
+                    <div
                       key={session.id}
-                      onClick={() => { setChatHistory(session.messages); setCurrentSessionId(session.id); }}
-                      className={`text-left px-3 py-2 rounded-[10px] transition-all ${isActive ? 'bg-kj-chip-bg' : 'hover:bg-kj-chip-bg/50'}`}
+                      className={`flex items-center gap-1 rounded-[10px] transition-all group ${isActive ? 'bg-kj-chip-bg' : 'hover:bg-kj-chip-bg/50'}`}
                     >
-                      <p className={`text-[13px] font-bengali truncate ${isActive ? 'font-bold text-kj-text' : 'font-medium text-kj-text-dim'}`}>
-                        {label}
-                      </p>
-                    </button>
+                      <button
+                        onClick={() => { setChatHistory(session.messages); setCurrentSessionId(session.id); }}
+                        className="flex-1 text-left px-3 py-2 min-w-0"
+                      >
+                        <p className={`text-[13px] font-bengali truncate ${isActive ? 'font-bold text-kj-text' : 'font-medium text-kj-text-dim'}`}>
+                          {label}
+                        </p>
+                      </button>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleDeleteSession(session.id); }}
+                        className="shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-kj-text-faint hover:text-red-400 hover:bg-red-400/10 opacity-0 group-hover:opacity-100 transition-all mr-1"
+                        title={language === 'bn' ? 'মুছুন' : 'Delete'}
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   );
                 })}
               </div>
