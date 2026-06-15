@@ -91,6 +91,7 @@ import TrainPhotoGallery from './components/TrainPhotoGallery';
 import { getBusRatings, BusRatingSummary } from './services/communityDataService';
 import ReleaseNotes from './components/ReleaseNotes';
 import HomePage from './components/HomePage';
+import HowKoyJaboHelps from './components/HowKoyJaboHelps';
 import KoyJaboLogo from './components/KoyJaboLogo';
 import LocalBusHub from './components/LocalBusHub';
 import MetroRailHub from './components/MetroRailHub';
@@ -2887,8 +2888,13 @@ const App: React.FC = () => {
 
         </div>
       </div>
-      {/* Spacer for bottom nav on mobile */}
 
+      {/* How KoyJabo helps animation */}
+      <div className="px-4 sm:px-6 md:px-10 mb-6">
+        <HowKoyJaboHelps onTryNow={() => setView(AppView.HOME)} />
+      </div>
+
+      {/* Spacer for bottom nav on mobile */}
       <div className="h-20 md:hidden"></div>
       </div>
   );
@@ -3098,6 +3104,7 @@ const App: React.FC = () => {
           </button>
         </div>
 
+        <HowKoyJaboHelps onTryNow={() => setView(AppView.HOME)} />
         <div className="h-20"></div>
       </div>
     </div>
@@ -3262,6 +3269,9 @@ const App: React.FC = () => {
 
         {/* <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
 
+
+        {/* How KoyJabo helps animation */}
+        <HowKoyJaboHelps onTryNow={() => setView(AppView.AI_ASSISTANT)} />
 
         {/* Bottom padding for mobile */}
         <div className="h-20"></div>

@@ -47,7 +47,6 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
     ];
 
     return (
-        <>
         <div
             className="flex flex-col flex-1 min-h-0 bg-transparent overflow-y-auto overscroll-y-contain"
             style={{ WebkitOverflowScrolling: 'touch' }}
@@ -182,9 +181,8 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
                     </div>
                 </div>
             </div>
-        </div>
         <GlobalFooter setView={setView} />
-        </>
+        </div>
     );
 };
 

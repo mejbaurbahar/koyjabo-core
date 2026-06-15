@@ -56,7 +56,6 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
     ];
 
     return (
-        <>
         <div
             className="flex flex-col flex-1 min-h-0 bg-kj-panel overflow-y-auto overscroll-y-contain"
             style={{ WebkitOverflowScrolling: 'touch' }}
@@ -148,9 +147,8 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
                     </div>
                 </div>
             </div>
-        </div>
         <GlobalFooter setView={setView} />
-        </>
+        </div>
     );
 };
 

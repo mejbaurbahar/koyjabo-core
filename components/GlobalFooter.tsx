@@ -33,7 +33,7 @@ const GlobalFooter: React.FC<GlobalFooterProps> = ({ setView }) => {
       style={{ background: 'color-mix(in srgb, var(--kj-panel) 90%, transparent)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' }}
     >
       {/* Main content */}
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 md:px-10 py-8 sm:py-10">
+      <div className="w-full px-5 sm:px-8 md:px-10 py-8 sm:py-10">
         <div className="flex flex-col md:flex-row gap-8 md:gap-6 md:justify-between md:items-start">
 
           {/* Left: Brand */}
