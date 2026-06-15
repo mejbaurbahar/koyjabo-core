@@ -178,6 +178,7 @@ export function TrainDetail({
   onBack,
   language,
   onOpenRating,
+  onOpenPhotos,
   isFavorite = false,
   onToggleFavorite,
 }: {
@@ -234,320 +235,223 @@ export function TrainDetail({
   const nearestStopIdx = nearestStopResult.idx;
   const nearestStopDistKm = nearestStopResult.distKm;
 
+  const [favLocal, setFavLocal] = React.useState(isFavorite);
+  const maxFare = route.fare?.acBerth || route.fare?.firstClassBerth || route.fare?.snigdha || route.fare?.shuvanChair || route.fare?.shuvan || 0;
+
   return (
     <div className="flex flex-col flex-1 min-h-0 w-full bg-kj-bg overflow-hidden">
 
-      {/* Sub-header */}
-      <div className="shrink-0 flex items-center gap-3 px-4 py-3 border-b border-kj-line dark:border-kj-line bg-kj-panel-muted">
-        <button
-          onClick={onBack}
-          className="p-2 -ml-1 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full transition-colors"
-          aria-label={bn ? 'ফিরুন' : 'Back'}
-        >
-          <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
+      {/* Sticky back bar */}
+      <div className="sticky top-0 z-20 bg-kj-bg/90 backdrop-blur-md border-b border-kj-line flex items-center gap-3 px-4 py-3 shrink-0">
+        <button onClick={onBack} className="w-9 h-9 rounded-xl border border-kj-line bg-kj-panel text-kj-text-dim flex items-center justify-center active:scale-90 transition-all hover:border-purple-400/60 hover:text-purple-500">
+          <ArrowLeft className="w-4 h-4" />
         </button>
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <h2 className="font-bold text-kj-text truncate">
-              {bn ? route.bnName : route.name}
-            </h2>
-            <span className="text-xs font-bold px-2 py-0.5 bg-kj-chip-bg text-kj-text-dim rounded-full">
-              #{route.number}
-            </span>
-            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${TYPE_COLORS[route.type] || TYPE_COLORS.Local}`}>
-              {bn ? (TYPE_BN[route.type] ?? route.type) : route.type}
-            </span>
-          </div>
-          <p className="text-xs text-kj-text-dim mt-0.5">
-            {bn ? fromSt?.bnName : fromSt?.name}
-            {' → '}
-            {bn ? toSt?.bnName : toSt?.name}
-          </p>
+          <p className="font-bengali font-bold text-kj-text truncate">{bn ? route.bnName : route.name}</p>
+          <p className="text-[11px] text-kj-text-faint font-sans">#{route.number} · {route.type}</p>
         </div>
-
-        <button
-          onClick={() => onOpenRating?.()}
-          className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900/40"
-          aria-label={bn ? 'ট্রেন রেটিং' : 'Train rating'}
-        >
-          {ratingSummary?.count ? `★ ${ratingSummary.average.toFixed(1)}` : (bn ? '☆ রেটিং' : '☆ Rate')}
-        </button>
-        <button
-          onClick={() => onToggleFavorite?.()}
-          className="w-8 h-8 flex items-center justify-center leading-none rounded-full bg-kj-panel border border-kj-line hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg transition-colors shrink-0"
-          aria-label={isFavorite ? (bn ? 'ফেভারিট থেকে সরান' : 'Remove from favorites') : (bn ? 'ফেভারিটে যোগ করুন' : 'Add to favorites')}
-        >
-          <Heart className={`w-4 h-4 ${isFavorite ? 'fill-pink-500 text-pink-500' : 'text-kj-text-faint'}`} />
+        <button onClick={() => { setFavLocal(f => !f); onToggleFavorite?.(); }}
+          className="w-9 h-9 rounded-full border border-kj-line bg-kj-panel flex items-center justify-center active:scale-90 transition-all">
+          <Heart className={`w-4 h-4 ${favLocal ? 'fill-pink-500 text-pink-500' : 'text-kj-text-faint'}`} />
         </button>
       </div>
 
-      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
-        {/* Map */}
-        <div className="h-[220px] xs:h-[260px] sm:h-[280px] md:h-[340px] bg-kj-panel relative">
-          <TrainRouteMap
-            route={route}
-            userLocation={userLocation}
-            highlightFromId={fromId || undefined}
-            highlightToId={toId || undefined}
-            language={language}
-            currentStopId={nearestStopIdx >= 0 ? route.stops[nearestStopIdx] : undefined}
-          />
-        </div>
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-24" style={{ WebkitOverflowScrolling: 'touch' }}>
 
-        <div className="p-4 space-y-4">
-
-          {/* Schedule */}
-          <div className="bg-kj-chip-bg rounded-2xl p-4 border border-kj-line dark:border-kj-line">
-            <h3 className="text-sm font-bold text-kj-text mb-3 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-kj-primary" />
-              {bn ? 'সময়সূচি' : 'Schedule'}
-            </h3>
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              <div className="space-y-1">
-                <p className="text-xs text-kj-text-dim">
-                  {bn ? `${fromSt?.bnName || 'শুরু'} ছাড়ে` : `Departs ${fromSt?.name || 'Start'}`}
-                </p>
-                <p className="font-bold text-kj-text text-base">{route.dhakaDepart}</p>
+        {/* Gradient hero card */}
+        <div className="mx-4 mt-4 rounded-[22px] p-5 relative overflow-hidden text-white" style={{ background: 'linear-gradient(135deg, #5b21b6 0%, #7c3aed 60%, #f59e0b 100%)' }}>
+          <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-white/10 pointer-events-none kj-anim-pulse" />
+          <div className="relative">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-sm flex flex-col items-center justify-center shrink-0">
+                <span className="font-sans font-black text-[12px] leading-none">#{route.number}</span>
+                <span className="text-xl mt-0.5">🚆</span>
               </div>
-              <div className="space-y-1">
-                <p className="text-xs text-kj-text-dim">{bn ? 'গন্তব্যে পৌঁছায়' : 'Arrives'}</p>
-                <p className="font-bold text-kj-text text-base">{route.destinationArrive}</p>
-              </div>
-              <div className="space-y-1">
-                <p className="text-xs text-kj-text-dim">{bn ? 'ফিরতি ছাড়ে' : 'Return Departs'}</p>
-                <p className="font-bold text-kj-text text-base">{route.returnDepart}</p>
-              </div>
-              <div className="space-y-1">
-                <p className="text-xs text-kj-text-dim">
-                  {bn ? `${fromSt?.bnName || 'ঢাকা'} ফেরে` : `Returns ${fromSt?.name || 'Dhaka'}`}
-                </p>
-                <p className="font-bold text-kj-text text-base">{route.dhakaArrive}</p>
+              <div className="flex-1 min-w-0">
+                <p className="font-bengali font-bold text-lg leading-tight">{bn ? route.bnName : route.name}</p>
+                <p className="text-white/75 text-sm font-bengali">{bn ? (fromSt?.bnName || route.from) : (fromSt?.name || route.from)} → {bn ? (toSt?.bnName || route.to) : (toSt?.name || route.to)}</p>
               </div>
             </div>
-            {route.offDay !== 'No Off Day' && route.offDay !== 'No Off' && (
-              <div className="mt-3 flex items-center gap-2 p-2 bg-amber-50 dark:bg-amber-400/15 rounded-lg border border-amber-200 dark:border-amber-400/25">
-                <CalendarX className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
-                <span className="text-xs text-amber-700 dark:text-amber-300">
-                  <span className="font-bold">{bn ? 'সাপ্তাহিক ছুটি:' : 'Off Day:'}</span> {route.offDay}
-                </span>
+            {/* Schedule strip */}
+            <div className="flex items-center gap-3 bg-white/15 rounded-xl px-4 py-3">
+              <div className="text-center"><p className="font-sans font-black text-xl leading-none">{route.dhakaDepart}</p><p className="text-white/60 text-[10px] mt-0.5">{bn ? 'ছাড়ে' : 'Dep'}</p></div>
+              <div className="flex-1 relative"><div className="h-px bg-white/30" /><span className="absolute left-1/2 -top-2.5 -translate-x-1/2 bg-[#7c3aed] px-2 text-[10px] font-bold text-white/80 font-sans whitespace-nowrap">{route.distanceKm} km</span></div>
+              <div className="text-center"><p className="font-sans font-black text-xl leading-none">{route.destinationArrive}</p><p className="text-white/60 text-[10px] mt-0.5">{bn ? 'পৌঁছায়' : 'Arr'}</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div className="px-4 py-4 space-y-4">
+
+          {/* Stat cards */}
+          <div className="grid grid-cols-3 gap-2.5">
+            {[
+              { icon: '🚆', label: bn ? 'ধরন' : 'Type', value: bn ? (TYPE_BN[route.type] ?? route.type) : route.type, color: '#7c3aed' },
+              { icon: '📍', label: bn ? 'স্টেশন' : 'Stations', value: route.stops.length.toString(), color: '#00f5ff' },
+              { icon: '৳', label: bn ? 'সর্বোচ্চ ভাড়া' : 'Max fare', value: maxFare > 0 ? `~৳${maxFare}` : 'Varies', color: '#ffb800' },
+            ].map((s, i) => (
+              <div key={i} className="dc-card rounded-2xl p-3.5 flex flex-col items-center gap-2 text-center">
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl" style={{ background: `${s.color}18` }}>{s.icon}</div>
+                <p className="text-[9px] font-bold uppercase tracking-[1.2px] text-kj-text-faint font-sans">{s.label}</p>
+                <p className="font-bengali font-bold text-kj-text text-[13px] leading-tight">{s.value}</p>
               </div>
-            )}
-            <div className="mt-3 flex items-center gap-2 text-xs text-kj-text-dim">
-              <Navigation className="w-3.5 h-3.5 shrink-0" />
-              <span>{bn ? `মোট দূরত্ব: ~${route.distanceKm} কিমি` : `Total distance: ~${route.distanceKm} km`}</span>
+            ))}
+          </div>
+
+          {/* Action row */}
+          <div className="grid grid-cols-3 gap-2">
+            {[
+              { label: bn ? 'রেটিং' : 'Rate', icon: '⭐', action: () => onOpenRating?.() },
+              { label: bn ? 'ছবি' : 'Photos', icon: '📷', action: () => onOpenPhotos?.() },
+              { label: bn ? 'শেয়ার' : 'Share', icon: '↗', action: () => navigator.share?.({ title: route.name, text: `${route.name} #${route.number}`, url: window.location.href }).catch(() => {}) },
+            ].map((btn, i) => (
+              <button key={i} onClick={btn.action} className="dc-card rounded-xl py-3 flex flex-col items-center gap-1.5 hover:border-purple-400/40 transition-colors active:scale-95">
+                <span className="text-xl">{btn.icon}</span>
+                <span className="text-[11px] font-semibold text-kj-text-dim font-bengali">{btn.label}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Route map */}
+          <div className="dc-card rounded-2xl overflow-hidden">
+            <div className="px-4 py-3 border-b border-kj-line flex items-center justify-between">
+              <h3 className="font-bold text-kj-text text-sm flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-kj-primary rounded-full kj-anim-pulse" />{bn ? 'রুট ম্যাপ' : 'Route Map'}
+              </h3>
+              {nearestStopIdx >= 0 && (
+                <span className="text-[10px] bg-kj-primary-soft border border-kj-primary/30 px-2 py-0.5 rounded-full text-kj-primary font-bold font-sans">Live</span>
+              )}
+            </div>
+            <div className="h-[240px]">
+              <TrainRouteMap route={route} userLocation={userLocation} highlightFromId={fromId || undefined} highlightToId={toId || undefined} language={language} currentStopId={nearestStopIdx >= 0 ? route.stops[nearestStopIdx] : undefined} />
             </div>
           </div>
 
-          {/* Station timeline */}
-          <div className="bg-kj-chip-bg rounded-2xl border border-kj-line dark:border-kj-line overflow-hidden">
-            <div className="px-4 py-3 border-b border-kj-line dark:border-kj-line">
-              <h3 className="text-sm font-bold text-kj-text flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-kj-primary" />
-                {bn ? `স্টেশন (${route.stops.length}টি)` : `Stations (${route.stops.length})`}
-                {nearestStopIdx >= 0 && (
-                  <span className="ml-auto text-[10px] font-semibold text-kj-primary flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 bg-kj-primary rounded-full animate-pulse inline-block" />
-                    {bn ? 'লাইভ অবস্থান' : 'Live location'}
-                  </span>
-                )}
-              </h3>
+          {/* Off day notice */}
+          {route.offDay && route.offDay !== 'No Off Day' && route.offDay !== 'No Off' && (
+            <div className="flex items-center gap-2.5 bg-kj-amber-soft border border-kj-amber/30 rounded-xl p-3">
+              <CalendarX className="w-4 h-4 text-kj-amber shrink-0" />
+              <span className="font-bengali text-xs text-kj-text"><span className="font-bold">{bn ? 'সাপ্তাহিক ছুটি:' : 'Weekly off:'}</span> {route.offDay}</span>
             </div>
-            <div className="px-4 py-4">
-              {route.stops.map((id, idx) => {
-                const st = TRAIN_STATIONS[id];
-                if (!st) return null;
-                const isFirst    = idx === 0;
-                const isLast     = idx === route.stops.length - 1;
-                const isMid      = !isFirst && !isLast;
-                const isNearUser = nearestStopIdx === idx;
-                const isPassed   = nearestStopIdx >= 0 && idx < nearestStopIdx;
-                const distLabel  = nearestStopDistKm < 1
-                  ? `${Math.round(nearestStopDistKm * 1000)} m`
-                  : `${nearestStopDistKm.toFixed(1)} km`;
+          )}
 
-                return (
-                  <React.Fragment key={id}>
-                    {isNearUser && userLocation && (
-                      <div className="flex gap-3">
-                        <div className="flex flex-col items-center" style={{ width: 20 }}>
-                          <div className={`w-px flex-none h-2 ${isPassed ? 'bg-emerald-400 dark:bg-kj-primary' : 'bg-gray-300 dark:bg-white/25'}`} />
-                          <div className="relative shrink-0 z-10">
-                            <div className="w-4 h-4 rounded-full bg-kj-primary border-2 border-kj-panel shadow-lg" />
-                            <div className="absolute inset-0 rounded-full bg-blue-400 animate-ping opacity-60" />
-                          </div>
-                          <div className="flex-1 min-h-[24px] flex flex-col items-center gap-0.5 py-0.5">
-                            {[0,1,2,3].map(i => (
-                              <div key={i} className="w-px h-1.5 bg-kj-primary/60 rounded" />
-                            ))}
-                          </div>
-                        </div>
-                        <div className="pb-1 flex-1 min-w-0 pt-0">
-                          <span className="text-sm font-bold text-kj-primary">
-                            {bn ? 'আপনার বর্তমান অবস্থান' : 'Your current location'}
-                          </span>
-                          <p className="text-[10px] text-kj-primary font-semibold mt-0.5 flex items-center gap-1">
-                            <span className="w-1 h-1 bg-kj-primary rounded-full animate-pulse inline-block" />
-                            {bn ? 'আপনি এখানে আছেন' : 'You are here'}
-                          </p>
-                        </div>
-                      </div>
-                    )}
+          {/* Helpline banner */}
+          <button onClick={() => {}} className="w-full dc-card rounded-2xl p-4 flex items-center gap-3 text-left hover:border-kj-accent/40 transition-colors active:scale-[0.99]">
+            <div className="w-11 h-11 rounded-xl bg-kj-accent flex items-center justify-center text-xl shrink-0">📞</div>
+            <div className="flex-1">
+              <p className="font-bengali font-bold text-kj-text text-sm">{bn ? 'হেল্পলাইন' : 'Helpline'}</p>
+              <p className="font-bengali text-[11px] text-kj-text-dim mt-0.5">{bn ? 'সব জরুরি ও পরিবহন নম্বর দেখুন' : 'Tap to see all helpline numbers'}</p>
+            </div>
+            <span className="font-sans font-black text-kj-accent text-sm">999</span>
+          </button>
 
-                    <div className="flex gap-3">
-                      <div className="flex flex-col items-center" style={{ width: 20 }}>
-                        {!(isNearUser && userLocation) && (
-                          <div className={`w-px flex-none h-2 ${
-                            isFirst ? 'bg-transparent'
-                            : isPassed ? 'bg-emerald-400 dark:bg-kj-primary'
-                            : 'bg-gray-300 dark:bg-white/25'
-                          }`} />
-                        )}
-                        {isNearUser && userLocation && <div className="flex-none h-0" />}
-                        {isNearUser ? (
-                          <div className="w-4 h-4 rounded-full bg-orange-500 border-2 border-orange-300 shadow-md shadow-orange-500/40 shrink-0 z-10" />
-                        ) : isPassed ? (
-                          <div className="w-4 h-4 rounded-full bg-kj-primary dark:bg-emerald-400 border-2 border-emerald-300 flex items-center justify-center shrink-0 z-10">
-                            <CheckCircle2 className="w-2.5 h-2.5 text-white" />
-                          </div>
-                        ) : isFirst ? (
-                          <div className="w-4 h-4 rounded-full bg-kj-primary dark:bg-emerald-400 border-2 border-emerald-400 dark:border-emerald-300 shadow-lg shadow-emerald-500/30 shrink-0 z-10" />
-                        ) : isLast ? (
-                          <div className="w-4 h-4 rounded-full bg-slate-500 dark:bg-white/80 border-2 border-slate-400 dark:border-white/50 shadow shrink-0 z-10" />
-                        ) : (
-                          <div className="w-2.5 h-2.5 rounded-full bg-gray-300 dark:bg-white/20 border border-gray-400 dark:border-white/35 shrink-0 z-10 mt-0.5" />
-                        )}
-                        {!isLast && (
-                          <div className={`w-px flex-1 min-h-[20px] ${
-                            isPassed ? 'bg-emerald-400 dark:bg-kj-primary'
-                            : isFirst ? 'bg-gradient-to-b from-emerald-500/70 dark:from-emerald-400/80 to-gray-300 dark:to-white/25'
-                            : 'bg-gray-300 dark:bg-white/25'
-                          }`} />
-                        )}
-                      </div>
-                      <div className={`pb-3 flex-1 min-w-0 ${isMid && !isNearUser ? 'pt-0.5' : 'pt-0'}`}>
-                        <span className={`leading-snug ${
-                          isNearUser ? 'text-sm font-bold text-orange-600 dark:text-orange-400'
-                          : isPassed ? 'text-xs text-kj-primary line-through opacity-60'
-                          : isFirst || isLast ? 'text-sm font-bold text-kj-text'
-                          : 'text-xs text-kj-text-dim'
-                        }`}>
-                          {bn ? st.bnName : st.name}
-                        </span>
-                        {isNearUser && (
-                          <p className="text-[10px] text-orange-500 dark:text-orange-400 font-semibold mt-0.5 flex items-center gap-1">
-                            <MapPin className="w-2.5 h-2.5 shrink-0" />
-                            {bn ? `নিকটতম স্টেশন • ${distLabel} দূরে` : `Nearest station • ${distLabel} away`}
-                          </p>
-                        )}
-                        {!isNearUser && (isFirst || isLast) && (
-                          <p className="text-[10px] text-kj-text-faint mt-0.5">
-                            {isFirst ? (bn ? 'যাত্রা শুরু' : 'Departure') : (bn ? 'চূড়ান্ত গন্তব্য' : 'Final Destination')}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </React.Fragment>
-                );
-              })}
+          {/* Fare calculator */}
+          <div className="dc-card rounded-2xl overflow-hidden">
+            <div className="px-4 py-3 border-b border-kj-line">
+              <h3 className="font-bold text-kj-text text-sm flex items-center gap-2"><Coins className="w-4 h-4 text-kj-amber" />{bn ? 'স্টেশন-টু-স্টেশন ভাড়া' : 'Station-to-Station Fare'}</h3>
+            </div>
+            <div className="p-4 space-y-3">
+              <div className="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label className="text-[10px] font-bold uppercase tracking-[1.2px] text-kj-text-faint font-sans mb-1.5 block">{bn ? 'কোথা থেকে' : 'From'}</label>
+                  <SearchableSelect options={stopOptions} value={fromId} onChange={setFromId} placeholder={bn ? 'স্টেশন বেছে নিন' : 'Select station'} />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold uppercase tracking-[1.2px] text-kj-text-faint font-sans mb-1.5 block">{bn ? 'কোথায়' : 'To'}</label>
+                  <SearchableSelect options={stopOptions.filter(o => o.id !== fromId)} value={toId} onChange={setToId} placeholder={bn ? 'স্টেশন বেছে নিন' : 'Select station'} />
+                </div>
+              </div>
+              {journeyInfo ? (
+                <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="bg-kj-primary-soft rounded-xl p-3 text-center"><p className="text-[10px] font-bold uppercase text-kj-text-faint font-sans">{bn ? 'দূরত্ব' : 'Distance'}</p><p className="font-sans font-black text-kj-primary text-lg mt-1">~{Math.round(journeyInfo.distKm)} km</p></div>
+                    <div className="bg-kj-primary-soft rounded-xl p-3 text-center"><p className="text-[10px] font-bold uppercase text-kj-text-faint font-sans">{bn ? 'সময়' : 'Duration'}</p><p className="font-sans font-black text-kj-primary text-lg mt-1">{journeyInfo.travelTime}</p></div>
+                  </div>
+                  <div className="dc-card rounded-xl overflow-hidden">
+                    <table className="w-full text-sm">
+                      <thead><tr className="bg-kj-chip-bg text-xs text-kj-text-faint"><th className="text-left px-3 py-2 font-bold uppercase tracking-[1px]">{bn ? 'শ্রেণী' : 'Class'}</th><th className="text-right px-3 py-2 font-bold uppercase tracking-[1px]">{bn ? 'ভাড়া' : 'Fare'}</th></tr></thead>
+                      <tbody className="divide-y divide-kj-line">
+                        {[
+                          { label: bn ? 'শুভন' : 'Shuvan', val: journeyInfo.fare.shuvan },
+                          { label: bn ? 'শুভন চেয়ার' : 'Shuvan Chair', val: journeyInfo.fare.shuvanChair },
+                          { label: bn ? 'স্নিগ্ধা' : 'Snigdha', val: journeyInfo.fare.snigdha },
+                          { label: bn ? 'এসি বার্থ' : 'AC Berth', val: journeyInfo.fare.acBerth },
+                        ].filter(r => r.val && r.val > 0).map(row => (
+                          <tr key={row.label} className="hover:bg-kj-chip-bg/50 transition-colors">
+                            <td className="px-3 py-2.5 font-bengali text-kj-text-dim">{row.label}</td>
+                            <td className="px-3 py-2.5 text-right font-bold text-kj-primary font-sans">৳{formatNumber(row.val!)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <p className="text-[10px] text-kj-text-faint font-bengali">{bn ? '⚠️ আনুমানিক ভাড়া · সঠিক তথ্যের জন্য রেলওয়ে সাইট দেখুন' : '⚠️ Approximate fare · check Bangladesh Railway website for exact rates'}</p>
+                </div>
+              ) : (
+                <p className="text-xs text-kj-text-faint text-center py-2 font-bengali">{bn ? 'দুটি স্টেশন সিলেক্ট করুন' : 'Select two stations to calculate fare'}</p>
+              )}
             </div>
           </div>
 
           <SponsoredAdSlot language={language as 'en' | 'bn'} size="728x90" compact />
 
-          {/* Fare Calculator */}
-          <div className="bg-kj-chip-bg rounded-2xl border border-kj-line dark:border-kj-line">
-            <div className="px-4 py-3 border-b border-kj-line dark:border-kj-line rounded-t-2xl">
-              <h3 className="text-sm font-bold text-kj-text flex items-center gap-2">
-                <Coins className="w-4 h-4 text-kj-amber dark:text-amber-400" />
-                {bn ? 'ভাড়া ও সময় ক্যালকুলেটর' : 'Fare & Time Calculator'}
-              </h3>
+          {/* Station timeline */}
+          <div className="dc-card rounded-2xl overflow-hidden">
+            <div className="px-4 py-3 border-b border-kj-line flex items-center justify-between">
+              <h3 className="font-bold text-kj-text text-sm flex items-center gap-2"><MapPin className="w-4 h-4 text-kj-primary" />{bn ? `স্টেশনসমূহ (${route.stops.length}টি)` : `Stations (${route.stops.length})`}</h3>
             </div>
-            <div className="p-4 space-y-3">
-              <div className="space-y-3">
-                <div>
-                  <label className="text-xs font-medium text-kj-text-dim mb-1 block">
-                    {bn ? 'কোথায় থেকে' : 'From Station'}
-                  </label>
-                  <SearchableSelect
-                    options={stopOptions}
-                    value={fromId}
-                    onChange={setFromId}
-                    placeholder={bn ? 'স্টেশন বেছে নিন' : 'Select station'}
-                  />
-                </div>
-                <div>
-                  <label className="text-xs font-medium text-kj-text-dim mb-1 block">
-                    {bn ? 'কোথায় যাবেন' : 'To Station'}
-                  </label>
-                  <SearchableSelect
-                    options={stopOptions.filter(o => o.id !== fromId)}
-                    value={toId}
-                    onChange={setToId}
-                    placeholder={bn ? 'স্টেশন বেছে নিন' : 'Select station'}
-                  />
-                </div>
-              </div>
-
-              {journeyInfo ? (
-                <>
-                  <div className="mt-2 space-y-3 animate-in fade-in duration-200">
-                    <div className="flex items-center justify-between p-3 bg-kj-primary-soft dark:bg-emerald-400/15 rounded-xl border border-kj-primary/30 dark:border-emerald-400/20">
-                      <div className="flex items-center gap-2 text-sm">
-                        <Navigation className="w-4 h-4 text-kj-primary" />
-                        <span className="font-medium text-kj-text-dim">
-                          ~{Math.round(journeyInfo.distKm)} km
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <Clock className="w-4 h-4 text-kj-primary" />
-                        <span className="font-medium text-kj-text-dim">{journeyInfo.travelTime}</span>
-                      </div>
+            <div className="px-4 py-4">
+              {route.stops.map((id, idx) => {
+                const st = TRAIN_STATIONS[id];
+                if (!st) return null;
+                const isFirst = idx === 0;
+                const isLast = idx === route.stops.length - 1;
+                const isNearUser = nearestStopIdx === idx;
+                const isPassed = nearestStopIdx >= 0 && idx < nearestStopIdx;
+                return (
+                  <div key={id} className="flex gap-3" style={{ paddingBottom: isLast ? 0 : 12 }}>
+                    <div className="flex flex-col items-center shrink-0" style={{ width: 20 }}>
+                      {!isFirst && <div className={`w-px flex-none h-3 ${isPassed ? 'bg-kj-primary' : 'bg-kj-line'}`} />}
+                      <div className={`rounded-full relative z-10 ${
+                        isNearUser ? 'w-4 h-4 bg-kj-accent border-2 border-white shadow-[0_0_0_3px_var(--kj-accent-soft)]' :
+                        isPassed ? 'w-3.5 h-3.5 bg-kj-primary border-2 border-kj-primary' :
+                        isFirst ? 'w-4 h-4 bg-kj-primary border-2 border-kj-primary' :
+                        isLast ? 'w-4 h-4 bg-kj-accent border-2 border-kj-accent' :
+                        'w-2.5 h-2.5 bg-kj-panel border-2 border-kj-line'
+                      }`} />
+                      {!isLast && <div className={`w-px flex-1 min-h-[20px] ${isPassed ? 'bg-kj-primary' : 'bg-kj-line'}`} />}
                     </div>
-
-                    <div className="overflow-hidden rounded-xl border border-kj-line dark:border-kj-line">
-                      <table className="w-full text-sm">
-                        <thead>
-                          <tr className="bg-gray-100 dark:bg-kj-chip-bg text-xs text-kj-text-dim">
-                            <th className="text-left px-3 py-2 font-medium">{bn ? 'শ্রেণী' : 'Class'}</th>
-                            <th className="text-right px-3 py-2 font-medium">{bn ? 'ভাড়া' : 'Fare'}</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-100 dark:divide-white/10">
-                          {[
-                            { label: bn ? 'শুভন' : 'Shuvan', val: journeyInfo.fare.shuvan },
-                            { label: bn ? 'শুভন চেয়ার' : 'Shuvan Chair', val: journeyInfo.fare.shuvanChair },
-                            { label: bn ? 'স্নিগ্ধা (এসি চেয়ার)' : 'Snigdha (AC Chair)', val: journeyInfo.fare.snigdha },
-                            { label: bn ? '১ম শ্রেণী বার্থ' : '1st Class Berth', val: journeyInfo.fare.firstClassBerth! },
-                            { label: bn ? 'এসি বার্থ' : 'AC Berth', val: journeyInfo.fare.acBerth! },
-                          ].map(row => (
-                            <tr key={row.label} className="hover:bg-kj-chip-bg dark:hover:bg-white/5 transition-colors">
-                              <td className="px-3 py-2.5 text-kj-text-dim dark:text-white/75">{row.label}</td>
-                              <td className="px-3 py-2.5 text-right font-bold text-emerald-700 dark:text-kj-primary">
-                                ৳{formatNumber(row.val)}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                    <div className="flex-1 min-w-0 pb-1">
+                      <span className={`font-bengali leading-snug ${isFirst || isLast ? 'text-sm font-bold text-kj-text' : isNearUser ? 'text-sm font-bold text-kj-accent' : isPassed ? 'text-xs text-kj-text-dim' : 'text-xs text-kj-text-dim'}`}>
+                        {bn ? st.bnName : st.name}
+                      </span>
+                      {(isFirst || isLast) && <p className="text-[10px] text-kj-text-faint mt-0.5 font-sans">{isFirst ? (bn ? 'যাত্রা শুরু' : 'Departure') : (bn ? 'চূড়ান্ত গন্তব্য' : 'Final destination')}</p>}
+                      {isNearUser && <p className="text-[10px] text-kj-accent font-semibold mt-0.5 font-sans">● {bn ? 'নিকটতম স্টেশন' : 'Nearest station'}</p>}
                     </div>
-                    <p className="text-[10px] text-kj-text-faint flex items-start gap-1">
-                      <AlertCircle className="w-3 h-3 mt-0.5 shrink-0" />
-                      {bn
-                        ? 'ভাড়া আনুমানিক। সঠিক ভাড়ার জন্য বাংলাদেশ রেলওয়ে ওয়েবসাইট দেখুন।'
-                        : 'Fare is approximate. Check Bangladesh Railway website for exact fares.'}
-                    </p>
                   </div>
-                </>
-              ) : (
-                <p className="text-xs text-kj-text-faint text-center py-2">
-                  {bn ? 'দুটি স্টেশন সিলেক্ট করুন' : 'Select two stations to calculate fare'}
-                </p>
-              )}
+                );
+              })}
             </div>
           </div>
 
-          <div className="h-24 md:h-4" />
         </div>
+      </div>
+
+      {/* Sticky bottom bar */}
+      <div className="sticky bottom-0 shrink-0 bg-kj-panel/90 backdrop-blur-[14px] border-t border-kj-line p-3 flex items-center gap-2 kj-glass" style={{ paddingBottom: 'calc(12px + env(safe-area-inset-bottom))' }}>
+        <button onClick={() => { setFavLocal(f => !f); onToggleFavorite?.(); }}
+          className={`flex items-center gap-1.5 px-3 py-2.5 rounded-xl border text-xs font-bold transition-colors font-bengali ${favLocal ? 'bg-kj-accent-soft text-kj-accent border-kj-accent' : 'bg-kj-panel-muted text-kj-text border-kj-line'}`}>
+          ❤️ {bn ? 'প্রিয়' : 'Save'}
+        </button>
+        <button onClick={() => onOpenRating?.()}
+          className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-kj-line bg-kj-panel-muted text-kj-text text-xs font-bold font-bengali">
+          ⭐ {bn ? 'রেট' : 'Rate'}
+        </button>
+        <button className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-kj-primary-ink font-bold text-sm font-bengali"
+          style={{ background: 'linear-gradient(135deg, #7c3aed, #5b21b6)' }}>
+          <Navigation className="w-4 h-4" />
+          {bn ? 'সময়সূচী দেখুন' : 'View schedule'}
+        </button>
       </div>
     </div>
   );

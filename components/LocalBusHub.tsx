@@ -162,13 +162,30 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
   }, []);
 
   const searchResults = useMemo(() => {
-    if (!initialFromId || !initialToId) return null;
-    return BUS_DATA.filter(bus => {
-      const fromIdx = bus.stops.indexOf(initialFromId);
-      const toIdx = bus.stops.indexOf(initialToId);
-      return fromIdx !== -1 && toIdx !== -1 && fromIdx < toIdx;
-    });
-  }, [initialFromId, initialToId]);
+    const q = searchQuery.trim().toLowerCase();
+    const hasFromTo = !!(initialFromId && initialToId);
+    const hasQuery = q.length >= 1;
+
+    if (!hasFromTo && !hasQuery) return null;
+
+    return (BUS_DATA as any[]).filter(bus => {
+      // Name / route-string / bnName search
+      const nameMatch = !hasQuery ||
+        (bus.name || '').toLowerCase().includes(q) ||
+        (bus.bnName || '').toLowerCase().includes(q) ||
+        (bus.routeString || '').toLowerCase().includes(q) ||
+        (bus.id || '').toLowerCase().includes(q);
+
+      // Stop-to-stop route filter
+      const routeMatch = !hasFromTo || (() => {
+        const fromIdx = (bus.stops as string[]).indexOf(initialFromId!);
+        const toIdx   = (bus.stops as string[]).indexOf(initialToId!);
+        return fromIdx !== -1 && toIdx !== -1 && fromIdx < toIdx;
+      })();
+
+      return nameMatch && routeMatch;
+    }) as typeof BUS_DATA;
+  }, [initialFromId, initialToId, searchQuery]);
 
   const handleSwap = () => {
     setFromField(toField);
@@ -396,7 +413,7 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
                       : L('No buses found', 'কোনো বাস পাওয়া যায়নি')}
                   </h3>
                   <span className="text-[11px] text-kj-text-faint font-sans">
-                    {fromField || L('From', 'থেকে')} → {toField || L('To', 'পর্যন্ত')}
+                    {searchQuery.trim() ? (L('Search: ', 'খুঁজছেন: ') + searchQuery) : ((fromField || L('From', 'থেকে')) + ' → ' + (toField || L('To', 'পর্যন্ত')))}
                   </span>
                 </div>
                 {searchResults.length === 0 ? (

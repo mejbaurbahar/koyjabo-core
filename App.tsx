@@ -3912,17 +3912,15 @@ const App: React.FC = () => {
                 {renderHomeContent()}
               </div>
             )}
-            {view === AppView.TRAIN_DETAILS && (
-              user && selectedTrain ? (
-                <TrainDetail
-                  route={selectedTrain}
-                  userLocation={userLocation}
-                  onBack={() => { setSelectedTrain(null); setView(AppView.TRAIN_LIST); }}
-                  language={language}
-                  onOpenRating={() => setView(AppView.RATE_TRAIN)}
-                  onOpenPhotos={() => setView(AppView.TRAIN_PHOTOS)}
-                />
-              ) : <LoginWall setView={setView} />
+            {view === AppView.TRAIN_DETAILS && selectedTrain && (
+              <TrainDetail
+                route={selectedTrain}
+                userLocation={userLocation}
+                onBack={() => { setSelectedTrain(null); setView(AppView.TRAIN_LIST); }}
+                language={language}
+                onOpenRating={() => user ? setView(AppView.RATE_TRAIN) : setView(AppView.LOGIN)}
+                onOpenPhotos={() => setView(AppView.TRAIN_PHOTOS)}
+              />
             )}
             {view === AppView.RATE_TRAIN && (
               user && selectedTrain ? (
