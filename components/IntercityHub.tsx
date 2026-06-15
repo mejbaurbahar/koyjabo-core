@@ -138,97 +138,240 @@ const IntercityHub: React.FC<IntercityHubProps> = ({ onBack, language }) => {
     return hits.slice(0, 12);
   }, [nameQuery]);
 
-  // Operator detail modal
+  // Operator detail page — new UI matching design spec
+  const [detailTab, setDetailTab] = React.useState<'route'|'amenities'|'info'>('route');
   if (selectedOperator) {
     const op = selectedOperator;
+
+    const ROUTE_STOPS = [
+      { en: 'Sayedabad Counter', bn: 'সায়েদাবাদ কাউন্টার', time: op.dep, kind: 'boarding' },
+      { en: 'Jatrabari', bn: 'যাত্রাবাড়ী', time: '', kind: 'stop' },
+      { en: 'Kanchpur Bridge', bn: 'কাঁচপুর সেতু', time: '', kind: 'stop' },
+      { en: 'Comilla Cantonment', bn: 'কুমিল্লা ক্যান্টনমেন্ট', time: '2:30 AM', kind: 'rest' },
+      { en: 'Feni', bn: 'ফেনী', time: '4:15 AM', kind: 'stop' },
+      { en: 'Chittagong', bn: 'চট্টগ্রাম', time: '6:00 AM', kind: 'stop' },
+      { en: 'Kolatoli Terminal', bn: 'কলাতলী টার্মিনাল', time: op.arr, kind: 'arrival' },
+    ];
+    const base = Number(op.fare.replace(',','')) * 2;
+    const total = base + 50 + 40 - 150;
+
     return (
       <div className="min-h-screen bg-kj-bg text-kj-text overflow-y-auto pb-32">
+        {/* Back bar */}
         <div className="sticky top-0 z-20 bg-kj-bg/90 backdrop-blur-md border-b border-kj-line flex items-center gap-3 px-4 py-3">
-          <button onClick={() => setSelectedOperator(null)} className="w-9 h-9 rounded-xl border border-kj-line bg-kj-panel text-kj-text-dim flex items-center justify-center active:scale-90 transition-all">
+          <button onClick={() => setSelectedOperator(null)} className="w-9 h-9 rounded-xl border border-kj-line bg-kj-panel text-kj-text-dim flex items-center justify-center active:scale-90 transition-all hover:border-kj-primary/40 hover:text-kj-primary">
             <ArrowLeft className="w-4 h-4" />
           </button>
-          <span className="font-bengali font-bold text-base text-kj-text">{L(op.name, op.nameBn)}</span>
-          {op.premium && <span className="ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full font-sans" style={{ background: 'var(--kj-amber-soft)', color: 'var(--kj-amber)' }}>★ Premium</span>}
+          <span className="font-bengali font-bold text-base text-kj-text flex-1 truncate">{L(op.name, op.nameBn)}</span>
+          {op.premium && <span className="text-[10px] font-bold px-2 py-0.5 rounded-full font-sans" style={{ background: 'var(--kj-amber-soft)', color: 'var(--kj-amber)' }}>★ Premium</span>}
         </div>
 
-        <div className="px-4 sm:px-6 py-5 space-y-4 max-w-2xl mx-auto w-full">
-          {/* Hero */}
-          <div className="rounded-[22px] p-5 relative overflow-hidden text-white" style={{ background: `linear-gradient(135deg, ${op.gradient[0]}, ${op.gradient[1]})` }}>
-            <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-white/10 pointer-events-none" />
-            <div className="relative">
+        {/* Gradient hero banner */}
+        <div className="mx-4 mt-4 rounded-[22px] p-5 relative overflow-hidden text-white" style={{ background: `linear-gradient(135deg, ${op.gradient[0]} 0%, ${op.gradient[1]} 75%)` }}>
+          <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full bg-white/10 pointer-events-none kj-anim-pulse" />
+          <div className="absolute right-20 bottom-[-10px] w-28 h-28 rounded-full bg-white/07 pointer-events-none" />
+          <div className="relative flex items-start justify-between gap-4 flex-wrap">
+            {/* Brand info */}
+            <div className="flex-1 min-w-[200px]">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center font-bold text-xl font-sans">{op.abbr}</div>
+                <div className="w-12 h-12 rounded-[14px] bg-white/20 backdrop-blur-sm flex items-center justify-center font-bold text-base font-sans shrink-0">{op.abbr}</div>
                 <div>
                   <p className="font-bengali font-bold text-lg leading-tight">{L(op.name, op.nameBn)}</p>
-                  <p className="text-white/75 text-sm font-bengali">{L(op.type, op.typeBn)}</p>
-                  <div className="flex items-center gap-1 mt-0.5">
-                    <Star className="w-3 h-3 fill-yellow-300 text-yellow-300" />
-                    <span className="text-[12px] font-bold font-sans">{op.rating}</span>
-                  </div>
+                  <p className="text-white/80 text-sm font-bengali">{L(op.type, op.typeBn)}</p>
                 </div>
               </div>
-              <p className="font-bengali text-sm text-white/85 leading-relaxed">{L(op.info, op.infoBn)}</p>
-            </div>
-          </div>
-
-          {/* Schedule card */}
-          <div className="dc-card rounded-2xl p-4">
-            <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-3">{L('Schedule · Dhaka → Destination', 'সময়সূচী · ঢাকা → গন্তব্য')}</p>
-            <div className="flex items-center gap-3">
-              <div className="text-center"><p className="font-sans font-bold text-xl text-kj-text">{op.dep}</p><p className="text-[10px] text-kj-text-faint font-bengali">{L('Departure', 'ছাড়ার সময়')}</p></div>
-              <div className="flex-1 relative"><div className="h-px bg-kj-line" /><span className="absolute left-1/2 -top-2.5 -translate-x-1/2 bg-kj-panel px-2 text-[10px] font-bold text-kj-text-faint font-sans">{L(op.dur, op.durBn)}</span></div>
-              <div className="text-center"><p className="font-sans font-bold text-xl text-kj-text">{op.arr}</p><p className="text-[10px] text-kj-text-faint font-bengali">{L('Arrival', 'পৌঁছানোর সময়')}</p></div>
-            </div>
-            <div className="mt-3 pt-3 border-t border-dashed border-kj-line flex items-center justify-between">
-              <span className="font-bengali text-sm text-kj-text-dim">{L(op.seats, op.seatsBn)}</span>
-              <span className="font-sans font-bold text-2xl text-kj-primary">৳ {op.fare}</span>
-            </div>
-          </div>
-
-          {/* Routes served */}
-          <div className="dc-card rounded-2xl p-4">
-            <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-3">{L('Routes Served', 'সেবিত রুট')}</p>
-            <div className="space-y-2">
-              {op.routes.map((r, i) => (
-                <div key={i} className="flex items-center gap-2 py-1.5 border-b border-kj-line last:border-0">
-                  <Bus className="w-4 h-4 text-kj-primary shrink-0" />
-                  <span className="font-bengali text-sm text-kj-text">{L(r, op.routesBn[i])}</span>
+              <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex items-center gap-1">
+                  {[1,2,3,4,5].map(s => <Star key={s} className={`w-3.5 h-3.5 ${s <= Math.round(op.rating) ? 'fill-yellow-300 text-yellow-300' : 'text-white/30'}`} />)}
+                  <span className="text-[12px] font-bold ml-1 font-sans">{op.rating}</span>
                 </div>
+                <span className="flex items-center gap-1.5 text-[11px] px-2 py-0.5 rounded-full font-sans font-bold" style={{ background: 'rgba(0,0,0,0.25)' }}>
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 kj-anim-pulse inline-block" />
+                  {L('Live info', 'লাইভ তথ্য')}
+                </span>
+              </div>
+            </div>
+
+            {/* Journey strip */}
+            <div className="rounded-[14px] px-4 py-3 flex items-center gap-4 shrink-0" style={{ background: 'rgba(0,0,0,0.25)', backdropFilter: 'blur(8px)' }}>
+              <div className="text-center">
+                <p className="font-sans text-[9px] font-bold uppercase tracking-[1.2px] opacity-70">{L('DEPART', 'ছাড়বে')}</p>
+                <p className="font-sans font-black text-[22px] leading-tight tracking-tight">{op.dep}</p>
+                <p className="font-bengali text-[11px] opacity-80">{L('Sayedabad', 'সায়েদাবাদ')}</p>
+              </div>
+              <div className="flex flex-col items-center gap-1 min-w-[70px]">
+                <span className="font-sans text-[10px] font-bold opacity-80">{L(op.dur, op.durBn)}</span>
+                <div className="w-full h-px bg-white/40 relative"><span className="absolute left-1/2 -top-3 -translate-x-1/2 text-base">🚌</span></div>
+                <span className="font-sans text-[9px] font-bold opacity-60 tracking-[1px]">NONSTOP</span>
+              </div>
+              <div className="text-center">
+                <p className="font-sans text-[9px] font-bold uppercase tracking-[1.2px] opacity-70">{L('ARRIVE', 'পৌঁছাবে')}</p>
+                <p className="font-sans font-black text-[22px] leading-tight tracking-tight">{op.arr}</p>
+                <p className="font-bengali text-[11px] opacity-80">{L('Kolatoli', 'কলাতলী')}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Two-column layout */}
+        <div className="px-4 sm:px-6 py-5 grid md:grid-cols-[1.5fr_1fr] gap-5 max-w-[1100px] mx-auto w-full">
+
+          {/* LEFT COLUMN */}
+          <div className="space-y-4">
+
+            {/* Tabs */}
+            <div className="flex gap-2 flex-wrap">
+              {([
+                { id: 'route', en: '🛣 Route & stops', bn: '🛣 রুট ও স্টপ' },
+                { id: 'amenities', en: '🚌 Amenities', bn: '🚌 সুবিধাসমূহ' },
+                { id: 'info', en: 'ℹ️ Info', bn: 'ℹ️ তথ্য' },
+              ] as const).map(tab => (
+                <button key={tab.id} onClick={() => setDetailTab(tab.id)}
+                  className={`px-3 py-2 rounded-xl text-xs font-bold transition-all border font-bengali ${detailTab === tab.id ? 'text-kj-primary-ink border-kj-primary' : 'bg-kj-panel-muted text-kj-text border-kj-line hover:border-kj-primary/40'}`}
+                  style={detailTab === tab.id ? { background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))' } : undefined}>
+                  {L(tab.en, tab.bn)}
+                </button>
               ))}
             </div>
+
+            {/* Route & stops tab */}
+            {detailTab === 'route' && (
+              <div className="dc-card rounded-2xl p-4">
+                <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-4">{L('Boarding points & route', 'বোর্ডিং পয়েন্ট ও রুট')}</p>
+                <div className="space-y-0">
+                  {ROUTE_STOPS.map((s, i) => (
+                    <div key={i} className="flex gap-3 relative" style={{ paddingBottom: i < ROUTE_STOPS.length - 1 ? 14 : 0 }}>
+                      <div className="flex flex-col items-center shrink-0" style={{ width: 18 }}>
+                        <div className={`rounded-full mt-1 z-10 ${
+                          s.kind === 'boarding' ? 'w-4 h-4 border-2 border-kj-primary bg-kj-primary' :
+                          s.kind === 'arrival'  ? 'w-4 h-4 border-2 border-kj-accent bg-kj-accent' :
+                          s.kind === 'rest'     ? 'w-3.5 h-3.5 border-2 border-kj-amber bg-kj-amber' :
+                          'w-2.5 h-2.5 border-2 border-kj-line bg-kj-panel'
+                        }`} />
+                        {i < ROUTE_STOPS.length - 1 && (
+                          <div className={`w-0.5 flex-1 mt-1 ${s.kind === 'rest' ? 'bg-kj-amber/50' : 'bg-kj-primary/40'}`} style={{ minHeight: 20 }} />
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className={`font-bengali text-sm ${s.kind === 'boarding' || s.kind === 'arrival' ? 'font-bold text-kj-text' : 'font-medium text-kj-text-dim'}`}>{L(s.en, s.bn)}</span>
+                          {s.kind === 'boarding' && <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full font-sans" style={{ background: 'var(--kj-primary-soft)', color: 'var(--kj-primary)' }}>{L('Boarding', 'বোর্ডিং')}</span>}
+                          {s.kind === 'arrival'  && <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full font-sans" style={{ background: 'var(--kj-accent-soft)', color: 'var(--kj-accent)' }}>{L('Destination', 'গন্তব্য')}</span>}
+                          {s.kind === 'rest'     && <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full font-sans" style={{ background: 'var(--kj-amber-soft)', color: 'var(--kj-amber)' }}>{L('Rest · 20 min', 'বিরতি · ২০ মি')}</span>}
+                        </div>
+                        {s.time && <p className="text-[11px] text-kj-text-faint mt-0.5 font-sans">{s.time}</p>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Amenities tab */}
+            {detailTab === 'amenities' && (
+              <div className="dc-card rounded-2xl p-4">
+                <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-4">{L('On-board amenities', 'বাসের সুবিধাসমূহ')}</p>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                  {[
+                    { ic: op.amenities.includes('AC') || op.amenities.includes('AC Sleeper') ? '❄️' : '🌡️', lbl: L('Air Conditioning', 'এয়ার কন্ডিশনিং'), ok: op.amenities.some(a => a.includes('AC')) },
+                    { ic: '🪑', lbl: L('Recliner seats', 'রিক্লাইনার সিট'), ok: op.amenities.some(a => a.includes('Sleeper') || a.includes('Volvo')) },
+                    { ic: '🔌', lbl: L('Charging port', 'চার্জার পোর্ট'), ok: op.amenities.some(a => a.includes('Charg') || a.includes('Volvo')) },
+                    { ic: '💧', lbl: L('Water', 'পানি'), ok: op.amenities.includes('Water') },
+                    { ic: '🍬', lbl: L('Snacks', 'স্ন্যাকস'), ok: op.amenities.includes('Snacks') },
+                    { ic: '📶', lbl: L('WiFi', 'ওয়াইফাই'), ok: false },
+                    { ic: '🚽', lbl: L('Toilet', 'টয়লেট'), ok: op.type.includes('Sleeper') },
+                    { ic: '📺', lbl: L('Entertainment', 'বিনোদন'), ok: op.amenities.some(a => a.includes('Volvo') || a.includes('Hino')) },
+                  ].map((item, i) => (
+                    <div key={i} className={`dc-card rounded-xl p-3 flex flex-col items-center gap-1.5 text-center ${!item.ok ? 'opacity-40' : ''}`}>
+                      <span className="text-xl">{item.ic}</span>
+                      <p className="font-bengali text-[11px] text-kj-text-dim leading-tight">{item.lbl}</p>
+                      <span className={`text-[10px] font-bold font-sans ${item.ok ? 'text-kj-primary' : 'text-kj-text-faint'}`}>{item.ok ? L('✓ Available', '✓ আছে') : L('✗ N/A', '✗ নেই')}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Info tab */}
+            {detailTab === 'info' && (
+              <div className="dc-card rounded-2xl p-4 space-y-3">
+                <div><p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-2">{L('About operator', 'অপারেটর সম্পর্কে')}</p><p className="font-bengali text-sm text-kj-text-dim leading-relaxed">{L(op.info, op.infoBn)}</p></div>
+                <div className="pt-3 border-t border-kj-line"><p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-2">{L('Routes', 'রুটসমূহ')}</p>{op.routes.map((r, i) => (<div key={i} className="flex items-center gap-2 py-1.5 border-b border-kj-line/50 last:border-0"><Bus className="w-4 h-4 text-kj-primary shrink-0" /><span className="font-bengali text-sm text-kj-text">{L(r, op.routesBn[i])}</span></div>))}</div>
+                <div className="pt-3 border-t border-kj-line flex items-center gap-3"><Phone className="w-4 h-4 text-kj-primary shrink-0" /><div><p className="text-[10px] font-bold uppercase text-kj-text-faint font-sans">{L('Phone', 'ফোন')}</p><p className="font-sans font-bold text-kj-text">{op.phone}</p></div></div>
+                <div className="flex items-start gap-3"><MapPin className="w-4 h-4 text-kj-amber shrink-0 mt-0.5" /><div><p className="text-[10px] font-bold uppercase text-kj-text-faint font-sans">{L('Counter', 'কাউন্টার')}</p><p className="font-bengali text-sm text-kj-text">{L(op.counter, op.counterBn)}</p></div></div>
+              </div>
+            )}
+
+            <SponsoredAdSlot language={language} size="728x90" compact />
           </div>
 
-          {/* Amenities */}
-          <div className="dc-card rounded-2xl p-4">
-            <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-3">{L('Amenities', 'সুবিধাসমূহ')}</p>
-            <div className="flex flex-wrap gap-2">
-              {op.amenities.map((a, i) => (
-                <span key={i} className="px-3 py-1 rounded-full text-xs font-bold font-sans" style={{ background: 'var(--kj-primary-soft)', color: 'var(--kj-primary)' }}>{a}</span>
-              ))}
+          {/* RIGHT COLUMN — Price & booking info */}
+          <div className="space-y-4">
+            {/* Price breakdown */}
+            <div className="dc-card rounded-2xl p-4" style={{ background: `linear-gradient(150deg, ${op.gradient[0]}15, var(--kj-panel))` }}>
+              <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-4">{L('Price info', 'মূল্য তথ্য')}</p>
+              <div className="space-y-2.5 mb-4">
+                {[
+                  { label: L('Base fare (×2)', 'মূল ভাড়া (×২)'), value: `৳ ${(Number(op.fare.replace(',','')) * 2).toLocaleString()}` },
+                  { label: L('Service fee', 'সার্ভিস ফি'), value: '৳ 50' },
+                  { label: L('Insurance', 'বীমা'), value: '৳ 40' },
+                  { label: L('Discount', 'ছাড়'), value: '−৳ 150', accent: true },
+                ].map((row, i) => (
+                  <div key={i} className="flex items-center justify-between text-sm">
+                    <span className="font-bengali text-kj-text-dim">{row.label}</span>
+                    <span className={`font-sans font-bold ${row.accent ? 'text-emerald-500' : 'text-kj-text'}`}>{row.value}</span>
+                  </div>
+                ))}
+                <div className="flex items-center justify-between pt-3 border-t border-kj-line">
+                  <span className="font-bengali font-bold text-kj-text">{L('Total (2 seats)', 'মোট (২ সিট)')}</span>
+                  <span className="font-sans font-black text-2xl text-kj-primary">৳ {total.toLocaleString()}</span>
+                </div>
+              </div>
+
+              {/* Payment methods */}
+              <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-2">{L('Payment methods', 'পেমেন্ট পদ্ধতি')}</p>
+              <div className="flex gap-2 flex-wrap mb-4">
+                {['bKash', 'Nagad', 'Rocket', 'Card'].map(m => (
+                  <span key={m} className="px-2.5 py-1 rounded-lg text-[11px] font-bold font-sans bg-kj-chip-bg text-kj-text border border-kj-line">{m}</span>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <div className="rounded-xl p-4 text-center mb-3" style={{ background: `linear-gradient(135deg, ${op.gradient[0]}, ${op.gradient[1]})` }}>
+                <p className="font-bengali text-white font-bold text-base mb-1">{L('Info only', 'শুধু তথ্য')}</p>
+                <p className="font-bengali text-white/75 text-xs mb-3">{L('KoyJabo does not sell tickets', 'কয়জাবো টিকিট বিক্রি করে না')}</p>
+                <a href={`https://www.google.com/search?q=${op.name}+bus+ticket+Bangladesh`} target="_blank" rel="noopener noreferrer"
+                  className="block w-full py-2.5 rounded-xl font-bold text-sm font-bengali text-center" style={{ background: 'rgba(255,255,255,0.2)', color: '#fff' }}>
+                  {L('Visit operator site ↗', 'অপারেটর সাইটে যান ↗')}
+                </a>
+              </div>
             </div>
-          </div>
 
-          {/* Contact */}
-          <div className="dc-card rounded-2xl p-4">
-            <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-3">{L('Contact & Counter', 'যোগাযোগ ও কাউন্টার')}</p>
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-9 h-9 rounded-xl bg-kj-primary-soft flex items-center justify-center shrink-0"><Phone className="w-4 h-4 text-kj-primary" /></div>
-              <div><p className="text-[10px] font-bold uppercase text-kj-text-faint font-sans">{L('Phone', 'ফোন')}</p><p className="font-sans font-bold text-kj-text">{op.phone}</p></div>
+            {/* Operator stats */}
+            <div className="dc-card rounded-2xl p-4">
+              <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-3">{L('Operator facts', 'অপারেটর তথ্য')}</p>
+              <div className="grid grid-cols-3 gap-2 text-center">
+                {[
+                  { v: '★ ' + op.rating, l: L('Rating', 'রেটিং') },
+                  { v: op.routes.length + '+', l: L('Routes', 'রুট') },
+                  { v: op.premium ? 'Premium' : 'Standard', l: L('Tier', 'শ্রেণী') },
+                ].map((s, i) => (
+                  <div key={i} className="bg-kj-chip-bg rounded-xl p-2.5">
+                    <p className="font-sans font-black text-kj-primary text-base leading-tight">{s.v}</p>
+                    <p className="text-[9px] font-bold uppercase tracking-[1px] text-kj-text-faint mt-0.5 font-sans">{s.l}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="flex items-start gap-3">
-              <div className="w-9 h-9 rounded-xl bg-kj-amber-soft flex items-center justify-center shrink-0 mt-0.5"><MapPin className="w-4 h-4 text-kj-amber" /></div>
-              <div><p className="text-[10px] font-bold uppercase text-kj-text-faint font-sans">{L('Counter', 'কাউন্টার')}</p><p className="font-bengali text-sm text-kj-text">{L(op.counter, op.counterBn)}</p></div>
+
+            {/* Disclaimer */}
+            <div className="flex items-start gap-2.5 bg-kj-panel-muted border border-kj-line rounded-xl p-3.5">
+              <Zap className="w-4 h-4 text-kj-amber shrink-0 mt-0.5" />
+              <p className="text-xs text-kj-text-faint leading-relaxed font-bengali">{L('KoyJabo shows info only · buy tickets at operator counters or official websites', 'কয়জাবো শুধু তথ্য দেখায় · টিকিট কিনতে অপারেটর কাউন্টারে যান')}</p>
             </div>
-          </div>
 
-          <div className="flex items-start gap-2.5 bg-kj-panel-muted border border-kj-line rounded-xl p-3.5">
-            <Zap className="w-4 h-4 text-kj-amber shrink-0 mt-0.5" />
-            <p className="text-xs text-kj-text-faint leading-relaxed font-bengali">
-              {L('KoyJabo shows info only · buy tickets at operator counters or official websites', 'কয়জাবো শুধু তথ্য দেখায় · অপারেটর কাউন্টার বা অফিশিয়াল সাইটে টিকিট কিনুন')}
-            </p>
+            <SponsoredAdSlot language={language} size="300x250" compact />
           </div>
-
-          <SponsoredAdSlot language={language} size="300x250" compact />
         </div>
       </div>
     );

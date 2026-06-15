@@ -57,7 +57,7 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ view, setView }) => {
 
     return (
         <div
-            className="flex flex-col flex-1 min-h-0 bg-kj-panel overflow-x-hidden w-full relative max-w-full"
+            className="flex flex-col bg-kj-panel overflow-x-hidden w-full relative max-w-full"
             style={{ WebkitOverflowScrolling: 'touch' }}
         >
             {/* Sticky back bar */}

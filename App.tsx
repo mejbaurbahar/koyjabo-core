@@ -2388,9 +2388,19 @@ const App: React.FC = () => {
     );
   };
 
-  const AI_QUICK_CHIPS = language === 'bn'
-    ? ['⚡ দ্রুত রুট খুঁজুন', '🚆 ট্রেনের সময়সূচী', '💰 ভাড়া হিসাব', '📍 কাছাকাছি স্টপ']
-    : ['⚡ Quick route', '🚆 Train schedule', '💰 Calc fare', '📍 Nearby stops'];
+  const AI_QUICK_CHIPS: Array<{ label: string; query: string }> = language === 'bn'
+    ? [
+        { label: '⚡ দ্রুত রুট', query: 'গুলশান ১ থেকে মতিঝিল যাওয়ার সবচেয়ে দ্রুত বাস কোনটি?' },
+        { label: '🚆 ট্রেন সময়সূচী', query: 'ঢাকা থেকে চট্টগ্রাম ট্রেনের সময়সূচী ও ভাড়া দেখান' },
+        { label: '💰 ভাড়া হিসাব', query: 'গুলশান থেকে মতিঝিল বাস ভাড়া কত?' },
+        { label: '📍 কাছের স্টপ', query: 'আমার কাছাকাছি বাস স্টপ কোথায়?' },
+      ]
+    : [
+        { label: '⚡ Quick route', query: 'What is the fastest bus from Gulshan 1 to Motijheel right now?' },
+        { label: '🚆 Train times', query: 'Show me trains from Dhaka to Chittagong with schedule and fare' },
+        { label: '💰 Fare check', query: 'What is the bus fare from Gulshan to Motijheel?' },
+        { label: '📍 Nearby stops', query: 'What buses are available near me right now?' },
+      ];
 
   const renderAiAssistant = () => {
     // Require login to use AI chat
@@ -2650,16 +2660,23 @@ const App: React.FC = () => {
               {AI_QUICK_CHIPS.map((chip, i) => (
                 <button
                   key={i}
-                  onClick={() => setAiQuery(chip.replace(/^[^\s]+\s/, ''))}
+                  onClick={() => {
+                    setAiQuery(chip.query);
+                    // Auto-submit after state update
+                    setTimeout(() => {
+                      const form = document.querySelector('[data-ai-form]') as HTMLFormElement;
+                      if (form) form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+                    }, 50);
+                  }}
                   className="px-3 py-1.5 rounded-full text-xs font-bengali font-medium bg-kj-panel-muted text-kj-text-dim border border-kj-line hover:border-kj-primary/40 hover:text-kj-primary transition-all active:scale-95"
                 >
-                  {chip}
+                  {chip.label}
                 </button>
               ))}
             </div>
 
             {/* Input row */}
-            <form onSubmit={handleAiSubmit}>
+            <form onSubmit={handleAiSubmit} data-ai-form>
               <div
                 className="flex items-end gap-2 rounded-[18px] border border-kj-line p-3"
                 style={{ background: 'var(--kj-input-bg)' }}

@@ -67,7 +67,7 @@ const ReleaseNotes: React.FC = () => {
 
   return (
     <div
-      className="flex flex-col flex-1 min-h-0 bg-kj-panel w-full relative"
+      className="flex flex-col bg-kj-panel w-full relative"
       style={{ WebkitOverflowScrolling: 'touch' }}
     >
       {/* Sticky back bar */}
