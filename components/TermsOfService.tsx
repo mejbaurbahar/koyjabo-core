@@ -57,7 +57,7 @@ const TermsOfService: React.FC<TermsOfServiceProps> = ({ view, setView }) => {
 
     return (
         <div
-            className="flex flex-col bg-kj-panel overflow-x-hidden w-full relative max-w-full"
+            className="bg-kj-panel w-full"
             style={{ WebkitOverflowScrolling: 'touch' }}
         >
             {/* Sticky back bar */}

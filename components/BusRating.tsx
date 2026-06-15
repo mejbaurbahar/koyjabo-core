@@ -1,3 +1,4 @@
+import SponsoredAdSlot from './SponsoredAdSlot';
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Star } from 'lucide-react';
 import { getBusRatings, submitBusRating, deleteBusRating, BusRatingSummary, getAuthUser } from '../services/communityDataService';
@@ -474,6 +475,8 @@ export default function BusRating({ busId, busName, onBack }: Props) {
           </div>
         </div>
       )}
-    </div>
+    
+        <SponsoredAdSlot language={language as 'en' | 'bn'} size="300x250" compact />
+</div>
   );
 }

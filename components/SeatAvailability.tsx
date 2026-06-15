@@ -1,3 +1,4 @@
+import SponsoredAdSlot from './SponsoredAdSlot';
 import React, { useState, useMemo, useEffect } from 'react';
 import { ArrowLeft, Ticket, ExternalLink, Train, Search, ChevronLeft, Star } from 'lucide-react';
 import { BD_TRAIN_ROUTES, BDTrainRoute } from '../data/bangladeshTrainData';
@@ -311,6 +312,8 @@ export default function SeatAvailability({ onBack }: Props) {
 
         <div className="h-4" />
       </div>
-    </div>
+    
+        <SponsoredAdSlot language={language as 'en' | 'bn'} size="300x250" compact />
+</div>
   );
 }

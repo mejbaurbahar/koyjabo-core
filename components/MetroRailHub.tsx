@@ -34,10 +34,30 @@ const STATIONS = [
 
 const CURRENT_STATION_IDX = 10;
 
+function getUpcomingTrains() {
+  const now = new Date();
+  const h = now.getHours();
+  const m = now.getMinutes();
+  const totalMin = h * 60 + m;
+  // MRT-6: 7:10 AM (430 min) to 9:40 PM (1300 min)
+  const isPeak = (totalMin >= 420 && totalMin <= 540) || (totalMin >= 1020 && totalMin <= 1200);
+  const freq = isPeak ? 8 : 12;
+  const isOperating = totalMin >= 430 && totalMin <= 1300;
+  if (!isOperating) return [
+    { minLabel: t2('Not operating', 'চলছে না'), pct: 0, crowdEn: '', crowdBn: '' },
+  ];
+  const nextMin = freq - (m % freq);
+  return [
+    { minLabel: nextMin <= 1 ? t2('Arriving', 'আসছে') : `${nextMin} min`, pct: isPeak ? 75 : 35, crowdEn: isPeak ? 'Crowded' : 'Light', crowdBn: isPeak ? 'ভিড়' : 'কম' },
+    { minLabel: `${nextMin + freq} min`, pct: isPeak ? 55 : 25, crowdEn: 'Moderate', crowdBn: 'মাঝামাঝি' },
+    { minLabel: `${nextMin + freq * 2} min`, pct: isPeak ? 80 : 40, crowdEn: isPeak ? 'Very crowded' : 'Light', crowdBn: isPeak ? 'খুব ভিড়' : 'কম' },
+  ];
+}
+function t2(en: string, bn: string) { return en; } // placeholder — real one in component scope
 const UPCOMING_TRAINS = [
-  { label: '2:15', minLabel: '2 min', pct: 35, crowdEn: 'Light', crowdBn: 'কম' },
-  { label: '10:15', minLabel: '10 min', pct: 55, crowdEn: 'Moderate', crowdBn: 'মাঝামাঝি' },
-  { label: '18:15', minLabel: '18 min', pct: 70, crowdEn: 'Crowded', crowdBn: 'ভিড়' },
+  { minLabel: '2 min', pct: 35, crowdEn: 'Light', crowdBn: 'কম' },
+  { minLabel: '10 min', pct: 55, crowdEn: 'Moderate', crowdBn: 'মাঝামাঝি' },
+  { minLabel: '18 min', pct: 70, crowdEn: 'Crowded', crowdBn: 'ভিড়' },
 ];
 
 function crowdColor(pct: number) {
@@ -65,13 +85,20 @@ const MetroRailHub: React.FC<Props> = ({ onBack, language }) => {
   const [toIdx, setToIdx] = useState(15);
 
   useEffect(() => {
-    const id = setInterval(() => {
-      setCountdown(prev => {
-        if (prev.s > 0) return { ...prev, s: prev.s - 1 };
-        if (prev.m > 0) return { m: prev.m - 1, s: 59 };
-        return { m: 8, s: 0 };
-      });
-    }, 1000);
+    const getNextTrainSecs = () => {
+      const now = new Date();
+      const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+      const totalMin = h * 60 + m;
+      const isOp = totalMin >= 430 && totalMin <= 1300;
+      if (!isOp) return { m: 0, s: 0 };
+      const isPeak = (totalMin >= 420 && totalMin <= 540) || (totalMin >= 1020 && totalMin <= 1200);
+      const freq = isPeak ? 8 : 12; // minutes
+      const secsIntoInterval = (m % freq) * 60 + s;
+      const secsUntilNext = freq * 60 - secsIntoInterval;
+      return { m: Math.floor(secsUntilNext / 60), s: secsUntilNext % 60 };
+    };
+    setCountdown(getNextTrainSecs());
+    const id = setInterval(() => setCountdown(getNextTrainSecs()), 1000);
     return () => clearInterval(id);
   }, []);
 
@@ -230,16 +257,18 @@ const MetroRailHub: React.FC<Props> = ({ onBack, language }) => {
               </div>
               <div className="space-y-2">
                 <button
-                  className="w-full rounded-xl py-1.5 text-[11px] font-semibold text-center transition-opacity hover:opacity-80"
+                  onClick={() => window.open('https://mrt.com.bd/', '_blank', 'noopener,noreferrer')}
+                  className="w-full rounded-xl py-1.5 text-[11px] font-semibold text-center transition-opacity hover:opacity-80 cursor-pointer"
                   style={{ background: 'rgba(0,0,0,0.18)' }}
                 >
-                  {t('Single Journey', 'একক যাত্রা')}
+                  🎫 {t('Single Journey', 'একক যাত্রা')} ↗
                 </button>
                 <button
-                  className="w-full rounded-xl py-1.5 text-[11px] font-semibold text-center transition-opacity hover:opacity-80"
+                  onClick={() => window.open('https://mrt.com.bd/', '_blank', 'noopener,noreferrer')}
+                  className="w-full rounded-xl py-1.5 text-[11px] font-semibold text-center transition-opacity hover:opacity-80 cursor-pointer"
                   style={{ background: 'rgba(0,0,0,0.18)' }}
                 >
-                  {t('MRT Pass', 'র‍্যাপিড পাস')}
+                  💳 {t('MRT Pass', 'র‍্যাপিড পাস')} ↗
                 </button>
               </div>
             </div>

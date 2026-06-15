@@ -1,3 +1,4 @@
+import SponsoredAdSlot from './SponsoredAdSlot';
 import React, { useEffect, useState } from 'react';
 import { ArrowLeft, Star, Train } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -474,6 +475,8 @@ export default function TrainRating({ trainId, trainName, onBack }: Props) {
           </div>
         </div>
       )}
-    </div>
+    
+        <SponsoredAdSlot language={language as 'en' | 'bn'} size="300x250" compact />
+</div>
   );
 }

@@ -139,7 +139,7 @@ const IntercityHub: React.FC<IntercityHubProps> = ({ onBack, language }) => {
   }, [nameQuery]);
 
   // Operator detail page — new UI matching design spec
-  const [detailTab, setDetailTab] = React.useState<'route'|'amenities'|'info'>('route');
+  const [detailTab, setDetailTab] = React.useState<'seats'|'route'|'amenities'|'info'>('seats');
   if (selectedOperator) {
     const op = selectedOperator;
 
@@ -152,8 +152,9 @@ const IntercityHub: React.FC<IntercityHubProps> = ({ onBack, language }) => {
       { en: 'Chittagong', bn: 'চট্টগ্রাম', time: '6:00 AM', kind: 'stop' },
       { en: 'Kolatoli Terminal', bn: 'কলাতলী টার্মিনাল', time: op.arr, kind: 'arrival' },
     ];
-    const base = Number(op.fare.replace(',','')) * 2;
+    const base = Number(op.fare.replace(',', '')) * 2;
     const total = base + 50 + 40 - 150;
+    const deckLabel = op.type.includes('Sleeper') ? L('Pick your berth', 'বার্থ নির্বাচন') : op.type.includes('Double') ? L('Pick seats · Lower deck', 'আসন · নিচতলা') : L('Pick your seats', 'আসন নির্বাচন');
 
     return (
       <div className="min-h-screen bg-kj-bg text-kj-text overflow-y-auto pb-32">
@@ -222,6 +223,7 @@ const IntercityHub: React.FC<IntercityHubProps> = ({ onBack, language }) => {
             {/* Tabs */}
             <div className="flex gap-2 flex-wrap">
               {([
+                { id: 'seats', en: '🪑 Seats', bn: '🪑 আসন' },
                 { id: 'route', en: '🛣 Route & stops', bn: '🛣 রুট ও স্টপ' },
                 { id: 'amenities', en: '🚌 Amenities', bn: '🚌 সুবিধাসমূহ' },
                 { id: 'info', en: 'ℹ️ Info', bn: 'ℹ️ তথ্য' },
@@ -233,6 +235,68 @@ const IntercityHub: React.FC<IntercityHubProps> = ({ onBack, language }) => {
                 </button>
               ))}
             </div>
+
+            {/* Seats tab — static demo seat map */}
+            {detailTab === 'seats' && (
+              <div className="dc-card rounded-2xl p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <p className="font-bengali font-bold text-kj-text text-sm">{deckLabel}</p>
+                    <p className="text-[11px] text-kj-text-dim mt-0.5 font-bengali">
+                      {op.type.includes('double') || op.type.includes('Double') ? L('Lower/Upper deck available', 'নিচতলা/উপরতলা আছে') : L('Single deck', 'একতলা')}
+                    </p>
+                  </div>
+                </div>
+                {/* Simple seat grid */}
+                <div className="flex justify-center">
+                  <div className="rounded-[18px] p-4 space-y-2" style={{ background: 'var(--kj-panel-muted)', border: '1px solid var(--kj-line)' }}>
+                    <div className="flex justify-end mb-2">
+                      <div className="w-8 h-8 rounded-xl flex items-center justify-center text-sm" style={{ background: 'var(--kj-text)', color: 'var(--kj-bg)' }}>🧑‍✈️</div>
+                    </div>
+                    {[1,2,3,4,5,6,7,8,9,10].map(row => {
+                      const taken = new Set(['1A','1B','2C','3D','4A','5C','6B','7A','8D','9A']);
+                      return (
+                        <div key={row} className="flex items-center gap-2">
+                          <span className="w-4 text-[10px] font-bold text-kj-text-faint font-sans text-right">{row}</span>
+                          {['A','B'].map(col => {
+                            const id = `${row}${col}`;
+                            const isTaken = taken.has(id);
+                            return (
+                              <div key={col} className="w-7 h-7 rounded-[6px] flex items-center justify-center text-[9px] font-bold font-sans cursor-pointer transition-all hover:opacity-80"
+                                style={{ background: isTaken ? 'var(--kj-chip-bg)' : 'var(--kj-primary)', color: isTaken ? 'var(--kj-text-faint)' : 'var(--kj-primary-ink)', opacity: isTaken ? 0.5 : 1 }}>
+                                {isTaken ? '✕' : col}
+                              </div>
+                            );
+                          })}
+                          <div className="w-4" />
+                          {['C','D'].map(col => {
+                            const id = `${row}${col}`;
+                            const isTaken = taken.has(id);
+                            const isLadies = row === 9;
+                            return (
+                              <div key={col} className="w-7 h-7 rounded-[6px] flex items-center justify-center text-[9px] font-bold font-sans cursor-pointer transition-all hover:opacity-80"
+                                style={{ background: isTaken ? 'var(--kj-chip-bg)' : isLadies ? '#fbcfe8' : 'var(--kj-primary)', color: isTaken ? 'var(--kj-text-faint)' : isLadies ? '#ec4899' : 'var(--kj-primary-ink)', opacity: isTaken ? 0.5 : 1 }}>
+                                {isTaken ? '✕' : col}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })}
+                    <div className="text-center mt-2 text-[9px] font-bold tracking-widest text-kj-text-faint font-sans">⮜ EXIT</div>
+                  </div>
+                </div>
+                {/* Legend */}
+                <div className="flex flex-wrap gap-4 justify-center mt-3 font-sans text-[11px] text-kj-text-dim">
+                  <span className="flex items-center gap-1.5"><span className="w-4 h-4 rounded bg-kj-primary inline-block" />{L('Available', 'খালি')}</span>
+                  <span className="flex items-center gap-1.5"><span className="w-4 h-4 rounded bg-kj-chip-bg inline-block opacity-50" />{L('Booked', 'বুক হয়েছে')}</span>
+                  <span className="flex items-center gap-1.5"><span className="w-4 h-4 rounded inline-block" style={{ background: '#fbcfe8' }} />{L('Ladies', 'মহিলা')}</span>
+                </div>
+                <div className="mt-4 p-3 rounded-xl text-center" style={{ background: 'var(--kj-primary-soft)', border: '1px solid var(--kj-primary-soft)' }}>
+                  <p className="font-bengali text-xs text-kj-primary">{L('Seats shown for reference only · book via operator website', 'আসন তথ্যমূলক · অপারেটর সাইটে বুক করুন')}</p>
+                </div>
+              </div>
+            )}
 
             {/* Route & stops tab */}
             {detailTab === 'route' && (

@@ -48,7 +48,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
 
     return (
         <div
-            className="flex flex-col bg-transparent w-full relative"
+            className="bg-transparent w-full"
             style={{ WebkitOverflowScrolling: 'touch' }}
         >
             {/* Sticky back bar */}
