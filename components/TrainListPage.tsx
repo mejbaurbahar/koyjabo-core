@@ -581,6 +581,28 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
     });
   }, [searchQuery, filterFrom, filterTo, sortBy]);
 
+  // Suggestions while typing — name/number match, max 6
+  const searchSuggestions = React.useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q || q.length < 1) return [];
+    const seen = new Set<string>();
+    const matches: typeof BD_TRAIN_ROUTES = [];
+    for (const r of BD_TRAIN_ROUTES) {
+      if (seen.has(r.id)) continue;
+      seen.add(r.id);
+      if (
+        r.name.toLowerCase().includes(q) ||
+        r.bnName.includes(q) ||
+        r.number.includes(q) ||
+        r.number.replace('/', '').includes(q)
+      ) {
+        matches.push(r);
+        if (matches.length >= 6) break;
+      }
+    }
+    return matches;
+  }, [searchQuery]);
+
   useEffect(() => {
     let cancelled = false;
     const idsToFetch = filtered
@@ -744,6 +766,34 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
                       </button>
                     )}
                   </div>
+
+                  {/* Suggestion dropdown */}
+                  {searchSuggestions.length > 0 && (
+                    <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.22)', backdropFilter: 'blur(12px)' }}>
+                      {searchSuggestions.map((r, i) => (
+                        <button
+                          key={r.id}
+                          onClick={() => {
+                            onSelectTrain ? onSelectTrain(r) : setSelectedTrain(r);
+                            setSearchQuery('');
+                          }}
+                          className="w-full text-left px-3 py-2.5 flex items-center gap-2.5 hover:bg-white/10 transition-colors"
+                          style={{ borderTop: i > 0 ? '1px solid rgba(255,255,255,0.12)' : 'none' }}
+                        >
+                          <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 text-xs font-black font-sans text-white" style={{ background: 'rgba(124,58,237,0.7)' }}>
+                            {r.number.split('/')[0]}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-bengali text-[13px] text-white font-semibold truncate">{bn ? r.bnName : r.name}</p>
+                            <p className="font-bengali text-[10px] text-white/60 truncate">
+                              {TRAIN_STATIONS[r.from]?.name || r.from} → {TRAIN_STATIONS[r.to]?.name || r.to}
+                            </p>
+                          </div>
+                          <span className="text-white/60 text-[10px] font-sans shrink-0">{r.dhakaDepart}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
 
                   {/* Name/Number/PNR chips */}
                   <div className="flex gap-1.5">
@@ -911,9 +961,20 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
           </div>
 
           {FEATURED_TRAINS.map(train => {
-            const matchedRoute = BD_TRAIN_ROUTES.find(r => r.number === train.number);
+            const matchedRoute = BD_TRAIN_ROUTES.find(r =>
+              r.number === train.number ||
+              r.number.startsWith(train.number + '/') ||
+              r.number.endsWith('/' + train.number) ||
+              r.number.includes(train.number)
+            );
+            const handleSelect = () => {
+              if (matchedRoute) {
+                if (activeTab === 'routemap') setRouteMapTrain(matchedRoute);
+                else { onSelectTrain ? onSelectTrain(matchedRoute) : setSelectedTrain(matchedRoute); }
+              }
+            };
             return (
-              <div key={train.number} className="dc-card rounded-2xl overflow-hidden">
+              <div key={train.number} className="dc-card rounded-2xl overflow-hidden cursor-pointer hover:border-purple-400/60 transition-all" onClick={handleSelect}>
                 {/* Card top: gradient badge + name + route + fare */}
                 <div className="p-4 flex items-start gap-3">
                   {/* 48×48 gradient badge */}
@@ -987,15 +1048,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
                       </span>
                     )}
                     <button
-                      onClick={() => {
-                        if (matchedRoute) {
-                          if (activeTab === 'routemap') {
-                            setRouteMapTrain(matchedRoute);
-                          } else {
-                            onSelectTrain ? onSelectTrain(matchedRoute) : setSelectedTrain(matchedRoute);
-                          }
-                        }
-                      }}
+                      onClick={e => { e.stopPropagation(); handleSelect(); }}
                       className="px-3 py-1.5 rounded-xl text-[11px] font-bold text-white transition-opacity hover:opacity-90 active:scale-95 font-sans"
                       style={{ background: train.gradient }}
                     >
