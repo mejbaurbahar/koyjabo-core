@@ -94,7 +94,7 @@ const IntercityHub: React.FC<IntercityHubProps> = ({ onBack, language, onSearch 
         </span>
       </div>
 
-      <div className="px-4 py-5 space-y-5 max-w-2xl mx-auto w-full">
+      <div className="px-4 sm:px-6 md:px-10 py-5 space-y-5 w-full max-w-3xl mx-auto">
 
         {/* Page title */}
         <div>

@@ -195,7 +195,7 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
         </div>
       </div>
 
-      <div className="px-4 py-5 space-y-5 max-w-2xl mx-auto w-full">
+      <div className="px-4 sm:px-6 md:px-10 py-5 space-y-5 w-full max-w-[1200px] mx-auto">
 
         {/* Hero section */}
         <div

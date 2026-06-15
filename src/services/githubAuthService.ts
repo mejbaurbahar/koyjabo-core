@@ -37,11 +37,12 @@ function ghHeaders(): Record<string, string> {
 }
 
 function friendlyHttpError(status: number): string {
-  if (status === 401 || status === 403) return 'Account service connection failed.';
+  if (status === 401) return 'Service authentication failed. Please try again later.';
+  if (status === 403) return 'Service temporarily unavailable. Please try again in a few minutes.';
   if (status === 404) return 'Account service connection failed.';
   if (status === 422) return 'Request could not be processed. Please try again.';
   if (status === 429) return 'Too many requests. Please wait a moment and try again.';
-  if (status >= 500) return 'Account service connection failed.';
+  if (status >= 500) return 'Server error. Please try again in a moment.';
   return 'Account service connection failed.';
 }
 

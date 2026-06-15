@@ -4172,7 +4172,6 @@ const App: React.FC = () => {
           </div>
           </div>
           {!rightPanelUsesOuterScroll && showPageAd && <PageAdSection />}
-          {!rightPanelUsesOuterScroll && !hideSiteChrome && <GlobalFooter setView={setView} />}
           </div>
           )}
         </main>
