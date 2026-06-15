@@ -1,3 +1,4 @@
+import HowKoyJaboHelps from './HowKoyJaboHelps';
 import React, { useState } from 'react';
 import {
   ArrowLeft, Search, Ship, MapPin, Clock, Star, Shield, Phone, Info, ChevronRight,
@@ -450,6 +451,7 @@ export default function LaunchHub({ onBack, language }: LaunchHubProps) {
           </div>
         </section>
 
+      <HowKoyJaboHelps />
       </div>
     </div>
   );

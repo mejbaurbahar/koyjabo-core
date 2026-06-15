@@ -121,7 +121,7 @@ export default function CommuteCostCalculator({ onBack }: Props) {
         )}
       </div>
 
-      <div className="px-4 py-5 space-y-5 max-w-2xl mx-auto w-full">
+      <div className="px-4 py-5 space-y-5 max-w-4xl mx-auto w-full">
 
         {/* Hero card */}
         <div
@@ -152,7 +152,7 @@ export default function CommuteCostCalculator({ onBack }: Props) {
           <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-3">
             {lbl('Average fares by mode', 'ধরন অনুযায়ী গড় ভাড়া')}
           </p>
-          <div className="grid grid-cols-2 gap-2.5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5">
             {TRANSPORT_MODES.map((m) => (
               <div key={m.id} className="dc-card rounded-2xl p-3.5 flex flex-col gap-2">
                 <span className="text-2xl leading-none">{m.icon}</span>
@@ -231,7 +231,7 @@ export default function CommuteCostCalculator({ onBack }: Props) {
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
-                <div className="grid grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5">
                   <div>
                     <p className="text-[10px] font-bold uppercase tracking-[1.2px] text-kj-text-faint font-sans mb-1.5">
                       {lbl('Fare per trip (৳)', 'প্রতি যাত্রায় ভাড়া (৳)')}

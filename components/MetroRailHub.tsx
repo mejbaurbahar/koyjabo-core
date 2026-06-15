@@ -1,3 +1,5 @@
+import SponsoredAdSlot from "./SponsoredAdSlot";
+import HowKoyJaboHelps from "./HowKoyJaboHelps";
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Train, CreditCard, MapPin, Clock, Zap, Calendar } from 'lucide-react';
 import { Train3D } from './design/Vehicles3D';
@@ -394,6 +396,10 @@ const MetroRailHub: React.FC<Props> = ({ onBack, language }) => {
         </div>
 
       </div>
+
+        <SponsoredAdSlot language={language as 'en' | 'bn'} size="728x90" compact />
+        <HowKoyJaboHelps />
+
     </div>
   );
 };

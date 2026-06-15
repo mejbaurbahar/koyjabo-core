@@ -174,6 +174,7 @@ const HomePage: React.FC<HomePageProps> = (props) => {
         {/* Mobile hero scene */}
         <div className="md:hidden mb-5">
           <TravelHeroScene isDarkMode={isDarkMode} height={200} />
+          <div className="mt-3"><PWABanner language={language} onInstall={() => onNavigate('INSTALL_APP')} /></div>
         </div>
 
         {/* ── Ad slot (hero) ────────────────────────────────────────── */}

@@ -1,3 +1,4 @@
+import HowKoyJaboHelps from './HowKoyJaboHelps';
 import React, { useState, useMemo, useEffect } from 'react';
 import {
   ArrowLeft,
@@ -637,6 +638,7 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
           </p>
         </div>
 
+      <HowKoyJaboHelps />
       </div>
     </div>
   );
