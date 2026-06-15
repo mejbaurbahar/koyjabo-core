@@ -254,6 +254,57 @@ export default function LaunchHub({ onBack, language }: LaunchHubProps) {
     });
   }, [searchDone, fromId, toId, searchQuery]);
 
+  // Transit routes — find 1-hop paths when no direct launch
+  const transitRoutes = useMemo(() => {
+    if (!searchDone || !fromId || !toId || searchResults.length > 0) return [];
+
+    // Build connection map: terminal → list of launches departing from it
+    const graph: Record<string, LaunchType[]> = {};
+    LAUNCHES.forEach(l => {
+      if (!graph[l.from]) graph[l.from] = [];
+      graph[l.from].push(l);
+    });
+
+    // Find all 1-hop paths: from → hub → to
+    const paths: { leg1: LaunchType; leg2: LaunchType; hub: string }[] = [];
+    const outFromSource = graph[fromId] || [];
+
+    outFromSource.forEach(leg1 => {
+      const hub = leg1.to;
+      const outFromHub = (graph[hub] || []).filter(l => l.to === toId);
+      outFromHub.forEach(leg2 => {
+        paths.push({ leg1, leg2, hub });
+      });
+    });
+
+    // Also try reverse: some routes only have one direction in data
+    // Check if hub has a connection to destination via any route
+    TERMINALS.forEach(hubT => {
+      if (hubT.id === fromId || hubT.id === toId) return;
+      const leg1Options = LAUNCHES.filter(l => l.from === fromId && l.to === hubT.id);
+      const leg2Options = LAUNCHES.filter(l => l.from === hubT.id && l.to === toId);
+      if (leg1Options.length > 0 && leg2Options.length > 0) {
+        // Already handled above, skip duplicates
+        return;
+      }
+      // Special: if sadarghat is the hub (most launches go through it)
+      // and we have reverse routes implicitly
+      if (hubT.id === 'sadarghat') {
+        const toHub = LAUNCHES.filter(l => l.from === fromId && l.to === 'sadarghat');
+        const fromHub = LAUNCHES.filter(l => l.from === 'sadarghat' && l.to === toId);
+        toHub.forEach(leg1 => {
+          fromHub.forEach(leg2 => {
+            if (!paths.find(p => p.leg1.id === leg1.id && p.leg2.id === leg2.id)) {
+              paths.push({ leg1, leg2, hub: 'sadarghat' });
+            }
+          });
+        });
+      }
+    });
+
+    return paths.slice(0, 3); // max 3 transit options
+  }, [searchDone, fromId, toId, searchResults]);
+
   // Name search live results
   const liveNameResults = useMemo(() => {
     const q = searchQuery.toLowerCase().trim();
@@ -547,9 +598,97 @@ export default function LaunchHub({ onBack, language }: LaunchHubProps) {
             </div>
 
             {searchResults.length === 0 ? (
-              <div className="dc-card rounded-2xl p-8 text-center">
-                <Ship className="w-10 h-10 text-kj-text-faint mx-auto mb-3" />
-                <p className="font-bengali text-kj-text-dim">{lbl('No direct launch service on this route. Try Sadarghat → Barisal or Chandpur.', 'এই রুটে সরাসরি লঞ্চ নেই। সদরঘাট → বরিশাল বা চাঁদপুর চেষ্টা করুন।')}</p>
+              <div className="space-y-4">
+                {/* No direct service banner */}
+                <div className="dc-card rounded-2xl p-5 text-center" style={{ border: '1px solid var(--kj-amber-soft)' }}>
+                  <span className="text-3xl mb-2 block">⚓</span>
+                  <p className="font-bengali font-bold text-kj-text mb-1">{lbl('No direct launch on this route', 'এই রুটে সরাসরি লঞ্চ নেই')}</p>
+                  <p className="font-bengali text-sm text-kj-text-dim">{lbl('But you can reach via a transfer — see options below', 'তবে ট্রান্সফার দিয়ে পৌঁছানো যাবে — নিচের বিকল্পগুলো দেখুন')}</p>
+                </div>
+
+                {/* Transit route suggestions */}
+                {transitRoutes.length > 0 && (
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ background: 'var(--kj-amber)', color: '#fff', fontSize: 10, fontWeight: 800 }}>2</div>
+                      <h3 className="font-bengali font-bold text-kj-text">{lbl('Suggested transit routes', 'সাজেস্টেড ট্রান্সফার রুট')}</h3>
+                    </div>
+                    {transitRoutes.map((path, i) => {
+                      const hubTerminal = TERMINALS.find(t => t.id === path.hub);
+                      return (
+                        <div key={i} className="dc-card rounded-2xl p-4 space-y-3" style={{ border: '1px solid var(--kj-amber)' + '40' }}>
+                          {/* Transfer badge */}
+                          <div className="flex items-center gap-2">
+                            <span className="text-[9px] font-bold uppercase tracking-[1.2px] px-2 py-0.5 rounded-full font-sans" style={{ background: 'var(--kj-amber-soft)', color: 'var(--kj-amber)' }}>
+                              🔄 {lbl('Transfer via', 'ট্রান্সফার মাধ্যমে')} {lbl(hubTerminal?.en || path.hub, hubTerminal?.bn || path.hub)}
+                            </span>
+                          </div>
+
+                          {/* Leg 1 */}
+                          <div className="dc-card rounded-xl p-3 space-y-2" style={{ background: 'var(--kj-chip-bg)' }}>
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="text-[9px] font-bold uppercase tracking-[1px] text-kj-text-faint font-sans">{lbl('Leg 1', 'প্রথম যাত্রা')}</p>
+                                <p className="font-bengali font-bold text-sm text-kj-text">{lbl(path.leg1.name, path.leg1.nameBn)}</p>
+                                <p className="font-bengali text-[11px] text-kj-text-dim">{lbl(path.leg1.fromBn, path.leg1.fromBn)} → {lbl(hubTerminal?.en || path.hub, hubTerminal?.bn || path.hub)}</p>
+                              </div>
+                              <div className="text-right">
+                                <p className="font-sans font-black text-kj-primary">{path.leg1.deck}</p>
+                                <p className="text-[9px] text-kj-text-faint font-sans">{path.leg1.dep} → {path.leg1.arr}</p>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Transfer indicator */}
+                          <div className="flex items-center gap-2 text-center">
+                            <div className="flex-1 h-px bg-kj-line" />
+                            <span className="text-[10px] font-bold font-bengali text-kj-text-faint px-2">⚓ {lbl('Wait at', 'অপেক্ষা করুন')} {lbl(hubTerminal?.en || path.hub, hubTerminal?.bn || path.hub)}</span>
+                            <div className="flex-1 h-px bg-kj-line" />
+                          </div>
+
+                          {/* Leg 2 */}
+                          <div className="dc-card rounded-xl p-3 space-y-2" style={{ background: 'var(--kj-chip-bg)' }}>
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="text-[9px] font-bold uppercase tracking-[1px] text-kj-text-faint font-sans">{lbl('Leg 2', 'দ্বিতীয় যাত্রা')}</p>
+                                <p className="font-bengali font-bold text-sm text-kj-text">{lbl(path.leg2.name, path.leg2.nameBn)}</p>
+                                <p className="font-bengali text-[11px] text-kj-text-dim">{lbl(hubTerminal?.en || path.hub, hubTerminal?.bn || path.hub)} → {lbl(path.leg2.toBn, path.leg2.toBn)}</p>
+                              </div>
+                              <div className="text-right">
+                                <p className="font-sans font-black text-kj-primary">{path.leg2.deck}</p>
+                                <p className="text-[9px] text-kj-text-faint font-sans">{path.leg2.dep} → {path.leg2.arr}</p>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Total info */}
+                          <div className="flex items-center justify-between pt-1 border-t border-dashed border-kj-line">
+                            <div className="flex items-center gap-2">
+                              <button onClick={() => setSelectedLaunch(path.leg1)} className="text-[11px] font-bold text-kj-primary font-sans underline underline-offset-2">
+                                {lbl('Details →', 'বিস্তারিত →')}
+                              </button>
+                            </div>
+                            <span className="font-bengali text-[11px] text-kj-text-dim">{lbl('2-leg journey', '২-লেগ যাত্রা')} · {lbl('Total deck from', 'মোট ডেক থেকে')} {path.leg1.deck}</span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* No transit either */}
+                {transitRoutes.length === 0 && (
+                  <div className="dc-card rounded-2xl p-5 text-center">
+                    <p className="font-bengali text-kj-text-dim text-sm">{lbl('No launch connection found for this route. Most routes connect via Sadarghat (Dhaka) or Barisal.', 'এই রুটে কোনো লঞ্চ সংযোগ পাওয়া যায়নি। বেশিরভাগ রুট সদরঘাট (ঢাকা) বা বরিশালের মাধ্যমে সংযুক্ত।')}</p>
+                    <div className="flex gap-2 mt-3 justify-center flex-wrap">
+                      {['sadarghat', 'barisal', 'chandpur'].map(hub => (
+                        <button key={hub} onClick={() => { setToId(hub); }} className="px-3 py-1.5 rounded-lg text-xs font-bold font-bengali" style={{ background: 'var(--kj-primary-soft)', color: 'var(--kj-primary)' }}>
+                          → {lbl(TERMINALS.find(t => t.id === hub)?.en || hub, TERMINALS.find(t => t.id === hub)?.bn || hub)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="space-y-3">

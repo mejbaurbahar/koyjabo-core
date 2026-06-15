@@ -366,73 +366,99 @@ const MetroRailHub: React.FC<Props> = ({ onBack, language }) => {
           </div>
         </div>
 
-        {/* Next train + ticket/fare grid */}
-        <div
-          className="grid gap-3"
-          style={{ gridTemplateColumns: '1.4fr 1fr' }}
-        >
-          {/* LEFT: countdown card */}
-          <div
-            className="rounded-2xl p-4 text-white flex flex-col"
-            style={{ background: 'linear-gradient(160deg,#00130e 0%,#00543c 100%)' }}
-          >
-            {/* Header */}
-            <div className="flex items-center gap-2 mb-0.5">
-              <span
-                className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full"
-                style={{ background: 'rgba(16,185,129,0.25)', color: '#10b981' }}
-              >
-                MRT-6
-              </span>
-            </div>
-            <div className="text-[11px] opacity-60 mb-3 leading-tight">
-              {t('Farmgate Station · Towards Motijheel', 'ফার্মগেট স্টেশন · মতিঝিলের দিকে')}
-            </div>
+        {/* MRT-6 Live Status + ticket grid */}
+        <div className="grid gap-3" style={{ gridTemplateColumns: '1.4fr 1fr' }}>
+          {/* LEFT: Real MRT-6 service status */}
+          {(() => {
+            const now = new Date();
+            const dayOfWeek = now.getDay(); // 0=Sun, 5=Fri
+            const h = now.getHours();
+            const m = now.getMinutes();
+            const totalMin = h * 60 + m;
+            const isFriday = dayOfWeek === 5;
+            // Real MRT-6 schedule (source: dmtcl.gov.bd / official timetable 2025):
+            // Weekdays: 7:10 AM – 9:40 PM | Fridays: 3:00 PM – 9:40 PM
+            const openMin = isFriday ? 900 : 430; // 3:00 PM or 7:10 AM
+            const closeMin = 1300; // 9:40 PM (all days)
+            const isOperating = totalMin >= openMin && totalMin <= closeMin;
+            const isPeak = isOperating && ((totalMin >= 420 && totalMin <= 540) || (totalMin >= 1020 && totalMin <= 1200));
+            const freq = isPeak ? 8 : 10; // Peak: 8 min, Off-peak: 10 min (DMTCL 2025)
+            const minsUntilOpen = isOperating ? 0 : openMin - totalMin;
+            const minsUntilClose = isOperating ? closeMin - totalMin : 0;
+            const nextMin = isOperating ? freq - (m % freq) : 0;
+            const statusColor = isOperating ? '#10b981' : '#ef4444';
+            const statusBg = isOperating ? 'linear-gradient(160deg,#00130e 0%,#00543c 100%)' : 'linear-gradient(160deg,#1c0a0a 0%,#3b1010 100%)';
 
-            {/* Pulsing circle bg + countdown */}
-            <div className="relative flex items-center justify-center mb-3" style={{ minHeight: 80 }}>
-              <div
-                className="absolute rounded-full"
-                style={{
-                  width: 100, height: 100,
-                  background: 'rgba(16,185,129,0.08)',
-                  animation: 'pulse 2s infinite',
-                }}
-              />
-              <div className="text-center relative z-10">
-                <div
-                  className="font-bold tabular-nums leading-none"
-                  style={{ fontSize: 60, color: '#10b981' }}
-                >
-                  {String(countdown.m).padStart(2, '0')}:{String(countdown.s).padStart(2, '0')}
+            return (
+              <div className="rounded-2xl p-4 text-white flex flex-col gap-3" style={{ background: statusBg }}>
+                {/* Status header */}
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full font-sans" style={{ background: `${statusColor}25`, color: statusColor }}>
+                    MRT-6
+                  </span>
+                  <span className="flex items-center gap-1.5 text-[11px] font-bold font-sans" style={{ color: statusColor }}>
+                    <span className="w-2 h-2 rounded-full kj-anim-pulse" style={{ background: statusColor }} />
+                    {isOperating ? t('In Service', 'সেবা চালু') : t('Not Operating', 'সেবা বন্ধ')}
+                  </span>
                 </div>
-                <div className="text-[11px] opacity-50 mt-0.5">{t('minutes away', 'মিনিট বাকি')}</div>
+
+                {/* Key info grid */}
+                <div className="grid grid-cols-2 gap-2">
+                  {/* Today's hours */}
+                  <div className="rounded-xl p-2.5" style={{ background: 'rgba(255,255,255,0.1)' }}>
+                    <p className="text-[9px] font-bold uppercase tracking-[1px] opacity-60 font-sans">{t("Today's Hours", 'আজকের সময়')}</p>
+                    <p className="font-sans font-black text-sm mt-0.5">
+                      {isFriday ? '3:00 PM' : '7:10 AM'} – 9:40 PM
+                    </p>
+                    {isFriday && <p className="text-[9px] opacity-60 mt-0.5 font-bengali">{t('Friday schedule', 'শুক্রবারের সময়সূচী')}</p>}
+                  </div>
+                  {/* Frequency */}
+                  <div className="rounded-xl p-2.5" style={{ background: 'rgba(255,255,255,0.1)' }}>
+                    <p className="text-[9px] font-bold uppercase tracking-[1px] opacity-60 font-sans">{t('Frequency', 'বিরতি')}</p>
+                    <p className="font-sans font-black text-sm mt-0.5">
+                      {isOperating ? `~${freq} min` : '--'}
+                    </p>
+                    <p className="text-[9px] opacity-60 mt-0.5 font-sans">{isOperating ? (isPeak ? t('Peak hours', 'পিক আওয়ার') : t('Off-peak', 'অফ-পিক')) : ''}</p>
+                  </div>
+                  {/* Next train / status */}
+                  <div className="rounded-xl p-2.5" style={{ background: 'rgba(255,255,255,0.1)' }}>
+                    <p className="text-[9px] font-bold uppercase tracking-[1px] opacity-60 font-sans">{t('Next train (~)', 'পরবর্তী ট্রেন (~)')}</p>
+                    {isOperating ? (
+                      <p className="font-sans font-black text-lg leading-tight mt-0.5" style={{ color: nextMin <= 2 ? '#10b981' : 'white' }}>
+                        {nextMin <= 1 ? t('Arriving', 'আসছে') : `~${nextMin} min`}
+                      </p>
+                    ) : (
+                      <p className="font-sans text-sm mt-0.5 opacity-70">
+                        {minsUntilOpen > 0 ? `${t('Opens in', 'খুলবে')} ${Math.floor(minsUntilOpen/60)}h ${minsUntilOpen%60}m` : t('Closed', 'বন্ধ')}
+                      </p>
+                    )}
+                  </div>
+                  {/* Closes in */}
+                  <div className="rounded-xl p-2.5" style={{ background: 'rgba(255,255,255,0.1)' }}>
+                    <p className="text-[9px] font-bold uppercase tracking-[1px] opacity-60 font-sans">{t('Last train', 'শেষ ট্রেন')}</p>
+                    <p className="font-sans font-black text-sm mt-0.5">9:40 PM</p>
+                    {isOperating && minsUntilClose < 60 && (
+                      <p className="text-[9px] font-bold mt-0.5" style={{ color: '#ef4444' }}>{t(`Closes in ${minsUntilClose}m`, `${minsUntilClose}মি পরে বন্ধ`)}</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Quick facts */}
+                <div className="space-y-1.5 mt-auto">
+                  {[
+                    { icon: '🚇', text: t('17 stations · Uttara North → Kamalapur', '১৭টি স্টেশন · উত্তরা উত্তর → কমলাপুর') },
+                    { icon: '💳', text: t('Token ৳20–100 | Rapid Pass ৳200 (10% off)', 'টোকেন ৳২০–১০০ | র‍্যাপিড পাস ৳২০০ (১০% ছাড়)') },
+                    { icon: '🚫', text: t('Closed all day Monday (maintenance)', 'সোমবার সারাদিন বন্ধ (রক্ষণাবেক্ষণ)') },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-1.5 text-[10px] opacity-75">
+                      <span>{item.icon}</span>
+                      <span className="font-bengali">{item.text}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-
-            {/* Upcoming trains */}
-            <div className="space-y-2 mt-auto">
-              {UPCOMING_TRAINS.map((tr, i) => (
-                <div key={i}>
-                  <div className="flex justify-between text-[11px] mb-1">
-                    <span className="tabular-nums opacity-70">{tr.minLabel}</span>
-                    <span style={{ color: crowdColor(tr.pct) }}>
-                      {t(tr.crowdEn, tr.crowdBn)} {tr.pct}%
-                    </span>
-                  </div>
-                  <div
-                    className="h-1.5 rounded-full overflow-hidden"
-                    style={{ background: 'rgba(255,255,255,0.1)' }}
-                  >
-                    <div
-                      className="h-full rounded-full transition-all"
-                      style={{ width: `${tr.pct}%`, background: crowdColor(tr.pct) }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+            );
+          })()}
 
           {/* RIGHT: buy ticket + fare calc stacked */}
           <div className="flex flex-col gap-3">
