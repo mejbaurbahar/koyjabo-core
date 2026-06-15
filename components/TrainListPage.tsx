@@ -487,7 +487,7 @@ const ALL_STATION_OPTIONS = (() => {
   return result.sort((a, b) => a.name.localeCompare(b.name));
 })();
 
-type SearchTab = 'eticket' | 'pnr' | 'live' | 'routemap';
+type SearchTab = 'eticket' | 'pnr' | 'routemap';
 type SortOption = 'name' | 'depart' | 'distance';
 
 // ── Main Export ───────────────────────────────────────────────────────────────
@@ -882,28 +882,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
                 </div>
               )}
 
-              {activeTab === 'live' && (
-                <div className="space-y-2">
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={e => setSearchQuery(e.target.value)}
-                    placeholder={lbl('Train name or number...', 'ট্রেনের নাম বা নম্বর...')}
-                    className="w-full px-3 py-2.5 rounded-xl text-white placeholder-white/50 text-sm focus:outline-none"
-                    style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)' }}
-                  />
-                  <button
-                    onClick={() => window.open('https://eticket.railway.gov.bd/timetable', '_blank', 'noopener,noreferrer')}
-                    className="w-full py-2.5 rounded-xl font-bold text-sm text-white font-bengali"
-                    style={{ background: 'linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%)', boxShadow: '0 6px 20px -8px #7c3aed' }}
-                  >
-                    {lbl('View Live Schedule', 'লাইভ সময়সূচী দেখুন')}
-                  </button>
-                  <p className="text-white/50 text-[11px] text-center font-bengali">
-                    {lbl('Select a train below to see its route', 'নিচে ট্রেন বেছে নিলে রুট দেখা যাবে')}
-                  </p>
-                </div>
-              )}
+
 
               {activeTab === 'routemap' && (
                 <div className="space-y-2">
