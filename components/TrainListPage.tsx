@@ -1,5 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import SponsoredAdSlot from './SponsoredAdSlot';
+import GlobalFooter from './GlobalFooter';
+import { AppView } from '../types';
 import {
   Train, Search, ArrowRight, Clock, CalendarX, Info,
   ArrowLeft, MapPin, Navigation,
@@ -33,6 +35,7 @@ interface TrainListPageProps {
   embedded?: boolean;
   onSelectTrain?: (route: BDTrainRoute) => void;
   onRateTrain?: (route: BDTrainRoute) => void;
+  setView?: (view: AppView) => void;
 }
 
 // Train type — colour chips (list view, light-mode-aware)
@@ -583,7 +586,7 @@ type SearchTab = 'eticket' | 'pnr' | 'live' | 'routemap';
 type SortOption = 'name' | 'depart' | 'distance';
 
 // ── Main Export ───────────────────────────────────────────────────────────────
-const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, embedded = false, onSelectTrain, onRateTrain }) => {
+const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, embedded = false, onSelectTrain, onRateTrain, setView }) => {
   const { language } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTrain, setSelectedTrain] = useState<BDTrainRoute | null>(null);
@@ -592,6 +595,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
   const [travelDate, setTravelDate] = useState('');
   const [activeTab, setActiveTab] = useState<SearchTab>('eticket');
   const [pnrInput, setPnrInput] = useState('');
+  const [pnrSideInput, setPnrSideInput] = useState('');
   const [sortBy, setSortBy] = useState<SortOption>('name');
   const [trainRatingsMap, setTrainRatingsMap] = useState<Record<string, TrainRatingSummary | null>>({});
   const [favoriteTrainIds, setFavoriteTrainIds] = useState<string[]>(getStoredTrainFavorites);
@@ -841,6 +845,16 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
 
                   {/* Search button */}
                   <button
+                    onClick={() => {
+                      // Filter results from local data (already reactive via state)
+                      // Also open Bangladesh Railway official booking site in background tab
+                      const fromSt = filterFrom ? (TRAIN_STATIONS[filterFrom]?.name || '') : 'Dhaka';
+                      const toSt   = filterTo   ? (TRAIN_STATIONS[filterTo]?.name   || '') : '';
+                      if (toSt) {
+                        const url = `https://eticket.railway.gov.bd/booking/train/search?fromcity=${encodeURIComponent(fromSt)}&tocity=${encodeURIComponent(toSt)}&djourney=${travelDate || new Date().toISOString().split('T')[0]}&class=all&adult=1&child=0`;
+                        window.open(url, '_blank', 'noopener,noreferrer');
+                      }
+                    }}
                     className="w-full py-2.5 rounded-xl font-bold text-sm text-white transition-opacity hover:opacity-90 active:scale-[0.98] font-bengali"
                     style={{ background: 'linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%)', boxShadow: '0 6px 20px -8px #7c3aed' }}
                   >
@@ -855,26 +869,63 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
                     type="text"
                     value={pnrInput}
                     onChange={e => setPnrInput(e.target.value)}
-                    placeholder={lbl('Enter PNR number...', 'PNR নম্বর দিন...')}
+                    placeholder={lbl('Enter PNR number (e.g. 123456)', 'PNR নম্বর দিন (যেমন: ১২৩৪৫৬)')}
                     className="w-full px-3 py-2.5 rounded-xl text-white placeholder-white/50 text-sm focus:outline-none focus:ring-2 focus:ring-white/30"
                     style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)' }}
                   />
                   <button
-                    className="w-full py-2.5 rounded-xl font-bold text-sm text-white"
+                    onClick={() => {
+                      const pnr = pnrInput.trim();
+                      if (!pnr) return;
+                      window.open(`https://eticket.railway.gov.bd/pnrCheck?pnr=${encodeURIComponent(pnr)}`, '_blank', 'noopener,noreferrer');
+                    }}
+                    disabled={!pnrInput.trim()}
+                    className="w-full py-2.5 rounded-xl font-bold text-sm text-white disabled:opacity-50 font-bengali"
                     style={{ background: 'linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%)', boxShadow: '0 6px 20px -8px #7c3aed' }}
                   >
-                    {lbl('Check Status', 'স্ট্যাটাস দেখুন')}
+                    {lbl('Check Status on Railway Website', 'রেলওয়ে সাইটে স্ট্যাটাস দেখুন')}
                   </button>
+                  <p className="text-white/50 text-[11px] text-center font-bengali">
+                    {lbl('Opens official Bangladesh Railway website', 'অফিশিয়াল বাংলাদেশ রেলওয়ে সাইটে যাবে')}
+                  </p>
                 </div>
               )}
 
-              {(activeTab === 'live' || activeTab === 'routemap') && (
-                <div className="py-4 text-center">
-                  <p className="text-white/70 text-sm font-bengali">
-                    {activeTab === 'live'
-                      ? lbl('Select a train below to view live location', 'লাইভ অবস্থান দেখতে নিচে ট্রেন বেছে নিন')
-                      : lbl('Select a train below to view route map', 'রুট ম্যাপ দেখতে নিচে ট্রেন বেছে নিন')}
+              {activeTab === 'live' && (
+                <div className="space-y-2">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    placeholder={lbl('Train name or number...', 'ট্রেনের নাম বা নম্বর...')}
+                    className="w-full px-3 py-2.5 rounded-xl text-white placeholder-white/50 text-sm focus:outline-none"
+                    style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)' }}
+                  />
+                  <button
+                    onClick={() => window.open('https://eticket.railway.gov.bd/timetable', '_blank', 'noopener,noreferrer')}
+                    className="w-full py-2.5 rounded-xl font-bold text-sm text-white font-bengali"
+                    style={{ background: 'linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%)', boxShadow: '0 6px 20px -8px #7c3aed' }}
+                  >
+                    {lbl('View Live Schedule', 'লাইভ সময়সূচী দেখুন')}
+                  </button>
+                  <p className="text-white/50 text-[11px] text-center font-bengali">
+                    {lbl('Select a train below to see its route', 'নিচে ট্রেন বেছে নিলে রুট দেখা যাবে')}
                   </p>
+                </div>
+              )}
+
+              {activeTab === 'routemap' && (
+                <div className="space-y-2">
+                  <p className="text-white/70 text-sm font-bengali text-center py-2">
+                    {lbl('Select any train below to see its full route map', 'নিচে যেকোনো ট্রেন বেছে নিন — পূর্ণ রুট দেখাবে')}
+                  </p>
+                  <button
+                    onClick={() => window.open('https://eticket.railway.gov.bd/timetable', '_blank', 'noopener,noreferrer')}
+                    className="w-full py-2 rounded-xl font-bold text-xs text-white/80 font-bengali"
+                    style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)' }}
+                  >
+                    {lbl('View Full Timetable', 'সময়সূচী দেখুন')}
+                  </button>
                 </div>
               )}
             </div>
@@ -1056,16 +1107,26 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
             <div className="p-4 space-y-3">
               <input
                 type="text"
-                defaultValue="KJ72X9PQ"
-                placeholder={lbl('PNR number...', 'PNR নম্বর...')}
+                value={pnrSideInput}
+                onChange={e => setPnrSideInput(e.target.value)}
+                placeholder={lbl('Enter PNR number...', 'PNR নম্বর দিন...')}
                 className="w-full px-3 py-2.5 rounded-xl text-sm bg-kj-chip-bg text-kj-text border border-kj-line focus:outline-none focus:ring-2 focus:ring-purple-500/30 font-sans"
               />
               <button
-                className="w-full py-2.5 rounded-xl font-bold text-sm text-white font-bengali"
+                onClick={() => {
+                  const p = pnrSideInput.trim();
+                  if (!p) return;
+                  window.open(`https://eticket.railway.gov.bd/pnrCheck?pnr=${encodeURIComponent(p)}`, '_blank', 'noopener,noreferrer');
+                }}
+                disabled={!pnrSideInput.trim()}
+                className="w-full py-2.5 rounded-xl font-bold text-sm text-white disabled:opacity-50 active:scale-[0.98] transition-all font-bengali"
                 style={{ background: 'linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%)', boxShadow: '0 6px 20px -8px #7c3aed' }}
               >
-                {lbl('Check Status', 'স্ট্যাটাস দেখুন')}
+                {lbl('Check on Railway Website', 'রেলওয়ে সাইটে চেক করুন')}
               </button>
+              <p className="text-[10px] text-kj-text-faint font-bengali text-center">
+                {lbl('Opens eticket.railway.gov.bd', 'eticket.railway.gov.bd-এ যাবে')}
+              </p>
             </div>
           </div>
         </div>
@@ -1103,6 +1164,11 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
       </div>
 
       <div className="h-8" />
+
+      {/* Footer */}
+      {!embedded && setView && (
+        <GlobalFooter setView={setView} />
+      )}
     </div>
   );
 };

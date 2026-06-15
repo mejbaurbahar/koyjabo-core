@@ -813,6 +813,7 @@ const App: React.FC = () => {
   const [showClearChatConfirm, setShowClearChatConfirm] = useState(false);
   const [showHistoryManager, setShowHistoryManager] = useState(false);
   const [showLiveMap, setShowLiveMap] = useState(false);
+  const [sessionTick, setSessionTick] = useState(0);
 
   const handleDeleteMessage = (index: number) => {
     setChatHistory(prev => prev.filter((_, i) => i !== index));
@@ -2420,10 +2421,9 @@ const App: React.FC = () => {
       );
     }
 
-    const [sessionTick, setSessionTick] = React.useState(0);
-    const recentSessions = React.useMemo(() => getAllSessions()
+    const recentSessions = getAllSessions()
       .sort((a, b) => b.lastUpdated - a.lastUpdated)
-      .slice(0, 10), [sessionTick]); // eslint-disable-line react-hooks/exhaustive-deps
+      .slice(0, 10);
 
     const handleDeleteSession = (id: string) => {
       deleteSession(id);
@@ -3620,6 +3620,7 @@ const App: React.FC = () => {
               userLocation={userLocation}
               onBack={() => setView(AppView.HOME)}
               embedded={false}
+              setView={setView}
               onSelectTrain={(route) => {
                 setSelectedTrain(route);
                 setView(AppView.TRAIN_DETAILS);
