@@ -22,10 +22,11 @@ interface BlogPostProps {
     postSlug: string;
     onBack: () => void;
     onGoHome: () => void;
+    onSelectPost: (slug: string) => void;
     language: 'en' | 'bn';
 }
 
-const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, language }) => {
+const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, onSelectPost, language }) => {
     const { t } = useLanguage();
     const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
     const post = BLOG_POSTS.find(p => p.slug === postSlug);
@@ -296,7 +297,7 @@ const BlogPostDetail: React.FC<BlogPostProps> = ({ postSlug, onBack, onGoHome, l
                                 return (
                                     <div
                                         key={rp.id}
-                                        onClick={() => { window.location.hash = `blog/${rp.slug}`; }}
+                                        onClick={() => onSelectPost(rp.slug)}
                                         className="dc-card rounded-xl cursor-pointer border border-kj-line p-3 flex items-center gap-3 active:scale-[0.99] transition-all hover:border-kj-primary/40"
                                     >
                                         <div

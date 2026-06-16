@@ -4019,6 +4019,9 @@ const App: React.FC = () => {
                     setSelectedBlogPost(null);
                     setView(AppView.HOME);
                   }}
+                  onSelectPost={(slug) => {
+                    setSelectedBlogPost(slug);
+                  }}
                   language={language}
                 />
               ) : (

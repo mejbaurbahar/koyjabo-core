@@ -54,7 +54,7 @@ const SponsoredAdSlot: React.FC<SponsoredAdSlotProps> = ({
         ref={cardRef}
         className="kj-ad-card w-full rounded-2xl overflow-hidden"
         style={{
-          ['--kj-ad-card-height' as string]: `${adHeight + 30}px`,
+          ['--kj-ad-card-height' as string]: `${adHeight}px`,
           ['--kj-ad-height' as string]: `${adHeight}px`,
           background: 'var(--kj-panel)',
           border: '1px solid var(--kj-line)',
@@ -65,44 +65,12 @@ const SponsoredAdSlot: React.FC<SponsoredAdSlotProps> = ({
           margin: '0 auto',
         }}
       >
-        {/* Sponsored label — minimal, blends in */}
-        <div className="flex items-center justify-between px-3 pt-2 pb-1">
-          <span
-            className="text-[9px] font-bold uppercase tracking-[1.2px]"
-            style={{ color: 'var(--kj-text-faint)', opacity: 0.55 }}
-          >
-            {lbl('Sponsored', 'স্পনসরড')}
-          </span>
-          <span
-            className="text-[8px] font-medium px-1.5 py-0.5 rounded-full"
-            style={{ background: 'var(--kj-chip-bg)', color: 'var(--kj-text-faint)', opacity: 0.5 }}
-          >
-            Ad
-          </span>
-        </div>
-
         {/* Single ad instance — always mounted, card shows/hides via parent display */}
         <div
           ref={shellRef}
           className="kj-ad-shell relative w-full overflow-hidden"
           style={{ height: adHeight, minHeight: adHeight, maxHeight: adHeight, contain: 'strict' }}
         >
-          <div
-            className="absolute inset-0 flex items-center justify-between gap-3 px-4 pointer-events-none"
-            style={{
-              border: '1px dashed var(--kj-line)',
-              background: 'var(--kj-panel-muted)',
-              color: 'var(--kj-text-faint)',
-              opacity: 0.65,
-            }}
-          >
-            <span className="text-[10px] font-bold uppercase tracking-[1.2px]">
-              {lbl('Google AdSense', 'গুগল অ্যাডসেন্স')} · {size}
-            </span>
-            <span className="text-[10px] font-semibold">
-              {lbl('reserved', 'রিজার্ভড')}
-            </span>
-          </div>
           <AdSenseAd
             adSlot="auto"
             adFormat={isLeaderboard ? 'horizontal' : 'rectangle'}
