@@ -117,12 +117,12 @@ async function fetchBRTAFares() {
   console.log('🚌 Loading BRTA official bus fares...');
   // BRTA doesn't publish a JSON endpoint; official rates as of April 2024 circular
   const fares = {
-    cityBusRatePerKm: 2.42,       // ৳/km for city buses (AC non-AC)
-    intercityBusRatePerKm: 2.15,  // ৳/km for intercity non-AC
+    cityBusRatePerKm: 2.53,       // ৳/km for city buses (AC non-AC)
+    intercityBusRatePerKm: 2.23,  // ৳/km for intercity non-AC
     intercityAcRatePerKm: 2.90,   // ৳/km for intercity AC
     minimumFare: 10,              // ৳ minimum
-    effectiveDate: '2024-04-02',
-    source: 'BRTA circular SRO-92 dated 02 April 2024',
+    effectiveDate: '2026-04-23',
+    source: 'BRTA circular dated 23 April 2026',
     fetchedAt: new Date().toISOString(),
   };
   console.log('  ✓ BRTA fares loaded');

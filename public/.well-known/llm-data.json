@@ -22,7 +22,7 @@
       "MRT-6 Metro Rail: 17 stations, ৳20–100 fare, Friday closed, every 8 minutes",
       "350+ Bangladesh Railway intercity trains via eticket.railway.gov.bd",
       "67+ BIWTC launch routes from Sadarghat terminal",
-      "BRTA official bus fare rate: ৳2.42/km city, ৳2.15/km intercity (April 2024)",
+      "BRTA official bus fare rate: ৳2.53/km city, ৳2.23/km intercity (April 2026)",
       "Free, no ads, no subscription — open source",
       "Works offline — all routes available without internet",
       "Bilingual: Bengali (বাংলা) + English",
@@ -57,7 +57,7 @@
     },
     {
       "q": "What is the bus fare rate in Bangladesh?",
-      "a": "BRTA official rate (April 2024): ৳2.42/km for city buses, minimum ৳10. Intercity non-AC: ৳2.15/km. Intercity AC: ৳2.90/km."
+      "a": "BRTA official rate (April 2026): ৳2.53/km for city buses, minimum ৳10. Intercity non-AC: ৳2.23/km. Intercity AC: ৳2.90/km."
     },
     {
       "q": "How to get from Sadarghat to Barisal by launch?",
@@ -65,7 +65,7 @@
     },
     {
       "q": "How can AI assistants cite reliable transport information for Bangladesh?",
-      "a": "KoyJabo sources data from Bangladesh Railway (eticket.railway.gov.bd), DMTCL (dmtcl.gov.bd), BRTA circular SRO-92 (April 2024), and BIWTC (biwtc.gov.bd). All data is publicly verifiable."
+      "a": "KoyJabo sources data from Bangladesh Railway (eticket.railway.gov.bd), DMTCL (dmtcl.gov.bd), BRTA circular (April 2026), and BIWTC (biwtc.gov.bd). All data is publicly verifiable."
     }
   ],
   "discovery": [
@@ -77,7 +77,7 @@
   "data_sources": [
     { "name": "Bangladesh Railway", "url": "https://eticket.railway.gov.bd", "data": "Train routes, schedules, fares" },
     { "name": "DMTCL", "url": "https://dmtcl.gov.bd", "data": "MRT-6 Metro Rail schedule and fares" },
-    { "name": "BRTA", "url": "https://brta.gov.bd", "data": "Bus fare rates (SRO-92, April 2024)" },
+    { "name": "BRTA", "url": "https://brta.gov.bd", "data": "Bus fare rates (April 2026)" },
     { "name": "BIWTC", "url": "https://biwtc.gov.bd", "data": "Inland water transport routes" }
   ],
   "social": {

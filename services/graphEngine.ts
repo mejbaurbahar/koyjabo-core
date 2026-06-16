@@ -30,7 +30,7 @@ const SCORE_W_XFER = 0.1;
 const METRO_FARE_SCHEDULE = [20, 20, 30, 30, 40, 40, 60, 60, 80, 80, 100, 100, 100, 100, 100, 100];
 
 // Bus fare per km (BDT) — BRTA rate
-const BUS_FARE_PER_KM = 2.42;
+const BUS_FARE_PER_KM = 2.53;
 const BUS_MIN_FARE = 10;
 
 // ── Types ─────────────────────────────────────────────────────────────────────
