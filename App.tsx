@@ -3755,7 +3755,8 @@ const App: React.FC = () => {
     || view === AppView.LOGIN
     || view === AppView.SIGNUP
     || view === AppView.FORGOT_PASSWORD
-    || view === AppView.RESET_PASSWORD;
+    || view === AppView.RESET_PASSWORD
+    || view === AppView.INSTALL_APP;
   const pageAdViews: AppView[] = [
     // Only pages WITHOUT their own SponsoredAdSlot get PageAdSection from App level
     AppView.ABOUT,
