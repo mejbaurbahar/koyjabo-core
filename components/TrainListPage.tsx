@@ -498,6 +498,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
   const [filterFrom, setFilterFrom] = useState<string>('');
   const [filterTo, setFilterTo] = useState<string>('');
   const [autoLocDetected, setAutoLocDetected] = useState(false);
+  const [searchValidationError, setSearchValidationError] = useState<string | null>(null);
 
   // Auto-detect nearest train station from user location
   useEffect(() => {
@@ -655,7 +656,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
   ];
 
   return (
-    <div className="min-h-screen bg-kj-bg text-kj-text overflow-y-auto pb-32">
+    <div className="min-h-screen bg-kj-bg text-kj-text overflow-x-hidden overflow-y-auto pb-32">
 
       {/* ── Sticky back bar ── */}
       <div className="sticky top-0 z-20 bg-kj-bg/90 backdrop-blur-md border-b border-kj-line flex items-center gap-3 px-4 py-3">
@@ -752,7 +753,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
                     <input
                       type="text"
                       value={searchQuery}
-                      onChange={e => setSearchQuery(e.target.value)}
+                      onChange={e => { setSearchQuery(e.target.value); setSearchValidationError(null); }}
                       placeholder={lbl(
                         "e.g. Cox's Bazar Express, Sonar Bangla, #786...",
                         'যেমন: কক্সবাজার এক্সপ্রেস, সোনার বাংলা, #৭৮৬...'
@@ -808,7 +809,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
                   <div style={{ position: 'relative' }}>
                     <select
                       value={filterFrom}
-                      onChange={e => { setFilterFrom(e.target.value); setAutoLocDetected(true); }}
+                      onChange={e => { setFilterFrom(e.target.value); setAutoLocDetected(true); setSearchValidationError(null); }}
                       className="w-full text-xs px-2.5 py-2.5 rounded-xl text-white focus:outline-none"
                       style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)' }}
                     >
@@ -824,7 +825,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
                   {/* Destination selector */}
                   <select
                     value={filterTo}
-                    onChange={e => setFilterTo(e.target.value)}
+                    onChange={e => { setFilterTo(e.target.value); setSearchValidationError(null); }}
                     className="w-full text-xs px-2.5 py-2.5 rounded-xl text-white focus:outline-none"
                     style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)' }}
                   >
@@ -834,15 +835,31 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
                     ))}
                   </select>
 
+                  {/* Validation error */}
+                  {searchValidationError && (
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-xl" style={{ background: 'rgba(239,68,68,0.2)', border: '1px solid rgba(239,68,68,0.4)' }}>
+                      <AlertCircle className="w-3.5 h-3.5 text-red-300 shrink-0" />
+                      <span className="text-[11px] font-bengali text-red-200">{searchValidationError}</span>
+                    </div>
+                  )}
+
                   {/* Search button */}
                   <button
                     onClick={() => {
-                      // Auto-select first match if search query or destination set
+                      // Validate: at least a train name OR a from station must be selected
+                      const hasQuery = searchQuery.trim().length > 0;
+                      const hasFrom = filterFrom.length > 0;
+                      const hasTo = filterTo.length > 0;
+                      if (!hasQuery && !hasFrom && !hasTo) {
+                        setSearchValidationError(lbl(
+                          'Please select a From station or enter a train name to search.',
+                          'অনুগ্রহ করে একটি স্টেশন বা ট্রেনের নাম দিন।'
+                        ));
+                        return;
+                      }
+                      setSearchValidationError(null);
+                      // Navigate to results
                       if (filtered.length > 0) {
-                        const firstMatch = filtered[0];
-                        if (onSelectTrain) onSelectTrain(firstMatch);
-                        else setSelectedTrain(firstMatch);
-                      } else {
                         document.querySelector('[data-train-results]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                       }
                     }}
@@ -921,7 +938,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
       </div>
 
       {/* ── Two-column content area ── */}
-      <div data-train-results className="px-4 py-5 grid gap-4 md:grid-cols-[1.5fr_1fr] max-w-5xl mx-auto w-full">
+      <div data-train-results className="px-4 py-5 grid grid-cols-1 gap-4 md:grid-cols-[1.5fr_1fr] max-w-5xl mx-auto w-full">
 
         {/* ── LEFT: Popular trains from Dhaka ── */}
         <div className="space-y-3">
