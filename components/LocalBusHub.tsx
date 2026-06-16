@@ -24,7 +24,7 @@ interface LocalBusHubProps {
   language: 'en' | 'bn';
   initialFromId?: string;
   initialToId?: string;
-  onBusSelect?: (bus: import('../types').BusRoute) => void;
+  onBusSelect?: (bus: import('../types').BusRoute, fromId?: string, toId?: string) => void;
 }
 
 const lbl = (language: 'en' | 'bn', en: string, bn: string) =>
@@ -158,10 +158,38 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
   const [toField, setToField] = useState(() => initialToId ? getStationName(initialToId) : '');
   const [activeFilter, setActiveFilter] = useState<string>('name');
   const [activeSort, setActiveSort] = useState<string | null>(null);
+  const [submittedRoute, setSubmittedRoute] = useState<{ fromId?: string; toId?: string }>(() => ({
+    fromId: initialFromId,
+    toId: initialToId,
+  }));
+  const [routeError, setRouteError] = useState<string | null>(null);
 
   const [nearbyBuses, setNearbyBuses] = useState<NearbyBus[]>(NEARBY_BUSES);
   const [locationLoading, setLocationLoading] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
+
+  const stationLookup = useMemo(() => {
+    const normalize = (value: string) => value.trim().toLowerCase().replace(/\s+/g, ' ');
+    const stations = { ...(STATIONS as any), ...(METRO_STATIONS as any) } as Record<string, { id?: string; name?: string; bnName?: string }>;
+    const exact = new Map<string, string>();
+    const entries = Object.entries(stations).map(([id, station]) => ({
+      id,
+      labels: [id, station.id, station.name, station.bnName].filter(Boolean) as string[],
+    }));
+
+    entries.forEach(({ id, labels }) => {
+      labels.forEach((label) => exact.set(normalize(label), id));
+    });
+
+    return { exact, entries, normalize };
+  }, []);
+
+  useEffect(() => {
+    setFromField(initialFromId ? getStationName(initialFromId) : '');
+    setToField(initialToId ? getStationName(initialToId) : '');
+    setSubmittedRoute({ fromId: initialFromId, toId: initialToId });
+    setRouteError(null);
+  }, [initialFromId, initialToId, language]);
 
   useEffect(() => {
     if (!navigator.geolocation) return;
@@ -215,31 +243,101 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
     );
   }, []);
 
+  const resolveStationId = (value: string): string | null => {
+    const normalized = stationLookup.normalize(value);
+    if (!normalized) return null;
+    const exact = stationLookup.exact.get(normalized);
+    if (exact) return exact;
+    const partial = stationLookup.entries.find(({ labels }) =>
+      labels.some((label) => stationLookup.normalize(label).includes(normalized))
+    );
+    return partial?.id || null;
+  };
+
+  const handleFindBus = () => {
+    const q = searchQuery.trim();
+    const fromText = fromField.trim();
+    const toText = toField.trim();
+
+    if (!fromText && !toText) {
+      if (q) {
+        setSubmittedRoute({});
+        setRouteError(null);
+        return;
+      }
+      setRouteError(L('Enter a bus name or both From and To stops.', 'বাসের নাম অথবা কোথা থেকে/কোথায় দুটোই লিখুন।'));
+      return;
+    }
+
+    if (!fromText || !toText) {
+      setRouteError(L('Enter both From and To stops.', 'কোথা থেকে এবং কোথায় দুটোই লিখুন।'));
+      return;
+    }
+
+    const fromId = resolveStationId(fromText);
+    const toId = resolveStationId(toText);
+
+    if (!fromId || !toId) {
+      setRouteError(L('Stop not found. Try another known stop name.', 'স্টপ পাওয়া যায়নি। পরিচিত স্টপের নাম চেষ্টা করুন।'));
+      return;
+    }
+
+    if (fromId === toId) {
+      setRouteError(L('From and To stops must be different.', 'কোথা থেকে এবং কোথায় আলাদা হতে হবে।'));
+      return;
+    }
+
+    setSubmittedRoute({ fromId, toId });
+    setRouteError(null);
+  };
+
+  const activeFromId = initialFromId || submittedRoute.fromId;
+  const activeToId = initialToId || submittedRoute.toId;
+
   const searchResults = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
-    const hasFromTo = !!(initialFromId && initialToId);
+    const hasFromTo = !!(activeFromId && activeToId);
     const hasQuery = q.length >= 1;
 
     if (!hasFromTo && !hasQuery) return null;
 
-    return (BUS_DATA as any[]).filter(bus => {
-      // Name / route-string / bnName search
-      const nameMatch = !hasQuery ||
-        (bus.name || '').toLowerCase().includes(q) ||
-        (bus.bnName || '').toLowerCase().includes(q) ||
-        (bus.routeString || '').toLowerCase().includes(q) ||
-        (bus.id || '').toLowerCase().includes(q);
+    const results = (BUS_DATA as any[]).filter(bus => {
+      const nameText = `${bus.name || ''} ${bus.bnName || ''} ${bus.id || ''}`.toLowerCase();
+      const stopText = (bus.stops || []).map((stopId: string) => getStationName(stopId)).join(' ').toLowerCase();
+      const routeText = `${bus.routeString || ''} ${stopText}`.toLowerCase();
+      const operatorText = nameText;
+      const allText = `${nameText} ${routeText}`.toLowerCase();
 
-      // Stop-to-stop route filter
+      const textMatch = !hasQuery || (
+        activeFilter === 'name' ? nameText.includes(q) :
+        activeFilter === 'route' ? routeText.includes(q) :
+        activeFilter === 'operator' ? operatorText.includes(q) :
+        allText.includes(q)
+      );
+
       const routeMatch = !hasFromTo || (() => {
-        const fromIdx = (bus.stops as string[]).indexOf(initialFromId!);
-        const toIdx   = (bus.stops as string[]).indexOf(initialToId!);
-        return fromIdx !== -1 && toIdx !== -1 && fromIdx < toIdx;
+        const fromIdx = (bus.stops as string[]).indexOf(activeFromId!);
+        const toIdx   = (bus.stops as string[]).indexOf(activeToId!);
+        return fromIdx !== -1 && toIdx !== -1 && fromIdx !== toIdx;
       })();
 
-      return nameMatch && routeMatch;
+      if (activeSort === 'ac' && bus.type !== 'AC') return false;
+
+      return textMatch && routeMatch;
     }) as typeof BUS_DATA;
-  }, [initialFromId, initialToId, searchQuery]);
+
+    if (!activeSort || !hasFromTo) return results;
+
+    return [...results].sort((a, b) => {
+      if (activeSort === 'cheapest') {
+        return calcBusFareAndDuration(a, activeFromId!, activeToId!).fare - calcBusFareAndDuration(b, activeFromId!, activeToId!).fare;
+      }
+      if (activeSort === 'fastest') {
+        return calcBusFareAndDuration(a, activeFromId!, activeToId!).durationMin - calcBusFareAndDuration(b, activeFromId!, activeToId!).durationMin;
+      }
+      return 0;
+    }) as typeof BUS_DATA;
+  }, [activeFilter, activeFromId, activeSort, activeToId, language, searchQuery]);
 
   const handleSwap = () => {
     setFromField(toField);
@@ -310,6 +408,8 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
             </div>
           </div>
         </div>
+
+        <SponsoredAdSlot language={language} size="728x90" compact />
 
         {/* Search card */}
         <div className="dc-card rounded-[22px] p-5 space-y-4">
@@ -404,6 +504,8 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
 
           {/* Find Bus button */}
           <button
+            type="button"
+            onClick={handleFindBus}
             className="w-full h-12 font-bold text-sm rounded-[14px] flex items-center justify-center gap-2 active:scale-[0.98] transition-all font-bengali text-kj-primary-ink"
             style={{
               background: 'linear-gradient(135deg, #006a4e, #10b981)',
@@ -413,6 +515,12 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
             <Search className="w-4 h-4" />
             {L('Find Bus', 'বাস খুঁজুন')}
           </button>
+
+          {routeError && (
+            <p className="text-xs font-semibold text-red-500 font-bengali">
+              {routeError}
+            </p>
+          )}
 
           {/* Filter sort chips */}
           <div className="flex gap-2 flex-wrap">
@@ -481,12 +589,12 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
                   <div className="space-y-2">
                     {searchResults.slice(0, 15).map((bus) => {
                       const initials = bus.name.slice(0, 2).toUpperCase();
-                      const fromIdx = bus.stops.indexOf(initialFromId!);
-                      const toIdx   = bus.stops.indexOf(initialToId!);
+                      const fromIdx = bus.stops.indexOf(activeFromId!);
+                      const toIdx   = bus.stops.indexOf(activeToId!);
                       const stopsCount = Math.max(1, Math.abs(toIdx - fromIdx));
                       // GPS-based fare & duration using BRTA ৳2.53/km rate
                       const { fare, distanceKm, durationMin } = calcBusFareAndDuration(
-                        bus, initialFromId!, initialToId!
+                        bus, activeFromId!, activeToId!
                       );
                       const durationLabel = durationMin >= 60
                         ? `${Math.floor(durationMin / 60)}h ${durationMin % 60}m`
@@ -495,7 +603,7 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
                         <button
                           key={bus.id}
                           type="button"
-                          onClick={() => onBusSelect?.(bus)}
+                          onClick={() => onBusSelect?.(bus, activeFromId, activeToId)}
                           className="dc-card rounded-2xl p-3.5 flex items-center gap-3 border border-kj-primary/20 w-full text-left hover:border-kj-primary/60 active:scale-[0.99] transition-all cursor-pointer"
                           style={{ boxShadow: '0 0 0 1px rgba(0,245,255,0.08)' }}
                         >

@@ -1512,6 +1512,10 @@ const App: React.FC = () => {
     const path = viewToPath[view];
     const currentPath = window.location.pathname.substring(1).replace(/\/$/, '');
 
+    if (view === AppView.BUS_DETAILS && !selectedBus && currentPath.startsWith('bus/')) {
+      return;
+    }
+
     // Special handling for bus deep links
     if (view === AppView.BUS_DETAILS && selectedBus) {
       const busSlug = getBusSlug(selectedBus);
@@ -2076,15 +2080,17 @@ const App: React.FC = () => {
     }
   };
 
-  const handleBusSelect = useCallback((bus: BusRoute, fromHistory: boolean = false, trip?: SuggestedRoute) => {
+  const handleBusSelect = useCallback((bus: BusRoute, fromHistory: boolean = false, trip?: SuggestedRoute, routeFareFrom?: string, routeFareTo?: string) => {
     // Require sign-in to view bus details
     if (!user) {
       // Preserve deep link so user lands back on the same bus after login
       const busSlug = slugify(bus.name || bus.id);
       const qs = new URLSearchParams();
-      if (fareStart && fareEnd) {
-        qs.set('from', getStationSlug(fareStart));
-        qs.set('to', getStationSlug(fareEnd));
+      const linkFrom = routeFareFrom || fareStart;
+      const linkTo = routeFareTo || fareEnd;
+      if (linkFrom && linkTo) {
+        qs.set('from', getStationSlug(linkFrom));
+        qs.set('to', getStationSlug(linkTo));
       }
       sessionStorage.setItem(POST_LOGIN_REDIRECT_KEY, `/bus/${busSlug}${qs.toString() ? `?${qs.toString()}` : ''}`);
       setView(AppView.LOGIN);
@@ -2109,7 +2115,10 @@ const App: React.FC = () => {
     setNearestStopDistance(Infinity);
 
     // Reset fares if not from a trip plan
-    if (!trip) {
+    if (routeFareFrom && routeFareTo) {
+      setFareStart(routeFareFrom);
+      setFareEnd(routeFareTo);
+    } else if (!trip) {
       setFareStart('');
       setFareEnd('');
     } else {
@@ -2146,7 +2155,7 @@ const App: React.FC = () => {
         }
       }).catch(() => {});
     }, { timeout: 2000 });
-  }, [user]);
+  }, [user, fareStart, fareEnd]);
 
   const toggleFavorite = useCallback((e: React.MouseEvent, busId: string) => {
     e.stopPropagation();
@@ -3968,7 +3977,13 @@ const App: React.FC = () => {
                   language={language}
                   initialFromId={fromStation || undefined}
                   initialToId={toStation || undefined}
-                  onBusSelect={(bus) => handleBusSelect(bus)}
+                  onBusSelect={(bus, selectedFromId, selectedToId) => handleBusSelect(
+                    bus,
+                    false,
+                    undefined,
+                    selectedFromId || fromStation || undefined,
+                    selectedToId || toStation || undefined
+                  )}
                 />
             )}
             {view === AppView.METRO_HUB && (

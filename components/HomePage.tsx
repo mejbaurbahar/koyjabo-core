@@ -208,7 +208,7 @@ const HomePage: React.FC<HomePageProps> = (props) => {
                 key={tile.key}
                 type="button"
                 onClick={() => tile.key === 'intercity' ? onIntercity() : onNavigate(tile.nav)}
-                className="relative overflow-hidden rounded-[20px] p-4 text-left text-white min-h-[180px] flex flex-col gap-2 border border-white/10 hover:brightness-110 active:scale-[0.97] transition-all shadow-[0_2px_4px_rgba(0,0,0,0.4),0_12px_36px_-16px_rgba(0,245,255,0.2)]"
+                className="relative overflow-hidden rounded-[20px] p-4 pb-[82px] text-left text-white min-h-[178px] md:min-h-[184px] flex flex-col gap-2 border border-white/10 hover:brightness-110 active:scale-[0.97] transition-all shadow-[0_2px_4px_rgba(0,0,0,0.4),0_12px_36px_-16px_rgba(0,245,255,0.2)]"
                 style={{ background: tile.grad }}
               >
                 <div className="absolute -right-8 -top-8 w-28 h-28 rounded-full bg-white/15 pointer-events-none animate-[kjpulse_2.4s_ease-in-out_infinite]" />
@@ -222,12 +222,12 @@ const HomePage: React.FC<HomePageProps> = (props) => {
                     </span>
                   )}
                 </div>
-                <div className="relative mt-auto text-left z-10">
+                <div className="relative text-left z-20 max-w-[92%]">
                   <p className="font-bengali font-bold text-[14px] md:text-[15px] leading-tight">{lbl(tile.titleEn, tile.titleBn)}</p>
                   <p className="text-white/75 text-[11px] mt-0.5 leading-snug">{lbl(tile.subEn, tile.subBn)}</p>
                 </div>
                 {tile.vehicle && (
-                  <div className="absolute left-0 right-0 bottom-[-10px] h-[86px] pointer-events-none select-none">
+                  <div className="absolute left-0 right-0 bottom-[-6px] h-[78px] pointer-events-none select-none z-10">
                     <MiniVehicle kind={tile.vehicle} palette={tile.palette} />
                   </div>
                 )}

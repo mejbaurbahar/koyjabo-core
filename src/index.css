@@ -822,6 +822,20 @@ ins.adsbygoogle {
   display: none !important;
 }
 
+.adsense-wrapper.kj-ad-reserved {
+  display: block !important;
+}
+
+.kj-ad-reserved .kj-ad-card {
+  min-height: var(--kj-ad-card-height) !important;
+}
+
+.kj-ad-reserved .kj-ad-shell {
+  height: var(--kj-ad-height) !important;
+  min-height: var(--kj-ad-height) !important;
+  max-height: var(--kj-ad-height) !important;
+}
+
 /* Hide the label text until ad actually fills — avoids "বিজ্ঞাপন Google AdSense · 728 × 90" showing in blank space */
 .adsense-wrapper:not(:has(.adsbygoogle[data-ad-status="filled"])) .adsense-label {
   visibility: hidden;
