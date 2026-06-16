@@ -17,30 +17,9 @@ const ContactUs: React.FC<ContactUsProps> = ({ view, setView }) => {
 
     const contactMethods = [
         {
-            icon: '💬',
-            title: lbl('Live Chat', 'লাইভ চ্যাট'),
-            detail: lbl('9am – 6pm, Sun – Thu', 'সকাল ৯টা – সন্ধ্যা ৬টা, রবি – বৃহস্পতি'),
-            pill: lbl('Online', 'অনলাইন'),
-            pillColor: '#10b981',
-        },
-        {
             icon: '✉️',
             title: lbl('Email', 'ইমেইল'),
             detail: 'koyjabo.bd@gmail.com',
-            pill: null,
-            pillColor: '',
-        },
-        {
-            icon: '📞',
-            title: lbl('Hotline', 'হটলাইন'),
-            detail: '+880 1700-000000',
-            pill: null,
-            pillColor: '',
-        },
-        {
-            icon: '🐙',
-            title: lbl('GitHub Issues', 'গিটহাব ইস্যু'),
-            detail: 'github.com/fagun18/Dhaka-Commute',
             pill: null,
             pillColor: '',
         },
