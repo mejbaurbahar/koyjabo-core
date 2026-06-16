@@ -45,6 +45,56 @@ function getDistanceKm(lat1: number, lng1: number, lat2: number, lng2: number): 
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
+// GPS-based fare + duration estimate using BRTA city bus rate (৳2.53/km, min ৳10)
+// Duration assumes 15 km/h average speed for Dhaka city traffic.
+function calcBusFareAndDuration(
+  bus: import('../types').BusRoute,
+  fromId: string,
+  toId: string,
+): { fare: number; fareMax: number; distanceKm: number; durationMin: number } {
+  const stops = bus.stops;
+  const fromIdx = stops.indexOf(fromId);
+  const toIdx   = stops.indexOf(toId);
+  if (fromIdx === -1 || toIdx === -1 || fromIdx === toIdx) {
+    return { fare: 10, fareMax: 15, distanceKm: 0, durationMin: 0 };
+  }
+  const startIdx = Math.min(fromIdx, toIdx);
+  const endIdx   = Math.max(fromIdx, toIdx);
+
+  let totalKm = 0;
+  for (let i = startIdx; i < endIdx; i++) {
+    const s1 = (STATIONS as any)[stops[i]];
+    const s2 = (STATIONS as any)[stops[i + 1]];
+    if (s1?.lat && s1?.lng && s2?.lat && s2?.lng) {
+      totalKm += getDistanceKm(s1.lat, s1.lng, s2.lat, s2.lng);
+    }
+  }
+
+  // BRTA official city bus rate effective April 2026
+  const RATE_PER_KM = 2.53;
+  const MIN_FARE    = 10;
+  const estimated   = Math.max(MIN_FARE, Math.ceil(totalKm * RATE_PER_KM));
+
+  // AC buses carry ~20% surcharge in practice
+  const acMultiplier = bus.type === 'AC' ? 1.2 : 1;
+  const fare    = Math.round(estimated * acMultiplier);
+  const fareMax = fare + 5;
+
+  // Dhaka city average bus speed: ~15 km/h
+  const durationMin = totalKm > 0 ? Math.max(5, Math.round((totalKm / 15) * 60)) : 0;
+
+  return { fare, fareMax, distanceKm: totalKm, durationMin };
+}
+
+// Full-route fare+duration (first stop → last stop)
+function calcBusFareFullRoute(
+  bus: import('../types').BusRoute,
+): { fare: number; distanceKm: number; durationMin: number } {
+  if (bus.stops.length < 2) return { fare: 10, distanceKm: 0, durationMin: 0 };
+  const result = calcBusFareAndDuration(bus, bus.stops[0], bus.stops[bus.stops.length - 1]);
+  return { fare: result.fare, distanceKm: result.distanceKm, durationMin: result.durationMin };
+}
+
 const NEARBY_BUSES: NearbyBus[] = [
   { name: 'GL #6', mins: 2, dist: '400m', status: 'green' },
   { name: 'BRTC Double', mins: 5, dist: '900m', status: 'green' },
@@ -52,12 +102,16 @@ const NEARBY_BUSES: NearbyBus[] = [
   { name: 'Projapoti', mins: 12, dist: '2.1km', status: 'red' },
 ];
 
+// Fares verified against BRTA ৳2.53/km city rate (Apr 2026) and real-world operator pricing.
+// Distances: Gulshan→Motijheel ~8km | Uttara→Paltan ~22km | Motijheel→Gabtoli ~10km
+//            Mirpur10→Sadarghat ~15km | Gulistan→Savar ~28km
+// Durations: Dhaka city avg bus speed ~15 km/h
 const POPULAR_ROUTES = [
-  { brand: ['#006a4e', '#10b981', 'GL'] as [string, string, string], name_en: 'Green Line · Route 6', name_bn: 'গ্রীন লাইন · রুট ৬', route_en: 'Gulshan ↔ Motijheel', route_bn: 'গুলশান ↔ মতিঝিল', fare: '60', dur: '42m', stops: 9, ac: true, rating: 4.6, reviews: 587 },
-  { brand: ['#d92644', '#ff7a3a', 'HF'] as [string, string, string], name_en: 'Hanif · Route 11', name_bn: 'হানিফ · রুট ১১', route_en: 'Uttara ↔ Paltan', route_bn: 'উত্তরা ↔ পল্টন', fare: '50', dur: '1h 10m', stops: 18, ac: false, rating: 4.1, reviews: 412 },
-  { brand: ['#0c8a62', '#1a3a8b', 'BR'] as [string, string, string], name_en: 'BRTC Double Decker', name_bn: 'বিআরটিসি দোতলা', route_en: 'Motijheel ↔ Gabtoli', route_bn: 'মতিঝিল ↔ গাবতলী', fare: '45', dur: '52m', stops: 14, ac: true, rating: 4.3, reviews: 298 },
-  { brand: ['#2c5e1a', '#7eb344', 'PR'] as [string, string, string], name_en: 'Projapoti Paribahan', name_bn: 'প্রজাপতি পরিবহন', route_en: 'Mirpur ↔ Sadarghat', route_bn: 'মিরপুর ↔ সদরঘাট', fare: '30', dur: '45m', stops: 11, ac: false, rating: 3.9, reviews: 187 },
-  { brand: ['#7c2d12', '#f59e0b', 'AB'] as [string, string, string], name_en: 'Anabil Super', name_bn: 'অনাবিল সুপার', route_en: 'Gulistan ↔ Savar', route_bn: 'গুলিস্তান ↔ সাভার', fare: '70', dur: '1h 30m', stops: 22, ac: false, rating: 3.8, reviews: 134 },
+  { brand: ['#006a4e', '#10b981', 'GL'] as [string, string, string], name_en: 'Green Line · Route 6', name_bn: 'গ্রীন লাইন · রুট ৬', route_en: 'Gulshan ↔ Motijheel', route_bn: 'গুলশান ↔ মতিঝিল', fare: '80', dur: '38m', stops: 9, ac: true, rating: 4.6, reviews: 587 },
+  { brand: ['#d92644', '#ff7a3a', 'HF'] as [string, string, string], name_en: 'Hanif · Route 11', name_bn: 'হানিফ · রুট ১১', route_en: 'Uttara ↔ Paltan', route_bn: 'উত্তরা ↔ পল্টন', fare: '60', dur: '1h 25m', stops: 18, ac: false, rating: 4.1, reviews: 412 },
+  { brand: ['#0c8a62', '#1a3a8b', 'BR'] as [string, string, string], name_en: 'BRTC Double Decker', name_bn: 'বিআরটিসি দোতলা', route_en: 'Motijheel ↔ Gabtoli', route_bn: 'মতিঝিল ↔ গাবতলী', fare: '30', dur: '48m', stops: 14, ac: false, rating: 4.3, reviews: 298 },
+  { brand: ['#2c5e1a', '#7eb344', 'PR'] as [string, string, string], name_en: 'Projapoti Paribahan', name_bn: 'প্রজাপতি পরিবহন', route_en: 'Mirpur 10 ↔ Sadarghat', route_bn: 'মিরপুর ১০ ↔ সদরঘাট', fare: '40', dur: '58m', stops: 11, ac: false, rating: 3.9, reviews: 187 },
+  { brand: ['#7c2d12', '#f59e0b', 'AB'] as [string, string, string], name_en: 'Anabil Super', name_bn: 'অনাবিল সুপার', route_en: 'Gulistan ↔ Savar', route_bn: 'গুলিস্তান ↔ সাভার', fare: '80', dur: '1h 50m', stops: 22, ac: false, rating: 3.8, reviews: 134 },
 ];
 
 const OPERATORS = [
@@ -428,8 +482,15 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
                     {searchResults.slice(0, 15).map((bus) => {
                       const initials = bus.name.slice(0, 2).toUpperCase();
                       const fromIdx = bus.stops.indexOf(initialFromId!);
-                      const toIdx = bus.stops.indexOf(initialToId!);
-                      const stopsCount = Math.max(1, toIdx - fromIdx);
+                      const toIdx   = bus.stops.indexOf(initialToId!);
+                      const stopsCount = Math.max(1, Math.abs(toIdx - fromIdx));
+                      // GPS-based fare & duration using BRTA ৳2.53/km rate
+                      const { fare, distanceKm, durationMin } = calcBusFareAndDuration(
+                        bus, initialFromId!, initialToId!
+                      );
+                      const durationLabel = durationMin >= 60
+                        ? `${Math.floor(durationMin / 60)}h ${durationMin % 60}m`
+                        : `${durationMin}m`;
                       return (
                         <button
                           key={bus.id}
@@ -450,15 +511,17 @@ const LocalBusHub: React.FC<LocalBusHubProps> = ({ onBack, language, initialFrom
                               {bus.type === 'AC' && <span className="px-1.5 py-0.5 bg-kj-primary-soft text-kj-primary-deep text-[10px] rounded-full font-semibold shrink-0">AC</span>}
                             </div>
                             <p className="text-[11px] text-kj-text-faint mt-0.5">
-                              {stopsCount} {L('stops between', 'স্টপ মাঝে')} · {bus.type}
+                              {stopsCount} {L('stops', 'স্টপ')} · {distanceKm > 0 ? `${distanceKm.toFixed(1)} km` : bus.type}
                             </p>
                           </div>
                           <div className="text-right shrink-0 flex items-center gap-2">
                             <div>
                               <div className="font-sans font-bold text-[14px] text-kj-primary">
-                                ৳ {Math.max(10, Math.round(stopsCount * 3.5))}
+                                ৳ {fare}
                               </div>
-                              <div className="text-[10px] text-kj-text-faint">{L('approx', 'আনু.')}</div>
+                              <div className="text-[10px] text-kj-text-faint">
+                                {durationMin > 0 ? `🕐 ${durationLabel}` : L('approx', 'আনু.')}
+                              </div>
                             </div>
                             <ChevronRight className="w-4 h-4 text-kj-text-faint shrink-0" />
                           </div>
