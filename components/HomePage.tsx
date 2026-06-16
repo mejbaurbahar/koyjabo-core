@@ -2,16 +2,17 @@ import React from 'react';
 import { Bus, Heart, Wifi } from 'lucide-react';
 import HomeSearchPanel, { HomeSearchPanelProps } from './HomeSearchPanel';
 import HomeRightPanel from './HomeRightPanel';
-import TravelHeroScene from './design/Vehicles3D';
+import TravelHeroScene, { MiniVehicle } from './design/Vehicles3D';
 import SponsoredAdSlot from './SponsoredAdSlot';
 import { BusRoute } from '../types';
+import { BusRatingSummary } from '../services/communityDataService';
 
 interface HomePageProps extends Omit<HomeSearchPanelProps, 'onSuggestionSelect'> {
   isDarkMode: boolean;
   isInDhaka: boolean;
   favorites: string[];
   filteredBuses: BusRoute[];
-  busRatingsMap: Record<string, { averageRating?: number; recommendPercent?: number } | null>;
+  busRatingsMap: Record<string, BusRatingSummary | null>;
   listFilter: 'ALL' | 'FAVORITES';
   selectedBus: BusRoute | null;
   searchQuery: string;
@@ -51,57 +52,69 @@ const PWABanner: React.FC<{ language: 'en' | 'bn'; onInstall: () => void }> = ({
 const MODE_TILES = [
   {
     key: 'local-bus',
-    grad: 'linear-gradient(135deg, #006a4e 0%, #10b981 100%)',
+    grad: 'linear-gradient(135deg, var(--kj-primary) 0%, var(--kj-primary-deep) 100%)',
     icon: '🚌',
     titleEn: 'Local bus', titleBn: 'লোকাল বাস',
     subEn: '200+ routes', subBn: '২০০+ রুট',
     badgeEn: 'Popular', badgeBn: 'জনপ্রিয়',
     nav: 'LOCAL_BUS_HUB',
+    vehicle: 'bus' as const,
+    palette: ['#ffffff', 'rgba(255,255,255,0.45)', '#04130d', '#fbbf24']
   },
   {
     key: 'metro',
-    grad: 'linear-gradient(135deg, #00130e 0%, #00543c 100%)',
+    grad: 'linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%)',
     icon: '🚇',
     titleEn: 'Metro Rail', titleBn: 'মেট্রো রেল',
     subEn: 'MRT-6 · 15 stations', subBn: 'MRT-6 · ১৫ স্টেশন',
     badgeEn: '', badgeBn: '',
     nav: 'METRO_HUB',
+    vehicle: 'train' as const,
+    palette: ['#ffffff', 'rgba(255,255,255,0.4)', '#fbbf24']
   },
   {
     key: 'train',
-    grad: 'linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%)',
+    grad: 'linear-gradient(135deg, #8b5cf6 0%, #5b21b6 100%)',
     icon: '🚆',
     titleEn: 'Train', titleBn: 'ট্রেন',
     subEn: 'BD Railway · all routes', subBn: 'BD রেলওয়ে · সব রুট',
     badgeEn: '', badgeBn: '',
     nav: 'TRAIN_LIST',
+    vehicle: 'train' as const,
+    palette: ['#ffffff', 'rgba(255,255,255,0.4)', '#fef3c7']
   },
   {
     key: 'intercity',
-    grad: 'linear-gradient(135deg, #78350f 0%, #f59e0b 100%)',
-    icon: '🚌',
+    grad: 'linear-gradient(135deg, #f59e0b 0%, #b45309 100%)',
+    icon: '✈️',
     titleEn: 'Intercity', titleBn: 'আন্তঃজেলা',
-    subEn: '64 districts', subBn: '৬৪ জেলা',
+    subEn: '64 districts · bus/train/flight', subBn: '৬৪ জেলা · বাস/ট্রেন/ফ্লাইট',
     badgeEn: '', badgeBn: '',
-    nav: 'INTERCITY',
+    nav: 'INTERCITY_HUB',
+    vehicle: 'plane' as const,
+    palette: ['#ffffff', '#3b82f6', '#ef4444']
   },
   {
     key: 'launch',
-    grad: 'linear-gradient(135deg, #0c4a6e 0%, #0ea5e9 100%)',
+    grad: 'linear-gradient(135deg, #0ea5e9 0%, #075985 100%)',
     icon: '⛴',
     titleEn: 'Launch & Steamer', titleBn: 'লঞ্চ ও স্টিমার',
     subEn: 'Sadarghat → Barisal', subBn: 'সদরঘাট → বরিশাল',
     badgeEn: '', badgeBn: '',
     nav: 'LAUNCH_HUB',
+    vehicle: 'launch' as const,
+    palette: ['#ffffff', 'rgba(255,255,255,0.4)', '#fbbf24']
   },
   {
     key: 'ai',
-    grad: 'linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%)',
+    grad: 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)',
     icon: '✨',
     titleEn: 'AI Assistant', titleBn: 'AI সহায়ক',
     subEn: 'Ask in Bangla', subBn: 'বাংলায় জিজ্ঞেস করুন',
     badgeEn: 'New', badgeBn: 'নতুন',
     nav: 'AI_ASSISTANT',
+    vehicle: 'chatbot' as const,
+    palette: ['#ffffff', '#ef4444', '#fbbf24']
   },
 ];
 
@@ -195,22 +208,29 @@ const HomePage: React.FC<HomePageProps> = (props) => {
                 key={tile.key}
                 type="button"
                 onClick={() => tile.key === 'intercity' ? onIntercity() : onNavigate(tile.nav)}
-                className="relative overflow-hidden rounded-[20px] p-4 text-left text-white min-h-[130px] md:min-h-[160px] flex flex-col gap-2 border border-white/10 hover:brightness-110 active:scale-[0.97] transition-all shadow-[0_2px_4px_rgba(0,0,0,0.4),0_12px_36px_-16px_rgba(0,245,255,0.2)]"
+                className="relative overflow-hidden rounded-[20px] p-4 text-left text-white min-h-[180px] flex flex-col gap-2 border border-white/10 hover:brightness-110 active:scale-[0.97] transition-all shadow-[0_2px_4px_rgba(0,0,0,0.4),0_12px_36px_-16px_rgba(0,245,255,0.2)]"
                 style={{ background: tile.grad }}
               >
-                <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-white/10 pointer-events-none" />
-                <div className="relative flex items-center justify-between">
-                  <span className="text-[28px] leading-none">{tile.icon}</span>
+                <div className="absolute -right-8 -top-8 w-28 h-28 rounded-full bg-white/15 pointer-events-none animate-[kjpulse_2.4s_ease-in-out_infinite]" />
+                <div className="relative flex items-center justify-between w-full">
+                  <div className="w-[38px] h-[38px] rounded-xl bg-white/15 backdrop-blur-md flex items-center justify-center text-white shrink-0">
+                    <span className="text-[20px] leading-none">{tile.icon}</span>
+                  </div>
                   {tile.badgeEn && (
                     <span className="bg-black/25 backdrop-blur-sm text-white text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full">
                       {lbl(tile.badgeEn, tile.badgeBn)}
                     </span>
                   )}
                 </div>
-                <div className="relative mt-auto">
-                  <p className="font-bengali font-bold text-[13px] md:text-sm leading-tight">{lbl(tile.titleEn, tile.titleBn)}</p>
+                <div className="relative mt-auto text-left z-10">
+                  <p className="font-bengali font-bold text-[14px] md:text-[15px] leading-tight">{lbl(tile.titleEn, tile.titleBn)}</p>
                   <p className="text-white/75 text-[11px] mt-0.5 leading-snug">{lbl(tile.subEn, tile.subBn)}</p>
                 </div>
+                {tile.vehicle && (
+                  <div className="absolute left-0 right-0 bottom-[-10px] h-[86px] pointer-events-none select-none">
+                    <MiniVehicle kind={tile.vehicle} palette={tile.palette} />
+                  </div>
+                )}
               </button>
             ))}
           </div>
@@ -251,7 +271,7 @@ const HomePage: React.FC<HomePageProps> = (props) => {
                       <p className="text-xs text-kj-text-dim truncate">
                         {bus.stops.length > 0 ? `${getStationSlug(bus.stops[0])} → ${getStationSlug(bus.stops[bus.stops.length - 1])}` : ''}
                       </p>
-                      {hasRating && <p className="text-[10px] text-kj-primary mt-0.5">★ {formatNumber((rating?.averageRating ?? 0).toFixed(1))}</p>}
+                      {hasRating && <p className="text-[10px] text-kj-primary mt-0.5">★ {formatNumber((rating?.average ?? 0).toFixed(1))}</p>}
                     </div>
                     <button type="button" onClick={(e) => onToggleFavorite(e, bus.id)} className="p-1 shrink-0">
                       <Heart className={`w-4 h-4 ${isFav ? 'fill-pink-500 text-pink-500' : 'text-kj-text-faint'}`} />
