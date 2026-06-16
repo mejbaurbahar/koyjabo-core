@@ -1566,7 +1566,18 @@ const App: React.FC = () => {
   // On first load, if URL is a deep link, sync state
   useEffect(() => {
     if (syncBusDeepLinkFromUrl()) return;
-    syncTrainDeepLinkFromUrl();
+    if (syncTrainDeepLinkFromUrl()) return;
+    
+    // Handle blog post URLs on initial load
+    const path = window.location.pathname.substring(1).replace(/\/$/, '');
+    const hash = window.location.hash.slice(1);
+    const target = hash || path;
+    
+    if (target?.startsWith('blog/')) {
+      const slug = target.replace('blog/', '');
+      setSelectedBlogPost(slug);
+      setView(AppView.BLOG);
+    }
   }, [syncBusDeepLinkFromUrl, syncTrainDeepLinkFromUrl]);
 
   // Browser history integration - Handle phone back button
@@ -1575,6 +1586,19 @@ const App: React.FC = () => {
       // Prefer URL-driven state for back/forward (deep links)
       if (syncBusDeepLinkFromUrl()) return;
       if (syncTrainDeepLinkFromUrl()) return;
+      
+      // Handle blog post URLs
+      const path = window.location.pathname.substring(1).replace(/\/$/, '');
+      const hash = window.location.hash.slice(1);
+      const target = hash || path;
+      
+      if (target?.startsWith('blog/')) {
+        const slug = target.replace('blog/', '');
+        setSelectedBlogPost(slug);
+        setView(AppView.BLOG);
+        return;
+      }
+      
       setView(getStoredView());
     };
 
