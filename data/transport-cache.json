@@ -1,0 +1,120 @@
+{
+  "metroStatus": {
+    "line": "MRT-6",
+    "operatingHours": {
+      "start": "07:10",
+      "end": "21:40"
+    },
+    "closedDay": "Friday",
+    "headwayMinutes": 8,
+    "firstTrain": "Uttara North",
+    "lastTrain": "Kamalapur",
+    "fareMin": 20,
+    "fareMax": 100,
+    "topSpeedKmh": 100,
+    "stations": 17,
+    "fetchedAt": "2026-06-14T07:14:49.264Z",
+    "source": "dmtcl.gov.bd (static schedule)"
+  },
+  "brtaFares": {
+    "cityBusRatePerKm": 2.53,
+    "intercityBusRatePerKm": 2.23,
+    "intercityAcRatePerKm": 2.9,
+    "minimumFare": 10,
+    "effectiveDate": "2026-04-23",
+    "source": "BRTA circular dated 23 April 2026",
+    "fetchedAt": "2026-06-14T07:14:49.264Z"
+  },
+  "launchRoutes": {
+    "routes": [
+      {
+        "from": "Sadarghat",
+        "to": "Barisal",
+        "durationH": 9,
+        "deckFare": 350,
+        "vipFare": 1800,
+        "dailyVessels": 8
+      },
+      {
+        "from": "Sadarghat",
+        "to": "Patuakhali",
+        "durationH": 10,
+        "deckFare": 280,
+        "vipFare": 1400,
+        "dailyVessels": 4
+      },
+      {
+        "from": "Sadarghat",
+        "to": "Chandpur",
+        "durationH": 3,
+        "deckFare": 150,
+        "vipFare": 400,
+        "dailyVessels": 6
+      },
+      {
+        "from": "Sadarghat",
+        "to": "Bhola",
+        "durationH": 6,
+        "deckFare": 200,
+        "vipFare": 600,
+        "dailyVessels": 3
+      },
+      {
+        "from": "Sadarghat",
+        "to": "Khulna",
+        "durationH": 13,
+        "deckFare": 350,
+        "vipFare": 2200,
+        "dailyVessels": 2
+      },
+      {
+        "from": "Sadarghat",
+        "to": "Hatiya",
+        "durationH": 11,
+        "deckFare": 280,
+        "vipFare": 900,
+        "dailyVessels": 2
+      },
+      {
+        "from": "Sadarghat",
+        "to": "Morrelganj",
+        "durationH": 11,
+        "deckFare": 300,
+        "vipFare": 1000,
+        "dailyVessels": 2
+      },
+      {
+        "from": "Sadarghat",
+        "to": "Bauphal",
+        "durationH": 9,
+        "deckFare": 250,
+        "vipFare": 800,
+        "dailyVessels": 2
+      },
+      {
+        "from": "Narayanganj",
+        "to": "Barisal",
+        "durationH": 10,
+        "deckFare": 320,
+        "vipFare": 1600,
+        "dailyVessels": 3
+      },
+      {
+        "from": "Narayanganj",
+        "to": "Chandpur",
+        "durationH": 2,
+        "deckFare": 100,
+        "vipFare": 300,
+        "dailyVessels": 4
+      }
+    ],
+    "totalRoutes": 67,
+    "fetchedAt": "2026-06-14T07:14:49.264Z",
+    "source": "biwtc.gov.bd"
+  },
+  "trainFaresSpotCheck": {
+    "spotCheck": [],
+    "fetchedAt": "2026-06-14T07:14:50.828Z"
+  },
+  "_refreshedAt": "2026-06-14T07:14:50.828Z"
+}

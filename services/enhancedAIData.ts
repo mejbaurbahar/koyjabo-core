@@ -8,7 +8,7 @@ export const FARE_DATA = {
     bus: {
         dhaka: {
             minimumFare: 10,
-            ratePerKm: 2.42,
+            ratePerKm: 2.53,
             acBusMultiplier: 2.5,
             luxuryMultiplier: 3,
             averageShortTrip: 20,
@@ -508,8 +508,8 @@ export const FAQ_DATABASE = {
 শুক্রবার ব্যতিত অন্যান্য দিন সকাল ০৬:৪০ থেকে রাত ০৯:২০ পর্যন্ত Single Journey Ticket ক্রয় ও MRT/Rapid Pass Top up করা যাবে। উত্তরা উত্তর স্টেশন থেকে শুক্রবার বিকাল ০২:৪৫ মিনিট হতে এবং মতিঝিল স্টেশন হতে শুক্রবার বিকাল ০৩:০৫ মিনিট হতে টিকিট ক্রয় ও Rapid Pass ক্রয় করা যাবে।`
     },
     'bus fare': {
-        en: '💰 **Bus Fare Calculation:**\n- Minimum fare: ৳10\n- Rate: ৳2.42 per km\n- AC buses: 2-3x regular fare\n- Average short trip: ৳20-30\n- Average long trip: ৳40-60',
-        bn: '💰 **বাস ভাড়া হিসাব:**\n- সর্বনিম্ন ভাড়া: ৳১০\n- রেট: প্রতি কিমি ৳২.৪২\n- এসি বাস: নিয়মিত ভাড়ার ২-৩ গুণ\n- গড় ছোট ট্রিপ: ৳২০-৩০\n- গড় লম্বা ট্রিপ: ৳৪০-৬০'
+        en: '💰 **Bus Fare Calculation:**\n- Minimum fare: ৳10\n- Rate: ৳2.53 per km\n- AC buses: 2-3x regular fare\n- Average short trip: ৳20-30\n- Average long trip: ৳40-60',
+        bn: '💰 **বাস ভাড়া হিসাব:**\n- সর্বনিম্ন ভাড়া: ৳১০\n- রেট: প্রতি কিমি ৳২.৫৩\n- এসি বাস: নিয়মিত ভাড়ার ২-৩ গুণ\n- গড় ছোট ট্রিপ: ৳২০-৩০\n- গড় লম্বা ট্রিপ: ৳৪০-৬০'
     },
     'best time to travel': {
         en: '⏰ **Best Time to Travel in Dhaka:**\n- Avoid: 8-10 AM, 5-8 PM (peak hours)\n- Best: 10:30 AM - 4 PM (less traffic)\n- Night: After 9 PM (very light traffic)\n- Friday: Less traffic overall (Metro closed)\n- Saturday & Sunday: Moderate traffic',

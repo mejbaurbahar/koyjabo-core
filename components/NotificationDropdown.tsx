@@ -42,7 +42,7 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({ onClose }) 
                     {unreadCount > 0 && (
                         <button
                             onClick={handleMarkAllAsRead}
-                            className="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+                            className="text-xs text-kj-primary hover:underline flex items-center gap-1"
                         >
                             <CheckCheck className="w-3 h-3" />
                             {t('notifications.markAllRead')}
@@ -81,7 +81,7 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({ onClose }) 
                 <div className="px-4 py-3 border-t border-kj-line bg-gray-50 dark:bg-kj-chip-bg/50">
                     <button
                         onClick={onClose}
-                        className="w-full text-center text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+                        className="w-full text-center text-xs text-kj-primary hover:text-blue-700 dark:hover:text-blue-300 font-medium"
                     >
                         {t('common.close')}
                     </button>

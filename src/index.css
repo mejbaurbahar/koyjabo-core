@@ -9,47 +9,65 @@
   line-height: 1.5;
   font-weight: 400;
 
-  --kj-bg: #f5f3ee;
-  --kj-panel: #ffffff;
-  --kj-panel-muted: #f0ede5;
-  --kj-line: #e2ddd0;
-  --kj-text: #0e1a1f;
-  --kj-text-dim: #5a6b6f;
-  --kj-text-faint: #8a9a9c;
-  --kj-chip-bg: #eae5d8;
-  --kj-chip-text: #3a4a4e;
-  --kj-input-bg: #fbfaf6;
-  --kj-primary: #006a4e;
-  --kj-primary-ink: #ffffff;
-  --kj-primary-soft: #e3efe9;
-  --kj-primary-deep: #004a36;
-  --kj-accent: #d92644;
-  --kj-accent-soft: #fbe6ea;
-  --kj-amber: #b46a13;
-  --kj-amber-soft: #f6ead3;
-  --kj-metro-bg: #001b14;
+  /* Futuristic light theme */
+  --kj-bg: #eef3f7;
+  --kj-panel: rgba(255, 255, 255, 0.82);
+  --kj-panel-muted: rgba(232, 240, 247, 0.7);
+  --kj-line: rgba(56, 89, 122, 0.18);
+  --kj-text: #0a1626;
+  --kj-text-dim: #4a607a;
+  --kj-text-faint: #7e93ab;
+  --kj-chip-bg: rgba(56, 100, 160, 0.08);
+  --kj-chip-text: #1e3a5f;
+  --kj-input-bg: rgba(255, 255, 255, 0.75);
+  --kj-primary: #00b8d9;
+  --kj-primary-ink: #02161c;
+  --kj-primary-soft: rgba(0, 184, 217, 0.12);
+  --kj-primary-deep: #0070ad;
+  --kj-accent: #ff3d77;
+  --kj-accent-soft: rgba(255, 61, 119, 0.12);
+  --kj-amber: #ff8a00;
+  --kj-amber-soft: rgba(255, 138, 0, 0.12);
+  --kj-metro-bg: #001b2e;
+  --kj-shadow: 0 2px 4px rgba(0,32,64,0.04), 0 18px 40px -20px rgba(0,184,217,0.18);
+  --kj-shadow-lg: 0 4px 12px rgba(0,32,64,0.06), 0 32px 80px -30px rgba(0,184,217,0.35);
+  /* Futuristic extras */
+  --kj-neon-cyan: #00b8d9;
+  --kj-neon-magenta: #ff3d77;
+  --kj-neon-violet: #a259ff;
+  --kj-neon-amber: #ff8a00;
+  --kj-grid: rgba(0, 120, 180, 0.07);
 }
 
 .dark {
-  --kj-bg: #080d10;
-  --kj-panel: #10181c;
-  --kj-panel-muted: #0c1418;
-  --kj-line: #1c272c;
-  --kj-text: #e8efe9;
-  --kj-text-dim: #8d9b9d;
-  --kj-text-faint: #5e6d70;
-  --kj-chip-bg: #172226;
-  --kj-chip-text: #b6c4c4;
-  --kj-input-bg: #0a1114;
-  --kj-primary: #10b981;
-  --kj-primary-ink: #04130d;
-  --kj-primary-soft: #0f2a22;
-  --kj-primary-deep: #0c8a62;
-  --kj-accent: #ff5a76;
-  --kj-accent-soft: #2a0e15;
-  --kj-amber: #f7b955;
-  --kj-amber-soft: #2a1f0c;
-  --kj-metro-bg: #00130e;
+  /* Futuristic dark theme — design handoff */
+  --kj-bg: #040814;
+  --kj-panel: rgba(13, 22, 42, 0.72);
+  --kj-panel-muted: rgba(7, 14, 28, 0.6);
+  --kj-line: rgba(0, 245, 255, 0.14);
+  --kj-text: #e0f7ff;
+  --kj-text-dim: #8da4c4;
+  --kj-text-faint: #5a7090;
+  --kj-chip-bg: rgba(0, 245, 255, 0.08);
+  --kj-chip-text: #bde6ff;
+  --kj-input-bg: rgba(5, 12, 24, 0.7);
+  --kj-primary: #00f5ff;
+  --kj-primary-ink: #001218;
+  --kj-primary-soft: rgba(0, 245, 255, 0.14);
+  --kj-primary-deep: #00d4e6;
+  --kj-accent: #ff2a6d;
+  --kj-accent-soft: rgba(255, 42, 109, 0.14);
+  --kj-amber: #ffb800;
+  --kj-amber-soft: rgba(255, 184, 0, 0.14);
+  --kj-metro-bg: #000814;
+  --kj-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 18px 50px -20px rgba(0,245,255,0.25);
+  --kj-shadow-lg: 0 4px 12px rgba(0,0,0,0.6), 0 30px 90px -25px rgba(0,245,255,0.45);
+  /* Futuristic extras */
+  --kj-neon-cyan: #00f5ff;
+  --kj-neon-magenta: #ff2a6d;
+  --kj-neon-violet: #a259ff;
+  --kj-neon-amber: #ffb800;
+  --kj-grid: rgba(0, 245, 255, 0.07);
 }
 
 
@@ -86,11 +104,14 @@ body {
   width: 100%;
   height: 100%;
   height: 100dvh;
+  max-height: 100dvh;
   /* iOS fallback */
   height: -webkit-fill-available;
+  max-height: -webkit-fill-available;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  min-height: 0;
 }
 
 /* Hide scrollbar utility */
@@ -108,12 +129,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #f42a41, #006a4e);
+  background: linear-gradient(to bottom, var(--kj-accent), var(--kj-primary));
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #d61f33, #00563f);
+  background: linear-gradient(to bottom, var(--kj-neon-magenta), var(--kj-neon-cyan));
 }
 
 /* --- ANIMATIONS For DhakaAlive --- */
@@ -766,17 +787,78 @@ textarea {
 
 /* ===== GOOGLE ADSENSE INTEGRATION ===== */
 
-/* Prevent ads from breaking layout — avoid overflow:hidden on ins (hurts nested iframes / touch) */
-.adsbygoogle {
+/* Hard-contain all AdSense iframes so they NEVER escape their parent container */
+.adsbygoogle,
+ins.adsbygoogle {
   display: block !important;
   margin: 0 auto;
   text-align: center;
+  /* Prevent expandable/anchor creatives from breaking page layout */
+  max-height: inherit !important;
+  overflow: hidden !important;
+}
+
+/* Clamp iframes injected by AdSense to their parent's height */
+.adsbygoogle > iframe,
+ins.adsbygoogle > iframe {
+  max-height: inherit !important;
+  height: inherit !important;
 }
 
 /* Ensure ads don't cause horizontal scroll */
 ins.adsbygoogle {
   max-width: 100%;
   box-sizing: border-box;
+}
+
+/* Fixed-size ad slots — prevent responsive units from stealing viewport */
+/* leaderboard: 12px pad × 2 + ~15px label + 90px ad = 129px; add buffer → 140px */
+.adsense-slot-leaderboard {
+  max-height: 140px;
+  overflow: hidden;
+}
+
+/* rectangle: 12px pad × 2 + ~15px label + 250px ad = 289px; add buffer → 300px */
+.adsense-slot-rectangle {
+  max-height: 300px;
+  overflow: hidden;
+}
+
+/* Collapse entire slot when Google marks the unit as unfilled */
+.adsense-wrapper:has(.adsbygoogle[data-ad-status="unfilled"]) {
+  display: none !important;
+}
+
+.adsense-wrapper.kj-ad-reserved {
+  display: block !important;
+}
+
+.kj-ad-reserved .kj-ad-card {
+  min-height: var(--kj-ad-card-height) !important;
+}
+
+.kj-ad-reserved .kj-ad-shell {
+  height: var(--kj-ad-height) !important;
+  min-height: var(--kj-ad-height) !important;
+  max-height: var(--kj-ad-height) !important;
+}
+
+/* Hide the label text until ad actually fills — avoids "বিজ্ঞাপন Google AdSense · 728 × 90" showing in blank space */
+.adsense-wrapper:not(:has(.adsbygoogle[data-ad-status="filled"])) .adsense-label {
+  visibility: hidden;
+}
+
+.adsense-slot-leaderboard .adsbygoogle,
+.adsense-slot-leaderboard ins.adsbygoogle,
+.adsense-slot-rectangle .adsbygoogle,
+.adsense-slot-rectangle ins.adsbygoogle {
+  max-height: 100% !important;
+  overflow: hidden !important;
+}
+
+.adsense-slot-leaderboard iframe,
+.adsense-slot-rectangle iframe {
+  max-height: 100% !important;
 }
 
 /* AdSense container styling */
@@ -943,4 +1025,239 @@ footer {
 /* Suppress Cesium default token warning and credits */
 .cesium-widget-credits {
   display: none !important;
+}
+
+/* ===== FUTURISTIC UI SYSTEM ===== */
+
+/* Animated grid background */
+@keyframes kj-grid-shift {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(40px, 40px); }
+}
+
+/* Aurora glow breathing */
+@keyframes kj-aurora {
+  0%, 100% { opacity: 0.8; }
+  50%       { opacity: 1; }
+}
+
+/* Holographic border spin */
+@keyframes kj-holo-rot {
+  to { transform: rotate(360deg); }
+}
+
+/* Neon pulse */
+@keyframes kj-neon-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 12px var(--kj-neon-cyan), 0 0 24px rgba(0,245,255,0.3); }
+  50%       { opacity: 0.75; box-shadow: 0 0 6px var(--kj-neon-cyan); }
+}
+
+/* Futuristic page background overlay */
+.kj-future-bg {
+  position: relative;
+}
+.kj-future-bg::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(var(--kj-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--kj-grid) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse at center top, #000 25%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center top, #000 25%, transparent 80%);
+  animation: kj-grid-shift 20s linear infinite;
+}
+.kj-future-bg::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(800px circle at 20% 0%, rgba(0,184,217,0.12), transparent 60%),
+    radial-gradient(600px circle at 85% 30%, rgba(255,61,119,0.08), transparent 60%),
+    radial-gradient(700px circle at 50% 100%, rgba(162,89,255,0.10), transparent 60%);
+  animation: kj-aurora 18s ease-in-out infinite alternate;
+}
+.dark .kj-future-bg::before {
+  background-image:
+    linear-gradient(var(--kj-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--kj-grid) 1px, transparent 1px);
+}
+.dark .kj-future-bg::after {
+  background:
+    radial-gradient(800px circle at 20% 0%, rgba(0,245,255,0.10), transparent 60%),
+    radial-gradient(600px circle at 85% 30%, rgba(255,42,109,0.08), transparent 60%),
+    radial-gradient(700px circle at 50% 100%, rgba(162,89,255,0.10), transparent 60%);
+}
+
+/* Glassmorphism panel */
+.kj-glass {
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+
+/* Design handoff card shell — glass by default */
+.dc-card {
+  background: var(--kj-panel);
+  border: 1px solid var(--kj-line);
+  box-shadow: var(--kj-shadow-lg);
+  backdrop-filter: blur(16px) saturate(138%);
+  -webkit-backdrop-filter: blur(16px) saturate(138%);
+}
+
+.kj-home-shell {
+  background: transparent;
+}
+
+/* Neon glow halo */
+.kj-glow {
+  box-shadow:
+    0 0 0 1px rgba(0, 245, 255, 0.35),
+    0 0 18px rgba(0, 245, 255, 0.28),
+    0 0 36px rgba(0, 245, 255, 0.14);
+  animation: kj-neon-pulse 3s ease-in-out infinite;
+}
+.kj-glow-accent {
+  box-shadow:
+    0 0 0 1px rgba(255, 42, 109, 0.35),
+    0 0 18px rgba(255, 42, 109, 0.28),
+    0 0 36px rgba(255, 42, 109, 0.14);
+}
+.kj-glow-amber {
+  box-shadow:
+    0 0 0 1px rgba(255, 184, 0, 0.35),
+    0 0 18px rgba(255, 184, 0, 0.28),
+    0 0 36px rgba(255, 184, 0, 0.14);
+}
+
+/* Holographic animated border */
+.kj-holo {
+  position: relative;
+  isolation: isolate;
+}
+.kj-holo::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from 0deg,
+    var(--kj-neon-cyan), var(--kj-neon-violet), var(--kj-neon-magenta),
+    var(--kj-neon-amber), var(--kj-neon-cyan));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: kj-holo-rot 6s linear infinite;
+  pointer-events: none;
+}
+
+/* Mode tile gradient cards */
+.kj-mode-tile {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+}
+.kj-mode-tile:hover {
+  transform: translateY(-3px) scale(1.02);
+}
+.kj-mode-tile:active {
+  transform: scale(0.97);
+}
+
+/* Pulsing live indicator */
+@keyframes kj-live-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.8); opacity: 0; }
+}
+.kj-live-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: inherit;
+  animation: kj-live-pulse 2s ease-in-out infinite;
+}
+
+/* Vehicle icon spin for mode tiles */
+@keyframes kj-bob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-4px); }
+}
+.kj-bob { animation: kj-bob 3s ease-in-out infinite; }
+
+@keyframes kjpulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* Home hero strip (legacy soft animations) */
+@keyframes kj-drive-soft {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(12px); }
+}
+@keyframes kj-fly-soft {
+  0% { transform: translateX(0) translateY(0); opacity: 0.7; }
+  50% { transform: translateX(-8px) translateY(-3px); opacity: 1; }
+  100% { transform: translateX(0) translateY(0); opacity: 0.7; }
+}
+@keyframes kj-glow-soft {
+  0%, 100% { box-shadow: 0 0 24px rgba(245,215,110,0.45); }
+  50% { box-shadow: 0 0 32px rgba(245,215,110,0.65); }
+}
+.kj-anim-drive-soft { animation: kj-drive-soft 4s ease-in-out infinite; }
+.kj-anim-fly-soft { animation: kj-fly-soft 6s ease-in-out infinite; }
+.kj-anim-glow-soft { animation: kj-glow-soft 3s ease-in-out infinite; }
+
+/* 3D vehicle scene (design handoff) */
+@keyframes kj-drive   { 0% { transform: translateX(-30%); } 100% { transform: translateX(130%); } }
+@keyframes kj-fly     { 0% { transform: translate(-20%, 18%) rotate(-6deg); } 50% { transform: translate(40%, 8%) rotate(-4deg); } 100% { transform: translate(130%, 18%) rotate(-6deg); } }
+@keyframes kj-train   { 0% { transform: translateX(-40%); } 100% { transform: translateX(140%); } }
+@keyframes kj-bob-sm  { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes kj-shake   { 0%, 100% { transform: translateY(0); } 25% { transform: translateY(-0.6px); } 75% { transform: translateY(0.6px); } }
+@keyframes kj-cloud   { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+@keyframes kj-spin    { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+@keyframes kj-pulse   { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.08); } }
+@keyframes kj-glow    { 0%, 100% { filter: drop-shadow(0 4px 14px rgba(16,185,129,0.45)); } 50% { filter: drop-shadow(0 6px 22px rgba(16,185,129,0.75)); } }
+@keyframes kj-dash    { to { stroke-dashoffset: -40; } }
+@keyframes kjdash     { to { stroke-dashoffset: -28; } }
+@keyframes kjbobsm    { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+/* KoyJabo Story animations */
+@keyframes kjDriveBy  { 0% { transform: translateX(380px); } 100% { transform: translateX(-200px); } }
+@keyframes kjFloatY   { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes kjBobY     { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes kjPopIn    { 0% { transform: scale(.4); opacity: 0; } 60% { transform: scale(1.12); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+@keyframes kjSpark    { 0%,100% { transform: scale(.6); opacity: .2; } 50% { transform: scale(1.1); opacity: 1; } }
+@keyframes kjRollIn   { 0% { transform: translateX(260px); } 70% { transform: translateX(-12px); } 100% { transform: translateX(0); } }
+@keyframes kjStoryIn  { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.kj-story-scene { animation: kjStoryIn .5s cubic-bezier(.2,.7,.25,1) both; }
+@keyframes kj-track   { 0% { background-position: 0 0; } 100% { background-position: -40px 0; } }
+@keyframes kj-blink   { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+@keyframes kj-smoke   { 0% { transform: translateY(0) scale(1); opacity: 0.7; } 100% { transform: translateY(-30px) scale(2); opacity: 0; } }
+.kj-anim-drive  { animation: kj-drive 9s linear infinite; transform-origin: center; }
+.kj-anim-fly    { animation: kj-fly 11s ease-in-out infinite; }
+.kj-anim-train  { animation: kj-train 7s linear infinite; }
+.kj-anim-bob-sm { animation: kj-bob-sm 1.6s ease-in-out infinite; }
+.kj-anim-shake  { animation: kj-shake 0.18s linear infinite; }
+.kj-anim-cloud  { animation: kj-cloud 28s linear infinite; }
+.kj-anim-spin   { animation: kj-spin 0.6s linear infinite; transform-origin: 50% 50%; transform-box: fill-box; }
+.kj-anim-pulse  { animation: kj-pulse 2s ease-in-out infinite; transform-origin: center; }
+.kj-anim-glow   { animation: kj-glow 2.4s ease-in-out infinite; }
+.kj-anim-dash   { stroke-dasharray: 12 8; animation: kj-dash 1.6s linear infinite; }
+.kj-anim-blink  { animation: kj-blink 1.3s ease-in-out infinite; }
+.kj-anim-smoke  { animation: kj-smoke 2.5s ease-out infinite; }
+
+/* Scan line CRT overlay */
+.kj-scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(0deg,
+    rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px,
+    transparent 1px, transparent 3px);
+  mix-blend-mode: overlay;
+  border-radius: inherit;
 }

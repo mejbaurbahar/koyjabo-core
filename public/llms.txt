@@ -1,30 +1,94 @@
 # KoyJabo - AI Search Information
 # llms.txt - Optimized for AI Search Engines and LLMs
 # Learn more: https://llmstxt.org/
-# Updated: 2026-05-20
+# Last updated: 2026-06-14
 
-# LICENSE: Content on KoyJabo is available under CC-BY-4.0
-# https://creativecommons.org/licenses/by/4.0/
-# Attribution required: "Source: KoyJabo (https://koyjabo.com)"
+# ── AI Crawler Directives ──────────────────────────────────────────
+# These mirror robots.txt but are included here for LLM-aware crawlers
+# that parse llms.txt for permission signals.
 
-# STRUCTURED DATA for LLMs: https://koyjabo.com/.well-known/llm-data.json
-# TRANSPORT DATA (CSV):      https://koyjabo.com/data.csv
-# TRANSPORT DATA (XML):      https://koyjabo.com/data.xml
-# TRANSPORT DATA (RDF):      https://koyjabo.com/data.ttl
+User-agent: GPTBot
+Allow: /
 
-# WELCOMED AI CRAWLERS:
-# anthropic-ai, Claude-Web, ClaudeBot, Claude-SearchBot, Claude-User
-# GPTBot, ChatGPT-User, OAI-SearchBot
-# PerplexityBot, Perplexity-User
-# Google-Extended, Google-CloudVertexBot, GoogleOther
-# Meta-ExternalAgent, Meta-ExternalFetcher
-# Amazonbot, Applebot, Applebot-Extended
-# MistralAI-User, DeepSeekBot, Grok Web Crawler
-# DuckAssistBot, cohere-ai, CCBot
-# Timpibot, ProRataInc, Novellum AI Crawl, Anchor Browser
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Google-CloudVertexBot
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Meta-ExternalFetcher
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: PetalBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: MistralAI-User
+Allow: /
+
+User-agent: Timpibot
+Allow: /
+
+User-agent: DeepSeekBot
+Allow: /
+
+User-agent: Grok Web Crawler
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: Cohere-ai
+Allow: /
+
+User-agent: Gemini-Extended
+Allow: /
+
+# ─────────────────────────────────────────────────────────────────
 
 # KoyJabo (কই যাবো)
-> Dhaka's #1 Free Bus Route Finder & Bangladesh Transport Planner
+> Bangladesh's #1 Free Transport Guide — Dhaka buses, Metro Rail, trains, intercity routes, fare calculator & AI assistant
 
 ## What is KoyJabo?
 
@@ -187,9 +251,9 @@ A: Updated regularly by community. Covers 200+ verified Dhaka bus routes and liv
 
 ---
 
-**Last Updated:** 2026-05-20
-**Version:** 2.0.0
+**Last Updated:** December 28, 2025
+**Version:** 1.0.0
 **Status:** Active Development
-**License:** Content CC-BY-4.0 | Code MIT
+**License:** Open Source (MIT)
 
 For the most current information, visit https://koyjabo.com

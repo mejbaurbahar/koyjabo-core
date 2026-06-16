@@ -1,0 +1,622 @@
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5] [cursor=pointer]:
+      - img "KoyJabo" [ref=e6]
+      - generic [ref=e7]:
+        - generic [ref=e8]: কই যাবো
+        - generic [ref=e9]: KoyJabo · BD
+    - generic [ref=e10]:
+      - button "হোম" [ref=e11] [cursor=pointer]:
+        - img [ref=e12]
+        - text: হোম
+      - button "মেট্রো LIVE" [ref=e15] [cursor=pointer]:
+        - img [ref=e16]
+        - text: মেট্রো
+        - generic [ref=e20]: LIVE
+      - button "আন্তঃজেলা" [ref=e21] [cursor=pointer]:
+        - img [ref=e22]
+        - text: আন্তঃজেলা
+      - button "ভাড়া হিসাব" [ref=e26] [cursor=pointer]:
+        - img [ref=e27]
+        - text: ভাড়া হিসাব
+      - button "AI সহায়ক NEW" [ref=e29] [cursor=pointer]:
+        - img [ref=e30]
+        - text: AI সহায়ক
+        - generic [ref=e33]: NEW
+    - generic [ref=e34]:
+      - button "Toggle language" [ref=e35] [cursor=pointer]:
+        - img [ref=e36]
+        - generic [ref=e40]: বাং
+      - button "অ্যাপ ইনস্টল" [ref=e41] [cursor=pointer]
+      - button "থিম পরিবর্তন" [ref=e42] [cursor=pointer]:
+        - img [ref=e43]
+      - button "লগইন" [ref=e49] [cursor=pointer]:
+        - img [ref=e50]
+        - text: লগইন
+      - button "মেনু খুলুন" [ref=e53] [cursor=pointer]:
+        - img [ref=e54]
+  - main [ref=e55]:
+    - generic [ref=e58]:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - img
+                - generic:
+                  - generic:
+                    - generic:
+                      - paragraph: "\"After I land, how do I go to Gulshan 2?\""
+          - generic "National Martyrs' Memorial" [ref=e59] [cursor=pointer]
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - paragraph: "\"Uttara to Motijheel: 100 Taka well spent.\""
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic "Lalbagh Fort"
+                - generic:
+                  - generic "Ahsan Manzil (Pink Palace)"
+              - generic:
+                - generic:
+                  - generic "Shaheed Minar"
+              - generic:
+                - generic:
+                  - generic "Curzon Hall"
+                - generic:
+                  - generic "National Parliament House"
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - paragraph: "\"How do I go to New Market from here?\""
+            - generic "Dhaka Metropolitan Police" [ref=e66]
+          - generic:
+            - generic:
+              - img
+              - img
+            - generic:
+              - img
+              - img
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - paragraph: "\"পারাপার ভাড়া ১০ টাকা হলো কবে?\""
+          - generic:
+            - generic:
+              - generic: "Live Simulation: Dhaka"
+      - generic [ref=e84]:
+        - generic [ref=e86]:
+          - generic [ref=e87]:
+            - heading "ব্লগ" [level=1] [ref=e88]
+            - paragraph [ref=e89]: ঢাকা এবং বাংলাদেশের যাতায়াত সম্পর্কে গাইড এবং টিপস
+          - generic [ref=e90]:
+            - img [ref=e91]
+            - textbox "পোস্ট খুঁজুন..." [ref=e94]
+          - generic [ref=e95]:
+            - button "সব" [ref=e96] [cursor=pointer]
+            - button "Travel Guide" [ref=e97] [cursor=pointer]
+            - button "Metro Rail" [ref=e98] [cursor=pointer]
+            - button "Bus & Transport" [ref=e99] [cursor=pointer]
+            - button "App Guide" [ref=e100] [cursor=pointer]
+            - button "Tips & Tricks" [ref=e101] [cursor=pointer]
+        - generic [ref=e102]:
+          - insertion [ref=e107]:
+            - iframe [ref=e109]:
+              
+          - generic [ref=e110]:
+            - heading "ফিচার্ড" [level=2] [ref=e111]:
+              - generic [ref=e112]: ফিচার্ড
+            - generic [ref=e113] [cursor=pointer]:
+              - generic [ref=e114]:
+                - img "ঢাকার ট্রাফিক আইন, লঙ্ঘন ও জরিমানার তালিকা (২০২৬ গাইড)" [ref=e115]
+                - generic [ref=e116]:
+                  - img [ref=e117]
+                  - text: Tips & Tricks
+              - generic [ref=e120]:
+                - generic [ref=e121]:
+                  - generic [ref=e122]:
+                    - img [ref=e123]
+                    - text: 4 min read
+                  - generic [ref=e126]:
+                    - img [ref=e127]
+                    - text: ৩০ এপ্রিল, ২০২৬
+                - heading "ঢাকার ট্রাফিক আইন, লঙ্ঘন ও জরিমানার তালিকা (২০২৬ গাইড)" [level=3] [ref=e129]
+                - paragraph [ref=e130]: ঢাকার ট্রাফিক সিস্টেমে বড় পরিবর্তন শুরু হয়ে গেছে। এখন থেকে শুধু ট্রাফিক পুলিশ না—AI-based system নিজেই শনাক্ত করবে কে আইন ভাঙছে।
+                - generic [ref=e131]:
+                  - generic [ref=e132]: "লেখক: KoyJabo Team"
+                  - button "পড়ুন" [ref=e133]:
+                    - text: পড়ুন
+                    - img [ref=e134]
+          - generic [ref=e136]:
+            - heading "সকল পোস্ট" [level=2] [ref=e137]
+            - generic [ref=e138]:
+              - generic [ref=e139] [cursor=pointer]:
+                - generic [ref=e140]:
+                  - 'img "কিভাবে ঢাকায় যাতায়াত করবেন: পর্যটকদের জন্য ট্রান্সপোর্ট গাইড (২০২৬)" [ref=e141]'
+                  - generic [ref=e142]:
+                    - img [ref=e143]
+                    - text: Travel Guide
+                - generic [ref=e146]:
+                  - generic [ref=e147]:
+                    - img [ref=e148]
+                    - text: 8 min read
+                    - generic [ref=e151]: ২৮ এপ্রি
+                  - 'heading "কিভাবে ঢাকায় যাতায়াত করবেন: পর্যটকদের জন্য ট্রান্সপোর্ট গাইড (২০২৬)" [level=3] [ref=e152]'
+                  - paragraph [ref=e153]: ঢাকায় যাতায়াতের সব তথ্য এক জায়গায় — বাস, মেট্রো, রিকশা, সিএনজি, রাইড-হেইলিং অ্যাপ এবং কীভাবে শহরটি চেনা মানুষের মতো চলতে পারবেন।
+                  - generic [ref=e154]:
+                    - generic [ref=e155]: KoyJabo Team
+                    - generic [ref=e156]: পড়ুন →
+              - generic [ref=e157] [cursor=pointer]:
+                - generic [ref=e158]:
+                  - 'img "ঢাকা মেট্রোরেল এমআরটি লাইন ৬ গাইড: রুট, টিকিট ও সময়সূচী" [ref=e159]'
+                  - generic [ref=e160]:
+                    - img [ref=e161]
+                    - text: Metro Rail
+                - generic [ref=e164]:
+                  - generic [ref=e165]:
+                    - img [ref=e166]
+                    - text: 6 min read
+                    - generic [ref=e169]: ২৭ এপ্রি
+                  - 'heading "ঢাকা মেট্রোরেল এমআরটি লাইন ৬ গাইড: রুট, টিকিট ও সময়সূচী" [level=3] [ref=e170]'
+                  - paragraph [ref=e171]: ঢাকার মেট্রোরেল সম্পর্কে সব কিছু — স্টেশন, ভাড়া, সময়সূচি, এমআরটি পাস কার্ড এবং প্রথমবার যাত্রীদের জন্য টিপস।
+                  - generic [ref=e172]:
+                    - generic [ref=e173]: KoyJabo Team
+                    - generic [ref=e174]: পড়ুন →
+              - generic [ref=e175] [cursor=pointer]:
+                - generic [ref=e176]:
+                  - img "ঢাকা থেকে কক্সবাজার ভ্রমণের খরচ, বাস ও ট্রেন গাইড (২০২৬)" [ref=e177]
+                  - generic [ref=e178]:
+                    - img [ref=e179]
+                    - text: Travel Guide
+                - generic [ref=e182]:
+                  - generic [ref=e183]:
+                    - img [ref=e184]
+                    - text: 7 min read
+                    - generic [ref=e187]: ২৬ এপ্রি
+                  - heading "ঢাকা থেকে কক্সবাজার ভ্রমণের খরচ, বাস ও ট্রেন গাইড (২০২৬)" [level=3] [ref=e188]
+                  - paragraph [ref=e189]: ঢাকা থেকে কক্সবাজার যাওয়ার সব উপায় — নাইটকোচ বাস, ট্রেন এবং বিমান। ভাড়া, সময় এবং সেরা টিপস সহ।
+                  - generic [ref=e190]:
+                    - generic [ref=e191]: KoyJabo Team
+                    - generic [ref=e192]: পড়ুন →
+              - generic [ref=e193] [cursor=pointer]:
+                - generic [ref=e194]:
+                  - 'img "ঢাকা থেকে চট্টগ্রাম: সম্পূর্ণ ট্রাভেল গাইড ২০২৬" [ref=e195]'
+                  - generic [ref=e196]:
+                    - img [ref=e197]
+                    - text: Travel Guide
+                - generic [ref=e200]:
+                  - generic [ref=e201]:
+                    - img [ref=e202]
+                    - text: 6 min read
+                    - generic [ref=e205]: ২৫ এপ্রি
+                  - 'heading "ঢাকা থেকে চট্টগ্রাম: সম্পূর্ণ ট্রাভেল গাইড ২০২৬" [level=3] [ref=e206]'
+                  - paragraph [ref=e207]: ঢাকা থেকে চট্টগ্রাম বাস, ট্রেন বা বিমানে — ভাড়া, সময়, এবং বাংলাদেশের সবচেয়ে ব্যস্ত রুটে কী আশা করতে পারেন।
+                  - generic [ref=e208]:
+                    - generic [ref=e209]: KoyJabo Team
+                    - generic [ref=e210]: পড়ুন →
+              - generic [ref=e211] [cursor=pointer]:
+                - generic [ref=e212]:
+                  - 'img "কই যাবো কীভাবে ব্যবহার করবেন: বাংলাদেশের সেরা ট্রান্সপোর্ট প্ল্যানার" [ref=e213]'
+                  - generic [ref=e214]:
+                    - img [ref=e215]
+                    - text: App Guide
+                - generic [ref=e218]:
+                  - generic [ref=e219]:
+                    - img [ref=e220]
+                    - text: 5 min read
+                    - generic [ref=e223]: ২৪ এপ্রি
+                  - 'heading "কই যাবো কীভাবে ব্যবহার করবেন: বাংলাদেশের সেরা ট্রান্সপোর্ট প্ল্যানার" [level=3] [ref=e224]'
+                  - paragraph [ref=e225]: কই যাবো দিয়ে ঢাকার বাস রুট খুঁজুন, ভাড়া দেখুন এবং সারা বাংলাদেশে যাত্রা পরিকল্পনা করুন। এখানে প্রতিটি ফিচারের সম্পূর্ণ গাইড।
+                  - generic [ref=e226]:
+                    - generic [ref=e227]: KoyJabo Team
+                    - generic [ref=e228]: পড়ুন →
+              - generic [ref=e229] [cursor=pointer]:
+                - generic [ref=e230]:
+                  - 'img "ঢাকার সেরা বাস রুট: দৈনন্দিন যাত্রীদের গাইড" [ref=e231]'
+                  - generic [ref=e232]:
+                    - img [ref=e233]
+                    - text: Bus & Transport
+                - generic [ref=e236]:
+                  - generic [ref=e237]:
+                    - img [ref=e238]
+                    - text: 5 min read
+                    - generic [ref=e241]: ২৩ এপ্রি
+                  - 'heading "ঢাকার সেরা বাস রুট: দৈনন্দিন যাত্রীদের গাইড" [level=3] [ref=e242]'
+                  - paragraph [ref=e243]: ঢাকার সবচেয়ে গুরুত্বপূর্ণ বাস রুটের ব্যবহারিক গাইড — মিরপুর–মতিঝিল, উত্তরা–গুলশান, ধানমন্ডি–পল্টন এবং কীভাবে KoyJabo দিয়ে যেকোনো রুট খুঁজবেন।
+                  - generic [ref=e244]:
+                    - generic [ref=e245]: KoyJabo Team
+                    - generic [ref=e246]: পড়ুন →
+            - generic [ref=e247]:
+              - generic [ref=e248] [cursor=pointer]:
+                - generic [ref=e249]:
+                  - 'img "ঢাকা থেকে সিলেট: বাস, ট্রেন ও সম্পূর্ণ ট্রাভেল গাইড" [ref=e250]'
+                  - generic [ref=e251]:
+                    - img [ref=e252]
+                    - text: Travel Guide
+                - generic [ref=e255]:
+                  - generic [ref=e256]:
+                    - img [ref=e257]
+                    - text: 6 min read
+                    - generic [ref=e260]: ২২ এপ্রি
+                  - 'heading "ঢাকা থেকে সিলেট: বাস, ট্রেন ও সম্পূর্ণ ট্রাভেল গাইড" [level=3] [ref=e261]'
+                  - paragraph [ref=e262]: সিলেট ভ্রমণ পরিকল্পনা করছেন — চা বাগান, রাতারগুল, জাফলং-এর দেশে? বাস, ট্রেন, ভাড়া এবং দর্শনীয় স্থানের সম্পূর্ণ গাইড।
+                  - generic [ref=e263]:
+                    - generic [ref=e264]: KoyJabo Team
+                    - generic [ref=e265]: পড়ুন →
+              - generic [ref=e266] [cursor=pointer]:
+                - generic [ref=e267]:
+                  - 'img "ঢাকায় রিকশা ও সিএনজি: প্রয়োজনীয় গাইড" [ref=e268]'
+                  - generic [ref=e269]:
+                    - img [ref=e270]
+                    - text: Travel Guide
+                - generic [ref=e273]:
+                  - generic [ref=e274]:
+                    - img [ref=e275]
+                    - text: 4 min read
+                    - generic [ref=e278]: ২১ এপ্রি
+                  - 'heading "ঢাকায় রিকশা ও সিএনজি: প্রয়োজনীয় গাইড" [level=3] [ref=e279]'
+                  - paragraph [ref=e280]: রিকশা ও সিএনজি ঢাকার অনন্য পরিচয়। কীভাবে ব্যবহার করবেন, কত দিতে হবে, কীভাবে দামাদামি করবেন — স্থানীয় এবং দর্শনার্থী উভয়ের জন্য।
+                  - generic [ref=e281]:
+                    - generic [ref=e282]: KoyJabo Team
+                    - generic [ref=e283]: পড়ুন →
+              - generic [ref=e284] [cursor=pointer]:
+                - generic [ref=e285]:
+                  - 'img "বাজেটে বাংলাদেশ ভ্রমণ: কম খরচে যাতায়াতের উপায়" [ref=e286]'
+                  - generic [ref=e287]:
+                    - img [ref=e288]
+                    - text: Travel Guide
+                - generic [ref=e291]:
+                  - generic [ref=e292]:
+                    - img [ref=e293]
+                    - text: 6 min read
+                    - generic [ref=e296]: ২০ এপ্রি
+                  - 'heading "বাজেটে বাংলাদেশ ভ্রমণ: কম খরচে যাতায়াতের উপায়" [level=3] [ref=e297]'
+                  - paragraph [ref=e298]: বাংলাদেশ এশিয়ার সবচেয়ে সাশ্রয়ী দেশগুলোর একটি। কম খরচে কীভাবে সারাদেশ ঘুরবেন — সস্তা বাস থেকে ট্রেন এবং হাঁটার রুট পর্যন্ত।
+                  - generic [ref=e299]:
+                    - generic [ref=e300]: KoyJabo Team
+                    - generic [ref=e301]: পড়ুন →
+              - generic [ref=e302] [cursor=pointer]:
+                - generic [ref=e303]:
+                  - 'img "ঢাকার ট্রাফিক: রাশ আওয়ার এড়ানোর ১০টি টিপস এবং প্রতি সপ্তাহে ঘণ্টা বাঁচান" [ref=e304]'
+                  - generic [ref=e305]:
+                    - img [ref=e306]
+                    - text: Tips & Tricks
+                - generic [ref=e309]:
+                  - generic [ref=e310]:
+                    - img [ref=e311]
+                    - text: 5 min read
+                    - generic [ref=e314]: ১৯ এপ্রি
+                  - 'heading "ঢাকার ট্রাফিক: রাশ আওয়ার এড়ানোর ১০টি টিপস এবং প্রতি সপ্তাহে ঘণ্টা বাঁচান" [level=3] [ref=e315]'
+                  - paragraph [ref=e316]: ঢাকার ট্রাফিক কুখ্যাত। কিন্তু যারা প্যাটার্ন, শর্টকাট এবং সঠিক টুল জানেন তারা প্রতি সপ্তাহে ঘণ্টার পর ঘণ্টা বাঁচান। এখানে ১০টি প্রমাণিত কৌশল।
+                  - generic [ref=e317]:
+                    - generic [ref=e318]: KoyJabo Team
+                    - generic [ref=e319]: পড়ুন →
+              - generic [ref=e320] [cursor=pointer]:
+                - generic [ref=e321]:
+                  - 'img "দূরপাল্লার বাসভাড়া বৃদ্ধি: যাত্রীদের উপর প্রভাব ও বাস্তবতা" [ref=e322]'
+                  - generic [ref=e323]:
+                    - img [ref=e324]
+                    - text: Bus & Transport
+                - generic [ref=e327]:
+                  - generic [ref=e328]:
+                    - img [ref=e329]
+                    - text: 4 min read
+                    - generic [ref=e332]: ২৭ এপ্রি
+                  - 'heading "দূরপাল্লার বাসভাড়া বৃদ্ধি: যাত্রীদের উপর প্রভাব ও বাস্তবতা" [level=3] [ref=e333]'
+                  - paragraph [ref=e334]: সম্প্রতি দূরপাল্লার বাসভাড়ার নতুন তালিকা প্রকাশ হয়েছে। কী পরিবর্তন হয়েছে, কেন ভাড়া বাড়ছে এবং কীভাবে স্মার্ট সিদ্ধান্ত নেবেন — জানুন বিস্তারিত।
+                  - generic [ref=e335]:
+                    - generic [ref=e336]: কই যাবো Team
+                    - generic [ref=e337]: পড়ুন →
+              - generic [ref=e338] [cursor=pointer]:
+                - generic [ref=e339]:
+                  - 'img "মেট্রোরেল: শুধু দ্রুত যাতায়াত নয়, এক নতুন ট্রান্সপোর্ট কালচার" [ref=e340]'
+                  - generic [ref=e341]:
+                    - img [ref=e342]
+                    - text: Metro Rail
+                - generic [ref=e345]:
+                  - generic [ref=e346]:
+                    - img [ref=e347]
+                    - text: 4 min read
+                    - generic [ref=e350]: ২৫ এপ্রি
+                  - 'heading "মেট্রোরেল: শুধু দ্রুত যাতায়াত নয়, এক নতুন ট্রান্সপোর্ট কালচার" [level=3] [ref=e351]'
+                  - paragraph [ref=e352]: মেট্রোরেল শুধু যাত্রা দ্রুত করেনি, এনেছে একটি নতুন ট্রান্সপোর্ট কালচার। ছোট ছোট অভ্যাস কীভাবে পুরো শহরের অভিজ্ঞতা বদলে দিতে পারে।
+                  - generic [ref=e353]:
+                    - generic [ref=e354]: কই যাবো Team
+                    - generic [ref=e355]: পড়ুন →
+            - generic [ref=e356]:
+              - generic [ref=e357] [cursor=pointer]:
+                - generic [ref=e358]:
+                  - img "বাংলাদেশে ভ্রমণের সেরা জায়গাগুলো (২০২৬ ট্যুরিস্ট গাইড)" [ref=e359]
+                  - generic [ref=e360]:
+                    - img [ref=e361]
+                    - text: Travel Guide
+                - generic [ref=e364]:
+                  - generic [ref=e365]:
+                    - img [ref=e366]
+                    - text: 10 min read
+                    - generic [ref=e369]: ২ মে
+                  - heading "বাংলাদেশে ভ্রমণের সেরা জায়গাগুলো (২০২৬ ট্যুরিস্ট গাইড)" [level=3] [ref=e370]
+                  - paragraph [ref=e371]: বাংলাদেশের লুকিয়ে থাকা সৌন্দর্যগুলো খুঁজে দেখুন — পৃথিবীর বৃহত্তম ম্যানগ্রোভ বন থেকে দীর্ঘতম সমুদ্র সৈকত। আপনার পরবর্তী ট্যুরের জন্য সেরা জায়গাগুলোর তালিকা।
+                  - generic [ref=e372]:
+                    - generic [ref=e373]: KoyJabo Team
+                    - generic [ref=e374]: পড়ুন →
+              - generic [ref=e375] [cursor=pointer]:
+                - generic [ref=e376]:
+                  - 'img "ঢাকা থেকে কক্সবাজার বাজেটে ভ্রমণের গাইড: টাকা বাঁচান (২০২৬)" [ref=e377]'
+                  - generic [ref=e378]:
+                    - img [ref=e379]
+                    - text: Travel Guide
+                - generic [ref=e382]:
+                  - generic [ref=e383]:
+                    - img [ref=e384]
+                    - text: 8 min read
+                    - generic [ref=e387]: ১ মে
+                  - 'heading "ঢাকা থেকে কক্সবাজার বাজেটে ভ্রমণের গাইড: টাকা বাঁচান (২০২৬)" [level=3] [ref=e388]'
+                  - paragraph [ref=e389]: বেশি খরচ না করে কক্সবাজার ঘুরতে চান? কিভাবে কম ভাড়ায় বাস, সস্তা হোটেল এবং সাশ্রয়ী খাবার পাবেন তা জানুন।
+                  - generic [ref=e390]:
+                    - generic [ref=e391]: KoyJabo Team
+                    - generic [ref=e392]: পড়ুন →
+              - generic [ref=e393] [cursor=pointer]:
+                - generic [ref=e394]:
+                  - 'img "বাংলাদেশ ট্যুর খরচ: আপনার কত টাকা লাগবে? (২০২৬ আপডেট)" [ref=e395]'
+                  - generic [ref=e396]:
+                    - img [ref=e397]
+                    - text: Tips & Tricks
+                - generic [ref=e400]:
+                  - generic [ref=e401]:
+                    - img [ref=e402]
+                    - text: 7 min read
+                    - generic [ref=e405]: ৩০ এপ্রি
+                  - 'heading "বাংলাদেশ ট্যুর খরচ: আপনার কত টাকা লাগবে? (২০২৬ আপডেট)" [level=3] [ref=e406]'
+                  - paragraph [ref=e407]: সারা বাংলাদেশ ঘুরে দেখার পরিকল্পনা করছেন? যাতায়াত, খাবার, থাকা এবং অন্যান্য খরচের একটি পূর্ণাঙ্গ হিসাব এখানে পাবেন।
+                  - generic [ref=e408]:
+                    - generic [ref=e409]: KoyJabo Team
+                    - generic [ref=e410]: পড়ুন →
+              - generic [ref=e411] [cursor=pointer]:
+                - generic [ref=e412]:
+                  - 'img "ঢাকা থেকে সুন্দরবন ভ্রমণ: সম্পূর্ণ ২০২৬ গাইড (খরচ, রুট ও টিপস)" [ref=e413]'
+                  - generic [ref=e414]:
+                    - img [ref=e415]
+                    - text: Travel Guide
+                - generic [ref=e418]:
+                  - generic [ref=e419]:
+                    - img [ref=e420]
+                    - text: 9 min read
+                    - generic [ref=e423]: ১০ মে
+                  - 'heading "ঢাকা থেকে সুন্দরবন ভ্রমণ: সম্পূর্ণ ২০২৬ গাইড (খরচ, রুট ও টিপস)" [level=3] [ref=e424]'
+                  - paragraph [ref=e425]: সুন্দরবন — রয়েল বেঙ্গল টাইগারের আবাস এবং পৃথিবীর বৃহত্তম ম্যানগ্রোভ বন — বাংলাদেশের সবচেয়ে অসাধারণ গন্তব্য। ঢাকা থেকে কীভাবে যাবেন, খরচ কত এবং কী দেখবেন।
+                  - generic [ref=e426]:
+                    - generic [ref=e427]: KoyJabo Team
+                    - generic [ref=e428]: পড়ুন →
+              - generic [ref=e429] [cursor=pointer]:
+                - generic [ref=e430]:
+                  - img "সেন্ট মার্টিন দ্বীপ সম্পূর্ণ ভ্রমণ গাইড ২০২৬" [ref=e431]
+                  - generic [ref=e432]:
+                    - img [ref=e433]
+                    - text: Travel Guide
+                - generic [ref=e436]:
+                  - generic [ref=e437]:
+                    - img [ref=e438]
+                    - text: 8 min read
+                    - generic [ref=e441]: ১১ মে
+                  - heading "সেন্ট মার্টিন দ্বীপ সম্পূর্ণ ভ্রমণ গাইড ২০২৬" [level=3] [ref=e442]
+                  - paragraph [ref=e443]: সেন্ট মার্টিন বাংলাদেশের একমাত্র প্রবাল দ্বীপ — স্বচ্ছ জল, সাদা বালির সৈকত এবং নারকেল বাগান। কীভাবে যাবেন, কোথায় থাকবেন, খরচ ও সেরা সময় জানুন।
+                  - generic [ref=e444]:
+                    - generic [ref=e445]: KoyJabo Team
+                    - generic [ref=e446]: পড়ুন →
+              - generic [ref=e447] [cursor=pointer]:
+                - generic [ref=e448]:
+                  - img "বিদেশি পর্যটকদের জন্য বাংলাদেশ ভ্রমণ গাইড ২০২৬" [ref=e449]
+                  - generic [ref=e450]:
+                    - img [ref=e451]
+                    - text: Travel Guide
+                - generic [ref=e454]:
+                  - generic [ref=e455]:
+                    - img [ref=e456]
+                    - text: 12 min read
+                    - generic [ref=e459]: ১১ মে
+                  - heading "বিদেশি পর্যটকদের জন্য বাংলাদেশ ভ্রমণ গাইড ২০২৬" [level=3] [ref=e460]
+                  - paragraph [ref=e461]: বাংলাদেশ ভ্রমণের পরিকল্পনা করছেন? ভিসা, সেরা জায়গা, যাতায়াত, নিরাপত্তা, খরচ এবং ভেতরের টিপস — বিদেশি পর্যটকের জানার সব কিছু।
+                  - generic [ref=e462]:
+                    - generic [ref=e463]: KoyJabo Team
+                    - generic [ref=e464]: পড়ুন →
+            - generic [ref=e465]:
+              - generic [ref=e466] [cursor=pointer]:
+                - generic [ref=e467]:
+                  - 'img "বাংলাদেশ ভিসা গাইড ২০২৬: ব্রিটেন, আমেরিকা, ইউএই, কানাডা ও ইউরোপ থেকে আবেদন পদ্ধতি" [ref=e468]'
+                  - generic [ref=e469]:
+                    - img [ref=e470]
+                    - text: Travel Guide
+                - generic [ref=e473]:
+                  - generic [ref=e474]:
+                    - img [ref=e475]
+                    - text: 10 min read
+                    - generic [ref=e478]: ১০ মে
+                  - 'heading "বাংলাদেশ ভিসা গাইড ২০২৬: ব্রিটেন, আমেরিকা, ইউএই, কানাডা ও ইউরোপ থেকে আবেদন পদ্ধতি" [level=3] [ref=e479]'
+                  - paragraph [ref=e480]: ব্রিটেন, আমেরিকা, ইউএই ও কানাডা থেকে বাংলাদেশ ভিসা পাওয়ার সম্পূর্ণ গাইড — ভিসা অন অ্যারাইভাল, ই-ভিসা, প্রয়োজনীয় কাগজপত্র ও আবেদন প্রক্রিয়া।
+                  - generic [ref=e481]:
+                    - generic [ref=e482]: KoyJabo Team
+                    - generic [ref=e483]: পড়ুন →
+              - generic [ref=e484] [cursor=pointer]:
+                - generic [ref=e485]:
+                  - 'img "কক্সবাজারে সেরা হোটেল ও রিসোর্ট ২০২৬: বাজেট থেকে বিলাসবহুল" [ref=e486]'
+                  - generic [ref=e487]:
+                    - img [ref=e488]
+                    - text: Travel Guide
+                - generic [ref=e491]:
+                  - generic [ref=e492]:
+                    - img [ref=e493]
+                    - text: 9 min read
+                    - generic [ref=e496]: ৯ মে
+                  - 'heading "কক্সবাজারে সেরা হোটেল ও রিসোর্ট ২০২৬: বাজেট থেকে বিলাসবহুল" [level=3] [ref=e497]'
+                  - paragraph [ref=e498]: কক্সবাজারে কোথায় থাকবেন? এই গাইডে বাজেট গেস্টহাউস থেকে শুরু করে লাক্সারি বিচ রিসোর্ট পর্যন্ত সেরা হোটেলের তালিকা, দাম ও বুকিং টিপস।
+                  - generic [ref=e499]:
+                    - generic [ref=e500]: KoyJabo Team
+                    - generic [ref=e501]: পড়ুন →
+              - generic [ref=e502] [cursor=pointer]:
+                - generic [ref=e503]:
+                  - 'img "বাংলাদেশ থেকে সস্তায় বিদেশ যাওয়ার উপায় ২০২৬: দুবাই, লন্ডন, আমেরিকা, মালয়েশিয়া" [ref=e504]'
+                  - generic [ref=e505]:
+                    - img [ref=e506]
+                    - text: Travel Guide
+                - generic [ref=e509]:
+                  - generic [ref=e510]:
+                    - img [ref=e511]
+                    - text: 11 min read
+                    - generic [ref=e514]: ৮ মে
+                  - 'heading "বাংলাদেশ থেকে সস্তায় বিদেশ যাওয়ার উপায় ২০২৬: দুবাই, লন্ডন, আমেরিকা, মালয়েশিয়া" [level=3] [ref=e515]'
+                  - paragraph [ref=e516]: ঢাকা থেকে দুবাই, লন্ডন, আমেরিকা, মালয়েশিয়া যাওয়ার সবচেয়ে সস্তা বিমান কোথায় পাবেন? এয়ারলাইন্স তুলনা, বুকিং টিপস এবং ২০২৬ সালের সর্বনিম্ন ভাড়া।
+                  - generic [ref=e517]:
+                    - generic [ref=e518]: KoyJabo Team
+                    - generic [ref=e519]: পড়ুন →
+              - generic [ref=e520] [cursor=pointer]:
+                - generic [ref=e521]:
+                  - 'img "বাংলাদেশ ট্যুর প্যাকেজ ২০২৬: সেরা ছুটির ডিল, দাম ও ট্রাভেল এজেন্সি গাইড" [ref=e522]'
+                  - generic [ref=e523]:
+                    - img [ref=e524]
+                    - text: Travel Guide
+                - generic [ref=e527]:
+                  - generic [ref=e528]:
+                    - img [ref=e529]
+                    - text: 10 min read
+                    - generic [ref=e532]: ৭ মে
+                  - 'heading "বাংলাদেশ ট্যুর প্যাকেজ ২০২৬: সেরা ছুটির ডিল, দাম ও ট্রাভেল এজেন্সি গাইড" [level=3] [ref=e533]'
+                  - paragraph [ref=e534]: কক্সবাজার, সুন্দরবন, সিলেট, সেন্ট মার্টিন ও বান্দরবান ট্যুর প্যাকেজের দাম ও সেরা ট্রাভেল এজেন্সির তালিকা।
+                  - generic [ref=e535]:
+                    - generic [ref=e536]: KoyJabo Team
+                    - generic [ref=e537]: পড়ুন →
+              - generic [ref=e538] [cursor=pointer]:
+                - generic [ref=e539]:
+                  - 'img "ঈদে বাংলাদেশ আসা: যুক্তরাজ্য, আমেরিকা, ইউএই ও কানাডা থেকে সম্পূর্ণ গাইড" [ref=e540]'
+                  - generic [ref=e541]:
+                    - img [ref=e542]
+                    - text: Travel Guide
+                - generic [ref=e545]:
+                  - generic [ref=e546]:
+                    - img [ref=e547]
+                    - text: 10 min read
+                    - generic [ref=e550]: ১৪ মে
+                  - 'heading "ঈদে বাংলাদেশ আসা: যুক্তরাজ্য, আমেরিকা, ইউএই ও কানাডা থেকে সম্পূর্ণ গাইড" [level=3] [ref=e551]'
+                  - paragraph [ref=e552]: ঈদে বাংলাদেশে আসার পরিকল্পনা করছেন? ফ্লাইট বুকিং, বিমানবন্দর থেকে যাতায়াত ও পরিবারের সাথে পুনর্মিলনের সম্পূর্ণ গাইড।
+                  - generic [ref=e553]:
+                    - generic [ref=e554]: KoyJabo Team
+                    - generic [ref=e555]: পড়ুন →
+              - generic [ref=e556] [cursor=pointer]:
+                - generic [ref=e557]:
+                  - 'img "ঢাকা বিমানবন্দর আগমন গাইড: পরিবহন, সিম কার্ড ও প্রথম ২৪ ঘণ্টা (২০২৬)" [ref=e558]'
+                  - generic [ref=e559]:
+                    - img [ref=e560]
+                    - text: Travel Guide
+                - generic [ref=e563]:
+                  - generic [ref=e564]:
+                    - img [ref=e565]
+                    - text: 8 min read
+                    - generic [ref=e568]: ১৪ মে
+                  - 'heading "ঢাকা বিমানবন্দর আগমন গাইড: পরিবহন, সিম কার্ড ও প্রথম ২৪ ঘণ্টা (২০২৬)" [level=3] [ref=e569]'
+                  - paragraph [ref=e570]: হজরত শাহজালাল বিমানবন্দরে নেমেছেন? ইমিগ্রেশন, কাস্টমস, সিম কার্ড, শহরে যাওয়া এবং প্রথম ২৪ ঘণ্টার সম্পূর্ণ গাইড।
+                  - generic [ref=e571]:
+                    - generic [ref=e572]: KoyJabo Team
+                    - generic [ref=e573]: পড়ুন →
+            - generic [ref=e574]:
+              - generic [ref=e575] [cursor=pointer]:
+                - generic [ref=e576]:
+                  - img "যুক্তরাজ্যে বসবাসকারী বাংলাদেশিদের জন্য সিলেট, চট্টগ্রাম ও ঢাকা ভ্রমণ গাইড ২০২৬" [ref=e577]
+                  - generic [ref=e578]:
+                    - img [ref=e579]
+                    - text: Travel Guide
+                - generic [ref=e582]:
+                  - generic [ref=e583]:
+                    - img [ref=e584]
+                    - text: 11 min read
+                    - generic [ref=e587]: ১৪ মে
+                  - heading "যুক্তরাজ্যে বসবাসকারী বাংলাদেশিদের জন্য সিলেট, চট্টগ্রাম ও ঢাকা ভ্রমণ গাইড ২০২৬" [level=3] [ref=e588]
+                  - paragraph [ref=e589]: যুক্তরাজ্যে বসবাসকারী বাংলাদেশিদের জন্য সিলেট, চট্টগ্রাম ও ঢাকায় ভ্রমণের সম্পূর্ণ গাইড।
+                  - generic [ref=e590]:
+                    - generic [ref=e591]: KoyJabo Team
+                    - generic [ref=e592]: পড়ুন →
+              - generic [ref=e593] [cursor=pointer]:
+                - generic [ref=e594]:
+                  - img "ইউএই ও মালয়েশিয়ায় কর্মরত বাংলাদেশিদের জন্য দেশে ফেরার গাইড ২০২৬" [ref=e595]
+                  - generic [ref=e596]:
+                    - img [ref=e597]
+                    - text: Travel Guide
+                - generic [ref=e600]:
+                  - generic [ref=e601]:
+                    - img [ref=e602]
+                    - text: 9 min read
+                    - generic [ref=e605]: ১৪ মে
+                  - heading "ইউএই ও মালয়েশিয়ায় কর্মরত বাংলাদেশিদের জন্য দেশে ফেরার গাইড ২০২৬" [level=3] [ref=e606]
+                  - paragraph [ref=e607]: ইউএই ও মালয়েশিয়ায় কর্মরত বাংলাদেশিদের জন্য সস্তায় দেশে আসার টিপস, বিমানবন্দর গাইড ও যাতায়াত তথ্য।
+                  - generic [ref=e608]:
+                    - generic [ref=e609]: KoyJabo Team
+                    - generic [ref=e610]: পড়ুন →
+              - generic [ref=e611] [cursor=pointer]:
+                - generic [ref=e612]:
+                  - 'img "বাংলাদেশ ২০২৬: প্রবাসীরা ফিরে এসে যা নতুন দেখবেন (মেট্রো, প্রযুক্তি ও পরিবহন)" [ref=e613]'
+                  - generic [ref=e614]:
+                    - img [ref=e615]
+                    - text: Travel Guide
+                - generic [ref=e618]:
+                  - generic [ref=e619]:
+                    - img [ref=e620]
+                    - text: 8 min read
+                    - generic [ref=e623]: ১৪ মে
+                  - 'heading "বাংলাদেশ ২০২৬: প্রবাসীরা ফিরে এসে যা নতুন দেখবেন (মেট্রো, প্রযুক্তি ও পরিবহন)" [level=3] [ref=e624]'
+                  - paragraph [ref=e625]: ২–৫ বছর দেশে না আসলে অনেক কিছু বদলে গেছে। মেট্রো রেল, রাইড-হেইলিং, নতুন সেতু ও প্রযুক্তি — সব কিছু জানুন।
+                  - generic [ref=e626]:
+                    - generic [ref=e627]: KoyJabo Team
+                    - generic [ref=e628]: পড়ুন →
+              - generic [ref=e629] [cursor=pointer]:
+                - generic [ref=e630]:
+                  - img "আমেরিকা ও কানাডা প্রবাসী বাংলাদেশিদের জন্য দেশ ভ্রমণ গাইড ২০২৬" [ref=e631]
+                  - generic [ref=e632]:
+                    - img [ref=e633]
+                    - text: Travel Guide
+                - generic [ref=e636]:
+                  - generic [ref=e637]:
+                    - img [ref=e638]
+                    - text: 10 min read
+                    - generic [ref=e641]: ১৪ মে
+                  - heading "আমেরিকা ও কানাডা প্রবাসী বাংলাদেশিদের জন্য দেশ ভ্রমণ গাইড ২০২৬" [level=3] [ref=e642]
+                  - paragraph [ref=e643]: আমেরিকা ও কানাডায় বসবাসকারী বাংলাদেশিদের জন্য বিমান টিকিট, ভিসা, খরচ ও ভ্রমণ টিপস।
+                  - generic [ref=e644]:
+                    - generic [ref=e645]: KoyJabo Team
+                    - generic [ref=e646]: পড়ুন →
+          - insertion [ref=e651]
+          - generic [ref=e653]:
+            - paragraph [ref=e654]: koyjabo.com
+            - paragraph [ref=e655]: বাংলাদেশের সেরা পাবলিক ট্রান্সপোর্ট গাইড — ঢাকার বাস, মেট্রোরেল, ট্রেন এবং আন্তঃনগর ভ্রমণ
+      - insertion [ref=e662]
+      - generic [ref=e666]:
+        - generic [ref=e667]:
+          - img "KoyJabo" [ref=e668]
+          - generic [ref=e669]: কইযাবো
+        - navigation [ref=e670]:
+          - link "হোম" [ref=e671] [cursor=pointer]:
+            - /url: /
+          - link "পরিচয়" [ref=e672] [cursor=pointer]:
+            - /url: /about
+          - link "প্রশ্ন ও উত্তর" [ref=e673] [cursor=pointer]:
+            - /url: /faq
+          - link "অ্যাপ ইনস্টল" [ref=e674] [cursor=pointer]:
+            - /url: /install
+          - link "যোগাযোগ" [ref=e675] [cursor=pointer]:
+            - /url: /contact
+          - link "গোপনীয়তা নীতি" [ref=e676] [cursor=pointer]:
+            - /url: /privacy
+          - link "শর্তাবলী" [ref=e677] [cursor=pointer]:
+            - /url: /terms
+          - link "রিলিজ নোট" [ref=e678] [cursor=pointer]:
+            - /url: /release-notes
+          - link "আন্তঃশহর যাত্রা" [ref=e679] [cursor=pointer]:
+            - /url: /intercity-hub
+        - paragraph [ref=e680]: © 2024–2026 KoyJabo

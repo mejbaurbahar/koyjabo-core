@@ -1,221 +1,336 @@
 import React from 'react';
-import { Settings as SettingsIcon, Sun, Moon, Monitor, Globe, Mail, ChevronRight, Rocket } from 'lucide-react';
+import { ChevronRight, LogOut, Smartphone } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import SponsoredAdSlot from './SponsoredAdSlot';
 
 interface SettingsPageProps {
     isDarkMode: boolean;
     toggleTheme: () => void;
     onContactClick: () => void;
+    onProfileClick?: () => void;
+    onPrivacyClick?: () => void;
+    onTermsClick?: () => void;
+    onAboutClick?: () => void;
+    onReleaseNotesClick?: () => void;
+    onInstallClick?: () => void;
     embedded?: boolean;
 }
 
-const SettingsPage: React.FC<SettingsPageProps> = ({ isDarkMode, toggleTheme, onContactClick, embedded = false }) => {
-    const { language, setLanguage, t } = useLanguage();
+function ToggleSwitch({ on }: { on: boolean }) {
+    return (
+        <div className={`w-9 h-[22px] rounded-full relative transition-colors duration-200 shrink-0 ${on ? 'bg-kj-primary' : 'bg-kj-line'}`}>
+            <div className={`absolute top-[2px] w-[18px] h-[18px] rounded-full bg-white shadow transition-all duration-200 ${on ? 'left-[18px]' : 'left-[2px]'}`} />
+        </div>
+    );
+}
+
+function Pill({ label }: { label: string }) {
+    return (
+        <span
+            className="text-[10px] font-bold px-2 py-0.5 rounded-full font-sans shrink-0"
+            style={{ background: 'var(--kj-primary-soft)', color: 'var(--kj-primary)' }}
+        >
+            {label}
+        </span>
+    );
+}
+
+const SettingsPage: React.FC<SettingsPageProps> = ({
+    isDarkMode, toggleTheme, onContactClick,
+    onProfileClick, onPrivacyClick, onTermsClick, onAboutClick,
+    onReleaseNotesClick, onInstallClick, embedded = false
+}) => {
+    const { language, setLanguage } = useLanguage();
+    const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
+
+    type RowRight =
+        | { kind: 'toggle'; on: boolean }
+        | { kind: 'pill'; label: string }
+        | { kind: 'arrow' }
+        | { kind: 'none' };
+
+    interface Row {
+        emoji: string;
+        label: string;
+        sub?: string;
+        action?: () => void;
+        right: RowRight;
+    }
+
+    interface Group {
+        title: string;
+        rows: Row[];
+    }
+
+    const groups: Group[] = [
+        {
+            title: lbl('Account', 'অ্যাকাউন্ট'),
+            rows: [
+                {
+                    emoji: '👤',
+                    label: lbl('Profile', 'প্রোফাইল'),
+                    sub: lbl('Mejbaur Bahar Fagun · mejbaur@markopolo.ai', 'মেজবাউর বাহার ফাগুন · +880 17XX-XXXXXX'),
+                    action: onProfileClick,
+                    right: { kind: 'arrow' },
+                },
+                {
+                    emoji: '🔒',
+                    label: lbl('Password & Security', 'পাসওয়ার্ড ও নিরাপত্তা'),
+                    sub: lbl('Two-factor auth', 'দ্বি-স্তর যাচাইকরণ'),
+                    right: { kind: 'pill', label: lbl('2FA On', '২এফএ চালু') },
+                },
+                {
+                    emoji: '💻',
+                    label: lbl('Devices', 'ডিভাইস'),
+                    sub: lbl('3 active sessions', '৩টি সক্রিয় সেশন'),
+                    right: { kind: 'arrow' },
+                },
+                {
+                    emoji: '💳',
+                    label: lbl('Payment Methods', 'পেমেন্ট পদ্ধতি'),
+                    sub: lbl('bKash · Visa ··4521', 'বিকাশ · ভিসা ··৪৫২১'),
+                    right: { kind: 'arrow' },
+                },
+            ],
+        },
+        {
+            title: lbl('App', 'অ্যাপ'),
+            rows: [
+                {
+                    emoji: '🌐',
+                    label: lbl('Language', 'ভাষা'),
+                    sub: language === 'bn' ? 'বাংলা' : 'English',
+                    action: () => setLanguage(language === 'bn' ? 'en' : 'bn'),
+                    right: { kind: 'arrow' },
+                },
+                {
+                    emoji: '🎨',
+                    label: lbl('Theme', 'থিম'),
+                    sub: isDarkMode ? lbl('Dark mode', 'ডার্ক মোড') : lbl('Light mode', 'লাইট মোড'),
+                    action: toggleTheme,
+                    right: { kind: 'toggle', on: isDarkMode },
+                },
+                {
+                    emoji: '🔔',
+                    label: lbl('Notifications', 'নোটিফিকেশন'),
+                    sub: lbl('Trip delays, deals & alerts', 'ট্রিপ বিলম্ব, অফার ও সতর্কতা'),
+                    right: { kind: 'toggle', on: true },
+                },
+                {
+                    emoji: '📍',
+                    label: lbl('Location', 'অবস্থান'),
+                    sub: lbl('Always · for route suggestions', 'সর্বদা · রুট পরামর্শের জন্য'),
+                    right: { kind: 'toggle', on: true },
+                },
+                {
+                    emoji: '📥',
+                    label: lbl('Offline Data', 'অফলাইন ডেটা'),
+                    sub: lbl('124 MB / 500 MB used', '১২৪ MB / ৫০০ MB ব্যবহৃত'),
+                    right: { kind: 'arrow' },
+                },
+                {
+                    emoji: '📊',
+                    label: lbl('Data Saver', 'ডেটা সেভার'),
+                    sub: lbl('Reduce image quality on mobile data', 'মোবাইল ডেটায় ছবির মান কমান'),
+                    right: { kind: 'toggle', on: false },
+                },
+            ],
+        },
+        {
+            title: lbl('Support', 'সহায়তা'),
+            rows: [
+                {
+                    emoji: '❓',
+                    label: lbl('Q & A', 'প্রশ্নোত্তর'),
+                    sub: lbl('Frequently asked questions', 'সচরাচর জিজ্ঞাসা'),
+                    right: { kind: 'arrow' },
+                },
+                {
+                    emoji: '✉️',
+                    label: lbl('Contact Us', 'যোগাযোগ করুন'),
+                    sub: lbl('Email & phone support', 'ইমেইল ও ফোন সহায়তা'),
+                    action: onContactClick,
+                    right: { kind: 'arrow' },
+                },
+                {
+                    emoji: '📝',
+                    label: lbl('Send Feedback', 'প্রতিক্রিয়া পাঠান'),
+                    sub: lbl('Help us improve KoyJabo', 'কয়জাবো উন্নত করতে সাহায্য করুন'),
+                    right: { kind: 'arrow' },
+                },
+                {
+                    emoji: '🐛',
+                    label: lbl('Report a Bug', 'বাগ রিপোর্ট করুন'),
+                    sub: lbl('Found something broken?', 'কিছু ভাঙা পেয়েছেন?'),
+                    right: { kind: 'arrow' },
+                },
+            ],
+        },
+        {
+            title: lbl('Legal', 'আইনি'),
+            rows: [
+                {
+                    emoji: '🛡️',
+                    label: lbl('Privacy Policy', 'গোপনীয়তা নীতি'),
+                    action: onPrivacyClick,
+                    right: { kind: 'arrow' },
+                },
+                {
+                    emoji: '📄',
+                    label: lbl('Terms of Service', 'সেবার শর্তাবলি'),
+                    action: onTermsClick,
+                    right: { kind: 'arrow' },
+                },
+                {
+                    emoji: 'ℹ️',
+                    label: lbl('About KoyJabo', 'কয়জাবো সম্পর্কে'),
+                    action: onAboutClick,
+                    right: { kind: 'arrow' },
+                },
+                {
+                    emoji: '🆕',
+                    label: lbl('Release Notes', 'রিলিজ নোট'),
+                    sub: 'v1.4.2',
+                    action: onReleaseNotesClick,
+                    right: { kind: 'arrow' },
+                },
+            ],
+        },
+    ];
 
     return (
         <div
-            className={`flex flex-col flex-1 min-h-0 w-full max-h-full bg-kj-panel px-4 sm:px-6 md:px-12 py-4 pb-24 md:pb-12 overflow-y-auto overscroll-y-contain touch-pan-y ${embedded ? '' : 'sm:pb-12 md:pt-8'}`}
+            className={`flex flex-col flex-1 min-h-0 w-full max-h-full bg-transparent px-4 sm:px-6 md:px-10 py-4 pb-24 md:pb-12 overflow-y-auto overscroll-y-contain touch-pan-y ${embedded ? '' : 'md:pt-8'}`}
             style={{ WebkitOverflowScrolling: 'touch' }}
         >
-            <div className="max-w-3xl mx-auto w-full">
-                <h1 className="text-2xl md:text-3xl font-bold mb-3 text-kj-text flex items-center gap-2">
-                    <SettingsIcon className="w-6 h-6 text-kj-text-dim" />
-                    {t('settings.title')}
-                </h1>
-                <p className="text-kj-text-dim mb-8">{t('settings.subtitle')}</p>
+            <div className="max-w-2xl mx-auto w-full">
 
-                <div className="space-y-6">
-                    {/* Language Settings */}
-                    <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
-                        <h2 className="text-lg font-bold text-kj-text mb-4">
-                            {t('settings.languagePreference')}
-                        </h2>
-                        <p className="text-sm text-kj-text-dim mb-4">
-                            {t('settings.languageDescription')}
-                        </p>
-
-                        {/* Language Options */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            {/* Bangla */}
-                            <button
-                                onClick={() => setLanguage('bn')}
-                                className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all ${language === 'bn'
-                                    ? 'border-kj-primary bg-kj-primary-soft dark:bg-emerald-900/20'
-                                    : 'border-kj-line hover:border-kj-line dark:hover:border-gray-600'
-                                    }`}
-                            >
-                                <div className={`p-2 rounded-lg ${language === 'bn' ? 'bg-kj-primary' : 'bg-gray-200 dark:bg-slate-700'}`}>
-                                    <Globe className={`w-5 h-5 ${language === 'bn' ? 'text-white' : 'text-kj-text-dim'}`} />
-                                </div>
-                                <div className="text-left flex-1">
-                                    <div className={`font-bold text-sm ${language === 'bn' ? 'text-emerald-700 dark:text-kj-primary' : 'text-kj-text'}`}>
-                                        বাংলা
-                                    </div>
-                                    <div className="text-xs text-kj-text-dim">
-                                        Bangla
-                                    </div>
-                                </div>
-                                {language === 'bn' && (
-                                    <div className="w-5 h-5 bg-kj-primary rounded-full flex items-center justify-center">
-                                        <div className="w-2 h-2 bg-white rounded-full"></div>
-                                    </div>
-                                )}
-                            </button>
-
-                            {/* English */}
-                            <button
-                                onClick={() => setLanguage('en')}
-                                className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all ${language === 'en'
-                                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                                    : 'border-kj-line hover:border-kj-line dark:hover:border-gray-600'
-                                    }`}
-                            >
-                                <div className={`p-2 rounded-lg ${language === 'en' ? 'bg-blue-500' : 'bg-gray-200 dark:bg-slate-700'}`}>
-                                    <Globe className={`w-5 h-5 ${language === 'en' ? 'text-white' : 'text-kj-text-dim'}`} />
-                                </div>
-                                <div className="text-left flex-1">
-                                    <div className={`font-bold text-sm ${language === 'en' ? 'text-blue-700 dark:text-blue-400' : 'text-kj-text'}`}>
-                                        English
-                                    </div>
-                                    <div className="text-xs text-kj-text-dim">
-                                        ইংরেজি
-                                    </div>
-                                </div>
-                                {language === 'en' && (
-                                    <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
-                                        <div className="w-2 h-2 bg-white rounded-full"></div>
-                                    </div>
-                                )}
-                            </button>
-                        </div>
-
-                        {/* Current Status */}
-                        <div className="mt-4 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
-                            <div className="flex items-center gap-2 text-sm">
-                                <Globe className="w-4 h-4 text-kj-text-dim" />
-                                <span className="text-kj-text-dim">
-                                    {t('settings.currentLanguage')}: <span className="font-bold text-kj-text">{language === 'bn' ? 'বাংলা (Bangla)' : 'English (ইংরেজি)'}</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    {/* Theme Settings */}
-                    <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
-                        <h2 className="text-lg font-bold text-kj-text mb-4">
-                            {t('settings.themePreference')}
-                        </h2>
-                        <p className="text-sm text-kj-text-dim mb-4">
-                            {t('settings.themeDescription')}
-                        </p>
-
-                        {/* Theme Options */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            {/* Light Mode */}
-                            <button
-                                onClick={() => {
-                                    if (isDarkMode) toggleTheme();
-                                }}
-                                className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all ${!isDarkMode
-                                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                                    : 'border-kj-line hover:border-kj-line dark:hover:border-gray-600'
-                                    }`}
-                            >
-                                <div className={`p-2 rounded-lg ${!isDarkMode ? 'bg-blue-500' : 'bg-gray-200 dark:bg-slate-700'}`}>
-                                    <Sun className={`w-5 h-5 ${!isDarkMode ? 'text-white' : 'text-kj-text-dim'}`} />
-                                </div>
-                                <div className="text-left flex-1">
-                                    <div className={`font-bold text-sm ${!isDarkMode ? 'text-blue-700 dark:text-blue-400' : 'text-kj-text'}`}>
-                                        {t('settings.lightMode')}
-                                    </div>
-                                    <div className="text-xs text-kj-text-dim">
-                                        {t('settings.brightTheme')}
-                                    </div>
-                                </div>
-                                {!isDarkMode && (
-                                    <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
-                                        <div className="w-2 h-2 bg-white rounded-full"></div>
-                                    </div>
-                                )}
-                            </button>
-
-                            {/* Dark Mode */}
-                            <button
-                                onClick={() => {
-                                    if (!isDarkMode) toggleTheme();
-                                }}
-                                className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all ${isDarkMode
-                                    ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
-                                    : 'border-kj-line hover:border-kj-line dark:hover:border-gray-600'
-                                    }`}
-                            >
-                                <div className={`p-2 rounded-lg ${isDarkMode ? 'bg-purple-500' : 'bg-gray-200 dark:bg-slate-700'}`}>
-                                    <Moon className={`w-5 h-5 ${isDarkMode ? 'text-white' : 'text-kj-text-dim'}`} />
-                                </div>
-                                <div className="text-left flex-1">
-                                    <div className={`font-bold text-sm ${isDarkMode ? 'text-purple-700 dark:text-purple-400' : 'text-kj-text'}`}>
-                                        {t('settings.darkMode')}
-                                    </div>
-                                    <div className="text-xs text-kj-text-dim">
-                                        {t('settings.easyOnEyes')}
-                                    </div>
-                                </div>
-                                {isDarkMode && (
-                                    <div className="w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center">
-                                        <div className="w-2 h-2 bg-white rounded-full"></div>
-                                    </div>
-                                )}
-                            </button>
-                        </div>
-
-                        {/* Current Status */}
-                        <div className="mt-4 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
-                            <div className="flex items-center gap-2 text-sm">
-                                <Monitor className="w-4 h-4 text-kj-text-dim" />
-                                <span className="text-kj-text-dim">
-                                    {t('settings.currentTheme')}: <span className="font-bold text-kj-text">{isDarkMode ? t('settings.dark') : t('settings.light')}</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Support & Contact */}
-                    <div className="bg-kj-panel border border-kj-line rounded-2xl p-6">
-                        <h2 className="text-lg font-bold text-kj-text mb-4">
-                            {t('settings.supportFeedback')}
-                        </h2>
-
-                        <button
-                            onClick={onContactClick}
-                            className="w-full flex items-center gap-4 p-4 rounded-xl border-2 border-slate-100 dark:border-kj-line hover:border-blue-200 dark:hover:border-blue-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-all text-left group"
-                        >
-                            <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform">
-                                <Mail className="w-6 h-6" />
-                            </div>
-                            <div className="flex-1">
-                                <h3 className="font-bold text-kj-text group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{t('settings.contactUsBtn')}</h3>
-                                <p className="text-sm text-kj-text-dim">{t('settings.contactUsDesc')}</p>
-                            </div>
-                            <ChevronRight className="w-5 h-5 text-kj-text-faint group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
-                        </button>
-                    </div>
-
-                    {/* App Info */}
-                    <div className="bg-slate-50 dark:bg-kj-chip-bg border border-kj-line rounded-2xl p-6">
-                        <h2 className="text-lg font-bold text-kj-text mb-2">
-                            {t('settings.appInfo')}
-                        </h2>
-                        <div className="space-y-2 text-sm">
-                            <div className="flex justify-between">
-                                <span className="text-kj-text-dim">{t('settings.version')}</span>
-                                <span className="font-medium text-kj-text">1.0.0</span>
-                            </div>
-                            <div className="flex justify-between">
-                                <span className="text-kj-text-dim">{t('settings.lastUpdated')}</span>
-                                <span className="font-medium text-kj-text">January 2026</span>
-                            </div>
-                        </div>
-                    </div>
+                {/* Page header */}
+                <div className="mb-6">
+                    <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-1">
+                        ✦ KoyJabo · {lbl('Preferences', 'পছন্দসমূহ')}
+                    </p>
+                    <h1 className="font-bengali font-bold leading-tight tracking-tight text-kj-text" style={{ fontSize: 26 }}>
+                        <span className="font-bengali">সেটিংস</span>
+                        <span className="text-kj-text-dim font-sans font-bold text-xl"> / </span>
+                        <span className="font-sans">Settings</span>
+                    </h1>
                 </div>
+
+                {/* Install PWA card */}
+                {onInstallClick && (
+                    <button
+                        onClick={onInstallClick}
+                        className="w-full dc-card rounded-[18px] border border-kj-primary/30 p-4 flex items-center gap-3 mb-5 text-left group hover:border-kj-primary/60 transition-colors"
+                    >
+                        <div
+                            className="w-10 h-10 rounded-xl flex items-center justify-center text-kj-primary-ink kj-anim-glow shrink-0"
+                            style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))' }}
+                        >
+                            <Smartphone className="w-5 h-5" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <div className="font-bengali font-bold text-[14px] text-kj-text">
+                                {lbl('Install App', 'অ্যাপ ইনস্টল করুন')}
+                            </div>
+                            <div className="text-[11px] text-kj-text-dim mt-0.5 font-bengali">
+                                {lbl('Works offline · all routes', 'অফলাইনে কাজ করে · সব রুট')}
+                            </div>
+                        </div>
+                        <ChevronRight className="w-4 h-4 text-kj-text-faint group-hover:text-kj-primary group-hover:translate-x-0.5 transition-all shrink-0" />
+                    </button>
+                )}
+
+                {/* Account & App sections */}
+                {groups.slice(0, 2).map((group, gi) => (
+                    <div key={gi} className="mb-5">
+                        <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans px-1 mb-2">
+                            {group.title}
+                        </p>
+                        <div className="dc-card rounded-[16px] overflow-hidden divide-y divide-kj-line">
+                            {group.rows.map((row, ri) => (
+                                <button
+                                    key={ri}
+                                    onClick={row.action || undefined}
+                                    disabled={!row.action && row.right.kind === 'none'}
+                                    className={`w-full flex items-center gap-3 px-[14px] py-[13px] text-left transition-colors ${row.action ? 'hover:bg-kj-chip-bg/60 cursor-pointer active:bg-kj-chip-bg' : 'cursor-default'}`}
+                                >
+                                    <span className="text-xl shrink-0 leading-none">{row.emoji}</span>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="font-bengali font-semibold text-[14px] text-kj-text leading-snug">
+                                            {row.label}
+                                        </div>
+                                        {row.sub && (
+                                            <div className="text-[11px] text-kj-text-faint mt-0.5 font-bengali truncate">
+                                                {row.sub}
+                                            </div>
+                                        )}
+                                    </div>
+                                    {row.right.kind === 'toggle' && <ToggleSwitch on={row.right.on} />}
+                                    {row.right.kind === 'pill' && <Pill label={row.right.label} />}
+                                    {row.right.kind === 'arrow' && (
+                                        <ChevronRight className="w-[14px] h-[14px] text-kj-text-faint shrink-0" />
+                                    )}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+
+                {/* Ad slot in the middle */}
+                <div className="mb-5">
+                    <SponsoredAdSlot language={language} size="300x250" compact />
+                </div>
+
+                {/* Support & Legal sections */}
+                {groups.slice(2).map((group, gi) => (
+                    <div key={gi + 2} className="mb-5">
+                        <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans px-1 mb-2">
+                            {group.title}
+                        </p>
+                        <div className="dc-card rounded-[16px] overflow-hidden divide-y divide-kj-line">
+                            {group.rows.map((row, ri) => (
+                                <button
+                                    key={ri}
+                                    onClick={row.action || undefined}
+                                    disabled={!row.action && row.right.kind === 'none'}
+                                    className={`w-full flex items-center gap-3 px-[14px] py-[13px] text-left transition-colors ${row.action ? 'hover:bg-kj-chip-bg/60 cursor-pointer active:bg-kj-chip-bg' : 'cursor-default'}`}
+                                >
+                                    <span className="text-xl shrink-0 leading-none">{row.emoji}</span>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="font-bengali font-semibold text-[14px] text-kj-text leading-snug">
+                                            {row.label}
+                                        </div>
+                                        {row.sub && (
+                                            <div className="text-[11px] text-kj-text-faint mt-0.5 font-bengali truncate">
+                                                {row.sub}
+                                            </div>
+                                        )}
+                                    </div>
+                                    {row.right.kind === 'toggle' && <ToggleSwitch on={row.right.on} />}
+                                    {row.right.kind === 'pill' && <Pill label={row.right.label} />}
+                                    {row.right.kind === 'arrow' && (
+                                        <ChevronRight className="w-[14px] h-[14px] text-kj-text-faint shrink-0" />
+                                    )}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+
+                {/* Sign out */}
+                <button className="w-full dc-card rounded-[16px] border border-red-500/30 bg-red-500/5 hover:bg-red-500/10 active:scale-[0.99] transition-all flex items-center justify-center gap-2.5 py-3.5 mb-5">
+                    <LogOut className="w-4 h-4 text-red-400 shrink-0" />
+                    <span className="font-bengali font-bold text-[14px] text-red-400">
+                        {lbl('Sign Out', 'সাইন আউট')}
+                    </span>
+                </button>
+
+                {/* Version footer */}
+                <p className="text-center text-[11px] text-kj-text-faint font-sans mb-2">
+                    KoyJabo · v2.5.0 · Build 2412.28
+                </p>
+
             </div>
         </div>
     );

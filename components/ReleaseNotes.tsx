@@ -1,170 +1,129 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Rocket, CheckCircle, Wrench, Zap, Calendar, ChevronRight, ChevronDown, Sparkles } from 'lucide-react';
-import { RELEASE_NOTES } from '../data/releaseNotes';
+import GlobalFooter from './GlobalFooter';
+import React from 'react';
+import { ArrowLeft } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-// import AdSenseAd from './AdSenseAd';
+import { AppView } from '../types';
+import SponsoredAdSlot from './SponsoredAdSlot';
 
+interface ReleaseNotesProps { setView?: (view: AppView) => void; }
+const ReleaseNotes: React.FC<ReleaseNotesProps> = ({ setView }) => {
+  const { language } = useLanguage();
+  const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
 
-const ReleaseNotes: React.FC = () => {
-  const { language, t } = useLanguage();
-  const [expandedVersion, setExpandedVersion] = useState<string | null>(RELEASE_NOTES[0]?.version || null);
+  type TagType = 'NEW' | 'FIX' | 'IMP' | 'PERF';
 
-  const toggleVersion = (version: string) => {
-    setExpandedVersion(expandedVersion === version ? null : version);
+  const tagMeta: Record<TagType, { color: string; label: string }> = {
+    NEW:  { color: '#06b6d4', label: 'NEW' },
+    FIX:  { color: '#f59e0b', label: 'FIX' },
+    IMP:  { color: '#f59e0b', label: 'IMP' },
+    PERF: { color: 'var(--kj-accent, #a855f7)', label: 'PERF' },
   };
 
+  const Tag: React.FC<{ type: TagType }> = ({ type }) => {
+    const m = tagMeta[type];
+    return (
+      <span
+        className="inline-flex items-center px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider shrink-0"
+        style={{ fontSize: 9, background: m.color + '22', color: m.color }}
+      >
+        {m.label}
+      </span>
+    );
+  };
+
+  const versions: Array<{
+    ver: string;
+    date: string;
+    latest?: boolean;
+    items: Array<{ tag: TagType; text: string }>;
+  }> = [
+    {
+      ver: 'v1.4.2',
+      date: lbl('Dec 28, 2025', '২৮ ডিসেম্বর ২০২৫'),
+      latest: true,
+      items: [
+        { tag: 'NEW',  text: lbl("AI Assistant answers in both languages", "এআই অ্যাসিস্ট্যান্ট দুই ভাষায় উত্তর দেয়") },
+        { tag: 'NEW',  text: lbl("Live tracking — Cox's Bazar Express", "লাইভ ট্র্যাকিং — কক্সবাজার এক্সপ্রেস") },
+        { tag: 'FIX',  text: lbl("Offline route caching bug fixed", "অফলাইন রুট ক্যাশিং বাগ ঠিক হয়েছে") },
+        { tag: 'PERF', text: lbl("40% faster startup", "৪০% দ্রুত স্টার্টআপ") },
+      ],
+    },
+    {
+      ver: 'v1.4.0',
+      date: lbl('Dec 15, 2025', '১৫ ডিসেম্বর ২০২৫'),
+      items: [
+        { tag: 'NEW',  text: lbl("Fare calculator", "ভাড়া ক্যালকুলেটর") },
+        { tag: 'NEW',  text: lbl("Seat booking", "সিট বুকিং") },
+        { tag: 'IMP',  text: lbl("Metro rail schedule updated", "মেট্রো রেল সময়সূচি আপডেট") },
+      ],
+    },
+    {
+      ver: 'v1.3.5',
+      date: lbl('Nov 20, 2025', '২০ নভেম্বর ২০২৫'),
+      items: [
+        { tag: 'NEW',  text: lbl("Dark mode", "ডার্ক মোড") },
+        { tag: 'FIX',  text: lbl("Bangla font rendering fixed", "বাংলা ফন্ট রেন্ডারিং ঠিক হয়েছে") },
+      ],
+    },
+  ];
+
   return (
-    <div className="absolute inset-0 z-10 flex flex-col bg-kj-bg font-sans overflow-hidden">
-      {/* Premium Header */}
-      <div className="shrink-0 bg-kj-panel border-b border-kj-line pt-safe px-4 sm:px-6 py-4 sm:py-5 flex items-center gap-4 sm:gap-5 shadow-sm relative z-10">
-        <div>
-          <h1 className="text-2xl font-black text-kj-text tracking-tight flex items-center gap-2">
-            {t('releaseNotes.title')}
-            <span className="flex h-2 w-2 rounded-full bg-kj-primary animate-pulse"></span>
-          </h1>
-          <p className="text-sm font-medium text-kj-text-dim">
-            {t('releaseNotes.subtitle')}
+    <div
+      className="flex flex-col flex-1 min-h-0 bg-kj-panel overflow-y-auto overscroll-y-contain"
+      style={{ WebkitOverflowScrolling: 'touch' }}
+    >
+      {/* Sticky back bar */}
+      <div className="sticky top-0 z-20 flex items-center gap-3 px-4 py-3 bg-kj-panel/80 backdrop-blur-md border-b border-kj-line shadow-sm">
+        <span className="font-black text-kj-text text-sm tracking-tight">
+          {lbl('Release Notes', 'রিলিজ নোট')}
+        </span>
+      </div>
+
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 pb-8 w-full space-y-6">
+
+        {/* Eyebrow + hero */}
+        <div className="pt-2">
+          <p className="text-[10px] font-black uppercase tracking-widest text-kj-text-faint mb-2">
+            {lbl('Changelog / পরিবর্তনের ইতিহাস', 'পরিবর্তনের ইতিহাস / Changelog')}
           </p>
+          <h1 className="text-2xl sm:text-3xl font-black text-kj-text leading-tight">
+            {lbl("What's new", 'কী নতুন')}
+          </h1>
         </div>
-      </div>
 
-      {/* Content */}
-      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-24 scroll-smooth" style={{ WebkitOverflowScrolling: 'touch' }}>
-        <div className="max-w-3xl mx-auto px-4 py-10 space-y-4">
-          {RELEASE_NOTES.map((note, index) => {
-            const isExpanded = expandedVersion === note.version;
-            const isLatest = index === 0;
+        <SponsoredAdSlot language={language} size="728x90" compact />
 
-            return (
-              <div 
-                key={note.version} 
-                className={`
-                  group transition-all duration-300 rounded-[2rem] border overflow-hidden
-                  ${isExpanded 
-                    ? 'bg-kj-panel border-kj-primary/30 dark:border-emerald-900/50 shadow-xl shadow-emerald-500/5 ring-1 ring-emerald-500/10' 
-                    : 'bg-white/60 dark:bg-kj-panel/40 border-kj-line hover:border-kj-primary/30 dark:hover:border-emerald-900/30'}
-                `}
-              >
-                {/* Accordion Trigger */}
-                <button
-                  onClick={() => toggleVersion(note.version)}
-                  className="w-full text-left px-4 sm:px-6 py-4 sm:py-6 flex items-center justify-between gap-3 sm:gap-4"
+        {/* Version cards */}
+        {versions.map(v => (
+          <div key={v.ver} className="dc-card p-5 sm:p-6 rounded-2xl border border-kj-line">
+            {/* Card header */}
+            <div className="flex items-center gap-3 mb-5">
+              <span className="text-lg font-black text-kj-text">{v.ver}</span>
+              {v.latest && (
+                <span
+                  className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider"
+                  style={{ background: 'var(--kj-primary)22', color: 'var(--kj-primary)' }}
                 >
-                  <div className="flex items-center gap-3 sm:gap-5">
-                    <div className={`
-                      w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg transform transition-transform group-hover:rotate-6 shrink-0
-                      ${note.type === 'major' ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white' : 
-                        note.type === 'minor' ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white' : 
-                        'bg-gradient-to-br from-slate-500 to-slate-700 text-white'}
-                    `}>
-                      {note.type === 'major' ? <Sparkles className="w-5 h-5 sm:w-7 sm:h-7" /> : <Rocket className="w-5 h-5 sm:w-7 sm:h-7" />}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-base sm:text-xl font-black text-kj-text">v{note.version}</span>
-                        {isLatest && (
-                          <span className="px-2.5 py-0.5 rounded-full bg-kj-primary-soft text-kj-primary text-[10px] font-black uppercase tracking-wider">
-                            Latest
-                          </span>
-                        )}
-                      </div>
-                      <span className="text-xs font-bold text-kj-text-faint flex items-center gap-1.5 mt-1">
-                        <Calendar className="w-3.5 h-3.5" />
-                        {new Date(note.date).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US', { 
-                          year: 'numeric', month: 'long', day: 'numeric' 
-                        })}
-                      </span>
-                    </div>
-                  </div>
-                  <div className={`
-                    w-10 h-10 rounded-full flex items-center justify-center transition-all
-                    ${isExpanded ? 'bg-kj-primary text-white rotate-180' : 'bg-kj-chip-bg text-kj-text-faint group-hover:bg-kj-primary-soft dark:group-hover:bg-emerald-900/20 group-hover:text-kj-primary'}
-                  `}>
-                    <ChevronDown className="w-5 h-5" />
-                  </div>
-                </button>
+                  {lbl('Latest', 'সর্বশেষ')}
+                </span>
+              )}
+              <span className="ml-auto text-xs text-kj-text-faint font-semibold">{v.date}</span>
+            </div>
 
-                {/* Accordion Content */}
-                <div className={`
-                  transition-all duration-500 ease-in-out overflow-hidden
-                  ${isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}
-                `}>
-                  <div className="px-6 pb-8 space-y-8 border-t border-slate-50 dark:border-kj-line/50 pt-8">
-                    {/* Features */}
-                    {note.features.length > 0 && (
-                      <div className="animate-in fade-in slide-in-from-top-4 duration-500 delay-100">
-                        <div className="flex items-center gap-2.5 mb-5">
-                          <div className="p-2 bg-kj-primary-soft rounded-xl">
-                            <Zap className="w-4 h-4 text-kj-primary" />
-                          </div>
-                          <h3 className="font-black text-kj-text tracking-tight uppercase text-xs">
-                            {t('releaseNotes.whatsNew')}
-                          </h3>
-                        </div>
-                        <ul className="space-y-4">
-                          {(language === 'bn' ? note.bnFeatures : note.features).map((feat, i) => (
-                            <li key={i} className="flex gap-4 text-sm font-medium text-kj-text-dim leading-relaxed group/item">
-                              <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-kj-primary shrink-0 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-                              {feat}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* Improvements */}
-                    {note.improvements.length > 0 && (
-                      <div className="animate-in fade-in slide-in-from-top-4 duration-500 delay-200">
-                        <div className="flex items-center gap-2.5 mb-5">
-                          <div className="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-xl">
-                            <Rocket className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                          </div>
-                          <h3 className="font-black text-kj-text tracking-tight uppercase text-xs">
-                            {t('releaseNotes.improvements')}
-                          </h3>
-                        </div>
-                        <ul className="space-y-4">
-                          {(language === 'bn' ? note.bnImprovements : note.improvements).map((imp, i) => (
-                            <li key={i} className="flex gap-4 text-sm font-medium text-kj-text-dim leading-relaxed">
-                              <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0 shadow-[0_0_8px_rgba(96,165,250,0.5)]" />
-                              {imp}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* Fixes */}
-                    {note.fixes.length > 0 && (
-                      <div className="animate-in fade-in slide-in-from-top-4 duration-500 delay-300">
-                        <div className="flex items-center gap-2.5 mb-5">
-                          <div className="p-2 bg-kj-chip-bg rounded-xl">
-                            <Wrench className="w-4 h-4 text-kj-text-dim" />
-                          </div>
-                          <h3 className="font-black text-kj-text tracking-tight uppercase text-xs">
-                            {t('releaseNotes.fixed')}
-                          </h3>
-                        </div>
-                        <ul className="space-y-4">
-                          {(language === 'bn' ? note.bnFixes : note.fixes).map((fix, i) => (
-                            <li key={i} className="flex gap-4 text-sm font-medium text-kj-text-dim leading-relaxed italic">
-                              <CheckCircle className="w-4 h-4 text-kj-text-faint dark:text-kj-text-dim mt-0.5 shrink-0" />
-                              {fix}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        {/* <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+            {/* Items */}
+            <ul className="space-y-3">
+              {v.items.map((item, i) => (
+                <li key={i} className="flex items-start gap-2.5">
+                  <Tag type={item.tag} />
+                  <span className="text-sm text-kj-text-dim leading-snug">{item.text}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
+      <GlobalFooter setView={setView} />
     </div>
-
   );
 };
 

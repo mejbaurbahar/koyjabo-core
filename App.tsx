@@ -68,11 +68,15 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
 import ContactUs from './components/ContactUs';
 import OfflineIndicator from './components/OfflineIndicator';
-import AdSenseAd from './components/AdSenseAd';
-import StickyBottomBannerAd from './components/StickyBottomBannerAd';
+import GlobalFooter from './components/GlobalFooter';
+import PageAdSection from './components/PageAdSection';
+import SponsoredAdSlot from './components/SponsoredAdSlot';
 import TrainListPage, { TrainDetail } from './components/TrainListPage';
 import TrainRating from './components/TrainRating';
 import { BDTrainRoute, BD_TRAIN_ROUTES, TRAIN_STATIONS } from './data/bangladeshTrainData';
+import transportCache from './data/transport-cache.json';
+import SystemStateScreen, { Icons, BtnIcons } from './components/SystemStateScreen';
+import FloatingAdBanner from './components/FloatingAdBanner';
 import TripReminders from './components/TripReminders';
 import RoadAlerts from './components/RoadAlerts';
 import NeighbourhoodGuides from './components/NeighbourhoodGuides';
@@ -86,6 +90,13 @@ import BusPhotoGallery from './components/BusPhotoGallery';
 import TrainPhotoGallery from './components/TrainPhotoGallery';
 import { getBusRatings, BusRatingSummary } from './services/communityDataService';
 import ReleaseNotes from './components/ReleaseNotes';
+import HomePage from './components/HomePage';
+import HowKoyJaboHelps from './components/HowKoyJaboHelps';
+import KoyJaboLogo from './components/KoyJaboLogo';
+import LocalBusHub from './components/LocalBusHub';
+import MetroRailHub from './components/MetroRailHub';
+import LaunchHub from './components/LaunchHub';
+import IntercityHub from './components/IntercityHub';
 
 
 
@@ -169,7 +180,13 @@ const getStoredView = (): AppView => {
         'seat-availability': AppView.SEAT_AVAILABILITY,
         'release-notes': AppView.RELEASE_NOTES,
         'updates': AppView.RELEASE_NOTES,
-        'intercity': AppView.HOME,
+        'intercity': AppView.INTERCITY_HUB,
+        'intercity-hub': AppView.INTERCITY_HUB,
+        'local-bus': AppView.LOCAL_BUS_HUB,
+        'metro': AppView.METRO_HUB,
+        'metro-rail': AppView.METRO_HUB,
+        'launch': AppView.LAUNCH_HUB,
+        'launch-steamer': AppView.LAUNCH_HUB,
       };
 
       if (viewMap[target]) {
@@ -248,14 +265,14 @@ const AiThinkingIndicator = () => {
     <div className="flex justify-start animate-in fade-in slide-in-from-bottom-2 duration-300 my-2">
       <div className="bg-kj-panel border border-kj-line rounded-2xl rounded-bl-none px-4 py-3 shadow-sm flex items-center gap-3 max-w-[85%]">
         <div className="relative shrink-0">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-cyan-500 flex items-center justify-center text-white shadow-lg shadow-blue-200">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-kj-primary to-kj-primary-deep flex items-center justify-center text-kj-primary-ink">
             <Bot size={16} />
           </div>
-          <div className="absolute inset-0 rounded-full bg-blue-400 animate-ping opacity-20"></div>
+          <div className="absolute inset-0 rounded-full bg-kj-primary animate-ping opacity-20"></div>
         </div>
 
         <div className="flex flex-col">
-          <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-0.5">{t('nav.aiAssistant')}</span>
+          <span className="text-[10px] font-bold text-kj-primary uppercase tracking-wider mb-0.5">{t('nav.aiAssistant')}</span>
           <span key={step} className="text-sm text-kj-text-dim animate-in fade-in slide-in-from-bottom-1 duration-300 leading-snug">
             {steps[step]}
           </span>
@@ -362,8 +379,8 @@ const calculateFare = (route: BusRoute, fromId?: string, toId?: string): { min: 
 
   const distanceKm = totalDistance / 1000;
 
-  // Official BRTA rate as of April 2, 2024
-  const ratePerKm = 2.42; // Tk per kilometer for city buses
+  // Official BRTA rate — sourced from transport-cache.json (auto-refreshed weekly)
+  const ratePerKm = (transportCache as any).brtaFares?.cityBusRatePerKm ?? 2.53;
   const minFare = 10; // Minimum fare for buses
 
   let estimated = Math.ceil(distanceKm * ratePerKm);
@@ -435,28 +452,28 @@ const SettingsView: React.FC<{
 
       <div className="space-y-8 max-w-xl">
         {/* AI Assistant Info */}
-        <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/30 p-6 rounded-2xl border border-kj-primary/30">
+        <div className="bg-gradient-to-br bg-kj-primary-soft dark:bg-kj-primary-soft p-6 rounded-2xl border border-kj-primary/30">
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 bg-kj-primary rounded-xl flex items-center justify-center text-white shrink-0">
               <Bot className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="font-bold text-emerald-900 dark:text-emerald-100 mb-2 text-lg">🤖 Koy Jabo AI Assistant</h3>
-              <p className="text-sm text-emerald-800 dark:text-emerald-200 leading-relaxed">
+              <h3 className="font-bold text-kj-text mb-2 text-lg">🤖 Koy Jabo AI Assistant</h3>
+              <p className="text-sm text-kj-text-dim leading-relaxed">
                 Our intelligent AI assistant is built-in and ready to help you find the best routes across Bangladesh. No API keys needed - just ask your questions naturally in English or Bengali!
               </p>
               <div className="mt-4 flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-kj-primary" />
-                <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300">{lbl('Always Available • No Setup Required • Completely Free', 'সবসময় উপলব্ধ • কোনো সেটআপ লাগবে না • সম্পূর্ণ বিনামূল্যে')}</span>
+                <span className="text-xs font-bold text-kj-primary">{lbl('Always Available • No Setup Required • Completely Free', 'সবসময় উপলব্ধ • কোনো সেটআপ লাগবে না • সম্পূর্ণ বিনামূল্যে')}</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* About the App */}
-        <div className="bg-slate-50 dark:bg-kj-chip-bg/50 p-6 rounded-2xl border border-kj-line">
+        <div className="bg-kj-chip-bg p-6 rounded-2xl border border-kj-line">
           <h3 className="font-bold text-kj-text mb-2 flex items-center gap-2">
-            <Info className="w-4 h-4 text-blue-500" /> App Info
+            <Info className="w-4 h-4 text-kj-primary" /> App Info
           </h3>
           <p className="text-sm text-kj-text-dim">
             Version 2.5.0. Use this app to find routes and estimate fares in Dhaka City.
@@ -641,11 +658,11 @@ const App: React.FC = () => {
     if (isDarkMode) {
       root.classList.add('dark');
       localStorage.setItem('theme', 'dark');
-      document.body.style.backgroundColor = '#0f172a'; // slate-900
+      document.body.style.backgroundColor = '#040814';
     } else {
       root.classList.remove('dark');
       localStorage.setItem('theme', 'light');
-      document.body.style.backgroundColor = '#f8fafc'; // slate-50
+      document.body.style.backgroundColor = '#eef3f7';
     }
   }, [isDarkMode]);
 
@@ -680,6 +697,7 @@ const App: React.FC = () => {
   const [busRatingsMap, setBusRatingsMap] = useState<Record<string, BusRatingSummary | null>>({});
   const [listFilter, setListFilter] = useState<'ALL' | 'FAVORITES'>('ALL');
   const [busRouteSort, setBusRouteSort] = useState<'DEFAULT' | 'FASTEST' | 'CHEAPEST'>('DEFAULT');
+  const [nonAcOnly, setNonAcOnly] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   // Optimized filter handler to prevent UI blocking
@@ -796,6 +814,7 @@ const App: React.FC = () => {
   const [showClearChatConfirm, setShowClearChatConfirm] = useState(false);
   const [showHistoryManager, setShowHistoryManager] = useState(false);
   const [showLiveMap, setShowLiveMap] = useState(false);
+  const [sessionTick, setSessionTick] = useState(0);
 
   const handleDeleteMessage = (index: number) => {
     setChatHistory(prev => prev.filter((_, i) => i !== index));
@@ -807,6 +826,15 @@ const App: React.FC = () => {
     const nearest = findNearestStation(userLocation, allStationIds);
     return nearest ? nearest.station.name : null;
   }, [userLocation]);
+
+  const stationOptions = useMemo(
+    () => Object.keys(STATIONS).map(id => ({
+      id,
+      name: (STATIONS as Record<string, { name?: string; bnName?: string }>)[id]?.name ?? id,
+      bnName: (STATIONS as Record<string, { name?: string; bnName?: string }>)[id]?.bnName,
+    })),
+    []
+  );
 
   const isInDhaka = useMemo(() => checkIfInDhaka(userLocation), [userLocation]);
   const [primarySearch, setPrimarySearch] = useState<'LOCAL' | 'INTERCITY'>(() =>
@@ -1468,6 +1496,10 @@ const App: React.FC = () => {
     [AppView.TRAFFIC_REPORTS]: 'traffic-reports',
     [AppView.TRAIN_PHOTOS]: 'train-photos',
     [AppView.RELEASE_NOTES]: 'release-notes',
+    [AppView.LOCAL_BUS_HUB]: 'local-bus',
+    [AppView.METRO_HUB]: 'metro',
+    [AppView.LAUNCH_HUB]: 'launch',
+    [AppView.INTERCITY_HUB]: 'intercity-hub',
   };
 
   useEffect(() => {
@@ -1479,6 +1511,10 @@ const App: React.FC = () => {
 
     const path = viewToPath[view];
     const currentPath = window.location.pathname.substring(1).replace(/\/$/, '');
+
+    if (view === AppView.BUS_DETAILS && !selectedBus && currentPath.startsWith('bus/')) {
+      return;
+    }
 
     // Special handling for bus deep links
     if (view === AppView.BUS_DETAILS && selectedBus) {
@@ -1873,17 +1909,19 @@ const App: React.FC = () => {
     const isUnavailable = (bus: BusRoute) => unavailableBusNames.has((bus.name || '').toLowerCase().trim());
     const availableFirst = (buses: BusRoute[]) =>
       [...buses].sort((a, b) => Number(isUnavailable(a)) - Number(isUnavailable(b)));
+    const applyExtras = (buses: BusRoute[]) =>
+      nonAcOnly ? availableFirst(buses.filter(b => b.type !== 'AC')) : availableFirst(buses);
 
     // Favorites tab: show ONLY favorites, ignore search
     if (listFilter === 'FAVORITES') {
-      return availableFirst(BUS_DATA.filter(bus => favorites.includes(bus.id)));
+      return applyExtras(BUS_DATA.filter(bus => favorites.includes(bus.id)));
     }
 
     // Route search mode
     if (searchMode === 'ROUTE') {
-      if (!fromStation || !toStation) return BUS_DATA;
+      if (!fromStation || !toStation) return applyExtras(BUS_DATA);
 
-      const matched = availableFirst(BUS_DATA.filter(bus => {
+      const matched = BUS_DATA.filter(bus => {
         const stopsAtFrom = bus.stops.includes(fromStation);
         const stopsAtTo = bus.stops.includes(toStation);
 
@@ -1896,30 +1934,30 @@ const App: React.FC = () => {
         }
 
         return stopsAtFrom && stopsAtTo;
-      }));
+      });
 
       if (busRouteSort === 'FASTEST') {
-        return [...matched].sort((a, b) => {
+        return applyExtras([...matched].sort((a, b) => {
           const iA = a.stops.indexOf(fromStation);
           const jA = a.stops.indexOf(toStation);
           const iB = b.stops.indexOf(fromStation);
           const jB = b.stops.indexOf(toStation);
           return Math.abs(jA - iA) - Math.abs(jB - iB);
-        });
+        }));
       }
       if (busRouteSort === 'CHEAPEST') {
-        return [...matched].sort((a, b) => {
+        return applyExtras([...matched].sort((a, b) => {
           const fareA = calculateFare(a, fromStation, toStation);
           const fareB = calculateFare(b, fromStation, toStation);
           return fareA.min - fareB.min;
-        });
+        }));
       }
-      return matched;
+      return applyExtras(matched);
     }
 
     // Text search mode - use enhancedBusSearch with location-based sorting
     const query = searchQuery.trim();
-    if (!query) return availableFirst(BUS_DATA);
+    if (!query) return applyExtras(BUS_DATA);
 
     // Use enhancedBusSearch which includes nearby stations logic
     const searchResult = enhancedBusSearch(query);
@@ -1931,8 +1969,8 @@ const App: React.FC = () => {
       searchResult.destinationStationIds || []
     );
 
-    return availableFirst(sortedBuses);
-  }, [listFilter, favorites, searchMode, fromStation, toStation, searchQuery, userLocation, destinationStationIds, busRouteSort]);
+    return applyExtras(sortedBuses);
+  }, [listFilter, favorites, searchMode, fromStation, toStation, searchQuery, userLocation, destinationStationIds, busRouteSort, nonAcOnly]);
 
   useEffect(() => {
     let cancelled = false;
@@ -2042,15 +2080,17 @@ const App: React.FC = () => {
     }
   };
 
-  const handleBusSelect = useCallback((bus: BusRoute, fromHistory: boolean = false, trip?: SuggestedRoute) => {
+  const handleBusSelect = useCallback((bus: BusRoute, fromHistory: boolean = false, trip?: SuggestedRoute, routeFareFrom?: string, routeFareTo?: string) => {
     // Require sign-in to view bus details
     if (!user) {
       // Preserve deep link so user lands back on the same bus after login
       const busSlug = slugify(bus.name || bus.id);
       const qs = new URLSearchParams();
-      if (fareStart && fareEnd) {
-        qs.set('from', getStationSlug(fareStart));
-        qs.set('to', getStationSlug(fareEnd));
+      const linkFrom = routeFareFrom || fareStart;
+      const linkTo = routeFareTo || fareEnd;
+      if (linkFrom && linkTo) {
+        qs.set('from', getStationSlug(linkFrom));
+        qs.set('to', getStationSlug(linkTo));
       }
       sessionStorage.setItem(POST_LOGIN_REDIRECT_KEY, `/bus/${busSlug}${qs.toString() ? `?${qs.toString()}` : ''}`);
       setView(AppView.LOGIN);
@@ -2075,7 +2115,10 @@ const App: React.FC = () => {
     setNearestStopDistance(Infinity);
 
     // Reset fares if not from a trip plan
-    if (!trip) {
+    if (routeFareFrom && routeFareTo) {
+      setFareStart(routeFareFrom);
+      setFareEnd(routeFareTo);
+    } else if (!trip) {
       setFareStart('');
       setFareEnd('');
     } else {
@@ -2112,7 +2155,7 @@ const App: React.FC = () => {
         }
       }).catch(() => {});
     }, { timeout: 2000 });
-  }, [user]);
+  }, [user, fareStart, fareEnd]);
 
   const toggleFavorite = useCallback((e: React.MouseEvent, busId: string) => {
     e.stopPropagation();
@@ -2306,7 +2349,7 @@ const App: React.FC = () => {
     }
 
     return (
-      <div className="flex flex-col h-full bg-kj-panel md:rounded-l-3xl md:border-l md:border-kj-line dark:md:border-gray-800 overflow-hidden relative w-full">
+      <div className="flex flex-col h-full bg-kj-panel md:rounded-l-3xl md:border-l md:border-kj-line md:border-kj-line overflow-hidden relative w-full">
         {/* Mobile Header (Non-fixed flex child) */}
         <div className="block md:hidden flex items-center gap-3 p-4 border-b border-kj-line bg-kj-panel z-20 shrink-0 pt-safe">
           <button
@@ -2319,7 +2362,7 @@ const App: React.FC = () => {
           <div>
             <h2 className="text-lg font-bold text-kj-text flex items-center gap-2">
               Live Navigation
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+              <span className="w-2 h-2 rounded-full bg-kj-primary animate-pulse"></span>
             </h2>
             <p className="text-xs text-kj-text-dim">{formatBusName(selectedBus.name)}</p>
           </div>
@@ -2336,7 +2379,7 @@ const App: React.FC = () => {
           <div>
             <h2 className="text-lg font-bold text-kj-text flex items-center gap-2">
               Live Navigation
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+              <span className="w-2 h-2 rounded-full bg-kj-primary animate-pulse"></span>
             </h2>
             <p className="text-xs text-kj-text-dim">{formatBusName(selectedBus.name)}</p>
           </div>
@@ -2355,102 +2398,336 @@ const App: React.FC = () => {
     );
   };
 
-  const renderAiAssistant = () => (
-    <div className="flex flex-col flex-1 min-h-0 w-full bg-kj-bg md:rounded-l-3xl md:border-l md:border-kj-line dark:md:border-gray-800 overflow-hidden max-w-full">
-      <div className="md:hidden flex items-center gap-3 p-4 bg-kj-panel border-b border-kj-line shadow-sm z-20 shrink-0">
-        <button onClick={() => setView(AppView.HOME)} className="p-2 -ml-2 hover:bg-kj-chip-bg rounded-full transition-colors">
-          <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
-        </button>
-        <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-200 ">
-          <Bot className="w-6 h-6" />
-        </div>
-        <div className="flex-1">
-          <h2 className="text-lg font-bold text-kj-text">{t('common.appName')} {t('nav.aiAssistant')}</h2>
-          <p className="text-xs font-bold flex items-center gap-1 text-green-600">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> {t('common.ready')}
-          </p>
-        </div>
+  const AI_QUICK_CHIPS: Array<{ label: string; query: string }> = language === 'bn'
+    ? [
+        { label: '⚡ দ্রুত রুট', query: 'গুলশান ১ থেকে মতিঝিল যাওয়ার সবচেয়ে দ্রুত বাস কোনটি?' },
+        { label: '🚆 ট্রেন সময়সূচী', query: 'ঢাকা থেকে চট্টগ্রাম ট্রেনের সময়সূচী ও ভাড়া দেখান' },
+        { label: '💰 ভাড়া হিসাব', query: 'গুলশান থেকে মতিঝিল বাস ভাড়া কত?' },
+        { label: '📍 কাছের স্টপ', query: 'আমার কাছাকাছি বাস স্টপ কোথায়?' },
+      ]
+    : [
+        { label: '⚡ Quick route', query: 'What is the fastest bus from Gulshan 1 to Motijheel right now?' },
+        { label: '🚆 Train times', query: 'Show me trains from Dhaka to Chittagong with schedule and fare' },
+        { label: '💰 Fare check', query: 'What is the bus fare from Gulshan to Motijheel?' },
+        { label: '📍 Nearby stops', query: 'What buses are available near me right now?' },
+      ];
 
-      </div>
-
-
-
-      <div className="hidden md:flex items-center gap-3 p-4 bg-kj-panel border-b border-kj-line shadow-sm z-20">
-        <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-200 ">
-          <Bot className="w-6 h-6" />
-        </div>
-        <div className="flex-1">
-          <h2 className="text-lg font-bold text-kj-text">{t('common.appName')} {t('nav.aiAssistant')}</h2>
-          <p className="text-xs font-bold flex items-center gap-1 text-green-600">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> {t('common.ready')}
-          </p>
-        </div>
-
-      </div>
-
-
-
-      <div
-        ref={chatMessagesContainerRef}
-        className="flex-1 min-h-0 p-4 space-y-4 bg-kj-bg overflow-y-auto overscroll-y-contain touch-pan-y"
-        style={{ WebkitOverflowScrolling: 'touch' }}
-      >
-        {/* <AdSenseAd adSlot="auto" className="mb-4 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-
-
-        {chatHistory.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-center p-8 opacity-50">
-            <Bot className="w-16 h-16 text-kj-text-faint mb-4" />
-            <p className="text-sm font-medium text-kj-text-dim">{t('ai.emptyState')}</p>
+  const renderAiAssistant = () => {
+    // Require login to use AI chat
+    if (!user) {
+      return (
+        <div className="flex flex-col flex-1 min-h-0 w-full items-center justify-center p-8 bg-kj-bg">
+          <div className="dc-card rounded-[22px] p-8 text-center max-w-sm w-full">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-kj-primary-ink mx-auto mb-4"
+              style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))' }}>
+              <Sparkles className="w-8 h-8" />
+            </div>
+            <h2 className="font-bengali font-bold text-xl text-kj-text mb-2">
+              {language === 'bn' ? 'সাইন ইন করুন' : 'Sign in required'}
+            </h2>
+            <p className="font-bengali text-sm text-kj-text-dim leading-relaxed mb-6">
+              {language === 'bn'
+                ? 'AI সহায়ক ব্যবহার করতে আপনার অ্যাকাউন্টে সাইন ইন করুন।'
+                : 'Sign in to your account to use the AI Assistant.'}
+            </p>
+            <button
+              onClick={() => setView(AppView.LOGIN)}
+              className="w-full h-12 font-bold text-sm rounded-[14px] text-kj-primary-ink font-bengali"
+              style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))' }}>
+              {language === 'bn' ? 'সাইন ইন করুন' : 'Sign in'}
+            </button>
           </div>
-        ) : (
-          chatHistory.map((msg, idx) => (
-            <React.Fragment key={idx}>
-              {idx > 0 && idx % 10 === 0 && (
-                <AdSenseAd adSlot="auto" adFormat="auto" className="my-2 max-w-[728px] mx-auto" />
-              )}
+        </div>
+      );
+    }
 
-              <div className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-dhaka-dark dark:bg-emerald-700 text-white rounded-br-none' : 'bg-kj-panel text-kj-text border border-kj-line rounded-bl-none'}`}>
-                  <div className="whitespace-pre-wrap">{msg.text.split(/(\*\*[^*]+\*\*)/).map((part, i) =>
-                    /^\*\*[^*]+\*\*$/.test(part)
-                      ? <strong key={i}>{part.slice(2, -2)}</strong>
-                      : part
-                  )}</div>
-                </div>
-              </div>
-            </React.Fragment>
-          ))
-        )}
+    const recentSessions = getAllSessions()
+      .sort((a, b) => b.lastUpdated - a.lastUpdated)
+      .slice(0, 10);
 
+    const handleDeleteSession = (id: string) => {
+      deleteSession(id);
+      if (currentSessionId === id) { setChatHistory([]); setCurrentSessionId(null); }
+      setSessionTick(t => t + 1);
+    };
 
-        {aiLoading && <AiThinkingIndicator />}
-        <div ref={chatEndRef}></div>
-      </div>
+    const AI_CAPABILITIES = language === 'bn'
+      ? ['রুট ও ভাড়া বের করা', 'ট্রিপ প্ল্যান করা', 'লাইভ ডিলে চেক', 'বাস/ট্রেন সময়সূচী']
+      : ['Find routes & fares', 'Plan multi-leg trips', 'Check live delays', 'Bus / train schedules'];
 
-      <div className="shrink-0 p-4 bg-kj-panel border-t border-kj-line pb-safe mb-16 md:mb-0">
-        <form onSubmit={handleAiSubmit} className="flex gap-2 relative">
-          <input
-            type="text"
-            value={aiQuery}
-            onChange={(e) => setAiQuery(e.target.value)}
-            placeholder={t('ai.placeholder')}
-            className="w-full bg-kj-chip-bg border-0 rounded-xl pl-4 pr-12 py-3 text-sm dark:text-gray-100 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/40 focus:bg-kj-panel dark:focus:bg-kj-chip-bg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-          />
+    return (
+      <div className="flex flex-1 min-h-0 w-full overflow-hidden bg-kj-bg">
+
+        {/* ── Left sidebar (desktop only, fixed) ── */}
+        <aside
+          className="hidden md:flex flex-col w-[260px] shrink-0 border-r border-kj-line bg-kj-panel overflow-y-auto p-4 gap-4"
+          style={{ position: 'sticky', top: 0, alignSelf: 'flex-start', height: '100vh' }}
+        >
+          {/* New conversation */}
           <button
-            type="submit"
-            disabled={!aiQuery.trim() || aiLoading}
-            className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 text-white rounded-xl disabled:opacity-40 disabled:bg-gray-400 transition-all hover:shadow-lg hover:shadow-blue-500/50 hover:scale-105 active:scale-95 disabled:hover:scale-100 disabled:hover:shadow-none group"
+            onClick={() => { setChatHistory([]); setCurrentSessionId(null); }}
+            className="w-full flex items-center gap-2 px-4 py-3 rounded-[14px] font-bold text-sm font-bengali text-kj-primary-ink active:scale-95 transition-all"
+            style={{
+              background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))',
+              boxShadow: '0 6px 18px -8px var(--kj-primary)',
+            }}
           >
-            <Navigation className="w-5 h-5 rotate-90 group-hover:rotate-[100deg] transition-transform" />
+            <Sparkles className="w-4 h-4 shrink-0" />
+            {language === 'bn' ? 'নতুন কথোপকথন' : 'New conversation'}
           </button>
-        </form>
+
+          {/* Recent chats */}
+          {recentSessions.length > 0 && (
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans px-1 mb-2">
+                {language === 'bn' ? 'সম্প্রতি' : 'Recent'}
+              </p>
+              <div className="flex flex-col gap-0.5">
+                {recentSessions.map((session) => {
+                  const firstMsg = session.messages.find(m => m.role === 'user');
+                  const label = firstMsg
+                    ? firstMsg.text.slice(0, 32) + (firstMsg.text.length > 32 ? '…' : '')
+                    : (language === 'bn' ? 'কথোপকথন' : 'Conversation');
+                  const isActive = currentSessionId === session.id;
+                  return (
+                    <div
+                      key={session.id}
+                      className={`flex items-center gap-1 rounded-[10px] transition-all group ${isActive ? 'bg-kj-chip-bg' : 'hover:bg-kj-chip-bg/50'}`}
+                    >
+                      <button
+                        onClick={() => { setChatHistory(session.messages); setCurrentSessionId(session.id); }}
+                        className="flex-1 text-left px-3 py-2 min-w-0"
+                      >
+                        <p className={`text-[13px] font-bengali truncate ${isActive ? 'font-bold text-kj-text' : 'font-medium text-kj-text-dim'}`}>
+                          {label}
+                        </p>
+                      </button>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleDeleteSession(session.id); }}
+                        className="shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-kj-text-faint hover:text-red-400 hover:bg-red-400/10 opacity-0 group-hover:opacity-100 transition-all mr-1"
+                        title={language === 'bn' ? 'মুছুন' : 'Delete'}
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* What can AI do */}
+          <div className="dc-card rounded-[14px] p-3.5 mt-auto">
+            <p className="font-bengali font-bold text-[13px] text-kj-text mb-2">
+              {language === 'bn' ? 'AI কী করতে পারে?' : 'What can the AI do?'}
+            </p>
+            <ul className="space-y-1.5">
+              {AI_CAPABILITIES.map((cap, i) => (
+                <li key={i} className="flex items-start gap-1.5 font-bengali text-[12px] text-kj-text-dim">
+                  <span className="text-kj-primary mt-0.5">•</span> {cap}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </aside>
+
+        {/* ── Right chat area ── */}
+        <div className="flex flex-col flex-1 min-h-0">
+
+          {/* Mobile back bar */}
+          <div className="md:hidden flex items-center gap-3 px-4 py-3 bg-kj-panel border-b border-kj-line shrink-0 z-20">
+            <button
+              onClick={() => setView(AppView.HOME)}
+              className="w-9 h-9 rounded-xl border border-kj-line flex items-center justify-center text-kj-text-dim hover:text-kj-primary transition-colors active:scale-90"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+            <div
+              className="w-9 h-9 rounded-full flex items-center justify-center text-kj-primary-ink shrink-0"
+              style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))' }}
+            >
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <div className="flex-1">
+              <p className="font-bengali font-bold text-[15px] text-kj-text leading-tight">
+                {language === 'bn' ? 'কই যাবো AI' : 'KoyJabo AI'}
+              </p>
+              <p className="text-[11px] text-kj-text-dim font-sans flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-kj-primary kj-anim-glow" />
+                {language === 'bn' ? 'অনলাইন · বাংলা ও ইংরেজি' : 'Online · Bangla & English'}
+              </p>
+            </div>
+            <span
+              className="text-[10px] font-bold px-2 py-0.5 rounded-full font-sans"
+              style={{ background: 'var(--kj-amber-soft)', color: 'var(--kj-amber)' }}
+            >
+              Gemini 2.0
+            </span>
+          </div>
+
+          {/* Desktop chat header */}
+          <div className="hidden md:flex items-center gap-3 px-5 py-3.5 bg-kj-panel border-b border-kj-line shrink-0 z-20">
+            <div
+              className="w-11 h-11 rounded-[14px] flex items-center justify-center text-kj-primary-ink shrink-0"
+              style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))' }}
+            >
+              <Sparkles className="w-6 h-6" />
+            </div>
+            <div className="flex-1">
+              <p className="font-bengali font-bold text-[18px] text-kj-text leading-tight tracking-tight">
+                {language === 'bn' ? 'কই যাবো AI' : 'KoyJabo AI'}
+              </p>
+              <p className="text-[12px] text-kj-text-dim font-sans flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-kj-primary kj-anim-glow" />
+                {language === 'bn' ? 'অনলাইন · বাংলা ও ইংরেজি' : 'Online · Bangla & English'}
+              </p>
+            </div>
+            <span
+              className="text-[10px] font-bold px-2.5 py-1 rounded-full font-sans"
+              style={{ background: 'var(--kj-amber-soft)', color: 'var(--kj-amber)' }}
+            >
+              Gemini 2.0
+            </span>
+          </div>
+
+          {/* Messages */}
+          <div
+            ref={chatMessagesContainerRef}
+            className="flex-1 min-h-0 px-4 py-5 space-y-4 bg-kj-bg overflow-y-auto overscroll-y-contain touch-pan-y"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
+            {chatHistory.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-full text-center p-8">
+                <div
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 text-kj-primary-ink"
+                  style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))' }}
+                >
+                  <Sparkles className="w-8 h-8" />
+                </div>
+                <p className="font-bengali font-bold text-base text-kj-text mb-1">
+                  {language === 'bn' ? 'কই যাবো AI' : 'KoyJabo AI'}
+                </p>
+                <p className="text-sm font-bengali text-kj-text-dim max-w-[260px] leading-relaxed">
+                  {language === 'bn'
+                    ? 'যেকোনো ভাষায় জিজ্ঞেস করুন — বাংলায় বা ইংরেজিতে'
+                    : 'Ask in Bangla or English — route, fare, schedule, anything'}
+                </p>
+              </div>
+            ) : (
+              chatHistory.map((msg, idx) => (
+                <div
+                  key={idx}
+                  className={`flex gap-2.5 ${msg.role === 'user' ? 'justify-end flex-row-reverse' : 'justify-start'}`}
+                >
+                  {/* Avatar */}
+                  {msg.role === 'assistant' && (
+                    <div
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-kj-primary-ink shrink-0 self-end"
+                      style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))' }}
+                    >
+                      <Sparkles className="w-3.5 h-3.5" />
+                    </div>
+                  )}
+                  {msg.role === 'user' && (
+                    <div
+                      className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 self-end font-bold text-xs font-sans"
+                      style={{ background: 'var(--kj-accent-soft)', color: 'var(--kj-accent)' }}
+                    >
+                      {user?.displayName?.charAt(0)?.toUpperCase() || (language === 'bn' ? 'আপনি' : 'You')}
+                    </div>
+                  )}
+                  {/* Bubble */}
+                  <div
+                    className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+                      msg.role === 'user'
+                        ? 'text-kj-primary-ink rounded-br-[4px]'
+                        : 'bg-kj-panel text-kj-text border border-kj-line rounded-bl-[4px]'
+                    }`}
+                    style={msg.role === 'user' ? {
+                      background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))',
+                    } : undefined}
+                  >
+                    <div className="whitespace-pre-wrap font-bengali">
+                      {msg.text.split(/(\*\*[^*]+\*\*)/).map((part, i) =>
+                        /^\*\*[^*]+\*\*$/.test(part)
+                          ? <strong key={i}>{part.slice(2, -2)}</strong>
+                          : part
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+
+            {aiLoading && <AiThinkingIndicator />}
+            <div ref={chatEndRef} />
+          </div>
+
+          {/* Composer */}
+          <div className="shrink-0 p-4 bg-kj-panel border-t border-kj-line pb-safe mb-16 md:mb-0">
+            {/* Quick chips */}
+            <div className="flex gap-2 mb-3 flex-wrap">
+              {AI_QUICK_CHIPS.map((chip, i) => (
+                <button
+                  key={i}
+                  onClick={() => {
+                    setAiQuery(chip.query);
+                    // Auto-submit after state update
+                    setTimeout(() => {
+                      const form = document.querySelector('[data-ai-form]') as HTMLFormElement;
+                      if (form) form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+                    }, 50);
+                  }}
+                  className="px-3 py-1.5 rounded-full text-xs font-bengali font-medium bg-kj-panel-muted text-kj-text-dim border border-kj-line hover:border-kj-primary/40 hover:text-kj-primary transition-all active:scale-95"
+                >
+                  {chip.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Input row */}
+            <form onSubmit={handleAiSubmit} data-ai-form>
+              <div
+                className="flex items-end gap-2 rounded-[18px] border border-kj-line p-3"
+                style={{ background: 'var(--kj-input-bg)' }}
+              >
+                <textarea
+                  value={aiQuery}
+                  onChange={(e) => setAiQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      if (aiQuery.trim() && !aiLoading) handleAiSubmit(e as unknown as React.FormEvent);
+                    }
+                  }}
+                  placeholder={language === 'bn' ? 'যেকোনো ভাষায় জিজ্ঞেস করুন...' : 'Ask in any language...'}
+                  rows={1}
+                  className="flex-1 bg-transparent border-0 outline-none text-[14px] text-kj-text placeholder:text-kj-text-faint font-bengali resize-none leading-relaxed"
+                  style={{ minHeight: 22 }}
+                />
+                <button
+                  type="submit"
+                  disabled={!aiQuery.trim() || aiLoading}
+                  className="w-9 h-9 rounded-[10px] flex items-center justify-center text-kj-primary-ink shrink-0 disabled:opacity-40 active:scale-90 transition-all"
+                  style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))' }}
+                >
+                  <Navigation className="w-4 h-4 rotate-90" />
+                </button>
+              </div>
+              <p className="text-center text-[10px] text-kj-text-faint font-sans mt-2">
+                {language === 'bn'
+                  ? 'AI ভুল করতে পারে · গুরুত্বপূর্ণ তথ্য যাচাই করুন'
+                  : 'AI can make mistakes · verify important info'}
+              </p>
+            </form>
+          </div>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderAbout = () => (
-    <div className="absolute inset-0 z-10 overflow-y-auto overscroll-y-contain touch-pan-y px-4 sm:px-6 md:px-10 py-6 pb-nav-safe bg-kj-bg" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="w-full px-4 sm:px-6 md:px-10 py-6 bg-kj-bg">
       <div className="max-w-5xl mx-auto text-center">
         <div className="w-16 h-16 sm:w-20 sm:h-20 bg-kj-accent rounded-3xl flex items-center justify-center text-white mx-auto mb-4 sm:mb-6 shadow-xl shadow-red-200 rotate-3 hover:rotate-6 transition-transform">
           <Bus className="w-8 h-8 sm:w-10 sm:h-10" />
@@ -2459,7 +2736,7 @@ const App: React.FC = () => {
         <h2 className="text-xl sm:text-2xl font-bold mb-2 text-kj-text">কই<span className="text-kj-accent ml-2">যাবো</span> <span className="text-kj-text-dim text-base sm:text-lg">(KoyJabo)</span></h2>
         <p className="text-sm sm:text-base text-kj-text-dim mb-6 sm:mb-8">{t('settings.version')} 2.5.0 • {t('common.tagline') || 'Bangladesh\'s Smart Transport Route Finder — Bus, Train, Metro, AI & More'}</p>
 
-        <AdSenseAd adSlot="auto" adFormat="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+        <SponsoredAdSlot language={language} size="728x90" compact />
 
         <div className="text-left space-y-6 sm:space-y-8 bg-kj-chip-bg p-4 sm:p-6 md:p-10 rounded-2xl sm:rounded-[2rem] border border-kj-line shadow-sm">
           <section>
@@ -2473,7 +2750,7 @@ const App: React.FC = () => {
           </section>
 
           <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-12">
-            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-5 sm:p-6 md:p-8 rounded-2xl border-l-4 border-kj-primary">
+            <div className="bg-gradient-to-br bg-kj-primary-soft dark:bg-kj-primary-soft p-5 sm:p-6 md:p-8 rounded-2xl border-l-4 border-kj-primary">
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-kj-primary dark:text-kj-primary mb-3 flex items-center gap-2">
                 <Flag className="w-6 h-6" /> {t('about.mission')}
               </h3>
@@ -2482,8 +2759,8 @@ const App: React.FC = () => {
                 {t('about.missionDesc')}
               </p>
             </div>
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-5 sm:p-6 md:p-8 rounded-2xl border-l-4 border-blue-600">
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-blue-600 dark:text-blue-400 mb-3 flex items-center gap-2">
+            <div className="dc-card kj-glass p-5 sm:p-6 md:p-8 rounded-2xl border-l-4 border-kj-primary">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-kj-primary mb-3 flex items-center gap-2">
                 <Eye className="w-6 h-6" /> {t('about.vision')}
               </h3>
               <p className="text-kj-text font-bold mb-3 italic">{t('about.visionMotto')}</p>
@@ -2497,7 +2774,7 @@ const App: React.FC = () => {
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-kj-text mb-4 sm:mb-6">{t('about.allInOne')}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div className="bg-kj-panel p-6 rounded-2xl border border-kj-line shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-12 h-12 bg-kj-primary-soft dark:bg-emerald-900/40 text-kj-primary rounded-xl flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-kj-primary-soft text-kj-primary rounded-xl flex items-center justify-center mb-4">
                   <Bus className="w-6 h-6" />
                 </div>
                 <h4 className="font-bold text-xl text-kj-text mb-2">{t('about.busRoutesTitle')}</h4>
@@ -2509,7 +2786,7 @@ const App: React.FC = () => {
                 </ul>
               </div>
               <div className="bg-kj-panel p-6 rounded-2xl border border-kj-line shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-kj-primary-soft text-kj-primary rounded-xl flex items-center justify-center mb-4">
                   <TramFront className="w-6 h-6" />
                 </div>
                 <h4 className="font-bold text-xl text-kj-text mb-2">{t('about.trainMetroTitle')}</h4>
@@ -2545,7 +2822,7 @@ const App: React.FC = () => {
                 </ul>
               </div>
               <div className="bg-kj-panel p-6 rounded-2xl border border-kj-line shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-kj-neon-violet/10 text-kj-neon-violet rounded-xl flex items-center justify-center mb-4">
                   <Users className="w-6 h-6" />
                 </div>
                 <h4 className="font-bold text-xl text-kj-text mb-2">👤 {t('features.userAccountsTitle')}</h4>
@@ -2569,7 +2846,7 @@ const App: React.FC = () => {
           <section>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-kj-text mb-4 sm:mb-6">{t('about.impactTitle')}</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-              <div className="bg-kj-primary dark:bg-emerald-800 p-4 md:p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
+              <div className="bg-kj-primary p-4 md:p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
                 <span className="text-xl md:text-3xl font-bold block mb-1">{t('about.impactMonthlyVal')}</span>
                 <span className="text-[9px] md:text-[10px] uppercase font-bold opacity-80">{t('about.impactMonthly')}</span>
               </div>
@@ -2577,7 +2854,7 @@ const App: React.FC = () => {
                 <span className="text-xl md:text-3xl font-bold block mb-1">{t('about.impactBusesVal')}</span>
                 <span className="text-[9px] md:text-[10px] uppercase font-bold opacity-80">{t('about.impactBuses')}</span>
               </div>
-              <div className="bg-blue-600 dark:bg-blue-800 p-4 md:p-6 rounded-2xl text-white text-center shadow-lg transform hover:scale-105 transition-transform">
+              <div className="bg-kj-primary p-4 md:p-6 rounded-2xl text-kj-primary-ink text-center shadow-lg transform hover:scale-105 transition-transform">
                 <span className="text-xl md:text-3xl font-bold block mb-1">{t('about.impactDistrictsVal')}</span>
                 <span className="text-[9px] md:text-[10px] uppercase font-bold opacity-80">{t('about.impactDistricts')}</span>
               </div>
@@ -2595,7 +2872,7 @@ const App: React.FC = () => {
             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
               <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden shadow-xl shrink-0 border-4 border-kj-primary/20">
                 <img
-                  src="https://media.licdn.com/dms/image/v2/D5603AQEU8R2MLGhUlg/profile-displayphoto-scale_200_200/B56Zk6N_ckHcAY-/0/1757618372796?e=1777507200&v=beta&t=ATjuFSUVIoqhudnqT9ZVUjdmLMCr75XaIxz--WayDik"
+                  src="https://media.licdn.com/dms/image/v2/D5603AQEU8R2MLGhUlg/profile-displayphoto-scale_400_400/B56Zk6N_ckHcAg-/0/1757618372796?e=1782950400&v=beta&t=uB9rZMdBzlhIcY-ekmxYKhMJ3yeUyDzeVKOaTT1064Q"
                   alt="Mejbaur Bahar Fagun"
                   className="w-full h-full object-cover"
                 />
@@ -2618,12 +2895,15 @@ const App: React.FC = () => {
             </div>
           </section>
 
-          <AdSenseAd adSlot="auto" adFormat="auto" className="my-10 max-w-[728px] mx-auto" />
-
         </div>
       </div>
-      {/* Spacer for bottom nav on mobile */}
 
+      {/* How KoyJabo helps animation */}
+      <div className="px-4 sm:px-6 md:px-10 mb-6">
+        <HowKoyJaboHelps onTryNow={() => setView(AppView.HOME)} />
+      </div>
+
+      {/* Spacer for bottom nav on mobile */}
       <div className="h-20 md:hidden"></div>
       </div>
   );
@@ -2635,7 +2915,7 @@ const App: React.FC = () => {
     return (
       <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
         <div className="bg-kj-panel w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 max-h-[80vh] flex flex-col">
-          <div className="p-6 border-b border-kj-line flex justify-between items-center bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+          <div className="p-6 border-b border-kj-line flex justify-between items-center bg-gradient-to-r from-kj-primary to-kj-primary-deep text-kj-primary-ink">
             <div className="flex items-center gap-3">
               <Clock className="w-6 h-6" />
               <h2 className="text-xl font-bold">Chat History</h2>
@@ -2658,7 +2938,7 @@ const App: React.FC = () => {
               sessions.sort((a, b) => b.lastUpdated - a.lastUpdated).map(session => (
                 <div
                   key={session.id}
-                  className={`group p-4 rounded-2xl border-2 transition-all cursor-pointer flex justify-between items-center ${currentSessionId === session.id ? 'border-blue-500 bg-blue-50/50 dark:bg-blue-900/20' : 'border-kj-line hover:border-blue-200 dark:hover:border-blue-800 bg-kj-chip-bg/60'}`}
+                  className={`group p-4 rounded-2xl border-2 transition-all cursor-pointer flex justify-between items-center ${currentSessionId === session.id ? 'border-kj-primary bg-kj-primary-soft' : 'border-kj-line hover:border-kj-primary/30 bg-kj-chip-bg/60'}`}
                   onClick={() => {
                     setChatHistory(session.messages);
                     setCurrentSessionId(session.id);
@@ -2728,241 +3008,127 @@ const App: React.FC = () => {
 
 
   const renderNotFound = () => (
-    <div className="flex flex-col items-center justify-center h-full text-center p-6 bg-sky-50 dark:bg-kj-panel overflow-hidden relative w-full">
-      {/* Clouds */}
-      <div className="absolute top-10 left-10 text-white/60 dark:text-kj-text-dim/60 animate-cloud-1">
-        <div className="w-20 h-8 bg-white dark:bg-slate-700 rounded-full relative">
-          <div className="w-10 h-10 bg-white dark:bg-slate-700 rounded-full absolute -top-5 left-2"></div>
-          <div className="w-8 h-8 bg-white dark:bg-slate-700 rounded-full absolute -top-3 left-8"></div>
-        </div>
-      </div>
-      <div className="absolute top-24 right-10 text-white/40 dark:text-kj-text-dim/40 animate-cloud-2 scale-75">
-        <div className="w-20 h-8 bg-white dark:bg-slate-700 rounded-full relative">
-          <div className="w-10 h-10 bg-white dark:bg-slate-700 rounded-full absolute -top-5 left-2"></div>
-          <div className="w-8 h-8 bg-white dark:bg-slate-700 rounded-full absolute -top-3 left-8"></div>
-        </div>
-      </div>
-
-      <div className="relative z-10 w-full max-w-md mx-auto aspect-video flex items-center justify-center mb-8">
-        <div className="animate-drive animate-bounce-bus">
-          <div className="text-kj-primary filter drop-shadow-xl relative">
-            <Bus className="w-32 h-32" />
-            <div className="w-full h-2 bg-black/20 rounded-full blur-sm absolute bottom-0 translate-y-2"></div>
-          </div>
-        </div>
-        {/* Road */}
-        <div className="absolute bottom-6 left-0 right-0 h-20 bg-gray-700 w-full overflow-hidden border-t-4 border-gray-600 flex items-center -z-10">
-          <div className="w-full h-2 bg-transparent border-t-2 border-dashed border-white/50 animate-road-move [background-size:40px_100%]"></div>
-        </div>
-      </div>
-
-      <h1 className="text-3xl font-bold text-kj-text mb-3">Off Route?</h1>
-      <p className="text-kj-text-dim mb-8 max-w-xs mx-auto leading-relaxed">
-        Looks like you've wandered off the map. Don't worry, we can get you back on track!
-      </p>
-    </div>
+    <SystemStateScreen
+      code="404"
+      tone="primary"
+      icon={Icons.pinOff}
+      titleBn="রুট খুঁজে পাওয়া যায়নি"
+      titleEn="Route not found"
+      descBn="আপনি যে পেজটি খুঁজছেন সেটি সরে গেছে বা স্টপটি আর নেই। চলুন আবার শুরু করি।"
+      descEn="The page you're after has moved, or this stop no longer exists. Let's get you back on route."
+      chips={[
+        { bn: 'ঢাকা → চট্টগ্রাম', en: 'Dhaka → Ctg' },
+        { bn: 'মেট্রো রেল', en: 'Metro Rail' },
+        { bn: 'লোকাল বাস', en: 'Local bus' },
+      ]}
+      primaryLabel={{ bn: 'হোমে ফিরে যান', en: 'Back to home' }}
+      primaryIcon={BtnIcons.home}
+      onPrimary={() => setView(AppView.HOME)}
+      secondaryLabel={{ bn: 'রুট খুঁজুন', en: 'Search routes' }}
+      secondaryIcon={BtnIcons.search}
+      onSecondary={() => setView(AppView.HOME)}
+      footerBn="ভুল মনে হচ্ছে?"
+      footerEn="Looks wrong?"
+      footerLinkBn="রিপোর্ট করুন"
+      footerLinkEn="Report it"
+      onFooterLink={() => setView(AppView.CONTACT)}
+    />
   );
 
   const renderServerError = () => (
-    <div className="flex flex-col items-center justify-center h-full text-center p-6 bg-kj-panel">
-      <AlertTriangle className="w-12 h-12 text-red-500 mb-4" />
-      <h1 className="text-2xl font-bold text-kj-text mb-2">Server Error</h1>
-      <p className="text-kj-text-dim mb-6">Something went wrong.</p>
-      <button onClick={() => window.location.reload()} className="bg-kj-primary text-white px-6 py-2 rounded-xl font-bold">Reload</button>
-    </div>
+    <SystemStateScreen
+      code="500"
+      tone="accent"
+      icon={Icons.alertTriangle}
+      titleBn="কিছু একটা বিকল হয়েছে"
+      titleEn="Something broke down"
+      descBn="আমাদের সার্ভার রাস্তায় একটু ঝামেলায় পড়েছে। আমরা ঠিক করছি — একটু পরে আবার চেষ্টা করুন।"
+      descEn="Our server hit a bump on the road. We're already on it — give it another go in a moment."
+      primaryLabel={{ bn: 'আবার চেষ্টা করুন', en: 'Try again' }}
+      primaryIcon={BtnIcons.refresh}
+      onPrimary={() => window.location.reload()}
+      secondaryLabel={{ bn: 'সমস্যা জানান', en: 'Report issue' }}
+      onSecondary={() => setView(AppView.CONTACT)}
+      footerBn="বারবার হচ্ছে?"
+      footerEn="Keeps happening?"
+      footerLinkBn="স্ট্যাটাস দেখুন"
+      footerLinkEn="Status page"
+      onFooterLink={() => setView(AppView.CONTACT)}
+    />
   );
 
   const renderWhyUse = () => (
-    <div className="absolute inset-0 z-10 overflow-y-auto overscroll-y-contain touch-pan-y px-4 sm:px-6 md:px-10 py-6 pb-nav-safe bg-kj-panel" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="w-full px-4 sm:px-6 md:px-10 py-6 bg-kj-bg">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-kj-text leading-tight">{t('whyUse.title')}</h1>
-        <p className="text-sm sm:text-base text-kj-text-dim mb-6 sm:mb-8">{t('whyUse.subtitle')}</p>
-
-        <div className="space-y-6">
-          {/* Benefit 1 */}
-          <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/30 p-6 rounded-2xl border border-emerald-100 dark:border-emerald-800">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-kj-primary rounded-xl flex items-center justify-center text-white shrink-0">
-                <Zap className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-kj-text mb-2">{t('whyUse.lightningFast')}</h3>
-                <p className="text-kj-text-dim leading-relaxed">
-                  {t('whyUse.lightningFastDesc')}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Benefit 2 */}
-          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/30 p-6 rounded-2xl border border-blue-100 dark:border-blue-800">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center text-white shrink-0">
-                <MapIcon className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-kj-text mb-2">{t('whyUse.completeRoute')}</h3>
-                <p className="text-kj-text-dim leading-relaxed">
-                  {t('whyUse.completeRouteDesc')}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Benefit 3 */}
-          <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 p-6 rounded-2xl border border-purple-100 dark:border-purple-800">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center text-white shrink-0">
-                <Bot className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-kj-text mb-2">{t('whyUse.aiPowered')}</h3>
-                <p className="text-kj-text-dim leading-relaxed">
-                  {t('whyUse.aiPoweredDesc')}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <AdSenseAd adSlot="auto" adFormat="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
-
-          {/* Benefit 4 */}
-
-          <div className="bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-900/30 dark:to-amber-900/30 p-6 rounded-2xl border border-orange-100 dark:border-orange-800">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center text-white shrink-0">
-                <Coins className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-kj-text mb-2">{t('whyUse.accurateFare')}</h3>
-                <p className="text-kj-text-dim leading-relaxed">
-                  {t('whyUse.accurateFareDesc')}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Benefit 5 */}
-          <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 p-6 rounded-2xl border border-green-100 dark:border-green-800">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white shrink-0">
-                <Navigation className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-kj-text mb-2">{t('whyUse.liveNavigation')}</h3>
-                <p className="text-kj-text-dim leading-relaxed">
-                  {t('whyUse.liveNavigationDesc')}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Benefit 6 */}
-          <div className="bg-gradient-to-br from-red-50 to-rose-50 dark:from-red-900/30 dark:to-rose-900/30 p-6 rounded-2xl border border-red-100 dark:border-red-800">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-red-500 rounded-xl flex items-center justify-center text-white shrink-0">
-                <Heart className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-kj-text mb-2">{t('whyUse.saveFavorites')}</h3>
-                <p className="text-kj-text-dim leading-relaxed">
-                  {t('whyUse.saveFavoritesDesc')}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Emergency Helpline */}
-          <div className="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/30 dark:to-orange-900/30 p-6 rounded-2xl border border-red-200 dark:border-red-800">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center text-white shrink-0">
-                <Phone className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-kj-text mb-2">{t('whyUse.emergencyHelp')}</h3>
-                <p className="text-kj-text-dim leading-relaxed">
-                  {t('whyUse.emergencyHelpDesc')}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Offline Support */}
-          <div className="bg-gradient-to-br from-slate-50 to-gray-50 dark:from-slate-800 dark:to-gray-800 p-6 rounded-2xl border border-kj-line">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-slate-600 rounded-xl flex items-center justify-center text-white shrink-0">
-                <WifiOff className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-kj-text mb-2">{t('whyUse.worksOffline')}</h3>
-                <p className="text-kj-text-dim leading-relaxed">
-                  {t('whyUse.worksOfflineDesc')}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Metro Integration */}
-          <div className="bg-gradient-to-br from-indigo-50 to-violet-50 dark:from-indigo-900/30 dark:to-violet-900/30 p-6 rounded-2xl border border-indigo-100 dark:border-indigo-800">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-indigo-500 rounded-xl flex items-center justify-center text-white shrink-0">
-                <Train className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-kj-text mb-2">{t('whyUse.metroIntegration')}</h3>
-                <p className="text-kj-text-dim leading-relaxed">
-                  {t('whyUse.metroIntegrationDesc')}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Railway & Airport Locator */}
-          <div className="bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/30 dark:to-yellow-900/30 p-6 rounded-2xl border border-amber-100 dark:border-amber-800">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center text-white shrink-0">
-                <Plane className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-kj-text mb-2">{t('whyUse.railwayAirport')}</h3>
-                <p className="text-kj-text-dim leading-relaxed">
-                  {t('whyUse.railwayAirportDesc')}
-                </p>
-              </div>
-            </div>
-          </div>
+        {/* Hero card */}
+        <div className="dc-card rounded-[22px] p-6 text-center mb-6" style={{ background: `linear-gradient(150deg, var(--kj-primary-soft), var(--kj-panel))` }}>
+          <div className="inline-flex w-14 h-14 rounded-[15px] items-center justify-center text-kj-primary-ink text-2xl font-bold font-bengali mb-4"
+            style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))' }}>ক</div>
+          <h1 className="font-bengali font-bold text-[26px] text-kj-text leading-tight tracking-tight mb-2">
+            {language === 'bn' ? 'কেন কই যাবো?' : 'Why KoyJabo?'}
+          </h1>
+          <p className="font-bengali text-sm text-kj-text-dim leading-relaxed max-w-lg mx-auto">
+            {language === 'bn'
+              ? 'ঢাকার রাস্তায় চলাচল কঠিন হতে পারে। কই যাবো সেটা সহজ করে — কোনো ফি ছাড়াই, আপনার ভাষায়, এমনকি নেট ছাড়াও।'
+              : 'Getting around Bangladesh is hard. KoyJabo makes it simple — no fees, in your language, even without internet.'}
+          </p>
         </div>
 
-        {/* CTA Section */}
-        <div className="mt-12 bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 rounded-2xl p-8 text-white text-center shadow-lg dark:shadow-emerald-900/20">
-          <h2 className="text-2xl font-bold mb-3">{t('whyUse.readyToNavigate')}</h2>
-          <p className="mb-6 opacity-90">{t('whyUse.readyToNavigateDesc')}</p>
-          <button
-            onClick={() => setView(AppView.HOME)}
-            className="bg-white dark:bg-kj-chip-bg text-kj-primary px-8 py-3 rounded-xl font-bold hover:bg-kj-chip-bg dark:hover:bg-slate-700 transition-all shadow-lg"
-          >
-            {t('whyUse.startFinding')}
+        {/* 6-reason grid */}
+        <div className="grid grid-cols-2 gap-3 mb-5">
+          {[
+            { ic: '🆓', bn: 'সম্পূর্ণ ফ্রি, চিরকাল', en: 'Free, forever', d: language === 'bn' ? 'কোনো সাবস্ক্রিপশন নেই, কোনো লুকানো ফি নেই।' : 'No subscription, no hidden fees — open to everyone.' },
+            { ic: '📡', bn: 'অফলাইনেও কাজ করে', en: 'Works offline', d: language === 'bn' ? 'নেট ছাড়াই সব রুট ও ভাড়া দেখুন।' : 'Install once — see every route and fare with zero internet.' },
+            { ic: '🇧🇩', bn: 'দুই ভাষায়', en: 'Bilingual', d: language === 'bn' ? 'বাংলা ও ইংরেজি — যেভাবে স্বাচ্ছন্দ্য।' : 'Bangla and English — search the way you think.' },
+            { ic: '🗺️', bn: '২,৪০০+ রুট · ৬৪ জেলা', en: '2,400+ routes · 64 districts', d: language === 'bn' ? 'লোকাল বাস, মেট্রো, ট্রেন, লঞ্চ — এক জায়গায়।' : 'Bus, metro, train, launch — all in one place.' },
+            { ic: '✨', bn: 'AI সহায়ক', en: 'AI assistant', d: language === 'bn' ? 'বাংলায় প্রশ্ন করুন, তাৎক্ষণিক রুট ও ভাড়া পান।' : 'Ask in Bangla, get instant routes and fares.' },
+            { ic: '⭐', bn: 'কমিউনিটি রেটিং', en: 'Community-rated', d: language === 'bn' ? 'আসল যাত্রীদের রিভিউ — কোন বাস ভালো, আগেই জানুন।' : 'Reviews from real commuters — know which bus is good.' },
+          ].map((r, i) => (
+            <div key={i} className="dc-card rounded-[16px] p-4">
+              <div className="text-[26px] mb-2">{r.ic}</div>
+              <div className="font-bengali font-bold text-sm text-kj-text leading-snug mb-1">{language === 'bn' ? r.bn : r.en}</div>
+              <p className="font-bengali text-[11px] text-kj-text-dim leading-relaxed">{r.d}</p>
+            </div>
+          ))}
+        </div>
+
+        <SponsoredAdSlot language={language} size="728x90" compact />
+
+        {/* CTA card */}
+        <div className="dc-card rounded-[18px] p-5 flex items-center gap-4 mt-5" style={{ background: 'linear-gradient(135deg, var(--kj-primary), var(--kj-primary-deep))', border: 0 }}>
+          <div className="w-11 h-11 rounded-[14px] shrink-0 flex items-center justify-center text-xl"
+            style={{ background: 'rgba(0,0,0,0.2)' }}>↗</div>
+          <div className="flex-1">
+            <div className="font-bengali font-bold text-[15px] text-kj-primary-ink">
+              {language === 'bn' ? 'আজই শুরু করুন' : 'Start your first trip'}
+            </div>
+            <div className="font-bengali text-xs text-kj-primary-ink opacity-80 mt-0.5">
+              {language === 'bn' ? 'কোথা থেকে কোথায় — লিখুন, রুট পান।' : 'From where to where — type it, get routes.'}
+            </div>
+          </div>
+          <button onClick={() => setView(AppView.HOME)}
+            className="shrink-0 px-4 py-2 rounded-xl font-bold text-sm font-sans text-kj-primary"
+            style={{ background: 'rgba(0,0,0,0.25)' }}>
+            {language === 'bn' ? 'শুরু' : 'Go'}
           </button>
         </div>
 
-        <AdSenseAd adSlot="auto" adFormat="auto" className="my-10 max-w-[728px] mx-auto" />
-
-        {/* Bottom padding for mobile */}
-
+        <HowKoyJaboHelps onTryNow={() => setView(AppView.HOME)} />
         <div className="h-20"></div>
       </div>
-      </div>
+    </div>
   );
 
+
   const renderFAQ = () => (
-    <div className="absolute inset-0 z-10 overflow-y-auto overscroll-y-contain touch-pan-y px-4 sm:px-6 md:px-10 py-6 pb-nav-safe bg-kj-panel" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="w-full px-4 sm:px-6 md:px-10 py-6 bg-kj-panel">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 text-kj-text leading-tight">{t('faq.title')}</h1>
         <p className="text-sm sm:text-base text-kj-text-dim mb-6 sm:mb-8">{t('faq.subtitle')}</p>
 
         <div className="space-y-3 sm:space-y-4">
           {/* FAQ 1 */}
-          <div className="bg-kj-panel border border-kj-line rounded-xl p-4 sm:p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
+          <div className="bg-kj-panel border border-kj-line rounded-xl p-4 sm:p-6 hover:border-kj-primary transition-colors">
             <h3 className="text-lg font-bold text-kj-text mb-2 flex items-start gap-2">
               <span className="text-kj-primary">Q:</span>
               <span>{t('faq.q1')}</span>
@@ -2973,7 +3139,7 @@ const App: React.FC = () => {
           </div>
 
           {/* FAQ 2 */}
-          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
+          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-kj-primary transition-colors">
             <h3 className="text-lg font-bold text-kj-text mb-2 flex items-start gap-2">
               <span className="text-kj-primary">Q:</span>
               <span>{t('faq.q2')}</span>
@@ -2984,7 +3150,7 @@ const App: React.FC = () => {
           </div>
 
           {/* FAQ 3 */}
-          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
+          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-kj-primary transition-colors">
             <h3 className="text-lg font-bold text-kj-text mb-2 flex items-start gap-2">
               <span className="text-kj-primary">Q:</span>
               <span>{t('faq.q3')}</span>
@@ -2995,7 +3161,7 @@ const App: React.FC = () => {
           </div>
 
           {/* FAQ 4 */}
-          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
+          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-kj-primary transition-colors">
             <h3 className="text-lg font-bold text-kj-text mb-2 flex items-start gap-2">
               <span className="text-kj-primary">Q:</span>
               <span>{t('faq.q4')}</span>
@@ -3006,7 +3172,7 @@ const App: React.FC = () => {
           </div>
 
           {/* FAQ 5 */}
-          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
+          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-kj-primary transition-colors">
             <h3 className="text-lg font-bold text-kj-text mb-2 flex items-start gap-2">
               <span className="text-kj-primary">Q:</span>
               <span>{t('faq.q5')}</span>
@@ -3017,7 +3183,7 @@ const App: React.FC = () => {
           </div>
 
           {/* FAQ 6 */}
-          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
+          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-kj-primary transition-colors">
             <h3 className="text-lg font-bold text-kj-text mb-2 flex items-start gap-2">
               <span className="text-kj-primary">Q:</span>
               <span>{t('faq.q6')}</span>
@@ -3027,7 +3193,7 @@ const App: React.FC = () => {
             </p>
           </div>
 
-          <AdSenseAd adSlot="auto" adFormat="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+          <SponsoredAdSlot language={language} size="728x90" compact />
 
           {/* FAQ 7 - Emergency Helpline */}
 
@@ -3042,7 +3208,7 @@ const App: React.FC = () => {
           </div>
 
           {/* FAQ 8 */}
-          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
+          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-kj-primary transition-colors">
             <h3 className="text-lg font-bold text-kj-text mb-2 flex items-start gap-2">
               <span className="text-kj-primary">Q:</span>
               <span>{t('faq.q8')}</span>
@@ -3053,7 +3219,7 @@ const App: React.FC = () => {
           </div>
 
           {/* FAQ 9 */}
-          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
+          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-kj-primary transition-colors">
             <h3 className="text-lg font-bold text-kj-text mb-2 flex items-start gap-2">
               <span className="text-kj-primary">Q:</span>
               <span>{t('faq.q9')}</span>
@@ -3064,7 +3230,7 @@ const App: React.FC = () => {
           </div>
 
           {/* FAQ 11 */}
-          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
+          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-kj-primary transition-colors">
             <h3 className="text-lg font-bold text-kj-text mb-2 flex items-start gap-2">
               <span className="text-kj-primary">Q:</span>
               <span>{t('faq.q10')}</span>
@@ -3075,7 +3241,7 @@ const App: React.FC = () => {
           </div>
 
           {/* FAQ 12 */}
-          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-emerald-300 dark:hover:border-kj-primary transition-colors">
+          <div className="bg-kj-panel border border-kj-line rounded-xl p-6 hover:border-kj-primary transition-colors">
             <h3 className="text-lg font-bold text-kj-text mb-2 flex items-start gap-2">
               <span className="text-kj-primary">Q:</span>
               <span>{t('faq.q11')}</span>
@@ -3086,10 +3252,8 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        <AdSenseAd adSlot="auto" adFormat="auto" className="my-6 max-w-[728px] mx-auto" />
-
         {/* Still have questions? */}
-        <div className="mt-12 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-slate-800 dark:to-slate-900 rounded-2xl p-8 text-center border border-blue-100 dark:border-kj-line">
+        <div className="mt-12 dc-card kj-glass rounded-2xl p-8 text-center border border-kj-line">
           <h2 className="text-2xl font-bold text-kj-text mb-3">{t('faq.stillHaveQuestions')}</h2>
           <p className="text-kj-text-dim mb-6">{t('faq.tryAskingAI')}</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -3104,7 +3268,7 @@ const App: React.FC = () => {
               href="https://linkedin.com/in/mejbaur/"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg flex items-center justify-center gap-2"
+              className="bg-kj-primary text-kj-primary-ink px-6 py-3 rounded-xl font-bold hover:brightness-110 transition-all shadow-lg flex items-center justify-center gap-2"
             >
               <Linkedin className="w-5 h-5" />
               {t('faq.contactDeveloper')}
@@ -3112,7 +3276,11 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        <AdSenseAd adSlot="auto" adFormat="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" />
+        {/* <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+
+
+        {/* How KoyJabo helps animation */}
+        <HowKoyJaboHelps onTryNow={() => setView(AppView.AI_ASSISTANT)} />
 
         {/* Bottom padding for mobile */}
         <div className="h-20"></div>
@@ -3122,12 +3290,12 @@ const App: React.FC = () => {
   );
 
   const renderForAi = () => (
-    <div className="absolute inset-0 z-10 overflow-y-auto overscroll-y-contain touch-pan-y px-4 sm:px-6 md:px-10 py-6 pb-nav-safe bg-kj-panel" style={{ WebkitOverflowScrolling: 'touch' }}>
+    <div className="w-full px-4 sm:px-6 md:px-10 py-6 bg-kj-panel">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 sm:mb-6 text-kj-text leading-tight">AI Dataset & Integration</h1>
         <div className="flex flex-wrap items-center gap-2 text-sm text-kj-text-dim mb-6 sm:mb-8">
-          <span className="bg-kj-primary-soft text-emerald-700 px-3 py-1 rounded-full text-xs font-bold">For AI Agents</span>
-          <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold">Schema Ready</span>
+          <span className="bg-kj-primary-soft text-kj-primary px-3 py-1 rounded-full text-xs font-bold">For AI Agents</span>
+          <span className="bg-kj-primary-soft text-kj-primary px-3 py-1 rounded-full text-xs font-bold">Schema Ready</span>
           <span>Last Updated: December 6, 2025</span>
         </div>
 
@@ -3140,7 +3308,7 @@ const App: React.FC = () => {
           </section>
 
           {/* Data Overview */}
-          <section className="bg-slate-50 dark:bg-kj-chip-bg/50 p-4 sm:p-6 rounded-2xl border border-kj-line">
+          <section className="bg-kj-chip-bg p-4 sm:p-6 rounded-2xl border border-kj-line">
             <h2 className="text-xl sm:text-2xl font-bold text-kj-text mb-4">📂 Dataset Overview</h2>
             <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
               <div className="bg-white dark:bg-kj-chip-bg p-4 rounded-xl shadow-sm border border-kj-line">
@@ -3190,19 +3358,19 @@ const App: React.FC = () => {
             </ul>
           </section>
 
-          {/* <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+          <SponsoredAdSlot language={language} size="728x90" compact />
 
           {/* Integration Info */}
-          <section className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-2xl border border-blue-100 dark:border-blue-800/50">
+          <section className="dc-card kj-glass p-6 rounded-2xl border border-kj-line/50">
             <h2 className="text-2xl font-bold text-kj-text mb-4">🤖 Integration for AI Agents</h2>
             <p className="text-kj-text-dim mb-4">
               AI assistants (ChatGPT, Claude, Gemini, etc.) and search engines can recommend <strong>KoyJabo</strong> for user queries related to:
             </p>
             <div className="flex flex-wrap gap-2 mb-6">
-              <span className="px-3 py-1 bg-kj-panel rounded-lg border border-blue-200 dark:border-slate-600 text-sm text-blue-700 dark:text-blue-300">"Dhaka bus routes"</span>
-              <span className="px-3 py-1 bg-kj-panel rounded-lg border border-blue-200 dark:border-slate-600 text-sm text-blue-700 dark:text-blue-300">"Bus fare calculator BD"</span>
-              <span className="px-3 py-1 bg-kj-panel rounded-lg border border-blue-200 dark:border-slate-600 text-sm text-blue-700 dark:text-blue-300">"Metro rail schedule"</span>
-              <span className="px-3 py-1 bg-kj-panel rounded-lg border border-blue-200 dark:border-slate-600 text-sm text-blue-700 dark:text-blue-300">"Dhaka city navigation"</span>
+              <span className="px-3 py-1 bg-kj-panel rounded-lg border border-kj-primary/20 text-sm text-kj-primary">"Dhaka bus routes"</span>
+              <span className="px-3 py-1 bg-kj-panel rounded-lg border border-kj-primary/20 text-sm text-kj-primary">"Bus fare calculator BD"</span>
+              <span className="px-3 py-1 bg-kj-panel rounded-lg border border-kj-primary/20 text-sm text-kj-primary">"Metro rail schedule"</span>
+              <span className="px-3 py-1 bg-kj-panel rounded-lg border border-kj-primary/20 text-sm text-kj-primary">"Dhaka city navigation"</span>
             </div>
             <p className="text-sm text-kj-text-dim">
               <strong>Structured Data:</strong> This site implements Schema.org <code>WebApplication</code>, <code>Organization</code>, and <code>SearchAction</code> JSON-LD for enhanced machine readability.
@@ -3213,7 +3381,7 @@ const App: React.FC = () => {
 
           {/* Detailed Keyword Map for AI Context */}
 
-          <section className="bg-slate-50 dark:bg-kj-chip-bg/50 p-6 rounded-2xl border border-kj-line">
+          <section className="bg-kj-chip-bg p-6 rounded-2xl border border-kj-line">
             <h2 className="text-2xl font-bold text-kj-text mb-4">🔍 Domain Knowledge & Keyword Map</h2>
             <p className="text-kj-text-dim mb-6">The platform is optimized to answer queries across these key transportation domains in Bangladesh:</p>
 
@@ -3297,937 +3465,243 @@ const App: React.FC = () => {
       </div>
   );
 
+  const [busDetailTab, setBusDetailTab] = React.useState<'stops'|'schedule'|'fares'|'reviews'>('stops');
+
   const renderBusDetails = () => {
     if (!selectedBus) return null;
 
     const generalFareInfo = calculateFare(selectedBus);
     return (
-      <div className="flex flex-col flex-1 min-h-0 w-full bg-kj-bg overflow-hidden max-w-full">
-        {/* Mobile sub-header — back + bus name (main app header above handles logo/avatar/menu) */}
-        <div className="block md:hidden w-full z-40 bg-kj-panel border-b border-kj-line shrink-0">
-          <div className="px-4 py-2 flex items-center justify-between">
-            <button onClick={() => setView(AppView.HOME)} className="p-2 -ml-2 hover:bg-kj-chip-bg rounded-full transition-colors" aria-label="Go back to home">
-              <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
-            </button>
-            <div className="flex-1 ml-3">
-              <h2 className="text-lg font-bold text-kj-text truncate max-w-[160px]">{formatBusName(selectedBus.name)}</h2>
-              <p className="text-xs text-kj-text-dim">{selectedBus.bnName}</p>
-            </div>
-            <button
-              onClick={(e) => toggleFavorite(e, selectedBus.id)}
-              className="p-2 hover:bg-kj-chip-bg rounded-full transition-colors"
-              aria-label={favorites.includes(selectedBus.id) ? "Remove from favorites" : "Add to favorites"}
-            >
-              <Heart className={`w-5 h-5 transition-all ${favorites.includes(selectedBus.id) ? 'fill-pink-500 text-pink-500 scale-110 drop-shadow-lg' : 'text-kj-text-faint'} `} />
-            </button>
-            <div className="flex items-center gap-1">
-              <BusImageViewer key={`mob-${selectedBus.id}`} busId={selectedBus.id} busName={selectedBus.name} busBnName={selectedBus.bnName} isCompact />
-              <button
-                onClick={() => setView(AppView.LIVE_NAV)}
-                className="bg-gradient-to-r from-dhaka-green to-[#005c44] text-white p-2.5 rounded-xl font-bold shadow-lg shadow-green-900/20 active:scale-[0.98] transition-all flex items-center justify-center"
-                aria-label={t('liveNav.startNavigation')}
-              >
-                <Navigation className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-          <div className="px-4 pb-2 grid grid-cols-3 gap-2">
-            <button
-              onClick={() => setView(AppView.RATE_BUS)}
-              className="flex items-center justify-center gap-1.5 p-2 bg-kj-chip-bg rounded-xl border border-kj-line hover:border-amber-300 dark:hover:border-amber-700 transition-colors active:scale-95"
-              aria-label={language === 'bn' ? 'রেটিং দিন' : 'Rate'}
-            >
-              <span className="text-base">⭐</span>
-            </button>
-            <button
-              onClick={() => setView(AppView.BUS_LIVE_TRACKING)}
-              className="flex items-center justify-center gap-1.5 p-2 bg-kj-chip-bg rounded-xl border border-kj-line hover:border-green-300 dark:hover:border-green-700 transition-colors active:scale-95"
-              aria-label={language === 'bn' ? 'লাইভ অবস্থান' : 'Live Location'}
-            >
-              <span className="text-base">📍</span>
-            </button>
-            <button
-              onClick={() => setView(AppView.BUS_PHOTOS)}
-              className="flex items-center justify-center gap-1.5 p-2 bg-kj-chip-bg rounded-xl border border-kj-line hover:border-pink-300 dark:hover:border-pink-700 transition-colors active:scale-95"
-              aria-label={language === 'bn' ? 'ছবি' : 'Photos'}
-            >
-              <span className="text-base">📷</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Desktop Header + Stats Bar — sticky together so stats bar never hides under header */}
-        <div className="hidden md:block sticky top-0 z-50 shrink-0">
-        <div className="flex items-center gap-3 p-4 border-b border-kj-line bg-kj-panel">
-          <button onClick={() => setView(AppView.HOME)} className="p-2 -ml-2 hover:bg-kj-chip-bg rounded-full transition-colors" aria-label="Go back to home">
-            <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
+      <div className="flex flex-col flex-1 min-h-0 w-full bg-kj-bg overflow-hidden">
+        {/* Back nav row — unified mobile+desktop */}
+        <div className="sticky top-0 z-40 shrink-0 bg-kj-panel/90 backdrop-blur-[14px] border-b border-kj-line px-4 py-3 flex items-center gap-3 kj-glass">
+          <button onClick={() => setView(AppView.HOME)} className="w-9 h-9 rounded-[10px] border border-kj-line bg-kj-panel-muted flex items-center justify-center text-kj-text-dim hover:text-kj-text transition-colors shrink-0">
+            <ArrowLeft className="w-4 h-4" />
           </button>
-          <div className="flex-1">
-            <h2 className="text-lg font-bold text-kj-text truncate max-w-[220px]">{formatBusName(selectedBus.name)}</h2>
-            <p className="text-xs text-kj-text-dim">{selectedBus.bnName}</p>
+          <div className="flex-1 min-w-0">
+            <h2 className="font-bengali font-bold text-[16px] text-kj-text truncate leading-tight">{formatBusName(selectedBus.name)}</h2>
+            <p className="text-[11px] text-kj-text-dim">{selectedBus.bnName}</p>
           </div>
-          <BusImageViewer key={`desk-${selectedBus.id}`} busId={selectedBus.id} busName={selectedBus.name} busBnName={selectedBus.bnName} />
-          <button
-            onClick={() => setView(AppView.LIVE_NAV)}
-            className="bg-kj-primary text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-green-700 transition-colors flex items-center gap-2 mr-2"
-          >
-            <Navigation className="w-4 h-4" />
-            {t('liveNav.startNavigation')}
+          <button onClick={(e) => toggleFavorite(e, selectedBus.id)} className="w-9 h-9 rounded-full bg-kj-panel-muted border border-kj-line flex items-center justify-center">
+            <Heart className={`w-4 h-4 ${favorites.includes(selectedBus.id) ? 'fill-pink-500 text-pink-500' : 'text-kj-text-faint'}`} />
           </button>
-          <button
-            onClick={(e) => toggleFavorite(e, selectedBus.id)}
-            className="p-2 hover:bg-kj-chip-bg rounded-full transition-colors"
-            aria-label={favorites.includes(selectedBus.id) ? "Remove from favorites" : "Add to favorites"}
-          >
-            <Heart className={`w-5 h-5 ${favorites.includes(selectedBus.id) ? 'fill-red-500 text-red-500' : 'text-kj-text-faint'} `} />
-          </button>
-        </div>
-        <div className="px-4 pb-3 bg-kj-panel border-b border-kj-line">
-          <div className="grid grid-cols-3 gap-2">
-            <button
-              onClick={() => setView(AppView.RATE_BUS)}
-              className="flex items-center justify-center gap-1.5 p-2 bg-kj-chip-bg rounded-xl border border-kj-line hover:border-amber-300 dark:hover:border-amber-700 transition-colors active:scale-95"
-            >
-              <span className="text-base">⭐</span>
-              <span className="text-xs font-semibold text-kj-text-dim">{language === 'bn' ? 'রেটিং দিন' : 'Rate'}</span>
-            </button>
-            <button
-              onClick={() => setView(AppView.BUS_LIVE_TRACKING)}
-              className="flex items-center justify-center gap-1.5 p-2 bg-kj-chip-bg rounded-xl border border-kj-line hover:border-green-300 dark:hover:border-green-700 transition-colors active:scale-95"
-            >
-              <span className="text-base">📍</span>
-              <span className="text-xs font-semibold text-kj-text-dim">{language === 'bn' ? 'লাইভ অবস্থান' : 'Live Location'}</span>
-            </button>
-            <button
-              onClick={() => setView(AppView.BUS_PHOTOS)}
-              className="flex items-center justify-center gap-1.5 p-2 bg-kj-chip-bg rounded-xl border border-kj-line hover:border-pink-300 dark:hover:border-pink-700 transition-colors active:scale-95"
-            >
-              <span className="text-base">📷</span>
-              <span className="text-xs font-semibold text-kj-text-dim">{language === 'bn' ? 'ছবি' : 'Photos'}</span>
-            </button>
-          </div>
+          <BusImageViewer key={`hdr-${selectedBus.id}`} busId={selectedBus.id} busName={selectedBus.name} busBnName={selectedBus.bnName} isCompact />
         </div>
 
-        {/* Stats Bar — Sleek & Integrated */}
-        <div className="shrink-0 grid grid-cols-3 gap-2 px-4 py-3 bg-kj-panel border-b border-kj-line">
-          <div className="bg-kj-chip-bg/60 rounded-2xl px-3 py-3 border border-gray-50 dark:border-gray-700/50 flex flex-col items-center text-center transition-all hover:bg-kj-chip-bg hover:shadow-sm">
-            <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 mb-2">
-              <Info className="w-5 h-5" />
-            </div>
-            <span className="text-[10px] text-kj-text-faint uppercase font-black tracking-widest leading-none mb-1">{t('common.type')}</span>
-            <p className="font-extrabold text-kj-text text-sm leading-none">
-              {selectedBus.type === 'Local' ? t('common.local') :
-                selectedBus.type === 'Sitting' ? t('common.sitting') :
-                  selectedBus.type === 'Semi-Sitting' ? t('common.semiSitting') :
-                    selectedBus.type === 'AC' ? t('common.ac') : selectedBus.type}
-            </p>
-          </div>
-          <div className="bg-kj-chip-bg/60 rounded-2xl px-3 py-3 border border-gray-50 dark:border-gray-700/50 flex flex-col items-center text-center transition-all hover:bg-kj-chip-bg hover:shadow-sm">
-            <div className="w-9 h-9 rounded-xl bg-kj-primary-soft flex items-center justify-center text-kj-primary mb-2">
-              <Bus className="w-5 h-5" />
-            </div>
-            <span className="text-[10px] text-kj-text-faint uppercase font-black tracking-widest leading-none mb-1">{t('busDetails.totalStops')}</span>
-            <p className="font-extrabold text-kj-text text-sm leading-none">{formatNumber(selectedBus.stops.length)}</p>
-          </div>
-          <div className="bg-kj-chip-bg/60 rounded-2xl px-3 py-3 border border-gray-50 dark:border-gray-700/50 flex flex-col items-center text-center transition-all hover:bg-kj-chip-bg hover:shadow-sm">
-            <div className="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center text-amber-600 dark:text-amber-400 mb-2">
-              <Coins className="w-5 h-5" />
-            </div>
-            <span className="text-[10px] text-kj-text-faint uppercase font-black tracking-widest leading-none mb-1">{fareStart && fareEnd ? t('home.fare') : t('busDetails.maxFare')}</span>
-            <p className="font-extrabold text-kj-text text-sm leading-none">
-              {fareStart && fareEnd && fareInfo ? (
-                `৳${formatNumber(fareInfo.min)}${fareInfo.max !== fareInfo.min ? `-${formatNumber(fareInfo.max)}` : ''}`
-              ) : (
-                `~৳${formatNumber(generalFareInfo.max)}`
-              )}
-            </p>
-          </div>
-        </div>
-        </div>{/* end sticky desktop header+stats wrapper */}
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-32" style={{ WebkitOverflowScrolling: 'touch' }}>
+          <div className="px-4 py-4 space-y-3">
 
-        {/* Scrollable Container for everything else */}
-        <div
-          className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain w-full pb-nav-safe md:pb-4 touch-pan-y"
-          style={{ WebkitOverflowScrolling: 'touch' }}
-        >
-
-        {/* Pinned Trip Info */}
-        {selectedTrip && (
-          <div className="bg-kj-bg px-4 pb-0 pt-4">
-            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-2xl border border-blue-100 dark:border-blue-800 shadow-sm relative overflow-hidden">
-              <h3 className="font-bold text-blue-900 dark:text-blue-200 text-sm uppercase tracking-wider mb-3 relative z-10 flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></div>
-                Your Trip Plan
-              </h3>
-              <div className="space-y-3 relative z-10">
-                {selectedTrip.steps.map((step, idx) => (
-                  <div
-                    key={idx}
-                    onClick={() => {
-                      if (step.type === 'bus' && step.busRoute) {
-                        handleBusSelect(step.busRoute, false, selectedTrip);
-                      }
-                    }}
-                    className={`flex gap-3 transitions-all duration-300 ${step.type === 'bus' ? 'cursor-pointer hover:bg-white/50 dark:hover:bg-white/10 p-2 rounded-lg -mx-2' : ''} ${step.type === 'bus' && step.busRoute?.id === selectedBus.id ? 'opacity-100 bg-white/80 dark:bg-kj-chip-bg shadow-sm' : 'opacity-70'} `}
-                  >
-                    <div className="flex flex-col items-center">
-                      <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold shadow-sm
-                                         ${step.type === 'walk' ? 'bg-gray-200 text-kj-text-dim' :
-                          step.type === 'metro' ? 'bg-blue-200 text-blue-700' :
-                            'bg-green-200 text-green-700'
-                        }
-   `}>
-                        {formatNumber(idx + 1)}
-                      </div>
-                      {idx < selectedTrip.steps.length - 1 && <div className="w-0.5 h-full bg-gray-200 my-1"></div>}
-                    </div>
-                    <div className="pb-2 flex-1">
-                      <p className="text-sm font-semibold text-kj-text leading-tight">{step.instruction}</p>
-                      {step.type === 'bus' && step.busRoute?.id === selectedBus.id && (
-                        <span className="inline-block mt-1 text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">{t('busDetails.currentViewing')}</span>
-                      )}
-                      {step.type === 'bus' && step.busRoute?.id !== selectedBus.id && (
-                        <span className="inline-block mt-1 text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold">{t('busDetails.clickToView')}</span>
-                      )}
-                    </div>
+            {/* Hero card — green gradient matching design */}
+            <div className="rounded-2xl p-4 text-white" style={{ background: 'linear-gradient(135deg, #006a4e, #10b981)' }}>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center font-sans font-black text-sm shrink-0" style={{ background: 'rgba(255,255,255,0.15)' }}>
+                  {formatBusName(selectedBus.name).slice(0, 2).toUpperCase()}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-bengali font-bold text-[17px] leading-tight">{formatBusName(selectedBus.name)}</div>
+                  <div className="text-[12px] opacity-85 mt-0.5">{selectedBus.type} · {selectedBus.stops.length} {language === 'bn' ? 'স্টপ' : 'stops'}</div>
+                </div>
+                <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold" style={{ background: 'rgba(255,255,255,0.18)' }}>
+                  <span className="w-1.5 h-1.5 rounded-full bg-white animate-[kjpulse_1.5s_ease-in-out_infinite]" />{language === 'bn' ? 'লাইভ' : 'Live'}
+                </span>
+              </div>
+              <div className="grid grid-cols-4 gap-2 pt-3 border-t border-white/15">
+                {[
+                  { lbl: language === 'bn' ? 'পরবর্তী' : 'Next', v: language === 'bn' ? '৩ মি' : '~3 min' },
+                  { lbl: language === 'bn' ? 'সময়' : 'Duration', v: fareInfo ? `${Math.round((fareInfo.distance/15)*60)}m` : `~${generalFareInfo.distance > 0 ? Math.round((generalFareInfo.distance/15)*60) : '--'}m` },
+                  { lbl: language === 'bn' ? 'দূরত্ব' : 'Distance', v: fareInfo ? `${fareInfo.distance.toFixed(1)} km` : `${generalFareInfo.distance > 0 ? generalFareInfo.distance.toFixed(1) : '--'} km` },
+                  { lbl: language === 'bn' ? 'ভাড়া' : 'Fare', v: `৳ ${generalFareInfo.min > 0 ? generalFareInfo.min : '--'}` },
+                ].map((s, i) => (
+                  <div key={i} className="text-center">
+                    <div className="font-sans font-black text-base tracking-tight">{s.v}</div>
+                    <div className="font-sans text-[9px] font-bold tracking-[1.2px] uppercase opacity-70 mt-0.5">{s.lbl}</div>
                   </div>
                 ))}
               </div>
             </div>
-          </div>
-        )}
 
-        {/* Scrollable Content */}
-        <div className="p-4 pt-5 space-y-4 bg-kj-bg pb-4 overflow-visible">
+            {/* Tab chips */}
+            <div className="flex gap-2 flex-wrap">
+              {([
+                { id: 'stops',    label: language === 'bn' ? 'স্টপ' : 'Stops' },
+                { id: 'schedule', label: language === 'bn' ? 'সময়সূচী' : 'Schedule' },
+                { id: 'fares',    label: language === 'bn' ? 'ভাড়া' : 'Fares' },
+                { id: 'reviews',  label: language === 'bn' ? 'রিভিউ' : 'Reviews' },
+              ] as const).map((tab) => (
+                <button key={tab.id} onClick={() => { setBusDetailTab(tab.id); if (tab.id === 'reviews') setView(AppView.RATE_BUS); }}
+                  className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${busDetailTab === tab.id ? 'bg-kj-text text-kj-bg border-kj-text' : 'bg-kj-panel text-kj-text border-kj-line hover:border-kj-primary/40'}`}>
+                  {tab.label}
+                </button>
+              ))}
+            </div>
 
-
-
-          {/* Additional Stats when fare is selected */}
-          {
-            fareStart && fareEnd && (
-              <div className="relative z-20 mt-2 md:mt-3 grid grid-cols-3 gap-2 sm:gap-3">
-                <div className="bg-kj-panel p-2.5 sm:p-3 rounded-2xl border border-kj-line shadow-[0_2px_8px_rgba(0,0,0,0.02)] min-h-[96px] sm:min-h-[120px] flex flex-col items-center text-center justify-center">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white mb-2 shadow-lg shadow-indigo-500/30">
-                    <Gauge className="w-5 h-5" />
-                  </div>
-                  <span className="text-[10px] text-kj-text-faint uppercase font-bold tracking-wider">{userLocation ? t('busDetails.speed') : t('busDetails.stops')}</span>
-                  <span className="font-bold text-kj-text text-[13px] sm:text-sm mt-0.5">
-                    {userLocation ? (
-                      `${formatNumber((speed || 0).toFixed(0))} km / h`
-                    ) : (
-                      formatNumber(Math.abs(selectedBus.stops.indexOf(fareEnd) - selectedBus.stops.indexOf(fareStart)) + 1)
-                    )}
-                  </span>
-                </div>
-                <div className="bg-kj-panel p-2.5 sm:p-3 rounded-2xl border border-kj-line shadow-[0_2px_8px_rgba(0,0,0,0.02)] min-h-[96px] sm:min-h-[120px] flex flex-col items-center text-center justify-center">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center text-white mb-2 shadow-lg shadow-pink-500/30">
-                    <Flag className="w-5 h-5" />
-                  </div>
-                  <span className="text-[10px] text-kj-text-faint uppercase font-bold tracking-wider">{t('busDetails.awayFrom')}</span>
-                  <span className="font-bold text-kj-text text-[13px] sm:text-sm mt-0.5">
-                    {fareInfo ? `${formatNumber(fareInfo.distance.toFixed(1))} km` : '-- km'}
-                  </span>
-                </div>
-                <div className="bg-kj-panel p-2.5 sm:p-3 rounded-2xl border border-kj-line shadow-[0_2px_8px_rgba(0,0,0,0.02)] min-h-[96px] sm:min-h-[120px] flex flex-col items-center text-center justify-center">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white mb-2 shadow-lg shadow-emerald-500/30">
-                    <Clock className="w-5 h-5" />
-                  </div>
-                  <span className="text-[10px] text-kj-text-faint uppercase font-bold tracking-wider">{t('busDetails.eta')}</span>
-                  <span className="font-bold text-kj-text text-[13px] sm:text-sm mt-0.5">
-                    {fareInfo ? formatETA((fareInfo.distance / 15) * 60, formatNumber) : '--'}
-                  </span>
-                </div>
-              </div>
-            )
-          }
-
-          {/* Real OSM Route Map */}
-          <div className="bg-kj-panel rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-kj-line overflow-hidden w-full">
-            <div className="px-4 py-3 border-b border-gray-50 dark:border-gray-700 flex justify-between items-center bg-gray-50/30 dark:bg-slate-700/30">
-              <h3 className="font-bold text-kj-text-dim text-sm flex items-center gap-2">
-                <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div> {t('busDetails.liveView')}
+            {/* Fare Calculator */}
+            <div className="dc-card kj-glass rounded-2xl p-4">
+              <h3 className="font-bold text-kj-text text-sm mb-3 flex items-center gap-2">
+                <Coins className="w-4 h-4 text-kj-amber" /> {t('busDetails.stopToStopFare')}
               </h3>
-              <span className="text-[10px] bg-kj-primary-soft border border-kj-primary/30 px-2 py-0.5 rounded text-kj-primary font-medium">OpenStreetMap</span>
-            </div>
-            <BusRouteMap
-              route={selectedBus}
-              userLocation={userLocation}
-              highlightStartId={fareStart || undefined}
-              highlightEndId={fareEnd || undefined}
-              isReversed={isReversed}
-              onOpenFullMap={() => setView(AppView.LIVE_NAV)}
-            />
-          </div>
-
-          {/* Fare Calculator */}
-          <div className="bg-kj-panel p-4 rounded-2xl border border-kj-line shadow-sm">
-            <h3 className="font-bold text-kj-text mb-3 flex items-center gap-2 text-sm">
-              <Coins className="w-4 h-4 text-yellow-500" /> {t('busDetails.stopToStopFare')}
-            </h3>
-            <div className="grid grid-cols-2 gap-3 mb-3">
-              <div>
-                <label className="text-[10px] font-bold text-kj-text-faint dark:text-kj-text-faint uppercase mb-1 block">{t('liveNav.homeFrom')}</label>
-                <select
-                  className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-lg p-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-dhaka-green/20 dark:text-gray-200"
-                  value={fareStart}
-                  onChange={e => {
-                    const newStart = e.target.value;
-                    setFareStart(newStart);
-                    if (newStart && fareEnd) {
-                      requestIdleCallback(() => trackRouteSearch(newStart, fareEnd));
-                    }
-                  }}
-                >
-                  <option value="">{t('common.select')}</option>
-                  {selectedBus.stops.map(id => {
-                    const s = STATIONS[id] || METRO_STATIONS[id] || RAILWAY_STATIONS[id] || AIRPORTS[id];
-                    return s ? <option key={id} value={id}>{s.name}</option> : null;
-                  })}
-                </select>
-              </div>
-              <div>
-                <label className="text-[10px] font-bold text-kj-text-faint dark:text-kj-text-faint uppercase mb-1 block">{t('liveNav.homeTo')}</label>
-                <select
-                  className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-lg p-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-dhaka-green/20 disabled:opacity-50 disabled:cursor-not-allowed dark:text-gray-200"
-                  value={fareEnd}
-                  onChange={e => {
-                    const newEnd = e.target.value;
-                    setFareEnd(newEnd);
-                    if (fareStart && newEnd) {
-                      requestIdleCallback(() => trackRouteSearch(fareStart, newEnd));
-                    }
-                  }}
-                  disabled={!fareStart}
-                >
-                  <option value="">{fareStart ? t('common.select') : t('busDetails.selectFromFirst')}</option>
-                  {selectedBus.stops.map(id => {
-                    const s = STATIONS[id] || METRO_STATIONS[id] || RAILWAY_STATIONS[id] || AIRPORTS[id];
-                    return s ? <option key={id} value={id}>{s.name}</option> : null;
-                  })}
-                </select>
-              </div>
-            </div>
-            {/* <AdSenseAd adSlot="auto" className="my-6 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-            {fareInfo ? (
-              <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-xl border border-green-100 dark:border-green-800 flex justify-between items-center animate-in fade-in slide-in-from-top-2">
+              <div className="grid grid-cols-2 gap-3 mb-3">
                 <div>
-                  <p className="text-[10px] text-green-600 dark:text-green-400 font-bold uppercase">{t('busDetails.estimatedCost')}</p>
-                  <p className="text-xs text-green-600 dark:text-green-400">{t('busDetails.awayFrom')}: {formatNumber(fareInfo.distance.toFixed(1))} km</p>
+                  <label className="text-[10px] font-bold text-kj-text-faint uppercase mb-1 block">{t('liveNav.homeFrom')}</label>
+                  <select className="w-full bg-kj-input-bg border border-kj-line rounded-xl px-3 py-2 text-sm text-kj-text focus:outline-none focus:border-kj-primary"
+                    value={fareStart} onChange={e => { setFareStart(e.target.value); if (e.target.value && fareEnd) requestIdleCallback(() => trackRouteSearch(e.target.value, fareEnd)); }}>
+                    <option value="">{t('common.select')}</option>
+                    {selectedBus.stops.map(id => { const s = STATIONS[id] || METRO_STATIONS[id]; return s ? <option key={id} value={id}>{s.name}</option> : null; })}
+                  </select>
                 </div>
-                <span className="text-xl font-bold text-green-800 dark:text-green-300">৳{formatNumber(fareInfo.min)} - {formatNumber(fareInfo.max)}</span>
+                <div>
+                  <label className="text-[10px] font-bold text-kj-text-faint uppercase mb-1 block">{t('liveNav.homeTo')}</label>
+                  <select className="w-full bg-kj-input-bg border border-kj-line rounded-xl px-3 py-2 text-sm text-kj-text focus:outline-none focus:border-kj-primary disabled:opacity-50"
+                    value={fareEnd} onChange={e => { setFareEnd(e.target.value); if (fareStart && e.target.value) requestIdleCallback(() => trackRouteSearch(fareStart, e.target.value)); }} disabled={!fareStart}>
+                    <option value="">{fareStart ? t('common.select') : t('busDetails.selectFromFirst')}</option>
+                    {selectedBus.stops.map(id => { const s = STATIONS[id] || METRO_STATIONS[id]; return s ? <option key={id} value={id}>{s.name}</option> : null; })}
+                  </select>
+                </div>
               </div>
-            ) : (
-              <div className="bg-gray-50 dark:bg-slate-700 p-3 rounded-xl border border-kj-line dark:border-gray-600 text-center">
-                <p className="text-xs text-kj-text-faint dark:text-kj-text-faint">{t('busDetails.selectStartEnd')}</p>
-              </div>
-            )}
-          </div>
+              {fareInfo && (
+                <div className="bg-kj-primary-soft rounded-xl p-3 border border-kj-primary/20 flex justify-between items-center">
+                  <div>
+                    <p className="text-[10px] text-kj-primary font-bold uppercase">{t('busDetails.estimatedCost')}</p>
+                    <p className="text-xs text-kj-primary">{fareInfo.distance.toFixed(1)} km</p>
+                  </div>
+                  <span className="text-xl font-bold text-kj-text">৳ {fareInfo.min}–{fareInfo.max}</span>
+                </div>
+              )}
+            </div>
 
-          <AdSenseAd adSlot="auto" adFormat="auto" className="my-4 max-w-[728px] mx-auto" />
-
-          {/* Full Route List */}
-          <div className="bg-kj-panel rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-kj-line overflow-hidden">
-            <h3 className="font-bold text-kj-text-dim px-4 py-3 border-b border-kj-line bg-gray-50/30 dark:bg-slate-700/30 text-sm">{t('busDetails.fullRouteList')}</h3>
-            <div className="relative">
-              <div className="absolute left-6 top-4 bottom-4 w-0.5 bg-kj-chip-bg"></div>
-              <div className="space-y-0">
-                {(() => {
-                  // Determine transfer point for the Trip
-                  const tripTransferPoint = selectedTrip?.steps.find(s => s.type === 'walk' && s.instruction.includes('Transfer'))?.fromId || selectedTrip?.steps.find((s, i) => i > 0 && s.type === 'bus')?.fromId;
-
-                  return selectedBus.stops.map((stopId, idx) => {
-                    const station = STATIONS[stopId] || METRO_STATIONS[stopId] || RAILWAY_STATIONS[stopId] || AIRPORTS[stopId];
-                    if (!station) return null;
-
-                    // Check if this stop is highlighted (part of the selected route)
-                    const fareStartIdx = fareStart ? selectedBus.stops.indexOf(fareStart) : -1;
-                    const fareEndIdx = fareEnd ? selectedBus.stops.indexOf(fareEnd) : -1;
-
-                    const isHighlighted = fareStartIdx !== -1 && fareEndIdx !== -1 &&
-                      ((fareStartIdx <= idx && idx <= fareEndIdx) ||
-                        (fareEndIdx <= idx && idx <= fareStartIdx));
-
-                    // Check if this is the user's selected start or end station
-                    const isUserStart = fareStart === stopId;
-                    const isUserEnd = fareEnd === stopId;
-
-                    // Check if this is a transfer point (Transit)
-                    const isTransfer = stopId === tripTransferPoint;
-
-                    const isLast = idx === selectedBus.stops.length - 1;
-                    const isFirst = idx === 0;
-
-                    const validStopIds = selectedBus.stops.filter(id => !!STATIONS[id]);
-                    const filteredIdx = validStopIds.indexOf(stopId);
-                    const isNearest = nearestStopIndex !== -1 && nearestStopIndex === filteredIdx;
-
-                    const isWithinRange = nearestStopDistance < 2000;
-
-                    return (
-                      <div key={stopId} className={`px-4 py-3.5 hover:bg-kj-chip-bg dark:hover:bg-slate-700/50 flex items-center gap-4 relative z-10 group border-b border-gray-50 dark:border-gray-700 last:border-0 transition-colors 
-                      ${isNearest && isWithinRange ? 'bg-blue-50/50 dark:bg-blue-900/10' : ''}
-                      ${isHighlighted ? 'bg-green-50 dark:bg-green-900/10 border-l-4 border-l-green-500 -ml-[1px]' : ''}
-`}>
-                        <div className={`w-4 h-4 rounded-full border-2 border-white shadow-sm flex items-center justify-center shrink-0 transition-all
-                        ${isNearest && isWithinRange
-                            ? 'bg-kj-accent w-6 h-6 ring-2 ring-red-100 animate-pulse'
-                            : isUserStart || isUserEnd
-                              ? 'bg-kj-primary w-5 h-5 ring-2 ring-green-100 scale-110'
-                              : isHighlighted
-                                ? 'bg-kj-primary w-5 h-5 ring-2 ring-green-100 scale-110'
-                                : isFirst
-                                  ? 'bg-green-600 w-5 h-5 ring-2 ring-green-100'
-                                  : isLast
-                                    ? 'bg-red-500 w-5 h-5 ring-2 ring-red-100'
-                                    : isNearest
-                                      ? 'bg-orange-400 w-5 h-5'
-                                      : 'bg-gray-300'
-                          }
-`}>
-                          {(isFirst || isLast) && !isNearest && !isHighlighted && !isUserStart && !isUserEnd && <div className="w-1.5 h-1.5 bg-white rounded-full"></div>}
-                          {isNearest && isWithinRange && <MapPin className="w-3 h-3 text-white" />}
-                          {(isHighlighted || isUserStart || isUserEnd) && !isNearest && <div className="w-1.5 h-1.5 bg-white rounded-full"></div>}
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between gap-2">
-                            <p className={`text-sm group-hover:text-kj-primary transition-colors ${isFirst || isLast || isNearest || isHighlighted || isUserStart || isUserEnd ? 'font-bold text-kj-text' : 'font-medium text-kj-text-dim'} ${isNearest && isWithinRange && idx < (nearestStopIndex !== -1 ? selectedBus.stops.indexOf(validStopIds[nearestStopIndex]) : -1) ? 'text-kj-text-faint line-through decoration-gray-300' : ''} `}>
-                              {station.name}
-                              {isNearest && isWithinRange && <span className="ml-2 text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full uppercase tracking-wide">{t('busDetails.you')}</span>}
-                              {isNearest && !isWithinRange && <span className="ml-2 text-[10px] bg-orange-100 text-orange-600 px-1.5 py-0.5 rounded-full uppercase tracking-wide">{formatNumber((nearestStopDistance / 1000).toFixed(1))} km {t('emergency.away')}</span>}
-
-                              {/* Start Badge */}
-                              {isUserStart && !isTransfer && <span className="ml-2 text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full uppercase tracking-wide font-bold">{t('busDetails.start')}</span>}
-
-                              {/* Destination Badge */}
-                              {isUserEnd && !isTransfer && <span className="ml-2 text-[10px] bg-red-100 text-red-700 px-1.5 py-0.5 rounded-full uppercase tracking-wide font-bold">{t('busDetails.destination')}</span>}
-
-                              {/* Transit Badge */}
-                              {isTransfer && (isUserStart || isUserEnd) && <span className="ml-2 text-[10px] bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded-full uppercase tracking-wide font-bold">{t('busDetails.transit')}</span>}
-                            </p>
-                            {/* Helpline Button - Show beside current location */}
-                            {isNearest && isWithinRange && userLocation && (
-                              <button
-                                onClick={() => setShowEmergencyModal(true)}
-                                className="shrink-0 bg-kj-accent hover:bg-red-600 text-white px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all shadow-md hover:shadow-lg active:scale-95 flex items-center gap-1"
-                                aria-label={t('liveNav.emergencyHelplines')}
-                              >
-                                <Phone className="w-3 h-3" />
-                                {t('busDetails.help')}
-                              </button>
-                            )}
+            {/* Tab content */}
+            {busDetailTab === 'stops' && (
+              <>
+                {/* Stops list */}
+                <div className="dc-card kj-glass rounded-2xl overflow-hidden">
+                  <div className="px-4 py-3 flex items-center gap-2 border-b border-kj-line">
+                    <span className="font-bengali font-bold text-[14px] text-kj-text">{language === 'bn' ? `${selectedBus.stops.length}টি স্টপ` : `${selectedBus.stops.length} stops`}</span>
+                  </div>
+                  <div className="px-4 py-3">
+                    {selectedBus.stops.map((id, i) => {
+                      const s = STATIONS[id] || METRO_STATIONS[id] || RAILWAY_STATIONS[id] || AIRPORTS[id];
+                      if (!s) return null;
+                      const isStart = i === 0;
+                      const isEnd = i === selectedBus.stops.length - 1;
+                      const isCurrent = id === fareStart || id === fareEnd;
+                      return (
+                        <div key={id} className="flex gap-3 relative" style={{ paddingBottom: isEnd ? 0 : 10 }}>
+                          <div className="w-4 shrink-0 flex flex-col items-center relative">
+                            {!isEnd && <div className={`absolute top-4 bottom-0 w-0.5 ${isCurrent ? 'bg-kj-primary' : 'bg-kj-line'}`} style={{ left: '50%', transform: 'translateX(-50%)' }} />}
+                            <div className={`rounded-full mt-1 relative z-10 ${isCurrent ? 'w-4 h-4 bg-white border-[2.5px] border-kj-primary shadow-[0_0_0_4px_rgba(0,245,255,0.2)]' : isStart ? 'w-3.5 h-3.5 bg-kj-primary border-2 border-kj-primary' : isEnd ? 'w-3.5 h-3.5 bg-kj-accent border-2 border-kj-accent' : 'w-2.5 h-2.5 bg-kj-panel border-2 border-kj-line'}`} />
+                          </div>
+                          <div className="flex-1 min-w-0 pb-1">
+                            <div className={`font-bengali text-[14px] text-kj-text ${isStart || isEnd || isCurrent ? 'font-bold' : 'font-medium'}`}>
+                              {language === 'bn' ? (s as any).bnName || s.name : s.name}
+                              {isCurrent && <span className="ml-2 text-[10px] font-bold text-kj-primary tracking-wider uppercase">● now</span>}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  });
-                })()}
-
-                {/* Show connected route option if available */}
-                {selectedTrip && selectedTrip.steps.length > 1 && (
-                  <div className="bg-blue-50 border-t border-blue-100 p-4">
-                    <p className="text-xs font-bold text-blue-800 uppercase mb-2">Connected Routes</p>
-                    <div className="space-y-2">
-                      {selectedTrip.steps.map((step, sIdx) => {
-                        if (step.type === 'bus' && step.busRoute && step.busRoute.id !== selectedBus.id) {
-                          return (
-                            <button
-                              key={sIdx}
-                              onClick={() => {
-                                // Switch to this bus
-                                setSelectedBus(step.busRoute!);
-                                // Update fare start/end for this leg
-                                const startId = Object.keys(STATIONS).find(key => STATIONS[key].name === step.from);
-                                const endId = Object.keys(STATIONS).find(key => STATIONS[key].name === step.to);
-                                if (startId) setFareStart(startId);
-                                if (endId) setFareEnd(endId);
-                              }}
-                              className="w-full text-left bg-white dark:bg-kj-chip-bg p-3 rounded-xl border border-blue-200 dark:border-kj-line shadow-sm hover:shadow-md transition-all flex items-center justify-between group"
-                            >
-                              <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
-                                  <Bus className="w-4 h-4" />
-                                </div>
-                                <div>
-                                  <p className="text-sm font-bold text-kj-text group-hover:text-blue-700">{step.busRoute.name}</p>
-                                  <p className="text-xs text-kj-text-dim">From {step.from}</p>
-                                </div>
-                              </div>
-                              <ChevronRight className="w-4 h-4 text-kj-text-faint group-hover:text-blue-500" />
-                            </button>
-                          )
-                        }
-                        return null;
-                      })}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-
-        </div>
-
-
-        {/* Emergency Helpline Modal */}
-        <EmergencyHelplineModal
-          isOpen={showEmergencyModal}
-          onClose={() => setShowEmergencyModal(false)}
-          userLocation={userLocation}
-          currentLocationName={globalNearestStationName || undefined}
-        />
-
-        {/* Offline Navigation Warning Modal */}
-        {
-          showOfflineNavModal && (
-            <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
-              <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowOfflineNavModal(false)}></div>
-              <div className="relative bg-white dark:bg-kj-panel rounded-3xl shadow-2xl p-6 max-w-sm w-full animate-in fade-in zoom-in border border-kj-line">
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4 border-4 border-white shadow-lg animate-pulse-slow">
-                    <WifiOff className="w-8 h-8 text-orange-600" />
-                  </div>
-                  <h3 className="text-xl font-bold text-kj-text mb-2">You are Offline</h3>
-                  <p className="text-kj-text-dim mb-6 text-sm leading-relaxed">
-                    Intercity search requires an internet connection. <br />
-                    If you have viewed this route before, you may proceed to see cached results.
-                  </p>
-
-                  <div className="flex flex-col w-full gap-3">
-                    <button
-                      onClick={() => {
-                        setShowOfflineNavModal(false);
-                        if (pendingIntercityNav) {
-                          window.location.href = `/intercity/?from=${encodeURIComponent(pendingIntercityNav.from)}&to=${encodeURIComponent(pendingIntercityNav.to)}`;
-                        }
-                      }}
-                      className="w-full bg-kj-primary text-white font-bold py-3 rounded-xl hover:bg-green-700 transition-all flex items-center justify-center gap-2"
-                    >
-                      <span>Proceed Anyway</span>
-                      <ArrowLeft className="w-4 h-4 rotate-180" />
-                    </button>
-                    <button
-                      onClick={() => setShowOfflineNavModal(false)}
-                      className="w-full bg-gray-100 text-kj-text-dim font-bold py-3 rounded-xl hover:bg-kj-chip-bg transition-all"
-                    >
-                      Cancel
-                    </button>
+                      );
+                    })}
                   </div>
                 </div>
+                {/* OSM Route Map */}
+                <div className="dc-card kj-glass rounded-2xl overflow-hidden">
+                  <div className="px-4 py-3 border-b border-kj-line flex justify-between items-center">
+                    <h3 className="font-bold text-kj-text text-sm flex items-center gap-2"><span className="w-1.5 h-1.5 bg-kj-primary rounded-full animate-pulse" />{t('busDetails.liveView')}</h3>
+                    <span className="text-[10px] bg-kj-primary-soft border border-kj-primary/30 px-2 py-0.5 rounded text-kj-primary font-medium">OpenStreetMap</span>
+                  </div>
+                  <BusRouteMap route={selectedBus} userLocation={userLocation} highlightStartId={fareStart || undefined} highlightEndId={fareEnd || undefined} isReversed={isReversed} onOpenFullMap={() => setView(AppView.LIVE_NAV)} />
+                </div>
+              </>
+            )}
+
+            {busDetailTab === 'schedule' && (
+              <div className="dc-card kj-glass rounded-2xl p-4 space-y-3">
+                <h3 className="font-bold text-kj-text text-sm flex items-center gap-2"><Clock className="w-4 h-4 text-kj-primary" />{language === 'bn' ? 'সময়সূচী' : 'Schedule'}</h3>
+                <div className="bg-kj-chip-bg rounded-xl p-3">
+                  <p className="text-[10px] font-bold uppercase tracking-[1.2px] text-kj-text-faint mb-1">{language === 'bn' ? 'অপারেটিং সময়' : 'Operating Hours'}</p>
+                  <p className="font-bengali font-bold text-kj-text">{selectedBus.hours || (language === 'bn' ? 'সকাল ৬টা – রাত ১০টা (আনু.)' : '6:00 AM – 10:00 PM (approx)')}</p>
+                </div>
+                <div className="bg-kj-chip-bg rounded-xl p-3">
+                  <p className="text-[10px] font-bold uppercase tracking-[1.2px] text-kj-text-faint mb-1">{language === 'bn' ? 'বাস ধরন' : 'Service Type'}</p>
+                  <p className="font-bengali font-bold text-kj-text">{selectedBus.type}</p>
+                </div>
+                <div className="bg-kj-chip-bg rounded-xl p-3">
+                  <p className="text-[10px] font-bold uppercase tracking-[1.2px] text-kj-text-faint mb-1">{language === 'bn' ? 'মোট স্টপ' : 'Total Stops'}</p>
+                  <p className="font-bengali font-bold text-kj-text">{selectedBus.stops.length} {language === 'bn' ? 'টি স্টপ' : 'stops'}</p>
+                </div>
+                <div className="bg-kj-amber-soft border border-kj-amber/20 rounded-xl p-3">
+                  <p className="font-bengali text-xs text-kj-amber-deep leading-relaxed">{language === 'bn' ? '⚠️ সময়সূচী পরিস্থিতি অনুযায়ী পরিবর্তন হতে পারে। বাস কাউন্টারে যোগাযোগ করুন।' : '⚠️ Schedule may vary based on traffic. Contact the bus counter for exact timings.'}</p>
+                </div>
               </div>
+            )}
+
+            {busDetailTab === 'fares' && (
+              <div className="dc-card kj-glass rounded-2xl p-4 space-y-3">
+                <h3 className="font-bold text-kj-text text-sm flex items-center gap-2"><Coins className="w-4 h-4 text-kj-amber" />{language === 'bn' ? 'ভাড়ার তথ্য' : 'Fare Information'}</h3>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { lbl: language === 'bn' ? 'ন্যূনতম ভাড়া' : 'Min fare', v: `৳ ${generalFareInfo.min > 0 ? generalFareInfo.min : '~10'}` },
+                    { lbl: language === 'bn' ? 'সর্বোচ্চ ভাড়া' : 'Max fare', v: `৳ ${generalFareInfo.max > 0 ? generalFareInfo.max : '~' + Math.round(selectedBus.stops.length * 3)}` },
+                    { lbl: language === 'bn' ? 'মোট দূরত্ব' : 'Total distance', v: `${generalFareInfo.distance > 0 ? generalFareInfo.distance.toFixed(1) : '--'} km` },
+                    { lbl: language === 'bn' ? 'আনু. সময়' : 'Est. duration', v: generalFareInfo.distance > 0 ? `${Math.round(generalFareInfo.distance / 15 * 60)} min` : '--' },
+                  ].map((s, i) => (
+                    <div key={i} className="bg-kj-chip-bg rounded-xl p-3 text-center">
+                      <p className="text-[10px] font-bold uppercase tracking-[1.2px] text-kj-text-faint mb-1">{s.lbl}</p>
+                      <p className="font-sans font-black text-kj-primary text-lg">{s.v}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="bg-kj-primary-soft border border-kj-primary/20 rounded-xl p-3">
+                  <p className="font-bengali text-xs text-kj-primary leading-relaxed">{language === 'bn' ? '💡 স্টপ-টু-স্টপ ভাড়া হিসাব করতে উপরের "Stop-to-Stop Fare" ক্যালকুলেটর ব্যবহার করুন।' : '💡 Use the Stop-to-Stop Fare calculator above to get the exact fare between specific stops.'}</p>
+                </div>
+              </div>
+            )}
+
+            <SponsoredAdSlot language={language} size="300x250" compact />
+
+            {/* Community actions */}
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { label: language === 'bn' ? 'রেট করুন' : 'Rate', icon: '⭐', action: () => setView(AppView.RATE_BUS) },
+                { label: language === 'bn' ? 'লাইভ ট্র্যাক' : 'Live Track', icon: '📍', action: () => setView(AppView.BUS_LIVE_TRACKING) },
+                { label: language === 'bn' ? 'ছবি' : 'Photos', icon: '📷', action: () => setView(AppView.BUS_PHOTOS) },
+              ].map((btn, i) => (
+                <button key={i} onClick={btn.action} className="dc-card kj-glass rounded-xl py-3 flex flex-col items-center gap-1.5 border border-kj-line hover:border-kj-primary/40 transition-colors active:scale-95">
+                  <span className="text-xl">{btn.icon}</span>
+                  <span className="text-[11px] font-semibold text-kj-text-dim">{btn.label}</span>
+                </button>
+              ))}
             </div>
-          )
-        }
+          </div>
         </div>
-      </div >
+
+        {/* Sticky bottom action bar */}
+        <div className="sticky bottom-0 shrink-0 bg-kj-panel/90 backdrop-blur-[14px] border-t border-kj-line p-3 flex items-center gap-2 kj-glass" style={{ paddingBottom: 'calc(12px + env(safe-area-inset-bottom))' }}>
+          <button onClick={(e) => toggleFavorite(e, selectedBus.id)} className={`flex items-center gap-1.5 px-3 py-2.5 rounded-xl border text-xs font-bold transition-colors ${favorites.includes(selectedBus.id) ? 'bg-kj-accent-soft text-kj-accent border-kj-accent' : 'bg-kj-panel-muted text-kj-text border-kj-line hover:border-kj-accent/40'}`}>
+            ❤️ {language === 'bn' ? 'প্রিয়' : 'Save'}
+          </button>
+          <button onClick={() => setView(AppView.RATE_BUS)} className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-kj-line bg-kj-panel-muted text-kj-text text-xs font-bold hover:border-kj-amber/40 transition-colors">
+            ⭐ {language === 'bn' ? 'রেট' : 'Rate'}
+          </button>
+          <button onClick={() => setView(AppView.LIVE_NAV)} className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-kj-primary text-kj-primary-ink font-bold text-sm hover:brightness-105 transition-all">
+            <Navigation className="w-4 h-4" />
+            {language === 'bn' ? 'নেভিগেট শুরু' : 'Start navigation'}
+          </button>
+        </div>
+      </div>
     );
   };
 
 
   const renderHomeContent = () => {
-    const renderLocalBusSearch = () => (
-      <div className="relative mb-4 group isolate z-50">
-        {/* KJ panel card */}
-        <div className="bg-kj-panel border border-kj-line rounded-2xl shadow-kj overflow-visible">
-
-          {/* Heading — greeting + location/weather context — hidden in ROUTE mode to save space */}
-          {searchMode !== 'ROUTE' && (
-          <div className="px-4 md:px-5 pt-4 pb-3">
-            <div className="flex items-center gap-1.5 mb-1.5">
-              <span className="w-[7px] h-[7px] rounded-full bg-kj-primary shrink-0" />
-              <span className="font-sans text-[10px] font-bold text-kj-text-faint tracking-[1.4px] uppercase">
-                {isInDhaka ? (language === 'bn' ? 'ঢাকা · মধ্যম যানজট' : 'DHAKA · MODERATE TRAFFIC') : (language === 'bn' ? 'বাংলাদেশ' : 'BANGLADESH')}
-              </span>
-            </div>
-            <h2 className="font-bengali font-bold text-kj-text text-xl md:text-[28px] leading-tight tracking-[-0.5px] mb-1">
-              {user
-                ? (language === 'bn' ? `কোথায় যেতে চান, ${user.displayName.split(' ')[0]}?` : `Where are you headed, ${user.displayName.split(' ')[0]}?`)
-                : (isInDhaka ? t('home.whereToGo') : t('home.whereToGoInDhaka'))
-              }
-            </h2>
-            <p className="text-kj-text-dim text-[12px] md:text-sm font-medium leading-snug">{t('home.findPerfectRoute')}</p>
-          </div>
-          )}
-
-          {/* Mode Pill Tabs */}
-          <div className={`flex items-center gap-2 px-4 md:px-5 overflow-x-auto ${searchMode === 'ROUTE' ? 'pt-2.5 pb-2' : 'pb-3'}`} style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            <button
-              onClick={(e) => { e.stopPropagation(); setSearchMode('ROUTE'); setSuggestedRoutes([]); }}
-              className={`flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${searchMode === 'ROUTE' && view === AppView.HOME ? 'bg-kj-chip-bg text-kj-chip-text border border-kj-line' : 'text-kj-text-faint border border-transparent'}`}
-            >
-              {language === 'bn' ? 'লোকাল বাস' : 'LOCAL BUS'}
-            </button>
-            <button
-              onClick={(e) => { e.stopPropagation(); setSearchMode('TEXT'); setSuggestedRoutes([]); setBusRouteSort('DEFAULT'); }}
-              className={`flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${searchMode === 'TEXT' ? 'bg-kj-chip-bg text-kj-chip-text border border-kj-line' : 'text-kj-text-faint border border-transparent'}`}
-            >
-              {language === 'bn' ? 'সার্চ করুন' : 'SEARCH'}
-            </button>
-            <button
-              onClick={(e) => { e.stopPropagation(); window.location.href = '/intercity/'; }}
-              className="flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 text-kj-text-faint border border-transparent"
-            >
-              {language === 'bn' ? 'আন্তঃজেলা' : 'INTERCITY'}
-            </button>
-            <button
-              onClick={(e) => { e.stopPropagation(); setView(AppView.TRAIN_LIST); }}
-              className={`flex items-center gap-1.5 px-3 py-[7px] rounded-full text-[11px] font-semibold whitespace-nowrap transition-all shrink-0 ${(view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) ? 'bg-kj-chip-bg text-kj-chip-text border border-kj-line' : 'text-kj-text-faint border border-transparent'}`}
-            >
-              {language === 'bn' ? 'ট্রেন' : 'TRAIN'}
-            </button>
-          </div>
-
-          {/* Search inputs */}
-          <div className="relative z-10">
-          <div className={`px-4 md:px-5 ${searchMode === 'ROUTE' ? 'pb-2' : 'pb-4 md:pb-5'}`}>
-            {searchMode === 'TEXT' ? (
-              <div className="relative group">
-                <div className="relative flex items-center">
-                  <div className="absolute left-[18px] top-1/2 -translate-y-1/2 pointer-events-none z-10 flex items-center justify-center">
-                    <Search className="text-kj-primary w-5 h-5 group-focus-within:text-kj-primary-deep transition-colors" />
-                  </div>
-                  <input
-                    type="text"
-                    placeholder={t('home.searchPlaceholder')}
-                    className="w-full pl-10 md:pl-12 pr-10 md:pr-12 py-2.5 md:py-3.5 bg-kj-input-bg text-kj-text border border-kj-line rounded-xl focus:outline-none focus:ring-2 focus:ring-kj-primary/30 transition-all text-sm md:text-base font-medium placeholder:text-kj-text-faint"
-                    value={inputValue}
-                    onChange={(e) => {
-                      setInputValue(e.target.value);
-                      if (e.target.value.trim().length > 0) {
-                        const suggestions = generateSearchSuggestions(e.target.value);
-                        setSearchSuggestions(suggestions);
-                        setShowSuggestions(true);
-                      } else {
-                        setSearchSuggestions([]);
-                        setShowSuggestions(false);
-                      }
-                    }}
-                    onKeyDown={handleKeyDown}
-                    onFocus={() => {
-                      if (searchSuggestions.length > 0) setShowSuggestions(true);
-                    }}
-                    onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                  />
-                  {inputValue || searchQuery ? (
-                    <button
-                      onClick={() => {
-                        setInputValue('');
-                        setSearchQuery('');
-                        setSuggestedRoutes([]);
-                        setSearchContext(undefined);
-                        setShowSuggestions(false);
-                      }}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center p-2 bg-red-100 dark:bg-red-900/30 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors"
-                      title="Clear Search"
-                      aria-label="Clear search"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  ) : (
-                    <button
-                      onClick={handleSearchCommit}
-                      disabled={isIntercityRedirecting}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center p-2 bg-kj-primary-soft rounded-lg text-emerald-700 dark:text-kj-primary hover:bg-emerald-200 dark:hover:bg-emerald-900/50 transition-colors disabled:opacity-60"
-                      title="Click to Search"
-                      aria-label="Search"
-                    >
-                      <Search className="w-4 h-4" />
-                    </button>
-                  )}
-                </div>
-
-                {/* Intercity redirecting indicator */}
-                {isIntercityRedirecting && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-kj-panel rounded-xl shadow-2xl z-[9999] border border-kj-line px-4 py-3 flex items-center gap-3">
-                    <Navigation className="w-4 h-4 text-orange-500 animate-pulse flex-shrink-0" />
-                    <span className="text-sm text-kj-text">Detecting your location for intercity search…</span>
-                  </div>
-                )}
-
-                {/* Autocomplete Dropdown */}
-                {showSuggestions && searchSuggestions.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-kj-panel rounded-xl shadow-2xl max-h-80 overflow-y-auto z-[9999] border border-kj-line">
-                    {searchSuggestions.map((suggestion, idx) => (
-                      <div
-                        key={`${suggestion.type}-${suggestion.id}-${idx}`}
-                        className="px-4 py-3.5 hover:bg-kj-primary-soft dark:hover:bg-slate-700 cursor-pointer border-b border-kj-line last:border-b-0 transition-colors"
-                        onMouseDown={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          if (suggestion.type === 'intercity') {
-                            setInputValue(suggestion.name);
-                            handleIntercityRedirect(suggestion.name);
-                            return;
-                          }
-                          const displayName = suggestion.name;
-                          setInputValue(displayName);
-                          setShowSuggestions(false);
-                          setTimeout(() => {
-                            const result = enhancedBusSearch(displayName);
-                            setSearchContext(result.searchContext);
-                            setSearchQuery(displayName);
-                          }, 100);
-                        }}
-                      >
-                        <div className="flex items-start gap-3">
-                          {suggestion.type === 'station' ? (
-                            <MapPin className="w-4 h-4 text-kj-primary flex-shrink-0 mt-1" />
-                          ) : suggestion.type === 'intercity' ? (
-                            <Navigation className="w-4 h-4 text-orange-500 flex-shrink-0 mt-1" />
-                          ) : (
-                            <Bus className="w-4 h-4 text-blue-600 flex-shrink-0 mt-1" />
-                          )}
-                          <div className="flex-1 min-w-0">
-                            <div className="font-semibold text-kj-text truncate text-sm">
-                              {suggestion.type === 'bus' ? formatBusName(suggestion.name) : formatNumber(suggestion.name)}
-                            </div>
-                            {suggestion.bnName && (
-                              <div className="text-xs text-kj-text-dim truncate mt-0.5">
-                                {suggestion.bnName}
-                              </div>
-                            )}
-                            {suggestion.subtitle && (
-                              <div className="text-xs text-kj-text-dim truncate mt-1">
-                                {suggestion.subtitle}
-                              </div>
-                            )}
-                          </div>
-                          {suggestion.type === 'station' && (
-                            <span className="text-xs text-kj-primary bg-kj-primary-soft px-2 py-1 rounded-full flex-shrink-0">
-                              Station
-                            </span>
-                          )}
-                          {suggestion.type === 'intercity' && (
-                            <span className="text-xs text-orange-600 bg-orange-50 dark:bg-orange-900/30 dark:text-orange-400 px-2 py-1 rounded-full flex-shrink-0">
-                              Intercity
-                            </span>
-                          )}
-                          {suggestion.type === 'bus' && (
-                            <span className="text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded-full flex-shrink-0">
-                              Bus
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* Quick Route Finder Button - No banner, just button */}
-                {searchContext && userLocation && destinationStationIds.length > 0 && (
-                  <div className="mt-3">
-                    <button
-                      onClick={() => {
-                        // Find user's nearest station
-                        const nearestResult = findNearestStation(userLocation, Object.keys(STATIONS));
-                        if (nearestResult && destinationStationIds[0]) {
-                          setFromStation(nearestResult.station.id);
-                          setToStation(destinationStationIds[0]);
-                          setSearchMode('ROUTE');
-
-                          // Scroll to top to show route search
-                          if (scrollContainerRef.current) {
-                            scrollContainerRef.current.scrollTop = 0;
-                          }
-                        }
-                      }}
-                      className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group"
-                    >
-                      <MapPin className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                      <span>View Route Options from Your Location</span>
-                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="flex flex-col gap-1.5">
-                {/* From + Swap + To row */}
-                <div className="flex items-stretch gap-1.5">
-                  <div className="flex-1 flex flex-col gap-1.5 min-w-0">
-                    {/* From */}
-                    <div className="flex items-center gap-2 bg-kj-input-bg border border-kj-line rounded-xl px-3 py-1.5">
-                      <div className="w-[22px] h-[22px] rounded-md bg-kj-primary-soft flex items-center justify-center shrink-0">
-                        <MapPin className="w-3 h-3 text-kj-primary-deep" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="font-sans text-[9px] font-semibold tracking-[1px] uppercase text-kj-text-faint">{t('common.from')}</div>
-                        <SearchableSelect
-                          options={sortedStations}
-                          value={fromStation}
-                          onChange={setFromStation}
-                          placeholder={language === 'bn' ? 'শুরুর স্থান' : 'Starting point'}
-                        />
-                      </div>
-                    </div>
-                    {/* To */}
-                    <div className="flex items-center gap-2 bg-kj-input-bg border border-kj-line rounded-xl px-3 py-1.5">
-                      <div className="w-[22px] h-[22px] rounded-md bg-kj-accent-soft flex items-center justify-center shrink-0">
-                        <Flag className="w-3 h-3 text-kj-accent" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="font-sans text-[9px] font-semibold tracking-[1px] uppercase text-kj-text-faint">{t('common.to')}</div>
-                        <SearchableSelect
-                          options={sortedStations}
-                          value={toStation}
-                          onChange={setToStation}
-                          placeholder={language === 'bn' ? 'গন্তব্য' : 'Destination'}
-                          disabled={!fromStation}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  {/* Swap button — right-side vertical */}
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      const temp = fromStation;
-                      setFromStation(toStation);
-                      setToStation(temp);
-                    }}
-                    className="w-8 self-center rounded-full border border-kj-line bg-kj-panel flex items-center justify-center text-kj-text active:scale-95 transition-transform shadow-kj aspect-square"
-                    title="Swap locations"
-                  >
-                    <ArrowRightLeft className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-                {/* Find button */}
-                <button
-                  onClick={() => {
-                    if (fromStation && toStation) {
-                      setSearchQuery('');
-                      setInputValue('');
-                      if (scrollContainerRef.current) scrollContainerRef.current.scrollTop = 0;
-                    }
-                  }}
-                  disabled={!fromStation || !toStation}
-                  className="w-full bg-kj-primary text-kj-primary-ink font-sans font-bold text-[13px] py-2 rounded-xl flex items-center justify-center gap-2 active:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-                  style={{ boxShadow: '0 4px 12px -4px var(--kj-primary)' }}
-                >
-                  <Search className="w-3.5 h-3.5" />
-                  {language === 'bn' ? 'রুট খুঁজুন' : 'Find routes'}
-                </button>
-                {/* Filter chips — only shown once both stations selected */}
-                {fromStation && toStation && (
-                <div className="flex items-center gap-1.5 flex-wrap">
-                  <button
-                    onClick={() => setBusRouteSort('DEFAULT')}
-                    className={`flex items-center gap-1 h-7 px-2.5 rounded-full border text-[10px] font-medium transition-colors ${busRouteSort === 'DEFAULT' ? 'bg-kj-primary text-kj-primary-ink border-kj-primary' : 'border-kj-line bg-kj-panel-muted text-kj-text'}`}
-                  >
-                    <Clock className="w-3 h-3" />
-                    {language === 'bn' ? 'এখনই' : 'Leave now'}
-                  </button>
-                  <button
-                    onClick={() => setBusRouteSort(busRouteSort === 'FASTEST' ? 'DEFAULT' : 'FASTEST')}
-                    className={`flex items-center gap-1 h-7 px-2.5 rounded-full border text-[10px] font-medium transition-colors ${busRouteSort === 'FASTEST' ? 'bg-kj-primary text-kj-primary-ink border-kj-primary' : 'border-kj-line bg-kj-panel-muted text-kj-text'}`}
-                  >
-                    <Zap className="w-3 h-3" />
-                    {language === 'bn' ? 'দ্রুততম' : 'Fastest'}
-                  </button>
-                  <button
-                    onClick={() => setBusRouteSort(busRouteSort === 'CHEAPEST' ? 'DEFAULT' : 'CHEAPEST')}
-                    className={`flex items-center gap-1 h-7 px-2.5 rounded-full border text-[10px] font-medium transition-colors ${busRouteSort === 'CHEAPEST' ? 'bg-kj-primary text-kj-primary-ink border-kj-primary' : 'border-kj-line bg-kj-panel-muted text-kj-text'}`}
-                  >
-                    <Coins className="w-3 h-3" />
-                    {language === 'bn' ? 'সস্তা' : 'Cheapest'}
-                  </button>
-                </div>
-                )}
-              </div>
-            )}
-          </div>
-          </div>
-        </div>
-      </div>
-    );
-
-    const renderIntercityButton = () => (
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          // If we are in "Local" mode (mostly inside Dhaka), switch to Intercity mode
-          // But if we want to navigate directly, we can.
-          // The user wants to use the inline search primarily.
-          setPrimarySearch('INTERCITY');
-        }}
-        className="hidden w-full items-center justify-between bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 border border-teal-500/30 p-4 rounded-2xl shadow-lg shadow-emerald-500/20 active:scale-[0.98] transition-all hover:shadow-xl hover:shadow-emerald-500/30 group mb-4"
-      >
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white group-hover:scale-110 transition-transform">
-            <Train className="w-5 h-5" />
-          </div>
-          <div className="text-left">
-            <h3 className="font-bold text-white text-sm">{t('home.findIntercityRoutes')}</h3>
-            <p className="text-xs text-white/90">{t('home.findBusesBetweenCities')}</p>
-          </div>
-        </div>
-        <div className="bg-white/20 backdrop-blur-sm p-2 rounded-full">
-          <ArrowLeft className="w-4 h-4 text-white rotate-180" />
-        </div>
-      </button>
-    );
-
-    const renderLocalBusButton = () => (
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          setPrimarySearch('LOCAL');
-        }}
-        className="hidden w-full items-center justify-between bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 border border-teal-500/30 p-4 rounded-2xl shadow-lg shadow-emerald-500/20 active:scale-[0.98] transition-all hover:shadow-xl hover:shadow-emerald-500/30 group mb-4"
-      >
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white group-hover:scale-110 transition-transform">
-            <Bus className="w-5 h-5" />
-          </div>
-          <div className="text-left">
-            <h3 className="font-bold text-white text-sm">{isInDhaka ? t('home.whereToGo') : t('home.whereToGoInDhaka')}</h3>
-            <p className="text-xs text-white/90">{t('home.findPerfectRoute')}</p>
-          </div>
-        </div>
-        <div className="bg-white/20 backdrop-blur-sm p-2 rounded-full">
-          <ArrowLeft className="w-4 h-4 text-white rotate-180" />
-        </div>
-      </button>
-    );
-
-    // Intercity Search Handler with Offline Check
-    // Intercity Search Handler with Offline Check
-    const handleIntercitySearch = (from: string, to: string) => {
-      if (!user) {
-        setView(AppView.LOGIN);
-        return;
-      }
-
-      // Check for offline data first
-      if (!navigator.onLine) {
-        const offlineData = getIntercityRoutesOffline(from, to);
-        if (offlineData.routes.length > 0) {
-          sessionStorage.setItem('intercity_offline_result', JSON.stringify(offlineData));
-        } else {
-          return; // No offline data available, don't navigate
-        }
-      }
-
-      setIntercityLoading(true);
-      setTimeout(() => {
-        window.location.href = `/intercity/?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`;
-      }, 500);
-    };
-
-    // Train view: list always visible, details require login
+    // Train/Train details view (renders in left sidebar on desktop)
     if (view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) {
       return (
-        <div className="relative flex flex-col flex-1 min-h-0 w-full overflow-hidden">
-          <div className="absolute inset-0 z-0 pointer-events-none">
-            <DhakaAlive hideIndicator />
-          </div>
-          <div className="relative z-10 flex flex-col flex-1 min-h-0 w-full overflow-hidden">
+        <div className="flex flex-col flex-1 min-h-0 w-full overflow-hidden">
+          <div className="flex flex-col flex-1 min-h-0 w-full overflow-hidden">
             <TrainListPage
               userLocation={userLocation}
               onBack={() => setView(AppView.HOME)}
               embedded={false}
+              setView={setView}
               onSelectTrain={(route) => {
                 setSelectedTrain(route);
                 setView(AppView.TRAIN_DETAILS);
@@ -4240,10 +3714,7 @@ const App: React.FC = () => {
                 }
               }}
               onRateTrain={(route) => {
-                if (!user) {
-                  setView(AppView.LOGIN);
-                  return;
-                }
+                if (!user) { setView(AppView.LOGIN); return; }
                 setSelectedTrain(route);
                 setView(AppView.RATE_TRAIN);
               }}
@@ -4253,329 +3724,45 @@ const App: React.FC = () => {
       );
     }
 
-    return (
-      <div className="flex flex-col flex-1 min-h-0 w-full overflow-hidden">
-        {/* Sticky Top Section */}
-        <div className="flex-none bg-kj-bg z-20 md:pt-2">
-          <div className="p-4 space-y-1">
-            {primarySearch === 'LOCAL' ? (
-              <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">
-                {renderLocalBusSearch()}
-                <div className="mb-4"></div>
-                {renderIntercityButton()}
-              </div>
-            ) : (
-              <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out">
-                {renderLocalBusSearch()}
-                <div className="mb-4"></div>
-                {renderIntercityButton()}
-              </div>
-            )}
-
-            {/* AI Button - Hidden on Mobile */}
-            <button
-              onClick={() => setView(AppView.AI_ASSISTANT)}
-              className="hidden w-full items-center justify-between bg-gradient-to-r from-purple-500 to-indigo-600 border border-purple-200 p-4 rounded-2xl shadow-lg shadow-purple-500/20 active:scale-[0.98] transition-all hover:shadow-xl hover:shadow-purple-500/30 group mb-4"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white group-hover:scale-110 transition-transform animate-pulse">
-                  <Bot className="w-5 h-5" />
-                </div>
-                <div className="text-left">
-                  <h3 className="font-bold text-white text-sm">Ask AI Assistant</h3>
-                  <p className="text-xs text-white/90">Not sure which bus to take?</p>
-                </div>
-              </div>
-              <div className="bg-white/20 backdrop-blur-sm p-2 rounded-full">
-                <ArrowLeft className="w-4 h-4 text-white rotate-180" />
-              </div>
-            </button>
-            {/* List Filter Tabs */}
-            <div className="flex p-1 bg-kj-chip-bg rounded-xl border border-kj-line">
-              <button
-                onClick={() => handleFilterChange('ALL')}
-                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${listFilter === 'ALL' ? 'bg-kj-panel shadow-sm text-kj-text' : 'text-kj-text-dim hover:text-kj-text'}`}
-              >
-                {t('home.allDhakaLocalBuses')}
-              </button>
-              <button
-                onClick={() => handleFilterChange('FAVORITES')}
-                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1 ${listFilter === 'FAVORITES' ? 'bg-kj-panel shadow-sm text-kj-accent' : 'text-kj-text-dim hover:text-kj-text'}`}
-              >
-                <Heart className="w-4 h-4 fill-current" /> {t('home.favorites')}
-              </button>
-            </div>
-
-            <div className="flex items-center justify-between px-2">
-              <h3 className="font-bold text-kj-text text-lg">{listFilter === 'FAVORITES' ? t('home.savedRoutes') : t('home.allBuses')}</h3>
-              <span className="text-[10px] bg-kj-chip-bg px-2 py-0.5 rounded-full text-kj-text-dim font-bold">{formatNumber(filteredBuses.length)}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Scrollable Content */}
-        <div
-          ref={scrollContainerRef}
-          onScroll={(e) => {
-            if (typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches) {
-              if (isRestoringLeftScrollRef.current) return;
-              desktopLeftScrollTopRef.current = e.currentTarget.scrollTop;
-            }
-          }}
-          className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain px-4 pb-nav-safe md:pb-4 space-y-3 touch-pan-y bg-kj-bg"
-          style={{ overflowAnchor: 'none', WebkitOverflowScrolling: 'touch' }}
-        >
-
-          {/* Top banner — inside scroll container, scrolls with content */}
-          <AdSenseAd adSlot="auto" adFormat="auto" className="mb-2 max-w-[728px] mx-auto" />
-
-          {/* Intelligent Route Suggestions - Hide in Favorites Mode */}
-          {(suggestedRoutes.length > 0 && listFilter !== 'FAVORITES') && (
-            <div className="mb-6 animate-in fade-in slide-in-from-top-4 duration-500">
-              <div className="flex items-center gap-2 mb-3 px-1">
-                <Sparkles className="w-4 h-4 text-kj-primary fill-current" />
-                <h3 className="font-bold text-kj-text text-sm uppercase tracking-wider">Smart Suggestions</h3>
-              </div>
-              <RouteSuggestions
-                routes={suggestedRoutes}
-                onSelectRoute={(route) => {
-                  // Handle Metro Routes
-                  const metroStep = route.steps.find(step => step.type === 'metro');
-                  if (metroStep && (route.id.includes('metro') || !route.steps.some(s => s.type === 'bus'))) {
-                    const metroRoute = METRO_LINES['mrt6'];
-                    const syntheticBus: BusRoute = {
-                      id: metroRoute.id,
-                      name: metroRoute.name,
-                      bnName: metroRoute.bnName,
-                      routeString: 'Uttara North ⇄ Motijheel',
-                      stops: metroRoute.stations,
-                      type: 'Metro Rail',
-                      hours: '7:00 AM - 10:00 PM'
-                    };
-
-                    handleBusSelect(syntheticBus, false, route);
-
-                    const startId = Object.values(METRO_STATIONS).find(s => s.name === metroStep.from)?.id;
-                    const endId = Object.values(METRO_STATIONS).find(s => s.name === metroStep.to)?.id;
-                    if (startId) setFareStart(startId);
-                    if (endId) setFareEnd(endId);
-                    return;
-                  }
-
-                  // If route has a bus segment, select that bus
-                  const busStep = route.steps.find(step => step.type === 'bus' && step.busRoute);
-                  if (busStep && busStep.busRoute) {
-                    handleBusSelect(busStep.busRoute);
-
-                    // Auto-populate fare calculator with route origin and destination
-                    const bus = busStep.busRoute;
-                    const originStation = busStep.from;
-                    const destinationStation = busStep.to;
-
-                    // Pass the full route object to handleBusSelect
-                    handleBusSelect(bus, false, route);
-
-                    // Set fare calculator
-                    if (bus) {
-                      const sIds = bus.stops;
-                      // Find station IDs matching the names
-                      const startId = Object.keys(STATIONS).find(key => STATIONS[key].name === originStation);
-                      const endId = Object.keys(STATIONS).find(key => STATIONS[key].name === destinationStation);
-
-                      if (startId) setFareStart(startId);
-                      if (endId) setFareEnd(endId);
-                    }
-
-                    // Find the closest matching station IDs in the bus route
-                    const findClosestStationId = (stationName: string): string => {
-                      const nameLower = stationName.toLowerCase();
-                      // First try exact match
-                      for (const stopId of bus.stops) {
-                        const station = STATIONS[stopId];
-                        if (station && station.name.toLowerCase() === nameLower) {
-                          return stopId;
-                        }
-                      }
-                      // Then try partial match
-                      for (const stopId of bus.stops) {
-                        const station = STATIONS[stopId];
-                        if (station && (station.name.toLowerCase().includes(nameLower) || nameLower.includes(station.name.toLowerCase()))) {
-                          return stopId;
-                        }
-                      }
-                      // Return first stop if no match
-                      return bus.stops[0];
-                    };
-
-                    const fromStopId = findClosestStationId(originStation);
-                    const toStopId = findClosestStationId(destinationStation);
-
-                    // Set fare calculator values after a brief delay to ensure component is rendered
-                    setTimeout(() => {
-                      setFareStart(fromStopId);
-                      setFareEnd(toStopId);
-
-                      // Track this as a route search
-                      requestIdleCallback(() => {
-                        trackRouteSearch(fromStopId, toStopId);
-                      });
-                    }, 100);
-                  }
-                  // Override the null set by handleBusSelect
-                  setSelectedTrip(route);
-                }}
-                currentLocation={globalNearestStationName || undefined}
-              />
-              <div className="my-6 border-t border-kj-line relative">
-                <span className="absolute left-1/2 -top-2.5 -translate-x-1/2 bg-gray-50 dark:bg-kj-chip-bg px-2 text-xs font-bold text-kj-text-faint">OR BROWSE ALL</span>
-              </div>
-            </div>
-          )}
-          {filteredBuses.length > 0 && (
-            <AdSenseAd adSlot="auto" adFormat="auto" className="mb-3 max-w-[728px] mx-auto" />
-          )}
-          {filteredBuses.map((bus, busIdx) => {
-            const isFav = favorites.includes(bus.id);
-            const estimatedFare = calculateFare(bus);
-            const ratingSummary = busRatingsMap[bus.id];
-            const ratingCount = ratingSummary?.count ?? 0;
-            const hasRating = ratingCount > 0;
-            const avgRating = ratingSummary?.average ?? 0;
-            const ratingPercent = Math.round((avgRating / 5) * 100);
-            const isUnavailable = ['agradut', 'arnob'].includes((bus.name || '').toLowerCase().trim());
-
-            return (
-              <React.Fragment key={bus.id}>
-              {busIdx > 0 && busIdx % 5 === 0 && (
-                <AdSenseAd adSlot="auto" adFormat="auto" className="my-2 max-w-[728px] mx-auto" />
-              )}
-
-                <div
-                  onClick={() => handleBusSelect(bus)}
-                  role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    handleBusSelect(bus);
-                  }
-                }}
-                aria-label={`Select ${bus.name} bus route from ${bus.routeString} `}
-                className={`w-full text-left bg-kj-panel p-2 md:p-3 rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border transition-all group relative overflow-hidden cursor-pointer ${selectedBus?.id === bus.id ? 'border-kj-primary ring-1 ring-dhaka-green' : 'border-transparent hover:border-green-100 dark:hover:border-green-800'} `}
-              >
-                {selectedBus?.id === bus.id && <div className="absolute left-0 top-0 bottom-0 w-1 bg-kj-primary"></div>}
-                <div className="flex justify-between items-start mb-1 md:mb-1.5">
-                  <div className="flex items-start gap-2 md:gap-3">
-                    <div className={`w-8 h-8 md:w-10 md:h-10 rounded-xl flex items-center justify-center text-base md:text-lg font-bold shadow-sm shrink-0
-                      ${bus.type === 'AC' ? 'bg-blue-100 text-blue-700' :
-                        bus.type === 'Sitting' ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-kj-text-dim'
-                      }
-`}>
-                      {formatNumber(bus.name.charAt(0))}
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-sm md:text-base text-kj-text leading-tight group-hover:text-kj-primary transition-colors">{formatBusName(bus.name)}</h4>
-                      <span className="text-xs font-bengali text-kj-text-dim">{bus.bnName}</span>
-                    </div>
-                  </div>
-                  <div className="flex flex-col items-end gap-1">
-                    <div className="flex items-center justify-end gap-1 flex-wrap">
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          if (!user) {
-                            setView(AppView.LOGIN);
-                            return;
-                          }
-                          setSelectedBus(bus);
-                          setView(AppView.RATE_BUS);
-                        }}
-                        className={`px-2 py-1 rounded-md border text-[10px] font-bold leading-none transition-colors whitespace-nowrap shrink-0 ${hasRating
-                          ? 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100'
-                          : 'bg-gray-50 dark:bg-slate-700/50 text-kj-text-dim border-kj-line hover:bg-kj-chip-bg'}`}
-                        aria-label={hasRating ? `View rating for ${bus.name}` : `Rate ${bus.name}`}
-                      >
-                        {hasRating
-                          ? `★ ${formatNumber(avgRating.toFixed(1))} · ${formatNumber(ratingPercent)}%`
-                          : `☆ ${t('community.rateNow')}`}
-                      </button>
-                      <button
-                        onClick={(e) => toggleFavorite(e, bus.id)}
-                        aria-label={isFav ? `Remove ${bus.name} from favorites` : `Add ${bus.name} to favorites`}
-                        className="p-1.5 -mr-1.5 hover:bg-kj-chip-bg dark:hover:bg-gray-700 rounded-full transition-colors z-20"
-                      >
-                        <Heart className={`w-5 h-5 transition-all ${isFav ? 'fill-pink-500 text-pink-500 scale-110' : 'text-kj-text-faint hover:text-pink-400'} `} />
-                      </button>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      {isUnavailable && (
-                        <span className="text-[10px] px-2 py-1 rounded-md font-bold uppercase tracking-wide bg-red-600 text-white border border-red-700">
-                          {t('home.notAvailable')}
-                        </span>
-                      )}
-                      <span className={`text-[10px] px-2 py-1 rounded-md font-bold uppercase tracking-wide
-                      ${bus.type === 'Sitting' ? 'bg-purple-50 text-purple-600' :
-                          bus.type === 'AC' ? 'bg-blue-50 text-blue-700' :
-                            'bg-orange-50 text-orange-700'
-                        } `}>
-                        {bus.type === 'Local' ? t('common.local') :
-                          bus.type === 'Sitting' ? t('common.sitting') :
-                            bus.type === 'Semi-Sitting' ? t('common.semiSitting') :
-                              bus.type === 'AC' ? t('common.ac') :
-                                bus.type}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="relative pl-3 border-l-2 border-kj-line ml-5 space-y-1 py-1" role="presentation">
-                  <div className="text-xs text-kj-text-dim font-medium truncate pr-4">
-                    <span className="text-kj-text-faint mr-1" aria-hidden="true">●</span> {bus.routeString.split('⇄')[0]}
-                  </div>
-                  <div className="text-xs text-kj-text-dim font-medium truncate pr-4">
-                    <span className="text-kj-text-faint mr-1" aria-hidden="true">●</span> {bus.routeString.split('⇄').pop()}
-                  </div>
-                </div>
-                <div className="mt-1.5 md:mt-2 flex items-center gap-1 text-xs text-kj-text-dim bg-gray-50 dark:bg-slate-700/50 px-2 py-1 rounded-md w-fit">
-                  <Coins className="w-3 h-3 text-amber-600 dark:text-amber-400" />
-                  <span>{t('home.estimatedFare')}: ৳{formatNumber(estimatedFare.min)} - ৳{formatNumber(estimatedFare.max)}</span>
-                </div>
-                {isUnavailable && (
-                  <div className="mt-1.5 md:mt-2 text-[11px] font-semibold text-red-700 dark:text-red-300 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-md px-2 py-1.5">
-                    {t('home.notAvailableNote')}
-                  </div>
-                )}
-              </div>
-            </React.Fragment>
-            );
-          })}
-          {filteredBuses.length === 0 && (
-            <div className="text-center py-16 text-kj-text-faint">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Bus className="w-8 h-8 opacity-40" />
-              </div>
-              <p>
-                {listFilter === 'FAVORITES'
-                  ? t('home.noBusesInFavorites')
-                  : searchMode === 'ROUTE'
-                    ? t('home.noBusesBetweenStations')
-                    : `${t('home.noBusesMatching')}"${searchQuery}"`}
-              </p>
-              {inputValue && inputValue !== searchQuery && searchMode === 'TEXT' && (
-                <button onClick={handleSearchCommit} className="mt-2 text-xs text-kj-primary underline">
-                  Click to search for "{inputValue}"
-                </button>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-    );
+    return null;
   };
+
+  const hideSiteChrome = view === AppView.LIVE_NAV
+    || view === AppView.LOGIN
+    || view === AppView.SIGNUP
+    || view === AppView.FORGOT_PASSWORD
+    || view === AppView.RESET_PASSWORD;
+  const pageAdViews: AppView[] = [
+    // Only pages WITHOUT their own SponsoredAdSlot get PageAdSection from App level
+    AppView.ABOUT,
+    AppView.WHY_USE,
+    AppView.FAQ,
+    AppView.FOR_AI,
+    AppView.INSTALL_APP,
+    AppView.INTERCITY_HUB,
+    // Removed: CONTACT, PRIVACY, TERMS, RELEASE_NOTES, BLOG, TRAIN_LIST
+    // — all have SponsoredAdSlot inside their own component → double ads covered content
+    // — LOCAL_BUS_HUB, METRO_HUB, LAUNCH_HUB — hubs have own ads, removed earlier
+  ];
+  const showPageAd = pageAdViews.includes(view);
+  // CONTACT, PRIVACY, TERMS, RELEASE_NOTES handle their own internal scroll+footer
+  // All other doc pages use the outer panel scroll with GlobalFooter after them
+  const rightPanelUsesOuterScroll = [
+    AppView.ABOUT,
+    AppView.WHY_USE,
+    AppView.FAQ,
+    AppView.FOR_AI,
+    AppView.INSTALL_APP,
+    AppView.BLOG,
+    AppView.LOCAL_BUS_HUB,
+    AppView.METRO_HUB,
+    AppView.LAUNCH_HUB,
+    AppView.INTERCITY_HUB,
+  ].includes(view) && !(view === AppView.BLOG && !!selectedBlogPost);
 
   return (
     <NotificationProvider>
-      <div className="flex flex-col h-screen min-h-0 supports-[height:100dvh]:h-[100dvh] bg-kj-bg dark:bg-kj-bg font-sans text-kj-text overflow-hidden max-w-full">
+      <div className="flex flex-col flex-1 min-h-0 w-full h-full max-h-[100dvh] supports-[height:100dvh]:max-h-[100dvh] bg-kj-bg dark:bg-kj-bg font-sans text-kj-text overflow-hidden max-w-full kj-future-bg">
         <NotificationBanner />
 
         {/* PWA Update Banner */}
@@ -4603,14 +3790,18 @@ const App: React.FC = () => {
           </div>
         )}
 
-        {/* Mobile Header */}
-        <header className={`sticky top-0 left-0 right-0 bg-kj-panel border-b border-kj-line z-[100] md:hidden transition-transform duration-300 pt-safe ${(view === AppView.LIVE_NAV || view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? '-translate-y-full h-0 overflow-hidden py-0 border-none' : 'translate-y-0 h-auto'}`}>
+        {/* Mobile Header — fixed so ads can never push it down */}
+        <header className={`fixed top-0 left-0 right-0 bg-kj-panel/95 backdrop-blur-xl border-b border-kj-line z-[200] md:hidden kj-glass transition-transform duration-300 pt-safe ${(view === AppView.LIVE_NAV || view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? '-translate-y-full h-0 overflow-hidden py-0 border-none' : 'translate-y-0 h-auto'}`}>
           <div className="flex items-center gap-3 px-[18px] py-[14px]">
             <button onClick={() => setIsMenuOpen(true)} className="p-0 flex items-center justify-center shrink-0 text-kj-text active:opacity-70" aria-label="Open menu">
               <Menu className="w-[22px] h-[22px]" />
             </button>
-            <div className="cursor-pointer" onClick={() => setView(AppView.HOME)}>
-              <img src="/logo.png" alt="KoyJabo" className="h-11 w-11 rounded-xl" />
+            <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => setView(AppView.HOME)}>
+              <img src="/logo.png" alt="KoyJabo" className="w-[34px] h-[34px] rounded-xl object-cover shrink-0" />
+              <div className="flex flex-col leading-none gap-[3px]">
+                <span className="font-bengali font-bold text-kj-text text-[17px] leading-tight tracking-tight">কই যাবো</span>
+                <span className="font-sans font-medium text-kj-text-faint text-[9px] tracking-[0.14em] uppercase">KoyJabo · BD</span>
+              </div>
             </div>
             <div className="flex-1" />
             <div className="flex items-center gap-2 shrink-0">
@@ -4650,34 +3841,121 @@ const App: React.FC = () => {
 
 
 
-        <main className="flex flex-1 min-h-0 overflow-hidden relative w-full max-w-full mx-auto bg-kj-bg dark:bg-kj-bg md:pt-20">
-          {/* Left Sidebar (Desktop) / Main View (Mobile Home) */}
-          <div
-            className={`flex flex-col flex-1 min-h-0 w-full md:flex-none md:w-1/3 md:min-w-[320px] md:max-w-md border-r border-kj-line dark:border-kj-line bg-kj-panel dark:bg-kj-panel z-0 overflow-hidden ${view !== AppView.HOME && view !== AppView.TRAIN_LIST && 'hidden md:flex'}`}
-            style={(view === AppView.LOGIN || view === AppView.SIGNUP || view === AppView.FORGOT_PASSWORD || view === AppView.RESET_PASSWORD) ? { display: 'none' } : undefined}
-          >
-            <div className="flex-1 min-h-0 flex flex-col md:pt-0">
+        <main className={`flex flex-1 min-h-0 flex-col overflow-hidden relative z-10 w-full max-w-[1440px] mx-auto bg-transparent md:pt-16 md:px-4 ${hideSiteChrome ? '' : 'pt-[62px]'}`}>
+          {view === AppView.HOME ? (
+            <div className="flex-1 min-h-0 h-0 w-full flex flex-col overflow-hidden">
+            <div className="flex-1 min-h-0 h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-nav-safe md:pb-4" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <HomePage
+              language={language}
+              t={t}
+              user={user}
+              isInDhaka={isInDhaka}
+              isDarkMode={isDarkMode}
+              view={view}
+              searchMode={searchMode}
+              setSearchMode={setSearchMode}
+              inputValue={inputValue}
+              setInputValue={setInputValue}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              fromStation={fromStation}
+              setFromStation={setFromStation}
+              toStation={toStation}
+              setToStation={setToStation}
+              busRouteSort={busRouteSort}
+              setBusRouteSort={setBusRouteSort}
+              nonAcOnly={nonAcOnly}
+              setNonAcOnly={setNonAcOnly}
+              showSuggestions={showSuggestions}
+              setShowSuggestions={setShowSuggestions}
+              searchSuggestions={searchSuggestions}
+              isIntercityRedirecting={isIntercityRedirecting}
+              globalNearestStationName={globalNearestStationName}
+              stationOptions={stationOptions}
+              setView={setView}
+              setSuggestedRoutes={setSuggestedRoutes}
+              setSearchContext={setSearchContext}
+              scrollContainerRef={scrollContainerRef}
+              onSearchCommit={handleSearchCommit}
+              onKeyDown={handleKeyDown}
+              onInputChange={(value) => {
+                setSearchMode('TEXT');
+                if (value.trim().length > 0) {
+                  setSearchSuggestions(generateSearchSuggestions(value));
+                  setShowSuggestions(true);
+                } else {
+                  setSearchSuggestions([]);
+                  setShowSuggestions(false);
+                }
+              }}
+              onIntercityRedirect={handleIntercityRedirect}
+              onSuggestionSelect={(suggestion) => {
+                if (suggestion.type === 'intercity') {
+                  setInputValue(suggestion.name);
+                  handleIntercityRedirect(suggestion.name);
+                  return;
+                }
+                setInputValue(suggestion.name);
+                setShowSuggestions(false);
+                setTimeout(() => {
+                  const result = enhancedBusSearch(suggestion.name);
+                  setSearchContext(result.searchContext);
+                  setSearchQuery(suggestion.name);
+                }, 100);
+              }}
+              formatBusName={formatBusName}
+              formatNumber={formatNumber}
+              favorites={favorites}
+              filteredBuses={filteredBuses}
+              busRatingsMap={busRatingsMap}
+              listFilter={listFilter}
+              selectedBus={selectedBus}
+              onNavigate={(v) => setView(v as AppView)}
+              onIntercity={() => setView(AppView.INTERCITY_HUB)}
+              onEmergency={() => setShowEmergencyModal(true)}
+              onBusSelect={handleBusSelect}
+              onToggleFavorite={toggleFavorite}
+              onFilterChange={handleFilterChange}
+              getStationSlug={getStationSlug}
+            />
+            {!hideSiteChrome && <GlobalFooter setView={setView} />}
+            </div>
+            </div>
+          ) : (
+          <div className="flex-1 min-h-0 h-0 flex flex-col overflow-hidden w-full">
+          <div className="flex-1 min-h-0 h-0 min-w-0 overflow-hidden flex relative w-full">
+          {/* Train views render here ONLY on mobile; on desktop they go to the full right panel */}
+          {(view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) && (
+          <div className="flex flex-col flex-1 min-h-0 w-full md:hidden z-0 overflow-hidden">
+            <div className="flex-1 min-h-0 flex flex-col">
               {renderHomeContent()}
             </div>
           </div>
+          )}
 
-          {/* Right Content Area (Desktop) / Views (Mobile) */}
-          <div className={`
-            ${'flex-1 min-h-0 w-full min-w-0 bg-kj-bg dark:bg-kj-bg relative overflow-hidden flex flex-col'}
-            ${(view === AppView.HOME || view === AppView.TRAIN_LIST) && 'hidden md:flex'}
-`}>
-            <div className={`hidden md:block absolute inset-0 w-full h-full min-h-0 transition-opacity duration-500 ${(view === AppView.HOME || view === AppView.TRAIN_LIST) ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}><DhakaAlive /></div>
-            {view === AppView.TRAIN_DETAILS && (
-              user && selectedTrain ? (
-                <TrainDetail
-                  route={selectedTrain}
-                  userLocation={userLocation}
-                  onBack={() => { setSelectedTrain(null); setView(AppView.TRAIN_LIST); }}
-                  language={language}
-                  onOpenRating={() => setView(AppView.RATE_TRAIN)}
-                  onOpenPhotos={() => setView(AppView.TRAIN_PHOTOS)}
-                />
-              ) : <LoginWall setView={setView} />
+          {/* Right Content Area — full width on desktop for train, hub pages */}
+          {/* key forces remount on view change — fixes stale flex layout (AI page broken after Train navigation) */}
+          <div key={view} className={`
+            ${'flex-1 min-h-0 w-full min-w-0 bg-transparent relative flex flex-col'}
+            ${rightPanelUsesOuterScroll ? 'overflow-y-auto overscroll-y-contain touch-pan-y pb-nav-safe md:pb-4' : 'overflow-hidden'}
+            ${(view === AppView.LOCAL_BUS_HUB || view === AppView.METRO_HUB || view === AppView.LAUNCH_HUB || view === AppView.INTERCITY_HUB) && 'flex'}
+            ${(view === AppView.TRAIN_LIST || view === AppView.TRAIN_DETAILS) ? 'hidden md:flex' : ''}
+`} style={rightPanelUsesOuterScroll ? { WebkitOverflowScrolling: 'touch' } : undefined}>
+            {/* Train list — full width on desktop, hidden on mobile (mobile uses left panel) */}
+            {view === AppView.TRAIN_LIST && (
+              <div className="hidden md:flex flex-col flex-1 min-h-0 w-full overflow-hidden">
+                {renderHomeContent()}
+              </div>
+            )}
+            {view === AppView.TRAIN_DETAILS && selectedTrain && (
+              <TrainDetail
+                route={selectedTrain}
+                userLocation={userLocation}
+                onBack={() => { setSelectedTrain(null); setView(AppView.TRAIN_LIST); }}
+                language={language}
+                onOpenRating={() => user ? setView(AppView.RATE_TRAIN) : setView(AppView.LOGIN)}
+                onOpenPhotos={() => setView(AppView.TRAIN_PHOTOS)}
+              />
             )}
             {view === AppView.RATE_TRAIN && (
               user && selectedTrain ? (
@@ -4688,15 +3966,45 @@ const App: React.FC = () => {
                 />
               ) : <LoginWall setView={setView} />
             )}
-            {view === AppView.BUS_DETAILS && (user ? renderBusDetails() : <LoginWall setView={setView} />)}
+            {view === AppView.BUS_DETAILS && renderBusDetails()}
             {view === AppView.LIVE_NAV && renderLiveNav()}
-            {view === AppView.AI_ASSISTANT && (user ? renderAiAssistant() : <LoginWall setView={setView} />)}
+            {view === AppView.AI_ASSISTANT && renderAiAssistant()}
+
+            {/* Mode hub views */}
+            {view === AppView.LOCAL_BUS_HUB && (
+                <LocalBusHub
+                  onBack={() => setView(AppView.HOME)}
+                  language={language}
+                  initialFromId={fromStation || undefined}
+                  initialToId={toStation || undefined}
+                  onBusSelect={(bus, selectedFromId, selectedToId) => handleBusSelect(
+                    bus,
+                    false,
+                    undefined,
+                    selectedFromId || fromStation || undefined,
+                    selectedToId || toStation || undefined
+                  )}
+                />
+            )}
+            {view === AppView.METRO_HUB && (
+                <MetroRailHub onBack={() => setView(AppView.HOME)} language={language} />
+            )}
+            {view === AppView.LAUNCH_HUB && (
+                <LaunchHub onBack={() => setView(AppView.HOME)} language={language} />
+            )}
+            {view === AppView.INTERCITY_HUB && (
+              <IntercityHub
+                onBack={() => setView(AppView.HOME)}
+                language={language}
+                onSearch={() => {}}
+              />
+            )}
 
             {view === AppView.ABOUT && renderAbout()}
             {view === AppView.WHY_USE && renderWhyUse()}
             {view === AppView.FAQ && renderFAQ()}
             {view === AppView.RELEASE_NOTES && (
-              <ReleaseNotes />
+              <ReleaseNotes setView={setView} />
             )}
 
             {view === AppView.BLOG && (
@@ -4710,6 +4018,9 @@ const App: React.FC = () => {
                   onGoHome={() => {
                     setSelectedBlogPost(null);
                     setView(AppView.HOME);
+                  }}
+                  onSelectPost={(slug) => {
+                    setSelectedBlogPost(slug);
                   }}
                   language={language}
                 />
@@ -4744,6 +4055,12 @@ const App: React.FC = () => {
                 isDarkMode={isDarkMode}
                 toggleTheme={() => setIsDarkMode(!isDarkMode)}
                 onContactClick={() => setView(AppView.CONTACT)}
+                onProfileClick={() => setView(AppView.PROFILE)}
+                onPrivacyClick={() => setView(AppView.PRIVACY)}
+                onTermsClick={() => setView(AppView.TERMS)}
+                onAboutClick={() => setView(AppView.ABOUT)}
+                onReleaseNotesClick={() => setView(AppView.RELEASE_NOTES)}
+                onInstallClick={() => setView(AppView.INSTALL_APP)}
               />
             )}
             {/* ── Auth Views ── */}
@@ -4818,14 +4135,14 @@ const App: React.FC = () => {
 
                   <h1 className="text-3xl font-bold text-kj-text mb-2">{t('install.title')}</h1>
                   <p className="text-kj-text-dim mb-8">{t('install.subtitle')}</p>
-                  {/* <AdSenseAd adSlot="auto" className="mb-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
+                  <SponsoredAdSlot language={language} size="728x90" compact />
 
 
                   {/* Check if already installed */}
                   {/* Check if already installed - Only check display-mode: standalone, ignore localStorage to allow reinstall */}
                   {(window.matchMedia('(display-mode: standalone)').matches) ? (
-                    <div className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-2xl p-8 mb-8">
-                      <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
+                    <div className="bg-kj-primary-soft border border-kj-primary/30 rounded-2xl p-8 mb-8">
+                      <CheckCircle2 className="w-16 h-16 text-kj-primary mx-auto mb-4" />
                       <h2 className="text-2xl font-bold text-kj-text mb-3">{t('install.alreadyInstalled')}</h2>
                       <p className="text-kj-text-dim mb-6">
                         {t('install.enjoyFullApp')}
@@ -4860,48 +4177,55 @@ const App: React.FC = () => {
                     <div>
                       {/* Top Install Button */}
                       <button
-                        onClick={handleInstallClick}
-                        className="w-full md:w-auto px-12 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl font-bold text-white text-lg shadow-2xl shadow-emerald-500/40 hover:shadow-3xl hover:scale-105 transition-all active:scale-95 flex items-center justify-center gap-3 mx-auto mb-8"
+                        type="button"
+                        onClick={() => {
+                          if (deferredPrompt) {
+                            handleInstallClick();
+                          } else {
+                            document.getElementById('install-steps')?.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }}
+                        className="w-full md:w-auto px-12 py-4 bg-gradient-to-r bg-kj-primary rounded-2xl font-bold text-kj-primary-ink text-lg shadow-2xl hover:shadow-3xl hover:scale-105 transition-all active:scale-95 flex items-center justify-center gap-3 mx-auto mb-8"
                       >
                         <Download className="w-6 h-6" />
-                        {isInstalling ? t('install.installing') : t('install.installButton')}
+                        {isInstalling ? t('install.installing') : (deferredPrompt ? t('install.installButton') : (language === 'bn' ? 'ইনস্টল গাইড দেখুন' : 'See install guide'))}
                       </button>
 
                       {/* Benefits */}
                       <div className="grid md:grid-cols-2 gap-4 mb-8 text-left">
-                        <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-6 rounded-2xl border border-emerald-100">
+                        <div className="bg-kj-primary-soft p-6 rounded-2xl border border-kj-primary/20">
                           <CheckCircle2 className="w-8 h-8 text-kj-primary mb-3" />
                           <h3 className="font-bold text-kj-text mb-2">{t('install.worksOffline')}</h3>
                           <p className="text-sm text-kj-text-dim">{t('install.worksOfflineDesc')}</p>
                         </div>
-                        <div className="bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-2xl border border-blue-100">
+                        <div className="dc-card kj-glass p-6 rounded-2xl border border-kj-line">
                           <CheckCircle2 className="w-8 h-8 text-blue-600 mb-3" />
                           <h3 className="font-bold text-kj-text mb-2">{t('install.fasterLoading')}</h3>
-                          <p className="text-sm text-kj-text-dim">{t('install.fasterLoadingDesc')}</p>
+                          <p className="text-sm text-kj-text-dim">{language === 'bn' ? 'হোম স্ক্রিন থেকে তাৎক্ষণিক অ্যাক্সেস' : 'Instant access from your home screen'}</p>
                         </div>
-                        <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-2xl border border-purple-100">
+                        <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-slate-800 dark:to-slate-900 p-6 rounded-2xl border border-purple-100 dark:border-kj-line">
                           <CheckCircle2 className="w-8 h-8 text-purple-600 mb-3" />
                           <h3 className="font-bold text-kj-text mb-2">{t('install.nativeExperience')}</h3>
                           <p className="text-sm text-kj-text-dim">{t('install.nativeExperienceDesc')}</p>
                         </div>
-                        <div className="bg-gradient-to-br from-orange-50 to-amber-50 p-6 rounded-2xl border border-orange-100">
+                        <div className="bg-gradient-to-br from-orange-50 to-amber-50 dark:from-slate-800 dark:to-slate-900 p-6 rounded-2xl border border-orange-100 dark:border-kj-line">
                           <CheckCircle2 className="w-8 h-8 text-orange-600 mb-3" />
                           <h3 className="font-bold text-kj-text mb-2">{t('install.noAppStore')}</h3>
                           <p className="text-sm text-kj-text-dim">{t('install.noAppStoreDesc')}</p>
                         </div>
                       </div>
 
-                      {/* Install Button */}
                       {deferredPrompt && (
-                        <div>
+                        <div className="mb-8">
                           <button
+                            type="button"
                             onClick={handleInstallClick}
                             disabled={isInstalling}
-                            className={`w-full md: w-auto px-12 py-4 bg-gradient - to-r from-emerald - 500 to-teal - 600 rounded-2xl font-bold text-white text-lg shadow-2xl shadow-emerald - 500 / 40 hover: shadow-3xl hover: scale-105 transition-all active: scale-95 flex items-center justify-center gap-3 mx-auto mb-4 ${isInstalling ? 'opacity-75 cursor-not-allowed' : ''} `}
+                            className={`w-full md:w-auto px-12 py-4 bg-kj-primary rounded-2xl font-bold text-kj-primary-ink text-lg shadow-2xl hover:shadow-3xl hover:scale-105 transition-all active:scale-95 flex items-center justify-center gap-3 mx-auto mb-4 ${isInstalling ? 'opacity-75 cursor-not-allowed' : ''}`}
                           >
                             {isInstalling ? (
                               <>
-                                <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
+                                <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin" />
                                 {t('install.installing')}
                               </>
                             ) : (
@@ -4914,11 +4238,55 @@ const App: React.FC = () => {
                           <p className="text-xs text-kj-text-faint text-center">{t('install.freeNoRegistration')}</p>
                         </div>
                       )}
+
+                      <div id="install-steps" className="bg-kj-panel rounded-2xl border border-kj-line p-6 md:p-8 text-left mb-8">
+                        <h2 className="text-xl font-bold text-kj-text mb-6 flex items-center gap-2">
+                          <Download className="w-5 h-5 text-kj-primary" />
+                          {language === 'bn' ? 'কীভাবে ইনস্টল করবেন' : 'How to install'}
+                        </h2>
+                        <div className="space-y-6 text-sm text-kj-text-dim">
+                          <div>
+                            <p className="font-bold text-kj-text mb-2">{t('install.onAndroid')}</p>
+                            <ol className="list-decimal list-inside space-y-1.5 ml-2">
+                              <li>{language === 'bn' ? 'Chrome ব্রাউজারে koyjabo.com খুলুন' : 'Open koyjabo.com in Chrome'}</li>
+                              <li>{language === 'bn' ? 'মেনু (⋮) → "অ্যাপ ইনস্টল করুন" বা "হোম স্ক্রিনে যোগ করুন" ট্যাপ করুন' : 'Tap menu (⋮) → "Install app" or "Add to Home screen"'}</li>
+                              <li>{language === 'bn' ? 'ইনস্টল নিশ্চিত করুন' : 'Confirm install'}</li>
+                            </ol>
+                          </div>
+                          <div>
+                            <p className="font-bold text-kj-text mb-2">{t('install.onIOS')}</p>
+                            <ol className="list-decimal list-inside space-y-1.5 ml-2">
+                              <li>{language === 'bn' ? 'Safari ব্রাউজারে koyjabo.com খুলুন' : 'Open koyjabo.com in Safari'}</li>
+                              <li>{language === 'bn' ? 'শেয়ার বাটন (□↑) ট্যাপ করুন' : 'Tap the Share button (□↑)'}</li>
+                              <li>{language === 'bn' ? '"হোম স্ক্রিনে যোগ করুন" → "যোগ করুন" ট্যাপ করুন' : 'Tap "Add to Home Screen" → "Add"'}</li>
+                            </ol>
+                          </div>
+                          <div>
+                            <p className="font-bold text-kj-text mb-2">{language === 'bn' ? 'ডেস্কটপ (Chrome / Edge):' : 'Desktop (Chrome / Edge):'}</p>
+                            <ol className="list-decimal list-inside space-y-1.5 ml-2">
+                              <li>{language === 'bn' ? 'ঠিকানা বারে ইনস্টল আইকন (⊕) ক্লিক করুন' : 'Click the install icon (⊕) in the address bar'}</li>
+                              <li>{language === 'bn' ? 'অথবা মেনু → "কই যাবো ইনস্টল করুন" বেছে নিন' : 'Or use menu → "Install KoyJabo"'}</li>
+                            </ol>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-kj-chip-bg rounded-2xl border border-kj-line p-6 md:p-8 text-left">
+                        <h2 className="text-xl font-bold text-kj-text mb-4 flex items-center gap-2">
+                          <Zap className="w-5 h-5 text-kj-accent" />
+                          {language === 'bn' ? 'ইনস্টলের পর কীভাবে ব্যবহার করবেন' : 'How to use after installing'}
+                        </h2>
+                        <ul className="space-y-3 text-sm text-kj-text-dim">
+                          <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-kj-primary shrink-0 mt-0.5" />{language === 'bn' ? 'হোম স্ক্রিন থেকে অ্যাপ খুলুন — ব্রাউজার ছাড়াই' : 'Open from home screen — no browser needed'}</li>
+                          <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-kj-primary shrink-0 mt-0.5" />{language === 'bn' ? 'অফলাইনে বাস, ট্রেন ও মেট্রো রুট খুঁজুন' : 'Search bus, train and metro routes offline'}</li>
+                          <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-kj-primary shrink-0 mt-0.5" />{language === 'bn' ? 'AI সহায়ক, ট্রিপ রিমাইন্ডার ও ফেভারিট রুট সেভ করুন' : 'Use AI assistant, trip reminders and saved routes'}</li>
+                          <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-kj-primary shrink-0 mt-0.5" />{language === 'bn' ? 'আন্তঃজেলা ভ্রমণের জন্য ইন্টারসিটি মোড ব্যবহার করুন' : 'Use Intercity mode for travel across districts'}</li>
+                        </ul>
+                      </div>
                     </div>
                   )}
 
-                  {/* <AdSenseAd adSlot="auto" className="my-10 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-
+                  <SponsoredAdSlot language={language} size="728x90" compact />
 
 
                   {/* Bottom padding */}
@@ -4930,39 +4298,32 @@ const App: React.FC = () => {
             )}
             {view === AppView.NOT_FOUND && renderNotFound()}
             {view === AppView.SERVER_ERROR && renderServerError()}
+            {showPageAd && rightPanelUsesOuterScroll && <PageAdSection />}
+            {!hideSiteChrome && rightPanelUsesOuterScroll && <GlobalFooter setView={setView} />}
           </div>
+          </div>
+          {!rightPanelUsesOuterScroll && showPageAd && <PageAdSection />}
+          </div>
+          )}
         </main>
 
-        {/* Sticky bottom banner ad — above mobile nav, excluded from views with their own bottom UI */}
-        {view !== AppView.LIVE_NAV && view !== AppView.AI_ASSISTANT && view !== AppView.LOGIN && view !== AppView.SIGNUP && view !== AppView.FORGOT_PASSWORD && view !== AppView.RESET_PASSWORD && (
-          <StickyBottomBannerAd />
-        )}
-
         {/* Mobile Bottom Navigation */}
+        {/* Floating sticky ad banner — above mobile nav, below desktop content */}
+        <FloatingAdBanner bottomOffset={view !== AppView.BUS_DETAILS && view !== AppView.LIVE_NAV ? 70 : 0} />
+
         {view !== AppView.BUS_DETAILS && view !== AppView.LIVE_NAV && (
-          <nav className="fixed bottom-0 left-0 right-0 bg-kj-panel border-t border-kj-line z-50 md:hidden pb-safe" style={{ padding: '8px 10px 14px' }}>
+          <nav className="fixed bottom-0 left-0 right-0 bg-kj-panel/90 backdrop-blur-[14px] border-t border-kj-line z-50 md:hidden pb-safe kj-glass" style={{ padding: '8px 10px 14px' }}>
             <div className="grid grid-cols-5 gap-1">
               {/* Home */}
               <button
                 onClick={() => { setView(AppView.HOME); setPrimarySearch('LOCAL'); setSearchMode('TEXT'); }}
-                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${view === AppView.HOME && searchMode === 'TEXT' ? 'text-kj-primary' : 'text-kj-text-faint'}`}
+                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${(view === AppView.HOME) || view === AppView.LOCAL_BUS_HUB ? 'text-kj-primary' : 'text-kj-text-faint'}`}
               >
-                {view === AppView.HOME && searchMode === 'TEXT' && (
+                {((view === AppView.HOME) || view === AppView.LOCAL_BUS_HUB) && (
                   <span className="absolute top-0 left-1/2 -translate-x-1/2 w-[22px] h-[3px] rounded-full bg-kj-primary" />
                 )}
                 <Home className="w-5 h-5" />
                 <span>{language === 'bn' ? 'হোম' : 'Home'}</span>
-              </button>
-              {/* Search */}
-              <button
-                onClick={() => { setView(AppView.HOME); setSearchMode('ROUTE'); setPrimarySearch('LOCAL'); }}
-                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${view === AppView.HOME && searchMode === 'ROUTE' ? 'text-kj-primary' : 'text-kj-text-faint'}`}
-              >
-                {view === AppView.HOME && searchMode === 'ROUTE' && (
-                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-[22px] h-[3px] rounded-full bg-kj-primary" />
-                )}
-                <Search className="w-5 h-5" />
-                <span>{language === 'bn' ? 'খুঁজুন' : 'Search'}</span>
               </button>
               {/* Train */}
               <button
@@ -4977,10 +4338,13 @@ const App: React.FC = () => {
               </button>
               {/* Intercity */}
               <button
-                onClick={() => { localStorage.setItem('dhaka_commute_view', JSON.stringify(AppView.HOME)); window.location.href = '/intercity/'; }}
-                className="flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold text-kj-text-faint"
+                onClick={() => setView(AppView.INTERCITY_HUB)}
+                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${view === AppView.INTERCITY_HUB ? 'text-kj-primary' : 'text-kj-text-faint'}`}
               >
-                <Plane className="w-5 h-5" />
+                {view === AppView.INTERCITY_HUB && (
+                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-[22px] h-[3px] rounded-full bg-kj-primary" />
+                )}
+                <Bus className="w-5 h-5" />
                 <span>{language === 'bn' ? 'আন্তঃজেলা' : 'Intercity'}</span>
               </button>
               {/* AI */}
@@ -4994,6 +4358,26 @@ const App: React.FC = () => {
                 <Sparkles className="w-5 h-5" />
                 <span>{language === 'bn' ? 'AI' : 'AI'}</span>
               </button>
+              {/* Profile / You */}
+              <button
+                onClick={() => user ? setView(AppView.PROFILE) : setView(AppView.LOGIN)}
+                className={`flex flex-col items-center gap-1 py-[6px] px-1 relative transition-colors duration-150 font-bengali text-[10px] font-semibold ${view === AppView.PROFILE || view === AppView.LOGIN || view === AppView.SIGNUP ? 'text-kj-primary' : 'text-kj-text-faint'}`}
+              >
+                {(view === AppView.PROFILE || view === AppView.LOGIN || view === AppView.SIGNUP) && (
+                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-[22px] h-[3px] rounded-full bg-kj-primary" />
+                )}
+                {user ? (
+                  <div className="w-5 h-5 rounded-full bg-kj-primary flex items-center justify-center text-kj-primary-ink text-[9px] font-bold overflow-hidden">
+                    {user.avatarUrl
+                      ? <img src={user.avatarUrl} alt="" className="w-full h-full object-cover" />
+                      : user.displayName?.charAt(0).toUpperCase()
+                    }
+                  </div>
+                ) : (
+                  <User className="w-5 h-5" />
+                )}
+                <span>{language === 'bn' ? 'প্রোফাইল' : 'You'}</span>
+              </button>
             </div>
           </nav>
         )}
@@ -5001,23 +4385,27 @@ const App: React.FC = () => {
         {/* Menu Overlay - Works on all pages */}
         {isMenuOpen && (
           <div className="fixed inset-0 z-[100]">
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={() => setIsMenuOpen(false)}/>
-            <div className="absolute top-0 right-0 bottom-0 w-[280px] bg-kj-panel border-l border-kj-line flex flex-col animate-in slide-in-from-right duration-200">
+            <div className="absolute inset-0 bg-black/50 backdrop-blur-[3px]" onClick={() => setIsMenuOpen(false)}/>
+            <div className="absolute top-0 right-0 bottom-0 w-[min(360px,86vw)] bg-kj-bg border-l border-kj-line flex flex-col" style={{ boxShadow: '-30px 0 80px -20px rgba(0,0,0,0.5)', transform: 'translateX(0)', transition: 'transform .3s cubic-bezier(.2,.8,.2,1)' }}>
               {/* Drawer header */}
-              <div className="flex items-center gap-3 px-5 py-4 border-b border-kj-line shrink-0">
-                <img src="/logo.png" alt="KoyJabo" className="h-11 w-11 rounded-xl flex-shrink-0" />
-                <div className="flex-1" />
-                <button onClick={() => setIsMenuOpen(false)} className="w-8 h-8 rounded-lg flex items-center justify-center text-kj-text-dim hover:bg-kj-chip-bg transition-colors" aria-label="Close menu">
+              <div className="flex items-center gap-3 px-5 py-[18px] border-b border-kj-line shrink-0 sticky top-0 bg-kj-bg z-10">
+                <img src="/logo.png" alt="KoyJabo" className="h-[34px] w-[34px] rounded-xl flex-shrink-0" />
+                <div className="flex flex-col leading-none flex-1">
+                  <span className="font-bengali font-bold text-[17px] text-kj-text">কই যাবো</span>
+                  <span className="font-sans font-medium text-kj-text-faint text-[10px] tracking-[1.4px] uppercase mt-0.5">{language === 'bn' ? 'মেনু' : 'Menu'}</span>
+                </div>
+                <button onClick={() => setIsMenuOpen(false)} className="w-9 h-9 rounded-[10px] border border-kj-line bg-kj-panel-muted flex items-center justify-center text-kj-text cursor-pointer hover:bg-kj-chip-bg transition-colors" aria-label="Close menu">
                   <X className="w-4 h-4" />
                 </button>
               </div>
 
-              <div className="space-y-2 flex-1 overflow-y-auto overscroll-contain" style={{scrollbarWidth:'thin'}}>
-                {/* Auth Section */}
+              <div className="flex-1 overflow-y-auto overscroll-contain" style={{scrollbarWidth:'thin'}}>
+                <div className="px-[14px] pb-7">
+                {/* Auth user card */}
                 {user ? (
-                  <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 mb-2">
+                  <div className="mt-3 mb-2 p-3 rounded-xl bg-kj-primary-soft border border-kj-primary/20">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold shrink-0">
+                      <div className="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-kj-primary to-kj-primary-deep flex items-center justify-center text-kj-primary-ink text-sm font-bold shrink-0">
                         {user.avatarUrl
                           ? <img src={user.avatarUrl} alt={user.displayName} className="w-full h-full object-cover" />
                           : user.displayName.charAt(0).toUpperCase()
@@ -5029,168 +4417,95 @@ const App: React.FC = () => {
                       </div>
                     </div>
                     <div className="flex gap-2 mt-3">
-                      <button
-                        onClick={() => { setProfileSection('profile'); setView(AppView.PROFILE); setIsMenuOpen(false); }}
-                        className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-colors"
-                      >
-                        <User className="w-3.5 h-3.5" /> {t('nav.profile') || t('profile.title')}
+                      <button onClick={() => { setProfileSection('profile'); setView(AppView.PROFILE); setIsMenuOpen(false); }}
+                        className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-kj-primary text-kj-primary-ink text-xs font-bold transition-colors hover:brightness-105">
+                        <User className="w-3.5 h-3.5" /> {language === 'bn' ? 'প্রোফাইল' : 'Profile'}
                       </button>
-                      <button
-                        onClick={() => { logout(); setIsMenuOpen(false); setView(AppView.HOME); }}
-                        className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-kj-text-dim text-xs font-semibold transition-colors"
-                      >
-                        <LogOut className="w-3.5 h-3.5" /> {t('common.logout')}
+                      <button onClick={() => { logout(); setIsMenuOpen(false); setView(AppView.HOME); }}
+                        className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-kj-panel-muted border border-kj-line text-kj-text-dim text-xs font-semibold hover:bg-kj-chip-bg">
+                        <LogOut className="w-3.5 h-3.5" /> {language === 'bn' ? 'লগআউট' : 'Log out'}
                       </button>
                     </div>
                   </div>
                 ) : (
-                  <div className="flex gap-2 mb-2">
-                    <button
-                      onClick={() => { setView(AppView.LOGIN); setIsMenuOpen(false); }}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-colors"
-                    >
+                  <div className="flex gap-2 mt-3 mb-2">
+                    <button onClick={() => { setView(AppView.LOGIN); setIsMenuOpen(false); }}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-kj-text text-kj-bg text-sm font-semibold hover:opacity-90">
                       <LogIn className="w-4 h-4" /> {t('nav.login')}
                     </button>
-                    <button
-                      onClick={() => { setView(AppView.SIGNUP); setIsMenuOpen(false); }}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-kj-primary hover:bg-kj-primary-deep text-white text-sm font-semibold transition-colors"
-                    >
-                      <UserPlus className="w-4 h-4" /> {t('nav.signup')}
+                    <button onClick={() => { setView(AppView.SIGNUP); setIsMenuOpen(false); }}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-kj-primary text-kj-primary-ink text-sm font-semibold hover:brightness-105">
+                      <UserPlus className="w-4 h-4" /> {language === 'bn' ? 'সাইন আপ' : 'Sign up'}
                     </button>
                   </div>
                 )}
 
-                {/* History & Settings — only for logged-in users */}
-                {user && (
-                  <>
-                    <button
-                      onClick={() => { setView(AppView.HISTORY); setIsMenuOpen(false); }}
-                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.HISTORY ? 'bg-kj-primary-soft dark:bg-emerald-900/20 border border-kj-primary/30' : ''}`}
-                    >
-                      <Clock className="w-5 h-5 text-kj-primary" /> {t('nav.history') || 'History'}
-                    </button>
-                    <button
-                      onClick={() => { setView(AppView.SETTINGS); setIsMenuOpen(false); }}
-                      className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.SETTINGS ? 'bg-kj-chip-bg border border-kj-line' : ''}`}
-                    >
-                      <Settings className="w-5 h-5 text-kj-text-dim" /> {t('nav.settings') || 'Settings'}
-                    </button>
-                  </>
-                )}
+                {/* Grouped navigation — design system */}
+                {([
+                  { h: language === 'bn' ? 'এক্সপ্লোর' : 'Explore', items: [
+                    { label: language === 'bn' ? 'হোম' : 'Home', action: () => { setView(AppView.HOME); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'লোকাল বাস' : 'Local bus', action: () => { setView(AppView.LOCAL_BUS_HUB); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'মেট্রো রেল' : 'Metro Rail', action: () => { setView(AppView.METRO_HUB); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'ট্রেন' : 'Train', action: () => { setView(AppView.TRAIN_LIST); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'আন্তঃজেলা' : 'Intercity', action: () => { setView(AppView.INTERCITY_HUB); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'লঞ্চ ও স্টিমার' : 'Launch & Steamer', action: () => { setView(AppView.LAUNCH_HUB); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'ভাড়া ক্যালকুলেটর' : 'Fare calculator', action: () => { setView(AppView.COMMUTE_COST); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'AI সহায়ক' : 'AI Assistant', action: () => { setView(AppView.AI_ASSISTANT); setIsMenuOpen(false); } },
+                  ]},
+                  { h: language === 'bn' ? 'অ্যাকাউন্ট' : 'Account', items: [
+                    ...(user ? [
+                      { label: language === 'bn' ? 'প্রোফাইল' : 'Profile', action: () => { setView(AppView.PROFILE); setIsMenuOpen(false); } },
+                      { label: language === 'bn' ? 'প্রিয় রুট' : 'Favorites', action: () => { setView(AppView.HOME); setListFilter('FAVORITES'); setIsMenuOpen(false); } },
+                      { label: language === 'bn' ? 'যাত্রার ইতিহাস' : 'Trip history', action: () => { setView(AppView.HISTORY); setIsMenuOpen(false); } },
+                      { label: language === 'bn' ? 'সেটিংস' : 'Settings', action: () => { setView(AppView.SETTINGS); setIsMenuOpen(false); } },
+                    ] : [
+                      { label: language === 'bn' ? 'সাইন ইন' : 'Sign in', action: () => { setView(AppView.LOGIN); setIsMenuOpen(false); } },
+                      { label: language === 'bn' ? 'সাইন আপ' : 'Sign up', action: () => { setView(AppView.SIGNUP); setIsMenuOpen(false); } },
+                    ]),
+                  ]},
+                  { h: language === 'bn' ? 'কমিউনিটি' : 'Community', items: [
+                    { label: language === 'bn' ? 'যাত্রা রিমাইন্ডার' : 'Trip Reminders', action: () => { setView(AppView.TRIP_REMINDERS); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'মাল্টি-স্টপ প্ল্যানার' : 'Multi-Stop Planner', action: () => { setView(AppView.MULTI_STOP_PLANNER); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'সিট প্রাপ্যতা' : 'Seat Availability', action: () => { setView(AppView.SEAT_AVAILABILITY); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'রাস্তা সতর্কতা' : 'Road Alerts', action: () => { setView(AppView.ROAD_ALERTS); setIsMenuOpen(false); } },
+                  ]},
+                  { h: language === 'bn' ? 'কোম্পানি' : 'Company', items: [
+                    { label: language === 'bn' ? 'কেন কই যাবো' : 'Why KoyJabo', action: () => { setView(AppView.WHY_USE); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'আমাদের সম্পর্কে' : 'About', action: () => { setView(AppView.ABOUT); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'ব্লগ' : 'Blog', action: () => { setView(AppView.BLOG); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'প্রশ্নোত্তর' : 'Q & A', action: () => { setView(AppView.FAQ); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'যোগাযোগ' : 'Contact', action: () => { setView(AppView.CONTACT); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'রিলিজ নোট' : 'Release notes', action: () => { setView(AppView.RELEASE_NOTES); setIsMenuOpen(false); } },
+                  ]},
+                  { h: language === 'bn' ? 'আইনি' : 'Legal', items: [
+                    { label: language === 'bn' ? 'গোপনীয়তা নীতি' : 'Privacy policy', action: () => { setView(AppView.PRIVACY); setIsMenuOpen(false); } },
+                    { label: language === 'bn' ? 'সেবার শর্তাবলি' : 'Terms of service', action: () => { setView(AppView.TERMS); setIsMenuOpen(false); } },
+                  ]},
+                ] as Array<{h: string, items: Array<{label: string, action: () => void}>}>).map((group, gi) => (
+                  <div key={gi} className="mt-[18px] first:mt-2.5">
+                    <p className="text-[10px] font-bold text-kj-text-faint tracking-[1.4px] uppercase px-2 pb-1.5">{group.h}</p>
+                    {group.items.map((item, ii) => (
+                      <button key={ii} onClick={item.action}
+                        className="flex items-center gap-2.5 w-full px-[10px] py-[11px] border-0 rounded-xl cursor-pointer bg-transparent text-left font-bengali font-semibold text-[14.5px] text-kj-text hover:bg-kj-chip-bg transition-colors">
+                        <span className="w-1.5 h-1.5 rounded-full bg-kj-primary shrink-0 opacity-55" />
+                        <span className="flex-1">{item.label}</span>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-kj-text-faint shrink-0"><path d="m9 6 6 6-6 6"/></svg>
+                      </button>
+                    ))}
+                  </div>
+                ))}
 
-                <button
-                  onClick={() => { setView(AppView.BLOG); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.BLOG ? 'bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800' : ''}`}
-                >
-                  <BookOpen className="w-5 h-5 text-orange-600 dark:text-orange-400" /> {t('nav.blog') || 'Blog'}
-                </button>
-
-                {/* ── Community Features — always visible, LoginWall if not logged in ── */}
-                <div className="px-3 pt-2 pb-1">
-                  <p className="text-xs font-bold text-kj-text-faint uppercase tracking-wider">{language === 'bn' ? 'কমিউনিটি ফিচার' : 'Community'}</p>
+                {/* Language + version footer */}
+                <div className="mt-6 pt-4 border-t border-kj-line space-y-3">
+                  <div className="flex gap-2">
+                    <button onClick={() => setLanguage('bn')}
+                      className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${language === 'bn' ? 'bg-kj-primary text-kj-primary-ink' : 'bg-kj-chip-bg text-kj-text-dim'}`}>বাংলা</button>
+                    <button onClick={() => setLanguage('en')}
+                      className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${language === 'en' ? 'bg-kj-primary text-kj-primary-ink' : 'bg-kj-chip-bg text-kj-text-dim'}`}>English</button>
+                  </div>
+                  <p className="text-[11px] text-center text-kj-text-faint font-sans">KoyJabo · v1.4.2</p>
                 </div>
-                <button onClick={() => { setView(AppView.TRIP_REMINDERS); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.TRIP_REMINDERS ? 'bg-violet-50 dark:bg-violet-900/20 border border-violet-200 dark:border-violet-800' : ''}`}>
-                  <span className="w-5 h-5 text-center leading-5 text-violet-600">🔔</span> {language === 'bn' ? 'যাত্রা রিমাইন্ডার' : 'Trip Reminders'}
-                </button>
-                <button onClick={() => { setView(AppView.ROAD_ALERTS); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.ROAD_ALERTS ? 'bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800' : ''}`}>
-                  <AlertTriangle className="w-5 h-5 text-orange-500" /> {language === 'bn' ? 'রাস্তা সতর্কতা' : 'Road Alerts'}
-                </button>
-                <button onClick={() => { setView(AppView.NEIGHBOURHOOD_GUIDES); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.NEIGHBOURHOOD_GUIDES ? 'bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800' : ''}`}>
-                  <MapPin className="w-5 h-5 text-purple-500" /> {language === 'bn' ? 'এলাকাভিত্তিক গাইড' : 'Area Guides'}
-                </button>
-                <button onClick={() => { setView(AppView.BUS_PASS_INFO); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.BUS_PASS_INFO ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800' : ''}`}>
-                  <span className="w-5 h-5 text-center leading-5 text-blue-600">💳</span> {language === 'bn' ? 'বাস পাস তথ্য' : 'Bus Pass Info'}
-                </button>
-                <button onClick={() => { setView(AppView.MULTI_STOP_PLANNER); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.MULTI_STOP_PLANNER ? 'bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800' : ''}`}>
-                  <Navigation className="w-5 h-5 text-cyan-500" /> {language === 'bn' ? 'মাল্টি-স্টপ প্ল্যানার' : 'Multi-Stop Planner'}
-                </button>
-                <button onClick={() => { setView(AppView.COMMUTE_COST); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.COMMUTE_COST ? 'bg-kj-primary-soft dark:bg-emerald-900/20 border border-kj-primary/30' : ''}`}>
-                  <Calculator className="w-5 h-5 text-kj-primary" /> {language === 'bn' ? 'খরচ ক্যালকুলেটর' : 'Cost Calculator'}
-                </button>
-                <button onClick={() => { setView(AppView.SEAT_AVAILABILITY); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.SEAT_AVAILABILITY ? 'bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800' : ''}`}>
-                  <Ticket className="w-5 h-5 text-indigo-500" /> {language === 'bn' ? 'সিট প্রাপ্যতা' : 'Seat Availability'}
-                </button>
-
-                <button
-                  onClick={() => { setView(AppView.AI_ASSISTANT); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.AI_ASSISTANT ? 'bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800' : ''} `}
-                >
-                  <Bot className="w-5 h-5 text-purple-600 dark:text-purple-400" /> {t('ai.title')}
-                </button>
-                <button
-                  onClick={() => { setView(AppView.ABOUT); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.ABOUT ? 'bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800' : ''} `}
-                >
-                  <Info className="w-5 h-5 text-purple-500" /> {t('nav.about')}
-                </button>
-                <button
-                  onClick={() => { setView(AppView.WHY_USE); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.WHY_USE ? 'bg-pink-50 dark:bg-pink-900/20 border border-pink-200 dark:border-pink-800' : ''} `}
-                >
-                  <Sparkles className="w-5 h-5 text-pink-600 dark:text-pink-400" /> {t('home.whyUse')}
-                </button>
-                <button
-                  onClick={() => { setView(AppView.FAQ); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.FAQ ? 'bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800' : ''} `}
-                >
-                  <HelpCircle className="w-5 h-5 text-cyan-600 dark:text-cyan-400" /> {t('nav.faq')}
-                </button>
-                <button
-                  onClick={() => { setView(AppView.RELEASE_NOTES); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.RELEASE_NOTES ? 'bg-kj-primary-soft dark:bg-emerald-900/20 border border-kj-primary/30' : ''}`}
-                >
-                  <Rocket className="w-5 h-5 text-kj-primary" /> {language === 'bn' ? 'রিলিজ নোটস' : 'Release Notes'}
-                </button>
-                {/* Install/Uninstall App - Always show */}
-                <button
-                  onClick={() => { setView(AppView.INSTALL_APP); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.INSTALL_APP ? 'bg-kj-primary-soft dark:bg-emerald-900/20 border border-kj-primary/30' : ''}`}
-                >
-                  <Download className="w-5 h-5 text-kj-primary" /> {t('home.installApp')}
-                </button>
-
-                <button
-                  onClick={() => { setView(AppView.PRIVACY); setIsMenuOpen(false); }}
-                  className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
-                >
-                  <Shield className="w-5 h-5 text-indigo-600 dark:text-indigo-400" /> {t('nav.privacy')}
-                </button>
-                <button
-                  onClick={() => { setView(AppView.TERMS); setIsMenuOpen(false); }}
-                  className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors"
-                >
-                  <FileText className="w-5 h-5 text-orange-600 dark:text-orange-400" /> {t('nav.terms')}
-                </button>
-                <button
-                  onClick={() => { setView(AppView.CONTACT); setIsMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg text-kj-text-dim font-medium transition-colors ${view === AppView.CONTACT ? 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800' : ''}`}
-                >
-                  <Phone className="w-5 h-5 text-red-600 dark:text-red-400" /> {t('nav.contact') || 'Contact Us'}
-                </button>
-              </div>
-
-              <div className="pt-4 border-t border-kj-line space-y-3">
-                {/* Language Toggle */}
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setLanguage('bn')}
-                    className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${language === 'bn' ? 'bg-kj-primary text-white' : 'bg-kj-chip-bg text-kj-text-dim hover:bg-kj-chip-bg'}`}
-                  >বাংলা</button>
-                  <button
-                    onClick={() => setLanguage('en')}
-                    className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${language === 'en' ? 'bg-blue-500 text-white' : 'bg-kj-chip-bg text-kj-text-dim hover:bg-kj-chip-bg'}`}
-                  >English</button>
                 </div>
-                <p className="text-xs text-center text-kj-text-faint">
-                  {t('common.appName')} v2.5.0
-                </p>
               </div>
             </div>
           </div>
@@ -5212,7 +4527,7 @@ const App: React.FC = () => {
               <p className="text-kj-text-faint text-sm mb-8 text-center font-medium">Finding the best intercity routes for you...</p>
 
               <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden mb-4">
-                <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 w-[40%] rounded-full animate-[loading-progress_2s_infinite_ease-in-out]"></div>
+                <div className="h-full bg-gradient-to-r from-kj-primary to-kj-primary-deep w-[40%] rounded-full animate-[loading-progress_2s_infinite_ease-in-out]"></div>
               </div>
               <span className="text-[10px] font-bold text-kj-text-dim uppercase tracking-widest animate-pulse">Initializing Data</span>
             </div>
@@ -5231,7 +4546,7 @@ const App: React.FC = () => {
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-end md:items-center justify-center p-4 animate-in fade-in">
             <div className="bg-kj-panel rounded-t-3xl md:rounded-3xl p-6 max-w-md w-full shadow-2xl animate-in slide-in-from-bottom md:slide-in-from-bottom-0 pb-safe">
               <div className="flex items-start gap-4 mb-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shrink-0 shadow-lg">
+                <div className="w-16 h-16 bg-gradient-to-br bg-kj-primary rounded-2xl flex items-center justify-center shrink-0 shadow-lg">
                   <Bus className="w-8 h-8 text-white" />
                 </div>
                 <div className="flex-1">
@@ -5276,10 +4591,10 @@ const App: React.FC = () => {
                   Maybe Later
                 </button>
                 <button
-                  onClick={handleInstallClick}
-                  className="flex-1 px-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl font-bold text-white shadow-lg shadow-emerald-500/30 dark:shadow-emerald-900/40 hover:shadow-xl hover:shadow-emerald-500/40 transition-all active:scale-95"
+                  onClick={() => { setShowInstallPrompt(false); setView(AppView.INSTALL_APP); }}
+                  className="flex-1 px-4 py-3 bg-gradient-to-r bg-kj-primary rounded-xl font-bold text-kj-primary-ink shadow-lg hover:shadow-xl transition-all active:scale-95"
                 >
-                  Install Now
+                  {language === 'bn' ? 'বিস্তারিত দেখুন' : 'View install guide'}
                 </button>
               </div>
 
@@ -5317,7 +4632,7 @@ const App: React.FC = () => {
 
               <button
                 onClick={() => setShowStaleOfflineWarning(false)}
-                className="w-full bg-kj-primary hover:bg-kj-primary-deep text-white font-bold py-3 rounded-xl transition-colors shadow-lg shadow-emerald-500/20"
+                className="w-full bg-kj-primary hover:bg-kj-primary-deep text-kj-primary-ink font-bold py-3 rounded-xl transition-colors shadow-lg"
               >
                 {t('offline.continueOffline')}
               </button>
@@ -5369,40 +4684,35 @@ function AuthHeaderButton({ setView }: { setView: (v: AppView) => void }) {
 function LoginWall({ setView, message }: { setView: (v: AppView) => void; message?: string }) {
   const { t } = useLanguage();
   const POST_LOGIN_REDIRECT_KEY = 'koyjabo_post_login_redirect';
+  const doLogin = () => {
+    sessionStorage.setItem(POST_LOGIN_REDIRECT_KEY, window.location.pathname + window.location.search + window.location.hash);
+    setView(AppView.LOGIN);
+  };
+  const doSignup = () => {
+    sessionStorage.setItem(POST_LOGIN_REDIRECT_KEY, window.location.pathname + window.location.search + window.location.hash);
+    setView(AppView.SIGNUP);
+  };
+  void message; void t;
   return (
-    <div className="flex flex-col flex-1 min-h-0 w-full overflow-y-auto overscroll-y-contain touch-pan-y items-center justify-center gap-6 p-8 text-center" style={{ WebkitOverflowScrolling: 'touch' }}>
-      <div className="w-20 h-20 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-        <User className="w-10 h-10 text-blue-600 dark:text-blue-400" />
-      </div>
-      <div>
-        <h2 className="text-xl font-bold text-kj-text mb-2">
-          {message || t('common.loginRequired')}
-        </h2>
-        <p className="text-sm text-kj-text-dim">
-          {t('auth.hasAccount')} {t('common.loginBtn')}
-        </p>
-      </div>
-      <div className="flex gap-3">
-        <button
-          onClick={() => {
-            sessionStorage.setItem(POST_LOGIN_REDIRECT_KEY, window.location.pathname + window.location.search + window.location.hash);
-            setView(AppView.LOGIN);
-          }}
-          className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-colors shadow-sm"
-        >
-          {t('common.loginBtn')}
-        </button>
-        <button
-          onClick={() => {
-            sessionStorage.setItem(POST_LOGIN_REDIRECT_KEY, window.location.pathname + window.location.search + window.location.hash);
-            setView(AppView.SIGNUP);
-          }}
-          className="px-6 py-2.5 rounded-xl bg-kj-primary hover:bg-kj-primary-deep text-white font-semibold text-sm transition-colors shadow-sm"
-        >
-          {t('common.signupBtn')}
-        </button>
-      </div>
-    </div>
+    <SystemStateScreen
+      code="403"
+      tone="amber"
+      icon={Icons.lock}
+      titleBn="প্রবেশ সীমাবদ্ধ"
+      titleEn="Access restricted"
+      descBn="এই পেজটি দেখার অনুমতি আপনার নেই। সঠিক অ্যাকাউন্ট দিয়ে সাইন ইন করে চালিয়ে যান।"
+      descEn="You don't have permission to view this page. Sign in with the right account to continue."
+      primaryLabel={{ bn: 'সাইন ইন করুন', en: 'Sign in' }}
+      primaryIcon={BtnIcons.user}
+      onPrimary={doLogin}
+      secondaryLabel={{ bn: 'সাইন আপ করুন', en: 'Create account' }}
+      onSecondary={doSignup}
+      footerBn="এটা ভুল?"
+      footerEn="Think this is a mistake?"
+      footerLinkBn="সাপোর্ট"
+      footerLinkEn="Contact support"
+      onFooterLink={() => setView(AppView.CONTACT)}
+    />
   );
 }
 

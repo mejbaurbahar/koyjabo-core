@@ -18,6 +18,9 @@ export default defineConfig(({ mode }) => {
           target: 'http://localhost:3002',
           changeOrigin: true,
           bypass(req) {
+            if (req.url?.startsWith('/intercity-hub')) {
+              return req.url;
+            }
             // Let Vite handle TypeScript/JavaScript source file imports directly
             if (req.url && (req.url.endsWith('.ts') || req.url.endsWith('.tsx') || req.url.endsWith('.js'))) {
               return req.url;
@@ -126,7 +129,7 @@ export default defineConfig(({ mode }) => {
           skipWaiting: true,
           clientsClaim: true,
           // Cache versioning for proper updates
-          cacheId: 'dhaka-commute-v15',
+          cacheId: 'dhaka-commute-v27',
           maximumFileSizeToCacheInBytes: 10485760, // 10 MB
 
           runtimeCaching: [

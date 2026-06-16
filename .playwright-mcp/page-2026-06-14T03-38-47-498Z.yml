@@ -1,0 +1,107 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - button "Open menu" [ref=e6] [cursor=pointer]:
+        - img [ref=e7]
+      - img "KoyJabo" [ref=e9] [cursor=pointer]
+      - generic [ref=e10]:
+        - button "Toggle language" [ref=e11] [cursor=pointer]:
+          - img [ref=e12]
+          - generic [ref=e16]: বাং
+        - button "Toggle theme" [ref=e17] [cursor=pointer]:
+          - img [ref=e18]
+        - button "লগইন" [ref=e24] [cursor=pointer]:
+          - img [ref=e25]
+  - main [ref=e28]:
+    - generic [ref=e31]:
+      - generic [ref=e33]:
+        - generic [ref=e34]:
+          - generic [ref=e35]:
+            - img [ref=e36]
+            - text: যোগাযোগ করুন
+          - heading "আমাদের সাথে কথা বলুন!" [level=1] [ref=e38]
+          - paragraph [ref=e39]: আপনার কি কোনো প্রশ্ন, মতামত আছে বা কোনো রুট খুঁজে পাচ্ছেন না? আমরা আপনাকে সাহায্য করতে এখানে আছি।
+        - generic [ref=e40]:
+          - generic [ref=e41]:
+            - img [ref=e43]
+            - heading "মতামত দিন" [level=3] [ref=e45]
+            - paragraph [ref=e46]: কই যাবো আরও উন্নত করার কোনো আইডিয়া আছে? আমরা শুনতে আগ্রহী!
+            - generic [ref=e47]:
+              - text: প্রস্তুত
+              - img [ref=e48]
+          - generic [ref=e51]:
+            - img [ref=e53]
+            - heading "পার্টনারশিপ" [level=3] [ref=e59]
+            - paragraph [ref=e60]: কই যাবোর সাথে যুক্ত হতে আগ্রহী? আমাদের সাথে কানেক্ট করুন।
+            - link "LinkedIn" [ref=e61] [cursor=pointer]:
+              - /url: https://linkedin.com/company/koy-jabo
+              - text: LinkedIn
+              - img [ref=e62]
+        - generic [ref=e68]:
+          - img "Mejbaur Bahar Fagun" [ref=e71]
+          - generic [ref=e72]:
+            - heading "Mejbaur Bahar Fagun" [level=2] [ref=e73]
+            - paragraph [ref=e74]: প্রতিষ্ঠাতা, কই যাবো
+            - generic [ref=e75]:
+              - link "LinkedIn linkedin.com/in/mejbaur/" [ref=e76] [cursor=pointer]:
+                - /url: https://linkedin.com/in/mejbaur/
+                - img [ref=e78]
+                - generic [ref=e82]:
+                  - generic [ref=e83]: LinkedIn
+                  - generic [ref=e84]: linkedin.com/in/mejbaur/
+              - generic [ref=e85]:
+                - img [ref=e87]
+                - generic [ref=e90]:
+                  - generic [ref=e91]: অবস্থান
+                  - generic [ref=e92]: ঢাকা, বাংলাদেশ
+            - link "ফেসবুক পেজ" [ref=e94] [cursor=pointer]:
+              - /url: https://facebook.com/koyjabo
+              - img [ref=e95]
+              - generic [ref=e97]: ফেসবুক পেজ
+        - insertion [ref=e102]:
+          - iframe [ref=e104]:
+            
+      - insertion [ref=e111]:
+        - iframe [ref=e113]:
+          
+      - generic [ref=e116]:
+        - generic [ref=e117]:
+          - img "KoyJabo" [ref=e118]
+          - generic [ref=e119]: কইযাবো
+        - navigation [ref=e120]:
+          - link "হোম" [ref=e121] [cursor=pointer]:
+            - /url: /
+          - link "পরিচয়" [ref=e122] [cursor=pointer]:
+            - /url: /about
+          - link "প্রশ্ন ও উত্তর" [ref=e123] [cursor=pointer]:
+            - /url: /faq
+          - link "অ্যাপ ইনস্টল" [ref=e124] [cursor=pointer]:
+            - /url: /install
+          - link "যোগাযোগ" [ref=e125] [cursor=pointer]:
+            - /url: /contact
+          - link "গোপনীয়তা নীতি" [ref=e126] [cursor=pointer]:
+            - /url: /privacy
+          - link "শর্তাবলী" [ref=e127] [cursor=pointer]:
+            - /url: /terms
+          - link "রিলিজ নোট" [ref=e128] [cursor=pointer]:
+            - /url: /release-notes
+          - link "আন্তঃশহর যাত্রা" [ref=e129] [cursor=pointer]:
+            - /url: /intercity-hub
+        - paragraph [ref=e130]: © 2024–2026 KoyJabo
+  - navigation [ref=e131]:
+    - generic [ref=e132]:
+      - button "হোম" [ref=e133] [cursor=pointer]:
+        - img [ref=e134]
+        - generic [ref=e137]: হোম
+      - button "খুঁজুন" [ref=e138] [cursor=pointer]:
+        - img [ref=e139]
+        - generic [ref=e142]: খুঁজুন
+      - button "ট্রেন" [ref=e143] [cursor=pointer]:
+        - img [ref=e144]
+        - generic [ref=e148]: ট্রেন
+      - button "আন্তঃজেলা" [ref=e149] [cursor=pointer]:
+        - img [ref=e150]
+        - generic [ref=e152]: আন্তঃজেলা
+      - button "AI" [ref=e153] [cursor=pointer]:
+        - img [ref=e154]
+        - generic [ref=e157]: AI

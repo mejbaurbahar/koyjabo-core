@@ -1,0 +1,421 @@
+import React, { useState, useEffect } from 'react';
+import { Bus, Zap, Bot, Sparkles, ArrowRight, Heart, Phone } from 'lucide-react';
+import { MiniVehicle, type VehicleKind } from './design/Vehicles3D';
+import SponsoredAdSlot from './SponsoredAdSlot';
+import { BUS_DATA } from '../constants';
+import { getRecentBusSearches } from '../services/analyticsService';
+import type { BusRoute } from '../types';
+
+interface HomeRightPanelProps {
+  language: 'en' | 'bn';
+  isDarkMode: boolean;
+  onNavigate: (view: string) => void;
+  onIntercity: () => void;
+  onEmergency?: () => void;
+  favorites: string[];
+  isInDhaka: boolean;
+  user: { displayName: string; avatarUrl?: string } | null;
+}
+
+interface ModeTileDef {
+  title: { en: string; bn: string };
+  sub: { en: string; bn: string };
+  badge?: { en: string; bn: string };
+  grad: string;
+  vehicle: VehicleKind;
+  palette: string[];
+  icon: React.ReactNode;
+  action: () => void;
+}
+
+const SectionHeader: React.FC<{ title: string; action?: string; onAction?: () => void }> = ({ title, action, onAction }) => (
+  <div className="flex items-baseline justify-between mb-3">
+    <h2 className="font-bengali font-bold text-lg text-kj-text tracking-tight">{title}</h2>
+    {action && (
+      <button type="button" onClick={onAction} className="text-kj-primary text-xs font-semibold inline-flex items-center gap-1 hover:opacity-80">
+        {action}<ArrowRight className="w-3.5 h-3.5" />
+      </button>
+    )}
+  </div>
+);
+
+const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
+  language, isDarkMode, onNavigate, onIntercity, onEmergency, favorites,
+}) => {
+  const lbl = (en: string, bn: string) => (language === 'bn' ? bn : en);
+
+  const favoriteBuses: BusRoute[] = React.useMemo(
+    () => favorites.map(id => BUS_DATA.find(b => b.id === id)).filter((b): b is BusRoute => !!b).slice(0, 8),
+    [favorites]
+  );
+
+  const [recentSearches] = React.useState(() => getRecentBusSearches(200));
+  const trendingBuses: Array<{ bus: BusRoute; count: number }> = React.useMemo(() => {
+    const counts: Record<string, number> = {};
+    recentSearches.forEach(r => { counts[r.busId] = (counts[r.busId] || 0) + 1; });
+    const sorted = Object.entries(counts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([busId, count]) => ({ bus: BUS_DATA.find(b => b.id === busId) as BusRoute, count }))
+      .filter(x => x.bus);
+    if (sorted.length === 0) {
+      const fallback = ['green-line-ac', 'hanif-paribahan', 'brtc-double-decker', 'projapoti', 'shyamoli-nr'];
+      return fallback
+        .map(id => BUS_DATA.find(b => b.id === id))
+        .filter((b): b is BusRoute => !!b)
+        .slice(0, 5)
+        .map(bus => ({ bus, count: 0 }));
+    }
+    return sorted;
+  }, [recentSearches]);
+
+  const modeTiles: ModeTileDef[] = [
+    { title: { en: 'Local bus', bn: 'লোকাল বাস' }, sub: { en: '200+ routes', bn: '২০০+ রুট' }, badge: { en: 'Popular', bn: 'জনপ্রিয়' }, grad: 'linear-gradient(135deg, var(--kj-primary) 0%, var(--kj-primary-deep) 100%)', vehicle: 'bus', palette: ['#ffffff', 'rgba(255,255,255,0.45)', '#04130d', '#fbbf24'], icon: <Bus className="w-5 h-5" />, action: () => onNavigate('LOCAL_BUS_HUB') },
+    { title: { en: 'Metro Rail', bn: 'মেট্রো রেল' }, sub: { en: 'MRT-6 · 15 stations', bn: 'MRT-6 · ১৫ স্টেশন' }, grad: 'linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%)', vehicle: 'train', palette: ['#ffffff', 'rgba(255,255,255,0.4)', '#fbbf24'], icon: <span className="text-xs font-black">M6</span>, action: () => onNavigate('METRO_HUB') },
+    { title: { en: 'Train', bn: 'ট্রেন' }, sub: { en: 'BD Railway · all routes', bn: 'BD রেলওয়ে · সব রুট' }, grad: 'linear-gradient(135deg, #8b5cf6 0%, #5b21b6 100%)', vehicle: 'train', palette: ['#ffffff', 'rgba(255,255,255,0.4)', '#fef3c7'], icon: <span className="text-lg">🚆</span>, action: () => onNavigate('TRAIN_LIST') },
+    { title: { en: 'Intercity', bn: 'আন্তঃজেলা' }, sub: { en: '64 districts · bus/train/flight', bn: '৬৪ জেলা · বাস/ট্রেন/ফ্লাইট' }, grad: 'linear-gradient(135deg, #f59e0b 0%, #b45309 100%)', vehicle: 'plane', palette: ['#ffffff', '#3b82f6', '#ef4444'], icon: <span className="text-lg">✈️</span>, action: onIntercity },
+    { title: { en: 'Launch & Steamer', bn: 'লঞ্চ ও স্টিমার' }, sub: { en: 'Sadarghat → Barisal', bn: 'সদরঘাট → বরিশাল' }, grad: 'linear-gradient(135deg, #0ea5e9 0%, #075985 100%)', vehicle: 'launch', palette: ['#ffffff', 'rgba(255,255,255,0.4)', '#fbbf24'], icon: <span className="text-lg">⛵</span>, action: () => onNavigate('LAUNCH_HUB') },
+    { title: { en: 'AI Assistant', bn: 'AI সহায়ক' }, sub: { en: 'Ask in Bangla', bn: 'বাংলায় জিজ্ঞেস করুন' }, badge: { en: 'New', bn: 'নতুন' }, grad: 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)', vehicle: 'chatbot', palette: ['#ffffff', '#ef4444', '#fbbf24'], icon: <Sparkles className="w-5 h-5" />, action: () => onNavigate('AI_ASSISTANT') },
+  ];
+
+  return (
+    <div className="pb-28 md:pb-8">
+
+      {/* KoyJabo Story */}
+      <div className="mb-6 md:mb-8">
+        <SectionHeader
+          title={lbl('How KoyJabo helps', 'কই যাবো কীভাবে সাহায্য করে')}
+          action={lbl('Try it now', 'এখনি চেষ্টা করুন')}
+          onAction={() => onNavigate('LOCAL_BUS_HUB')}
+        />
+        <KoyJaboStory language={language} onNavigate={onNavigate} isDarkMode={isDarkMode} />
+      </div>
+
+      {/* Ad slot — after story */}
+      <div className="mb-6 md:mb-8 flex justify-center">
+        <SponsoredAdSlot language={language} size="728x90" compact />
+      </div>
+
+      {/* Saved routes */}
+      <div className="mb-6 md:mb-8">
+        <SectionHeader
+          title={favoriteBuses.length > 0
+            ? lbl('Your saved routes', 'আপনার সেভ করা রুট')
+            : lbl('Saved buses', 'সেভ করা বাস')}
+          action={favoriteBuses.length > 0 ? lbl('View all', 'সব দেখুন') : undefined}
+        />
+        {favoriteBuses.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {favoriteBuses.map((bus) => {
+              const colors = ['var(--kj-primary)', 'var(--kj-accent)', 'var(--kj-amber)', 'var(--kj-primary-deep)'];
+              const idx = favoriteBuses.indexOf(bus) % colors.length;
+              return (
+                <div key={bus.id} className="dc-card rounded-2xl p-3.5 flex flex-col gap-2 cursor-pointer hover:border-kj-primary/30 transition-colors">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded shrink-0" style={{ background: bus.color || colors[idx] }} />
+                    <span className="text-[10px] font-bold text-kj-text-faint uppercase tracking-wider truncate">{bus.bnName || bus.name}</span>
+                  </div>
+                  <p className="font-bengali font-bold text-sm text-kj-text leading-snug truncate">
+                    {language === 'bn' ? (bus.bnName || bus.name) : bus.name}
+                  </p>
+                  <div className="flex items-center gap-1 text-[11px] text-kj-text-faint">
+                    <Heart className="w-3 h-3 fill-pink-500 text-pink-500 shrink-0" />
+                    <span className="truncate">{bus.stops.length} {lbl('stops', 'স্টপ')}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="dc-card rounded-2xl p-6 text-center">
+            <Heart className="w-8 h-8 text-kj-text-faint mx-auto mb-2" />
+            <p className="font-bengali text-sm text-kj-text-dim">{lbl('No saved routes yet. Tap ❤ on any bus to save it here.', 'এখনো কোনো রুট সেভ হয়নি। যেকোনো বাসে ❤ চাপলে এখানে সেভ হবে।')}</p>
+          </div>
+        )}
+      </div>
+
+      {/* Ad slot — before trending */}
+      <div className="mb-6 md:mb-8 flex justify-center">
+        <SponsoredAdSlot language={language} size="728x90" compact />
+      </div>
+
+      {/* Trending + sidebar grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-6 md:gap-8 mb-6 md:mb-8">
+
+        {/* Trending routes */}
+        <div>
+          <SectionHeader
+            title={lbl('Trending routes today', 'ট্রেন্ডিং রুট আজ')}
+            action={lbl('View all', 'সব দেখুন')}
+            onAction={() => onNavigate('LOCAL_BUS_HUB')}
+          />
+          <div className="flex flex-col gap-2">
+            {trendingBuses.length === 0 ? (
+              <div className="dc-card rounded-xl p-5 text-center">
+                <Bus className="w-8 h-8 text-kj-text-faint mx-auto mb-2 opacity-40" />
+                <p className="font-bengali text-sm text-kj-text-dim">
+                  {lbl('No trending data yet. Search for buses to build your trends.', 'এখনো কোনো ট্রেন্ডিং ডেটা নেই। বাস খুঁজলে ট্রেন্ড তৈরি হবে।')}
+                </p>
+              </div>
+            ) : trendingBuses.map(({ bus, count }) => {
+              const initials = bus.name.slice(0, 2).toUpperCase();
+              return (
+                <div
+                  key={bus.id}
+                  className="dc-card rounded-[14px] p-3.5 md:p-4 flex items-center gap-3.5 cursor-pointer hover:border-kj-primary/40 transition-colors group"
+                >
+                  {/* 36px brand gradient badge */}
+                  <div
+                    className="w-9 h-9 rounded-[10px] flex items-center justify-center shrink-0 text-white font-bold text-xs shadow-[0_2px_8px_rgba(0,0,0,0.35)]"
+                    style={{ background: bus.color ? `linear-gradient(135deg, ${bus.color}, #0070ad)` : 'linear-gradient(135deg, #006a4e, #10b981)' }}
+                  >{initials}</div>
+
+                  {/* Name + route */}
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bengali font-bold text-[15px] text-kj-text truncate">
+                      {language === 'bn' ? (bus.bnName || bus.name) : bus.name}
+                    </p>
+                    <p className="text-kj-text-dim text-xs truncate mt-0.5">
+                        {bus.routeString} · {bus.stops.length} {lbl('stops', 'স্টপ')}
+                    </p>
+                  </div>
+
+                  {/* Fare badge + heart toggle */}
+                  <div className="flex flex-col items-end gap-1.5 shrink-0">
+                    {bus.type && (
+                      <span className="bg-kj-primary-soft text-kj-primary-deep text-[11px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap">
+                        {bus.type}
+                      </span>
+                    )}
+                    {count > 0 && (
+                      <span className="bg-kj-amber-soft text-kj-amber text-[10px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap">
+                        {count}× {lbl('today', 'আজ')}
+                      </span>
+                    )}
+                    <Heart className="w-3.5 h-3.5 text-kj-text-faint group-hover:text-pink-400 transition-colors" />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Right column: AI card + Emergency + Ad */}
+        <div className="flex flex-col gap-4">
+
+          {/* AI card */}
+          <div
+            onClick={() => onNavigate('AI_ASSISTANT')}
+            onKeyDown={(e) => e.key === 'Enter' && onNavigate('AI_ASSISTANT')}
+            role="button"
+            tabIndex={0}
+            className="dc-card rounded-[20px] p-5 text-white relative overflow-hidden cursor-pointer border-0 shadow-[0_4px_12px_rgba(0,0,0,0.6),0_30px_90px_-25px_rgba(124,58,237,0.45)] hover:brightness-105 transition-all"
+            style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%)' }}
+          >
+            <div className="absolute -right-10 -top-10 w-44 h-44 rounded-full bg-white/8 pointer-events-none" />
+            <div className="absolute right-10 -bottom-12 w-32 h-32 rounded-full bg-white/5 pointer-events-none" />
+
+            {/* Heading */}
+            <div className="relative flex items-center gap-2 mb-2">
+              <div className="w-8 h-8 rounded-[10px] bg-white/15 backdrop-blur-sm flex items-center justify-center shrink-0">
+                <Sparkles className="w-4 h-4" />
+              </div>
+              <h2 className="font-bengali font-bold text-[17px] leading-tight">{lbl('KoyJabo AI', 'কই যাবো AI')}</h2>
+              <span className="ml-auto bg-white/20 text-white text-[10px] font-bold uppercase px-2 py-0.5 rounded-full">Beta</span>
+            </div>
+
+            <p className="relative font-bengali text-[13px] text-white/80 mb-3 leading-snug">
+              {lbl('Ask in Bangla or English', 'বাংলা বা ইংরেজিতে জিজ্ঞেস করুন')}
+            </p>
+
+            {/* Quick-ask chips */}
+            <div className="relative flex flex-wrap gap-1.5 mb-3.5">
+              {[
+                { en: "Cox's Bazar fare?", bn: 'কক্সবাজার ভাড়া?' },
+                { en: 'Airport → Farmgate', bn: 'বিমানবন্দর → ফার্মগেট' },
+                { en: 'Sadarghat launch', bn: 'সদরঘাট লঞ্চ' },
+              ].map((q) => (
+                <span key={q.en} className="px-2.5 py-1 rounded-full bg-white/12 border border-white/18 font-bengali text-[11px] text-white/90">
+                  {lbl(q.en, q.bn)}
+                </span>
+              ))}
+            </div>
+
+            {/* Ask button */}
+            <div className="relative bg-black/20 rounded-[14px] px-3.5 py-2.5 flex items-center gap-2.5 border border-white/10">
+              <Bot className="w-4 h-4 shrink-0 opacity-70" />
+              <span className="flex-1 font-bengali text-sm opacity-60">{lbl('Type your question...', 'আপনার প্রশ্ন লিখুন...')}</span>
+              <button type="button" className="w-8 h-8 rounded-lg bg-white text-[#5b21b6] flex items-center justify-center shrink-0 hover:scale-105 transition-transform">
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* Emergency card */}
+          <div className="dc-card rounded-[20px] p-[18px]">
+            <div className="flex items-center gap-2.5 mb-3">
+              <span className="text-xl">🚨</span>
+              <div>
+                <h2 className="font-bengali font-bold text-[15px] text-kj-text">{lbl('Emergency Contacts', 'জরুরি নম্বর')}</h2>
+                <p className="text-xs text-kj-text-dim">{lbl('Tap to call', 'চাপুন কল করতে')}</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                { label: { en: 'Police', bn: 'পুলিশ' }, num: '999', tone: 'accent' as const },
+                { label: { en: 'Ambulance', bn: 'অ্যাম্বুলেন্স' }, num: '199', tone: 'accent' as const },
+                { label: { en: 'Fire service', bn: 'ফায়ার' }, num: '102', tone: 'amber' as const },
+                { label: { en: 'Highway', bn: 'হাইওয়ে' }, num: '+880-2', tone: 'primary' as const },
+              ].map((e) => (
+                <button
+                  key={e.num}
+                  type="button"
+                  onClick={onEmergency}
+                  className="bg-kj-panel-muted border border-kj-line rounded-xl px-3 py-2.5 text-left hover:border-kj-primary/30 transition-colors flex flex-col gap-0.5"
+                >
+                  <div className="flex items-center gap-1.5">
+                    <Phone className="w-3 h-3 text-kj-text-faint shrink-0" />
+                    <p className="font-bengali font-semibold text-xs text-kj-text">{lbl(e.label.en, e.label.bn)}</p>
+                  </div>
+                  <p className={`text-[15px] font-extrabold tracking-tight ${e.tone === 'accent' ? 'text-kj-accent' : e.tone === 'amber' ? 'text-kj-amber' : 'text-kj-primary'}`}>{e.num}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Ad — desktop sidebar */}
+          <div className="hidden lg:block">
+            <SponsoredAdSlot language={language} size="300x250" compact />
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  );
+};
+
+// ── KoyJabo Story — 4-scene animation ────────────────────────────────────────
+const KoyJaboStory: React.FC<{ language: 'en' | 'bn'; onNavigate: (v: string) => void; isDarkMode: boolean }> = ({ language, onNavigate, isDarkMode }) => {
+  const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
+  const [scene, setScene] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => setScene(s => (s + 1) % 4), 3600);
+    return () => clearInterval(id);
+  }, []);
+
+  const captions = [
+    { bn: 'লোকাল বাসস্ট্যান্ডে — কোন বাসে উঠবো? সব তো একরকম! 😕', en: 'At the bus stand — which bus do I take? They all look the same! 😕' },
+    { bn: 'ফোনে koyjabo.com খুলে গন্তব্য লিখুন', en: 'Open koyjabo.com and type your destination' },
+    { bn: 'সঠিক বাস, ভাড়া আর সময় — সাথে সাথে ✅', en: 'The right bus, fare & time — instantly ✅' },
+    { bn: 'নিশ্চিন্তে সঠিক বাসে উঠে যাত্রা শুরু! 🎉', en: 'Hop on the right bus, stress-free! 🎉' },
+  ];
+
+  const sceneContent = () => {
+    if (scene === 0) return (
+      <>
+        <div className="absolute right-[9%] bottom-14 flex flex-col items-center">
+          <div className="bg-kj-primary text-white text-[11px] font-black px-2.5 py-1 rounded-lg shadow-md">🚏 BUS</div>
+          <div className="w-1 h-11 bg-[#9aa3b2]" />
+        </div>
+        <div className="absolute left-[11%] bottom-12 flex flex-col items-center">
+          <div className="animate-[kjFloatY_2.2s_ease-in-out_infinite] bg-white rounded-xl px-2.5 py-1.5 shadow-lg font-black text-base text-[#0a1626] mb-1.5">🤔 ?</div>
+          <span className="text-4xl">🧑</span>
+        </div>
+        <div className="absolute bottom-4 left-0 animate-[kjDriveBy_3.4s_linear]">
+          <div className="text-5xl">🚌</div>
+        </div>
+        <div className="absolute bottom-3 left-0 animate-[kjDriveBy_3.4s_linear_1.6s_both]">
+          <div className="text-5xl opacity-70">🚌</div>
+        </div>
+      </>
+    );
+    if (scene === 1) return (
+      <>
+        <div className="absolute left-[8%] bottom-12"><span className="text-4xl">🧑</span></div>
+        <div className="absolute right-[10%] top-1/2 -translate-y-1/2 animate-[kjPopIn_.55s_cubic-bezier(.2,.8,.3,1)_both]">
+          <div className="bg-white rounded-2xl p-3 shadow-xl border border-gray-100 w-36">
+            <div className="flex items-center gap-1 bg-gray-50 rounded-lg px-2 py-1 text-[9px] text-gray-500 mb-2 border">🔒 koyjabo.com</div>
+            <div className="font-bold text-[12px] text-[#0a1626] mb-2">কই যাবো</div>
+            <div className="border rounded-lg overflow-hidden text-[10px]">
+              <div className="px-2 py-1.5 border-b flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-kj-primary shrink-0"/><span className="text-[#0a1626]">Gulshan 1</span></div>
+              <div className="px-2 py-1.5 flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-kj-accent shrink-0"/><span className="text-[#0a1626]">Motijheel</span></div>
+            </div>
+            <div className="mt-2 bg-gradient-to-br from-kj-primary to-kj-primary-deep text-white text-[11px] font-bold rounded-lg py-1.5 text-center animate-[kjBobY_1.4s_ease-in-out_infinite]">🔍 Find bus</div>
+          </div>
+        </div>
+      </>
+    );
+    if (scene === 2) return (
+      <>
+        <div className="absolute right-[9%] bottom-12"><span className="text-4xl">🧑</span></div>
+        <div className="absolute left-[8%] top-1/2 -translate-y-1/2 animate-[kjPopIn_.5s_cubic-bezier(.2,.8,.3,1)_both]">
+          <div className="bg-white rounded-2xl p-3 shadow-xl border border-gray-100 w-36">
+            <div className="text-[10px] font-bold text-gray-500 mb-2">Gulshan → Motijheel · 3</div>
+            {[{l:'GL',n:'Green Line · 6',m:'৳60 · 42m',c:'#10b981',hi:true},{l:'HF',n:'Hanif',m:'৳35 · 58m',c:'#9aa3b2'},{l:'BR',n:'BRTC',m:'৳45 · 52m',c:'#9aa3b2'}].map((r,i)=>(
+              <div key={i} className={`flex items-center gap-1.5 p-1.5 rounded-lg border mb-1.5 ${r.hi ? 'bg-green-50 border-green-400' : 'bg-white border-gray-200 opacity-60'}`}>
+                <span className="w-5 h-5 rounded flex items-center justify-center text-white text-[9px] font-black shrink-0" style={{background:r.c}}>{r.l}</span>
+                <span className="flex-1 min-w-0"><span className="block text-[10px] font-bold text-[#0a1626]">{r.n}</span><span className="text-[9px] text-gray-500">{r.m}</span></span>
+                {r.hi && <span className="text-green-500 font-bold text-xs">✓</span>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </>
+    );
+    return (
+      <>
+        {[['18%',40,0],['78%',80,0.5],['60%',30,1],['30%',70,0.8]].map((s,i)=>(
+          <span key={i} className="absolute text-xl animate-[kjSpark_1.6s_ease-in-out_infinite]" style={{left:s[0] as string, bottom:s[1] as number, animationDelay:`${s[2]}s`}}>✨</span>
+        ))}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 animate-[kjRollIn_1s_cubic-bezier(.2,.8,.3,1)_both] flex items-end gap-1">
+          <span className="text-5xl">🚌</span>
+          <div className="bg-kj-primary text-white text-[10px] font-black px-2 py-0.5 rounded-lg mb-1">Motijheel ✓</div>
+        </div>
+        <div className="absolute bottom-10 left-1/2 translate-x-4 animate-[kjBobY_1.2s_ease-in-out_infinite]"><span className="text-3xl">🧑</span></div>
+      </>
+    );
+  };
+
+  return (
+    <div className="dc-card rounded-[22px] overflow-hidden">
+      {/* Stage */}
+      <div className="relative h-[220px] overflow-hidden" style={{ background: 'linear-gradient(180deg,#bfe6ff 0%, #e6f5ff 58%, #b9e3c6 58%, #a3d6b2 100%)' }}>
+        <div className="absolute top-4 right-6 w-10 h-10 rounded-full" style={{ background: 'radial-gradient(circle,#fff4c2,#ffd34d)', boxShadow: '0 0 30px rgba(255,211,77,0.6)' }} />
+        <div className="absolute top-7 left-[20%] w-14 h-4 rounded-full bg-white/85" />
+        <div className="absolute top-12 left-[46%] w-10 h-3 rounded-full bg-white/70" />
+        <div className="absolute left-0 right-0 bottom-0 h-12" style={{ background: 'linear-gradient(180deg,#5b6472,#4a525e)' }}>
+          <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-0.5" style={{ backgroundImage: 'repeating-linear-gradient(90deg,#ffd34d 0 20px,transparent 20px 40px)' }} />
+        </div>
+        <div key={scene} className="kj-story-scene absolute inset-0">{sceneContent()}</div>
+        <div className="absolute top-2.5 left-2.5 text-white text-[10px] font-black tracking-wide px-2.5 py-1 rounded-full backdrop-blur-md" style={{ background: 'rgba(10,22,38,0.55)', letterSpacing: 1 }}>
+          {lbl('HOW KOYJABO WORKS', 'কই যাবো কীভাবে কাজ করে')} · {scene + 1}/4
+        </div>
+      </div>
+
+      {/* Caption bar + progress dots */}
+      <div className="p-4" style={{ background: isDarkMode ? '#000814' : '#001b2e' }}>
+        <div className="flex gap-1.5 mb-2.5">
+          {[0,1,2,3].map(i => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setScene(i)}
+              className="flex-1 h-1.5 rounded-full transition-colors duration-300"
+              style={{ background: i === scene ? 'var(--kj-primary)' : i < scene ? '#10b981' : 'rgba(255,255,255,0.18)' }}
+            />
+          ))}
+        </div>
+        <div className="flex items-center gap-3 flex-wrap">
+          <span className="font-bengali font-semibold text-sm text-white leading-snug flex-1 min-w-[200px]">{lbl(captions[scene].en, captions[scene].bn)}</span>
+          <button type="button" onClick={() => onNavigate('LOCAL_BUS_HUB')} className="bg-kj-primary text-kj-primary-ink font-bold text-xs px-4 py-2 rounded-full whitespace-nowrap hover:brightness-105 transition-all shrink-0">
+            {lbl('Try it now', 'এখনি চেষ্টা করুন')} →
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default HomeRightPanel;

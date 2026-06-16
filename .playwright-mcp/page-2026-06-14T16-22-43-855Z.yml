@@ -1,0 +1,163 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - link "কই যাবো" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e7]:
+          - img [ref=e9]
+          - img "কই যাবো" [ref=e13]
+      - generic [ref=e14]:
+        - link "হোম" [ref=e15] [cursor=pointer]:
+          - /url: /
+          - img [ref=e16]
+          - text: হোম
+        - button "আন্তঃনগর" [ref=e19] [cursor=pointer]:
+          - img [ref=e20]
+          - text: আন্তঃনগর
+        - link "ট্রেন" [ref=e24] [cursor=pointer]:
+          - /url: /train
+          - img [ref=e25]
+          - text: ট্রেন
+        - link "এআই সহায়ক" [ref=e29] [cursor=pointer]:
+          - /url: /#ai-assistant
+          - img [ref=e30]
+          - text: এআই সহায়ক
+        - link "রিলিজ নোটস" [ref=e33] [cursor=pointer]:
+          - /url: /#release-notes
+          - img [ref=e34]
+          - text: রিলিজ নোটস
+        - link "সম্পর্কে" [ref=e39] [cursor=pointer]:
+          - /url: /#about
+          - img [ref=e40]
+          - text: সম্পর্কে
+      - generic [ref=e42]:
+        - button "লাইভ দৃশ্য" [ref=e43] [cursor=pointer]:
+          - img [ref=e44]
+          - generic [ref=e46]: লাইভ দৃশ্য
+        - button "Toggle Dark Mode" [ref=e47] [cursor=pointer]:
+          - img [ref=e54]
+          - img [ref=e67]
+        - button "লগইন" [ref=e73] [cursor=pointer]:
+          - img [ref=e74]
+          - text: লগইন
+        - button [ref=e77] [cursor=pointer]:
+          - img [ref=e78]
+    - generic [ref=e79]:
+      - generic [ref=e80]:
+        - generic [ref=e86]:
+          - generic [ref=e87]:
+            - heading "বাংলাদেশ ভ্রমণ" [level=2] [ref=e88]
+            - paragraph [ref=e89]:
+              - text: আপনার পছন্দের রুটে
+              - link "Travel & Transportation" [ref=e90] [cursor=pointer]:
+                - img [ref=e92]
+                - text: Travel & Transportation
+          - generic [ref=e94]:
+            - generic [ref=e95]:
+              - generic [ref=e96]: প্রস্থান
+              - generic [ref=e97]:
+                - generic:
+                  - img
+                - button "শুরুর স্থান" [ref=e98] [cursor=pointer]
+                - generic:
+                  - img
+            - button [ref=e101] [cursor=pointer]:
+              - img [ref=e102]
+            - generic [ref=e106]:
+              - generic [ref=e107]: গন্তব্য
+              - generic [ref=e108]:
+                - generic:
+                  - img
+                - button "গন্তব্যের নাম" [ref=e109] [cursor=pointer]
+                - generic:
+                  - img
+            - button "খুঁজুন" [disabled] [ref=e110]:
+              - img [ref=e111]
+              - generic [ref=e114]: খুঁজুন
+        - generic [ref=e115]:
+          - generic [ref=e118]:
+            - img [ref=e120]
+            - generic [ref=e123]:
+              - heading "কিভাবে কাজ করে দেখতে চান?" [level=4] [ref=e124]
+              - paragraph [ref=e125]: সার্চ না করেই রেজাল্ট কার্ডের ইন্টারফেস দেখতে ডেমো বাটনে ক্লিক করুন।
+              - button "ডেমো রেজাল্ট দেখুন" [ref=e126] [cursor=pointer]
+          - insertion [ref=e128]:
+            - generic [ref=e130]:
+              - generic "নিবন্ধের সাথে সম্পর্কযুক্ত এইসব বিষয়ে আপনার আগ্রহ থাকতে পারে।" [ref=e131]: আরও দেখুন
+              - link "Long Distance Bus & Rail" [ref=e132] [cursor=pointer]:
+                - img [ref=e134]
+                - text: Long Distance Bus & Rail
+      - generic [ref=e138]:
+        - generic:
+          - generic:
+            - generic:
+              - img
+              - generic:
+                - generic:
+                  - generic:
+                    - paragraph: "\"After I land, how do I go to Gulshan 2?\""
+        - generic "National Martyrs' Memorial" [ref=e139] [cursor=pointer]
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - paragraph: "\"Uttara to Motijheel: 100 Taka well spent.\""
+        - generic [ref=e147]:
+          - generic [ref=e148]:
+            - generic "Lalbagh Fort" [ref=e150] [cursor=pointer]
+            - generic "Ahsan Manzil (Pink Palace)" [ref=e159] [cursor=pointer]
+          - generic "Shaheed Minar" [ref=e177] [cursor=pointer]
+          - generic [ref=e185]:
+            - generic "Curzon Hall" [ref=e187] [cursor=pointer]
+            - generic "National Parliament House" [ref=e199] [cursor=pointer]
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - paragraph: "\"How do I go to New Market from here?\""
+          - generic "Dhaka Metropolitan Police" [ref=e212]
+        - generic [ref=e230]:
+          - generic [ref=e231]:
+            - img [ref=e232]
+            - img [ref=e234]
+          - generic [ref=e236]:
+            - img [ref=e237]
+            - img [ref=e239]
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - paragraph: "\"পারাপার ভাড়া ১০ টাকা হলো কবে?\""
+  - insertion [ref=e243]:
+    - iframe [ref=e245]:
+      - generic [active] [ref=f91e1]:
+        - generic [ref=f91e6]:
+          - link [ref=f91e7] [cursor=pointer]:
+            - /url: https://www.googleadservices.com/pagead/aclk?sa=L&ai=Cb7nbUtUuasXxLdW19fwPltrh8QS89dfEhgGMmp2KjBWhpvjz0B0QASC0wN6sAWAzoAHU-YOZA8gBCagDAcgDywSqBO4BT9BClJZx1zuXtHk4H_c9xp6BekdEm2qao-WPah8952kEnTOA3oIa-Y3FYGBusbhm_lhwAGHmwn4FO2XaLzYlOdGRp-EmAiYv7q0p210fBtzvJmIqsbwHULyYE4iN82ezlORO1uN378f-z8xPmfGRJ0iB5q-B5EJ6hCXFb-NiGyQ6K48zTn01Ke097V_HO4i61sCkARP-jnCQXIwOcNAs9JajB8wbWzjit_Cb66nmUWEjBLJoSA8BsWbg7Sw7ojYahXfn1N7EFeDU__RuaLpizXnSi3NIU39x8qTyw0MJKtZFtG9Z0LAaA1tWtvVcMcAErM3ejOwFiAWizNvLV6AGLoAHm_7AlByoB6fMsQKoB6a-G6gHzM6xAqgH89EbqAeW2BuoB6qbsQKoB47OG6gHk9gbqAfw4BuoB-6WsQKoB_6esQKoB6--sQKoB9XJG6gHmgaoB_-esQKoB9-fsQKoB_jCsQKoB_vCsQLYBwDSCDMIgGEQARifAzIIioKAgICAgAg6D4BAgMCAgICAqIACqIOAEEi9_cE6WMa6t_SRh5UDYAGxCYrsjQ7wPmFtgAoBmAsByAsBgAwBqg0CQkTIDQHqDRMIqem39JGHlQMV1VqdCR0WbThO8A0CiA4JsA6pg7XqGNgTDNAVAcoWAgoA-BYBgBcBshcQGAEqCjcyOTQzMDM3NTBQBroXAjgBqhgXCQAAAABQk_JAEgo3Mjk0MzAzNzUwGAGyGAkSAsVoGC4iAQDQGAHCGQIIAQ&ae=1&gclid=EAIaIQobChMIxeK39JGHlQMV1VqdCR0WbThOEAEYASAAEgLfj_D_BwE&num=1&cid=CAQS8wEAEQoqgXRzPgCfzEhdelsHtW-X-_aqikpIQ6JTa28o660HkZ7hlJhk-TS8sh-3mtMVfqvziy_OTxR7aY_fPiGFbOVWWIElG1LR8iKLx47ffaoq1PLx-JXE5l1TzWYvBYaWR_Cxn_H6JPK3pPcnJJMW4AoB0XpADkvnQ912yxSAccgu06YEkuwexVwU5vNW9KyOW8xLJJY1hGSpxfcPgWH9KMaEMMLOhAHoJl9oMF4lGB1BLLjYIWjW4-GsqwJzUJe9Bj-1YYONrdu_YA5b0KY3zxb7cCviyrPcq-r4_zuZPmzRibIWeGtaPyQ2bocYsoggO7AYAQ&sig=AOD64_3GJKW7i6WuScrT7R-UAeXaxLNsSw&client=ca-pub-8425219156685369&rf=1&nb=9&adurl=https://www.tenorshare.net/sem/reiboot-brand.html%3Fgad_source%3D5%26gad_campaignid%3D23512671778%26gclid%3DEAIaIQobChMIxeK39JGHlQMV1VqdCR0WbThOEAEYASAAEgLfj_D_BwE
+            - img [ref=f91e8]
+          - generic [ref=f91e10]:
+            - generic [ref=f91e13]:
+              - link "iPhone Recovery Software" [ref=f91e17] [cursor=pointer]:
+                - /url: https://www.googleadservices.com/pagead/aclk?sa=L&ai=Cb7nbUtUuasXxLdW19fwPltrh8QS89dfEhgGMmp2KjBWhpvjz0B0QASC0wN6sAWAzoAHU-YOZA8gBCagDAcgDywSqBO4BT9BClJZx1zuXtHk4H_c9xp6BekdEm2qao-WPah8952kEnTOA3oIa-Y3FYGBusbhm_lhwAGHmwn4FO2XaLzYlOdGRp-EmAiYv7q0p210fBtzvJmIqsbwHULyYE4iN82ezlORO1uN378f-z8xPmfGRJ0iB5q-B5EJ6hCXFb-NiGyQ6K48zTn01Ke097V_HO4i61sCkARP-jnCQXIwOcNAs9JajB8wbWzjit_Cb66nmUWEjBLJoSA8BsWbg7Sw7ojYahXfn1N7EFeDU__RuaLpizXnSi3NIU39x8qTyw0MJKtZFtG9Z0LAaA1tWtvVcMcAErM3ejOwFiAWizNvLV6AGLoAHm_7AlByoB6fMsQKoB6a-G6gHzM6xAqgH89EbqAeW2BuoB6qbsQKoB47OG6gHk9gbqAfw4BuoB-6WsQKoB_6esQKoB6--sQKoB9XJG6gHmgaoB_-esQKoB9-fsQKoB_jCsQKoB_vCsQLYBwDSCDMIgGEQARifAzIIioKAgICAgAg6D4BAgMCAgICAqIACqIOAEEi9_cE6WMa6t_SRh5UDYAGxCYrsjQ7wPmFtgAoBmAsByAsBgAwBqg0CQkTIDQHqDRMIqem39JGHlQMV1VqdCR0WbThO8A0CiA4JsA6pg7XqGNgTDNAVAcoWAgoA-BYBgBcBshcQGAEqCjcyOTQzMDM3NTBQBroXAjgBqhgXCQAAAABQk_JAEgo3Mjk0MzAzNzUwGAGyGAkSAsVoGC4iAQDQGAHCGQIIAQ&ae=1&gclid=EAIaIQobChMIxeK39JGHlQMV1VqdCR0WbThOEAEYASAAEgLfj_D_BwE&num=1&cid=CAQS8wEAEQoqgXRzPgCfzEhdelsHtW-X-_aqikpIQ6JTa28o660HkZ7hlJhk-TS8sh-3mtMVfqvziy_OTxR7aY_fPiGFbOVWWIElG1LR8iKLx47ffaoq1PLx-JXE5l1TzWYvBYaWR_Cxn_H6JPK3pPcnJJMW4AoB0XpADkvnQ912yxSAccgu06YEkuwexVwU5vNW9KyOW8xLJJY1hGSpxfcPgWH9KMaEMMLOhAHoJl9oMF4lGB1BLLjYIWjW4-GsqwJzUJe9Bj-1YYONrdu_YA5b0KY3zxb7cCviyrPcq-r4_zuZPmzRibIWeGtaPyQ2bocYsoggO7AYAQ&sig=AOD64_3GJKW7i6WuScrT7R-UAeXaxLNsSw&client=ca-pub-8425219156685369&rf=1&nb=0&adurl=https://www.tenorshare.net/sem/reiboot-brand.html%3Fgad_source%3D5%26gad_campaignid%3D23512671778%26gclid%3DEAIaIQobChMIxeK39JGHlQMV1VqdCR0WbThOEAEYASAAEgLfj_D_BwE
+              - link "World's Leading Software To Solve iPhone Booting Problems" [ref=f91e21] [cursor=pointer]:
+                - /url: https://www.googleadservices.com/pagead/aclk?sa=L&ai=Cb7nbUtUuasXxLdW19fwPltrh8QS89dfEhgGMmp2KjBWhpvjz0B0QASC0wN6sAWAzoAHU-YOZA8gBCagDAcgDywSqBO4BT9BClJZx1zuXtHk4H_c9xp6BekdEm2qao-WPah8952kEnTOA3oIa-Y3FYGBusbhm_lhwAGHmwn4FO2XaLzYlOdGRp-EmAiYv7q0p210fBtzvJmIqsbwHULyYE4iN82ezlORO1uN378f-z8xPmfGRJ0iB5q-B5EJ6hCXFb-NiGyQ6K48zTn01Ke097V_HO4i61sCkARP-jnCQXIwOcNAs9JajB8wbWzjit_Cb66nmUWEjBLJoSA8BsWbg7Sw7ojYahXfn1N7EFeDU__RuaLpizXnSi3NIU39x8qTyw0MJKtZFtG9Z0LAaA1tWtvVcMcAErM3ejOwFiAWizNvLV6AGLoAHm_7AlByoB6fMsQKoB6a-G6gHzM6xAqgH89EbqAeW2BuoB6qbsQKoB47OG6gHk9gbqAfw4BuoB-6WsQKoB_6esQKoB6--sQKoB9XJG6gHmgaoB_-esQKoB9-fsQKoB_jCsQKoB_vCsQLYBwDSCDMIgGEQARifAzIIioKAgICAgAg6D4BAgMCAgICAqIACqIOAEEi9_cE6WMa6t_SRh5UDYAGxCYrsjQ7wPmFtgAoBmAsByAsBgAwBqg0CQkTIDQHqDRMIqem39JGHlQMV1VqdCR0WbThO8A0CiA4JsA6pg7XqGNgTDNAVAcoWAgoA-BYBgBcBshcQGAEqCjcyOTQzMDM3NTBQBroXAjgBqhgXCQAAAABQk_JAEgo3Mjk0MzAzNzUwGAGyGAkSAsVoGC4iAQDQGAHCGQIIAQ&ae=1&gclid=EAIaIQobChMIxeK39JGHlQMV1VqdCR0WbThOEAEYASAAEgLfj_D_BwE&num=1&cid=CAQS8wEAEQoqgXRzPgCfzEhdelsHtW-X-_aqikpIQ6JTa28o660HkZ7hlJhk-TS8sh-3mtMVfqvziy_OTxR7aY_fPiGFbOVWWIElG1LR8iKLx47ffaoq1PLx-JXE5l1TzWYvBYaWR_Cxn_H6JPK3pPcnJJMW4AoB0XpADkvnQ912yxSAccgu06YEkuwexVwU5vNW9KyOW8xLJJY1hGSpxfcPgWH9KMaEMMLOhAHoJl9oMF4lGB1BLLjYIWjW4-GsqwJzUJe9Bj-1YYONrdu_YA5b0KY3zxb7cCviyrPcq-r4_zuZPmzRibIWeGtaPyQ2bocYsoggO7AYAQ&sig=AOD64_3GJKW7i6WuScrT7R-UAeXaxLNsSw&client=ca-pub-8425219156685369&rf=1&nb=7&adurl=https://www.tenorshare.net/sem/reiboot-brand.html%3Fgad_source%3D5%26gad_campaignid%3D23512671778%26gclid%3DEAIaIQobChMIxeK39JGHlQMV1VqdCR0WbThOEAEYASAAEgLfj_D_BwE
+            - generic [ref=f91e24]:
+              - link:
+                - /url: https://www.googleadservices.com/pagead/aclk?sa=L&ai=Cb7nbUtUuasXxLdW19fwPltrh8QS89dfEhgGMmp2KjBWhpvjz0B0QASC0wN6sAWAzoAHU-YOZA8gBCagDAcgDywSqBO4BT9BClJZx1zuXtHk4H_c9xp6BekdEm2qao-WPah8952kEnTOA3oIa-Y3FYGBusbhm_lhwAGHmwn4FO2XaLzYlOdGRp-EmAiYv7q0p210fBtzvJmIqsbwHULyYE4iN82ezlORO1uN378f-z8xPmfGRJ0iB5q-B5EJ6hCXFb-NiGyQ6K48zTn01Ke097V_HO4i61sCkARP-jnCQXIwOcNAs9JajB8wbWzjit_Cb66nmUWEjBLJoSA8BsWbg7Sw7ojYahXfn1N7EFeDU__RuaLpizXnSi3NIU39x8qTyw0MJKtZFtG9Z0LAaA1tWtvVcMcAErM3ejOwFiAWizNvLV6AGLoAHm_7AlByoB6fMsQKoB6a-G6gHzM6xAqgH89EbqAeW2BuoB6qbsQKoB47OG6gHk9gbqAfw4BuoB-6WsQKoB_6esQKoB6--sQKoB9XJG6gHmgaoB_-esQKoB9-fsQKoB_jCsQKoB_vCsQLYBwDSCDMIgGEQARifAzIIioKAgICAgAg6D4BAgMCAgICAqIACqIOAEEi9_cE6WMa6t_SRh5UDYAGxCYrsjQ7wPmFtgAoBmAsByAsBgAwBqg0CQkTIDQHqDRMIqem39JGHlQMV1VqdCR0WbThO8A0CiA4JsA6pg7XqGNgTDNAVAcoWAgoA-BYBgBcBshcQGAEqCjcyOTQzMDM3NTBQBroXAjgBqhgXCQAAAABQk_JAEgo3Mjk0MzAzNzUwGAGyGAkSAsVoGC4iAQDQGAHCGQIIAQ&ae=1&gclid=EAIaIQobChMIxeK39JGHlQMV1VqdCR0WbThOEAEYASAAEgLfj_D_BwE&num=1&cid=CAQS8wEAEQoqgXRzPgCfzEhdelsHtW-X-_aqikpIQ6JTa28o660HkZ7hlJhk-TS8sh-3mtMVfqvziy_OTxR7aY_fPiGFbOVWWIElG1LR8iKLx47ffaoq1PLx-JXE5l1TzWYvBYaWR_Cxn_H6JPK3pPcnJJMW4AoB0XpADkvnQ912yxSAccgu06YEkuwexVwU5vNW9KyOW8xLJJY1hGSpxfcPgWH9KMaEMMLOhAHoJl9oMF4lGB1BLLjYIWjW4-GsqwJzUJe9Bj-1YYONrdu_YA5b0KY3zxb7cCviyrPcq-r4_zuZPmzRibIWeGtaPyQ2bocYsoggO7AYAQ&sig=AOD64_3GJKW7i6WuScrT7R-UAeXaxLNsSw&client=ca-pub-8425219156685369&rf=1&nb=8&adurl=https://www.tenorshare.net/sem/reiboot-brand.html%3Fgad_source%3D5%26gad_campaignid%3D23512671778%26gclid%3DEAIaIQobChMIxeK39JGHlQMV1VqdCR0WbThOEAEYASAAEgLfj_D_BwE
+              - link "Tenorshare ReiBoot" [ref=f91e26] [cursor=pointer]:
+                - /url: https://www.googleadservices.com/pagead/aclk?sa=L&ai=Cb7nbUtUuasXxLdW19fwPltrh8QS89dfEhgGMmp2KjBWhpvjz0B0QASC0wN6sAWAzoAHU-YOZA8gBCagDAcgDywSqBO4BT9BClJZx1zuXtHk4H_c9xp6BekdEm2qao-WPah8952kEnTOA3oIa-Y3FYGBusbhm_lhwAGHmwn4FO2XaLzYlOdGRp-EmAiYv7q0p210fBtzvJmIqsbwHULyYE4iN82ezlORO1uN378f-z8xPmfGRJ0iB5q-B5EJ6hCXFb-NiGyQ6K48zTn01Ke097V_HO4i61sCkARP-jnCQXIwOcNAs9JajB8wbWzjit_Cb66nmUWEjBLJoSA8BsWbg7Sw7ojYahXfn1N7EFeDU__RuaLpizXnSi3NIU39x8qTyw0MJKtZFtG9Z0LAaA1tWtvVcMcAErM3ejOwFiAWizNvLV6AGLoAHm_7AlByoB6fMsQKoB6a-G6gHzM6xAqgH89EbqAeW2BuoB6qbsQKoB47OG6gHk9gbqAfw4BuoB-6WsQKoB_6esQKoB6--sQKoB9XJG6gHmgaoB_-esQKoB9-fsQKoB_jCsQKoB_vCsQLYBwDSCDMIgGEQARifAzIIioKAgICAgAg6D4BAgMCAgICAqIACqIOAEEi9_cE6WMa6t_SRh5UDYAGxCYrsjQ7wPmFtgAoBmAsByAsBgAwBqg0CQkTIDQHqDRMIqem39JGHlQMV1VqdCR0WbThO8A0CiA4JsA6pg7XqGNgTDNAVAcoWAgoA-BYBgBcBshcQGAEqCjcyOTQzMDM3NTBQBroXAjgBqhgXCQAAAABQk_JAEgo3Mjk0MzAzNzUwGAGyGAkSAsVoGC4iAQDQGAHCGQIIAQ&ae=1&gclid=EAIaIQobChMIxeK39JGHlQMV1VqdCR0WbThOEAEYASAAEgLfj_D_BwE&num=1&cid=CAQS8wEAEQoqgXRzPgCfzEhdelsHtW-X-_aqikpIQ6JTa28o660HkZ7hlJhk-TS8sh-3mtMVfqvziy_OTxR7aY_fPiGFbOVWWIElG1LR8iKLx47ffaoq1PLx-JXE5l1TzWYvBYaWR_Cxn_H6JPK3pPcnJJMW4AoB0XpADkvnQ912yxSAccgu06YEkuwexVwU5vNW9KyOW8xLJJY1hGSpxfcPgWH9KMaEMMLOhAHoJl9oMF4lGB1BLLjYIWjW4-GsqwJzUJe9Bj-1YYONrdu_YA5b0KY3zxb7cCviyrPcq-r4_zuZPmzRibIWeGtaPyQ2bocYsoggO7AYAQ&sig=AOD64_3GJKW7i6WuScrT7R-UAeXaxLNsSw&client=ca-pub-8425219156685369&rf=1&nb=1&adurl=https://www.tenorshare.net/sem/reiboot-brand.html%3Fgad_source%3D5%26gad_campaignid%3D23512671778%26gclid%3DEAIaIQobChMIxeK39JGHlQMV1VqdCR0WbThOEAEYASAAEgLfj_D_BwE
+              - link "Open" [ref=f91e28] [cursor=pointer]:
+                - /url: https://www.googleadservices.com/pagead/aclk?sa=L&ai=Cb7nbUtUuasXxLdW19fwPltrh8QS89dfEhgGMmp2KjBWhpvjz0B0QASC0wN6sAWAzoAHU-YOZA8gBCagDAcgDywSqBO4BT9BClJZx1zuXtHk4H_c9xp6BekdEm2qao-WPah8952kEnTOA3oIa-Y3FYGBusbhm_lhwAGHmwn4FO2XaLzYlOdGRp-EmAiYv7q0p210fBtzvJmIqsbwHULyYE4iN82ezlORO1uN378f-z8xPmfGRJ0iB5q-B5EJ6hCXFb-NiGyQ6K48zTn01Ke097V_HO4i61sCkARP-jnCQXIwOcNAs9JajB8wbWzjit_Cb66nmUWEjBLJoSA8BsWbg7Sw7ojYahXfn1N7EFeDU__RuaLpizXnSi3NIU39x8qTyw0MJKtZFtG9Z0LAaA1tWtvVcMcAErM3ejOwFiAWizNvLV6AGLoAHm_7AlByoB6fMsQKoB6a-G6gHzM6xAqgH89EbqAeW2BuoB6qbsQKoB47OG6gHk9gbqAfw4BuoB-6WsQKoB_6esQKoB6--sQKoB9XJG6gHmgaoB_-esQKoB9-fsQKoB_jCsQKoB_vCsQLYBwDSCDMIgGEQARifAzIIioKAgICAgAg6D4BAgMCAgICAqIACqIOAEEi9_cE6WMa6t_SRh5UDYAGxCYrsjQ7wPmFtgAoBmAsByAsBgAwBqg0CQkTIDQHqDRMIqem39JGHlQMV1VqdCR0WbThO8A0CiA4JsA6pg7XqGNgTDNAVAcoWAgoA-BYBgBcBshcQGAEqCjcyOTQzMDM3NTBQBroXAjgBqhgXCQAAAABQk_JAEgo3Mjk0MzAzNzUwGAGyGAkSAsVoGC4iAQDQGAHCGQIIAQ&ae=1&gclid=EAIaIQobChMIxeK39JGHlQMV1VqdCR0WbThOEAEYASAAEgLfj_D_BwE&num=1&cid=CAQS8wEAEQoqgXRzPgCfzEhdelsHtW-X-_aqikpIQ6JTa28o660HkZ7hlJhk-TS8sh-3mtMVfqvziy_OTxR7aY_fPiGFbOVWWIElG1LR8iKLx47ffaoq1PLx-JXE5l1TzWYvBYaWR_Cxn_H6JPK3pPcnJJMW4AoB0XpADkvnQ912yxSAccgu06YEkuwexVwU5vNW9KyOW8xLJJY1hGSpxfcPgWH9KMaEMMLOhAHoJl9oMF4lGB1BLLjYIWjW4-GsqwJzUJe9Bj-1YYONrdu_YA5b0KY3zxb7cCviyrPcq-r4_zuZPmzRibIWeGtaPyQ2bocYsoggO7AYAQ&sig=AOD64_3GJKW7i6WuScrT7R-UAeXaxLNsSw&client=ca-pub-8425219156685369&rf=1&nb=8&adurl=https://www.tenorshare.net/sem/reiboot-brand.html%3Fgad_source%3D5%26gad_campaignid%3D23512671778%26gclid%3DEAIaIQobChMIxeK39JGHlQMV1VqdCR0WbThOEAEYASAAEgLfj_D_BwE
+              - link [ref=f91e29] [cursor=pointer]:
+                - /url: https://www.googleadservices.com/pagead/aclk?sa=L&ai=Cb7nbUtUuasXxLdW19fwPltrh8QS89dfEhgGMmp2KjBWhpvjz0B0QASC0wN6sAWAzoAHU-YOZA8gBCagDAcgDywSqBO4BT9BClJZx1zuXtHk4H_c9xp6BekdEm2qao-WPah8952kEnTOA3oIa-Y3FYGBusbhm_lhwAGHmwn4FO2XaLzYlOdGRp-EmAiYv7q0p210fBtzvJmIqsbwHULyYE4iN82ezlORO1uN378f-z8xPmfGRJ0iB5q-B5EJ6hCXFb-NiGyQ6K48zTn01Ke097V_HO4i61sCkARP-jnCQXIwOcNAs9JajB8wbWzjit_Cb66nmUWEjBLJoSA8BsWbg7Sw7ojYahXfn1N7EFeDU__RuaLpizXnSi3NIU39x8qTyw0MJKtZFtG9Z0LAaA1tWtvVcMcAErM3ejOwFiAWizNvLV6AGLoAHm_7AlByoB6fMsQKoB6a-G6gHzM6xAqgH89EbqAeW2BuoB6qbsQKoB47OG6gHk9gbqAfw4BuoB-6WsQKoB_6esQKoB6--sQKoB9XJG6gHmgaoB_-esQKoB9-fsQKoB_jCsQKoB_vCsQLYBwDSCDMIgGEQARifAzIIioKAgICAgAg6D4BAgMCAgICAqIACqIOAEEi9_cE6WMa6t_SRh5UDYAGxCYrsjQ7wPmFtgAoBmAsByAsBgAwBqg0CQkTIDQHqDRMIqem39JGHlQMV1VqdCR0WbThO8A0CiA4JsA6pg7XqGNgTDNAVAcoWAgoA-BYBgBcBshcQGAEqCjcyOTQzMDM3NTBQBroXAjgBqhgXCQAAAABQk_JAEgo3Mjk0MzAzNzUwGAGyGAkSAsVoGC4iAQDQGAHCGQIIAQ&ae=1&gclid=EAIaIQobChMIxeK39JGHlQMV1VqdCR0WbThOEAEYASAAEgLfj_D_BwE&num=1&cid=CAQS8wEAEQoqgXRzPgCfzEhdelsHtW-X-_aqikpIQ6JTa28o660HkZ7hlJhk-TS8sh-3mtMVfqvziy_OTxR7aY_fPiGFbOVWWIElG1LR8iKLx47ffaoq1PLx-JXE5l1TzWYvBYaWR_Cxn_H6JPK3pPcnJJMW4AoB0XpADkvnQ912yxSAccgu06YEkuwexVwU5vNW9KyOW8xLJJY1hGSpxfcPgWH9KMaEMMLOhAHoJl9oMF4lGB1BLLjYIWjW4-GsqwJzUJe9Bj-1YYONrdu_YA5b0KY3zxb7cCviyrPcq-r4_zuZPmzRibIWeGtaPyQ2bocYsoggO7AYAQ&sig=AOD64_3GJKW7i6WuScrT7R-UAeXaxLNsSw&client=ca-pub-8425219156685369&rf=1&nb=8&adurl=https://www.tenorshare.net/sem/reiboot-brand.html%3Fgad_source%3D5%26gad_campaignid%3D23512671778%26gclid%3DEAIaIQobChMIxeK39JGHlQMV1VqdCR0WbThOEAEYASAAEgLfj_D_BwE
+                - generic [ref=f91e31]:
+                  - img [ref=f91e32]
+                  - img [ref=f91e34]
+        - img [ref=f91e42] [cursor=pointer]
+        - button [ref=f91e44] [cursor=pointer]:
+          - img [ref=f91e45]
+        - iframe

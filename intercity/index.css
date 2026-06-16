@@ -3,47 +3,53 @@
 @tailwind utilities;
 
 :root {
-  --kj-bg: #f5f3ee;
-  --kj-panel: #ffffff;
-  --kj-panel-muted: #f0ede5;
-  --kj-line: #e2ddd0;
-  --kj-text: #0e1a1f;
-  --kj-text-dim: #5a6b6f;
-  --kj-text-faint: #8a9a9c;
-  --kj-chip-bg: #eae5d8;
-  --kj-chip-text: #3a4a4e;
-  --kj-input-bg: #fbfaf6;
-  --kj-primary: #006a4e;
-  --kj-primary-ink: #ffffff;
-  --kj-primary-soft: #e3efe9;
-  --kj-primary-deep: #004a36;
-  --kj-accent: #d92644;
-  --kj-accent-soft: #fbe6ea;
-  --kj-amber: #b46a13;
-  --kj-amber-soft: #f6ead3;
-  --kj-metro-bg: #001b14;
+  /* Futuristic light theme */
+  --kj-bg: #eef3f7;
+  --kj-panel: rgba(255, 255, 255, 0.82);
+  --kj-panel-muted: rgba(232, 240, 247, 0.7);
+  --kj-line: rgba(56, 89, 122, 0.18);
+  --kj-text: #0a1626;
+  --kj-text-dim: #4a607a;
+  --kj-text-faint: #7e93ab;
+  --kj-chip-bg: rgba(56, 100, 160, 0.08);
+  --kj-chip-text: #1e3a5f;
+  --kj-input-bg: rgba(255, 255, 255, 0.75);
+  --kj-primary: #00b8d9;
+  --kj-primary-ink: #02161c;
+  --kj-primary-soft: rgba(0, 184, 217, 0.12);
+  --kj-primary-deep: #0070ad;
+  --kj-accent: #ff3d77;
+  --kj-accent-soft: rgba(255, 61, 119, 0.12);
+  --kj-amber: #ff8a00;
+  --kj-amber-soft: rgba(255, 138, 0, 0.12);
+  --kj-metro-bg: #001b2e;
+  --kj-neon-cyan: #00b8d9;
+  --kj-neon-magenta: #ff3d77;
 }
 
 .dark {
-  --kj-bg: #10181c;
-  --kj-panel: #16222a;
-  --kj-panel-muted: #10181c;
-  --kj-line: #1c272c;
-  --kj-text: #e8efe9;
-  --kj-text-dim: #8d9b9d;
-  --kj-text-faint: #5e6d70;
-  --kj-chip-bg: #172226;
-  --kj-chip-text: #b6c4c4;
-  --kj-input-bg: #0c1418;
-  --kj-primary: #10b981;
-  --kj-primary-ink: #04130d;
-  --kj-primary-soft: #0f2a22;
-  --kj-primary-deep: #0c8a62;
-  --kj-accent: #ff5a76;
-  --kj-accent-soft: #2a0e15;
-  --kj-amber: #f7b955;
-  --kj-amber-soft: #2a1f0c;
-  --kj-metro-bg: #00130e;
+  /* Futuristic dark theme */
+  --kj-bg: #040814;
+  --kj-panel: rgba(13, 22, 42, 0.82);
+  --kj-panel-muted: rgba(7, 14, 28, 0.65);
+  --kj-line: rgba(0, 245, 255, 0.14);
+  --kj-text: #e0f7ff;
+  --kj-text-dim: #8da4c4;
+  --kj-text-faint: #5a7090;
+  --kj-chip-bg: rgba(0, 245, 255, 0.08);
+  --kj-chip-text: #bde6ff;
+  --kj-input-bg: rgba(5, 12, 24, 0.7);
+  --kj-primary: #00f5ff;
+  --kj-primary-ink: #001218;
+  --kj-primary-soft: rgba(0, 245, 255, 0.14);
+  --kj-primary-deep: #00d4e6;
+  --kj-accent: #ff2a6d;
+  --kj-accent-soft: rgba(255, 42, 109, 0.14);
+  --kj-amber: #ffb800;
+  --kj-amber-soft: rgba(255, 184, 0, 0.14);
+  --kj-metro-bg: #000814;
+  --kj-neon-cyan: #00f5ff;
+  --kj-neon-magenta: #ff2a6d;
 }
 
 /* Custom Styles */

@@ -1,0 +1,114 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - button "Open menu" [ref=e6] [cursor=pointer]:
+        - img [ref=e7]
+      - img "KoyJabo" [ref=e9] [cursor=pointer]
+      - generic [ref=e10]:
+        - button "Toggle language" [ref=e11] [cursor=pointer]:
+          - img [ref=e12]
+          - generic [ref=e16]: বাং
+        - button "Toggle theme" [ref=e17] [cursor=pointer]:
+          - img [ref=e18]
+        - button "লগইন" [ref=e24] [cursor=pointer]:
+          - img [ref=e25]
+  - main [ref=e28]:
+    - generic [ref=e29]:
+      - generic [ref=e33]:
+        - heading "সেটিংস" [level=1] [ref=e34]:
+          - img [ref=e35]
+          - text: সেটিংস
+        - paragraph [ref=e38]: আপনার অ্যাপ অভিজ্ঞতা কাস্টমাইজ করুন
+        - generic [ref=e39]:
+          - generic [ref=e40]:
+            - heading "ভাষা পছন্দ" [level=2] [ref=e41]
+            - paragraph [ref=e42]: আপনার পছন্দের ভাষা নির্বাচন করুন
+            - generic [ref=e43]:
+              - button "বাংলা Bangla" [ref=e44] [cursor=pointer]:
+                - img [ref=e46]
+                - generic [ref=e49]:
+                  - generic [ref=e50]: বাংলা
+                  - generic [ref=e51]: Bangla
+              - button "English ইংরেজি" [ref=e54] [cursor=pointer]:
+                - img [ref=e56]
+                - generic [ref=e59]:
+                  - generic [ref=e60]: English
+                  - generic [ref=e61]: ইংরেজি
+            - generic [ref=e63]:
+              - img [ref=e64]
+              - generic [ref=e67]: "বর্তমান ভাষা: বাংলা (Bangla)"
+          - generic [ref=e68]:
+            - heading "থিম পছন্দ" [level=2] [ref=e69]
+            - paragraph [ref=e70]: কই যাবো কেমন দেখাবে তা চয়ন করুন। একটি থিম নির্বাচন করুন বা আপনার সিস্টেমের সাথে সিঙ্ক করুন।
+            - generic [ref=e71]:
+              - button "লাইট মোড উজ্জ্বল থিম" [ref=e72] [cursor=pointer]:
+                - img [ref=e74]
+                - generic [ref=e80]:
+                  - generic [ref=e81]: লাইট মোড
+                  - generic [ref=e82]: উজ্জ্বল থিম
+              - button "ডার্ক মোড চোখে আরামদায়ক" [ref=e83] [cursor=pointer]:
+                - img [ref=e85]
+                - generic [ref=e87]:
+                  - generic [ref=e88]: ডার্ক মোড
+                  - generic [ref=e89]: চোখে আরামদায়ক
+            - generic [ref=e93]:
+              - img [ref=e94]
+              - generic [ref=e96]: "বর্তমান থিম: অন্ধকার"
+          - generic [ref=e97]:
+            - heading "সমর্থন ও প্রতিক্রিয়া" [level=2] [ref=e98]
+            - button "যোগাযোগ করুন সাহায্য পান বা সমস্যা রিপোর্ট করুন" [ref=e99] [cursor=pointer]:
+              - img [ref=e101]
+              - generic [ref=e104]:
+                - heading "যোগাযোগ করুন" [level=3] [ref=e105]
+                - paragraph [ref=e106]: সাহায্য পান বা সমস্যা রিপোর্ট করুন
+              - img [ref=e107]
+          - generic [ref=e109]:
+            - heading "অ্যাপ তথ্য" [level=2] [ref=e110]
+            - generic [ref=e111]:
+              - generic [ref=e112]:
+                - generic [ref=e113]: সংস্করণ
+                - generic [ref=e114]: 1.0.0
+              - generic [ref=e115]:
+                - generic [ref=e116]: সর্বশেষ আপডেট
+                - generic [ref=e117]: January 2026
+      - generic [ref=e120]:
+        - generic [ref=e121]:
+          - img "KoyJabo" [ref=e122]
+          - generic [ref=e123]: কইযাবো
+        - navigation [ref=e124]:
+          - link "হোম" [ref=e125] [cursor=pointer]:
+            - /url: /
+          - link "পরিচয়" [ref=e126] [cursor=pointer]:
+            - /url: /about
+          - link "প্রশ্ন ও উত্তর" [ref=e127] [cursor=pointer]:
+            - /url: /faq
+          - link "অ্যাপ ইনস্টল" [ref=e128] [cursor=pointer]:
+            - /url: /install
+          - link "যোগাযোগ" [ref=e129] [cursor=pointer]:
+            - /url: /contact
+          - link "গোপনীয়তা নীতি" [ref=e130] [cursor=pointer]:
+            - /url: /privacy
+          - link "শর্তাবলী" [ref=e131] [cursor=pointer]:
+            - /url: /terms
+          - link "রিলিজ নোট" [ref=e132] [cursor=pointer]:
+            - /url: /release-notes
+          - link "আন্তঃশহর যাত্রা" [ref=e133] [cursor=pointer]:
+            - /url: /intercity-hub
+        - paragraph [ref=e134]: © 2024–2026 KoyJabo
+  - navigation [ref=e135]:
+    - generic [ref=e136]:
+      - button "হোম" [ref=e137] [cursor=pointer]:
+        - img [ref=e138]
+        - generic [ref=e141]: হোম
+      - button "খুঁজুন" [ref=e142] [cursor=pointer]:
+        - img [ref=e143]
+        - generic [ref=e146]: খুঁজুন
+      - button "ট্রেন" [ref=e147] [cursor=pointer]:
+        - img [ref=e148]
+        - generic [ref=e152]: ট্রেন
+      - button "আন্তঃজেলা" [ref=e153] [cursor=pointer]:
+        - img [ref=e154]
+        - generic [ref=e156]: আন্তঃজেলা
+      - button "AI" [ref=e157] [cursor=pointer]:
+        - img [ref=e158]
+        - generic [ref=e161]: AI

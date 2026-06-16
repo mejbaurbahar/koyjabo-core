@@ -20,33 +20,38 @@ const NotificationBanner: React.FC = () => {
     const title = language === 'bn' ? highPriorityNotification.bnTitle || highPriorityNotification.title : highPriorityNotification.title;
     const message = language === 'bn' ? highPriorityNotification.bnMessage || highPriorityNotification.message : highPriorityNotification.message;
 
-    // Determine colors and icon based on type
+    // Determine icon and tone color based on type
     const getStyles = () => {
         switch (type) {
             case 'warning':
                 return {
-                    bg: 'bg-gradient-to-r from-orange-500 to-red-500',
-                    icon: <AlertTriangle className="w-6 h-6 text-white animate-pulse" />
+                    borderColor: 'var(--kj-accent)',
+                    iconBg: 'var(--kj-accent-soft)',
+                    icon: <AlertTriangle className="w-5 h-5 animate-pulse" style={{ color: 'var(--kj-accent)' }} />
                 };
             case 'error':
                 return {
-                    bg: 'bg-gradient-to-r from-red-600 to-pink-600',
-                    icon: <AlertOctagon className="w-6 h-6 text-white" />
+                    borderColor: 'var(--kj-accent)',
+                    iconBg: 'var(--kj-accent-soft)',
+                    icon: <AlertOctagon className="w-5 h-5" style={{ color: 'var(--kj-accent)' }} />
                 };
             case 'success':
                 return {
-                    bg: 'bg-gradient-to-r from-emerald-500 to-green-500',
-                    icon: <CheckCircle className="w-6 h-6 text-white" />
+                    borderColor: 'var(--kj-amber)',
+                    iconBg: 'var(--kj-amber-soft)',
+                    icon: <CheckCircle className="w-5 h-5" style={{ color: 'var(--kj-amber)' }} />
                 };
             case 'announcement':
                 return {
-                    bg: 'bg-gradient-to-r from-purple-600 to-indigo-600',
-                    icon: <Megaphone className="w-6 h-6 text-white animate-bounce" />
+                    borderColor: 'var(--kj-neon-violet)',
+                    iconBg: 'rgba(162,89,255,0.12)',
+                    icon: <Megaphone className="w-5 h-5 animate-bounce" style={{ color: 'var(--kj-neon-violet)' }} />
                 };
             default: // info
                 return {
-                    bg: 'bg-gradient-to-r from-blue-500 to-cyan-500',
-                    icon: <Info className="w-6 h-6 text-white" />
+                    borderColor: 'var(--kj-primary)',
+                    iconBg: 'var(--kj-primary-soft)',
+                    icon: <Info className="w-5 h-5" style={{ color: 'var(--kj-primary)' }} />
                 };
         }
     };
@@ -70,24 +75,31 @@ const NotificationBanner: React.FC = () => {
 
     return (
         <div
-            className={`sticky top-0 left-0 right-0 z-[9999] ${styles.bg} shadow-lg shadow-black/10 animate-in slide-in-from-top duration-300 cursor-pointer pt-safe`}
+            className="sticky top-0 left-0 right-0 z-[9999] animate-in slide-in-from-top duration-300 cursor-pointer pt-safe"
+            style={{
+                background: 'var(--kj-panel)',
+                borderBottom: `1px solid ${styles.borderColor}`,
+                boxShadow: 'var(--kj-shadow)',
+                backdropFilter: 'blur(12px)',
+            }}
             onClick={handleClick}
         >
             <div className="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="shrink-0 p-1.5 bg-white/20 rounded-full backdrop-blur-sm">
+                    <div className="shrink-0 p-1.5 rounded-full" style={{ background: styles.iconBg }}>
                         {styles.icon}
                     </div>
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-white min-w-0">
-                        <span className="font-bold whitespace-nowrap text-sm sm:text-base">{title}</span>
-                        <span className="hidden sm:inline w-1 h-1 bg-white/50 rounded-full"></span>
-                        <span className="text-xs sm:text-sm text-blue-50 truncate opacity-90">{message}</span>
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-0">
+                        <span className="font-bold whitespace-nowrap text-sm sm:text-base" style={{ color: 'var(--kj-text)' }}>{title}</span>
+                        <span className="hidden sm:inline w-1 h-1 rounded-full" style={{ background: 'var(--kj-line)' }}></span>
+                        <span className="text-xs sm:text-sm truncate" style={{ color: 'var(--kj-text-dim)' }}>{message}</span>
                     </div>
                 </div>
 
                 <button
                     onClick={handleDismiss}
-                    className="shrink-0 p-1 hover:bg-white/20 rounded-full transition-colors text-white/80 hover:text-white"
+                    className="shrink-0 p-1 rounded-full transition-colors"
+                    style={{ color: 'var(--kj-text-dim)' }}
                     aria-label={t('common.close')}
                 >
                     <X className="w-5 h-5" />

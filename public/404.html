@@ -8,7 +8,7 @@
     <script>
         // GitHub Pages SPA redirect — route back to the correct sub-app
         var path = window.location.pathname;
-        if (path.startsWith('/intercity')) {
+        if (path === '/intercity' || path.startsWith('/intercity/')) {
             // Avoid redirect loop: if already at /intercity/ don't redirect again
             if (path !== '/intercity/' && path !== '/intercity/index.html') {
                 window.location.replace('/intercity/');

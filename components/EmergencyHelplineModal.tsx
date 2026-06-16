@@ -43,13 +43,13 @@ const EmergencyHelplineModal: React.FC<EmergencyHelplineModalProps> = ({
     const getServiceColor = (type: string) => {
         switch (type) {
             case 'police':
-                return 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800';
+                return 'bg-blue-50 dark:bg-blue-900/30 text-kj-primary border-kj-primary/20';
             case 'hospital':
                 return 'bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 border-green-200 dark:border-green-800';
             case 'fire':
                 return 'bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800';
             default:
-                return 'bg-gray-50 dark:bg-gray-800 text-kj-text-dim border-kj-line';
+                return 'bg-kj-panel text-kj-text-dim border-kj-line';
         }
     };
 
@@ -63,7 +63,7 @@ const EmergencyHelplineModal: React.FC<EmergencyHelplineModalProps> = ({
         return (
             <div
                 key={service.id}
-                className="bg-kj-panel border border-kj-line rounded-xl p-4 hover:shadow-md transition-shadow"
+                className="dc-card rounded-xl p-4 hover:shadow-md transition-shadow"
             >
                 <div className="flex items-start justify-between gap-3">
                     <div className="flex-1">
@@ -162,7 +162,7 @@ const EmergencyHelplineModal: React.FC<EmergencyHelplineModalProps> = ({
                             {nearestServices.police.length > 0 && (
                                 <div>
                                     <h3 className="text-sm font-bold text-kj-text-dim mb-3 uppercase tracking-wide flex items-center gap-2">
-                                        <Shield className="w-4 h-4 text-blue-600" />
+                                        <Shield className="w-4 h-4 text-kj-primary" />
                                         {t('emergency.nearestPoliceStations')}
                                     </h3>
                                     <div className="space-y-2">

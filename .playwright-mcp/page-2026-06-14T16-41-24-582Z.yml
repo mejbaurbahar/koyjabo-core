@@ -1,0 +1,410 @@
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5] [cursor=pointer]:
+      - img "KoyJabo" [ref=e6]
+      - generic [ref=e7]:
+        - generic [ref=e8]: কই যাবো
+        - generic [ref=e9]: KoyJabo · BD
+    - generic [ref=e10]:
+      - button "হোম" [ref=e11] [cursor=pointer]:
+        - img [ref=e12]
+        - text: হোম
+      - button "মেট্রো LIVE" [ref=e15] [cursor=pointer]:
+        - img [ref=e16]
+        - text: মেট্রো
+        - generic [ref=e20]: LIVE
+      - button "ট্রেন" [ref=e21] [cursor=pointer]:
+        - img [ref=e22]
+        - text: ট্রেন
+      - button "আন্তঃজেলা" [ref=e26] [cursor=pointer]:
+        - img [ref=e27]
+        - text: আন্তঃজেলা
+      - button "ভাড়া হিসাব" [ref=e31] [cursor=pointer]:
+        - img [ref=e32]
+        - text: ভাড়া হিসাব
+      - button "AI সহায়ক NEW" [ref=e34] [cursor=pointer]:
+        - img [ref=e35]
+        - text: AI সহায়ক
+        - generic [ref=e38]: NEW
+    - generic [ref=e39]:
+      - button "Toggle language" [ref=e40] [cursor=pointer]:
+        - img [ref=e41]
+        - generic [ref=e45]: বাং
+      - button "অ্যাপ ইনস্টল" [ref=e46] [cursor=pointer]
+      - button "থিম পরিবর্তন" [ref=e47] [cursor=pointer]:
+        - img [ref=e48]
+      - button "লগইন" [ref=e54] [cursor=pointer]:
+        - img [ref=e55]
+        - text: লগইন
+      - button "মেনু খুলুন" [ref=e58] [cursor=pointer]:
+        - img [ref=e59]
+  - main [ref=e60]:
+    - generic [ref=e63]:
+      - generic [ref=e65]:
+        - generic [ref=e66]:
+          - button "ফিরে যান" [ref=e67] [cursor=pointer]:
+            - img [ref=e68]
+            - generic [ref=e70]: ফিরে যান
+          - heading "ব্লগ" [level=1] [ref=e71]
+        - generic [ref=e72]:
+          - img [ref=e73]
+          - textbox "পোস্ট খুঁজুন..." [ref=e76]
+        - generic [ref=e77]:
+          - button "সব" [ref=e78] [cursor=pointer]
+          - button "Travel Guide" [ref=e79] [cursor=pointer]
+          - button "Metro Rail" [ref=e80] [cursor=pointer]
+          - button "Bus & Transport" [ref=e81] [cursor=pointer]
+          - button "App Guide" [ref=e82] [cursor=pointer]
+          - button "Tips & Tricks" [ref=e83] [cursor=pointer]
+        - generic [ref=e84] [cursor=pointer]:
+          - generic [ref=e85]:
+            - img [ref=e86]
+            - generic [ref=e95]: ★ ফিচার্ড
+          - generic [ref=e96]:
+            - generic [ref=e97]:
+              - generic [ref=e98]: Tips & Tricks
+              - generic [ref=e99]:
+                - img [ref=e100]
+                - text: 4 min read
+              - generic [ref=e103]: ৩০ এপ্রি, ২০২৬
+            - heading "ঢাকার ট্রাফিক আইন, লঙ্ঘন ও জরিমানার তালিকা (২০২৬ গাইড)" [level=2] [ref=e104]
+        - insertion [ref=e108]:
+          - generic [ref=e110]:
+            - generic "নিবন্ধের সাথে সম্পর্কযুক্ত এইসব বিষয়ে আপনার আগ্রহ থাকতে পারে।" [ref=e111]: আরও দেখুন
+            - link "Shipping & Logistics" [ref=e112] [cursor=pointer]:
+              - img [ref=e114]
+              - text: Shipping & Logistics
+            - link "Urban Transit" [ref=e116] [cursor=pointer]:
+              - img [ref=e118]
+              - text: Urban Transit
+            - link "Demographics" [ref=e120] [cursor=pointer]:
+              - img [ref=e122]
+              - text: Demographics
+            - link "Long Distance Bus & Rail" [ref=e124] [cursor=pointer]:
+              - img [ref=e126]
+              - text: Long Distance Bus & Rail
+            - link "Geographic Reference" [ref=e128] [cursor=pointer]:
+              - img [ref=e130]
+              - text: Geographic Reference
+            - link "City & Local Guides" [ref=e132] [cursor=pointer]:
+              - img [ref=e134]
+              - text: City & Local Guides
+            - link "Car Rentals" [ref=e136] [cursor=pointer]:
+              - img [ref=e138]
+              - text: Car Rentals
+            - link "Travel & Transportation" [ref=e140] [cursor=pointer]:
+              - img [ref=e142]
+              - text: Travel & Transportation
+        - generic [ref=e144]:
+          - generic [ref=e145] [cursor=pointer]:
+            - img [ref=e147]
+            - generic [ref=e156]:
+              - generic [ref=e157]:
+                - generic [ref=e158]: Travel Guide
+                - generic [ref=e159]: ২৮ এপ্রি
+              - 'heading "কিভাবে ঢাকায় যাতায়াত করবেন: পর্যটকদের জন্য ট্রান্সপোর্ট গাইড (২০২৬)" [level=3] [ref=e160]'
+              - generic [ref=e161]:
+                - img [ref=e162]
+                - text: 8 min read
+          - generic [ref=e165] [cursor=pointer]:
+            - img [ref=e167]
+            - generic [ref=e176]:
+              - generic [ref=e177]:
+                - generic [ref=e178]: Metro Rail
+                - generic [ref=e179]: ২৭ এপ্রি
+              - 'heading "ঢাকা মেট্রোরেল এমআরটি লাইন ৬ গাইড: রুট, টিকিট ও সময়সূচী" [level=3] [ref=e180]'
+              - generic [ref=e181]:
+                - img [ref=e182]
+                - text: 6 min read
+          - generic [ref=e185] [cursor=pointer]:
+            - img [ref=e187]
+            - generic [ref=e196]:
+              - generic [ref=e197]:
+                - generic [ref=e198]: Travel Guide
+                - generic [ref=e199]: ২৬ এপ্রি
+              - heading "ঢাকা থেকে কক্সবাজার ভ্রমণের খরচ, বাস ও ট্রেন গাইড (২০২৬)" [level=3] [ref=e200]
+              - generic [ref=e201]:
+                - img [ref=e202]
+                - text: 7 min read
+          - generic [ref=e205] [cursor=pointer]:
+            - img [ref=e207]
+            - generic [ref=e216]:
+              - generic [ref=e217]:
+                - generic [ref=e218]: Travel Guide
+                - generic [ref=e219]: ২৫ এপ্রি
+              - 'heading "ঢাকা থেকে চট্টগ্রাম: সম্পূর্ণ ট্রাভেল গাইড ২০২৬" [level=3] [ref=e220]'
+              - generic [ref=e221]:
+                - img [ref=e222]
+                - text: 6 min read
+          - generic [ref=e225] [cursor=pointer]:
+            - img [ref=e227]
+            - generic [ref=e236]:
+              - generic [ref=e237]:
+                - generic [ref=e238]: App Guide
+                - generic [ref=e239]: ২৪ এপ্রি
+              - 'heading "কই যাবো কীভাবে ব্যবহার করবেন: বাংলাদেশের সেরা ট্রান্সপোর্ট প্ল্যানার" [level=3] [ref=e240]'
+              - generic [ref=e241]:
+                - img [ref=e242]
+                - text: 5 min read
+          - generic [ref=e245] [cursor=pointer]:
+            - img [ref=e247]
+            - generic [ref=e256]:
+              - generic [ref=e257]:
+                - generic [ref=e258]: Bus & Transport
+                - generic [ref=e259]: ২৩ এপ্রি
+              - 'heading "ঢাকার সেরা বাস রুট: দৈনন্দিন যাত্রীদের গাইড" [level=3] [ref=e260]'
+              - generic [ref=e261]:
+                - img [ref=e262]
+                - text: 5 min read
+          - generic [ref=e265] [cursor=pointer]:
+            - img [ref=e267]
+            - generic [ref=e276]:
+              - generic [ref=e277]:
+                - generic [ref=e278]: Travel Guide
+                - generic [ref=e279]: ২২ এপ্রি
+              - 'heading "ঢাকা থেকে সিলেট: বাস, ট্রেন ও সম্পূর্ণ ট্রাভেল গাইড" [level=3] [ref=e280]'
+              - generic [ref=e281]:
+                - img [ref=e282]
+                - text: 6 min read
+          - generic [ref=e285] [cursor=pointer]:
+            - img [ref=e287]
+            - generic [ref=e296]:
+              - generic [ref=e297]:
+                - generic [ref=e298]: Travel Guide
+                - generic [ref=e299]: ২১ এপ্রি
+              - 'heading "ঢাকায় রিকশা ও সিএনজি: প্রয়োজনীয় গাইড" [level=3] [ref=e300]'
+              - generic [ref=e301]:
+                - img [ref=e302]
+                - text: 4 min read
+          - generic [ref=e305] [cursor=pointer]:
+            - img [ref=e307]
+            - generic [ref=e316]:
+              - generic [ref=e317]:
+                - generic [ref=e318]: Travel Guide
+                - generic [ref=e319]: ২০ এপ্রি
+              - 'heading "বাজেটে বাংলাদেশ ভ্রমণ: কম খরচে যাতায়াতের উপায়" [level=3] [ref=e320]'
+              - generic [ref=e321]:
+                - img [ref=e322]
+                - text: 6 min read
+          - generic [ref=e325] [cursor=pointer]:
+            - img [ref=e327]
+            - generic [ref=e336]:
+              - generic [ref=e337]:
+                - generic [ref=e338]: Tips & Tricks
+                - generic [ref=e339]: ১৯ এপ্রি
+              - 'heading "ঢাকার ট্রাফিক: রাশ আওয়ার এড়ানোর ১০টি টিপস এবং প্রতি সপ্তাহে ঘণ্টা বাঁচান" [level=3] [ref=e340]'
+              - generic [ref=e341]:
+                - img [ref=e342]
+                - text: 5 min read
+          - generic [ref=e345] [cursor=pointer]:
+            - img [ref=e347]
+            - generic [ref=e356]:
+              - generic [ref=e357]:
+                - generic [ref=e358]: Bus & Transport
+                - generic [ref=e359]: ২৭ এপ্রি
+              - 'heading "দূরপাল্লার বাসভাড়া বৃদ্ধি: যাত্রীদের উপর প্রভাব ও বাস্তবতা" [level=3] [ref=e360]'
+              - generic [ref=e361]:
+                - img [ref=e362]
+                - text: 4 min read
+          - generic [ref=e365] [cursor=pointer]:
+            - img [ref=e367]
+            - generic [ref=e376]:
+              - generic [ref=e377]:
+                - generic [ref=e378]: Metro Rail
+                - generic [ref=e379]: ২৫ এপ্রি
+              - 'heading "মেট্রোরেল: শুধু দ্রুত যাতায়াত নয়, এক নতুন ট্রান্সপোর্ট কালচার" [level=3] [ref=e380]'
+              - generic [ref=e381]:
+                - img [ref=e382]
+                - text: 4 min read
+          - generic [ref=e385] [cursor=pointer]:
+            - img [ref=e387]
+            - generic [ref=e396]:
+              - generic [ref=e397]:
+                - generic [ref=e398]: Travel Guide
+                - generic [ref=e399]: ২ মে
+              - heading "বাংলাদেশে ভ্রমণের সেরা জায়গাগুলো (২০২৬ ট্যুরিস্ট গাইড)" [level=3] [ref=e400]
+              - generic [ref=e401]:
+                - img [ref=e402]
+                - text: 10 min read
+          - generic [ref=e405] [cursor=pointer]:
+            - img [ref=e407]
+            - generic [ref=e416]:
+              - generic [ref=e417]:
+                - generic [ref=e418]: Travel Guide
+                - generic [ref=e419]: ১ মে
+              - 'heading "ঢাকা থেকে কক্সবাজার বাজেটে ভ্রমণের গাইড: টাকা বাঁচান (২০২৬)" [level=3] [ref=e420]'
+              - generic [ref=e421]:
+                - img [ref=e422]
+                - text: 8 min read
+          - generic [ref=e425] [cursor=pointer]:
+            - img [ref=e427]
+            - generic [ref=e436]:
+              - generic [ref=e437]:
+                - generic [ref=e438]: Tips & Tricks
+                - generic [ref=e439]: ৩০ এপ্রি
+              - 'heading "বাংলাদেশ ট্যুর খরচ: আপনার কত টাকা লাগবে? (২০২৬ আপডেট)" [level=3] [ref=e440]'
+              - generic [ref=e441]:
+                - img [ref=e442]
+                - text: 7 min read
+          - generic [ref=e445] [cursor=pointer]:
+            - img [ref=e447]
+            - generic [ref=e456]:
+              - generic [ref=e457]:
+                - generic [ref=e458]: Travel Guide
+                - generic [ref=e459]: ১০ মে
+              - 'heading "ঢাকা থেকে সুন্দরবন ভ্রমণ: সম্পূর্ণ ২০২৬ গাইড (খরচ, রুট ও টিপস)" [level=3] [ref=e460]'
+              - generic [ref=e461]:
+                - img [ref=e462]
+                - text: 9 min read
+          - generic [ref=e465] [cursor=pointer]:
+            - img [ref=e467]
+            - generic [ref=e476]:
+              - generic [ref=e477]:
+                - generic [ref=e478]: Travel Guide
+                - generic [ref=e479]: ১১ মে
+              - heading "সেন্ট মার্টিন দ্বীপ সম্পূর্ণ ভ্রমণ গাইড ২০২৬" [level=3] [ref=e480]
+              - generic [ref=e481]:
+                - img [ref=e482]
+                - text: 8 min read
+          - generic [ref=e485] [cursor=pointer]:
+            - img [ref=e487]
+            - generic [ref=e496]:
+              - generic [ref=e497]:
+                - generic [ref=e498]: Travel Guide
+                - generic [ref=e499]: ১১ মে
+              - heading "বিদেশি পর্যটকদের জন্য বাংলাদেশ ভ্রমণ গাইড ২০২৬" [level=3] [ref=e500]
+              - generic [ref=e501]:
+                - img [ref=e502]
+                - text: 12 min read
+          - generic [ref=e505] [cursor=pointer]:
+            - img [ref=e507]
+            - generic [ref=e516]:
+              - generic [ref=e517]:
+                - generic [ref=e518]: Travel Guide
+                - generic [ref=e519]: ১০ মে
+              - 'heading "বাংলাদেশ ভিসা গাইড ২০২৬: ব্রিটেন, আমেরিকা, ইউএই, কানাডা ও ইউরোপ থেকে আবেদন পদ্ধতি" [level=3] [ref=e520]'
+              - generic [ref=e521]:
+                - img [ref=e522]
+                - text: 10 min read
+          - generic [ref=e525] [cursor=pointer]:
+            - img [ref=e527]
+            - generic [ref=e536]:
+              - generic [ref=e537]:
+                - generic [ref=e538]: Travel Guide
+                - generic [ref=e539]: ৯ মে
+              - 'heading "কক্সবাজারে সেরা হোটেল ও রিসোর্ট ২০২৬: বাজেট থেকে বিলাসবহুল" [level=3] [ref=e540]'
+              - generic [ref=e541]:
+                - img [ref=e542]
+                - text: 9 min read
+          - generic [ref=e545] [cursor=pointer]:
+            - img [ref=e547]
+            - generic [ref=e556]:
+              - generic [ref=e557]:
+                - generic [ref=e558]: Travel Guide
+                - generic [ref=e559]: ৮ মে
+              - 'heading "বাংলাদেশ থেকে সস্তায় বিদেশ যাওয়ার উপায় ২০২৬: দুবাই, লন্ডন, আমেরিকা, মালয়েশিয়া" [level=3] [ref=e560]'
+              - generic [ref=e561]:
+                - img [ref=e562]
+                - text: 11 min read
+          - generic [ref=e565] [cursor=pointer]:
+            - img [ref=e567]
+            - generic [ref=e576]:
+              - generic [ref=e577]:
+                - generic [ref=e578]: Travel Guide
+                - generic [ref=e579]: ৭ মে
+              - 'heading "বাংলাদেশ ট্যুর প্যাকেজ ২০২৬: সেরা ছুটির ডিল, দাম ও ট্রাভেল এজেন্সি গাইড" [level=3] [ref=e580]'
+              - generic [ref=e581]:
+                - img [ref=e582]
+                - text: 10 min read
+          - generic [ref=e585] [cursor=pointer]:
+            - img [ref=e587]
+            - generic [ref=e596]:
+              - generic [ref=e597]:
+                - generic [ref=e598]: Travel Guide
+                - generic [ref=e599]: ১৪ মে
+              - 'heading "ঈদে বাংলাদেশ আসা: যুক্তরাজ্য, আমেরিকা, ইউএই ও কানাডা থেকে সম্পূর্ণ গাইড" [level=3] [ref=e600]'
+              - generic [ref=e601]:
+                - img [ref=e602]
+                - text: 10 min read
+          - generic [ref=e605] [cursor=pointer]:
+            - img [ref=e607]
+            - generic [ref=e616]:
+              - generic [ref=e617]:
+                - generic [ref=e618]: Travel Guide
+                - generic [ref=e619]: ১৪ মে
+              - 'heading "ঢাকা বিমানবন্দর আগমন গাইড: পরিবহন, সিম কার্ড ও প্রথম ২৪ ঘণ্টা (২০২৬)" [level=3] [ref=e620]'
+              - generic [ref=e621]:
+                - img [ref=e622]
+                - text: 8 min read
+          - generic [ref=e625] [cursor=pointer]:
+            - img [ref=e627]
+            - generic [ref=e636]:
+              - generic [ref=e637]:
+                - generic [ref=e638]: Travel Guide
+                - generic [ref=e639]: ১৪ মে
+              - heading "যুক্তরাজ্যে বসবাসকারী বাংলাদেশিদের জন্য সিলেট, চট্টগ্রাম ও ঢাকা ভ্রমণ গাইড ২০২৬" [level=3] [ref=e640]
+              - generic [ref=e641]:
+                - img [ref=e642]
+                - text: 11 min read
+          - generic [ref=e645] [cursor=pointer]:
+            - img [ref=e647]
+            - generic [ref=e656]:
+              - generic [ref=e657]:
+                - generic [ref=e658]: Travel Guide
+                - generic [ref=e659]: ১৪ মে
+              - heading "ইউএই ও মালয়েশিয়ায় কর্মরত বাংলাদেশিদের জন্য দেশে ফেরার গাইড ২০২৬" [level=3] [ref=e660]
+              - generic [ref=e661]:
+                - img [ref=e662]
+                - text: 9 min read
+          - generic [ref=e665] [cursor=pointer]:
+            - img [ref=e667]
+            - generic [ref=e676]:
+              - generic [ref=e677]:
+                - generic [ref=e678]: Travel Guide
+                - generic [ref=e679]: ১৪ মে
+              - 'heading "বাংলাদেশ ২০২৬: প্রবাসীরা ফিরে এসে যা নতুন দেখবেন (মেট্রো, প্রযুক্তি ও পরিবহন)" [level=3] [ref=e680]'
+              - generic [ref=e681]:
+                - img [ref=e682]
+                - text: 8 min read
+          - generic [ref=e685] [cursor=pointer]:
+            - img [ref=e687]
+            - generic [ref=e696]:
+              - generic [ref=e697]:
+                - generic [ref=e698]: Travel Guide
+                - generic [ref=e699]: ১৪ মে
+              - heading "আমেরিকা ও কানাডা প্রবাসী বাংলাদেশিদের জন্য দেশ ভ্রমণ গাইড ২০২৬" [level=3] [ref=e700]
+              - generic [ref=e701]:
+                - img [ref=e702]
+                - text: 10 min read
+        - insertion [ref=e709]
+        - generic [ref=e711]:
+          - paragraph [ref=e712]: koyjabo.com
+          - paragraph [ref=e713]:
+            - text: বাংলাদেশের সেরা পাবলিক ট্রান্সপোর্ট গাইড — ঢাকার বাস, মেট্রোরেল, ট্রেন এবং আন্তঃনগর ভ্রমণ
+            - link "Maps" [ref=e714] [cursor=pointer]:
+              - img [ref=e716]
+              - text: Maps
+      - generic [ref=e721]:
+        - generic [ref=e722]:
+          - img "KoyJabo" [ref=e723]
+          - generic [ref=e724]: কইযাবো
+        - navigation [ref=e725]:
+          - link "হোম" [ref=e726] [cursor=pointer]:
+            - /url: /
+          - link "পরিচয়" [ref=e727] [cursor=pointer]:
+            - /url: /about
+          - link "প্রশ্ন ও উত্তর" [ref=e728] [cursor=pointer]:
+            - /url: /faq
+          - link "অ্যাপ ইনস্টল" [ref=e729] [cursor=pointer]:
+            - /url: /install
+          - link "যোগাযোগ" [ref=e730] [cursor=pointer]:
+            - /url: /contact
+          - link "গোপনীয়তা নীতি" [ref=e731] [cursor=pointer]:
+            - /url: /privacy
+          - link "শর্তাবলী" [ref=e732] [cursor=pointer]:
+            - /url: /terms
+          - link "রিলিজ নোট" [ref=e733] [cursor=pointer]:
+            - /url: /release-notes
+          - link "আন্তঃশহর যাত্রা" [ref=e734] [cursor=pointer]:
+            - /url: /intercity-hub
+        - paragraph [ref=e735]: © 2024–2026 KoyJabo

@@ -14,9 +14,10 @@ interface SearchableSelectProps {
     onChange: (value: string) => void;
     placeholder: string;
     disabled?: boolean;
+    variant?: 'default' | 'embedded';
 }
 
-export const SearchableSelect: React.FC<SearchableSelectProps> = ({ options, value, onChange, placeholder, disabled }) => {
+export const SearchableSelect: React.FC<SearchableSelectProps> = ({ options, value, onChange, placeholder, disabled, variant = 'default' }) => {
     const { t } = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
@@ -48,8 +49,13 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({ options, val
     }, [wrapperRef, value, options]);
 
     const filteredOptions = options.filter(option =>
-        option.name.toLowerCase().includes(searchTerm.toLowerCase())
+        (option.name || '').toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const embedded = variant === 'embedded';
+    const inputClass = embedded
+        ? 'w-full bg-transparent text-kj-text text-[15px] font-semibold font-bengali focus:outline-none placeholder:text-kj-text-faint placeholder:font-normal placeholder:text-sm disabled:text-kj-text-faint py-0.5 pr-6'
+        : 'w-full pl-3 pr-10 py-2.5 bg-kj-input-bg text-kj-text rounded-xl text-xs md:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-kj-primary/30 disabled:bg-kj-panel disabled:text-kj-text-faint border border-kj-line focus:border-kj-primary/40 transition-all';
 
     return (
         <div className="relative w-full" ref={wrapperRef}>
@@ -69,8 +75,9 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({ options, val
                     }}
                     placeholder={placeholder}
                     disabled={disabled}
-                    className="w-full pl-2 md:pl-3 pr-10 md:pr-14 py-2 md:py-3.5 bg-kj-panel text-kj-text rounded-xl text-xs md:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-kj-primary/30 disabled:bg-gray-100 dark:disabled:bg-kj-panel disabled:text-kj-text-faint dark:disabled:text-kj-text-dim border border-transparent focus:border-green-400/30 transition-all shadow-sm"
+                    className={inputClass}
                 />
+                {!embedded && (
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
                     {searchTerm && !disabled && (
                         <button
@@ -90,6 +97,23 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({ options, val
                     )}
                     <MapPin className="w-4 h-4 text-kj-text-faint pointer-events-none mx-1" />
                 </div>
+                )}
+                {embedded && searchTerm && !disabled && (
+                    <button
+                        type="button"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            onChange('');
+                            setSearchTerm('');
+                            setIsOpen(false);
+                        }}
+                        className="absolute right-0 top-1/2 -translate-y-1/2 p-0.5 text-kj-text-faint hover:text-kj-text"
+                        aria-label="Clear selection"
+                    >
+                        <X className="w-3.5 h-3.5" />
+                    </button>
+                )}
             </div>
 
             {isOpen && !disabled && (
@@ -103,7 +127,7 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({ options, val
                                     setSearchTerm(option.name);
                                     setIsOpen(false);
                                 }}
-                                className="px-4 py-3 hover:bg-kj-chip-bg dark:hover:bg-slate-700 cursor-pointer border-b border-gray-50 dark:border-gray-700 last:border-0 flex items-center justify-between group"
+                                className="px-4 py-3 hover:bg-kj-chip-bg dark:hover:bg-slate-700 cursor-pointer border-b border-gray-50 border-kj-line last:border-0 flex items-center justify-between group"
                             >
                                 <div className="flex-1">
                                     <div className="text-sm font-semibold text-kj-text">

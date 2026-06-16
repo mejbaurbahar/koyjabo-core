@@ -117,9 +117,9 @@ const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ isOnline }) => {
 
                             {/* Cache Info */}
                             {hasCache && (
-                                <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
+                                <div className="mb-6 p-4 bg-kj-primary-soft rounded-xl border border-kj-primary/20">
                                     <div className="flex items-center gap-2 mb-2">
-                                        <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                                        <CheckCircle2 className="w-4 h-4 text-kj-primary" />
                                         <span className="text-sm font-semibold text-blue-900 dark:text-blue-100">
                                             {t('offline.cachedData')}
                                         </span>
@@ -138,7 +138,7 @@ const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ isOnline }) => {
                             {/* Available Features */}
                             <div>
                                 <h4 className="text-sm font-bold text-kj-text mb-3 flex items-center gap-2">
-                                    <Zap className="w-4 h-4 text-yellow-500" />
+                                    <Zap className="w-4 h-4 text-kj-amber" />
                                     {t('offline.availableFeatures')}
                                 </h4>
 

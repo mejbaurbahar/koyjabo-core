@@ -1,9 +1,14 @@
+import HowKoyJaboHelps from './HowKoyJaboHelps';
 import React, { useState, useMemo, useEffect } from 'react';
+import SponsoredAdSlot from './SponsoredAdSlot';
+import GlobalFooter from './GlobalFooter';
+import { AppView } from '../types';
 import {
   Train, Search, ArrowRight, Clock, CalendarX, Info,
-  ArrowLeft, MapPin, Navigation,
-  Coins, AlertCircle, X, CheckCircle2, SlidersHorizontal, ChevronDown, Star, Heart
+  ArrowLeft, MapPin, Navigation, ChevronRight,
+  Coins, AlertCircle, X, CheckCircle2, SlidersHorizontal, Star, Heart, Ticket, Radio, Map
 } from 'lucide-react';
+import { Train3D } from './design/Vehicles3D';
 
 function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
   const R = 6371;
@@ -23,8 +28,6 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { trackFeatureUsage } from '../services/analyticsService';
 import { getTrainRatings, TrainRatingSummary } from '../services/communityDataService';
 import TrainImageViewer from './TrainImageViewer';
-import AdSenseAd from './AdSenseAd';
-
 
 
 interface TrainListPageProps {
@@ -33,6 +36,7 @@ interface TrainListPageProps {
   embedded?: boolean;
   onSelectTrain?: (route: BDTrainRoute) => void;
   onRateTrain?: (route: BDTrainRoute) => void;
+  setView?: (view: AppView) => void;
 }
 
 // Train type — colour chips (list view, light-mode-aware)
@@ -67,6 +71,107 @@ function getStoredTrainFavorites(): string[] {
   }
 }
 
+// Featured trains for the hero section
+const FEATURED_TRAINS = [
+  {
+    number: '813',
+    name: "Cox's Bazar Express",
+    bnName: 'কক্সবাজার এক্সপ্রেস',
+    route: 'Dhaka → Cox\'s Bazar',
+    bnRoute: 'ঢাকা → কক্সবাজার',
+    depart: '10:30 PM',
+    arrive: '09:30 AM',
+    duration: '11h',
+    fare: '৳745–2,656',
+    offDay: 'Tue',
+    gradient: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
+    badgeBg: '#7c3aed',
+    color: '#7c3aed',
+  },
+  {
+    number: '786',
+    name: 'Sonar Bangla Express',
+    bnName: 'সোনার বাংলা এক্সপ্রেস',
+    route: 'Dhaka → Chittagong',
+    bnRoute: 'ঢাকা → চট্টগ্রাম',
+    depart: '07:00 AM',
+    arrive: '12:30 PM',
+    duration: '5h 30m',
+    fare: '৳405–1,591',
+    offDay: null,
+    gradient: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
+    badgeBg: '#059669',
+    color: '#059669',
+  },
+  {
+    number: '709',
+    name: 'Parabat Express',
+    bnName: 'পারাবত এক্সপ্রেস',
+    route: 'Dhaka → Sylhet',
+    bnRoute: 'ঢাকা → সিলেট',
+    depart: '06:30 AM',
+    arrive: '01:00 PM',
+    duration: '6h 30m',
+    fare: '৳375–1,678',
+    offDay: 'Tue',
+    gradient: 'linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%)',
+    badgeBg: '#1d4ed8',
+    color: '#1d4ed8',
+  },
+  {
+    number: '729',
+    name: 'Jahanabad Express',
+    bnName: 'জাহানাবাদ এক্সপ্রেস',
+    route: 'Dhaka → Khulna (Padma)',
+    bnRoute: 'ঢাকা → খুলনা (পদ্মা)',
+    depart: '06:00 AM',
+    arrive: '09:45 AM',
+    duration: '3h 45m',
+    fare: '৳445–1,289',
+    offDay: null,
+    gradient: 'linear-gradient(135deg, #b45309 0%, #f59e0b 100%)',
+    badgeBg: '#b45309',
+    color: '#b45309',
+    badge: 'New',
+  },
+  {
+    number: '801',
+    name: 'Upaban Express',
+    bnName: 'উপবন এক্সপ্রেস',
+    route: 'Dhaka → Sylhet',
+    bnRoute: 'ঢাকা → সিলেট',
+    depart: '10:00 PM',
+    arrive: '05:00 AM',
+    duration: '7h',
+    fare: '৳375–1,678',
+    offDay: 'Wed',
+    gradient: 'linear-gradient(135deg, #b91c1c 0%, #ef4444 100%)',
+    badgeBg: '#b91c1c',
+    color: '#b91c1c',
+  },
+];
+
+// Major stations grid
+const MAJOR_STATIONS = [
+  { emoji: '🏛', name: 'Kamalapur', bnName: 'কমলাপুর', city: 'Dhaka', cityBn: 'ঢাকা' },
+  { emoji: '✈️', name: 'Airport', bnName: 'এয়ারপোর্ট', city: 'Dhaka', cityBn: 'ঢাকা' },
+  { emoji: '🏞', name: 'Chittagong', bnName: 'চট্টগ্রাম', city: 'Chittagong', cityBn: 'চট্টগ্রাম' },
+  { emoji: '🍵', name: 'Sylhet', bnName: 'সিলেট', city: 'Sylhet', cityBn: 'সিলেট' },
+  { emoji: '🥭', name: 'Rajshahi', bnName: 'রাজশাহী', city: 'Rajshahi', cityBn: 'রাজশাহী' },
+  { emoji: '🌳', name: 'Khulna', bnName: 'খুলনা', city: 'Khulna', cityBn: 'খুলনা' },
+  { emoji: '🏖', name: "Cox's Bazar", bnName: 'কক্সবাজার', city: "Cox's Bazar", cityBn: 'কক্সবাজার' },
+  { emoji: '🏭', name: 'Gazipur', bnName: 'গাজীপুর', city: 'Gazipur', cityBn: 'গাজীপুর' },
+];
+
+// Coach classes data
+const COACH_CLASSES = [
+  { emoji: '🛏', name: 'AC Berth', bnName: 'এসি বার্থ', price: '৳2,656', desc: 'First class sleeper', descBn: 'প্রথম শ্রেণী ঘুমের আসন', color: '#7c3aed' },
+  { emoji: '❄️', name: 'Snigdha', bnName: 'স্নিগ্ধা', price: '৳719', desc: 'AC chair', descBn: 'এসি চেয়ার', color: '#1d4ed8' },
+  { emoji: '💺', name: 'AC Chair', bnName: 'এসি চেয়ার', price: '৳540', desc: 'AC daytime', descBn: 'এসি দিনের আসন', color: '#059669' },
+  { emoji: '🪑', name: 'Shovon Chair', bnName: 'শোভন চেয়ার', price: '৳375', desc: 'Non-AC', descBn: 'নন-এসি', color: '#b45309' },
+  { emoji: '👥', name: 'Shovon', bnName: 'শোভন', price: '৳265', desc: 'Bench basic', descBn: 'বেঞ্চ সাধারণ', color: '#dc2626' },
+];
+
 // ── Train Detail View ─────────────────────────────────────────────────────────
 export function TrainDetail({
   route,
@@ -74,6 +179,7 @@ export function TrainDetail({
   onBack,
   language,
   onOpenRating,
+  onOpenPhotos,
   isFavorite = false,
   onToggleFavorite,
 }: {
@@ -130,461 +236,222 @@ export function TrainDetail({
   const nearestStopIdx = nearestStopResult.idx;
   const nearestStopDistKm = nearestStopResult.distKm;
 
+  const [favLocal, setFavLocal] = React.useState(isFavorite);
+  const maxFare = route.fare?.acBerth || route.fare?.firstClassBerth || route.fare?.snigdha || route.fare?.shuvanChair || route.fare?.shuvan || 0;
+
   return (
-    /* Light: white bg — Dark: deep navy gradient */
     <div className="flex flex-col flex-1 min-h-0 w-full bg-kj-bg overflow-hidden">
 
-      {/* Sub-header */}
-      <div className="shrink-0 flex items-center gap-3 px-4 py-3 border-b border-kj-line dark:border-kj-line bg-kj-panel-muted">
-        <button
-          onClick={onBack}
-          className="p-2 -ml-1 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full transition-colors"
-          aria-label={bn ? 'ফিরুন' : 'Back'}
-        >
-          <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
+      {/* Sticky back bar */}
+      <div className="sticky top-0 z-20 bg-kj-bg/90 backdrop-blur-md border-b border-kj-line flex items-center gap-3 px-4 py-3 shrink-0">
+        <button onClick={onBack} className="w-9 h-9 rounded-xl border border-kj-line bg-kj-panel text-kj-text-dim flex items-center justify-center active:scale-90 transition-all hover:border-purple-400/60 hover:text-purple-500">
+          <ArrowLeft className="w-4 h-4" />
         </button>
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <h2 className="font-bold text-kj-text truncate">
-              {bn ? route.bnName : route.name}
-            </h2>
-            <span className="text-xs font-bold px-2 py-0.5 bg-kj-chip-bg text-kj-text-dim rounded-full">
-              #{route.number}
-            </span>
-            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${TYPE_COLORS[route.type] || TYPE_COLORS.Local}`}>
-              {bn ? (TYPE_BN[route.type] ?? route.type) : route.type}
-            </span>
-          </div>
-          <p className="text-xs text-kj-text-dim mt-0.5">
-            {bn ? fromSt?.bnName : fromSt?.name}
-            {' → '}
-            {bn ? toSt?.bnName : toSt?.name}
-          </p>
+          <p className="font-bengali font-bold text-kj-text truncate">{bn ? route.bnName : route.name}</p>
+          <p className="text-[11px] text-kj-text-faint font-sans">#{route.number} · {route.type}</p>
         </div>
-
-        <button
-          onClick={() => onOpenRating?.()}
-          className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900/40"
-          aria-label={bn ? 'ট্রেন রেটিং' : 'Train rating'}
-        >
-          {ratingSummary?.count ? `★ ${ratingSummary.average.toFixed(1)}` : (bn ? '☆ রেটিং' : '☆ Rate')}
-        </button>
-        <button
-          onClick={() => onToggleFavorite?.()}
-          className="w-8 h-8 flex items-center justify-center leading-none rounded-full bg-kj-panel border border-kj-line hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg transition-colors shrink-0"
-          aria-label={isFavorite ? (bn ? 'ফেভারিট থেকে সরান' : 'Remove from favorites') : (bn ? 'ফেভারিটে যোগ করুন' : 'Add to favorites')}
-        >
-          <Heart className={`w-4 h-4 ${isFavorite ? 'fill-pink-500 text-pink-500' : 'text-kj-text-faint'}`} />
+        <button onClick={() => { setFavLocal(f => !f); onToggleFavorite?.(); }}
+          className="w-9 h-9 rounded-full border border-kj-line bg-kj-panel flex items-center justify-center active:scale-90 transition-all">
+          <Heart className={`w-4 h-4 ${favLocal ? 'fill-pink-500 text-pink-500' : 'text-kj-text-faint'}`} />
         </button>
       </div>
 
-      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
-        {/* Map */}
-        <div className="h-[220px] xs:h-[260px] sm:h-[280px] md:h-[340px] bg-kj-panel relative">
-          <TrainRouteMap
-            route={route}
-            userLocation={userLocation}
-            highlightFromId={fromId || undefined}
-            highlightToId={toId || undefined}
-            language={language}
-            currentStopId={nearestStopIdx >= 0 ? route.stops[nearestStopIdx] : undefined}
-          />
-        </div>
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y pb-24" style={{ WebkitOverflowScrolling: 'touch' }}>
 
-        <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-4 max-w-[728px] mx-auto" />
-
-
-
-        <div className="p-4 space-y-4">
-
-          {/* ── Schedule ─────────────────────────────────────────────────── */}
-          <div className="bg-kj-chip-bg rounded-2xl p-4 border border-kj-line dark:border-kj-line">
-            <h3 className="text-sm font-bold text-kj-text mb-3 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-kj-primary" />
-              {bn ? 'সময়সূচি' : 'Schedule'}
-            </h3>
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              <div className="space-y-1">
-                <p className="text-xs text-kj-text-dim">
-                  {bn ? `${fromSt?.bnName || 'শুরু'} ছাড়ে` : `Departs ${fromSt?.name || 'Start'}`}
-                </p>
-                <p className="font-bold text-kj-text text-base">{route.dhakaDepart}</p>
+        {/* Gradient hero card */}
+        <div className="mx-4 mt-4 rounded-[22px] p-5 relative overflow-hidden text-white" style={{ background: 'linear-gradient(135deg, #5b21b6 0%, #7c3aed 60%, #f59e0b 100%)' }}>
+          <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-white/10 pointer-events-none kj-anim-pulse" />
+          <div className="relative">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-sm flex flex-col items-center justify-center shrink-0">
+                <span className="font-sans font-black text-[12px] leading-none">#{route.number}</span>
+                <span className="text-xl mt-0.5">🚆</span>
               </div>
-              <div className="space-y-1">
-                <p className="text-xs text-kj-text-dim">{bn ? 'গন্তব্যে পৌঁছায়' : 'Arrives'}</p>
-                <p className="font-bold text-kj-text text-base">{route.destinationArrive}</p>
-              </div>
-              <div className="space-y-1">
-                <p className="text-xs text-kj-text-dim">{bn ? 'ফিরতি ছাড়ে' : 'Return Departs'}</p>
-                <p className="font-bold text-kj-text text-base">{route.returnDepart}</p>
-              </div>
-              <div className="space-y-1">
-                <p className="text-xs text-kj-text-dim">
-                  {bn ? `${fromSt?.bnName || 'ঢাকা'} ফেরে` : `Returns ${fromSt?.name || 'Dhaka'}`}
-                </p>
-                <p className="font-bold text-kj-text text-base">{route.dhakaArrive}</p>
+              <div className="flex-1 min-w-0">
+                <p className="font-bengali font-bold text-lg leading-tight">{bn ? route.bnName : route.name}</p>
+                <p className="text-white/75 text-sm font-bengali">{bn ? (fromSt?.bnName || route.from) : (fromSt?.name || route.from)} → {bn ? (toSt?.bnName || route.to) : (toSt?.name || route.to)}</p>
               </div>
             </div>
-            {route.offDay !== 'No Off Day' && route.offDay !== 'No Off' && (
-              <div className="mt-3 flex items-center gap-2 p-2 bg-amber-50 dark:bg-amber-400/15 rounded-lg border border-amber-200 dark:border-amber-400/25">
-                <CalendarX className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
-                <span className="text-xs text-amber-700 dark:text-amber-300">
-                  <span className="font-bold">{bn ? 'সাপ্তাহিক ছুটি:' : 'Off Day:'}</span> {route.offDay}
-                </span>
+            {/* Schedule strip */}
+            <div className="flex items-center gap-3 bg-white/15 rounded-xl px-4 py-3">
+              <div className="text-center"><p className="font-sans font-black text-xl leading-none">{route.dhakaDepart}</p><p className="text-white/60 text-[10px] mt-0.5">{bn ? 'ছাড়ে' : 'Dep'}</p></div>
+              <div className="flex-1 relative"><div className="h-px bg-white/30" /><span className="absolute left-1/2 -top-2.5 -translate-x-1/2 bg-[#7c3aed] px-2 text-[10px] font-bold text-white/80 font-sans whitespace-nowrap">{route.distanceKm} km</span></div>
+              <div className="text-center"><p className="font-sans font-black text-xl leading-none">{route.destinationArrive}</p><p className="text-white/60 text-[10px] mt-0.5">{bn ? 'পৌঁছায়' : 'Arr'}</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div className="px-4 py-4 space-y-4">
+
+          {/* Stat cards */}
+          <div className="grid grid-cols-3 gap-2.5">
+            {[
+              { icon: '🚆', label: bn ? 'ধরন' : 'Type', value: bn ? (TYPE_BN[route.type] ?? route.type) : route.type, color: '#7c3aed' },
+              { icon: '📍', label: bn ? 'স্টেশন' : 'Stations', value: route.stops.length.toString(), color: '#00f5ff' },
+              { icon: '৳', label: bn ? 'সর্বোচ্চ ভাড়া' : 'Max fare', value: maxFare > 0 ? `~৳${maxFare}` : 'Varies', color: '#ffb800' },
+            ].map((s, i) => (
+              <div key={i} className="dc-card rounded-2xl p-3.5 flex flex-col items-center gap-2 text-center">
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl" style={{ background: `${s.color}18` }}>{s.icon}</div>
+                <p className="text-[9px] font-bold uppercase tracking-[1.2px] text-kj-text-faint font-sans">{s.label}</p>
+                <p className="font-bengali font-bold text-kj-text text-[13px] leading-tight">{s.value}</p>
               </div>
-            )}
-            <div className="mt-3 flex items-center gap-2 text-xs text-kj-text-dim">
-              <Navigation className="w-3.5 h-3.5 shrink-0" />
-              <span>{bn ? `মোট দূরত্ব: ~${route.distanceKm} কিমি` : `Total distance: ~${route.distanceKm} km`}</span>
+            ))}
+          </div>
+
+          {/* Action row */}
+          <div className="grid grid-cols-3 gap-2">
+            {[
+              { label: bn ? 'রেটিং' : 'Rate', icon: '⭐', action: () => onOpenRating?.() },
+              { label: bn ? 'ছবি' : 'Photos', icon: '📷', action: () => onOpenPhotos?.() },
+              { label: bn ? 'শেয়ার' : 'Share', icon: '↗', action: () => navigator.share?.({ title: route.name, text: `${route.name} #${route.number}`, url: window.location.href }).catch(() => {}) },
+            ].map((btn, i) => (
+              <button key={i} onClick={btn.action} className="dc-card rounded-xl py-3 flex flex-col items-center gap-1.5 hover:border-purple-400/40 transition-colors active:scale-95">
+                <span className="text-xl">{btn.icon}</span>
+                <span className="text-[11px] font-semibold text-kj-text-dim font-bengali">{btn.label}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Route map */}
+          <div className="dc-card rounded-2xl overflow-hidden">
+            <div className="px-4 py-3 border-b border-kj-line flex items-center justify-between">
+              <h3 className="font-bold text-kj-text text-sm flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-kj-primary rounded-full kj-anim-pulse" />{bn ? 'রুট ম্যাপ' : 'Route Map'}
+              </h3>
+              {nearestStopIdx >= 0 && (
+                <span className="text-[10px] bg-kj-primary-soft border border-kj-primary/30 px-2 py-0.5 rounded-full text-kj-primary font-bold font-sans">Live</span>
+              )}
+            </div>
+            <div className="h-[240px]">
+              <TrainRouteMap route={route} userLocation={userLocation} highlightFromId={fromId || undefined} highlightToId={toId || undefined} language={language} currentStopId={nearestStopIdx >= 0 ? route.stops[nearestStopIdx] : undefined} />
             </div>
           </div>
 
-          {/* ── Station timeline ──────────────────────────────────────────── */}
-          <div className="bg-kj-chip-bg rounded-2xl border border-kj-line dark:border-kj-line overflow-hidden">
-            <div className="px-4 py-3 border-b border-kj-line dark:border-kj-line">
-              <h3 className="text-sm font-bold text-kj-text flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-kj-primary" />
-                {bn ? `স্টেশন (${route.stops.length}টি)` : `Stations (${route.stops.length})`}
-                {nearestStopIdx >= 0 && (
-                  <span className="ml-auto text-[10px] font-semibold text-blue-600 dark:text-blue-400 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse inline-block" />
-                    {bn ? 'লাইভ অবস্থান' : 'Live location'}
-                  </span>
-                )}
-              </h3>
+          {/* Off day notice */}
+          {route.offDay && route.offDay !== 'No Off Day' && route.offDay !== 'No Off' && (
+            <div className="flex items-center gap-2.5 bg-kj-amber-soft border border-kj-amber/30 rounded-xl p-3">
+              <CalendarX className="w-4 h-4 text-kj-amber shrink-0" />
+              <span className="font-bengali text-xs text-kj-text"><span className="font-bold">{bn ? 'সাপ্তাহিক ছুটি:' : 'Weekly off:'}</span> {route.offDay}</span>
+            </div>
+          )}
+
+          {/* Helpline banner */}
+          <button onClick={() => {}} className="w-full dc-card rounded-2xl p-4 flex items-center gap-3 text-left hover:border-kj-accent/40 transition-colors active:scale-[0.99]">
+            <div className="w-11 h-11 rounded-xl bg-kj-accent flex items-center justify-center text-xl shrink-0">📞</div>
+            <div className="flex-1">
+              <p className="font-bengali font-bold text-kj-text text-sm">{bn ? 'হেল্পলাইন' : 'Helpline'}</p>
+              <p className="font-bengali text-[11px] text-kj-text-dim mt-0.5">{bn ? 'সব জরুরি ও পরিবহন নম্বর দেখুন' : 'Tap to see all helpline numbers'}</p>
+            </div>
+            <span className="font-sans font-black text-kj-accent text-sm">999</span>
+          </button>
+
+          {/* Fare calculator */}
+          <div className="dc-card rounded-2xl overflow-hidden">
+            <div className="px-4 py-3 border-b border-kj-line">
+              <h3 className="font-bold text-kj-text text-sm flex items-center gap-2"><Coins className="w-4 h-4 text-kj-amber" />{bn ? 'স্টেশন-টু-স্টেশন ভাড়া' : 'Station-to-Station Fare'}</h3>
+            </div>
+            <div className="p-4 space-y-3">
+              <div className="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label className="text-[10px] font-bold uppercase tracking-[1.2px] text-kj-text-faint font-sans mb-1.5 block">{bn ? 'কোথা থেকে' : 'From'}</label>
+                  <SearchableSelect options={stopOptions} value={fromId} onChange={setFromId} placeholder={bn ? 'স্টেশন বেছে নিন' : 'Select station'} />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold uppercase tracking-[1.2px] text-kj-text-faint font-sans mb-1.5 block">{bn ? 'কোথায়' : 'To'}</label>
+                  <SearchableSelect options={stopOptions.filter(o => o.id !== fromId)} value={toId} onChange={setToId} placeholder={bn ? 'স্টেশন বেছে নিন' : 'Select station'} />
+                </div>
+              </div>
+              {journeyInfo ? (
+                <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="bg-kj-primary-soft rounded-xl p-3 text-center"><p className="text-[10px] font-bold uppercase text-kj-text-faint font-sans">{bn ? 'দূরত্ব' : 'Distance'}</p><p className="font-sans font-black text-kj-primary text-lg mt-1">~{Math.round(journeyInfo.distKm)} km</p></div>
+                    <div className="bg-kj-primary-soft rounded-xl p-3 text-center"><p className="text-[10px] font-bold uppercase text-kj-text-faint font-sans">{bn ? 'সময়' : 'Duration'}</p><p className="font-sans font-black text-kj-primary text-lg mt-1">{journeyInfo.travelTime}</p></div>
+                  </div>
+                  <div className="dc-card rounded-xl overflow-hidden">
+                    <table className="w-full text-sm">
+                      <thead><tr className="bg-kj-chip-bg text-xs text-kj-text-faint"><th className="text-left px-3 py-2 font-bold uppercase tracking-[1px]">{bn ? 'শ্রেণী' : 'Class'}</th><th className="text-right px-3 py-2 font-bold uppercase tracking-[1px]">{bn ? 'ভাড়া' : 'Fare'}</th></tr></thead>
+                      <tbody className="divide-y divide-kj-line">
+                        {[
+                          { label: bn ? 'শুভন' : 'Shuvan', val: journeyInfo.fare.shuvan },
+                          { label: bn ? 'শুভন চেয়ার' : 'Shuvan Chair', val: journeyInfo.fare.shuvanChair },
+                          { label: bn ? 'স্নিগ্ধা' : 'Snigdha', val: journeyInfo.fare.snigdha },
+                          { label: bn ? 'এসি বার্থ' : 'AC Berth', val: journeyInfo.fare.acBerth },
+                        ].filter(r => r.val && r.val > 0).map(row => (
+                          <tr key={row.label} className="hover:bg-kj-chip-bg/50 transition-colors">
+                            <td className="px-3 py-2.5 font-bengali text-kj-text-dim">{row.label}</td>
+                            <td className="px-3 py-2.5 text-right font-bold text-kj-primary font-sans">৳{formatNumber(row.val!)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <p className="text-[10px] text-kj-text-faint font-bengali">{bn ? '⚠️ আনুমানিক ভাড়া · সঠিক তথ্যের জন্য রেলওয়ে সাইট দেখুন' : '⚠️ Approximate fare · check Bangladesh Railway website for exact rates'}</p>
+                </div>
+              ) : (
+                <p className="text-xs text-kj-text-faint text-center py-2 font-bengali">{bn ? 'দুটি স্টেশন সিলেক্ট করুন' : 'Select two stations to calculate fare'}</p>
+              )}
+            </div>
+          </div>
+
+          <SponsoredAdSlot language={language as 'en' | 'bn'} size="728x90" compact />
+
+          {/* Station timeline */}
+          <div className="dc-card rounded-2xl overflow-hidden">
+            <div className="px-4 py-3 border-b border-kj-line flex items-center justify-between">
+              <h3 className="font-bold text-kj-text text-sm flex items-center gap-2"><MapPin className="w-4 h-4 text-kj-primary" />{bn ? `স্টেশনসমূহ (${route.stops.length}টি)` : `Stations (${route.stops.length})`}</h3>
             </div>
             <div className="px-4 py-4">
               {route.stops.map((id, idx) => {
                 const st = TRAIN_STATIONS[id];
                 if (!st) return null;
-                const isFirst    = idx === 0;
-                const isLast     = idx === route.stops.length - 1;
-                const isMid      = !isFirst && !isLast;
+                const isFirst = idx === 0;
+                const isLast = idx === route.stops.length - 1;
                 const isNearUser = nearestStopIdx === idx;
-                const isPassed   = nearestStopIdx >= 0 && idx < nearestStopIdx;
-                const distLabel  = nearestStopDistKm < 1
-                  ? `${Math.round(nearestStopDistKm * 1000)} m`
-                  : `${nearestStopDistKm.toFixed(1)} km`;
-
+                const isPassed = nearestStopIdx >= 0 && idx < nearestStopIdx;
                 return (
-                  <React.Fragment key={id}>
-                    {/* ── Virtual "You are here" row injected before nearest station ── */}
-                    {isNearUser && userLocation && (
-                      <div className="flex gap-3">
-                        <div className="flex flex-col items-center" style={{ width: 20 }}>
-                          {/* Top connector into this virtual row (solid from above if passed, else gray) */}
-                          <div className={`w-px flex-none h-2 ${isPassed ? 'bg-emerald-400 dark:bg-kj-primary' : 'bg-gray-300 dark:bg-white/25'}`} />
-                          {/* Pulsing blue user dot */}
-                          <div className="relative shrink-0 z-10">
-                            <div className="w-4 h-4 rounded-full bg-blue-500 border-2 border-white dark:border-slate-900 shadow-lg shadow-blue-500/50" />
-                            <div className="absolute inset-0 rounded-full bg-blue-400 animate-ping opacity-60" />
-                          </div>
-                          {/* Dashed connector from user-dot down to nearest station */}
-                          <div className="flex-1 min-h-[24px] flex flex-col items-center gap-0.5 py-0.5">
-                            {[0,1,2,3].map(i => (
-                              <div key={i} className="w-px h-1.5 bg-blue-400 dark:bg-blue-500 rounded" />
-                            ))}
-                          </div>
-                        </div>
-                        <div className="pb-1 flex-1 min-w-0 pt-0">
-                          <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
-                            {bn ? 'আপনার বর্তমান অবস্থান' : 'Your current location'}
-                          </span>
-                          <p className="text-[10px] text-blue-500 dark:text-blue-400 font-semibold mt-0.5 flex items-center gap-1">
-                            <span className="w-1 h-1 bg-blue-500 rounded-full animate-pulse inline-block" />
-                            {bn ? 'আপনি এখানে আছেন' : 'You are here'}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* ── Actual stop row ── */}
-                    <div className="flex gap-3">
-                      {/* Timeline column */}
-                      <div className="flex flex-col items-center" style={{ width: 20 }}>
-                        {/* Top connector — hide it when the virtual row already drew the dashed line */}
-                        {!(isNearUser && userLocation) && (
-                          <div className={`w-px flex-none h-2 ${
-                            isFirst ? 'bg-transparent'
-                            : isPassed ? 'bg-emerald-400 dark:bg-kj-primary'
-                            : 'bg-gray-300 dark:bg-white/25'
-                          }`} />
-                        )}
-                        {isNearUser && userLocation && <div className="flex-none h-0" />}
-                        {/* Dot */}
-                        {isNearUser ? (
-                          /* Nearest station: orange pin dot */
-                          <div className="w-4 h-4 rounded-full bg-orange-500 border-2 border-orange-300 shadow-md shadow-orange-500/40 shrink-0 z-10" />
-                        ) : isPassed ? (
-                          <div className="w-4 h-4 rounded-full bg-kj-primary dark:bg-emerald-400 border-2 border-emerald-300 flex items-center justify-center shrink-0 z-10">
-                            <CheckCircle2 className="w-2.5 h-2.5 text-white" />
-                          </div>
-                        ) : isFirst ? (
-                          <div className="w-4 h-4 rounded-full bg-kj-primary dark:bg-emerald-400 border-2 border-emerald-400 dark:border-emerald-300 shadow-lg shadow-emerald-500/30 shrink-0 z-10" />
-                        ) : isLast ? (
-                          <div className="w-4 h-4 rounded-full bg-slate-500 dark:bg-white/80 border-2 border-slate-400 dark:border-white/50 shadow shrink-0 z-10" />
-                        ) : (
-                          <div className="w-2.5 h-2.5 rounded-full bg-gray-300 dark:bg-white/20 border border-gray-400 dark:border-white/35 shrink-0 z-10 mt-0.5" />
-                        )}
-                        {/* Bottom connector */}
-                        {!isLast && (
-                          <div className={`w-px flex-1 min-h-[20px] ${
-                            isPassed ? 'bg-emerald-400 dark:bg-kj-primary'
-                            : isFirst ? 'bg-gradient-to-b from-emerald-500/70 dark:from-emerald-400/80 to-gray-300 dark:to-white/25'
-                            : 'bg-gray-300 dark:bg-white/25'
-                          }`} />
-                        )}
-                      </div>
-                      {/* Stop name */}
-                      <div className={`pb-3 flex-1 min-w-0 ${isMid && !isNearUser ? 'pt-0.5' : 'pt-0'}`}>
-                        <span className={`leading-snug ${
-                          isNearUser ? 'text-sm font-bold text-orange-600 dark:text-orange-400'
-                          : isPassed ? 'text-xs text-kj-primary line-through opacity-60'
-                          : isFirst || isLast ? 'text-sm font-bold text-kj-text'
-                          : 'text-xs text-kj-text-dim'
-                        }`}>
-                          {bn ? st.bnName : st.name}
-                        </span>
-                        {isNearUser && (
-                          <p className="text-[10px] text-orange-500 dark:text-orange-400 font-semibold mt-0.5 flex items-center gap-1">
-                            <MapPin className="w-2.5 h-2.5 shrink-0" />
-                            {bn ? `নিকটতম স্টেশন • ${distLabel} দূরে` : `Nearest station • ${distLabel} away`}
-                          </p>
-                        )}
-                        {!isNearUser && (isFirst || isLast) && (
-                          <p className="text-[10px] text-kj-text-faint mt-0.5">
-                            {isFirst ? (bn ? 'যাত্রা শুরু' : 'Departure') : (bn ? 'চূড়ান্ত গন্তব্য' : 'Final Destination')}
-                          </p>
-                        )}
-                      </div>
+                  <div key={id} className="flex gap-3" style={{ paddingBottom: isLast ? 0 : 12 }}>
+                    <div className="flex flex-col items-center shrink-0" style={{ width: 20 }}>
+                      {!isFirst && <div className={`w-px flex-none h-3 ${isPassed ? 'bg-kj-primary' : 'bg-kj-line'}`} />}
+                      <div className={`rounded-full relative z-10 ${
+                        isNearUser ? 'w-4 h-4 bg-kj-accent border-2 border-white shadow-[0_0_0_3px_var(--kj-accent-soft)]' :
+                        isPassed ? 'w-3.5 h-3.5 bg-kj-primary border-2 border-kj-primary' :
+                        isFirst ? 'w-4 h-4 bg-kj-primary border-2 border-kj-primary' :
+                        isLast ? 'w-4 h-4 bg-kj-accent border-2 border-kj-accent' :
+                        'w-2.5 h-2.5 bg-kj-panel border-2 border-kj-line'
+                      }`} />
+                      {!isLast && <div className={`w-px flex-1 min-h-[20px] ${isPassed ? 'bg-kj-primary' : 'bg-kj-line'}`} />}
                     </div>
-                  </React.Fragment>
+                    <div className="flex-1 min-w-0 pb-1">
+                      <span className={`font-bengali leading-snug ${isFirst || isLast ? 'text-sm font-bold text-kj-text' : isNearUser ? 'text-sm font-bold text-kj-accent' : isPassed ? 'text-xs text-kj-text-dim' : 'text-xs text-kj-text-dim'}`}>
+                        {bn ? st.bnName : st.name}
+                      </span>
+                      {(isFirst || isLast) && <p className="text-[10px] text-kj-text-faint mt-0.5 font-sans">{isFirst ? (bn ? 'যাত্রা শুরু' : 'Departure') : (bn ? 'চূড়ান্ত গন্তব্য' : 'Final destination')}</p>}
+                      {isNearUser && <p className="text-[10px] text-kj-accent font-semibold mt-0.5 font-sans">● {bn ? 'নিকটতম স্টেশন' : 'Nearest station'}</p>}
+                    </div>
+                  </div>
                 );
               })}
             </div>
           </div>
 
-          {/* <AdSenseAd adSlot="auto" className="my-2 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-
-
-
-          {/* ── Fare Calculator ───────────────────────────────────────────── */}
-          {/* No overflow-hidden so SearchableSelect dropdown isn't clipped */}
-          <div className="bg-kj-chip-bg rounded-2xl border border-kj-line dark:border-kj-line">
-            <div className="px-4 py-3 border-b border-kj-line dark:border-kj-line rounded-t-2xl">
-              <h3 className="text-sm font-bold text-kj-text flex items-center gap-2">
-                <Coins className="w-4 h-4 text-amber-500 dark:text-amber-400" />
-                {bn ? 'ভাড়া ও সময় ক্যালকুলেটর' : 'Fare & Time Calculator'}
-              </h3>
-            </div>
-            <div className="p-4 space-y-3">
-              <div className="space-y-3">
-                <div>
-                  <label className="text-xs font-medium text-kj-text-dim mb-1 block">
-                    {bn ? 'কোথায় থেকে' : 'From Station'}
-                  </label>
-                  <SearchableSelect
-                    options={stopOptions}
-                    value={fromId}
-                    onChange={setFromId}
-                    placeholder={bn ? 'স্টেশন বেছে নিন' : 'Select station'}
-                  />
-                </div>
-                <div>
-                  <label className="text-xs font-medium text-kj-text-dim mb-1 block">
-                    {bn ? 'কোথায় যাবেন' : 'To Station'}
-                  </label>
-                  <SearchableSelect
-                    options={stopOptions.filter(o => o.id !== fromId)}
-                    value={toId}
-                    onChange={setToId}
-                    placeholder={bn ? 'স্টেশন বেছে নিন' : 'Select station'}
-                  />
-                </div>
-              </div>
-
-              {journeyInfo ? (
-                <>
-                  <div className="mt-2 space-y-3 animate-in fade-in duration-200">
-                    <div className="flex items-center justify-between p-3 bg-kj-primary-soft dark:bg-emerald-400/15 rounded-xl border border-kj-primary/30 dark:border-emerald-400/20">
-                      <div className="flex items-center gap-2 text-sm">
-                        <Navigation className="w-4 h-4 text-kj-primary" />
-                        <span className="font-medium text-kj-text-dim">
-                          ~{Math.round(journeyInfo.distKm)} km
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <Clock className="w-4 h-4 text-kj-primary" />
-                        <span className="font-medium text-kj-text-dim">{journeyInfo.travelTime}</span>
-                      </div>
-                    </div>
-
-                    <div className="overflow-hidden rounded-xl border border-kj-line dark:border-kj-line">
-                      <table className="w-full text-sm">
-                        <thead>
-                          <tr className="bg-gray-100 dark:bg-kj-chip-bg text-xs text-kj-text-dim">
-                            <th className="text-left px-3 py-2 font-medium">{bn ? 'শ্রেণী' : 'Class'}</th>
-                            <th className="text-right px-3 py-2 font-medium">{bn ? 'ভাড়া' : 'Fare'}</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-100 dark:divide-white/10">
-                          {[
-                            { label: bn ? 'শুভন' : 'Shuvan', val: journeyInfo.fare.shuvan },
-                            { label: bn ? 'শুভন চেয়ার' : 'Shuvan Chair', val: journeyInfo.fare.shuvanChair },
-                            { label: bn ? 'স্নিগ্ধা (এসি চেয়ার)' : 'Snigdha (AC Chair)', val: journeyInfo.fare.snigdha },
-                            { label: bn ? '১ম শ্রেণী বার্থ' : '1st Class Berth', val: journeyInfo.fare.firstClassBerth! },
-                            { label: bn ? 'এসি বার্থ' : 'AC Berth', val: journeyInfo.fare.acBerth! },
-                          ].map(row => (
-                            <tr key={row.label} className="hover:bg-kj-chip-bg dark:hover:bg-white/5 transition-colors">
-                              <td className="px-3 py-2.5 text-kj-text-dim dark:text-white/75">{row.label}</td>
-                              <td className="px-3 py-2.5 text-right font-bold text-emerald-700 dark:text-kj-primary">
-                                ৳{formatNumber(row.val)}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                    <p className="text-[10px] text-kj-text-faint flex items-start gap-1">
-                      <AlertCircle className="w-3 h-3 mt-0.5 shrink-0" />
-                      {bn
-                        ? 'ভাড়া আনুমানিক। সঠিক ভাড়ার জন্য বাংলাদেশ রেলওয়ে ওয়েবসাইট দেখুন।'
-                        : 'Fare is approximate. Check Bangladesh Railway website for exact fares.'}
-                    </p>
-                  </div>
-
-                  {/* <AdSenseAd adSlot="auto" className="my-8 w-full max-w-[728px] mx-auto px-2 md:px-0 shrink-0" /> */}
-                </>
-              ) : (
-                <p className="text-xs text-kj-text-faint text-center py-2">
-                  {bn ? 'দুটি স্টেশন সিলেক্ট করুন' : 'Select two stations to calculate fare'}
-                </p>
-              )}
-            </div>
-          </div>
-
-
-
-          {/* Spacer for mobile bottom nav */}
-
-          <div className="h-24 md:h-4" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ── Train Card ────────────────────────────────────────────────────────────────
-function TrainCard({
-  route, onClick, onRateClick, language, ratingSummary, isFavorite, onToggleFavorite
-}: {
-  route: BDTrainRoute;
-  onClick: () => void;
-  onRateClick?: () => void;
-  language: string;
-  ratingSummary?: TrainRatingSummary | null;
-  isFavorite?: boolean;
-  onToggleFavorite?: () => void;
-}) {
-  const bn = language === 'bn';
-  const fromStation = TRAIN_STATIONS[route.from];
-  const toStation   = TRAIN_STATIONS[route.to];
-
-  const hasRating = (ratingSummary?.count ?? 0) > 0;
-  const avgRating = ratingSummary?.average ?? 0;
-  const ratingPercent = Math.round((avgRating / 5) * 100);
-
-  return (
-    <div
-      onClick={onClick}
-      className="bg-kj-panel border border-kj-line rounded-2xl p-4 cursor-pointer hover:border-emerald-300 dark:hover:border-emerald-600 hover:shadow-md transition-all active:scale-[0.99]"
-    >
-      <div className="flex items-start justify-between gap-2 mb-3">
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap mb-1">
-            <h3 className="font-bold text-kj-text text-sm truncate">
-              {bn ? route.bnName : route.name}
-            </h3>
-            <span className="text-[10px] font-bold px-1.5 py-0.5 bg-kj-chip-bg text-kj-text-dim rounded shrink-0">
-              #{route.number}
-            </span>
-          </div>
-          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${TYPE_COLORS[route.type] || TYPE_COLORS.Local}`}>
-            {bn ? (TYPE_BN[route.type] ?? route.type) : route.type}
-          </span>
-        </div>
-        <div className="flex items-center gap-1 shrink-0">
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              onToggleFavorite?.();
-            }}
-            className="w-8 h-8 flex items-center justify-center leading-none rounded-full bg-kj-chip-bg border border-kj-line dark:border-kj-line hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg transition-colors shrink-0"
-            aria-label={isFavorite ? `Remove ${route.name} from favorites` : `Add ${route.name} to favorites`}
-          >
-            <Heart className={`w-4 h-4 ${isFavorite ? 'fill-pink-500 text-pink-500' : 'text-kj-text-faint'}`} />
-          </button>
-          <div
-            className="w-8 h-8 rounded-full flex items-center justify-center"
-            style={{ backgroundColor: route.color + '20', color: route.color }}
-          >
-            <Train className="w-4 h-4" />
-          </div>
         </div>
       </div>
 
-      {/* Route */}
-      <div className="flex items-center gap-2 mb-3 text-sm">
-        <div className="flex-1 min-w-0">
-          <p className="font-semibold text-kj-text truncate">
-            {bn ? fromStation?.bnName : fromStation?.name}
-          </p>
-        </div>
-        <ArrowRight className="w-4 h-4 text-kj-text-faint shrink-0" />
-        <div className="flex-1 min-w-0 text-right">
-          <p className="font-semibold text-kj-text truncate">
-            {bn ? toStation?.bnName : toStation?.name}
-          </p>
-        </div>
-      </div>
-
-      {/* Times */}
-      <div className="flex items-center justify-between text-xs text-kj-text-dim">
-        <div className="flex items-center gap-1">
-          <Clock className="w-3 h-3 text-kj-primary" />
-          <span className="font-medium text-kj-text-dim">{route.dhakaDepart}</span>
-          <span>→</span>
-          <span className="font-medium text-kj-text-dim">{route.destinationArrive}</span>
-        </div>
-        {route.offDay !== 'No Off Day' && route.offDay !== 'No Off' && (
-          <div className="flex items-center gap-1 text-amber-600 dark:text-amber-400">
-            <CalendarX className="w-3 h-3 shrink-0" />
-            <span className="truncate max-w-[100px]">{route.offDay.split(',')[0]}</span>
-          </div>
-        )}
-      </div>
-
-      {/* Fare range */}
-      <div className="mt-2 flex items-center justify-between gap-2">
-        <div className="flex items-center gap-1 text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 px-2 py-1 rounded-lg w-fit">
-          <Coins className="w-3 h-3 shrink-0" />
-          <span>৳{route.fare.shuvan}{route.fare.acBerth ? ` – ৳${route.fare.acBerth.toLocaleString()}` : ''}</span>
-        </div>
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            onRateClick?.();
-          }}
-          className={`px-2 py-1 rounded-md border text-[10px] font-bold leading-none transition-colors ${hasRating
-            ? 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100'
-            : 'bg-gray-50 text-kj-text-dim border-kj-line hover:bg-kj-chip-bg'}`}
-          aria-label={hasRating ? `View rating for ${route.name}` : `Rate ${route.name}`}
-        >
-          {hasRating
-            ? `★ ${avgRating.toFixed(1)} · ${ratingPercent}%`
-            : (bn ? '☆ রেটিং' : '☆ Rate')}
+      {/* Sticky bottom bar */}
+      <div className="sticky bottom-0 shrink-0 bg-kj-panel/90 backdrop-blur-[14px] border-t border-kj-line p-3 flex items-center gap-2 kj-glass" style={{ paddingBottom: 'calc(12px + env(safe-area-inset-bottom))' }}>
+        <button onClick={() => { setFavLocal(f => !f); onToggleFavorite?.(); }}
+          className={`flex items-center gap-1.5 px-3 py-2.5 rounded-xl border text-xs font-bold transition-colors font-bengali ${favLocal ? 'bg-kj-accent-soft text-kj-accent border-kj-accent' : 'bg-kj-panel-muted text-kj-text border-kj-line'}`}>
+          ❤️ {bn ? 'প্রিয়' : 'Save'}
+        </button>
+        <button onClick={() => onOpenRating?.()}
+          className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-kj-line bg-kj-panel-muted text-kj-text text-xs font-bold font-bengali">
+          ⭐ {bn ? 'রেট' : 'Rate'}
+        </button>
+        <button className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-kj-primary-ink font-bold text-sm font-bengali"
+          style={{ background: 'linear-gradient(135deg, #7c3aed, #5b21b6)' }}>
+          <Navigation className="w-4 h-4" />
+          {bn ? 'সময়সূচী দেখুন' : 'View schedule'}
         </button>
       </div>
     </div>
@@ -620,28 +487,61 @@ const ALL_STATION_OPTIONS = (() => {
   return result.sort((a, b) => a.name.localeCompare(b.name));
 })();
 
+type SearchTab = 'eticket' | 'pnr' | 'routemap';
 type SortOption = 'name' | 'depart' | 'distance';
 
 // ── Main Export ───────────────────────────────────────────────────────────────
-const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, embedded = false, onSelectTrain, onRateTrain }) => {
+const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, embedded = false, onSelectTrain, onRateTrain, setView }) => {
   const { language } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTrain, setSelectedTrain] = useState<BDTrainRoute | null>(null);
-  const [filterType, setFilterType] = useState<string>('');
-  const [filterDivision, setFilterDivision] = useState<string>('');
   const [filterFrom, setFilterFrom] = useState<string>('');
   const [filterTo, setFilterTo] = useState<string>('');
+  const [autoLocDetected, setAutoLocDetected] = useState(false);
+  const [searchValidationError, setSearchValidationError] = useState<string | null>(null);
+  const [searchExecuted, setSearchExecuted] = useState(false);
+
+  // Auto-detect nearest train station from user location
+  useEffect(() => {
+    if (filterFrom || autoLocDetected) return;
+    const loc = userLocation;
+    if (loc) {
+      let nearestId = '';
+      let minDist = Infinity;
+      Object.entries(TRAIN_STATIONS).forEach(([id, st]) => {
+        const d = haversineKm(loc.lat, loc.lng, st.lat, st.lng);
+        if (d < minDist) { minDist = d; nearestId = id; }
+      });
+      if (nearestId && minDist < 50) { setFilterFrom(nearestId); setAutoLocDetected(true); }
+    } else if (!autoLocDetected && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(pos => {
+        const { latitude: lat, longitude: lng } = pos.coords;
+        let nearestId = '';
+        let minDist = Infinity;
+        Object.entries(TRAIN_STATIONS).forEach(([id, st]) => {
+          const d = haversineKm(lat, lng, st.lat, st.lng);
+          if (d < minDist) { minDist = d; nearestId = id; }
+        });
+        if (nearestId && minDist < 80) { setFilterFrom(nearestId); setAutoLocDetected(true); }
+      }, () => {});
+    }
+  }, [userLocation, autoLocDetected, filterFrom]);
+  const [travelDate, setTravelDate] = useState('');
+  const [activeTab, setActiveTab] = useState<SearchTab>('eticket');
+  const [pnrInput, setPnrInput] = useState('');
+  const [pnrSideInput, setPnrSideInput] = useState('');
+  const [selectedStation, setSelectedStation] = useState<string | null>(null);
+  const [routeMapTrain, setRouteMapTrain] = useState<BDTrainRoute | null>(null);
   const [sortBy, setSortBy] = useState<SortOption>('name');
-  const [showFilters, setShowFilters] = useState(false);
   const [trainRatingsMap, setTrainRatingsMap] = useState<Record<string, TrainRatingSummary | null>>({});
   const [favoriteTrainIds, setFavoriteTrainIds] = useState<string[]>(getStoredTrainFavorites);
-  const [listFilter, setListFilter] = useState<'ALL' | 'FAVORITES'>('ALL');
   const bn = language === 'bn';
+
+  const lbl = (en: string, bnStr: string) => language === 'bn' ? bnStr : en;
 
   useEffect(() => { trackFeatureUsage('train_list'); }, []);
 
   const filtered = useMemo(() => {
-    // Deduplicate by id (keep first occurrence)
     const seen = new Set<string>();
     const unique = BD_TRAIN_ROUTES.filter(r => {
       if (seen.has(r.id)) return false;
@@ -651,7 +551,6 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
 
     let results = unique;
 
-    // Text search across name, number, bnName, all stop names
     const q = searchQuery.toLowerCase().trim();
     if (q) {
       results = results.filter(r =>
@@ -665,16 +564,8 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
       );
     }
 
-    // Type filter
-    if (filterType) results = results.filter(r => r.type === filterType);
-
-    // Division filter
-    if (filterDivision) results = results.filter(r => r.division === filterDivision);
-
-    // From station filter — train must stop at this station
     if (filterFrom) results = results.filter(r => r.stops.includes(filterFrom));
 
-    // To station filter — train must stop at this station AND after filterFrom if both set
     if (filterTo) {
       results = results.filter(r => {
         if (!r.stops.includes(filterTo)) return false;
@@ -685,21 +576,34 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
       });
     }
 
-    // Sort
-    const sorted = [...results].sort((a, b) => {
+    return [...results].sort((a, b) => {
       if (sortBy === 'depart') return a.dhakaDepart.localeCompare(b.dhakaDepart);
       if (sortBy === 'distance') return a.distanceKm - b.distanceKm;
       return a.name.localeCompare(b.name);
     });
+  }, [searchQuery, filterFrom, filterTo, sortBy]);
 
-    if (listFilter === 'FAVORITES') {
-      return sorted.filter(r => favoriteTrainIds.includes(r.id));
+  // Suggestions while typing — name/number match, max 6
+  const searchSuggestions = React.useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q || q.length < 1) return [];
+    const seen = new Set<string>();
+    const matches: typeof BD_TRAIN_ROUTES = [];
+    for (const r of BD_TRAIN_ROUTES) {
+      if (seen.has(r.id)) continue;
+      seen.add(r.id);
+      if (
+        r.name.toLowerCase().includes(q) ||
+        r.bnName.includes(q) ||
+        r.number.includes(q) ||
+        r.number.replace('/', '').includes(q)
+      ) {
+        matches.push(r);
+        if (matches.length >= 6) break;
+      }
     }
-
-    return sorted;
-  }, [searchQuery, filterType, filterDivision, filterFrom, filterTo, sortBy, listFilter, favoriteTrainIds]);
-
-  const activeFilterCount = [filterType, filterDivision, filterFrom, filterTo].filter(Boolean).length;
+    return matches;
+  }, [searchQuery]);
 
   useEffect(() => {
     let cancelled = false;
@@ -722,21 +626,6 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
     return () => { cancelled = true; };
   }, [filtered, trainRatingsMap]);
 
-  const nearestStation = useMemo(() => {
-    if (!userLocation) return null;
-    let minDist = Infinity;
-    let nearest: { station: (typeof TRAIN_STATIONS)[string]; distKm: number } | null = null;
-    Object.values(TRAIN_STATIONS).forEach(st => {
-      const d = haversineKm(userLocation.lat, userLocation.lng, st.lat, st.lng);
-      if (d < minDist) { minDist = d; nearest = { station: st, distKm: d }; }
-    });
-    return nearest;
-  }, [userLocation]);
-
-  const clearAllFilters = () => {
-    setFilterType(''); setFilterDivision(''); setFilterFrom(''); setFilterTo(''); setSearchQuery('');
-  };
-
   const toggleFavoriteTrain = (trainId: string) => {
     setFavoriteTrainIds(prev => {
       const next = prev.includes(trainId) ? prev.filter(id => id !== trainId) : [...prev, trainId];
@@ -745,7 +634,7 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
     });
   };
 
-  // Inline detail fallback (when no external handler)
+  // Inline detail fallback
   if (!onSelectTrain && selectedTrain) {
     return (
       <TrainDetail
@@ -754,269 +643,589 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
         onBack={() => setSelectedTrain(null)}
         language={language}
         onOpenRating={() => onRateTrain?.(selectedTrain)}
-        onOpenPhotos={() => window.location.hash = `train-photos`}
+        onOpenPhotos={() => window.location.hash = 'train-photos'}
         isFavorite={favoriteTrainIds.includes(selectedTrain.id)}
         onToggleFavorite={() => toggleFavoriteTrain(selectedTrain.id)}
       />
     );
   }
 
+  const SEARCH_TABS: { id: SearchTab; label: string; bnLabel: string; icon: string }[] = [
+    { id: 'eticket',  label: 'Search',    bnLabel: 'খুঁজুন',         icon: '🔍' },
+    { id: 'pnr',      label: 'PNR',       bnLabel: 'PNR',           icon: '🔍' },
+    { id: 'routemap', label: 'Route map', bnLabel: 'রুট ম্যাপ',     icon: '🛤' },
+  ];
+
   return (
-    <div className="flex flex-col flex-1 min-h-0 w-full bg-kj-bg overflow-hidden">
-      {/* Header */}
-      <div className="shrink-0 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 dark:from-[#10181c] dark:via-[#16222a] dark:to-[#10181c] shadow-xl shadow-emerald-500/30 dark:shadow-none">
-          <div className="absolute top-0 right-0 -mr-12 -mt-12 w-40 h-40 rounded-full bg-white/10 blur-2xl" />
-          <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-32 h-32 rounded-full bg-white/10 blur-2xl" />
-        </div>
+    <div className="min-h-screen bg-kj-bg text-kj-text overflow-x-hidden overflow-y-auto pb-32">
 
-        <div className="relative z-10 px-4 pt-4 pb-4">
-          {/* Title */}
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-              <Train className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h1 className="font-bold text-white text-xl leading-tight drop-shadow-md">
-                {bn ? 'বাংলাদেশ রেলওয়ে' : 'Bangladesh Railway'}
-              </h1>
-              <p className="text-white/80 text-xs">
-                {bn ? `${UNIQUE_TRAIN_COUNT}টি ট্রেন` : `${UNIQUE_TRAIN_COUNT} Trains`}
-              </p>
-            </div>
+      {/* ── Sticky back bar ── */}
+      <div className="sticky top-0 z-20 bg-kj-bg/90 backdrop-blur-md border-b border-kj-line flex items-center gap-3 px-4 py-3">
+        {onBack && (
+          <button
+            onClick={onBack}
+            className="w-9 h-9 rounded-xl border border-kj-line bg-kj-panel text-kj-text-dim flex items-center justify-center active:scale-90 transition-all hover:border-purple-400/60 hover:text-purple-600"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </button>
+        )}
+        <span className="font-bengali font-bold text-base text-kj-text">
+          {lbl('Bangladesh Railway', 'বাংলাদেশ রেলওয়ে')}
+        </span>
+      </div>
+
+      {/* ── Hero ── */}
+      <div
+        className="relative overflow-hidden px-4 pt-6 pb-0"
+        style={{ background: 'linear-gradient(135deg,#5b21b6 0%,#7c3aed 50%,#f59e0b 100%)' }}
+      >
+        {/* Decorative blobs */}
+        <div className="absolute -right-12 -top-14 w-60 h-60 rounded-full pointer-events-none" style={{ background: 'rgba(255,255,255,0.12)' }} />
+        <div className="absolute left-1/3 -bottom-20 w-52 h-52 rounded-full pointer-events-none" style={{ background: 'rgba(255,255,255,0.07)' }} />
+
+        <div className="relative">
+          {/* Eyebrow */}
+          <span className="font-sans text-[11px] font-bold uppercase tracking-[1.4px] text-white/80">
+            ✦ Bangladesh Railway · সকল রুট / all routes
+          </span>
+
+          {/* h1 */}
+          <h1 className="font-bengali font-bold text-white leading-[1.1] tracking-tight text-balance mt-2 mb-2" style={{ fontSize: 24 }}>
+            {lbl('Bangladesh Railway · all routes', 'বাংলাদেশ রেলওয়ে · সকল রুট')}
+          </h1>
+
+          {/* Subtitle */}
+          <p className="font-bengali text-[13px] text-white/88 leading-relaxed max-w-[400px]">
+            {lbl(
+              '350+ intercity trains, e-ticket booking, live tracking — including Padma Bridge route.',
+              '৩৫০+ আন্তঃনগর ট্রেন, ই-টিকেট বুকিং, লাইভ ট্র্যাকিং — পদ্মা সেতু রুট সহ।'
+            )}
+          </p>
+
+          {/* Stat strip */}
+          <div className="flex gap-5 mt-4 mb-5 flex-wrap">
+            {[
+              { v: '350+', l: lbl('Trains', 'ট্রেন') },
+              { v: '64',   l: lbl('Districts', 'জেলা') },
+              { v: '5 days', l: lbl('Advance', 'অগ্রিম') },
+              { v: '★4.5', l: lbl('Rating', 'রেটিং') },
+            ].map(s => (
+              <div key={s.l}>
+                <div className="font-sans font-extrabold text-[18px] tracking-tight leading-none text-white">{s.v}</div>
+                <div className="font-sans text-[9px] font-bold uppercase tracking-[1.2px] text-white/80 mt-1">{s.l}</div>
+              </div>
+            ))}
           </div>
-          {/* AdSense removed from fixed header to prevent blocking content */}
 
-
-
-
-          {/* Search + filter toggle row */}
-
-          <div className="flex gap-2">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                placeholder={bn ? 'ট্রেন বা স্টেশন খুঁজুন...' : 'Search train, station, number...'}
-                className="w-full pl-9 pr-9 py-2.5 rounded-xl bg-white/15 text-white placeholder-white/60 text-sm focus:outline-none focus:ring-2 focus:ring-white/30 border border-white/10"
-              />
-              {searchQuery && (
-                <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white">
-                  <X className="w-4 h-4" />
+          {/* Search card inside hero */}
+          <div
+            className="rounded-2xl overflow-hidden mb-0"
+            style={{ background: 'rgba(255,255,255,0.13)', backdropFilter: 'blur(14px)', border: '1px solid rgba(255,255,255,0.22)' }}
+          >
+            {/* Tab chips */}
+            <div className="flex gap-1.5 p-3 pb-2 overflow-x-auto scrollbar-none">
+              {SEARCH_TABS.map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-bold transition-all whitespace-nowrap shrink-0 ${
+                    activeTab === tab.id
+                      ? 'bg-white text-purple-700'
+                      : 'text-white/80 hover:bg-white/15'
+                  }`}
+                >
+                  <span>{tab.icon}</span>
+                  {bn ? tab.bnLabel : tab.label}
                 </button>
-              )}
+              ))}
             </div>
-            <button
-              onClick={() => setShowFilters(v => !v)}
-              className={`relative px-3 py-2.5 rounded-xl border text-sm font-bold flex items-center gap-1.5 transition-all ${showFilters ? 'bg-white text-emerald-700 border-white' : 'bg-white/15 text-white border-white/20 hover:bg-white/25'}`}
-            >
-              <SlidersHorizontal className="w-4 h-4" />
-              {bn ? 'ফিল্টার' : 'Filter'}
-              {activeFilterCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
-                  {activeFilterCount}
-                </span>
-              )}
-            </button>
-          </div>
 
-          {/* Expandable filter panel */}
-          {showFilters && (
-            <div className="mt-3 p-3 bg-white/15 rounded-xl border border-white/20 space-y-2 animate-in slide-in-from-top-2 duration-200">
-              {/* Row 1: From → To */}
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="text-[10px] font-bold text-white/70 block mb-1">{bn ? 'কোথায় থেকে' : 'From'}</label>
-                  <select
-                    value={filterFrom}
-                    onChange={e => setFilterFrom(e.target.value)}
-                    className="w-full text-xs px-2 py-1.5 rounded-lg bg-white/20 text-white border border-white/20 focus:outline-none"
-                  >
-                    <option value="" className="text-kj-text">{bn ? 'সব স্টেশন' : 'Any station'}</option>
-                    {ALL_STATION_OPTIONS.map(st => (
-                      <option key={st.id} value={st.id} className="text-kj-text">{bn ? st.bnName : st.name}</option>
+            <div className="px-3 pb-3 space-y-2">
+              {activeTab === 'eticket' && (
+                <>
+                  {/* Name search */}
+                  <div className="relative">
+                    <div
+                      className="absolute left-3 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
+                      style={{ background: 'linear-gradient(135deg, #7c3aed, #a855f7)' }}
+                    >
+                      <Search className="w-3.5 h-3.5 text-white" />
+                    </div>
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={e => { setSearchQuery(e.target.value); setSearchValidationError(null); }}
+                      placeholder={lbl(
+                        "e.g. Cox's Bazar Express, Sonar Bangla, #786...",
+                        'যেমন: কক্সবাজার এক্সপ্রেস, সোনার বাংলা, #৭৮৬...'
+                      )}
+                      className="w-full pl-12 pr-9 py-2.5 rounded-xl text-white placeholder-white/50 text-sm focus:outline-none focus:ring-2 focus:ring-white/30 font-bengali"
+                      style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)' }}
+                    />
+                    {searchQuery && (
+                      <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white">
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Suggestion dropdown */}
+                  {searchSuggestions.length > 0 && (
+                    <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.22)', backdropFilter: 'blur(12px)' }}>
+                      {searchSuggestions.map((r, i) => (
+                        <button
+                          key={r.id}
+                          onClick={() => {
+                            onSelectTrain ? onSelectTrain(r) : setSelectedTrain(r);
+                            setSearchQuery('');
+                          }}
+                          className="w-full text-left px-3 py-2.5 flex items-center gap-2.5 hover:bg-white/10 transition-colors"
+                          style={{ borderTop: i > 0 ? '1px solid rgba(255,255,255,0.12)' : 'none' }}
+                        >
+                          <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 text-xs font-black font-sans text-white" style={{ background: 'rgba(124,58,237,0.7)' }}>
+                            {r.number.split('/')[0]}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-bengali text-[13px] text-white font-semibold truncate">{bn ? r.bnName : r.name}</p>
+                            <p className="font-bengali text-[10px] text-white/60 truncate">
+                              {TRAIN_STATIONS[r.from]?.name || r.from} → {TRAIN_STATIONS[r.to]?.name || r.to}
+                            </p>
+                          </div>
+                          <span className="text-white/60 text-[10px] font-sans shrink-0">{r.dhakaDepart}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Name/Number/PNR chips */}
+                  <div className="flex gap-1.5">
+                    {[lbl('Name','নাম'), lbl('Number','নম্বর'), 'PNR'].map(chip => (
+                      <span key={chip} className="px-2 py-0.5 rounded text-[9px] font-bold font-sans" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.9)' }}>
+                        {chip}
+                      </span>
                     ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="text-[10px] font-bold text-white/70 block mb-1">{bn ? 'কোথায় যাবেন' : 'To'}</label>
+                  </div>
+
+                  {/* From station (auto from location) */}
+                  <div style={{ position: 'relative' }}>
+                    <select
+                      value={filterFrom}
+                      onChange={e => { setFilterFrom(e.target.value); setAutoLocDetected(true); setSearchValidationError(null); }}
+                      className="w-full text-xs px-2.5 py-2.5 rounded-xl text-white focus:outline-none"
+                      style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)' }}
+                    >
+                      <option value="" className="text-kj-text bg-kj-bg">📍 {lbl('From (auto-detecting...)', 'থেকে (স্বয়ংক্রিয়...)')}</option>
+                      {ALL_STATION_OPTIONS.map(st => (
+                        <option key={st.id} value={st.id} className="text-kj-text bg-kj-bg">{bn ? st.bnName : st.name}</option>
+                      ))}
+                    </select>
+                    {filterFrom && autoLocDetected && !userLocation && (
+                      <span style={{ position: 'absolute', right: 8, top: 8, fontSize: 9, color: 'rgba(255,255,255,0.6)' }}>📍</span>
+                    )}
+                  </div>
+                  {/* Destination selector */}
                   <select
                     value={filterTo}
-                    onChange={e => setFilterTo(e.target.value)}
-                    className="w-full text-xs px-2 py-1.5 rounded-lg bg-white/20 text-white border border-white/20 focus:outline-none"
+                    onChange={e => { setFilterTo(e.target.value); setSearchValidationError(null); }}
+                    className="w-full text-xs px-2.5 py-2.5 rounded-xl text-white focus:outline-none"
+                    style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)' }}
                   >
-                    <option value="" className="text-kj-text">{bn ? 'সব স্টেশন' : 'Any station'}</option>
+                    <option value="" className="text-kj-text bg-kj-bg">{lbl('To: select destination', 'গন্তব্য বেছে নিন')}</option>
                     {ALL_STATION_OPTIONS.map(st => (
-                      <option key={st.id} value={st.id} className="text-kj-text">{bn ? st.bnName : st.name}</option>
+                      <option key={st.id} value={st.id} className="text-kj-text bg-kj-bg">{bn ? st.bnName : st.name}</option>
                     ))}
                   </select>
-                </div>
-              </div>
-              {/* Row 2: Type + Division */}
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="text-[10px] font-bold text-white/70 block mb-1">{bn ? 'ট্রেনের ধরন' : 'Type'}</label>
-                  <select
-                    value={filterType}
-                    onChange={e => setFilterType(e.target.value)}
-                    className="w-full text-xs px-2 py-1.5 rounded-lg bg-white/20 text-white border border-white/20 focus:outline-none"
+
+                  {/* Validation error */}
+                  {searchValidationError && (
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-xl" style={{ background: 'rgba(239,68,68,0.2)', border: '1px solid rgba(239,68,68,0.4)' }}>
+                      <AlertCircle className="w-3.5 h-3.5 text-red-300 shrink-0" />
+                      <span className="text-[11px] font-bengali text-red-200">{searchValidationError}</span>
+                    </div>
+                  )}
+
+                  {/* Search button — disabled until user provides input */}
+                  {(() => {
+                    const hasInput = searchQuery.trim().length > 0 || filterFrom.length > 0 || filterTo.length > 0;
+                    return (
+                      <button
+                        disabled={!hasInput}
+                        onClick={() => {
+                          setSearchValidationError(null);
+                          setSearchExecuted(true);
+                          setTimeout(() => {
+                            document.querySelector('[data-train-results]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }, 80);
+                        }}
+                        className="w-full py-2.5 rounded-xl font-bold text-sm text-white transition-all active:scale-[0.98] font-bengali disabled:opacity-40 disabled:cursor-not-allowed"
+                        style={{ background: 'linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%)', boxShadow: hasInput ? '0 6px 20px -8px #7c3aed' : 'none' }}
+                      >
+                        {lbl('Search Train', 'ট্রেন খুঁজুন')}
+                      </button>
+                    );
+                  })()}
+                </>
+              )}
+
+              {activeTab === 'pnr' && (
+                <div className="space-y-2">
+                  <input
+                    type="text"
+                    value={pnrInput}
+                    onChange={e => setPnrInput(e.target.value)}
+                    placeholder={lbl('Enter PNR number (e.g. 123456)', 'PNR নম্বর দিন (যেমন: ১২৩৪৫৬)')}
+                    className="w-full px-3 py-2.5 rounded-xl text-white placeholder-white/50 text-sm focus:outline-none focus:ring-2 focus:ring-white/30"
+                    style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)' }}
+                  />
+                  <button
+                    onClick={() => {
+                      const pnr = pnrInput.trim();
+                      if (!pnr) return;
+                      window.open(`https://eticket.railway.gov.bd/pnrCheck?pnr=${encodeURIComponent(pnr)}`, '_blank', 'noopener,noreferrer');
+                    }}
+                    disabled={!pnrInput.trim()}
+                    className="w-full py-2.5 rounded-xl font-bold text-sm text-white disabled:opacity-50 font-bengali"
+                    style={{ background: 'linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%)', boxShadow: '0 6px 20px -8px #7c3aed' }}
                   >
-                    <option value="" className="text-kj-text">{bn ? 'সব ধরন' : 'All types'}</option>
-                    {(['Express', 'Intercity', 'Mail', 'Local'] as const).map(t => (
-                      <option key={t} value={t} className="text-kj-text">{bn ? (TYPE_BN[t] ?? t) : t}</option>
-                    ))}
-                  </select>
+                    {lbl('Check Status on Railway Website', 'রেলওয়ে সাইটে স্ট্যাটাস দেখুন')}
+                  </button>
+                  <p className="text-white/50 text-[11px] text-center font-bengali">
+                    {lbl('Opens official Bangladesh Railway website', 'অফিশিয়াল বাংলাদেশ রেলওয়ে সাইটে যাবে')}
+                  </p>
                 </div>
-                <div>
-                  <label className="text-[10px] font-bold text-white/70 block mb-1">{bn ? 'বিভাগ' : 'Division'}</label>
-                  <select
-                    value={filterDivision}
-                    onChange={e => setFilterDivision(e.target.value)}
-                    className="w-full text-xs px-2 py-1.5 rounded-lg bg-white/20 text-white border border-white/20 focus:outline-none"
-                  >
-                    <option value="" className="text-kj-text">{bn ? 'সব বিভাগ' : 'All divisions'}</option>
-                    {ALL_DIVISIONS.map(d => (
-                      <option key={d} value={d} className="text-kj-text">{d}</option>
-                    ))}
-                  </select>
+              )}
+
+
+
+              {activeTab === 'routemap' && (
+                <div className="space-y-2">
+                  {routeMapTrain ? (
+                    <>
+                      <div className="text-white/90 text-sm font-bengali font-bold">{bn ? routeMapTrain.bnName : routeMapTrain.name}</div>
+                      <div className="text-white/60 text-[11px] font-sans">#{routeMapTrain.number} · {routeMapTrain.stops.length} stops</div>
+                      <div className="max-h-40 overflow-y-auto space-y-1 mt-2">
+                        {routeMapTrain.stops.map((stopId, idx) => {
+                          const st = TRAIN_STATIONS[stopId];
+                          return (
+                            <div key={stopId} className="flex items-center gap-2">
+                              <div className="flex flex-col items-center shrink-0">
+                                <div className="w-2 h-2 rounded-full" style={{ background: idx === 0 || idx === routeMapTrain.stops.length - 1 ? '#00f5ff' : 'rgba(255,255,255,0.4)' }} />
+                                {idx < routeMapTrain.stops.length - 1 && <div className="w-px h-4 bg-white/20" />}
+                              </div>
+                              <span className="text-white/80 text-[11px] font-bengali">{bn && st?.bnName ? st.bnName : (st?.name || stopId)}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <button onClick={() => setRouteMapTrain(null)} className="w-full py-1.5 rounded-xl text-xs text-white/60 font-sans" style={{ background: 'rgba(255,255,255,0.08)' }}>{lbl('Clear', 'মুছুন')}</button>
+                    </>
+                  ) : (
+                    <p className="text-white/70 text-sm font-bengali text-center py-2">
+                      {lbl('Click "Details" on any train below to view its route map', 'নিচে যেকোনো ট্রেনে "বিস্তারিত" ক্লিক করুন — পূর্ণ রুট দেখাবে')}
+                    </p>
+                  )}
                 </div>
-              </div>
-              {/* Row 3: Sort */}
-              <div>
-                <label className="text-[10px] font-bold text-white/70 block mb-1">{bn ? 'সাজানো' : 'Sort by'}</label>
-                <div className="flex gap-1.5">
-                  {([['name', bn ? 'নাম' : 'Name'], ['depart', bn ? 'সময়' : 'Depart'], ['distance', bn ? 'দূরত্ব' : 'Distance']] as [SortOption, string][]).map(([val, label]) => (
-                    <button
-                      key={val}
-                      onClick={() => setSortBy(val)}
-                      className={`flex-1 text-xs py-1 rounded-lg font-bold transition-colors ${sortBy === val ? 'bg-white text-emerald-700' : 'bg-white/20 text-white'}`}
-                    >
-                      {label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              {/* Clear */}
-              {activeFilterCount > 0 && (
-                <button
-                  onClick={clearAllFilters}
-                  className="w-full text-xs py-1.5 rounded-lg text-white/80 hover:text-white font-bold border border-white/20 hover:border-white/40 transition-colors"
-                >
-                  {bn ? 'সব ফিল্টার মুছুন' : 'Clear all filters'}
-                </button>
               )}
             </div>
-          )}
+          </div>
         </div>
+        {/* Bottom fade */}
+        <div className="h-6" />
       </div>
 
-      {/* Nearest station banner — only show when within Bangladesh (~500 km radius) */}
-      {nearestStation && nearestStation.distKm < 500 && (
-        <div className="shrink-0 px-4 py-2.5 bg-blue-50 dark:bg-blue-950/30 border-b border-blue-100 dark:border-blue-900/40">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1 shrink-0">
-              <div className="w-2.5 h-2.5 rounded-full bg-blue-500 border-2 border-white dark:border-slate-900 shadow-sm" />
-              <div className="flex gap-0.5">
-                {[0,1,2,3].map(i => (
-                  <div key={i} className="w-1.5 h-px bg-blue-300 dark:bg-blue-600 rounded" />
+      {/* ── Two-column content area ── */}
+      <div data-train-results className="px-4 py-5 grid grid-cols-1 gap-4 md:grid-cols-[1.5fr_1fr] max-w-5xl mx-auto w-full">
+
+        {/* ── LEFT: Search results or prompt ── */}
+        <div className="space-y-3">
+          {!searchExecuted ? (
+            /* Pre-search state — encourage user to search */
+            <div className="dc-card rounded-2xl p-8 flex flex-col items-center gap-4 text-center border-dashed">
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl" style={{ background: 'linear-gradient(135deg,#5b21b6,#7c3aed)' }}>🚆</div>
+              <div>
+                <p className="font-bengali font-bold text-kj-text text-base">{lbl('Search for trains', 'ট্রেন খুঁজুন')}</p>
+                <p className="font-bengali text-xs text-kj-text-faint mt-1.5 leading-relaxed max-w-[260px]">
+                  {lbl('Select a From station or enter a train name above, then tap Search Train to see results.', 'উপরে স্টেশন বা ট্রেনের নাম দিন, তারপর বার্তান ট্রেন খুঁজুন বোতাম চাপুন।')}
+                </p>
+              </div>
+              <div className="grid grid-cols-3 gap-3 w-full mt-2">
+                {[
+                  { emoji: '🏛', label: lbl('Dhaka', 'ঢাকা'), id: 'kamalapur' },
+                  { emoji: '🏞', label: lbl('Chittagong', 'চট্টগ্রাম'), id: 'chattogram' },
+                  { emoji: '🍵', label: lbl('Sylhet', 'সিলেট'), id: 'sylhet' },
+                  { emoji: '🥭', label: lbl('Rajshahi', 'রাজশাহী'), id: 'rajshahi' },
+                  { emoji: '🌳', label: lbl('Khulna', 'খুলনা'), id: 'khulna' },
+                  { emoji: '🏖', label: lbl("Cox's Bazar", 'কক্সবাজার'), id: 'coxsbazar' },
+                ].map(st => (
+                  <button key={st.id} onClick={() => { setFilterFrom('kamalapur'); setFilterTo(st.id); setSearchValidationError(null); setSearchExecuted(true); setTimeout(() => { document.querySelector('[data-train-results]')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 80); }}
+                    className="flex flex-col items-center gap-1.5 p-3 dc-card rounded-xl hover:border-purple-400/60 transition-all active:scale-95">
+                    <span className="text-xl">{st.emoji}</span>
+                    <span className="text-[11px] font-bengali font-semibold text-kj-text-dim">{st.label}</span>
+                  </button>
                 ))}
               </div>
-              <div className="w-6 h-6 rounded-full bg-kj-primary flex items-center justify-center shadow-sm">
-                <Train className="w-3 h-3 text-white" />
+            </div>
+          ) : (
+            <>
+          <div className="mb-1">
+            <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans">
+              {lbl('Search results', 'অনুসন্ধান ফলাফল')}
+            </p>
+            <div className="flex items-center justify-between mt-0.5">
+              <h2 className="font-bengali font-bold text-base text-kj-text">
+                {filtered.length > 0 ? lbl(`${filtered.length} Train${filtered.length !== 1 ? 's' : ''} Found`, `${filtered.length}টি ট্রেন পাওয়া গেছে`) : lbl('No trains found', 'কোনো ট্রেন পাওয়া যায়নি')}
+              </h2>
+              <button onClick={() => { setSearchExecuted(false); setFilterFrom(''); setFilterTo(''); setSearchQuery(''); setSearchValidationError(null); }}
+                className="text-[10px] font-bold text-purple-500 hover:text-purple-400 font-sans px-2 py-0.5 rounded border border-purple-500/30">
+                {lbl('Clear', 'মুছুন')}
+              </button>
+            </div>
+          </div>
+
+          {filtered.length === 0 && (
+            <div className="dc-card rounded-2xl p-6 flex flex-col items-center gap-3 text-center">
+              <span className="text-4xl">🔍</span>
+              <p className="font-bengali font-bold text-kj-text text-sm">{lbl('No trains match your search', 'আপনার অনুসন্ধানে কোনো ট্রেন পাওয়া যায়নি')}</p>
+              <p className="font-bengali text-xs text-kj-text-faint">{lbl('Try a different station or train name', 'ভিন্ন স্টেশন বা নাম দিয়ে চেষ্টা করুন')}</p>
+            </div>
+          )}
+          {filtered.map(train => {
+            const handleSelect = () => {
+              if (onSelectTrain) onSelectTrain(train);
+              else setSelectedTrain(train);
+            };
+            const typeColor = TYPE_COLORS[train.type] || 'bg-kj-chip-bg text-kj-text-dim';
+            const fromSt = TRAIN_STATIONS[train.from];
+            const toSt = TRAIN_STATIONS[train.to];
+            const maxFare = train.fare?.acBerth || train.fare?.firstClassBerth || train.fare?.snigdha || train.fare?.shuvanChair || train.fare?.shuvan || 0;
+            const minFare = train.fare?.shuvan || train.fare?.shuvanChair || 0;
+            return (
+              <div key={train.id} className="dc-card rounded-2xl overflow-hidden cursor-pointer hover:border-purple-400/60 transition-all" onClick={handleSelect}>
+                <div className="p-4 flex items-start gap-3">
+                  <div className="w-12 h-12 rounded-2xl flex flex-col items-center justify-center shrink-0 text-white"
+                    style={{ background: train.color || 'linear-gradient(135deg,#5b21b6,#7c3aed)' }}>
+                    <span className="font-sans font-black text-[10px] leading-none">#{train.number.split('/')[0]}</span>
+                    <span className="text-base leading-none mt-0.5">🚆</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <p className="font-bengali font-bold text-kj-text text-sm leading-tight">{bn ? train.bnName : train.name}</p>
+                      <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full font-sans ${typeColor}`}>{bn ? (TYPE_BN[train.type] ?? train.type) : train.type}</span>
+                    </div>
+                    <p className="font-bengali text-[12px] text-kj-text-dim mt-0.5 truncate">
+                      {bn ? (fromSt?.bnName || train.from) : (fromSt?.name || train.from)} → {bn ? (toSt?.bnName || train.to) : (toSt?.name || train.to)}
+                    </p>
+                  </div>
+                  <div className="text-right shrink-0">
+                    {minFare > 0 && <p className="font-sans font-bold text-sm text-kj-primary">৳{minFare}–{maxFare}</p>}
+                    <p className="text-[9px] text-kj-text-faint font-sans mt-0.5">{lbl('from', 'থেকে')}</p>
+                  </div>
+                </div>
+                <div className="px-4 py-3 flex items-center gap-3 border-t border-kj-line" style={{ background: `${train.color}08` }}>
+                  <div className="text-center shrink-0">
+                    <p className="font-sans font-black text-base text-kj-text leading-none">{train.dhakaDepart}</p>
+                    <p className="text-[9px] text-kj-text-faint mt-0.5">{lbl('Dep', 'ছাড়ে')}</p>
+                  </div>
+                  <div className="flex-1 flex flex-col items-center gap-0.5">
+                    <div className="flex items-center gap-1 w-full">
+                      <div className="flex-1 h-px bg-kj-line" />
+                      <span className="text-[10px] font-semibold text-kj-text-dim px-1 shrink-0 font-sans">{train.distanceKm} km</span>
+                      <div className="flex-1 h-px bg-kj-line" />
+                    </div>
+                    <ArrowRight className="w-3 h-3 text-kj-text-faint" />
+                  </div>
+                  <div className="text-center shrink-0">
+                    <p className="font-sans font-black text-base text-kj-text leading-none">{train.destinationArrive}</p>
+                    <p className="text-[9px] text-kj-text-faint mt-0.5">{lbl('Arr', 'পৌঁছায়')}</p>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0 ml-1">
+                    {train.offDay && train.offDay !== 'No Off Day' && train.offDay !== 'No Off' && (
+                      <span className="text-[9px] font-bold px-1.5 py-0.5 rounded font-sans bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400">
+                        Off {train.offDay.split(' ')[0]}
+                      </span>
+                    )}
+                    <button onClick={e => { e.stopPropagation(); handleSelect(); }}
+                      className="px-3 py-1.5 rounded-xl text-[11px] font-bold text-white transition-opacity hover:opacity-90 active:scale-95 font-sans"
+                      style={{ background: train.color || '#7c3aed' }}>
+                      {lbl('Details', 'বিস্তারিত')}
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-xs font-bold text-kj-text truncate leading-tight">
-                {bn ? nearestStation.station.bnName : nearestStation.station.name}
-              </p>
-              <p className="text-[10px] text-blue-600 dark:text-blue-400 leading-tight">
-                {bn ? 'নিকটতম রেল স্টেশন' : 'Nearest train station'}
-              </p>
-            </div>
-            <span className="text-[11px] font-bold text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/50 px-2 py-0.5 rounded-full shrink-0">
-              {nearestStation.distKm < 1
-                ? `${Math.round(nearestStation.distKm * 1000)} m`
-                : `${nearestStation.distKm.toFixed(1)} km`}
+            );
+          })}
+          </>
+          )}
+
+          {/* Disclaimer */}
+          <div className="flex items-start gap-2 p-3 bg-kj-primary-soft dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800 text-xs text-emerald-700 dark:text-emerald-300 mt-2">
+            <Info className="w-4 h-4 shrink-0 mt-0.5 text-kj-primary" />
+            <span className="font-bengali">
+              {lbl(
+                'Schedules may change. Check Bangladesh Railway website for latest information.',
+                'সময়সূচি পরিবর্তন হতে পারে। সর্বশেষ তথ্যের জন্য বাংলাদেশ রেলওয়ে ওয়েবসাইট দেখুন।'
+              )}
             </span>
           </div>
-        </div>
-      )}
+        </div>  {/* end LEFT column */}
 
-      {/* Count row */}
-      <div className="shrink-0 flex items-center justify-between px-5 py-2 bg-kj-panel border-b border-kj-line">
-        <h3 className="font-bold text-kj-text text-sm">
-          {listFilter === 'FAVORITES' ? (bn ? 'সংরক্ষিত ট্রেন' : 'Saved Trains') : (bn ? 'ট্রেনের তালিকা' : 'Train List')}
-        </h3>
-        <div className="flex items-center gap-2">
-          {activeFilterCount > 0 && (
-            <button onClick={clearAllFilters} className="text-[10px] text-red-500 font-bold hover:underline">
-              {bn ? 'ক্লিয়ার' : 'Clear'}
-            </button>
-          )}
-          <span className="text-[10px] bg-gray-200 dark:bg-kj-chip-bg px-2 py-0.5 rounded-full text-kj-text-dim font-bold">
-            {filtered.length}
-          </span>
-        </div>
-      </div>
 
-      <div className="shrink-0 px-4 py-2 bg-kj-panel border-b border-kj-line">
-        <div className="flex p-1 bg-kj-chip-bg rounded-xl">
-          <button
-            onClick={() => setListFilter('ALL')}
-            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${listFilter === 'ALL' ? 'bg-white dark:bg-kj-chip-bg shadow-sm text-kj-text' : 'text-kj-text-dim dark:text-kj-text-faint hover:text-kj-text dark:hover:text-gray-200'}`}
-          >
-            {bn ? 'সব ট্রেন' : 'All Trains'}
-          </button>
-          <button
-            onClick={() => setListFilter('FAVORITES')}
-            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1 ${listFilter === 'FAVORITES' ? 'bg-white dark:bg-kj-chip-bg shadow-sm text-red-500' : 'text-kj-text-dim dark:text-kj-text-faint hover:text-kj-text dark:hover:text-gray-200'}`}
-          >
-            <Heart className="w-4 h-4 fill-current" />
-            {bn ? 'প্রিয়' : 'Favorites'}
-          </button>
-        </div>
-      </div>
 
-      {/* Train list */}
-      <div className="relative z-10 flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y px-4 py-3 space-y-3 pb-28 md:pb-4" style={{ WebkitOverflowScrolling: 'touch' }}>
-        <div className="flex items-start gap-2 p-3 bg-kj-primary-soft dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800 text-xs text-emerald-700 dark:text-emerald-300">
-          <Info className="w-4 h-4 shrink-0 mt-0.5 text-kj-primary" />
-          <span>
-            {bn
-              ? 'সময়সূচি পরিবর্তন হতে পারে। সর্বশেষ তথ্যের জন্য বাংলাদেশ রেলওয়ে ওয়েবসাইট দেখুন।'
-              : 'Schedules may change. Check Bangladesh Railway website for latest information.'}
-          </span>
-        </div>
+        {/* ── RIGHT: Coach classes + Ad + PNR ── */}
+        <div className="space-y-4">
 
-        <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-2 max-w-[728px] mx-auto" />
-
-        {filtered.length === 0 ? (
-          <div className="text-center py-16 text-kj-text-faint">
-            <Train className="w-12 h-12 mx-auto mb-3 opacity-30" />
-            <p className="font-medium">{bn ? 'কোনো ট্রেন পাওয়া যায়নি' : 'No trains found'}</p>
-            <p className="text-sm mt-1">{bn ? 'অন্য কীওয়ার্ড দিয়ে খুঁজুন' : 'Try a different keyword'}</p>
+          {/* Coach classes card */}
+          <div className="dc-card rounded-2xl overflow-hidden">
+            <div
+              className="px-4 py-3"
+              style={{ background: 'linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%)' }}
+            >
+              <h3 className="font-bengali font-bold text-white text-sm">
+                {lbl('Coach Classes', 'কোচ শ্রেণী ও ভাড়া')}
+              </h3>
+              <p className="font-bengali text-white/70 text-[11px] mt-0.5">
+                {lbl('Approximate minimum fares', 'আনুমানিক ন্যূনতম ভাড়া')}
+              </p>
+            </div>
+            <div className="divide-y divide-kj-line">
+              {COACH_CLASSES.map(cls => (
+                <div key={cls.name} className="flex items-center gap-3 px-4 py-3 hover:bg-kj-chip-bg transition-colors">
+                  <span className="text-xl leading-none shrink-0">{cls.emoji}</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bengali font-semibold text-kj-text text-sm leading-tight">
+                      {bn ? cls.bnName : cls.name}
+                    </p>
+                    <p className="font-bengali text-[11px] text-kj-text-faint">
+                      {bn ? cls.descBn : cls.desc}
+                    </p>
+                  </div>
+                  <span className="font-sans font-black text-sm shrink-0" style={{ color: cls.color }}>{cls.price}</span>
+                </div>
+              ))}
+            </div>
           </div>
-        ) : (
-          filtered.map((route, idx) => (
-            <React.Fragment key={route.id}>
-              {idx > 0 && idx % 8 === 0 && (
-                <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-1 max-w-[728px] mx-auto" />
-              )}
-              <TrainCard
-                route={route}
-                onClick={() => onSelectTrain ? onSelectTrain(route) : setSelectedTrain(route)}
-                onRateClick={() => onRateTrain ? onRateTrain(route) : setSelectedTrain(route)}
-                ratingSummary={trainRatingsMap[route.id]}
-                isFavorite={favoriteTrainIds.includes(route.id)}
-                onToggleFavorite={() => toggleFavoriteTrain(route.id)}
-                language={language}
+
+          {/* Ad slot */}
+          <SponsoredAdSlot language={language as 'en' | 'bn'} size="300x250" compact />
+
+          {/* PNR check card */}
+          <div className="dc-card rounded-2xl overflow-hidden" style={{ background: 'var(--kj-primary-soft)' }}>
+            <div className="px-4 py-3 border-b border-kj-line">
+              <h3 className="font-bengali font-bold text-kj-text text-sm flex items-center gap-2">
+                <span>🔍</span>
+                {lbl('PNR Status Check', 'PNR স্ট্যাটাস চেক')}
+              </h3>
+            </div>
+            <div className="p-4 space-y-3">
+              <input
+                type="text"
+                value={pnrSideInput}
+                onChange={e => setPnrSideInput(e.target.value)}
+                placeholder={lbl('Enter PNR number...', 'PNR নম্বর দিন...')}
+                className="w-full px-3 py-2.5 rounded-xl text-sm bg-kj-chip-bg text-kj-text border border-kj-line focus:outline-none focus:ring-2 focus:ring-purple-500/30 font-sans"
               />
-            </React.Fragment>
-          ))
-        )}
+              <button
+                onClick={() => {
+                  const p = pnrSideInput.trim();
+                  if (!p) return;
+                  window.open(`https://eticket.railway.gov.bd/pnrCheck?pnr=${encodeURIComponent(p)}`, '_blank', 'noopener,noreferrer');
+                }}
+                disabled={!pnrSideInput.trim()}
+                className="w-full py-2.5 rounded-xl font-bold text-sm text-white disabled:opacity-50 active:scale-[0.98] transition-all font-bengali"
+                style={{ background: 'linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%)', boxShadow: '0 6px 20px -8px #7c3aed' }}
+              >
+                {lbl('Check on Railway Website', 'রেলওয়ে সাইটে চেক করুন')}
+              </button>
+              <p className="text-[10px] text-kj-text-faint font-bengali text-center">
+                {lbl('Opens eticket.railway.gov.bd', 'eticket.railway.gov.bd-এ যাবে')}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* ── Major stations grid ── */}
+      <div className="px-4 pb-6 max-w-5xl mx-auto w-full">
+        <div className="mb-3">
+          <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans">
+            {lbl('Railway network · Bangladesh', 'রেলওয়ে নেটওয়ার্ক · বাংলাদেশ')}
+          </p>
+          <h2 className="font-bengali font-bold text-base text-kj-text mt-0.5">
+            {lbl('Major Stations', 'প্রধান স্টেশনসমূহ')}
+          </h2>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+          {MAJOR_STATIONS.map(station => (
+            <button
+              key={station.name}
+              onClick={() => setSelectedStation(selectedStation === station.name ? null : station.name)}
+              className={`dc-card rounded-2xl p-3.5 flex flex-col items-center gap-2 transition-all active:scale-95 text-center ${selectedStation === station.name ? 'border-purple-400 dark:border-purple-500' : 'hover:border-purple-400 dark:hover:border-purple-500'}`}
+            >
+              <span className="text-2xl leading-none">{station.emoji}</span>
+              <div>
+                <p className="font-bengali font-bold text-kj-text text-[12px] leading-tight">{bn ? station.bnName : station.name}</p>
+                <p className="font-bengali text-[10px] text-kj-text-faint mt-0.5">{bn ? station.cityBn : station.city}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {/* Station detail panel */}
+        {selectedStation && (() => {
+          const st = MAJOR_STATIONS.find(s => s.name === selectedStation);
+          if (!st) return null;
+          const stationId = Object.keys(TRAIN_STATIONS).find(id => TRAIN_STATIONS[id].name === st.name || TRAIN_STATIONS[id].bnName === st.bnName);
+          const trainsVia = stationId
+            ? BD_TRAIN_ROUTES.filter(r => r.stops.includes(stationId)).slice(0, 8)
+            : [];
+          return (
+            <div className="mt-4 dc-card rounded-2xl overflow-hidden">
+              <div className="px-5 py-4 flex items-center gap-3" style={{ background: 'linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%)' }}>
+                <span className="text-3xl">{st.emoji}</span>
+                <div className="flex-1">
+                  <p className="font-bengali font-bold text-white text-lg">{bn ? st.bnName : st.name}</p>
+                  <p className="text-white/70 text-sm font-bengali">{bn ? st.cityBn : st.city}</p>
+                </div>
+                <button onClick={() => setSelectedStation(null)} className="text-white/60 hover:text-white"><X className="w-5 h-5" /></button>
+              </div>
+              <div className="p-4">
+                <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans mb-3">
+                  {lbl(`Trains via ${st.name}`, `${st.bnName} হয়ে ট্রেন`)} ({trainsVia.length})
+                </p>
+                {trainsVia.length === 0 ? (
+                  <p className="font-bengali text-sm text-kj-text-dim">{lbl('No trains found for this station', 'এই স্টেশনের জন্য কোনো ট্রেন পাওয়া যায়নি')}</p>
+                ) : (
+                  <div className="space-y-2">
+                    {trainsVia.map(r => (
+                      <button key={r.id} onClick={() => { onSelectTrain ? onSelectTrain(r) : setSelectedTrain(r); }}
+                        className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-kj-chip-bg transition-colors text-left">
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white text-[10px] font-bold shrink-0 font-sans" style={{ background: 'linear-gradient(135deg, #5b21b6, #7c3aed)' }}>
+                          #{r.number}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-bengali font-bold text-kj-text text-sm truncate">{bn ? r.bnName : r.name}</p>
+                          <p className="font-bengali text-[11px] text-kj-text-dim">{r.dhakaDepart} · {r.offDay ? `Off ${r.offDay}` : lbl('Runs daily', 'প্রতিদিন')}</p>
+                        </div>
+                        <ChevronRight className="w-4 h-4 text-kj-text-faint shrink-0" />
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })()}
+
+        <SponsoredAdSlot language={language as 'en' | 'bn'} size="728x90" compact />
+      </div>
+
+      <div className="h-8" />
+
+      <HowKoyJaboHelps />
+      {/* Footer */}
+      {!embedded && setView && (
+        <GlobalFooter setView={setView} />
+      )}
     </div>
   );
 };

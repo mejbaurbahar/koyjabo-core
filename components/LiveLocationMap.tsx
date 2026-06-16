@@ -595,7 +595,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                                         disabled={isOffline && !!layer.online}
                                         className={`text-xs font-semibold px-3 py-2 rounded-xl text-left flex items-center gap-2 justify-between transition-all ${
                                             activeLayer === layer.id
-                                                ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
+                                                ? 'bg-blue-50 dark:bg-blue-900/30 text-kj-primary'
                                                 : isOffline && layer.online
                                                     ? 'text-kj-text-faint cursor-not-allowed'
                                                     : 'text-kj-text-dim hover:bg-kj-chip-bg'
@@ -606,7 +606,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                                             {layer.label}
                                         </span>
                                         {isOffline && layer.online && <Lock className="w-3 h-3" />}
-                                        {activeLayer === layer.id && <CheckCircle2 className="w-3 h-3 text-blue-500" />}
+                                        {activeLayer === layer.id && <CheckCircle2 className="w-3 h-3 text-kj-primary" />}
                                     </button>
                                 ))}
                             </div>
@@ -633,7 +633,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                     title={followMode ? 'Following you' : 'Click to follow'}
                     className={`p-2.5 rounded-xl shadow-lg border backdrop-blur-md active:scale-95 transition-all ${
                         followMode
-                            ? 'bg-blue-600 border-blue-500 text-white shadow-blue-500/30'
+                            ? 'bg-blue-600 border-kj-primary text-white shadow-blue-500/30'
                             : 'bg-kj-panel/90 border-white/30 dark:border-kj-line/50 text-kj-text-dim'
                     }`}
                 >
@@ -723,7 +723,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                                     return (
                                         <div
                                             key={stop.id}
-                                            className={`flex items-center gap-3 py-2.5 cursor-pointer rounded-xl px-2 -mx-2 transition-colors ${isNearest ? 'bg-blue-50 dark:bg-blue-900/20' : 'hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg'}`}
+                                            className={`flex items-center gap-3 py-2.5 cursor-pointer rounded-xl px-2 -mx-2 transition-colors ${isNearest ? 'bg-kj-primary-soft' : 'hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg'}`}
                                             onClick={() => {
                                                 mapRef.current?.flyTo([stop.lat, stop.lng], 16, { duration: 0.8 });
                                                 followModeRef.current = false;
@@ -748,9 +748,9 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
 
                                             {/* Name */}
                                             <div className="flex-1 min-w-0">
-                                                <p className={`text-sm font-semibold leading-tight truncate ${isNearest ? 'text-blue-600 dark:text-blue-400' : 'text-kj-text'}`}>
+                                                <p className={`text-sm font-semibold leading-tight truncate ${isNearest ? 'text-kj-primary' : 'text-kj-text'}`}>
                                                     {stop.name}
-                                                    {isNearest && <span className="ml-1.5 text-[10px] bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded-full font-bold">Nearest</span>}
+                                                    {isNearest && <span className="ml-1.5 text-[10px] bg-kj-primary-soft text-blue-600 px-1.5 py-0.5 rounded-full font-bold">Nearest</span>}
                                                 </p>
                                                 <p className="text-[10px] text-kj-text-faint">{stop.bnName}</p>
                                             </div>
@@ -770,7 +770,7 @@ const LiveLocationMap: React.FC<LiveLocationMapProps> = ({
                 <button
                     onClick={recenter}
                     disabled={!userLocation}
-                    className="absolute bottom-6 right-4 z-[400] bg-blue-600 text-white p-3.5 rounded-full shadow-xl shadow-blue-500/30 hover:bg-blue-700 disabled:opacity-40 active:scale-95 transition-all flex items-center justify-center"
+                    className="absolute bottom-6 right-4 z-[400] bg-kj-primary text-kj-primary-ink p-3.5 rounded-full shadow-xl shadow-blue-500/30 hover:bg-blue-700 disabled:opacity-40 active:scale-95 transition-all flex items-center justify-center"
                 >
                     <Navigation className="w-6 h-6" />
                 </button>

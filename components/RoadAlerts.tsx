@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { ArrowLeft, AlertTriangle, Clock, ChevronDown, ChevronUp, Plus, ExternalLink } from 'lucide-react';
-import AdSenseAd from './AdSenseAd';
+import { ArrowLeft, AlertTriangle, Clock, ChevronDown, ChevronUp, Plus, ExternalLink, Map, Flag } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useToast } from '../contexts/ToastContext';
 import { submitTrafficReport, getTodayTrafficReports, upvoteTrafficReport, TrafficReport, getAuthUser } from '../services/communityDataService';
 import { trackFeatureUsage } from '../services/analyticsService';
+import SponsoredAdSlot from './SponsoredAdSlot';
 
 
 
@@ -12,8 +12,6 @@ interface Props {
   onBack: () => void;
 }
 
-// ── Admin pre-alerts (pinned official notices) ────────────────────────────────
-// Add or remove entries here to manage pinned government/admin notices.
 interface AdminAlert {
   id: string;
   titleBn: string;
@@ -22,7 +20,7 @@ interface AdminAlert {
   descriptionEn?: string;
   url?: string;
   source?: string;
-  timestamp: number;  // Unix ms — used for display only
+  timestamp: number;
   icon: string;
 }
 
@@ -43,11 +41,20 @@ const ADMIN_ALERTS: AdminAlert[] = [
 type AlertType = { value: TrafficReport['type']; icon: string; color: string };
 
 const ALERT_TYPES: AlertType[] = [
-  { value: 'heavy_traffic', icon: '🚦', color: 'text-red-600' },
-  { value: 'accident', icon: '🚨', color: 'text-red-700' },
-  { value: 'road_block', icon: '🚧', color: 'text-orange-600' },
-  { value: 'bus_delayed', icon: '🚌', color: 'text-amber-600' },
-  { value: 'bus_cancelled', icon: '❌', color: 'text-red-600' },
+  { value: 'heavy_traffic', icon: '🚦', color: 'text-red-500' },
+  { value: 'accident', icon: '🚨', color: 'text-red-600' },
+  { value: 'road_block', icon: '🚧', color: 'text-amber-500' },
+  { value: 'bus_delayed', icon: '🚌', color: 'text-amber-400' },
+  { value: 'bus_cancelled', icon: '❌', color: 'text-red-500' },
+];
+
+const FILTER_CHIPS = [
+  { key: 'all', labelEn: 'All', labelBn: 'সব' },
+  { key: 'heavy_traffic', labelEn: 'Traffic', labelBn: 'যানজট' },
+  { key: 'road_block', labelEn: 'Roadblock', labelBn: 'বাধা' },
+  { key: 'accident', labelEn: 'Accident', labelBn: 'দুর্ঘটনা' },
+  { key: 'bus_delayed', labelEn: 'Bus Delay', labelBn: 'বাস বিলম্ব' },
+  { key: 'bus_cancelled', labelEn: 'Cancelled', labelBn: 'বাতিল' },
 ];
 
 function timeAgo(ts: number, t: (key: string) => string): string {
@@ -57,13 +64,27 @@ function timeAgo(ts: number, t: (key: string) => string): string {
   return `${Math.floor(diff / 60)}${t('roadAlerts.hoursAgo')}`;
 }
 
+function severityDotClass(s: string) {
+  if (s === 'high') return 'bg-red-500';
+  if (s === 'medium') return 'bg-amber-400';
+  return 'bg-emerald-400';
+}
+
+function severityBadgeClass(s: string) {
+  if (s === 'high') return 'bg-red-500/15 text-red-400 border border-red-500/20';
+  if (s === 'medium') return 'bg-amber-400/15 text-amber-400 border border-amber-400/20';
+  return 'bg-emerald-400/15 text-emerald-400 border border-emerald-400/20';
+}
+
 export default function RoadAlerts({ onBack }: Props) {
   const { t, language } = useLanguage();
+  const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
   const { showToast } = useToast();
   const user = getAuthUser();
   const [reports, setReports] = useState<TrafficReport[]>([]);
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [activeFilter, setActiveFilter] = useState('all');
   const [form, setForm] = useState({
     location: '', type: 'heavy_traffic' as TrafficReport['type'],
     severity: 'medium' as TrafficReport['severity'], description: '',
@@ -121,110 +142,163 @@ export default function RoadAlerts({ onBack }: Props) {
     setReports(fresh);
   };
 
-  const severityColor = (s: string) =>
-    s === 'high' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
-    s === 'medium' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' :
-    'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400';
+  const filteredReports = activeFilter === 'all' ? reports : reports.filter(r => r.type === activeFilter);
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 bg-kj-bg overflow-hidden">
-      <div className="flex items-center gap-3 p-4 bg-kj-panel border-b border-kj-line shrink-0">
-        <button onClick={onBack} className="p-2 -ml-2 hover:bg-kj-chip-bg dark:hover:bg-kj-chip-bg rounded-full">
-          <ArrowLeft className="w-5 h-5 text-kj-text-dim" />
+    <div className="min-h-screen bg-kj-bg text-kj-text overflow-y-auto pb-32">
+
+      {/* Sticky back bar */}
+      <div className="sticky top-0 z-20 bg-kj-bg/90 backdrop-blur-md border-b border-kj-line flex items-center gap-3 px-4 py-3">
+        <button
+          onClick={onBack}
+          className="w-9 h-9 rounded-xl border border-kj-line bg-kj-panel text-kj-text-dim flex items-center justify-center active:scale-90 transition-all hover:border-kj-primary/40 hover:text-kj-primary"
+        >
+          <ArrowLeft className="w-4 h-4" />
         </button>
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
-          <AlertTriangle className="w-5 h-5 text-white" />
-        </div>
-        <div className="flex-1">
-          <h1 className="text-lg font-bold text-kj-text">{t('roadAlerts.title')}</h1>
-          <p className="text-xs text-kj-text-dim">
-            {t('roadAlerts.activeReports').replace('{count}', String(reports.length))}
-          </p>
-        </div>
-        <button onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-1.5 px-2.5 sm:px-3 py-2 bg-orange-500 hover:bg-orange-600 text-white text-xs sm:text-sm font-semibold rounded-xl transition-colors shrink-0">
-          <Plus className="w-4 h-4 shrink-0" /> <span className="hidden xs:inline">{t('roadAlerts.reportBtn')}</span>
+        <span className="font-bengali font-bold text-base text-kj-text">
+          {lbl('Road Alerts', 'রোড অ্যালার্ট')}
+        </span>
+        <button
+          onClick={() => setShowForm(!showForm)}
+          className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all active:scale-95"
+          style={{ background: 'linear-gradient(135deg, #f97316 0%, #ef4444 100%)', color: '#fff' }}
+        >
+          <Plus className="w-3.5 h-3.5" />
+          {t('roadAlerts.reportBtn')}
         </button>
       </div>
 
-      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain touch-pan-y p-4 space-y-3 pb-nav-safe" style={{ WebkitOverflowScrolling: 'touch' }}>
+      <div className="px-4 py-5 space-y-5 max-w-2xl mx-auto w-full">
+
+        {/* Page title */}
+        <div>
+          <span className="text-[11px] font-bold uppercase tracking-[1.4px] text-kj-text-faint font-sans">
+            {lbl('✦ KoyJabo · Live Traffic & Road Alerts', '✦ কই যাবো · লাইভ ট্রাফিক ও রোড অ্যালার্ট')}
+          </span>
+          <h1 className="font-bengali font-bold leading-tight tracking-tight mt-1.5 text-kj-text" style={{ fontSize: 26 }}>
+            {lbl('Stay Alert on the Road', 'রাস্তায় সতর্ক থাকুন')}
+          </h1>
+          <p className="font-bengali text-[13px] text-kj-text-dim leading-relaxed mt-1">
+            {lbl('Community-reported traffic, accidents & road closures.', 'সম্প্রদায়ের রিপোর্ট করা যানজট, দুর্ঘটনা ও রাস্তা বন্ধ।')}
+          </p>
+          <div className="flex gap-5 mt-3 flex-wrap">
+            {[
+              { v: String(reports.length), l: lbl('Reports', 'রিপোর্ট') },
+              { v: lbl('Live', 'লাইভ'), l: lbl('Updates', 'আপডেট') },
+              { v: '5m', l: lbl('Refresh', 'রিফ্রেশ') },
+            ].map((s) => (
+              <div key={s.l}>
+                <div className="font-sans font-extrabold text-[18px] tracking-tight leading-none text-kj-primary">{s.v}</div>
+                <div className="text-[11px] text-kj-text-faint mt-0.5">{s.l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Report form */}
         {showForm && (
-          <form onSubmit={handleSubmit} className="bg-kj-panel rounded-2xl p-4 shadow-sm border border-kj-line space-y-3">
-            <h3 className="font-bold text-kj-text text-sm">{t('roadAlerts.newReport')}</h3>
-            <input value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))}
+          <form onSubmit={handleSubmit} className="dc-card p-4 space-y-3">
+            <h3 className="font-bold text-kj-text text-sm flex items-center gap-2">
+              <Flag className="w-4 h-4 text-orange-400" />
+              {t('roadAlerts.newReport')}
+            </h3>
+            <input
+              value={form.location}
+              onChange={e => setForm(f => ({ ...f, location: e.target.value }))}
               placeholder={t('roadAlerts.locationPlaceholder')}
-              className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white" required />
+              className="w-full bg-kj-chip-bg border border-kj-line rounded-xl px-3 py-2.5 text-sm text-kj-text placeholder-kj-text-faint focus:border-kj-primary/60 outline-none transition-colors"
+              required
+            />
             <div className="grid grid-cols-2 gap-2">
-              <select value={form.type} onChange={e => setForm(f => ({ ...f, type: e.target.value as TrafficReport['type'] }))}
-                className="bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white">
+              <select
+                value={form.type}
+                onChange={e => setForm(f => ({ ...f, type: e.target.value as TrafficReport['type'] }))}
+                className="bg-kj-chip-bg border border-kj-line rounded-xl px-3 py-2.5 text-sm text-kj-text focus:border-kj-primary/60 outline-none"
+              >
                 {ALERT_TYPES.map(at => <option key={at.value} value={at.value}>{at.icon} {getTypeLabel(at.value)}</option>)}
               </select>
-              <select value={form.severity} onChange={e => setForm(f => ({ ...f, severity: e.target.value as TrafficReport['severity'] }))}
-                className="bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white">
+              <select
+                value={form.severity}
+                onChange={e => setForm(f => ({ ...f, severity: e.target.value as TrafficReport['severity'] }))}
+                className="bg-kj-chip-bg border border-kj-line rounded-xl px-3 py-2.5 text-sm text-kj-text focus:border-kj-primary/60 outline-none"
+              >
                 <option value="low">{t('roadAlerts.severityOptLow')}</option>
                 <option value="medium">{t('roadAlerts.severityOptMedium')}</option>
                 <option value="high">{t('roadAlerts.severityOptHigh')}</option>
               </select>
             </div>
-            <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
+            <textarea
+              value={form.description}
+              onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
               placeholder={t('roadAlerts.descPlaceholder')}
               rows={2}
-              className="w-full bg-gray-50 dark:bg-slate-700 border border-kj-line dark:border-gray-600 rounded-xl px-3 py-2.5 text-sm dark:text-white resize-none" required />
+              className="w-full bg-kj-chip-bg border border-kj-line rounded-xl px-3 py-2.5 text-sm text-kj-text placeholder-kj-text-faint resize-none focus:border-kj-primary/60 outline-none transition-colors"
+              required
+            />
             <div className="flex gap-2">
-              <button type="submit" disabled={submitting}
-                className="flex-1 py-2.5 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white font-semibold text-sm rounded-xl transition-colors">
+              <button
+                type="submit"
+                disabled={submitting}
+                className="flex-1 py-2.5 font-bold text-sm rounded-xl text-white disabled:opacity-50 transition-all active:scale-95"
+                style={{ background: 'linear-gradient(135deg, #f97316 0%, #ef4444 100%)' }}
+              >
                 {submitting ? t('roadAlerts.sending') : t('roadAlerts.reportAction')}
               </button>
-              <button type="button" onClick={() => setShowForm(false)}
-                className="px-4 py-2.5 bg-kj-chip-bg text-kj-text-dim font-semibold text-sm rounded-xl">
+              <button
+                type="button"
+                onClick={() => setShowForm(false)}
+                className="px-4 py-2.5 bg-kj-chip-bg text-kj-text-dim font-semibold text-sm rounded-xl hover:bg-kj-line transition-colors"
+              >
                 {t('common.cancel')}
               </button>
             </div>
           </form>
         )}
 
-        <AdSenseAd adSlot="auto" adFormat="fluid" layoutKey="-6t+ed+2i-1n-4w" className="my-4 max-w-[728px] mx-auto" />
-
-
-
-
+        {/* Official notices */}
         {ADMIN_ALERTS.length > 0 && (
           <div className="space-y-2">
-            <p className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wide px-1">
-              {language === 'bn' ? '📌 সরকারি নোটিশ' : '📌 Official Notices'}
-            </p>
+            <span className="text-[11px] font-bold uppercase tracking-[1.4px] text-kj-primary">
+              {lbl('📌 Official Notices', '📌 সরকারি নোটিশ')}
+            </span>
             {ADMIN_ALERTS.map(alert => (
-              <div key={alert.id} className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-200 dark:border-blue-800 overflow-hidden">
+              <div key={alert.id} className="dc-card border-kj-primary/30 overflow-hidden">
                 <div className="p-4">
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-start gap-3 flex-1">
-                      <span className="text-xl">{alert.icon}</span>
+                      <span className="text-xl shrink-0">{alert.icon}</span>
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-blue-900 dark:text-blue-100 text-sm leading-snug">
+                        <p className="font-semibold text-kj-text text-sm leading-snug">
                           {language === 'bn' ? alert.titleBn : alert.titleEn}
                         </p>
                         {alert.source && (
-                          <p className="text-xs text-blue-500 dark:text-blue-400 mt-0.5">{alert.source}</p>
+                          <p className="text-[11px] text-kj-primary mt-0.5">{alert.source}</p>
                         )}
                       </div>
                     </div>
-                    <button onClick={() => setExpanded(expanded === alert.id ? null : alert.id)}
-                      className="p-1 text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 shrink-0">
+                    <button
+                      onClick={() => setExpanded(expanded === alert.id ? null : alert.id)}
+                      className="p-1 text-kj-primary hover:brightness-110 shrink-0"
+                    >
                       {expanded === alert.id ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                     </button>
                   </div>
                   {expanded === alert.id && (
-                    <div className="mt-3 pt-3 border-t border-blue-200 dark:border-blue-700">
+                    <div className="mt-3 pt-3 border-t border-kj-line">
                       {(language === 'bn' ? alert.descriptionBn : alert.descriptionEn) && (
-                        <p className="text-sm text-blue-800 dark:text-blue-200 mb-2">
+                        <p className="text-sm text-kj-text-dim mb-2">
                           {language === 'bn' ? alert.descriptionBn : alert.descriptionEn}
                         </p>
                       )}
                       {alert.url && (
-                        <a href={alert.url} target="_blank" rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+                        <a
+                          href={alert.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-kj-primary hover:underline"
+                        >
                           <ExternalLink className="w-3.5 h-3.5" />
-                          {language === 'bn' ? 'সম্পূর্ণ নোটিশ দেখুন' : 'View full notice'}
+                          {lbl('View full notice', 'সম্পূর্ণ নোটিশ দেখুন')}
                         </a>
                       )}
                     </div>
@@ -235,62 +309,117 @@ export default function RoadAlerts({ onBack }: Props) {
           </div>
         )}
 
-        {loading && <div className="text-center py-10 text-kj-text-faint">{t('roadAlerts.loading')}</div>}
+        {/* Filter chips */}
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
+          {FILTER_CHIPS.map(chip => (
+            <button
+              key={chip.key}
+              onClick={() => setActiveFilter(chip.key)}
+              className={`flex-none px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                activeFilter === chip.key
+                  ? 'bg-kj-primary text-white shadow-md shadow-kj-primary/30'
+                  : 'bg-kj-panel border border-kj-line text-kj-text-dim hover:border-kj-primary/40'
+              }`}
+            >
+              {lbl(chip.labelEn, chip.labelBn)}
+            </button>
+          ))}
+        </div>
 
-        {!loading && reports.length === 0 && (
-          <div className="text-center py-12">
+        {/* Map preview placeholder */}
+        <div className="dc-card overflow-hidden">
+          <div className="h-[180px] bg-kj-chip-bg flex flex-col items-center justify-center gap-2">
+            <Map className="w-10 h-10 text-kj-text-faint" />
+            <p className="text-xs text-kj-text-faint font-medium">{lbl('Map preview coming soon', 'ম্যাপ প্রিভিউ শীঘ্রই আসছে')}</p>
+          </div>
+        </div>
+
+        {/* Loading */}
+        {loading && (
+          <div className="text-center py-10 text-kj-text-faint text-sm">{t('roadAlerts.loading')}</div>
+        )}
+
+        {/* Empty state */}
+        {!loading && filteredReports.length === 0 && (
+          <div className="dc-card p-10 text-center">
             <AlertTriangle className="w-12 h-12 text-kj-text-faint mx-auto mb-3" />
-            <p className="text-kj-text-dim font-medium">{t('roadAlerts.noReportsToday')}</p>
+            <p className="font-bold text-kj-text-dim">{t('roadAlerts.noReportsToday')}</p>
             <p className="text-sm text-kj-text-faint mt-1">{t('roadAlerts.reportIfYouSee')}</p>
           </div>
         )}
 
-        {reports.map(r => {
-          const typeInfo = ALERT_TYPES.find(at => at.value === r.type) || ALERT_TYPES[0];
-          return (
-            <div key={r.id} className="bg-kj-panel rounded-2xl shadow-sm border border-kj-line overflow-hidden">
-              <div className="p-4">
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex items-start gap-3 flex-1">
-                    <span className="text-2xl">{typeInfo.icon}</span>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-bold text-kj-text text-sm">{r.location}</span>
-                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${severityColor(r.severity)}`}>{getSeverityLabel(r.severity)}</span>
-                      </div>
-                      <p className="text-xs text-kj-text-dim mt-0.5">{getTypeLabel(r.type)} · {timeAgo(r.timestamp, t)}</p>
+        {/* Alert cards */}
+        <div className="space-y-3">
+          {filteredReports.map(r => {
+            const typeInfo = ALERT_TYPES.find(at => at.value === r.type) || ALERT_TYPES[0];
+            return (
+              <div key={r.id} className="dc-card overflow-hidden">
+                <div className="p-4">
+                  <div className="flex items-start gap-3">
+                    {/* Severity dot */}
+                    <div className="flex flex-col items-center gap-1 shrink-0 mt-0.5">
+                      <div className={`w-2.5 h-2.5 rounded-full ${severityDotClass(r.severity)}`} />
                     </div>
-                  </div>
-                  <button onClick={() => setExpanded(expanded === r.id ? null : r.id)}
-                    className="p-1 text-kj-text-faint hover:text-kj-text-dim dark:hover:text-kj-text-faint">
-                    {expanded === r.id ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                  </button>
-                </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-bold text-kj-text text-sm">{r.location}</span>
+                            <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${severityBadgeClass(r.severity)}`}>
+                              {getSeverityLabel(r.severity)}
+                            </span>
+                          </div>
+                          <p className="text-xs text-kj-text-dim mt-0.5">
+                            {typeInfo.icon} {getTypeLabel(r.type)}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => setExpanded(expanded === r.id ? null : r.id)}
+                          className="p-1 text-kj-text-faint hover:text-kj-text-dim shrink-0"
+                        >
+                          {expanded === r.id ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                        </button>
+                      </div>
 
-                {expanded === r.id && (
-                  <div className="mt-3 pt-3 border-t border-kj-line">
-                    <p className="text-sm text-kj-text-dim">{r.description}</p>
-                    <p className="text-xs text-kj-text-faint mt-2">{t('roadAlerts.reportedBy')} {r.displayName}</p>
-                  </div>
-                )}
+                      {expanded === r.id && (
+                        <div className="mt-3 pt-3 border-t border-kj-line">
+                          <p className="text-sm text-kj-text-dim">{r.description}</p>
+                          <p className="text-xs text-kj-text-faint mt-2">{t('roadAlerts.reportedBy')} {r.displayName}</p>
+                        </div>
+                      )}
 
-                <div className="flex items-center justify-between mt-3">
-                  <button onClick={() => handleUpvote(r.id)}
-                    className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg font-medium transition-colors ${r.upvotes.includes(user?.id ?? '') ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' : 'bg-kj-chip-bg text-kj-text-dim hover:bg-orange-50 dark:hover:bg-orange-900/20'}`}>
-                    👍 {t('roadAlerts.correct')} ({r.upvotes.length})
-                  </button>
-                  <div className="flex items-center gap-1 text-xs text-kj-text-faint">
-                    <Clock className="w-3 h-3" />
-                    {timeAgo(r.timestamp, t)}
+                      {/* Card footer */}
+                      <div className="flex items-center justify-between mt-3 gap-2">
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => handleUpvote(r.id)}
+                            className={`flex items-center gap-1 text-[11px] px-2.5 py-1.5 rounded-lg font-bold transition-colors ${
+                              r.upvotes.includes(user?.id ?? '')
+                                ? 'bg-orange-500/15 text-orange-400 border border-orange-500/20'
+                                : 'bg-kj-chip-bg text-kj-text-dim hover:bg-orange-500/10 border border-kj-line'
+                            }`}
+                          >
+                            👍 {t('roadAlerts.correct')} ({r.upvotes.length})
+                          </button>
+                          <button className="flex items-center gap-1 text-[11px] px-2.5 py-1.5 rounded-lg font-bold bg-kj-chip-bg text-kj-text-dim border border-kj-line hover:border-kj-primary/40 transition-colors">
+                            <Map className="w-3 h-3" />
+                            {lbl('Map', 'ম্যাপ')}
+                          </button>
+                        </div>
+                        <div className="flex items-center gap-1 text-[11px] text-kj-text-faint">
+                          <Clock className="w-3 h-3" />
+                          {timeAgo(r.timestamp, t)}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
 
-        <div className="h-4" />
-
+        <SponsoredAdSlot language={language} size="300x250" compact />
       </div>
     </div>
   );

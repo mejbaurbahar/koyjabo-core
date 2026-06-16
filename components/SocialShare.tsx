@@ -61,7 +61,7 @@ const SocialShare: React.FC<SocialShareProps> = ({ className = '' }) => {
             {/* Facebook */}
             <button
                 onClick={handleFacebookShare}
-                className="p-2 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+                className="p-2 rounded-full hover:bg-blue-50 dark:hover:bg-kj-primary-soft transition-colors"
                 title="Share on Facebook"
                 aria-label="Share on Facebook"
             >
@@ -81,7 +81,7 @@ const SocialShare: React.FC<SocialShareProps> = ({ className = '' }) => {
             {/* LinkedIn */}
             <button
                 onClick={handleLinkedInShare}
-                className="p-2 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+                className="p-2 rounded-full hover:bg-blue-50 dark:hover:bg-kj-primary-soft transition-colors"
                 title="Share on LinkedIn"
                 aria-label="Share on LinkedIn"
             >
