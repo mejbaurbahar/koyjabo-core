@@ -92,6 +92,7 @@ export function IntercityPage(props: Props) {
       r.busOperators.some(op => op.toLowerCase().includes(q))
     );
   }, [nameSearch, from, to]);
+  const canSearchJourneys = Boolean(from.trim() && to.trim());
 
   const DIVISION_COLORS: Record<string, string> = {
     Dhaka: '#3b82f6', Chattogram: '#10b981', Sylhet: '#a855f7',
@@ -282,14 +283,15 @@ export function IntercityPage(props: Props) {
           </div>
 
           <button
-            onClick={() => onNav('results')}
+            disabled={!canSearchJourneys}
+            onClick={() => canSearchJourneys && onNav('results')}
             style={{
               marginTop: 16, width: '100%',
               background: `linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)`,
               border: 'none', borderRadius: 14,
               padding: '14px 24px',
               fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 15, fontWeight: 700, color: '#fff',
-              cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+              cursor: canSearchJourneys ? 'pointer' : 'not-allowed', opacity: canSearchJourneys ? 1 : 0.5, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
               letterSpacing: 0.3,
             }}
           >

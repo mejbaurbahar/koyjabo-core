@@ -77,6 +77,7 @@ export function FlightsPage(props: Props) {
 
   const fromSuggestions = useMemo(() => filterAirports(fromAirport), [fromAirport]);
   const toSuggestions = useMemo(() => filterAirports(toAirport), [toAirport]);
+  const canFindFlights = Boolean(fromAirport.trim() && toAirport.trim());
 
   return (
     <PageShell {...props}>
@@ -151,7 +152,7 @@ export function FlightsPage(props: Props) {
                 anchorRef={toRef as React.RefObject<HTMLElement>}
               />
             )}
-            <button onClick={()=>onNav('results')} style={{ background:'linear-gradient(135deg,#1e5aa0,#0a1d3a)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'10px 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #1e5aa0', marginTop:10 }}>
+            <button disabled={!canFindFlights} onClick={()=>canFindFlights && onNav('results')} style={{ background:'linear-gradient(135deg,#1e5aa0,#0a1d3a)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'10px 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:canFindFlights?'pointer':'not-allowed', opacity:canFindFlights?1:0.5, display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #1e5aa0', marginTop:10 }}>
               <Icon.search s={16}/>{T(lang,'ফ্লাইট খুঁজুন','Find flights')}
             </button>
           </div>

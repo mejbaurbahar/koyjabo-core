@@ -222,7 +222,10 @@ function applyDigitLocale(root: HTMLElement | null, lang: Lang, originals: WeakM
 
 export function KoyJaboApp() {
   const [theme, setTheme] = useState<Theme>('dark');
-  const [lang, setLang] = useState<Lang>('en');
+  const [lang, setLang] = useState<Lang>(() => {
+    const saved = localStorage.getItem('app-language');
+    return saved === 'bn' || saved === 'en' ? saved : 'bn';
+  });
   const [stack, setStack] = useState<StackEntry[]>(() => [entryFromLocation()]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [dir, setDir] = useState<'fwd' | 'back'>('fwd');
@@ -242,6 +245,11 @@ export function KoyJaboApp() {
 
   // Inject global styles once
   useEffect(() => { injectGlobalStyles(); }, []);
+
+  useEffect(() => {
+    localStorage.setItem('app-language', lang);
+    document.documentElement.lang = lang;
+  }, [lang]);
 
   useEffect(() => {
     let raf = window.requestAnimationFrame(() => {

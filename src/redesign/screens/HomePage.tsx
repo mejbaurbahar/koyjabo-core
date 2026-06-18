@@ -27,6 +27,7 @@ interface HomePageProps {
   onLang: () => void;
   onTheme: () => void;
   onMenu: () => void;
+  authUser?: { id?: string; displayName?: string; username?: string } | null;
 }
 
 // ─── Inline 3D-style SVG Vehicles ────────────────────────────────────────────
@@ -58,6 +59,28 @@ const LAUNCH_TERMINALS = [
   { id:'hatiya', label:'Hatiya Ghat', sub:'হাতিয়া ঘাট' },
   { id:'borguna', label:'Borguna Ghat', sub:'বরগুনা ঘাট' },
 ];
+
+function stopLabelFromId(id: string) {
+  return id
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function buildLocalBusLocationSuggestions(): Suggestion[] {
+  const map = new Map<string, Suggestion>();
+  Object.values(STATIONS).forEach(s => map.set(s.name.toLowerCase(), { id: s.id, label: s.name, sub: s.bnName }));
+  BUS_DATA.forEach(bus => {
+    bus.routeString.split(/[⇄→-]/).map(part => part.trim()).filter(Boolean).forEach(part => {
+      if (!map.has(part.toLowerCase())) map.set(part.toLowerCase(), { id: part.toLowerCase().replace(/\s+/g, '_'), label: part, sub: bus.name });
+    });
+    bus.stops.forEach(stopId => {
+      if (STATIONS[stopId]) return;
+      const label = stopLabelFromId(stopId);
+      if (!map.has(label.toLowerCase())) map.set(label.toLowerCase(), { id: stopId, label, sub: bus.name });
+    });
+  });
+  return Array.from(map.values()).sort((a, b) => a.label.localeCompare(b.label));
+}
 
 function SearchPanel({
   tk,
@@ -91,9 +114,7 @@ function SearchPanel({
     return () => window.clearInterval(timer);
   }, []);
 
-  const stationList: Suggestion[] = useMemo(() =>
-    Object.values(STATIONS).map(s => ({ id: s.id, label: s.name, sub: s.bnName })), []
-  );
+  const stationList: Suggestion[] = useMemo(buildLocalBusLocationSuggestions, []);
   const modeOptions: Suggestion[] = useMemo(() => {
     if (activeMode === 'metro') {
       return Object.values(REAL_METRO_STATIONS).map(s => ({ id: s.id, label: s.name, sub: s.bnName }));
@@ -120,9 +141,9 @@ function SearchPanel({
   }, [activeMode, stationList]);
   const norm = (s: string) => s.toLowerCase().replace(/[\s\-\.]/g,'');
   const filterModeOptions = (q: string) => {
-    if (!q.trim()) return modeOptions.slice(0, 8);
+    if (!q.trim()) return modeOptions;
     const lq = q.toLowerCase();
-    return modeOptions.filter(s => s.label.toLowerCase().includes(lq) || s.sub?.includes(q) || s.id.toLowerCase().includes(norm(q))).slice(0, 8);
+    return modeOptions.filter(s => s.label.toLowerCase().includes(lq) || s.sub?.includes(q) || s.id.toLowerCase().includes(norm(q)));
   };
 
   const modeRoute = (mode = activeMode) =>
@@ -191,6 +212,7 @@ function SearchPanel({
     setFrom('');
     setTo('');
   };
+  const canFindRoute = Boolean(from.trim() && to.trim());
 
   const pillBase: React.CSSProperties = {
     borderRadius: 999,
@@ -345,7 +367,7 @@ function SearchPanel({
             />
           </div>
         </div>
-        {fromFocus && <SuggestionDropdown suggestions={filterModeOptions(from)} onSelect={s => { setFrom(s.label); setFromFocus(false); }} onDismiss={() => setFromFocus(false)} tk={tk} lang={lang} anchorRef={fromRef} />}
+        {fromFocus && <SuggestionDropdown suggestions={filterModeOptions(from)} maxItems={modeOptions.length} onSelect={s => { setFrom(s.label); setFromFocus(false); }} onDismiss={() => setFromFocus(false)} tk={tk} lang={lang} anchorRef={fromRef} />}
 
         {/* Swap (desktop only) */}
         {!isMobile && (
@@ -388,12 +410,13 @@ function SearchPanel({
             />
           </div>
         </div>
-        {toFocus && <SuggestionDropdown suggestions={filterModeOptions(to)} onSelect={s => { setTo(s.label); setToFocus(false); }} onDismiss={() => setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef} />}
+        {toFocus && <SuggestionDropdown suggestions={filterModeOptions(to)} maxItems={modeOptions.length} onSelect={s => { setTo(s.label); setToFocus(false); }} onDismiss={() => setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef} />}
 
         {/* Find routes — navigates with real from/to */}
         <button
           data-kj-find-routes
-          onClick={() => onNav(activeMode === 'bus' ? 'results' : modeRoute(), from || to ? { from, to, mode: activeMode, pref: routePref } : { mode: activeMode, pref: routePref })}
+          disabled={!canFindRoute}
+          onClick={() => canFindRoute && onNav(activeMode === 'bus' ? 'results' : modeRoute(), { from, to, mode: activeMode, pref: routePref })}
           style={{
             gridColumn: isMobile ? '1 / -1' : 'auto',
             order: isMobile ? 0 : 3,
@@ -405,7 +428,8 @@ function SearchPanel({
             fontFamily: lang === 'bn' ? BEN : SANS,
             fontSize: 14,
             fontWeight: 700,
-            cursor: 'pointer',
+            cursor: canFindRoute ? 'pointer' : 'not-allowed',
+            opacity: canFindRoute ? 1 : 0.5,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -1899,6 +1923,7 @@ export function HomePage({
   onLang,
   onTheme,
   onMenu,
+  authUser,
 }: HomePageProps) {
   const tk: Tokens = KJ_TOKENS[theme];
   const isMobile = device === 'mobile';
@@ -2147,7 +2172,7 @@ export function HomePage({
         </div>
 
         {/* ── Footer ── */}
-        <KJFooterComponent tk={tk} lang={lang} isMobile={isMobile} onNav={onNav}/>
+        <KJFooterComponent tk={tk} lang={lang} isMobile={isMobile} onNav={onNav} user={authUser}/>
       </div>
 
       {/* Mobile: anchor ad above tab bar */}
