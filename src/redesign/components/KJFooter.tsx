@@ -36,11 +36,8 @@ const LEGAL: FooterLink[] = [
 ];
 
 const SOCIAL = [
-  { label: 'f', title: 'Facebook' },
-  { label: 'in', title: 'LinkedIn' },
-  { label: 'X', title: 'X (Twitter)' },
-  { label: '▶', title: 'YouTube' },
-  { label: '✦', title: 'Other' },
+  { label: 'f', title: 'Facebook', href: 'https://www.facebook.com/koyjabo/' },
+  { label: 'in', title: 'LinkedIn', href: 'https://www.linkedin.com/company/koy-jabo/' },
 ];
 
 function FooterCol({
@@ -176,9 +173,12 @@ export function KJFooter({ tk, lang, isMobile, onNav }: KJFooterProps) {
             {/* Social icons */}
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               {SOCIAL.map((s) => (
-                <div
+                <a
                   key={s.title}
                   title={s.title}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{
                     width: 34,
                     height: 34,
@@ -193,10 +193,11 @@ export function KJFooter({ tk, lang, isMobile, onNav }: KJFooterProps) {
                     fontWeight: 700,
                     fontSize: 12,
                     color: tk.textDim,
+                    textDecoration: 'none',
                   }}
                 >
                   {s.label}
-                </div>
+                </a>
               ))}
             </div>
           </div>

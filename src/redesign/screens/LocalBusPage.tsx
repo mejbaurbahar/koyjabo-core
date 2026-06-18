@@ -9,6 +9,7 @@ import { ModeHero } from '../components/ModeHero';
 import { Stars } from '../components/Stars';
 import { BUS_DATA, STATIONS } from '../../../constants';
 import { SuggestionDropdown, Suggestion } from '../components/SuggestionDropdown';
+import { trackBusSearch, trackRouteSearch } from '../../../services/analyticsService';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string,p?:Record<string,string>)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -53,11 +54,11 @@ export function LocalBusPage(props: Props) {
   );
 
   const filterStations = (q: string) => {
-    if (!q.trim()) return stationList.slice(0, 8);
+    if (!q.trim()) return stationList;
     const lq = q.toLowerCase();
     return stationList.filter(s =>
       s.label.toLowerCase().includes(lq) || (s.sub ?? '').toLowerCase().includes(lq)
-    ).slice(0, 8);
+    );
   };
 
   // Normalize station name for matching (remove spaces/punctuation for stop ID matching)
@@ -141,7 +142,7 @@ export function LocalBusPage(props: Props) {
                 </div>
               </div>
               {toFocus && <SuggestionDropdown suggestions={filterStations(toInput)} onSelect={s=>{setToInput(s.label);setToFocus(false);}} onDismiss={()=>setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef}/>}
-              <button onClick={()=>onNav('results', { from: fromInput, to: toInput })} style={{ background:`linear-gradient(135deg,${tk.primary},${tk.primaryDeep})`, color:tk.primaryInk, border:0, borderRadius:14, padding:isMobile?'12px 16px':'0 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:`0 8px 22px -10px ${tk.primary}` }}>
+              <button onClick={()=>{ if (fromInput || toInput) trackRouteSearch(fromInput, toInput); onNav('results', { from: fromInput, to: toInput, search: searchQuery }); }} style={{ background:`linear-gradient(135deg,${tk.primary},${tk.primaryDeep})`, color:tk.primaryInk, border:0, borderRadius:14, padding:isMobile?'12px 16px':'0 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:`0 8px 22px -10px ${tk.primary}` }}>
                 <Icon.search s={16}/>{T(lang,'বাস খুঁজুন','Find bus')}
               </button>
             </div>
@@ -168,7 +169,7 @@ export function LocalBusPage(props: Props) {
                   const col = routeColor(r.type);
                   const initials = r.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
                   return (
-                    <div key={r.id||i} onClick={()=>onNav('bus-detail', { busId: r.id, from: fromInput, to: toInput })} style={{ ...card(14), display:'flex', alignItems:'center', gap:12, cursor:'pointer' }}>
+                    <div key={r.id||i} onClick={()=>{ trackBusSearch(r.id, r.name); onNav('bus-detail', { busId: r.id, from: fromInput, to: toInput }); }} style={{ ...card(14), display:'flex', alignItems:'center', gap:12, cursor:'pointer' }}>
                       <div style={{ width:44, height:44, borderRadius:12, flexShrink:0, background:`linear-gradient(135deg,${col}cc,${col})`, color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:SANS, fontWeight:800, fontSize:13 }}>{initials}</div>
                       <div style={{ flex:1, minWidth:0 }}>
                         <div style={{ display:'flex', alignItems:'center', gap:6, flexWrap:'wrap' }}>

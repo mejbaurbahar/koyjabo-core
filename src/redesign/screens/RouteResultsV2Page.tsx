@@ -3,6 +3,8 @@ import { KJ_TOKENS, SANS, BEN, T, Tokens, Lang } from '../tokens';
 import { AdSlot } from '../components/AdSlot';
 import { PageShell } from './PageShell';
 import { BUS_DATA, STATIONS } from '../../../constants';
+import { trackBusSearch } from '../../../services/analyticsService';
+import { getFavoriteBusIds, toggleFavoriteBus } from '../utils/favorites';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:Lang; route:string; canBack:boolean; onNav:(r:string,p?:Record<string,string>)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -21,15 +23,10 @@ const TYPE_COLOR: Record<string, string> = {
   'AC': '#006a4e', 'Local': '#1e3a8a', 'Double-Decker': '#7c3aed',
   'Semi-Sitting': '#0c4a6e', 'Sitting': '#b45309', 'Metro Rail': '#00543c',
 };
-const OCC = ['Empty','Moderate','Moderate','Busy','Busy'];
-const OCC_BN = ['ফাঁকা','মধ্যম','মধ্যম','ব্যস্ত','ব্যস্ত'];
-const OCC_C = ['#22c55e','#f59e0b','#f59e0b','#ef4444','#ef4444'];
-
 const STAT_CHIPS = [
-  { icon: '⚡', label: 'Fastest', labelBn: 'দ্রুততম', val: '48 min', valBn: '৪৮ মিনিট' },
-  { icon: '💰', label: 'Cheapest', labelBn: 'সস্তা', val: '৳30', valBn: '৳৩০' },
-  { icon: '🚶', label: 'Less walk', labelBn: 'কম হাঁটা', val: '50m', valBn: '৫০ মি' },
-  { icon: '⭐', label: 'Top rated', labelBn: 'শীর্ষ রেটেড', val: '4.5★', valBn: '৪.৫★' },
+  { icon: '🚌', label: 'Matching buses', labelBn: 'মিলেছে', key: 'count' },
+  { icon: '📍', label: 'From', labelBn: 'শুরু', key: 'from' },
+  { icon: '🏁', label: 'To', labelBn: 'গন্তব্য', key: 'to' },
 ];
 
 const HIST_HEIGHTS = [30, 55, 80, 100, 75, 45, 20];
@@ -39,6 +36,7 @@ export function RouteResultsV2Page(props: Props) {
   const isMobile = device === 'mobile';
   const tk: Tokens = KJ_TOKENS[theme];
   const [activeTOD, setActiveTOD] = useState('Morning');
+  const [favoriteIds, setFavoriteIds] = useState<string[]>(() => getFavoriteBusIds());
   const lbl = (en: string, bn: string) => T(lang, bn, en);
 
   const fromQ = params?.from ?? '';
@@ -54,8 +52,7 @@ export function RouteResultsV2Page(props: Props) {
     } else if (fromQ || toQ) {
       filtered = filtered.filter(r => busMatchesRoute(r, fromQ, toQ));
     }
-    return filtered.slice(0, 20).map((r, i) => {
-      const occIdx = i % 5;
+    return filtered.slice(0, 20).map((r) => {
       // Get real stop names
       const stopNames = r.stops.map(sid => STATIONS[sid]?.name ?? sid.replace(/_/g,' ')).slice(0, 6);
       return {
@@ -65,13 +62,10 @@ export function RouteResultsV2Page(props: Props) {
         nameBn: r.bnName,
         route: r.routeString,
         routeBn: r.routeString,
-        time: `${30 + r.stops.length * 3} min`,
-        timeBn: `${30 + r.stops.length * 3} মিনিট`,
         fare: `৳${r.type==='AC'?60:r.type==='Double-Decker'?50:30}`,
         fareOld: '',
         type: r.type,
         typeBn: r.type,
-        occupancy: OCC[occIdx], occupancyBn: OCC_BN[occIdx], occupancyColor: OCC_C[occIdx],
         badgeColor: TYPE_COLOR[r.type] ?? '#1e3a8a',
         ai: r.type === 'AC',
         stops: stopNames,
@@ -206,7 +200,7 @@ export function RouteResultsV2Page(props: Props) {
             flexWrap: isMobile ? 'wrap' : 'nowrap',
           }}>
             <input
-              defaultValue="Gulshan 2"
+              defaultValue={fromQ}
               style={{
                 background: tk.inputBg, border: `1px solid ${tk.line}`, borderRadius: 10,
                 padding: '8px 12px', fontFamily: SANS, fontSize: 14, fontWeight: 600, color: tk.text,
@@ -222,7 +216,7 @@ export function RouteResultsV2Page(props: Props) {
               <div style={{ width: 28, height: 1, background: tk.line }} />
             </div>
             <input
-              defaultValue="Motijheel"
+              defaultValue={toQ}
               style={{
                 background: tk.inputBg, border: `1px solid ${tk.line}`, borderRadius: 10,
                 padding: '8px 12px', fontFamily: SANS, fontSize: 14, fontWeight: 600, color: tk.text,
@@ -237,7 +231,13 @@ export function RouteResultsV2Page(props: Props) {
 
           {/* Stat chips */}
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            {STAT_CHIPS.map((chip) => (
+            {STAT_CHIPS.map((chip) => {
+              const value = chip.key === 'count'
+                ? String(RESULTS.length)
+                : chip.key === 'from'
+                  ? (fromQ || lbl('Any', 'যেকোনো'))
+                  : (toQ || lbl('Any', 'যেকোনো'));
+              return (
               <div key={chip.label} style={{
                 background: tk.panelMuted, border: `1px solid ${tk.line}`,
                 borderRadius: 999, padding: '6px 14px',
@@ -246,9 +246,9 @@ export function RouteResultsV2Page(props: Props) {
               }}>
                 <span style={{ fontSize: 14 }}>{chip.icon}</span>
                 <span style={{ color: tk.textDim }}>{lbl(chip.label, chip.labelBn)}</span>
-                <span style={{ color: tk.text, fontWeight: 700 }}>{lbl(chip.val, chip.valBn)}</span>
+                <span style={{ color: tk.text, fontWeight: 700 }}>{value}</span>
               </div>
-            ))}
+            );})}
           </div>
         </div>
       </div>
@@ -366,30 +366,8 @@ export function RouteResultsV2Page(props: Props) {
                             borderRadius: 6, padding: '3px 8px',
                             fontFamily: SANS, fontSize: 12, color: tk.textDim,
                           }}>
-                            🕐 {lbl(r.time, r.timeBn)}
-                          </span>
-                          <span style={{
-                            background: tk.panelMuted, border: `1px solid ${tk.line}`,
-                            borderRadius: 6, padding: '3px 8px',
-                            fontFamily: SANS, fontSize: 12, color: tk.textDim,
-                          }}>
                             {lbl(r.type, r.typeBn)}
                           </span>
-                          {/* Occupancy meter */}
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                            <div style={{
-                              width: 32, height: 5, background: tk.panelMuted, borderRadius: 3, overflow: 'hidden',
-                            }}>
-                              <div style={{
-                                height: '100%', borderRadius: 3,
-                                background: r.occupancyColor,
-                                width: r.occupancy === 'Empty' ? '20%' : r.occupancy === 'Moderate' ? '55%' : '88%',
-                              }} />
-                            </div>
-                            <span style={{ fontFamily: SANS, fontSize: 11, color: r.occupancyColor, fontWeight: 600 }}>
-                              {lbl(r.occupancy, r.occupancyBn)}
-                            </span>
-                          </div>
                           {r.ai && (
                             <span style={{ fontFamily: SANS, fontSize: 11, color: '#22c55e', fontWeight: 600 }}>
                               🌿 Eco
@@ -398,11 +376,15 @@ export function RouteResultsV2Page(props: Props) {
                         </div>
 
                         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                          <button style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, color: tk.textFaint }}>♡</button>
-                          <button style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, color: tk.textFaint }}>🔔</button>
-                          <button style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, color: tk.textFaint }}>↗</button>
                           <button
-                            onClick={() => onNav('bus-detail', { busId: (r as any).busId, from: fromQ, to: toQ })}
+                            onClick={() => setFavoriteIds(toggleFavoriteBus(r.busId))}
+                            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 18, color: favoriteIds.includes(r.busId) ? tk.accent : tk.textFaint }}
+                            title={lbl('Favorite bus', 'প্রিয় বাস')}
+                          >
+                            {favoriteIds.includes(r.busId) ? '♥' : '♡'}
+                          </button>
+                          <button
+                            onClick={() => { trackBusSearch(r.busId, r.name); onNav('bus-detail', { busId: (r as any).busId, from: fromQ, to: toQ }); }}
                             style={{
                               background: tk.primarySoft, border: `1px solid ${tk.primary}`,
                               borderRadius: 8, padding: '6px 14px', cursor: 'pointer',

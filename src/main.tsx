@@ -67,6 +67,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 
 import AntiScraping from '../components/AntiScraping';
 import { ToastProvider } from '../contexts/ToastContext';
+import { LanguageProvider } from '../contexts/LanguageContext';
 
 const rootElement = document.getElementById('root');
 if (rootElement) {
@@ -74,7 +75,11 @@ if (rootElement) {
   root.render(
     <React.StrictMode>
       <ErrorBoundary>
-        <KoyJaboApp />
+        <LanguageProvider>
+          <ToastProvider>
+            <KoyJaboApp />
+          </ToastProvider>
+        </LanguageProvider>
       </ErrorBoundary>
     </React.StrictMode>
   );
