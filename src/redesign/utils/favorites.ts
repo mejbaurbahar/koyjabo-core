@@ -1,8 +1,18 @@
 export const BUS_FAVORITES_KEY = 'koyjabo_favorite_buses';
 
+function currentFavoriteKey(): string {
+  try {
+    const raw = localStorage.getItem('koyjabo_auth_session');
+    const userId = raw ? JSON.parse(raw)?.user?.id : '';
+    return userId ? `${BUS_FAVORITES_KEY}_${userId}` : BUS_FAVORITES_KEY;
+  } catch {
+    return BUS_FAVORITES_KEY;
+  }
+}
+
 export function getFavoriteBusIds(): string[] {
   try {
-    const raw = localStorage.getItem(BUS_FAVORITES_KEY);
+    const raw = localStorage.getItem(currentFavoriteKey());
     const parsed = raw ? JSON.parse(raw) : [];
     return Array.isArray(parsed) ? parsed.filter((id): id is string => typeof id === 'string') : [];
   } catch {
@@ -12,7 +22,7 @@ export function getFavoriteBusIds(): string[] {
 
 export function setFavoriteBusIds(ids: string[]): void {
   try {
-    localStorage.setItem(BUS_FAVORITES_KEY, JSON.stringify(Array.from(new Set(ids))));
+    localStorage.setItem(currentFavoriteKey(), JSON.stringify(Array.from(new Set(ids))));
     window.dispatchEvent(new Event('koyjabo:favorites-changed'));
   } catch {
     // localStorage can be unavailable in private browsing.

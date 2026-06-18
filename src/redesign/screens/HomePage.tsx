@@ -79,9 +79,16 @@ function SearchPanel({
   const [fromFocus, setFromFocus] = useState(false);
   const [toFocus, setToFocus] = useState(false);
   const [searchFocus, setSearchFocus] = useState(false);
+  const [routePref, setRoutePref] = useState<'fastest' | 'cheapest' | 'non-ac'>('fastest');
+  const [leaveTime, setLeaveTime] = useState(() => new Date());
   const fromRef = useRef<HTMLDivElement>(null);
   const toRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setLeaveTime(new Date()), 30000);
+    return () => window.clearInterval(timer);
+  }, []);
 
   const stationList: Suggestion[] = useMemo(() =>
     Object.values(STATIONS).map(s => ({ id: s.id, label: s.name, sub: s.bnName })), []
@@ -153,7 +160,7 @@ function SearchPanel({
   } as Record<SearchModeId, string>;
 
   const submitSearch = (value = searchQ) => {
-    const params = value.trim() ? { search: value.trim(), mode: activeMode } : { mode: activeMode };
+    const params = value.trim() ? { search: value.trim(), mode: activeMode, pref: routePref } : { mode: activeMode, pref: routePref };
     onNav(modeRoute(), params);
   };
 
@@ -197,6 +204,7 @@ function SearchPanel({
     display: 'inline-flex',
     alignItems: 'center',
     gap: 5,
+    minHeight: 32,
   };
 
   const fieldCard: React.CSSProperties = {
@@ -221,6 +229,7 @@ function SearchPanel({
         display: 'flex',
         flexDirection: 'column',
         gap: 16,
+        minHeight: isMobile ? 404 : 352,
       }}
     >
       {/* Mode pills — scroll horizontally on mobile */}
@@ -234,7 +243,7 @@ function SearchPanel({
               ...pillBase,
               background: activeMode === m.id ? tk.primary : tk.panelMuted,
               color: activeMode === m.id ? tk.primaryInk : tk.textDim,
-              border: activeMode === m.id ? 'none' : `1px solid ${tk.line}`,
+              border: `1px solid ${activeMode === m.id ? tk.primary : tk.line}`,
               flex: isMobile ? '1 1 0' : undefined,
               justifyContent: 'center',
               minWidth: 0,
@@ -383,7 +392,7 @@ function SearchPanel({
         {/* Find routes — navigates with real from/to */}
         <button
           data-kj-find-routes
-          onClick={() => onNav(activeMode === 'bus' ? 'results' : modeRoute(), from || to ? { from, to, mode: activeMode } : { mode: activeMode })}
+          onClick={() => onNav(activeMode === 'bus' ? 'results' : modeRoute(), from || to ? { from, to, mode: activeMode, pref: routePref } : { mode: activeMode, pref: routePref })}
           style={{
             gridColumn: isMobile ? '1 / -1' : 'auto',
             order: isMobile ? 0 : 3,
@@ -411,30 +420,33 @@ function SearchPanel({
       {/* Footer chips */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: isMobile ? 'nowrap' : 'wrap', overflowX: 'auto', scrollbarWidth: 'none' }}>
         {[
-          T(lang, 'এখনই ছাড়ুন · ৪:২২ PM', 'Leave now · 4:22 PM'),
-          T(lang, 'দ্রুততম', 'Fastest'),
-          T(lang, 'সস্তাতম', 'Cheapest'),
-          ...(!isMobile ? [T(lang, 'Non-AC only', 'Non-AC only')] : []),
-        ].map((chip, i) => (
+          { key: 'now', label: T(lang, `এখনই · ${leaveTime.toLocaleTimeString('bn-BD', { hour: 'numeric', minute: '2-digit' })}`, `Leave now · ${leaveTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`) },
+          { key: 'fastest', label: T(lang, 'দ্রুততম', 'Fastest') },
+          { key: 'cheapest', label: T(lang, 'সস্তাতম', 'Cheapest') },
+          ...(!isMobile ? [{ key: 'non-ac', label: T(lang, 'AC ছাড়া', 'Non-AC only') }] : []),
+        ].map((chip) => {
+          const active = chip.key === 'now' || chip.key === routePref;
+          return (
           <button
-            key={i}
+            key={chip.key}
+            onClick={() => chip.key !== 'now' && setRoutePref(chip.key as 'fastest' | 'cheapest' | 'non-ac')}
             style={{
-              background: i === 0 ? tk.primarySoft : tk.panelMuted,
-              border: `1px solid ${i === 0 ? tk.primary : tk.line}`,
+              background: active ? tk.primarySoft : tk.panelMuted,
+              border: `1px solid ${active ? tk.primary : tk.line}`,
               borderRadius: 999,
               padding: '5px 12px',
               fontFamily: lang === 'bn' ? BEN : SANS,
               fontSize: 11,
-              fontWeight: 500,
-              color: i === 0 ? tk.primary : tk.textDim,
+              fontWeight: active ? 700 : 500,
+              color: active ? tk.primary : tk.textDim,
               cursor: 'pointer',
               whiteSpace: 'nowrap',
               flexShrink: 0,
             }}
           >
-            {chip}
+            {chip.label}
           </button>
-        ))}
+        );})}
         <span
           style={{
             marginLeft: 'auto',

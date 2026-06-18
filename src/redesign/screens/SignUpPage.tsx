@@ -23,13 +23,19 @@ export function SignUpPage(props: Props) {
   const strength = pw.length > 12 ? 5 : pw.length > 8 ? 4 : pw.length > 5 ? 3 : pw.length > 2 ? 2 : pw.length > 0 ? 1 : 0;
   const strengthLabel = ['','Weak','Fair','Good','Strong','Excellent'][strength];
   const strengthColor = ['',tk.accent,'#f59e0b','#f59e0b','#10b981','#10b981'][strength];
+  const normalizedEmail = email.trim().toLowerCase();
+  const emailLooksGmail = !normalizedEmail || /^[^\s@]+@gmail\.com$/.test(normalizedEmail);
 
-  const username = email.trim().split('@')[0]?.replace(/[^a-z0-9_]/gi, '').toLowerCase() || name.trim().replace(/\s+/g, '').toLowerCase();
+  const username = normalizedEmail.split('@')[0]?.replace(/[^a-z0-9_]/gi, '').toLowerCase() || name.trim().replace(/\s+/g, '').toLowerCase();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!name.trim() || !email.trim() || !pw || !confirmPw) {
       setError(T(lang, 'সব তথ্য পূরণ করুন।', 'Fill all fields.'));
+      return;
+    }
+    if (!/^[^\s@]+@gmail\.com$/.test(normalizedEmail)) {
+      setError(T(lang, 'শুধু Gmail ঠিকানা গ্রহণ করা হবে।', 'Only Gmail addresses are accepted.'));
       return;
     }
     if (pw !== confirmPw) {
@@ -43,11 +49,11 @@ export function SignUpPage(props: Props) {
     setSubmitting(true);
     setError('');
     try {
-      const result = await signupUser(email, pw, username, name.trim());
+      const result = await signupUser(normalizedEmail, pw, username, name.trim());
       if (!result.success || !result.userId) throw new Error(result.error || T(lang, 'সাইন আপ ব্যর্থ হয়েছে।', 'Sign up failed.'));
       signInUser({
         id: result.userId,
-        email: result.email || email.trim().toLowerCase(),
+        email: result.email || normalizedEmail,
         username: result.username || username,
         displayName: result.displayName || name.trim(),
       });
@@ -70,7 +76,20 @@ export function SignUpPage(props: Props) {
 
           <div style={{ display:'flex',flexDirection:'column',gap:12,marginBottom:20 }}>
             <input value={name} onChange={e=>setName(e.target.value)} autoComplete="name" placeholder={T(lang,'পূর্ণ নাম','Full name')} style={{ width:'100%',background:tk.inputBg,border:`1px solid ${tk.line}`,borderRadius:12,padding:'12px 14px',color:tk.text,fontFamily:BEN,fontSize:14,outline:'none',boxSizing:'border-box' }}/>
-            <input type="email" value={email} onChange={e=>setEmail(e.target.value)} autoComplete="email" placeholder="Email" style={{ width:'100%',background:tk.inputBg,border:`1px solid ${tk.line}`,borderRadius:12,padding:'12px 14px',color:tk.text,fontFamily:SANS,fontSize:14,outline:'none',boxSizing:'border-box' }}/>
+            <div>
+              <input
+                type="email"
+                value={email}
+                onChange={e=>setEmail(e.target.value)}
+                autoComplete="email"
+                placeholder="yourname@gmail.com"
+                title={T(lang, 'শুধু Gmail ঠিকানা গ্রহণ করা হবে', 'Only Gmail addresses are accepted')}
+                style={{ width:'100%',background:tk.inputBg,border:`1px solid ${emailLooksGmail ? tk.line : tk.accent}`,borderRadius:12,padding:'12px 14px',color:tk.text,fontFamily:SANS,fontSize:14,outline:'none',boxSizing:'border-box' }}
+              />
+              <div style={{ marginTop:6,fontFamily:BEN,fontSize:11,color:emailLooksGmail?tk.textFaint:tk.accent }}>
+                {T(lang, 'শুধু Gmail অ্যাকাউন্ট দিয়ে সাইন আপ করা যাবে।', 'Only Gmail accounts can sign up.')}
+              </div>
+            </div>
             <div>
               <div style={{ position:'relative' }}>
                 <input type={showPw?'text':'password'} value={pw} onChange={e=>setPw(e.target.value)} autoComplete="new-password" placeholder={T(lang,'পাসওয়ার্ড','Password')} style={{ width:'100%',background:tk.inputBg,border:`1px solid ${tk.line}`,borderRadius:12,padding:'12px 44px 12px 14px',color:tk.text,fontFamily:SANS,fontSize:14,outline:'none',boxSizing:'border-box' }}/>

@@ -3,6 +3,7 @@ import { KJ_TOKENS, Theme, Lang, Device, T, SANS, BEN } from './tokens';
 import { injectGlobalStyles } from './globalStyles';
 import { SplashScreen } from './SplashScreen';
 import { getAuthUser } from '../../services/communityDataService';
+import { setHistoryUser } from '../../services/analyticsService';
 
 // Lazy imports — all screens
 import { HomePage } from './screens/HomePage';
@@ -191,6 +192,8 @@ function AuthRequiredPage(props: any) {
 }
 
 const PUBLIC_ROUTES = new Set(['signin', 'signup', 'forgot-password']);
+const ACCOUNT_ROUTES = new Set(['profile', 'favorites', 'history', 'settings', 'edit-profile', 'password', 'devices']);
+const ACTION_GATED_ROUTES = new Set(['results', 'rate-review', 'metro-token', 'metro-pass']);
 
 export function KoyJaboApp() {
   const [theme, setTheme] = useState<Theme>('dark');
@@ -202,6 +205,7 @@ export function KoyJaboApp() {
   const [splash, setSplash] = useState(true);
   const [vignette, setVignette] = useState(false);
   const [anchorOn, setAnchorOn] = useState(true);
+  const [authPrompt, setAuthPrompt] = useState(false);
   const [vw, setVw] = useState(window.innerWidth);
   const [authUser, setAuthUser] = useState(() => getAuthUser());
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -235,7 +239,12 @@ export function KoyJaboApp() {
   }, []);
 
   useEffect(() => {
-    const refreshAuth = () => setAuthUser(getAuthUser());
+    const refreshAuth = () => {
+      const user = getAuthUser();
+      setAuthUser(user);
+      setHistoryUser(user?.id ?? null);
+    };
+    refreshAuth();
     window.addEventListener('storage', refreshAuth);
     window.addEventListener('focus', refreshAuth);
     window.addEventListener('koyjabo-auth-changed', refreshAuth);
@@ -272,7 +281,13 @@ export function KoyJaboApp() {
   const resolvedDevice: 'desktop' | 'mobile' = vw < 1024 ? 'mobile' : 'desktop';
 
   const nav = useCallback((route: Route, params?: Record<string, string>) => {
-    setAuthUser(getAuthUser());
+    const currentUser = getAuthUser();
+    setAuthUser(currentUser);
+    if (!currentUser && ACTION_GATED_ROUTES.has(route)) {
+      sessionStorage.setItem('koyjabo_post_login_redirect', pathForEntry({ route, params }));
+      setAuthPrompt(true);
+      return;
+    }
     const entry = { route, params };
     setDir('fwd');
     setShowSkeleton(true);
@@ -345,7 +360,7 @@ export function KoyJaboApp() {
 
   function renderScreen(route: Route, params?: Record<string, string>) {
     const p = { ...sharedProps, params };
-    if (!authUser && !PUBLIC_ROUTES.has(route)) return <AuthRequiredPage {...p}/>;
+    if (!authUser && ACCOUNT_ROUTES.has(route)) return <AuthRequiredPage {...p}/>;
     switch (route) {
       case 'home': return <HomePage {...p}/>;
       case 'bus-hub': return <LocalBusPage {...p}/>;
@@ -495,6 +510,21 @@ export function KoyJaboApp() {
           onClose={() => setMenuOpen(false)}
           onNav={(r) => { setMenuOpen(false); nav(r); }}
         />
+      )}
+      {authPrompt && (
+        <div style={{ position:'fixed', inset:0, zIndex:9800, background:'rgba(0,0,0,.55)', display:'flex', alignItems:'center', justifyContent:'center', padding:20 }}>
+          <div style={{ width:'100%', maxWidth:420, background:tk.panel, border:`1px solid ${tk.line}`, borderRadius:20, padding:24, boxShadow:tk.shadowLg, textAlign:'center' }}>
+            <div style={{ width:56, height:56, borderRadius:18, background:tk.accentSoft, color:tk.accent, display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 14px', fontFamily:SANS, fontSize:26, fontWeight:900 }}>!</div>
+            <h2 style={{ margin:'0 0 8px', fontFamily:lang === 'bn' ? BEN : SANS, fontSize:20, color:tk.text }}>{T(lang, 'লগইন প্রয়োজন', 'Login required')}</h2>
+            <p style={{ margin:'0 0 18px', fontFamily:lang === 'bn' ? BEN : SANS, fontSize:14, color:tk.textDim, lineHeight:1.6 }}>{T(lang, 'এই ফিচার ব্যবহার করতে আগে সাইন ইন করুন।', 'Please sign in before using this feature.')}</p>
+            <button onClick={() => { setAuthPrompt(false); nav('signin'); }} style={{ width:'100%', background:tk.primary, color:tk.primaryInk, border:0, borderRadius:12, padding:'12px 18px', fontFamily:lang === 'bn' ? BEN : SANS, fontWeight:800, cursor:'pointer' }}>
+              {T(lang, 'সাইন ইন', 'Sign in')}
+            </button>
+            <button onClick={() => setAuthPrompt(false)} style={{ marginTop:10, background:'transparent', border:0, color:tk.textDim, fontFamily:SANS, cursor:'pointer' }}>
+              {T(lang, 'বন্ধ করুন', 'Close')}
+            </button>
+          </div>
+        </div>
       )}
       {showRails && (
         <>

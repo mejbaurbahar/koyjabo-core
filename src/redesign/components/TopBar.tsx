@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Tokens, Lang, Theme, SANS, BEN, T } from '../tokens';
 import { Logo } from './Logo';
 import { Icon } from './Icons';
+import { signOutUser } from '../utils/auth';
 
 type Device = 'auto' | 'mobile' | 'desktop';
 
@@ -43,6 +44,7 @@ export function TopBar({
   onMenu,
 }: TopBarProps) {
   const isMobile = device === 'mobile';
+  const [profileOpen, setProfileOpen] = useState(false);
 
   const controlBtn: React.CSSProperties = {
     background: tk.panelMuted,
@@ -129,14 +131,14 @@ export function TopBar({
           </span>
         </button>
 
-        {/* Desktop nav — pushed to right side with marginLeft: auto */}
-        {!isMobile && user && (
+        {/* Desktop nav */}
+        {!isMobile && (
           <nav
             style={{
               display: 'flex',
               alignItems: 'center',
               gap: 1,
-              marginLeft: 'auto',  // pushes nav to the right
+              marginLeft: 'auto',
               marginRight: 12,
               minWidth: 0,
               overflowX: 'auto',
@@ -187,6 +189,23 @@ export function TopBar({
             </button>
           )}
 
+          {!isMobile && !user && (
+            <>
+              <button
+                onClick={() => onNav('signin')}
+                style={{ ...controlBtn, borderRadius: 10, padding: '8px 12px' }}
+              >
+                {T(lang, 'সাইন ইন', 'Sign in')}
+              </button>
+              <button
+                onClick={() => onNav('signup')}
+                style={{ ...controlBtn, borderRadius: 10, padding: '8px 12px', background: tk.primary, color: tk.primaryInk, border: 'none' }}
+              >
+                {T(lang, 'সাইন আপ', 'Sign up')}
+              </button>
+            </>
+          )}
+
           {/* Lang toggle */}
           <button onClick={onLang} style={controlBtn}>
             <Icon.globe s={14}/>
@@ -198,8 +217,8 @@ export function TopBar({
             {theme === 'dark' ? <Icon.sun s={16} /> : <Icon.moon s={16} />}
           </button>
 
-          {/* Install button — desktop only, filled dark bg */}
-          {!isMobile && (
+          {/* Install button for guests */}
+          {!isMobile && !user && (
             <button
               onClick={() => onNav('install')}
               style={{
@@ -212,6 +231,60 @@ export function TopBar({
             >
               <Icon.download s={16} />
             </button>
+          )}
+
+          {/* Profile menu for signed-in desktop users */}
+          {!isMobile && user && (
+            <div style={{ position: 'relative' }}>
+              <button
+                onClick={() => setProfileOpen(open => !open)}
+                style={{
+                  width: 38,
+                  height: 38,
+                  borderRadius: 999,
+                  background: tk.primarySoft,
+                  color: tk.primaryDeep,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontFamily: SANS,
+                  fontWeight: 800,
+                  fontSize: 12,
+                  border: `1px solid ${tk.primary}55`,
+                  cursor: 'pointer',
+                }}
+                aria-label={T(lang, 'প্রোফাইল', 'Profile')}
+              >
+                {(user.displayName || user.username || 'KJ').slice(0, 2).toUpperCase()}
+              </button>
+              {profileOpen && (
+                <div style={{
+                  position: 'absolute',
+                  right: 0,
+                  top: 46,
+                  width: 180,
+                  background: tk.panel,
+                  border: `1px solid ${tk.line}`,
+                  borderRadius: 14,
+                  boxShadow: tk.shadowLg,
+                  padding: 6,
+                  zIndex: 500,
+                }}>
+                  <button
+                    onClick={() => { setProfileOpen(false); onNav('profile'); }}
+                    style={{ width: '100%', background: 'transparent', border: 0, color: tk.text, textAlign: 'left', padding: '10px 12px', borderRadius: 10, fontFamily: lang === 'bn' ? BEN : SANS, cursor: 'pointer' }}
+                  >
+                    {T(lang, 'প্রোফাইল', 'Profile')}
+                  </button>
+                  <button
+                    onClick={() => { setProfileOpen(false); signOutUser(); onNav('signin'); }}
+                    style={{ width: '100%', background: 'transparent', border: 0, color: tk.accent, textAlign: 'left', padding: '10px 12px', borderRadius: 10, fontFamily: lang === 'bn' ? BEN : SANS, cursor: 'pointer' }}
+                  >
+                    {T(lang, 'সাইন আউট', 'Sign out')}
+                  </button>
+                </div>
+              )}
+            </div>
           )}
 
           {/* Avatar + menu — mobile only */}

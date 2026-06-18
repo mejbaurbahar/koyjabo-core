@@ -39,6 +39,7 @@ export function RouteResultsV2Page(props: Props) {
   const fromQ = params?.from ?? '';
   const toQ = params?.to ?? '';
   const searchQ = params?.search ?? '';
+  const pref = params?.pref ?? 'fastest';
 
   // Real filtered results from BUS_DATA
   const RESULTS = useMemo(() => {
@@ -49,6 +50,14 @@ export function RouteResultsV2Page(props: Props) {
     } else if (fromQ || toQ) {
       filtered = filtered.filter(r => busMatchesRoute(r, fromQ, toQ));
     }
+    if (pref === 'non-ac') {
+      filtered = filtered.filter(r => r.type !== 'AC');
+    }
+    const fareOf = (r: typeof BUS_DATA[0]) => r.type === 'AC' ? 60 : r.type === 'Double-Decker' ? 50 : 30;
+    filtered = filtered.slice().sort((a, b) => {
+      if (pref === 'cheapest' || pref === 'non-ac') return fareOf(a) - fareOf(b);
+      return a.stops.length - b.stops.length;
+    });
     return filtered.slice(0, 20).map((r) => {
       // Get real stop names
       const stopNames = r.stops.map(sid => STATIONS[sid]?.name ?? sid.replace(/_/g,' ')).slice(0, 6);
@@ -59,7 +68,7 @@ export function RouteResultsV2Page(props: Props) {
         nameBn: r.bnName,
         route: r.routeString,
         routeBn: r.routeString,
-        fare: `৳${r.type==='AC'?60:r.type==='Double-Decker'?50:30}`,
+        fare: `৳${fareOf(r)}`,
         fareOld: '',
         type: r.type,
         typeBn: r.type,
@@ -69,7 +78,7 @@ export function RouteResultsV2Page(props: Props) {
         hours: r.hours,
       };
     });
-  }, [fromQ, toQ, searchQ]);
+  }, [fromQ, toQ, searchQ, pref]);
 
   const fareValues = RESULTS
     .map(result => Number(result.fare.replace(/[^\d]/g, '')))

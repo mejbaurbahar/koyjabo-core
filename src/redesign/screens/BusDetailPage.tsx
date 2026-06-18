@@ -236,7 +236,7 @@ export function BusDetailPage(props: Props) {
         </div>
       </div>
 
-      <div style={{ position:'fixed', bottom: isMobile ? 0 : 60, left:0, right:0, background:tk.panel, backdropFilter:'blur(14px)', WebkitBackdropFilter:'blur(14px)', borderTop:`1px solid ${tk.line}`, padding:'12px 16px', display:'flex', gap:10, zIndex:9100 }}>
+      <div style={{ position:'sticky', bottom: isMobile ? 64 : 0, background:tk.panel, backdropFilter:'blur(14px)', WebkitBackdropFilter:'blur(14px)', borderTop:`1px solid ${tk.line}`, padding:'12px 16px', display:'flex', gap:10, zIndex:50, marginTop:24 }}>
         <button onClick={()=>setFavoriteIds(toggleFavoriteBus(bus.id))} style={{ ...chipBtn(tk),borderRadius:12,padding:'10px 16px',color:isFavorite?tk.accent:tk.text }}>
           {isFavorite?'♥':'♡'} {T(lang,'সেভ','Save')}
         </button>

@@ -23,6 +23,12 @@ export function injectGlobalStyles() {
     .kj-screen [style*="display: flex"] > *,
     .kj-screen [style*="display:flex"] > * { min-width: 0; }
 
+    @media (max-width: 768px) {
+      input, textarea, select {
+        font-size: 16px !important;
+      }
+    }
+
     /* Scrollable chip rows */
     .kj-chips-scroll { overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap !important; }
     .kj-chips-scroll::-webkit-scrollbar { display: none; }

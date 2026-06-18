@@ -514,12 +514,16 @@ async function handleSignup({ email, passwordHash, username, displayName }) {
   }
 
   const normalizedEmail = email.toLowerCase().trim();
+  const emailDomain = normalizedEmail.split('@')[1] || '';
+
+  if (emailDomain !== 'gmail.com') {
+    return { success: false, error: 'Only Gmail addresses are accepted for signup.' };
+  }
 
   if (isTempMail(normalizedEmail)) {
     return { success: false, error: 'Temporary or disposable email addresses are not allowed. Please use a real email address (Gmail, Yahoo, Outlook, etc.).' };
   }
 
-  const emailDomain = normalizedEmail.split('@')[1] || '';
   const disposableViaApi = await isTempMailApi(emailDomain);
   if (disposableViaApi) {
     return { success: false, error: 'Temporary or disposable email addresses are not allowed. Please use a real email address (Gmail, Yahoo, Outlook, etc.).' };
@@ -680,6 +684,46 @@ async function handleUpdateProfile({ userId, displayName, username }) {
 
   await writeDataFile(`data/users/${userId}.json`, updated, userFile.sha, `Profile update: ${userId}`);
   return { success: true, userId, displayName: updated.displayName, username: updated.username };
+}
+
+async function handleDeleteAccount({ userId }) {
+  if (!userId) return { success: false, error: 'User ID required.' };
+
+  const userFile = await readDataFile(`data/users/${userId}.json`);
+  if (!userFile) return { success: true, deleted: true };
+
+  const [indexFile, usernameIndexFile, historyFile, devicesFile, avatarFile] = await Promise.all([
+    readDataFile('data/users/index.json'),
+    readDataFile('data/users/username_index.json'),
+    readDataFile(`data/history/${userId}.json`),
+    readDataFile(`data/devices/${userId}.json`),
+    readDataFile(`data/avatars/${userId}.json`),
+  ]);
+
+  if (indexFile) {
+    const next = {};
+    for (const [key, value] of Object.entries(indexFile.content || {})) {
+      if (value !== userId) next[key] = value;
+    }
+    await writeDataFile('data/users/index.json', next, indexFile.sha, `Delete account index: ${userId}`);
+  }
+
+  if (usernameIndexFile) {
+    const next = {};
+    for (const [key, value] of Object.entries(usernameIndexFile.content || {})) {
+      if (value !== userId) next[key] = value;
+    }
+    await writeDataFile('data/users/username_index.json', next, usernameIndexFile.sha, `Delete username index: ${userId}`);
+  }
+
+  await Promise.all([
+    deleteDataFile(`data/history/${userId}.json`, historyFile?.sha),
+    deleteDataFile(`data/devices/${userId}.json`, devicesFile?.sha),
+    deleteDataFile(`data/avatars/${userId}.json`, avatarFile?.sha),
+    deleteDataFile(`data/users/${userId}.json`, userFile.sha),
+  ]);
+
+  return { success: true, deleted: true };
 }
 
 async function handleChangePassword({ userId, newPasswordHash, oldPasswordHash, userAgent }) {
@@ -1349,6 +1393,9 @@ async function main() {
         break;
       case 'update-profile':
         result = await handleUpdateProfile({ userId, displayName: data.displayName, username: data.username });
+        break;
+      case 'delete-account':
+        result = await handleDeleteAccount({ userId });
         break;
       case 'change-password':
         result = await handleChangePassword({ userId, newPasswordHash: passwordHash, oldPasswordHash: data.oldPasswordHash, userAgent: data.userAgent });
