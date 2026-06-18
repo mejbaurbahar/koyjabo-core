@@ -35,12 +35,12 @@ interface HomePageProps {
 // ─── SearchPanel ──────────────────────────────────────────────────────────────
 
 const SEARCH_MODES = [
-  { bn: 'লোকাল বাস', en: 'Local Bus', id: 'bus' },
-  { bn: 'মেট্রো', en: 'Metro', id: 'metro' },
-  { bn: 'আন্তঃজেলা', en: 'Intercity', id: 'intercity' },
-  { bn: 'ট্রেন', en: 'Train', id: 'train' },
-  { bn: 'লঞ্চ', en: 'Launch', id: 'launch' },
-  { bn: 'বিমান', en: 'Air', id: 'flights' },
+  { bn: 'লোকাল বাস', en: 'Local Bus', shortBn: 'বাস', shortEn: 'Bus', icon: '🚌', id: 'bus' },
+  { bn: 'মেট্রো', en: 'Metro', shortBn: 'মেট্রো', shortEn: 'Metro', icon: '🚇', id: 'metro' },
+  { bn: 'আন্তঃজেলা', en: 'Intercity', shortBn: 'জেলা', shortEn: 'City', icon: '🧭', id: 'intercity' },
+  { bn: 'ট্রেন', en: 'Train', shortBn: 'ট্রেন', shortEn: 'Train', icon: '🚆', id: 'train' },
+  { bn: 'লঞ্চ', en: 'Launch', shortBn: 'লঞ্চ', shortEn: 'Launch', icon: '⛴️', id: 'launch' },
+  { bn: 'বিমান', en: 'Air', shortBn: 'বিমান', shortEn: 'Air', icon: '✈️', id: 'flights' },
 ] as const;
 
 type SearchModeId = typeof SEARCH_MODES[number]['id'];
@@ -186,14 +186,17 @@ function SearchPanel({
 
   const pillBase: React.CSSProperties = {
     borderRadius: 999,
-    padding: '5px 13px',
+    padding: isMobile ? '7px 10px' : '5px 13px',
     fontFamily: lang === 'bn' ? BEN : SANS,
-    fontSize: 12,
+    fontSize: isMobile ? 11 : 12,
     fontWeight: 600,
     cursor: 'pointer',
     border: 'none',
     whiteSpace: 'nowrap',
     transition: 'all 0.18s ease',
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 5,
   };
 
   const fieldCard: React.CSSProperties = {
@@ -221,7 +224,7 @@ function SearchPanel({
       }}
     >
       {/* Mode pills — scroll horizontally on mobile */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, overflowX: 'auto', scrollbarWidth: 'none', flexWrap: isMobile ? 'nowrap' : 'wrap' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, overflowX: isMobile ? 'hidden' : 'auto', scrollbarWidth: 'none', flexWrap: isMobile ? 'nowrap' : 'wrap' }}>
         {SEARCH_MODES.map((m) => (
           <button
             key={m.id}
@@ -232,9 +235,16 @@ function SearchPanel({
               background: activeMode === m.id ? tk.primary : tk.panelMuted,
               color: activeMode === m.id ? tk.primaryInk : tk.textDim,
               border: activeMode === m.id ? 'none' : `1px solid ${tk.line}`,
+              flex: isMobile ? '1 1 0' : undefined,
+              justifyContent: 'center',
+              minWidth: 0,
             }}
+            aria-label={T(lang, m.bn, m.en)}
           >
-            {T(lang, m.bn, m.en)}
+            <span aria-hidden="true">{m.icon}</span>
+            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {isMobile ? T(lang, m.shortBn, m.shortEn) : T(lang, m.bn, m.en)}
+            </span>
           </button>
         ))}
         {!isMobile && (

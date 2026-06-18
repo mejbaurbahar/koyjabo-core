@@ -98,6 +98,9 @@ const ROUTE_PATHS: Record<string, string> = {
   privacy: '/privacy',
   terms: '/terms',
   install: '/install',
+  offline: '/offline',
+  '500': '/500',
+  maintenance: '/maintenance',
 };
 
 const slugify = (value: string) => value.toLowerCase().trim().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -187,7 +190,6 @@ function AuthRequiredPage(props: any) {
 export function KoyJaboApp() {
   const [theme, setTheme] = useState<Theme>('dark');
   const [lang, setLang] = useState<Lang>('en');
-  const [forceDesktop, setForceDesktop] = useState(false); // phone user can request desktop view
   const [stack, setStack] = useState<StackEntry[]>(() => [entryFromLocation()]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [dir, setDir] = useState<'fwd' | 'back'>('fwd');
@@ -262,8 +264,7 @@ export function KoyJaboApp() {
     return () => window.removeEventListener('popstate', onPop);
   }, []);
 
-  // Resolve actual device — forceDesktop lets phone users request web layout
-  const resolvedDevice: 'desktop' | 'mobile' = (vw < 1024 && !forceDesktop) ? 'mobile' : 'desktop';
+  const resolvedDevice: 'desktop' | 'mobile' = vw < 1024 ? 'mobile' : 'desktop';
 
   const nav = useCallback((route: Route, params?: Record<string, string>) => {
     setAuthUser(getAuthUser());
@@ -436,7 +437,7 @@ export function KoyJaboApp() {
     stage = (
       <div ref={scrollerRef} style={{
         width: '100%', height: '100vh',
-        overflowX: forceDesktop ? 'auto' : 'hidden', // allow h-scroll in desktop-on-phone mode
+        overflowX: 'hidden',
         overflowY: 'auto',
         background: tk.bg, position: 'relative',
         WebkitOverflowScrolling: 'touch',
@@ -445,8 +446,7 @@ export function KoyJaboApp() {
         paddingBottom: showAnchor ? 96 : 0,
         boxSizing: 'border-box',
       }}>
-        {/* When forcing desktop on phone, content needs min-width to render properly */}
-        <div style={{ minWidth: forceDesktop ? 1280 : 'auto' }}>
+        <div>
         {screenContent}
         </div>
       </div>
@@ -480,29 +480,6 @@ export function KoyJaboApp() {
       )}
       {stage}
       {aiFab}
-      {/* Desktop view toggle — shown only on small screens */}
-      {vw < 1024 && (
-        <button
-          onClick={() => setForceDesktop(f => !f)}
-          style={{
-            position: 'fixed',
-            // On AI chat page, lift above fixed input bar (60px tab + 72px input = 132px + buffer)
-            bottom: isPhone ? (top.route === 'ai' ? 148 : 86) : (showAnchor ? 72 : 16),
-            left: 16, zIndex: 9500,
-            background: 'rgba(13,22,42,0.9)', backdropFilter: 'blur(12px)',
-            WebkitBackdropFilter: 'blur(12px)',
-            border: `1px solid ${forceDesktop ? 'rgba(0,245,255,0.5)' : 'rgba(255,255,255,0.15)'}`,
-            borderRadius: 999,
-            padding: '7px 14px', fontFamily: "'Inter',sans-serif",
-            fontSize: 11, fontWeight: 700,
-            color: forceDesktop ? '#00f5ff' : 'rgba(255,255,255,0.7)',
-            cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6,
-            boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
-          }}
-        >
-          {forceDesktop ? '📱 Mobile view' : '🖥 Desktop view'}
-        </button>
-      )}
       <NavDrawer
         open={menuOpen} theme={theme} lang={lang}
         user={authUser}

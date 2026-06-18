@@ -115,18 +115,18 @@ export function TopBar({
           aria-label="KoyJabo Home"
         >
           <Logo tk={tk} size={isMobile ? 32 : 36} />
-          {!isMobile && (
-            <span
-              style={{
-                fontFamily: BEN,
-                fontWeight: 800,
-                fontSize: 18,
-                color: tk.text,
-              }}
-            >
-              কই যাবো
-            </span>
-          )}
+          <span
+            style={{
+              fontFamily: BEN,
+              fontWeight: 800,
+              fontSize: isMobile ? 16 : 18,
+              color: tk.text,
+              whiteSpace: 'nowrap',
+              lineHeight: 1,
+            }}
+          >
+            কই যাবো
+          </span>
         </button>
 
         {/* Desktop nav — pushed to right side with marginLeft: auto */}
