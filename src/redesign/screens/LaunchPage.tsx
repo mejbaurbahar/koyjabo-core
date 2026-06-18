@@ -38,6 +38,21 @@ const CABINS = [
   { l:'Deck Floor', bn:'ডেক', c:'#ef4444', p:'৳ 300', e:'🧳', desc:{bn:'খোলা ডেক',en:'Open deck'} },
 ];
 
+const BIWTA_LINKS = [
+  { en:'Official BIWTA portal', bn:'বিআইডব্লিউটিএ অফিসিয়াল পোর্টাল', href:'https://biwta.gov.bd/' },
+  { en:'Notices', bn:'নোটিশ', href:'https://biwta.gov.bd/pages/notices' },
+  { en:'Waterway information', bn:'নৌ-পথ সংক্রান্ত তথ্য', href:'https://biwta.gov.bd/pages/static-pages/6922e036933eb65569e26049' },
+  { en:'Port and transport', bn:'বন্দর ও পরিবহন', href:'https://biwta.gov.bd/pages/static-pages/6922dce3933eb65569e12937' },
+  { en:'Safety and traffic', bn:'নৌ-নিরাপত্তা ও ট্রাফিক ব্যবস্থাপনা', href:'https://biwta.gov.bd/pages/static-pages/6922db63933eb65569e09dde' },
+  { en:'Realtime tidal data', bn:'টাইডাল ডাটা (রিয়েল টাইম)', href:'http://biwta.port-log.net/live/display.php' },
+];
+
+const BIWTA_NOTES = [
+  { en:'BIWTA is the official authority for inland waterway services, ports, traffic and safety information.', bn:'অভ্যন্তরীণ নৌপথ, বন্দর, ট্রাফিক ও নিরাপত্তা তথ্যের অফিসিয়াল কর্তৃপক্ষ বিআইডব্লিউটিএ।' },
+  { en:'Before launch travel, check BIWTA notices and realtime tidal data when weather or river conditions may affect trips.', bn:'লঞ্চ যাত্রার আগে আবহাওয়া বা নদীর অবস্থার প্রভাব থাকলে বিআইডব্লিউটিএ নোটিশ ও রিয়েলটাইম টাইডাল ডাটা দেখুন।' },
+  { en:'For emergencies, BIWTA links Bangladesh public emergency services such as 999, 333 and Fire Service 102.', bn:'জরুরি প্রয়োজনে বিআইডব্লিউটিএ বাংলাদেশ সরকারি জরুরি সেবা ৯৯৯, ৩৩৩ এবং ফায়ার সার্ভিস ১০২ যুক্ত করেছে।' },
+];
+
 export function LaunchPage(props: Props) {
   const { theme, device, lang, onNav, params } = props;
   const tk = KJ_TOKENS[theme];
@@ -125,6 +140,29 @@ export function LaunchPage(props: Props) {
             </div>
             {fromFocus && <SuggestionDropdown suggestions={fromSuggestions} onSelect={s => { setFromTerminal(s.label); setFromFocus(false); }} onDismiss={() => setFromFocus(false)} tk={tk} lang={lang} anchorRef={fromRef as React.RefObject<HTMLElement>}/>}
             {toFocus && <SuggestionDropdown suggestions={toSuggestions} onSelect={s => { setToTerminal(s.label); setToFocus(false); }} onDismiss={() => setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef as React.RefObject<HTMLElement>}/>}
+          </div>
+
+          <div style={{ ...card(16), marginBottom:18 }}>
+            <SectionHeader tk={tk} lang={lang} title={T(lang,'বিআইডব্লিউটিএ অফিসিয়াল তথ্য','BIWTA official information')}/>
+            <div style={{ fontFamily:SANS, fontSize:11, fontWeight:700, color:tk.textFaint, margin:'4px 0 12px' }}>{T(lang,'সূত্র: biwta.gov.bd','Source: biwta.gov.bd')}</div>
+            <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1.05fr 0.95fr', gap:14 }}>
+              <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+                {BIWTA_NOTES.map((note,i)=>(
+                  <div key={i} style={{ display:'flex', gap:10, alignItems:'flex-start', background:tk.panelMuted, border:`1px solid ${tk.line}`, borderRadius:12, padding:12 }}>
+                    <span style={{ width:24, height:24, flexShrink:0, borderRadius:999, display:'inline-flex', alignItems:'center', justifyContent:'center', background:'#0ea5e922', color:'#0ea5e9', fontFamily:SANS, fontWeight:900, fontSize:12 }}>{i+1}</span>
+                    <span style={{ fontFamily:lang==='bn'?BEN:SANS, fontSize:13, color:tk.textDim, lineHeight:1.6 }}>{T(lang,note.bn,note.en)}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1fr 1fr', gap:8, alignContent:'start' }}>
+                {BIWTA_LINKS.map(link=>(
+                  <a key={link.href} href={link.href} target="_blank" rel="noreferrer" style={{ textDecoration:'none', color:tk.text, background:tk.inputBg, border:`1px solid ${tk.line}`, borderRadius:12, padding:'10px 12px', fontFamily:lang==='bn'?BEN:SANS, fontWeight:800, fontSize:12, display:'flex', alignItems:'center', justifyContent:'space-between', gap:8 }}>
+                    <span>{T(lang,link.bn,link.en)}</span>
+                    <span style={{ color:'#0ea5e9' }}>↗</span>
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
 
           <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1.5fr 1fr', gap:18 }}>

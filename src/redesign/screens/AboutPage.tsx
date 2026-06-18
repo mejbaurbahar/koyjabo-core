@@ -149,17 +149,20 @@ export function AboutPage(props: PageShellProps) {
             style={{ width: 144, height: 144, borderRadius: 22, objectFit: 'cover', border: `1px solid ${tk.line}`, margin: isMobile ? '0 auto' : 0 }}
           />
           <div>
-            <div style={{ fontFamily: BEN, color: tk.primary, fontWeight: 800, fontSize: 14, marginBottom: 8 }}>
-              প্রতিষ্ঠাতার সাথে দেখা করুন
+            <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, color: tk.primary, fontWeight: 800, fontSize: 14, marginBottom: 8 }}>
+              {lbl('Meet the founder', 'প্রতিষ্ঠাতার সাথে দেখা করুন')}
             </div>
             <h2 style={{ fontFamily: SANS, color: tk.text, fontWeight: 800, fontSize: isMobile ? 24 : 30, margin: '0 0 4px' }}>
               Mejbaur Bahar Fagun
             </h2>
-            <div style={{ fontFamily: BEN, color: tk.textDim, fontWeight: 700, fontSize: 14, marginBottom: 14 }}>
-              প্রতিষ্ঠাতা, কই যাবো
+            <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, color: tk.textDim, fontWeight: 700, fontSize: 14, marginBottom: 14 }}>
+              {lbl('Founder, KoyJabo', 'প্রতিষ্ঠাতা, কই যাবো')}
             </div>
-            <p style={{ fontFamily: BEN, color: tk.textDim, lineHeight: 1.8, fontSize: 15, margin: '0 0 16px' }}>
-              মেজবাউর একজন সিনিয়র সফটওয়্যার টেস্ট ইঞ্জিনিয়ার, যিনি বর্তমানে বাংলাদেশের ঢাকায় বসবাস করছেন। প্রযুক্তির মাধ্যমে বাস্তব জীবনের বিভিন্ন সমস্যার সমাধান করার অদম্য উৎসাহ থেকেই তিনি "কই যাবো" তৈরি করেছেন যেন পুরো বাংলাদেশের যাতায়াতের তথ্য সবার জন্য সহজলভ্য হয়।
+            <p style={{ fontFamily: lang === 'bn' ? BEN : SANS, color: tk.textDim, lineHeight: 1.8, fontSize: 15, margin: '0 0 16px' }}>
+              {lbl(
+                'Mejbaur is a Senior Software Test Engineer currently living in Dhaka, Bangladesh. His strong passion for solving real-life problems through technology inspired him to create "KoyJabo" so transport information across Bangladesh becomes easy for everyone to access.',
+                'মেজবাউর একজন সিনিয়র সফটওয়্যার টেস্ট ইঞ্জিনিয়ার, যিনি বর্তমানে বাংলাদেশের ঢাকায় বসবাস করছেন। প্রযুক্তির মাধ্যমে বাস্তব জীবনের বিভিন্ন সমস্যার সমাধান করার অদম্য উৎসাহ থেকেই তিনি "কই যাবো" তৈরি করেছেন যেন পুরো বাংলাদেশের যাতায়াতের তথ্য সবার জন্য সহজলভ্য হয়.',
+              )}
             </p>
             <a
               href="https://www.linkedin.com/in/mejbaur/"
