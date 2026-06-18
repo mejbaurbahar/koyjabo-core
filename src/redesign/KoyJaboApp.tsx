@@ -1,0 +1,356 @@
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { KJ_TOKENS, Theme, Lang, Device } from './tokens';
+import { injectGlobalStyles } from './globalStyles';
+import { SplashScreen } from './SplashScreen';
+
+// Lazy imports — all screens
+import { HomePage } from './screens/HomePage';
+import { LocalBusPage } from './screens/LocalBusPage';
+import { MetroPage } from './screens/MetroPage';
+import { TrainPage } from './screens/TrainPage';
+import { LaunchPage } from './screens/LaunchPage';
+import { FlightsPage } from './screens/FlightsPage';
+import { AIChatPage } from './screens/AIChatPage';
+import { IntercityPage } from './screens/IntercityPage';
+import { RouteResultsV2Page } from './screens/RouteResultsV2Page';
+import { FareCalcPage } from './screens/FareCalcPage';
+import { IntercityDetailPage } from './screens/IntercityDetailPage';
+import { BusDetailPage } from './screens/BusDetailPage';
+import { MetroDetailPage } from './screens/MetroDetailPage';
+import { TrainDetailPage } from './screens/TrainDetailPage';
+import { VehicleDetailPage } from './screens/VehicleDetailPage';
+import { RateReviewPage } from './screens/RateReviewPage';
+import { MetroTokenPage } from './screens/MetroTokenPage';
+import { MetroPassPage } from './screens/MetroPassPage';
+import { ProfilePage } from './screens/ProfilePage';
+import { FavoritesPage } from './screens/FavoritesPage';
+import { HistoryPage } from './screens/HistoryPage';
+import { SettingsPage } from './screens/SettingsPage';
+import { EditProfilePage } from './screens/EditProfilePage';
+import { PasswordPage } from './screens/PasswordPage';
+import { DevicesPage } from './screens/DevicesPage';
+import { SignInPage } from './screens/SignInPage';
+import { SignUpPage } from './screens/SignUpPage';
+import { WhyPage } from './screens/WhyPage';
+import { AboutPage } from './screens/AboutPage';
+import { BlogsPage } from './screens/BlogsPage';
+import { BlogDetailPage } from './screens/BlogDetailPage';
+import { QAPage } from './screens/QAPage';
+import { ContactPage } from './screens/ContactPage';
+import { ReleasePage } from './screens/ReleasePage';
+import { PrivacyPage } from './screens/PrivacyPage';
+import { TermsPage } from './screens/TermsPage';
+import { InstallPage } from './screens/InstallPage';
+import { ErrorPage404, ErrorPage500, OfflinePage, MaintenancePage } from './screens/SystemStatesPage';
+import { NavDrawer } from './components/NavDrawer';
+// FloatingControls removed per user request
+import { AIFab } from './components/AIFab';
+import { TopBar } from './components/TopBar';
+import { MobileTabBar } from './components/MobileTabBar';
+import { SideRailAd, AnchorAd, VignetteAd } from './components/AdComponents';
+
+type Route = string;
+
+interface StackEntry {
+  route: Route;
+  params?: Record<string, string>;
+}
+
+const SECTION_MAP: Record<string, string> = {
+  home: 'home', 'bus-hub': 'search', 'metro-hub': 'search', 'train-hub': 'search',
+  'launch-hub': 'search', 'flights-hub': 'search', intercity: 'search',
+  ai: 'ai', favorites: 'saved', profile: 'you', history: 'you', settings: 'you',
+};
+
+// Routes that show a back button (detail / leaf pages reached from search results)
+const SHOW_BACK_ROUTES = new Set([
+  'bus-detail', 'train-detail', 'metro-detail', 'intercity-detail', 'vehicle',
+  'rate-review', 'metro-token', 'metro-pass', 'blog-detail', 'edit-profile',
+  'password', 'devices', 'results', 'install',
+]);
+
+export function KoyJaboApp() {
+  const [theme, setTheme] = useState<Theme>('dark');
+  const [lang, setLang] = useState<Lang>('en');
+  const [forceDesktop, setForceDesktop] = useState(false); // phone user can request desktop view
+  const [stack, setStack] = useState<StackEntry[]>([{ route: 'home' }]);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [dir, setDir] = useState<'fwd' | 'back'>('fwd');
+  const [showSkeleton, setShowSkeleton] = useState(false);
+  const [splash, setSplash] = useState(true);
+  const [vignette, setVignette] = useState(false);
+  const [anchorOn, setAnchorOn] = useState(true);
+  const [vw, setVw] = useState(window.innerWidth);
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const vignetteTimer = useRef<number>(0);
+
+  // Inject global styles once
+  useEffect(() => { injectGlobalStyles(); }, []);
+
+  // Dismiss both splash screens after 1.4s
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setSplash(false);
+      // Dismiss the index.html static splash too
+      const el = document.getElementById('kj-splash');
+      if (el) { el.style.opacity = '0'; el.style.visibility = 'hidden'; setTimeout(() => el.remove(), 600); }
+    }, 1400);
+    return () => clearTimeout(t);
+  }, []);
+
+  // Show vignette ad after 3 minutes of use
+  useEffect(() => {
+    vignetteTimer.current = window.setTimeout(() => setVignette(true), 180000);
+    return () => clearTimeout(vignetteTimer.current);
+  }, []);
+
+  // Track vw for rail ads
+  useEffect(() => {
+    const onResize = () => setVw(window.innerWidth);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  const top = stack[stack.length - 1];
+  const canBack = stack.length > 1;
+  const tk = KJ_TOKENS[theme];
+
+  // Resolve actual device — forceDesktop lets phone users request web layout
+  const resolvedDevice: 'desktop' | 'mobile' = (vw < 1024 && !forceDesktop) ? 'mobile' : 'desktop';
+
+  const nav = useCallback((route: Route, params?: Record<string, string>) => {
+    setDir('fwd');
+    setShowSkeleton(true);
+    setTimeout(() => {
+      setStack(s => [...s, { route, params }]);
+      setShowSkeleton(false);
+      if (scrollerRef.current) scrollerRef.current.scrollTop = 0;
+    }, 160);
+  }, []);
+
+  const navTab = useCallback((route: Route) => {
+    setDir('fwd');
+    setStack([{ route }]);
+    if (scrollerRef.current) scrollerRef.current.scrollTop = 0;
+  }, []);
+
+  const back = useCallback(() => {
+    if (stack.length <= 1) return;
+    setDir('back');
+    setStack(s => s.slice(0, -1));
+    if (scrollerRef.current) scrollerRef.current.scrollTop = 0;
+  }, [stack.length]);
+
+  // Keyboard back
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.key === 'Escape' || e.key === 'Backspace') &&
+        !['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement).tagName) &&
+        !(e.target as HTMLElement).isContentEditable) {
+        if (canBack) { e.preventDefault(); back(); }
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [canBack, back]);
+
+  // Back button only on detail/leaf pages, not on hub/main pages
+  const showBack = canBack && SHOW_BACK_ROUTES.has(top.route);
+
+  const sharedProps = {
+    theme, device: resolvedDevice, lang,
+    route: top.route, params: top.params ?? {},
+    canBack: showBack, onBack: back, onNav: nav, onNavTab: navTab,
+    onLang: () => setLang(l => l === 'bn' ? 'en' : 'bn'),
+    onTheme: () => setTheme(t => t === 'dark' ? 'light' : 'dark'),
+    onMenu: () => setMenuOpen(true),
+  } as any; // typed via each screen's Props interface
+
+  const section = SECTION_MAP[top.route] || 'home';
+  const showRails = resolvedDevice === 'desktop' && vw >= 1500;
+  const showAnchor = anchorOn && resolvedDevice === 'desktop';
+  const isPhone = resolvedDevice === 'mobile';
+  const showFrame = false; // no phone frame mode — always full responsive
+
+  function renderScreen(route: Route, params?: Record<string, string>) {
+    const p = { ...sharedProps, params };
+    switch (route) {
+      case 'home': return <HomePage {...p}/>;
+      case 'bus-hub': return <LocalBusPage {...p}/>;
+      case 'metro-hub': return <MetroPage {...p}/>;
+      case 'train-hub': return <TrainPage {...p}/>;
+      case 'launch-hub': return <LaunchPage {...p}/>;
+      case 'flights-hub': return <FlightsPage {...p}/>;
+      case 'ai': return <AIChatPage {...p}/>;
+      case 'intercity': return <IntercityPage {...p}/>;
+      case 'results': return <RouteResultsV2Page {...p}/>;
+      case 'fare': return <FareCalcPage {...p}/>;
+      case 'intercity-detail': return <IntercityDetailPage {...p}/>;
+      case 'bus-detail': return <BusDetailPage {...p}/>;
+      case 'metro-detail': return <MetroDetailPage {...p}/>;
+      case 'train-detail': return <TrainDetailPage {...p}/>;
+      case 'vehicle': return <VehicleDetailPage {...p}/>;
+      case 'rate-review': return <RateReviewPage {...p}/>;
+      case 'metro-token': return <MetroTokenPage {...p}/>;
+      case 'metro-pass': return <MetroPassPage {...p}/>;
+      case 'profile': return <ProfilePage {...p}/>;
+      case 'favorites': return <FavoritesPage {...p}/>;
+      case 'history': return <HistoryPage {...p}/>;
+      case 'settings': return <SettingsPage {...p}/>;
+      case 'edit-profile': return <EditProfilePage {...p}/>;
+      case 'password': return <PasswordPage {...p}/>;
+      case 'devices': return <DevicesPage {...p}/>;
+      case 'signin': return <SignInPage {...p}/>;
+      case 'signup': return <SignUpPage {...p}/>;
+      case 'why': return <WhyPage {...p}/>;
+      case 'about': return <AboutPage {...p}/>;
+      case 'blogs': return <BlogsPage {...p}/>;
+      case 'blog-detail': return <BlogDetailPage {...p}/>;
+      case 'qa': return <QAPage {...p}/>;
+      case 'contact': return <ContactPage {...p}/>;
+      case 'release': return <ReleasePage {...p}/>;
+      case 'privacy': return <PrivacyPage {...p}/>;
+      case 'terms': return <TermsPage {...p}/>;
+      case 'install': return <InstallPage {...p}/>;
+      case '500': return <ErrorPage500 theme={theme} lang={lang}/>;
+      case 'offline': return <OfflinePage theme={theme} lang={lang}/>;
+      case 'maintenance': return <MaintenancePage theme={theme} lang={lang}/>;
+      default: return <ErrorPage404 theme={theme} lang={lang} onHome={() => navTab('home')}/>;
+    }
+  }
+
+  const screenKey = `${stack.length}:${top.route}`;
+
+  const screenContent = (
+    <div key={screenKey} className={`kj-screen kj-${dir}`} style={{ minHeight: '100%' }}>
+      {renderScreen(top.route, top.params)}
+    </div>
+  );
+
+  // AI FAB — sticky inside scroller so it pins to phone screen too
+  // Hidden on the AI page itself
+  // AIFab — fixed so it always shows regardless of scroll/overflow context
+  const aiFab = top.route !== 'ai' ? (
+    <div style={{
+      position: 'fixed', right: 16,
+      bottom: isPhone ? 'calc(92px + env(safe-area-inset-bottom))' : (showAnchor ? 'calc(96px + env(safe-area-inset-bottom))' : 24),
+      zIndex: 9200, pointerEvents: 'auto',
+    }}>
+      <AIFab tk={tk} lang={lang} onNav={() => nav('ai')}/>
+    </div>
+  ) : null;
+
+  let stage: React.ReactNode;
+  if (showFrame) {
+    const fh = Math.min(window.innerHeight - 48, 880);
+    stage = (
+      <div style={{
+        width: '100%', minHeight: '100vh', display: 'flex',
+        alignItems: 'center', justifyContent: 'center',
+        background: theme === 'dark' ? '#05060b' : '#dde6ee',
+        padding: 24, boxSizing: 'border-box',
+      }}>
+        <div style={{
+          width: 414, height: fh, borderRadius: 52, padding: 12,
+          background: 'linear-gradient(160deg,#23252c,#0c0d11)',
+          boxShadow: '0 40px 100px -30px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04)',
+          flexShrink: 0,
+        }}>
+          <div ref={scrollerRef} style={{
+            width: '100%', height: '100%', borderRadius: 40,
+            overflow: 'hidden auto', background: tk.bg,
+            position: 'relative', WebkitOverflowScrolling: 'touch',
+          }}>
+            {screenContent}
+            {aiFab}
+          </div>
+        </div>
+      </div>
+    );
+  } else {
+    stage = (
+      <div ref={scrollerRef} style={{
+        width: '100%', height: '100vh',
+        overflowX: forceDesktop ? 'auto' : 'hidden', // allow h-scroll in desktop-on-phone mode
+        overflowY: 'auto',
+        background: tk.bg, position: 'relative',
+        WebkitOverflowScrolling: 'touch',
+        paddingLeft: showRails ? 184 : 0,
+        paddingRight: showRails ? 184 : 0,
+        paddingBottom: showAnchor ? 96 : 0,
+        boxSizing: 'border-box',
+      }}>
+        {/* When forcing desktop on phone, content needs min-width to render properly */}
+        <div style={{ minWidth: forceDesktop ? 1280 : 'auto' }}>
+        {screenContent}
+        </div>
+      </div>
+    );
+  }
+
+  const liftBottom = showAnchor ? 88 : 16;
+
+  return (
+    <>
+      {splash && <SplashScreen/>}
+      {/* TopBar rendered here — outside the animated .kj-screen wrapper */}
+      {/* This avoids CSS transform containment block issue that breaks position:fixed */}
+      <TopBar
+        tk={tk} lang={lang} theme={theme}
+        device={resolvedDevice}
+        activeRoute={top.route}
+        canBack={canBack} onBack={back}
+        onNav={nav} onLang={() => setLang(l => l === 'bn' ? 'en' : 'bn')}
+        onTheme={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
+        onMenu={() => setMenuOpen(true)}
+      />
+      {/* Mobile tab bar — outside scroller too */}
+      {isPhone && (
+        <MobileTabBar
+          tk={tk} lang={lang}
+          activeRoute={top.route}
+          onNav={navTab}
+        />
+      )}
+      {stage}
+      {aiFab}
+      {/* Desktop view toggle — shown only on small screens */}
+      {vw < 1024 && (
+        <button
+          onClick={() => setForceDesktop(f => !f)}
+          style={{
+            position: 'fixed',
+            // On AI chat page, lift above fixed input bar (60px tab + 72px input = 132px + buffer)
+            bottom: isPhone ? (top.route === 'ai' ? 148 : 86) : (showAnchor ? 72 : 16),
+            left: 16, zIndex: 9500,
+            background: 'rgba(13,22,42,0.9)', backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            border: `1px solid ${forceDesktop ? 'rgba(0,245,255,0.5)' : 'rgba(255,255,255,0.15)'}`,
+            borderRadius: 999,
+            padding: '7px 14px', fontFamily: "'Inter',sans-serif",
+            fontSize: 11, fontWeight: 700,
+            color: forceDesktop ? '#00f5ff' : 'rgba(255,255,255,0.7)',
+            cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6,
+            boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
+          }}
+        >
+          {forceDesktop ? '📱 Mobile view' : '🖥 Desktop view'}
+        </button>
+      )}
+      <NavDrawer
+        open={menuOpen} theme={theme} lang={lang}
+        activeRoute={top.route}
+        onClose={() => setMenuOpen(false)}
+        onNav={(r) => { setMenuOpen(false); nav(r); }}
+      />
+      {showRails && (
+        <>
+          <SideRailAd tk={tk} lang={lang} side="left"/>
+          <SideRailAd tk={tk} lang={lang} side="right"/>
+        </>
+      )}
+      {showAnchor && <AnchorAd tk={tk} lang={lang} onClose={() => setAnchorOn(false)}/>}
+      <VignetteAd tk={tk} lang={lang} open={vignette} onClose={() => setVignette(false)}/>
+    </>
+  );
+}
