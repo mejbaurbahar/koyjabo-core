@@ -10,7 +10,7 @@ interface BlogProps {
     language: 'en' | 'bn';
 }
 
-const CATEGORIES = ['All', 'Travel Guide', 'Metro Rail', 'Bus & Transport', 'App Guide', 'Tips & Tricks'];
+const CATEGORIES = ['All', 'Travel Guide', 'Train & Railway', 'Metro Rail', 'Bus & Transport', 'App Guide', 'Tips & Tricks'];
 
 const CAT_COLORS: Record<string, [string, string]> = {
     'Travel Guide':    ['#10b981', '#006a4e'],
@@ -50,7 +50,7 @@ const Blog: React.FC<BlogProps> = ({ onBack, onSelectPost, language }) => {
                 post.excerpt.toLowerCase().includes(q) ||
                 post.keywords.some(k => k.toLowerCase().includes(q));
             return matchesCategory && titleMatch;
-        });
+        }).sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime());
     }, [searchQuery, selectedCategory]);
 
     const featuredPost = filteredPosts[0];

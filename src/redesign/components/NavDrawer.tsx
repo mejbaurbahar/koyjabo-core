@@ -57,11 +57,20 @@ interface NavDrawerProps {
   onNav: (route: string) => void;
   theme: Theme;
   lang: Lang;
+  user?: { id?: string; displayName?: string; username?: string } | null;
   activeRoute?: string;
 }
 
-export function NavDrawer({ open, onClose, onNav, theme, lang, activeRoute }: NavDrawerProps) {
+export function NavDrawer({ open, onClose, onNav, theme, lang, user, activeRoute }: NavDrawerProps) {
   const tk = KJ_TOKENS[theme] as Tokens;
+  const groups = GROUPS.map(group => group.heading.en === 'Account'
+    ? {
+        ...group,
+        links: user
+          ? group.links.filter(link => link.route !== 'signin' && link.route !== 'signup')
+          : group.links.filter(link => link.route === 'signin'),
+      }
+    : group);
 
   const handleNav = (route: string) => {
     onNav(route);
@@ -165,7 +174,7 @@ export function NavDrawer({ open, onClose, onNav, theme, lang, activeRoute }: Na
 
         {/* Nav groups */}
         <div style={{ padding: '12px 0 28px', flex: '1 1 auto', minHeight: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain' }}>
-          {GROUPS.map((group) => (
+          {groups.map((group) => (
             <div key={group.heading.en} style={{ marginBottom: 8 }}>
               {/* Group heading */}
               <div

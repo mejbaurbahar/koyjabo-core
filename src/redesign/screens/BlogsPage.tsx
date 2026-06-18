@@ -2,75 +2,20 @@ import React from 'react';
 import { KJ_TOKENS, T, SANS, BEN, Tokens, Lang } from '../tokens';
 import { PageShell, PageShellProps } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
+import { BLOG_POSTS, BlogPost } from '../../../data/blogPosts';
 
-const BLOGS = [
-  {
-    id: 'mrt6',
-    titleEn: 'MRT-6 Complete Guide 2026',
-    titleBn: 'মেট্রো রেল সম্পূর্ণ গাইড ২০২৬',
-    date: 'Jun 10',
-    category: 'Metro',
-    readTime: '8 min',
-    tags: ['metro', 'guide'],
-    from: '#1e3a8a',
-    to: '#3b82f6',
-  },
-  {
-    id: 'coxsbazar-bus',
-    titleEn: "Cox's Bazar Bus Guide",
-    titleBn: 'কক্সবাজার বাস গাইড',
-    date: 'Jun 8',
-    category: 'Intercity',
-    readTime: '6 min',
-    tags: ['intercity', 'bus'],
-    from: '#064e3b',
-    to: '#10b981',
-  },
-  {
-    id: 'sadarghat',
-    titleEn: 'Sadarghat Launch Terminal',
-    titleBn: 'সদরঘাট লঞ্চ টার্মিনাল',
-    date: 'Jun 5',
-    category: 'Launch',
-    readTime: '5 min',
-    tags: ['launch', 'terminal'],
-    from: '#075985',
-    to: '#0ea5e9',
-  },
-  {
-    id: 'dhaka-traffic',
-    titleEn: 'Dhaka Traffic Tips 2026',
-    titleBn: 'ঢাকা ট্রাফিক টিপস',
-    date: 'Jun 3',
-    category: 'Tips',
-    readTime: '4 min',
-    tags: ['tips', 'traffic'],
-    from: '#b45309',
-    to: '#f59e0b',
-  },
-  {
-    id: 'train-eticket',
-    titleEn: 'Bangladesh Railway E-ticket',
-    titleBn: 'বাংলাদেশ রেলওয়ে ই-টিকেট',
-    date: 'Jun 1',
-    category: 'Train',
-    readTime: '7 min',
-    tags: ['train', 'eticket'],
-    from: '#5b21b6',
-    to: '#8b5cf6',
-  },
-  {
-    id: 'airport-city',
-    titleEn: 'Airport to City Guide',
-    titleBn: 'বিমানবন্দর থেকে শহর',
-    date: 'May 28',
-    category: 'Flights',
-    readTime: '5 min',
-    tags: ['flights', 'airport'],
-    from: '#b91c1c',
-    to: '#ef4444',
-  },
-];
+const CAT_COLORS: Record<string, [string, string]> = {
+  'Travel Guide': ['#10b981', '#006a4e'],
+  'Train & Railway': ['#5b21b6', '#8b5cf6'],
+  'Metro Rail': ['#1e3a8a', '#3b82f6'],
+  'Bus & Transport': ['#064e3b', '#10b981'],
+  'App Guide': ['#7c3aed', '#a855f7'],
+  'Tips & Tricks': ['#b45309', '#f59e0b'],
+};
+
+function catColors(category: string): [string, string] {
+  return CAT_COLORS[category] ?? ['#075985', '#0ea5e9'];
+}
 
 function BlogCard({
   blog,
@@ -78,15 +23,16 @@ function BlogCard({
   lang,
   onNav,
 }: {
-  blog: typeof BLOGS[0];
+  blog: BlogPost;
   tk: Tokens;
   lang: Lang;
-  onNav: (r: string) => void;
+  onNav: (r: string, p?: Record<string, string>) => void;
 }) {
   const lbl = (en: string, bn: string) => T(lang, bn, en);
+  const [from, to] = catColors(blog.category);
   return (
     <div
-      onClick={() => onNav('blog-detail')}
+      onClick={() => onNav('blog-detail', { slug: blog.slug })}
       style={{
         background: tk.panel,
         backdropFilter: 'blur(10px)',
@@ -99,12 +45,12 @@ function BlogCard({
       }}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => e.key === 'Enter' && onNav('blog-detail')}
+      onKeyDown={(e) => e.key === 'Enter' && onNav('blog-detail', { slug: blog.slug })}
     >
       {/* Gradient hero thumbnail */}
       <div
         style={{
-          background: `linear-gradient(135deg, ${blog.from} 0%, ${blog.to} 100%)`,
+          background: `linear-gradient(135deg, ${from} 0%, ${to} 100%)`,
           height: 120,
           position: 'relative',
           display: 'flex',
@@ -141,7 +87,7 @@ function BlogCard({
             lineHeight: 1.45,
           }}
         >
-          {lbl(blog.titleEn, blog.titleBn)}
+          {lbl(blog.title, blog.bnTitle)}
         </h3>
 
         <div
@@ -159,7 +105,7 @@ function BlogCard({
               color: tk.textFaint,
             }}
           >
-            {blog.date}
+            {new Date(blog.publishDate).toLocaleDateString(lang === 'bn' ? 'bn-BD' : 'en-US', { month: 'short', day: 'numeric' })}
           </span>
           <span style={{ color: tk.line, fontSize: 10 }}>·</span>
           <span
@@ -169,12 +115,12 @@ function BlogCard({
               color: tk.textFaint,
             }}
           >
-            {blog.readTime} {lbl('read', 'পড়া')}
+            {blog.readTime}
           </span>
         </div>
 
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-          {blog.tags.map((tag) => (
+          {blog.keywords.slice(0, 3).map((tag) => (
             <span
               key={tag}
               style={{
@@ -201,8 +147,9 @@ export function BlogsPage(props: PageShellProps) {
   const tk: Tokens = KJ_TOKENS[theme];
   const isMobile = device === 'mobile';
   const lbl = (en: string, bn: string) => T(lang, bn, en);
-  const firstRow = BLOGS.slice(0, 3);
-  const secondRow = BLOGS.slice(3, 6);
+  const posts = [...BLOG_POSTS].sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime());
+  const firstRow = posts.slice(0, 3);
+  const secondRow = posts.slice(3);
 
   return (
     <PageShell {...props}>

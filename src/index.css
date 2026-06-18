@@ -153,35 +153,24 @@ body {
 }
 
 .kj-splash-logo {
-  width: 64px;
-  height: 64px;
+  width: 68px;
+  height: 68px;
   border-radius: 18px;
-  background: linear-gradient(150deg, #22f5ff 0%, #00b8d9 55%, #0a82a8 100%);
+  background: #05060b;
   box-shadow: 0 14px 40px -10px rgba(0,200,230,0.65), inset 0 1px 0 rgba(255,255,255,0.4);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  overflow: hidden;
   animation: kjFloatY 2.2s ease-in-out infinite;
 }
 
-.kj-splash-logo span {
-  font-family: 'Hind Siliguri', 'Inter', system-ui, sans-serif;
-  font-weight: 700;
-  font-size: 38px;
-  color: #04222b;
-  line-height: 1;
-  margin-top: 2px;
-}
-
-.kj-splash-logo::after {
-  content: '';
-  position: absolute;
-  bottom: 13px;
-  width: 28px;
-  height: 3px;
-  border-radius: 999px;
-  background: #ff2a6d;
+.kj-splash-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .kj-splash-title {

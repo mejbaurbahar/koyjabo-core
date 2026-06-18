@@ -11,11 +11,12 @@ export interface PageShellProps {
   lang: 'bn' | 'en';
   route: string;
   canBack: boolean;
-  onNav: (r: string) => void;
+  onNav: (r: string, p?: Record<string, string>) => void;
   onBack: () => void;
   onLang: () => void;
   onTheme: () => void;
   onMenu: () => void;
+  authUser?: { id?: string; displayName?: string; username?: string } | null;
   children: React.ReactNode;
   backLabel?: string;
 }
@@ -31,6 +32,7 @@ export function PageShell({
   onLang,
   onTheme,
   onMenu,
+  authUser,
   children,
 }: PageShellProps) {
   const tk: Tokens = KJ_TOKENS[theme];
@@ -98,7 +100,7 @@ export function PageShell({
 
       {/* Footer — hidden on AI chat page on mobile (chat needs full height) */}
       {!(isMobile && route === 'ai') && (
-        <KJFooter tk={tk} lang={lang} isMobile={isMobile} onNav={onNav} />
+        <KJFooter tk={tk} lang={lang} isMobile={isMobile} onNav={onNav} user={authUser} />
       )}
 
       {/* MobileTabBar rendered in KoyJaboApp */}

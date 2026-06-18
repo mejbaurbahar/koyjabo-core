@@ -96,9 +96,14 @@ interface KJFooterProps {
   lang: Lang;
   isMobile: boolean;
   onNav: (route: string) => void;
+  user?: { id?: string; displayName?: string; username?: string } | null;
 }
 
-export function KJFooter({ tk, lang, isMobile, onNav }: KJFooterProps) {
+export function KJFooter({ tk, lang, isMobile, onNav, user }: KJFooterProps) {
+  const accountLinks = user
+    ? ACCOUNT.filter(link => link.route !== 'signin' && link.route !== 'signup')
+    : ACCOUNT.filter(link => link.route === 'signin');
+
   return (
     <footer
       style={{
@@ -214,7 +219,7 @@ export function KJFooter({ tk, lang, isMobile, onNav }: KJFooterProps) {
             tk={tk}
             lang={lang}
             heading={{ bn: 'অ্যাকাউন্ট', en: 'Account' }}
-            links={ACCOUNT}
+            links={accountLinks}
             onNav={onNav}
           />
           <FooterCol

@@ -20,6 +20,7 @@ interface TopBarProps {
   lang: Lang;
   theme: Theme;
   device: Device;
+  user?: { displayName?: string; username?: string } | null;
   activeRoute?: string;
   onNav: (route: string) => void;
   onLang: () => void;
@@ -34,6 +35,7 @@ export function TopBar({
   lang,
   theme,
   device,
+  user,
   activeRoute,
   onNav,
   onLang,
@@ -215,16 +217,20 @@ export function TopBar({
           {/* Avatar + menu — mobile only */}
           {isMobile && (
             <>
-              <div
+              <button
+                onClick={() => onNav(user ? 'profile' : 'signin')}
                 style={{
                   width: 36, height: 36, borderRadius: 999,
                   background: tk.primarySoft, color: tk.primaryDeep,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontFamily: SANS, fontWeight: 700, fontSize: 13, flexShrink: 0,
+                  border: `1px solid ${tk.line}`,
+                  cursor: 'pointer',
                 }}
+                aria-label={user ? T(lang, 'প্রোফাইল', 'Profile') : T(lang, 'সাইন ইন', 'Sign in')}
               >
-                MF
-              </div>
+                {user ? (user.displayName || user.username || 'KJ').slice(0, 2).toUpperCase() : <Icon.user s={18} />}
+              </button>
               <button onClick={onMenu} style={iconBtn} aria-label="Open menu">
                 <Icon.menu s={20} />
               </button>

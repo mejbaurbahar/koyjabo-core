@@ -29,13 +29,10 @@ const STAT_CHIPS = [
   { icon: '🏁', label: 'To', labelBn: 'গন্তব্য', key: 'to' },
 ];
 
-const HIST_HEIGHTS = [30, 55, 80, 100, 75, 45, 20];
-
 export function RouteResultsV2Page(props: Props) {
   const { theme, device, lang, onNav, params } = props;
   const isMobile = device === 'mobile';
   const tk: Tokens = KJ_TOKENS[theme];
-  const [activeTOD, setActiveTOD] = useState('Morning');
   const [favoriteIds, setFavoriteIds] = useState<string[]>(() => getFavoriteBusIds());
   const lbl = (en: string, bn: string) => T(lang, bn, en);
 
@@ -74,12 +71,13 @@ export function RouteResultsV2Page(props: Props) {
     });
   }, [fromQ, toQ, searchQ]);
 
-  const todOptions = [
-    { label: 'Morning', labelBn: 'সকাল' },
-    { label: 'Afternoon', labelBn: 'দুপুর' },
-    { label: 'Evening', labelBn: 'সন্ধ্যা' },
-    { label: 'Night', labelBn: 'রাত' },
-  ];
+  const fareValues = RESULTS
+    .map(result => Number(result.fare.replace(/[^\d]/g, '')))
+    .filter(value => Number.isFinite(value) && value > 0);
+  const fareMin = fareValues.length ? Math.min(...fareValues) : 0;
+  const fareMax = fareValues.length ? Math.max(...fareValues) : 0;
+  const busTypes = Array.from(new Set(RESULTS.map(result => result.type).filter(Boolean)));
+  const operators = Array.from(new Set(RESULTS.map(result => result.name).filter(Boolean))).slice(0, 10);
 
   const FilterSidebar = () => (
     <div style={{
@@ -95,93 +93,24 @@ export function RouteResultsV2Page(props: Props) {
         {lbl('Filters', 'ফিল্টার')}
       </div>
 
-      {/* Time of day */}
+      {fareValues.length > 0 && (
       <div style={{ marginBottom: 20 }}>
         <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 600, color: tk.textFaint, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
-          {lbl('Time of Day', 'সময়')}
+          {lbl('Available Fare', 'উপলব্ধ ভাড়া')}
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
-          {todOptions.map((t) => (
-            <button
-              key={t.label}
-              onClick={() => setActiveTOD(t.label)}
-              style={{
-                background: activeTOD === t.label ? tk.primarySoft : tk.panelMuted,
-                border: `1px solid ${activeTOD === t.label ? tk.primary : tk.line}`,
-                borderRadius: 8, padding: '7px 4px', cursor: 'pointer',
-                fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 12, fontWeight: 500,
-                color: activeTOD === t.label ? tk.primary : tk.textDim,
-                transition: 'all 0.15s ease',
-              }}
-            >
-              {lbl(t.label, t.labelBn)}
-            </button>
-          ))}
+        <div style={{ background: tk.panelMuted, border: `1px solid ${tk.line}`, borderRadius: 12, padding: 12, fontFamily: SANS, fontSize: 13, color: tk.text }}>
+          {fareMin === fareMax ? `৳${fareMin}` : `৳${fareMin} - ৳${fareMax}`}
         </div>
       </div>
+      )}
 
-      {/* Fare range */}
-      <div style={{ marginBottom: 20 }}>
-        <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 600, color: tk.textFaint, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
-          {lbl('Fare Range', 'ভাড়া')}
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: SANS, fontSize: 12, color: tk.textDim, marginBottom: 8 }}>
-          <span>৳20</span>
-          <span>৳1200</span>
-        </div>
-        {/* Histogram bars */}
-        <div style={{ display: 'flex', alignItems: 'flex-end', gap: 3, height: 40, marginBottom: 10 }}>
-          {HIST_HEIGHTS.map((h, i) => (
-            <div
-              key={i}
-              style={{
-                flex: 1, height: `${h}%`, borderRadius: '3px 3px 0 0',
-                background: i < 4 ? tk.primary : tk.panelMuted,
-                transition: 'opacity 0.2s',
-              }}
-            />
-          ))}
-        </div>
-        {/* Fake dual range slider */}
-        <div style={{ position: 'relative', height: 6, background: tk.panelMuted, borderRadius: 3 }}>
-          <div style={{
-            position: 'absolute', left: '5%', right: '15%', height: '100%',
-            background: tk.primary, borderRadius: 3,
-          }} />
-          <div style={{
-            position: 'absolute', left: '5%', top: '50%', transform: 'translate(-50%, -50%)',
-            width: 14, height: 14, borderRadius: '50%', background: tk.primary, border: `2px solid ${tk.bg}`,
-            boxShadow: `0 0 0 2px ${tk.primary}`,
-          }} />
-          <div style={{
-            position: 'absolute', right: '15%', top: '50%', transform: 'translate(50%, -50%)',
-            width: 14, height: 14, borderRadius: '50%', background: tk.primary, border: `2px solid ${tk.bg}`,
-            boxShadow: `0 0 0 2px ${tk.primary}`,
-          }} />
-        </div>
-      </div>
+      {busTypes.length > 0 && (
+        <FilterGroup tk={tk} lang={lang} heading={lbl('Bus Type', 'বাসের ধরন')} items={busTypes.map(type => ({ label: type }))} />
+      )}
 
-      {/* Bus type */}
-      <FilterGroup tk={tk} lang={lang} heading={lbl('Bus Type', 'বাসের ধরন')} items={[
-        { label: lbl('Local', 'লোকাল') },
-        { label: lbl('AC', 'এসি') },
-        { label: lbl('Double Decker', 'ডবল ডেকার') },
-      ]} />
-
-      {/* Operator */}
-      <FilterGroup tk={tk} lang={lang} heading={lbl('Operator', 'অপারেটর')} items={[
-        { label: 'Green Line' },
-        { label: 'Hanif' },
-        { label: 'BRTC' },
-        { label: 'Shyamoli' },
-      ]} />
-
-      {/* Amenities */}
-      <FilterGroup tk={tk} lang={lang} heading={lbl('Amenities', 'সুবিধা')} items={[
-        { label: lbl('AC', 'এসি') },
-        { label: lbl('Charger', 'চার্জার') },
-        { label: lbl('WiFi', 'ওয়াইফাই') },
-      ]} />
+      {operators.length > 0 && (
+        <FilterGroup tk={tk} lang={lang} heading={lbl('Operator', 'অপারেটর')} items={operators.map(name => ({ label: name }))} />
+      )}
     </div>
   );
 
@@ -212,7 +141,7 @@ export function RouteResultsV2Page(props: Props) {
               fontFamily: SANS, fontSize: 12, color: tk.textFaint, whiteSpace: 'nowrap',
             }}>
               <div style={{ width: 28, height: 1, background: tk.line }} />
-              <span>12.4 KM</span>
+              <span>{lbl('Route', 'রুট')}</span>
               <div style={{ width: 28, height: 1, background: tk.line }} />
             </div>
             <input

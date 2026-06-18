@@ -129,7 +129,7 @@ export default defineConfig(({ mode }) => {
           skipWaiting: true,
           clientsClaim: true,
           // Cache versioning for proper updates
-          cacheId: 'dhaka-commute-v32',
+          cacheId: 'dhaka-commute-v33',
           maximumFileSizeToCacheInBytes: 10485760, // 10 MB
 
           runtimeCaching: [

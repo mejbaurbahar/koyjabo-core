@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { KJ_TOKENS, Theme, Lang, Device } from './tokens';
+import { KJ_TOKENS, Theme, Lang, Device, T, SANS, BEN } from './tokens';
 import { injectGlobalStyles } from './globalStyles';
 import { SplashScreen } from './SplashScreen';
+import { getAuthUser } from '../../services/communityDataService';
 
 // Lazy imports — all screens
 import { HomePage } from './screens/HomePage';
@@ -41,6 +42,7 @@ import { ReleasePage } from './screens/ReleasePage';
 import { PrivacyPage } from './screens/PrivacyPage';
 import { TermsPage } from './screens/TermsPage';
 import { InstallPage } from './screens/InstallPage';
+import { PageShell } from './screens/PageShell';
 import { ErrorPage404, ErrorPage500, OfflinePage, MaintenancePage } from './screens/SystemStatesPage';
 import { NavDrawer } from './components/NavDrawer';
 // FloatingControls removed per user request
@@ -88,7 +90,7 @@ const ROUTE_PATHS: Record<string, string> = {
   signup: '/signup',
   why: '/why',
   about: '/about',
-  blogs: '/blogs',
+  blogs: '/blog',
   qa: '/qa',
   contact: '/contact',
   release: '/release',
@@ -114,11 +116,12 @@ function detailPath(route: string, params: Record<string, string> = {}) {
   if (route === 'train-detail') return `/train/${slugify(params.trainId || params.id || 'detail')}${suffix}`;
   if (route === 'intercity-detail') return `/intercity/${slugify(params.id || params.operator || 'detail')}${suffix}`;
   if (route === 'vehicle') return `/launch/${slugify(params.id || params.name || 'detail')}${suffix}`;
+  if (route === 'blog-detail') return `/blog/${slugify(params.slug || params.id || 'post')}`;
   return ROUTE_PATHS[route] || '/';
 }
 
 function pathForEntry(entry: StackEntry) {
-  if (['bus-detail', 'metro-detail', 'train-detail', 'intercity-detail', 'vehicle'].includes(entry.route)) {
+  if (['bus-detail', 'metro-detail', 'train-detail', 'intercity-detail', 'vehicle', 'blog-detail'].includes(entry.route)) {
     return detailPath(entry.route, entry.params || {});
   }
   if (entry.route === 'results') {
@@ -145,8 +148,39 @@ function entryFromLocation(): StackEntry {
   if (path.startsWith('/train/') && path !== '/train') return { route: 'train-detail', params: { ...params, trainId: path.split('/')[2] || '' } };
   if (path.startsWith('/intercity/') && path !== '/intercity') return { route: 'intercity-detail', params: { ...params, id: path.split('/')[2] || '' } };
   if (path.startsWith('/launch/') && path !== '/launch') return { route: 'vehicle', params: { ...params, id: path.split('/')[2] || '' } };
+  if (path.startsWith('/blog/') && path !== '/blog') return { route: 'blog-detail', params: { ...params, slug: path.split('/')[2] || '' } };
+  if (path === '/blogs') return { route: 'blogs' };
   const match = Object.entries(ROUTE_PATHS).find(([, routePath]) => routePath === path);
   return { route: match?.[0] || 'home' };
+}
+
+function AuthRequiredPage(props: any) {
+  const { theme, device, lang, onNav } = props;
+  const tk = KJ_TOKENS[theme as Theme];
+  const isMobile = device === 'mobile';
+  return (
+    <PageShell {...props} canBack>
+      <div style={{ minHeight: '58vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: isMobile ? '28px 16px 96px' : '56px 24px 96px' }}>
+        <div style={{ width: '100%', maxWidth: 460, background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 20, padding: isMobile ? 22 : 30, boxShadow: tk.shadowLg, textAlign: 'center' }}>
+          <div style={{ width: 62, height: 62, borderRadius: 18, background: tk.accentSoft, color: tk.accent, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', fontFamily: SANS, fontSize: 28, fontWeight: 800 }}>
+            !
+          </div>
+          <h1 style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 22, fontWeight: 800, color: tk.text, margin: '0 0 8px' }}>
+            {T(lang, 'লগইন প্রয়োজন', 'Login required')}
+          </h1>
+          <p style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 14, color: tk.textDim, lineHeight: 1.6, margin: '0 0 20px' }}>
+            {T(lang, 'সার্চ রেজাল্ট দেখতে আগে সাইন ইন করুন।', 'Please sign in before viewing search results.')}
+          </p>
+          <button
+            onClick={() => onNav('signin')}
+            style={{ background: tk.primary, color: tk.primaryInk, border: 0, borderRadius: 12, padding: '12px 20px', fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 14, fontWeight: 800, cursor: 'pointer', width: '100%' }}
+          >
+            {T(lang, 'সাইন ইন করুন', 'Sign in')}
+          </button>
+        </div>
+      </div>
+    </PageShell>
+  );
 }
 
 export function KoyJaboApp() {
@@ -161,6 +195,7 @@ export function KoyJaboApp() {
   const [vignette, setVignette] = useState(false);
   const [anchorOn, setAnchorOn] = useState(true);
   const [vw, setVw] = useState(window.innerWidth);
+  const [authUser, setAuthUser] = useState(() => getAuthUser());
   const scrollerRef = useRef<HTMLDivElement>(null);
   const vignetteTimer = useRef<number>(0);
 
@@ -191,6 +226,18 @@ export function KoyJaboApp() {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
+  useEffect(() => {
+    const refreshAuth = () => setAuthUser(getAuthUser());
+    window.addEventListener('storage', refreshAuth);
+    window.addEventListener('focus', refreshAuth);
+    window.addEventListener('koyjabo-auth-changed', refreshAuth);
+    return () => {
+      window.removeEventListener('storage', refreshAuth);
+      window.removeEventListener('focus', refreshAuth);
+      window.removeEventListener('koyjabo-auth-changed', refreshAuth);
+    };
+  }, []);
+
   const top = stack[stack.length - 1];
   const canBack = stack.length > 1;
   const tk = KJ_TOKENS[theme];
@@ -218,6 +265,7 @@ export function KoyJaboApp() {
   const resolvedDevice: 'desktop' | 'mobile' = (vw < 1024 && !forceDesktop) ? 'mobile' : 'desktop';
 
   const nav = useCallback((route: Route, params?: Record<string, string>) => {
+    setAuthUser(getAuthUser());
     const entry = { route, params };
     setDir('fwd');
     setShowSkeleton(true);
@@ -230,12 +278,22 @@ export function KoyJaboApp() {
   }, [pushUrl]);
 
   const navTab = useCallback((route: Route) => {
+    setAuthUser(getAuthUser());
     const entry = { route };
     setDir('fwd');
     pushUrl(entry);
     setStack([entry]);
     if (scrollerRef.current) scrollerRef.current.scrollTop = 0;
   }, [pushUrl]);
+
+  useEffect(() => {
+    if (authUser && (top.route === 'signin' || top.route === 'signup')) {
+      const entry = { route: 'profile' };
+      setDir('fwd');
+      pushUrl(entry, true);
+      setStack([entry]);
+    }
+  }, [authUser, top.route, pushUrl]);
 
   const back = useCallback(() => {
     if (stack.length <= 1) return;
@@ -265,6 +323,7 @@ export function KoyJaboApp() {
   const sharedProps = {
     theme, device: resolvedDevice, lang,
     route: top.route, params: top.params ?? {},
+    authUser,
     canBack: showBack, onBack: back, onNav: nav, onNavTab: navTab,
     onLang: () => setLang(l => l === 'bn' ? 'en' : 'bn'),
     onTheme: () => setTheme(t => t === 'dark' ? 'light' : 'dark'),
@@ -288,7 +347,7 @@ export function KoyJaboApp() {
       case 'flights-hub': return <FlightsPage {...p}/>;
       case 'ai': return <AIChatPage {...p}/>;
       case 'intercity': return <IntercityPage {...p}/>;
-      case 'results': return <RouteResultsV2Page {...p}/>;
+      case 'results': return authUser ? <RouteResultsV2Page {...p}/> : <AuthRequiredPage {...p}/>;
       case 'fare': return <FareCalcPage {...p}/>;
       case 'intercity-detail': return <IntercityDetailPage {...p}/>;
       case 'bus-detail': return <BusDetailPage {...p}/>;
@@ -403,6 +462,7 @@ export function KoyJaboApp() {
       <TopBar
         tk={tk} lang={lang} theme={theme}
         device={resolvedDevice}
+        user={authUser}
         activeRoute={top.route}
         canBack={canBack} onBack={back}
         onNav={nav} onLang={() => setLang(l => l === 'bn' ? 'en' : 'bn')}
@@ -444,6 +504,7 @@ export function KoyJaboApp() {
       )}
       <NavDrawer
         open={menuOpen} theme={theme} lang={lang}
+        user={authUser}
         activeRoute={top.route}
         onClose={() => setMenuOpen(false)}
         onNav={(r) => { setMenuOpen(false); nav(r); }}
