@@ -5,19 +5,9 @@ import { PageShell } from './PageShell';
 import { BUS_DATA, STATIONS } from '../../../constants';
 import { trackBusSearch } from '../../../services/analyticsService';
 import { getFavoriteBusIds, toggleFavoriteBus } from '../utils/favorites';
+import { buildLocalBusLocationSuggestions, isSameLocationValue, matchesBusStation, planLocalBusTransit } from '../utils/localBusRouting';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:Lang; route:string; canBack:boolean; onNav:(r:string,p?:Record<string,string>)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
-
-// Normalize for stop matching
-const normQ = (s: string) => s.toLowerCase().replace(/[\s\-\.]/g,'');
-
-function busMatchesRoute(r: typeof BUS_DATA[0], from: string, to: string): boolean {
-  if (!from && !to) return true;
-  const rf = normQ(from); const rt = normQ(to);
-  const matchF = !from || r.routeString.toLowerCase().includes(from.toLowerCase()) || r.stops.some(s=>s.includes(rf));
-  const matchT = !to || r.routeString.toLowerCase().includes(to.toLowerCase()) || r.stops.some(s=>s.includes(rt));
-  return matchF && matchT;
-}
 
 const TYPE_COLOR: Record<string, string> = {
   'AC': '#006a4e', 'Local': '#1e3a8a', 'Double-Decker': '#7c3aed',
@@ -40,15 +30,18 @@ export function RouteResultsV2Page(props: Props) {
   const toQ = params?.to ?? '';
   const searchQ = params?.search ?? '';
   const pref = params?.pref ?? 'fastest';
+  const stationSuggestions = useMemo(buildLocalBusLocationSuggestions, []);
+  const sameLocation = isSameLocationValue(fromQ, toQ, stationSuggestions);
 
   // Real filtered results from BUS_DATA
   const RESULTS = useMemo(() => {
+    if (sameLocation) return [];
     let filtered = BUS_DATA.filter(r => r.active !== false);
     if (searchQ) {
       const q = searchQ.toLowerCase();
       filtered = filtered.filter(r => r.name.toLowerCase().includes(q) || r.bnName.toLowerCase().includes(q) || r.routeString.toLowerCase().includes(q));
     } else if (fromQ || toQ) {
-      filtered = filtered.filter(r => busMatchesRoute(r, fromQ, toQ));
+      filtered = filtered.filter(r => matchesBusStation(r, fromQ) && matchesBusStation(r, toQ));
     }
     if (pref === 'non-ac') {
       filtered = filtered.filter(r => r.type !== 'AC');
@@ -78,7 +71,12 @@ export function RouteResultsV2Page(props: Props) {
         hours: r.hours,
       };
     });
-  }, [fromQ, toQ, searchQ, pref]);
+  }, [fromQ, toQ, searchQ, pref, sameLocation]);
+
+  const transitRoutes = useMemo(() => {
+    if (sameLocation || searchQ || !fromQ || !toQ || RESULTS.length > 0) return [];
+    return planLocalBusTransit(fromQ, toQ, pref === 'cheapest' ? 6 : 4);
+  }, [fromQ, toQ, searchQ, pref, sameLocation, RESULTS.length]);
 
   const fareValues = RESULTS
     .map(result => Number(result.fare.replace(/[^\d]/g, '')))
@@ -339,6 +337,88 @@ export function RouteResultsV2Page(props: Props) {
               </div>
             </React.Fragment>
           ))}
+
+          {RESULTS.length === 0 && (
+            <div style={{
+              background: tk.panel, border: `1px solid ${tk.line}`,
+              borderRadius: 18, padding: isMobile ? 16 : 20, boxShadow: tk.shadow,
+              backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)',
+            }}>
+              <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:8 }}>
+                <span style={{ width:34, height:34, borderRadius:10, display:'inline-flex', alignItems:'center', justifyContent:'center', background:tk.primarySoft, color:tk.primary, fontSize:18 }}>⇄</span>
+                <div>
+                  <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize:17, fontWeight:800, color:tk.text }}>
+                    {sameLocation ? lbl('Pick two different locations', 'দুটি আলাদা লোকেশন বাছুন') : lbl('No direct bus found', 'সরাসরি বাস পাওয়া যায়নি')}
+                  </div>
+                  <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize:13, color:tk.textDim, lineHeight:1.5, marginTop:2 }}>
+                    {sameLocation
+                      ? lbl('From and To cannot be same. Change one location and search again.', 'শুরু ও গন্তব্য একই হতে পারে না। একটি লোকেশন বদলে আবার সার্চ করুন।')
+                      : lbl('Try these transit routes. Suggestions use real KoyJabo bus routes and nearest available stops.', 'এই ট্রানজিট রুটগুলো চেষ্টা করুন। সুপারিশগুলো কই যাবোর আসল বাস রুট ও কাছের স্টপ থেকে তৈরি।')}
+                  </div>
+                </div>
+              </div>
+
+              {!sameLocation && transitRoutes.length === 0 && (
+                <div style={{ marginTop:14, background:tk.panelMuted, border:`1px solid ${tk.line}`, borderRadius:12, padding:14, fontFamily:lang==='bn'?BEN:SANS, fontSize:13, color:tk.textDim, lineHeight:1.6 }}>
+                  {lbl('No safe transit combination found from current bus data. Try a nearby main road or landmark.', 'বর্তমান বাস ডেটা থেকে নিরাপদ ট্রানজিট কম্বিনেশন পাওয়া যায়নি। কাছের প্রধান সড়ক বা ল্যান্ডমার্ক দিয়ে চেষ্টা করুন।')}
+                </div>
+              )}
+
+              {transitRoutes.length > 0 && (
+                <div style={{ display:'flex', flexDirection:'column', gap:12, marginTop:16 }}>
+                  {transitRoutes.map((route, routeIdx) => {
+                    const firstBusLeg = route.legs.find(leg => leg.kind === 'bus');
+                    const firstBus = firstBusLeg?.kind === 'bus' ? firstBusLeg.bus : undefined;
+                    return (
+                      <div key={route.id} style={{ background:tk.panelMuted, border:`1px solid ${routeIdx === 0 ? tk.primary : tk.line}`, borderRadius:14, padding:14 }}>
+                        <div style={{ display:'flex', justifyContent:'space-between', gap:12, flexWrap:'wrap', marginBottom:10 }}>
+                          <div>
+                            <div style={{ fontFamily:lang==='bn'?BEN:SANS, fontSize:14, fontWeight:800, color:tk.text }}>
+                              {routeIdx === 0 ? lbl('Best transit route', 'সেরা ট্রানজিট রুট') : route.title}
+                            </div>
+                            <div style={{ fontFamily:SANS, fontSize:12, color:tk.textFaint, marginTop:3 }}>
+                              {lbl(`${route.transfers} transfer`, `${route.transfers}টি ট্রান্সফার`)} · {Math.round(route.totalDuration)} min · ৳{route.totalFare} · {route.totalDistance.toFixed(1)} km
+                            </div>
+                          </div>
+                          {firstBus && (
+                            <button
+                              onClick={() => { trackBusSearch(firstBus.id, firstBus.name); onNav('bus-detail', { busId: firstBus.id, from: fromQ, to: toQ }); }}
+                              style={{ background:tk.primarySoft, border:`1px solid ${tk.primary}`, borderRadius:10, padding:'8px 12px', color:tk.primary, fontFamily:lang==='bn'?BEN:SANS, fontSize:12, fontWeight:800, cursor:'pointer' }}
+                            >
+                              {lbl('Open first bus', 'প্রথম বাস দেখুন')}
+                            </button>
+                          )}
+                        </div>
+                        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                          {route.legs.map((leg, legIdx) => (
+                            <div key={`${route.id}-${legIdx}`} style={{ display:'grid', gridTemplateColumns:'28px 1fr auto', gap:10, alignItems:'start' }}>
+                              <span style={{ width:28, height:28, borderRadius:999, display:'inline-flex', alignItems:'center', justifyContent:'center', background:leg.kind === 'bus' ? tk.primarySoft : tk.inputBg, color:leg.kind === 'bus' ? tk.primary : tk.textDim, fontSize:14 }}>
+                                {leg.kind === 'bus' ? '🚌' : '🚶'}
+                              </span>
+                              <div>
+                                <div style={{ fontFamily:lang==='bn'?BEN:SANS, fontSize:13, fontWeight:700, color:tk.text }}>
+                                  {leg.kind === 'bus'
+                                    ? lbl(`Take ${leg.bus.name}`, `${leg.bus.bnName} ধরুন`)
+                                    : lbl('Walk', 'হেঁটে যান')}
+                                </div>
+                                <div style={{ fontFamily:SANS, fontSize:12, color:tk.textDim, marginTop:2 }}>
+                                  {leg.from} → {leg.to}
+                                </div>
+                              </div>
+                              <div style={{ textAlign:'right', fontFamily:SANS, fontSize:11, color:tk.textFaint, whiteSpace:'nowrap' }}>
+                                {Math.round(leg.durationMin)} min
+                                {leg.kind === 'bus' && <div>৳{leg.fare}</div>}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Bottom ad */}
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>

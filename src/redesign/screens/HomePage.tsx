@@ -8,11 +8,12 @@ import { Pill } from '../components/Pill';
 import { Bus3D, MiniVehicle, TravelHeroScene } from '../components/Vehicles3D';
 import { KJFooter as KJFooterComponent } from '../components/KJFooter';
 import { NativeAdSection as NativeAdSectionReal } from '../components/AdComponents';
-import { STATIONS, BUS_DATA, METRO_STATIONS as REAL_METRO_STATIONS, AIRPORTS } from '../../../constants';
+import { BUS_DATA, METRO_STATIONS as REAL_METRO_STATIONS, AIRPORTS } from '../../../constants';
 import { BD_TRAIN_ROUTES, TRAIN_STATIONS } from '../../../data/bangladeshTrainData';
 import { INTERCITY_BUS_ROUTES, MAJOR_TRANSPORT_HUBS } from '../../../data/intercityData';
 import { getUserHistory } from '../../../services/analyticsService';
 import { SuggestionDropdown, Suggestion } from '../components/SuggestionDropdown';
+import { buildLocalBusLocationSuggestions, isSameLocationValue, normalizePlace } from '../utils/localBusRouting';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -59,28 +60,6 @@ const LAUNCH_TERMINALS = [
   { id:'hatiya', label:'Hatiya Ghat', sub:'হাতিয়া ঘাট' },
   { id:'borguna', label:'Borguna Ghat', sub:'বরগুনা ঘাট' },
 ];
-
-function stopLabelFromId(id: string) {
-  return id
-    .replace(/_/g, ' ')
-    .replace(/\b\w/g, c => c.toUpperCase());
-}
-
-function buildLocalBusLocationSuggestions(): Suggestion[] {
-  const map = new Map<string, Suggestion>();
-  Object.values(STATIONS).forEach(s => map.set(s.name.toLowerCase(), { id: s.id, label: s.name, sub: s.bnName }));
-  BUS_DATA.forEach(bus => {
-    bus.routeString.split(/[⇄→-]/).map(part => part.trim()).filter(Boolean).forEach(part => {
-      if (!map.has(part.toLowerCase())) map.set(part.toLowerCase(), { id: part.toLowerCase().replace(/\s+/g, '_'), label: part, sub: bus.name });
-    });
-    bus.stops.forEach(stopId => {
-      if (STATIONS[stopId]) return;
-      const label = stopLabelFromId(stopId);
-      if (!map.has(label.toLowerCase())) map.set(label.toLowerCase(), { id: stopId, label, sub: bus.name });
-    });
-  });
-  return Array.from(map.values()).sort((a, b) => a.label.localeCompare(b.label));
-}
 
 function SearchPanel({
   tk,
@@ -139,11 +118,11 @@ function SearchPanel({
     }
     return stationList;
   }, [activeMode, stationList]);
-  const norm = (s: string) => s.toLowerCase().replace(/[\s\-\.]/g,'');
   const filterModeOptions = (q: string) => {
     if (!q.trim()) return modeOptions;
-    const lq = q.toLowerCase();
-    return modeOptions.filter(s => s.label.toLowerCase().includes(lq) || s.sub?.includes(q) || s.id.toLowerCase().includes(norm(q)));
+    const lq = normalizePlace(q);
+    return modeOptions.filter(s => normalizePlace(s.label).includes(lq) || normalizePlace(s.sub ?? '').includes(lq) || normalizePlace(s.id).includes(lq))
+      .sort((a, b) => a.label.localeCompare(b.label, 'en', { sensitivity: 'base' }));
   };
 
   const modeRoute = (mode = activeMode) =>
@@ -212,7 +191,8 @@ function SearchPanel({
     setFrom('');
     setTo('');
   };
-  const canFindRoute = Boolean(from.trim() && to.trim());
+  const sameLocation = isSameLocationValue(from, to, modeOptions);
+  const canFindRoute = Boolean(from.trim() && to.trim() && !sameLocation);
 
   const pillBase: React.CSSProperties = {
     borderRadius: 999,
@@ -367,7 +347,7 @@ function SearchPanel({
             />
           </div>
         </div>
-        {fromFocus && <SuggestionDropdown suggestions={filterModeOptions(from)} maxItems={modeOptions.length} onSelect={s => { setFrom(s.label); setFromFocus(false); }} onDismiss={() => setFromFocus(false)} tk={tk} lang={lang} anchorRef={fromRef} />}
+        {fromFocus && <SuggestionDropdown suggestions={filterModeOptions(from)} maxItems={modeOptions.length} onSelect={s => { if (isSameLocationValue(s.label, to, modeOptions)) return; setFrom(s.label); setFromFocus(false); }} onDismiss={() => setFromFocus(false)} tk={tk} lang={lang} anchorRef={fromRef} />}
 
         {/* Swap (desktop only) */}
         {!isMobile && (
@@ -410,7 +390,7 @@ function SearchPanel({
             />
           </div>
         </div>
-        {toFocus && <SuggestionDropdown suggestions={filterModeOptions(to)} maxItems={modeOptions.length} onSelect={s => { setTo(s.label); setToFocus(false); }} onDismiss={() => setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef} />}
+        {toFocus && <SuggestionDropdown suggestions={filterModeOptions(to)} maxItems={modeOptions.length} onSelect={s => { if (isSameLocationValue(from, s.label, modeOptions)) return; setTo(s.label); setToFocus(false); }} onDismiss={() => setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef} />}
 
         {/* Find routes — navigates with real from/to */}
         <button
@@ -441,6 +421,11 @@ function SearchPanel({
           <Icon.arrowR s={16} />
         </button>
       </div>
+      {sameLocation && (
+        <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 12, fontWeight: 700, color: tk.accent, marginTop: -2 }}>
+          {T(lang, 'শুরু ও গন্তব্য একই হতে পারে না। আলাদা লোকেশন বাছুন।', 'From and To cannot be same. Pick different locations.')}
+        </div>
+      )}
 
       {/* Footer chips */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: isMobile ? 'nowrap' : 'wrap', overflowX: 'auto', scrollbarWidth: 'none' }}>

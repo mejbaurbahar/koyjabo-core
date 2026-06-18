@@ -7,9 +7,10 @@ import { Pill } from '../components/Pill';
 import { Icon } from '../components/Icons';
 import { ModeHero } from '../components/ModeHero';
 import { Stars } from '../components/Stars';
-import { BUS_DATA, STATIONS } from '../../../constants';
+import { BUS_DATA } from '../../../constants';
 import { SuggestionDropdown, Suggestion } from '../components/SuggestionDropdown';
 import { trackBusSearch, trackRouteSearch } from '../../../services/analyticsService';
+import { buildLocalBusLocationSuggestions, isSameLocationValue, matchesBusStation, normalizePlace } from '../utils/localBusRouting';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string,p?:Record<string,string>)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -53,26 +54,6 @@ const BRTA_NOTES = [
   { en:'BRTA Service Portal hotline: 16107.', bn:'বিআরটিএ সার্ভিস পোর্টাল হেল্পলাইন: ১৬১০৭।' },
 ];
 
-function stopLabelFromId(id: string) {
-  return id.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-}
-
-function buildBusLocationSuggestions(): Suggestion[] {
-  const map = new Map<string, Suggestion>();
-  Object.values(STATIONS).forEach(s => map.set(s.name.toLowerCase(), { id: s.id, label: s.name, sub: s.bnName }));
-  BUS_DATA.forEach(bus => {
-    bus.routeString.split(/[⇄→-]/).map(part => part.trim()).filter(Boolean).forEach(part => {
-      if (!map.has(part.toLowerCase())) map.set(part.toLowerCase(), { id: part.toLowerCase().replace(/\s+/g, '_'), label: part, sub: bus.name });
-    });
-    bus.stops.forEach(stopId => {
-      if (STATIONS[stopId]) return;
-      const label = stopLabelFromId(stopId);
-      if (!map.has(label.toLowerCase())) map.set(label.toLowerCase(), { id: stopId, label, sub: bus.name });
-    });
-  });
-  return Array.from(map.values()).sort((a, b) => a.label.localeCompare(b.label));
-}
-
 export function LocalBusPage(props: Props) {
   const { theme, device, lang, onNav } = props;
   const tk = KJ_TOKENS[theme];
@@ -88,27 +69,14 @@ export function LocalBusPage(props: Props) {
   const toRef = useRef<HTMLDivElement>(null);
 
   // Station suggestions from real STATIONS data
-  const stationList: Suggestion[] = useMemo(buildBusLocationSuggestions, []);
+  const stationList: Suggestion[] = useMemo(buildLocalBusLocationSuggestions, []);
 
   const filterStations = (q: string) => {
     if (!q.trim()) return stationList;
-    const lq = q.toLowerCase();
+    const lq = normalizePlace(q);
     return stationList.filter(s =>
-      s.label.toLowerCase().includes(lq) || (s.sub ?? '').toLowerCase().includes(lq)
-    );
-  };
-
-  // Normalize station name for matching (remove spaces/punctuation for stop ID matching)
-  const norm = (s: string) => s.toLowerCase().replace(/[\s\-\.]/g, '');
-
-  const matchesStation = (r: typeof BUS_DATA[0], query: string) => {
-    if (!query.trim()) return true;
-    const q = query.toLowerCase();
-    const qNorm = norm(query);
-    return r.routeString.toLowerCase().includes(q) ||
-      r.name.toLowerCase().includes(q) ||
-      r.bnName.includes(q) ||
-      r.stops.some(s => s.toLowerCase().includes(qNorm) || s.toLowerCase().includes(q));
+      normalizePlace(s.label).includes(lq) || normalizePlace(s.sub ?? '').includes(lq)
+    ).sort((a, b) => a.label.localeCompare(b.label, 'en', { sensitivity: 'base' }));
   };
 
   // Real bus route filtering
@@ -123,19 +91,20 @@ export function LocalBusPage(props: Props) {
         r.bnName.toLowerCase().includes(q) ||
         r.routeString.toLowerCase().includes(q) ||
         r.type.toLowerCase().includes(q) ||
-        r.stops.some(s => s.toLowerCase().includes(norm(q)))
+        r.stops.some(s => normalizePlace(s).includes(normalizePlace(q)))
       ).slice(0, 20);
     }
     if (f && t) {
-      const results = BUS_DATA.filter(r => matchesStation(r, f) && matchesStation(r, t)).slice(0, 20);
+      const results = BUS_DATA.filter(r => matchesBusStation(r, f) && matchesBusStation(r, t)).slice(0, 20);
       if (results.length) return results;
     }
-    if (f) return BUS_DATA.filter(r => matchesStation(r, f)).slice(0, 15);
-    if (t) return BUS_DATA.filter(r => matchesStation(r, t)).slice(0, 15);
+    if (f) return BUS_DATA.filter(r => matchesBusStation(r, f)).slice(0, 15);
+    if (t) return BUS_DATA.filter(r => matchesBusStation(r, t)).slice(0, 15);
     // Default: popular named routes
     return BUS_DATA.filter(r => r.active !== false && r.name.length > 3).slice(0, 10);
   }, [searchQuery, fromInput, toInput]);
-  const canFindBus = Boolean(fromInput.trim() && toInput.trim());
+  const sameLocation = isSameLocationValue(fromInput, toInput, stationList);
+  const canFindBus = Boolean(fromInput.trim() && toInput.trim() && !sameLocation);
 
   return (
     <PageShell {...props}>
@@ -170,7 +139,7 @@ export function LocalBusPage(props: Props) {
                   <input value={fromInput} onChange={e=>setFromInput(e.target.value)} onFocus={()=>setFromFocus(true)} onBlur={()=>setTimeout(()=>setFromFocus(false),150)} placeholder={T(lang,'গুলশান ১','Gulshan 1')} style={{ background:'transparent', border:'none', outline:'none', fontFamily:BEN, fontSize:15, fontWeight:600, color:tk.text, marginTop:2, width:'100%' }}/>
                 </div>
               </div>
-              {fromFocus && <SuggestionDropdown suggestions={filterStations(fromInput)} maxItems={stationList.length} onSelect={s=>{setFromInput(s.label);setFromFocus(false);}} onDismiss={()=>setFromFocus(false)} tk={tk} lang={lang} anchorRef={fromRef}/>}
+              {fromFocus && <SuggestionDropdown suggestions={filterStations(fromInput)} maxItems={stationList.length} onSelect={s=>{ if (isSameLocationValue(s.label, toInput, stationList)) return; setFromInput(s.label);setFromFocus(false);}} onDismiss={()=>setFromFocus(false)} tk={tk} lang={lang} anchorRef={fromRef}/>}
               {/* TO field with suggestions via portal */}
               <div ref={toRef} style={{ background:tk.inputBg, border:`1px solid ${toFocus?tk.accent:tk.line}`, borderRadius:14, padding:'10px 14px', display:'flex', alignItems:'center', gap:12, transition:'border-color 0.15s' }}>
                 <div style={{ width:28, height:28, borderRadius:8, background:tk.accentSoft, color:tk.accent, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><Icon.flag s={16}/></div>
@@ -179,11 +148,16 @@ export function LocalBusPage(props: Props) {
                   <input value={toInput} onChange={e=>setToInput(e.target.value)} onFocus={()=>setToFocus(true)} onBlur={()=>setTimeout(()=>setToFocus(false),150)} placeholder={T(lang,'মতিঝিল','Motijheel')} style={{ background:'transparent', border:'none', outline:'none', fontFamily:BEN, fontSize:15, fontWeight:600, color:tk.text, marginTop:2, width:'100%' }}/>
                 </div>
               </div>
-              {toFocus && <SuggestionDropdown suggestions={filterStations(toInput)} maxItems={stationList.length} onSelect={s=>{setToInput(s.label);setToFocus(false);}} onDismiss={()=>setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef}/>}
+              {toFocus && <SuggestionDropdown suggestions={filterStations(toInput)} maxItems={stationList.length} onSelect={s=>{ if (isSameLocationValue(fromInput, s.label, stationList)) return; setToInput(s.label);setToFocus(false);}} onDismiss={()=>setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef}/>}
               <button disabled={!canFindBus} onClick={()=>{ if (!canFindBus) return; trackRouteSearch(fromInput, toInput); onNav('results', { from: fromInput, to: toInput, search: searchQuery }); }} style={{ background:`linear-gradient(135deg,${tk.primary},${tk.primaryDeep})`, color:tk.primaryInk, border:0, borderRadius:14, padding:isMobile?'12px 16px':'0 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:canFindBus?'pointer':'not-allowed', opacity:canFindBus?1:0.5, display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:`0 8px 22px -10px ${tk.primary}` }}>
                 <Icon.search s={16}/>{T(lang,'বাস খুঁজুন','Find bus')}
               </button>
             </div>
+            {sameLocation && (
+              <div style={{ marginTop:10, fontFamily:lang==='bn'?BEN:SANS, fontSize:12, fontWeight:700, color:tk.accent }}>
+                {T(lang,'শুরু ও গন্তব্য একই হতে পারে না। আলাদা লোকেশন বাছুন।','From and To cannot be same. Pick different locations.')}
+              </div>
+            )}
             <div style={{ display:'flex', gap:6, marginTop:12, flexWrap:'wrap' }}>
               {[{l:'⚡ '+T(lang,'দ্রুততম','Fastest'),on:true},{l:'৳ '+T(lang,'সস্তা','Cheapest')},{l:'❄️ AC'},{l:'🚻 '+T(lang,'টয়লেট','Toilet')},{l:'👥 '+T(lang,'কম ভিড়','Less crowd')}].map((c,i)=>(
                 <button key={i} style={{ ...chipBtn(tk), background:c.on?tk.text:tk.panelMuted, color:c.on?tk.bg:tk.text, borderColor:c.on?tk.text:tk.line, fontWeight:c.on?700:500 }}>{c.l}</button>
