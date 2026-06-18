@@ -36,14 +36,6 @@ function AdsenseUnit({ slot, format = 'auto' }: { slot: string; format?: string 
   );
 }
 
-function AdLabel({ tk, lang }: { tk: Tokens; lang: Lang }) {
-  return (
-    <span style={{ fontFamily: SANS, fontSize: 9, fontWeight: 700, letterSpacing: 1.4, textTransform: 'uppercase', color: tk.textFaint, background: tk.bg, border: `1px solid ${tk.line}`, padding: '3px 7px', borderRadius: 4 }}>
-      {T(lang, 'বিজ্ঞাপন', 'Sponsored')}
-    </span>
-  );
-}
-
 // ── SideRailAd: fixed skyscraper (desktop ≥1500px gutters)
 export function SideRailAd({ tk, lang, side }: { tk: Tokens; lang: Lang; side: 'left' | 'right' }) {
   return (
@@ -52,9 +44,8 @@ export function SideRailAd({ tk, lang, side }: { tk: Tokens; lang: Lang; side: '
       [side]: 8, width: 160, zIndex: 80,
       background: tk.panelMuted, border: `1px solid ${tk.line}`, borderRadius: 12,
       minHeight: 600, display: 'flex', flexDirection: 'column', alignItems: 'stretch',
-      justifyContent: 'flex-start', gap: 8, padding: 8, overflow: 'hidden',
+      justifyContent: 'flex-start', padding: 8, overflow: 'hidden',
     }}>
-      <div style={{ display: 'flex', justifyContent: 'center' }}><AdLabel tk={tk} lang={lang}/></div>
       <div style={{ minHeight: 560, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <AdsenseUnit slot="7294303750"/>
       </div>
@@ -72,8 +63,7 @@ export function AnchorAd({ tk, lang, onClose }: { tk: Tokens; lang: Lang; onClos
       padding: '8px 16px', minHeight: 64, backdropFilter: 'blur(12px)',
       paddingBottom: 'calc(8px + env(safe-area-inset-bottom))',
     }}>
-      <div style={{ flexShrink: 0 }}><AdLabel tk={tk} lang={lang}/></div>
-      <div style={{ width: 'min(640px, 60vw)', minHeight: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ flex: 1, minHeight: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <AdsenseUnit slot="7294303750" format="horizontal"/>
       </div>
       <button onClick={onClose} style={{ background: tk.panelMuted, border: `1px solid ${tk.line}`, borderRadius: 999, color: tk.textFaint, cursor: 'pointer', fontSize: 16, width: 32, height: 32, lineHeight: 1 }}>×</button>
@@ -92,9 +82,6 @@ export function VignetteAd({ tk, lang, open, onClose }: { tk: Tokens; lang: Lang
   if (!open) return null;
   return (
     <div style={{ position: 'fixed', inset: 0, zIndex: 10080, background: 'rgba(3,5,12,0.92)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-      <div style={{ position: 'absolute', top: 14, left: 16 }}>
-        <span style={{ fontFamily: SANS, fontSize: 9, fontWeight: 700, letterSpacing: 1.4, textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', padding: '3px 7px', borderRadius: 4, background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)' }}>{T(lang, 'বিজ্ঞাপন', 'Sponsored')}</span>
-      </div>
       <button onClick={count === 0 ? onClose : undefined} style={{
         position: 'absolute', top: 14, right: 14, padding: '8px 14px', borderRadius: 999,
         border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.1)', color: '#fff',
@@ -105,10 +92,6 @@ export function VignetteAd({ tk, lang, open, onClose }: { tk: Tokens; lang: Lang
         {count === 0 && <span>✕</span>}
       </button>
       <div style={{ width: 'min(420px,100%)', minHeight: 360, maxHeight: '76vh', borderRadius: 18, overflow: 'hidden', background: tk.bg, border: `1px solid ${tk.line}`, boxShadow: tk.shadowLg, display: 'flex', flexDirection: 'column' }}>
-        <div style={{ padding: '14px 16px', borderBottom: `1px solid ${tk.line}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ fontFamily: BEN, fontWeight: 700, fontSize: 15, color: tk.text }}>{T(lang, 'স্পনসরড বিজ্ঞাপন', 'Sponsored advertisement')}</div>
-          <div style={{ fontFamily: SANS, fontSize: 10, color: tk.textFaint }}>Google AdSense</div>
-        </div>
         <div style={{ minHeight: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 12 }}>
           <AdsenseUnit slot="7294303750"/>
         </div>
@@ -128,13 +111,9 @@ export function AdIntentRow({ tk, lang }: { tk: Tokens; lang: Lang }) {
   ];
   return (
     <div>
-      <div style={{ fontFamily: SANS, fontSize: 10, fontWeight: 700, color: tk.textFaint, letterSpacing: 1.4, textTransform: 'uppercase', marginBottom: 10 }}>
-        {T(lang, 'স্পনসরড', 'Sponsored suggestions')}
-      </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
         {chips.map((c, i) => (
           <button key={i} onClick={() => setDialogOpen(true)} style={{ background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 999, padding: '8px 14px', fontFamily: BEN, fontSize: 13, color: tk.text, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ fontFamily: SANS, fontSize: 8, fontWeight: 700, color: tk.textFaint, background: tk.panelMuted, padding: '2px 5px', borderRadius: 4 }}>Ad</span>
             {c.label}
           </button>
         ))}
@@ -142,7 +121,6 @@ export function AdIntentRow({ tk, lang }: { tk: Tokens; lang: Lang }) {
       {dialogOpen && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }} onClick={() => setDialogOpen(false)}>
           <div style={{ background: tk.bg, border: `1px solid ${tk.line}`, borderRadius: 20, padding: 24, maxWidth: 360, width: '100%' }} onClick={e => e.stopPropagation()}>
-            <div style={{ fontFamily: SANS, fontSize: 9, fontWeight: 700, color: tk.textFaint, letterSpacing: 1.4, textTransform: 'uppercase', marginBottom: 12 }}>{T(lang, 'স্পনসরড বিজ্ঞাপন', 'Sponsored advertisement')}</div>
             <div style={{ minHeight: 250, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
               <AdsenseUnit slot="7294303750"/>
             </div>
@@ -166,9 +144,6 @@ export function NativeAdSection({ tk, lang, isMobile }: { tk: Tokens; lang: Lang
   ];
   return (
     <div>
-      <div style={{ fontFamily: SANS, fontSize: 10, fontWeight: 700, color: tk.textFaint, letterSpacing: 1.4, textTransform: 'uppercase', marginBottom: 12 }}>
-        {T(lang, 'স্পনসরড', 'Sponsored')}
-      </div>
       <div style={{ background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 14, padding: 10, minHeight: isMobile ? 120 : 100, marginBottom: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <AdsenseUnit slot="7294303750" format={isMobile ? 'horizontal' : 'auto'}/>
       </div>

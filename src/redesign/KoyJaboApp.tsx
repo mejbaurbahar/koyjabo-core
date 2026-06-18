@@ -48,6 +48,7 @@ import { AIFab } from './components/AIFab';
 import { TopBar } from './components/TopBar';
 import { MobileTabBar } from './components/MobileTabBar';
 import { SideRailAd, AnchorAd, VignetteAd } from './components/AdComponents';
+import { BUS_DATA } from '../../constants';
 
 type Route = string;
 
@@ -69,11 +70,90 @@ const SHOW_BACK_ROUTES = new Set([
   'password', 'devices', 'results', 'install',
 ]);
 
+const ROUTE_PATHS: Record<string, string> = {
+  home: '/',
+  'bus-hub': '/local-bus',
+  'metro-hub': '/metro',
+  'train-hub': '/train',
+  'launch-hub': '/launch',
+  'flights-hub': '/air',
+  intercity: '/intercity',
+  fare: '/fare',
+  ai: '/ai',
+  favorites: '/favorites',
+  history: '/history',
+  profile: '/profile',
+  settings: '/settings',
+  signin: '/signin',
+  signup: '/signup',
+  why: '/why',
+  about: '/about',
+  blogs: '/blogs',
+  qa: '/qa',
+  contact: '/contact',
+  release: '/release',
+  privacy: '/privacy',
+  terms: '/terms',
+  install: '/install',
+};
+
+const slugify = (value: string) => value.toLowerCase().trim().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+function busSlug(busId?: string) {
+  const bus = BUS_DATA.find(item => item.id === busId);
+  return slugify(bus?.name || busId || 'bus');
+}
+
+function detailPath(route: string, params: Record<string, string> = {}) {
+  const query = new URLSearchParams();
+  if (params.from) query.set('from', slugify(params.from));
+  if (params.to) query.set('to', slugify(params.to));
+  const suffix = query.toString() ? `?${query.toString()}` : '';
+  if (route === 'bus-detail') return `/bus/${busSlug(params.busId)}${suffix}`;
+  if (route === 'metro-detail') return `/metro/${slugify(params.stationId || params.id || 'detail')}${suffix}`;
+  if (route === 'train-detail') return `/train/${slugify(params.trainId || params.id || 'detail')}${suffix}`;
+  if (route === 'intercity-detail') return `/intercity/${slugify(params.id || params.operator || 'detail')}${suffix}`;
+  if (route === 'vehicle') return `/launch/${slugify(params.id || params.name || 'detail')}${suffix}`;
+  return ROUTE_PATHS[route] || '/';
+}
+
+function pathForEntry(entry: StackEntry) {
+  if (['bus-detail', 'metro-detail', 'train-detail', 'intercity-detail', 'vehicle'].includes(entry.route)) {
+    return detailPath(entry.route, entry.params || {});
+  }
+  if (entry.route === 'results') {
+    const query = new URLSearchParams();
+    if (entry.params?.from) query.set('from', entry.params.from);
+    if (entry.params?.to) query.set('to', entry.params.to);
+    if (entry.params?.search) query.set('search', entry.params.search);
+    return `/local-bus/results${query.toString() ? `?${query.toString()}` : ''}`;
+  }
+  return ROUTE_PATHS[entry.route] || '/';
+}
+
+function entryFromLocation(): StackEntry {
+  const path = window.location.pathname.replace(/\/+$/, '') || '/';
+  const search = new URLSearchParams(window.location.search);
+  const params = Object.fromEntries(search.entries()) as Record<string, string>;
+  if (path.startsWith('/bus/')) {
+    const slug = path.split('/')[2] || '';
+    const bus = BUS_DATA.find(item => slugify(item.name) === slug || slugify(item.id) === slug);
+    return { route: 'bus-detail', params: { ...params, busId: bus?.id || slug } };
+  }
+  if (path.startsWith('/local-bus/results')) return { route: 'results', params };
+  if (path.startsWith('/metro/') && path !== '/metro') return { route: 'metro-detail', params: { ...params, stationId: path.split('/')[2] || '' } };
+  if (path.startsWith('/train/') && path !== '/train') return { route: 'train-detail', params: { ...params, trainId: path.split('/')[2] || '' } };
+  if (path.startsWith('/intercity/') && path !== '/intercity') return { route: 'intercity-detail', params: { ...params, id: path.split('/')[2] || '' } };
+  if (path.startsWith('/launch/') && path !== '/launch') return { route: 'vehicle', params: { ...params, id: path.split('/')[2] || '' } };
+  const match = Object.entries(ROUTE_PATHS).find(([, routePath]) => routePath === path);
+  return { route: match?.[0] || 'home' };
+}
+
 export function KoyJaboApp() {
   const [theme, setTheme] = useState<Theme>('dark');
   const [lang, setLang] = useState<Lang>('en');
   const [forceDesktop, setForceDesktop] = useState(false); // phone user can request desktop view
-  const [stack, setStack] = useState<StackEntry[]>([{ route: 'home' }]);
+  const [stack, setStack] = useState<StackEntry[]>(() => [entryFromLocation()]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [dir, setDir] = useState<'fwd' | 'back'>('fwd');
   const [showSkeleton, setShowSkeleton] = useState(false);
@@ -115,31 +195,56 @@ export function KoyJaboApp() {
   const canBack = stack.length > 1;
   const tk = KJ_TOKENS[theme];
 
+  const pushUrl = useCallback((entry: StackEntry, replace = false) => {
+    const nextPath = pathForEntry(entry);
+    const currentPath = `${window.location.pathname}${window.location.search}`;
+    if (nextPath === currentPath) return;
+    if (replace) window.history.replaceState(entry, '', nextPath);
+    else window.history.pushState(entry, '', nextPath);
+  }, []);
+
+  useEffect(() => {
+    pushUrl(stack[stack.length - 1], true);
+    const onPop = () => {
+      setDir('back');
+      setStack([entryFromLocation()]);
+      if (scrollerRef.current) scrollerRef.current.scrollTop = 0;
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
+
   // Resolve actual device — forceDesktop lets phone users request web layout
   const resolvedDevice: 'desktop' | 'mobile' = (vw < 1024 && !forceDesktop) ? 'mobile' : 'desktop';
 
   const nav = useCallback((route: Route, params?: Record<string, string>) => {
+    const entry = { route, params };
     setDir('fwd');
     setShowSkeleton(true);
+    pushUrl(entry);
     setTimeout(() => {
-      setStack(s => [...s, { route, params }]);
+      setStack(s => [...s, entry]);
       setShowSkeleton(false);
       if (scrollerRef.current) scrollerRef.current.scrollTop = 0;
     }, 160);
-  }, []);
+  }, [pushUrl]);
 
   const navTab = useCallback((route: Route) => {
+    const entry = { route };
     setDir('fwd');
-    setStack([{ route }]);
+    pushUrl(entry);
+    setStack([entry]);
     if (scrollerRef.current) scrollerRef.current.scrollTop = 0;
-  }, []);
+  }, [pushUrl]);
 
   const back = useCallback(() => {
     if (stack.length <= 1) return;
+    const previous = stack[stack.length - 2];
     setDir('back');
     setStack(s => s.slice(0, -1));
+    pushUrl(previous);
     if (scrollerRef.current) scrollerRef.current.scrollTop = 0;
-  }, [stack.length]);
+  }, [stack, pushUrl]);
 
   // Keyboard back
   useEffect(() => {

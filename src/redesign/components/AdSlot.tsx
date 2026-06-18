@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Tokens, Lang, SANS, T } from '../tokens';
+import { Tokens, Lang } from '../tokens';
 
 type AdKind = 'leaderboard' | 'mid-rect' | 'mob-banner' | 'anchor';
 
@@ -74,14 +74,6 @@ export function AdSlot({
         margin: '0 auto',
       }}
     >
-      {/* Sponsored label */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '5px 10px', borderBottom: `1px solid ${tk.line}` }}>
-        <span style={{ fontFamily: SANS, fontSize: 9, fontWeight: 700, letterSpacing: 1.4, textTransform: 'uppercase', color: tk.textFaint }}>
-          {T(lang, 'বিজ্ঞাপন', 'Sponsored')}
-        </span>
-        <span style={{ fontFamily: SANS, fontSize: 9, color: tk.textFaint, opacity: 0.6 }}>Google AdSense</span>
-      </div>
-      {/* Real ad container */}
       <div style={{ minHeight: h, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <RealAd format={format} slot={slot} />
       </div>

@@ -5,6 +5,9 @@ import { AdSlot } from '../components/AdSlot';
 import { ConfirmModal } from '../components/ConfirmModal';
 import { Icon } from '../components/Icons';
 import { SectionHeader } from '../components/SectionHeader';
+import { getUserHistory } from '../../../services/analyticsService';
+import { getAuthUser } from '../../../services/communityDataService';
+import { getFavoriteBusIds } from '../utils/favorites';
 
 interface ScreenProps {
   theme: 'dark' | 'light';
@@ -18,14 +21,6 @@ interface ScreenProps {
   onTheme: () => void;
   onMenu: () => void;
 }
-
-const TRIPS = [
-  { d: 'WED', date: '14', from: 'Banani', fromBn: 'বনানী', to: 'Karwan Bazar', toBn: 'কারওয়ান বাজার', mode: '🚌', op: 'GL', t: '8:42 AM', f: '40', dur: '32m' },
-  { d: 'WED', date: '14', from: 'Karwan Bazar', fromBn: 'কারওয়ান বাজার', to: 'Banani', toBn: 'বনানী', mode: '🚇', op: 'M6', t: '6:15 PM', f: '30', dur: '24m' },
-  { d: 'TUE', date: '13', from: 'Banani', fromBn: 'বনানী', to: 'Motijheel', toBn: 'মতিঝিল', mode: '🚇', op: 'M6', t: '9:20 AM', f: '100', dur: '32m' },
-  { d: 'MON', date: '12', from: 'Airport', fromBn: 'এয়ারপোর্ট', to: 'Farmgate', toBn: 'ফার্মগেট', mode: '🚌', op: 'BRTC', t: '11:00 AM', f: '75', dur: '45m' },
-  { d: 'SUN', date: '11', from: 'Gulshan', fromBn: 'গুলশান', to: 'Dhanmondi', toBn: 'ধানমন্ডি', mode: '🚌', op: 'GL', t: '3:00 PM', f: '60', dur: '38m' },
-];
 
 const SETTINGS_SHORTCUTS = [
   { icon: <Icon.bell s={16}/>, label: 'Notifications', labelBn: 'নোটিফিকেশন', sub: 'Delays, deals', subBn: 'বিলম্ব, অফার', route: 'settings' },
@@ -42,14 +37,23 @@ export function ProfilePage(props: ScreenProps) {
   const lbl = (en: string, bn: string) => T(lang, bn, en);
   const font = lang === 'bn' ? BEN : SANS;
   const [confirmSignOut, setConfirmSignOut] = useState(false);
+  const user = getAuthUser();
+  const history = getUserHistory();
+  const favoriteCount = getFavoriteBusIds().length;
+  const recentRecords = [
+    ...(history.routeSearches || []).map(item => ({ type: lbl('Route search', 'রুট সার্চ'), title: `${item.from || lbl('Any', 'যেকোনো')} → ${item.to || lbl('Any', 'যেকোনো')}`, time: item.timestamp })),
+    ...(history.busSearches || []).map(item => ({ type: lbl('Bus opened', 'বাস দেখা'), title: item.busName, time: item.timestamp })),
+    ...(history.trainSearches || []).map(item => ({ type: lbl('Train search', 'ট্রেন সার্চ'), title: `${item.trainName} · ${item.from} → ${item.to}`, time: item.timestamp })),
+    ...(history.intercitySearches || []).map(item => ({ type: lbl('Intercity search', 'আন্তঃজেলা সার্চ'), title: `${item.from} → ${item.to}`, time: item.timestamp })),
+  ].sort((a, b) => b.time - a.time).slice(0, 5);
 
   const card: React.CSSProperties = { background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 16, overflow: 'hidden' };
 
   const STATS = [
-    { label: lbl('Trips', 'ট্রিপ'), value: '247' },
-    { label: lbl('Saved', 'সাশ্রয়'), value: '৳ 12,400' },
-    { label: lbl('CO₂ saved', 'CO₂ সাশ্রয়'), value: '48 kg' },
-    { label: lbl('Streak', 'স্ট্রিক'), value: '22 days' },
+    { label: lbl('Searches', 'সার্চ'), value: String(recentRecords.length) },
+    { label: lbl('Favorites', 'প্রিয়'), value: String(favoriteCount) },
+    { label: lbl('Buses opened', 'বাস দেখা'), value: String((history.busSearches || []).length) },
+    { label: lbl('Routes searched', 'রুট সার্চ'), value: String((history.routeSearches || []).length) },
   ];
 
   return (
@@ -72,13 +76,13 @@ export function ProfilePage(props: ScreenProps) {
             color: tk.primaryInk, display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontFamily: SANS, fontWeight: 800, fontSize: 28,
             boxShadow: `0 0 24px ${tk.primary}44`,
-          }}>MF</div>
+          }}>{(user?.displayName || user?.username || 'KJ').slice(0, 2).toUpperCase()}</div>
           {/* Info */}
           <div style={{ flex: 1, position: 'relative', minWidth: 0 }}>
             <div style={{ fontFamily: font, fontWeight: 700, fontSize: 22, color: tk.text, letterSpacing: -0.4 }}>
-              {lbl('Mejbaur Fagun', 'মেজবাউর ফাগুন')}
+              {user?.displayName || user?.username || lbl('Guest user', 'অতিথি ব্যবহারকারী')}
             </div>
-            <div style={{ fontFamily: SANS, fontSize: 13, color: tk.textDim, marginTop: 4 }}>mejbaur@markopolo.ai · Banani, Dhaka</div>
+            <div style={{ fontFamily: SANS, fontSize: 13, color: tk.textDim, marginTop: 4 }}>{user ? `@${user.username}` : lbl('Sign in to sync your profile data', 'প্রোফাইল ডেটা সিঙ্ক করতে সাইন ইন করুন')}</div>
             <div style={{ display: 'flex', gap: isMobile ? 16 : 28, marginTop: 14, flexWrap: 'wrap' }}>
               {STATS.map((s) => (
                 <div key={s.label}>
@@ -102,25 +106,24 @@ export function ProfilePage(props: ScreenProps) {
 
           {/* LEFT: Trip history */}
           <div>
-            <SectionHeader tk={tk} lang={lang} title={lbl('Trip history · this week', 'এই সপ্তাহের ট্রিপ ইতিহাস')} />
+            <SectionHeader tk={tk} lang={lang} title={lbl('Recent activity', 'সাম্প্রতিক কার্যকলাপ')} />
             <div style={card}>
-              {TRIPS.map((t, i) => (
+              {recentRecords.length > 0 ? recentRecords.map((item, i) => (
                 <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px', borderTop: i ? `1px solid ${tk.line}` : '' }}>
                   <div style={{ width: 42, height: 42, borderRadius: 10, background: tk.panelMuted, border: `1px solid ${tk.line}`, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <span style={{ fontFamily: SANS, fontSize: 9, fontWeight: 700, color: tk.textFaint, letterSpacing: 1 }}>{t.d}</span>
-                    <span style={{ fontFamily: SANS, fontSize: 16, fontWeight: 800, color: tk.text, lineHeight: 1 }}>{t.date}</span>
+                    <span style={{ fontFamily: SANS, fontSize: 16, fontWeight: 800, color: tk.text, lineHeight: 1 }}>•</span>
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontFamily: font, fontWeight: 600, fontSize: 14, color: tk.text, display: 'flex', alignItems: 'center', gap: 5 }}>
-                      <span>{lbl(t.from, t.fromBn)}</span>
-                      <Icon.arrowR s={11}/>
-                      <span>{lbl(t.to, t.toBn)}</span>
-                    </div>
-                    <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint, marginTop: 3 }}>{t.mode} {t.op} · {t.t} · {t.dur}</div>
+                    <div style={{ fontFamily: font, fontWeight: 600, fontSize: 14, color: tk.text }}>{item.title}</div>
+                    <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint, marginTop: 3 }}>{item.type}</div>
                   </div>
-                  <div style={{ fontFamily: SANS, fontWeight: 700, fontSize: 15, color: tk.text, letterSpacing: -0.3 }}>৳ {t.f}</div>
+                  <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint }}>{new Date(item.time).toLocaleDateString(lang === 'bn' ? 'bn-BD' : 'en-US')}</div>
                 </div>
-              ))}
+              )) : (
+                <div style={{ padding: 24, textAlign: 'center', fontFamily: font, color: tk.textDim, fontSize: 14 }}>
+                  {lbl('No real activity yet. Searches and saved buses will appear here.', 'এখনো কোনো আসল কার্যকলাপ নেই। সার্চ ও সেভ করা বাস এখানে দেখা যাবে।')}
+                </div>
+              )}
             </div>
 
             {/* Quick actions */}
