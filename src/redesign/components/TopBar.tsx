@@ -119,13 +119,10 @@ export function TopBar({
                 fontFamily: BEN,
                 fontWeight: 800,
                 fontSize: 18,
-                background: `linear-gradient(135deg, ${tk.primary} 0%, #a855f7 100%)`,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
+                color: tk.text,
               }}
             >
-              KoyJabo
+              কই যাবো
             </span>
           )}
         </button>

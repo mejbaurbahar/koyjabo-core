@@ -23,8 +23,8 @@ export function ContactPage(props: Props) {
           {[
             { e:'📧', l:'Email', v:'koyjabo@gmail.com', c:tk.primarySoft, fc:tk.primary },
             { e:'📘', l:'Facebook', v:'facebook.com/koyjabo', c:'#1877f22a', fc:'#1877f2' },
-            { e:'🐙', l:'GitHub', v:'github.com/koyjabo', c:tk.chipBg, fc:tk.text },
-            { e:'🐛', l:T(lang,'বাগ রিপোর্ট','Bug Report'), v:'GitHub Issues', c:tk.accentSoft, fc:tk.accent },
+            { e:'💼', l:'LinkedIn', v:'linkedin.com/company/koy-jabo', c:tk.chipBg, fc:tk.text },
+            { e:'📝', l:T(lang,'ভুল তথ্য জানান','Report issue'), v:'Contact form', c:tk.accentSoft, fc:tk.accent },
           ].map((c,i)=>(
             <div key={i} style={{ ...card(14),background:c.c,borderColor:c.fc+'33',display:'flex',alignItems:'center',gap:12,cursor:'pointer' }}>
               <span style={{ fontSize:24 }}>{c.e}</span>

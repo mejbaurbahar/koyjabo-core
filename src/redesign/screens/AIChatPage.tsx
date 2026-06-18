@@ -4,6 +4,7 @@ import { PageShell } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
 import { Icon } from '../components/Icons';
 import { askGeminiRoute, ChatMessage } from '../../../services/geminiService';
+import { getAllSessions, saveChatMessage } from '../../../services/chatHistoryManager';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -112,23 +113,29 @@ export function AIChatPage(props: Props) {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Msg[]>(INIT_MESSAGES);
   const [isLoading, setIsLoading] = useState(false);
+  const [sessionId, setSessionId] = useState<string | null>(null);
   const suggestions = [
     { bn:'কোন বাস গুলশান থেকে মতিঝিল?', en:'Bus Gulshan to Motijheel?' },
     { bn:'বিমানবন্দর → ফার্মগেট', en:'Airport → Farmgate' },
     { bn:'সদরঘাট লঞ্চ সময়', en:'Sadarghat launch times' },
     { bn:'মেট্রো সময়সূচি', en:'Metro schedule' },
   ];
-  const recents = [
-    T(lang,'গুলশান থেকে মতিঝিল বাস','Bus from Gulshan to Motijheel'),
-    T(lang,'কক্সবাজার ট্রেন সময়সূচি',"Cox's Bazar train schedule"),
-    T(lang,'মেট্রো ভাড়া ক্যালকুলেটর','Metro fare calculator'),
-  ];
+  const recents = getAllSessions()
+    .slice()
+    .sort((a, b) => b.lastUpdated - a.lastUpdated)
+    .slice(0, 6)
+    .map(session => ({
+      id: session.id,
+      title: session.messages.find(message => message.role === 'user')?.text || T(lang, 'নতুন কথোপকথন', 'New conversation'),
+    }));
 
   async function send() {
     if (!input.trim() || isLoading) return;
     const userText = input.trim();
     const userMsg = { id: Date.now(), isUser:true, text:userText };
     setMessages(m => [...m, userMsg]);
+    const nextSessionId = saveChatMessage({ role: 'user', text: userText, timestamp: Date.now() } as any, sessionId);
+    setSessionId(nextSessionId);
     setInput('');
     setIsLoading(true);
     try {
@@ -137,6 +144,7 @@ export function AIChatPage(props: Props) {
         .filter(m => !(m as any).rich)
         .map(m => ({ role: m.isUser ? 'user' : 'assistant', text: m.text }));
       const response = await askGeminiRoute(userText, undefined, chatHistory, 'Mejbaur');
+      saveChatMessage({ role: 'assistant', text: response, timestamp: Date.now() } as any, nextSessionId);
       setMessages(m => [...m, { id: Date.now()+1, isUser:false, text:response }]);
     } catch {
       setMessages(m => [...m, { id: Date.now()+1, isUser:false, text:T(lang,'দুঃখিত, একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।','Sorry, something went wrong. Please try again.') }]);
@@ -155,12 +163,16 @@ export function AIChatPage(props: Props) {
               <div style={{ fontFamily:SANS,fontSize:10,fontWeight:700,color:tk.textFaint,letterSpacing:1.4,textTransform:'uppercase',marginBottom:10 }}>
                 {T(lang,'সাম্প্রতিক কথোপকথন','Recent conversations')}
               </div>
-              {recents.map((r,i)=>(
-                <div key={i} style={{ padding:'8px 10px',borderRadius:10,cursor:'pointer',fontFamily:BEN,fontSize:13,color:tk.textDim,marginBottom:4 }}
+              {recents.length > 0 ? recents.map((r)=>(
+                <div key={r.id} style={{ padding:'8px 10px',borderRadius:10,cursor:'default',fontFamily:BEN,fontSize:13,color:tk.textDim,marginBottom:4 }}
                   onMouseEnter={e=>(e.currentTarget.style.background=tk.chipBg)} onMouseLeave={e=>(e.currentTarget.style.background='transparent')}>
-                  💬 {r}
+                  💬 {r.title}
                 </div>
-              ))}
+              )) : (
+                <div style={{ fontFamily:BEN,fontSize:13,color:tk.textFaint,lineHeight:1.6,padding:'8px 0' }}>
+                  {T(lang,'এখনো কোনো কথোপকথন নেই। প্রশ্ন করলে এখানে দেখা যাবে।','No conversations yet. Ask a question and it will appear here.')}
+                </div>
+              )}
             </div>
             <div style={{ padding:'16px' }}>
               <div style={{ fontFamily:SANS,fontSize:10,fontWeight:700,color:tk.textFaint,letterSpacing:1.4,textTransform:'uppercase',marginBottom:10 }}>

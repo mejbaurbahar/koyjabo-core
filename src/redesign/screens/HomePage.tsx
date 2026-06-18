@@ -1938,7 +1938,7 @@ export function HomePage({
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
                   <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: SANS, fontSize: 11, fontWeight: 700, letterSpacing: 1.4, textTransform: 'uppercase', color: tk.textFaint }}>
                     <span style={{ width: 6, height: 6, borderRadius: 999, background: tk.accent, animation: 'kjpulse 1.5s ease-in-out infinite', display: 'inline-block' }}/>
-                    {T(lang, 'ঢাকা · ৩১°C · জ্যাম মাঝারি', 'Dhaka · 31°C · Moderate traffic')}
+                    {T(lang, 'লাইভ আবহাওয়া ও ট্রাফিক চালু নেই', 'Live weather and traffic unavailable')}
                   </span>
                 </div>
                 <h1
