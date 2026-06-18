@@ -32,6 +32,7 @@ import { PasswordPage } from './screens/PasswordPage';
 import { DevicesPage } from './screens/DevicesPage';
 import { SignInPage } from './screens/SignInPage';
 import { SignUpPage } from './screens/SignUpPage';
+import { ForgotPasswordPage } from './screens/ForgotPasswordPage';
 import { WhyPage } from './screens/WhyPage';
 import { AboutPage } from './screens/AboutPage';
 import { BlogsPage } from './screens/BlogsPage';
@@ -42,7 +43,6 @@ import { ReleasePage } from './screens/ReleasePage';
 import { PrivacyPage } from './screens/PrivacyPage';
 import { TermsPage } from './screens/TermsPage';
 import { InstallPage } from './screens/InstallPage';
-import { PageShell } from './screens/PageShell';
 import { ErrorPage404, ErrorPage500, OfflinePage, MaintenancePage } from './screens/SystemStatesPage';
 import { NavDrawer } from './components/NavDrawer';
 // FloatingControls removed per user request
@@ -89,6 +89,7 @@ const ROUTE_PATHS: Record<string, string> = {
   settings: '/settings',
   signin: '/signin',
   signup: '/signup',
+  'forgot-password': '/forgot-password',
   why: '/why',
   about: '/about',
   blogs: '/blog',
@@ -163,8 +164,10 @@ function AuthRequiredPage(props: any) {
   const tk = KJ_TOKENS[theme as Theme];
   const isMobile = device === 'mobile';
   return (
-    <PageShell {...props} canBack>
-      <div style={{ minHeight: '58vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: isMobile ? '28px 16px 96px' : '56px 24px 96px' }}>
+    <div style={{ minHeight: '100vh', background: tk.bg, position: 'relative', overflow: 'hidden', color: tk.text }}>
+      <div className="kj-future-bg" style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}/>
+      <div style={{ height: isMobile ? 52 : 60 }} />
+      <div style={{ minHeight: isMobile ? 'calc(100vh - 52px)' : 'calc(100vh - 60px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: isMobile ? '28px 16px 96px' : '56px 24px 96px', position: 'relative', zIndex: 1 }}>
         <div style={{ width: '100%', maxWidth: 460, background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 20, padding: isMobile ? 22 : 30, boxShadow: tk.shadowLg, textAlign: 'center' }}>
           <div style={{ width: 62, height: 62, borderRadius: 18, background: tk.accentSoft, color: tk.accent, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', fontFamily: SANS, fontSize: 28, fontWeight: 800 }}>
             !
@@ -173,7 +176,7 @@ function AuthRequiredPage(props: any) {
             {T(lang, 'লগইন প্রয়োজন', 'Login required')}
           </h1>
           <p style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 14, color: tk.textDim, lineHeight: 1.6, margin: '0 0 20px' }}>
-            {T(lang, 'সার্চ রেজাল্ট দেখতে আগে সাইন ইন করুন।', 'Please sign in before viewing search results.')}
+            {T(lang, 'কই যাবো ব্যবহার করতে আগে সাইন ইন করুন।', 'Please sign in to use KoyJabo.')}
           </p>
           <button
             onClick={() => onNav('signin')}
@@ -183,9 +186,11 @@ function AuthRequiredPage(props: any) {
           </button>
         </div>
       </div>
-    </PageShell>
+    </div>
   );
 }
+
+const PUBLIC_ROUTES = new Set(['signin', 'signup', 'forgot-password']);
 
 export function KoyJaboApp() {
   const [theme, setTheme] = useState<Theme>('dark');
@@ -289,7 +294,7 @@ export function KoyJaboApp() {
   }, [pushUrl]);
 
   useEffect(() => {
-    if (authUser && (top.route === 'signin' || top.route === 'signup')) {
+    if (authUser && PUBLIC_ROUTES.has(top.route)) {
       const entry = { route: 'profile' };
       setDir('fwd');
       pushUrl(entry, true);
@@ -340,6 +345,7 @@ export function KoyJaboApp() {
 
   function renderScreen(route: Route, params?: Record<string, string>) {
     const p = { ...sharedProps, params };
+    if (!authUser && !PUBLIC_ROUTES.has(route)) return <AuthRequiredPage {...p}/>;
     switch (route) {
       case 'home': return <HomePage {...p}/>;
       case 'bus-hub': return <LocalBusPage {...p}/>;
@@ -368,6 +374,7 @@ export function KoyJaboApp() {
       case 'devices': return <DevicesPage {...p}/>;
       case 'signin': return <SignInPage {...p}/>;
       case 'signup': return <SignUpPage {...p}/>;
+      case 'forgot-password': return <ForgotPasswordPage {...p}/>;
       case 'why': return <WhyPage {...p}/>;
       case 'about': return <AboutPage {...p}/>;
       case 'blogs': return <BlogsPage {...p}/>;
@@ -396,7 +403,7 @@ export function KoyJaboApp() {
   // AI FAB — sticky inside scroller so it pins to phone screen too
   // Hidden on the AI page itself
   // AIFab — fixed so it always shows regardless of scroll/overflow context
-  const aiFab = top.route !== 'ai' ? (
+  const aiFab = authUser && top.route !== 'ai' ? (
     <div style={{
       position: 'fixed', right: 16,
       bottom: isPhone ? 'calc(92px + env(safe-area-inset-bottom))' : (showAnchor ? 'calc(96px + env(safe-area-inset-bottom))' : 24),
@@ -471,7 +478,7 @@ export function KoyJaboApp() {
         onMenu={() => setMenuOpen(true)}
       />
       {/* Mobile tab bar — outside scroller too */}
-      {isPhone && (
+      {isPhone && authUser && (
         <MobileTabBar
           tk={tk} lang={lang}
           activeRoute={top.route}
@@ -480,13 +487,15 @@ export function KoyJaboApp() {
       )}
       {stage}
       {aiFab}
-      <NavDrawer
-        open={menuOpen} theme={theme} lang={lang}
-        user={authUser}
-        activeRoute={top.route}
-        onClose={() => setMenuOpen(false)}
-        onNav={(r) => { setMenuOpen(false); nav(r); }}
-      />
+      {authUser && (
+        <NavDrawer
+          open={menuOpen} theme={theme} lang={lang}
+          user={authUser}
+          activeRoute={top.route}
+          onClose={() => setMenuOpen(false)}
+          onNav={(r) => { setMenuOpen(false); nav(r); }}
+        />
+      )}
       {showRails && (
         <>
           <SideRailAd tk={tk} lang={lang} side="left"/>

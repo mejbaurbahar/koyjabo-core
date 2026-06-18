@@ -130,7 +130,7 @@ export function TopBar({
         </button>
 
         {/* Desktop nav — pushed to right side with marginLeft: auto */}
-        {!isMobile && (
+        {!isMobile && user && (
           <nav
             style={{
               display: 'flex',
@@ -181,7 +181,7 @@ export function TopBar({
         {/* Right controls — exact order from design: Menu | Lang | Theme | Install */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
           {/* Menu button — desktop (left of lang) */}
-          {!isMobile && (
+          {!isMobile && user && (
             <button onClick={onMenu} style={iconBtn} title="Menu">
               <Icon.menu s={18} />
             </button>
@@ -231,9 +231,11 @@ export function TopBar({
               >
                 {user ? (user.displayName || user.username || 'KJ').slice(0, 2).toUpperCase() : <Icon.user s={18} />}
               </button>
-              <button onClick={onMenu} style={iconBtn} aria-label="Open menu">
-                <Icon.menu s={20} />
-              </button>
+              {user && (
+                <button onClick={onMenu} style={iconBtn} aria-label="Open menu">
+                  <Icon.menu s={20} />
+                </button>
+              )}
             </>
           )}
         </div>
