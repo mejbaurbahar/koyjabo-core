@@ -397,11 +397,7 @@ export function IntercityDetailPage(props: Props) {
             <AdSlot tk={tk} lang={lang} kind="mid-rect" />
           </div>
 
-          {/* Sponsored native cards */}
           <div style={{ marginBottom: 24 }}>
-            <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 700, letterSpacing: 0.8, textTransform: 'uppercase', color: tk.textFaint, marginBottom: 12 }}>
-              {lbl('Sponsored', 'বিজ্ঞাপন')}
-            </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {SPONSORED_CARDS.map((card) => (
                 <div key={card.brand} style={{

@@ -10,11 +10,10 @@ export function PrivacyPage(props: Props) {
   const tk = KJ_TOKENS[theme];
   const isMobile = device === 'mobile';
   const card = (r=16): React.CSSProperties => ({ background:tk.panel,border:`1px solid ${tk.line}`,borderRadius:r,padding:16 });
-  const toc = [T(lang,'আমরা কী তথ্য সংগ্রহ করি','Data we collect'),T(lang,'কীভাবে ব্যবহার করি','How we use it'),T(lang,'তৃতীয় পক্ষ','Third parties'),T(lang,'আপনার অধিকার','Your rights'),T(lang,'কুকিজ','Cookies'),T(lang,'যোগাযোগ','Contact')];
   const sections = [
-    { h:toc[0], body:T(lang,'আমরা আপনার অবস্থান (আপনার অনুমতিতে), অনুসন্ধানের ইতিহাস এবং ডিভাইস তথ্য সংগ্রহ করি।','We collect your location (with permission), search history, and device info.') },
-    { h:toc[1], body:T(lang,'রুট উন্নত করতে এবং প্রাসঙ্গিক বিজ্ঞাপন দেখাতে ব্যবহার করা হয়।','Used to improve routes and show relevant ads.') },
-    { h:toc[2], body:T(lang,'Google AdSense এবং Firebase Analytics ব্যবহার করা হয়।','Google AdSense and Firebase Analytics are used.') },
+    { h:T(lang,'আমরা কী তথ্য সংগ্রহ করি','Data we collect'), body:T(lang,'আপনার অনুমতিতে অবস্থান, অ্যাকাউন্ট প্রোফাইল, সার্চ ইতিহাস, সেভ করা রুট, রিভিউ এবং আপলোড করা ছবি সংগ্রহ করা হতে পারে।','With your permission, we may collect location, account profile, search history, saved routes, reviews, and uploaded photos.') },
+    { h:T(lang,'কীভাবে ব্যবহার করি','How we use it'), body:T(lang,'এই তথ্য রুট সাজেশন, প্রোফাইল সিঙ্ক, কমিউনিটি কনটেন্ট, নিরাপত্তা এবং অফলাইন অভিজ্ঞতা উন্নত করতে ব্যবহার করা হয়।','This data is used for route suggestions, profile sync, community content, safety, and improving the offline experience.') },
+    { h:T(lang,'তৃতীয় পক্ষ ও নিয়ন্ত্রণ','Third parties and controls'), body:T(lang,'কমিউনিটি ডেটা Cloudflare/GitHub proxy দিয়ে সিঙ্ক হয় এবং বিজ্ঞাপনের জন্য Google AdSense ব্যবহার হতে পারে। আপনি ইতিহাস পরিষ্কার, প্রোফাইল আপডেট বা অ্যাকাউন্ট মুছে ফেলতে পারেন।','Community data syncs through the Cloudflare/GitHub proxy and Google AdSense may be used for ads. You can clear history, update your profile, or delete your account.') },
   ];
 
   return (
@@ -31,10 +30,10 @@ export function PrivacyPage(props: Props) {
         {/* TOC */}
         <div style={{ ...card(14),marginBottom:20 }}>
           <div style={{ fontFamily:SANS,fontSize:10,fontWeight:700,color:tk.textFaint,letterSpacing:1.4,textTransform:'uppercase',marginBottom:10 }}>{T(lang,'বিষয়সূচি','On this page')}</div>
-          {toc.map((t,i)=>(
+          {sections.map((s,i)=>(
             <div key={i} style={{ display:'flex',alignItems:'center',gap:10,padding:'6px 0' }}>
               <span style={{ fontFamily:SANS,fontSize:11,fontWeight:600,color:tk.textFaint }}>{String(i+1).padStart(2,'0')}</span>
-              <span style={{ fontFamily:BEN,fontSize:13,color:tk.primary,fontWeight:600 }}>{t}</span>
+              <span style={{ fontFamily:BEN,fontSize:13,color:tk.primary,fontWeight:600 }}>{s.h}</span>
             </div>
           ))}
         </div>

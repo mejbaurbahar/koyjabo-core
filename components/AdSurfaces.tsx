@@ -6,18 +6,7 @@ type Language = 'en' | 'bn';
 
 const lbl = (language: Language, en: string, bn: string) => (language === 'bn' ? bn : en);
 
-export const AdLabel: React.FC<{ language: Language; light?: boolean }> = ({ language, light = false }) => (
-  <span
-    className="inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[9px] font-bold uppercase tracking-[1.2px]"
-    style={{
-      color: light ? 'rgba(255,255,255,0.86)' : 'var(--kj-text-faint)',
-      background: light ? 'rgba(255,255,255,0.18)' : 'var(--kj-bg)',
-      borderColor: light ? 'rgba(255,255,255,0.3)' : 'var(--kj-line)',
-    }}
-  >
-    {lbl(language, 'Sponsored', 'বিজ্ঞাপন')}
-  </span>
-);
+export const AdLabel: React.FC<{ language: Language; light?: boolean }> = () => null;
 
 export const AdIntentRow: React.FC<{ language: Language }> = ({ language }) => {
   const [open, setOpen] = useState(false);
@@ -32,9 +21,8 @@ export const AdIntentRow: React.FC<{ language: Language }> = ({ language }) => {
     <div className="dc-card rounded-[18px] p-4">
       <div className="mb-3 flex items-center justify-between gap-3">
         <p className="font-bengali text-sm font-bold text-kj-text">
-          {lbl(language, 'Sponsored suggestions', 'স্পনসর্ড পরামর্শ')}
+          {lbl(language, 'Travel suggestions', 'ভ্রমণ পরামর্শ')}
         </p>
-        <AdLabel language={language} />
       </div>
       <div className="flex flex-wrap gap-2">
         {chips.map((chip) => (
@@ -57,13 +45,12 @@ const AdIntentDialog: React.FC<{ language: Language; onClose: () => void }> = ({
   <div className="fixed inset-0 z-[10050] flex items-center justify-center p-5">
     <button
       type="button"
-      aria-label={lbl(language, 'Close sponsored dialog', 'স্পনসর্ড ডায়ালগ বন্ধ করুন')}
+      aria-label={lbl(language, 'Close dialog', 'ডায়ালগ বন্ধ করুন')}
       className="absolute inset-0 bg-black/60 backdrop-blur-sm"
       onClick={onClose}
     />
     <div className="relative w-full max-w-[420px] overflow-hidden rounded-[20px] border border-kj-line bg-kj-bg shadow-kj-lg">
       <div className="relative flex h-[150px] items-center justify-center bg-gradient-to-br from-sky-500 to-sky-950">
-        <div className="absolute left-3 top-3"><AdLabel language={language} light /></div>
         <button type="button" onClick={onClose} className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-lg border border-white/25 bg-white/15 text-white">
           <X className="h-4 w-4" />
         </button>

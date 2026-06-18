@@ -11,6 +11,7 @@ import { NativeAdSection as NativeAdSectionReal } from '../components/AdComponen
 import { STATIONS, BUS_DATA, METRO_STATIONS as REAL_METRO_STATIONS, AIRPORTS } from '../../../constants';
 import { BD_TRAIN_ROUTES, TRAIN_STATIONS } from '../../../data/bangladeshTrainData';
 import { INTERCITY_BUS_ROUTES, MAJOR_TRANSPORT_HUBS } from '../../../data/intercityData';
+import { getUserHistory } from '../../../services/analyticsService';
 import { SuggestionDropdown, Suggestion } from '../components/SuggestionDropdown';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -20,7 +21,7 @@ interface HomePageProps {
   device: 'desktop' | 'mobile';
   lang: 'bn' | 'en';
   route: string;
-  onNav: (route: string) => void;
+  onNav: (route: string, params?: Record<string, string>) => void;
   onBack: () => void;
   canBack: boolean;
   onLang: () => void;
@@ -1019,7 +1020,7 @@ function KoyJaboStory({
   );
 }
 
-// ─── MetroLive strip ──────────────────────────────────────────────────────────
+// ─── Metro guide strip ────────────────────────────────────────────────────────
 
 const METRO_STATIONS = [
   'উত্তরা উত্তর', 'উত্তরা সেন্টার', 'পল্লবী', 'মিরপুর ১১', 'মিরপুর ১০',
@@ -1031,9 +1032,7 @@ const METRO_STATIONS_EN = [
   'Kazipara', 'Shewrapara', 'Agargaon', 'Bijoy Sarani', 'Farmgate',
   'Karwan Bazar', 'Shahbag', 'Dhaka University', 'Bangladesh Secretariat', 'Motijheel',
 ];
-const CURRENT_STATION = 9; // Farmgate index
-
-function MetroLiveStrip({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobile: boolean }) {
+function MetroGuideStrip({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobile: boolean }) {
   return (
     <div
       style={{
@@ -1079,18 +1078,8 @@ function MetroLiveStrip({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobi
             </span>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span
-                  style={{
-                    width: 7,
-                    height: 7,
-                    borderRadius: '50%',
-                    background: '#22c55e',
-                    animation: 'kjpulse 1.5s ease-in-out infinite',
-                    display: 'inline-block',
-                  }}
-                />
                 <span style={{ fontFamily: SANS, fontSize: 12, fontWeight: 600, color: '#93c5fd' }}>
-                  {T(lang, 'লাইভ · এমআরটি লাইন ৬', 'Live · MRT Line 6')}
+                  {T(lang, 'এমআরটি-৬ অফিসিয়াল সার্ভিস গাইড', 'MRT-6 official service guide')}
                 </span>
               </div>
               <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 11, color: 'rgba(255,255,255,0.5)', marginTop: 1 }}>
@@ -1100,10 +1089,10 @@ function MetroLiveStrip({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobi
           </div>
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>
-              {T(lang, 'পরের ট্রেন', 'Next train')}
+              {T(lang, 'স্টেশন নোটিশ', 'Station notice')}
             </div>
-            <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 22, fontWeight: 800, color: '#60a5fa' }}>
-              {T(lang, '২ মিনিট', '2 min')}
+            <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 13, fontWeight: 800, color: '#60a5fa' }}>
+              {T(lang, 'যাত্রার আগে যাচাই করুন', 'Check before travel')}
             </div>
           </div>
         </div>
@@ -1111,7 +1100,6 @@ function MetroLiveStrip({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobi
         {/* Station dots */}
         <div style={{ overflowX: 'auto', paddingBottom: 4 }}>
           <div style={{ minWidth: isMobile ? 560 : '100%', position: 'relative', padding: '8px 0 12px' }}>
-            {/* Progress line behind */}
             <div
               style={{
                 position: 'absolute',
@@ -1128,7 +1116,7 @@ function MetroLiveStrip({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobi
                 position: 'absolute',
                 top: 15,
                 left: 8,
-                width: `${(CURRENT_STATION / (METRO_STATIONS.length - 1)) * 100}%`,
+                right: 8,
                 height: 4,
                 borderRadius: 999,
                 background: 'linear-gradient(90deg, #3b82f6, #60a5fa)',
@@ -1138,23 +1126,21 @@ function MetroLiveStrip({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobi
             {/* Station dots */}
             <div style={{ display: 'flex', justifyContent: 'space-between', position: 'relative' }}>
               {METRO_STATIONS.map((sbn, i) => {
-                const isPast = i < CURRENT_STATION;
-                const isCurrent = i === CURRENT_STATION;
+                const showLabel = i === 0 || i === METRO_STATIONS.length - 1 || (!isMobile && i === 7);
                 return (
                   <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, flex: 1 }}>
                     <div
                       style={{
-                        width: isCurrent ? 14 : 9,
-                        height: isCurrent ? 14 : 9,
+                        width: showLabel ? 12 : 9,
+                        height: showLabel ? 12 : 9,
                         borderRadius: '50%',
-                        background: isCurrent ? '#60a5fa' : isPast ? '#3b82f6' : 'rgba(255,255,255,0.15)',
-                        border: isCurrent ? '3px solid white' : 'none',
-                        boxShadow: isCurrent ? '0 0 12px rgba(96,165,250,0.8)' : 'none',
+                        background: showLabel ? '#60a5fa' : '#3b82f6',
+                        border: showLabel ? '2px solid rgba(255,255,255,0.9)' : 'none',
                         transition: 'all 0.3s ease',
                         flexShrink: 0,
                       }}
                     />
-                    {isCurrent && (
+                    {showLabel && (
                       <span
                         style={{
                           fontFamily: lang === 'bn' ? BEN : SANS,
@@ -1191,16 +1177,13 @@ function MetroLiveStrip({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobi
           {[
             { label: T(lang, 'ভাড়া', 'Fare'), value: '৳২০–১০০' },
             { label: T(lang, 'সময়', 'Hours'), value: '7:10AM – 9:40PM' },
-            { label: '', value: T(lang, 'সময়মতো চলছে', 'On time, no delays') },
+            { label: '', value: T(lang, 'লাইভ ট্রেন অবস্থান ডিএমটিসিএল প্রকাশ করে না', 'DMTCL does not publish live train positions') },
           ].map((item, i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
               {item.label && (
                 <span style={{ fontFamily: SANS, fontSize: 10, color: 'rgba(255,255,255,0.4)', fontWeight: 500 }}>
                   {item.label}
                 </span>
-              )}
-              {i === 2 && (
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', display: 'inline-block' }} />
               )}
               <span style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.75)' }}>
                 {item.value}
@@ -1215,15 +1198,64 @@ function MetroLiveStrip({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobi
 
 // ─── Saved Routes ─────────────────────────────────────────────────────────────
 
-const SAVED = [
-  { label: { bn: 'বাসা → অফিস', en: 'HOME → WORK' }, route: 'Banani → Karwan Bazar', time: '28 min · ৳ 40', colorKey: 'primary' as const },
-  { label: { bn: 'অফিস → বাসা', en: 'WORK → HOME' }, route: 'Karwan Bazar → Banani', time: '35 min · ৳ 40', colorKey: 'accent' as const },
-  { label: { bn: 'সপ্তাহান্তে', en: 'WEEKENDS' }, route: 'Banani → Dhanmondi 32', time: '42 min · ৳ 60', colorKey: 'amber' as const },
-  { label: { bn: 'বাবার বাসা', en: "DAD'S HOUSE" }, route: 'Banani → Mirpur DOHS', time: '55 min · ৳ 75', colorKey: 'primaryDeep' as const },
-];
+type SavedRouteCard = {
+  label: string;
+  route: string;
+  time?: string;
+  colorKey: 'primary' | 'accent' | 'amber' | 'primaryDeep';
+};
+
+function readSavedRouteCards(): SavedRouteCard[] {
+  if (typeof window === 'undefined') return [];
+  const keys = ['koyjabo_saved_routes', 'dhaka_commute_saved_routes', 'saved_routes'];
+  const colors: SavedRouteCard['colorKey'][] = ['primary', 'accent', 'amber', 'primaryDeep'];
+  const cards: SavedRouteCard[] = [];
+
+  keys.forEach((key) => {
+    try {
+      const raw = localStorage.getItem(key);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      const items = Array.isArray(parsed) ? parsed : Array.isArray(parsed?.routes) ? parsed.routes : [];
+      items.forEach((item: Record<string, unknown>, index: number) => {
+        const from = String(item.from || item.origin || item.start || item.fromName || '').trim();
+        const to = String(item.to || item.destination || item.end || item.toName || '').trim();
+        const route = String(item.route || item.path || (from && to ? `${from} → ${to}` : '')).trim();
+        if (!route) return;
+        const label = String(item.label || item.name || item.type || '').trim();
+        const time = [item.duration || item.time, item.fare ? `৳ ${item.fare}` : ''].filter(Boolean).join(' · ');
+        cards.push({ label, route, time, colorKey: colors[(cards.length + index) % colors.length] });
+      });
+    } catch {
+      // Ignore malformed local cache; empty state will explain there is no saved data.
+    }
+  });
+
+  return cards.slice(0, 4);
+}
 
 function SavedRoutes({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobile: boolean }) {
+  const saved = useMemo(readSavedRouteCards, []);
   const getColor = (key: string) => (tk as Record<string, string>)[key] ?? tk.primary;
+
+  if (saved.length === 0) {
+    return (
+      <div
+        style={{
+          background: tk.panel,
+          border: `1px solid ${tk.line}`,
+          borderRadius: 16,
+          padding: '18px 20px',
+          color: tk.textDim,
+          fontFamily: lang === 'bn' ? BEN : SANS,
+          fontSize: 14,
+          lineHeight: 1.6,
+        }}
+      >
+        {T(lang, 'এখনো কোনো সেভ করা রুট নেই। কোনো বাস বা রুট সেভ করলে এখানে দেখা যাবে।', 'No saved routes yet. Save a bus or route and it will appear here.')}
+      </div>
+    );
+  }
 
   return (
     <div
@@ -1237,7 +1269,7 @@ function SavedRoutes({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobile:
         width: '100%',
       }}
     >
-      {SAVED.map((s, i) => (
+      {saved.map((s, i) => (
         <div
           key={i}
           style={{
@@ -1273,14 +1305,14 @@ function SavedRoutes({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobile:
                 letterSpacing: 0.6,
               }}
             >
-              {T(lang, s.label.bn, s.label.en)}
+              {s.label || T(lang, 'সেভ করা রুট', 'Saved route')}
             </span>
           </div>
           <div style={{ fontFamily: SANS, fontSize: 13, fontWeight: 600, color: tk.text }}>
             {s.route}
           </div>
           <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint }}>
-            {s.time}
+            {s.time || T(lang, 'সেভ করা', 'Saved')}
           </div>
         </div>
       ))}
@@ -1290,63 +1322,39 @@ function SavedRoutes({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobile:
 
 // ─── Popular Routes ───────────────────────────────────────────────────────────
 
-const POPULAR_ROUTES = [
-  {
-    code: 'GL',
-    name: { en: 'Green Line', bn: 'গ্রীন লাইন পরিবহন' },
-    path: 'Gulshan 2→Badda→Rampura→Malibagh→Motijheel',
-    fare: '৳60',
-    time: '48min',
-    stops: '12 stops',
-    tag: 'AC',
+function initials(text: string) {
+  return text.split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase() || 'BUS';
+}
+
+function estimateFare(stops: number, type: string) {
+  const base = type === 'AC' ? 50 : 10;
+  return `৳${Math.max(base, Math.min(120, base + stops * 5))}`;
+}
+
+function buildPopularRoutes() {
+  const usage = getUserHistory().mostUsedBuses || {};
+  const used = Object.entries(usage)
+    .sort((a, b) => b[1] - a[1])
+    .map(([busId, count]) => ({ bus: BUS_DATA.find(item => item.id === busId), count }))
+    .filter((item): item is { bus: typeof BUS_DATA[number]; count: number } => Boolean(item.bus));
+
+  const source = used.length > 0
+    ? used
+    : BUS_DATA.filter(bus => bus.active !== false).slice(0, 5).map(bus => ({ bus, count: 0 }));
+
+  return source.slice(0, 5).map(({ bus, count }, index) => ({
+    busId: bus.id,
+    code: initials(bus.name),
+    name: { en: bus.name, bn: bus.bnName },
+    path: bus.routeString,
+    fare: estimateFare(bus.stops.length, bus.type),
+    time: bus.hours,
+    stops: bus.stops.length,
+    usageCount: count,
+    type: bus.type,
     dots: ['#006a4e', '#10b981'],
-    route: 'bus-detail',
-  },
-  {
-    code: 'HF',
-    name: { en: 'Hanif Enterprise', bn: 'হানিফ এন্টারপ্রাইজ' },
-    path: 'Uttara 7→Airport→Banani→Farmgate→Paltan',
-    fare: '৳75',
-    time: '1h15min',
-    stops: '18 stops',
-    tag: '',
-    dots: ['#d92644', '#ff7a3a'],
-    route: 'bus-detail',
-  },
-  {
-    code: 'SH',
-    name: { en: 'Shyamoli NR Travels', bn: 'শ্যামলী এনআর' },
-    path: 'Sayedabad→Jatrabari→Kachpur→Chittagong',
-    fare: '৳680',
-    time: '6h30min',
-    stops: '4 stops',
-    tag: 'AC · Intercity',
-    dots: ['#b46a13', '#f7b955'],
-    route: 'bus-detail',
-  },
-  {
-    code: 'BR',
-    name: { en: 'BRTC Articulated', bn: 'বিআরটিসি' },
-    path: 'Motijheel→Shahbag→Farmgate→Mohakhali→Abdullahpur',
-    fare: '৳45',
-    time: '52min',
-    stops: '14 stops',
-    tag: '',
-    dots: ['#0c8a62', '#1a3a8b'],
-    route: 'bus-detail',
-  },
-  {
-    code: 'PR',
-    name: { en: 'Projapoti Paribahan', bn: 'প্রজাপতি' },
-    path: 'Mirpur 12→Shyamoli→College Gate→Azimpur→Sadarghat',
-    fare: '৳30',
-    time: '45min',
-    stops: '11 stops',
-    tag: '',
-    dots: ['#2c5e1a', '#7eb344'],
-    route: 'bus-detail',
-  },
-];
+  }));
+}
 
 function PopularRoutes({
   tk,
@@ -1355,8 +1363,10 @@ function PopularRoutes({
 }: {
   tk: Tokens;
   lang: Lang;
-  onNav: (r: string) => void;
+  onNav: (r: string, params?: Record<string, string>) => void;
 }) {
+  const routes = useMemo(buildPopularRoutes, []);
+
   return (
     <div
       style={{
@@ -1366,16 +1376,16 @@ function PopularRoutes({
         overflow: 'hidden',
       }}
     >
-      {POPULAR_ROUTES.map((r, i) => (
+      {routes.map((r, i) => (
         <div
           key={i}
-          onClick={() => onNav(r.route)}
+          onClick={() => onNav('bus-detail', { busId: r.busId })}
           style={{
             display: 'flex',
             alignItems: 'center',
             gap: 12,
             padding: '13px 16px',
-            borderBottom: i < POPULAR_ROUTES.length - 1 ? `1px solid ${tk.line}` : 'none',
+            borderBottom: i < routes.length - 1 ? `1px solid ${tk.line}` : 'none',
             cursor: 'pointer',
             transition: 'background 0.15s ease',
           }}
@@ -1422,22 +1432,20 @@ function PopularRoutes({
               >
                 {lang === 'bn' ? r.name.bn : r.name.en}
               </span>
-              {r.tag && (
-                <span
-                  style={{
-                    fontFamily: SANS,
-                    fontSize: 10,
-                    fontWeight: 600,
-                    color: tk.amber,
-                    background: tk.amberSoft,
-                    borderRadius: 5,
-                    padding: '1px 5px',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {r.tag}
-                </span>
-              )}
+              <span
+                style={{
+                  fontFamily: lang === 'bn' ? BEN : SANS,
+                  fontSize: 10,
+                  fontWeight: 600,
+                  color: tk.amber,
+                  background: tk.amberSoft,
+                  borderRadius: 5,
+                  padding: '1px 5px',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {r.usageCount > 0 ? T(lang, `${r.usageCount} বার দেখা`, `${r.usageCount} views`) : r.type}
+              </span>
             </div>
             <div
               style={{
@@ -1459,7 +1467,7 @@ function PopularRoutes({
               {r.fare}
             </div>
             <div style={{ fontFamily: SANS, fontSize: 10, color: tk.textFaint }}>
-              {r.time} · {r.stops}
+              {r.time} · {T(lang, `${r.stops} স্টপ`, `${r.stops} stops`)}
             </div>
           </div>
 
@@ -1729,20 +1737,6 @@ function AdIntentRow({ tk, lang }: { tk: Tokens; lang: Lang }) {
         paddingBottom: 2,
       }}
     >
-      <span
-        style={{
-          fontFamily: SANS,
-          fontSize: 10,
-          fontWeight: 600,
-          color: tk.textFaint,
-          textTransform: 'uppercase',
-          letterSpacing: 0.5,
-          whiteSpace: 'nowrap',
-          flexShrink: 0,
-        }}
-      >
-        {T(lang, 'স্পনসর', 'Sponsored')}
-      </span>
       {chips.map((c, i) => (
         <button
           key={i}
@@ -2085,16 +2079,16 @@ export function HomePage({
           <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
         </div>
 
-        {/* ── Metro Live ── */}
+        {/* ── Metro guide ── */}
         <div style={section}>
           <SectionHeader
             tk={tk}
             lang={lang}
-            title={T(lang, 'মেট্রো লাইভ', 'Metro Live')}
+            title={T(lang, 'মেট্রো গাইড', 'Metro guide')}
             action={T(lang, 'সব স্টেশন', 'All stations')}
             onAction={() => onNav('metro-hub')}
           />
-          <MetroLiveStrip tk={tk} lang={lang} isMobile={isMobile} />
+          <MetroGuideStrip tk={tk} lang={lang} isMobile={isMobile} />
         </div>
 
         {/* ── Saved Routes ── */}

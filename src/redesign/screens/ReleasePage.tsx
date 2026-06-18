@@ -6,14 +6,19 @@ import { AdSlot } from '../components/AdSlot';
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
 const releases = [
-  { v:'v1.5.2', date:'Jun 17, 2026', items:[T('en','Fixed footer overlap on install app page for mobile devices','Fixed footer overlap on install app page for mobile devices'),T('en','Removed live chat, hotline, and GitHub issues from contact page','Removed live chat, hotline, and GitHub issues from contact page')] },
-  { v:'v1.5.1', date:'Jun 15, 2026', items:[T('en','Fixed blog post URL routing to show detail page on direct navigation','Fixed blog post URL routing to show detail page on direct navigation'),T('en','Fix blog navigation and remove ad placeholder text','Fix blog navigation and remove ad placeholder text')] },
-  { v:'v1.5.0', date:'Jun 12, 2026', items:[T('en','Full futuristic UI redesign with glassmorphism and neon animations','Full futuristic UI redesign with glassmorphism and neon animations'),T('en','Added 3D animated vehicle illustrations','Added 3D animated vehicle illustrations'),T('en','Improved ad system across all pages','Improved ad system across all pages')] },
-  { v:'v1.4.0', date:'May 28, 2026', items:[T('en','New: Domestic Flights hub (4 airlines, 8 airports)','New: Domestic Flights hub (4 airlines, 8 airports)'),T('en','Flight info for Biman, US-Bangla, Novoair, Air Astra','Flight info for Biman, US-Bangla, Novoair, Air Astra')] },
-  { v:'v1.3.0', date:'May 15, 2026', items:[T('en','New: Launch & Steamer hub (Sadarghat terminal)','New: Launch & Steamer hub (Sadarghat terminal)'),T('en','Cabin class info and tonight\'s launches','Cabin class info and tonight\'s launches')] },
-  { v:'v1.2.0', date:'May 1, 2026', items:[T('en','New: Train hub (Bangladesh Railway, 5 classes, PNR check)','New: Train hub (Bangladesh Railway, 5 classes, PNR check)'),T('en','Added Cox\'s Bazar Express and popular trains','Added Cox\'s Bazar Express and popular trains')] },
-  { v:'v1.1.0', date:'Apr 15, 2026', items:[T('en','New: Metro Rail MRT-6 full hub (17 stations)','New: Metro Rail MRT-6 full hub (17 stations)'),T('en','Station map, fares, tokens, Rapid Pass info','Station map, fares, tokens, Rapid Pass info')] },
-  { v:'v1.0.0', date:'Apr 1, 2026', items:[T('en','Initial launch — Local Bus routes + AI Assistant','Initial launch — Local Bus routes + AI Assistant'),T('en','Bilingual (বাংলা/English) support from day one','Bilingual (বাংলা/English) support from day one'),T('en','PWA offline support','PWA offline support')] },
+  { v:'v1.5.5', date:'Jun 19, 2026', items:[
+    { bn:'মেট্রো লাইভ দাবির বদলে বাস্তব MRT-6 সার্ভিস গাইড দেখানো হয়েছে।', en:'Replaced fake Metro Live claims with a real MRT-6 service guide.' },
+    { bn:'সেভ করা রুটে ডেমো ডেটা সরিয়ে বাস্তব সেভ ডেটা বা খালি বার্তা দেখানো হয়েছে।', en:'Removed demo saved routes and now shows real saved data or an empty message.' },
+    { bn:'প্রোফাইল ছবির PNG/JPG, ২MB এবং নিরাপদ ইমেজ যাচাই যোগ হয়েছে।', en:'Added PNG/JPG, 2MB, and safe-image validation for profile photos.' },
+  ] },
+  { v:'v1.5.4', date:'Jun 19, 2026', items:[
+    { bn:'বাস লাইভ ম্যাপ এবং রিভিউ/ফটো পেজের ডিজাইন ঠিক করা হয়েছে।', en:'Fixed bus live map and review/photo page styling.' },
+    { bn:'বাংলা/ইংরেজি ভাষা বদলালে প্রতিষ্ঠাতা সেকশন অনুবাদ হয়।', en:'Founder section now follows Bangla/English language selection.' },
+  ] },
+  { v:'v1.5.3', date:'Jun 18, 2026', items:[
+    { bn:'লগইন, সাইনআপ, প্রোফাইল এবং সাইনআউট ফ্লো উন্নত করা হয়েছে।', en:'Improved login, signup, profile, and sign-out flows.' },
+    { bn:'ফেভারিট, ইতিহাস এবং সাম্প্রতিক কথোপকথনে ডেমো ডেটা সরানো হয়েছে।', en:'Removed demo data from favorites, history, and recent conversations.' },
+  ] },
 ];
 
 export function ReleasePage(props: Props) {
@@ -41,7 +46,7 @@ export function ReleasePage(props: Props) {
                 </div>
                 <ul style={{ margin:0,padding:'0 0 0 14px' }}>
                   {r.items.map((item,j)=>(
-                    <li key={j} style={{ fontFamily:BEN,fontSize:13,color:tk.textDim,lineHeight:1.7,marginBottom:2 }}>{item}</li>
+                    <li key={j} style={{ fontFamily:BEN,fontSize:13,color:tk.textDim,lineHeight:1.7,marginBottom:2 }}>{T(lang,item.bn,item.en)}</li>
                   ))}
                 </ul>
               </div>

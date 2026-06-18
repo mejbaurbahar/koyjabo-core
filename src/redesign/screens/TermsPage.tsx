@@ -10,11 +10,10 @@ export function TermsPage(props: Props) {
   const tk = KJ_TOKENS[theme];
   const isMobile = device === 'mobile';
   const card = (r=16): React.CSSProperties => ({ background:tk.panel,border:`1px solid ${tk.line}`,borderRadius:r,padding:16 });
-  const toc = [T(lang,'তথ্য-মাত্র সেবা','Information only'),T(lang,'ব্যবহারকারীর আচরণ','User conduct'),T(lang,'মেধাস্বত্ব','Intellectual property'),T(lang,'দায়বদ্ধতা সীমাবদ্ধতা','Limitation of liability'),T(lang,'পরিবর্তন','Changes'),T(lang,'যোগাযোগ','Contact')];
   const sections = [
-    { h:toc[0], body:T(lang,'কই যাবো শুধুমাত্র তথ্য প্রদান করে — কোনো টিকেট বিক্রি করে না। টিকেটের জন্য সরাসরি অপারেটরের সাইটে যান।','KoyJabo provides information only — no ticket sales. Purchase tickets directly at operator websites or counters.') },
-    { h:toc[1], body:T(lang,'আপনি এই সেবা আইনি উদ্দেশ্যে ব্যবহার করতে সম্মত। স্প্যাম বা ক্ষতিকর বিষয়বস্তু নিষিদ্ধ।','You agree to use this service for lawful purposes. Spam or harmful content is prohibited.') },
-    { h:toc[2], body:T(lang,'কই যাবো এবং এর লোগো নিবন্ধিত ট্রেডমার্ক। কোড MIT লাইসেন্সের অধীনে।','KoyJabo and its logo are trademarks. Code is under MIT license.') },
+    { h:T(lang,'তথ্য-মাত্র সেবা','Information only'), body:T(lang,'কই যাবো শুধুমাত্র তথ্য প্রদান করে — কোনো টিকেট বিক্রি করে না। টিকেটের জন্য সরাসরি অপারেটরের ওয়েবসাইট বা কাউন্টারে যান।','KoyJabo provides information only — no ticket sales. Purchase tickets directly at operator websites or counters.') },
+    { h:T(lang,'ব্যবহারকারীর আচরণ','User conduct'), body:T(lang,'আপনি এই সেবা আইনি উদ্দেশ্যে ব্যবহার করতে সম্মত। স্প্যাম বা ক্ষতিকর বিষয়বস্তু নিষিদ্ধ।','You agree to use this service for lawful purposes. Spam or harmful content is prohibited.') },
+    { h:T(lang,'মেধাস্বত্ব','Intellectual property'), body:T(lang,'কই যাবো এবং এর লোগো ট্রেডমার্ক। কোড MIT লাইসেন্সের অধীনে।','KoyJabo and its logo are trademarks. Code is under MIT license.') },
   ];
 
   return (
@@ -30,7 +29,7 @@ export function TermsPage(props: Props) {
 
         <div style={{ ...card(14),marginBottom:20 }}>
           <div style={{ fontFamily:SANS,fontSize:10,fontWeight:700,color:tk.textFaint,letterSpacing:1.4,textTransform:'uppercase',marginBottom:10 }}>{T(lang,'বিষয়সূচি','On this page')}</div>
-          {toc.map((t,i)=>(<div key={i} style={{ display:'flex',alignItems:'center',gap:10,padding:'6px 0' }}><span style={{ fontFamily:SANS,fontSize:11,fontWeight:600,color:tk.textFaint }}>{String(i+1).padStart(2,'0')}</span><span style={{ fontFamily:BEN,fontSize:13,color:tk.primary,fontWeight:600 }}>{t}</span></div>))}
+          {sections.map((s,i)=>(<div key={i} style={{ display:'flex',alignItems:'center',gap:10,padding:'6px 0' }}><span style={{ fontFamily:SANS,fontSize:11,fontWeight:600,color:tk.textFaint }}>{String(i+1).padStart(2,'0')}</span><span style={{ fontFamily:BEN,fontSize:13,color:tk.primary,fontWeight:600 }}>{s.h}</span></div>))}
         </div>
 
         {sections.map((s,i)=>(
