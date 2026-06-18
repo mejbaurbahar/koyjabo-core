@@ -273,7 +273,7 @@ export function KJFooter({ tk, lang, isMobile, onNav }: KJFooterProps) {
                 display: 'inline-block',
               }}
             />
-            {T(lang, 'সব সিস্টেম চালু', 'All systems operational')}
+            {T(lang, 'বাংলাদেশের জন্য ঢাকায় তৈরি', 'Made in Dhaka for Bangladesh')}
           </span>
         </div>
       </div>

@@ -87,10 +87,14 @@ export function NavDrawer({ open, onClose, onNav, theme, lang, activeRoute }: Na
       />
 
       {/* Clipping wrapper — clips the translateX(105%) drawer to viewport */}
-      <div style={{ position: 'fixed', inset: 0, zIndex: 100, overflow: 'hidden', overscrollBehavior: 'contain', pointerEvents: open ? 'auto' : 'none' }}>
+      <div
+        onClick={onClose}
+        style={{ position: 'fixed', inset: 0, zIndex: 100, overflow: 'hidden', overscrollBehavior: 'contain', pointerEvents: open ? 'auto' : 'none' }}
+      >
 
       {/* Drawer panel */}
       <div
+        onClick={(event) => event.stopPropagation()}
         style={{
           position: 'absolute',
           top: 0,
@@ -153,7 +157,7 @@ export function NavDrawer({ open, onClose, onNav, theme, lang, activeRoute }: Na
               fontSize: 18,
               lineHeight: 1,
             }}
-            aria-label="Close menu"
+            aria-label={T(lang, 'মেনু বন্ধ করুন', 'Close menu')}
           >
             ×
           </button>

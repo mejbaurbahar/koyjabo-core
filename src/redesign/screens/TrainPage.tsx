@@ -9,7 +9,7 @@ import { Stars } from '../components/Stars';
 import { BD_TRAIN_ROUTES, TRAIN_STATIONS } from '../../../data/bangladeshTrainData';
 import { SuggestionDropdown, Suggestion } from '../components/SuggestionDropdown';
 
-interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
+interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string,p?:Record<string,string>)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
 // Map real BD_TRAIN_ROUTES to display format
 const stationName = (id: string) => TRAIN_STATIONS[id]?.name ?? id.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
@@ -40,6 +40,14 @@ const TRAINS = BD_TRAIN_ROUTES.map(r => ({
   rating: 4.3,
   n: 0,
 }));
+
+const FEATURED_TRAIN_IDS = [
+  'coxsbazar-express',
+  'parjotak-express',
+  'banalata-express',
+  'jahanabad-express',
+  'ruposhi-bangla',
+];
 
 const COACHES = [
   { l:'AC Berth', bn:'এসি বার্থ', c:'#7c3aed', fare:'৳ 2,656', n:'40 berths', e:'🛏️' },
@@ -76,9 +84,15 @@ export function TrainPage(props: Props) {
   const filteredTrains = useMemo(() => {
     const fromQ = fromStation.toLowerCase();
     const toQ = toStation.toLowerCase();
-    if (!fromQ && !toQ) return TRAINS;
+    if (!fromQ && !toQ) {
+      const featured = FEATURED_TRAIN_IDS
+        .map(id => TRAINS.find(train => train.source.id === id))
+        .filter((train): train is typeof TRAINS[number] => !!train);
+      return featured.length ? featured : TRAINS.slice(0, 5);
+    }
     return TRAINS.filter(r => routeIncludes(r.source, fromQ) && routeIncludes(r.source, toQ));
   }, [fromStation, toStation]);
+  const hasTrainSearch = Boolean(fromStation.trim() || toStation.trim());
 
   return (
     <PageShell {...props}>
@@ -140,14 +154,14 @@ export function TrainPage(props: Props) {
             {/* Trains list */}
             <div>
               <SectionHeader tk={tk} lang={lang}
-                title={filteredTrains.length < TRAINS.length
+                title={hasTrainSearch
                   ? T(lang,`${filteredTrains.length}টি ট্রেন পাওয়া গেছে`,`${filteredTrains.length} trains found`)
-                  : T(lang,'সব ট্রেন','All trains')}
-                action={T(lang,'সব ট্রেন','All trains')}/>
+                  : T(lang,'প্রিয় ট্রেন','Favorite trains')}
+                action={T(lang,'প্রিয় ট্রেন','Favorite trains')}/>
               <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
                 {filteredTrains.length === 0 && <div style={{ fontFamily:BEN, fontSize:13, color:tk.textFaint, padding:'16px 0', textAlign:'center' }}>{T(lang,'কোনো ট্রেন পাওয়া যায়নি','No trains found for this route')}</div>}
                 {filteredTrains.map((t,i)=>(
-                  <div key={i} onClick={()=>onNav('train-detail')} style={{ ...card(14), cursor:'pointer' }}>
+                  <div key={t.source.id} onClick={()=>onNav('train-detail', { trainId: t.source.id })} style={{ ...card(14), cursor:'pointer' }}>
                     <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:10 }}>
                       <div style={{ width:48, height:48, borderRadius:12, flexShrink:0, background:`linear-gradient(135deg,${t.col[0]},${t.col[1]})`, color:'#fff', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center' }}>
                         <span style={{ fontFamily:SANS, fontWeight:800, fontSize:12 }}>{t.num}</span>

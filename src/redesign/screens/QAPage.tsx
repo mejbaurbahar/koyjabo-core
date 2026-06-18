@@ -13,7 +13,7 @@ const QA = (lang:'bn'|'en') => [
   { q: T(lang,'ট্রেনের টিকেট অনলাইনে কীভাবে কিনবো?','How to buy train ticket online?'), a: T(lang,'eticket.railway.gov.bd ভিজিট করুন। কই যাবো শুধু তথ্য দেখায় — টিকেট বিক্রি করে না।','Visit eticket.railway.gov.bd. KoyJabo shows info only — purchase from official site.') },
   { q: T(lang,'কই যাবো কি অফলাইনে কাজ করে?','Does KoyJabo work offline?'), a: T(lang,'হ্যাঁ! PWA হিসেবে ইনস্টল করুন। রুট, ভাড়া, সময়সূচি ইন্টারনেট ছাড়াও কাজ করে।','Yes! Install as PWA. Routes, fares, schedules work without internet.') },
   { q: T(lang,'কই যাবো কি বিনামূল্যে?','Is KoyJabo free?'), a: T(lang,'১০০% বিনামূল্যে চিরকালের জন্য। অ-হস্তক্ষেপকারী বিজ্ঞাপন দ্বারা সমর্থিত।','100% free forever. Supported by non-intrusive ads.') },
-  { q: T(lang,'ভুল তথ্য কীভাবে জানাবো?','How do I report wrong information?'), a: T(lang,'আমাদের সাথে koyjabo.com/contact পেজে যোগাযোগ করুন বা GitHub Issues ব্যবহার করুন।','Contact us at koyjabo.com/contact or via our GitHub Issues page.') },
+  { q: T(lang,'ভুল তথ্য কীভাবে জানাবো?','How do I report wrong information?'), a: T(lang,'আমাদের সাথে koyjabo.com/contact পেজে যোগাযোগ করুন।','Contact us at koyjabo.com/contact.') },
 ];
 
 export function QAPage(props: Props) {

@@ -18,8 +18,8 @@ const STATS = [
 ];
 
 const CONTACTS = [
-  { icon: '💻', label: 'GitHub', href: 'https://github.com/koyjabo', labelBn: 'গিটহাব' },
-  { icon: '📘', label: 'Facebook', href: 'https://facebook.com/koyjabo', labelBn: 'ফেসবুক' },
+  { icon: '💼', label: 'LinkedIn', href: 'https://www.linkedin.com/company/koy-jabo/', labelBn: 'লিংকডইন' },
+  { icon: '📘', label: 'Facebook', href: 'https://www.facebook.com/koyjabo/', labelBn: 'ফেসবুক' },
   { icon: '✉️', label: 'koyjabo@gmail.com', href: 'mailto:koyjabo@gmail.com', labelBn: 'ইমেইল' },
 ];
 
