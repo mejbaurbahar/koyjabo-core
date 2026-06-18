@@ -561,7 +561,31 @@
   </noscript>
   </head>
 
-<body style="margin:0;padding:0;background:#1b1f22">
+<body style="margin:0;padding:0;background:#05060b">
+
+  <div id="kj-splash" role="status" aria-live="polite">
+    <div class="kj-splash-col">
+      <div class="kj-splash-ring">
+        <svg viewBox="0 0 132 132" width="132" height="132" fill="none" aria-hidden="true">
+          <circle cx="66" cy="66" r="60" stroke="rgba(255,255,255,0.08)" stroke-width="3"/>
+          <circle cx="66" cy="66" r="60" stroke="#22f5ff" stroke-width="3" stroke-linecap="round" stroke-dasharray="60 320"/>
+          <circle cx="126" cy="66" r="4" fill="#ff2a6d"/>
+        </svg>
+        <div class="kj-splash-logo"><span>ক</span></div>
+      </div>
+      <div class="kj-splash-title">কই যাবো</div>
+      <div class="kj-splash-sub">KOYJABO</div>
+      <div class="kj-splash-bar"><i></i></div>
+      <div id="kj-splash-tag" class="kj-splash-tag" data-bn="আপনার রুট লোড হচ্ছে…" data-en="Loading your routes…">আপনার রুট লোড হচ্ছে…</div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var lang = localStorage.getItem('app-language') || 'bn';
+      var tag = document.getElementById('kj-splash-tag');
+      if (tag) tag.textContent = tag.getAttribute(lang === 'en' ? 'data-en' : 'data-bn');
+    })();
+  </script>
 
   <div id="root"></div>
 

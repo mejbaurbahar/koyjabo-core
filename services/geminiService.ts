@@ -1,5 +1,6 @@
 import { BUS_DATA, METRO_STATIONS, STATIONS } from '../constants';
 import { BD_TRAIN_ROUTES, TRAIN_STATIONS } from '../data/bangladeshTrainData';
+import { INTERCITY_BUS_ROUTES, MAJOR_TRANSPORT_HUBS } from '../data/intercityData';
 import { getOfflineIntercityData } from '../intercity/offlineService';
 import {
   classifyIntent, buildSmartResponse, generateComparisonResponse,
@@ -165,6 +166,22 @@ const AIRPORTS = {
   "Barishal": { name: "Barishal Airport", domestic: true, international: false },
   "Rajshahi": { name: "Shah Makhdum Airport", domestic: true, international: false }
 };
+
+const DOMESTIC_AIR_ROUTES = [
+  { from: 'Dhaka', to: 'Chattogram', code: 'DAC ⇄ CGP', airlines: ['Biman Bangladesh', 'US-Bangla', 'Air Astra'], duration: '45-55 min' },
+  { from: 'Dhaka', to: 'Sylhet', code: 'DAC ⇄ ZYL', airlines: ['Biman Bangladesh', 'US-Bangla', 'Air Astra'], duration: '40-50 min' },
+  { from: 'Dhaka', to: "Cox's Bazar", code: 'DAC ⇄ CXB', airlines: ['Biman Bangladesh', 'US-Bangla', 'Air Astra'], duration: '55-65 min' },
+  { from: 'Dhaka', to: 'Jashore', code: 'DAC ⇄ JSR', airlines: ['Biman Bangladesh', 'US-Bangla', 'Air Astra'], duration: '35-45 min' },
+  { from: 'Dhaka', to: 'Saidpur', code: 'DAC ⇄ SPD', airlines: ['Biman Bangladesh', 'US-Bangla', 'Air Astra'], duration: '45-55 min' },
+  { from: 'Dhaka', to: 'Barishal', code: 'DAC ⇄ BZL', airlines: ['Biman Bangladesh', 'US-Bangla'], duration: '35-45 min' },
+  { from: 'Dhaka', to: 'Rajshahi', code: 'DAC ⇄ RJH', airlines: ['Biman Bangladesh', 'US-Bangla'], duration: '40-50 min' },
+];
+
+const ALL_INTERCITY_LOCATIONS = [...new Set([
+  ...MAJOR_LOCATIONS,
+  ...INTERCITY_BUS_ROUTES.map(r => r.district),
+  ...MAJOR_TRANSPORT_HUBS.map(r => r.district),
+])];
 
 // Complete tour plans for popular destinations
 const TOUR_PLANS: Record<string, { en: string; bn: string }> = {
@@ -751,7 +768,7 @@ const findIntercityRoute = (query: string, fromContextDistrict?: string): string
   const lowerQuery = normalize(query);
   const isBn = /[\u0980-\u09FF]/.test(query);
 
-  const foundDistricts = MAJOR_LOCATIONS.filter(d => {
+  const foundDistricts = ALL_INTERCITY_LOCATIONS.filter(d => {
     const enMatch = lowerQuery.includes(normalize(d));
     const bnMatch = MAJOR_LOCATIONS_BN[d] && lowerQuery.includes(normalize(MAJOR_LOCATIONS_BN[d]));
     return enMatch || bnMatch;
@@ -801,6 +818,22 @@ const findIntercityRoute = (query: string, fromContextDistrict?: string): string
 
 const findLocalBusInfo = (query: string): string => {
   const lowerQuery = normalize(query);
+  const isBn = /[\u0980-\u09FF]/.test(query);
+  const localIntent = lowerQuery.includes('bus') || lowerQuery.includes('local') || lowerQuery.includes('বাস') || lowerQuery.includes('route') || lowerQuery.includes('রুট') || lowerQuery.includes('to') || lowerQuery.includes('থেকে');
+  if (localIntent) {
+    const mentionedStations = Object.values(STATIONS).filter(s =>
+      lowerQuery.includes(normalize(s.name)) || (s.bnName && lowerQuery.includes(normalize(s.bnName)))
+    );
+    if (mentionedStations.length >= 2) {
+      const sorted = mentionedStations.slice(0, 2).sort((a, b) => {
+        const ai = lowerQuery.indexOf(normalize(a.name));
+        const bi = lowerQuery.indexOf(normalize(b.name));
+        return (ai < 0 ? 9999 : ai) - (bi < 0 ? 9999 : bi);
+      });
+      const route = findBusRoute(sorted[0].name, sorted[1].name, isBn);
+      if (route) return route;
+    }
+  }
   // Search for a specific bus name
   const bus = BUS_DATA.find(b => b.active !== false && lowerQuery.includes(normalize(b.name)));
   if (bus) {
@@ -1083,6 +1116,24 @@ const findAirportInfo = (query: string): string => {
   if (lowerQuery.includes("flight") || lowerQuery.includes("plane") ||
     lowerQuery.includes("airport") || lowerQuery.includes("বিমান") ||
     lowerQuery.includes("ফ্লাইট") || lowerQuery.includes("এয়ারপোর্ট")) {
+
+    const mentionedCities = Object.keys(AIRPORTS).filter(city => lowerQuery.includes(normalize(city)));
+    if (mentionedCities.length >= 2) {
+      const route = DOMESTIC_AIR_ROUTES.find(r =>
+        (mentionedCities.includes(r.from) && mentionedCities.includes(r.to)) ||
+        (mentionedCities.includes(r.to) && mentionedCities.includes(r.from))
+      );
+      if (route) {
+        const fromAirport = AIRPORTS[route.from as keyof typeof AIRPORTS];
+        const toAirport = AIRPORTS[route.to as keyof typeof AIRPORTS];
+        return isBn
+          ? `✈️ **ফ্লাইট রুট: ${route.from} → ${route.to}**\n\n**এয়ারপোর্ট:** ${fromAirport.name} → ${toAirport.name}\n**রুট কোড:** ${route.code}\n**এয়ারলাইন্স:** ${route.airlines.join(', ')}\n**সময়:** ${route.duration}\n\nভাড়া ও সিট প্রতিদিন বদলায়, তাই বুকিংয়ের আগে এয়ারলাইন্স/অফিশিয়াল চ্যানেলে যাচাই করুন।`
+          : `✈️ **Flight route: ${route.from} → ${route.to}**\n\n**Airports:** ${fromAirport.name} → ${toAirport.name}\n**Route code:** ${route.code}\n**Airlines:** ${route.airlines.join(', ')}\n**Duration:** ${route.duration}\n\nFares and seats change daily, so verify availability on the airline or official booking channel before travel.`;
+      }
+      return isBn
+        ? `✈️ **ফ্লাইট রুট:** ${mentionedCities.join(' → ')} রুটের নিয়মিত দেশীয় ফ্লাইট ডাটাবেসে পাইনি। কাছের চালু বিমানবন্দর: ${Object.keys(AIRPORTS).join(', ')}।`
+        : `✈️ **Flight route:** I do not have a scheduled domestic flight record for ${mentionedCities.join(' → ')}. Active airport cities in the app: ${Object.keys(AIRPORTS).join(', ')}.`;
+    }
 
     // Check for specific airports
     for (const [city, info] of Object.entries(AIRPORTS)) {
@@ -1427,7 +1478,7 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
       _stationNameWords(s.name).some(w => lowerQuery.includes(w))
     );
   const _normLoc = (s: string) => s.toLowerCase().replace(/['’]/g, '');
-  const _mentionsIntercityLocation = MAJOR_LOCATIONS.some(loc =>
+  const _mentionsIntercityLocation = ALL_INTERCITY_LOCATIONS.some(loc =>
     lowerQuery.includes(_normLoc(loc)) ||
     (MAJOR_LOCATIONS_BN[loc] && lowerQuery.includes(_normLoc(MAJOR_LOCATIONS_BN[loc])))
   );
@@ -1529,7 +1580,7 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
     const area = (userAreaName || userNearbyStation || '').toLowerCase();
     if (!area) return undefined;
     // Direct match against intercity district list
-    const direct = MAJOR_LOCATIONS.find(loc => area.includes(loc.toLowerCase()));
+    const direct = ALL_INTERCITY_LOCATIONS.find(loc => area.includes(loc.toLowerCase()));
     if (direct) return direct;
     // Bengali district names
     const bnEntry = Object.entries(MAJOR_LOCATIONS_BN).find(([, bn]) => bn && area.includes(bn.toLowerCase()));
@@ -1584,6 +1635,31 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
       `- **মেলা প্রাঙ্গণ → সাইনবোর্ড**: ভাড়া ১০০ টাকা\n\n` +
       `**🕗 সময়:** সকাল ৮টা থেকে | শেষ ট্রিপ রাত ১১টা পর্যন্ত।\n\n` +
       `🎟️ **টিকিট মূল্য:** বড় ৫০ টাকা, ছোট ২৫ টাকা (৫ বছরের কম ফ্রি)।`;
+  }
+
+  const wantsFlight = lowerQuery.includes('flight') || lowerQuery.includes('plane') || lowerQuery.includes('air') || lowerQuery.includes('airport') || lowerQuery.includes('বিমান') || lowerQuery.includes('ফ্লাইট') || lowerQuery.includes('এয়ারপোর্ট');
+  const wantsLaunch = lowerQuery.includes('launch') || lowerQuery.includes('ferry') || lowerQuery.includes('লঞ্চ') || lowerQuery.includes('ঘাট') || lowerQuery.includes('নৌ');
+  const wantsTrain = lowerQuery.includes('train') || lowerQuery.includes('railway') || lowerQuery.includes('express') || lowerQuery.includes('ট্রেন') || lowerQuery.includes('রেল');
+  const wantsLocalBus = (lowerQuery.includes('local') || lowerQuery.includes('বাস') || lowerQuery.includes('bus')) &&
+    [...Object.values(STATIONS), ...Object.values(METRO_STATIONS)].some(s =>
+      lowerQuery.includes(normalize(s.name)) || (s.bnName && lowerQuery.includes(normalize(s.bnName)))
+    );
+
+  if (wantsFlight) {
+    const flight = findAirportInfo(query);
+    if (flight) return flight;
+  }
+  if (wantsLaunch) {
+    const launch = findLaunchInfo(query);
+    if (launch) return launch;
+  }
+  if (wantsTrain) {
+    const train = findTrainInfo(query);
+    if (train) return train;
+  }
+  if (wantsLocalBus) {
+    const bus = findLocalBusInfo(query);
+    if (bus) return bus;
   }
 
   // Priority checks for specific info types
@@ -1774,7 +1850,7 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
 
   // 6. Check Intercity
   // Check against our comprehensive list
-  const isIntercityQuery = MAJOR_LOCATIONS.some(loc => {
+  const isIntercityQuery = ALL_INTERCITY_LOCATIONS.some(loc => {
     const enMatch = lowerQuery.includes(normalize(loc));
     const bnMatch = MAJOR_LOCATIONS_BN[loc] && lowerQuery.includes(normalize(MAJOR_LOCATIONS_BN[loc]));
     return enMatch || bnMatch;
