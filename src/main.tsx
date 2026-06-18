@@ -1,5 +1,6 @@
 import React, { ErrorInfo, ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
+import './index.css';
 import { KoyJaboApp } from './redesign/KoyJaboApp';
 
 interface ErrorBoundaryProps {

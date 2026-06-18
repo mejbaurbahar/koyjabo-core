@@ -133,6 +133,29 @@ export function injectGlobalStyles() {
 
     /* Leaflet map */
     .kj-map { background: #aadaff; }
+    .kj-map .leaflet-container { width: 100%; height: 100%; background: #aadaff; font-family: 'Inter', sans-serif; }
+    .kj-map .leaflet-pane,
+    .kj-map .leaflet-tile,
+    .kj-map .leaflet-marker-icon,
+    .kj-map .leaflet-marker-shadow,
+    .kj-map .leaflet-tile-container,
+    .kj-map .leaflet-pane > svg,
+    .kj-map .leaflet-pane > canvas,
+    .kj-map .leaflet-zoom-box,
+    .kj-map .leaflet-image-layer,
+    .kj-map .leaflet-layer {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .kj-map .leaflet-tile {
+      filter: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      border-radius: 0 !important;
+      max-width: none !important;
+    }
+    .kj-map .leaflet-control-container { font-family: 'Inter', sans-serif; }
     .kj-map .leaflet-control-attribution { font-family: 'Inter', sans-serif; font-size: 9px; }
     .kj-map .leaflet-bar { display: none; }
     .kj-stop-dot { background: #fff; border: 2px solid #e1126b; border-radius: 3px; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }

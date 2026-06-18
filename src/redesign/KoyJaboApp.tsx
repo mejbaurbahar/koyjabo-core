@@ -195,6 +195,31 @@ const PUBLIC_ROUTES = new Set(['signin', 'signup', 'forgot-password']);
 const ACCOUNT_ROUTES = new Set(['profile', 'favorites', 'history', 'settings', 'edit-profile', 'password', 'devices']);
 const ACTION_GATED_ROUTES = new Set(['results', 'rate-review', 'metro-token', 'metro-pass']);
 
+const BN_DIGITS = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+function localizeDigits(value: string) {
+  return value.replace(/\d/g, digit => BN_DIGITS[Number(digit)]);
+}
+
+function applyDigitLocale(root: HTMLElement | null, lang: Lang, originals: WeakMap<Text, string>) {
+  if (!root) return;
+  const skipTags = new Set(['SCRIPT', 'STYLE', 'TEXTAREA', 'INPUT', 'SELECT', 'OPTION', 'CODE', 'PRE']);
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      const parent = node.parentElement;
+      if (!parent || skipTags.has(parent.tagName)) return NodeFilter.FILTER_REJECT;
+      if (!/\d/.test(node.data) && !originals.has(node)) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    },
+  });
+  const textNodes: Text[] = [];
+  while (walker.nextNode()) textNodes.push(walker.currentNode as Text);
+  textNodes.forEach(node => {
+    if (!originals.has(node)) originals.set(node, node.data);
+    const original = originals.get(node) || node.data;
+    node.data = lang === 'bn' ? localizeDigits(original) : original;
+  });
+}
+
 export function KoyJaboApp() {
   const [theme, setTheme] = useState<Theme>('dark');
   const [lang, setLang] = useState<Lang>('en');
@@ -210,9 +235,30 @@ export function KoyJaboApp() {
   const [authUser, setAuthUser] = useState(() => getAuthUser());
   const scrollerRef = useRef<HTMLDivElement>(null);
   const vignetteTimer = useRef<number>(0);
+  const digitOriginalsRef = useRef<WeakMap<Text, string>>(new WeakMap());
+  const top = stack[stack.length - 1];
+  const canBack = stack.length > 1;
+  const tk = KJ_TOKENS[theme];
 
   // Inject global styles once
   useEffect(() => { injectGlobalStyles(); }, []);
+
+  useEffect(() => {
+    let raf = window.requestAnimationFrame(() => {
+      applyDigitLocale(scrollerRef.current, lang, digitOriginalsRef.current);
+    });
+    const observer = new MutationObserver(() => {
+      window.cancelAnimationFrame(raf);
+      raf = window.requestAnimationFrame(() => {
+        applyDigitLocale(scrollerRef.current, lang, digitOriginalsRef.current);
+      });
+    });
+    if (scrollerRef.current) observer.observe(scrollerRef.current, { childList: true, subtree: true, characterData: true });
+    return () => {
+      window.cancelAnimationFrame(raf);
+      observer.disconnect();
+    };
+  }, [lang, top.route, stack.length, showSkeleton, authPrompt]);
 
   // Dismiss both splash screens after 1.4s
   useEffect(() => {
@@ -254,10 +300,6 @@ export function KoyJaboApp() {
       window.removeEventListener('koyjabo-auth-changed', refreshAuth);
     };
   }, []);
-
-  const top = stack[stack.length - 1];
-  const canBack = stack.length > 1;
-  const tk = KJ_TOKENS[theme];
 
   const pushUrl = useCallback((entry: StackEntry, replace = false) => {
     const nextPath = pathForEntry(entry);
