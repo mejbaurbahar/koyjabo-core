@@ -559,6 +559,32 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap"
       rel="stylesheet">
   </noscript>
+  <style>
+    #kj-splash {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 50% 38%, #0b1733 0%, #05060b 70%);
+      color: #eafcff;
+      font-family: 'Inter', 'Hind Siliguri', system-ui, sans-serif;
+    }
+    #kj-splash .kj-splash-col { display: flex; flex-direction: column; align-items: center; }
+    #kj-splash .kj-splash-ring { position: relative; width: 132px; height: 132px; display: flex; align-items: center; justify-content: center; margin-bottom: 26px; }
+    #kj-splash .kj-splash-ring svg { position: absolute; inset: 0; animation: kjWheel 2.6s linear infinite; }
+    #kj-splash .kj-splash-logo { width: 64px; height: 64px; border-radius: 18px; background: linear-gradient(150deg, #22f5ff 0%, #00b8d9 55%, #0a82a8 100%); display: flex; align-items: center; justify-content: center; position: relative; }
+    #kj-splash .kj-splash-logo span { font-family: 'Hind Siliguri', 'Inter', system-ui, sans-serif; font-weight: 700; font-size: 38px; color: #04222b; line-height: 1; }
+    #kj-splash .kj-splash-logo::after { content: ''; position: absolute; bottom: 13px; width: 28px; height: 3px; border-radius: 999px; background: #ff2a6d; }
+    #kj-splash .kj-splash-title { font-family: 'Hind Siliguri', 'Inter', system-ui, sans-serif; font-weight: 700; font-size: 30px; letter-spacing: 0; }
+    #kj-splash .kj-splash-sub { font-size: 11px; font-weight: 700; letter-spacing: 4px; color: #4ad6ee; margin-top: 4px; }
+    #kj-splash .kj-splash-bar { width: 168px; height: 4px; border-radius: 999px; background: rgba(255,255,255,0.1); margin-top: 22px; overflow: hidden; }
+    #kj-splash .kj-splash-bar i { display: block; height: 100%; width: 42%; border-radius: 999px; background: linear-gradient(90deg, #22f5ff, #ff2a6d); animation: kjLoadBar 1.2s ease-in-out infinite; }
+    #kj-splash .kj-splash-tag { font-size: 11px; color: #6b7a91; margin-top: 14px; }
+    @keyframes kjLoadBar { 0% { transform: translateX(-120%); } 100% { transform: translateX(330%); } }
+    @keyframes kjWheel { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+  </style>
   </head>
 
 <body style="margin:0;padding:0;background:#05060b">

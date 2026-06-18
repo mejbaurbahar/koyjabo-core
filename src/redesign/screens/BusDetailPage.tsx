@@ -96,8 +96,24 @@ export function BusDetailPage(props: Props) {
     return () => navigator.geolocation.clearWatch(id);
   }, []);
 
-  if (showRating) return <BusRating busId={bus.id} busName={bus.name} onBack={() => { setShowRating(false); getBusRatings(bus.id).then(setRatingSummary).catch(() => setRatingSummary(null)); }} />;
-  if (showPhotos) return <BusPhotoGallery busId={bus.id} busName={bus.name} busBnName={bus.bnName} onBack={() => setShowPhotos(false)} />;
+  if (showRating) return (
+    <PageShell {...props} canBack>
+      <div style={{ padding:isMobile?'16px 12px 100px':'24px 40px 80px', maxWidth:920, margin:'0 auto' }}>
+        <div style={{ ...card(18), padding:0, overflow:'hidden', minHeight:isMobile?'calc(100vh - 150px)':'calc(100vh - 190px)', display:'flex' }}>
+          <BusRating busId={bus.id} busName={bus.name} onBack={() => { setShowRating(false); getBusRatings(bus.id).then(setRatingSummary).catch(() => setRatingSummary(null)); }} />
+        </div>
+      </div>
+    </PageShell>
+  );
+  if (showPhotos) return (
+    <PageShell {...props} canBack>
+      <div style={{ padding:isMobile?'16px 12px 100px':'24px 40px 80px', maxWidth:920, margin:'0 auto' }}>
+        <div style={{ ...card(18), padding:0, overflow:'hidden' }}>
+          <BusPhotoGallery busId={bus.id} busName={bus.name} busBnName={bus.bnName} onBack={() => setShowPhotos(false)} />
+        </div>
+      </div>
+    </PageShell>
+  );
 
   const colPair = TYPE_COLOR[bus.type] ?? ['#1e3a8a','#3b82f6'];
   const badge = bus.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();

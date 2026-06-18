@@ -38,13 +38,6 @@ const CABINS = [
   { l:'Deck Floor', bn:'ডেক', c:'#ef4444', p:'৳ 300', e:'🧳', desc:{bn:'খোলা ডেক',en:'Open deck'} },
 ];
 
-const ROUTES = [
-  { f:{bn:'সদরঘাট',en:'Sadarghat'}, t:{bn:'বরিশাল',en:'Barisal'}, p:'৳ 300+', d:'10h' },
-  { f:{bn:'সদরঘাট',en:'Sadarghat'}, t:{bn:'ভোলা',en:'Bhola'}, p:'৳ 250+', d:'6h' },
-  { f:{bn:'সদরঘাট',en:'Sadarghat'}, t:{bn:'পটুয়াখালী',en:'Patuakhali'}, p:'৳ 400+', d:'12h' },
-  { f:{bn:'সদরঘাট',en:'Sadarghat'}, t:{bn:'চাঁদপুর',en:'Chandpur'}, p:'৳ 200+', d:'3h' },
-];
-
 export function LaunchPage(props: Props) {
   const { theme, device, lang, onNav, params } = props;
   const tk = KJ_TOKENS[theme];
@@ -189,19 +182,6 @@ export function LaunchPage(props: Props) {
                       <div style={{ fontFamily:BEN, fontSize:11, color:tk.textFaint }}>{T(lang,c.desc.bn,c.desc.en)}</div>
                     </div>
                     <div style={{ fontFamily:SANS, fontWeight:800, fontSize:14, color:c.c }}>{c.p}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div style={card(16)}>
-                <div style={{ fontFamily:BEN, fontWeight:700, fontSize:14, color:tk.text, marginBottom:10 }}>{T(lang,'জনপ্রিয় রুট','Popular routes')}</div>
-                {ROUTES.map((r,i)=>(
-                  <div key={i} style={{ display:'flex', alignItems:'center', gap:8, padding:'8px 0', borderTop:i?`1px dashed ${tk.line}`:'', fontFamily:BEN, fontSize:12 }}>
-                    <span style={{ color:tk.text, fontWeight:600 }}>{T(lang,r.f.bn,r.f.en)}</span>
-                    <Icon.arrowR s={11}/>
-                    <span style={{ color:tk.text, fontWeight:700, flex:1 }}>{T(lang,r.t.bn,r.t.en)}</span>
-                    <span style={{ fontFamily:SANS, fontSize:11, color:tk.textFaint }}>{r.d}</span>
-                    <span style={{ fontFamily:SANS, fontWeight:700, fontSize:12, color:tk.primary }}>{r.p}</span>
                   </div>
                 ))}
               </div>
