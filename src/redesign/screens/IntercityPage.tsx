@@ -297,12 +297,10 @@ export function IntercityPage(props: Props) {
           </button>
         </div>
 
-        {/* District route cards — real 64-district data */}
+        {(nameSearch || from || to) && (
         <div style={{ marginTop: 32 }}>
           <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 700, letterSpacing: 0.8, textTransform: 'uppercase', color: tk.textFaint, marginBottom: 16 }}>
-            {(nameSearch || from || to)
-              ? lbl(`${filteredDistricts.length} routes found`, `${filteredDistricts.length}টি রুট পাওয়া গেছে`)
-              : lbl('All Bangladesh routes · 64 districts + major hubs', 'সারাদেশের রুট · ৬৪ জেলা + প্রধান হাব')}
+            {lbl(`${filteredDistricts.length} routes found`, `${filteredDistricts.length}টি রুট পাওয়া গেছে`)}
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 12 }}>
             {filteredDistricts.map((r) => {
@@ -346,6 +344,7 @@ export function IntercityPage(props: Props) {
             </div>
           )}
         </div>
+        )}
 
         {/* Popular Operators */}
         <div style={{ marginTop: 28 }}>

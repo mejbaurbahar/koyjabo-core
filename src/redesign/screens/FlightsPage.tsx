@@ -28,17 +28,6 @@ const AIRPORTS_LIST = [
   { iata: 'RJH', en: 'Rajshahi', bn: 'রাজশাহী' },
 ];
 
-const AIRPORTS = [
-  { iata:'DAC', bn:'ঢাকা', en:'Dhaka', sub:'Shahjalal Intl', ic:'🛫' },
-  { iata:'CGP', bn:'চট্টগ্রাম', en:'Chittagong', sub:'Shah Amanat', ic:'🌆' },
-  { iata:'CXB', bn:'কক্সবাজার', en:"Cox's Bazar", sub:'Beach city', ic:'🏖' },
-  { iata:'ZYL', bn:'সিলেট', en:'Sylhet', sub:'Osmani Intl', ic:'🍵' },
-  { iata:'JSR', bn:'যশোর', en:'Jessore', sub:'South-west', ic:'🌾' },
-  { iata:'SPD', bn:'সৈয়দপুর', en:'Saidpur', sub:'North Bengal', ic:'🏔' },
-  { iata:'BZL', bn:'বরিশাল', en:'Barisal', sub:'Riverine', ic:'🚤' },
-  { iata:'RJH', bn:'রাজশাহী', en:'Rajshahi', sub:'Mango city', ic:'🥭' },
-];
-
 const CABINS = [
   { l:'Business', bn:'বিজনেস', c:'#7c3aed', p:'৳ 12,500', e:'🥂', desc:{bn:'প্রায়োরিটি · লাউঞ্জ',en:'Priority · lounge'} },
   { l:'Economy Plus', bn:'ইকোনমি প্লাস', c:'#0ea5e9', p:'৳ 6,200', e:'🪑', desc:{bn:'বাড়তি লেগরুম',en:'Extra legroom'} },
@@ -202,19 +191,6 @@ export function FlightsPage(props: Props) {
                     <div style={{ fontFamily:SANS, fontWeight:800, fontSize:13, color:c.c }}>{c.p}</div>
                   </div>
                 ))}
-              </div>
-
-              <div style={card(14)}>
-                <div style={{ fontFamily:BEN, fontWeight:700, fontSize:14, color:tk.text, marginBottom:10 }}>{T(lang,'বিমানবন্দরসমূহ','Airports')}</div>
-                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
-                  {AIRPORTS.map((a,i)=>(
-                    <div key={i} style={{ background:tk.panelMuted, borderRadius:10, padding:'8px 10px' }}>
-                      <div style={{ fontFamily:SANS, fontWeight:800, fontSize:13, color:tk.primary }}>{a.iata}</div>
-                      <div style={{ fontFamily:BEN, fontSize:11, color:tk.text, fontWeight:600 }}>{T(lang,a.bn,a.en)}</div>
-                      <div style={{ fontFamily:SANS, fontSize:9, color:tk.textFaint }}>{a.sub}</div>
-                    </div>
-                  ))}
-                </div>
               </div>
 
               <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'mid-rect'}/>
