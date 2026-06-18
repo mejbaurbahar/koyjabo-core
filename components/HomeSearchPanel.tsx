@@ -4,6 +4,8 @@ import { SearchableSelect } from './SearchableSelect';
 import { AppView } from '../types';
 import type { SearchSuggestion } from '../services/searchService';
 
+export type TransportSearchMode = 'LOCAL' | 'METRO' | 'INTERCITY' | 'TRAIN' | 'LAUNCH' | 'AIR';
+
 interface StationOption {
   id: string;
   name: string;
@@ -18,6 +20,8 @@ export interface HomeSearchPanelProps {
   view: AppView;
   searchMode: 'TEXT' | 'ROUTE';
   setSearchMode: (m: 'TEXT' | 'ROUTE') => void;
+  transportMode: TransportSearchMode;
+  setTransportMode: (m: TransportSearchMode) => void;
   inputValue: string;
   setInputValue: (v: string) => void;
   searchQuery: string;
@@ -36,6 +40,7 @@ export interface HomeSearchPanelProps {
   isIntercityRedirecting: boolean;
   globalNearestStationName: string | null;
   stationOptions: StationOption[];
+  routeOptions: StationOption[];
   setView: (v: AppView) => void;
   setSuggestedRoutes: (routes: []) => void;
   setSearchContext: (ctx: string | undefined) => void;
@@ -51,12 +56,12 @@ export interface HomeSearchPanelProps {
 
 const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
   const {
-    language, view, searchMode, setSearchMode,
+    language, view, searchMode, setSearchMode, transportMode, setTransportMode,
     inputValue, setInputValue, searchQuery, setSearchQuery,
     fromStation, setFromStation, toStation, setToStation,
     busRouteSort, setBusRouteSort, nonAcOnly, setNonAcOnly,
     showSuggestions, setShowSuggestions, searchSuggestions, isIntercityRedirecting,
-    globalNearestStationName, stationOptions, setView, setSuggestedRoutes,
+    globalNearestStationName, stationOptions, routeOptions, setView, setSuggestedRoutes,
     setSearchContext, scrollContainerRef, onSearchCommit, onKeyDown, onInputChange,
     onSuggestionSelect, formatBusName, formatNumber,
   } = props;
@@ -67,26 +72,81 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
     minute: '2-digit',
   });
 
-  const modeChips = [
-    { label: lbl('Local bus', 'লোকাল বাস'), active: searchMode === 'TEXT' || (searchMode === 'ROUTE' && view === AppView.HOME), onClick: () => { setSearchMode('TEXT'); setSuggestedRoutes([]); setBusRouteSort('DEFAULT'); } },
-    { label: lbl('Metro', 'মেট্রো'), onClick: () => setView(AppView.METRO_HUB) },
-    { label: lbl('Intercity', 'আন্তঃজেলা'), onClick: () => setView(AppView.INTERCITY_HUB) },
-    { label: lbl('Train', 'ট্রেন'), onClick: () => setView(AppView.TRAIN_LIST) },
-    { label: lbl('Launch', 'লঞ্চ'), onClick: () => setView(AppView.LAUNCH_HUB) },
+  const setMode = (mode: TransportSearchMode) => {
+    setTransportMode(mode);
+    setSearchMode('TEXT');
+    setInputValue('');
+    setSearchQuery('');
+    setFromStation('');
+    setToStation('');
+    setSuggestedRoutes([]);
+    setSearchContext(undefined);
+    setShowSuggestions(false);
+    setBusRouteSort('DEFAULT');
+  };
+
+  const modeChips: Array<{ mode: TransportSearchMode; label: string }> = [
+    { mode: 'LOCAL', label: lbl('Local bus', 'লোকাল বাস') },
+    { mode: 'METRO', label: lbl('Metro', 'মেট্রো') },
+    { mode: 'INTERCITY', label: lbl('Intercity', 'আন্তঃজেলা') },
+    { mode: 'TRAIN', label: lbl('Train', 'ট্রেন') },
+    { mode: 'LAUNCH', label: lbl('Launch', 'লঞ্চ') },
+    { mode: 'AIR', label: lbl('Air', 'বিমান') },
   ];
 
   const quickIcons = [
-    { icon: '🚌', action: () => setSearchMode('TEXT') },
-    { icon: '🚇', action: () => setView(AppView.METRO_HUB) },
-    { icon: '🚆', action: () => setView(AppView.TRAIN_LIST) },
-    { icon: '✈️', action: () => setView(AppView.INTERCITY_HUB) },
-    { icon: '📍', action: () => { if (globalNearestStationName) { setInputValue(globalNearestStationName); setSearchMode('TEXT'); } } },
+    { icon: '🚌', action: () => setMode('LOCAL') },
+    { icon: '🚇', action: () => setMode('METRO') },
+    { icon: '🚆', action: () => setMode('TRAIN') },
+    { icon: '⛴', action: () => setMode('LAUNCH') },
+    { icon: '✈️', action: () => setMode('AIR') },
   ];
 
   const handleFindRoute = () => {
     if (!fromStation || !toStation) return;
-    setView(AppView.LOCAL_BUS_HUB);
+    if (transportMode === 'LOCAL') {
+      setSearchMode('ROUTE');
+      setSearchQuery('');
+      setSuggestedRoutes([]);
+      scrollContainerRef.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      return;
+    }
+    localStorage.setItem('koyjabo_prefill_from', fromStation);
+    localStorage.setItem('koyjabo_prefill_to', toStation);
+    localStorage.setItem('koyjabo_prefill_mode', transportMode.toLowerCase());
+    const nextView =
+      transportMode === 'METRO' ? AppView.METRO_HUB :
+      transportMode === 'TRAIN' ? AppView.TRAIN_LIST :
+      transportMode === 'LAUNCH' ? AppView.LAUNCH_HUB :
+      AppView.INTERCITY_HUB;
+    setView(nextView);
   };
+
+  const searchPlaceholders: Record<TransportSearchMode, string> = {
+    LOCAL: lbl('Search bus, stop, place...', 'বাস, স্টপ বা স্থান লিখুন...'),
+    METRO: lbl('Search MRT station or fare...', 'মেট্রো স্টেশন বা ভাড়া লিখুন...'),
+    INTERCITY: lbl('Search district or operator...', 'জেলা বা অপারেটর লিখুন...'),
+    TRAIN: lbl('Search train, station, number...', 'ট্রেন, স্টেশন বা নম্বর লিখুন...'),
+    LAUNCH: lbl('Search launch, terminal, route...', 'লঞ্চ, ঘাট বা রুট লিখুন...'),
+    AIR: lbl('Search airport or flight route...', 'বিমানবন্দর বা ফ্লাইট রুট লিখুন...'),
+  };
+  const fromPlaceholders: Record<TransportSearchMode, string> = {
+    LOCAL: lbl('Gulshan 1', 'গুলশান ১'),
+    METRO: lbl('Uttara North', 'উত্তরা উত্তর'),
+    INTERCITY: lbl('Dhaka', 'ঢাকা'),
+    TRAIN: lbl('Dhaka (Kamalapur)', 'ঢাকা (কমলাপুর)'),
+    LAUNCH: lbl('Sadarghat, Dhaka', 'সদরঘাট, ঢাকা'),
+    AIR: lbl('Hazrat Shahjalal Airport', 'হযরত শাহজালাল বিমানবন্দর'),
+  };
+  const toPlaceholders: Record<TransportSearchMode, string> = {
+    LOCAL: lbl('Motijheel', 'মতিঝিল'),
+    METRO: lbl('Motijheel', 'মতিঝিল'),
+    INTERCITY: lbl("Cox's Bazar", 'কক্সবাজার'),
+    TRAIN: lbl('Chattogram', 'চট্টগ্রাম'),
+    LAUNCH: lbl('Barisal Ghat', 'বরিশাল ঘাট'),
+    AIR: lbl("Cox's Bazar Airport", 'কক্সবাজার বিমানবন্দর'),
+  };
+  const activeOptions = routeOptions.length ? routeOptions : stationOptions;
 
   const chipBtn = (active: boolean) =>
     `inline-flex items-center gap-1.5 h-8 px-3 rounded-full border text-xs font-medium transition-all ${
@@ -111,16 +171,16 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
         <div className="flex items-center gap-2 flex-wrap mb-3.5">
           {modeChips.map((chip) => (
             <button
-              key={chip.label}
+              key={chip.mode}
               type="button"
-              onClick={chip.onClick}
+              onClick={() => setMode(chip.mode)}
               className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold whitespace-nowrap shrink-0 border transition-all ${
-                chip.active
+                transportMode === chip.mode
                   ? 'bg-gradient-to-r from-kj-primary to-kj-primary-deep text-kj-primary-ink border-transparent shadow-[0_2px_8px_rgba(0,245,255,0.3)]'
                   : 'bg-kj-chip-bg text-kj-chip-text border-transparent hover:border-kj-line hover:text-kj-primary'
               }`}
             >
-              {chip.active && <span className="w-1.5 h-1.5 rounded-full bg-kj-primary-ink/80 shrink-0" />}
+              {transportMode === chip.mode && <span className="w-1.5 h-1.5 rounded-full bg-kj-primary-ink/80 shrink-0" />}
               {chip.label}
             </button>
           ))}
@@ -150,7 +210,7 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
             <input
               data-kj-universal-search
               type="text"
-              placeholder={lbl('Search bus, train, stop, place, district...', 'বাস, ট্রেন, স্টপ বা স্থান লিখুন...')}
+              placeholder={searchPlaceholders[transportMode]}
               className="flex-1 min-w-0 bg-transparent text-kj-text text-sm font-bengali font-medium focus:outline-none placeholder:text-kj-text-dim"
               value={inputValue}
               onChange={(e) => {
@@ -237,10 +297,10 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
               <div className="text-[10px] font-semibold text-kj-text-faint uppercase tracking-[1.2px]">{lbl('From', 'কোথা থেকে')}</div>
               <SearchableSelect
                 variant="embedded"
-                placeholder={lbl('Gulshan 1', 'গুলশান ১')}
+                placeholder={fromPlaceholders[transportMode]}
                 value={fromStation}
                 onChange={setFromStation}
-                options={stationOptions}
+                options={activeOptions}
               />
               {globalNearestStationName && (
                 <p className="text-[10px] text-kj-text-faint mt-0.5">· {lbl('Current location', 'বর্তমান অবস্থান')}</p>
@@ -272,10 +332,10 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
               <div className="text-[10px] font-semibold text-kj-text-faint uppercase tracking-[1.2px]">{lbl('To', 'কোথায়')}</div>
               <SearchableSelect
                 variant="embedded"
-                placeholder={lbl('Motijheel', 'মতিঝিল')}
+                placeholder={toPlaceholders[transportMode]}
                 value={toStation}
                 onChange={setToStation}
-                options={stationOptions}
+                options={activeOptions.filter(o => o.id !== fromStation)}
               />
             </div>
           </div>
@@ -316,7 +376,9 @@ const HomeSearchPanel: React.FC<HomeSearchPanelProps> = (props) => {
           <div className="flex-1 hidden md:block" />
           <span className="inline-flex items-center gap-1.5 text-xs text-kj-text-faint ml-auto">
             <span className="w-1.5 h-1.5 rounded-full bg-kj-primary shadow-[0_0_0_3px_rgba(0,245,255,0.14)]" />
-            {lbl('2,412 routes live', '২,৪১২ রুট লাইভ')}
+            {transportMode === 'LOCAL'
+              ? lbl('2,412 routes live', '২,৪১২ রুট লাইভ')
+              : lbl('Real local dataset', 'বাস্তব লোকাল ডেটা')}
           </span>
         </div>
 

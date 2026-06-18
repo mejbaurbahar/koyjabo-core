@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bus, Heart, Wifi } from 'lucide-react';
-import HomeSearchPanel, { HomeSearchPanelProps } from './HomeSearchPanel';
+import HomeSearchPanel, { HomeSearchPanelProps, TransportSearchMode } from './HomeSearchPanel';
 import HomeRightPanel from './HomeRightPanel';
 import TravelHeroScene, { MiniVehicle } from './design/Vehicles3D';
 import SponsoredAdSlot from './SponsoredAdSlot';
@@ -58,6 +58,7 @@ const MODE_TILES = [
     subEn: '200+ routes', subBn: '২০০+ রুট',
     badgeEn: 'Popular', badgeBn: 'জনপ্রিয়',
     nav: 'LOCAL_BUS_HUB',
+    mode: 'LOCAL' as TransportSearchMode,
     vehicle: 'bus' as const,
     palette: ['#ffffff', 'rgba(255,255,255,0.45)', '#04130d', '#fbbf24']
   },
@@ -69,6 +70,7 @@ const MODE_TILES = [
     subEn: 'MRT-6 · 15 stations', subBn: 'MRT-6 · ১৫ স্টেশন',
     badgeEn: '', badgeBn: '',
     nav: 'METRO_HUB',
+    mode: 'METRO' as TransportSearchMode,
     vehicle: 'train' as const,
     palette: ['#ffffff', 'rgba(255,255,255,0.4)', '#fbbf24']
   },
@@ -80,6 +82,7 @@ const MODE_TILES = [
     subEn: 'BD Railway · all routes', subBn: 'BD রেলওয়ে · সব রুট',
     badgeEn: '', badgeBn: '',
     nav: 'TRAIN_LIST',
+    mode: 'TRAIN' as TransportSearchMode,
     vehicle: 'train' as const,
     palette: ['#ffffff', 'rgba(255,255,255,0.4)', '#fef3c7']
   },
@@ -91,6 +94,7 @@ const MODE_TILES = [
     subEn: '64 districts · bus/train/flight', subBn: '৬৪ জেলা · বাস/ট্রেন/ফ্লাইট',
     badgeEn: '', badgeBn: '',
     nav: 'INTERCITY_HUB',
+    mode: 'INTERCITY' as TransportSearchMode,
     vehicle: 'plane' as const,
     palette: ['#ffffff', '#3b82f6', '#ef4444']
   },
@@ -102,8 +106,21 @@ const MODE_TILES = [
     subEn: 'Sadarghat → Barisal', subBn: 'সদরঘাট → বরিশাল',
     badgeEn: '', badgeBn: '',
     nav: 'LAUNCH_HUB',
+    mode: 'LAUNCH' as TransportSearchMode,
     vehicle: 'launch' as const,
     palette: ['#ffffff', 'rgba(255,255,255,0.4)', '#fbbf24']
+  },
+  {
+    key: 'air',
+    grad: 'linear-gradient(135deg, #38bdf8 0%, #1d4ed8 100%)',
+    icon: '✈️',
+    titleEn: 'Air', titleBn: 'বিমান',
+    subEn: 'Domestic airports', subBn: 'দেশীয় বিমানবন্দর',
+    badgeEn: '', badgeBn: '',
+    nav: 'INTERCITY_HUB',
+    mode: 'AIR' as TransportSearchMode,
+    vehicle: 'plane' as const,
+    palette: ['#ffffff', '#38bdf8', '#ef4444']
   },
   {
     key: 'ai',
@@ -113,6 +130,7 @@ const MODE_TILES = [
     subEn: 'Ask in Bangla', subBn: 'বাংলায় জিজ্ঞেস করুন',
     badgeEn: 'New', badgeBn: 'নতুন',
     nav: 'AI_ASSISTANT',
+    mode: 'LOCAL' as TransportSearchMode,
     vehicle: 'chatbot' as const,
     palette: ['#ffffff', '#ef4444', '#fbbf24']
   },
@@ -121,14 +139,14 @@ const MODE_TILES = [
 const HomePage: React.FC<HomePageProps> = (props) => {
   const {
     language, t, user, isInDhaka, filteredBuses, busRatingsMap, listFilter, selectedBus,
-    searchMode, fromStation, toStation, searchQuery, favorites,
+    searchMode, transportMode, setTransportMode, fromStation, toStation, searchQuery, favorites,
     onBusSelect, onToggleFavorite, onFilterChange, onNavigate, onIntercity,
     onEmergency, isDarkMode, getStationSlug, formatBusName, formatNumber,
     scrollContainerRef, ...searchProps
   } = props;
 
   const lbl = (en: string, bn: string) => (language === 'bn' ? bn : en);
-  const hasSearch = Boolean(searchQuery || (searchMode === 'ROUTE' && fromStation && toStation));
+  const hasSearch = transportMode === 'LOCAL' && Boolean(searchQuery || (searchMode === 'ROUTE' && fromStation && toStation));
 
   const greeting = user
     ? lbl(`Where are you headed, ${user.displayName?.split(' ')[0] || 'friend'}?`, `কোথায় যেতে চান, ${user.displayName?.split(' ')[0] || ''}?`)
@@ -169,6 +187,8 @@ const HomePage: React.FC<HomePageProps> = (props) => {
               user={user}
               isInDhaka={isInDhaka}
               searchMode={searchMode}
+              transportMode={transportMode}
+              setTransportMode={setTransportMode}
               searchQuery={searchQuery}
               fromStation={fromStation}
               toStation={toStation}
@@ -202,14 +222,29 @@ const HomePage: React.FC<HomePageProps> = (props) => {
               {lbl('How are you traveling?', 'কীভাবে যাবেন?')}
             </h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-2.5 md:gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-2.5 md:gap-3">
             {MODE_TILES.map((tile) => (
               <button
                 key={tile.key}
                 type="button"
-                onClick={() => tile.key === 'intercity' ? onIntercity() : onNavigate(tile.nav)}
+                onClick={() => {
+                  if (tile.key === 'ai') {
+                    onNavigate(tile.nav);
+                    return;
+                  }
+                  setTransportMode(tile.mode);
+                  searchProps.setSearchMode('TEXT');
+                  searchProps.setInputValue('');
+                  searchProps.setSearchQuery('');
+                  searchProps.setFromStation('');
+                  searchProps.setToStation('');
+                  document.querySelector<HTMLInputElement>('[data-kj-universal-search]')?.focus();
+                }}
                 className="relative overflow-hidden rounded-[20px] p-4 pb-[82px] text-left text-white min-h-[178px] md:min-h-[184px] flex flex-col gap-2 border border-white/10 hover:brightness-110 active:scale-[0.97] transition-all shadow-[0_2px_4px_rgba(0,0,0,0.4),0_12px_36px_-16px_rgba(0,245,255,0.2)]"
-                style={{ background: tile.grad }}
+                style={{
+                  background: tile.grad,
+                  outline: transportMode === tile.mode && tile.key !== 'ai' ? '2px solid var(--kj-primary)' : undefined,
+                }}
               >
                 <div className="absolute -right-8 -top-8 w-28 h-28 rounded-full bg-white/15 pointer-events-none animate-[kjpulse_2.4s_ease-in-out_infinite]" />
                 <div className="relative flex items-center justify-between w-full">

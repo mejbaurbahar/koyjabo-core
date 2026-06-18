@@ -7,7 +7,6 @@ interface KoyJaboLogoProps {
 }
 
 const KoyJaboLogo: React.FC<KoyJaboLogoProps> = ({ size = 36, isDarkMode = true, className = '' }) => {
-  const inner = isDarkMode ? '#040814' : '#0a1626';
   const r = Math.round(size * 0.32);
 
   return (
@@ -18,48 +17,39 @@ const KoyJaboLogo: React.FC<KoyJaboLogoProps> = ({ size = 36, isDarkMode = true,
         height: size,
         borderRadius: r,
         position: 'relative',
-        background: 'conic-gradient(from 180deg, #00f5ff, #a259ff, #ff2a6d, #ffb800, #00f5ff)',
-        padding: 2,
+        background: isDarkMode
+          ? 'linear-gradient(150deg, #22f5ff 0%, #00b8d9 55%, #0a82a8 100%)'
+          : 'linear-gradient(150deg, #18d9f2 0%, #00b8d9 55%, #0070ad 100%)',
+        color: '#04222b',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden',
+        boxShadow: '0 12px 28px -14px rgba(0,184,217,0.72), inset 0 1px 0 rgba(255,255,255,0.42)',
         flexShrink: 0,
       }}
     >
-      <div
+      <span
         style={{
-          width: '100%',
-          height: '100%',
-          borderRadius: r - 2,
-          background: inner,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'relative',
-          overflow: 'hidden',
-          boxShadow: 'inset 0 0 18px rgba(0,245,255,0.4)',
+          fontFamily: "'Hind Siliguri', 'Inter', system-ui, sans-serif",
+          fontWeight: 800,
+          fontSize: size * 0.52,
+          lineHeight: 1,
+          letterSpacing: 0,
+          marginTop: size * 0.03,
         }}
-      >
-        <span
-          style={{
-            fontFamily: "'Hind Siliguri', 'Inter', system-ui, sans-serif",
-            fontWeight: 700,
-            fontSize: size * 0.5,
-            background: 'linear-gradient(135deg, #00f5ff, #a259ff)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            lineHeight: 1,
-            letterSpacing: -0.5,
-            position: 'relative',
-            zIndex: 1,
-          }}
-        >ক</span>
-        <span
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'radial-gradient(circle at 30% 30%, rgba(0,245,255,0.5), transparent 60%)',
-          }}
-        />
-      </div>
+      >ক</span>
+      <span
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: size * 0.2,
+          width: size * 0.46,
+          height: Math.max(2, size * 0.06),
+          borderRadius: 999,
+          background: '#ff2a6d',
+        }}
+      />
     </div>
   );
 };

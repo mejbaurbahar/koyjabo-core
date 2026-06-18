@@ -1,5 +1,5 @@
 import HowKoyJaboHelps from './HowKoyJaboHelps';
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   ArrowLeft, Search, Ship, MapPin, Star, Shield, Phone,
   ChevronRight, X, Anchor,
@@ -229,14 +229,23 @@ const SAFETY_TIPS = [
 export default function LaunchHub({ onBack, language }: LaunchHubProps) {
   const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [fromId, setFromId] = useState('sadarghat');
-  const [toId, setToId] = useState('');
-  const [searchDone, setSearchDone] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(() => {
+    const saved = localStorage.getItem('koyjabo_prefill_launch_search') || '';
+    localStorage.removeItem('koyjabo_prefill_launch_search');
+    return saved;
+  });
+  const [fromId, setFromId] = useState(() => localStorage.getItem('koyjabo_prefill_from') || 'sadarghat');
+  const [toId, setToId] = useState(() => localStorage.getItem('koyjabo_prefill_to') || '');
+  const [searchDone, setSearchDone] = useState(() => Boolean(localStorage.getItem('koyjabo_prefill_from') && localStorage.getItem('koyjabo_prefill_to')));
   const [selectedLaunch, setSelectedLaunch] = useState<LaunchType | null>(null);
 
   const fromTerminal = TERMINALS.find(t => t.id === fromId);
   const toTerminal = TERMINALS.find(t => t.id === toId);
+
+  useEffect(() => {
+    localStorage.removeItem('koyjabo_prefill_from');
+    localStorage.removeItem('koyjabo_prefill_to');
+  }, []);
 
   // Search results
   const searchResults = useMemo(() => {
