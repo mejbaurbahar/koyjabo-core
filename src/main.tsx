@@ -1,8 +1,7 @@
 import React, { ErrorInfo, ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
-import App from '../App';
 import './index.css';
-import { LanguageProvider } from '../contexts/LanguageContext';
+import { KoyJaboApp } from './redesign/KoyJaboApp';
 
 interface ErrorBoundaryProps {
   children?: ReactNode;
@@ -69,6 +68,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 
 import AntiScraping from '../components/AntiScraping';
 import { ToastProvider } from '../contexts/ToastContext';
+import { LanguageProvider } from '../contexts/LanguageContext';
 
 const rootElement = document.getElementById('root');
 if (rootElement) {
@@ -76,12 +76,11 @@ if (rootElement) {
   root.render(
     <React.StrictMode>
       <ErrorBoundary>
-        <ToastProvider>
-          <LanguageProvider>
-            <AntiScraping />
-            <App />
-          </LanguageProvider>
-        </ToastProvider>
+        <LanguageProvider>
+          <ToastProvider>
+            <KoyJaboApp />
+          </ToastProvider>
+        </LanguageProvider>
       </ErrorBoundary>
     </React.StrictMode>
   );

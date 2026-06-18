@@ -559,9 +559,58 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap"
       rel="stylesheet">
   </noscript>
+  <style>
+    #kj-splash {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 50% 38%, #0b1733 0%, #05060b 70%);
+      color: #eafcff;
+      font-family: 'Inter', 'Hind Siliguri', system-ui, sans-serif;
+    }
+    #kj-splash .kj-splash-col { display: flex; flex-direction: column; align-items: center; }
+    #kj-splash .kj-splash-ring { position: relative; width: 132px; height: 132px; display: flex; align-items: center; justify-content: center; margin-bottom: 26px; }
+    #kj-splash .kj-splash-ring svg { position: absolute; inset: 0; animation: kjWheel 2.6s linear infinite; }
+    #kj-splash .kj-splash-logo { width: 68px; height: 68px; border-radius: 18px; background: #05060b; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; box-shadow: 0 14px 40px -10px rgba(0,200,230,0.65), inset 0 0 0 1px rgba(255,255,255,0.12); }
+    #kj-splash .kj-splash-logo img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    #kj-splash .kj-splash-title { font-family: 'Hind Siliguri', 'Inter', system-ui, sans-serif; font-weight: 700; font-size: 30px; letter-spacing: 0; }
+    #kj-splash .kj-splash-sub { font-size: 11px; font-weight: 700; letter-spacing: 4px; color: #4ad6ee; margin-top: 4px; }
+    #kj-splash .kj-splash-bar { width: 168px; height: 4px; border-radius: 999px; background: rgba(255,255,255,0.1); margin-top: 22px; overflow: hidden; }
+    #kj-splash .kj-splash-bar i { display: block; height: 100%; width: 42%; border-radius: 999px; background: linear-gradient(90deg, #22f5ff, #ff2a6d); animation: kjLoadBar 1.2s ease-in-out infinite; }
+    #kj-splash .kj-splash-tag { font-size: 11px; color: #6b7a91; margin-top: 14px; }
+    @keyframes kjLoadBar { 0% { transform: translateX(-120%); } 100% { transform: translateX(330%); } }
+    @keyframes kjWheel { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+  </style>
   </head>
 
-<body style="margin:0;padding:0;background:#1b1f22">
+<body style="margin:0;padding:0;background:#05060b">
+
+  <div id="kj-splash" role="status" aria-live="polite">
+    <div class="kj-splash-col">
+      <div class="kj-splash-ring">
+        <svg viewBox="0 0 132 132" width="132" height="132" fill="none" aria-hidden="true">
+          <circle cx="66" cy="66" r="60" stroke="rgba(255,255,255,0.08)" stroke-width="3"/>
+          <circle cx="66" cy="66" r="60" stroke="#22f5ff" stroke-width="3" stroke-linecap="round" stroke-dasharray="60 320"/>
+          <circle cx="126" cy="66" r="4" fill="#ff2a6d"/>
+        </svg>
+        <div class="kj-splash-logo"><img src="/logo.png" alt="KoyJabo"></div>
+      </div>
+      <div class="kj-splash-title">কই যাবো</div>
+      <div class="kj-splash-sub">KOYJABO</div>
+      <div class="kj-splash-bar"><i></i></div>
+      <div id="kj-splash-tag" class="kj-splash-tag" data-bn="আপনার রুট লোড হচ্ছে…" data-en="Loading your routes…">আপনার রুট লোড হচ্ছে…</div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var lang = localStorage.getItem('app-language') || 'bn';
+      var tag = document.getElementById('kj-splash-tag');
+      if (tag) tag.textContent = tag.getAttribute(lang === 'en' ? 'data-en' : 'data-bn');
+    })();
+  </script>
 
   <div id="root"></div>
 

@@ -14,7 +14,6 @@ const SponsoredAdSlot: React.FC<SponsoredAdSlotProps> = ({
   className = '',
   compact = false,
 }) => {
-  const lbl = (en: string, bn: string) => (language === 'bn' ? bn : en);
   const isLeaderboard = size === '728x90';
   const adHeight = isLeaderboard ? 90 : 250;
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -30,7 +29,7 @@ const SponsoredAdSlot: React.FC<SponsoredAdSlotProps> = ({
 
     const applyReservedSize = () => {
       setImportant(wrapperRef.current, 'display', 'block');
-      setImportant(cardRef.current, 'min-height', `${adHeight + 30}px`);
+      setImportant(cardRef.current, 'min-height', `${adHeight}px`);
       setImportant(shellRef.current, 'height', `${adHeight}px`);
       setImportant(shellRef.current, 'min-height', `${adHeight}px`);
       setImportant(shellRef.current, 'max-height', `${adHeight}px`);
@@ -49,7 +48,7 @@ const SponsoredAdSlot: React.FC<SponsoredAdSlotProps> = ({
       ref={wrapperRef}
       className={`adsense-wrapper kj-ad-reserved w-full ${compact ? 'my-3' : 'my-5 md:my-6'} ${className}`}
     >
-      {/* Card wrapper — matches dc-card style so ad looks like content */}
+      {/* Card wrapper keeps an ad-size reservation so content never shifts. */}
       <div
         ref={cardRef}
         className="kj-ad-card w-full rounded-2xl overflow-hidden"

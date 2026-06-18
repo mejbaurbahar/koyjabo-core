@@ -32,6 +32,17 @@ function _invalidate(path: string): void {
   _cache.delete(path);
 }
 
+const COMMUNITY_QUEUE_KEY = 'kj_pending_community_writes';
+const communityCacheKey = (path: string) => `kj_community_cache:${path}`;
+
+type PendingCommunityWrite = {
+  id: string;
+  path: string;
+  content: unknown;
+  message: string;
+  createdAt: number;
+};
+
 export function getAuthUser(): { id: string; displayName: string; username: string } | null {
   try {
     const s = localStorage.getItem('koyjabo_auth_session');
@@ -39,6 +50,35 @@ export function getAuthUser(): { id: string; displayName: string; username: stri
     const u = JSON.parse(s)?.user;
     return u?.id ? { id: u.id, displayName: u.displayName ?? '', username: u.username ?? '' } : null;
   } catch { return null; }
+}
+
+function getPendingCommunityWrites(): PendingCommunityWrite[] {
+  try {
+    const items = JSON.parse(localStorage.getItem(COMMUNITY_QUEUE_KEY) ?? '[]');
+    return Array.isArray(items) ? items : [];
+  } catch { return []; }
+}
+
+function savePendingCommunityWrites(items: PendingCommunityWrite[]) {
+  try { localStorage.setItem(COMMUNITY_QUEUE_KEY, JSON.stringify(items)); } catch { /* quota */ }
+}
+
+function readCommunityCache<T>(path: string): T | null {
+  try {
+    const cached = localStorage.getItem(communityCacheKey(path));
+    return cached ? JSON.parse(cached) as T : null;
+  } catch { return null; }
+}
+
+function writeCommunityCache(path: string, content: unknown) {
+  try { localStorage.setItem(communityCacheKey(path), JSON.stringify(content)); } catch { /* quota */ }
+}
+
+function queueCommunityPut(path: string, content: unknown, message: string) {
+  const next = getPendingCommunityWrites().filter(item => item.path !== path);
+  next.push({ id: crypto.randomUUID(), path, content, message, createdAt: Date.now() });
+  savePendingCommunityWrites(next.slice(-100));
+  writeCommunityCache(path, content);
 }
 
 async function repoGet<T>(path: string): Promise<T | null> {
@@ -51,19 +91,30 @@ async function repoGet<T>(path: string): Promise<T | null> {
       cache: 'no-store'
     });
     if (res.status === 404) {
-      _cache.set(path, { data: null, expiresAt: Date.now() + CACHE_TTL });
-      return null;
+      const fallback = readCommunityCache<T>(path);
+      _cache.set(path, { data: fallback, expiresAt: Date.now() + CACHE_TTL });
+      return fallback;
     }
-    if (!res.ok) return null;
+    if (!res.ok) {
+      const fallback = readCommunityCache<T>(path);
+      _cache.set(path, { data: fallback, expiresAt: Date.now() + CACHE_TTL });
+      return fallback;
+    }
     const text = await res.text();
     if (!text || text === 'null') {
-      _cache.set(path, { data: null, expiresAt: Date.now() + CACHE_TTL });
-      return null;
+      const fallback = readCommunityCache<T>(path);
+      _cache.set(path, { data: fallback, expiresAt: Date.now() + CACHE_TTL });
+      return fallback;
     }
     const data = JSON.parse(text) as T;
+    writeCommunityCache(path, data);
     _cache.set(path, { data, expiresAt: Date.now() + CACHE_TTL });
     return data;
-  } catch { return null; }
+  } catch {
+    const fallback = readCommunityCache<T>(path);
+    _cache.set(path, { data: fallback, expiresAt: Date.now() + CACHE_TTL });
+    return fallback;
+  }
   finally { _release(); }
 }
 
@@ -107,6 +158,35 @@ async function repoPut(path: string, content: unknown, message?: string): Promis
   } catch { return false; }
 }
 
+async function repoPutOrQueue(path: string, content: unknown, message: string): Promise<boolean> {
+  writeCommunityCache(path, content);
+  if (typeof navigator !== 'undefined' && !navigator.onLine) {
+    queueCommunityPut(path, content, message);
+    return true;
+  }
+  const ok = await repoPut(path, content, message);
+  if (!ok) queueCommunityPut(path, content, message);
+  return true;
+}
+
+export async function flushPendingCommunityWrites(): Promise<void> {
+  if (typeof navigator !== 'undefined' && !navigator.onLine) return;
+  const pending = getPendingCommunityWrites();
+  if (pending.length === 0) return;
+
+  const remaining: PendingCommunityWrite[] = [];
+  for (const item of pending) {
+    const ok = await repoPut(item.path, item.content, item.message);
+    if (!ok) remaining.push(item);
+  }
+  savePendingCommunityWrites(remaining);
+}
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('online', () => { void flushPendingCommunityWrites(); });
+  void flushPendingCommunityWrites();
+}
+
 const today = () => new Date().toISOString().split('T')[0];
 
 // ── Bus Ratings ───────────────────────────────────────────────────────────────
@@ -142,7 +222,7 @@ export async function submitBusRating(busId: string, stars: number, comment: str
   const newRating: BusRating = { userId: user.id, displayName: user.displayName, busId, stars, comment: persistedComment, timestamp: Date.now() };
   const ratings = [...filtered, newRating];
   const average = ratings.length ? ratings.reduce((s, r) => s + r.stars, 0) / ratings.length : 0;
-  return repoPut(`data/ratings/${busId}.json`, { busId, average: Math.round(average * 10) / 10, count: ratings.length, ratings }, `rating: ${busId}`);
+  return repoPutOrQueue(`data/ratings/${busId}.json`, { busId, average: Math.round(average * 10) / 10, count: ratings.length, ratings }, `rating: ${busId}`);
 }
 
 export async function deleteBusRating(busId: string): Promise<boolean> {
@@ -195,7 +275,7 @@ export async function submitTrainRating(trainId: string, trainName: string, star
   const newRating: TrainRating = { userId: user.id, displayName: user.displayName, trainId, trainName, stars, comment: persistedComment, timestamp: Date.now() };
   const ratings = [...filtered, newRating];
   const average = ratings.length ? ratings.reduce((s, r) => s + r.stars, 0) / ratings.length : 0;
-  return repoPut(
+  return repoPutOrQueue(
     `data/train-ratings/${trainId}.json`,
     { trainId, trainName, average: Math.round(average * 10) / 10, count: ratings.length, ratings },
     `train-rating: ${trainId}`
@@ -404,7 +484,7 @@ export async function submitBusPhoto(busId: string, busName: string, caption: st
   const photo: BusPhoto = { id: crypto.randomUUID(), userId: user.id, displayName: user.displayName, busId, busName, caption, dataUrl, timestamp: Date.now() };
   existing.photos.unshift(photo);
   if (existing.photos.length > 50) existing.photos = existing.photos.slice(0, 50);
-  return repoPut(`data/photos/${busId}.json`, existing, `photo: ${busName}`);
+  return repoPutOrQueue(`data/photos/${busId}.json`, existing, `photo: ${busName}`);
 }
 
 export async function deleteBusPhoto(busId: string, photoId: string): Promise<boolean> {
@@ -463,7 +543,7 @@ export async function submitTrainPhoto(trainId: string, trainName: string, capti
   const photo: TrainPhoto = { id: crypto.randomUUID(), userId: user.id, displayName: user.displayName, trainId, trainName, caption, dataUrl, timestamp: Date.now() };
   existing.photos.unshift(photo);
   if (existing.photos.length > 50) existing.photos = existing.photos.slice(0, 50);
-  return repoPut(`data/train-photos/${trainId}.json`, existing, `train-photo: ${trainName}`);
+  return repoPutOrQueue(`data/train-photos/${trainId}.json`, existing, `train-photo: ${trainName}`);
 }
 
 export async function deleteTrainPhoto(trainId: string, photoId: string): Promise<boolean> {

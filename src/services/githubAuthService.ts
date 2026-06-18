@@ -341,6 +341,16 @@ export async function updateProfile(
 }
 
 /**
+ * DELETE ACCOUNT — removes user profile/index/history/device/avatar data.
+ */
+export async function deleteAccount(userId: string): Promise<AuthResult> {
+  return triggerAndWait('delete-account', {
+    userId,
+    data: JSON.stringify({})
+  });
+}
+
+/**
  * CHANGE PASSWORD — verifies old password locally first, then triggers workflow.
  */
 export async function changePassword(

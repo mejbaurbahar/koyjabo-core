@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { AppView } from '../types';
+import KoyJaboLogo from './KoyJaboLogo';
 
 interface GlobalFooterProps {
   setView: (view: AppView) => void;
@@ -9,6 +10,7 @@ interface GlobalFooterProps {
 const GlobalFooter: React.FC<GlobalFooterProps> = ({ setView }) => {
   const { t, language } = useLanguage();
   const lbl = (en: string, bn: string) => (language === 'bn' ? bn : en);
+  const isDarkMode = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
 
   const links: { href: string; label: string; onClick?: (e: React.MouseEvent) => void }[] = [
     { href: '/', label: t('nav.home') || 'Home', onClick: (e) => { e.preventDefault(); setView(AppView.HOME); } },
@@ -39,12 +41,7 @@ const GlobalFooter: React.FC<GlobalFooterProps> = ({ setView }) => {
           {/* Left: Brand */}
           <div className="flex flex-col gap-2.5 min-w-[160px]">
             <div className="flex items-center gap-2.5">
-              {/* KoyJabo logo */}
-              <img
-                src="/logo.png"
-                alt="KoyJabo"
-                className="w-9 h-9 rounded-[10px] shrink-0 object-cover"
-              />
+              <KoyJaboLogo size={36} isDarkMode={isDarkMode} />
               <span className="font-bengali font-bold text-kj-text text-[17px] tracking-tight">
                 কই<span style={{ color: 'var(--kj-accent)' }}>যাবো</span>
               </span>
@@ -104,14 +101,10 @@ const GlobalFooter: React.FC<GlobalFooterProps> = ({ setView }) => {
           {/* Right: Made in Dhaka + copyright */}
           <div className="flex flex-col gap-2 items-start md:items-end min-w-[160px]">
             <p className="font-bengali text-[12.5px] text-kj-text-dim leading-[1.5]">
-              {lbl('Made in Dhaka', 'ঢাকায় তৈরি')}
-              {' '}
-              <span aria-label="love" role="img">❤️</span>
-              {' '}
-              {lbl('for Bangladesh', 'বাংলাদেশের জন্য')}
+              {lbl('Made in Dhaka for Bangladesh', 'বাংলাদেশের জন্য ঢাকায় তৈরি')}
             </p>
             <p className="text-[11.5px] text-kj-text-faint font-sans">
-              © 2024–2026 KoyJabo
+              © 2026 KoyJabo
             </p>
           </div>
         </div>

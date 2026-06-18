@@ -454,7 +454,14 @@ export const getTodayRouteSearches = (): Array<{ from: string; to: string }> =>
     });
 
 export const clearUserHistory = (): void => {
-    localStorage.removeItem(getHistoryKey());
+    const empty: UserHistory = {
+        busSearches: [], routeSearches: [], intercitySearches: [], trainSearches: [],
+        mostUsedBuses: {}, mostUsedRoutes: {}, mostUsedIntercity: {}, mostUsedTrains: {},
+        todayBuses: [], todayRoutes: [], todayIntercity: [], todayTrains: [],
+        lastResetDate: getTodayDate(),
+        communityFeatureUsage: {}, communityFeatureHistory: [],
+    };
+    saveUserHistory(empty);
 };
 
 export const getRecentBusSearches = (limit: number = 10): BusSearchRecord[] =>

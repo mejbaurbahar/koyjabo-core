@@ -124,12 +124,20 @@ type OperatorType = typeof FEATURED_OPERATORS[0];
 
 const IntercityHub: React.FC<IntercityHubProps> = ({ onBack, language }) => {
   const L = (en: string, bn: string) => language === 'bn' ? bn : en;
-  const [from, setFrom] = useState('Dhaka');
-  const [to, setTo] = useState('');
-  const [activeMode, setActiveMode] = useState('bus');
-  const [nameQuery, setNameQuery] = useState('');
-  const [searchDone, setSearchDone] = useState(false);
+  const [from, setFrom] = useState(() => localStorage.getItem('koyjabo_prefill_from') || 'Dhaka');
+  const [to, setTo] = useState(() => localStorage.getItem('koyjabo_prefill_intercity_to') || localStorage.getItem('koyjabo_prefill_to') || '');
+  const [activeMode, setActiveMode] = useState(() => localStorage.getItem('koyjabo_prefill_intercity_mode') || 'bus');
+  const [nameQuery, setNameQuery] = useState(() => localStorage.getItem('koyjabo_prefill_query') || '');
+  const [searchDone, setSearchDone] = useState(() => Boolean(localStorage.getItem('koyjabo_prefill_intercity_to') || localStorage.getItem('koyjabo_prefill_to')));
   const [selectedOperator, setSelectedOperator] = useState<OperatorType | null>(null);
+
+  React.useEffect(() => {
+    localStorage.removeItem('koyjabo_prefill_from');
+    localStorage.removeItem('koyjabo_prefill_to');
+    localStorage.removeItem('koyjabo_prefill_intercity_to');
+    localStorage.removeItem('koyjabo_prefill_intercity_mode');
+    localStorage.removeItem('koyjabo_prefill_query');
+  }, []);
 
   const districtOptions = useMemo(
     () => [...new Set(INTERCITY_BUS_ROUTES.map((r) => r.district))]

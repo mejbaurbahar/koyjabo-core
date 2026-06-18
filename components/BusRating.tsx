@@ -95,6 +95,15 @@ export default function BusRating({ busId, busName, onBack }: Props) {
   useEffect(() => { trackFeatureUsage('bus_rating'); }, []);
 
   useEffect(() => {
+    if (!showDeleteModal) return undefined;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [showDeleteModal]);
+
+  useEffect(() => {
     setLoading(true);
     getBusRatings(busId)
       .then(d => setSummary(d))

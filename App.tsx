@@ -91,12 +91,33 @@ import TrainPhotoGallery from './components/TrainPhotoGallery';
 import { getBusRatings, BusRatingSummary } from './services/communityDataService';
 import ReleaseNotes from './components/ReleaseNotes';
 import HomePage from './components/HomePage';
+import type { TransportSearchMode } from './components/HomeSearchPanel';
 import HowKoyJaboHelps from './components/HowKoyJaboHelps';
 import KoyJaboLogo from './components/KoyJaboLogo';
 import LocalBusHub from './components/LocalBusHub';
 import MetroRailHub from './components/MetroRailHub';
 import LaunchHub from './components/LaunchHub';
 import IntercityHub from './components/IntercityHub';
+import { AiAssistantFab, SideRailAd, VignetteAd } from './components/AdSurfaces';
+import { INTERCITY_BUS_ROUTES, MAJOR_TRANSPORT_HUBS } from './data/intercityData';
+
+const LAUNCH_TERMINAL_OPTIONS = [
+  { id: 'sadarghat', name: 'Sadarghat, Dhaka', bnName: 'সদরঘাট, ঢাকা' },
+  { id: 'barisal', name: 'Barisal Ghat', bnName: 'বরিশাল ঘাট' },
+  { id: 'khulna', name: 'Khulna Ghat', bnName: 'খুলনা ঘাট' },
+  { id: 'patuakhali', name: 'Patuakhali Ghat', bnName: 'পটুয়াখালী ঘাট' },
+  { id: 'bhola', name: 'Bhola Ghat', bnName: 'ভোলা ঘাট' },
+  { id: 'chandpur', name: 'Chandpur Ghat', bnName: 'চাঁদপুর ঘাট' },
+  { id: 'narayanganj', name: 'Narayanganj Terminal', bnName: 'নারায়ণগঞ্জ টার্মিনাল' },
+  { id: 'madaripur', name: 'Madaripur Ghat', bnName: 'মাদারীপুর ঘাট' },
+  { id: 'shariatpur', name: 'Shariatpur Ghat', bnName: 'শরীয়তপুর ঘাট' },
+  { id: 'hatiya', name: 'Hatiya Ghat', bnName: 'হাতিয়া ঘাট' },
+  { id: 'sandwip', name: 'Sandwip Ghat', bnName: 'সন্দ্বীপ ঘাট' },
+  { id: 'monpura', name: 'Monpura Ghat', bnName: 'মনপুরা ঘাট' },
+  { id: 'pirojpur', name: 'Pirojpur Ghat', bnName: 'পিরোজপুর ঘাট' },
+  { id: 'borguna', name: 'Borguna Ghat', bnName: 'বরগুনা ঘাট' },
+  { id: 'jhalokati', name: 'Jhalokati Ghat', bnName: 'ঝালকাঠি ঘাট' },
+];
 
 
 
@@ -603,6 +624,12 @@ const App: React.FC = () => {
     return BD_TRAIN_ROUTES.find(r => getTrainSlug(r) === normalized) || null;
   };
 
+  const getBlogTargetFromUrl = () => {
+    const path = window.location.pathname.substring(1).replace(/\/$/, '');
+    const hash = window.location.hash.slice(1);
+    return hash || path;
+  };
+
   const [view, setView] = useState<AppView>(getStoredView);
 
   // Auth guard: redirect logged-in users away from auth-only pages
@@ -631,9 +658,7 @@ const App: React.FC = () => {
   const [selectedBus, setSelectedBus] = useState<BusRoute | null>(getStoredBus);
   const [selectedTrain, setSelectedTrain] = useState<BDTrainRoute | null>(null);
   const [selectedBlogPost, setSelectedBlogPost] = useState<string | null>(() => {
-    const path = window.location.pathname.substring(1).replace(/\/$/, '');
-    const hash = window.location.hash.slice(1);
-    const target = hash || path;
+    const target = getBlogTargetFromUrl();
     if (target?.startsWith('blog/')) {
       return target.replace('blog/', '');
     }
@@ -641,6 +666,20 @@ const App: React.FC = () => {
   });
   const [initialLocationChecked, setInitialLocationChecked] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showVignetteAd, setShowVignetteAd] = useState(false);
+  const viewChangeCountRef = useRef(0);
+  const didMountViewAdRef = useRef(false);
+
+  useEffect(() => {
+    const splash = document.getElementById('kj-splash');
+    if (!splash) return;
+    const minSplash = window.setTimeout(() => splash.classList.add('kj-hide'), 900);
+    const removeSplash = window.setTimeout(() => splash.remove(), 1600);
+    return () => {
+      window.clearTimeout(minSplash);
+      window.clearTimeout(removeSplash);
+    };
+  }, []);
 
   // Dark Mode State
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -684,6 +723,10 @@ const App: React.FC = () => {
   }, []);
 
   const [searchMode, setSearchMode] = useState<'TEXT' | 'ROUTE'>('TEXT');
+  const [transportMode, setTransportMode] = useState<TransportSearchMode>(() => {
+    const saved = localStorage.getItem('dhaka_commute_transport_mode') as TransportSearchMode | null;
+    return saved && ['LOCAL', 'METRO', 'INTERCITY', 'TRAIN', 'LAUNCH', 'AIR'].includes(saved) ? saved : 'LOCAL';
+  });
   const [inputValue, setInputValue] = useState(() => localStorage.getItem('dhaka_commute_input_value') || '');
   const [searchQuery, setSearchQuery] = useState(() => localStorage.getItem('dhaka_commute_search_query') || '');
 
@@ -836,6 +879,87 @@ const App: React.FC = () => {
     []
   );
 
+  const transportRouteOptions = useMemo(() => {
+    const toOption = ([id, item]: [string, { name?: string; bnName?: string }]) => ({
+      id,
+      name: item.name ?? id,
+      bnName: item.bnName,
+    });
+    if (transportMode === 'METRO') return Object.entries(METRO_STATIONS).map(toOption);
+    if (transportMode === 'TRAIN') return Object.entries(TRAIN_STATIONS).map(toOption);
+    if (transportMode === 'LAUNCH') return LAUNCH_TERMINAL_OPTIONS;
+    if (transportMode === 'AIR') return Object.entries(AIRPORTS).map(toOption);
+    if (transportMode === 'INTERCITY') {
+      const seen = new Set<string>();
+      return [...INTERCITY_BUS_ROUTES, ...MAJOR_TRANSPORT_HUBS]
+        .filter(route => {
+          if (seen.has(route.district)) return false;
+          seen.add(route.district);
+          return true;
+        })
+        .sort((a, b) => a.district.localeCompare(b.district))
+        .map(route => ({ id: route.district, name: route.district }));
+    }
+    return stationOptions;
+  }, [transportMode, stationOptions]);
+
+  const generateModeSuggestions = useCallback((query: string, mode: TransportSearchMode): SearchSuggestion[] => {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    if (mode === 'LOCAL') return generateSearchSuggestions(query);
+
+    const fromOptions = (items: Array<{ id: string; name: string; bnName?: string }>, type: SearchSuggestion['type'] = 'station') =>
+      items
+        .filter(item =>
+          item.name.toLowerCase().includes(q) ||
+          item.bnName?.includes(query.trim()) ||
+          item.id.toLowerCase().includes(q)
+        )
+        .slice(0, 10)
+        .map(item => ({ type, id: item.id, name: item.name, bnName: item.bnName }));
+
+    if (mode === 'TRAIN') {
+      const stationHits = fromOptions(Object.entries(TRAIN_STATIONS).map(([id, s]) => ({ id, name: s.name, bnName: s.bnName })));
+      const trainHits = BD_TRAIN_ROUTES
+        .filter(train =>
+          train.name.toLowerCase().includes(q) ||
+          train.bnName.includes(query.trim()) ||
+          train.number.includes(q)
+        )
+        .slice(0, 6)
+        .map(train => ({
+          type: 'bus' as const,
+          id: train.id,
+          name: `${train.name} (${train.number})`,
+          bnName: train.bnName,
+          subtitle: train.stops.map(id => TRAIN_STATIONS[id]?.name).filter(Boolean).slice(0, 2).join(' → '),
+        }));
+      return [...trainHits, ...stationHits].slice(0, 10);
+    }
+
+    if (mode === 'INTERCITY') {
+      return fromOptions(
+        [...INTERCITY_BUS_ROUTES, ...MAJOR_TRANSPORT_HUBS].map(route => ({
+          id: route.district,
+          name: route.district,
+          bnName: route.busOperators.slice(0, 3).join(', '),
+        })),
+        'intercity',
+      );
+    }
+
+    if (mode === 'AIR') {
+      return fromOptions(Object.entries(AIRPORTS).map(([id, airport]) => ({
+        id,
+        name: airport.name,
+        bnName: airport.bnName,
+      })));
+    }
+
+    if (mode === 'LAUNCH') return fromOptions(LAUNCH_TERMINAL_OPTIONS);
+    return fromOptions(Object.entries(METRO_STATIONS).map(([id, s]) => ({ id, name: s.name, bnName: s.bnName })));
+  }, []);
+
   const isInDhaka = useMemo(() => checkIfInDhaka(userLocation), [userLocation]);
   const [primarySearch, setPrimarySearch] = useState<'LOCAL' | 'INTERCITY'>(() =>
     (localStorage.getItem('dhaka_commute_primary_search') as 'LOCAL' | 'INTERCITY') || 'LOCAL'
@@ -858,6 +982,10 @@ const App: React.FC = () => {
   useEffect(() => {
     localStorage.setItem('dhaka_commute_search_query', searchQuery);
   }, [searchQuery]);
+
+  useEffect(() => {
+    localStorage.setItem('dhaka_commute_transport_mode', transportMode);
+  }, [transportMode]);
 
   useEffect(() => {
     localStorage.setItem('dhaka_commute_from_station', fromStation);
@@ -1440,6 +1568,24 @@ const App: React.FC = () => {
     return true;
   }, []);
 
+  const syncBlogDeepLinkFromUrl = useCallback(() => {
+    const target = getBlogTargetFromUrl();
+    if (target === 'blog') {
+      setSelectedBlogPost(null);
+      setView(AppView.BLOG);
+      return true;
+    }
+
+    if (target?.startsWith('blog/')) {
+      const slug = target.replace('blog/', '');
+      setSelectedBlogPost(slug);
+      setView(AppView.BLOG);
+      return true;
+    }
+
+    return false;
+  }, []);
+
   // Reverse mapping:  // Map views to URL paths
   const viewToPath: Record<AppView, string> = {
     [AppView.HOME]: '',
@@ -1567,18 +1713,8 @@ const App: React.FC = () => {
   useEffect(() => {
     if (syncBusDeepLinkFromUrl()) return;
     if (syncTrainDeepLinkFromUrl()) return;
-    
-    // Handle blog post URLs on initial load
-    const path = window.location.pathname.substring(1).replace(/\/$/, '');
-    const hash = window.location.hash.slice(1);
-    const target = hash || path;
-    
-    if (target?.startsWith('blog/')) {
-      const slug = target.replace('blog/', '');
-      setSelectedBlogPost(slug);
-      setView(AppView.BLOG);
-    }
-  }, [syncBusDeepLinkFromUrl, syncTrainDeepLinkFromUrl]);
+    syncBlogDeepLinkFromUrl();
+  }, [syncBusDeepLinkFromUrl, syncTrainDeepLinkFromUrl, syncBlogDeepLinkFromUrl]);
 
   // Browser history integration - Handle phone back button
   useEffect(() => {
@@ -1586,25 +1722,15 @@ const App: React.FC = () => {
       // Prefer URL-driven state for back/forward (deep links)
       if (syncBusDeepLinkFromUrl()) return;
       if (syncTrainDeepLinkFromUrl()) return;
+      if (syncBlogDeepLinkFromUrl()) return;
       
-      // Handle blog post URLs
-      const path = window.location.pathname.substring(1).replace(/\/$/, '');
-      const hash = window.location.hash.slice(1);
-      const target = hash || path;
-      
-      if (target?.startsWith('blog/')) {
-        const slug = target.replace('blog/', '');
-        setSelectedBlogPost(slug);
-        setView(AppView.BLOG);
-        return;
-      }
-      
+      setSelectedBlogPost(null);
       setView(getStoredView());
     };
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [syncBusDeepLinkFromUrl, syncTrainDeepLinkFromUrl]);
+  }, [syncBusDeepLinkFromUrl, syncTrainDeepLinkFromUrl, syncBlogDeepLinkFromUrl]);
 
   // Check for hash on mount (e.g., #ai-assistant from intercity page)
   useEffect(() => {
@@ -2062,6 +2188,38 @@ const App: React.FC = () => {
     const query = inputValue.trim();
     setShowSuggestions(false);
     (document.activeElement as HTMLElement)?.blur();
+
+    if (transportMode !== 'LOCAL') {
+      setSearchMode('TEXT');
+      setSearchQuery(query);
+      if (query) {
+        localStorage.setItem('koyjabo_prefill_query', query);
+        localStorage.setItem('koyjabo_prefill_mode', transportMode.toLowerCase());
+      }
+      if (transportMode === 'TRAIN') {
+        localStorage.setItem('koyjabo_prefill_train_search', query);
+        setView(AppView.TRAIN_LIST);
+        return;
+      }
+      if (transportMode === 'LAUNCH') {
+        localStorage.setItem('koyjabo_prefill_launch_search', query);
+        setView(AppView.LAUNCH_HUB);
+        return;
+      }
+      if (transportMode === 'METRO') {
+        setView(AppView.METRO_HUB);
+        return;
+      }
+      if (transportMode === 'AIR') {
+        localStorage.setItem('koyjabo_prefill_intercity_mode', 'plane');
+        localStorage.setItem('koyjabo_prefill_intercity_to', query);
+        setView(AppView.INTERCITY_HUB);
+        return;
+      }
+      localStorage.setItem('koyjabo_prefill_intercity_to', query);
+      setView(AppView.INTERCITY_HUB);
+      return;
+    }
 
     // Check if the query is an intercity destination before local search
     if (query) {
@@ -3785,6 +3943,18 @@ const App: React.FC = () => {
     AppView.INTERCITY_HUB,
   ].includes(view) && !(view === AppView.BLOG && !!selectedBlogPost);
 
+  useEffect(() => {
+    if (hideSiteChrome) return;
+    if (!didMountViewAdRef.current) {
+      didMountViewAdRef.current = true;
+      return;
+    }
+    viewChangeCountRef.current += 1;
+    if (viewChangeCountRef.current > 0 && viewChangeCountRef.current % 5 === 0) {
+      setShowVignetteAd(true);
+    }
+  }, [hideSiteChrome, view]);
+
   return (
     <NotificationProvider>
       <div className="flex flex-col flex-1 min-h-0 w-full h-full max-h-[100dvh] supports-[height:100dvh]:max-h-[100dvh] bg-kj-bg dark:bg-kj-bg font-sans text-kj-text overflow-hidden max-w-full kj-future-bg">
@@ -3879,6 +4049,8 @@ const App: React.FC = () => {
               view={view}
               searchMode={searchMode}
               setSearchMode={setSearchMode}
+              transportMode={transportMode}
+              setTransportMode={setTransportMode}
               inputValue={inputValue}
               setInputValue={setInputValue}
               searchQuery={searchQuery}
@@ -3897,6 +4069,7 @@ const App: React.FC = () => {
               isIntercityRedirecting={isIntercityRedirecting}
               globalNearestStationName={globalNearestStationName}
               stationOptions={stationOptions}
+              routeOptions={transportRouteOptions}
               setView={setView}
               setSuggestedRoutes={setSuggestedRoutes}
               setSearchContext={setSearchContext}
@@ -3906,7 +4079,7 @@ const App: React.FC = () => {
               onInputChange={(value) => {
                 setSearchMode('TEXT');
                 if (value.trim().length > 0) {
-                  setSearchSuggestions(generateSearchSuggestions(value));
+                  setSearchSuggestions(generateModeSuggestions(value, transportMode));
                   setShowSuggestions(true);
                 } else {
                   setSearchSuggestions([]);
@@ -3917,11 +4090,19 @@ const App: React.FC = () => {
               onSuggestionSelect={(suggestion) => {
                 if (suggestion.type === 'intercity') {
                   setInputValue(suggestion.name);
-                  handleIntercityRedirect(suggestion.name);
+                  if (transportMode === 'LOCAL') handleIntercityRedirect(suggestion.name);
+                  else {
+                    setSearchQuery(suggestion.name);
+                    setShowSuggestions(false);
+                  }
                   return;
                 }
                 setInputValue(suggestion.name);
                 setShowSuggestions(false);
+                if (transportMode !== 'LOCAL') {
+                  setSearchQuery(suggestion.name);
+                  return;
+                }
                 setTimeout(() => {
                   const result = enhancedBusSearch(suggestion.name);
                   setSearchContext(result.searchContext);
@@ -4035,6 +4216,7 @@ const App: React.FC = () => {
             {view === AppView.BLOG && (
               selectedBlogPost ? (
                 <BlogPostDetail
+                  key={selectedBlogPost}
                   postSlug={selectedBlogPost}
                   onBack={() => {
                     setSelectedBlogPost(null);
@@ -4331,6 +4513,25 @@ const App: React.FC = () => {
           </div>
           )}
         </main>
+
+        {!hideSiteChrome && (
+          <>
+            <SideRailAd language={language} side="left" />
+            <SideRailAd language={language} side="right" />
+          </>
+        )}
+
+        <VignetteAd
+          language={language}
+          open={showVignetteAd}
+          onClose={() => setShowVignetteAd(false)}
+        />
+
+        <AiAssistantFab
+          language={language}
+          onClick={() => setView(AppView.AI_ASSISTANT)}
+          hidden={hideSiteChrome || view === AppView.AI_ASSISTANT}
+        />
 
         {/* Mobile Bottom Navigation */}
         {/* Floating sticky ad banner — above mobile nav, below desktop content */}
