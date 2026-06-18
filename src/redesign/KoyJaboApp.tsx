@@ -50,6 +50,7 @@ import { AIFab } from './components/AIFab';
 import { TopBar } from './components/TopBar';
 import { MobileTabBar } from './components/MobileTabBar';
 import { SideRailAd, AnchorAd, VignetteAd } from './components/AdComponents';
+import { AdBlockGate } from './components/AdBlockGate';
 import { BUS_DATA } from '../../constants';
 
 type Route = string;
@@ -517,6 +518,7 @@ export function KoyJaboApp() {
       )}
       {showAnchor && <AnchorAd tk={tk} lang={lang} onClose={() => setAnchorOn(false)}/>}
       <VignetteAd tk={tk} lang={lang} open={vignette} onClose={() => setVignette(false)}/>
+      <AdBlockGate lang={lang} theme={theme}/>
     </>
   );
 }

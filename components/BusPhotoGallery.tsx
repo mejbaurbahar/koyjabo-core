@@ -52,8 +52,6 @@ async function compressImage(file: File, maxKB = 280): Promise<string> {
   });
 }
 
-const CATEGORIES = ['All', 'Exterior', 'Interior', 'Route', 'Other'];
-
 function PhotoSkeleton() {
   return (
     <div className="grid grid-cols-3 gap-2 animate-pulse">
@@ -80,7 +78,6 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
   const [deleting, setDeleting] = useState(false);
   const [officialSrc, setOfficialSrc] = useState<string | null>(null);
   const [hasOfficialBusImage, setHasOfficialBusImage] = useState(false);
-  const [activeCategory, setActiveCategory] = useState('All');
   const { showToast } = useToast();
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -92,6 +89,15 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
   }, [busName, busBnName]);
 
   useEffect(() => { trackFeatureUsage('bus_photos'); }, []);
+
+  useEffect(() => {
+    if (!lightbox && !deleteTarget) return undefined;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [lightbox, deleteTarget]);
 
   useEffect(() => {
     setLoading(true);
@@ -248,21 +254,21 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
           </form>
         )}
 
-        {/* Category chips */}
-        <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
-          {CATEGORIES.map(cat => (
+        <div className="flex items-center justify-between gap-3 pt-1">
+          <div>
+            <p className="font-bold text-kj-text text-base">{lbl('Rider photos', 'যাত্রীদের ছবি')}</p>
+            <p className="text-xs text-kj-text-faint mt-0.5">
+              {formatNumber(photos.length)} {lbl('uploaded photos', 'আপলোড করা ছবি')}
+            </p>
+          </div>
+          {user && !showForm && (
             <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${
-                activeCategory === cat
-                  ? 'bg-gradient-to-r from-pink-500 to-rose-600 text-white border-transparent shadow'
-                  : 'bg-kj-chip-bg text-kj-text-dim border-kj-line hover:border-pink-400/40'
-              }`}
+              onClick={() => setShowForm(true)}
+              className="px-3 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-pink-500 to-rose-600 active:scale-95 transition-all"
             >
-              {cat}
+              {lbl('Add photo', 'ছবি যোগ করুন')}
             </button>
-          ))}
+          )}
         </div>
 
         {/* Photo grid */}
@@ -270,7 +276,7 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
           <PhotoSkeleton />
         ) : (
           <>
-            {photos.length === 0 && !showForm && !hasOfficialBusImage && (
+            {photos.length === 0 && !showForm && (
               <div className="text-center py-16">
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-500/10 to-rose-600/10 border border-pink-500/20 flex items-center justify-center mx-auto mb-4">
                   <Camera className="w-8 h-8 text-pink-500/60" />
@@ -286,9 +292,19 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
               </div>
             )}
 
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {user && !showForm && photos.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setShowForm(true)}
+                  className="aspect-square rounded-2xl border-2 border-dashed border-kj-line bg-kj-panel/80 flex flex-col items-center justify-center gap-2 text-kj-text-faint hover:border-pink-400 hover:text-pink-500 transition-colors"
+                >
+                  <Upload className="w-7 h-7" />
+                  <span className="text-xs font-bold">{lbl('Upload photo', 'ছবি আপলোড')}</span>
+                </button>
+              )}
               {photos.map(p => (
-                <div key={p.id} className="kj-photo relative rounded-xl overflow-hidden aspect-square">
+                <div key={p.id} className="kj-photo relative rounded-2xl overflow-hidden aspect-square border border-kj-line bg-kj-panel">
                   <button onClick={() => setLightbox(p)} className="absolute inset-0 w-full h-full">
                     <img src={p.dataUrl} alt={p.caption || busName} className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Tokens, Lang, SANS, BEN, T } from '../tokens';
 
 interface ConfirmModalProps {
@@ -22,6 +22,15 @@ export function ConfirmModal({
   onConfirm,
   onClose,
 }: ConfirmModalProps) {
+  useEffect(() => {
+    if (!open) return undefined;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [open]);
+
   if (!open) return null;
 
   const cancelLabel = T(lang, 'বাতিল', 'Cancel');
