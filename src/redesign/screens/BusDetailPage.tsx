@@ -5,6 +5,7 @@ import { AdSlot } from '../components/AdSlot';
 import { Pill } from '../components/Pill';
 import { BUS_DATA, STATIONS } from '../../../constants';
 import BusRouteMap from '../../../components/BusRouteMap';
+import LiveLocationMap from '../../../components/LiveLocationMap';
 import BusRating from '../../../components/BusRating';
 import BusPhotoGallery from '../../../components/BusPhotoGallery';
 import EmergencyHelplineModal from '../../../components/EmergencyHelplineModal';
@@ -57,6 +58,7 @@ export function BusDetailPage(props: Props) {
   const [showRating, setShowRating] = useState(false);
   const [showPhotos, setShowPhotos] = useState(false);
   const [showHelpline, setShowHelpline] = useState(false);
+  const [showLiveMap, setShowLiveMap] = useState(false);
   const [ratingSummary, setRatingSummary] = useState<BusRatingSummary | null>(null);
 
   const realStops = useMemo(() => bus.stops.map((sid, i) => {
@@ -124,13 +126,24 @@ export function BusDetailPage(props: Props) {
   return (
     <PageShell {...props}>
       <div style={{ padding:isMobile?'16px 16px 100px':'28px 40px 145px', maxWidth:1180, margin:'0 auto' }}>
-        <div style={{ height:isMobile?320:430,borderRadius:16,overflow:'hidden',position:'relative',marginBottom:18,background:'#0a1f14',border:`1px solid ${tk.line}` }}>
+        <div style={{ ...card(18), padding:0, overflow:'hidden', marginBottom:18 }}>
+          <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',gap:10,padding:'12px 14px',borderBottom:`1px solid ${tk.line}` }}>
+            <div style={{ display:'flex',alignItems:'center',gap:8 }}>
+              <span style={{ width:8,height:8,borderRadius:999,background:tk.primary,boxShadow:`0 0 0 4px ${tk.primary}22` }} />
+              <span style={{ fontFamily:BEN,fontWeight:800,fontSize:14,color:tk.text }}>{T(lang,'লাইভ দৃশ্য','Live View')}</span>
+            </div>
+            <span style={{ fontFamily:SANS,fontSize:11,fontWeight:800,color:tk.primary,border:`1px solid ${tk.primary}66`,borderRadius:8,padding:'4px 8px' }}>OpenStreetMap</span>
+          </div>
+          <div style={{ height:isMobile?320:430,overflow:'hidden',position:'relative',background:'#0a1f14' }}>
           <BusRouteMap
             route={bus}
             userLocation={userLocation}
             highlightStartId={fromId}
             highlightEndId={toId}
+            onOpenFullMap={() => setShowLiveMap(true)}
+            height="100%"
           />
+          </div>
         </div>
 
         <div style={{ display:'grid',gridTemplateColumns:isMobile?'1fr':'1.35fr 0.8fr',gap:20 }}>
@@ -243,10 +256,17 @@ export function BusDetailPage(props: Props) {
         <button onClick={()=>setShowRating(true)} style={{ ...chipBtn(tk),borderRadius:12,padding:'10px 16px' }}>
           ★ {T(lang,'রেট','Rate')}
         </button>
-        <button style={{ flex:1,background:tk.primary,color:tk.primaryInk,border:0,borderRadius:12,padding:'12px 20px',fontFamily:SANS,fontWeight:700,fontSize:14,cursor:'pointer' }}>
+        <button onClick={() => setShowLiveMap(true)} style={{ flex:1,background:tk.primary,color:tk.primaryInk,border:0,borderRadius:12,padding:'12px 20px',fontFamily:SANS,fontWeight:700,fontSize:14,cursor:'pointer' }}>
           {T(lang,'নেভিগেট শুরু','Start navigation')}
         </button>
       </div>
+
+      <LiveLocationMap
+        isOpen={showLiveMap}
+        onClose={() => setShowLiveMap(false)}
+        userLocation={userLocation}
+        selectedRoute={bus}
+      />
 
       <EmergencyHelplineModal
         isOpen={showHelpline}

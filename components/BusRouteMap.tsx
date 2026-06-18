@@ -16,6 +16,7 @@ interface BusRouteMapProps {
   highlightEndId?: string;
   isReversed?: boolean;
   onOpenFullMap?: () => void;
+  height?: number | string;
 }
 
 const esc = (s: string) => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');
@@ -71,6 +72,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
   highlightEndId,
   isReversed = false,
   onOpenFullMap,
+  height = 310,
 }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
@@ -528,7 +530,7 @@ const BusRouteMap: React.FC<BusRouteMapProps> = ({
   }, [isTraffic, isOnline, mapReady]);
 
   return (
-    <div className="relative z-0 isolate w-full rounded-b-2xl overflow-hidden bg-kj-chip-bg" style={{ height: 310 }}>
+    <div className="relative z-0 isolate w-full rounded-b-2xl overflow-hidden bg-kj-chip-bg" style={{ height }}>
       <div className="w-full h-full relative">
         <div ref={mapRef} className="w-full h-full" /></div>
 
