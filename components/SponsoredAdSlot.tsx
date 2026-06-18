@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import AdSenseAd from './AdSenseAd';
+import { AdLabel } from './AdSurfaces';
 
 interface SponsoredAdSlotProps {
   language: 'en' | 'bn';
@@ -49,12 +50,12 @@ const SponsoredAdSlot: React.FC<SponsoredAdSlotProps> = ({
       ref={wrapperRef}
       className={`adsense-wrapper kj-ad-reserved w-full ${compact ? 'my-3' : 'my-5 md:my-6'} ${className}`}
     >
-      {/* Card wrapper — matches dc-card style so ad looks like content */}
+      {/* Card wrapper — fixed label + reserved box prevent CLS and ad/content confusion. */}
       <div
         ref={cardRef}
         className="kj-ad-card w-full rounded-2xl overflow-hidden"
         style={{
-          ['--kj-ad-card-height' as string]: `${adHeight}px`,
+          ['--kj-ad-card-height' as string]: `${adHeight + 34}px`,
           ['--kj-ad-height' as string]: `${adHeight}px`,
           background: 'var(--kj-panel)',
           border: '1px solid var(--kj-line)',
@@ -65,6 +66,17 @@ const SponsoredAdSlot: React.FC<SponsoredAdSlotProps> = ({
           margin: '0 auto',
         }}
       >
+        <div className="flex items-center justify-between gap-3 px-3 py-2" style={{ minHeight: 34 }}>
+          <div className="flex items-center gap-2">
+            <AdLabel language={language} />
+            <span className="hidden text-[10px] font-medium text-kj-text-faint sm:inline">
+              Google AdSense · {size}
+            </span>
+          </div>
+          <span className="text-[10px] font-medium text-kj-text-faint">
+            {lbl('Reserved', 'রিজার্ভড')}
+          </span>
+        </div>
         {/* Single ad instance — always mounted, card shows/hides via parent display */}
         <div
           ref={shellRef}

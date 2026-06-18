@@ -493,10 +493,18 @@ type SortOption = 'name' | 'depart' | 'distance';
 // ── Main Export ───────────────────────────────────────────────────────────────
 const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, embedded = false, onSelectTrain, onRateTrain, setView }) => {
   const { language } = useLanguage();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(() => {
+    const saved = localStorage.getItem('koyjabo_prefill_train_search') || '';
+    localStorage.removeItem('koyjabo_prefill_train_search');
+    return saved;
+  });
   const [selectedTrain, setSelectedTrain] = useState<BDTrainRoute | null>(null);
-  const [filterFrom, setFilterFrom] = useState<string>('');
-  const [filterTo, setFilterTo] = useState<string>('');
+  const [filterFrom, setFilterFrom] = useState<string>(() =>
+    localStorage.getItem('koyjabo_prefill_mode') === 'train' ? localStorage.getItem('koyjabo_prefill_from') || '' : ''
+  );
+  const [filterTo, setFilterTo] = useState<string>(() =>
+    localStorage.getItem('koyjabo_prefill_mode') === 'train' ? localStorage.getItem('koyjabo_prefill_to') || '' : ''
+  );
   const [autoLocDetected, setAutoLocDetected] = useState(false);
   const [searchValidationError, setSearchValidationError] = useState<string | null>(null);
   const [searchExecuted, setSearchExecuted] = useState(false);
@@ -540,6 +548,14 @@ const TrainListPage: React.FC<TrainListPageProps> = ({ userLocation, onBack, emb
   const lbl = (en: string, bnStr: string) => language === 'bn' ? bnStr : en;
 
   useEffect(() => { trackFeatureUsage('train_list'); }, []);
+
+  useEffect(() => {
+    if (localStorage.getItem('koyjabo_prefill_mode') === 'train') {
+      localStorage.removeItem('koyjabo_prefill_from');
+      localStorage.removeItem('koyjabo_prefill_to');
+      localStorage.removeItem('koyjabo_prefill_mode');
+    }
+  }, []);
 
   const filtered = useMemo(() => {
     const seen = new Set<string>();

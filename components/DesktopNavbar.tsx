@@ -99,12 +99,7 @@ export const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
                 className="flex items-center gap-2.5 cursor-pointer group shrink-0"
                 onClick={() => { setView(AppView.HOME); setPrimarySearch('LOCAL'); }}
             >
-                {/* KoyJabo logo */}
-                <img
-                    src="/logo.png"
-                    alt="KoyJabo"
-                    className="w-9 h-9 rounded-[10px] shrink-0 group-hover:scale-105 transition-transform object-cover"
-                />
+                <KoyJaboLogo size={36} isDarkMode={isDarkMode} className="transition-transform group-hover:scale-105" />
                 <div className="flex flex-col leading-none gap-[3px]">
                     <span className="font-bengali font-bold text-kj-text text-[17px] leading-tight tracking-tight">
                         কই যাবো

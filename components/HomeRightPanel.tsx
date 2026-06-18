@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Bus, Zap, Bot, Sparkles, ArrowRight, Heart, Phone } from 'lucide-react';
 import { MiniVehicle, type VehicleKind } from './design/Vehicles3D';
 import SponsoredAdSlot from './SponsoredAdSlot';
+import { AdIntentRow, NativeAdSection } from './AdSurfaces';
 import { BUS_DATA } from '../constants';
 import { getRecentBusSearches } from '../services/analyticsService';
 import type { BusRoute } from '../types';
@@ -96,6 +97,10 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
         <SponsoredAdSlot language={language} size="728x90" compact />
       </div>
 
+      <div className="mb-6 md:mb-8">
+        <AdIntentRow language={language} />
+      </div>
+
       {/* Saved routes */}
       <div className="mb-6 md:mb-8">
         <SectionHeader
@@ -137,6 +142,10 @@ const HomeRightPanel: React.FC<HomeRightPanelProps> = ({
       {/* Ad slot — before trending */}
       <div className="mb-6 md:mb-8 flex justify-center">
         <SponsoredAdSlot language={language} size="728x90" compact />
+      </div>
+
+      <div className="mb-6 md:mb-8">
+        <NativeAdSection language={language} />
       </div>
 
       {/* Trending + sidebar grid */}
