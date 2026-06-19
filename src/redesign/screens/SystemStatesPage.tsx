@@ -83,43 +83,10 @@ export function ErrorPage403({ theme, lang }: SystemProps) {
 }
 
 export function OfflinePage({ theme, lang }: SystemProps) {
-  const tk = KJ_TOKENS[theme];
-  const features = [
-    { icon:'🚌', bn:'লোকাল বাস রুট', en:'Local bus routes', ok:true },
-    { icon:'🚆', bn:'ট্রেন ও মেট্রো গাইড', en:'Train and metro guides', ok:true },
-    { icon:'⭐', bn:'হিস্ট্রি ও ফেভারিট', en:'History and favorites', ok:true },
-    { icon:'🤖', bn:'লাইভ AI উত্তর', en:'Live AI answers', ok:false },
-    { icon:'🚦', bn:'রিয়েলটাইম ট্রাফিক', en:'Realtime traffic', ok:false },
-  ];
-
-  return (
-    <div style={{ minHeight:'100vh',background:tk.bg,display:'flex',alignItems:'center',justifyContent:'center',padding:'24px 18px',position:'relative',overflow:'hidden' }}>
-      <div className="kj-future-bg" style={{ position:'absolute',inset:0,pointerEvents:'none',zIndex:0 }}/>
-      <div style={{ position:'relative',zIndex:1,width:'100%',maxWidth:460,background:tk.panel,border:`1px solid ${tk.line}`,borderRadius:28,padding:24,boxShadow:tk.shadowLg }}>
-        <RouteRing tone={tk.primary} status="OFFLINE" icon="📶"/>
-        <h1 style={{ fontFamily:BEN,fontWeight:800,fontSize:28,color:tk.text,margin:'18px 0 10px',textAlign:'center' }}>
-          {T(lang,'অফলাইন মোড চালু','Offline mode ready')}
-        </h1>
-        <p style={{ fontFamily:BEN,fontSize:15,color:tk.textDim,lineHeight:1.65,margin:'0 0 18px',textAlign:'center' }}>
-          {T(lang,'ইন্টারনেট নেই, কিন্তু সেভ করা রুট, ভাড়া, স্টেশন ও ফেভারিট ব্যবহার করতে পারবেন। লাইভ AI ও ট্রাফিক অনলাইনে ফিরলে চালু হবে।','No internet, but saved routes, fares, stations and favorites still work. Live AI and traffic resume when you are online.')}
-        </p>
-        <div style={{ display:'grid',gap:8,marginBottom:20 }}>
-          {features.map(item => (
-            <div key={item.en} style={{ display:'flex',alignItems:'center',gap:10,background:tk.panelMuted,border:`1px solid ${tk.line}`,borderRadius:14,padding:'10px 12px' }}>
-              <span style={{ fontSize:18 }}>{item.icon}</span>
-              <span style={{ flex:1,fontFamily:BEN,fontSize:13,fontWeight:700,color:tk.text }}>{T(lang,item.bn,item.en)}</span>
-              <span style={{ fontFamily:SANS,fontSize:11,fontWeight:800,color:item.ok?tk.primary:tk.accent }}>
-                {item.ok ? T(lang,'চালু','Ready') : T(lang,'অনলাইন দরকার','Online')}
-              </span>
-            </div>
-          ))}
-        </div>
-        <button onClick={()=>window.location.reload()} style={{ width:'100%',background:tk.primary,color:tk.primaryInk,border:0,borderRadius:16,padding:'13px 18px',fontFamily:BEN,fontWeight:900,fontSize:14,cursor:'pointer' }}>
-          {T(lang,'আবার চেষ্টা করুন','Try again')}
-        </button>
-      </div>
-    </div>
-  );
+  return <SystemScreen theme={theme} lang={lang} tone={KJ_TOKENS[theme].primary} icon="📶" status="OFFLINE"
+    titleBn="ইন্টারনেট নেই" titleEn="No Connection"
+    bodyBn="আপনি অফলাইনে আছেন। সেভ করা রুট এখনও কাজ করছে!" bodyEn="You're offline. Saved routes still work!"
+    buttons={[{labelBn:'আবার চেষ্টা',labelEn:'Try Again',primary:true},{labelBn:'অফলাইন ব্রাউজ করুন',labelEn:'Browse Offline'}]}/>;
 }
 
 export function MaintenancePage({ theme, lang }: SystemProps) {

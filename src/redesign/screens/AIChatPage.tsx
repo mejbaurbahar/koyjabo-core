@@ -6,7 +6,7 @@ import { Icon } from '../components/Icons';
 import { askGeminiRoute, ChatMessage } from '../../../services/geminiService';
 import { getAllSessions, saveChatMessage } from '../../../services/chatHistoryManager';
 
-interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; authUser?: { id?: string; displayName?: string; username?: string } | null; }
+interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
 function AvatarAI({ tk }: { tk: any }) {
   return (
@@ -107,7 +107,7 @@ function ChatBubble({ msg, tk, lang }: { msg: any; tk: any; lang:'bn'|'en' }) {
 }
 
 export function AIChatPage(props: Props) {
-  const { theme, device, lang, authUser } = props;
+  const { theme, device, lang } = props;
   const tk = KJ_TOKENS[theme];
   const isMobile = device === 'mobile';
   const [input, setInput] = useState('');
@@ -131,10 +131,6 @@ export function AIChatPage(props: Props) {
 
   async function send() {
     if (!input.trim() || isLoading) return;
-    if (!authUser) {
-      setMessages(m => [...m, { id: Date.now(), isUser:false, text:T(lang,'AI চ্যাট ব্যবহার করতে আগে সাইন ইন করুন।','Please sign in before using AI chat.') }]);
-      return;
-    }
     const userText = input.trim();
     const userMsg = { id: Date.now(), isUser:true, text:userText };
     setMessages(m => [...m, userMsg]);

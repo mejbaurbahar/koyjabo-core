@@ -4,10 +4,10 @@ import { Icon } from './Icons';
 
 const TABS = [
   { bn: 'হোম', en: 'Home', route: 'home', icon: 'home' as const },
-  { bn: 'ট্রেন', en: 'Train', route: 'train-hub', icon: 'train' as const, activeRoutes: ['train-hub', 'train-detail'] },
-  { bn: 'বিমান', en: 'Air', route: 'flights-hub', icon: 'spark' as const, activeRoutes: ['flights-hub'] },
+  { bn: 'খুঁজুন', en: 'Search', route: 'intercity', icon: 'search' as const },
+  { bn: 'সেভড', en: 'Saved', route: 'favorites', icon: 'star' as const },
   { bn: 'AI', en: 'AI', route: 'ai', icon: 'spark' as const },
-  { bn: 'প্রোফাইল', en: 'Profile', route: 'profile', icon: 'user' as const, activeRoutes: ['profile', 'settings', 'edit-profile', 'password', 'devices'] },
+  { bn: 'আপনি', en: 'You', route: 'profile', icon: 'user' as const },
 ] as const;
 
 interface MobileTabBarProps {
@@ -38,7 +38,7 @@ export function MobileTabBar({ tk, lang, activeRoute, onNav }: MobileTabBarProps
       }}
     >
       {TABS.map((tab) => {
-        const active = activeRoute === tab.route || ('activeRoutes' in tab && tab.activeRoutes.includes(activeRoute || ''));
+        const active = activeRoute === tab.route;
         const IconComp = Icon[tab.icon];
 
         return (

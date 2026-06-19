@@ -8,7 +8,6 @@ import { SectionHeader } from '../components/SectionHeader';
 import { getUserHistory } from '../../../services/analyticsService';
 import { getAuthUser } from '../../../services/communityDataService';
 import { getFavoriteBusIds } from '../utils/favorites';
-import { signOutUser } from '../utils/auth';
 
 interface ScreenProps {
   theme: 'dark' | 'light';
@@ -47,12 +46,11 @@ export function ProfilePage(props: ScreenProps) {
     ...(history.trainSearches || []).map(item => ({ type: lbl('Train search', 'ট্রেন সার্চ'), title: `${item.trainName} · ${item.from} → ${item.to}`, time: item.timestamp })),
     ...(history.intercitySearches || []).map(item => ({ type: lbl('Intercity search', 'আন্তঃজেলা সার্চ'), title: `${item.from} → ${item.to}`, time: item.timestamp })),
   ].sort((a, b) => b.time - a.time).slice(0, 5);
-  const totalSearches = (history.routeSearches || []).length + (history.busSearches || []).length + (history.trainSearches || []).length + (history.intercitySearches || []).length;
 
   const card: React.CSSProperties = { background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 16, overflow: 'hidden' };
 
   const STATS = [
-    { label: lbl('Searches', 'সার্চ'), value: String(totalSearches) },
+    { label: lbl('Searches', 'সার্চ'), value: String(recentRecords.length) },
     { label: lbl('Favorites', 'প্রিয়'), value: String(favoriteCount) },
     { label: lbl('Buses opened', 'বাস দেখা'), value: String((history.busSearches || []).length) },
     { label: lbl('Routes searched', 'রুট সার্চ'), value: String((history.routeSearches || []).length) },
@@ -198,7 +196,7 @@ export function ProfilePage(props: ScreenProps) {
         title={lbl('Sign out?', 'সাইন আউট করবেন?')}
         message={lbl('You will be signed out of your account.', 'আপনি আপনার অ্যাকাউন্ট থেকে সাইন আউট হয়ে যাবেন।')}
         confirmLabel={lbl('Sign out', 'সাইন আউট')}
-        onConfirm={() => { signOutUser(); setConfirmSignOut(false); onNav('signin'); }}
+        onConfirm={() => { setConfirmSignOut(false); onNav('signin'); }}
         onClose={() => setConfirmSignOut(false)}
       />
     </PageShell>

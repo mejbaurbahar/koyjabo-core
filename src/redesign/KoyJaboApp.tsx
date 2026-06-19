@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { KJ_TOKENS, Theme, Lang, Device, T, SANS, BEN } from './tokens';
+import { KJ_TOKENS, Theme, Lang, Device } from './tokens';
 import { injectGlobalStyles } from './globalStyles';
 import { SplashScreen } from './SplashScreen';
-import { getAuthUser } from '../../services/communityDataService';
-import { setHistoryUser } from '../../services/analyticsService';
 
 // Lazy imports — all screens
 import { HomePage } from './screens/HomePage';
@@ -33,7 +31,6 @@ import { PasswordPage } from './screens/PasswordPage';
 import { DevicesPage } from './screens/DevicesPage';
 import { SignInPage } from './screens/SignInPage';
 import { SignUpPage } from './screens/SignUpPage';
-import { ForgotPasswordPage } from './screens/ForgotPasswordPage';
 import { WhyPage } from './screens/WhyPage';
 import { AboutPage } from './screens/AboutPage';
 import { BlogsPage } from './screens/BlogsPage';
@@ -45,13 +42,15 @@ import { PrivacyPage } from './screens/PrivacyPage';
 import { TermsPage } from './screens/TermsPage';
 import { InstallPage } from './screens/InstallPage';
 import { ErrorPage404, ErrorPage500, OfflinePage, MaintenancePage } from './screens/SystemStatesPage';
+import { FlightDetailPage } from './screens/FlightDetailPage';
+import { KoyCoinsPage } from './screens/KoyCoinsPage';
+import { earnCoins, claimDailyBonus } from './utils/koyCoinService';
 import { NavDrawer } from './components/NavDrawer';
 // FloatingControls removed per user request
 import { AIFab } from './components/AIFab';
 import { TopBar } from './components/TopBar';
 import { MobileTabBar } from './components/MobileTabBar';
 import { SideRailAd, AnchorAd, VignetteAd } from './components/AdComponents';
-import { AdBlockGate } from './components/AdBlockGate';
 import { BUS_DATA } from '../../constants';
 
 type Route = string;
@@ -71,7 +70,7 @@ const SECTION_MAP: Record<string, string> = {
 const SHOW_BACK_ROUTES = new Set([
   'bus-detail', 'train-detail', 'metro-detail', 'intercity-detail', 'vehicle',
   'rate-review', 'metro-token', 'metro-pass', 'blog-detail', 'edit-profile',
-  'password', 'devices', 'results', 'install',
+  'password', 'devices', 'results', 'install', 'flight-detail', 'koy-coins',
 ]);
 
 const ROUTE_PATHS: Record<string, string> = {
@@ -90,19 +89,16 @@ const ROUTE_PATHS: Record<string, string> = {
   settings: '/settings',
   signin: '/signin',
   signup: '/signup',
-  'forgot-password': '/forgot-password',
   why: '/why',
   about: '/about',
-  blogs: '/blog',
+  blogs: '/blogs',
   qa: '/qa',
   contact: '/contact',
   release: '/release',
   privacy: '/privacy',
   terms: '/terms',
   install: '/install',
-  offline: '/offline',
-  '500': '/500',
-  maintenance: '/maintenance',
+  'koy-coins': '/coins',
 };
 
 const slugify = (value: string) => value.toLowerCase().trim().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -122,12 +118,12 @@ function detailPath(route: string, params: Record<string, string> = {}) {
   if (route === 'train-detail') return `/train/${slugify(params.trainId || params.id || 'detail')}${suffix}`;
   if (route === 'intercity-detail') return `/intercity/${slugify(params.id || params.operator || 'detail')}${suffix}`;
   if (route === 'vehicle') return `/launch/${slugify(params.id || params.name || 'detail')}${suffix}`;
-  if (route === 'blog-detail') return `/blog/${slugify(params.slug || params.id || 'post')}`;
+  if (route === 'flight-detail') return `/air/${(params.code || 'flight').toLowerCase()}${suffix}`;
   return ROUTE_PATHS[route] || '/';
 }
 
 function pathForEntry(entry: StackEntry) {
-  if (['bus-detail', 'metro-detail', 'train-detail', 'intercity-detail', 'vehicle', 'blog-detail'].includes(entry.route)) {
+  if (['bus-detail', 'metro-detail', 'train-detail', 'intercity-detail', 'vehicle', 'flight-detail'].includes(entry.route)) {
     return detailPath(entry.route, entry.params || {});
   }
   if (entry.route === 'results') {
@@ -154,78 +150,15 @@ function entryFromLocation(): StackEntry {
   if (path.startsWith('/train/') && path !== '/train') return { route: 'train-detail', params: { ...params, trainId: path.split('/')[2] || '' } };
   if (path.startsWith('/intercity/') && path !== '/intercity') return { route: 'intercity-detail', params: { ...params, id: path.split('/')[2] || '' } };
   if (path.startsWith('/launch/') && path !== '/launch') return { route: 'vehicle', params: { ...params, id: path.split('/')[2] || '' } };
-  if (path.startsWith('/blog/') && path !== '/blog') return { route: 'blog-detail', params: { ...params, slug: path.split('/')[2] || '' } };
-  if (path === '/blogs') return { route: 'blogs' };
+  if (path.startsWith('/air/') && path !== '/air') return { route: 'flight-detail', params: { ...params, code: (path.split('/')[2] || '').toUpperCase() } };
   const match = Object.entries(ROUTE_PATHS).find(([, routePath]) => routePath === path);
   return { route: match?.[0] || 'home' };
 }
 
-function AuthRequiredPage(props: any) {
-  const { theme, device, lang, onNav } = props;
-  const tk = KJ_TOKENS[theme as Theme];
-  const isMobile = device === 'mobile';
-  return (
-    <div style={{ minHeight: '100vh', background: tk.bg, position: 'relative', overflow: 'hidden', color: tk.text }}>
-      <div className="kj-future-bg" style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}/>
-      <div style={{ height: isMobile ? 52 : 60 }} />
-      <div style={{ minHeight: isMobile ? 'calc(100vh - 52px)' : 'calc(100vh - 60px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: isMobile ? '28px 16px 96px' : '56px 24px 96px', position: 'relative', zIndex: 1 }}>
-        <div style={{ width: '100%', maxWidth: 460, background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 20, padding: isMobile ? 22 : 30, boxShadow: tk.shadowLg, textAlign: 'center' }}>
-          <div style={{ width: 62, height: 62, borderRadius: 18, background: tk.accentSoft, color: tk.accent, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', fontFamily: SANS, fontSize: 28, fontWeight: 800 }}>
-            !
-          </div>
-          <h1 style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 22, fontWeight: 800, color: tk.text, margin: '0 0 8px' }}>
-            {T(lang, 'লগইন প্রয়োজন', 'Login required')}
-          </h1>
-          <p style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 14, color: tk.textDim, lineHeight: 1.6, margin: '0 0 20px' }}>
-            {T(lang, 'কই যাবো ব্যবহার করতে আগে সাইন ইন করুন।', 'Please sign in to use KoyJabo.')}
-          </p>
-          <button
-            onClick={() => onNav('signin')}
-            style={{ background: tk.primary, color: tk.primaryInk, border: 0, borderRadius: 12, padding: '12px 20px', fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 14, fontWeight: 800, cursor: 'pointer', width: '100%' }}
-          >
-            {T(lang, 'সাইন ইন করুন', 'Sign in')}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-const PUBLIC_ROUTES = new Set(['signin', 'signup', 'forgot-password']);
-const ACCOUNT_ROUTES = new Set(['profile', 'favorites', 'history', 'settings', 'edit-profile', 'password', 'devices']);
-const ACTION_GATED_ROUTES = new Set(['results', 'rate-review', 'metro-token', 'metro-pass']);
-
-const BN_DIGITS = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
-function localizeDigits(value: string) {
-  return value.replace(/\d/g, digit => BN_DIGITS[Number(digit)]);
-}
-
-function applyDigitLocale(root: HTMLElement | null, lang: Lang, originals: WeakMap<Text, string>) {
-  if (!root) return;
-  const skipTags = new Set(['SCRIPT', 'STYLE', 'TEXTAREA', 'INPUT', 'SELECT', 'OPTION', 'CODE', 'PRE']);
-  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-    acceptNode(node) {
-      const parent = node.parentElement;
-      if (!parent || skipTags.has(parent.tagName)) return NodeFilter.FILTER_REJECT;
-      if (!/\d/.test(node.data) && !originals.has(node)) return NodeFilter.FILTER_REJECT;
-      return NodeFilter.FILTER_ACCEPT;
-    },
-  });
-  const textNodes: Text[] = [];
-  while (walker.nextNode()) textNodes.push(walker.currentNode as Text);
-  textNodes.forEach(node => {
-    if (!originals.has(node)) originals.set(node, node.data);
-    const original = originals.get(node) || node.data;
-    node.data = lang === 'bn' ? localizeDigits(original) : original;
-  });
-}
-
 export function KoyJaboApp() {
   const [theme, setTheme] = useState<Theme>('dark');
-  const [lang, setLang] = useState<Lang>(() => {
-    const saved = localStorage.getItem('app-language');
-    return saved === 'bn' || saved === 'en' ? saved : 'bn';
-  });
+  const [lang, setLang] = useState<Lang>('en');
+  const [forceDesktop, setForceDesktop] = useState(false); // phone user can request desktop view
   const [stack, setStack] = useState<StackEntry[]>(() => [entryFromLocation()]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [dir, setDir] = useState<'fwd' | 'back'>('fwd');
@@ -233,40 +166,15 @@ export function KoyJaboApp() {
   const [splash, setSplash] = useState(true);
   const [vignette, setVignette] = useState(false);
   const [anchorOn, setAnchorOn] = useState(true);
-  const [authPrompt, setAuthPrompt] = useState(false);
   const [vw, setVw] = useState(window.innerWidth);
-  const [authUser, setAuthUser] = useState(() => getAuthUser());
   const scrollerRef = useRef<HTMLDivElement>(null);
   const vignetteTimer = useRef<number>(0);
-  const digitOriginalsRef = useRef<WeakMap<Text, string>>(new WeakMap());
-  const top = stack[stack.length - 1];
-  const canBack = stack.length > 1;
-  const tk = KJ_TOKENS[theme];
 
   // Inject global styles once
   useEffect(() => { injectGlobalStyles(); }, []);
 
-  useEffect(() => {
-    localStorage.setItem('app-language', lang);
-    document.documentElement.lang = lang;
-  }, [lang]);
-
-  useEffect(() => {
-    let raf = window.requestAnimationFrame(() => {
-      applyDigitLocale(scrollerRef.current, lang, digitOriginalsRef.current);
-    });
-    const observer = new MutationObserver(() => {
-      window.cancelAnimationFrame(raf);
-      raf = window.requestAnimationFrame(() => {
-        applyDigitLocale(scrollerRef.current, lang, digitOriginalsRef.current);
-      });
-    });
-    if (scrollerRef.current) observer.observe(scrollerRef.current, { childList: true, subtree: true, characterData: true });
-    return () => {
-      window.cancelAnimationFrame(raf);
-      observer.disconnect();
-    };
-  }, [lang, top.route, stack.length, showSkeleton, authPrompt]);
+  // Daily login bonus
+  useEffect(() => { claimDailyBonus(); }, []);
 
   // Dismiss both splash screens after 1.4s
   useEffect(() => {
@@ -292,22 +200,9 @@ export function KoyJaboApp() {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  useEffect(() => {
-    const refreshAuth = () => {
-      const user = getAuthUser();
-      setAuthUser(user);
-      setHistoryUser(user?.id ?? null);
-    };
-    refreshAuth();
-    window.addEventListener('storage', refreshAuth);
-    window.addEventListener('focus', refreshAuth);
-    window.addEventListener('koyjabo-auth-changed', refreshAuth);
-    return () => {
-      window.removeEventListener('storage', refreshAuth);
-      window.removeEventListener('focus', refreshAuth);
-      window.removeEventListener('koyjabo-auth-changed', refreshAuth);
-    };
-  }, []);
+  const top = stack[stack.length - 1];
+  const canBack = stack.length > 1;
+  const tk = KJ_TOKENS[theme];
 
   const pushUrl = useCallback((entry: StackEntry, replace = false) => {
     const nextPath = pathForEntry(entry);
@@ -328,20 +223,19 @@ export function KoyJaboApp() {
     return () => window.removeEventListener('popstate', onPop);
   }, []);
 
-  const resolvedDevice: 'desktop' | 'mobile' = vw < 1024 ? 'mobile' : 'desktop';
+  // Resolve actual device — forceDesktop lets phone users request web layout
+  const resolvedDevice: 'desktop' | 'mobile' = (vw < 1024 && !forceDesktop) ? 'mobile' : 'desktop';
 
   const nav = useCallback((route: Route, params?: Record<string, string>) => {
-    const currentUser = getAuthUser();
-    setAuthUser(currentUser);
-    if (!currentUser && ACTION_GATED_ROUTES.has(route)) {
-      sessionStorage.setItem('koyjabo_post_login_redirect', pathForEntry({ route, params }));
-      setAuthPrompt(true);
-      return;
-    }
     const entry = { route, params };
     setDir('fwd');
     setShowSkeleton(true);
     pushUrl(entry);
+    if (['results', 'bus-hub', 'metro-hub', 'train-hub', 'flights-hub', 'intercity', 'launch-hub'].includes(route)) {
+      earnCoins(5, 'Transport search');
+    } else if (route === 'ai') {
+      earnCoins(3, 'AI assistant');
+    }
     setTimeout(() => {
       setStack(s => [...s, entry]);
       setShowSkeleton(false);
@@ -350,22 +244,12 @@ export function KoyJaboApp() {
   }, [pushUrl]);
 
   const navTab = useCallback((route: Route) => {
-    setAuthUser(getAuthUser());
     const entry = { route };
     setDir('fwd');
     pushUrl(entry);
     setStack([entry]);
     if (scrollerRef.current) scrollerRef.current.scrollTop = 0;
   }, [pushUrl]);
-
-  useEffect(() => {
-    if (authUser && PUBLIC_ROUTES.has(top.route)) {
-      const entry = { route: 'profile' };
-      setDir('fwd');
-      pushUrl(entry, true);
-      setStack([entry]);
-    }
-  }, [authUser, top.route, pushUrl]);
 
   const back = useCallback(() => {
     if (stack.length <= 1) return;
@@ -395,7 +279,6 @@ export function KoyJaboApp() {
   const sharedProps = {
     theme, device: resolvedDevice, lang,
     route: top.route, params: top.params ?? {},
-    authUser,
     canBack: showBack, onBack: back, onNav: nav, onNavTab: navTab,
     onLang: () => setLang(l => l === 'bn' ? 'en' : 'bn'),
     onTheme: () => setTheme(t => t === 'dark' ? 'light' : 'dark'),
@@ -410,7 +293,6 @@ export function KoyJaboApp() {
 
   function renderScreen(route: Route, params?: Record<string, string>) {
     const p = { ...sharedProps, params };
-    if (!authUser && ACCOUNT_ROUTES.has(route)) return <AuthRequiredPage {...p}/>;
     switch (route) {
       case 'home': return <HomePage {...p}/>;
       case 'bus-hub': return <LocalBusPage {...p}/>;
@@ -420,13 +302,15 @@ export function KoyJaboApp() {
       case 'flights-hub': return <FlightsPage {...p}/>;
       case 'ai': return <AIChatPage {...p}/>;
       case 'intercity': return <IntercityPage {...p}/>;
-      case 'results': return authUser ? <RouteResultsV2Page {...p}/> : <AuthRequiredPage {...p}/>;
+      case 'results': return <RouteResultsV2Page {...p}/>;
       case 'fare': return <FareCalcPage {...p}/>;
       case 'intercity-detail': return <IntercityDetailPage {...p}/>;
       case 'bus-detail': return <BusDetailPage {...p}/>;
       case 'metro-detail': return <MetroDetailPage {...p}/>;
       case 'train-detail': return <TrainDetailPage {...p}/>;
       case 'vehicle': return <VehicleDetailPage {...p}/>;
+      case 'flight-detail': return <FlightDetailPage {...p}/>;
+      case 'koy-coins': return <KoyCoinsPage {...p}/>;
       case 'rate-review': return <RateReviewPage {...p}/>;
       case 'metro-token': return <MetroTokenPage {...p}/>;
       case 'metro-pass': return <MetroPassPage {...p}/>;
@@ -439,7 +323,6 @@ export function KoyJaboApp() {
       case 'devices': return <DevicesPage {...p}/>;
       case 'signin': return <SignInPage {...p}/>;
       case 'signup': return <SignUpPage {...p}/>;
-      case 'forgot-password': return <ForgotPasswordPage {...p}/>;
       case 'why': return <WhyPage {...p}/>;
       case 'about': return <AboutPage {...p}/>;
       case 'blogs': return <BlogsPage {...p}/>;
@@ -468,7 +351,7 @@ export function KoyJaboApp() {
   // AI FAB — sticky inside scroller so it pins to phone screen too
   // Hidden on the AI page itself
   // AIFab — fixed so it always shows regardless of scroll/overflow context
-  const aiFab = authUser && top.route !== 'ai' ? (
+  const aiFab = top.route !== 'ai' ? (
     <div style={{
       position: 'fixed', right: 16,
       bottom: isPhone ? 'calc(92px + env(safe-area-inset-bottom))' : (showAnchor ? 'calc(96px + env(safe-area-inset-bottom))' : 24),
@@ -509,7 +392,7 @@ export function KoyJaboApp() {
     stage = (
       <div ref={scrollerRef} style={{
         width: '100%', height: '100vh',
-        overflowX: 'hidden',
+        overflowX: forceDesktop ? 'auto' : 'hidden', // allow h-scroll in desktop-on-phone mode
         overflowY: 'auto',
         background: tk.bg, position: 'relative',
         WebkitOverflowScrolling: 'touch',
@@ -518,7 +401,8 @@ export function KoyJaboApp() {
         paddingBottom: showAnchor ? 96 : 0,
         boxSizing: 'border-box',
       }}>
-        <div>
+        {/* When forcing desktop on phone, content needs min-width to render properly */}
+        <div style={{ minWidth: forceDesktop ? 1280 : 'auto' }}>
         {screenContent}
         </div>
       </div>
@@ -535,7 +419,6 @@ export function KoyJaboApp() {
       <TopBar
         tk={tk} lang={lang} theme={theme}
         device={resolvedDevice}
-        user={authUser}
         activeRoute={top.route}
         canBack={canBack} onBack={back}
         onNav={nav} onLang={() => setLang(l => l === 'bn' ? 'en' : 'bn')}
@@ -543,7 +426,7 @@ export function KoyJaboApp() {
         onMenu={() => setMenuOpen(true)}
       />
       {/* Mobile tab bar — outside scroller too */}
-      {isPhone && authUser && (
+      {isPhone && (
         <MobileTabBar
           tk={tk} lang={lang}
           activeRoute={top.route}
@@ -552,30 +435,35 @@ export function KoyJaboApp() {
       )}
       {stage}
       {aiFab}
-      {authUser && (
-        <NavDrawer
-          open={menuOpen} theme={theme} lang={lang}
-          user={authUser}
-          activeRoute={top.route}
-          onClose={() => setMenuOpen(false)}
-          onNav={(r) => { setMenuOpen(false); nav(r); }}
-        />
+      {/* Desktop view toggle — shown only on small screens */}
+      {vw < 1024 && (
+        <button
+          onClick={() => setForceDesktop(f => !f)}
+          style={{
+            position: 'fixed',
+            // On AI chat page, lift above fixed input bar (60px tab + 72px input = 132px + buffer)
+            bottom: isPhone ? (top.route === 'ai' ? 148 : 86) : (showAnchor ? 72 : 16),
+            left: 16, zIndex: 9500,
+            background: 'rgba(13,22,42,0.9)', backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            border: `1px solid ${forceDesktop ? 'rgba(0,245,255,0.5)' : 'rgba(255,255,255,0.15)'}`,
+            borderRadius: 999,
+            padding: '7px 14px', fontFamily: "'Inter',sans-serif",
+            fontSize: 11, fontWeight: 700,
+            color: forceDesktop ? '#00f5ff' : 'rgba(255,255,255,0.7)',
+            cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6,
+            boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
+          }}
+        >
+          {forceDesktop ? '📱 Mobile view' : '🖥 Desktop view'}
+        </button>
       )}
-      {authPrompt && (
-        <div style={{ position:'fixed', inset:0, zIndex:9800, background:'rgba(0,0,0,.55)', display:'flex', alignItems:'center', justifyContent:'center', padding:20 }}>
-          <div style={{ width:'100%', maxWidth:420, background:tk.panel, border:`1px solid ${tk.line}`, borderRadius:20, padding:24, boxShadow:tk.shadowLg, textAlign:'center' }}>
-            <div style={{ width:56, height:56, borderRadius:18, background:tk.accentSoft, color:tk.accent, display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 14px', fontFamily:SANS, fontSize:26, fontWeight:900 }}>!</div>
-            <h2 style={{ margin:'0 0 8px', fontFamily:lang === 'bn' ? BEN : SANS, fontSize:20, color:tk.text }}>{T(lang, 'লগইন প্রয়োজন', 'Login required')}</h2>
-            <p style={{ margin:'0 0 18px', fontFamily:lang === 'bn' ? BEN : SANS, fontSize:14, color:tk.textDim, lineHeight:1.6 }}>{T(lang, 'এই ফিচার ব্যবহার করতে আগে সাইন ইন করুন।', 'Please sign in before using this feature.')}</p>
-            <button onClick={() => { setAuthPrompt(false); nav('signin'); }} style={{ width:'100%', background:tk.primary, color:tk.primaryInk, border:0, borderRadius:12, padding:'12px 18px', fontFamily:lang === 'bn' ? BEN : SANS, fontWeight:800, cursor:'pointer' }}>
-              {T(lang, 'সাইন ইন', 'Sign in')}
-            </button>
-            <button onClick={() => setAuthPrompt(false)} style={{ marginTop:10, background:'transparent', border:0, color:tk.textDim, fontFamily:SANS, cursor:'pointer' }}>
-              {T(lang, 'বন্ধ করুন', 'Close')}
-            </button>
-          </div>
-        </div>
-      )}
+      <NavDrawer
+        open={menuOpen} theme={theme} lang={lang}
+        activeRoute={top.route}
+        onClose={() => setMenuOpen(false)}
+        onNav={(r) => { setMenuOpen(false); nav(r); }}
+      />
       {showRails && (
         <>
           <SideRailAd tk={tk} lang={lang} side="left"/>
@@ -584,7 +472,6 @@ export function KoyJaboApp() {
       )}
       {showAnchor && <AnchorAd tk={tk} lang={lang} onClose={() => setAnchorOn(false)}/>}
       <VignetteAd tk={tk} lang={lang} open={vignette} onClose={() => setVignette(false)}/>
-      <AdBlockGate lang={lang} theme={theme}/>
     </>
   );
 }

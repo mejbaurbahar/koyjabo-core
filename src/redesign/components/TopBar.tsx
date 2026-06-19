@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Tokens, Lang, Theme, SANS, BEN, T } from '../tokens';
 import { Logo } from './Logo';
 import { Icon } from './Icons';
-import { signOutUser } from '../utils/auth';
+import { getBalance, isAdFree } from '../utils/koyCoinService';
 
 type Device = 'auto' | 'mobile' | 'desktop';
 
@@ -21,7 +21,6 @@ interface TopBarProps {
   lang: Lang;
   theme: Theme;
   device: Device;
-  user?: { displayName?: string; username?: string } | null;
   activeRoute?: string;
   onNav: (route: string) => void;
   onLang: () => void;
@@ -31,12 +30,36 @@ interface TopBarProps {
   onBack?: () => void;
 }
 
+function CoinBadge({ tk, lang, onNav }: { tk: Tokens; lang: Lang; onNav: (r: string) => void }) {
+  const balance = getBalance();
+  const adFree = isAdFree();
+  return (
+    <button
+      onClick={() => onNav('koy-coins')}
+      title={T(lang, 'কয় কয়েন', 'KoyCoins')}
+      style={{
+        background: adFree ? 'linear-gradient(135deg,#b45309,#f59e0b)' : 'rgba(245,158,11,0.12)',
+        border: `1px solid ${adFree ? '#f59e0b' : 'rgba(245,158,11,0.35)'}`,
+        borderRadius: 999,
+        padding: '5px 10px',
+        display: 'inline-flex', alignItems: 'center', gap: 5,
+        cursor: 'pointer', flexShrink: 0,
+      }}
+    >
+      <span style={{ fontSize: 13 }}>🪙</span>
+      <span style={{ fontFamily: SANS, fontWeight: 700, fontSize: 12, color: adFree ? '#fff' : '#f59e0b' }}>
+        {balance}
+      </span>
+      {adFree && <span style={{ fontFamily: SANS, fontSize: 10, fontWeight: 700, color: '#fff' }}>✕ ads</span>}
+    </button>
+  );
+}
+
 export function TopBar({
   tk,
   lang,
   theme,
   device,
-  user,
   activeRoute,
   onNav,
   onLang,
@@ -44,7 +67,6 @@ export function TopBar({
   onMenu,
 }: TopBarProps) {
   const isMobile = device === 'mobile';
-  const [profileOpen, setProfileOpen] = useState(false);
 
   const controlBtn: React.CSSProperties = {
     background: tk.panelMuted,
@@ -117,28 +139,28 @@ export function TopBar({
           aria-label="KoyJabo Home"
         >
           <Logo tk={tk} size={isMobile ? 32 : 36} />
-          <span
-            style={{
-              fontFamily: BEN,
-              fontWeight: 800,
-              fontSize: isMobile ? 16 : 18,
-              color: tk.text,
-              whiteSpace: 'nowrap',
-              lineHeight: 1,
-            }}
-          >
-            কই যাবো
-          </span>
+          {!isMobile && (
+            <span
+              style={{
+                fontFamily: BEN,
+                fontWeight: 800,
+                fontSize: 18,
+                color: tk.text,
+              }}
+            >
+              কই যাবো
+            </span>
+          )}
         </button>
 
-        {/* Desktop nav */}
+        {/* Desktop nav — pushed to right side with marginLeft: auto */}
         {!isMobile && (
           <nav
             style={{
               display: 'flex',
               alignItems: 'center',
               gap: 1,
-              marginLeft: 'auto',
+              marginLeft: 'auto',  // pushes nav to the right
               marginRight: 12,
               minWidth: 0,
               overflowX: 'auto',
@@ -183,28 +205,14 @@ export function TopBar({
         {/* Right controls — exact order from design: Menu | Lang | Theme | Install */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
           {/* Menu button — desktop (left of lang) */}
-          {!isMobile && user && (
+          {!isMobile && (
             <button onClick={onMenu} style={iconBtn} title="Menu">
               <Icon.menu s={18} />
             </button>
           )}
 
-          {!isMobile && !user && (
-            <>
-              <button
-                onClick={() => onNav('signin')}
-                style={{ ...controlBtn, borderRadius: 10, padding: '8px 12px' }}
-              >
-                {T(lang, 'সাইন ইন', 'Sign in')}
-              </button>
-              <button
-                onClick={() => onNav('signup')}
-                style={{ ...controlBtn, borderRadius: 10, padding: '8px 12px', background: tk.primary, color: tk.primaryInk, border: 'none' }}
-              >
-                {T(lang, 'সাইন আপ', 'Sign up')}
-              </button>
-            </>
-          )}
+          {/* KoyCoins badge */}
+          <CoinBadge tk={tk} lang={lang} onNav={onNav} />
 
           {/* Lang toggle */}
           <button onClick={onLang} style={controlBtn}>
@@ -217,8 +225,8 @@ export function TopBar({
             {theme === 'dark' ? <Icon.sun s={16} /> : <Icon.moon s={16} />}
           </button>
 
-          {/* Install button for guests */}
-          {!isMobile && !user && (
+          {/* Install button — desktop only, filled dark bg */}
+          {!isMobile && (
             <button
               onClick={() => onNav('install')}
               style={{
@@ -233,82 +241,22 @@ export function TopBar({
             </button>
           )}
 
-          {/* Profile menu for signed-in desktop users */}
-          {!isMobile && user && (
-            <div style={{ position: 'relative' }}>
-              <button
-                onClick={() => setProfileOpen(open => !open)}
-                style={{
-                  width: 38,
-                  height: 38,
-                  borderRadius: 999,
-                  background: tk.primarySoft,
-                  color: tk.primaryDeep,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontFamily: SANS,
-                  fontWeight: 800,
-                  fontSize: 12,
-                  border: `1px solid ${tk.primary}55`,
-                  cursor: 'pointer',
-                }}
-                aria-label={T(lang, 'প্রোফাইল', 'Profile')}
-              >
-                {(user.displayName || user.username || 'KJ').slice(0, 2).toUpperCase()}
-              </button>
-              {profileOpen && (
-                <div style={{
-                  position: 'absolute',
-                  right: 0,
-                  top: 46,
-                  width: 180,
-                  background: tk.panel,
-                  border: `1px solid ${tk.line}`,
-                  borderRadius: 14,
-                  boxShadow: tk.shadowLg,
-                  padding: 6,
-                  zIndex: 500,
-                }}>
-                  <button
-                    onClick={() => { setProfileOpen(false); onNav('profile'); }}
-                    style={{ width: '100%', background: 'transparent', border: 0, color: tk.text, textAlign: 'left', padding: '10px 12px', borderRadius: 10, fontFamily: lang === 'bn' ? BEN : SANS, cursor: 'pointer' }}
-                  >
-                    {T(lang, 'প্রোফাইল', 'Profile')}
-                  </button>
-                  <button
-                    onClick={() => { setProfileOpen(false); signOutUser(); onNav('signin'); }}
-                    style={{ width: '100%', background: 'transparent', border: 0, color: tk.accent, textAlign: 'left', padding: '10px 12px', borderRadius: 10, fontFamily: lang === 'bn' ? BEN : SANS, cursor: 'pointer' }}
-                  >
-                    {T(lang, 'সাইন আউট', 'Sign out')}
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
-
           {/* Avatar + menu — mobile only */}
           {isMobile && (
             <>
-              <button
-                onClick={() => onNav(user ? 'profile' : 'signin')}
+              <div
                 style={{
                   width: 36, height: 36, borderRadius: 999,
                   background: tk.primarySoft, color: tk.primaryDeep,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontFamily: SANS, fontWeight: 700, fontSize: 13, flexShrink: 0,
-                  border: `1px solid ${tk.line}`,
-                  cursor: 'pointer',
                 }}
-                aria-label={user ? T(lang, 'প্রোফাইল', 'Profile') : T(lang, 'সাইন ইন', 'Sign in')}
               >
-                {user ? (user.displayName || user.username || 'KJ').slice(0, 2).toUpperCase() : <Icon.user s={18} />}
+                MF
+              </div>
+              <button onClick={onMenu} style={iconBtn} aria-label="Open menu">
+                <Icon.menu s={20} />
               </button>
-              {user && (
-                <button onClick={onMenu} style={iconBtn} aria-label="Open menu">
-                  <Icon.menu s={20} />
-                </button>
-              )}
             </>
           )}
         </div>

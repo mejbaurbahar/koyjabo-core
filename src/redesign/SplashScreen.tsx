@@ -23,13 +23,20 @@ export function SplashScreen() {
             <circle cx="126" cy="66" r="4" fill="#ff2a6d"/>
           </svg>
           <div style={{
-            width: 68, height: 68, borderRadius: 18,
-            background: '#05060b',
-            boxShadow: '0 14px 40px -10px rgba(0,200,230,0.65), inset 0 0 0 1px rgba(255,255,255,0.12)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden',
+            width: 64, height: 64, borderRadius: 18,
+            background: 'linear-gradient(150deg, #22f5ff 0%, #00b8d9 55%, #0a82a8 100%)',
+            boxShadow: '0 14px 40px -10px rgba(0,200,230,0.65), inset 0 1px 0 rgba(255,255,255,0.4)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative',
             animation: 'kjFloatY 2.2s ease-in-out infinite',
           }}>
-            <img src="/logo.png" alt="KoyJabo" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+            <span style={{
+              fontFamily: "'Hind Siliguri', sans-serif", fontWeight: 700, fontSize: 38,
+              color: '#04222b', lineHeight: 1, marginTop: 2,
+            }}>ক</span>
+            <span style={{
+              position: 'absolute', bottom: 13, width: 28, height: 3,
+              borderRadius: 999, background: '#ff2a6d',
+            }}/>
           </div>
         </div>
         <div style={{

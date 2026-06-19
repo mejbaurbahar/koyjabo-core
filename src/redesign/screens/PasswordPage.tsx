@@ -21,7 +21,7 @@ export function PasswordPage(props: Props) {
           <span style={{ fontSize:28 }}>🛡️</span>
           <div>
             <div style={{ fontFamily:BEN,fontWeight:700,fontSize:14,color:tk.primaryDeep }}>{T(lang,'আপনার অ্যাকাউন্ট সুরক্ষিত','Your account is secured')}</div>
-            <div style={{ fontFamily:BEN,fontSize:12,color:tk.primaryDeep,opacity:0.85 }}>{T(lang,'দুই-ফ্যাক্টর প্রমাণীকরণ শীঘ্রই আসছে','Two-factor authentication is coming soon')}</div>
+            <div style={{ fontFamily:BEN,fontSize:12,color:tk.primaryDeep,opacity:0.85 }}>{T(lang,'২ ফ্যাক্টর প্রমাণীকরণ সক্রিয়','2FA is currently enabled')}</div>
           </div>
         </div>
 
@@ -51,15 +51,15 @@ export function PasswordPage(props: Props) {
         {/* 2FA */}
         <div style={{ ...card(18),marginBottom:16 }}>
           <div style={{ fontFamily:BEN,fontWeight:700,fontSize:14,color:tk.text,marginBottom:12 }}>{T(lang,'দুই-ফ্যাক্টর প্রমাণীকরণ','Two-Factor Authentication')}</div>
-          <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',opacity:0.72 }}>
+          <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between' }}>
             <div>
               <div style={{ fontFamily:BEN,fontSize:13,color:tk.text }}>{T(lang,'অথেনটিকেটর অ্যাপ','Authenticator app')}</div>
-              <div style={{ fontFamily:SANS,fontSize:11,color:tk.textFaint }}>{T(lang,'এখনো চালু হয়নি','Not available yet')}</div>
+              <div style={{ fontFamily:SANS,fontSize:11,color:tk.textFaint }}>{T(lang,'সক্রিয়','Active')}</div>
             </div>
-            <span style={{ background:'rgba(245,158,11,.14)',border:'1px solid rgba(245,158,11,.35)',color:'#f59e0b',fontFamily:SANS,fontWeight:800,fontSize:10,padding:'4px 10px',borderRadius:999 }}>{T(lang,'শীঘ্রই','Coming soon')}</span>
+            <span style={{ background:'#10b981',color:'#fff',fontFamily:SANS,fontWeight:700,fontSize:11,padding:'4px 10px',borderRadius:999 }}>ON</span>
           </div>
-          <button disabled style={{ marginTop:12,background:'transparent',border:0,color:tk.textFaint,fontFamily:SANS,fontWeight:600,fontSize:13,cursor:'not-allowed',padding:0,opacity:0.65 }}>
-            {T(lang,'ব্যাকআপ কোড শীঘ্রই','Backup codes coming soon')}
+          <button style={{ marginTop:12,background:'transparent',border:0,color:tk.primary,fontFamily:SANS,fontWeight:600,fontSize:13,cursor:'pointer',padding:0 }}>
+            {T(lang,'ব্যাকআপ কোড দেখুন','View backup codes')} →
           </button>
         </div>
 
