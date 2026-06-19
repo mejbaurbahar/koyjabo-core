@@ -10,6 +10,7 @@ interface Props {
   busId: string;
   busName: string;
   onBack: () => void;
+  onSuccess?: () => void;
 }
 
 function timeAgo(ts: number, t: (key: string, params?: Record<string, string | number>) => string, formatNumber: (n: number | string) => string): string {
@@ -75,7 +76,7 @@ function RatingSkeleton() {
   );
 }
 
-export default function BusRating({ busId, busName, onBack }: Props) {
+export default function BusRating({ busId, busName, onBack, onSuccess }: Props) {
   const user = getAuthUser();
   const { t, language, formatNumber } = useLanguage();
   const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
@@ -119,6 +120,7 @@ export default function BusRating({ busId, busName, onBack }: Props) {
       setActiveTags([]);
       setAspectStars({});
       showToast(t('community.ratingSubmitted') || 'Rating saved!', 'success');
+      onSuccess?.();
     } else {
       showToast(t('community.submitError') || 'Failed to save. Please try again.', 'error');
     }

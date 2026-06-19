@@ -42,6 +42,9 @@ import { PrivacyPage } from './screens/PrivacyPage';
 import { TermsPage } from './screens/TermsPage';
 import { InstallPage } from './screens/InstallPage';
 import { ErrorPage404, ErrorPage500, OfflinePage, MaintenancePage } from './screens/SystemStatesPage';
+import { FlightDetailPage } from './screens/FlightDetailPage';
+import { KoyCoinsPage } from './screens/KoyCoinsPage';
+import { earnCoins, claimDailyBonus } from './utils/koyCoinService';
 import { NavDrawer } from './components/NavDrawer';
 // FloatingControls removed per user request
 import { AIFab } from './components/AIFab';
@@ -67,7 +70,7 @@ const SECTION_MAP: Record<string, string> = {
 const SHOW_BACK_ROUTES = new Set([
   'bus-detail', 'train-detail', 'metro-detail', 'intercity-detail', 'vehicle',
   'rate-review', 'metro-token', 'metro-pass', 'blog-detail', 'edit-profile',
-  'password', 'devices', 'results', 'install',
+  'password', 'devices', 'results', 'install', 'flight-detail', 'koy-coins',
 ]);
 
 const ROUTE_PATHS: Record<string, string> = {
@@ -95,6 +98,7 @@ const ROUTE_PATHS: Record<string, string> = {
   privacy: '/privacy',
   terms: '/terms',
   install: '/install',
+  'koy-coins': '/coins',
 };
 
 const slugify = (value: string) => value.toLowerCase().trim().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -114,11 +118,12 @@ function detailPath(route: string, params: Record<string, string> = {}) {
   if (route === 'train-detail') return `/train/${slugify(params.trainId || params.id || 'detail')}${suffix}`;
   if (route === 'intercity-detail') return `/intercity/${slugify(params.id || params.operator || 'detail')}${suffix}`;
   if (route === 'vehicle') return `/launch/${slugify(params.id || params.name || 'detail')}${suffix}`;
+  if (route === 'flight-detail') return `/air/${(params.code || 'flight').toLowerCase()}${suffix}`;
   return ROUTE_PATHS[route] || '/';
 }
 
 function pathForEntry(entry: StackEntry) {
-  if (['bus-detail', 'metro-detail', 'train-detail', 'intercity-detail', 'vehicle'].includes(entry.route)) {
+  if (['bus-detail', 'metro-detail', 'train-detail', 'intercity-detail', 'vehicle', 'flight-detail'].includes(entry.route)) {
     return detailPath(entry.route, entry.params || {});
   }
   if (entry.route === 'results') {
@@ -145,6 +150,7 @@ function entryFromLocation(): StackEntry {
   if (path.startsWith('/train/') && path !== '/train') return { route: 'train-detail', params: { ...params, trainId: path.split('/')[2] || '' } };
   if (path.startsWith('/intercity/') && path !== '/intercity') return { route: 'intercity-detail', params: { ...params, id: path.split('/')[2] || '' } };
   if (path.startsWith('/launch/') && path !== '/launch') return { route: 'vehicle', params: { ...params, id: path.split('/')[2] || '' } };
+  if (path.startsWith('/air/') && path !== '/air') return { route: 'flight-detail', params: { ...params, code: (path.split('/')[2] || '').toUpperCase() } };
   const match = Object.entries(ROUTE_PATHS).find(([, routePath]) => routePath === path);
   return { route: match?.[0] || 'home' };
 }
@@ -166,6 +172,9 @@ export function KoyJaboApp() {
 
   // Inject global styles once
   useEffect(() => { injectGlobalStyles(); }, []);
+
+  // Daily login bonus
+  useEffect(() => { claimDailyBonus(); }, []);
 
   // Dismiss both splash screens after 1.4s
   useEffect(() => {
@@ -222,6 +231,11 @@ export function KoyJaboApp() {
     setDir('fwd');
     setShowSkeleton(true);
     pushUrl(entry);
+    if (['results', 'bus-hub', 'metro-hub', 'train-hub', 'flights-hub', 'intercity', 'launch-hub'].includes(route)) {
+      earnCoins(5, 'Transport search');
+    } else if (route === 'ai') {
+      earnCoins(3, 'AI assistant');
+    }
     setTimeout(() => {
       setStack(s => [...s, entry]);
       setShowSkeleton(false);
@@ -295,6 +309,8 @@ export function KoyJaboApp() {
       case 'metro-detail': return <MetroDetailPage {...p}/>;
       case 'train-detail': return <TrainDetailPage {...p}/>;
       case 'vehicle': return <VehicleDetailPage {...p}/>;
+      case 'flight-detail': return <FlightDetailPage {...p}/>;
+      case 'koy-coins': return <KoyCoinsPage {...p}/>;
       case 'rate-review': return <RateReviewPage {...p}/>;
       case 'metro-token': return <MetroTokenPage {...p}/>;
       case 'metro-pass': return <MetroPassPage {...p}/>;

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Tokens, Lang } from '../tokens';
+import { isAdFree } from '../utils/koyCoinService';
 
 type AdKind = 'leaderboard' | 'mid-rect' | 'mob-banner' | 'anchor';
 
@@ -55,6 +56,7 @@ export function AdSlot({
   kind?: AdKind;
   sticky?: boolean;
 }) {
+  if (isAdFree()) return null;
   const { w, h, format, slot } = DIMS[kind];
 
   return (

@@ -11,6 +11,7 @@ interface Props {
   busName: string;
   busBnName?: string;
   onBack: () => void;
+  onSuccess?: () => void;
 }
 
 function timeAgo(ts: number, t: (key: string, params?: Record<string, string | number>) => string, formatNumber: (n: number | string) => string): string {
@@ -64,7 +65,7 @@ function PhotoSkeleton() {
   );
 }
 
-export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: Props) {
+export default function BusPhotoGallery({ busId, busName, busBnName, onBack, onSuccess }: Props) {
   const user = getAuthUser();
   const { t, formatNumber, language } = useLanguage();
   const lbl = (en: string, bn: string) => language === 'bn' ? bn : en;
@@ -126,6 +127,7 @@ export default function BusPhotoGallery({ busId, busName, busBnName, onBack }: P
       setCaption('');
       setPreviewUrl(null);
       showToast(t('community.photoUploaded') || 'Photo uploaded!', 'success');
+      onSuccess?.();
     } else {
       showToast(t('community.submitError') || 'Failed to upload. Please try again.', 'error');
     }

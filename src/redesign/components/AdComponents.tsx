@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Tokens, Lang, SANS, BEN, T } from '../tokens';
+import { isAdFree } from '../utils/koyCoinService';
 
 function AdsenseUnit({ slot, format = 'auto' }: { slot: string; format?: string }) {
   const insRef = useRef<HTMLElement>(null);
@@ -38,6 +39,7 @@ function AdsenseUnit({ slot, format = 'auto' }: { slot: string; format?: string 
 
 // ── SideRailAd: fixed skyscraper (desktop ≥1500px gutters)
 export function SideRailAd({ tk, lang, side }: { tk: Tokens; lang: Lang; side: 'left' | 'right' }) {
+  if (isAdFree()) return null;
   return (
     <div style={{
       position: 'fixed', top: '50%', transform: 'translateY(-50%)',
@@ -55,6 +57,7 @@ export function SideRailAd({ tk, lang, side }: { tk: Tokens; lang: Lang; side: '
 
 // ── AnchorAd: sticky bottom bar
 export function AnchorAd({ tk, lang, onClose }: { tk: Tokens; lang: Lang; onClose: () => void }) {
+  if (isAdFree()) return null;
   return (
     <div style={{
       position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 9000,
@@ -79,7 +82,7 @@ export function VignetteAd({ tk, lang, open, onClose }: { tk: Tokens; lang: Lang
     const id = setInterval(() => setCount(c => c <= 1 ? (clearInterval(id), 0) : c - 1), 1000);
     return () => clearInterval(id);
   }, [open]);
-  if (!open) return null;
+  if (!open || isAdFree()) return null;
   return (
     <div style={{ position: 'fixed', inset: 0, zIndex: 10080, background: 'rgba(3,5,12,0.92)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
       <button onClick={count === 0 ? onClose : undefined} style={{

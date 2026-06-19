@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useCallback } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, chipBtn } from '../tokens';
 import { PageShell } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
@@ -10,6 +10,7 @@ import { Stars } from '../components/Stars';
 import { BUS_DATA, STATIONS } from '../../../constants';
 import { SuggestionDropdown, Suggestion } from '../components/SuggestionDropdown';
 import { trackBusSearch, trackRouteSearch } from '../../../services/analyticsService';
+import { earnCoins } from '../utils/koyCoinService';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string,p?:Record<string,string>)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -99,6 +100,38 @@ export function LocalBusPage(props: Props) {
     return BUS_DATA.filter(r => r.active !== false && r.name.length > 3).slice(0, 10);
   }, [searchQuery, fromInput, toInput]);
 
+  const [mode, setMode] = useState<'buses'|'transit'>('buses');
+
+  type Leg = { kind:'walk'|'bus'|'metro'; label:string; from:string; to:string; min:number; col:string; detail?:string; };
+  type Journey = { id:number; total:string; fare:string; from:string; to:string; legs:Leg[]; };
+
+  const TRANSIT_ROUTES: Journey[] = [
+    {
+      id:1, total:'52 min', fare:'৳ 30', from:T(lang,'গুলশান ২','Gulshan 2'), to:T(lang,'মতিঝিল','Motijheel'),
+      legs:[
+        {kind:'walk',label:T(lang,'হাঁটুন','Walk'),from:T(lang,'গুলশান ২','Gulshan 2'),to:T(lang,'গুলশান ১ স্টপ','Gulshan 1 stop'),min:3,col:'#6b7280'},
+        {kind:'bus',label:'GL-5',from:T(lang,'গুলশান ১','Gulshan 1'),to:T(lang,'ফার্মগেট','Farmgate'),min:28,col:'#10b981',detail:T(lang,'গ্রীন লাইন · ৳১৫','Green Line · ৳15')},
+        {kind:'walk',label:T(lang,'হাঁটুন','Walk'),from:T(lang,'ফার্মগেট','Farmgate'),to:T(lang,'ফার্মগেট বাস স্টপ','Farmgate bus stop'),min:3,col:'#6b7280'},
+        {kind:'bus',label:'BRTC-8',from:T(lang,'ফার্মগেট','Farmgate'),to:T(lang,'মতিঝিল','Motijheel'),min:18,col:'#3b82f6',detail:T(lang,'BRTC দোতলা · ৳১৫','BRTC Double · ৳15')},
+      ],
+    },
+    {
+      id:2, total:'38 min', fare:'৳ 50', from:T(lang,'ফার্মগেট','Farmgate'), to:T(lang,'মিরপুর ১০','Mirpur 10'),
+      legs:[
+        {kind:'walk',label:T(lang,'হাঁটুন','Walk'),from:T(lang,'ফার্মগেট','Farmgate'),to:T(lang,'ফার্মগেট মেট্রো','Farmgate Metro'),min:4,col:'#6b7280'},
+        {kind:'metro',label:T(lang,'মেট্রো MRT-6','Metro MRT-6'),from:T(lang,'ফার্মগেট','Farmgate'),to:T(lang,'মিরপুর ১০','Mirpur 10'),min:22,col:'#6d28d9',detail:T(lang,'MRT লাইন ৬ · ৳৩০','MRT Line 6 · ৳30')},
+        {kind:'walk',label:T(lang,'হাঁটুন','Walk'),from:T(lang,'মিরপুর ১০ স্টেশন','Mirpur 10 station'),to:T(lang,'মিরপুর ১০','Mirpur 10'),min:4,col:'#6b7280'},
+      ],
+    },
+    {
+      id:3, total:'65 min', fare:'৳ 25', from:T(lang,'ধানমন্ডি','Dhanmondi'), to:T(lang,'উত্তরা','Uttara'),
+      legs:[
+        {kind:'bus',label:'SH-7',from:T(lang,'ধানমন্ডি','Dhanmondi'),to:T(lang,'বিমানবন্দর রোড','Airport Road'),min:40,col:'#f59e0b',detail:T(lang,'শ্যামলী · ৳২৫','Shyamoli · ৳25')},
+        {kind:'walk',label:T(lang,'হাঁটুন','Walk'),from:T(lang,'বিমানবন্দর রোড','Airport Road'),to:T(lang,'উত্তরা','Uttara'),min:5,col:'#6b7280'},
+      ],
+    },
+  ];
+
   return (
     <PageShell {...props}>
       <div style={{ padding:isMobile?'0 0 80px':'0 0 48px' }}>
@@ -153,42 +186,104 @@ export function LocalBusPage(props: Props) {
             </div>
           </div>
 
+          {/* Mode tab switcher */}
+          <div style={{ display:'flex', gap:6, marginBottom:16 }}>
+            {([{k:'buses',bn:'🚌 বাস রুট',en:'🚌 Bus routes'},{k:'transit',bn:'🔀 ট্রানজিট',en:'🔀 Transit'}] as const).map(t=>(
+              <button key={t.k} onClick={()=>setMode(t.k)} style={{ ...chipBtn(tk), background:mode===t.k?tk.primary:tk.panelMuted, color:mode===t.k?tk.primaryInk:tk.text, borderColor:mode===t.k?tk.primary:tk.line, fontWeight:mode===t.k?700:500, padding:'8px 16px', fontSize:13 }}>
+                {T(lang,t.bn,t.en)}
+              </button>
+            ))}
+          </div>
+
           <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1.4fr 1fr', gap:isMobile?18:24 }}>
-            {/* Popular routes */}
+            {/* Main content — buses or transit */}
             <div>
-              <SectionHeader tk={tk} lang={lang}
-                title={(searchQuery || fromInput || toInput)
-                  ? T(lang, `${filteredRoutes.length}টি রুট পাওয়া গেছে`, `${filteredRoutes.length} routes found`)
-                  : T(lang,'জনপ্রিয় বাস রুট','Popular bus routes')}
-                action={T(lang,'সব দেখুন','See all')}/>
-              <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-                {filteredRoutes.length === 0 && (
-                  <div style={{ fontFamily:BEN, fontSize:13, color:tk.textFaint, padding:'12px 0', textAlign:'center' }}>{T(lang,'কোনো রুট পাওয়া যায়নি','No routes found')}</div>
-                )}
-                {filteredRoutes.map((r,i)=>{
-                  const col = routeColor(r.type);
-                  const initials = r.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-                  return (
-                    <div key={r.id||i} onClick={()=>{ trackBusSearch(r.id, r.name); onNav('bus-detail', { busId: r.id, from: fromInput, to: toInput }); }} style={{ ...card(14), display:'flex', alignItems:'center', gap:12, cursor:'pointer' }}>
-                      <div style={{ width:44, height:44, borderRadius:12, flexShrink:0, background:`linear-gradient(135deg,${col}cc,${col})`, color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:SANS, fontWeight:800, fontSize:13 }}>{initials}</div>
-                      <div style={{ flex:1, minWidth:0 }}>
-                        <div style={{ display:'flex', alignItems:'center', gap:6, flexWrap:'wrap' }}>
-                          <span style={{ fontFamily:BEN, fontWeight:700, fontSize:14, color:tk.text }}>{lang==='bn'?r.bnName:r.name}</span>
-                          {r.type==='AC' && <Pill tk={tk} tone="primary">AC</Pill>}
+              {mode === 'buses' ? (
+                <>
+                  <SectionHeader tk={tk} lang={lang}
+                    title={(searchQuery || fromInput || toInput)
+                      ? T(lang, `${filteredRoutes.length}টি রুট পাওয়া গেছে`, `${filteredRoutes.length} routes found`)
+                      : T(lang,'জনপ্রিয় বাস রুট','Popular bus routes')}
+                    action={T(lang,'সব দেখুন','See all')}/>
+                  <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+                    {filteredRoutes.length === 0 && (
+                      <div style={{ fontFamily:BEN, fontSize:13, color:tk.textFaint, padding:'12px 0', textAlign:'center' }}>{T(lang,'কোনো রুট পাওয়া যায়নি','No routes found')}</div>
+                    )}
+                    {filteredRoutes.map((r,i)=>{
+                      const col = routeColor(r.type);
+                      const initials = r.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+                      return (
+                        <div key={r.id||i} onClick={()=>{ trackBusSearch(r.id, r.name); onNav('bus-detail', { busId: r.id, from: fromInput, to: toInput }); }} style={{ ...card(14), display:'flex', alignItems:'center', gap:12, cursor:'pointer' }}>
+                          <div style={{ width:44, height:44, borderRadius:12, flexShrink:0, background:`linear-gradient(135deg,${col}cc,${col})`, color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:SANS, fontWeight:800, fontSize:13 }}>{initials}</div>
+                          <div style={{ flex:1, minWidth:0 }}>
+                            <div style={{ display:'flex', alignItems:'center', gap:6, flexWrap:'wrap' }}>
+                              <span style={{ fontFamily:BEN, fontWeight:700, fontSize:14, color:tk.text }}>{lang==='bn'?r.bnName:r.name}</span>
+                              {r.type==='AC' && <Pill tk={tk} tone="primary">AC</Pill>}
+                            </div>
+                            <div style={{ fontFamily:BEN, fontSize:12, color:tk.textDim, marginTop:2 }}>{r.routeString}</div>
+                            <div style={{ display:'flex', alignItems:'center', gap:6, marginTop:4 }}>
+                              <span style={{ fontFamily:SANS, fontSize:10, color:tk.textFaint }}>{r.type}</span>
+                              {r.hours && <span style={{ fontFamily:SANS, fontSize:10, color:tk.textFaint }}>· {r.hours}</span>}
+                            </div>
+                          </div>
+                          <div style={{ textAlign:'right', flexShrink:0 }}><Icon.arrowR s={14}/></div>
                         </div>
-                        <div style={{ fontFamily:BEN, fontSize:12, color:tk.textDim, marginTop:2 }}>{r.routeString}</div>
-                        <div style={{ display:'flex', alignItems:'center', gap:6, marginTop:4 }}>
-                          <span style={{ fontFamily:SANS, fontSize:10, color:tk.textFaint }}>{r.type}</span>
-                          {r.hours && <span style={{ fontFamily:SANS, fontSize:10, color:tk.textFaint }}>· {r.hours}</span>}
+                      );
+                    })}
+                  </div>
+                </>
+              ) : (
+                /* Transit journey planner */
+                <>
+                  <SectionHeader tk={tk} lang={lang} title={T(lang,'ট্রানজিট রুট · মাল্টি-লেগ যাত্রা','Transit routes · multi-leg journey')} action=""/>
+                  <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
+                    {TRANSIT_ROUTES.map(journey=>(
+                      <div key={journey.id} style={{ ...card(16), cursor:'pointer' }} onClick={()=>{ earnCoins(5, 'Transit search'); onNav('results', { from: fromInput||journey.from, to: toInput||journey.to }); }}>
+                        {/* Journey header */}
+                        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:14 }}>
+                          <div>
+                            <div style={{ fontFamily:BEN, fontWeight:700, fontSize:14, color:tk.text }}>{journey.from} → {journey.to}</div>
+                            <div style={{ display:'flex', gap:10, marginTop:4 }}>
+                              <span style={{ fontFamily:SANS, fontWeight:700, fontSize:12, color:tk.primary }}>⏱ {journey.total}</span>
+                              <span style={{ fontFamily:SANS, fontWeight:700, fontSize:12, color:'#10b981' }}>৳ {journey.fare.replace('৳ ','')}</span>
+                            </div>
+                          </div>
+                          <div style={{ fontFamily:SANS, fontWeight:700, fontSize:11, color:tk.textFaint }}>{journey.legs.length} {T(lang,'লেগ','legs')}</div>
+                        </div>
+                        {/* Leg timeline */}
+                        <div style={{ position:'relative' }}>
+                          {journey.legs.map((leg,li)=>(
+                            <div key={li} style={{ display:'flex', gap:12, paddingBottom: li<journey.legs.length-1?0:0 }}>
+                              {/* Timeline spine */}
+                              <div style={{ display:'flex', flexDirection:'column', alignItems:'center', width:20, flexShrink:0 }}>
+                                <div style={{ width:12, height:12, borderRadius:999, background:leg.col, border:`2px solid ${tk.bg}`, boxShadow:`0 0 0 2px ${leg.col}`, zIndex:1, marginTop:3, flexShrink:0 }}/>
+                                {li < journey.legs.length-1 && <div style={{ width:2, flex:1, background:`${leg.col}44`, minHeight:20, marginTop:2 }}/>}
+                              </div>
+                              {/* Leg content */}
+                              <div style={{ flex:1, paddingBottom:12 }}>
+                                <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:2 }}>
+                                  <span style={{ fontSize:13 }}>
+                                    {leg.kind==='walk'?'🚶':leg.kind==='metro'?'🚇':'🚌'}
+                                  </span>
+                                  <span style={{ fontFamily:SANS, fontWeight:700, fontSize:13, color:leg.col }}>{leg.label}</span>
+                                  <span style={{ fontFamily:SANS, fontSize:11, color:tk.textFaint, marginLeft:'auto' }}>{leg.min} {T(lang,'মিনিট','min')}</span>
+                                </div>
+                                <div style={{ fontFamily:BEN, fontSize:12, color:tk.textDim }}>{leg.from} → {leg.to}</div>
+                                {leg.detail && <div style={{ fontFamily:SANS, fontSize:11, color:tk.textFaint, marginTop:2 }}>{leg.detail}</div>}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        <div style={{ borderTop:`1px dashed ${tk.line}`, paddingTop:10, display:'flex', justifyContent:'flex-end' }}>
+                          <button style={{ background:tk.primarySoft, color:tk.primary, border:`1px solid ${tk.primary}`, borderRadius:8, padding:'6px 14px', fontFamily:SANS, fontWeight:700, fontSize:12, cursor:'pointer' }}>
+                            {T(lang,'রুট দেখুন','View route')} →
+                          </button>
                         </div>
                       </div>
-                      <div style={{ textAlign:'right', flexShrink:0 }}>
-                        <Icon.arrowR s={14}/>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Sidebar */}

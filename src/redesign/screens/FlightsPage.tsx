@@ -7,8 +7,9 @@ import { Icon } from '../components/Icons';
 import { ModeHero } from '../components/ModeHero';
 import { Stars } from '../components/Stars';
 import { SuggestionDropdown, Suggestion } from '../components/SuggestionDropdown';
+import { earnCoins } from '../utils/koyCoinService';
 
-interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
+interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string,p?:Record<string,string>)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
 const AIRLINES = [
   { code:'BG', name:{bn:'বিমান বাংলাদেশ',en:'Biman Bangladesh'}, dep:'07:15', arr:'08:15', dur:'1h 0m', stop:'Nonstop', fare:'4,499', seats:9, col:['#006a4e','#10b981'] as [string,string], rating:4.2, reviews:1240 },
@@ -136,7 +137,7 @@ export function FlightsPage(props: Props) {
                 anchorRef={toRef as React.RefObject<HTMLElement>}
               />
             )}
-            <button onClick={()=>onNav('results')} style={{ background:'linear-gradient(135deg,#1e5aa0,#0a1d3a)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'10px 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #1e5aa0', marginTop:10 }}>
+            <button onClick={()=>{ earnCoins(5, 'Flight search'); onNav('results'); }} style={{ background:'linear-gradient(135deg,#1e5aa0,#0a1d3a)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'10px 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #1e5aa0', marginTop:10 }}>
               <Icon.search s={16}/>{T(lang,'ফ্লাইট খুঁজুন','Find flights')}
             </button>
           </div>
@@ -147,7 +148,7 @@ export function FlightsPage(props: Props) {
               <SectionHeader tk={tk} lang={lang} title={T(lang,"এয়ারলাইন গাইড · ঢাকা → কক্সবাজার","Airline guide · Dhaka → Cox's Bazar")} action={T(lang,'সব দেখুন','See all')}/>
               <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
                 {AIRLINES.map((a,i)=>(
-                  <div key={i} onClick={()=>onNav('vehicle')} style={{ ...card(14), position:'relative', overflow:'hidden', cursor:'pointer' }}>
+                  <div key={i} onClick={()=>{ earnCoins(2, 'View flight details'); onNav('flight-detail', { code: a.code }); }} style={{ ...card(14), position:'relative', overflow:'hidden', cursor:'pointer' }}>
                     {a.best && <div style={{ position:'absolute', top:0, right:0, background:'linear-gradient(90deg,#0ea5e9,#22d3ee)', color:'#04130d', padding:'3px 10px', borderRadius:'0 16px 0 10px', fontFamily:SANS, fontWeight:800, fontSize:9, letterSpacing:1 }}>★ {T(lang,'সেরা','BEST')}</div>}
                     {a.cheap && <div style={{ position:'absolute', top:0, right:0, background:'linear-gradient(90deg,#a855f7,#7c3aed)', color:'#fff', padding:'3px 10px', borderRadius:'0 16px 0 10px', fontFamily:SANS, fontWeight:800, fontSize:9, letterSpacing:1 }}>৳ {T(lang,'সস্তা','CHEAPEST')}</div>}
                     <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:10 }}>

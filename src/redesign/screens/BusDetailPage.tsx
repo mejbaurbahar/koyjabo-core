@@ -9,6 +9,7 @@ import BusRating from '../../../components/BusRating';
 import BusPhotoGallery from '../../../components/BusPhotoGallery';
 import EmergencyHelplineModal from '../../../components/EmergencyHelplineModal';
 import { getBusRatings, BusRatingSummary } from '../../../services/communityDataService';
+import { earnCoins } from '../utils/koyCoinService';
 import type { UserLocation } from '../../../types';
 import { getFavoriteBusIds, toggleFavoriteBus } from '../utils/favorites';
 
@@ -100,7 +101,7 @@ export function BusDetailPage(props: Props) {
     <PageShell {...props} canBack>
       <div style={{ padding:isMobile?'16px 12px 100px':'24px 40px 80px', maxWidth:920, margin:'0 auto' }}>
         <div style={{ ...card(18), padding:0, overflow:'hidden', minHeight:isMobile?'calc(100vh - 150px)':'calc(100vh - 190px)', display:'flex' }}>
-          <BusRating busId={bus.id} busName={bus.name} onBack={() => { setShowRating(false); getBusRatings(bus.id).then(setRatingSummary).catch(() => setRatingSummary(null)); }} />
+          <BusRating busId={bus.id} busName={bus.name} onBack={() => { setShowRating(false); getBusRatings(bus.id).then(setRatingSummary).catch(() => setRatingSummary(null)); }} onSuccess={() => earnCoins(10, 'Bus review submitted')}/>
         </div>
       </div>
     </PageShell>
@@ -109,7 +110,7 @@ export function BusDetailPage(props: Props) {
     <PageShell {...props} canBack>
       <div style={{ padding:isMobile?'16px 12px 100px':'24px 40px 80px', maxWidth:920, margin:'0 auto' }}>
         <div style={{ ...card(18), padding:0, overflow:'hidden' }}>
-          <BusPhotoGallery busId={bus.id} busName={bus.name} busBnName={bus.bnName} onBack={() => setShowPhotos(false)} />
+          <BusPhotoGallery busId={bus.id} busName={bus.name} busBnName={bus.bnName} onBack={() => setShowPhotos(false)} onSuccess={() => earnCoins(8, 'Bus photo uploaded')}/>
         </div>
       </div>
     </PageShell>

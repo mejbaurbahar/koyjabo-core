@@ -25,6 +25,7 @@ const GROUPS: { heading: { bn: string; en: string }; links: DrawerLink[] }[] = [
     heading: { bn: 'অ্যাকাউন্ট', en: 'Account' },
     links: [
       { bn: 'প্রোফাইল', en: 'Profile', route: 'profile' },
+      { bn: '🪙 কয় কয়েন', en: '🪙 KoyCoins', route: 'koy-coins' },
       { bn: 'সেভড', en: 'Favorites', route: 'favorites' },
       { bn: 'ইতিহাস', en: 'History', route: 'history' },
       { bn: 'সেটিংস', en: 'Settings', route: 'settings' },

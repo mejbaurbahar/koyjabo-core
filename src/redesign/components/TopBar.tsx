@@ -2,6 +2,7 @@ import React from 'react';
 import { Tokens, Lang, Theme, SANS, BEN, T } from '../tokens';
 import { Logo } from './Logo';
 import { Icon } from './Icons';
+import { getBalance, isAdFree } from '../utils/koyCoinService';
 
 type Device = 'auto' | 'mobile' | 'desktop';
 
@@ -27,6 +28,31 @@ interface TopBarProps {
   onMenu: () => void;
   canBack?: boolean;
   onBack?: () => void;
+}
+
+function CoinBadge({ tk, lang, onNav }: { tk: Tokens; lang: Lang; onNav: (r: string) => void }) {
+  const balance = getBalance();
+  const adFree = isAdFree();
+  return (
+    <button
+      onClick={() => onNav('koy-coins')}
+      title={T(lang, 'কয় কয়েন', 'KoyCoins')}
+      style={{
+        background: adFree ? 'linear-gradient(135deg,#b45309,#f59e0b)' : 'rgba(245,158,11,0.12)',
+        border: `1px solid ${adFree ? '#f59e0b' : 'rgba(245,158,11,0.35)'}`,
+        borderRadius: 999,
+        padding: '5px 10px',
+        display: 'inline-flex', alignItems: 'center', gap: 5,
+        cursor: 'pointer', flexShrink: 0,
+      }}
+    >
+      <span style={{ fontSize: 13 }}>🪙</span>
+      <span style={{ fontFamily: SANS, fontWeight: 700, fontSize: 12, color: adFree ? '#fff' : '#f59e0b' }}>
+        {balance}
+      </span>
+      {adFree && <span style={{ fontFamily: SANS, fontSize: 10, fontWeight: 700, color: '#fff' }}>✕ ads</span>}
+    </button>
+  );
 }
 
 export function TopBar({
@@ -184,6 +210,9 @@ export function TopBar({
               <Icon.menu s={18} />
             </button>
           )}
+
+          {/* KoyCoins badge */}
+          <CoinBadge tk={tk} lang={lang} onNav={onNav} />
 
           {/* Lang toggle */}
           <button onClick={onLang} style={controlBtn}>
