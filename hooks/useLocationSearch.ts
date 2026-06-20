@@ -42,10 +42,12 @@ function getStaticLocations(): LocationSuggestion[] {
   }
 
   // Nationwide train stations
+  // Use 'rail_' prefix when id conflicts with a bus stop (e.g. 'kamalapur')
   for (const [id, t] of Object.entries(TRAIN_STATIONS)) {
-    if (seen.has(id)) continue;
-    seen.add(id);
-    list.push({ id, label: t.name, sub: t.bnName || '', lat: t.lat, lng: t.lng, category: 'railway_station' });
+    const safeId = seen.has(id) ? `rail_${id}` : id;
+    if (seen.has(safeId)) continue;
+    seen.add(safeId);
+    list.push({ id: safeId, label: t.name, sub: t.bnName || '', lat: t.lat, lng: t.lng, category: 'railway_station' });
   }
 
   // Launch terminals

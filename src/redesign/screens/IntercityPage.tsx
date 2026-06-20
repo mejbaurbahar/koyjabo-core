@@ -5,11 +5,14 @@ import { PageShell } from './PageShell';
 import { Plane3D } from '../components/Vehicles3D';
 import { INTERCITY_BUS_ROUTES, BUS_OPERATORS, MAJOR_TRANSPORT_HUBS } from '../../../data/intercityData';
 import { LOCATIONS_DATA } from '../../../intercity/constants';
+import { BD_TRAIN_ROUTES } from '../../../data/bangladeshTrainData';
+import { DOMESTIC_ROUTES, AIRPORTS_DATA } from '../../../data/bangladeshFlightData';
+import { LAUNCH_ROUTES, LAUNCH_TERMINALS } from '../../../data/bangladeshLaunchData';
 import { SuggestionDropdown, Suggestion } from '../components/SuggestionDropdown';
 import { useLocationSearch } from '../../../hooks/useLocationSearch';
 import { earnCoins } from '../utils/koyCoinService';
 
-interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:Lang; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
+interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:Lang; route:string; canBack:boolean; onNav:(r:string,p?:Record<string,string>)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
 const OPERATORS = [
   {
@@ -203,15 +206,71 @@ export function IntercityPage(props: Props) {
     return (side === 'from' ? fromSuggs : toSuggs) as Suggestion[];
   };
 
-  const filteredDistricts = useMemo(() => {
-    const q = (nameSearch || from || to).toLowerCase().trim();
-    if (!q) return ALL_INTERCITY_LOCATIONS.filter(r => r.district !== 'Dhaka');
-    return ALL_INTERCITY_LOCATIONS.filter(r =>
-      r.district.toLowerCase().includes(q) ||
-      r.route.toLowerCase().includes(q) ||
-      r.busOperators.some(op => op.toLowerCase().includes(q))
-    );
-  }, [nameSearch, from, to]);
+  // Normalize city name for loose matching (Dhaka, Benapole, Benapol etc.)
+  const matchesLocation = (text: string, loc: string) => {
+    if (!loc.trim()) return true;
+    const l = loc.toLowerCase().trim();
+    const t = text.toLowerCase();
+    // Try full match, then first word ≥4 chars
+    if (t.includes(l)) return true;
+    const word = l.split(/\s+/).find(w => w.length >= 4);
+    return word ? t.includes(word) : false;
+  };
+
+  const filteredResults = useMemo(() => {
+    const fq = (nameSearch || from).toLowerCase().trim();
+    const tq = to.toLowerCase().trim();
+    const sq = nameSearch.toLowerCase().trim();
+
+    if (activeChip === 'Train') {
+      return BD_TRAIN_ROUTES.filter(r => {
+        const allStops = [r.from, r.to, ...(r.stops || [])].join(' ');
+        const routeText = (r.name + ' ' + r.bnName + ' ' + allStops).toLowerCase();
+        const fromOk = !fq || matchesLocation(routeText, fq);
+        const toOk = !tq || matchesLocation(routeText, tq);
+        const searchOk = !sq || matchesLocation(r.name + ' ' + r.bnName, sq);
+        return fromOk && toOk && searchOk;
+      });
+    }
+
+    if (activeChip === 'Flight') {
+      return DOMESTIC_ROUTES.filter(r => {
+        const fromAp = AIRPORTS_DATA.find(a => a.iata === r.from);
+        const toAp = AIRPORTS_DATA.find(a => a.iata === r.to);
+        const fromText = (fromAp?.en || '') + ' ' + (fromAp?.city || '') + ' ' + r.from;
+        const toText = (toAp?.en || '') + ' ' + (toAp?.city || '') + ' ' + r.to;
+        const fromOk = !fq || matchesLocation(fromText, fq);
+        const toOk = !tq || matchesLocation(toText, tq);
+        return fromOk && toOk;
+      });
+    }
+
+    if (activeChip === 'Launch') {
+      return LAUNCH_ROUTES.filter(r => {
+        const fromT = LAUNCH_TERMINALS.find(t => t.id === r.from);
+        const toT = LAUNCH_TERMINALS.find(t => t.id === r.to);
+        const fromText = (fromT?.en || '') + ' ' + (fromT?.bn || '');
+        const toText = (toT?.en || '') + ' ' + (toT?.bn || '');
+        const fromOk = !fq || matchesLocation(fromText + ' ' + r.name.en + ' ' + r.from, fq);
+        const toOk = !tq || matchesLocation(toText + ' ' + r.to, tq);
+        return fromOk && toOk;
+      });
+    }
+
+    // Bus mode (default)
+    const allBus = [...INTERCITY_BUS_ROUTES, ...MAJOR_TRANSPORT_HUBS];
+    if (!fq && !tq && !sq) return allBus.filter(r => r.district !== 'Dhaka');
+    return allBus.filter(r => {
+      const text = (r.district + ' ' + r.route + ' ' + r.busOperators.join(' ')).toLowerCase();
+      const textWithDiv = text + ' ' + r.division.toLowerCase();
+      // When both from and to specified: route must mention BOTH
+      if (fq && tq) {
+        return matchesLocation(textWithDiv, fq) && matchesLocation(textWithDiv, tq);
+      }
+      const q = fq || tq || sq;
+      return matchesLocation(textWithDiv, q);
+    });
+  }, [nameSearch, from, to, activeChip]);
 
   const DIVISION_COLORS: Record<string, string> = {
     Dhaka: '#3b82f6', Chattogram: '#10b981', Sylhet: '#a855f7',
@@ -398,47 +457,94 @@ export function IntercityPage(props: Props) {
         {(nameSearch || from || to) && (
         <div id="intercity-results" style={{ marginTop: 32 }}>
           <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 700, letterSpacing: 0.8, textTransform: 'uppercase', color: tk.textFaint, marginBottom: 16 }}>
-            {lbl(`${filteredDistricts.length} routes found`, `${filteredDistricts.length}টি রুট পাওয়া গেছে`)}
+            {lbl(`${filteredResults.length} ${activeChip} routes found`, `${filteredResults.length}টি ${activeChip} রুট পাওয়া গেছে`)}
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 12 }}>
-            {filteredDistricts.map((r) => {
-              const col = DIVISION_COLORS[r.division] || '#6b7280';
-              const initials = r.district.slice(0, 2).toUpperCase();
-              const hasAC = r.costAC && r.costAC !== '-';
-              return (
-                <button
-                  key={r.district}
-                  onClick={() => onNav('intercity-detail')}
-                  style={{ background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 16, padding: 0, cursor: 'pointer', textAlign: 'left', overflow: 'hidden', transition: 'box-shadow 0.15s' }}
-                >
-                  <div style={{ background: `linear-gradient(135deg, ${col}33, ${col}11)`, borderBottom: `1px solid ${tk.line}`, padding: '12px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <div style={{ width: 36, height: 36, borderRadius: 10, background: col, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: SANS, fontSize: 12, fontWeight: 800, color: '#fff', flexShrink: 0 }}>{initials}</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {filteredResults.slice(0, 30).map((r: any, i: number) => {
+              // ── Bus card ──────────────────────────────────────────────────
+              if (activeChip === 'Bus') {
+                const col = DIVISION_COLORS[r.division] || '#6b7280';
+                const hasAC = r.costAC && r.costAC !== '-';
+                return (
+                  <button key={r.district + i} onClick={() => onNav('intercity-detail')}
+                    style={{ background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 14, padding: '12px 14px', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{ width: 44, height: 44, borderRadius: 10, background: col, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: SANS, fontSize: 13, fontWeight: 800, color: '#fff', flexShrink: 0 }}>🚌</div>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 14, fontWeight: 700, color: tk.text }}>{r.district}</div>
-                      <div style={{ fontFamily: SANS, fontSize: 10, color: col, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5 }}>{r.division} Division</div>
-                    </div>
-                    {hasAC && <span style={{ background: col+'22', color: col, border: `1px solid ${col}44`, borderRadius: 999, padding: '3px 8px', fontFamily: SANS, fontSize: 10, fontWeight: 700 }}>AC</span>}
-                  </div>
-                  <div style={{ padding: '10px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textDim, marginBottom: 3 }}>{r.route}</div>
-                      <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint }}>
-                        {r.busOperators.slice(0, 2).join(' · ')}
-                        {r.busOperators.length > 2 && ` +${r.busOperators.length - 2}`}
-                      </div>
+                      <div style={{ fontFamily: SANS, fontSize: 14, fontWeight: 700, color: tk.text }}>{r.district}</div>
+                      <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint, marginTop: 2 }}>{r.route}</div>
+                      <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textDim, marginTop: 2 }}>{r.busOperators.slice(0, 3).join(' · ')}{r.busOperators.length > 3 ? ` +${r.busOperators.length - 3}` : ''}</div>
                     </div>
                     <div style={{ textAlign: 'right', flexShrink: 0 }}>
                       <div style={{ fontFamily: SANS, fontSize: 13, fontWeight: 700, color: tk.text }}>{r.costNonAC}</div>
                       {hasAC && <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textDim }}>AC: {r.costAC}</div>}
                     </div>
-                  </div>
-                </button>
-              );
+                  </button>
+                );
+              }
+              // ── Train card ─────────────────────────────────────────────────
+              if (activeChip === 'Train') {
+                return (
+                  <button key={r.id + i} onClick={() => onNav('train-detail', { trainId: r.id })}
+                    style={{ background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 14, padding: '12px 14px', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{ width: 44, height: 44, borderRadius: 10, background: 'linear-gradient(135deg,#5b21b6,#7c3aed)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>🚆</div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontFamily: SANS, fontSize: 14, fontWeight: 700, color: tk.text }}>{r.name} <span style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint }}>#{r.number}</span></div>
+                      <div style={{ fontFamily: BEN, fontSize: 12, color: tk.textDim, marginTop: 2 }}>{r.bnName}</div>
+                      <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint, marginTop: 2 }}>Off day: {r.offDay}</div>
+                    </div>
+                    <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                      <div style={{ fontFamily: SANS, fontSize: 13, fontWeight: 700, color: tk.text }}>{r.dhakaDepart}</div>
+                      <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textDim }}>৳{r.fare?.shuvan || '—'}</div>
+                    </div>
+                  </button>
+                );
+              }
+              // ── Flight card ────────────────────────────────────────────────
+              if (activeChip === 'Flight') {
+                const fromAp = AIRPORTS_DATA.find((a: any) => a.iata === r.from);
+                const toAp = AIRPORTS_DATA.find((a: any) => a.iata === r.to);
+                return (
+                  <button key={r.id + i} onClick={() => onNav('flight-detail', { code: r.airline })}
+                    style={{ background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 14, padding: '12px 14px', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{ width: 44, height: 44, borderRadius: 10, background: 'linear-gradient(135deg,#1e3a8a,#3b82f6)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>✈️</div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontFamily: SANS, fontSize: 14, fontWeight: 700, color: tk.text }}>{r.flightNo}</div>
+                      <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textDim, marginTop: 2 }}>{fromAp?.en || r.from} → {toAp?.en || r.to}</div>
+                      <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint, marginTop: 2 }}>{r.dep} – {r.arr} · {r.dur} · {r.daysOp}</div>
+                    </div>
+                    <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                      <div style={{ fontFamily: SANS, fontSize: 13, fontWeight: 700, color: tk.text }}>৳{r.fareEco.toLocaleString()}</div>
+                      {r.fareBiz && <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textDim }}>Biz: ৳{r.fareBiz.toLocaleString()}</div>}
+                    </div>
+                  </button>
+                );
+              }
+              // ── Launch card ────────────────────────────────────────────────
+              if (activeChip === 'Launch') {
+                const fromT = LAUNCH_TERMINALS.find((t: any) => t.id === r.from);
+                const toT = LAUNCH_TERMINALS.find((t: any) => t.id === r.to);
+                return (
+                  <button key={r.id + i} onClick={() => onNav('vehicle', { kind:'launch', id:r.id, name:r.name.en, nameBn:r.name.bn, from:fromT?.en||r.from, to:toT?.en||r.to, dep:r.dep, arr:r.arr, dur:r.dur, deck:String(r.deck), cabin:String(r.cabin), vip:String(r.vip), operator:r.operator.en, operatorBn:r.operator.bn, rating:String(r.rating), col:'#0369a1' })}
+                    style={{ background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 14, padding: '12px 14px', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{ width: 44, height: 44, borderRadius: 10, background: 'linear-gradient(135deg,#0c1a2e,#0369a1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>⛴️</div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontFamily: BEN, fontSize: 14, fontWeight: 700, color: tk.text }}>{lbl(r.name.en, r.name.bn)}</div>
+                      <div style={{ fontFamily: BEN, fontSize: 11, color: tk.textDim, marginTop: 2 }}>{lbl(r.operator.en, r.operator.bn)}</div>
+                      <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint, marginTop: 2 }}>{r.dep} → {r.arr} · {r.dur}</div>
+                    </div>
+                    <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                      <div style={{ fontFamily: SANS, fontSize: 13, fontWeight: 700, color: tk.text }}>৳{r.deck}</div>
+                      <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textDim }}>Cabin: ৳{r.cabin}</div>
+                    </div>
+                  </button>
+                );
+              }
+              return null;
             })}
           </div>
-          {filteredDistricts.length === 0 && (
+          {filteredResults.length === 0 && (
             <div style={{ textAlign: 'center', padding: '32px 16px', color: tk.textFaint, fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 14 }}>
-              {lbl('No routes found. Try a different search.', 'কোনো রুট পাওয়া যায়নি।')}
+              {lbl(`No ${activeChip} routes found. Try different locations.`, 'কোনো রুট পাওয়া যায়নি।')}
             </div>
           )}
         </div>
