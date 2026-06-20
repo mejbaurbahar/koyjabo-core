@@ -43,12 +43,12 @@ type PendingCommunityWrite = {
   createdAt: number;
 };
 
-export function getAuthUser(): { id: string; displayName: string; username: string } | null {
+export function getAuthUser(): { id: string; displayName: string; username: string; avatarUrl?: string; email?: string } | null {
   try {
     const s = localStorage.getItem('koyjabo_auth_session');
     if (!s) return null;
     const u = JSON.parse(s)?.user;
-    return u?.id ? { id: u.id, displayName: u.displayName ?? '', username: u.username ?? '' } : null;
+    return u?.id ? { id: u.id, displayName: u.displayName ?? '', username: u.username ?? '', avatarUrl: u.avatarUrl ?? undefined, email: u.email ?? undefined } : null;
   } catch { return null; }
 }
 
