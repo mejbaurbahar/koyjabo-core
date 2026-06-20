@@ -147,15 +147,17 @@ export function useLocationSearch(
       s.sub.includes(query)
     );
 
-    // Deduplicate OSM results by normalized name to avoid showing same place twice
-    const norm = (s: string) => s.toLowerCase().replace(/[\s\-\.,'()]+/g, '');
-    const seenNames = new Set<string>(staticMatches.map(s => norm(s.label)));
+    // Strip common transport suffixes before normalizing — prevents "Hemayetpur" vs "Hemayetpur Bus Stand"
+    const STRIP_SUFFIXES = /\s*(bus stand|bus stop|bus station|bus terminal|railway station|rail station|train station|station|ghat|terminal|bazar|bazaar|stand|\d+)$/i;
+    const normBase = (s: string) => s.toLowerCase().replace(STRIP_SUFFIXES, '').replace(/[\s\-\.,'()]+/g, '');
+
+    const seenNames = new Set<string>(staticMatches.map(s => normBase(s.label)));
     const staticIds = new Set(staticMatches.map(s => s.id));
 
     const osmMapped: LocationSuggestion[] = osmResults
       .filter(r => {
         if (!r.name || staticIds.has(r.id)) return false;
-        const n = norm(r.name);
+        const n = normBase(r.name);
         if (seenNames.has(n)) return false;
         seenNames.add(n);
         return true;
@@ -183,19 +185,20 @@ export function searchAllLocations(query: string, limit = 20): LocationSuggestio
   if (!query.trim()) return staticList.slice(0, limit);
 
   const q = query.toLowerCase().trim();
-  const norm = (s: string) => s.toLowerCase().replace(/[\s\-\.,'()]+/g, '');
+  const STRIP = /\s*(bus stand|bus stop|bus station|bus terminal|railway station|rail station|train station|station|ghat|terminal|bazar|bazaar|stand|\d+)$/i;
+  const normBase = (s: string) => s.toLowerCase().replace(STRIP, '').replace(/[\s\-\.,'()]+/g, '');
   const staticMatches = staticList.filter(s =>
     s.label.toLowerCase().includes(q) ||
     s.sub.toLowerCase().includes(q)
   );
 
-  const seenNames = new Set<string>(staticMatches.map(s => norm(s.label)));
+  const seenNames = new Set<string>(staticMatches.map(s => normBase(s.label)));
   const staticIds = new Set(staticMatches.map(s => s.id));
 
   const osmSync = searchLocationsSync(query, limit)
     .filter(r => {
       if (!r.name || staticIds.has(r.id)) return false;
-      const n = norm(r.name);
+      const n = normBase(r.name);
       if (seenNames.has(n)) return false;
       seenNames.add(n);
       return true;

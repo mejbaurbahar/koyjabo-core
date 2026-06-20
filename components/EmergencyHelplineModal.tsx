@@ -1,5 +1,5 @@
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { X, Phone, Shield, Activity, Flame, MapPin, Navigation2 } from 'lucide-react';
 import { UserLocation } from '../types';
 import { NATIONAL_HELPLINES } from '../data/emergencyHelplines';
@@ -24,6 +24,15 @@ const EmergencyHelplineModal: React.FC<EmergencyHelplineModalProps> = ({
         if (!userLocation) return null;
         return findNearestEmergencyServicesByType(userLocation, 2);
     }, [userLocation]);
+
+    // Lock body scroll when modal is open
+    useEffect(() => {
+        if (isOpen) {
+            const prev = document.body.style.overflow;
+            document.body.style.overflow = 'hidden';
+            return () => { document.body.style.overflow = prev; };
+        }
+    }, [isOpen]);
 
     if (!isOpen) return null;
 
