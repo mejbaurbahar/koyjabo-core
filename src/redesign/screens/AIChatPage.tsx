@@ -112,10 +112,9 @@ function renderMd(text: string, tk: any) {
   const lines = text.split('\n');
   return lines.map((line, i) => {
     const trimmed = line.trim();
-    if (!trimmed) return <div key={i} style={{ height:6 }} />;
-    if (/^─{3,}$/.test(trimmed)) return <div key={i} style={{ borderTop:`1px solid ${tk.line}`,margin:'8px 0' }} />;
+    if (!trimmed) return <div key={i} style={{ height: 10 }} />;
+    if (/^─{3,}$/.test(trimmed)) return <div key={i} style={{ borderTop:`1px solid ${tk.line}`, margin:'18px 0 14px' }} />;
 
-    // Parse **bold** inline
     const parseBold = (s: string) => {
       const parts = s.split(/\*\*(.+?)\*\*/);
       return parts.map((p, j) => j % 2 === 1
@@ -123,18 +122,34 @@ function renderMd(text: string, tk: any) {
         : p);
     };
 
-    const isRoute = /^\d+\.\s/.test(trimmed);
-    const isHeader = /^[🗺️🏆⚡📍🚌🚇🚂✈️🚢🛳️⛴️🚶]/.test(trimmed) && trimmed.length < 120;
-    const isKV = /^[💰⏱️🔄⚠️📌📞🎁📝✅]/.test(trimmed);
+    const isRouteTag = /^[🏆⚡💸🚌]/.test(trimmed) && trimmed.includes('**') && trimmed.length < 80;
+    const isFlow = trimmed.startsWith('📍');
+    const isSummary = trimmed.startsWith('⏱️');
+    const isStep = /^\s*🚌|^\s*🚇|^\s*🚂|^\s*🚶|^\s*✈️/.test(trimmed);
+    const isReason = trimmed.startsWith('💡');
+    const isHeader = /^🗺️/.test(trimmed);
+
+    let bg = 'transparent';
+    let borderL = 'none';
+    let pl = 0;
+    let mb = 3;
+
+    if (isRouteTag) { bg = `${tk.primarySoft}44`; pl = 8; mb = 4; }
+    if (isFlow) { bg = `${tk.panelMuted}`; pl = 8; mb = 4; }
+    if (isStep) { pl = 12; mb = 3; borderL = `2px solid ${tk.line}`; }
+    if (isReason) { bg = `${tk.accentSoft}22`; pl = 8; mb = 2; }
+    if (isHeader) { mb = 6; }
 
     return (
       <div key={i} style={{
-        display:'flex', gap: isRoute ? 6 : 0,
-        marginBottom: isHeader ? 6 : isRoute ? 3 : 2,
-        paddingLeft: isRoute ? 4 : 0,
-        background: isHeader && trimmed.startsWith('🏆') ? `${tk.primarySoft}33` : isHeader && trimmed.startsWith('⚡') ? `${tk.accentSoft}22` : 'transparent',
-        borderRadius: isHeader ? 6 : 0,
-        padding: isHeader ? '3px 6px' : '0',
+        marginBottom: mb,
+        paddingLeft: pl,
+        paddingTop: isRouteTag ? 6 : isReason ? 4 : 0,
+        paddingBottom: isRouteTag ? 4 : 0,
+        paddingRight: (isRouteTag || isFlow || isReason) ? 8 : 0,
+        background: bg,
+        borderLeft: borderL,
+        borderRadius: (isRouteTag || isFlow || isReason) ? 8 : 0,
       }}>
         {parseBold(trimmed)}
       </div>
