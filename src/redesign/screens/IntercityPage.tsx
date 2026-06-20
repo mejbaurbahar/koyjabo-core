@@ -6,6 +6,7 @@ import { Plane3D } from '../components/Vehicles3D';
 import { INTERCITY_BUS_ROUTES, BUS_OPERATORS, MAJOR_TRANSPORT_HUBS } from '../../../data/intercityData';
 import { LOCATIONS_DATA } from '../../../intercity/constants';
 import { SuggestionDropdown, Suggestion } from '../components/SuggestionDropdown';
+import { useLocationSearch } from '../../../hooks/useLocationSearch';
 import { earnCoins } from '../utils/koyCoinService';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:Lang; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
@@ -187,29 +188,19 @@ export function IntercityPage(props: Props) {
       .map(r => ({ id: r.district.toLowerCase().replace(/\s/g,'_'), label: r.district, sub: r.division + ' Division' })),
   ].filter((v, i, arr) => arr.findIndex(x => x.id === v.id) === i), []);
 
-  // Flatten ALL locations from LOCATIONS_DATA into a searchable array
-  const allBDLocations: Suggestion[] = useMemo(() => {
-    const result: Suggestion[] = [];
-    for (const [category, places] of Object.entries(LOCATIONS_DATA)) {
-      for (const place of places as string[]) {
-        result.push({ id: place.toLowerCase().replace(/[\s']/g,'_'), label: place, sub: category.replace(' Division','') });
-      }
-    }
-    // Deduplicate by label
-    const seen = new Set<string>();
-    return result.filter(r => { if (seen.has(r.label)) return false; seen.add(r.label); return true; });
-  }, []);
+  // Comprehensive location search: LOCATIONS_DATA (~600) + OSM database (14K)
+  const { suggestions: fromSuggs } = useLocationSearch(from, { limit: 20 });
+  const { suggestions: toSuggs } = useLocationSearch(to, { limit: 20 });
 
-  const filterDistricts = (q: string): Suggestion[] => {
-    if (!q.trim()) {
-      // Show popular destinations when empty
-      const popular = ["Dhaka","Cox's Bazar","Sylhet","Chattogram","Rajshahi","Khulna","Barishal","Rangpur","Sajek Valley","Saint Martin's Island","Kuakata","Sreemangal","Bandarban","Sundarbans"];
-      return popular.map(n => ({ id: n.toLowerCase().replace(/[\s']/g,'_'), label: n, sub: '' }));
-    }
-    const lq = q.toLowerCase();
-    return allBDLocations.filter(s =>
-      s.label.toLowerCase().includes(lq) || (s.sub ?? '').toLowerCase().includes(lq)
-    ).slice(0, 15);
+  const POPULAR_DEFAULTS: Suggestion[] = [
+    "Dhaka","Cox's Bazar","Sylhet","Chattogram","Rajshahi","Khulna",
+    "Barishal","Rangpur","Sajek Valley","Saint Martin's Island",
+    "Kuakata","Sreemangal","Bandarban","Sundarbans",
+  ].map(n => ({ id: n.toLowerCase().replace(/[\s']/g,'_'), label: n, sub: '' }));
+
+  const filterDistricts = (q: string, side: 'from' | 'to'): Suggestion[] => {
+    if (!q.trim()) return POPULAR_DEFAULTS;
+    return (side === 'from' ? fromSuggs : toSuggs) as Suggestion[];
   };
 
   const filteredDistricts = useMemo(() => {
@@ -370,7 +361,7 @@ export function IntercityPage(props: Props) {
                 onFocus={() => setFromFocus(true)}
                 onBlur={() => setTimeout(() => setFromFocus(false), 150)}
               />
-              {fromFocus && <SuggestionDropdown suggestions={filterDistricts(from)} onSelect={s => { setFrom(s.label); setFromFocus(false); }} onDismiss={() => setFromFocus(false)} tk={tk} lang={lang} anchorRef={fromRef}/>}
+              {fromFocus && <SuggestionDropdown suggestions={filterDistricts(from, 'from')} onSelect={s => { setFrom(s.label); setFromFocus(false); }} onDismiss={() => setFromFocus(false)} tk={tk} lang={lang} anchorRef={fromRef}/>}
             </div>
             {/* TO with district suggestions via portal */}
             <div>
@@ -384,7 +375,7 @@ export function IntercityPage(props: Props) {
                 onFocus={() => setToFocus(true)}
                 onBlur={() => setTimeout(() => setToFocus(false), 150)}
               />
-              {toFocus && <SuggestionDropdown suggestions={filterDistricts(to)} onSelect={s => { setTo(s.label); setToFocus(false); }} onDismiss={() => setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef}/>}
+              {toFocus && <SuggestionDropdown suggestions={filterDistricts(to, 'to')} onSelect={s => { setTo(s.label); setToFocus(false); }} onDismiss={() => setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef}/>}
             </div>
           </div>
 

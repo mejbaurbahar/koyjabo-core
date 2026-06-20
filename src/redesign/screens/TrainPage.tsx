@@ -8,6 +8,7 @@ import { ModeHero } from '../components/ModeHero';
 import { Stars } from '../components/Stars';
 import { BD_TRAIN_ROUTES, TRAIN_STATIONS } from '../../../data/bangladeshTrainData';
 import { SuggestionDropdown, Suggestion } from '../components/SuggestionDropdown';
+import { useLocationSearch } from '../../../hooks/useLocationSearch';
 import { earnCoins } from '../utils/koyCoinService';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string,p?:Record<string,string>)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
@@ -73,14 +74,11 @@ export function TrainPage(props: Props) {
   const fromRef = useRef<HTMLDivElement>(null);
   const toRef = useRef<HTMLDivElement>(null);
 
-  const stationSuggestions: Suggestion[] = useMemo(() =>
-    Object.values(TRAIN_STATIONS).map(s => ({ id: s.id, label: s.name, sub: s.bnName })), []
-  );
-  const filterStations = (q: string) => {
-    if (!q.trim()) return stationSuggestions.slice(0, 20);
-    const lq = q.toLowerCase();
-    return stationSuggestions.filter(s => s.label.toLowerCase().includes(lq) || s.sub?.toLowerCase().includes(lq)).slice(0, 20);
-  };
+  // Comprehensive station search: 139 hardcoded + 490 OSM railway stations
+  const { suggestions: fromStationSuggs } = useLocationSearch(fromStation, { limit: 20, categories: ['railway_station'] });
+  const { suggestions: toStationSuggs } = useLocationSearch(toStation, { limit: 20, categories: ['railway_station'] });
+  const filterStations = (q: string, side: 'from' | 'to') =>
+    (side === 'from' ? fromStationSuggs : toStationSuggs) as Suggestion[];
 
   const filteredTrains = useMemo(() => {
     const fromQ = fromStation.toLowerCase();
@@ -131,7 +129,7 @@ export function TrainPage(props: Props) {
                   <input value={fromStation} onChange={e=>setFromStation(e.target.value)} onFocus={()=>setFromFocus(true)} onBlur={()=>setTimeout(()=>setFromFocus(false),150)} placeholder={T(lang,'ঢাকা / Dhaka','Dhaka')} style={{ background:'transparent', border:'none', outline:'none', fontFamily:BEN, fontSize:14, fontWeight:600, color:tk.text, width:'100%' }}/>
                 </div>
               </div>
-              {fromFocus && <SuggestionDropdown suggestions={filterStations(fromStation)} onSelect={s=>{setFromStation(s.label);setFromFocus(false);}} onDismiss={()=>setFromFocus(false)} tk={tk} lang={lang} anchorRef={fromRef}/>}
+              {fromFocus && <SuggestionDropdown suggestions={filterStations(fromStation, 'from')} onSelect={s=>{setFromStation(s.label);setFromFocus(false);}} onDismiss={()=>setFromFocus(false)} tk={tk} lang={lang} anchorRef={fromRef}/>}
               {/* TO with real station suggestions via portal */}
               <div ref={toRef} style={{ background:tk.inputBg, border:`1px solid ${toFocus?tk.accent:tk.line}`, borderRadius:14, padding:'10px 14px', display:'flex', alignItems:'center', gap:10 }}>
                 <div style={{ width:28, height:28, borderRadius:8, background:tk.accentSoft, color:tk.accent, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><Icon.flag s={14}/></div>
@@ -140,7 +138,7 @@ export function TrainPage(props: Props) {
                   <input value={toStation} onChange={e=>setToStation(e.target.value)} onFocus={()=>setToFocus(true)} onBlur={()=>setTimeout(()=>setToFocus(false),150)} placeholder={T(lang,"কক্সবাজার","Cox's Bazar")} style={{ background:'transparent', border:'none', outline:'none', fontFamily:BEN, fontSize:14, fontWeight:600, color:tk.text, width:'100%' }}/>
                 </div>
               </div>
-              {toFocus && <SuggestionDropdown suggestions={filterStations(toStation)} onSelect={s=>{setToStation(s.label);setToFocus(false);}} onDismiss={()=>setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef}/>}
+              {toFocus && <SuggestionDropdown suggestions={filterStations(toStation, 'to')} onSelect={s=>{setToStation(s.label);setToFocus(false);}} onDismiss={()=>setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef}/>}
               <div style={{ background:tk.inputBg, border:`1px solid ${tk.line}`, borderRadius:14, padding:'10px 14px', display:'flex', alignItems:'center', gap:10 }}>
                 <div style={{ width:28, height:28, borderRadius:8, background:tk.amberSoft, color:tk.amber, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><Icon.clock s={14}/></div>
                 <div><div style={{ fontFamily:SANS, fontSize:10, fontWeight:600, color:tk.textFaint, textTransform:'uppercase', letterSpacing:1.2 }}>{T(lang,'তারিখ','Date')}</div><div style={{ fontFamily:BEN, fontSize:14, fontWeight:600, color:tk.text }}>15 May</div></div>

@@ -8,10 +8,13 @@ import { Pill } from '../components/Pill';
 import { Bus3D, MiniVehicle, TravelHeroScene } from '../components/Vehicles3D';
 import { KJFooter as KJFooterComponent } from '../components/KJFooter';
 import { NativeAdSection as NativeAdSectionReal } from '../components/AdComponents';
-import { STATIONS, BUS_DATA, METRO_STATIONS as REAL_METRO_STATIONS, AIRPORTS } from '../../../constants';
+import { STATIONS, BUS_DATA, METRO_STATIONS as REAL_METRO_STATIONS } from '../../../constants';
 import { BD_TRAIN_ROUTES, TRAIN_STATIONS } from '../../../data/bangladeshTrainData';
 import { INTERCITY_BUS_ROUTES, MAJOR_TRANSPORT_HUBS } from '../../../data/intercityData';
+import { AIRPORTS_DATA } from '../../../data/bangladeshFlightData';
+import { LAUNCH_TERMINALS as LAUNCH_TERMINALS_DATA } from '../../../data/bangladeshLaunchData';
 import { SuggestionDropdown, Suggestion } from '../components/SuggestionDropdown';
+import { useLocationSearch } from '../../../hooks/useLocationSearch';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -83,38 +86,54 @@ function SearchPanel({
   const toRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
 
-  const stationList: Suggestion[] = useMemo(() =>
-    Object.values(STATIONS).map(s => ({ id: s.id, label: s.name, sub: s.bnName })), []
-  );
-  const modeOptions: Suggestion[] = useMemo(() => {
+  // Category filter per mode
+  const modeCategories: Record<string, string[] | undefined> = {
+    bus: ['bus_stop'],
+    metro: ['metro_station'],
+    train: ['railway_station'],
+    intercity: undefined, // all categories
+    launch: ['ferry_terminal'],
+    flights: ['airport'],
+  };
+
+  // Comprehensive from/to search using useLocationSearch hook
+  const { suggestions: fromSuggestionsHook } = useLocationSearch(from, {
+    limit: 20,
+    categories: modeCategories[activeMode],
+  });
+  const { suggestions: toSuggestionsHook } = useLocationSearch(to, {
+    limit: 20,
+    categories: modeCategories[activeMode],
+  });
+
+  // Static fallback lists shown when input is empty (popular destinations per mode)
+  const emptyDefaultsForMode: Suggestion[] = useMemo(() => {
     if (activeMode === 'metro') {
       return Object.values(REAL_METRO_STATIONS).map(s => ({ id: s.id, label: s.name, sub: s.bnName }));
     }
     if (activeMode === 'train') {
-      return Object.values(TRAIN_STATIONS).map(s => ({ id: s.id, label: s.name, sub: s.bnName }));
+      return Object.values(TRAIN_STATIONS).slice(0, 20).map(s => ({ id: s.id, label: s.name, sub: s.bnName }));
+    }
+    if (activeMode === 'launch') {
+      return LAUNCH_TERMINALS_DATA.map(t => ({ id: t.id, label: t.en, sub: t.bn }));
+    }
+    if (activeMode === 'flights') {
+      return AIRPORTS_DATA.map(a => ({ id: a.iata, label: a.en, sub: a.bn }));
     }
     if (activeMode === 'intercity') {
       const seen = new Set<string>();
       return [...INTERCITY_BUS_ROUTES, ...MAJOR_TRANSPORT_HUBS]
-        .filter(r => {
-          if (seen.has(r.district)) return false;
-          seen.add(r.district);
-          return true;
-        })
+        .filter(r => { if (seen.has(r.district)) return false; seen.add(r.district); return true; })
         .sort((a, b) => a.district.localeCompare(b.district))
-        .map(r => ({ id: r.district, label: r.district, sub: r.busOperators.slice(0, 3).join(', ') }));
+        .map(r => ({ id: r.district, label: r.district, sub: r.busOperators.slice(0, 2).join(', ') }));
     }
-    if (activeMode === 'launch') return LAUNCH_TERMINALS;
-    if (activeMode === 'flights') {
-      return Object.values(AIRPORTS).map(a => ({ id: a.id, label: a.name, sub: a.bnName }));
-    }
-    return stationList;
-  }, [activeMode, stationList]);
-  const norm = (s: string) => s.toLowerCase().replace(/[\s\-\.]/g,'');
-  const filterModeOptions = (q: string) => {
-    if (!q.trim()) return modeOptions.slice(0, 8);
-    const lq = q.toLowerCase();
-    return modeOptions.filter(s => s.label.toLowerCase().includes(lq) || s.sub?.includes(q) || s.id.toLowerCase().includes(norm(q))).slice(0, 8);
+    // bus — popular Dhaka stops
+    return Object.values(STATIONS).slice(0, 20).map(s => ({ id: s.id, label: s.name, sub: s.bnName }));
+  }, [activeMode]);
+
+  const filterModeOptions = (q: string, side: 'from' | 'to'): Suggestion[] => {
+    if (!q.trim()) return emptyDefaultsForMode;
+    return (side === 'from' ? fromSuggestionsHook : toSuggestionsHook) as Suggestion[];
   };
 
   const modeRoute = (mode = activeMode) =>
@@ -172,10 +191,10 @@ function SearchPanel({
         .filter(r => r.name.toLowerCase().includes(q) || r.bnName.includes(searchQ) || r.number.includes(q))
         .slice(0, 5)
         .map(r => ({ id: r.id, label: `${r.name} (${r.number})`, sub: r.bnName }));
-      return [...trains, ...filterModeOptions(searchQ)].slice(0, 8);
+      return [...trains, ...filterModeOptions(searchQ, 'from')].slice(0, 15);
     }
-    return filterModeOptions(searchQ);
-  }, [activeMode, searchQ, modeOptions]);
+    return filterModeOptions(searchQ, 'from');
+  }, [activeMode, searchQ, fromSuggestionsHook]);
 
   const changeMode = (mode: SearchModeId) => {
     setActiveMode(mode);
@@ -325,7 +344,7 @@ function SearchPanel({
             />
           </div>
         </div>
-        {fromFocus && <SuggestionDropdown suggestions={filterModeOptions(from)} onSelect={s => { setFrom(s.label); setFromFocus(false); }} onDismiss={() => setFromFocus(false)} tk={tk} lang={lang} anchorRef={fromRef} />}
+        {fromFocus && <SuggestionDropdown suggestions={filterModeOptions(from, 'from')} onSelect={s => { setFrom(s.label); setFromFocus(false); }} onDismiss={() => setFromFocus(false)} tk={tk} lang={lang} anchorRef={fromRef} />}
 
         {/* Swap (desktop only) */}
         {!isMobile && (
@@ -368,7 +387,7 @@ function SearchPanel({
             />
           </div>
         </div>
-        {toFocus && <SuggestionDropdown suggestions={filterModeOptions(to)} onSelect={s => { setTo(s.label); setToFocus(false); }} onDismiss={() => setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef} />}
+        {toFocus && <SuggestionDropdown suggestions={filterModeOptions(to, 'to')} onSelect={s => { setTo(s.label); setToFocus(false); }} onDismiss={() => setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef} />}
 
         {/* Find routes — navigates with real from/to */}
         <button

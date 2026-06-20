@@ -1,5 +1,6 @@
 import { BusRoute, UserLocation } from '../types';
 import { BUS_DATA, STATIONS, METRO_STATIONS, RAILWAY_STATIONS, AIRPORTS } from '../constants';
+import { TRAIN_STATIONS } from '../data/bangladeshTrainData';
 import { TRANSFER_POINTS, TransferPoint, findNearestTransferPoint } from './transferPoints';
 import { getDistance, findNearestStation } from './locationService';
 
@@ -114,8 +115,8 @@ const calculateBusFare = (bus: BusRoute, fromId: string, toId: string): number =
     const end = Math.max(fromIdx, toIdx);
 
     for (let i = start; i < end; i++) {
-        const s1 = STATIONS[bus.stops[i]] || METRO_STATIONS[bus.stops[i]] || RAILWAY_STATIONS[bus.stops[i]] || AIRPORTS[bus.stops[i]];
-        const s2 = STATIONS[bus.stops[i + 1]] || METRO_STATIONS[bus.stops[i + 1]] || RAILWAY_STATIONS[bus.stops[i + 1]] || AIRPORTS[bus.stops[i + 1]];
+        const s1 = STATIONS[bus.stops[i]] || METRO_STATIONS[bus.stops[i]] || RAILWAY_STATIONS[bus.stops[i]] || TRAIN_STATIONS[bus.stops[i]] || AIRPORTS[bus.stops[i]];
+        const s2 = STATIONS[bus.stops[i + 1]] || METRO_STATIONS[bus.stops[i + 1]] || RAILWAY_STATIONS[bus.stops[i + 1]] || TRAIN_STATIONS[bus.stops[i + 1]] || AIRPORTS[bus.stops[i + 1]];
         if (s1 && s2) {
             distance += getDistance({ lat: s1.lat, lng: s1.lng }, { lat: s2.lat, lng: s2.lng });
         }
@@ -130,8 +131,8 @@ const calculateBusFare = (bus: BusRoute, fromId: string, toId: string): number =
 const calculateRouteDistance = (stops: string[]): number => {
     let totalDistance = 0;
     for (let i = 0; i < stops.length - 1; i++) {
-        const s1 = STATIONS[stops[i]] || METRO_STATIONS[stops[i]] || RAILWAY_STATIONS[stops[i]] || AIRPORTS[stops[i]];
-        const s2 = STATIONS[stops[i + 1]] || METRO_STATIONS[stops[i + 1]] || RAILWAY_STATIONS[stops[i + 1]] || AIRPORTS[stops[i + 1]];
+        const s1 = STATIONS[stops[i]] || METRO_STATIONS[stops[i]] || RAILWAY_STATIONS[stops[i]] || TRAIN_STATIONS[stops[i]] || AIRPORTS[stops[i]];
+        const s2 = STATIONS[stops[i + 1]] || METRO_STATIONS[stops[i + 1]] || RAILWAY_STATIONS[stops[i + 1]] || TRAIN_STATIONS[stops[i + 1]] || AIRPORTS[stops[i + 1]];
         if (s1 && s2) {
             totalDistance += getDistance({ lat: s1.lat, lng: s1.lng }, { lat: s2.lat, lng: s2.lng });
         }

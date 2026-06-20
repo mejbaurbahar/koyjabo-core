@@ -410,7 +410,7 @@ export const BD_LOCATIONS: BDLocation[] = [
 ];
 
 /** Filter BD_LOCATIONS by search query */
-export function searchBDLocations(q: string, limit = 15): BDLocation[] {
+export function searchBDLocations(q: string, limit = 50): BDLocation[] {
   if (!q.trim()) return BD_LOCATIONS.slice(0, limit);
   const lq = q.toLowerCase();
   return BD_LOCATIONS.filter(l =>

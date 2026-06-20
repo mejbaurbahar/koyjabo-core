@@ -58,7 +58,7 @@ export const generateSearchSuggestions = (query: string): SearchSuggestion[] => 
                 subtitle: station.bnName || station.name
             });
             // Optimization: Limit internal collection if we have enough
-            if (suggestions.length > 20) break;
+            if (suggestions.length > 50) break;
         }
     }
 
@@ -91,9 +91,9 @@ export const generateSearchSuggestions = (query: string): SearchSuggestion[] => 
         });
     }
 
-    // Return top 10 suggestions (5 stations + 5 buses preferred) + intercity
-    const stationSuggestions = suggestions.filter(s => s.type === 'station').slice(0, 6);
-    const busSuggestions = suggestions.filter(s => s.type === 'bus').slice(0, 4);
+    // Return top suggestions: up to 15 stations + 8 buses + intercity
+    const stationSuggestions = suggestions.filter(s => s.type === 'station').slice(0, 15);
+    const busSuggestions = suggestions.filter(s => s.type === 'bus').slice(0, 8);
     const intercitySuggestions = suggestions.filter(s => s.type === 'intercity');
 
     return [...stationSuggestions, ...busSuggestions, ...intercitySuggestions];

@@ -62,16 +62,15 @@ export function FlightsPage(props: Props) {
 
   const filteredFlights = useMemo(() => {
     const routes = DOMESTIC_ROUTES.filter(r => r.from === fromIATA && r.to === toIATA);
-    // Decorate with metadata
+    const minFare = routes.length ? Math.min(...routes.map(x => x.fareEco)) : 0;
     return routes.map(r => {
       const meta = AIRLINE_META[r.airline] ?? { name:{bn:r.airline,en:r.airline}, col:['#3b82f6','#60a5fa'] as [string,string], rating:4.0, reviews:0 };
-      const fares = filteredFlights2?.length ? [] : routes.map(x=>x.fareEco);
       return {
         ...r, ...meta,
         fare: r.fareEco.toLocaleString(),
         stop: r.daysOp === 'Daily' ? 'Nonstop' : r.daysOp,
         best: r.airline === 'BS',
-        cheap: routes.length > 1 && r.fareEco === Math.min(...routes.map(x=>x.fareEco)),
+        cheap: routes.length > 1 && r.fareEco === minFare,
       };
     });
   }, [fromIATA, toIATA]);
