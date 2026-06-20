@@ -4,7 +4,7 @@ import { AdSlot } from '../components/AdSlot';
 import { PageShell } from './PageShell';
 import { Plane3D } from '../components/Vehicles3D';
 import { INTERCITY_BUS_ROUTES, BUS_OPERATORS, MAJOR_TRANSPORT_HUBS } from '../../../data/intercityData';
-import { BD_LOCATIONS, searchBDLocations } from '../../../data/bangladeshLocations';
+import { LOCATIONS_DATA } from '../../../intercity/constants';
 import { SuggestionDropdown, Suggestion } from '../components/SuggestionDropdown';
 import { earnCoins } from '../utils/koyCoinService';
 
@@ -187,20 +187,29 @@ export function IntercityPage(props: Props) {
       .map(r => ({ id: r.district.toLowerCase().replace(/\s/g,'_'), label: r.district, sub: r.division + ' Division' })),
   ].filter((v, i, arr) => arr.findIndex(x => x.id === v.id) === i), []);
 
+  // Flatten ALL locations from LOCATIONS_DATA into a searchable array
+  const allBDLocations: Suggestion[] = useMemo(() => {
+    const result: Suggestion[] = [];
+    for (const [category, places] of Object.entries(LOCATIONS_DATA)) {
+      for (const place of places as string[]) {
+        result.push({ id: place.toLowerCase().replace(/[\s']/g,'_'), label: place, sub: category.replace(' Division','') });
+      }
+    }
+    // Deduplicate by label
+    const seen = new Set<string>();
+    return result.filter(r => { if (seen.has(r.label)) return false; seen.add(r.label); return true; });
+  }, []);
+
   const filterDistricts = (q: string): Suggestion[] => {
     if (!q.trim()) {
-      // Show popular destinations first when empty
-      const popular = ['Dhaka City','Chattogram','Cox\'s Bazar','Sylhet','Khulna','Barishal','Rajshahi','Rangpur'];
-      return popular.map(n => {
-        const found = BD_LOCATIONS.find(l => l.en === n || l.en.includes(n));
-        return { id: found?.id || n.toLowerCase(), label: n, sub: found?.division || '' };
-      });
+      // Show popular destinations when empty
+      const popular = ["Dhaka","Cox's Bazar","Sylhet","Chattogram","Rajshahi","Khulna","Barishal","Rangpur","Sajek Valley","Saint Martin's Island","Kuakata","Sreemangal","Bandarban","Sundarbans"];
+      return popular.map(n => ({ id: n.toLowerCase().replace(/[\s']/g,'_'), label: n, sub: '' }));
     }
-    return searchBDLocations(q, 15).map(l => ({
-      id: l.id,
-      label: l.en,
-      sub: l.district ? `${l.district}, ${l.division}` : l.division,
-    }));
+    const lq = q.toLowerCase();
+    return allBDLocations.filter(s =>
+      s.label.toLowerCase().includes(lq) || (s.sub ?? '').toLowerCase().includes(lq)
+    ).slice(0, 15);
   };
 
   const filteredDistricts = useMemo(() => {
