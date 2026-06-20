@@ -118,9 +118,23 @@ function detailPath(route: string, params: Record<string, string> = {}) {
   if (route === 'bus-detail') return `/bus/${busSlug(params.busId)}${suffix}`;
   if (route === 'metro-detail') return `/metro/${slugify(params.stationId || params.id || 'detail')}${suffix}`;
   if (route === 'train-detail') return `/train/${slugify(params.trainId || params.id || 'detail')}${suffix}`;
-  if (route === 'intercity-detail') return `/intercity/${slugify(params.id || params.operator || 'detail')}${suffix}`;
+  if (route === 'intercity-detail') {
+    const base = slugify(params.operator || params.id || 'detail');
+    const q = new URLSearchParams();
+    if (params.from) q.set('from', params.from);
+    if (params.to) q.set('to', params.to);
+    const qs = q.toString() ? `?${q.toString()}` : '';
+    return `/intercity/${base}${qs}`;
+  }
   if (route === 'vehicle') return `/launch/${slugify(params.id || params.name || 'detail')}${suffix}`;
-  if (route === 'flight-detail') return `/air/${(params.code || 'flight').toLowerCase()}${suffix}`;
+  if (route === 'flight-detail') {
+    const base = (params.flightNo || params.code || 'flight').toLowerCase();
+    const q = new URLSearchParams();
+    if (params.fromIATA) q.set('from', params.fromIATA);
+    if (params.toIATA) q.set('to', params.toIATA);
+    const qs = q.toString() ? `?${q.toString()}` : '';
+    return `/air/${base}${qs}`;
+  }
   return ROUTE_PATHS[route] || '/';
 }
 

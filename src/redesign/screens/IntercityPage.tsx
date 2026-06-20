@@ -577,7 +577,7 @@ export function IntercityPage(props: Props) {
                     const opDetails = BUS_OPERATORS.find((b) => b.name.toLowerCase().includes(c.opName.toLowerCase()) || c.opName.toLowerCase().includes(b.name.split(' ')[0].toLowerCase()));
                     return (
                       <button key={c.opName + i}
-                        onClick={() => onNav('intercity-detail', { operator: c.opName, route: c.route, district: c.district, costNonAC: c.costNonAC, costAC: c.costAC, contact: c.contact, counter: opDetails?.mainCounterLocation || '' })}
+                        onClick={() => onNav('intercity-detail', { operator: c.opName, route: c.route, district: c.district, costNonAC: c.costNonAC, costAC: c.costAC, contact: c.contact, counter: opDetails?.mainCounterLocation || '', from: from || 'Dhaka', to: to || c.district })}
                         style={{ background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 14, padding: '14px 16px', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 12 }}>
                         <div style={{ width: 48, height: 48, borderRadius: 12, background: `linear-gradient(135deg,${col},${col}aa)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>🚌</div>
                         <div style={{ flex: 1, minWidth: 0 }}>
@@ -631,7 +631,7 @@ export function IntercityPage(props: Props) {
                 const fromAp = AIRPORTS_DATA.find((a: any) => a.iata === r.from);
                 const toAp = AIRPORTS_DATA.find((a: any) => a.iata === r.to);
                 return (
-                  <button key={r.id + i} onClick={() => onNav('flight-detail', { code: r.airline })}
+                  <button key={r.id + i} onClick={() => onNav('flight-detail', { code: r.airline, flightNo: r.flightNo, dep: r.dep, arr: r.arr, dur: r.dur, fromIATA: r.from, toIATA: r.to, fromName: fromAp?.en || r.from, toName: toAp?.en || r.to, fare: String(r.fareEco) })}
                     style={{ background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 14, padding: '12px 14px', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 12 }}>
                     <div style={{ width: 44, height: 44, borderRadius: 10, background: 'linear-gradient(135deg,#1e3a8a,#3b82f6)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>✈️</div>
                     <div style={{ flex: 1, minWidth: 0 }}>

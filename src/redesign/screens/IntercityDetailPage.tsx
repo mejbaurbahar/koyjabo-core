@@ -16,13 +16,47 @@ const TABS: { id: TabId; en: string; bn: string }[] = [
   { id: 'policy', en: 'Policy', bn: 'নীতি' },
 ];
 
-const STOPS = [
-  { name: 'Sayedabad', nameBn: 'সায়েদাবাদ', time: '9:00 PM', kind: 'boarding' },
-  { name: 'Kanchpur', nameBn: 'কাঁচপুর', time: '9:45 PM', kind: 'stop' },
-  { name: 'Comilla', nameBn: 'কুমিল্লা', time: '11:30 PM', kind: 'rest' },
-  { name: 'Chittagong', nameBn: 'চট্টগ্রাম', time: '2:30 AM', kind: 'stop' },
-  { name: 'Kolatoli', nameBn: 'কলাতলী', time: '6:30 AM', kind: 'destination' },
-];
+type StopEntry = { name: string; nameBn: string; time: string; kind: 'boarding' | 'stop' | 'rest' | 'destination' };
+
+// Build stop list from route params
+function buildStops(route: string, counter: string, from: string, to: string): StopEntry[] {
+  // Parse origin/destination from route string e.g. "Dhaka (Gabtoli) ⇄ Benapole (Land Port)"
+  const parts = route.split(/⇄|→|->/);
+  const originRaw = parts[0]?.trim() || from || 'Dhaka';
+  const destRaw = parts[1]?.trim() || to || 'Destination';
+
+  // Extract terminal name from parenthetical if present
+  const extractTerminal = (s: string) => {
+    const m = s.match(/\(([^)]+)\)/);
+    return m ? m[1].trim() : '';
+  };
+  const originCity = originRaw.replace(/\([^)]+\)/, '').trim();
+  const originTerminal = extractTerminal(originRaw) || counter?.split('/')[0]?.trim() || '';
+  const destCity = destRaw.replace(/\([^)]+\)/, '').trim();
+  const destTerminal = extractTerminal(destRaw);
+
+  const stops: StopEntry[] = [];
+
+  // Boarding stop(s) — show counter locations in Dhaka
+  const counters = counter ? counter.split('/').map(c => c.trim()).filter(Boolean) : [];
+  if (counters.length > 0) {
+    counters.forEach((c, i) => {
+      stops.push({ name: `${c} (${originCity})`, nameBn: c, time: '', kind: i === 0 ? 'boarding' : 'stop' });
+    });
+  } else {
+    stops.push({ name: originTerminal || originCity, nameBn: originCity, time: '', kind: 'boarding' });
+  }
+
+  // Destination
+  stops.push({
+    name: destTerminal ? `${destCity} (${destTerminal})` : destCity,
+    nameBn: destCity,
+    time: '',
+    kind: 'destination',
+  });
+
+  return stops;
+}
 
 const AMENITIES = [
   { label: 'AC', labelBn: 'এসি', icon: '❄️', available: true },
@@ -153,7 +187,7 @@ function SeatsTab({ tk, lang }: { tk: Tokens; lang: Lang }) {
   );
 }
 
-function RouteTab({ tk, lang }: { tk: Tokens; lang: Lang }) {
+function RouteTab({ tk, lang, stops }: { tk: Tokens; lang: Lang; stops: StopEntry[] }) {
   const lbl = (en: string, bn: string) => T(lang, bn, en);
   const kindColor: Record<string, string> = { boarding: '#10b981', stop: '#3b82f6', rest: '#f59e0b', destination: '#ef4444' };
   const kindLabel: Record<string, { en: string; bn: string }> = {
@@ -164,10 +198,10 @@ function RouteTab({ tk, lang }: { tk: Tokens; lang: Lang }) {
   };
   return (
     <div>
-      {STOPS.map((stop, i) => (
+      {stops.map((stop, i) => (
         <div key={stop.name} style={{ display: 'flex', gap: 16, position: 'relative' }}>
           {/* Vertical line */}
-          {i < STOPS.length - 1 && (
+          {i < stops.length - 1 && (
             <div style={{
               position: 'absolute', left: 14, top: 28, bottom: 0, width: 2,
               background: tk.line, zIndex: 0,
@@ -247,11 +281,16 @@ export function IntercityDetailPage(props: Props) {
   const fareAC = params?.costAC && params.costAC !== '-' ? params.costAC : null;
   const counterLocation = params?.counter || 'Sayedabad / Arambagh';
   const contactNumber = params?.contact || '16557';
+  const fromCity = params?.from || 'Dhaka';
+  const toCity = params?.to || params?.district || 'Destination';
+
+  // Build route stops from params
+  const routeStops = buildStops(routeText, counterLocation, fromCity, toCity);
 
   const tabContent = () => {
     switch (activeTab) {
       case 'seats': return <SeatsTab tk={tk} lang={lang} />;
-      case 'route': return <RouteTab tk={tk} lang={lang} />;
+      case 'route': return <RouteTab tk={tk} lang={lang} stops={routeStops} />;
       case 'bus': return <BusTab tk={tk} lang={lang} />;
       case 'photos': return (
         <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 14, color: tk.textDim }}>
@@ -350,10 +389,10 @@ export function IntercityDetailPage(props: Props) {
           {/* Quick stats */}
           <div style={{ display: 'flex', gap: 10, marginTop: 16, flexWrap: 'wrap' }}>
             {[
-              { val: '380km', label: lbl('Distance', 'দূরত্ব') },
-              { val: '8', label: lbl('Stops', 'স্টপ') },
-              { val: '46', label: lbl('Seats', 'সিট') },
-              { val: '100km/h', label: lbl('Avg speed', 'গতি') },
+              { val: fromCity, label: lbl('From', 'থেকে') },
+              { val: toCity, label: lbl('To', 'গন্তব্য') },
+              { val: fareNonAC, label: lbl('Non-AC', 'নন-এসি') },
+              ...(fareAC ? [{ val: fareAC, label: lbl('AC', 'এসি') }] : []),
             ].map((s) => (
               <div key={s.label} style={{
                 background: 'rgba(255,255,255,0.12)', borderRadius: 10, padding: '8px 14px', textAlign: 'center',

@@ -175,7 +175,7 @@ export function FlightsPage(props: Props) {
                   ? <div style={{ fontFamily:BEN, fontSize:13, color:tk.textFaint, padding:'16px 0' }}>{T(lang,'এই রুটে কোনো ফ্লাইট পাওয়া যায়নি।','No flights found for this route.')}</div>
                   : null}
                 {(filteredFlights2.length > 0 ? filteredFlights2 : []).map((a,i)=>(
-                  <div key={i} onClick={()=>{ earnCoins(2, 'View flight details'); onNav('flight-detail', { code: a.airline }); }} style={{ ...card(14), position:'relative', overflow:'hidden', cursor:'pointer' }}>
+                  <div key={i} onClick={()=>{ earnCoins(2, 'View flight details'); onNav('flight-detail', { code: a.airline, flightNo: a.flightNo, dep: a.dep, arr: a.arr, dur: a.dur, fromIATA, toIATA, fromName: fromAirportName, toName: toAirportName, fare: String(a.fareEco) }); }} style={{ ...card(14), position:'relative', overflow:'hidden', cursor:'pointer' }}>
                     {a.best && <div style={{ position:'absolute', top:0, right:0, background:'linear-gradient(90deg,#0ea5e9,#22d3ee)', color:'#04130d', padding:'3px 10px', borderRadius:'0 16px 0 10px', fontFamily:SANS, fontWeight:800, fontSize:9, letterSpacing:1 }}>★ {T(lang,'সেরা','BEST')}</div>}
                     {a.cheap && <div style={{ position:'absolute', top:0, right:0, background:'linear-gradient(90deg,#a855f7,#7c3aed)', color:'#fff', padding:'3px 10px', borderRadius:'0 16px 0 10px', fontFamily:SANS, fontWeight:800, fontSize:9, letterSpacing:1 }}>৳ {T(lang,'সস্তা','CHEAPEST')}</div>}
                     <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:10 }}>
