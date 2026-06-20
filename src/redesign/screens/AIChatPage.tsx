@@ -249,9 +249,25 @@ export function AIChatPage(props: Props) {
 
       const hasFrom = /\bfrom\b|থেকে|হতে/i.test(userText);
       const area = userAreaRef.current;
-      const queryForOffline = (!hasFrom && area)
-        ? `${userText} from ${area} [Context: User is in ${area} area]`
-        : userText;
+
+      // Extract destination from "how to go X", "route to X", "reach X" etc.
+      function extractGoToDest(q: string): string | null {
+        const m = q.match(
+          /^(?:how\s+(?:to\s+)?(?:go|get)\s+(?:to\s+)?|route\s+to\s+|(?:reach|take\s+me\s+to|go\s+to|directions?\s+to|best\s+(?:bus|way)\s+(?:to|for)|nearest\s+way\s+to|how\s+can\s+i\s+(?:get\s+to|reach)\s+))(.+?)(?:\?|$)/i
+        ) || q.match(/(?:কিভাবে\s+যাব[োো]?\s+|যেতে\s+চাই\s+|যাবো?\s+কিভাবে\s+)(.+?)(?:\?|।|$)/i);
+        return m ? m[1].trim().replace(/[?।]$/, '').trim() : null;
+      }
+
+      const goToDest = !hasFrom ? extractGoToDest(userText) : null;
+      let queryForOffline: string;
+      if (area && goToDest) {
+        // Build unambiguous "FROM to DEST" — prevents positional reversal
+        queryForOffline = `${area} to ${goToDest} [Context: User is in ${area} area]`;
+      } else if (!hasFrom && area) {
+        queryForOffline = `${userText} from ${area} [Context: User is in ${area} area]`;
+      } else {
+        queryForOffline = userText;
+      }
 
       let response: string;
       try {

@@ -1767,14 +1767,26 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
           return true;
         });
 
-        // Very basic positional heuristic: first mentioned = from, second = to.
         if (mentionedDeduped.length >= 2) {
+          // Semantic nav-intent check: "how to go X", "route to X", "reach X"
+          // In these cases the named place is ALWAYS the destination, never the origin.
+          // If the query also has "X to Y" or "X থেকে Y", fall through to positional.
+          const hasExplicitFrom = /\bfrom\b|থেকে|হতে/i.test(lowerQ);
+          const hasNavToIntent = /(?:how\s+(?:to\s+)?(?:go|get)\s+(?:to\s+)?|route\s+to\s+|(?:reach|take\s+me\s+to|go\s+to|directions?\s+to|nearest\s+way\s+to|how\s+can\s+i\s+(?:get\s+to|reach)\s+))/i.test(lowerQ);
+
+          if (hasNavToIntent && !hasExplicitFrom) {
+            // Nav intent without explicit from: mentioned[0] = dest (GPS = from via context)
+            // The GPS area was already appended as "AREA to DEST" by AIChatPage,
+            // so mentionedDeduped[0] = AREA (from), mentionedDeduped[1] = DEST.
+            // Positional sort handles this correctly since AREA comes first in text.
+          }
+
+          // Positional sort: first in text = from, second = to (safe with above context)
           const getIdx = (s: typeof mentionedDeduped[0]) => {
             const sn = s.name.toLowerCase();
             const ni = lowerQ.indexOf(sn);
             if (ni >= 0) return ni;
             if (s.bnName) { const bi = lowerQ.indexOf(s.bnName); if (bi >= 0) return bi; }
-            // base name position
             const base = sn.replace(/\s+\d+$/, '');
             return base !== sn ? lowerQ.indexOf(base) : -1;
           };
@@ -1787,6 +1799,13 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
           } else {
             fromLoc = mentionedDeduped[1].id;
             toLoc = mentionedDeduped[0].id;
+          }
+        } else if (mentionedDeduped.length === 1 && _gpsDistrict) {
+          // Single station with GPS context: station = destination, GPS = origin
+          const hasNavToIntent = /(?:how\s+(?:to\s+)?(?:go|get)|route\s+to|reach|go\s+to|directions?\s+to|nearest\s+way)/i.test(lowerQ);
+          if (hasNavToIntent) {
+            toLoc = mentionedDeduped[0].id;
+            fromLoc = resolveLocation(_gpsDistrict) ?? undefined;
           }
         }
       }

@@ -494,9 +494,9 @@ export function findRoutes(
     results.push({ steps, totalTimeMin, totalCostBDT, transfers: Math.max(0, transfers), score, tag });
   }
 
-  // Add a direct single-bus route if one exists and isn't already represented
-  const direct = findDirectBus(fromId, toId);
-  if (direct) {
+  // Add ALL direct single-bus routes not already represented
+  const directs = findAllDirectBuses(fromId, toId);
+  for (const direct of directs) {
     const alreadyShown = results.some(r =>
       r.transfers === 0 && r.steps.some(s => s.routeName === direct.steps[0].routeName)
     );
@@ -512,19 +512,27 @@ export function findRoutes(
 
   // Deduplicate: remove routes that are identical (same steps sequence)
   const seen = new Set<string>();
-  return finalRoutes.filter(r => {
+  const unique = finalRoutes.filter(r => {
     const key = r.steps.map(s => `${s.fromId}-${s.mode}-${s.toId}`).join('|');
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
   });
+
+  // Sort: direct (0 transfers) always first, then by score
+  return unique.sort((a, b) => {
+    if (a.transfers === 0 && b.transfers > 0) return -1;
+    if (b.transfers === 0 && a.transfers > 0) return 1;
+    return a.score - b.score;
+  });
 }
 
-// ── Direct single-bus route finder ───────────────────────────────────────────
-// Scans BUS_DATA for a route that covers both stops without any transfer.
+// ── Direct bus route finder — returns ALL buses serving this pair ─────────────
 
-function findDirectBus(fromId: string, toId: string): GraphRoute | null {
+function findAllDirectBuses(fromId: string, toId: string): GraphRoute[] {
   const { nodes } = getGraph();
+  const routes: GraphRoute[] = [];
+
   for (const bus of BUS_DATA.filter(b => b.active !== false)) {
     const fromIdx = bus.stops.indexOf(fromId);
     const toIdx = bus.stops.indexOf(toId);
@@ -548,24 +556,24 @@ function findDirectBus(fromId: string, toId: string): GraphRoute | null {
 
     const roundedTime = Math.round(totalTime);
     const roundedCost = Math.round(totalCost);
-    const step: PathStep = {
-      fromId, fromName: fromNode.name, fromBnName: fromNode.bnName,
-      toId, toName: toNode.name, toBnName: toNode.bnName,
-      mode: 'bus', timeMin: totalTime, costBDT: roundedCost,
-      routeName: bus.name, routeBnName: bus.bnName,
-      instruction: `🚌 Take **${bus.name}** from ${fromNode.name} → ${toNode.name}`,
-      instructionBn: `🚌 **${bus.bnName}** বাসে ${fromNode.bnName} থেকে ${toNode.bnName}`,
-    };
-    return {
-      steps: [step],
+    routes.push({
+      steps: [{
+        fromId, fromName: fromNode.name, fromBnName: fromNode.bnName,
+        toId, toName: toNode.name, toBnName: toNode.bnName,
+        mode: 'bus', timeMin: totalTime, costBDT: roundedCost,
+        routeName: bus.name, routeBnName: bus.bnName,
+        instruction: `🚌 Take **${bus.name}** from ${fromNode.name} → ${toNode.name}`,
+        instructionBn: `🚌 **${bus.bnName || bus.name}** বাসে ${fromNode.bnName || fromNode.name} থেকে ${toNode.bnName || toNode.name}`,
+      }],
       totalTimeMin: roundedTime,
       totalCostBDT: roundedCost,
       transfers: 0,
       score: roundedTime * SCORE_W_TIME + roundedCost * SCORE_W_COST,
       tag: 'direct',
-    };
+    });
   }
-  return null;
+  // Sort direct buses: fastest first
+  return routes.sort((a, b) => a.totalTimeMin - b.totalTimeMin);
 }
 
 // ── Location resolver ─────────────────────────────────────────────────────────
