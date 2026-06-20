@@ -67,6 +67,17 @@ export function FlightDetailPage(props: Props) {
   const isMobile = device === 'mobile';
   const code = params?.code ?? 'BS';
   const a = AIRLINES[code] ?? AIRLINES['BS'];
+
+  // Use passed flight data if available, fall back to airline defaults
+  const flightNo = params?.flightNo || `${code}001`;
+  const depTime = params?.dep || a.dep;
+  const arrTime = params?.arr || a.arr;
+  const durText = params?.dur || a.dur;
+  const fromCode = params?.fromIATA || 'DAC';
+  const toCode = params?.toIATA || 'CXB';
+  const fromName = params?.fromName || 'Dhaka (Shahjalal)';
+  const toName = params?.toName || "Cox's Bazar";
+  const flightFare = params?.fare ? parseInt(params.fare).toLocaleString() : a.fare;
   const adFree = isAdFree();
 
   const [tab, setTab] = useState<TabKey>('info');
@@ -100,20 +111,20 @@ export function FlightDetailPage(props: Props) {
 
           {/* Route timeline */}
           <div style={{ background:'rgba(255,255,255,0.15)', borderRadius:14, padding:'14px 18px', display:'flex', alignItems:'center', gap:12 }}>
-            <div style={{ textAlign:'center' }}>
-              <div style={{ fontFamily:SANS, fontWeight:800, fontSize:22 }}>{a.dep}</div>
-              <div style={{ fontFamily:SANS, fontSize:11, opacity:0.8 }}>DAC</div>
-              <div style={{ fontFamily:BEN, fontSize:11, opacity:0.7 }}>{T(lang,'ঢাকা','Dhaka')}</div>
+            <div style={{ textAlign:'center', flex:1 }}>
+              <div style={{ fontFamily:SANS, fontWeight:800, fontSize:22 }}>{depTime}</div>
+              <div style={{ fontFamily:SANS, fontSize:12, opacity:0.9, fontWeight:700 }}>{fromCode}</div>
+              <div style={{ fontFamily:SANS, fontSize:11, opacity:0.7 }}>{fromName.split('(')[0].trim()}</div>
             </div>
-            <div style={{ flex:1, position:'relative', textAlign:'center' }}>
-              <div style={{ height:2, background:'rgba(255,255,255,0.5)', borderRadius:999, margin:'8px 0' }}/>
-              <div style={{ fontFamily:SANS, fontSize:11, opacity:0.9, fontWeight:700 }}>{a.dur} · {a.stop}</div>
+            <div style={{ flexShrink:0, textAlign:'center' }}>
+              <div style={{ height:2, background:'rgba(255,255,255,0.5)', borderRadius:999, margin:'8px 0', width:40 }}/>
+              <div style={{ fontFamily:SANS, fontSize:11, opacity:0.9, fontWeight:700 }}>{durText} · {a.stop}</div>
               <div style={{ fontSize:16, marginTop:2 }}>✈️</div>
             </div>
-            <div style={{ textAlign:'center' }}>
-              <div style={{ fontFamily:SANS, fontWeight:800, fontSize:22 }}>{a.arr}</div>
-              <div style={{ fontFamily:SANS, fontSize:11, opacity:0.8 }}>CXB</div>
-              <div style={{ fontFamily:BEN, fontSize:11, opacity:0.7 }}>{T(lang,'কক্সবাজার',"Cox's Bazar")}</div>
+            <div style={{ textAlign:'center', flex:1 }}>
+              <div style={{ fontFamily:SANS, fontWeight:800, fontSize:22 }}>{arrTime}</div>
+              <div style={{ fontFamily:SANS, fontSize:12, opacity:0.9, fontWeight:700 }}>{toCode}</div>
+              <div style={{ fontFamily:SANS, fontSize:11, opacity:0.7 }}>{toName.split('(')[0].trim()}</div>
             </div>
           </div>
 
@@ -129,7 +140,7 @@ export function FlightDetailPage(props: Props) {
           <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:16, flexWrap:'wrap', gap:10 }}>
             <div>
               <span style={{ fontFamily:SANS, fontSize:12, color:tk.textFaint }}>{T(lang,'শুরু থেকে','Starts from')} </span>
-              <span style={{ fontFamily:SANS, fontWeight:800, fontSize:26, color:tk.text }}>৳ {a.fare}</span>
+              <span style={{ fontFamily:SANS, fontWeight:800, fontSize:26, color:tk.text }}>৳ {flightFare}</span>
               <div style={{ fontFamily:SANS, fontSize:11, color:tk.textFaint }}>{T(lang,'অফিসিয়াল সাইটে যাচাই করুন','verify on official site')}</div>
             </div>
             <div style={{ background:a.seats <= 5 ? '#ff2a6d22' : tk.primarySoft, border:`1px solid ${a.seats <= 5 ? '#ff2a6d' : tk.primary}`, borderRadius:999, padding:'6px 14px', fontFamily:SANS, fontWeight:700, fontSize:12, color:a.seats <= 5 ? '#ff2a6d' : tk.primary }}>
@@ -152,10 +163,11 @@ export function FlightDetailPage(props: Props) {
               <div style={card()}>
                 <div style={{ fontFamily:BEN, fontWeight:700, fontSize:14, color:tk.text, marginBottom:12 }}>{T(lang,'ফ্লাইট বিস্তারিত','Flight details')}</div>
                 {[
-                  {l:T(lang,'রুট','Route'), v:'DAC → CXB · '+T(lang,'ঢাকা → কক্সবাজার',"Dhaka → Cox's Bazar")},
-                  {l:T(lang,'ছাড়বে','Departs'), v:a.dep+' · '+T(lang,'শাহজালাল বিমানবন্দর','Shahjalal Airport')},
-                  {l:T(lang,'পৌঁছাবে','Arrives'), v:a.arr+' · '+T(lang,'কক্সবাজার বিমানবন্দর',"Cox's Bazar Airport")},
-                  {l:T(lang,'সময়','Duration'), v:a.dur+' · '+T(lang,a.stop,a.stop)},
+                  {l:T(lang,'ফ্লাইট নম্বর','Flight No'), v:flightNo},
+                  {l:T(lang,'রুট','Route'), v:`${fromCode} → ${toCode} · ${fromName.split('(')[0].trim()} → ${toName.split('(')[0].trim()}`},
+                  {l:T(lang,'ছাড়বে','Departs'), v:`${depTime} · ${fromName}`},
+                  {l:T(lang,'পৌঁছাবে','Arrives'), v:`${arrTime} · ${toName}`},
+                  {l:T(lang,'সময়','Duration'), v:`${durText} · ${T(lang,a.stop,a.stop)}`},
                   {l:T(lang,'বিমান','Aircraft'), v:a.aircraft},
                   {l:T(lang,'লাগেজ','Baggage'), v:T(lang,a.baggage.bn,a.baggage.en)},
                 ].map((row,i)=>(

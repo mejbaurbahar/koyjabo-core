@@ -15,7 +15,11 @@
 import { BUS_DATA, STATIONS, METRO_STATIONS } from '../constants';
 import { busRouteConfidence, metroConfidence, confidenceBadge, fareEstimateNote } from './transportKnowledge';
 import { BD_TRAIN_ROUTES, TRAIN_STATIONS } from '../data/bangladeshTrainData';
+import { AIRPORTS_DATA, DOMESTIC_ROUTES } from '../data/bangladeshFlightData';
+import { LAUNCH_TERMINALS, LAUNCH_ROUTES } from '../data/bangladeshLaunchData';
+import { INTERCITY_BUS_ROUTES, MAJOR_TRANSPORT_HUBS } from '../data/intercityData';
 import { fuzzyMatchLocation } from './travelAI';
+import { searchLocationsSync } from './locationSearchService';
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const WALK_SPEED_KMH = 4.5;           // Average walking speed
@@ -36,7 +40,7 @@ const BUS_MIN_FARE = 10;
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-export type EdgeMode = 'bus' | 'metro' | 'walk' | 'transfer' | 'train';
+export type EdgeMode = 'bus' | 'metro' | 'walk' | 'transfer' | 'train' | 'flight' | 'launch';
 
 export interface GraphEdge {
   to: string;          // destination node id
@@ -54,7 +58,7 @@ export interface GraphNode {
   bnName: string;
   lat: number;
   lng: number;
-  type: 'bus_stop' | 'metro_station' | 'rail_station' | 'transfer_hub';
+  type: 'bus_stop' | 'metro_station' | 'rail_station' | 'transfer_hub' | 'airport' | 'launch_terminal';
 }
 
 export interface PathStep {
@@ -137,6 +141,28 @@ function buildGraph(): { graph: AdjacencyList; nodes: NodeMap } {
     }
   }
 
+  // 3b. Add airport nodes (nationwide)
+  for (const ap of AIRPORTS_DATA) {
+    const id = `airport_${ap.iata.toLowerCase()}`;
+    if (!nodes.has(id)) {
+      nodes.set(id, {
+        id, name: ap.en, bnName: ap.bn,
+        lat: ap.lat, lng: ap.lng, type: 'airport',
+      });
+    }
+  }
+
+  // 3c. Add launch terminals
+  for (const lt of LAUNCH_TERMINALS) {
+    const id = `launch_${lt.id}`;
+    if (!nodes.has(id)) {
+      nodes.set(id, {
+        id, name: lt.en, bnName: lt.bn,
+        lat: lt.lat, lng: lt.lng, type: 'launch_terminal',
+      });
+    }
+  }
+
   // 4. Bus route edges — consecutive stops (skip discontinued routes)
   for (const bus of BUS_DATA.filter(b => b.active !== false)) {
     for (let i = 0; i < bus.stops.length - 1; i++) {
@@ -189,6 +215,136 @@ function buildGraph(): { graph: AdjacencyList; nodes: NodeMap } {
         routeId: train.id, routeName: train.name, routeBnName: train.bnName
       });
     }
+  }
+
+  // 4.6 Flight edges — domestic routes
+  for (const route of DOMESTIC_ROUTES) {
+    const fromId = `airport_${route.from.toLowerCase()}`;
+    const toId = `airport_${route.to.toLowerCase()}`;
+    const fromNode = nodes.get(fromId);
+    const toNode = nodes.get(toId);
+    if (!fromNode || !toNode) continue;
+
+    // Parse duration e.g. "1h 5m" → minutes
+    const durMatch = route.dur.match(/(\d+)h\s*(?:(\d+)m)?/);
+    const timeMin = durMatch ? parseInt(durMatch[1]) * 60 + parseInt(durMatch[2] ?? '0') : 60;
+    const costBDT = route.fareEco;
+
+    addEdge(graph, fromId, { to: toId, mode: 'flight', timeMin, costBDT, routeId: route.id, routeName: route.flightNo });
+    addEdge(graph, toId, { to: fromId, mode: 'flight', timeMin, costBDT, routeId: route.id, routeName: route.flightNo });
+  }
+
+  // 4.7 Launch/ferry edges
+  // Build a set of unique routes (from→to), keep shortest duration per pair
+  const launchPairs = new Map<string, { timeMin: number; costBDT: number; routeName: string }>();
+  for (const lr of LAUNCH_ROUTES) {
+    const fromId = `launch_${lr.from}`;
+    const toId = `launch_${lr.to}`;
+    const fromNode = nodes.get(fromId);
+    const toNode = nodes.get(toId);
+    if (!fromNode || !toNode) continue;
+
+    const durMatch = lr.dur.match(/(\d+)h\s*(?:(\d+)m)?/);
+    const timeMin = durMatch ? parseInt(durMatch[1]) * 60 + parseInt(durMatch[2] ?? '0') : 600;
+    const costBDT = lr.deck; // deck fare as base cost
+    const key = `${fromId}|${toId}`;
+    const existing = launchPairs.get(key);
+    if (!existing || timeMin < existing.timeMin) {
+      launchPairs.set(key, { timeMin, costBDT, routeName: lr.name.en });
+    }
+  }
+  for (const [key, val] of launchPairs) {
+    const [fromId, toId] = key.split('|');
+    addEdge(graph, fromId, { to: toId, mode: 'launch', timeMin: val.timeMin, costBDT: val.costBDT, routeName: val.routeName });
+    addEdge(graph, toId, { to: fromId, mode: 'launch', timeMin: val.timeMin, costBDT: val.costBDT, routeName: val.routeName });
+  }
+
+  // 4.8 Intercity bus edges — district-to-district connections
+  // Maps district names from INTERCITY_BUS_ROUTES to existing graph node IDs
+  const DISTRICT_TO_NODE: Record<string, string> = {
+    // Dhaka Division
+    'Dhaka': 'kamalapur', 'Gazipur': 'joydebpur', 'Narayanganj': 'narayanganj',
+    'Narsingdi': 'narsingdi', 'Manikganj': 'gabtoli', 'Munshiganj': 'muktarpur',
+    'Tangail': 'tangail', 'Faridpur': 'faridpur', 'Gopalganj': 'kashiani',
+    'Madaripur': 'madaripur', 'Rajbari': 'rajbari', 'Shariatpur': 'mawa',
+    'Kishoreganj': 'kishoreganj',
+    // Chattogram Division
+    'Chattogram': 'chattogram', "Cox's Bazar": 'coxsbazar', 'Cumilla': 'comilla',
+    'Brahmanbaria': 'brahmanbaria', 'Chandpur': 'chandpur', 'Feni': 'feni',
+    'Noakhali': 'maijdi_court', 'Lakshmipur': 'chaumuhani',
+    'Khagrachhari': 'chattogram', 'Rangamati': 'chattogram', 'Bandarban': 'chattogram',
+    // Rajshahi Division
+    'Rajshahi': 'rajshahi', 'Chapai Nawabganj': 'chapainawabganj', 'Natore': 'natore',
+    'Naogaon': 'santahar', 'Pabna': 'paksey', 'Sirajganj': 'sirajganj',
+    'Bogura': 'bogra', 'Joypurhat': 'akkelpur',
+    // Khulna Division
+    'Khulna': 'khulna', 'Jashore': 'jessore', 'Satkhira': 'satkhira',
+    'Bagerhat': 'mongla', 'Narail': 'narail', 'Magura': 'magura',
+    'Jhenaidah': 'jessore', 'Kushtia': 'kushtia_court', 'Chuadanga': 'chuadanga',
+    'Meherpur': 'darshana',
+    // Barishal Division
+    'Barishal': 'barisal', 'Bhola': 'barisal', 'Jhalokathi': 'barisal',
+    'Pirojpur': 'barisal', 'Patukhali': 'barisal', 'Barguna': 'barisal',
+    // Sylhet Division
+    'Sylhet': 'sylhet', 'Moulvibazar': 'moulvibazar', 'Habiganj': 'habiganj',
+    'Sunamganj': 'sunamganj',
+    // Rangpur Division
+    'Rangpur': 'rangpur', 'Dinajpur': 'dinajpur', 'Thakurgaon': 'thakurgaon',
+    'Panchagarh': 'panchagarh', 'Nilphamari': 'nilphamari', 'Kurigram': 'kurigram',
+    'Lalmonirhat': 'lalmonirhat', 'Gaibandha': 'gaibandha',
+    // Mymensingh Division
+    'Mymensingh': 'mymensingh', 'Jamalpur': 'jamalpur', 'Sherpur': 'jamalpur',
+    'Netrokona': 'netrokona',
+    // Major hubs
+    'Benapole': 'benapole', 'Sreemangal': 'srimangal', 'Bhairab': 'bhairab',
+    'Teknaf': 'chattogram', 'Kuakata': 'barisal',
+  };
+
+  // Dhaka terminal name → STATIONS node id
+  const DHAKA_TERMINAL_MAP: Record<string, string> = {
+    'Gabtoli': 'gabtoli', 'Sayedabad': 'sayedabad', 'Mohakhali': 'mohakhali',
+    'Gulistan': 'gulistan', 'Kamalapur': 'kamalapur',
+  };
+
+  const parseIntercityFare = (fareStr: string): number => {
+    const nums = fareStr.replace(/[৳,]/g, '').match(/\d+/g);
+    if (!nums) return 300;
+    return parseInt(nums[0]);
+  };
+
+  // Parse Dhaka terminal from route string e.g. "Dhaka (Gabtoli) ⇄ Bogura"
+  const parseDhakaTerminal = (route: string): string => {
+    const m = route.match(/Dhaka \(([^)]+)\)/);
+    if (m) return DHAKA_TERMINAL_MAP[m[1]] ?? 'kamalapur';
+    return 'kamalapur';
+  };
+
+  const allIntercityRoutes = [...INTERCITY_BUS_ROUTES, ...MAJOR_TRANSPORT_HUBS];
+  for (const r of allIntercityRoutes) {
+    if (r.district === 'Dhaka' || r.costNonAC === '-') continue;
+    const destNodeId = DISTRICT_TO_NODE[r.district];
+    if (!destNodeId) continue;
+    const destNode = nodes.get(destNodeId);
+    if (!destNode) continue;
+
+    const dhakaNodeId = parseDhakaTerminal(r.route);
+    const dhakaNode = nodes.get(dhakaNodeId);
+    if (!dhakaNode) continue;
+
+    const fare = parseIntercityFare(r.costNonAC);
+    // Estimate duration from straight-line distance at 60 km/h avg intercity
+    const distM = haversineM(dhakaNode.lat, dhakaNode.lng, destNode.lat, destNode.lng);
+    const timeMin = Math.round((distM / 1000 / 60) * 60 + 30); // +30 min for boarding/stops
+
+    const operatorName = r.busOperators[0] ?? 'Intercity Bus';
+    addEdge(graph, dhakaNodeId, {
+      to: destNodeId, mode: 'bus', timeMin, costBDT: fare,
+      routeName: operatorName, routeBnName: operatorName,
+    });
+    addEdge(graph, destNodeId, {
+      to: dhakaNodeId, mode: 'bus', timeMin, costBDT: fare,
+      routeName: operatorName, routeBnName: operatorName,
+    });
   }
 
   // 5. Metro edges — ordered station list from METRO_STATIONS
@@ -387,6 +543,14 @@ function pathToSteps(state: DijkstraState, nodes: NodeMap): PathStep[] {
         instruction = `🚂 Take **${edge.routeName}** from ${fn} → ${tn}`;
         instructionBn = `🚂 **${edge.routeBnName ?? edge.routeName}** ট্রেনে ${fn} থেকে ${tn}`;
         break;
+      case 'flight':
+        instruction = `✈️ Fly **${edge.routeName}** from ${fn} → ${tn} (৳${edge.costBDT})`;
+        instructionBn = `✈️ **${edge.routeName}** ফ্লাইটে ${fn} থেকে ${tn} (৳${edge.costBDT})`;
+        break;
+      case 'launch':
+        instruction = `⛴️ Take **${edge.routeName}** launch from ${fn} → ${tn}`;
+        instructionBn = `⛴️ **${edge.routeName}** লঞ্চে ${fn} থেকে ${tn}`;
+        break;
       case 'transfer':
         instruction = `🔄 Transfer at ${fn}`;
         instructionBn = `🔄 ${fn}-এ ট্রান্সফার করুন`;
@@ -580,6 +744,53 @@ function findAllDirectBuses(fromId: string, toId: string): GraphRoute[] {
 // ── Location resolver ─────────────────────────────────────────────────────────
 // Converts free-text to the nearest graph node id
 
+// Airport IATA codes → node id mapping (only IATA codes + explicit airport keywords)
+// Do NOT include city names here — those should match train stations first
+const AIRPORT_ALIASES: Record<string, string> = {
+  'dac': 'airport_dac', 'shahjalal': 'airport_dac', 'hsia': 'airport_dac',
+  'cgp': 'airport_cgp', 'shah amanat': 'airport_cgp',
+  'cxb': 'airport_cxb',
+  'osmani': 'airport_zyl', 'zyl': 'airport_zyl',
+  'jsr': 'airport_jsr',
+  'spd': 'airport_spd',
+  'bzl': 'airport_bzl',
+  'rjh': 'airport_rjh',
+};
+
+// Common spelling variant → canonical graph node ID
+// These handle British/Bengali spelling differences that partial matching misses
+const SPELLING_ALIASES: Record<string, string> = {
+  // Barishal vs Barisal
+  'barishal': 'barisal', 'বরিশাল': 'barisal',
+  // Cox's Bazar — prefer train station over airport
+  "cox's bazar": 'coxsbazar', 'coxs bazar': 'coxsbazar', 'cox bazar': 'coxsbazar',
+  // Chattogram / Chittagong / Comilla / Cumilla
+  'chittagong': 'chattogram', 'চট্টগ্রাম': 'chattogram',
+  'cumilla': 'comilla', 'comilla': 'comilla',
+  // Dhaka variants
+  'dhaka': 'kamalapur', 'ঢাকা': 'kamalapur',
+  // Jashore vs Jessore
+  'jashore': 'jessore', 'যশোর': 'jessore',
+  // Kushtia
+  'kushtia': 'kushtia_court',
+  // Nawabganj
+  'chapainawabganj': 'chapainawabganj', 'chapai nawabganj': 'chapainawabganj',
+};
+
+// Launch terminal aliases for common name resolution
+const LAUNCH_ALIASES: Record<string, string> = {
+  'sadarghat': 'launch_sadarghat', 'সদরঘাট': 'launch_sadarghat',
+  'barisal ghat': 'launch_barisal', 'barishal ghat': 'launch_barisal',
+  'khulna ghat': 'launch_khulna',
+  'chandpur ghat': 'launch_chandpur', 'চাঁদপুর': 'launch_chandpur',
+};
+
+// Node type priority for routing (higher = prefer when tie-breaking)
+const NODE_TYPE_PRIORITY: Record<string, number> = {
+  rail_station: 100, airport: 90, launch_terminal: 80,
+  transfer_hub: 70, metro_station: 60, bus_stop: 10,
+};
+
 export function resolveLocation(query: string): string | null {
   const { nodes } = getGraph();
   const q = query.toLowerCase().trim();
@@ -587,19 +798,88 @@ export function resolveLocation(query: string): string | null {
   // Direct node id match
   if (nodes.has(q)) return q;
 
-  // Match by name (partial, case-insensitive)
-  for (const [id, node] of nodes) {
-    if (node.name.toLowerCase().includes(q) || (node.bnName && node.bnName.includes(query))) return id;
+  // Spelling alias lookup (before everything — fixes Barishal/barisal, Cox's etc.)
+  const aliasId = SPELLING_ALIASES[q];
+  if (aliasId && nodes.has(aliasId)) return aliasId;
+
+  // Handle "City (Station)" format — try the parenthetical content first
+  const parenMatch = q.match(/\(([^)]+)\)/);
+  if (parenMatch) {
+    const inner = parenMatch[1].toLowerCase();
+    if (nodes.has(inner)) return inner;
+    for (const [id, node] of nodes) {
+      if (node.name.toLowerCase().includes(inner)) return id;
+    }
+    // Also try without the parenthetical
+    const outer = q.replace(/\s*\([^)]+\)/, '').trim();
+    if (nodes.has(outer)) return outer;
   }
+
+  // Launch alias lookup
+  const launchId = LAUNCH_ALIASES[q] ?? LAUNCH_ALIASES[query];
+  if (launchId && nodes.has(launchId)) return launchId;
+
+  // Match by name — score by exact > startsWith > contains, break ties by node type priority
+  let bestId: string | null = null;
+  let bestScore = -1;
+
+  for (const [id, node] of nodes) {
+    const nameLower = node.name.toLowerCase();
+    const bnMatch = node.bnName && node.bnName.includes(query);
+    const typePriority = NODE_TYPE_PRIORITY[node.type] ?? 10;
+
+    let score = 0;
+    if (nameLower === q || node.bnName === query) score = 1000 + typePriority;
+    else if (nameLower.startsWith(q)) score = 500 + typePriority;
+    else if (nameLower.includes(q) || bnMatch) score = 100 + typePriority;
+
+    if (score > bestScore) { bestScore = score; bestId = id; }
+  }
+  if (bestId && bestScore >= 100) return bestId;
+
+  // Airport alias lookup — IATA codes and explicit airport names only
+  const airportId = AIRPORT_ALIASES[q];
+  if (airportId && nodes.has(airportId)) return airportId;
 
   // Fuzzy intercity → district match (fallback)
   const fuzzy = fuzzyMatchLocation(query);
   if (fuzzy) {
-    // Try matching district to a known node
     const fLower = fuzzy.toLowerCase();
+    let fBest: string | null = null;
+    let fBestScore = -1;
     for (const [id, node] of nodes) {
-      if (node.name.toLowerCase().includes(fLower)) return id;
+      if (node.name.toLowerCase().includes(fLower)) {
+        const s = NODE_TYPE_PRIORITY[node.type] ?? 10;
+        if (s > fBestScore) { fBestScore = s; fBest = id; }
+      }
     }
+    if (fBest) return fBest;
+  }
+
+  // OSM extended search: find matching location → find nearest high-priority graph node
+  const osmResults = searchLocationsSync(query, 5);
+  for (const r of osmResults) {
+    if (!r.lat || !r.lng) continue;
+    // Find nearest TRANSPORT node (not just any bus stop) within 5km
+    let nearestId: string | null = null;
+    let nearestScore = -1;
+    for (const [id, node] of nodes) {
+      const typePriority = NODE_TYPE_PRIORITY[node.type] ?? 10;
+      if (typePriority < 60) continue; // Skip plain bus stops for inter-city resolve
+      const d = haversineM(r.lat, r.lng, node.lat, node.lng);
+      if (d > 5000) continue; // 5km max
+      const score = typePriority - d / 100; // closer + higher priority = better
+      if (score > nearestScore) { nearestScore = score; nearestId = id; }
+    }
+    if (nearestId) return nearestId;
+    // Fallback: accept any node within 2km
+    let fallbackId: string | null = null;
+    let fallbackDist = Infinity;
+    for (const [id, node] of nodes) {
+      const d = haversineM(r.lat, r.lng, node.lat, node.lng);
+      if (d < 2000 && d < fallbackDist) { fallbackDist = d; fallbackId = id; }
+    }
+    if (fallbackId) return fallbackId;
   }
 
   return null;
@@ -722,6 +1002,8 @@ export function formatRoutes(
         if (s.mode === 'bus') return `  🚌 **${s.routeName}** — ${s.fromName} → ${s.toName}`;
         if (s.mode === 'metro') return `  🚇 **Metro MRT-6** ✅ — ${s.fromName} → ${s.toName} (৳${s.costBDT})`;
         if (s.mode === 'train') return `  🚂 **${s.routeName}** — ${s.fromName} → ${s.toName}`;
+        if (s.mode === 'flight') return `  ✈️ **${s.routeName}** — ${s.fromName} → ${s.toName} (৳${s.costBDT})`;
+        if (s.mode === 'launch') return `  ⛴️ **${s.routeName}** — ${s.fromName} → ${s.toName}`;
         return `  📍 ${s.fromName} → ${s.toName}`;
       });
 

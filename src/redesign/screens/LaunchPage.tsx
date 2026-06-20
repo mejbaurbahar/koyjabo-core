@@ -8,21 +8,11 @@ import { ModeHero } from '../components/ModeHero';
 import { Stars } from '../components/Stars';
 import { SuggestionDropdown, Suggestion } from '../components/SuggestionDropdown';
 import { earnCoins } from '../utils/koyCoinService';
+import { LAUNCH_ROUTES, LAUNCH_TERMINALS } from '../../../data/bangladeshLaunchData';
 
-interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
+interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string,p?:Record<string,string>)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
-const TERMINALS = [
-  { id:'sadarghat', en:'Sadarghat', bn:'সদরঘাট' },
-  { id:'barisal', en:'Barisal Ghat', bn:'বরিশাল ঘাট' },
-  { id:'khulna', en:'Khulna Ghat', bn:'খুলনা ঘাট' },
-  { id:'patuakhali', en:'Patuakhali Ghat', bn:'পটুয়াখালী ঘাট' },
-  { id:'bhola', en:'Bhola Ghat', bn:'ভোলা ঘাট' },
-  { id:'chandpur', en:'Chandpur Ghat', bn:'চাঁদপুর ঘাট' },
-  { id:'narayanganj', en:'Narayanganj Terminal', bn:'নারায়ণগঞ্জ টার্মিনাল' },
-  { id:'madaripur', en:'Madaripur Ghat', bn:'মাদারীপুর ঘাট' },
-  { id:'hatiya', en:'Hatiya Ghat', bn:'হাতিয়া ঘাট' },
-  { id:'borguna', en:'Borguna Ghat', bn:'বরগুনা ঘাট' },
-];
+// Use real LAUNCH_TERMINALS from data file (12 terminals)
 
 const LAUNCHES = [
   { n:{bn:'সুন্দরবন-১২',en:'Sundarban-12'}, op:{bn:'সুন্দরবন নেভিগেশন',en:'Sundarban Navigation'}, dep:'6:30 PM', arr:'5:00 AM', dur:'10h 30m', deck:300, vip:4500, rating:4.5, reviews:0, col:'#0ea5e9' },
@@ -57,13 +47,31 @@ export function LaunchPage(props: Props) {
   const filterTerminals = (q: string): Suggestion[] => {
     const lower = q.toLowerCase();
     const matched = q
-      ? TERMINALS.filter(t => t.en.toLowerCase().includes(lower) || t.bn.includes(q))
-      : TERMINALS;
+      ? LAUNCH_TERMINALS.filter(t => t.en.toLowerCase().includes(lower) || t.bn.includes(q))
+      : LAUNCH_TERMINALS;
     return matched.map(t => ({ id: t.id, label: lang === 'bn' ? t.bn : t.en }));
   };
 
   const fromSuggestions = useMemo(() => filterTerminals(fromTerminal), [fromTerminal, lang]);
   const toSuggestions = useMemo(() => filterTerminals(toTerminal), [toTerminal, lang]);
+
+  // Filter real routes by selected terminals (match by name or id)
+  const matchTerminalId = (q: string) => {
+    if (!q) return null;
+    const lower = q.toLowerCase();
+    return LAUNCH_TERMINALS.find(t => t.en.toLowerCase().includes(lower) || t.bn.includes(q) || t.id === lower.replace(/\s/g,''))?.id ?? null;
+  };
+  const fromId = matchTerminalId(fromTerminal);
+  const toId = matchTerminalId(toTerminal);
+  const filteredLaunches = useMemo(() => {
+    if (fromId && toId) return LAUNCH_ROUTES.filter(r => r.from === fromId && r.to === toId);
+    if (fromId) return LAUNCH_ROUTES.filter(r => r.from === fromId);
+    if (toId) return LAUNCH_ROUTES.filter(r => r.to === toId);
+    // Default: Sadarghat → Barisal (most popular route)
+    return LAUNCH_ROUTES.filter(r => r.from === 'sadarghat' && r.to === 'barisal');
+  }, [fromId, toId]);
+  const fromLabel = fromId ? LAUNCH_TERMINALS.find(t=>t.id===fromId)?.[lang==='bn'?'bn':'en'] ?? 'Sadarghat' : (lang==='bn'?'সদরঘাট':'Sadarghat');
+  const toLabel = toId ? LAUNCH_TERMINALS.find(t=>t.id===toId)?.[lang==='bn'?'bn':'en'] ?? 'Barisal' : (lang==='bn'?'বরিশাল':'Barisal');
 
   return (
     <PageShell {...props}>
@@ -87,7 +95,7 @@ export function LaunchPage(props: Props) {
                 ))}
               </div>
             </div>
-            <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1fr 1fr 0.8fr auto', gap:10 }}>
+            <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1fr 1fr auto', gap:10 }}>
               <div ref={fromRef} style={{ background:tk.inputBg, border:`1px solid ${tk.line}`, borderRadius:14, padding:'10px 14px', display:'flex', alignItems:'center', gap:10 }}>
                 <div style={{ width:28, height:28, borderRadius:8, background:tk.primarySoft, color:tk.primaryDeep, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><Icon.pin s={14}/></div>
                 <div style={{ flex:1, minWidth:0 }}>
@@ -116,11 +124,7 @@ export function LaunchPage(props: Props) {
                   />
                 </div>
               </div>
-              <div style={{ background:tk.inputBg, border:`1px solid ${tk.line}`, borderRadius:14, padding:'10px 14px', display:'flex', alignItems:'center', gap:10 }}>
-                <div style={{ width:28, height:28, borderRadius:8, background:tk.amberSoft, color:tk.amber, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><Icon.clock s={14}/></div>
-                <div><div style={{ fontFamily:SANS, fontSize:10, fontWeight:600, color:tk.textFaint, textTransform:'uppercase', letterSpacing:1.2 }}>{T(lang,'তারিখ','Date')}</div><div style={{ fontFamily:BEN, fontSize:14, fontWeight:600, color:tk.text }}>15 May</div></div>
-              </div>
-              <button onClick={()=>{ earnCoins(5,'Launch search'); onNav('results'); }} style={{ background:'linear-gradient(135deg,#0ea5e9,#075985)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'0 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #0ea5e9' }}>
+              <button onClick={()=>{ earnCoins(5,'Launch search'); document.getElementById('launch-results')?.scrollIntoView({ behavior:'smooth', block:'start' }); }} style={{ background:'linear-gradient(135deg,#0ea5e9,#075985)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'0 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #0ea5e9' }}>
                 <Icon.search s={16}/>{T(lang,'লঞ্চ খুঁজুন','Find launch')}
               </button>
             </div>
@@ -130,30 +134,32 @@ export function LaunchPage(props: Props) {
 
           <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1.5fr 1fr', gap:18 }}>
             {/* Launches list */}
-            <div>
-              <SectionHeader tk={tk} lang={lang} title={T(lang,'আজকের লঞ্চ · সদরঘাট → বরিশাল','Tonight\'s launches · Sadarghat → Barisal')} action={T(lang,'সব দেখুন','All')}/>
+            <div id="launch-results">
+              <SectionHeader tk={tk} lang={lang} title={T(lang,`আজকের লঞ্চ · ${fromLabel} → ${toLabel}`,`Tonight's launches · ${fromLabel} → ${toLabel}`)} action={T(lang,'সব দেখুন','All')}/>
               <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-                {LAUNCHES.map((l,i)=>(
-                  <div key={i} onClick={()=>onNav('vehicle')} style={{ ...card(14), position:'relative', overflow:'hidden', cursor:'pointer' }}>
-                    {l.premium && <div style={{ position:'absolute', top:0, right:0, background:'linear-gradient(90deg,#f59e0b,#fbbf24)', color:'#04130d', padding:'3px 10px', borderRadius:'0 16px 0 10px', fontFamily:SANS, fontWeight:800, fontSize:9, letterSpacing:1 }}>★ PREMIUM</div>}
+                {filteredLaunches.length === 0
+                  ? <div style={{ fontFamily:BEN, fontSize:13, color:tk.textFaint, padding:'16px 0' }}>{T(lang,'এই রুটে কোনো লঞ্চ পাওয়া যায়নি।','No launches found for this route.')}</div>
+                  : filteredLaunches.map((l,i)=>(
+                  <div key={l.id} onClick={()=>onNav('vehicle', { kind:'launch', id:l.id, name:l.name.en, nameBn:l.name.bn, from: fromLabel, to: toLabel, dep:l.dep, arr:l.arr, dur:l.dur, deck:String(l.deck), cabin:String(l.cabin), vip:String(l.vip), operator:l.operator.en, operatorBn:l.operator.bn, rating:String(l.rating), type:l.type, col:l.col })} style={{ ...card(14), position:'relative', overflow:'hidden', cursor:'pointer' }}>
+                    {l.overnight && <div style={{ position:'absolute', top:0, right:0, background:'linear-gradient(90deg,#7c3aed,#a855f7)', color:'#fff', padding:'3px 10px', borderRadius:'0 16px 0 10px', fontFamily:SANS, fontWeight:800, fontSize:9, letterSpacing:1 }}>🌙 OVERNIGHT</div>}
                     <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:10 }}>
-                      <div style={{ width:56, height:44, borderRadius:10, background:`linear-gradient(135deg,${l.col},${l.col}cc)`, flexShrink:0, overflow:'hidden', display:'flex', alignItems:'center', justifyContent:'center', fontSize:24 }}>⛴️</div>
+                      <div style={{ width:56, height:44, borderRadius:10, background:`linear-gradient(135deg,${l.col},${l.col}cc)`, flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center', fontSize:24 }}>⛴️</div>
                       <div style={{ flex:1, minWidth:0 }}>
-                        <div style={{ fontFamily:BEN, fontWeight:700, fontSize:14, color:tk.text }}>{T(lang,l.n.bn,l.n.en)}</div>
-                        <div style={{ fontFamily:BEN, fontSize:11, color:tk.textDim, marginTop:2 }}>{T(lang,l.op.bn,l.op.en)}</div>
+                        <div style={{ fontFamily:BEN, fontWeight:700, fontSize:14, color:tk.text }}>{T(lang,l.name.bn,l.name.en)}</div>
+                        <div style={{ fontFamily:BEN, fontSize:11, color:tk.textDim, marginTop:2 }}>{T(lang,l.operator.bn,l.operator.en)}</div>
                         <div style={{ display:'flex', alignItems:'center', gap:4, marginTop:4 }}>
                           <Stars value={l.rating} size={10}/>
                           <span style={{ fontFamily:SANS, fontSize:10, fontWeight:700, color:tk.text }}>{l.rating}</span>
-                          <span style={{ fontFamily:SANS, fontSize:10, color:tk.textFaint }}>({l.reviews})</span>
+                          <span style={{ fontFamily:SANS, fontSize:10, color:tk.textFaint }}>{l.type}</span>
                         </div>
                       </div>
                     </div>
                     <div style={{ display:'flex', alignItems:'center', gap:10, padding:'10px 0', borderTop:`1px dashed ${tk.line}`, borderBottom:`1px dashed ${tk.line}`, marginBottom:10 }}>
-                      <div><div style={{ fontFamily:SANS, fontWeight:700, fontSize:14, color:tk.text }}>{l.dep}</div><div style={{ fontFamily:BEN, fontSize:10, color:tk.textFaint }}>{T(lang,'সদরঘাট','Sadarghat')}</div></div>
+                      <div><div style={{ fontFamily:SANS, fontWeight:700, fontSize:14, color:tk.text }}>{l.dep}</div><div style={{ fontFamily:BEN, fontSize:10, color:tk.textFaint }}>{fromLabel}</div></div>
                       <div style={{ flex:1, height:1, background:tk.line, position:'relative' }}>
                         <span style={{ position:'absolute', left:'50%', top:-8, transform:'translateX(-50%)', background:tk.panel, padding:'0 6px', fontFamily:SANS, fontSize:10, fontWeight:700, color:tk.textFaint, whiteSpace:'nowrap' }}>{l.dur} · ⛴</span>
                       </div>
-                      <div style={{ textAlign:'right' }}><div style={{ fontFamily:SANS, fontWeight:700, fontSize:14, color:tk.text }}>{l.arr}</div><div style={{ fontFamily:BEN, fontSize:10, color:tk.textFaint }}>{T(lang,'বরিশাল','Barisal')}</div></div>
+                      <div style={{ textAlign:'right' }}><div style={{ fontFamily:SANS, fontWeight:700, fontSize:14, color:tk.text }}>{l.arr}</div><div style={{ fontFamily:BEN, fontSize:10, color:tk.textFaint }}>{toLabel}</div></div>
                     </div>
                     <div style={{ display:'flex', gap:8 }}>
                       <div style={{ flex:1, background:tk.panelMuted, borderRadius:10, padding:'8px 10px' }}>

@@ -4437,5 +4437,61 @@ export const AIRPORTS: Record<string, MetroStation> = {
     lat: 23.8434344,
     lng: 90.4029252,
     description: 'Main international airport of Bangladesh'
+  },
+  'shah_amanat_airport': {
+    id: 'shah_amanat_airport',
+    name: 'Shah Amanat International Airport (Chittagong)',
+    bnName: 'শাহ আমানত আন্তর্জাতিক বিমানবন্দর (চট্টগ্রাম)',
+    lat: 22.2496,
+    lng: 91.8133,
+    description: 'International airport serving Chittagong'
+  },
+  'osmani_airport': {
+    id: 'osmani_airport',
+    name: 'Osmani International Airport (Sylhet)',
+    bnName: 'ওসমানী আন্তর্জাতিক বিমানবন্দর (সিলেট)',
+    lat: 24.9591,
+    lng: 91.8670,
+    description: 'International airport serving Sylhet'
+  },
+  'coxs_bazar_airport': {
+    id: 'coxs_bazar_airport',
+    name: "Cox's Bazar Airport",
+    bnName: 'কক্সবাজার বিমানবন্দর',
+    lat: 21.4522,
+    lng: 91.9639,
+    description: "Airport serving Cox's Bazar"
+  },
+  'jessore_airport': {
+    id: 'jessore_airport',
+    name: 'Jessore Airport (Jashore)',
+    bnName: 'যশোর বিমানবন্দর',
+    lat: 23.1838,
+    lng: 89.1608,
+    description: 'Airport serving Jessore / Jashore'
+  },
+  'saidpur_airport': {
+    id: 'saidpur_airport',
+    name: 'Saidpur Airport',
+    bnName: 'সৈয়দপুর বিমানবন্দর',
+    lat: 25.7592,
+    lng: 88.9088,
+    description: 'Airport serving Saidpur and Rangpur division'
+  },
+  'barisal_airport': {
+    id: 'barisal_airport',
+    name: 'Barisal Airport',
+    bnName: 'বরিশাল বিমানবন্দর',
+    lat: 22.8010,
+    lng: 90.3012,
+    description: 'Airport serving Barishal'
+  },
+  'rajshahi_airport': {
+    id: 'rajshahi_airport',
+    name: 'Shah Makhdum Airport (Rajshahi)',
+    bnName: 'শাহ মখদুম বিমানবন্দর (রাজশাহী)',
+    lat: 24.4371,
+    lng: 88.6161,
+    description: 'Airport serving Rajshahi'
   }
 };

@@ -29,6 +29,15 @@ dist-ssr
 dev-dist/
 .claude/
 
+# OSM collected raw data (regenerate via: node scripts/collect-bd-locations.mjs)
+data/collected/
+# Processed intermediate data (regenerate via: node scripts/process-bd-locations.mjs)
+data/generated/
+
+# Playwright test screenshots
+*.png
+.playwright-mcp/
+
 # Secret management scripts — run locally, never commit
 update-smtp-secret.cjs
 setup-secrets.cjs

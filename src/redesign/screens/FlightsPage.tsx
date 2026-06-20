@@ -8,26 +8,17 @@ import { ModeHero } from '../components/ModeHero';
 import { Stars } from '../components/Stars';
 import { SuggestionDropdown, Suggestion } from '../components/SuggestionDropdown';
 import { earnCoins } from '../utils/koyCoinService';
+import { DOMESTIC_ROUTES, AIRPORTS_DATA } from '../../../data/bangladeshFlightData';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string,p?:Record<string,string>)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
-const AIRLINES = [
-  { code:'BG', name:{bn:'বিমান বাংলাদেশ',en:'Biman Bangladesh'}, dep:'07:15', arr:'08:15', dur:'1h 0m', stop:'Nonstop', fare:'4,499', seats:9, col:['#006a4e','#10b981'] as [string,string], rating:4.2, reviews:1240 },
-  { code:'BS', name:{bn:'ইউএস-বাংলা',en:'US-Bangla'}, dep:'09:40', arr:'10:45', dur:'1h 5m', stop:'Nonstop', fare:'4,199', seats:14, col:['#0c4a6e','#0ea5e9'] as [string,string], rating:4.5, reviews:2310, best:true },
-  { code:'VQ', name:{bn:'নোভোএয়ার',en:'NOVOAIR'}, dep:'12:20', arr:'13:25', dur:'1h 5m', stop:'Nonstop', fare:'4,650', seats:6, col:['#b45309','#f59e0b'] as [string,string], rating:4.3, reviews:980 },
-  { code:'2A', name:{bn:'এয়ার আস্ট্রা',en:'Air Astra'}, dep:'16:05', arr:'17:10', dur:'1h 5m', stop:'Nonstop', fare:'3,990', seats:3, col:['#7c3aed','#a855f7'] as [string,string], rating:4.1, reviews:410, cheap:true },
-];
-
-const AIRPORTS_LIST = [
-  { iata: 'DAC', en: 'Dhaka (Shahjalal)', bn: 'ঢাকা (শাহজালাল)' },
-  { iata: 'CGP', en: 'Chittagong (Shah Amanat)', bn: 'চট্টগ্রাম (শাহ আমানত)' },
-  { iata: 'CXB', en: "Cox's Bazar", bn: 'কক্সবাজার' },
-  { iata: 'ZYL', en: 'Sylhet (Osmani)', bn: 'সিলেট (ওসমানী)' },
-  { iata: 'JSR', en: 'Jessore', bn: 'যশোর' },
-  { iata: 'SPD', en: 'Saidpur', bn: 'সৈয়দপুর' },
-  { iata: 'BZL', en: 'Barisal', bn: 'বরিশাল' },
-  { iata: 'RJH', en: 'Rajshahi', bn: 'রাজশাহী' },
-];
+// Airline display metadata (colors, ratings)
+const AIRLINE_META: Record<string,{name:{bn:string;en:string};col:[string,string];rating:number;reviews:number}> = {
+  BG: { name:{bn:'বিমান বাংলাদেশ',en:'Biman Bangladesh'}, col:['#006a4e','#10b981'], rating:4.2, reviews:1240 },
+  BS: { name:{bn:'ইউএস-বাংলা',en:'US-Bangla'}, col:['#0c4a6e','#0ea5e9'], rating:4.5, reviews:2310 },
+  VQ: { name:{bn:'নোভোএয়ার',en:'NOVOAIR'}, col:['#b45309','#f59e0b'], rating:4.3, reviews:980 },
+  '2A':{ name:{bn:'এয়ার আস্ট্রা',en:'Air Astra'}, col:['#7c3aed','#a855f7'], rating:4.1, reviews:410 },
+};
 
 const CABINS = [
   { l:'Business', bn:'বিজনেস', c:'#7c3aed', p:'৳ 12,500', e:'🥂', desc:{bn:'প্রায়োরিটি · লাউঞ্জ',en:'Priority · lounge'} },
@@ -52,8 +43,8 @@ export function FlightsPage(props: Props) {
   const filterAirports = (q: string): Suggestion[] => {
     const lq = q.toLowerCase();
     const list = q.trim() === ''
-      ? AIRPORTS_LIST
-      : AIRPORTS_LIST.filter(a =>
+      ? AIRPORTS_DATA
+      : AIRPORTS_DATA.filter(a =>
           a.iata.toLowerCase().includes(lq) ||
           a.en.toLowerCase().includes(lq) ||
           a.bn.includes(q)
@@ -63,6 +54,44 @@ export function FlightsPage(props: Props) {
 
   const fromSuggestions = useMemo(() => filterAirports(fromAirport), [fromAirport]);
   const toSuggestions = useMemo(() => filterAirports(toAirport), [toAirport]);
+
+  // Extract IATA code from display string like "DAC · Dhaka"
+  const extractIATA = (s: string) => s.match(/^([A-Z]{3})/)?.[1] ?? s.toUpperCase().slice(0,3);
+  const fromIATA = fromAirport ? extractIATA(fromAirport) : 'DAC';
+  const toIATA = toAirport ? extractIATA(toAirport) : 'CXB';
+
+  const filteredFlights = useMemo(() => {
+    const routes = DOMESTIC_ROUTES.filter(r => r.from === fromIATA && r.to === toIATA);
+    const minFare = routes.length ? Math.min(...routes.map(x => x.fareEco)) : 0;
+    return routes.map(r => {
+      const meta = AIRLINE_META[r.airline] ?? { name:{bn:r.airline,en:r.airline}, col:['#3b82f6','#60a5fa'] as [string,string], rating:4.0, reviews:0 };
+      return {
+        ...r, ...meta,
+        fare: r.fareEco.toLocaleString(),
+        stop: r.daysOp === 'Daily' ? 'Nonstop' : r.daysOp,
+        best: r.airline === 'BS',
+        cheap: routes.length > 1 && r.fareEco === minFare,
+      };
+    });
+  }, [fromIATA, toIATA]);
+  // Workaround: re-compute without circular ref
+  const filteredFlights2 = useMemo(() => {
+    const routes = DOMESTIC_ROUTES.filter(r => r.from === fromIATA && r.to === toIATA);
+    const minFare = routes.length ? Math.min(...routes.map(r=>r.fareEco)) : 0;
+    return routes.map(r => {
+      const meta = AIRLINE_META[r.airline] ?? { name:{bn:r.airline,en:r.airline}, col:['#3b82f6','#60a5fa'] as [string,string], rating:4.0, reviews:0 };
+      return {
+        ...r, ...meta,
+        fare: r.fareEco.toLocaleString(),
+        stop: 'Nonstop',
+        best: r.airline === 'BS',
+        cheap: r.fareEco === minFare && routes.length > 1,
+      };
+    });
+  }, [fromIATA, toIATA]);
+
+  const fromAirportName = AIRPORTS_DATA.find(a=>a.iata===fromIATA)?.en ?? fromIATA;
+  const toAirportName = AIRPORTS_DATA.find(a=>a.iata===toIATA)?.en ?? toIATA;
 
   return (
     <PageShell {...props}>
@@ -82,7 +111,7 @@ export function FlightsPage(props: Props) {
                 <button key={i} style={{ ...chipBtn(tk), background:c.on?tk.text:tk.panelMuted, color:c.on?tk.bg:tk.text, borderColor:c.on?tk.text:tk.line, fontWeight:c.on?700:500 }}>{c.l}</button>
               ))}
             </div>
-            <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1fr 1fr 0.9fr auto', gap:10 }}>
+            <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1fr 1fr auto', gap:10 }}>
               {/* From */}
               <div ref={fromRef} style={{ background:tk.inputBg, border:`1px solid ${fromFocus?tk.primary:tk.line}`, borderRadius:14, padding:'10px 14px', display:'flex', alignItems:'center', gap:10 }}>
                 <div style={{ width:28, height:28, borderRadius:8, background:tk.primarySoft, color:tk.primaryDeep, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><Icon.pin s={14}/></div>
@@ -113,11 +142,6 @@ export function FlightsPage(props: Props) {
                   />
                 </div>
               </div>
-              {/* Date */}
-              <div style={{ background:tk.inputBg, border:`1px solid ${tk.line}`, borderRadius:14, padding:'10px 14px', display:'flex', alignItems:'center', gap:10 }}>
-                <div style={{ width:28, height:28, borderRadius:8, background:tk.amberSoft, color:tk.amber, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><Icon.clock s={14}/></div>
-                <div><div style={{ fontFamily:SANS, fontSize:10, fontWeight:600, color:tk.textFaint, textTransform:'uppercase', letterSpacing:1.2 }}>{T(lang,'তারিখ','Date')}</div><div style={{ fontFamily:BEN, fontSize:14, fontWeight:600, color:tk.text }}>15 May</div></div>
-              </div>
             </div>
             {fromFocus && (
               <SuggestionDropdown
@@ -137,22 +161,25 @@ export function FlightsPage(props: Props) {
                 anchorRef={toRef as React.RefObject<HTMLElement>}
               />
             )}
-            <button onClick={()=>{ earnCoins(5, 'Flight search'); onNav('results'); }} style={{ background:'linear-gradient(135deg,#1e5aa0,#0a1d3a)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'10px 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #1e5aa0', marginTop:10 }}>
+            <button onClick={()=>{ earnCoins(5, 'Flight search'); document.getElementById('flights-results')?.scrollIntoView({ behavior:'smooth', block:'start' }); }} style={{ background:'linear-gradient(135deg,#1e5aa0,#0a1d3a)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'10px 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #1e5aa0', marginTop:10 }}>
               <Icon.search s={16}/>{T(lang,'ফ্লাইট খুঁজুন','Find flights')}
             </button>
           </div>
 
           <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1.5fr 1fr', gap:18 }}>
             {/* Flights list */}
-            <div>
-              <SectionHeader tk={tk} lang={lang} title={T(lang,"এয়ারলাইন গাইড · ঢাকা → কক্সবাজার","Airline guide · Dhaka → Cox's Bazar")} action={T(lang,'সব দেখুন','See all')}/>
+            <div id="flights-results">
+              <SectionHeader tk={tk} lang={lang} title={T(lang,`এয়ারলাইন গাইড · ${fromIATA} → ${toIATA}`,`Airline guide · ${fromAirportName} → ${toAirportName}`)} action={T(lang,'সব দেখুন','See all')}/>
               <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-                {AIRLINES.map((a,i)=>(
-                  <div key={i} onClick={()=>{ earnCoins(2, 'View flight details'); onNav('flight-detail', { code: a.code }); }} style={{ ...card(14), position:'relative', overflow:'hidden', cursor:'pointer' }}>
+                {filteredFlights2.length === 0
+                  ? <div style={{ fontFamily:BEN, fontSize:13, color:tk.textFaint, padding:'16px 0' }}>{T(lang,'এই রুটে কোনো ফ্লাইট পাওয়া যায়নি।','No flights found for this route.')}</div>
+                  : null}
+                {(filteredFlights2.length > 0 ? filteredFlights2 : []).map((a,i)=>(
+                  <div key={i} onClick={()=>{ earnCoins(2, 'View flight details'); onNav('flight-detail', { code: a.airline, flightNo: a.flightNo, dep: a.dep, arr: a.arr, dur: a.dur, fromIATA, toIATA, fromName: fromAirportName, toName: toAirportName, fare: String(a.fareEco) }); }} style={{ ...card(14), position:'relative', overflow:'hidden', cursor:'pointer' }}>
                     {a.best && <div style={{ position:'absolute', top:0, right:0, background:'linear-gradient(90deg,#0ea5e9,#22d3ee)', color:'#04130d', padding:'3px 10px', borderRadius:'0 16px 0 10px', fontFamily:SANS, fontWeight:800, fontSize:9, letterSpacing:1 }}>★ {T(lang,'সেরা','BEST')}</div>}
                     {a.cheap && <div style={{ position:'absolute', top:0, right:0, background:'linear-gradient(90deg,#a855f7,#7c3aed)', color:'#fff', padding:'3px 10px', borderRadius:'0 16px 0 10px', fontFamily:SANS, fontWeight:800, fontSize:9, letterSpacing:1 }}>৳ {T(lang,'সস্তা','CHEAPEST')}</div>}
                     <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:10 }}>
-                      <div style={{ width:44, height:44, borderRadius:12, flexShrink:0, background:`linear-gradient(135deg,${a.col[0]},${a.col[1]})`, color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:SANS, fontWeight:800, fontSize:14 }}>{a.code}</div>
+                      <div style={{ width:44, height:44, borderRadius:12, flexShrink:0, background:`linear-gradient(135deg,${a.col[0]},${a.col[1]})`, color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:SANS, fontWeight:800, fontSize:14 }}>{a.airline}</div>
                       <div style={{ flex:1, minWidth:0 }}>
                         <div style={{ fontFamily:BEN, fontWeight:700, fontSize:14, color:tk.text }}>{T(lang,a.name.bn,a.name.en)}</div>
                         <div style={{ display:'flex', alignItems:'center', gap:4, marginTop:3 }}>
