@@ -4,6 +4,7 @@ import { PageShell } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
 import { Icon } from '../components/Icons';
 import { askGeminiRoute, ChatMessage } from '../../../services/geminiService';
+import { askGitHubModels } from '../../../services/githubModelsService';
 import { getAllSessions, saveChatMessage } from '../../../services/chatHistoryManager';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
@@ -100,10 +101,44 @@ function ChatBubble({ msg, tk, lang }: { msg: any; tk: any; lang:'bn'|'en' }) {
       {!isUser && <AvatarAI tk={tk}/>}
       {isUser && <div style={{ width:32,height:32,borderRadius:999,background:tk.accentSoft,color:tk.accent,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontFamily:SANS,fontWeight:700,fontSize:12 }}>MF</div>}
       <div style={{ background:isUser?tk.primary:tk.panel,color:isUser?tk.primaryInk:tk.text,border:isUser?0:`1px solid ${tk.line}`,borderRadius:16,padding:'12px 16px',fontFamily:BEN,fontSize:14,lineHeight:1.6 }}>
-        {msg.text}
+        {isUser ? msg.text : renderMd(msg.text, tk)}
       </div>
     </div>
   );
+}
+
+function renderMd(text: string, tk: any) {
+  const lines = text.split('\n');
+  return lines.map((line, i) => {
+    const trimmed = line.trim();
+    if (!trimmed) return <div key={i} style={{ height:6 }} />;
+    if (/^─{3,}$/.test(trimmed)) return <div key={i} style={{ borderTop:`1px solid ${tk.line}`,margin:'8px 0' }} />;
+
+    // Parse **bold** inline
+    const parseBold = (s: string) => {
+      const parts = s.split(/\*\*(.+?)\*\*/);
+      return parts.map((p, j) => j % 2 === 1
+        ? <strong key={j} style={{ fontWeight:700, color:tk.text }}>{p}</strong>
+        : p);
+    };
+
+    const isRoute = /^\d+\.\s/.test(trimmed);
+    const isHeader = /^[🗺️🏆⚡📍🚌🚇🚂✈️🚢🛳️⛴️🚶]/.test(trimmed) && trimmed.length < 120;
+    const isKV = /^[💰⏱️🔄⚠️📌📞🎁📝✅]/.test(trimmed);
+
+    return (
+      <div key={i} style={{
+        display:'flex', gap: isRoute ? 6 : 0,
+        marginBottom: isHeader ? 6 : isRoute ? 3 : 2,
+        paddingLeft: isRoute ? 4 : 0,
+        background: isHeader && trimmed.startsWith('🏆') ? `${tk.primarySoft}33` : isHeader && trimmed.startsWith('⚡') ? `${tk.accentSoft}22` : 'transparent',
+        borderRadius: isHeader ? 6 : 0,
+        padding: isHeader ? '3px 6px' : '0',
+      }}>
+        {parseBold(trimmed)}
+      </div>
+    );
+  });
 }
 
 export function AIChatPage(props: Props) {
@@ -143,7 +178,12 @@ export function AIChatPage(props: Props) {
       const chatHistory: ChatMessage[] = currentMessages
         .filter(m => !(m as any).rich)
         .map(m => ({ role: m.isUser ? 'user' : 'assistant', text: m.text }));
-      const response = await askGeminiRoute(userText, undefined, chatHistory, 'Mejbaur');
+      let response: string;
+      try {
+        response = await askGitHubModels(userText, chatHistory);
+      } catch {
+        response = await askGeminiRoute(userText, undefined, chatHistory, 'Mejbaur');
+      }
       saveChatMessage({ role: 'assistant', text: response, timestamp: Date.now() } as any, nextSessionId);
       setMessages(m => [...m, { id: Date.now()+1, isUser:false, text:response }]);
     } catch {

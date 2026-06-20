@@ -267,6 +267,63 @@ export default {
       return new Response('Not found', { status: 404 });
     }
 
+    // ── POST /ai  — Cloudflare Workers AI (no token needed) ─────────────────
+    if ((url.pathname === '/ai' || url.pathname === '/ai/') && request.method === 'POST') {
+      if (!env.AI) {
+        return new Response(JSON.stringify({ error: 'AI binding not configured' }), {
+          status: 503, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) },
+        });
+      }
+
+      const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+      if (isRateLimited(ip + ':ai', 20, 60_000)) {
+        return new Response(JSON.stringify({ error: 'Too many AI requests' }), {
+          status: 429, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) },
+        });
+      }
+
+      let body;
+      try { body = await request.json(); } catch {
+        return new Response(JSON.stringify({ error: 'Invalid JSON' }), {
+          status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) },
+        });
+      }
+
+      const message = String(body.message || '').slice(0, 500);
+      const history = Array.isArray(body.history) ? body.history.slice(-6) : [];
+      if (!message) {
+        return new Response(JSON.stringify({ error: 'Missing message' }), {
+          status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) },
+        });
+      }
+
+      const SYSTEM_PROMPT = `You are KoyJabo AI (কই যাবো AI), a transport assistant for Bangladesh built by Mejbaur Bahar Fagun.
+Help with: bus routes, Dhaka metro (MRT Line 6: Uttara North–Motijheel, 7:10AM–8:40PM, closed Fridays), intercity trains, launches, domestic flights, rickshaws, CNGs, and travel tips.
+Be concise (2–3 short paragraphs max). Respond in Bangla if the user writes in Bangla script, otherwise in English.
+If asked who made you: "I was built by Mejbaur Bahar Fagun, a software engineer, for KoyJabo (koyjabo.com)."`;
+
+      const messages = [
+        { role: 'system', content: SYSTEM_PROMPT },
+        ...history.map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: String(m.text || '').slice(0, 300) })),
+        { role: 'user', content: message },
+      ];
+
+      try {
+        const result = await env.AI.run('@cf/meta/llama-3.3-70b-instruct-fp8-fast', {
+          messages,
+          max_tokens: 600,
+        });
+        const text = result.response || '';
+        return new Response(JSON.stringify({ text }), {
+          status: 200, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) },
+        });
+      } catch (e) {
+        return new Response(JSON.stringify({ error: 'ai_failed', detail: String(e).slice(0, 100) }), {
+          status: 502, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) },
+        });
+      }
+    }
+
     // Only serve /gh path
     if (url.pathname !== '/gh' && url.pathname !== '/gh/') {
       return new Response('Not found', { status: 404 });

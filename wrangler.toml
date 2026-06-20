@@ -9,3 +9,6 @@ DATA_OWNER = "mejbaurbahar"
 DATA_REPO = "koyjabo"
 
 # GH_TOKEN is set as a secret (not here) via: npx wrangler secret put GH_TOKEN
+
+[ai]
+binding = "AI"
