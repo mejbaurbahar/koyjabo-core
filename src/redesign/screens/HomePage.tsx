@@ -1099,9 +1099,11 @@ function MetroLiveStrip({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobi
               </div>
             </div>
           </div>
-          <div style={{ textAlign:'right' }}>
-            <div style={{ fontFamily:lang==='bn'?BEN:SANS, fontSize:11, color:'rgba(255,255,255,0.4)' }}>{T(lang,'পরের ট্রেন','Next train')}</div>
-            <div style={{ fontFamily:lang==='bn'?BEN:SANS, fontSize:22, fontWeight:800, color:'#60a5fa' }}>{countdown} {T(lang,'মিনিট','min')}</div>
+          <div style={{ textAlign:'right', minWidth:72 }}>
+            <div style={{ fontFamily:SANS, fontSize:11, color:'rgba(255,255,255,0.4)' }}>{T(lang,'পরের ট্রেন','Next train')}</div>
+            <div style={{ fontFamily:SANS, fontSize:22, fontWeight:800, color:'#60a5fa', fontVariantNumeric:'tabular-nums', letterSpacing:'-0.5px' }}>
+              {countdown} <span style={{ fontSize:14 }}>{T(lang,'মিনিট','min')}</span>
+            </div>
           </div>
         </div>
 
@@ -1116,14 +1118,15 @@ function MetroLiveStrip({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobi
             {/* Completed track */}
             <div style={{ position:'absolute', top:26, left:4, width:`${trainPct}%`, height:5, borderRadius:999, background:'linear-gradient(90deg,#1e40af,#60a5fa)', transition:'width 1.2s ease-in-out' }}/>
 
-            {/* Animated train — sits on track */}
+            {/* Animated train — GPU layer, no layout impact */}
             <div style={{
               position:'absolute',
-              top:3, // wire height
+              top:3,
               left: `calc(${trainPct}% - 36px)`,
               transition: atStation ? 'left 1.2s cubic-bezier(.4,0,.2,1)' : 'none',
               zIndex:3,
-              transform: atStation ? 'scaleX(1)' : 'scaleX(1)',
+              willChange:'left',
+              contain:'layout style paint',
             }}>
               <MetroTrainSVG/>
               {/* Motion blur when moving */}
@@ -1138,23 +1141,25 @@ function MetroLiveStrip({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobi
                 const isPast = i < trainIdx;
                 const isCurr = i === trainIdx;
                 return (
-                  <div key={i} style={{ display:'flex', flexDirection:'column', alignItems:'center', flex:1 }}>
-                    {/* Vertical connector from wire to dot */}
-                    <div style={{ width:1, height:8, background: isPast||isCurr ? 'rgba(96,165,250,0.4)' : 'rgba(255,255,255,0.1)' }}/>
+                  <div key={i} style={{ display:'flex', flexDirection:'column', alignItems:'center', flex:1, height:32 }}>
+                    {/* Vertical connector — fixed height */}
+                    <div style={{ width:1, height:8, background: isPast||isCurr ? 'rgba(96,165,250,0.4)' : 'rgba(255,255,255,0.1)', flexShrink:0 }}/>
                     <div style={{
-                      width: isCurr ? 12 : 7,
-                      height: isCurr ? 12 : 7,
-                      borderRadius:'50%',
+                      width:12, height:12, borderRadius:'50%', flexShrink:0,
                       background: isCurr ? '#60a5fa' : isPast ? '#3b82f6' : 'rgba(255,255,255,0.15)',
-                      border: isCurr ? '2px solid white' : 'none',
+                      border: isCurr ? '2px solid white' : '2px solid transparent',
                       boxShadow: isCurr ? '0 0 10px rgba(96,165,250,0.9)' : 'none',
-                      transition:'all 0.4s ease',
+                      transition:'background 0.4s ease, box-shadow 0.4s ease',
                     }}/>
-                    {isCurr && (
-                      <span style={{ fontFamily:lang==='bn'?BEN:SANS, fontSize:8, fontWeight:700, color:'#93c5fd', whiteSpace:'nowrap', marginTop:3 }}>
-                        {name}
-                      </span>
-                    )}
+                    {/* Always rendered — visibility toggles to avoid layout shift */}
+                    <span style={{
+                      fontFamily:lang==='bn'?BEN:SANS, fontSize:8, fontWeight:700,
+                      color:'#93c5fd', whiteSpace:'nowrap', marginTop:2,
+                      visibility: isCurr ? 'visible' : 'hidden',
+                      lineHeight:1,
+                    }}>
+                      {name}
+                    </span>
                   </div>
                 );
               })}
