@@ -71,17 +71,125 @@ export function IntercityPage(props: Props) {
   const fromRef = useRef<HTMLInputElement>(null);
   const toRef = useRef<HTMLInputElement>(null);
 
-  // District suggestions from real data
-  const districtSuggestions: Suggestion[] = useMemo(() =>
-    ALL_INTERCITY_LOCATIONS.filter(r => r.district !== 'Dhaka').map(r => ({
-      id: r.district, label: r.district, sub: r.division + ' Division'
-    })), []
-  );
+  // All Bangladesh locations — 64 districts + major Dhaka areas + hubs + tourist spots
+  const ALL_BD_LOCATIONS: Suggestion[] = useMemo(() => [
+    // Major cities
+    { id:'dhaka', label:'Dhaka', sub:'Dhaka Division' },
+    { id:'chattogram', label:'Chattogram', sub:'Chattogram Division' },
+    { id:'sylhet', label:'Sylhet', sub:'Sylhet Division' },
+    { id:'rajshahi', label:'Rajshahi', sub:'Rajshahi Division' },
+    { id:'khulna', label:'Khulna', sub:'Khulna Division' },
+    { id:'barishal', label:'Barishal', sub:'Barishal Division' },
+    { id:'rangpur', label:'Rangpur', sub:'Rangpur Division' },
+    { id:'mymensingh', label:'Mymensingh', sub:'Mymensingh Division' },
+    // Chattogram Division
+    { id:"coxs_bazar", label:"Cox's Bazar", sub:'Chattogram Division' },
+    { id:'cumilla', label:'Cumilla', sub:'Chattogram Division' },
+    { id:'feni', label:'Feni', sub:'Chattogram Division' },
+    { id:'noakhali', label:'Noakhali', sub:'Chattogram Division' },
+    { id:'lakshmipur', label:'Lakshmipur', sub:'Chattogram Division' },
+    { id:'chandpur', label:'Chandpur', sub:'Chattogram Division' },
+    { id:'brahmanbaria', label:'Brahmanbaria', sub:'Chattogram Division' },
+    { id:'bandarban', label:'Bandarban', sub:'Chattogram Division' },
+    { id:'rangamati', label:'Rangamati', sub:'Chattogram Division' },
+    { id:'khagrachhari', label:'Khagrachhari', sub:'Chattogram Division' },
+    // Sylhet Division
+    { id:'moulvibazar', label:'Moulvibazar', sub:'Sylhet Division' },
+    { id:'habiganj', label:'Habiganj', sub:'Sylhet Division' },
+    { id:'sunamganj', label:'Sunamganj', sub:'Sylhet Division' },
+    // Rajshahi Division
+    { id:'bogura', label:'Bogura', sub:'Rajshahi Division' },
+    { id:'naogaon', label:'Naogaon', sub:'Rajshahi Division' },
+    { id:'natore', label:'Natore', sub:'Rajshahi Division' },
+    { id:'chapainawabganj', label:'Chapainawabganj', sub:'Rajshahi Division' },
+    { id:'pabna', label:'Pabna', sub:'Rajshahi Division' },
+    { id:'sirajganj', label:'Sirajganj', sub:'Rajshahi Division' },
+    { id:'joypurhat', label:'Joypurhat', sub:'Rajshahi Division' },
+    // Khulna Division
+    { id:'jashore', label:'Jashore', sub:'Khulna Division' },
+    { id:'benapole', label:'Benapole', sub:'Khulna Division' },
+    { id:'satkhira', label:'Satkhira', sub:'Khulna Division' },
+    { id:'bagerhat', label:'Bagerhat', sub:'Khulna Division' },
+    { id:'narail', label:'Narail', sub:'Khulna Division' },
+    { id:'chuadanga', label:'Chuadanga', sub:'Khulna Division' },
+    { id:'jhenaidah', label:'Jhenaidah', sub:'Khulna Division' },
+    { id:'magura', label:'Magura', sub:'Khulna Division' },
+    { id:'meherpur', label:'Meherpur', sub:'Khulna Division' },
+    { id:'kushtia', label:'Kushtia', sub:'Khulna Division' },
+    // Barishal Division
+    { id:'patuakhali', label:'Patuakhali', sub:'Barishal Division' },
+    { id:'kuakata', label:'Kuakata', sub:'Barishal Division' },
+    { id:'bhola', label:'Bhola', sub:'Barishal Division' },
+    { id:'pirojpur', label:'Pirojpur', sub:'Barishal Division' },
+    { id:'barguna', label:'Barguna', sub:'Barishal Division' },
+    { id:'jhalokati', label:'Jhalokati', sub:'Barishal Division' },
+    // Rangpur Division
+    { id:'dinajpur', label:'Dinajpur', sub:'Rangpur Division' },
+    { id:'thakurgaon', label:'Thakurgaon', sub:'Rangpur Division' },
+    { id:'panchagarh', label:'Panchagarh', sub:'Rangpur Division' },
+    { id:'nilphamari', label:'Nilphamari', sub:'Rangpur Division' },
+    { id:'lalmonirhat', label:'Lalmonirhat', sub:'Rangpur Division' },
+    { id:'kurigram', label:'Kurigram', sub:'Rangpur Division' },
+    { id:'gaibandha', label:'Gaibandha', sub:'Rangpur Division' },
+    // Mymensingh Division
+    { id:'jamalpur', label:'Jamalpur', sub:'Mymensingh Division' },
+    { id:'sherpur', label:'Sherpur', sub:'Mymensingh Division' },
+    { id:'netrokona', label:'Netrokona', sub:'Mymensingh Division' },
+    { id:'kishoreganj', label:'Kishoreganj', sub:'Mymensingh Division' },
+    // Dhaka Division districts
+    { id:'gazipur', label:'Gazipur', sub:'Dhaka Division' },
+    { id:'narayanganj', label:'Narayanganj', sub:'Dhaka Division' },
+    { id:'narsingdi', label:'Narsingdi', sub:'Dhaka Division' },
+    { id:'manikganj', label:'Manikganj', sub:'Dhaka Division' },
+    { id:'munshiganj', label:'Munshiganj', sub:'Dhaka Division' },
+    { id:'faridpur', label:'Faridpur', sub:'Dhaka Division' },
+    { id:'gopalganj', label:'Gopalganj', sub:'Dhaka Division' },
+    { id:'madaripur', label:'Madaripur', sub:'Dhaka Division' },
+    { id:'shariatpur', label:'Shariatpur', sub:'Dhaka Division' },
+    { id:'rajbari', label:'Rajbari', sub:'Dhaka Division' },
+    { id:'tangail', label:'Tangail', sub:'Dhaka Division' },
+    // Major Dhaka areas
+    { id:'gulshan', label:'Gulshan', sub:'Dhaka City' },
+    { id:'banani', label:'Banani', sub:'Dhaka City' },
+    { id:'uttara', label:'Uttara', sub:'Dhaka City' },
+    { id:'mirpur', label:'Mirpur', sub:'Dhaka City' },
+    { id:'dhanmondi', label:'Dhanmondi', sub:'Dhaka City' },
+    { id:'mohammadpur', label:'Mohammadpur', sub:'Dhaka City' },
+    { id:'farmgate', label:'Farmgate', sub:'Dhaka City' },
+    { id:'motijheel', label:'Motijheel', sub:'Dhaka City' },
+    { id:'old_dhaka', label:'Old Dhaka', sub:'Dhaka City' },
+    { id:'badda', label:'Badda', sub:'Dhaka City' },
+    { id:'khilgaon', label:'Khilgaon', sub:'Dhaka City' },
+    { id:'rampura', label:'Rampura', sub:'Dhaka City' },
+    { id:'mohakhali', label:'Mohakhali', sub:'Dhaka City' },
+    { id:'tejgaon', label:'Tejgaon', sub:'Dhaka City' },
+    { id:'shahbag', label:'Shahbag', sub:'Dhaka City' },
+    { id:'savar', label:'Savar', sub:'Dhaka Division' },
+    { id:'hemayetpur', label:'Hemayetpur', sub:'Savar, Dhaka' },
+    { id:'gabtoli', label:'Gabtoli', sub:'Dhaka Bus Terminal' },
+    { id:'sadarghat', label:'Sadarghat', sub:'Dhaka Launch Terminal' },
+    { id:'kamalapur', label:'Kamalapur', sub:'Dhaka Railway Station' },
+    { id:'airport', label:'Airport (HSIA)', sub:'Dhaka International Airport' },
+    // Tourist destinations
+    { id:'sundarbans', label:'Sundarbans', sub:'Khulna Division' },
+    { id:'saint_martin', label:"Saint Martin Island", sub:'Teknaf, Cox\'s Bazar' },
+    { id:'sajek', label:'Sajek Valley', sub:'Rangamati' },
+    { id:'jaflong', label:'Jaflong', sub:'Sylhet' },
+    { id:'ratargul', label:'Ratargul', sub:'Sylhet' },
+    { id:'srimangal', label:'Srimangal', sub:'Moulvibazar' },
+    { id:'nilgiri', label:'Nilgiri', sub:'Bandarban' },
+    { id:'kaptai', label:'Kaptai Lake', sub:'Rangamati' },
+    { id:'mongla', label:'Mongla', sub:'Bagerhat' },
+    { id:'teknaf', label:'Teknaf', sub:"Cox's Bazar" },
+    ...ALL_INTERCITY_LOCATIONS
+      .filter(r => !['Dhaka','Chattogram','Sylhet','Rajshahi','Khulna','Barishal','Rangpur','Mymensingh'].includes(r.district))
+      .map(r => ({ id: r.district.toLowerCase().replace(/\s/g,'_'), label: r.district, sub: r.division + ' Division' })),
+  ].filter((v, i, arr) => arr.findIndex(x => x.id === v.id) === i), []);
 
   const filterDistricts = (q: string): Suggestion[] => {
-    if (!q.trim()) return [{ id: 'dhaka', label: 'Dhaka', sub: 'Dhaka Division' }, ...districtSuggestions.slice(0, 7)];
+    if (!q.trim()) return ALL_BD_LOCATIONS.slice(0, 10);
     const lq = q.toLowerCase();
-    return districtSuggestions.filter(s => s.label.toLowerCase().includes(lq)).slice(0, 8);
+    return ALL_BD_LOCATIONS.filter(s => s.label.toLowerCase().includes(lq) || s.sub?.toLowerCase().includes(lq)).slice(0, 12);
   };
 
   const filteredDistricts = useMemo(() => {
@@ -257,28 +365,6 @@ export function IntercityPage(props: Props) {
                 onBlur={() => setTimeout(() => setToFocus(false), 150)}
               />
               {toFocus && <SuggestionDropdown suggestions={filterDistricts(to)} onSelect={s => { setTo(s.label); setToFocus(false); }} onDismiss={() => setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef}/>}
-            </div>
-            <div>
-              <label style={labelStyle}>
-                {lbl('Date', 'তারিখ')}
-              </label>
-              <input
-                style={inputStyle}
-                placeholder={lbl('Today, Jun 17', 'আজ, ১৭ জুন')}
-                type="text"
-                readOnly
-              />
-            </div>
-            <div>
-              <label style={labelStyle}>
-                {lbl('Passengers', 'যাত্রী')}
-              </label>
-              <input
-                style={inputStyle}
-                placeholder={lbl('1 Adult', '১ যাত্রী')}
-                type="text"
-                readOnly
-              />
             </div>
           </div>
 

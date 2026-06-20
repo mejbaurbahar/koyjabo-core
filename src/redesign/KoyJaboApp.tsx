@@ -52,6 +52,7 @@ import { TopBar } from './components/TopBar';
 import { MobileTabBar } from './components/MobileTabBar';
 import { SideRailAd, AnchorAd, VignetteAd } from './components/AdComponents';
 import { BUS_DATA, STATIONS } from '../../constants';
+import { useAuth } from '../contexts/AuthContext';
 
 type Route = string;
 
@@ -155,6 +156,7 @@ function entryFromLocation(): StackEntry {
 }
 
 export function KoyJaboApp() {
+  const { user } = useAuth();
   const [theme, setTheme] = useState<Theme>('dark');
   const [lang, setLang] = useState<Lang>('en');
   const [forceDesktop, setForceDesktop] = useState(false); // phone user can request desktop view
@@ -423,6 +425,7 @@ export function KoyJaboApp() {
         onNav={nav} onLang={() => setLang(l => l === 'bn' ? 'en' : 'bn')}
         onTheme={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
         onMenu={() => setMenuOpen(true)}
+        user={user}
       />
       {/* Mobile tab bar — outside scroller too */}
       {isPhone && (

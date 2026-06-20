@@ -2,19 +2,32 @@ import React from 'react';
 import { KJ_TOKENS, T, SANS, BEN } from '../tokens';
 import { PageShell } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
+import { RELEASE_NOTES } from '../../../data/releaseNotes';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
-const releases = [
-  { v:'v1.5.2', date:'Jun 17, 2026', items:[T('en','Fixed footer overlap on install app page for mobile devices','Fixed footer overlap on install app page for mobile devices'),T('en','Removed live chat, hotline, and GitHub issues from contact page','Removed live chat, hotline, and GitHub issues from contact page')] },
-  { v:'v1.5.1', date:'Jun 15, 2026', items:[T('en','Fixed blog post URL routing to show detail page on direct navigation','Fixed blog post URL routing to show detail page on direct navigation'),T('en','Fix blog navigation and remove ad placeholder text','Fix blog navigation and remove ad placeholder text')] },
-  { v:'v1.5.0', date:'Jun 12, 2026', items:[T('en','Full futuristic UI redesign with glassmorphism and neon animations','Full futuristic UI redesign with glassmorphism and neon animations'),T('en','Added 3D animated vehicle illustrations','Added 3D animated vehicle illustrations'),T('en','Improved ad system across all pages','Improved ad system across all pages')] },
-  { v:'v1.4.0', date:'May 28, 2026', items:[T('en','New: Domestic Flights hub (4 airlines, 8 airports)','New: Domestic Flights hub (4 airlines, 8 airports)'),T('en','Flight info for Biman, US-Bangla, Novoair, Air Astra','Flight info for Biman, US-Bangla, Novoair, Air Astra')] },
-  { v:'v1.3.0', date:'May 15, 2026', items:[T('en','New: Launch & Steamer hub (Sadarghat terminal)','New: Launch & Steamer hub (Sadarghat terminal)'),T('en','Cabin class info and tonight\'s launches','Cabin class info and tonight\'s launches')] },
-  { v:'v1.2.0', date:'May 1, 2026', items:[T('en','New: Train hub (Bangladesh Railway, 5 classes, PNR check)','New: Train hub (Bangladesh Railway, 5 classes, PNR check)'),T('en','Added Cox\'s Bazar Express and popular trains','Added Cox\'s Bazar Express and popular trains')] },
-  { v:'v1.1.0', date:'Apr 15, 2026', items:[T('en','New: Metro Rail MRT-6 full hub (17 stations)','New: Metro Rail MRT-6 full hub (17 stations)'),T('en','Station map, fares, tokens, Rapid Pass info','Station map, fares, tokens, Rapid Pass info')] },
-  { v:'v1.0.0', date:'Apr 1, 2026', items:[T('en','Initial launch — Local Bus routes + AI Assistant','Initial launch — Local Bus routes + AI Assistant'),T('en','Bilingual (বাংলা/English) support from day one','Bilingual (বাংলা/English) support from day one'),T('en','PWA offline support','PWA offline support')] },
+// Merge hardcoded UI releases with data/releaseNotes.ts entries
+const UI_RELEASES = [
+  { v:'v1.6.0', date:'Jun 20, 2026', items:['Cloudflare Workers AI (Llama 3.3 70B) — smarter answers','GPS-based location detection for AI routing','Route direction fix: destination always correctly detected','Direct buses shown first in route results','Human-friendly route format with 💡 reasoning','Transport knowledge layer with verified source labels','Location consent modal + Settings location toggle'] },
+  { v:'v1.5.2', date:'Jun 17, 2026', items:['Fixed footer overlap on install app page for mobile devices','Removed live chat, hotline, and GitHub issues from contact page'] },
+  { v:'v1.5.1', date:'Jun 15, 2026', items:['Fixed blog post URL routing to show detail page on direct navigation','Fix blog navigation and remove ad placeholder text'] },
+  { v:'v1.5.0', date:'Jun 12, 2026', items:['Full futuristic UI redesign with glassmorphism and neon animations','Added 3D animated vehicle illustrations','Improved ad system across all pages'] },
+  { v:'v1.4.0', date:'May 28, 2026', items:['New: Domestic Flights hub (4 airlines, 8 airports)','Flight info for Biman, US-Bangla, Novoair, Air Astra'] },
+  { v:'v1.3.0', date:'May 15, 2026', items:["New: Launch & Steamer hub (Sadarghat terminal)","Cabin class info and tonight's launches"] },
+  { v:'v1.2.0', date:'May 1, 2026', items:["New: Train hub (Bangladesh Railway, 5 classes, PNR check)","Added Cox's Bazar Express and popular trains"] },
+  { v:'v1.1.0', date:'Apr 15, 2026', items:['New: Metro Rail MRT-6 full hub (17 stations)','Station map, fares, tokens, Rapid Pass info'] },
+  { v:'v1.0.0', date:'Apr 1, 2026', items:['Initial launch — Local Bus routes + AI Assistant','Bilingual (বাংলা/English) support from day one','PWA offline support'] },
 ];
+
+// Convert RELEASE_NOTES data format to display format
+const DATA_RELEASES = RELEASE_NOTES.map(r => ({
+  v: `v${r.version}`,
+  date: new Date(r.date).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }),
+  items: [...(r.features||[]), ...(r.fixes||[]), ...(r.improvements||[])],
+  bnItems: [...(r.bnFeatures||[]), ...(r.bnFixes||[]), ...(r.bnImprovements||[])],
+}));
+
+const releases = [...UI_RELEASES, ...DATA_RELEASES];
 
 export function ReleasePage(props: Props) {
   const { theme, device, lang } = props;
@@ -40,7 +53,7 @@ export function ReleasePage(props: Props) {
                   <span style={{ fontFamily:SANS,fontSize:12,color:tk.textFaint }}>{r.date}</span>
                 </div>
                 <ul style={{ margin:0,padding:'0 0 0 14px' }}>
-                  {r.items.map((item,j)=>(
+                  {((lang === 'bn' && (r as any).bnItems?.length ? (r as any).bnItems : r.items)).map((item: string, j: number)=>(
                     <li key={j} style={{ fontFamily:BEN,fontSize:13,color:tk.textDim,lineHeight:1.7,marginBottom:2 }}>{item}</li>
                   ))}
                 </ul>
