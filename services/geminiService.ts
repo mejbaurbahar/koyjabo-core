@@ -1,4 +1,5 @@
 import { BUS_DATA, METRO_STATIONS, STATIONS } from '../constants';
+import { noVerifiedDataMessage, VERIFIED_FACTS } from './transportKnowledge';
 import { BD_TRAIN_ROUTES, TRAIN_STATIONS } from '../data/bangladeshTrainData';
 import { INTERCITY_BUS_ROUTES, MAJOR_TRANSPORT_HUBS } from '../data/intercityData';
 import { getOfflineIntercityData } from '../intercity/offlineService';
@@ -1814,11 +1815,10 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
         try {
           const graphResult = await planAndFormat(fromLoc, toLoc, isBn);
           if (graphResult && !graphResult.startsWith('🤔') && graphResult.length > 60) {
-            // Find additional direct buses not already shown in the graph result
             const extraDirect = BUS_DATA.filter(b => {
               if (b.active === false) return false;
-              const fi = b.stops.indexOf(fromLoc);
-              const ti = b.stops.indexOf(toLoc);
+              const fi = b.stops.indexOf(fromLoc as string);
+              const ti = b.stops.indexOf(toLoc as string);
               return fi >= 0 && ti > fi && !graphResult.includes(b.name);
             }).map(b => `🚌 **${b.name}**${b.bnName ? ` (${b.bnName})` : ''}`);
             if (extraDirect.length > 0) {
@@ -1826,6 +1826,10 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
               return graphResult + label + extraDirect.join('\n');
             }
             return graphResult;
+          }
+          // graph returned 🤔 (no route found) — show honest "no verified data" message
+          if (graphResult && graphResult.startsWith('🤔') && fromLoc && toLoc) {
+            return noVerifiedDataMessage(fromLoc, toLoc, isBn);
           }
         } catch (_) { /* fallthrough to legacy engine */ }
       }

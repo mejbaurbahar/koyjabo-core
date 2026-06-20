@@ -13,6 +13,7 @@
  */
 
 import { BUS_DATA, STATIONS, METRO_STATIONS } from '../constants';
+import { busRouteConfidence, metroConfidence, confidenceBadge, fareEstimateNote } from './transportKnowledge';
 import { BD_TRAIN_ROUTES, TRAIN_STATIONS } from '../data/bangladeshTrainData';
 import { fuzzyMatchLocation } from './travelAI';
 
@@ -713,21 +714,26 @@ export function formatRoutes(
       ? `⏱️ ~${Math.round(route.totalTimeMin)} মিনিট | 💰 ৳${route.totalCostBDT} | 🔄 ${route.transfers === 0 ? 'সরাসরি' : route.transfers + ' বদল'}`
       : `⏱️ ~${Math.round(route.totalTimeMin)} min | 💰 ৳${route.totalCostBDT} | 🔄 ${route.transfers === 0 ? 'Direct' : route.transfers + ' transfer(s)'}`;
 
-    // Human-readable steps — show only meaningful segments (skip short walks < 3 min)
+    // Human-readable steps — skip short walks < 3 min
     const steps = route.steps
       .filter(s => !(s.mode === 'walk' && s.timeMin < 3))
-      .map((s, i) => {
+      .map(s => {
         if (s.mode === 'walk') return `  🚶 Walk ~${Math.round(s.timeMin)} min to **${s.toName}**`;
-        if (s.mode === 'bus') return `  🚌 **${s.routeName}** from ${s.fromName} → ${s.toName}`;
-        if (s.mode === 'metro') return `  🚇 **Metro MRT-6** from ${s.fromName} → ${s.toName} (৳${s.costBDT})`;
-        if (s.mode === 'train') return `  🚂 **${s.routeName}** from ${s.fromName} → ${s.toName}`;
+        if (s.mode === 'bus') return `  🚌 **${s.routeName}** — ${s.fromName} → ${s.toName}`;
+        if (s.mode === 'metro') return `  🚇 **Metro MRT-6** ✅ — ${s.fromName} → ${s.toName} (৳${s.costBDT})`;
+        if (s.mode === 'train') return `  🚂 **${s.routeName}** — ${s.fromName} → ${s.toName}`;
         return `  📍 ${s.fromName} → ${s.toName}`;
       });
 
     const reason = routeReason(route, isBn);
-    const reasonLine = isBn ? `💡 ${reason}` : `💡 ${reason}`;
 
-    return [title, `📍 ${flow}`, summary, ...steps, reasonLine].join('\n');
+    // Confidence label
+    const hasModes = route.steps.map(s => s.mode);
+    const ds = hasModes.includes('metro') ? metroConfidence() : busRouteConfidence(route.steps[0]?.routeName);
+    const dsLabel = confidenceBadge(ds, isBn);
+    const fareNote = fareEstimateNote(isBn);
+
+    return [title, `📍 ${flow}`, summary, ...steps, `💡 ${reason}`, `_${dsLabel} · ${fareNote}_`].join('\n');
   });
 
   // Peak-hour warning

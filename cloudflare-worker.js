@@ -353,6 +353,48 @@ If asked who built you: "Mejbaur Bahar Fagun, software engineer, Bangladesh."`;
       }
     }
 
+    // ── POST /feedback — store route correction feedback ─────────────────────
+    if ((url.pathname === '/feedback' || url.pathname === '/feedback/') && request.method === 'POST') {
+      const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+      if (isRateLimited(ip + ':fb', 10, 60_000)) {
+        return new Response(JSON.stringify({ error: 'Rate limited' }), {
+          status: 429, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) },
+        });
+      }
+      let body;
+      try { body = await request.json(); } catch {
+        return new Response(JSON.stringify({ error: 'Invalid JSON' }), {
+          status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) },
+        });
+      }
+      const feedback = {
+        type: String(body.type || 'wrong_route').slice(0, 50),
+        query: String(body.query || '').slice(0, 300),
+        from: String(body.from || '').slice(0, 100),
+        to: String(body.to || '').slice(0, 100),
+        comment: String(body.comment || '').slice(0, 500),
+        timestamp: Date.now(),
+        ip: ip.slice(0, 15),
+      };
+      // Store in KV or write to data repo (currently: log to Cloudflare logs + return ok)
+      console.log('[FEEDBACK]', JSON.stringify(feedback));
+      // If DATA_TOKEN and DATA_REPO are set, store to GitHub data repo
+      if (env.DATA_TOKEN) {
+        try {
+          const today = new Date().toISOString().split('T')[0];
+          const path = `data/feedback/${today}.json`;
+          const existing = await readDataFile(env.DATA_TOKEN, env.DATA_OWNER || 'mejbaurbahar', env.DATA_REPO || 'koyjabo', path);
+          const record = existing?.content || { date: today, entries: [] };
+          record.entries.push(feedback);
+          if (record.entries.length > 200) record.entries = record.entries.slice(-200);
+          await writeDataFile(env.DATA_TOKEN, env.DATA_OWNER || 'mejbaurbahar', env.DATA_REPO || 'koyjabo', path, record, `Feedback: ${feedback.type} ${today}`);
+        } catch { /* non-fatal */ }
+      }
+      return new Response(JSON.stringify({ ok: true }), {
+        status: 200, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) },
+      });
+    }
+
     // Only serve /gh path
     if (url.pathname !== '/gh' && url.pathname !== '/gh/') {
       return new Response('Not found', { status: 404 });
