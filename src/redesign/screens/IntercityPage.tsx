@@ -206,69 +206,160 @@ export function IntercityPage(props: Props) {
     return (side === 'from' ? fromSuggs : toSuggs) as Suggestion[];
   };
 
-  // Normalize city name for loose matching (Dhaka, Benapole, Benapol etc.)
-  const matchesLocation = (text: string, loc: string) => {
-    if (!loc.trim()) return true;
-    const l = loc.toLowerCase().trim();
+  // ── Location aliases for smart matching ──────────────────────────────────────
+  // City name → train station IDs / terminal IDs / IATA codes
+  const CITY_TO_STATION: Record<string, string[]> = {
+    dhaka: ['kamalapur', 'tejgaon', 'cantonment', 'airport_r', 'tongi'],
+    chattogram: ['chattogram'], chittagong: ['chattogram'],
+    'cox\'s bazar': ['coxsbazar'], coxsbazar: ['coxsbazar'], 'cox bazar': ['coxsbazar'],
+    sylhet: ['sylhet'], rajshahi: ['rajshahi'], khulna: ['khulna'],
+    mymensingh: ['mymensingh'], comilla: ['comilla'], cumilla: ['comilla'],
+    bogra: ['bogra'], bogura: ['bogra'], dinajpur: ['dinajpur'],
+    rangpur: ['rangpur'], jamalpur: ['jamalpur'], tangail: ['tangail'],
+    barishal: ['barisal'], barisal: ['barisal'], faridpur: ['faridpur'],
+    narayanganj: ['narayanganj'], narsingdi: ['narsingdi'],
+    brahmanbaria: ['brahmanbaria'], feni: ['feni'], noakhali: ['chaumuhani'],
+    srimangal: ['srimangal'], sreemangal: ['srimangal'],
+    sirajganj: ['sirajganj'], pabna: ['paksey'],
+    benapole: ['benapole'], jessore: ['jessore'], jashore: ['jessore'],
+    kushtia: ['kushtia_court'],
+  };
+
+  // City/airport name → IATA code aliases
+  const CITY_TO_IATA: Record<string, string> = {
+    dhaka: 'DAC', 'hazrat shahjalal': 'DAC', hsia: 'DAC',
+    chattogram: 'CGP', chittagong: 'CGP', ctg: 'CGP', 'shah amanat': 'CGP',
+    sylhet: 'ZYL', osmani: 'ZYL',
+    'cox\'s bazar': 'CXB', coxsbazar: 'CXB', 'cox bazar': 'CXB',
+    jessore: 'JSR', jashore: 'JSR',
+    saidpur: 'SPD',
+    barishal: 'BZL', barisal: 'BZL',
+    rajshahi: 'RJH',
+  };
+
+  // Terminal keyword → terminal id
+  const CITY_TO_TERMINAL: Record<string, string> = {
+    dhaka: 'sadarghat', sadarghat: 'sadarghat',
+    barishal: 'barisal', barisal: 'barisal',
+    khulna: 'khulna',
+    patuakhali: 'patuakhali', kuakata: 'patuakhali',
+    bhola: 'bhola',
+    chandpur: 'chandpur',
+    narayanganj: 'narayanganj',
+    madaripur: 'madaripur',
+    hatiya: 'hatiya',
+    barguna: 'borguna', borguna: 'borguna',
+    morrelganj: 'morrelganj',
+    jhalkathi: 'jhalkathi', jhalokati: 'jhalkathi',
+  };
+
+  // Loose text match: also tries first significant word
+  const loosematch = (text: string, q: string) => {
+    if (!q.trim()) return true;
     const t = text.toLowerCase();
-    // Try full match, then first word ≥4 chars
+    const l = q.toLowerCase().trim();
     if (t.includes(l)) return true;
     const word = l.split(/\s+/).find(w => w.length >= 4);
     return word ? t.includes(word) : false;
   };
 
+  // Resolve user input to station IDs (array for OR matching)
+  const resolveStations = (q: string): string[] => {
+    const l = q.toLowerCase().trim();
+    return CITY_TO_STATION[l] || CITY_TO_STATION[l.split(/\s+/)[0]] || [];
+  };
+
+  // Resolve user input to IATA code
+  const resolveIATA = (q: string): string | null => {
+    const l = q.toLowerCase().trim();
+    return CITY_TO_IATA[l] || CITY_TO_IATA[l.split(/\s+/)[0]] || null;
+  };
+
+  // Resolve user input to terminal ID
+  const resolveTerminal = (q: string): string | null => {
+    const l = q.toLowerCase().trim();
+    return CITY_TO_TERMINAL[l] || CITY_TO_TERMINAL[l.split(/\s+/)[0]] || null;
+  };
+
   const filteredResults = useMemo(() => {
-    const fq = (nameSearch || from).toLowerCase().trim();
-    const tq = to.toLowerCase().trim();
+    const fromQ = from.toLowerCase().trim();
+    const toQ = to.toLowerCase().trim();
     const sq = nameSearch.toLowerCase().trim();
 
+    // ── Train ───────────────────────────────────────────────────────────────────
     if (activeChip === 'Train') {
+      // Show ALL trains if no search terms
+      if (!fromQ && !toQ && !sq) return BD_TRAIN_ROUTES;
+      const fromStations = fromQ ? resolveStations(fromQ) : [];
+      const toStations = toQ ? resolveStations(toQ) : [];
       return BD_TRAIN_ROUTES.filter(r => {
-        const allStops = [r.from, r.to, ...(r.stops || [])].join(' ');
-        const routeText = (r.name + ' ' + r.bnName + ' ' + allStops).toLowerCase();
-        const fromOk = !fq || matchesLocation(routeText, fq);
-        const toOk = !tq || matchesLocation(routeText, tq);
-        const searchOk = !sq || matchesLocation(r.name + ' ' + r.bnName, sq);
-        return fromOk && toOk && searchOk;
+        const allStopIds = [r.from, r.to, ...(r.stops || [])];
+        const nameText = (r.name + ' ' + r.bnName).toLowerCase();
+        // Search filter
+        if (sq && !loosematch(nameText, sq)) return false;
+        // From filter: station ID match OR loose name match in stops list
+        const fromOk = !fromQ || (
+          fromStations.length > 0
+            ? fromStations.some(s => allStopIds.includes(s))
+            : allStopIds.some(id => loosematch(id, fromQ)) || loosematch(nameText, fromQ)
+        );
+        // To filter
+        const toOk = !toQ || (
+          toStations.length > 0
+            ? toStations.some(s => allStopIds.includes(s))
+            : allStopIds.some(id => loosematch(id, toQ)) || loosematch(nameText, toQ)
+        );
+        return fromOk && toOk;
       });
     }
 
+    // ── Flight ─────────────────────────────────────────────────────────────────
     if (activeChip === 'Flight') {
+      // Show ALL flights if no search terms
+      if (!fromQ && !toQ && !sq) return DOMESTIC_ROUTES;
+      const fromIATA = fromQ ? (resolveIATA(fromQ) || fromQ.toUpperCase()) : null;
+      const toIATA = toQ ? (resolveIATA(toQ) || toQ.toUpperCase()) : null;
       return DOMESTIC_ROUTES.filter(r => {
         const fromAp = AIRPORTS_DATA.find(a => a.iata === r.from);
         const toAp = AIRPORTS_DATA.find(a => a.iata === r.to);
-        const fromText = (fromAp?.en || '') + ' ' + (fromAp?.city || '') + ' ' + r.from;
-        const toText = (toAp?.en || '') + ' ' + (toAp?.city || '') + ' ' + r.to;
-        const fromOk = !fq || matchesLocation(fromText, fq);
-        const toOk = !tq || matchesLocation(toText, tq);
+        const fromText = ((fromAp?.en || '') + ' ' + (fromAp?.city || '') + ' ' + r.from).toLowerCase();
+        const toText = ((toAp?.en || '') + ' ' + (toAp?.city || '') + ' ' + r.to).toLowerCase();
+        const nameText = (r.flightNo + ' ' + r.airline).toLowerCase();
+        if (sq && !loosematch(nameText + ' ' + fromText + ' ' + toText, sq)) return false;
+        const fromOk = !fromQ || r.from === fromIATA || loosematch(fromText, fromQ);
+        const toOk = !toQ || r.to === toIATA || loosematch(toText, toQ);
         return fromOk && toOk;
       });
     }
 
+    // ── Launch ─────────────────────────────────────────────────────────────────
     if (activeChip === 'Launch') {
+      // Show ALL launches if no search terms
+      if (!fromQ && !toQ && !sq) return LAUNCH_ROUTES;
+      const fromTermId = fromQ ? resolveTerminal(fromQ) : null;
+      const toTermId = toQ ? resolveTerminal(toQ) : null;
       return LAUNCH_ROUTES.filter(r => {
         const fromT = LAUNCH_TERMINALS.find(t => t.id === r.from);
         const toT = LAUNCH_TERMINALS.find(t => t.id === r.to);
-        const fromText = (fromT?.en || '') + ' ' + (fromT?.bn || '');
-        const toText = (toT?.en || '') + ' ' + (toT?.bn || '');
-        const fromOk = !fq || matchesLocation(fromText + ' ' + r.name.en + ' ' + r.from, fq);
-        const toOk = !tq || matchesLocation(toText + ' ' + r.to, tq);
+        const fromText = ((fromT?.en || '') + ' ' + (fromT?.bn || '') + ' ' + r.from).toLowerCase();
+        const toText = ((toT?.en || '') + ' ' + (toT?.bn || '') + ' ' + r.to).toLowerCase();
+        const nameText = (r.name.en + ' ' + r.name.bn + ' ' + r.operator.en).toLowerCase();
+        if (sq && !loosematch(nameText, sq)) return false;
+        const fromOk = !fromQ || r.from === fromTermId || loosematch(fromText, fromQ);
+        const toOk = !toQ || r.to === toTermId || loosematch(toText, toQ);
         return fromOk && toOk;
       });
     }
 
-    // Bus mode (default)
+    // ── Bus (default) ──────────────────────────────────────────────────────────
+    const fq = (sq || fromQ);
+    const tq = toQ;
     const allBus = [...INTERCITY_BUS_ROUTES, ...MAJOR_TRANSPORT_HUBS];
-    if (!fq && !tq && !sq) return allBus.filter(r => r.district !== 'Dhaka');
+    if (!fq && !tq) return allBus.filter(r => r.district !== 'Dhaka');
     return allBus.filter(r => {
-      const text = (r.district + ' ' + r.route + ' ' + r.busOperators.join(' ')).toLowerCase();
-      const textWithDiv = text + ' ' + r.division.toLowerCase();
-      // When both from and to specified: route must mention BOTH
-      if (fq && tq) {
-        return matchesLocation(textWithDiv, fq) && matchesLocation(textWithDiv, tq);
-      }
-      const q = fq || tq || sq;
-      return matchesLocation(textWithDiv, q);
+      const text = (r.district + ' ' + r.route + ' ' + r.busOperators.join(' ') + ' ' + r.division).toLowerCase();
+      if (fq && tq) return loosematch(text, fq) && loosematch(text, tq);
+      return loosematch(text, fq || tq);
     });
   }, [nameSearch, from, to, activeChip]);
 
@@ -454,7 +545,7 @@ export function IntercityPage(props: Props) {
           </button>
         </div>
 
-        {(nameSearch || from || to) && (
+        {(nameSearch || from || to || activeChip === 'Train' || activeChip === 'Flight' || activeChip === 'Launch') && (
         <div id="intercity-results" style={{ marginTop: 32 }}>
           {/* For bus: expand into per-operator cards */}
           {activeChip === 'Bus' ? (() => {
