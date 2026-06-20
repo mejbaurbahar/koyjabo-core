@@ -456,31 +456,67 @@ export function IntercityPage(props: Props) {
 
         {(nameSearch || from || to) && (
         <div id="intercity-results" style={{ marginTop: 32 }}>
+          {/* For bus: expand into per-operator cards */}
+          {activeChip === 'Bus' ? (() => {
+            // Flatten all operators from all matched routes into individual cards
+            const operatorCards: { opName: string; route: string; district: string; division: string; costNonAC: string; costAC: string; contact: string }[] = [];
+            for (const r of filteredResults as any[]) {
+              for (const opName of r.busOperators) {
+                const opDetails = BUS_OPERATORS.find((b) => b.name.toLowerCase().includes(opName.toLowerCase()) || opName.toLowerCase().includes(b.name.split(' ')[0].toLowerCase()));
+                operatorCards.push({
+                  opName,
+                  route: r.route,
+                  district: r.district,
+                  division: r.division,
+                  costNonAC: r.costNonAC,
+                  costAC: r.costAC,
+                  contact: opDetails?.contactNumber || r.mainContactNumber || '',
+                });
+              }
+            }
+            return (
+              <>
+                <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 700, letterSpacing: 0.8, textTransform: 'uppercase', color: tk.textFaint, marginBottom: 16 }}>
+                  {lbl(`${operatorCards.length} bus operators found`, `${operatorCards.length}টি বাস অপারেটর পাওয়া গেছে`)}
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {operatorCards.slice(0, 40).map((c, i) => {
+                    const col = DIVISION_COLORS[c.division] || '#6b7280';
+                    const hasAC = c.costAC && c.costAC !== '-';
+                    const opDetails = BUS_OPERATORS.find((b) => b.name.toLowerCase().includes(c.opName.toLowerCase()) || c.opName.toLowerCase().includes(b.name.split(' ')[0].toLowerCase()));
+                    return (
+                      <button key={c.opName + i}
+                        onClick={() => onNav('intercity-detail', { operator: c.opName, route: c.route, district: c.district, costNonAC: c.costNonAC, costAC: c.costAC, contact: c.contact, counter: opDetails?.mainCounterLocation || '' })}
+                        style={{ background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 14, padding: '14px 16px', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 12 }}>
+                        <div style={{ width: 48, height: 48, borderRadius: 12, background: `linear-gradient(135deg,${col},${col}aa)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>🚌</div>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ fontFamily: SANS, fontSize: 15, fontWeight: 700, color: tk.text }}>{c.opName}</div>
+                          <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint, marginTop: 3 }}>{c.route}</div>
+                          {opDetails?.mainCounterLocation && <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textDim, marginTop: 2 }}>📍 {opDetails.mainCounterLocation}</div>}
+                        </div>
+                        <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                          <div style={{ fontFamily: SANS, fontSize: 14, fontWeight: 700, color: tk.text }}>{c.costNonAC}</div>
+                          {hasAC && <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textDim }}>AC: {c.costAC}</div>}
+                          {c.contact && <div style={{ fontFamily: SANS, fontSize: 10, color: tk.primary, marginTop: 4 }}>📞 {c.contact.split(',')[0]}</div>}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+                {operatorCards.length === 0 && (
+                  <div style={{ textAlign: 'center', padding: '32px 16px', color: tk.textFaint, fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 14 }}>
+                    {lbl('No bus operators found. Try different locations.', 'কোনো বাস পাওয়া যায়নি।')}
+                  </div>
+                )}
+              </>
+            );
+          })() : (
+          <>
           <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 700, letterSpacing: 0.8, textTransform: 'uppercase', color: tk.textFaint, marginBottom: 16 }}>
             {lbl(`${filteredResults.length} ${activeChip} routes found`, `${filteredResults.length}টি ${activeChip} রুট পাওয়া গেছে`)}
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {filteredResults.slice(0, 30).map((r: any, i: number) => {
-              // ── Bus card ──────────────────────────────────────────────────
-              if (activeChip === 'Bus') {
-                const col = DIVISION_COLORS[r.division] || '#6b7280';
-                const hasAC = r.costAC && r.costAC !== '-';
-                return (
-                  <button key={r.district + i} onClick={() => onNav('intercity-detail')}
-                    style={{ background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 14, padding: '12px 14px', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <div style={{ width: 44, height: 44, borderRadius: 10, background: col, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: SANS, fontSize: 13, fontWeight: 800, color: '#fff', flexShrink: 0 }}>🚌</div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontFamily: SANS, fontSize: 14, fontWeight: 700, color: tk.text }}>{r.district}</div>
-                      <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint, marginTop: 2 }}>{r.route}</div>
-                      <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textDim, marginTop: 2 }}>{r.busOperators.slice(0, 3).join(' · ')}{r.busOperators.length > 3 ? ` +${r.busOperators.length - 3}` : ''}</div>
-                    </div>
-                    <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                      <div style={{ fontFamily: SANS, fontSize: 13, fontWeight: 700, color: tk.text }}>{r.costNonAC}</div>
-                      {hasAC && <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textDim }}>AC: {r.costAC}</div>}
-                    </div>
-                  </button>
-                );
-              }
               // ── Train card ─────────────────────────────────────────────────
               if (activeChip === 'Train') {
                 return (
@@ -546,6 +582,8 @@ export function IntercityPage(props: Props) {
             <div style={{ textAlign: 'center', padding: '32px 16px', color: tk.textFaint, fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 14 }}>
               {lbl(`No ${activeChip} routes found. Try different locations.`, 'কোনো রুট পাওয়া যায়নি।')}
             </div>
+          )}
+          </>
           )}
         </div>
         )}

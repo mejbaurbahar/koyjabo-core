@@ -233,11 +233,20 @@ function BusTab({ tk, lang }: { tk: Tokens; lang: Lang }) {
 }
 
 export function IntercityDetailPage(props: Props) {
-  const { theme, device, lang, onNav } = props;
+  const { theme, device, lang, onNav, params } = props;
   const isMobile = device === 'mobile';
   const tk: Tokens = KJ_TOKENS[theme];
   const [activeTab, setActiveTab] = useState<TabId>('seats');
   const lbl = (en: string, bn: string) => T(lang, bn, en);
+
+  // Use passed operator data or fall back to defaults
+  const operatorName = params?.operator || 'Green Line Paribahan';
+  const operatorInitials = operatorName.split(' ').map((w: string) => w[0]).join('').toUpperCase().slice(0, 2);
+  const routeText = params?.route || 'Dhaka ⇄ Cox\'s Bazar';
+  const fareNonAC = params?.costNonAC || '৳680';
+  const fareAC = params?.costAC && params.costAC !== '-' ? params.costAC : null;
+  const counterLocation = params?.counter || 'Sayedabad / Arambagh';
+  const contactNumber = params?.contact || '16557';
 
   const tabContent = () => {
     switch (activeTab) {
@@ -287,11 +296,11 @@ export function IntercityDetailPage(props: Props) {
               fontFamily: SANS, fontSize: 16, fontWeight: 800, color: '#fff',
               flexShrink: 0,
             }}>
-              GL
+              {operatorInitials}
             </div>
             <div>
               <h1 style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: isMobile ? 20 : 26, fontWeight: 800, color: '#fff', margin: 0 }}>
-                {lbl('Green Line Paribahan', 'গ্রীন লাইন পরিবহন')}
+                {operatorName}
               </h1>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4, flexWrap: 'wrap' }}>
                 <span style={{ fontFamily: SANS, fontSize: 13, color: 'rgba(255,255,255,0.75)' }}>
@@ -319,22 +328,22 @@ export function IntercityDetailPage(props: Props) {
             flexWrap: isMobile ? 'wrap' : 'nowrap',
           }}>
             <div style={{ textAlign: 'center', flex: 1 }}>
-              <div style={{ fontFamily: SANS, fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>{lbl('Dhaka', 'ঢাকা')}</div>
-              <div style={{ fontFamily: SANS, fontSize: 22, fontWeight: 800, color: '#fff' }}>9:00 PM</div>
-              <div style={{ fontFamily: SANS, fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>Sayedabad</div>
+              <div style={{ fontFamily: SANS, fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>{routeText.split('⇄')[0]?.trim() || 'Dhaka'}</div>
+              <div style={{ fontFamily: SANS, fontSize: 20, fontWeight: 800, color: '#fff' }}>{counterLocation.split('/')[0]?.trim() || 'Counter'}</div>
+              <div style={{ fontFamily: SANS, fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>{lbl('Boarding point', 'বোর্ডিং পয়েন্ট')}</div>
             </div>
             <div style={{ textAlign: 'center', flexShrink: 0 }}>
-              <div style={{ fontFamily: SANS, fontSize: 11, color: 'rgba(255,255,255,0.6)', marginBottom: 4 }}>9h 30m</div>
+              <div style={{ fontFamily: SANS, fontSize: 11, color: 'rgba(255,255,255,0.6)', marginBottom: 4 }}>{lbl('Overnight', 'রাত্রিকালীন')}</div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                 <div style={{ width: 32, height: 1, background: 'rgba(255,255,255,0.4)' }} />
-                <span style={{ fontSize: 16 }}>✈</span>
+                <span style={{ fontSize: 16 }}>🚌</span>
                 <div style={{ width: 32, height: 1, background: 'rgba(255,255,255,0.4)' }} />
               </div>
             </div>
             <div style={{ textAlign: 'center', flex: 1 }}>
-              <div style={{ fontFamily: SANS, fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>{lbl("Cox's Bazar", 'কক্সবাজার')}</div>
-              <div style={{ fontFamily: SANS, fontSize: 22, fontWeight: 800, color: '#fff' }}>6:30 AM</div>
-              <div style={{ fontFamily: SANS, fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>Kolatoli</div>
+              <div style={{ fontFamily: SANS, fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>{routeText.split('⇄')[1]?.trim() || "Destination"}</div>
+              <div style={{ fontFamily: SANS, fontSize: 20, fontWeight: 800, color: '#fff' }}>{fareNonAC}</div>
+              {fareAC && <div style={{ fontFamily: SANS, fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>AC: {fareAC}</div>}
             </div>
           </div>
 
@@ -469,9 +478,8 @@ export function IntercityDetailPage(props: Props) {
                 {lbl('Where to Buy', 'কোথায় কিনবেন')}
               </div>
               {[
-                { icon: '🌐', label: 'greenlinebd.com' },
-                { icon: '🏢', label: lbl('Sayedabad counter', 'সায়েদাবাদ কাউন্টার') },
-                { icon: '📞', label: '01700-000000' },
+                { icon: '🏢', label: counterLocation },
+                { icon: '📞', label: contactNumber },
               ].map((item) => (
                 <div key={item.label} style={{
                   display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8,
