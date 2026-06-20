@@ -28,6 +28,7 @@ interface TopBarProps {
   onMenu: () => void;
   canBack?: boolean;
   onBack?: () => void;
+  user?: { displayName?: string; username?: string; avatarUrl?: string } | null;
 }
 
 function CoinBadge({ tk, lang, onNav }: { tk: Tokens; lang: Lang; onNav: (r: string) => void }) {
@@ -65,8 +66,10 @@ export function TopBar({
   onLang,
   onTheme,
   onMenu,
+  user,
 }: TopBarProps) {
   const isMobile = device === 'mobile';
+  const initials = (user?.displayName || user?.username || 'KJ').slice(0, 2).toUpperCase();
 
   const controlBtn: React.CSSProperties = {
     background: tk.panelMuted,
@@ -244,16 +247,14 @@ export function TopBar({
           {/* Avatar + menu — mobile only */}
           {isMobile && (
             <>
-              <div
-                style={{
-                  width: 36, height: 36, borderRadius: 999,
-                  background: tk.primarySoft, color: tk.primaryDeep,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontFamily: SANS, fontWeight: 700, fontSize: 13, flexShrink: 0,
-                }}
-              >
-                MF
-              </div>
+              {user?.avatarUrl
+                ? <img src={user.avatarUrl} alt={initials} onClick={() => onNav('profile')}
+                    style={{ width:36,height:36,borderRadius:999,objectFit:'cover',flexShrink:0,cursor:'pointer',border:`2px solid ${tk.primarySoft}` }}/>
+                : <div onClick={() => onNav('profile')}
+                    style={{ width:36,height:36,borderRadius:999,background:tk.primarySoft,color:tk.primaryDeep,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:SANS,fontWeight:700,fontSize:13,flexShrink:0,cursor:'pointer' }}>
+                    {initials}
+                  </div>
+              }
               <button onClick={onMenu} style={iconBtn} aria-label="Open menu">
                 <Icon.menu s={20} />
               </button>
