@@ -34,7 +34,40 @@ export function SettingsPage(props: ScreenProps) {
   const font = lang === 'bn' ? BEN : SANS;
 
   const [notifs, setNotifs] = useState({ reminders: true, alerts: true, news: false, email: false });
-  const [privacy, setPrivacy] = useState({ stats: true, location: false });
+  const [privacy, setPrivacy] = useState({
+    stats: true,
+    location: localStorage.getItem('kj-location-consent') === 'yes',
+  });
+
+  function handleLocationToggle() {
+    const next = !privacy.location;
+    setPrivacy(p => ({ ...p, location: next }));
+    if (next) {
+      localStorage.setItem('kj-location-consent', 'yes');
+      navigator.geolocation?.getCurrentPosition(
+        pos => {
+          const areas = [
+            {n:'Uttara',lat:23.8759,lng:90.3795},{n:'Mirpur',lat:23.8223,lng:90.3654},
+            {n:'Gulshan',lat:23.7928,lng:90.4144},{n:'Banani',lat:23.7937,lng:90.4066},
+            {n:'Dhanmondi',lat:23.7461,lng:90.3742},{n:'Mohammadpur',lat:23.7625,lng:90.3580},
+            {n:'Farmgate',lat:23.7581,lng:90.3903},{n:'Motijheel',lat:23.7330,lng:90.4182},
+            {n:'Old Dhaka',lat:23.7104,lng:90.4074},{n:'Badda',lat:23.7814,lng:90.4278},
+            {n:'Savar',lat:23.8580,lng:90.2660},{n:'Gazipur',lat:23.9999,lng:90.4203},
+            {n:'Chattogram',lat:22.3569,lng:91.7832},{n:'Sylhet',lat:24.8949,lng:91.8687},
+          ];
+          const {latitude:lat,longitude:lng} = pos.coords;
+          let best=areas[0],bestD=Infinity;
+          for(const a of areas){const d=(a.lat-lat)**2+(a.lng-lng)**2;if(d<bestD){bestD=d;best=a;}}
+          localStorage.setItem('kj-location-area', best.n);
+        },
+        () => {},
+        { timeout: 8000, maximumAge: 0 }
+      );
+    } else {
+      localStorage.setItem('kj-location-consent', 'no');
+      localStorage.removeItem('kj-location-area');
+    }
+  }
   const [confirmClear, setConfirmClear] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmSignOut, setConfirmSignOut] = useState(false);
@@ -85,7 +118,7 @@ export function SettingsPage(props: ScreenProps) {
       title: lbl('Privacy & Data', 'গোপনীয়তা ও ডেটা'),
       items: [
         { icon: '📊', label: lbl('Anonymous usage stats', 'বেনামী ব্যবহার পরিসংখ্যান'), right: <Toggle on={privacy.stats} onChange={() => setPrivacy(p => ({ ...p, stats: !p.stats }))} tk={tk} />, onClick: undefined },
-        { icon: '📍', label: lbl('Share location', 'অবস্থান শেয়ার'), right: <Toggle on={privacy.location} onChange={() => setPrivacy(p => ({ ...p, location: !p.location }))} tk={tk} />, onClick: undefined },
+        { icon: '📍', label: lbl('Location for AI & nearby buses', 'AI ও কাছের বাসের জন্য অবস্থান'), sub: privacy.location ? lbl('Active – detecting location', 'সক্রিয় – অবস্থান শনাক্ত হচ্ছে') : lbl('Off – enable for smarter results', 'বন্ধ – চালু করলে ভালো ফলাফল পাবেন'), right: <Toggle on={privacy.location} onChange={handleLocationToggle} tk={tk} />, onClick: undefined },
         { icon: '🗑', label: lbl('Clear search history', 'অনুসন্ধান ইতিহাস মুছুন'), right: null, onClick: () => setConfirmClear(true) },
         { icon: '⚠️', label: lbl('Delete account', 'অ্যাকাউন্ট মুছুন'), danger: true, right: null, onClick: () => setConfirmDelete(true) },
       ],

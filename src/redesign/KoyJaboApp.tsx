@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { KJ_TOKENS, Theme, Lang, Device } from './tokens';
 import { injectGlobalStyles } from './globalStyles';
 import { SplashScreen } from './SplashScreen';
+import { LocationConsentModal } from './components/LocationConsentModal';
 
 // Lazy imports — all screens
 import { HomePage } from './screens/HomePage';
@@ -167,6 +168,7 @@ export function KoyJaboApp() {
   const [vignette, setVignette] = useState(false);
   const [anchorOn, setAnchorOn] = useState(true);
   const [vw, setVw] = useState(window.innerWidth);
+  const [showConsentModal, setShowConsentModal] = useState(false);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const vignetteTimer = useRef<number>(0);
 
@@ -176,13 +178,16 @@ export function KoyJaboApp() {
   // Daily login bonus
   useEffect(() => { claimDailyBonus(); }, []);
 
-  // Dismiss both splash screens after 1.4s
+  // Dismiss both splash screens after 1.4s, then show consent modal on first visit
   useEffect(() => {
     const t = setTimeout(() => {
       setSplash(false);
-      // Dismiss the index.html static splash too
       const el = document.getElementById('kj-splash');
       if (el) { el.style.opacity = '0'; el.style.visibility = 'hidden'; setTimeout(() => el.remove(), 600); }
+      // Show consent modal only if user hasn't decided yet
+      if (!localStorage.getItem('kj-location-consent')) {
+        setShowConsentModal(true);
+      }
     }, 1400);
     return () => clearTimeout(t);
   }, []);
@@ -472,6 +477,38 @@ export function KoyJaboApp() {
       )}
       {showAnchor && <AnchorAd tk={tk} lang={lang} onClose={() => setAnchorOn(false)}/>}
       <VignetteAd tk={tk} lang={lang} open={vignette} onClose={() => setVignette(false)}/>
+      <LocationConsentModal
+        tk={tk} lang={lang} open={showConsentModal}
+        onNav={(r) => { setShowConsentModal(false); nav(r); }}
+        onAllow={() => {
+          localStorage.setItem('kj-location-consent', 'yes');
+          setShowConsentModal(false);
+          navigator.geolocation?.getCurrentPosition(
+            pos => {
+              // store nearest area for AI context
+              const areas = [
+                {n:'Uttara',lat:23.8759,lng:90.3795},{n:'Mirpur',lat:23.8223,lng:90.3654},
+                {n:'Gulshan',lat:23.7928,lng:90.4144},{n:'Banani',lat:23.7937,lng:90.4066},
+                {n:'Dhanmondi',lat:23.7461,lng:90.3742},{n:'Mohammadpur',lat:23.7625,lng:90.3580},
+                {n:'Farmgate',lat:23.7581,lng:90.3903},{n:'Motijheel',lat:23.7330,lng:90.4182},
+                {n:'Old Dhaka',lat:23.7104,lng:90.4074},{n:'Badda',lat:23.7814,lng:90.4278},
+                {n:'Savar',lat:23.8580,lng:90.2660},{n:'Gazipur',lat:23.9999,lng:90.4203},
+                {n:'Chattogram',lat:22.3569,lng:91.7832},{n:'Sylhet',lat:24.8949,lng:91.8687},
+              ];
+              const {latitude:lat,longitude:lng} = pos.coords;
+              let best=areas[0],bestD=Infinity;
+              for(const a of areas){const d=(a.lat-lat)**2+(a.lng-lng)**2;if(d<bestD){bestD=d;best=a;}}
+              localStorage.setItem('kj-location-area', best.n);
+            },
+            () => {},
+            { timeout: 8000, maximumAge: 0 }
+          );
+        }}
+        onDeny={() => {
+          localStorage.setItem('kj-location-consent', 'no');
+          setShowConsentModal(false);
+        }}
+      />
     </>
   );
 }

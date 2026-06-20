@@ -184,9 +184,18 @@ export function AIChatPage(props: Props) {
   const userAreaRef = useRef<string>('');
 
   useEffect(() => {
+    const consent = localStorage.getItem('kj-location-consent');
+    if (consent !== 'yes') return;
+    // Use stored area first (fast), then refresh in background
+    const stored = localStorage.getItem('kj-location-area');
+    if (stored) userAreaRef.current = stored;
     if (!navigator.geolocation) return;
     navigator.geolocation.getCurrentPosition(
-      pos => { userAreaRef.current = nearestArea(pos.coords.latitude, pos.coords.longitude); },
+      pos => {
+        const area = nearestArea(pos.coords.latitude, pos.coords.longitude);
+        userAreaRef.current = area;
+        localStorage.setItem('kj-location-area', area);
+      },
       () => {},
       { timeout: 5000, maximumAge: 300000 }
     );
