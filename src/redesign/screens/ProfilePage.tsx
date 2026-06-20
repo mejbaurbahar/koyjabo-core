@@ -70,13 +70,16 @@ export function ProfilePage(props: ScreenProps) {
         }}>
           <div style={{ position: 'absolute', top: -30, right: -40, width: 200, height: 200, borderRadius: 999, background: `radial-gradient(circle, ${tk.primarySoft}, transparent 70%)`, pointerEvents: 'none' }} />
           {/* Avatar */}
-          <div style={{
-            width: 76, height: 76, borderRadius: 999, flexShrink: 0,
-            background: `linear-gradient(135deg, ${tk.primary}, ${tk.primaryDeep})`,
-            color: tk.primaryInk, display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontFamily: SANS, fontWeight: 800, fontSize: 28,
-            boxShadow: `0 0 24px ${tk.primary}44`,
-          }}>{(user?.displayName || user?.username || 'KJ').slice(0, 2).toUpperCase()}</div>
+          {user?.avatarUrl
+            ? <img src={user.avatarUrl} alt="avatar" style={{ width:76, height:76, borderRadius:999, objectFit:'cover', flexShrink:0, boxShadow:`0 0 24px ${tk.primary}44`, border:`3px solid ${tk.primarySoft}` }}/>
+            : <div style={{
+                width: 76, height: 76, borderRadius: 999, flexShrink: 0,
+                background: `linear-gradient(135deg, ${tk.primary}, ${tk.primaryDeep})`,
+                color: tk.primaryInk, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontFamily: SANS, fontWeight: 800, fontSize: 28,
+                boxShadow: `0 0 24px ${tk.primary}44`,
+              }}>{(user?.displayName || user?.username || 'KJ').slice(0, 2).toUpperCase()}</div>
+          }
           {/* Info */}
           <div style={{ flex: 1, position: 'relative', minWidth: 0 }}>
             <div style={{ fontFamily: font, fontWeight: 700, fontSize: 22, color: tk.text, letterSpacing: -0.4 }}>

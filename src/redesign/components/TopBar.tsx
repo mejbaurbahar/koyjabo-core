@@ -207,7 +207,18 @@ export function TopBar({
 
         {/* Right controls — exact order from design: Menu | Lang | Theme | Install */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
-          {/* Menu button — desktop (left of lang) */}
+          {/* Avatar — desktop */}
+          {!isMobile && (
+            user?.avatarUrl
+              ? <img src={user.avatarUrl} alt={initials} onClick={() => onNav('profile')}
+                  style={{ width:34,height:34,borderRadius:999,objectFit:'cover',flexShrink:0,cursor:'pointer',border:`2px solid ${tk.primarySoft}` }}/>
+              : <div onClick={() => onNav('profile')}
+                  style={{ width:34,height:34,borderRadius:999,background:tk.primarySoft,color:tk.primaryDeep,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:SANS,fontWeight:700,fontSize:12,flexShrink:0,cursor:'pointer' }}>
+                  {initials}
+                </div>
+          )}
+
+          {/* Menu button — desktop */}
           {!isMobile && (
             <button onClick={onMenu} style={iconBtn} title="Menu">
               <Icon.menu s={18} />
