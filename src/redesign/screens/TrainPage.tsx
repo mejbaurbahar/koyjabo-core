@@ -77,9 +77,9 @@ export function TrainPage(props: Props) {
     Object.values(TRAIN_STATIONS).map(s => ({ id: s.id, label: s.name, sub: s.bnName })), []
   );
   const filterStations = (q: string) => {
-    if (!q.trim()) return stationSuggestions.slice(0, 8);
+    if (!q.trim()) return stationSuggestions.slice(0, 20);
     const lq = q.toLowerCase();
-    return stationSuggestions.filter(s => s.label.toLowerCase().includes(lq) || s.sub?.toLowerCase().includes(lq)).slice(0, 8);
+    return stationSuggestions.filter(s => s.label.toLowerCase().includes(lq) || s.sub?.toLowerCase().includes(lq)).slice(0, 20);
   };
 
   const filteredTrains = useMemo(() => {

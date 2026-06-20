@@ -4,6 +4,7 @@ import { AdSlot } from '../components/AdSlot';
 import { PageShell } from './PageShell';
 import { Plane3D } from '../components/Vehicles3D';
 import { INTERCITY_BUS_ROUTES, BUS_OPERATORS, MAJOR_TRANSPORT_HUBS } from '../../../data/intercityData';
+import { BD_LOCATIONS, searchBDLocations } from '../../../data/bangladeshLocations';
 import { SuggestionDropdown, Suggestion } from '../components/SuggestionDropdown';
 import { earnCoins } from '../utils/koyCoinService';
 
@@ -187,9 +188,19 @@ export function IntercityPage(props: Props) {
   ].filter((v, i, arr) => arr.findIndex(x => x.id === v.id) === i), []);
 
   const filterDistricts = (q: string): Suggestion[] => {
-    if (!q.trim()) return ALL_BD_LOCATIONS.slice(0, 10);
-    const lq = q.toLowerCase();
-    return ALL_BD_LOCATIONS.filter(s => s.label.toLowerCase().includes(lq) || s.sub?.toLowerCase().includes(lq)).slice(0, 12);
+    if (!q.trim()) {
+      // Show popular destinations first when empty
+      const popular = ['Dhaka City','Chattogram','Cox\'s Bazar','Sylhet','Khulna','Barishal','Rajshahi','Rangpur'];
+      return popular.map(n => {
+        const found = BD_LOCATIONS.find(l => l.en === n || l.en.includes(n));
+        return { id: found?.id || n.toLowerCase(), label: n, sub: found?.division || '' };
+      });
+    }
+    return searchBDLocations(q, 15).map(l => ({
+      id: l.id,
+      label: l.en,
+      sub: l.district ? `${l.district}, ${l.division}` : l.division,
+    }));
   };
 
   const filteredDistricts = useMemo(() => {
