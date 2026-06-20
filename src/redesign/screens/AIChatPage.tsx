@@ -7,6 +7,7 @@ import { Icon } from '../components/Icons';
 import { askGeminiRoute, ChatMessage } from '../../../services/geminiService';
 import { askGitHubModels } from '../../../services/githubModelsService';
 import { getAllSessions, getSession, saveChatMessage, deleteSession } from '../../../services/chatHistoryManager';
+import { getAuthUser } from '../../../services/communityDataService';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -28,7 +29,7 @@ const INIT_MESSAGES: Msg[] = [
   { id:1, isUser:false, text:'hello', rich:'greeting' },
 ];
 
-function ChatBubble({ msg, tk, lang }: { msg: any; tk: any; lang:'bn'|'en' }) {
+function ChatBubble({ msg, tk, lang, userAvatarUrl, userInitials }: { msg: any; tk: any; lang:'bn'|'en'; userAvatarUrl?: string; userInitials?: string }) {
   const isUser = msg.isUser;
   if (msg.rich === 'greeting') {
     return (
@@ -100,7 +101,10 @@ function ChatBubble({ msg, tk, lang }: { msg: any; tk: any; lang:'bn'|'en' }) {
   return (
     <div style={{ display:'flex',gap:10,alignSelf:isUser?'flex-end':'flex-start',maxWidth:'80%',flexDirection:isUser?'row-reverse':'row' }}>
       {!isUser && <AvatarAI tk={tk}/>}
-      {isUser && <div style={{ width:32,height:32,borderRadius:999,background:tk.accentSoft,color:tk.accent,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontFamily:SANS,fontWeight:700,fontSize:12 }}>MF</div>}
+      {isUser && (userAvatarUrl
+        ? <img src={userAvatarUrl} alt={userInitials} style={{ width:32,height:32,borderRadius:999,objectFit:'cover',flexShrink:0,border:`1.5px solid ${tk.primarySoft}` }}/>
+        : <div style={{ width:32,height:32,borderRadius:999,background:tk.accentSoft,color:tk.accent,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontFamily:SANS,fontWeight:700,fontSize:12 }}>{userInitials||'KJ'}</div>
+      )}
       <div style={{ background:isUser?tk.primary:tk.panel,color:isUser?tk.primaryInk:tk.text,border:isUser?0:`1px solid ${tk.line}`,borderRadius:16,padding:'12px 16px',fontFamily:BEN,fontSize:14,lineHeight:1.6 }}>
         {isUser ? msg.text : renderMd(msg.text, tk)}
       </div>
@@ -196,6 +200,10 @@ export function AIChatPage(props: Props) {
       { timeout: 5000, maximumAge: 300000 }
     );
   }, []);
+  const chatUser = getAuthUser();
+  const userAvatarUrl = chatUser?.avatarUrl;
+  const userInitials = (chatUser?.displayName || chatUser?.username || 'KJ').slice(0, 2).toUpperCase();
+
   const suggestions = [
     { bn:'কোন বাস গুলশান থেকে মতিঝিল?', en:'Bus Gulshan to Motijheel?' },
     { bn:'বিমানবন্দর → ফার্মগেট', en:'Airport → Farmgate' },
@@ -341,7 +349,7 @@ export function AIChatPage(props: Props) {
         {/* Main chat */}
         <div style={{ flex:1,display:'flex',flexDirection:'column',overflow:'hidden' }}>
           <div style={{ flex:1, minHeight:0, overflow:'auto', padding:'16px', paddingBottom: isMobile ? '80px' : '16px', display:'flex',flexDirection:'column',gap:14 }}>
-            {messages.map(msg => <ChatBubble key={msg.id} msg={msg} tk={tk} lang={lang}/>)}
+            {messages.map(msg => <ChatBubble key={msg.id} msg={msg} tk={tk} lang={lang} userAvatarUrl={userAvatarUrl} userInitials={userInitials}/>)}
             {isLoading && (
               <div style={{ display:'flex',gap:10,alignSelf:'flex-start',maxWidth:'80%' }}>
                 <AvatarAI tk={tk}/>
