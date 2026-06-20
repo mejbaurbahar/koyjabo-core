@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { STATIONS } from '../../../constants';
 import { KJ_TOKENS, T, SANS, BEN, chipBtn } from '../tokens';
 import { PageShell } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
@@ -141,36 +142,16 @@ function renderMd(text: string, tk: any) {
   });
 }
 
-// Nearest area from GPS coords using major Bangladesh locations
+// Find nearest station name from GPS coords using all known STATIONS
 function nearestArea(lat: number, lng: number): string {
-  const areas = [
-    { name: 'Uttara', lat: 23.8759, lng: 90.3795 },
-    { name: 'Mirpur', lat: 23.8223, lng: 90.3654 },
-    { name: 'Gulshan', lat: 23.7928, lng: 90.4144 },
-    { name: 'Banani', lat: 23.7937, lng: 90.4066 },
-    { name: 'Dhanmondi', lat: 23.7461, lng: 90.3742 },
-    { name: 'Mohammadpur', lat: 23.7625, lng: 90.3580 },
-    { name: 'Farmgate', lat: 23.7581, lng: 90.3903 },
-    { name: 'Motijheel', lat: 23.7330, lng: 90.4182 },
-    { name: 'Old Dhaka', lat: 23.7104, lng: 90.4074 },
-    { name: 'Khilgaon', lat: 23.7502, lng: 90.4279 },
-    { name: 'Badda', lat: 23.7814, lng: 90.4278 },
-    { name: 'Demra', lat: 23.7126, lng: 90.4559 },
-    { name: 'Savar', lat: 23.8580, lng: 90.2660 },
-    { name: 'Gazipur', lat: 23.9999, lng: 90.4203 },
-    { name: 'Narayanganj', lat: 23.6238, lng: 90.5000 },
-    { name: 'Chattogram', lat: 22.3569, lng: 91.7832 },
-    { name: 'Sylhet', lat: 24.8949, lng: 91.8687 },
-    { name: 'Rajshahi', lat: 24.3745, lng: 88.6042 },
-    { name: 'Khulna', lat: 22.8456, lng: 89.5403 },
-    { name: 'Barishal', lat: 22.7010, lng: 90.3535 },
-  ];
-  let best = areas[0], bestDist = Infinity;
-  for (const a of areas) {
-    const d = (a.lat - lat) ** 2 + (a.lng - lng) ** 2;
-    if (d < bestDist) { bestDist = d; best = a; }
+  const stationList = Object.values(STATIONS).filter((s: any) => s.lat && s.lng);
+  let best: any = stationList[0];
+  let bestDist = Infinity;
+  for (const s of stationList as any[]) {
+    const d = (s.lat - lat) ** 2 + (s.lng - lng) ** 2;
+    if (d < bestDist) { bestDist = d; best = s; }
   }
-  return best.name;
+  return best?.name || 'Dhaka';
 }
 
 export function AIChatPage(props: Props) {

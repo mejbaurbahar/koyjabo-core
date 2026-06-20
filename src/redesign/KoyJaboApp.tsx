@@ -52,7 +52,7 @@ import { AIFab } from './components/AIFab';
 import { TopBar } from './components/TopBar';
 import { MobileTabBar } from './components/MobileTabBar';
 import { SideRailAd, AnchorAd, VignetteAd } from './components/AdComponents';
-import { BUS_DATA } from '../../constants';
+import { BUS_DATA, STATIONS } from '../../constants';
 
 type Route = string;
 
@@ -485,20 +485,11 @@ export function KoyJaboApp() {
           setShowConsentModal(false);
           navigator.geolocation?.getCurrentPosition(
             pos => {
-              // store nearest area for AI context
-              const areas = [
-                {n:'Uttara',lat:23.8759,lng:90.3795},{n:'Mirpur',lat:23.8223,lng:90.3654},
-                {n:'Gulshan',lat:23.7928,lng:90.4144},{n:'Banani',lat:23.7937,lng:90.4066},
-                {n:'Dhanmondi',lat:23.7461,lng:90.3742},{n:'Mohammadpur',lat:23.7625,lng:90.3580},
-                {n:'Farmgate',lat:23.7581,lng:90.3903},{n:'Motijheel',lat:23.7330,lng:90.4182},
-                {n:'Old Dhaka',lat:23.7104,lng:90.4074},{n:'Badda',lat:23.7814,lng:90.4278},
-                {n:'Savar',lat:23.8580,lng:90.2660},{n:'Gazipur',lat:23.9999,lng:90.4203},
-                {n:'Chattogram',lat:22.3569,lng:91.7832},{n:'Sylhet',lat:24.8949,lng:91.8687},
-              ];
               const {latitude:lat,longitude:lng} = pos.coords;
-              let best=areas[0],bestD=Infinity;
-              for(const a of areas){const d=(a.lat-lat)**2+(a.lng-lng)**2;if(d<bestD){bestD=d;best=a;}}
-              localStorage.setItem('kj-location-area', best.n);
+              const stList = Object.values(STATIONS).filter((s:any)=>s.lat&&s.lng);
+              let best:any=stList[0],bestD=Infinity;
+              for(const s of stList as any[]){const d=(s.lat-lat)**2+(s.lng-lng)**2;if(d<bestD){bestD=d;best=s;}}
+              localStorage.setItem('kj-location-area', best?.name||'Dhaka');
             },
             () => {},
             { timeout: 8000, maximumAge: 0 }
