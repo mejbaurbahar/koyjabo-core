@@ -1,0 +1,231 @@
+- generic [ref=e16]:
+  - generic [ref=e32]:
+    - button "KoyJabo Home" [ref=e33] [cursor=pointer]:
+      - img "KoyJabo" [ref=e35]
+      - generic [ref=e36]: কই যাবো
+    - navigation [ref=e37]:
+      - button "🏠 Home" [ref=e38] [cursor=pointer]:
+        - generic [ref=e39]: 🏠
+        - text: Home
+      - button "🚌 Local Bus" [ref=e40] [cursor=pointer]:
+        - generic [ref=e41]: 🚌
+        - text: Local Bus
+      - button "🚇 Metro" [ref=e42] [cursor=pointer]:
+        - generic [ref=e43]: 🚇
+        - text: Metro
+      - button "🚆 Train" [ref=e44] [cursor=pointer]:
+        - generic [ref=e45]: 🚆
+        - text: Train
+      - button "🧭 Intercity" [ref=e46] [cursor=pointer]:
+        - generic [ref=e47]: 🧭
+        - text: Intercity
+      - button "⛴️ Launch" [ref=e48] [cursor=pointer]:
+        - generic [ref=e49]: ⛴️
+        - text: Launch
+      - button "✈️ Flights" [ref=e50] [cursor=pointer]:
+        - generic [ref=e51]: ✈️
+        - text: Flights
+    - generic [ref=e52]:
+      - button "Menu" [ref=e53] [cursor=pointer]:
+        - img [ref=e54]
+      - button "🪙 10" [ref=e55] [cursor=pointer]:
+        - generic [ref=e56]: 🪙
+        - generic [ref=e57]: "10"
+      - button "EN" [ref=e58] [cursor=pointer]:
+        - img [ref=e59]
+        - generic [ref=e63]: EN
+      - button "Toggle theme" [ref=e64] [cursor=pointer]:
+        - img [ref=e65]
+      - button "Install app" [ref=e71] [cursor=pointer]:
+        - img [ref=e72]
+  - generic [ref=e78]:
+    - main [ref=e80]:
+      - generic [ref=e81]:
+        - generic [ref=e82]:
+          - generic [ref=e83]:
+            - generic [ref=e84]: Recent conversations
+            - generic [ref=e157]: 💬 Which bus goes from Gulshan to Motijheel?
+          - generic [ref=e86]:
+            - generic [ref=e87]: Suggestions
+            - button "Bus Gulshan to Motijheel?" [ref=e88] [cursor=pointer]
+            - button "Airport → Farmgate" [ref=e89] [cursor=pointer]
+            - button "Sadarghat launch times" [ref=e90] [cursor=pointer]
+            - button "Metro schedule" [ref=e91] [cursor=pointer]
+        - generic [ref=e92]:
+          - generic [ref=e93]:
+            - generic [ref=e94]:
+              - img [ref=e96]
+              - generic [ref=e102]: Hello! I'm KoyJabo AI. Ask me anything about transport in Bangladesh.
+            - generic [ref=e158]:
+              - generic [ref=e159]: MF
+              - generic [ref=e160]: Which bus goes from Gulshan to Motijheel?
+            - generic [ref=e161]:
+              - img [ref=e163]
+              - generic [ref=e168]: "📍 Want to go to **Motijheel**? 🗺️ Please tell me where you're starting from — I'll plan the best route with fares and timing! 💡 _Example: \"Farmgate to Motijheel\"_"
+            - generic [ref=e169]:
+              - generic [ref=e170]: MF
+              - generic [ref=e171]: Dhaka to Cox's Bazar bus
+            - generic [ref=e172]:
+              - img [ref=e174]
+              - generic [ref=e179]: 🗺️ **Dhaka → Cox's Bazar** Route Options 🏆 **Best Route (Balanced)** ⏱️ ~508 min | 💰 ৳557 | 🔄 2 transfer(s) 1. 🚌 Take **BRTC Dhaka-Khulna (AC)** from Dhaka → CBS-2 Fulbaria 2. 🚶 Walk 21 min from CBS-2 Fulbaria to Kamalapur Railway Station 3. 🚂 Take **Suborno Express** from Kamalapur Railway Station → Biman Bandar (Airport) 4. 🚂 Take **Cox's Bazar Express** from Biman Bandar (Airport) → Cox's Bazar ───── ⚡ **Fastest Route** ⏱️ ~496 min | 💰 ৳567 | 🔄 3 transfer(s) 1. 🚌 Take **BRTC Dhaka-Khulna (AC)** from Dhaka → CBS-2 Fulbaria 2. 🚶 Walk 2 min from CBS-2 Fulbaria to Motijheel Metro Station 3. 🚌 Take **6 No.** from Motijheel Metro Station → Kamalapur Railway Station 4. 🚂 Take **Suborno Express** from Kamalapur Railway Station → Biman Bandar (Airport) 5. 🚂 Take **Cox's Bazar Express** from Biman Bandar (Airport) → Cox's Bazar ⏰ **Peak Hour Alert:** Heavy traffic now — bus time may be 1.5–2x longer. Metro is fastest.
+          - generic [ref=e103]:
+            - textbox "Type your question..." [active] [ref=e104]
+            - button [ref=e105] [cursor=pointer]:
+              - img [ref=e106]
+    - contentinfo [ref=e108]:
+      - generic [ref=e109]:
+        - generic [ref=e110]:
+          - generic [ref=e111]:
+            - button "KoyJabo কই যাবো" [ref=e112] [cursor=pointer]:
+              - img "KoyJabo" [ref=e114]
+              - generic [ref=e115]: কই যাবো
+            - paragraph [ref=e116]: Smart transit guide for Dhaka commuters
+            - generic [ref=e117]:
+              - link "f" [ref=e118] [cursor=pointer]:
+                - /url: https://www.facebook.com/koyjabo/
+              - link "in" [ref=e119] [cursor=pointer]:
+                - /url: https://www.linkedin.com/company/koy-jabo/
+          - generic [ref=e120]:
+            - generic [ref=e121]: Explore
+            - button "Local Bus" [ref=e122] [cursor=pointer]
+            - button "Metro" [ref=e123] [cursor=pointer]
+            - button "Train" [ref=e124] [cursor=pointer]
+            - button "Flights" [ref=e125] [cursor=pointer]
+            - button "Launch" [ref=e126] [cursor=pointer]
+            - button "Fare" [ref=e127] [cursor=pointer]
+          - generic [ref=e128]:
+            - generic [ref=e129]: Account
+            - button "Profile" [ref=e130] [cursor=pointer]
+            - button "Favorites" [ref=e131] [cursor=pointer]
+            - button "History" [ref=e132] [cursor=pointer]
+            - button "Settings" [ref=e133] [cursor=pointer]
+            - button "Sign In" [ref=e134] [cursor=pointer]
+          - generic [ref=e135]:
+            - generic [ref=e136]: Company
+            - button "Why KoyJabo" [ref=e137] [cursor=pointer]
+            - button "About" [ref=e138] [cursor=pointer]
+            - button "Blog" [ref=e139] [cursor=pointer]
+            - button "QA" [ref=e140] [cursor=pointer]
+            - button "Contact" [ref=e141] [cursor=pointer]
+          - generic [ref=e142]:
+            - generic [ref=e143]: Legal
+            - button "Privacy" [ref=e144] [cursor=pointer]
+            - button "Terms" [ref=e145] [cursor=pointer]
+            - button "Release" [ref=e146] [cursor=pointer]
+        - generic [ref=e147]:
+          - generic [ref=e148]: © 2026 KoyJabo · All rights reserved
+          - generic [ref=e149]: Made in Dhaka for Bangladesh
+  - generic:
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - img "KoyJabo"
+          - generic: KoyJabo
+        - button "Close menu": ×
+      - generic:
+        - generic:
+          - generic: Explore
+          - button "Home":
+            - generic: Home
+            - generic:
+              - img
+          - button "Local Bus":
+            - generic: Local Bus
+            - generic:
+              - img
+          - button "Metro":
+            - generic: Metro
+            - generic:
+              - img
+          - button "Train":
+            - generic: Train
+            - generic:
+              - img
+          - button "Intercity":
+            - generic: Intercity
+            - generic:
+              - img
+          - button "Launch":
+            - generic: Launch
+            - generic:
+              - img
+          - button "Flights":
+            - generic: Flights
+            - generic:
+              - img
+          - button "Fare":
+            - generic: Fare
+            - generic:
+              - img
+          - button "AI Assistant":
+            - generic: AI Assistant
+            - generic:
+              - img
+        - generic:
+          - generic: Account
+          - button "Profile":
+            - generic: Profile
+            - generic:
+              - img
+          - button "🪙 KoyCoins":
+            - generic: 🪙 KoyCoins
+            - generic:
+              - img
+          - button "Favorites":
+            - generic: Favorites
+            - generic:
+              - img
+          - button "History":
+            - generic: History
+            - generic:
+              - img
+          - button "Settings":
+            - generic: Settings
+            - generic:
+              - img
+          - button "Sign In":
+            - generic: Sign In
+            - generic:
+              - img
+        - generic:
+          - generic: Company
+          - button "Why KoyJabo":
+            - generic: Why KoyJabo
+            - generic:
+              - img
+          - button "About":
+            - generic: About
+            - generic:
+              - img
+          - button "Blog":
+            - generic: Blog
+            - generic:
+              - img
+          - button "QA":
+            - generic: QA
+            - generic:
+              - img
+          - button "Contact":
+            - generic: Contact
+            - generic:
+              - img
+          - button "Release":
+            - generic: Release
+            - generic:
+              - img
+        - generic:
+          - generic: Legal
+          - button "Privacy":
+            - generic: Privacy
+            - generic:
+              - img
+          - button "Terms":
+            - generic: Terms
+            - generic:
+              - img
+  - generic [ref=e151]:
+    - insertion [ref=e153]:
+      - iframe [ref=e155]:
+        
+    - button "×" [ref=e156] [cursor=pointer]

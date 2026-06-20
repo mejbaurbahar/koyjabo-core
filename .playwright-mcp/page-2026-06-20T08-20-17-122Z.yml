@@ -1,0 +1,320 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e4]:
+      - list [ref=e7]:
+        - listitem [ref=e8]:
+          - link "বিআরটিএ সেবা বাতায়ন" [ref=e9] [cursor=pointer]:
+            - /url: /bsp/
+      - list [ref=e12]:
+        - listitem [ref=e13]:
+          - link "প্রবেশ করুন" [ref=e14] [cursor=pointer]:
+            - /url: /bsp/login/
+        - listitem [ref=e15]:
+          - link "নিবন্ধন" [ref=e16] [cursor=pointer]:
+            - /url: /bsp/register
+        - listitem [ref=e17]:
+          - link "English" [ref=e18] [cursor=pointer]:
+            - /url: "?lan=en"
+            - img [ref=e19]
+            - text: English
+    - generic [ref=e21]:
+      - link "Brta Logo" [ref=e23] [cursor=pointer]:
+        - /url: ""
+        - img "Brta Logo" [ref=e24]
+      - list [ref=e25]:
+        - listitem [ref=e26]:
+          - generic [ref=e27] [cursor=pointer]: 
+          - generic [ref=e28]:
+            - generic [ref=e29]: ১৬১০৭, ০৯৬১০ ৯৯০ ৯৯৮
+            - generic [ref=e30]: রবিবার–বৃহস্পতিবার (০৯.০০ সকাল - ০৫.০০ বিকাল)
+            - generic [ref=e31]: সকল সরকারি কার্যক্রম রোববার থেকে বৃহস্পতিবার পর্যন্ত পরিচালিত হবে।
+    - banner [ref=e32]:
+      - generic [ref=e34]:
+        - generic:
+          - generic: 
+        - navigation [ref=e35]:
+          - list [ref=e37]:
+            - listitem [ref=e38]:
+              - link "হোম" [ref=e39] [cursor=pointer]:
+                - /url: /bsp/
+            - listitem [ref=e40]:
+              - link "ফিটনেস এপয়েন্টমেন্ট সময়সূচী" [ref=e41] [cursor=pointer]:
+                - /url: /bsp/viewAppointmentSchedule
+            - listitem [ref=e42]:
+              - link "রাইড শেয়ারিং" [ref=e43] [cursor=pointer]:
+                - /url: "#"
+              - text: 
+            - listitem [ref=e44]:
+              - link "অভিযোগ/মতামত দিন" [ref=e45] [cursor=pointer]:
+                - /url: /bsp/feedbackForm
+            - listitem [ref=e46]:
+              - link "ইউজার ম্যানুয়াল" [ref=e47] [cursor=pointer]:
+                - /url: /bsp/manual/usermanual
+    - generic [ref=e50]:
+      - generic [ref=e51]: 
+      - text: শোক বার্তাঃ বিআরটিএ ঢাকা মেট্রো-৩ সার্কেলের সহকারী রাজস্ব কর্মকর্তা জনাব মোঃ আবু বকর সিদ্দিক গত ২৩-১১-২০২৪ খ্রি. তারিখে ইন্তেকাল করেছেন (ইন্না-লিল্লাহ হি ওয়া ইন্না ইলাইহি রাজিঊন)। আল্লাহ্ তাআ'লা মরহুম ভাইয়ের পরিবারকে সবর করার তৌফিক নসীব করুন। (আমিন)
+      - generic [ref=e52]: 
+      - text: ছাত্র জনতার অঙ্গীকার, নিরাপদ সড়ক হোক সবার
+      - generic [ref=e53]: 
+      - text: মোটরযান চালানোর সময় গতিসীমা মেনে চলুন
+      - generic [ref=e54]: 
+      - text: জেব্রাক্রসিং ব্যবহার করুন
+      - generic [ref=e55]: 
+      - text: ফুটওভারব্রিজ ব্যবহার করুন
+      - generic [ref=e56]: 
+      - text: মোটরসাইকেল চালানোর সময় হেলমেট ব্যবহার করুন
+    - generic [ref=e60]: অ্যাকাউন্ট নিবন্ধন করুন
+    - generic [ref=e63]:
+      - heading "যদি আপনি একজন নিবন্ধিত ইউজার হয়ে থাকেন তাহলে  এখানে ক্লিক করুন" [level=3] [ref=e66]:
+        - text: যদি আপনি একজন নিবন্ধিত ইউজার হয়ে থাকেন তাহলে
+        - link " এখানে ক্লিক করুন" [ref=e67] [cursor=pointer]:
+          - /url: /bsp/login
+          - button " এখানে ক্লিক করুন" [ref=e68]:
+            - generic [ref=e69]: 
+            - generic [ref=e70]: এখানে ক্লিক করুন
+      - generic [ref=e71]:
+        - heading "আপনার কি কোন অ্যাকাউন্ট নেই? তাহলে এখানে নিবন্ধন করুন।" [level=3] [ref=e72]
+        - generic [ref=e74]:
+          - generic [ref=e75]:
+            - generic [ref=e76]:
+              - text: "*"
+              - generic [ref=e77] [cursor=pointer]: "জন্ম তারিখ :"
+              - generic [ref=e78]:
+                - combobox [ref=e79]:
+                  - option "Day" [selected]
+                  - option "1st"
+                  - option "2nd"
+                  - option "3rd"
+                  - option "4th"
+                  - option "5th"
+                  - option "6th"
+                  - option "7th"
+                  - option "8th"
+                  - option "9th"
+                  - option "10th"
+                  - option "11th"
+                  - option "12th"
+                  - option "13th"
+                  - option "14th"
+                  - option "15th"
+                  - option "16th"
+                  - option "17th"
+                  - option "18th"
+                  - option "19th"
+                  - option "20th"
+                  - option "21st"
+                  - option "22nd"
+                  - option "23rd"
+                  - option "24th"
+                  - option "25th"
+                  - option "26th"
+                  - option "27th"
+                  - option "28th"
+                  - option "29th"
+                  - option "30th"
+                  - option "31st"
+                - combobox [ref=e80]:
+                  - option "Month" [selected]
+                  - option "January"
+                  - option "February"
+                  - option "March"
+                  - option "April"
+                  - option "May"
+                  - option "June"
+                  - option "July"
+                  - option "August"
+                  - option "September"
+                  - option "October"
+                  - option "November"
+                  - option "December"
+                - combobox [ref=e81]:
+                  - option "Year" [selected]
+                  - option "2008"
+                  - option "2007"
+                  - option "2006"
+                  - option "2005"
+                  - option "2004"
+                  - option "2003"
+                  - option "2002"
+                  - option "2001"
+                  - option "2000"
+                  - option "1999"
+                  - option "1998"
+                  - option "1997"
+                  - option "1996"
+                  - option "1995"
+                  - option "1994"
+                  - option "1993"
+                  - option "1992"
+                  - option "1991"
+                  - option "1990"
+                  - option "1989"
+                  - option "1988"
+                  - option "1987"
+                  - option "1986"
+                  - option "1985"
+                  - option "1984"
+                  - option "1983"
+                  - option "1982"
+                  - option "1981"
+                  - option "1980"
+                  - option "1979"
+                  - option "1978"
+                  - option "1977"
+                  - option "1976"
+                  - option "1975"
+                  - option "1974"
+                  - option "1973"
+                  - option "1972"
+                  - option "1971"
+                  - option "1970"
+                  - option "1969"
+                  - option "1968"
+                  - option "1967"
+                  - option "1966"
+                  - option "1965"
+                  - option "1964"
+                  - option "1963"
+                  - option "1962"
+                  - option "1961"
+                  - option "1960"
+                  - option "1959"
+                  - option "1958"
+                  - option "1957"
+                  - option "1956"
+                  - option "1955"
+                  - option "1954"
+                  - option "1953"
+                  - option "1952"
+                  - option "1951"
+                  - option "1950"
+                  - option "1949"
+                  - option "1948"
+                  - option "1947"
+                  - option "1946"
+                  - option "1945"
+                  - option "1944"
+                  - option "1943"
+                  - option "1942"
+                  - option "1941"
+                  - option "1940"
+                  - option "1939"
+                  - option "1938"
+                  - option "1937"
+                  - option "1936"
+                  - option "1935"
+                  - option "1934"
+                  - option "1933"
+                  - option "1932"
+                  - option "1931"
+                  - option "1930"
+                  - option "1929"
+                  - option "1928"
+                  - option "1927"
+                  - option "1926"
+                  - option "1925"
+                  - option "1924"
+                  - option "1923"
+                  - option "1922"
+                  - option "1921"
+                  - option "1920"
+                  - option "1919"
+                  - option "1918"
+                  - option "1917"
+                  - option "1916"
+                  - option "1915"
+                  - option "1914"
+                  - option "1913"
+                  - option "1912"
+                  - option "1911"
+                  - option "1910"
+                  - option "1909"
+                  - option "1908"
+                  - option "1907"
+                  - option "1906"
+                  - option "1905"
+            - generic [ref=e82]:
+              - text: "*"
+              - generic [ref=e83] [cursor=pointer]: "জাতীয় পরিচয়পত্র নম্বর :"
+              - textbox [ref=e84]
+              - generic [ref=e85]: বিঃ দ্রঃ ১৩ সংখ্যার জাতীয় পরিচয়পত্র নম্বর এর আগে আবেদনকারীর জন্ম সাল যোগ করুন
+          - generic [ref=e87]:
+            - text: "*"
+            - generic [ref=e88] [cursor=pointer]: "মোবাইল নম্বর :"
+            - textbox "মোবাইল নম্বর :" [ref=e89]:
+              - /placeholder: "EX : 01XXXXXXXXX"
+            - generic [ref=e90]: বিঃ দ্রঃ মোবাইল নম্বরটি অবশ্যই প্রদত্ত জাতীয় পরিচয়পত্র নম্বর দিয়ে রেজিস্টারড হতে হবে
+          - generic [ref=e91]:
+            - generic [ref=e92]:
+              - generic [ref=e93] [cursor=pointer]: "* সিকিউরিটি কোড"
+              - img [ref=e94]
+              - button " Refresh Code" [ref=e96] [cursor=pointer]:
+                - generic [ref=e97]:
+                  - generic [ref=e98]: 
+                  - text: Refresh Code
+            - generic [ref=e99]:
+              - generic [ref=e100] [cursor=pointer]: "* সিকিউরিটি কোড"
+              - textbox "* সিকিউরিটি কোড" [ref=e101]:
+                - /placeholder: Security Code
+          - button " অনুসন্ধান" [ref=e105] [cursor=pointer]:
+            - generic [ref=e106]: 
+            - text: অনুসন্ধান
+    - contentinfo [ref=e107]:
+      - generic [ref=e110]:
+        - generic [ref=e112]:
+          - heading "পোর্টালসমূহ" [level=4] [ref=e113]
+          - list [ref=e114]:
+            - listitem [ref=e115]:
+              - link "সড়ক পরিবহন ও সেতু মন্ত্রণালয়" [ref=e116] [cursor=pointer]:
+                - /url: http://www.moc.gov.bd/
+            - listitem [ref=e117]:
+              - link "সড়ক যোগাযোগ এবং হাইওয়ে বিভাগ" [ref=e118] [cursor=pointer]:
+                - /url: http://www.rhd.gov.bd/
+            - listitem [ref=e119]:
+              - link "সেতু বিভাগ" [ref=e120] [cursor=pointer]:
+                - /url: http://www.moc-bd.gov.bd/
+            - listitem [ref=e121]:
+              - link "ঢাকা পরিবহন সমন্বয় কর্তৃপক্ষ" [ref=e122] [cursor=pointer]:
+                - /url: http://www.dtcb.gov.bd/
+            - listitem [ref=e123]:
+              - link "বাংলাদেশ রোড ট্রান্সপোর্ট কর্পোরেশন (বিআরটিসি)" [ref=e124] [cursor=pointer]:
+                - /url: http://www.brtc.gov.bd/
+            - listitem [ref=e125]:
+              - link "কাস্টমস হাউস চট্টগ্রাম" [ref=e126] [cursor=pointer]:
+                - /url: http://www.nbr-ctg.com
+            - listitem [ref=e127]:
+              - link "বাংলাদেশ সরকার" [ref=e128] [cursor=pointer]:
+                - /url: http://www.bangladesh.gov.bd
+        - generic [ref=e130]:
+          - heading "গুরুত্বপূর্ণ লিংক" [level=4] [ref=e131]
+          - list [ref=e132]:
+            - listitem [ref=e133]:
+              - link "রাষ্ট্রপতির কার্যালয়" [ref=e134] [cursor=pointer]:
+                - /url: http://www.bangabhaban.gov.bd/
+            - listitem [ref=e135]:
+              - link "প্রধানমন্ত্রীর কার্যালয়" [ref=e136] [cursor=pointer]:
+                - /url: http://www.pmo.gov.bd/
+            - listitem [ref=e137]:
+              - link "ক্যাবিনেট ডিভিশন" [ref=e138] [cursor=pointer]:
+                - /url: http://www.cabinet.gov.bd/
+            - listitem [ref=e139]:
+              - link "সড়ক ও মহাসড়ক বিভাগ" [ref=e140] [cursor=pointer]:
+                - /url: http://www.rthd.gov.bd/
+            - listitem [ref=e141]:
+              - link "সেতু বিভাগ" [ref=e142] [cursor=pointer]:
+                - /url: http://www.bridgesdivision.gov.bd/
+            - listitem [ref=e143]:
+              - link "বাংলাদেশ ব্যাংক" [ref=e144] [cursor=pointer]:
+                - /url: https://www.bb.org.bd/
+      - paragraph [ref=e149]:
+        - strong [ref=e150]: "বাস্তবায়নে:"
+        - link "বাংলাদেশ সড়ক পরিবহন কর্তৃপক্ষ (বিআরটিএ)" [ref=e151] [cursor=pointer]:
+          - /url: http://brta.gov.bd
+          - text: বাংলাদেশ সড়ক পরিবহন কর্তৃপক্ষ (বিআরটিএ)
+          - img [ref=e152]
+        - strong [ref=e153]: "রক্ষণাবেক্ষণে :"
+        - link "কম্পিউটার নেটওয়ার্ক সিস্টেমস লিমিটেড" [ref=e154] [cursor=pointer]:
+          - /url: http://www.cnsbd.com
+          - text: কম্পিউটার নেটওয়ার্ক সিস্টেমস লিমিটেড
+          - img [ref=e155]
+  - text: 

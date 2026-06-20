@@ -1,0 +1,290 @@
+- generic [active] [ref=e1]:
+  - status [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e10]: ক
+      - generic [ref=e11]: কই যাবো
+      - generic [ref=e12]: KOYJABO
+      - generic [ref=e15]: আপনার রুট লোড হচ্ছে…
+  - generic [ref=e16]:
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - img [ref=e20]
+        - generic [ref=e25]: ক
+      - generic [ref=e27]: কই যাবো
+      - generic [ref=e28]: KOYJABO
+      - generic [ref=e31]: Loading your routes…
+    - generic [ref=e33]:
+      - button "KoyJabo Home" [ref=e34] [cursor=pointer]:
+        - img "KoyJabo" [ref=e36]
+        - generic [ref=e37]: কই যাবো
+      - navigation [ref=e38]:
+        - button "🏠 Home" [ref=e39] [cursor=pointer]:
+          - generic [ref=e40]: 🏠
+          - text: Home
+        - button "🚌 Local Bus" [ref=e41] [cursor=pointer]:
+          - generic [ref=e42]: 🚌
+          - text: Local Bus
+        - button "🚇 Metro" [ref=e43] [cursor=pointer]:
+          - generic [ref=e44]: 🚇
+          - text: Metro
+        - button "🚆 Train" [ref=e45] [cursor=pointer]:
+          - generic [ref=e46]: 🚆
+          - text: Train
+        - button "🧭 Intercity" [ref=e47] [cursor=pointer]:
+          - generic [ref=e48]: 🧭
+          - text: Intercity
+        - button "⛴️ Launch" [ref=e49] [cursor=pointer]:
+          - generic [ref=e50]: ⛴️
+          - text: Launch
+        - button "✈️ Flights" [ref=e51] [cursor=pointer]:
+          - generic [ref=e52]: ✈️
+          - text: Flights
+      - generic [ref=e53]:
+        - button "Menu" [ref=e54] [cursor=pointer]:
+          - img [ref=e55]
+        - button "🪙 10" [ref=e56] [cursor=pointer]:
+          - generic [ref=e57]: 🪙
+          - generic [ref=e58]: "10"
+        - button "EN" [ref=e59] [cursor=pointer]:
+          - img [ref=e60]
+          - generic [ref=e64]: EN
+        - button "Toggle theme" [ref=e65] [cursor=pointer]:
+          - img [ref=e66]
+        - button "Install app" [ref=e72] [cursor=pointer]:
+          - img [ref=e73]
+    - generic [ref=e79]:
+      - main [ref=e81]:
+        - generic [ref=e82]:
+          - generic [ref=e86]:
+            - generic [ref=e87]:
+              - generic [ref=e88]: 🪙
+              - generic [ref=e89]: "10"
+              - generic [ref=e90]: KoyCoins
+            - generic [ref=e93]:
+              - generic [ref=e94]: Skip all ads
+              - generic [ref=e95]: Spend coins to remove all ads
+          - generic [ref=e96]:
+            - generic [ref=e97]:
+              - generic [ref=e98]: 🎁
+              - generic [ref=e99]:
+                - generic [ref=e100]: Daily bonus
+                - generic [ref=e101]: +10 coins per day
+              - button "Claim" [ref=e102] [cursor=pointer]
+            - generic [ref=e103]:
+              - generic [ref=e104]: 🚫 Ad-free plans
+              - generic [ref=e105]:
+                - generic [ref=e109]:
+                  - generic [ref=e110]: ⚡
+                  - generic [ref=e111]: 1 hour
+                  - generic [ref=e113]: 🪙 50
+                  - button "Use" [ref=e114]
+                - generic [ref=e118]:
+                  - generic [ref=e119]: 🔥
+                  - generic [ref=e120]: 6 hours
+                  - generic [ref=e122]: 🪙 200
+                  - button "Use" [ref=e123]
+                - generic [ref=e127]:
+                  - generic [ref=e128]: 👑
+                  - generic [ref=e129]: 24 hours
+                  - generic [ref=e131]: 🪙 500
+                  - button "Use" [ref=e132]
+            - generic [ref=e133]:
+              - generic [ref=e134]: 💡 How to earn coins
+              - generic [ref=e135]:
+                - generic [ref=e136]:
+                  - generic [ref=e138]: 📅
+                  - generic [ref=e140]:
+                    - generic [ref=e141]: Daily login
+                    - generic [ref=e142]: "+10"
+                - generic [ref=e143]:
+                  - generic [ref=e145]: 🔍
+                  - generic [ref=e147]:
+                    - generic [ref=e148]: Search transport
+                    - generic [ref=e149]: "+5"
+                - generic [ref=e150]:
+                  - generic [ref=e152]: 🔀
+                  - generic [ref=e154]:
+                    - generic [ref=e155]: View transit route
+                    - generic [ref=e156]: "+5"
+                - generic [ref=e157]:
+                  - generic [ref=e159]: ✈️
+                  - generic [ref=e161]:
+                    - generic [ref=e162]: View flight detail
+                    - generic [ref=e163]: "+2"
+                - generic [ref=e164]:
+                  - generic [ref=e166]: 🤖
+                  - generic [ref=e167]:
+                    - generic [ref=e168]: AI assistant
+                    - generic [ref=e169]: "+3"
+            - generic [ref=e170]:
+              - generic [ref=e171]: 📋 Transaction history
+              - generic [ref=e173]:
+                - generic [ref=e175]: ↑
+                - generic [ref=e176]:
+                  - generic [ref=e177]:
+                    - generic [ref=e178]: Daily bonus
+                    - generic [ref=e179]: 19 Jun, 21:38
+                  - generic [ref=e180]: "+10"
+      - contentinfo [ref=e181]:
+        - generic [ref=e182]:
+          - generic [ref=e183]:
+            - generic [ref=e184]:
+              - button "KoyJabo কই যাবো" [ref=e185] [cursor=pointer]:
+                - img "KoyJabo" [ref=e187]
+                - generic [ref=e188]: কই যাবো
+              - paragraph [ref=e189]: Smart transit guide for Dhaka commuters
+              - generic [ref=e190]:
+                - link "f" [ref=e191] [cursor=pointer]:
+                  - /url: https://www.facebook.com/koyjabo/
+                - link "in" [ref=e192] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/company/koy-jabo/
+            - generic [ref=e193]:
+              - generic [ref=e194]: Explore
+              - button "Local Bus" [ref=e195] [cursor=pointer]
+              - button "Metro" [ref=e196] [cursor=pointer]
+              - button "Train" [ref=e197] [cursor=pointer]
+              - button "Flights" [ref=e198] [cursor=pointer]
+              - button "Launch" [ref=e199] [cursor=pointer]
+              - button "Fare" [ref=e200] [cursor=pointer]
+            - generic [ref=e201]:
+              - generic [ref=e202]: Account
+              - button "Profile" [ref=e203] [cursor=pointer]
+              - button "Favorites" [ref=e204] [cursor=pointer]
+              - button "History" [ref=e205] [cursor=pointer]
+              - button "Settings" [ref=e206] [cursor=pointer]
+              - button "Sign In" [ref=e207] [cursor=pointer]
+            - generic [ref=e208]:
+              - generic [ref=e209]: Company
+              - button "Why KoyJabo" [ref=e210] [cursor=pointer]
+              - button "About" [ref=e211] [cursor=pointer]
+              - button "Blog" [ref=e212] [cursor=pointer]
+              - button "QA" [ref=e213] [cursor=pointer]
+              - button "Contact" [ref=e214] [cursor=pointer]
+            - generic [ref=e215]:
+              - generic [ref=e216]: Legal
+              - button "Privacy" [ref=e217] [cursor=pointer]
+              - button "Terms" [ref=e218] [cursor=pointer]
+              - button "Release" [ref=e219] [cursor=pointer]
+          - generic [ref=e220]:
+            - generic [ref=e221]: © 2026 KoyJabo · All rights reserved
+            - generic [ref=e222]: Made in Dhaka for Bangladesh
+    - generic [ref=e224]:
+      - generic: AI Assistant · ask me
+      - button "AI Assistant" [ref=e226] [cursor=pointer]:
+        - img [ref=e227]
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - img "KoyJabo"
+            - generic: KoyJabo
+          - button "Close menu": ×
+        - generic:
+          - generic:
+            - generic: Explore
+            - button "Home":
+              - generic: Home
+              - generic:
+                - img
+            - button "Local Bus":
+              - generic: Local Bus
+              - generic:
+                - img
+            - button "Metro":
+              - generic: Metro
+              - generic:
+                - img
+            - button "Train":
+              - generic: Train
+              - generic:
+                - img
+            - button "Intercity":
+              - generic: Intercity
+              - generic:
+                - img
+            - button "Launch":
+              - generic: Launch
+              - generic:
+                - img
+            - button "Flights":
+              - generic: Flights
+              - generic:
+                - img
+            - button "Fare":
+              - generic: Fare
+              - generic:
+                - img
+            - button "AI Assistant":
+              - generic: AI Assistant
+              - generic:
+                - img
+          - generic:
+            - generic: Account
+            - button "Profile":
+              - generic: Profile
+              - generic:
+                - img
+            - button "🪙 KoyCoins":
+              - generic: 🪙 KoyCoins
+              - generic:
+                - img
+            - button "Favorites":
+              - generic: Favorites
+              - generic:
+                - img
+            - button "History":
+              - generic: History
+              - generic:
+                - img
+            - button "Settings":
+              - generic: Settings
+              - generic:
+                - img
+            - button "Sign In":
+              - generic: Sign In
+              - generic:
+                - img
+          - generic:
+            - generic: Company
+            - button "Why KoyJabo":
+              - generic: Why KoyJabo
+              - generic:
+                - img
+            - button "About":
+              - generic: About
+              - generic:
+                - img
+            - button "Blog":
+              - generic: Blog
+              - generic:
+                - img
+            - button "QA":
+              - generic: QA
+              - generic:
+                - img
+            - button "Contact":
+              - generic: Contact
+              - generic:
+                - img
+            - button "Release":
+              - generic: Release
+              - generic:
+                - img
+          - generic:
+            - generic: Legal
+            - button "Privacy":
+              - generic: Privacy
+              - generic:
+                - img
+            - button "Terms":
+              - generic: Terms
+              - generic:
+                - img
+    - generic [ref=e235]:
+      - insertion [ref=e237]:
+        - iframe [ref=e239]:
+          
+      - button "×" [ref=e240] [cursor=pointer]

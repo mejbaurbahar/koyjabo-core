@@ -16,7 +16,8 @@
       "BRTC (brtc.gov.bd)",
       "Shyamoli, Green Line, Hanif, Ena, Shohagh operators",
       "Shohoz (shohoz.com)"
-    ]
+    ],
+    "totalRoutes": 209
   },
   "routes": [
     {
@@ -8273,6 +8274,1402 @@
       ],
       "departurePoint": "Bogra Charmatha",
       "arrivalPoint": "AK Khan"
+    },
+    {
+      "id": "bd-bus-dhaka-kishoreganj-000",
+      "origin": "Dhaka",
+      "destination": "Kishoreganj",
+      "transportMode": "bus",
+      "operatorName": "Ena Transport",
+      "duration": 150,
+      "durationHuman": "2h 30m",
+      "distance": 105,
+      "frequency": 6,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 220,
+          "priceUSD": 2
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 380,
+          "priceUSD": 3
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00",
+          "arrivalTime": "09:30"
+        },
+        {
+          "departureTime": "14:00",
+          "arrivalTime": "16:30"
+        }
+      ],
+      "departurePoint": "Mohakhali",
+      "arrivalPoint": "Kishoreganj Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-dhaka-brahmanbaria-000",
+      "origin": "Dhaka",
+      "destination": "Brahmanbaria",
+      "transportMode": "bus",
+      "operatorName": "BRTC / Tisha Paribahan",
+      "duration": 180,
+      "durationHuman": "3h 0m",
+      "distance": 115,
+      "frequency": 5,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 230,
+          "priceUSD": 2
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 400,
+          "priceUSD": 3
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00",
+          "arrivalTime": "10:00"
+        },
+        {
+          "departureTime": "15:00",
+          "arrivalTime": "18:00"
+        }
+      ],
+      "departurePoint": "Mohakhali",
+      "arrivalPoint": "Brahmanbaria Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-dhaka-noakhali-000",
+      "origin": "Dhaka",
+      "destination": "Noakhali",
+      "transportMode": "bus",
+      "operatorName": "Ena Transport / Desh Travels",
+      "duration": 240,
+      "durationHuman": "4h 0m",
+      "distance": 170,
+      "frequency": 8,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 280,
+          "priceUSD": 2
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 450,
+          "priceUSD": 4
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00",
+          "arrivalTime": "11:00"
+        },
+        {
+          "departureTime": "13:00",
+          "arrivalTime": "17:00"
+        },
+        {
+          "departureTime": "20:00",
+          "arrivalTime": "00:00+1"
+        }
+      ],
+      "departurePoint": "Gabtoli/Sayedabad",
+      "arrivalPoint": "Noakhali Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-dhaka-patuakhali-000",
+      "origin": "Dhaka",
+      "destination": "Patuakhali",
+      "transportMode": "bus",
+      "operatorName": "Sakura Paribahan",
+      "duration": 300,
+      "durationHuman": "5h 0m",
+      "distance": 220,
+      "frequency": 4,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 350,
+          "priceUSD": 3
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 550,
+          "priceUSD": 5
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00",
+          "arrivalTime": "12:00"
+        },
+        {
+          "departureTime": "20:00",
+          "arrivalTime": "01:00+1"
+        }
+      ],
+      "departurePoint": "Gabtoli/Sayedabad",
+      "arrivalPoint": "Patuakhali Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-dhaka-saidpur-000",
+      "origin": "Dhaka",
+      "destination": "Saidpur",
+      "transportMode": "bus",
+      "operatorName": "Hanif Enterprise / Shyamoli",
+      "duration": 450,
+      "durationHuman": "7h 30m",
+      "distance": 400,
+      "frequency": 3,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 700,
+          "priceUSD": 6
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 1200,
+          "priceUSD": 10
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "08:00",
+          "arrivalTime": "15:30"
+        },
+        {
+          "departureTime": "21:00",
+          "arrivalTime": "04:30+1"
+        }
+      ],
+      "departurePoint": "Gabtoli/Sayedabad",
+      "arrivalPoint": "Saidpur Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-dhaka-nilphamari-000",
+      "origin": "Dhaka",
+      "destination": "Nilphamari",
+      "transportMode": "bus",
+      "operatorName": "Hanif Enterprise",
+      "duration": 480,
+      "durationHuman": "8h 0m",
+      "distance": 430,
+      "frequency": 2,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 750,
+          "priceUSD": 6
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 1300,
+          "priceUSD": 11
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "08:00",
+          "arrivalTime": "16:00"
+        },
+        {
+          "departureTime": "20:00",
+          "arrivalTime": "04:00+1"
+        }
+      ],
+      "departurePoint": "Gabtoli/Sayedabad",
+      "arrivalPoint": "Nilphamari Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-dhaka-bagerhat-000",
+      "origin": "Dhaka",
+      "destination": "Bagerhat",
+      "transportMode": "bus",
+      "operatorName": "Eagle Paribahan / Shohagh",
+      "duration": 300,
+      "durationHuman": "5h 0m",
+      "distance": 250,
+      "frequency": 4,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 400,
+          "priceUSD": 3
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 650,
+          "priceUSD": 5
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00",
+          "arrivalTime": "12:00"
+        },
+        {
+          "departureTime": "20:00",
+          "arrivalTime": "01:00+1"
+        }
+      ],
+      "departurePoint": "Gabtoli/Sayedabad",
+      "arrivalPoint": "Bagerhat Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-dhaka-mongla-000",
+      "origin": "Dhaka",
+      "destination": "Mongla",
+      "transportMode": "bus",
+      "operatorName": "Shohagh Paribahan",
+      "duration": 360,
+      "durationHuman": "6h 0m",
+      "distance": 310,
+      "frequency": 3,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 480,
+          "priceUSD": 4
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 780,
+          "priceUSD": 6
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00",
+          "arrivalTime": "13:00"
+        },
+        {
+          "departureTime": "19:00",
+          "arrivalTime": "01:00+1"
+        }
+      ],
+      "departurePoint": "Gabtoli/Sayedabad",
+      "arrivalPoint": "Mongla Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-dhaka-habiganj-000",
+      "origin": "Dhaka",
+      "destination": "Habiganj",
+      "transportMode": "bus",
+      "operatorName": "Hanif / Alliance Transport",
+      "duration": 210,
+      "durationHuman": "3h 30m",
+      "distance": 160,
+      "frequency": 5,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 300,
+          "priceUSD": 2
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 480,
+          "priceUSD": 4
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00",
+          "arrivalTime": "10:30"
+        },
+        {
+          "departureTime": "14:00",
+          "arrivalTime": "17:30"
+        }
+      ],
+      "departurePoint": "Mohakhali/Sayedabad",
+      "arrivalPoint": "Habiganj Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-dhaka-manikganj-000",
+      "origin": "Dhaka",
+      "destination": "Manikganj",
+      "transportMode": "bus",
+      "operatorName": "BRTC / Local",
+      "duration": 90,
+      "durationHuman": "1h 30m",
+      "distance": 65,
+      "frequency": 8,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 120,
+          "priceUSD": 1
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "06:00",
+          "arrivalTime": "07:30"
+        },
+        {
+          "departureTime": "10:00",
+          "arrivalTime": "11:30"
+        },
+        {
+          "departureTime": "14:00",
+          "arrivalTime": "15:30"
+        },
+        {
+          "departureTime": "17:00",
+          "arrivalTime": "18:30"
+        }
+      ],
+      "departurePoint": "Gabtoli",
+      "arrivalPoint": "Manikganj Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-dhaka-munshiganj-000",
+      "origin": "Dhaka",
+      "destination": "Munshiganj",
+      "transportMode": "bus",
+      "operatorName": "Nayan Paribahan",
+      "duration": 90,
+      "durationHuman": "1h 30m",
+      "distance": 35,
+      "frequency": 6,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 100,
+          "priceUSD": 1
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00",
+          "arrivalTime": "08:30"
+        },
+        {
+          "departureTime": "12:00",
+          "arrivalTime": "13:30"
+        },
+        {
+          "departureTime": "16:00",
+          "arrivalTime": "17:30"
+        }
+      ],
+      "departurePoint": "Gulistan",
+      "arrivalPoint": "Munshiganj Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-dhaka-narail-000",
+      "origin": "Dhaka",
+      "destination": "Narail",
+      "transportMode": "bus",
+      "operatorName": "Eagle Paribahan",
+      "duration": 240,
+      "durationHuman": "4h 0m",
+      "distance": 200,
+      "frequency": 3,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 320,
+          "priceUSD": 3
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 520,
+          "priceUSD": 4
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00",
+          "arrivalTime": "11:00"
+        },
+        {
+          "departureTime": "20:00",
+          "arrivalTime": "00:00+1"
+        }
+      ],
+      "departurePoint": "Gabtoli",
+      "arrivalPoint": "Narail Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-dhaka-sherpur-000",
+      "origin": "Dhaka",
+      "destination": "Sherpur",
+      "transportMode": "bus",
+      "operatorName": "Ena Transport",
+      "duration": 210,
+      "durationHuman": "3h 30m",
+      "distance": 175,
+      "frequency": 4,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 290,
+          "priceUSD": 2
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:30",
+          "arrivalTime": "11:00"
+        },
+        {
+          "departureTime": "14:00",
+          "arrivalTime": "17:30"
+        }
+      ],
+      "departurePoint": "Mohakhali",
+      "arrivalPoint": "Sherpur Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-dhaka-gaibandha-000",
+      "origin": "Dhaka",
+      "destination": "Gaibandha",
+      "transportMode": "bus",
+      "operatorName": "Hanif Enterprise",
+      "duration": 360,
+      "durationHuman": "6h 0m",
+      "distance": 310,
+      "frequency": 3,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 550,
+          "priceUSD": 5
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 900,
+          "priceUSD": 8
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "08:00",
+          "arrivalTime": "14:00"
+        },
+        {
+          "departureTime": "20:00",
+          "arrivalTime": "02:00+1"
+        }
+      ],
+      "departurePoint": "Gabtoli/Sayedabad",
+      "arrivalPoint": "Gaibandha Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-chittagong-comilla-000",
+      "origin": "Chittagong",
+      "destination": "Comilla",
+      "transportMode": "bus",
+      "operatorName": "BRTC / Ena Transport",
+      "duration": 120,
+      "durationHuman": "2h 0m",
+      "distance": 100,
+      "frequency": 6,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 150,
+          "priceUSD": 1
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 250,
+          "priceUSD": 2
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00",
+          "arrivalTime": "09:00"
+        },
+        {
+          "departureTime": "12:00",
+          "arrivalTime": "14:00"
+        },
+        {
+          "departureTime": "17:00",
+          "arrivalTime": "19:00"
+        }
+      ],
+      "departurePoint": "Chittagong A.Alam Gate",
+      "arrivalPoint": "Comilla Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-chittagong-feni-000",
+      "origin": "Chittagong",
+      "destination": "Feni",
+      "transportMode": "bus",
+      "operatorName": "Local / BRTC",
+      "duration": 90,
+      "durationHuman": "1h 30m",
+      "distance": 77,
+      "frequency": 8,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 120,
+          "priceUSD": 1
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00",
+          "arrivalTime": "08:30"
+        },
+        {
+          "departureTime": "11:00",
+          "arrivalTime": "12:30"
+        },
+        {
+          "departureTime": "15:00",
+          "arrivalTime": "16:30"
+        }
+      ],
+      "departurePoint": "Chittagong A.Alam Gate",
+      "arrivalPoint": "Feni Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-rajshahi-bogra-000",
+      "origin": "Rajshahi",
+      "destination": "Bogra",
+      "transportMode": "bus",
+      "operatorName": "Hanif / National",
+      "duration": 120,
+      "durationHuman": "2h 0m",
+      "distance": 76,
+      "frequency": 6,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 150,
+          "priceUSD": 1
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 250,
+          "priceUSD": 2
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "08:00",
+          "arrivalTime": "10:00"
+        },
+        {
+          "departureTime": "13:00",
+          "arrivalTime": "15:00"
+        },
+        {
+          "departureTime": "17:00",
+          "arrivalTime": "19:00"
+        }
+      ],
+      "departurePoint": "Rajshahi Bus Stand",
+      "arrivalPoint": "Bogra Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-rajshahi-dinajpur-000",
+      "origin": "Rajshahi",
+      "destination": "Dinajpur",
+      "transportMode": "bus",
+      "operatorName": "Hanif Enterprise",
+      "duration": 180,
+      "durationHuman": "3h 0m",
+      "distance": 135,
+      "frequency": 4,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 280,
+          "priceUSD": 2
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 450,
+          "priceUSD": 4
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "08:00",
+          "arrivalTime": "11:00"
+        },
+        {
+          "departureTime": "14:00",
+          "arrivalTime": "17:00"
+        }
+      ],
+      "departurePoint": "Rajshahi Bus Stand",
+      "arrivalPoint": "Dinajpur Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-khulna-satkhira-000",
+      "origin": "Khulna",
+      "destination": "Satkhira",
+      "transportMode": "bus",
+      "operatorName": "Eagle Paribahan / Local",
+      "duration": 120,
+      "durationHuman": "2h 0m",
+      "distance": 75,
+      "frequency": 6,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 150,
+          "priceUSD": 1
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00",
+          "arrivalTime": "09:00"
+        },
+        {
+          "departureTime": "12:00",
+          "arrivalTime": "14:00"
+        },
+        {
+          "departureTime": "16:00",
+          "arrivalTime": "18:00"
+        }
+      ],
+      "departurePoint": "Khulna Bus Stand",
+      "arrivalPoint": "Satkhira Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-khulna-bagerhat-000",
+      "origin": "Khulna",
+      "destination": "Bagerhat",
+      "transportMode": "bus",
+      "operatorName": "Local Service",
+      "duration": 60,
+      "durationHuman": "1h 0m",
+      "distance": 36,
+      "frequency": 8,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 80,
+          "priceUSD": 1
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00",
+          "arrivalTime": "08:00"
+        },
+        {
+          "departureTime": "09:00",
+          "arrivalTime": "10:00"
+        },
+        {
+          "departureTime": "11:00",
+          "arrivalTime": "12:00"
+        },
+        {
+          "departureTime": "14:00",
+          "arrivalTime": "15:00"
+        }
+      ],
+      "departurePoint": "Khulna Bus Stand",
+      "arrivalPoint": "Bagerhat Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-barisal-patuakhali-000",
+      "origin": "Barisal",
+      "destination": "Patuakhali",
+      "transportMode": "bus",
+      "operatorName": "Local Service",
+      "duration": 90,
+      "durationHuman": "1h 30m",
+      "distance": 65,
+      "frequency": 8,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 100,
+          "priceUSD": 1
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00",
+          "arrivalTime": "08:30"
+        },
+        {
+          "departureTime": "10:00",
+          "arrivalTime": "11:30"
+        },
+        {
+          "departureTime": "13:00",
+          "arrivalTime": "14:30"
+        },
+        {
+          "departureTime": "16:00",
+          "arrivalTime": "17:30"
+        }
+      ],
+      "departurePoint": "Barisal Nathullabad",
+      "arrivalPoint": "Patuakhali Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-barisal-borguna-000",
+      "origin": "Barisal",
+      "destination": "Borguna",
+      "transportMode": "bus",
+      "operatorName": "Local Service",
+      "duration": 150,
+      "durationHuman": "2h 30m",
+      "distance": 115,
+      "frequency": 4,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 150,
+          "priceUSD": 1
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00",
+          "arrivalTime": "09:30"
+        },
+        {
+          "departureTime": "12:00",
+          "arrivalTime": "14:30"
+        }
+      ],
+      "departurePoint": "Barisal Nathullabad",
+      "arrivalPoint": "Borguna Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-sylhet-sunamganj-000",
+      "origin": "Sylhet",
+      "destination": "Sunamganj",
+      "transportMode": "bus",
+      "operatorName": "Local / BRTC",
+      "duration": 90,
+      "durationHuman": "1h 30m",
+      "distance": 68,
+      "frequency": 6,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 120,
+          "priceUSD": 1
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00",
+          "arrivalTime": "08:30"
+        },
+        {
+          "departureTime": "11:00",
+          "arrivalTime": "12:30"
+        },
+        {
+          "departureTime": "15:00",
+          "arrivalTime": "16:30"
+        }
+      ],
+      "departurePoint": "Sylhet Bus Stand",
+      "arrivalPoint": "Sunamganj Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-rangpur-kurigram-000",
+      "origin": "Rangpur",
+      "destination": "Kurigram",
+      "transportMode": "bus",
+      "operatorName": "Local / Hanif",
+      "duration": 120,
+      "durationHuman": "2h 0m",
+      "distance": 70,
+      "frequency": 5,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 150,
+          "priceUSD": 1
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00",
+          "arrivalTime": "09:00"
+        },
+        {
+          "departureTime": "12:00",
+          "arrivalTime": "14:00"
+        },
+        {
+          "departureTime": "16:00",
+          "arrivalTime": "18:00"
+        }
+      ],
+      "departurePoint": "Rangpur Bus Stand",
+      "arrivalPoint": "Kurigram Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-rangpur-lalmonirhat-000",
+      "origin": "Rangpur",
+      "destination": "Lalmonirhat",
+      "transportMode": "bus",
+      "operatorName": "Local Service",
+      "duration": 90,
+      "durationHuman": "1h 30m",
+      "distance": 58,
+      "frequency": 5,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 120,
+          "priceUSD": 1
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00",
+          "arrivalTime": "08:30"
+        },
+        {
+          "departureTime": "11:00",
+          "arrivalTime": "12:30"
+        },
+        {
+          "departureTime": "15:00",
+          "arrivalTime": "16:30"
+        }
+      ],
+      "departurePoint": "Rangpur Bus Stand",
+      "arrivalPoint": "Lalmonirhat Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-rangpur-panchagarh-000",
+      "origin": "Rangpur",
+      "destination": "Panchagarh",
+      "transportMode": "bus",
+      "operatorName": "Hanif Enterprise",
+      "duration": 180,
+      "durationHuman": "3h 0m",
+      "distance": 138,
+      "frequency": 3,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 250,
+          "priceUSD": 2
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "08:00",
+          "arrivalTime": "11:00"
+        },
+        {
+          "departureTime": "14:00",
+          "arrivalTime": "17:00"
+        }
+      ],
+      "departurePoint": "Rangpur Bus Stand",
+      "arrivalPoint": "Panchagarh Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-mymensingh-kishoreganj-000",
+      "origin": "Mymensingh",
+      "destination": "Kishoreganj",
+      "transportMode": "bus",
+      "operatorName": "Local / Ena",
+      "duration": 90,
+      "durationHuman": "1h 30m",
+      "distance": 50,
+      "frequency": 5,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 120,
+          "priceUSD": 1
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00",
+          "arrivalTime": "08:30"
+        },
+        {
+          "departureTime": "11:00",
+          "arrivalTime": "12:30"
+        },
+        {
+          "departureTime": "15:00",
+          "arrivalTime": "16:30"
+        }
+      ],
+      "departurePoint": "Mymensingh Bus Stand",
+      "arrivalPoint": "Kishoreganj Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-chittagong-coxsbazar-000",
+      "origin": "Chittagong",
+      "destination": "Cox's Bazar",
+      "transportMode": "bus",
+      "operatorName": "BRTC / Shyamoli",
+      "duration": 180,
+      "durationHuman": "3h 0m",
+      "distance": 152,
+      "frequency": 5,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 280,
+          "priceUSD": 2
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 450,
+          "priceUSD": 4
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00",
+          "arrivalTime": "10:00"
+        },
+        {
+          "departureTime": "13:00",
+          "arrivalTime": "16:00"
+        }
+      ],
+      "departurePoint": "Chittagong A.Alam Gate",
+      "arrivalPoint": "Cox Bazar Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-dhaka-coxsbazar-direct-000",
+      "origin": "Dhaka",
+      "destination": "Cox's Bazar",
+      "transportMode": "bus",
+      "operatorName": "S Alam Paribahan",
+      "duration": 600,
+      "durationHuman": "10h 0m",
+      "distance": 414,
+      "frequency": 4,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 1200,
+          "priceUSD": 10
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 1800,
+          "priceUSD": 15
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "08:00",
+          "arrivalTime": "18:00"
+        },
+        {
+          "departureTime": "21:00",
+          "arrivalTime": "07:00+1"
+        }
+      ],
+      "departurePoint": "Gabtoli/Sayedabad",
+      "arrivalPoint": "Cox's Bazar Bus Stand",
+      "externalLinks": {}
+    },
+    {
+      "id": "bd-bus-dhaka-lakshmipur-000",
+      "origin": "Dhaka",
+      "destination": "Lakshmipur",
+      "transportMode": "bus",
+      "operatorName": "Desh Travels / Shohagh",
+      "duration": 240,
+      "durationHuman": "4h 0m",
+      "distance": 155,
+      "frequency": 5,
+      "operatingDays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "prices": [
+        {
+          "className": "Non AC",
+          "currency": "BDT",
+          "price": 280,
+          "priceUSD": 2
+        },
+        {
+          "className": "AC",
+          "currency": "BDT",
+          "price": 460,
+          "priceUSD": 4
+        }
+      ],
+      "schedule": [
+        {
+          "departureTime": "07:00",
+          "arrivalTime": "11:00"
+        },
+        {
+          "departureTime": "13:00",
+          "arrivalTime": "17:00"
+        }
+      ],
+      "departurePoint": "Gabtoli/Sayedabad",
+      "arrivalPoint": "Lakshmipur Bus Stand",
+      "externalLinks": {}
     }
   ]
 }

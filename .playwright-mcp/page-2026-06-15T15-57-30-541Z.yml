@@ -1,0 +1,670 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - navigation [ref=e4]:
+      - generic [ref=e5] [cursor=pointer]:
+        - img "KoyJabo" [ref=e6]
+        - generic [ref=e7]:
+          - generic [ref=e8]: কই যাবো
+          - generic [ref=e9]: KOYJABO
+      - generic [ref=e10]:
+        - button "হোম" [ref=e11] [cursor=pointer]:
+          - img [ref=e12]
+          - text: হোম
+        - button "মেট্রো LIVE" [ref=e15] [cursor=pointer]:
+          - img [ref=e16]
+          - text: মেট্রো
+          - generic [ref=e20]: LIVE
+        - button "ট্রেন" [ref=e21] [cursor=pointer]:
+          - img [ref=e23]
+          - text: ট্রেন
+        - button "আন্তঃজেলা" [ref=e27] [cursor=pointer]:
+          - img [ref=e28]
+          - text: আন্তঃজেলা
+        - button "ভাড়া হিসাব" [ref=e32] [cursor=pointer]:
+          - img [ref=e33]
+          - text: ভাড়া হিসাব
+        - button "AI সহায়ক NEW" [ref=e35] [cursor=pointer]:
+          - img [ref=e36]
+          - text: AI সহায়ক
+          - generic [ref=e39]: NEW
+      - generic [ref=e40]:
+        - button "Toggle language" [ref=e41] [cursor=pointer]:
+          - img [ref=e42]
+          - generic [ref=e46]: বাং
+        - button "থিম পরিবর্তন" [ref=e47] [cursor=pointer]:
+          - img [ref=e48]
+        - button "অ্যাপ ইনস্টল" [ref=e54] [cursor=pointer]
+        - button "Mejbaur Bahar Fagun" [ref=e55] [cursor=pointer]:
+          - img "Mejbaur Bahar Fagun" [ref=e56]
+        - button "মেনু খুলুন" [ref=e57] [cursor=pointer]:
+          - img [ref=e58]
+    - main [ref=e59]:
+      - generic [ref=e66]:
+        - generic [ref=e67]:
+          - button [ref=e68] [cursor=pointer]:
+            - img [ref=e69]
+          - generic [ref=e71]: বাংলাদেশ রেলওয়ে
+        - generic [ref=e73]:
+          - text: ✦ Bangladesh Railway · সকল রুট / all routes
+          - heading "বাংলাদেশ রেলওয়ে · সকল রুট" [level=1] [ref=e74]
+          - paragraph [ref=e75]:
+            - text: ৩৫০+ আন্তঃনগর ট্রেন, ই-টিকেট বুকিং, লাইভ ট্র্যাকিং — পদ্মা সেতু রুট সহ।
+            - link "Demographics" [ref=e76] [cursor=pointer]:
+              - img [ref=e78]
+              - text: Demographics
+          - generic [ref=e80]:
+            - generic [ref=e81]:
+              - generic [ref=e82]: 350+
+              - generic [ref=e83]: ট্রেন
+            - generic [ref=e84]:
+              - generic [ref=e85]: "64"
+              - generic [ref=e86]: জেলা
+            - generic [ref=e87]:
+              - generic [ref=e88]: 5 days
+              - generic [ref=e89]: অগ্রিম
+            - generic [ref=e90]:
+              - generic [ref=e91]: ★4.5
+              - generic [ref=e92]: রেটিং
+          - generic [ref=e93]:
+            - generic [ref=e94]:
+              - button "🔍 খুঁজুন" [ref=e95] [cursor=pointer]:
+                - generic [ref=e96]: 🔍
+                - text: খুঁজুন
+              - button "🔍 PNR" [ref=e97] [cursor=pointer]:
+                - generic [ref=e98]: 🔍
+                - text: PNR
+              - button "🛤 রুট ম্যাপ" [ref=e99] [cursor=pointer]:
+                - generic [ref=e100]: 🛤
+                - text: রুট ম্যাপ
+            - generic [ref=e101]:
+              - generic [ref=e102]:
+                - img [ref=e104]
+                - 'textbox "যেমন: কক্সবাজার এক্সপ্রেস, সোনার বাংলা, #৭৮৬..." [ref=e107]'
+              - generic [ref=e108]:
+                - generic [ref=e109]: নাম
+                - generic [ref=e110]: নম্বর
+                - generic [ref=e111]: PNR
+              - combobox [ref=e113]:
+                - option "📍 থেকে (স্বয়ংক্রিয়...)"
+                - option "আব্দুলপুর"
+                - option "আখানগর"
+                - option "আখাউড়া"
+                - option "আক্কেলপুর"
+                - option "আমনুরা"
+                - option "আড়ংঘাটা"
+                - option "বাহুবল"
+                - option "বড়খাতা"
+                - option "বেজেরডাঙ্গা"
+                - option "বেনাপোল"
+                - option "ভাগা"
+                - option "ভৈরব বাজার"
+                - option "ভাঙ্গা জংশন"
+                - option "বিমান বন্দর"
+                - option "বিরামপুর"
+                - option "বগুড়া"
+                - option "বোনারপাড়া"
+                - option "ব্রাহ্মণবাড়িয়া"
+                - option "বুড়িমারী"
+                - option "চাঁদপুর"
+                - option "চাঁপাইনবাবগঞ্জ"
+                - option "চট্টগ্রাম"
+                - option "চৌমুহনী"
+                - option "চেঙ্গুটিয়া"
+                - option "চিলাহাটি"
+                - option "চিরিরবন্দর"
+                - option "চুয়াডাঙ্গা"
+                - option "চুলকাটি বাজার"
+                - option "কুমিল্লা"
+                - option "কক্সবাজার"
+                - option "দর্শনা"
+                - option "দৌলতপুর"
+                - option "ডেমরা"
+                - option "দেওয়ানগঞ্জ বাজার"
+                - option "ঢাকা (কমলাপুর)"
+                - option "ঢাকা ক্যান্টনমেন্ট"
+                - option "দিগরাজ"
+                - option "দিনাজপুর"
+                - option "ফরিদপুর"
+                - option "ফতুল্লা"
+                - option "ফেনী"
+                - option "গফরগাঁও"
+                - option "গাইবান্ধা"
+                - option "গেন্ডারিয়া"
+                - option "গেন্ডা"
+                - option "হবিগঞ্জ"
+                - option "হাজীগঞ্জ"
+                - option "হাতিবান্ধা"
+                - option "ঈশ্বরদী"
+                - option "জামালপুর"
+                - option "যশোর"
+                - option "ঝিকরগাছা"
+                - option "জয়দেবপুর"
+                - option "জয়পুরহাট"
+                - option "কাঞ্চন জংশন"
+                - option "কাশিয়ানী"
+                - option "কাটাখালী"
+                - option "কাউনিয়া"
+                - option "কাওগাঁও"
+                - option "খুলনা"
+                - option "কিশোরগঞ্জ"
+                - option "কিসমত"
+                - option "কুড়িগ্রাম"
+                - option "কুষ্টিয়া কোর্ট"
+                - option "লাকসাম"
+                - option "লালমনিরহাট"
+                - option "লোহাগড়া"
+                - option "মহিমাগঞ্জ"
+                - option "মাইজদী কোর্ট"
+                - option "মনমথপুর"
+                - option "মতলব"
+                - option "মাওয়া"
+                - option "মিরসরাই"
+                - option "মোহাম্মদনগর"
+                - option "মোহনগঞ্জ"
+                - option "মঙ্গলপুর"
+                - option "মংলা"
+                - option "মৌলভীবাজার"
+                - option "মুক্তারপুর"
+                - option "ময়মনসিংহ"
+                - option "নাঙ্গলবন্ধা"
+                - option "নড়াইল"
+                - option "নারায়ণগঞ্জ"
+                - option "নরসিংদী"
+                - option "নাটোর"
+                - option "নাভারন"
+                - option "নবাবগঞ্জ জংশন"
+                - option "নয়নী বুরুজ"
+                - option "নেত্রকোণা"
+                - option "নীলফামারী"
+                - option "নোয়াখালী"
+                - option "নোয়াপাড়া"
+                - option "পাকশী"
+                - option "পঞ্চগড়"
+                - option "পার্বতীপুর"
+                - option "পাটগ্রাম"
+                - option "ফুলবাড়ী"
+                - option "ফুলতলা"
+                - option "পোড়াদহ"
+                - option "পুকুরিয়া"
+                - option "রাজবাড়ী"
+                - option "রাজশাহী"
+                - option "রংপুর"
+                - option "রুহিয়া"
+                - option "রূপদিয়া"
+                - option "সৈয়দপুর"
+                - option "সান্তাহার"
+                - option "সাতক্ষীরা"
+                - option "শাহবাজপুর"
+                - option "শিবচর"
+                - option "শিবগঞ্জ"
+                - option "সিংগিয়া"
+                - option "সিরাজগঞ্জ বাজার"
+                - option "সীতাকুণ্ড"
+                - option "শ্রীমঙ্গল"
+                - option "সিলেট"
+                - option "তালমা"
+                - option "টাঙ্গাইল"
+                - option "তারাকান্দি"
+                - option "তেজগাঁও" [selected]
+                - option "ঠাকুরগাঁও"
+                - option "টঙ্গী"
+                - option "তুষভাণ্ডার"
+                - option "উল্লাপাড়া"
+              - combobox [ref=e114]:
+                - option "গন্তব্য বেছে নিন" [selected]
+                - option "আব্দুলপুর"
+                - option "আখানগর"
+                - option "আখাউড়া"
+                - option "আক্কেলপুর"
+                - option "আমনুরা"
+                - option "আড়ংঘাটা"
+                - option "বাহুবল"
+                - option "বড়খাতা"
+                - option "বেজেরডাঙ্গা"
+                - option "বেনাপোল"
+                - option "ভাগা"
+                - option "ভৈরব বাজার"
+                - option "ভাঙ্গা জংশন"
+                - option "বিমান বন্দর"
+                - option "বিরামপুর"
+                - option "বগুড়া"
+                - option "বোনারপাড়া"
+                - option "ব্রাহ্মণবাড়িয়া"
+                - option "বুড়িমারী"
+                - option "চাঁদপুর"
+                - option "চাঁপাইনবাবগঞ্জ"
+                - option "চট্টগ্রাম"
+                - option "চৌমুহনী"
+                - option "চেঙ্গুটিয়া"
+                - option "চিলাহাটি"
+                - option "চিরিরবন্দর"
+                - option "চুয়াডাঙ্গা"
+                - option "চুলকাটি বাজার"
+                - option "কুমিল্লা"
+                - option "কক্সবাজার"
+                - option "দর্শনা"
+                - option "দৌলতপুর"
+                - option "ডেমরা"
+                - option "দেওয়ানগঞ্জ বাজার"
+                - option "ঢাকা (কমলাপুর)"
+                - option "ঢাকা ক্যান্টনমেন্ট"
+                - option "দিগরাজ"
+                - option "দিনাজপুর"
+                - option "ফরিদপুর"
+                - option "ফতুল্লা"
+                - option "ফেনী"
+                - option "গফরগাঁও"
+                - option "গাইবান্ধা"
+                - option "গেন্ডারিয়া"
+                - option "গেন্ডা"
+                - option "হবিগঞ্জ"
+                - option "হাজীগঞ্জ"
+                - option "হাতিবান্ধা"
+                - option "ঈশ্বরদী"
+                - option "জামালপুর"
+                - option "যশোর"
+                - option "ঝিকরগাছা"
+                - option "জয়দেবপুর"
+                - option "জয়পুরহাট"
+                - option "কাঞ্চন জংশন"
+                - option "কাশিয়ানী"
+                - option "কাটাখালী"
+                - option "কাউনিয়া"
+                - option "কাওগাঁও"
+                - option "খুলনা"
+                - option "কিশোরগঞ্জ"
+                - option "কিসমত"
+                - option "কুড়িগ্রাম"
+                - option "কুষ্টিয়া কোর্ট"
+                - option "লাকসাম"
+                - option "লালমনিরহাট"
+                - option "লোহাগড়া"
+                - option "মহিমাগঞ্জ"
+                - option "মাইজদী কোর্ট"
+                - option "মনমথপুর"
+                - option "মতলব"
+                - option "মাওয়া"
+                - option "মিরসরাই"
+                - option "মোহাম্মদনগর"
+                - option "মোহনগঞ্জ"
+                - option "মঙ্গলপুর"
+                - option "মংলা"
+                - option "মৌলভীবাজার"
+                - option "মুক্তারপুর"
+                - option "ময়মনসিংহ"
+                - option "নাঙ্গলবন্ধা"
+                - option "নড়াইল"
+                - option "নারায়ণগঞ্জ"
+                - option "নরসিংদী"
+                - option "নাটোর"
+                - option "নাভারন"
+                - option "নবাবগঞ্জ জংশন"
+                - option "নয়নী বুরুজ"
+                - option "নেত্রকোণা"
+                - option "নীলফামারী"
+                - option "নোয়াখালী"
+                - option "নোয়াপাড়া"
+                - option "পাকশী"
+                - option "পঞ্চগড়"
+                - option "পার্বতীপুর"
+                - option "পাটগ্রাম"
+                - option "ফুলবাড়ী"
+                - option "ফুলতলা"
+                - option "পোড়াদহ"
+                - option "পুকুরিয়া"
+                - option "রাজবাড়ী"
+                - option "রাজশাহী"
+                - option "রংপুর"
+                - option "রুহিয়া"
+                - option "রূপদিয়া"
+                - option "সৈয়দপুর"
+                - option "সান্তাহার"
+                - option "সাতক্ষীরা"
+                - option "শাহবাজপুর"
+                - option "শিবচর"
+                - option "শিবগঞ্জ"
+                - option "সিংগিয়া"
+                - option "সিরাজগঞ্জ বাজার"
+                - option "সীতাকুণ্ড"
+                - option "শ্রীমঙ্গল"
+                - option "সিলেট"
+                - option "তালমা"
+                - option "টাঙ্গাইল"
+                - option "তারাকান্দি"
+                - option "তেজগাঁও"
+                - option "ঠাকুরগাঁও"
+                - option "টঙ্গী"
+                - option "তুষভাণ্ডার"
+                - option "উল্লাপাড়া"
+              - button "ট্রেন খুঁজুন (26)" [ref=e115] [cursor=pointer]
+        - generic [ref=e117]:
+          - generic [ref=e118]:
+            - generic [ref=e119]:
+              - paragraph [ref=e120]:
+                - text: জনপ্রিয় ট্রেন · ঢাকা থেকে
+                - link "Boats & Watercraft" [ref=e121] [cursor=pointer]:
+                  - img [ref=e123]
+                  - text: Boats & Watercraft
+              - generic [ref=e125]:
+                - heading "জনপ্রিয় ট্রেন · ঢাকা থেকে" [level=2] [ref=e126]
+                - generic [ref=e127]: 26 টি
+            - generic [ref=e128] [cursor=pointer]:
+              - generic [ref=e129]:
+                - generic [ref=e130]:
+                  - generic [ref=e131]: "#813"
+                  - generic [ref=e132]: 🚆
+                - generic [ref=e133]:
+                  - paragraph [ref=e135]: কক্সবাজার এক্সপ্রেস
+                  - paragraph [ref=e136]: ঢাকা → কক্সবাজার
+                - generic [ref=e137]:
+                  - paragraph [ref=e138]: ৳745–2,656
+                  - paragraph [ref=e139]: থেকে
+              - generic [ref=e140]:
+                - generic [ref=e141]:
+                  - paragraph [ref=e142]: 10:30 PM
+                  - paragraph [ref=e143]: ছাড়ে
+                - generic [ref=e144]:
+                  - generic [ref=e147]: 11h
+                  - img [ref=e149]
+                - generic [ref=e151]:
+                  - paragraph [ref=e152]: 09:30 AM
+                  - paragraph [ref=e153]: পৌঁছায়
+                - generic [ref=e154]:
+                  - generic [ref=e155]: Off Tue
+                  - button "বিস্তারিত" [ref=e156]
+            - generic [ref=e157] [cursor=pointer]:
+              - generic [ref=e158]:
+                - generic [ref=e159]:
+                  - generic [ref=e160]: "#786"
+                  - generic [ref=e161]: 🚆
+                - generic [ref=e162]:
+                  - paragraph [ref=e164]: সোনার বাংলা এক্সপ্রেস
+                  - paragraph [ref=e165]: ঢাকা → চট্টগ্রাম
+                - generic [ref=e166]:
+                  - paragraph [ref=e167]: ৳405–1,591
+                  - paragraph [ref=e168]: থেকে
+              - generic [ref=e169]:
+                - generic [ref=e170]:
+                  - paragraph [ref=e171]: 07:00 AM
+                  - paragraph [ref=e172]: ছাড়ে
+                - generic [ref=e173]:
+                  - generic [ref=e176]: 5h 30m
+                  - img [ref=e178]
+                - generic [ref=e180]:
+                  - paragraph [ref=e181]: 12:30 PM
+                  - paragraph [ref=e182]: পৌঁছায়
+                - button "বিস্তারিত" [ref=e184]
+            - generic [ref=e185] [cursor=pointer]:
+              - generic [ref=e186]:
+                - generic [ref=e187]:
+                  - generic [ref=e188]: "#709"
+                  - generic [ref=e189]: 🚆
+                - generic [ref=e190]:
+                  - paragraph [ref=e192]: পারাবত এক্সপ্রেস
+                  - paragraph [ref=e193]: ঢাকা → সিলেট
+                - generic [ref=e194]:
+                  - paragraph [ref=e195]: ৳375–1,678
+                  - paragraph [ref=e196]: থেকে
+              - generic [ref=e197]:
+                - generic [ref=e198]:
+                  - paragraph [ref=e199]: 06:30 AM
+                  - paragraph [ref=e200]: ছাড়ে
+                - generic [ref=e201]:
+                  - generic [ref=e204]: 6h 30m
+                  - img [ref=e206]
+                - generic [ref=e208]:
+                  - paragraph [ref=e209]: 01:00 PM
+                  - paragraph [ref=e210]: পৌঁছায়
+                - generic [ref=e211]:
+                  - generic [ref=e212]: Off Tue
+                  - button "বিস্তারিত" [ref=e213]
+            - generic [ref=e214] [cursor=pointer]:
+              - generic [ref=e215]:
+                - generic [ref=e216]:
+                  - generic [ref=e217]: "#729"
+                  - generic [ref=e218]: 🚆
+                - generic [ref=e219]:
+                  - generic [ref=e220]:
+                    - paragraph [ref=e221]: জাহানাবাদ এক্সপ্রেস
+                    - generic [ref=e222]: New
+                  - paragraph [ref=e223]: ঢাকা → খুলনা (পদ্মা)
+                - generic [ref=e224]:
+                  - paragraph [ref=e225]: ৳445–1,289
+                  - paragraph [ref=e226]: থেকে
+              - generic [ref=e227]:
+                - generic [ref=e228]:
+                  - paragraph [ref=e229]: 06:00 AM
+                  - paragraph [ref=e230]: ছাড়ে
+                - generic [ref=e231]:
+                  - generic [ref=e234]: 3h 45m
+                  - img [ref=e236]
+                - generic [ref=e238]:
+                  - paragraph [ref=e239]: 09:45 AM
+                  - paragraph [ref=e240]: পৌঁছায়
+                - button "বিস্তারিত" [ref=e242]
+            - generic [ref=e243] [cursor=pointer]:
+              - generic [ref=e244]:
+                - generic [ref=e245]:
+                  - generic [ref=e246]: "#801"
+                  - generic [ref=e247]: 🚆
+                - generic [ref=e248]:
+                  - paragraph [ref=e250]: উপবন এক্সপ্রেস
+                  - paragraph [ref=e251]: ঢাকা → সিলেট
+                - generic [ref=e252]:
+                  - paragraph [ref=e253]: ৳375–1,678
+                  - paragraph [ref=e254]: থেকে
+              - generic [ref=e255]:
+                - generic [ref=e256]:
+                  - paragraph [ref=e257]: 10:00 PM
+                  - paragraph [ref=e258]: ছাড়ে
+                - generic [ref=e259]:
+                  - generic [ref=e262]: 7h
+                  - img [ref=e264]
+                - generic [ref=e266]:
+                  - paragraph [ref=e267]: 05:00 AM
+                  - paragraph [ref=e268]: পৌঁছায়
+                - generic [ref=e269]:
+                  - generic [ref=e270]: Off Wed
+                  - button "বিস্তারিত" [ref=e271]
+            - generic [ref=e272]:
+              - img [ref=e273]
+              - generic [ref=e275]:
+                - text: সময়সূচি পরিবর্তন হতে পারে। সর্বশেষ তথ্যের জন্য বাংলাদেশ রেলওয়ে ওয়েবসাইট দেখুন।
+                - link "Rail Freight" [ref=e276] [cursor=pointer]:
+                  - img [ref=e278]
+                  - text: Rail Freight
+          - generic [ref=e280]:
+            - generic [ref=e281]:
+              - generic [ref=e282]:
+                - heading "কোচ শ্রেণী ও ভাড়া" [level=3] [ref=e283]
+                - paragraph [ref=e284]: আনুমানিক ন্যূনতম ভাড়া
+              - generic [ref=e285]:
+                - generic [ref=e286]:
+                  - generic [ref=e287]: 🛏
+                  - generic [ref=e288]:
+                    - paragraph [ref=e289]: এসি বার্থ
+                    - paragraph [ref=e290]: প্রথম শ্রেণী ঘুমের আসন
+                  - generic [ref=e291]: ৳2,656
+                - generic [ref=e292]:
+                  - generic [ref=e293]: ❄️
+                  - generic [ref=e294]:
+                    - paragraph [ref=e295]: স্নিগ্ধা
+                    - paragraph [ref=e296]: এসি চেয়ার
+                  - generic [ref=e297]: ৳719
+                - generic [ref=e298]:
+                  - generic [ref=e299]: 💺
+                  - generic [ref=e300]:
+                    - paragraph [ref=e301]: এসি চেয়ার
+                    - paragraph [ref=e302]: এসি দিনের আসন
+                  - generic [ref=e303]: ৳540
+                - generic [ref=e304]:
+                  - generic [ref=e305]: 🪑
+                  - generic [ref=e306]:
+                    - paragraph [ref=e307]: শোভন চেয়ার
+                    - paragraph [ref=e308]: নন-এসি
+                  - generic [ref=e309]: ৳375
+                - generic [ref=e310]:
+                  - generic [ref=e311]: 👥
+                  - generic [ref=e312]:
+                    - paragraph [ref=e313]: শোভন
+                    - paragraph [ref=e314]: বেঞ্চ সাধারণ
+                  - generic [ref=e315]: ৳265
+            - generic [ref=e316]:
+              - heading "🔍 PNR স্ট্যাটাস চেক" [level=3] [ref=e318]:
+                - generic [ref=e319]: 🔍
+                - text: PNR স্ট্যাটাস চেক
+              - generic [ref=e320]:
+                - textbox "PNR নম্বর দিন..." [ref=e321]
+                - button "রেলওয়ে সাইটে চেক করুন" [disabled] [ref=e322]
+                - paragraph [ref=e323]: eticket.railway.gov.bd-এ যাবে
+        - generic [ref=e324]:
+          - generic [ref=e325]:
+            - paragraph [ref=e326]: রেলওয়ে নেটওয়ার্ক · বাংলাদেশ
+            - heading "প্রধান স্টেশনসমূহ" [level=2] [ref=e327]
+          - generic [ref=e328]:
+            - button "🏛 কমলাপুর ঢাকা" [ref=e329] [cursor=pointer]:
+              - generic [ref=e330]: 🏛
+              - generic [ref=e331]:
+                - paragraph [ref=e332]: কমলাপুর
+                - paragraph [ref=e333]: ঢাকা
+            - button "✈️ এয়ারপোর্ট ঢাকা" [ref=e334] [cursor=pointer]:
+              - generic [ref=e335]: ✈️
+              - generic [ref=e336]:
+                - paragraph [ref=e337]: এয়ারপোর্ট
+                - paragraph [ref=e338]: ঢাকা
+            - button "🏞 চট্টগ্রাম চট্টগ্রাম" [ref=e339] [cursor=pointer]:
+              - generic [ref=e340]: 🏞
+              - generic [ref=e341]:
+                - paragraph [ref=e342]: চট্টগ্রাম
+                - paragraph [ref=e343]: চট্টগ্রাম
+            - button "🍵 সিলেট সিলেট" [ref=e344] [cursor=pointer]:
+              - generic [ref=e345]: 🍵
+              - generic [ref=e346]:
+                - paragraph [ref=e347]: সিলেট
+                - paragraph [ref=e348]: সিলেট
+            - button "🥭 রাজশাহী রাজশাহী" [ref=e349] [cursor=pointer]:
+              - generic [ref=e350]: 🥭
+              - generic [ref=e351]:
+                - paragraph [ref=e352]: রাজশাহী
+                - paragraph [ref=e353]: রাজশাহী
+            - button "🌳 খুলনা খুলনা" [ref=e354] [cursor=pointer]:
+              - generic [ref=e355]: 🌳
+              - generic [ref=e356]:
+                - paragraph [ref=e357]: খুলনা
+                - paragraph [ref=e358]: খুলনা
+            - button "🏖 কক্সবাজার কক্সবাজার" [ref=e359] [cursor=pointer]:
+              - generic [ref=e360]: 🏖
+              - generic [ref=e361]:
+                - paragraph [ref=e362]: কক্সবাজার
+                - paragraph [ref=e363]: কক্সবাজার
+            - button "🏭 গাজীপুর গাজীপুর" [ref=e364] [cursor=pointer]:
+              - generic [ref=e365]: 🏭
+              - generic [ref=e366]:
+                - paragraph [ref=e367]: গাজীপুর
+                - paragraph [ref=e368]: গাজীপুর
+        - generic [ref=e370]:
+          - generic [ref=e372]:
+            - paragraph [ref=e373]:
+              - text: ✦ KoyJabo
+              - link "City & Local Guides" [ref=e374] [cursor=pointer]:
+                - img [ref=e376]
+                - text: City & Local Guides
+            - heading "কই যাবো কীভাবে সাহায্য করে" [level=2] [ref=e378]
+          - generic [ref=e379]:
+            - generic [ref=e380]:
+              - generic [ref=e381]:
+                - generic [ref=e382]:
+                  - generic [ref=e383]: "1"
+                  - generic [ref=e384]: 😕
+                - paragraph [ref=e385]: বাসস্ট্যান্ডে — কোন বাসে উঠবো?
+              - img [ref=e387]
+            - generic [ref=e389]:
+              - generic [ref=e390]:
+                - generic [ref=e391]:
+                  - generic [ref=e392]: "2"
+                  - generic [ref=e393]: 📱
+                - paragraph [ref=e394]: KoyJabo খুলুন, গন্তব্য লিখুন
+              - img [ref=e396]
+            - generic [ref=e398]:
+              - generic [ref=e399]:
+                - generic [ref=e400]:
+                  - generic [ref=e401]: "3"
+                  - generic [ref=e402]: ✅
+                - paragraph [ref=e403]: সঠিক বাস, ভাড়া ও সময় — সাথে সাথে
+              - img [ref=e405]
+            - generic [ref=e408]:
+              - generic [ref=e409]:
+                - generic [ref=e410]: "4"
+                - generic [ref=e411]: 🎉
+              - paragraph [ref=e412]: নিশ্চিন্তে সঠিক বাসে উঠে যাত্রা!
+          - paragraph [ref=e414]: ২,৪০০+ রুট · ৬৪ জেলা · অফলাইনেও চলে · সম্পূর্ণ ফ্রি
+        - generic [ref=e417]:
+          - generic [ref=e418]:
+            - generic [ref=e419]:
+              - img "KoyJabo" [ref=e420]
+              - generic [ref=e421]: কইযাবো
+            - paragraph [ref=e422]: বাংলাদেশের স্মার্ট ট্রান্সপোর্ট গাইড
+            - generic [ref=e423]:
+              - link "LinkedIn" [ref=e424] [cursor=pointer]:
+                - /url: https://linkedin.com/company/koy-jabo/
+                - img [ref=e425]
+              - link "Facebook" [ref=e427] [cursor=pointer]:
+                - /url: https://www.facebook.com/koyjabo/
+                - img [ref=e428]
+          - navigation [ref=e430]:
+            - generic [ref=e431]:
+              - link "হোম" [ref=e432] [cursor=pointer]:
+                - /url: /
+              - link "পরিচয়" [ref=e433] [cursor=pointer]:
+                - /url: /about
+              - link "প্রশ্ন ও উত্তর" [ref=e434] [cursor=pointer]:
+                - /url: /faq
+            - generic [ref=e435]:
+              - link "অ্যাপ ইনস্টল" [ref=e436] [cursor=pointer]:
+                - /url: /install
+              - link "যোগাযোগ" [ref=e437] [cursor=pointer]:
+                - /url: /contact
+              - link "গোপনীয়তা নীতি" [ref=e438] [cursor=pointer]:
+                - /url: /privacy
+            - generic [ref=e439]:
+              - link "শর্তাবলী" [ref=e440] [cursor=pointer]:
+                - /url: /terms
+              - link "রিলিজ নোট" [ref=e441] [cursor=pointer]:
+                - /url: /release-notes
+              - link "আন্তঃশহর যাত্রা" [ref=e442] [cursor=pointer]:
+                - /url: /intercity-hub
+          - generic [ref=e443]:
+            - paragraph [ref=e444]:
+              - text: ঢাকায় তৈরি
+              - img "love" [ref=e445]: ❤️
+              - text: বাংলাদেশের জন্য
+            - paragraph [ref=e446]: © 2024–2026 KoyJabo
+  - insertion [ref=e447]:
+    - iframe [ref=e450]:
+      - generic [active] [ref=f389e1]:
+        - generic [ref=f389e6]:
+          - link [ref=f389e7] [cursor=pointer]:
+            - /url: https://adclick.g.doubleclick.net/aclk?sa=l&ai=CAuNi6SAwatzQCO3ag8UP-KTxsQvs0ZWchwGUpoX4xxPVvPjtmA4QASC0wN6sAWAzoAHx34jLAsgBCakClygPhMRakj6oAwHIA8sEqgTrAU_QCVZtvJGKOoehLOxN2_Q9OIXehawMoEt3bOp9fqdE0bckbnDY72ZNsTwXArsbx4Tu6LOYeIfNiS9RyVnZSLmspDVDmwzP5WjB2J_bvM4WOwmvLHq6zOQ8nf-NnheTr80_t9sWDADVFAg_UuFFQuwZW5o-TNE4Jj-WoCK5V0Umg7_qV7TfhFGNw82QNT1E5gY2x6_S8n24aCmloVGqzIZ2IljkINteQwRCOkiOFc-_yV_XMT7BcYjnigBlGSmV_WAU9Zbk3CZNwW6ZzXFne4MHCZa1nJB3oWdjl9i9bp-nfaqQexfkBAQMVGjABMeL8OKPBYgFpL6-t1OgBi6AB_ef97QBqAenzLECqAfi2LECqAemvhuoB8zOsQKoB_PRG6gHltgbqAeqm7ECqAeOzhuoB5PYG6gH8OAbqAfulrECqAf-nrECqAevvrECqAfVyRuoB9m2sQKoB5oGqAf_nrECqAffn7ECqAf4wrECqAf7wrEC2AcA0ggzCIBhEAEYnwMyCIqCgICAgIAIOg-AQIDAgICAgKiAAqiDgBBIvf3BOljNw7WRzomVA2ABsQkIzC0839iu9oAKAZgLAcgLAYAMAaIMA5ABAaoNAkJEyA0B6g0TCJnvtZHOiZUDFW3toAIdeFI8tvANAogOCbAOi76BuhjYEwzQFQGYFgHKFgIKAPgWAYAXAbIXBBgBUAa6FwI4AbIYCRICkVQYLiIBANAYAcIZAggB&ae=1&gclid=EAIaIQobChMInOm1kc6JlQMVbe2gAh14Ujy2EAEYASAAEgIFofD_BwE&num=1&cid=CAQS9AEAEQoqgZFhJRLhuHYL-Khe0ynZ72B5YZfrqO_-2VDXEYN0AIthL-6j2qdLL4oA4OF8AAh8L85FzOT6LfL18GUCY1IkCn45xK_nFYocL256_aQGL2iV_kJtedcrQ1d5SWfu1couvKZ8ic-ISAK6igu_PO45t01N8W022dZF53rHQv-b0gfMjgPFsk_Gswg135a0u-vKK-_hbgtCUQ3je8JVV_p_UhUmq6ZvXUk9LE1bYBXrzrFAK1OOL6NOQjJJDVFUIlLORKCWYlAw3kIwK-Ygatn8BDZ-yhULNIAc8onbwc8EI8aCPBInIv31T6IVjLzBQv_QGAE&sig=AOD64_2yfDJMqqO8RlDuhQByiPOH_wilUw&client=ca-pub-8425219156685369&rf=1&nb=9&adurl=https://www.rewita.pl/obiekty/zamek-czocha/%3Fgad_source%3D5%26gad_campaignid%3D22396509988%26gclid%3DEAIaIQobChMInOm1kc6JlQMVbe2gAh14Ujy2EAEYASAAEgIFofD_BwE
+            - img [ref=f389e8]
+          - generic [ref=f389e12]:
+            - link "Luksus w historycznych murach" [ref=f389e15] [cursor=pointer]:
+              - /url: https://adclick.g.doubleclick.net/aclk?sa=l&ai=CAuNi6SAwatzQCO3ag8UP-KTxsQvs0ZWchwGUpoX4xxPVvPjtmA4QASC0wN6sAWAzoAHx34jLAsgBCakClygPhMRakj6oAwHIA8sEqgTrAU_QCVZtvJGKOoehLOxN2_Q9OIXehawMoEt3bOp9fqdE0bckbnDY72ZNsTwXArsbx4Tu6LOYeIfNiS9RyVnZSLmspDVDmwzP5WjB2J_bvM4WOwmvLHq6zOQ8nf-NnheTr80_t9sWDADVFAg_UuFFQuwZW5o-TNE4Jj-WoCK5V0Umg7_qV7TfhFGNw82QNT1E5gY2x6_S8n24aCmloVGqzIZ2IljkINteQwRCOkiOFc-_yV_XMT7BcYjnigBlGSmV_WAU9Zbk3CZNwW6ZzXFne4MHCZa1nJB3oWdjl9i9bp-nfaqQexfkBAQMVGjABMeL8OKPBYgFpL6-t1OgBi6AB_ef97QBqAenzLECqAfi2LECqAemvhuoB8zOsQKoB_PRG6gHltgbqAeqm7ECqAeOzhuoB5PYG6gH8OAbqAfulrECqAf-nrECqAevvrECqAfVyRuoB9m2sQKoB5oGqAf_nrECqAffn7ECqAf4wrECqAf7wrEC2AcA0ggzCIBhEAEYnwMyCIqCgICAgIAIOg-AQIDAgICAgKiAAqiDgBBIvf3BOljNw7WRzomVA2ABsQkIzC0839iu9oAKAZgLAcgLAYAMAaIMA5ABAaoNAkJEyA0B6g0TCJnvtZHOiZUDFW3toAIdeFI8tvANAogOCbAOi76BuhjYEwzQFQGYFgHKFgIKAPgWAYAXAbIXBBgBUAa6FwI4AbIYCRICkVQYLiIBANAYAcIZAggB&ae=1&gclid=EAIaIQobChMInOm1kc6JlQMVbe2gAh14Ujy2EAEYASAAEgIFofD_BwE&num=1&cid=CAQS9AEAEQoqgZFhJRLhuHYL-Khe0ynZ72B5YZfrqO_-2VDXEYN0AIthL-6j2qdLL4oA4OF8AAh8L85FzOT6LfL18GUCY1IkCn45xK_nFYocL256_aQGL2iV_kJtedcrQ1d5SWfu1couvKZ8ic-ISAK6igu_PO45t01N8W022dZF53rHQv-b0gfMjgPFsk_Gswg135a0u-vKK-_hbgtCUQ3je8JVV_p_UhUmq6ZvXUk9LE1bYBXrzrFAK1OOL6NOQjJJDVFUIlLORKCWYlAw3kIwK-Ygatn8BDZ-yhULNIAc8onbwc8EI8aCPBInIv31T6IVjLzBQv_QGAE&sig=AOD64_2yfDJMqqO8RlDuhQByiPOH_wilUw&client=ca-pub-8425219156685369&rf=1&nb=0&adurl=https://www.rewita.pl/obiekty/zamek-czocha/%3Fgad_source%3D5%26gad_campaignid%3D22396509988%26gclid%3DEAIaIQobChMInOm1kc6JlQMVbe2gAh14Ujy2EAEYASAAEgIFofD_BwE
+            - link "Odpocznij w królewskim stylu, z nowoczesnymi udogodnieniami w historycznych wnętrzach" [ref=f389e19] [cursor=pointer]:
+              - /url: https://adclick.g.doubleclick.net/aclk?sa=l&ai=CAuNi6SAwatzQCO3ag8UP-KTxsQvs0ZWchwGUpoX4xxPVvPjtmA4QASC0wN6sAWAzoAHx34jLAsgBCakClygPhMRakj6oAwHIA8sEqgTrAU_QCVZtvJGKOoehLOxN2_Q9OIXehawMoEt3bOp9fqdE0bckbnDY72ZNsTwXArsbx4Tu6LOYeIfNiS9RyVnZSLmspDVDmwzP5WjB2J_bvM4WOwmvLHq6zOQ8nf-NnheTr80_t9sWDADVFAg_UuFFQuwZW5o-TNE4Jj-WoCK5V0Umg7_qV7TfhFGNw82QNT1E5gY2x6_S8n24aCmloVGqzIZ2IljkINteQwRCOkiOFc-_yV_XMT7BcYjnigBlGSmV_WAU9Zbk3CZNwW6ZzXFne4MHCZa1nJB3oWdjl9i9bp-nfaqQexfkBAQMVGjABMeL8OKPBYgFpL6-t1OgBi6AB_ef97QBqAenzLECqAfi2LECqAemvhuoB8zOsQKoB_PRG6gHltgbqAeqm7ECqAeOzhuoB5PYG6gH8OAbqAfulrECqAf-nrECqAevvrECqAfVyRuoB9m2sQKoB5oGqAf_nrECqAffn7ECqAf4wrECqAf7wrEC2AcA0ggzCIBhEAEYnwMyCIqCgICAgIAIOg-AQIDAgICAgKiAAqiDgBBIvf3BOljNw7WRzomVA2ABsQkIzC0839iu9oAKAZgLAcgLAYAMAaIMA5ABAaoNAkJEyA0B6g0TCJnvtZHOiZUDFW3toAIdeFI8tvANAogOCbAOi76BuhjYEwzQFQGYFgHKFgIKAPgWAYAXAbIXBBgBUAa6FwI4AbIYCRICkVQYLiIBANAYAcIZAggB&ae=1&gclid=EAIaIQobChMInOm1kc6JlQMVbe2gAh14Ujy2EAEYASAAEgIFofD_BwE&num=1&cid=CAQS9AEAEQoqgZFhJRLhuHYL-Khe0ynZ72B5YZfrqO_-2VDXEYN0AIthL-6j2qdLL4oA4OF8AAh8L85FzOT6LfL18GUCY1IkCn45xK_nFYocL256_aQGL2iV_kJtedcrQ1d5SWfu1couvKZ8ic-ISAK6igu_PO45t01N8W022dZF53rHQv-b0gfMjgPFsk_Gswg135a0u-vKK-_hbgtCUQ3je8JVV_p_UhUmq6ZvXUk9LE1bYBXrzrFAK1OOL6NOQjJJDVFUIlLORKCWYlAw3kIwK-Ygatn8BDZ-yhULNIAc8onbwc8EI8aCPBInIv31T6IVjLzBQv_QGAE&sig=AOD64_2yfDJMqqO8RlDuhQByiPOH_wilUw&client=ca-pub-8425219156685369&rf=1&nb=7&adurl=https://www.rewita.pl/obiekty/zamek-czocha/%3Fgad_source%3D5%26gad_campaignid%3D22396509988%26gclid%3DEAIaIQobChMInOm1kc6JlQMVbe2gAh14Ujy2EAEYASAAEgIFofD_BwE
+              - text: Odpocznij w królewskim stylu
+              - generic [ref=f389e20]:
+                - text: ", z nowoczesnymi udogodnieniami w historycznych"
+                - text: wnętrzach
+            - link "AMW Rewita Sp. z o. o." [ref=f389e23] [cursor=pointer]:
+              - /url: https://adclick.g.doubleclick.net/aclk?sa=l&ai=CAuNi6SAwatzQCO3ag8UP-KTxsQvs0ZWchwGUpoX4xxPVvPjtmA4QASC0wN6sAWAzoAHx34jLAsgBCakClygPhMRakj6oAwHIA8sEqgTrAU_QCVZtvJGKOoehLOxN2_Q9OIXehawMoEt3bOp9fqdE0bckbnDY72ZNsTwXArsbx4Tu6LOYeIfNiS9RyVnZSLmspDVDmwzP5WjB2J_bvM4WOwmvLHq6zOQ8nf-NnheTr80_t9sWDADVFAg_UuFFQuwZW5o-TNE4Jj-WoCK5V0Umg7_qV7TfhFGNw82QNT1E5gY2x6_S8n24aCmloVGqzIZ2IljkINteQwRCOkiOFc-_yV_XMT7BcYjnigBlGSmV_WAU9Zbk3CZNwW6ZzXFne4MHCZa1nJB3oWdjl9i9bp-nfaqQexfkBAQMVGjABMeL8OKPBYgFpL6-t1OgBi6AB_ef97QBqAenzLECqAfi2LECqAemvhuoB8zOsQKoB_PRG6gHltgbqAeqm7ECqAeOzhuoB5PYG6gH8OAbqAfulrECqAf-nrECqAevvrECqAfVyRuoB9m2sQKoB5oGqAf_nrECqAffn7ECqAf4wrECqAf7wrEC2AcA0ggzCIBhEAEYnwMyCIqCgICAgIAIOg-AQIDAgICAgKiAAqiDgBBIvf3BOljNw7WRzomVA2ABsQkIzC0839iu9oAKAZgLAcgLAYAMAaIMA5ABAaoNAkJEyA0B6g0TCJnvtZHOiZUDFW3toAIdeFI8tvANAogOCbAOi76BuhjYEwzQFQGYFgHKFgIKAPgWAYAXAbIXBBgBUAa6FwI4AbIYCRICkVQYLiIBANAYAcIZAggB&ae=1&gclid=EAIaIQobChMInOm1kc6JlQMVbe2gAh14Ujy2EAEYASAAEgIFofD_BwE&num=1&cid=CAQS9AEAEQoqgZFhJRLhuHYL-Khe0ynZ72B5YZfrqO_-2VDXEYN0AIthL-6j2qdLL4oA4OF8AAh8L85FzOT6LfL18GUCY1IkCn45xK_nFYocL256_aQGL2iV_kJtedcrQ1d5SWfu1couvKZ8ic-ISAK6igu_PO45t01N8W022dZF53rHQv-b0gfMjgPFsk_Gswg135a0u-vKK-_hbgtCUQ3je8JVV_p_UhUmq6ZvXUk9LE1bYBXrzrFAK1OOL6NOQjJJDVFUIlLORKCWYlAw3kIwK-Ygatn8BDZ-yhULNIAc8onbwc8EI8aCPBInIv31T6IVjLzBQv_QGAE&sig=AOD64_2yfDJMqqO8RlDuhQByiPOH_wilUw&client=ca-pub-8425219156685369&rf=1&nb=1&adurl=https://www.rewita.pl/obiekty/zamek-czocha/%3Fgad_source%3D5%26gad_campaignid%3D22396509988%26gclid%3DEAIaIQobChMInOm1kc6JlQMVbe2gAh14Ujy2EAEYASAAEgIFofD_BwE
+          - link "Otwórz" [ref=f389e26] [cursor=pointer]:
+            - /url: https://adclick.g.doubleclick.net/aclk?sa=l&ai=CAuNi6SAwatzQCO3ag8UP-KTxsQvs0ZWchwGUpoX4xxPVvPjtmA4QASC0wN6sAWAzoAHx34jLAsgBCakClygPhMRakj6oAwHIA8sEqgTrAU_QCVZtvJGKOoehLOxN2_Q9OIXehawMoEt3bOp9fqdE0bckbnDY72ZNsTwXArsbx4Tu6LOYeIfNiS9RyVnZSLmspDVDmwzP5WjB2J_bvM4WOwmvLHq6zOQ8nf-NnheTr80_t9sWDADVFAg_UuFFQuwZW5o-TNE4Jj-WoCK5V0Umg7_qV7TfhFGNw82QNT1E5gY2x6_S8n24aCmloVGqzIZ2IljkINteQwRCOkiOFc-_yV_XMT7BcYjnigBlGSmV_WAU9Zbk3CZNwW6ZzXFne4MHCZa1nJB3oWdjl9i9bp-nfaqQexfkBAQMVGjABMeL8OKPBYgFpL6-t1OgBi6AB_ef97QBqAenzLECqAfi2LECqAemvhuoB8zOsQKoB_PRG6gHltgbqAeqm7ECqAeOzhuoB5PYG6gH8OAbqAfulrECqAf-nrECqAevvrECqAfVyRuoB9m2sQKoB5oGqAf_nrECqAffn7ECqAf4wrECqAf7wrEC2AcA0ggzCIBhEAEYnwMyCIqCgICAgIAIOg-AQIDAgICAgKiAAqiDgBBIvf3BOljNw7WRzomVA2ABsQkIzC0839iu9oAKAZgLAcgLAYAMAaIMA5ABAaoNAkJEyA0B6g0TCJnvtZHOiZUDFW3toAIdeFI8tvANAogOCbAOi76BuhjYEwzQFQGYFgHKFgIKAPgWAYAXAbIXBBgBUAa6FwI4AbIYCRICkVQYLiIBANAYAcIZAggB&ae=1&gclid=EAIaIQobChMInOm1kc6JlQMVbe2gAh14Ujy2EAEYASAAEgIFofD_BwE&num=1&cid=CAQS9AEAEQoqgZFhJRLhuHYL-Khe0ynZ72B5YZfrqO_-2VDXEYN0AIthL-6j2qdLL4oA4OF8AAh8L85FzOT6LfL18GUCY1IkCn45xK_nFYocL256_aQGL2iV_kJtedcrQ1d5SWfu1couvKZ8ic-ISAK6igu_PO45t01N8W022dZF53rHQv-b0gfMjgPFsk_Gswg135a0u-vKK-_hbgtCUQ3je8JVV_p_UhUmq6ZvXUk9LE1bYBXrzrFAK1OOL6NOQjJJDVFUIlLORKCWYlAw3kIwK-Ygatn8BDZ-yhULNIAc8onbwc8EI8aCPBInIv31T6IVjLzBQv_QGAE&sig=AOD64_2yfDJMqqO8RlDuhQByiPOH_wilUw&client=ca-pub-8425219156685369&rf=1&nb=8&adurl=https://www.rewita.pl/obiekty/zamek-czocha/%3Fgad_source%3D5%26gad_campaignid%3D22396509988%26gclid%3DEAIaIQobChMInOm1kc6JlQMVbe2gAh14Ujy2EAEYASAAEgIFofD_BwE
+            - generic [ref=f389e27]:
+              - generic [ref=f389e29]: Otwórz
+              - generic [ref=f389e31]:
+                - img [ref=f389e32]
+                - img [ref=f389e34]
+        - img [ref=f389e42] [cursor=pointer]
+        - button [ref=f389e44] [cursor=pointer]:
+          - img [ref=f389e45]
+        - iframe

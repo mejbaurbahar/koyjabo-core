@@ -1,0 +1,258 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e4]:
+      - list [ref=e7]:
+        - listitem [ref=e8]:
+          - link "বিআরটিএ সেবা বাতায়ন" [ref=e9] [cursor=pointer]:
+            - /url: /bsp/;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+      - list [ref=e12]:
+        - listitem [ref=e13]:
+          - link "প্রবেশ করুন" [ref=e14] [cursor=pointer]:
+            - /url: /bsp/login/;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+        - listitem [ref=e15]:
+          - link "নিবন্ধন" [ref=e16] [cursor=pointer]:
+            - /url: /bsp/register;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+        - listitem [ref=e17]:
+          - link "English" [ref=e18] [cursor=pointer]:
+            - /url: "?lan=en"
+            - img [ref=e19]
+            - text: English
+    - generic [ref=e21]:
+      - link "Brta Logo" [ref=e23] [cursor=pointer]:
+        - /url: ""
+        - img "Brta Logo" [ref=e24]
+      - list [ref=e25]:
+        - listitem [ref=e26]:
+          - generic [ref=e27] [cursor=pointer]: 
+          - generic [ref=e28]:
+            - generic [ref=e29]: ১৬১০৭, ০৯৬১০ ৯৯০ ৯৯৮
+            - generic [ref=e30]: রবিবার–বৃহস্পতিবার (০৯.০০ সকাল - ০৫.০০ বিকাল)
+            - generic [ref=e31]: সকল সরকারি কার্যক্রম রোববার থেকে বৃহস্পতিবার পর্যন্ত পরিচালিত হবে।
+    - banner [ref=e32]:
+      - generic [ref=e34]:
+        - generic:
+          - generic: 
+        - navigation [ref=e35]:
+          - list [ref=e37]:
+            - listitem [ref=e38]:
+              - link "হোম" [ref=e39] [cursor=pointer]:
+                - /url: /bsp/;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+            - listitem [ref=e40]:
+              - link "ফিটনেস এপয়েন্টমেন্ট সময়সূচী" [ref=e41] [cursor=pointer]:
+                - /url: /bsp/viewAppointmentSchedule;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+            - listitem [ref=e42]:
+              - link "রাইড শেয়ারিং" [ref=e43] [cursor=pointer]:
+                - /url: "#"
+              - text: 
+            - listitem [ref=e44]:
+              - link "অভিযোগ/মতামত দিন" [ref=e45] [cursor=pointer]:
+                - /url: /bsp/feedbackForm;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+            - listitem [ref=e46]:
+              - link "ইউজার ম্যানুয়াল" [ref=e47] [cursor=pointer]:
+                - /url: /bsp/manual/usermanual;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+    - generic [ref=e50]:
+      - generic [ref=e51]: 
+      - text: শোক বার্তাঃ বিআরটিএ ঢাকা মেট্রো-৩ সার্কেলের সহকারী রাজস্ব কর্মকর্তা জনাব মোঃ আবু বকর সিদ্দিক গত ২৩-১১-২০২৪ খ্রি. তারিখে ইন্তেকাল করেছেন (ইন্না-লিল্লাহ হি ওয়া ইন্না ইলাইহি রাজিঊন)। আল্লাহ্ তাআ'লা মরহুম ভাইয়ের পরিবারকে সবর করার তৌফিক নসীব করুন। (আমিন)
+      - generic [ref=e52]: 
+      - text: ছাত্র জনতার অঙ্গীকার, নিরাপদ সড়ক হোক সবার
+      - generic [ref=e53]: 
+      - text: মোটরযান চালানোর সময় গতিসীমা মেনে চলুন
+      - generic [ref=e54]: 
+      - text: জেব্রাক্রসিং ব্যবহার করুন
+      - generic [ref=e55]: 
+      - text: ফুটওভারব্রিজ ব্যবহার করুন
+      - generic [ref=e56]: 
+      - text: মোটরসাইকেল চালানোর সময় হেলমেট ব্যবহার করুন
+    - generic [ref=e58]:
+      - generic [ref=e60]:
+        - generic [ref=e61]:
+          - heading "বিআরটিএ সার্ভিস পোর্টালে স্বাগতম" [level=2] [ref=e63]:
+            - text: বিআরটিএ সার্ভিস পোর্টালে
+            - text: স্বাগতম
+          - paragraph [ref=e64]: বিআরটিএ সার্ভিস পোর্টাল (বিএসপি) বাংলাদেশ রোড ট্রান্সপোর্ট অথরিটি (বিআরটিএ) এর একটি অনলাইন সেবা প্রদানের মাধ্যম যেখানে ড্রাইভার, মোটরযান মালিক, মোটরযান বিক্রেতাদের নিবন্ধিত করা হয় এবং শিক্ষানবিশ ড্রাইভিং লাইসেন্স, স্মার্ট কার্ড ড্রাইভিং লাইসেন্স, ড্রাইভিং লাইসেন্স নবায়ন, ডুপ্লিকেট ড্রাইভিং লাইসেন্স ইত্যাদি সেবার জন্য আবেদন এবং অনলাইনে ফি প্রদান করা যায়।
+        - img "Chrome" [ref=e67]
+      - generic [ref=e68]:
+        - link "ট্রাস্টি বোর্ড সার্টিফিকেট ডাউনলোড করতে এখানে ক্লিক করুন " [ref=e69] [cursor=pointer]:
+          - /url: /bsp/tbc/;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+          - generic [ref=e70]:
+            - text: ট্রাস্টি বোর্ড সার্টিফিকেট ডাউনলোড করতে এখানে ক্লিক করুন
+            - strong
+            - generic [ref=e71]: 
+        - link "ই-ফিটনেস ফলাফল (VIC) দেখতে এখানে ক্লিক করুন " [ref=e72] [cursor=pointer]:
+          - /url: /bsp/vfc/;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+          - generic [ref=e73]:
+            - text: ই-ফিটনেস ফলাফল (VIC) দেখতে এখানে ক্লিক করুন
+            - strong
+            - generic [ref=e74]: 
+        - link "ই-ট্যাক্স টোকেন, ই-লাইসেন্স ইত্যাদি যাচাইকরণ " [ref=e75] [cursor=pointer]:
+          - /url: /bsp/scan;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+          - generic [ref=e76]:
+            - text: ই-ট্যাক্স টোকেন, ই-লাইসেন্স ইত্যাদি যাচাইকরণ
+            - strong
+            - generic [ref=e77]: 
+        - link "ড্রাইভিং লাইসেন্স যাচাইকরণ " [ref=e78] [cursor=pointer]:
+          - /url: /bsp/dlVerification;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+          - generic [ref=e79]:
+            - text: ড্রাইভিং লাইসেন্স যাচাইকরণ
+            - strong
+            - generic [ref=e80]: 
+      - generic [ref=e81]:
+        - generic [ref=e82]: সেবা ও তথ্য
+        - generic [ref=e84]:
+          - link "" [ref=e86] [cursor=pointer]:
+            - /url: /bsp/services/number-plate;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+            - generic [ref=e87]: 
+          - heading "নম্বর প্লেট" [level=3] [ref=e88]:
+            - link "নম্বর প্লেট" [ref=e89] [cursor=pointer]:
+              - /url: /bsp/services/number-plate;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+              - heading "নম্বর প্লেট" [level=3] [ref=e90]
+        - generic [ref=e92]:
+          - link "" [ref=e94] [cursor=pointer]:
+            - /url: /bsp/services/route-permit;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+            - generic [ref=e95]: 
+          - heading "রুট পারমিট" [level=3] [ref=e96]:
+            - link "রুট পারমিট" [ref=e97] [cursor=pointer]:
+              - /url: /bsp/services/route-permit;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+              - heading "রুট পারমিট" [level=3] [ref=e98]
+        - generic [ref=e100]:
+          - link "" [ref=e102] [cursor=pointer]:
+            - /url: /bsp/services/fitness-&-tax-token;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+            - generic [ref=e103]: 
+          - heading "ফিটনেস এবং ট্যাক্স টোকেন" [level=3] [ref=e104]:
+            - link "ফিটনেস এবং ট্যাক্স টোকেন" [ref=e105] [cursor=pointer]:
+              - /url: /bsp/services/fitness-&-tax-token;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+              - heading "ফিটনেস এবং ট্যাক্স টোকেন" [level=3] [ref=e106]
+        - generic [ref=e108]:
+          - link "" [ref=e110] [cursor=pointer]:
+            - /url: /bsp/services/driving-license;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+            - generic [ref=e111]: 
+          - heading "ড্রাইভিং লাইসেন্স" [level=3] [ref=e112]:
+            - link "ড্রাইভিং লাইসেন্স" [ref=e113] [cursor=pointer]:
+              - /url: /bsp/services/driving-license;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+              - heading "ড্রাইভিং লাইসেন্স" [level=3] [ref=e114]
+        - generic [ref=e116]:
+          - link "" [ref=e118] [cursor=pointer]:
+            - /url: /bsp/services/road-safety;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+            - generic [ref=e119]: 
+          - heading "সড়ক নিরাপত্তা" [level=3] [ref=e120]:
+            - link "সড়ক নিরাপত্তা" [ref=e121] [cursor=pointer]:
+              - /url: /bsp/services/road-safety;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+              - heading "সড়ক নিরাপত্তা" [level=3] [ref=e122]
+        - generic [ref=e124]:
+          - link "" [ref=e126] [cursor=pointer]:
+            - /url: /bsp/services/traffic-signs-&-driving-test-giudeline;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+            - generic [ref=e127]: 
+          - heading "ট্র্যাফিক চিহ্ন এবং ড্রাইভিং টেস্ট নির্দেশিকা" [level=3] [ref=e128]:
+            - link "ট্র্যাফিক চিহ্ন এবং ড্রাইভিং টেস্ট নির্দেশিকা" [ref=e129] [cursor=pointer]:
+              - /url: /bsp/services/traffic-signs-&-driving-test-giudeline;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+              - heading "ট্র্যাফিক চিহ্ন এবং ড্রাইভিং টেস্ট নির্দেশিকা" [level=3] [ref=e130]
+        - generic [ref=e132]:
+          - link "" [ref=e134] [cursor=pointer]:
+            - /url: /bsp/services/road-sign-manual;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+            - generic [ref=e135]: 
+          - heading "রোড সাইন ম্যানুয়াল" [level=3] [ref=e136]:
+            - link "রোড সাইন ম্যানুয়াল" [ref=e137] [cursor=pointer]:
+              - /url: /bsp/services/road-sign-manual;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+              - heading "রোড সাইন ম্যানুয়াল" [level=3] [ref=e138]
+      - generic [ref=e139]:
+        - generic [ref=e141]:
+          - generic [ref=e142]:
+            - generic [ref=e143]:
+              - link "" [ref=e145] [cursor=pointer]:
+                - /url: /bsp/feeCalculator;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+                - generic [ref=e146]: 
+              - link "ফি ক্যালকুলেটর" [ref=e147] [cursor=pointer]:
+                - /url: /bsp/feeCalculator;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+                - heading "ফি ক্যালকুলেটর" [level=3] [ref=e148]
+              - paragraph [ref=e149]: ফি ক্যালকুলেটর ব্যবহার করে গ্রাহক তার ফি হিসাব করতে পারেন।
+            - generic [ref=e150]:
+              - link "" [ref=e152] [cursor=pointer]:
+                - /url: http://mvtax.brta.gov.bd/
+                - generic [ref=e153]: 
+              - link "পেমেন্ট যাচাইকরণ" [ref=e154] [cursor=pointer]:
+                - /url: http://mvtax.brta.gov.bd/
+                - heading "পেমেন্ট যাচাইকরণ" [level=4] [ref=e155]
+              - paragraph [ref=e156]: গ্রাহক তাদের পেমেন্ট যাচাই করতে পারেন।
+          - img "iphone 2" [ref=e158]
+          - generic [ref=e159]:
+            - generic [ref=e160]:
+              - link "" [ref=e162] [cursor=pointer]:
+                - /url: /bsp/bankList;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+                - generic [ref=e163]: 
+              - link "ব্যাংকের শাখা/বুথের তালিকা" [ref=e164] [cursor=pointer]:
+                - /url: /bsp/bankList;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+                - heading "ব্যাংকের শাখা/বুথের তালিকা" [level=3] [ref=e165]
+              - paragraph [ref=e166]: যে সকল ব্যাংকে গ্রাহক তার ফি দিতে পারেন তার একটি তালিকা ।
+            - generic [ref=e167]:
+              - link "" [ref=e169] [cursor=pointer]:
+                - /url: /bsp/dctbResult;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+                - generic [ref=e170]: 
+              - link "ড্রাইভিং পরীক্ষা (ডিসিটিসি)-এর ফলাফল" [ref=e171] [cursor=pointer]:
+                - /url: /bsp/dctbResult;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+                - heading "ড্রাইভিং পরীক্ষা (ডিসিটিসি)-এর ফলাফল" [level=3] [ref=e172]
+              - paragraph [ref=e173]: সমস্ত বিভাগ এবং জেলার ডি সি টি সি এর ফলাফল।
+        - link "পোর্টাল থেকে সেবা পেতে এখানে ক্লিক করুন " [ref=e174] [cursor=pointer]:
+          - /url: /bsp/register/;jsessionid=2AFEF0AE693168602F1AE73B83DE87DE
+          - generic [ref=e175]:
+            - text: পোর্টাল থেকে সেবা পেতে এখানে ক্লিক করুন
+            - strong
+            - generic [ref=e176]: 
+    - contentinfo [ref=e177]:
+      - generic [ref=e180]:
+        - generic [ref=e182]:
+          - heading "পোর্টালসমূহ" [level=4] [ref=e183]
+          - list [ref=e184]:
+            - listitem [ref=e185]:
+              - link "সড়ক পরিবহন ও সেতু মন্ত্রণালয়" [ref=e186] [cursor=pointer]:
+                - /url: http://www.moc.gov.bd/
+            - listitem [ref=e187]:
+              - link "সড়ক যোগাযোগ এবং হাইওয়ে বিভাগ" [ref=e188] [cursor=pointer]:
+                - /url: http://www.rhd.gov.bd/
+            - listitem [ref=e189]:
+              - link "সেতু বিভাগ" [ref=e190] [cursor=pointer]:
+                - /url: http://www.moc-bd.gov.bd/
+            - listitem [ref=e191]:
+              - link "ঢাকা পরিবহন সমন্বয় কর্তৃপক্ষ" [ref=e192] [cursor=pointer]:
+                - /url: http://www.dtcb.gov.bd/
+            - listitem [ref=e193]:
+              - link "বাংলাদেশ রোড ট্রান্সপোর্ট কর্পোরেশন (বিআরটিসি)" [ref=e194] [cursor=pointer]:
+                - /url: http://www.brtc.gov.bd/
+            - listitem [ref=e195]:
+              - link "কাস্টমস হাউস চট্টগ্রাম" [ref=e196] [cursor=pointer]:
+                - /url: http://www.nbr-ctg.com
+            - listitem [ref=e197]:
+              - link "বাংলাদেশ সরকার" [ref=e198] [cursor=pointer]:
+                - /url: http://www.bangladesh.gov.bd
+        - generic [ref=e200]:
+          - heading "গুরুত্বপূর্ণ লিংক" [level=4] [ref=e201]
+          - list [ref=e202]:
+            - listitem [ref=e203]:
+              - link "রাষ্ট্রপতির কার্যালয়" [ref=e204] [cursor=pointer]:
+                - /url: http://www.bangabhaban.gov.bd/
+            - listitem [ref=e205]:
+              - link "প্রধানমন্ত্রীর কার্যালয়" [ref=e206] [cursor=pointer]:
+                - /url: http://www.pmo.gov.bd/
+            - listitem [ref=e207]:
+              - link "ক্যাবিনেট ডিভিশন" [ref=e208] [cursor=pointer]:
+                - /url: http://www.cabinet.gov.bd/
+            - listitem [ref=e209]:
+              - link "সড়ক ও মহাসড়ক বিভাগ" [ref=e210] [cursor=pointer]:
+                - /url: http://www.rthd.gov.bd/
+            - listitem [ref=e211]:
+              - link "সেতু বিভাগ" [ref=e212] [cursor=pointer]:
+                - /url: http://www.bridgesdivision.gov.bd/
+            - listitem [ref=e213]:
+              - link "বাংলাদেশ ব্যাংক" [ref=e214] [cursor=pointer]:
+                - /url: https://www.bb.org.bd/
+      - paragraph [ref=e219]:
+        - strong [ref=e220]: "বাস্তবায়নে:"
+        - link "বাংলাদেশ সড়ক পরিবহন কর্তৃপক্ষ (বিআরটিএ)" [ref=e221] [cursor=pointer]:
+          - /url: http://brta.gov.bd
+          - text: বাংলাদেশ সড়ক পরিবহন কর্তৃপক্ষ (বিআরটিএ)
+          - img [ref=e222]
+        - strong [ref=e223]: "রক্ষণাবেক্ষণে :"
+        - link "কম্পিউটার নেটওয়ার্ক সিস্টেমস লিমিটেড" [ref=e224] [cursor=pointer]:
+          - /url: http://www.cnsbd.com
+          - text: কম্পিউটার নেটওয়ার্ক সিস্টেমস লিমিটেড
+          - img [ref=e225]
+  - text: 

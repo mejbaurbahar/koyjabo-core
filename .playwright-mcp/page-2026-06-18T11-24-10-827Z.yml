@@ -1,0 +1,443 @@
+- generic [ref=e13]:
+  - generic [ref=e30]:
+    - button "KoyJabo Home" [ref=e31] [cursor=pointer]:
+      - generic [ref=e34]: ক
+      - generic [ref=e35]: KoyJabo
+    - navigation [ref=e36]:
+      - button "🏠 Home" [ref=e37] [cursor=pointer]:
+        - generic [ref=e38]: 🏠
+        - text: Home
+      - button "🚌 Local Bus" [ref=e39] [cursor=pointer]:
+        - generic [ref=e40]: 🚌
+        - text: Local Bus
+      - button "🚇 Metro" [ref=e41] [cursor=pointer]:
+        - generic [ref=e42]: 🚇
+        - text: Metro
+      - button "🚆 Train" [ref=e43] [cursor=pointer]:
+        - generic [ref=e44]: 🚆
+        - text: Train
+      - button "🧭 Intercity" [ref=e45] [cursor=pointer]:
+        - generic [ref=e46]: 🧭
+        - text: Intercity
+      - button "⛴️ Launch" [ref=e47] [cursor=pointer]:
+        - generic [ref=e48]: ⛴️
+        - text: Launch
+      - button "✈️ Flights" [ref=e49] [cursor=pointer]:
+        - generic [ref=e50]: ✈️
+        - text: Flights
+    - generic [ref=e51]:
+      - button "Menu" [ref=e52] [cursor=pointer]:
+        - img [ref=e53]
+      - button "EN" [ref=e54] [cursor=pointer]:
+        - img [ref=e55]
+        - generic [ref=e59]: EN
+      - button "Toggle theme" [ref=e60] [cursor=pointer]:
+        - img [ref=e61]
+      - button "Install app" [ref=e67] [cursor=pointer]:
+        - img [ref=e68]
+  - generic [ref=e860]:
+    - main [ref=e862]:
+      - generic [ref=e863]:
+        - generic [ref=e867]:
+          - generic [ref=e868]:
+            - generic [ref=e869]: ✦ KoyJabo · bus
+            - heading "Every Dhaka bus · in one app" [level=1] [ref=e870]
+            - paragraph [ref=e871]: 2,412 live routes, 1,000+ stops, 140+ operators — works offline too.
+            - generic [ref=e872]:
+              - generic [ref=e873]:
+                - generic [ref=e874]: 2,412
+                - generic [ref=e875]: Routes
+              - generic [ref=e876]:
+                - generic [ref=e877]: 1,043
+                - generic [ref=e878]: Stops
+              - generic [ref=e879]:
+                - generic [ref=e880]: 140+
+                - generic [ref=e881]: Operators
+              - generic [ref=e882]:
+                - generic [ref=e883]: ★ 4.4
+                - generic [ref=e884]: Avg rating
+          - img "3D bus" [ref=e886]:
+            - generic [ref=e917]: MOTIJHEEL · 6
+        - generic [ref=e950]:
+          - generic [ref=e951]:
+            - generic [ref=e952]:
+              - img [ref=e954]
+              - 'textbox "e.g. Green Line, Raida #7, BRTC Double, Route 6..." [ref=e957]'
+            - generic [ref=e958]:
+              - button "Name" [ref=e959] [cursor=pointer]
+              - button "Route" [ref=e960] [cursor=pointer]
+              - button "Operator" [ref=e961] [cursor=pointer]
+            - generic [ref=e962]:
+              - generic [ref=e963]:
+                - img [ref=e965]
+                - generic [ref=e968]:
+                  - generic [ref=e969]: From
+                  - textbox "Gulshan 1" [active] [ref=e970]: Gabtoli
+              - generic [ref=e971]:
+                - img [ref=e973]
+                - generic [ref=e975]:
+                  - generic [ref=e976]: To
+                  - textbox "Motijheel" [ref=e977]
+              - button "Find bus" [ref=e978] [cursor=pointer]:
+                - img [ref=e979]
+                - text: Find bus
+            - generic [ref=e982]:
+              - button "⚡ Fastest" [ref=e983] [cursor=pointer]
+              - button "৳ Cheapest" [ref=e984] [cursor=pointer]
+              - button "❄️ AC" [ref=e985] [cursor=pointer]
+              - button "🚻 Toilet" [ref=e986] [cursor=pointer]
+              - button "👥 Less crowd" [ref=e987] [cursor=pointer]
+          - generic [ref=e988]:
+            - generic [ref=e989]:
+              - heading "15 routes found" [level=2] [ref=e1265]
+              - generic [ref=e992]:
+                - generic [ref=e1029] [cursor=pointer]:
+                  - generic [ref=e1030]: 7N
+                  - generic [ref=e1031]:
+                    - generic [ref=e1033]: 7 No.
+                    - generic [ref=e1034]: Gabtoli ⇄ Sadarghat
+                    - generic [ref=e1035]:
+                      - generic [ref=e1036]: Local
+                      - generic [ref=e1037]: · 6:00 AM - 11:00 PM
+                  - img [ref=e1039]
+                - generic [ref=e1041] [cursor=pointer]:
+                  - generic [ref=e1042]: 8N
+                  - generic [ref=e1043]:
+                    - generic [ref=e1045]: 8 No.
+                    - generic [ref=e1046]: Jatrabari ⇄ Gabtoli
+                    - generic [ref=e1047]:
+                      - generic [ref=e1048]: Local
+                      - generic [ref=e1049]: · 6:00 AM - 11:00 PM
+                  - img [ref=e1051]
+                - generic [ref=e1065] [cursor=pointer]:
+                  - generic [ref=e1066]: A
+                  - generic [ref=e1067]:
+                    - generic [ref=e1069]: Achia
+                    - generic [ref=e1070]: Gabtoli ⇄ Demra
+                    - generic [ref=e1071]:
+                      - generic [ref=e1072]: Semi-Sitting
+                      - generic [ref=e1073]: · 6:00 AM - 12:00 PM
+                  - img [ref=e1075]
+                - generic [ref=e1077] [cursor=pointer]:
+                  - generic [ref=e1078]: AP
+                  - generic [ref=e1079]:
+                    - generic [ref=e1081]: Achim Paribahan
+                    - generic [ref=e1082]: Gabtoli ⇄ Demra
+                    - generic [ref=e1083]:
+                      - generic [ref=e1084]: Semi-Sitting
+                      - generic [ref=e1085]: · 6:00 AM - 11:00 PM
+                  - img [ref=e1087]
+                - generic [ref=e1101] [cursor=pointer]:
+                  - generic [ref=e1102]: A
+                  - generic [ref=e1103]:
+                    - generic [ref=e1105]: Agradut
+                    - generic [ref=e1106]: Savar ⇄ Notun Bazar
+                    - generic [ref=e1107]:
+                      - generic [ref=e1108]: Semi-Sitting
+                      - generic [ref=e1109]: · 5:30 AM - 10:30 PM
+                  - img [ref=e1111]
+                - generic [ref=e1266] [cursor=pointer]:
+                  - generic [ref=e1267]: A
+                  - generic [ref=e1268]:
+                    - generic [ref=e1270]: Ajmi
+                    - generic [ref=e1271]: Dhamrai ⇄ Chittagong Road
+                    - generic [ref=e1272]:
+                      - generic [ref=e1273]: Semi-Sitting
+                      - generic [ref=e1274]: · 6:00 AM - 10:00 PM
+                  - img [ref=e1276]
+                - generic [ref=e1278] [cursor=pointer]:
+                  - generic [ref=e1279]: AM
+                  - generic [ref=e1280]:
+                    - generic [ref=e1282]: Al Madina Plus One
+                    - generic [ref=e1283]: Nandan Park ⇄ Kamalapur
+                    - generic [ref=e1284]:
+                      - generic [ref=e1285]: Semi-Sitting
+                      - generic [ref=e1286]: · 6:00 AM - 10:00 PM
+                  - img [ref=e1288]
+                - generic [ref=e1290] [cursor=pointer]:
+                  - generic [ref=e1291]: A
+                  - generic [ref=e1292]:
+                    - generic [ref=e1294]: Arnob
+                    - generic [ref=e1295]: Hemayetpur ⇄ Demra
+                    - generic [ref=e1296]:
+                      - generic [ref=e1297]: Semi-Sitting
+                      - generic [ref=e1298]: · 6:00 AM - 10:00 PM
+                  - img [ref=e1300]
+                - generic [ref=e1302] [cursor=pointer]:
+                  - generic [ref=e1303]: BP
+                  - generic [ref=e1304]:
+                    - generic [ref=e1306]: Baishakhi Paribahan
+                    - generic [ref=e1307]: Savar ⇄ Notun Bazar
+                    - generic [ref=e1308]:
+                      - generic [ref=e1309]: Semi-Sitting
+                      - generic [ref=e1310]: · 6:00 AM - 10:00 PM
+                  - img [ref=e1312]
+                - generic [ref=e1314] [cursor=pointer]:
+                  - generic [ref=e1315]: B
+                  - generic [ref=e1316]:
+                    - generic [ref=e1318]: Bashumoti
+                    - generic [ref=e1319]: Gazipur ⇄ Gabtoli
+                    - generic [ref=e1320]:
+                      - generic [ref=e1321]: Semi-Sitting
+                      - generic [ref=e1322]: · 6:00 AM - 10:00 PM
+                  - img [ref=e1324]
+                - generic [ref=e1326] [cursor=pointer]:
+                  - generic [ref=e1327]: BT
+                  - generic [ref=e1328]:
+                    - generic [ref=e1330]: Basumati Transport
+                    - generic [ref=e1331]: Gabtoli ⇄ Gazipur
+                    - generic [ref=e1332]:
+                      - generic [ref=e1333]: Semi-Sitting
+                      - generic [ref=e1334]: · 6:00 AM - 10:00 PM
+                  - img [ref=e1336]
+                - generic [ref=e1338] [cursor=pointer]:
+                  - generic [ref=e1339]: BM
+                  - generic [ref=e1340]:
+                    - generic [ref=e1342]: Brihottor Mirpur
+                    - generic [ref=e1343]: Chiriyakhana ⇄ Chandra
+                    - generic [ref=e1344]:
+                      - generic [ref=e1345]: Semi-Sitting
+                      - generic [ref=e1346]: · 6:00 AM - 10:00 PM
+                  - img [ref=e1348]
+                - generic [ref=e1350] [cursor=pointer]:
+                  - generic [ref=e1351]: B(
+                  - generic [ref=e1352]:
+                    - generic [ref=e1354]: BRTC (Gabtoli-Gazipur)
+                    - generic [ref=e1355]: Gabtoli ⇄ Gazipur
+                    - generic [ref=e1356]:
+                      - generic [ref=e1357]: Semi-Sitting
+                      - generic [ref=e1358]: · 6:00 AM - 10:00 PM
+                  - img [ref=e1360]
+                - generic [ref=e1362] [cursor=pointer]:
+                  - generic [ref=e1363]: B(
+                  - generic [ref=e1364]:
+                    - generic [ref=e1366]: BRTC (Madanpur-Savar)
+                    - generic [ref=e1367]: Madanpur ⇄ Savar
+                    - generic [ref=e1368]:
+                      - generic [ref=e1369]: Semi-Sitting
+                      - generic [ref=e1370]: · 6:00 AM - 10:00 PM
+                  - img [ref=e1372]
+                - generic [ref=e1374] [cursor=pointer]:
+                  - generic [ref=e1375]: B(
+                  - generic [ref=e1376]:
+                    - generic [ref=e1378]: BRTC (Motijheel-Chandra)
+                    - generic [ref=e1379]: Motijheel ⇄ Chandra
+                    - generic [ref=e1380]:
+                      - generic [ref=e1381]: Semi-Sitting
+                      - generic [ref=e1382]: · 6:00 AM - 10:00 PM
+                  - img [ref=e1384]
+            - generic [ref=e1113]:
+              - generic [ref=e1114]:
+                - generic [ref=e1115]:
+                  - generic [ref=e1117]: Buses near you · live
+                  - generic [ref=e1118]: Farmgate
+                - generic [ref=e1119]:
+                  - generic [ref=e1121]: "GL #6"
+                  - generic [ref=e1122]: 400 m ↗
+                  - generic [ref=e1123]: 2 min
+                - generic [ref=e1124]:
+                  - generic [ref=e1126]: BRTC Double
+                  - generic [ref=e1127]: 900 m ↗
+                  - generic [ref=e1128]: 5 min
+                - generic [ref=e1129]:
+                  - generic [ref=e1131]: "Hanif #11"
+                  - generic [ref=e1132]: 1.4 km ↗
+                  - generic [ref=e1133]: 8 min
+                - generic [ref=e1134]:
+                  - generic [ref=e1136]: Projapoti
+                  - generic [ref=e1137]: 2.1 km ↘
+                  - generic [ref=e1138]: 12 min
+                - button "View all on map →" [ref=e1139] [cursor=pointer]
+              - generic [ref=e1140]:
+                - generic [ref=e1141]:
+                  - generic [ref=e1142]: Sponsored
+                  - generic [ref=e1143]: Google AdSense
+                - insertion [ref=e1145]:
+                  - iframe [ref=e1147]:
+                    
+              - generic [ref=e1148]:
+                - generic [ref=e1149]: Top operators
+                - generic [ref=e1150]:
+                  - generic [ref=e1151] [cursor=pointer]:
+                    - generic [ref=e1152]: GL
+                    - generic [ref=e1153]: Green Line
+                  - generic [ref=e1154] [cursor=pointer]:
+                    - generic [ref=e1155]: BR
+                    - generic [ref=e1156]: BRTC
+                  - generic [ref=e1157] [cursor=pointer]:
+                    - generic [ref=e1158]: HF
+                    - generic [ref=e1159]: Hanif
+                  - generic [ref=e1160] [cursor=pointer]:
+                    - generic [ref=e1161]: SH
+                    - generic [ref=e1162]: Shyamoli
+                  - generic [ref=e1163] [cursor=pointer]:
+                    - generic [ref=e1164]: PR
+                    - generic [ref=e1165]: Projapoti
+                  - generic [ref=e1166] [cursor=pointer]:
+                    - generic [ref=e1167]: AB
+                    - generic [ref=e1168]: Anabil
+          - generic [ref=e1169]:
+            - generic [ref=e1170]:
+              - generic [ref=e1171]: Sponsored
+              - generic [ref=e1172]: Google AdSense
+            - insertion [ref=e1174]:
+              - iframe [ref=e1176]:
+                
+    - contentinfo [ref=e1177]:
+      - generic [ref=e1178]:
+        - generic [ref=e1179]:
+          - generic [ref=e1180]:
+            - button "ক কই যাবো" [ref=e1181] [cursor=pointer]:
+              - generic [ref=e1184]: ক
+              - generic [ref=e1185]: কই যাবো
+            - paragraph [ref=e1186]: Smart transit guide for Dhaka commuters
+            - generic [ref=e1187]:
+              - generic "Facebook" [ref=e1188] [cursor=pointer]: f
+              - generic "LinkedIn" [ref=e1189] [cursor=pointer]: in
+              - generic "X (Twitter)" [ref=e1190] [cursor=pointer]: X
+              - generic "YouTube" [ref=e1191] [cursor=pointer]: ▶
+              - generic "Other" [ref=e1192] [cursor=pointer]: ✦
+          - generic [ref=e1193]:
+            - generic [ref=e1194]: Explore
+            - button "Local Bus" [ref=e1195] [cursor=pointer]
+            - button "Metro" [ref=e1196] [cursor=pointer]
+            - button "Train" [ref=e1197] [cursor=pointer]
+            - button "Flights" [ref=e1198] [cursor=pointer]
+            - button "Launch" [ref=e1199] [cursor=pointer]
+            - button "Fare" [ref=e1200] [cursor=pointer]
+          - generic [ref=e1201]:
+            - generic [ref=e1202]: Account
+            - button "Profile" [ref=e1203] [cursor=pointer]
+            - button "Favorites" [ref=e1204] [cursor=pointer]
+            - button "History" [ref=e1205] [cursor=pointer]
+            - button "Settings" [ref=e1206] [cursor=pointer]
+            - button "Sign In" [ref=e1207] [cursor=pointer]
+          - generic [ref=e1208]:
+            - generic [ref=e1209]: Company
+            - button "Why KoyJabo" [ref=e1210] [cursor=pointer]
+            - button "About" [ref=e1211] [cursor=pointer]
+            - button "Blog" [ref=e1212] [cursor=pointer]
+            - button "QA" [ref=e1213] [cursor=pointer]
+            - button "Contact" [ref=e1214] [cursor=pointer]
+          - generic [ref=e1215]:
+            - generic [ref=e1216]: Legal
+            - button "Privacy" [ref=e1217] [cursor=pointer]
+            - button "Terms" [ref=e1218] [cursor=pointer]
+            - button "Release" [ref=e1219] [cursor=pointer]
+        - generic [ref=e1220]:
+          - generic [ref=e1221]: © 2026 KoyJabo · All rights reserved
+          - generic [ref=e1222]: All systems operational
+  - generic [ref=e821]:
+    - generic: AI Assistant · ask me
+    - button "AI Assistant" [ref=e823] [cursor=pointer]:
+      - img [ref=e824]
+  - generic:
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic: ক
+          - generic: KoyJabo
+        - button "Close menu": ×
+      - generic:
+        - generic:
+          - generic: Explore
+          - button "Home":
+            - generic: Home
+            - generic:
+              - img
+          - button "Local Bus":
+            - generic: Local Bus
+            - generic:
+              - img
+          - button "Metro":
+            - generic: Metro
+            - generic:
+              - img
+          - button "Train":
+            - generic: Train
+            - generic:
+              - img
+          - button "Intercity":
+            - generic: Intercity
+            - generic:
+              - img
+          - button "Launch":
+            - generic: Launch
+            - generic:
+              - img
+          - button "Flights":
+            - generic: Flights
+            - generic:
+              - img
+          - button "Fare":
+            - generic: Fare
+            - generic:
+              - img
+          - button "AI Assistant":
+            - generic: AI Assistant
+            - generic:
+              - img
+        - generic:
+          - generic: Account
+          - button "Profile":
+            - generic: Profile
+            - generic:
+              - img
+          - button "Favorites":
+            - generic: Favorites
+            - generic:
+              - img
+          - button "History":
+            - generic: History
+            - generic:
+              - img
+          - button "Settings":
+            - generic: Settings
+            - generic:
+              - img
+          - button "Sign In":
+            - generic: Sign In
+            - generic:
+              - img
+        - generic:
+          - generic: Company
+          - button "Why KoyJabo":
+            - generic: Why KoyJabo
+            - generic:
+              - img
+          - button "About":
+            - generic: About
+            - generic:
+              - img
+          - button "Blog":
+            - generic: Blog
+            - generic:
+              - img
+          - button "QA":
+            - generic: QA
+            - generic:
+              - img
+          - button "Contact":
+            - generic: Contact
+            - generic:
+              - img
+          - button "Release":
+            - generic: Release
+            - generic:
+              - img
+        - generic:
+          - generic: Legal
+          - button "Privacy":
+            - generic: Privacy
+            - generic:
+              - img
+          - button "Terms":
+            - generic: Terms
+            - generic:
+              - img
+  - generic [ref=e832]:
+    - generic [ref=e833]: Sponsored
+    - generic [ref=e834]: Google AdSense · 320 × 50
+    - button "✕" [ref=e835] [cursor=pointer]

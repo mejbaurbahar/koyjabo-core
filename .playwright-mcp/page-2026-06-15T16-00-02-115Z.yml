@@ -1,0 +1,302 @@
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5] [cursor=pointer]:
+      - img "KoyJabo" [ref=e6]
+      - generic [ref=e7]:
+        - generic [ref=e8]: কই যাবো
+        - generic [ref=e9]: KOYJABO
+    - generic [ref=e10]:
+      - button "হোম" [ref=e11] [cursor=pointer]:
+        - img [ref=e12]
+        - text: হোম
+      - button "মেট্রো LIVE" [ref=e15] [cursor=pointer]:
+        - img [ref=e16]
+        - text: মেট্রো
+        - generic [ref=e20]: LIVE
+      - button "ট্রেন" [ref=e21] [cursor=pointer]:
+        - img [ref=e22]
+        - text: ট্রেন
+      - button "আন্তঃজেলা" [ref=e26] [cursor=pointer]:
+        - img [ref=e27]
+        - text: আন্তঃজেলা
+      - button "ভাড়া হিসাব" [ref=e31] [cursor=pointer]:
+        - img [ref=e32]
+        - text: ভাড়া হিসাব
+      - button "AI সহায়ক NEW" [ref=e34] [cursor=pointer]:
+        - img [ref=e35]
+        - text: AI সহায়ক
+        - generic [ref=e38]: NEW
+    - generic [ref=e39]:
+      - button "Toggle language" [ref=e40] [cursor=pointer]:
+        - img [ref=e41]
+        - generic [ref=e45]: বাং
+      - button "থিম পরিবর্তন" [ref=e46] [cursor=pointer]:
+        - img [ref=e47]
+      - button "অ্যাপ ইনস্টল" [ref=e53] [cursor=pointer]
+      - button "Mejbaur Bahar Fagun" [ref=e54] [cursor=pointer]:
+        - img "Mejbaur Bahar Fagun" [ref=e55]
+      - button "মেনু খুলুন" [ref=e56] [cursor=pointer]:
+        - img [ref=e57]
+  - main [ref=e58]:
+    - generic [ref=e61]:
+      - generic [ref=e62]:
+        - generic [ref=e63]:
+          - button [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+          - generic [ref=e67]: লঞ্চ ও স্টিমার
+        - generic [ref=e68]:
+          - generic [ref=e70]:
+            - generic [ref=e71]:
+              - text: ✦ KoyJabo · launch
+              - heading "নদীপথে বাংলাদেশ ভ্রমণ" [level=1] [ref=e72]
+              - paragraph [ref=e73]:
+                - text: ৬০+ রুট · রাতের কেবিন সেবা · সদরঘাট থেকে সব দক্ষিণাঞ্চল
+                - link "Demographics" [ref=e74] [cursor=pointer]:
+                  - img [ref=e76]
+                  - text: Demographics
+              - generic [ref=e78]:
+                - generic [ref=e79]:
+                  - generic [ref=e80]: 60+
+                  - generic [ref=e81]: রুট
+                - generic [ref=e82]:
+                  - generic [ref=e83]: "14"
+                  - generic [ref=e84]: ঘাট
+                - generic [ref=e85]:
+                  - generic [ref=e86]: ৳300+
+                  - generic [ref=e87]: থেকে
+                - generic [ref=e88]:
+                  - generic [ref=e89]: 6–13h
+                  - generic [ref=e90]: সময়
+            - img [ref=e92]
+          - generic [ref=e123]:
+            - generic [ref=e125]:
+              - img [ref=e127]
+              - generic [ref=e130]:
+                - paragraph [ref=e131]: লঞ্চ বা অপারেটরের নাম দিয়ে খুঁজুন
+                - 'textbox "যেমন: সুন্দরবন-১২, পারাবত, বিআইডব্লিউটিএ..." [ref=e132]'
+            - generic [ref=e135]: অথবা · রুট দিয়ে খুঁজুন
+            - generic [ref=e137]:
+              - generic [ref=e138]:
+                - generic [ref=e139]:
+                  - img [ref=e141]
+                  - generic [ref=e144]: কোথা থেকে (ঘাট)
+                - combobox [ref=e145]:
+                  - option "সদরঘাট, ঢাকা" [selected]
+                  - option "বরিশাল ঘাট"
+                  - option "খুলনা ঘাট"
+                  - option "পটুয়াখালী ঘাট"
+                  - option "ভোলা ঘাট"
+                  - option "চাঁদপুর ঘাট"
+                  - option "নারায়ণগঞ্জ টার্মিনাল"
+                  - option "নরসিংদী ঘাট"
+                  - option "মাদারীপুর ঘাট"
+                  - option "শরীয়তপুর ঘাট"
+                  - option "হাতিয়া ঘাট"
+                  - option "সন্দ্বীপ ঘাট"
+                  - option "মনপুরা ঘাট"
+                  - option "পিরোজপুর ঘাট"
+                  - option "বরগুনা ঘাট"
+                  - option "ঝালকাঠি ঘাট"
+              - generic [ref=e146]:
+                - generic [ref=e147]:
+                  - img [ref=e149]
+                  - generic [ref=e152]: কোথায় (ঘাট)
+                - combobox [ref=e153]:
+                  - option "গন্তব্য বেছে নিন" [selected]
+                  - option "বরিশাল ঘাট"
+                  - option "খুলনা ঘাট"
+                  - option "পটুয়াখালী ঘাট"
+                  - option "ভোলা ঘাট"
+                  - option "চাঁদপুর ঘাট"
+                  - option "নারায়ণগঞ্জ টার্মিনাল"
+                  - option "নরসিংদী ঘাট"
+                  - option "মাদারীপুর ঘাট"
+                  - option "শরীয়তপুর ঘাট"
+                  - option "হাতিয়া ঘাট"
+                  - option "সন্দ্বীপ ঘাট"
+                  - option "মনপুরা ঘাট"
+                  - option "পিরোজপুর ঘাট"
+                  - option "বরগুনা ঘাট"
+                  - option "ঝালকাঠি ঘাট"
+            - button "লঞ্চ খুঁজুন" [ref=e154] [cursor=pointer]:
+              - img [ref=e155]
+              - text: লঞ্চ খুঁজুন
+          - generic [ref=e159]:
+            - heading "আজকের লঞ্চ · সদরঘাট" [level=2] [ref=e160]
+            - generic [ref=e161]:
+              - generic [ref=e162] [cursor=pointer]:
+                - generic [ref=e163]: ⛴
+                - generic [ref=e164]:
+                  - paragraph [ref=e166]: সুন্দরবন-১২
+                  - paragraph [ref=e167]: সদরঘাট, ঢাকা → বরিশাল ঘাট
+                  - paragraph [ref=e168]: 6:30 PM · 10h 30m
+                - generic [ref=e169]:
+                  - generic [ref=e170]:
+                    - paragraph [ref=e171]: ৳300
+                    - paragraph [ref=e172]: ডেক
+                  - img [ref=e173]
+              - generic [ref=e175] [cursor=pointer]:
+                - generic [ref=e176]: ⛴
+                - generic [ref=e177]:
+                  - paragraph [ref=e179]: পারাবত-১৮
+                  - paragraph [ref=e180]: সদরঘাট, ঢাকা → বরিশাল ঘাট
+                  - paragraph [ref=e181]: 7:00 PM · 11h
+                - generic [ref=e182]:
+                  - generic [ref=e183]:
+                    - paragraph [ref=e184]: ৳280
+                    - paragraph [ref=e185]: ডেক
+                  - img [ref=e186]
+              - generic [ref=e188] [cursor=pointer]:
+                - generic [ref=e189]: ⛴
+                - generic [ref=e190]:
+                  - generic [ref=e191]:
+                    - paragraph [ref=e192]: কীর্তনখোলা-১০
+                    - generic [ref=e193]: ★
+                  - paragraph [ref=e194]: সদরঘাট, ঢাকা → বরিশাল ঘাট
+                  - paragraph [ref=e195]: 7:30 PM · 11h
+                - generic [ref=e196]:
+                  - generic [ref=e197]:
+                    - paragraph [ref=e198]: ৳300
+                    - paragraph [ref=e199]: ডেক
+                  - img [ref=e200]
+              - generic [ref=e202] [cursor=pointer]:
+                - generic [ref=e203]: ⛴
+                - generic [ref=e204]:
+                  - paragraph [ref=e206]: এমভি অ্যাডভেঞ্চার-৯
+                  - paragraph [ref=e207]: সদরঘাট, ঢাকা → বরিশাল ঘাট
+                  - paragraph [ref=e208]: 8:00 PM · 11h
+                - generic [ref=e209]:
+                  - generic [ref=e210]:
+                    - paragraph [ref=e211]: ৳250
+                    - paragraph [ref=e212]: ডেক
+                  - img [ref=e213]
+          - generic [ref=e215]:
+            - heading "কেবিনের ধরন ও ভাড়া" [level=2] [ref=e216]
+            - generic [ref=e217]:
+              - generic [ref=e218]:
+                - generic [ref=e219]: 🛏️
+                - generic [ref=e220]:
+                  - paragraph [ref=e221]:
+                    - text: ভিআইপি স্যুট
+                    - link "Maritime Transport" [ref=e222] [cursor=pointer]:
+                      - img [ref=e224]
+                      - text: Maritime Transport
+                  - paragraph [ref=e226]: প্রাইভেট এসি রুম, সংযুক্ত বাথরুম, টিভি
+                  - paragraph [ref=e227]: ৳3,500–৳5,500
+              - generic [ref=e228]:
+                - generic [ref=e229]: 🛋️
+                - generic [ref=e230]:
+                  - paragraph [ref=e231]: এসি কেবিন
+                  - paragraph [ref=e232]: প্রাইভেট এসি রুম, আরামদায়ক বার্থ
+                  - paragraph [ref=e233]: ৳2,000–৳3,500
+              - generic [ref=e234]:
+                - generic [ref=e235]: 🪑
+                - generic [ref=e236]:
+                  - paragraph [ref=e237]: সিঙ্গেল কেবিন
+                  - paragraph [ref=e238]: একক নন-এসি কেবিন ও বার্থ
+                  - paragraph [ref=e239]: ৳1,200–৳2,000
+              - generic [ref=e240]:
+                - generic [ref=e241]: 💺
+                - generic [ref=e242]:
+                  - paragraph [ref=e243]: ডেক সিট
+                  - paragraph [ref=e244]: ডেকে নির্ধারিত আসন, খোলা বাতাস
+                  - paragraph [ref=e245]: ৳400–৳550
+              - generic [ref=e246]:
+                - generic [ref=e247]: 🛖
+                - generic [ref=e248]:
+                  - paragraph [ref=e249]: ডেক ফ্লোর
+                  - paragraph [ref=e250]: খোলা ডেক ফ্লোর, সাশ্রয়ী বিকল্প
+                  - paragraph [ref=e251]: ৳250–৳350
+          - generic [ref=e252]:
+            - generic [ref=e253]:
+              - img [ref=e254]
+              - heading "নিরাপত্তা টিপস" [level=2] [ref=e256]
+            - generic [ref=e257]:
+              - generic [ref=e258]: •
+              - paragraph [ref=e259]: খোলা ডেকে সবসময় লাইফ জ্যাকেট পরুন — লাইফবোট স্টেশনে বিনামূল্যে পাওয়া যায়
+            - generic [ref=e260]:
+              - generic [ref=e261]: •
+              - paragraph [ref=e262]: রাতের যাত্রার আগে আবহাওয়া দেখুন — কালবৈশাখী মৌসুমে (মার্চ–মে) ভ্রমণ এড়িয়ে চলুন
+            - generic [ref=e263]:
+              - generic [ref=e264]: •
+              - paragraph [ref=e265]: টিকিট, জাতীয় পরিচয়পত্র ও জরুরি যোগাযোগ নম্বর সবসময় কাছে রাখুন
+            - generic [ref=e266]:
+              - generic [ref=e267]: •
+              - paragraph [ref=e268]: "বিআইডব্লিউটিএ জরুরি হটলাইন: ১৬১১৩ — ২৪/৭ পাওয়া যায়"
+          - generic [ref=e270]:
+            - generic [ref=e272]:
+              - paragraph [ref=e273]: ✦ KoyJabo
+              - heading "কই যাবো কীভাবে সাহায্য করে" [level=2] [ref=e274]
+            - generic [ref=e275]:
+              - generic [ref=e276]:
+                - generic [ref=e277]:
+                  - generic [ref=e278]:
+                    - generic [ref=e279]: "1"
+                    - generic [ref=e280]: 😕
+                  - paragraph [ref=e281]: বাসস্ট্যান্ডে — কোন বাসে উঠবো?
+                - img [ref=e283]
+              - generic [ref=e285]:
+                - generic [ref=e286]:
+                  - generic [ref=e287]:
+                    - generic [ref=e288]: "2"
+                    - generic [ref=e289]: 📱
+                  - paragraph [ref=e290]: KoyJabo খুলুন, গন্তব্য লিখুন
+                - img [ref=e292]
+              - generic [ref=e294]:
+                - generic [ref=e295]:
+                  - generic [ref=e296]:
+                    - generic [ref=e297]: "3"
+                    - generic [ref=e298]: ✅
+                  - paragraph [ref=e299]:
+                    - text: সঠিক বাস, ভাড়া ও সময় — সাথে সাথে
+                    - link "Long Distance Bus & Rail" [ref=e300] [cursor=pointer]:
+                      - img [ref=e302]
+                      - text: Long Distance Bus & Rail
+                - img [ref=e305]
+              - generic [ref=e308]:
+                - generic [ref=e309]:
+                  - generic [ref=e310]: "4"
+                  - generic [ref=e311]: 🎉
+                - paragraph [ref=e312]: নিশ্চিন্তে সঠিক বাসে উঠে যাত্রা!
+            - paragraph [ref=e314]: ২,৪০০+ রুট · ৬৪ জেলা · অফলাইনেও চলে · সম্পূর্ণ ফ্রি
+      - generic [ref=e317]:
+        - generic [ref=e318]:
+          - generic [ref=e319]:
+            - img "KoyJabo" [ref=e320]
+            - generic [ref=e321]: কইযাবো
+          - paragraph [ref=e322]: বাংলাদেশের স্মার্ট ট্রান্সপোর্ট গাইড
+          - generic [ref=e323]:
+            - link "LinkedIn" [ref=e324] [cursor=pointer]:
+              - /url: https://linkedin.com/company/koy-jabo/
+              - img [ref=e325]
+            - link "Facebook" [ref=e327] [cursor=pointer]:
+              - /url: https://www.facebook.com/koyjabo/
+              - img [ref=e328]
+        - navigation [ref=e330]:
+          - generic [ref=e331]:
+            - link "হোম" [ref=e332] [cursor=pointer]:
+              - /url: /
+            - link "পরিচয়" [ref=e333] [cursor=pointer]:
+              - /url: /about
+            - link "প্রশ্ন ও উত্তর" [ref=e334] [cursor=pointer]:
+              - /url: /faq
+          - generic [ref=e335]:
+            - link "অ্যাপ ইনস্টল" [ref=e336] [cursor=pointer]:
+              - /url: /install
+            - link "যোগাযোগ" [ref=e337] [cursor=pointer]:
+              - /url: /contact
+            - link "গোপনীয়তা নীতি" [ref=e338] [cursor=pointer]:
+              - /url: /privacy
+          - generic [ref=e339]:
+            - link "শর্তাবলী" [ref=e340] [cursor=pointer]:
+              - /url: /terms
+            - link "রিলিজ নোট" [ref=e341] [cursor=pointer]:
+              - /url: /release-notes
+            - link "আন্তঃশহর যাত্রা" [ref=e342] [cursor=pointer]:
+              - /url: /intercity-hub
+        - generic [ref=e343]:
+          - paragraph [ref=e344]:
+            - text: ঢাকায় তৈরি
+            - img "love" [ref=e345]: ❤️
+            - text: বাংলাদেশের জন্য
+          - paragraph [ref=e346]: © 2024–2026 KoyJabo

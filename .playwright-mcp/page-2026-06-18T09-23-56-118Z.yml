@@ -1,0 +1,290 @@
+- generic [ref=e2]:
+  - generic [ref=e4]:
+    - button "KoyJabo Home" [ref=e5] [cursor=pointer]:
+      - generic [ref=e8]: ক
+      - generic [ref=e9]: KoyJabo
+    - navigation [ref=e10]:
+      - button "🏠 Home" [ref=e11] [cursor=pointer]:
+        - generic [ref=e12]: 🏠
+        - text: Home
+      - button "🚌 Local Bus" [ref=e13] [cursor=pointer]:
+        - generic [ref=e14]: 🚌
+        - text: Local Bus
+      - button "🚇 Metro" [ref=e15] [cursor=pointer]:
+        - generic [ref=e16]: 🚇
+        - text: Metro
+      - button "🚆 Train" [ref=e17] [cursor=pointer]:
+        - generic [ref=e18]: 🚆
+        - text: Train
+      - button "🧭 Intercity" [ref=e19] [cursor=pointer]:
+        - generic [ref=e20]: 🧭
+        - text: Intercity
+      - button "⛴️ Launch" [ref=e21] [cursor=pointer]:
+        - generic [ref=e22]: ⛴️
+        - text: Launch
+      - button "✈️ Flights" [ref=e23] [cursor=pointer]:
+        - generic [ref=e24]: ✈️
+        - text: Flights
+    - generic [ref=e25]:
+      - button "Menu" [ref=e26] [cursor=pointer]:
+        - img [ref=e27]
+      - button "EN" [ref=e28] [cursor=pointer]:
+        - img [ref=e29]
+        - generic [ref=e33]: EN
+      - button "Toggle theme" [ref=e34] [cursor=pointer]:
+        - img [ref=e35]
+      - button "Install app" [ref=e41] [cursor=pointer]:
+        - img [ref=e42]
+  - generic [ref=e895]:
+    - main [ref=e897]:
+      - generic [ref=e898]:
+        - generic [ref=e899]:
+          - generic [ref=e900]:
+            - generic [ref=e902]: MF
+            - generic [ref=e903]:
+              - generic [ref=e904]: Mejbaur Fagun
+              - generic [ref=e905]: mejbaur@markopolo.ai
+            - button "Edit" [ref=e906] [cursor=pointer]
+          - generic [ref=e907]:
+            - generic [ref=e908]:
+              - generic [ref=e909]: "142"
+              - generic [ref=e910]: Trips
+            - generic [ref=e911]:
+              - generic [ref=e912]: "28"
+              - generic [ref=e913]: Bus Routes
+            - generic [ref=e914]:
+              - generic [ref=e915]: "14"
+              - generic [ref=e916]: Metro Rides
+            - generic [ref=e917]:
+              - generic [ref=e918]: 48 kg
+              - generic [ref=e919]: CO₂ Saved
+        - generic [ref=e920]:
+          - generic [ref=e921]: Quick Actions
+          - generic [ref=e922]:
+            - button "❤ Favorites" [ref=e923] [cursor=pointer]:
+              - generic [ref=e924]: ❤
+              - generic [ref=e925]: Favorites
+            - button "📊 History" [ref=e926] [cursor=pointer]:
+              - generic [ref=e927]: 📊
+              - generic [ref=e928]: History
+            - button "⚙ Settings" [ref=e929] [cursor=pointer]:
+              - generic [ref=e930]: ⚙
+              - generic [ref=e931]: Settings
+            - button "🚪 Sign out" [ref=e932] [cursor=pointer]:
+              - generic [ref=e933]: 🚪
+              - generic [ref=e934]: Sign out
+        - generic [ref=e935]:
+          - generic [ref=e936]: Recent Trips
+          - generic [ref=e937]:
+            - generic [ref=e938]:
+              - generic [ref=e939]: 🚌
+              - generic [ref=e940]:
+                - generic [ref=e941]: Banani → Karwan Bazar
+                - generic [ref=e942]: Yesterday
+              - generic [ref=e943]: ৳40
+            - generic [ref=e944]:
+              - generic [ref=e945]: 🚌
+              - generic [ref=e946]:
+                - generic [ref=e947]: Gulshan → Motijheel
+                - generic [ref=e948]: 2 days ago
+              - generic [ref=e949]: ৳60
+            - generic [ref=e950]:
+              - generic [ref=e951]: 🚌
+              - generic [ref=e952]:
+                - generic [ref=e953]: Airport → Farmgate
+                - generic [ref=e954]: Last week
+              - generic [ref=e955]: ৳75
+        - generic [ref=e956]:
+          - generic [ref=e957]: Saved Routes
+          - generic [ref=e958]:
+            - generic [ref=e959]:
+              - generic [ref=e960]: Bus
+              - generic [ref=e961]:
+                - generic [ref=e962]: Green Line
+                - generic [ref=e963]: Gulshan → Motijheel
+              - generic [ref=e964]: ♥
+            - generic [ref=e965]:
+              - generic [ref=e966]: Metro
+              - generic [ref=e967]:
+                - generic [ref=e968]: Metro Line 6
+                - generic [ref=e969]: Uttara → Motijheel
+              - generic [ref=e970]: ♥
+            - generic [ref=e971]:
+              - generic [ref=e972]: Train
+              - generic [ref=e973]:
+                - generic [ref=e974]: Cox's Bazar Express
+                - generic [ref=e975]: Dhaka → Cox's Bazar
+              - generic [ref=e976]: ♥
+            - generic [ref=e977]:
+              - generic [ref=e978]: Launch
+              - generic [ref=e979]:
+                - generic [ref=e980]: Sundarban-12
+                - generic [ref=e981]: Sadarghat → Barisal
+              - generic [ref=e982]: ♥
+        - generic [ref=e983]:
+          - generic [ref=e984]: Account
+          - generic [ref=e985]:
+            - button "👤 Edit profile ›" [ref=e986] [cursor=pointer]:
+              - generic [ref=e987]: 👤
+              - generic [ref=e988]: Edit profile
+              - generic [ref=e989]: ›
+            - button "🔐 Password & security ›" [ref=e990] [cursor=pointer]:
+              - generic [ref=e991]: 🔐
+              - generic [ref=e992]: Password & security
+              - generic [ref=e993]: ›
+            - button "📱 Devices ›" [ref=e994] [cursor=pointer]:
+              - generic [ref=e995]: 📱
+              - generic [ref=e996]: Devices
+              - generic [ref=e997]: ›
+            - 'button "🔔 Notifications: On ›" [ref=e998] [cursor=pointer]':
+              - generic [ref=e999]: 🔔
+              - generic [ref=e1000]: "Notifications: On"
+              - generic [ref=e1001]: ›
+            - 'button "🌐 Language: English ›" [ref=e1002] [cursor=pointer]':
+              - generic [ref=e1003]: 🌐
+              - generic [ref=e1004]: "Language: English"
+              - generic [ref=e1005]: ›
+            - 'button "🎨 Theme: Dark ›" [ref=e1006] [cursor=pointer]':
+              - generic [ref=e1007]: 🎨
+              - generic [ref=e1008]: "Theme: Dark"
+              - generic [ref=e1009]: ›
+            - button "🚪 Sign out" [ref=e1010] [cursor=pointer]:
+              - generic [ref=e1011]: 🚪
+              - generic [ref=e1012]: Sign out
+        - generic [ref=e1014]:
+          - generic [ref=e1015]: Sponsored
+          - generic [ref=e1016]: Google AdSense · 728×90
+          - generic [ref=e1017]: reserved
+    - contentinfo [ref=e1018]:
+      - generic [ref=e1019]:
+        - generic [ref=e1020]:
+          - generic [ref=e1021]:
+            - button "ক কই যাবো" [ref=e1022] [cursor=pointer]:
+              - generic [ref=e1025]: ক
+              - generic [ref=e1026]: কই যাবো
+            - paragraph [ref=e1027]: Smart transit guide for Dhaka commuters
+            - generic [ref=e1028]:
+              - generic "Facebook" [ref=e1029] [cursor=pointer]: f
+              - generic "LinkedIn" [ref=e1030] [cursor=pointer]: in
+              - generic "X (Twitter)" [ref=e1031] [cursor=pointer]: X
+              - generic "YouTube" [ref=e1032] [cursor=pointer]: ▶
+              - generic "Other" [ref=e1033] [cursor=pointer]: ✦
+          - generic [ref=e1034]:
+            - generic [ref=e1035]: Explore
+            - button "Local Bus" [ref=e1036] [cursor=pointer]
+            - button "Metro" [ref=e1037] [cursor=pointer]
+            - button "Train" [ref=e1038] [cursor=pointer]
+            - button "Flights" [ref=e1039] [cursor=pointer]
+            - button "Launch" [ref=e1040] [cursor=pointer]
+            - button "Fare" [ref=e1041] [cursor=pointer]
+          - generic [ref=e1042]:
+            - generic [ref=e1043]: Account
+            - button "Profile" [ref=e1044] [cursor=pointer]
+            - button "Favorites" [ref=e1045] [cursor=pointer]
+            - button "History" [ref=e1046] [cursor=pointer]
+            - button "Settings" [ref=e1047] [cursor=pointer]
+            - button "Sign In" [ref=e1048] [cursor=pointer]
+          - generic [ref=e1049]:
+            - generic [ref=e1050]: Company
+            - button "Why KoyJabo" [ref=e1051] [cursor=pointer]
+            - button "About" [ref=e1052] [cursor=pointer]
+            - button "Blog" [ref=e1053] [cursor=pointer]
+            - button "QA" [ref=e1054] [cursor=pointer]
+            - button "Contact" [ref=e1055] [cursor=pointer]
+          - generic [ref=e1056]:
+            - generic [ref=e1057]: Legal
+            - button "Privacy" [ref=e1058] [cursor=pointer]
+            - button "Terms" [ref=e1059] [cursor=pointer]
+            - button "Release" [ref=e1060] [cursor=pointer]
+        - generic [ref=e1061]:
+          - generic [ref=e1062]: © 2026 KoyJabo · All rights reserved
+          - generic [ref=e1063]: All systems operational
+  - generic [ref=e716]:
+    - generic: AI Assistant · ask me
+    - button "AI Assistant" [ref=e718] [cursor=pointer]:
+      - img [ref=e719]
+  - generic [ref=e745]:
+    - generic [ref=e746]:
+      - generic [ref=e747]:
+        - generic [ref=e750]: ক
+        - generic [ref=e751]: KoyJabo
+      - button "Close menu" [ref=e752] [cursor=pointer]: ×
+    - generic [ref=e753]:
+      - generic [ref=e754]:
+        - generic [ref=e755]: Explore
+        - button "Home" [ref=e756] [cursor=pointer]:
+          - generic [ref=e758]: Home
+          - img [ref=e760]
+        - button "Local Bus" [ref=e762] [cursor=pointer]:
+          - generic [ref=e764]: Local Bus
+          - img [ref=e766]
+        - button "Metro" [ref=e768] [cursor=pointer]:
+          - generic [ref=e770]: Metro
+          - img [ref=e772]
+        - button "Train" [ref=e774] [cursor=pointer]:
+          - generic [ref=e776]: Train
+          - img [ref=e778]
+        - button "Intercity" [ref=e780] [cursor=pointer]:
+          - generic [ref=e782]: Intercity
+          - img [ref=e784]
+        - button "Launch" [ref=e786] [cursor=pointer]:
+          - generic [ref=e788]: Launch
+          - img [ref=e790]
+        - button "Flights" [ref=e792] [cursor=pointer]:
+          - generic [ref=e794]: Flights
+          - img [ref=e796]
+        - button "Fare" [ref=e798] [cursor=pointer]:
+          - generic [ref=e800]: Fare
+          - img [ref=e802]
+        - button "AI Assistant" [ref=e804] [cursor=pointer]:
+          - generic [ref=e806]: AI Assistant
+          - img [ref=e808]
+      - generic [ref=e810]:
+        - generic [ref=e811]: Account
+        - button "Profile" [ref=e812] [cursor=pointer]:
+          - generic [ref=e814]: Profile
+          - img [ref=e816]
+        - button "Favorites" [ref=e818] [cursor=pointer]:
+          - generic [ref=e820]: Favorites
+          - img [ref=e822]
+        - button "History" [ref=e824] [cursor=pointer]:
+          - generic [ref=e826]: History
+          - img [ref=e828]
+        - button "Settings" [ref=e830] [cursor=pointer]:
+          - generic [ref=e832]: Settings
+          - img [ref=e834]
+        - button "Sign In" [ref=e836] [cursor=pointer]:
+          - generic [ref=e838]: Sign In
+          - img [ref=e840]
+      - generic [ref=e842]:
+        - generic [ref=e843]: Company
+        - button "Why KoyJabo" [ref=e844] [cursor=pointer]:
+          - generic [ref=e846]: Why KoyJabo
+          - img [ref=e848]
+        - button "About" [ref=e850] [cursor=pointer]:
+          - generic [ref=e852]: About
+          - img [ref=e854]
+        - button "Blog" [ref=e856] [cursor=pointer]:
+          - generic [ref=e858]: Blog
+          - img [ref=e860]
+        - button "QA" [ref=e862] [cursor=pointer]:
+          - generic [ref=e864]: QA
+          - img [ref=e866]
+        - button "Contact" [ref=e868] [cursor=pointer]:
+          - generic [ref=e870]: Contact
+          - img [ref=e872]
+        - button "Release" [ref=e874] [cursor=pointer]:
+          - generic [ref=e876]: Release
+          - img [ref=e878]
+      - generic [ref=e880]:
+        - generic [ref=e881]: Legal
+        - button "Privacy" [ref=e882] [cursor=pointer]:
+          - generic [ref=e884]: Privacy
+          - img [ref=e886]
+        - button "Terms" [ref=e888] [cursor=pointer]:
+          - generic [ref=e890]: Terms
+          - img [ref=e892]
+  - generic [ref=e727]:
+    - generic [ref=e728]: Sponsored
+    - generic [ref=e729]: Google AdSense · 320 × 50
+    - button "✕" [ref=e730] [cursor=pointer]

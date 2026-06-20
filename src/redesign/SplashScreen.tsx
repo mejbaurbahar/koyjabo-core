@@ -26,10 +26,11 @@ export function SplashScreen() {
             width: 68, height: 68, borderRadius: 18,
             background: '#05060b',
             boxShadow: '0 14px 40px -10px rgba(0,200,230,0.65), inset 0 0 0 1px rgba(255,255,255,0.12)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative',
+            overflow: 'hidden',
             animation: 'kjFloatY 2.2s ease-in-out infinite',
           }}>
-            <img src="/logo.png" alt="KoyJabo" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+            <img src="/logo.png" alt="KoyJabo" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}/>
           </div>
         </div>
         <div style={{

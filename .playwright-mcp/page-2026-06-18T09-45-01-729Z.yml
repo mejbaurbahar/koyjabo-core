@@ -1,0 +1,23 @@
+- generic [active] [ref=e1]:
+  - status [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e9]: ক
+      - generic [ref=e10]: কই যাবো
+      - generic [ref=e11]: KOYJABO
+      - generic [ref=e12]: আপনার রুট লোড হচ্ছে…
+  - generic [ref=e15]:
+    - generic [ref=e16]: "[plugin:vite:import-analysis] Failed to resolve import \"../../data/intercityData\" from \"src/redesign/screens/IntercityPage.tsx\". Does the file exist?"
+    - generic [ref=e17]: /Users/mejbaurbaharfagun/Desktop/Personal/koyjabo-core/src/redesign/screens/IntercityPage.tsx:6:52
+    - generic [ref=e18]: "6 | import { PageShell } from \"./PageShell\"; 7 | import { Plane3D } from \"../components/Vehicles3D\"; 8 | import { INTERCITY_BUS_ROUTES, BUS_OPERATORS } from \"../../data/intercityData\"; | ^ 9 | const OPERATORS = [ 10 | {"
+    - generic [ref=e19]: at TransformPluginContext._formatLog (file:///Users/mejbaurbaharfagun/Desktop/Personal/koyjabo-core/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:42528:41) at TransformPluginContext.error (file:///Users/mejbaurbaharfagun/Desktop/Personal/koyjabo-core/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:42525:16) at normalizeUrl (file:///Users/mejbaurbaharfagun/Desktop/Personal/koyjabo-core/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:40504:23) at process.processTicksAndRejections (node:internal/process/task_queues:104:5) at async file:///Users/mejbaurbaharfagun/Desktop/Personal/koyjabo-core/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:40623:37 at async Promise.all (index 6) at async TransformPluginContext.transform (file:///Users/mejbaurbaharfagun/Desktop/Personal/koyjabo-core/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:40550:7) at async EnvironmentPluginContainer.transform (file:///Users/mejbaurbaharfagun/Desktop/Personal/koyjabo-core/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:42323:18) at async loadAndTransform (file:///Users/mejbaurbaharfagun/Desktop/Personal/koyjabo-core/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:35739:27) at async viteTransformMiddleware (file:///Users/mejbaurbaharfagun/Desktop/Personal/koyjabo-core/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:37254:24
+    - generic [ref=e20]:
+      - text: Click outside, press Esc key, or fix the code to dismiss.
+      - text: You can also disable this overlay by setting
+      - code [ref=e21]: server.hmr.overlay
+      - text: to
+      - code [ref=e22]: "false"
+      - text: in
+      - code [ref=e23]: vite.config.ts
+      - text: .

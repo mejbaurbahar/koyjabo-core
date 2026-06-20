@@ -1,0 +1,376 @@
+- generic [ref=e1]:
+  - generic [ref=e13]:
+    - generic [ref=e30]:
+      - button "KoyJabo Home" [ref=e31] [cursor=pointer]:
+        - generic [ref=e34]: ক
+        - generic [ref=e35]: KoyJabo
+      - navigation [ref=e36]:
+        - button "🏠 Home" [ref=e37] [cursor=pointer]:
+          - generic [ref=e38]: 🏠
+          - text: Home
+        - button "🚌 Local Bus" [ref=e39] [cursor=pointer]:
+          - generic [ref=e40]: 🚌
+          - text: Local Bus
+        - button "🚇 Metro" [ref=e41] [cursor=pointer]:
+          - generic [ref=e42]: 🚇
+          - text: Metro
+        - button "🚆 Train" [ref=e43] [cursor=pointer]:
+          - generic [ref=e44]: 🚆
+          - text: Train
+        - button "🧭 Intercity" [ref=e45] [cursor=pointer]:
+          - generic [ref=e46]: 🧭
+          - text: Intercity
+        - button "⛴️ Launch" [ref=e47] [cursor=pointer]:
+          - generic [ref=e48]: ⛴️
+          - text: Launch
+        - button "✈️ Flights" [ref=e49] [cursor=pointer]:
+          - generic [ref=e50]: ✈️
+          - text: Flights
+      - generic [ref=e51]:
+        - button "Menu" [ref=e52] [cursor=pointer]:
+          - img [ref=e53]
+        - button "EN" [ref=e54] [cursor=pointer]:
+          - img [ref=e55]
+          - generic [ref=e59]: EN
+        - button "Toggle theme" [ref=e60] [cursor=pointer]:
+          - img [ref=e61]
+        - button "Install app" [ref=e67] [cursor=pointer]:
+          - img [ref=e68]
+    - generic [ref=e1769]:
+      - main [ref=e1771]:
+        - generic [ref=e1772]:
+          - generic [ref=e1776]:
+            - generic [ref=e1777]:
+              - generic [ref=e1778]: ✦ KoyJabo · train
+              - heading "Dhaka Metro · MRT-6 live" [level=1] [ref=e1779]
+              - paragraph [ref=e1780]: 17 stations from Uttara to Kamalapur · trains every 8 min · 45 min end-to-end.
+              - generic [ref=e1781]:
+                - generic [ref=e1782]:
+                  - generic [ref=e1783]: "17"
+                  - generic [ref=e1784]: Stations
+                - generic [ref=e1785]:
+                  - generic [ref=e1786]: 8 min
+                  - generic [ref=e1787]: Frequency
+                - generic [ref=e1788]:
+                  - generic [ref=e1789]: ৳ 20-100
+                  - generic [ref=e1790]: Fare range
+                - generic [ref=e1791]:
+                  - generic [ref=e1792]: 7am–9pm
+                  - generic [ref=e1793]: Operating
+            - img "3D metro train" [ref=e1795]:
+              - generic [ref=e1821]: M6
+          - generic [ref=e1882]:
+            - generic [ref=e1883]:
+              - generic [ref=e1884]:
+                - generic [ref=e1886]: Next train · Farmgate
+                - generic [ref=e1887]: 2:15
+                - generic [ref=e1888]: Uttara North → Motijheel
+                - generic [ref=e1889]:
+                  - generic [ref=e1890]:
+                    - generic [ref=e1891]: After
+                    - generic [ref=e1892]: 10:08
+                  - generic [ref=e1893]:
+                    - generic [ref=e1894]: Then
+                    - generic [ref=e1895]: 10:16
+              - generic [ref=e1896]:
+                - button "Single journey token ৳ 20 – 100" [ref=e1897] [cursor=pointer]:
+                  - generic [ref=e1898]:
+                    - generic [ref=e1899]: Single journey token
+                    - generic [ref=e1900]: ৳ 20 – 100
+                  - img [ref=e1901]
+                - button "MRT Rapid Pass 10% discount" [ref=e1903] [cursor=pointer]:
+                  - generic [ref=e1904]:
+                    - generic [ref=e1905]: MRT Rapid Pass
+                    - generic [ref=e1906]: 10% discount
+                  - img [ref=e1907]
+            - generic [ref=e1909]:
+              - generic [ref=e1910]: Station map · MRT-6
+              - generic [ref=e1911]:
+                - generic [ref=e1912]:
+                  - generic [ref=e1915]: Uttara North
+                  - generic [ref=e1916]: ৳0
+                - generic [ref=e1917]:
+                  - generic [ref=e1920]: Uttara Center
+                  - generic [ref=e1921]: ৳20
+                - generic [ref=e1922]:
+                  - generic [ref=e1925]: Uttara South
+                  - generic [ref=e1926]: ৳20
+                - generic [ref=e1927]:
+                  - generic [ref=e1930]: Pallabi
+                  - generic [ref=e1931]: ৳30
+                - generic [ref=e1932]:
+                  - generic [ref=e1935]: Mirpur 11
+                  - generic [ref=e1936]: ৳40
+                - generic [ref=e1937]:
+                  - generic [ref=e1940]: Mirpur 10
+                  - generic [ref=e1941]: ৳50
+                - generic [ref=e1942]:
+                  - generic [ref=e1945]: Kazipara
+                  - generic [ref=e1946]: ৳60
+                - generic [ref=e1947]:
+                  - generic [ref=e1950]: Shewrapara
+                  - generic [ref=e1951]: ৳60
+                - generic [ref=e1952]:
+                  - generic [ref=e1955]: Agargaon
+                  - generic [ref=e1956]: ৳70
+                - generic [ref=e1957]:
+                  - generic [ref=e1960]: Bijoy Sarani
+                  - generic [ref=e1961]: ৳80
+                - generic [ref=e1962]:
+                  - generic [ref=e1965]: Farmgate
+                  - generic [ref=e1966]: ৳80
+                - generic [ref=e1967]:
+                  - generic [ref=e1970]: Karwan Bazar
+                  - generic [ref=e1971]: ৳90
+                - generic [ref=e1972]:
+                  - generic [ref=e1975]: Shahbagh
+                  - generic [ref=e1976]: ৳90
+                - generic [ref=e1977]:
+                  - generic [ref=e1980]: DU
+                  - generic [ref=e1981]: ৳90
+                - generic [ref=e1982]:
+                  - generic [ref=e1985]: Secretariat
+                  - generic [ref=e1986]: ৳100
+                - generic [ref=e1987]:
+                  - generic [ref=e1990]: Motijheel
+                  - generic [ref=e1991]: ৳100
+                - generic [ref=e1992]:
+                  - generic [ref=e1994]: Kamalapur
+                  - generic [ref=e1995]: ৳100
+            - generic [ref=e1996]:
+              - generic [ref=e1997]: Fare Calculator 🎫
+              - generic [ref=e1998]:
+                - generic [ref=e1999]:
+                  - generic [ref=e2000]: 🚇
+                  - generic [ref=e2001]:
+                    - generic [ref=e2002]: From station
+                    - textbox "Uttara North" [active] [ref=e2003]
+                - generic [ref=e2004]:
+                  - generic [ref=e2005]: 📍
+                  - generic [ref=e2006]:
+                    - generic [ref=e2007]: To station
+                    - textbox "Motijheel" [ref=e2008]
+                - generic [ref=e2009]: Select 2 stations
+            - generic [ref=e2010]:
+              - generic [ref=e2011]:
+                - generic [ref=e2012]: ⏰
+                - generic [ref=e2013]: Operating
+                - generic [ref=e2014]: 7:10 AM – 9:40 PM
+              - generic [ref=e2015]:
+                - generic [ref=e2016]: 🗓
+                - generic [ref=e2017]: Off day
+                - generic [ref=e2018]: Fri morning
+              - generic [ref=e2019]:
+                - generic [ref=e2020]: 🎫
+                - generic [ref=e2021]: Fare
+                - generic [ref=e2022]: ৳ 20 – 100
+              - generic [ref=e2023]:
+                - generic [ref=e2024]: ⚡
+                - generic [ref=e2025]: Top speed
+                - generic [ref=e2026]: 100 km/h
+            - generic [ref=e2027]:
+              - generic [ref=e2028]:
+                - generic [ref=e2029]: Sponsored
+                - generic [ref=e2030]: Google AdSense
+              - insertion [ref=e2032]:
+                - iframe [ref=e2034]:
+                  
+      - contentinfo [ref=e2035]:
+        - generic [ref=e2036]:
+          - generic [ref=e2037]:
+            - generic [ref=e2038]:
+              - button "ক কই যাবো" [ref=e2039] [cursor=pointer]:
+                - generic [ref=e2042]: ক
+                - generic [ref=e2043]: কই যাবো
+              - paragraph [ref=e2044]: Smart transit guide for Dhaka commuters
+              - generic [ref=e2045]:
+                - generic "Facebook" [ref=e2046] [cursor=pointer]: f
+                - generic "LinkedIn" [ref=e2047] [cursor=pointer]: in
+                - generic "X (Twitter)" [ref=e2048] [cursor=pointer]: X
+                - generic "YouTube" [ref=e2049] [cursor=pointer]: ▶
+                - generic "Other" [ref=e2050] [cursor=pointer]: ✦
+            - generic [ref=e2051]:
+              - generic [ref=e2052]: Explore
+              - button "Local Bus" [ref=e2053] [cursor=pointer]
+              - button "Metro" [ref=e2054] [cursor=pointer]
+              - button "Train" [ref=e2055] [cursor=pointer]
+              - button "Flights" [ref=e2056] [cursor=pointer]
+              - button "Launch" [ref=e2057] [cursor=pointer]
+              - button "Fare" [ref=e2058] [cursor=pointer]
+            - generic [ref=e2059]:
+              - generic [ref=e2060]: Account
+              - button "Profile" [ref=e2061] [cursor=pointer]
+              - button "Favorites" [ref=e2062] [cursor=pointer]
+              - button "History" [ref=e2063] [cursor=pointer]
+              - button "Settings" [ref=e2064] [cursor=pointer]
+              - button "Sign In" [ref=e2065] [cursor=pointer]
+            - generic [ref=e2066]:
+              - generic [ref=e2067]: Company
+              - button "Why KoyJabo" [ref=e2068] [cursor=pointer]
+              - button "About" [ref=e2069] [cursor=pointer]
+              - button "Blog" [ref=e2070] [cursor=pointer]
+              - button "QA" [ref=e2071] [cursor=pointer]
+              - button "Contact" [ref=e2072] [cursor=pointer]
+            - generic [ref=e2073]:
+              - generic [ref=e2074]: Legal
+              - button "Privacy" [ref=e2075] [cursor=pointer]
+              - button "Terms" [ref=e2076] [cursor=pointer]
+              - button "Release" [ref=e2077] [cursor=pointer]
+          - generic [ref=e2078]:
+            - generic [ref=e2079]: © 2026 KoyJabo · All rights reserved
+            - generic [ref=e2080]: All systems operational
+    - generic [ref=e806]:
+      - generic: AI Assistant · ask me
+      - button "AI Assistant" [ref=e808] [cursor=pointer]:
+        - img [ref=e809]
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic: ক
+            - generic: KoyJabo
+          - button "Close menu": ×
+        - generic:
+          - generic:
+            - generic: Explore
+            - button "Home":
+              - generic: Home
+              - generic:
+                - img
+            - button "Local Bus":
+              - generic: Local Bus
+              - generic:
+                - img
+            - button "Metro":
+              - generic: Metro
+              - generic:
+                - img
+            - button "Train":
+              - generic: Train
+              - generic:
+                - img
+            - button "Intercity":
+              - generic: Intercity
+              - generic:
+                - img
+            - button "Launch":
+              - generic: Launch
+              - generic:
+                - img
+            - button "Flights":
+              - generic: Flights
+              - generic:
+                - img
+            - button "Fare":
+              - generic: Fare
+              - generic:
+                - img
+            - button "AI Assistant":
+              - generic: AI Assistant
+              - generic:
+                - img
+          - generic:
+            - generic: Account
+            - button "Profile":
+              - generic: Profile
+              - generic:
+                - img
+            - button "Favorites":
+              - generic: Favorites
+              - generic:
+                - img
+            - button "History":
+              - generic: History
+              - generic:
+                - img
+            - button "Settings":
+              - generic: Settings
+              - generic:
+                - img
+            - button "Sign In":
+              - generic: Sign In
+              - generic:
+                - img
+          - generic:
+            - generic: Company
+            - button "Why KoyJabo":
+              - generic: Why KoyJabo
+              - generic:
+                - img
+            - button "About":
+              - generic: About
+              - generic:
+                - img
+            - button "Blog":
+              - generic: Blog
+              - generic:
+                - img
+            - button "QA":
+              - generic: QA
+              - generic:
+                - img
+            - button "Contact":
+              - generic: Contact
+              - generic:
+                - img
+            - button "Release":
+              - generic: Release
+              - generic:
+                - img
+          - generic:
+            - generic: Legal
+            - button "Privacy":
+              - generic: Privacy
+              - generic:
+                - img
+            - button "Terms":
+              - generic: Terms
+              - generic:
+                - img
+    - generic [ref=e817]:
+      - generic [ref=e818]: Sponsored
+      - generic [ref=e819]: Google AdSense · 320 × 50
+      - button "✕" [ref=e820] [cursor=pointer]
+  - generic [ref=e2082]:
+    - button "📍 Uttara North উত্তরা উত্তর · Start" [ref=e2083] [cursor=pointer]:
+      - generic [ref=e2084]: 📍
+      - generic [ref=e2085]:
+        - generic [ref=e2086]: Uttara North
+        - generic [ref=e2087]: উত্তরা উত্তর · Start
+    - button "📍 Uttara Center উত্তরা কেন্দ্র · ৳20" [ref=e2088] [cursor=pointer]:
+      - generic [ref=e2089]: 📍
+      - generic [ref=e2090]:
+        - generic [ref=e2091]: Uttara Center
+        - generic [ref=e2092]: উত্তরা কেন্দ্র · ৳20
+    - button "📍 Uttara South উত্তরা দক্ষিণ · ৳20" [ref=e2093] [cursor=pointer]:
+      - generic [ref=e2094]: 📍
+      - generic [ref=e2095]:
+        - generic [ref=e2096]: Uttara South
+        - generic [ref=e2097]: উত্তরা দক্ষিণ · ৳20
+    - button "📍 Pallabi পল্লবী · ৳30" [ref=e2098] [cursor=pointer]:
+      - generic [ref=e2099]: 📍
+      - generic [ref=e2100]:
+        - generic [ref=e2101]: Pallabi
+        - generic [ref=e2102]: পল্লবী · ৳30
+    - button "📍 Mirpur 11 মিরপুর ১১ · ৳40" [ref=e2103] [cursor=pointer]:
+      - generic [ref=e2104]: 📍
+      - generic [ref=e2105]:
+        - generic [ref=e2106]: Mirpur 11
+        - generic [ref=e2107]: মিরপুর ১১ · ৳40
+    - button "📍 Mirpur 10 মিরপুর ১০ · ৳50" [ref=e2108] [cursor=pointer]:
+      - generic [ref=e2109]: 📍
+      - generic [ref=e2110]:
+        - generic [ref=e2111]: Mirpur 10
+        - generic [ref=e2112]: মিরপুর ১০ · ৳50
+    - button "📍 Kazipara কাজীপাড়া · ৳60" [ref=e2113] [cursor=pointer]:
+      - generic [ref=e2114]: 📍
+      - generic [ref=e2115]:
+        - generic [ref=e2116]: Kazipara
+        - generic [ref=e2117]: কাজীপাড়া · ৳60
+    - button "📍 Shewrapara শেওড়াপাড়া · ৳60" [ref=e2118] [cursor=pointer]:
+      - generic [ref=e2119]: 📍
+      - generic [ref=e2120]:
+        - generic [ref=e2121]: Shewrapara
+        - generic [ref=e2122]: শেওড়াপাড়া · ৳60

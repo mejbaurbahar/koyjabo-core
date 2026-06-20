@@ -1,0 +1,557 @@
+- generic [ref=e13]:
+  - generic [ref=e30]:
+    - button "KoyJabo Home" [ref=e31] [cursor=pointer]:
+      - generic [ref=e34]: ক
+      - generic [ref=e35]: KoyJabo
+    - navigation [ref=e36]:
+      - button "🏠 Home" [ref=e37] [cursor=pointer]:
+        - generic [ref=e38]: 🏠
+        - text: Home
+      - button "🚌 Local Bus" [ref=e39] [cursor=pointer]:
+        - generic [ref=e40]: 🚌
+        - text: Local Bus
+      - button "🚇 Metro" [ref=e41] [cursor=pointer]:
+        - generic [ref=e42]: 🚇
+        - text: Metro
+      - button "🚆 Train" [ref=e43] [cursor=pointer]:
+        - generic [ref=e44]: 🚆
+        - text: Train
+      - button "🧭 Intercity" [ref=e45] [cursor=pointer]:
+        - generic [ref=e46]: 🧭
+        - text: Intercity
+      - button "⛴️ Launch" [ref=e47] [cursor=pointer]:
+        - generic [ref=e48]: ⛴️
+        - text: Launch
+      - button "✈️ Flights" [ref=e49] [cursor=pointer]:
+        - generic [ref=e50]: ✈️
+        - text: Flights
+    - generic [ref=e51]:
+      - button "Menu" [ref=e52] [cursor=pointer]:
+        - img [ref=e53]
+      - button "EN" [ref=e54] [cursor=pointer]:
+        - img [ref=e55]
+        - generic [ref=e59]: EN
+      - button "Toggle theme" [ref=e60] [cursor=pointer]:
+        - img [ref=e61]
+      - button "Install app" [ref=e67] [cursor=pointer]:
+        - img [ref=e68]
+  - generic [ref=e1233]:
+    - generic [ref=e1235]:
+      - generic [ref=e1236]:
+        - generic [ref=e1237]:
+          - generic [ref=e1239]: Dhaka · 31°C · Moderate traffic
+          - heading "Where are you headed, Mejbaur?" [level=1] [ref=e1241]
+          - paragraph [ref=e1242]: 2,400+ Dhaka bus routes, Metro Rail and intercity travel across all 64 districts — works offline too.
+        - generic [ref=e1243]:
+          - generic [ref=e1244]:
+            - button "Local Bus" [ref=e1245] [cursor=pointer]
+            - button "Metro" [ref=e1246] [cursor=pointer]
+            - button "Intercity" [ref=e1247] [cursor=pointer]
+            - button "Train" [ref=e1248] [cursor=pointer]
+            - button "Launch" [ref=e1249] [cursor=pointer]
+            - button "Search anything" [ref=e1250] [cursor=pointer]:
+              - img [ref=e1251]
+              - text: Search anything
+          - generic [ref=e1254]:
+            - img [ref=e1256]
+            - generic [ref=e1259]: Search bus, train, stop...
+            - generic [ref=e1260]:
+              - generic [ref=e1261] [cursor=pointer]: 🚌
+              - generic [ref=e1262] [cursor=pointer]: 🚇
+              - generic [ref=e1263] [cursor=pointer]: 🚆
+              - generic [ref=e1264] [cursor=pointer]: ✈️
+              - generic [ref=e1265] [cursor=pointer]: 📍
+            - generic [ref=e1266]: ⌘K
+          - generic [ref=e1269]: Or · plan a route
+          - generic [ref=e1271]:
+            - generic [ref=e1272] [cursor=pointer]:
+              - img [ref=e1274]
+              - generic [ref=e1277]:
+                - generic [ref=e1278]: From
+                - generic [ref=e1279]: Gulshan 1 · Current location
+            - button "Swap" [ref=e1280] [cursor=pointer]:
+              - img [ref=e1281]
+            - generic [ref=e1284] [cursor=pointer]:
+              - img [ref=e1286]
+              - generic [ref=e1288]:
+                - generic [ref=e1289]: To
+                - generic [ref=e1290]: Motijheel
+            - button "Find routes" [ref=e1291] [cursor=pointer]:
+              - text: Find routes
+              - img [ref=e1292]
+          - generic [ref=e1294]:
+            - button "Leave now · 4:22 PM" [ref=e1295] [cursor=pointer]
+            - button "Fastest" [ref=e1296] [cursor=pointer]
+            - button "Cheapest" [ref=e1297] [cursor=pointer]
+            - button "Non-AC only" [ref=e1298] [cursor=pointer]
+            - generic [ref=e1299]: 2,412 routes live
+      - generic [ref=e1301]:
+        - generic [ref=e1302]:
+          - img [ref=e1304]
+          - img
+          - img [ref=e1314]
+          - img "3D bus" [ref=e1316]:
+            - generic [ref=e1347]: MOTIJHEEL · 6
+          - img "3D airplane" [ref=e1381]
+          - generic [ref=e1414]: LIVE · DHAKA
+        - generic [ref=e1416]:
+          - img [ref=e1418]
+          - generic [ref=e1423]:
+            - generic [ref=e1424]: Works offline too
+            - generic [ref=e1425]: Install as PWA
+          - button "Install" [ref=e1426] [cursor=pointer]:
+            - img [ref=e1427]
+            - text: Install
+    - generic [ref=e1431]:
+      - generic [ref=e1432]:
+        - generic [ref=e1433]: Sponsored
+        - generic [ref=e1434]: Google AdSense
+      - insertion [ref=e1436]:
+        - iframe [ref=e1438]:
+          
+    - generic [ref=e1439]:
+      - heading "How are you traveling?" [level=2] [ref=e1442]
+      - generic [ref=e1443]:
+        - button "🚌 Popular Local bus 200+ routes 3D bus" [ref=e1444] [cursor=pointer]:
+          - generic [ref=e1447]:
+            - generic [ref=e1449]: 🚌
+            - generic [ref=e1450]: Popular
+          - generic [ref=e1451]:
+            - generic [ref=e1452]: Local bus
+            - generic [ref=e1453]: 200+ routes
+          - generic:
+            - img "3D bus":
+              - generic:
+                - generic: MOTIJHEEL · 6
+        - button "🚆 Metro Rail MRT-6 · 15 stations 3D metro train" [ref=e1454] [cursor=pointer]:
+          - generic [ref=e1459]: 🚆
+          - generic [ref=e1460]:
+            - generic [ref=e1461]: Metro Rail
+            - generic [ref=e1462]: MRT-6 · 15 stations
+          - generic:
+            - img "3D metro train":
+              - generic:
+                - generic: M6
+        - button "🚆 Train BD Railway · all routes 3D metro train" [ref=e1463] [cursor=pointer]:
+          - generic [ref=e1468]: 🚆
+          - generic [ref=e1469]:
+            - generic [ref=e1470]: Train
+            - generic [ref=e1471]: BD Railway · all routes
+          - generic:
+            - img "3D metro train":
+              - generic:
+                - generic: M6
+        - button "✈️ Intercity 64 districts · bus/train/flight 3D airplane" [ref=e1472] [cursor=pointer]:
+          - generic [ref=e1477]: ✈️
+          - generic [ref=e1478]:
+            - generic [ref=e1479]: Intercity
+            - generic [ref=e1480]: 64 districts · bus/train/flight
+          - generic:
+            - img "3D airplane"
+        - button "⛴️ Launch & Steamer Sadarghat → Barisal 3D river launch" [ref=e1481] [cursor=pointer]:
+          - generic [ref=e1486]: ⛴️
+          - generic [ref=e1487]:
+            - generic [ref=e1488]: Launch & Steamer
+            - generic [ref=e1489]: Sadarghat → Barisal
+          - generic:
+            - img "3D river launch"
+        - button "✈️ New Flights 4 airlines · 8 airports 3D airplane" [ref=e1490] [cursor=pointer]:
+          - generic [ref=e1493]:
+            - generic [ref=e1495]: ✈️
+            - generic [ref=e1496]: New
+          - generic [ref=e1497]:
+            - generic [ref=e1498]: Flights
+            - generic [ref=e1499]: 4 airlines · 8 airports
+          - generic:
+            - img "3D airplane"
+        - button "🤖 New AI Assistant Ask in Bangla AI chatbot" [ref=e1500] [cursor=pointer]:
+          - generic [ref=e1503]:
+            - generic [ref=e1505]: 🤖
+            - generic [ref=e1506]: New
+          - generic [ref=e1507]:
+            - generic [ref=e1508]: AI Assistant
+            - generic [ref=e1509]: Ask in Bangla
+          - generic:
+            - img "AI chatbot":
+              - generic:
+                - generic:
+                  - generic: ✦
+    - generic [ref=e1511]:
+      - generic [ref=e1512]:
+        - generic [ref=e1513]: Sponsored
+        - generic [ref=e1514]: Google AdSense
+      - insertion [ref=e1516]:
+        - iframe [ref=e1518]:
+          
+    - generic [ref=e1520]:
+      - generic [ref=e1521]: Sponsored
+      - button "Bus from Airport" [ref=e1522] [cursor=pointer]
+      - button "Motijheel routes" [ref=e1523] [cursor=pointer]
+      - button "Dhaka-Chittagong" [ref=e1524] [cursor=pointer]
+      - button "Gulshan → Banani" [ref=e1525] [cursor=pointer]
+      - button "Cox's Bazar bus" [ref=e1526] [cursor=pointer]
+    - generic [ref=e1527]:
+      - heading "How does KoyJabo work?" [level=2] [ref=e1530]
+      - generic [ref=e1531]:
+        - generic [ref=e2007]:
+          - generic [ref=e2010]: 😊
+          - img "3D bus" [ref=e2012]:
+            - generic [ref=e2043]: MOTIJHEEL · 6
+          - generic [ref=e2076]: ✓
+          - generic [ref=e2077]: ✨
+          - generic [ref=e2078]: 🎉
+          - generic [ref=e2079]: ⭐
+        - generic [ref=e1679]:
+          - paragraph [ref=e1680]: Hop on the right bus, stress-free! 🎉
+          - button "Try it now" [ref=e2081] [cursor=pointer]
+    - generic [ref=e1682]:
+      - generic [ref=e1683]:
+        - generic [ref=e1684]: Sponsored
+        - generic [ref=e1685]: Google AdSense
+      - insertion [ref=e1687]:
+        - iframe [ref=e1689]:
+          
+    - generic [ref=e1690]:
+      - generic [ref=e1691]:
+        - heading "Metro Live" [level=2] [ref=e1693]
+        - button "All stations" [ref=e1694] [cursor=pointer]
+      - generic [ref=e1696]:
+        - generic [ref=e1697]:
+          - generic [ref=e1698]:
+            - generic [ref=e1699]: M6
+            - generic [ref=e1700]:
+              - generic [ref=e1703]: Live · MRT Line 6
+              - generic [ref=e1704]: Uttara North → Motijheel
+          - generic [ref=e1705]:
+            - generic [ref=e1706]: Next train
+            - generic [ref=e1707]: 2 min
+        - generic [ref=e1733]: Farmgate
+        - generic [ref=e1744]:
+          - generic [ref=e1745]:
+            - generic [ref=e1746]: Fare
+            - generic [ref=e1747]: ৳২০–১০০
+          - generic [ref=e1748]:
+            - generic [ref=e1749]: Hours
+            - generic [ref=e1750]: 7:10AM – 9:40PM
+          - generic [ref=e1753]: On time, no delays
+    - generic [ref=e1754]:
+      - generic [ref=e1755]:
+        - heading "Saved routes" [level=2] [ref=e1757]
+        - button "See all" [ref=e1758] [cursor=pointer]
+      - generic [ref=e1759]:
+        - generic [ref=e1760] [cursor=pointer]:
+          - generic [ref=e1763]: HOME → WORK
+          - generic [ref=e1764]: Banani → Karwan Bazar
+          - generic [ref=e1765]: 28 min · ৳ 40
+        - generic [ref=e1766] [cursor=pointer]:
+          - generic [ref=e1769]: WORK → HOME
+          - generic [ref=e1770]: Karwan Bazar → Banani
+          - generic [ref=e1771]: 35 min · ৳ 40
+        - generic [ref=e1772] [cursor=pointer]:
+          - generic [ref=e1775]: WEEKENDS
+          - generic [ref=e1776]: Banani → Dhanmondi 32
+          - generic [ref=e1777]: 42 min · ৳ 60
+        - generic [ref=e1778] [cursor=pointer]:
+          - generic [ref=e1781]: DAD'S HOUSE
+          - generic [ref=e1782]: Banani → Mirpur DOHS
+          - generic [ref=e1783]: 55 min · ৳ 75
+    - generic [ref=e1785]:
+      - generic [ref=e1786]:
+        - generic [ref=e1787]: Sponsored
+        - generic [ref=e1788]: Google AdSense
+      - insertion [ref=e1790]:
+        - iframe [ref=e1792]:
+          
+    - generic [ref=e1794]:
+      - generic [ref=e1795]:
+        - generic [ref=e1796]:
+          - generic [ref=e1797]:
+            - heading "Popular routes" [level=2] [ref=e1799]
+            - button "All routes" [ref=e1800] [cursor=pointer]
+          - generic [ref=e1801]:
+            - generic [ref=e1802] [cursor=pointer]:
+              - generic [ref=e1803]: GL
+              - generic [ref=e1804]:
+                - generic [ref=e1805]:
+                  - generic [ref=e1806]: Green Line
+                  - generic [ref=e1807]: AC
+                - generic [ref=e1808]: Gulshan 2→Badda→Rampura→Malibagh→Motijheel
+              - generic [ref=e1809]:
+                - generic [ref=e1810]: ৳60
+                - generic [ref=e1811]: 48min · 12 stops
+              - img [ref=e1812]
+            - generic [ref=e1814] [cursor=pointer]:
+              - generic [ref=e1815]: HF
+              - generic [ref=e1816]:
+                - generic [ref=e1818]: Hanif Enterprise
+                - generic [ref=e1819]: Uttara 7→Airport→Banani→Farmgate→Paltan
+              - generic [ref=e1820]:
+                - generic [ref=e1821]: ৳75
+                - generic [ref=e1822]: 1h15min · 18 stops
+              - img [ref=e1823]
+            - generic [ref=e1825] [cursor=pointer]:
+              - generic [ref=e1826]: SH
+              - generic [ref=e1827]:
+                - generic [ref=e1828]:
+                  - generic [ref=e1829]: Shyamoli NR Travels
+                  - generic [ref=e1830]: AC · Intercity
+                - generic [ref=e1831]: Sayedabad→Jatrabari→Kachpur→Chittagong
+              - generic [ref=e1832]:
+                - generic [ref=e1833]: ৳680
+                - generic [ref=e1834]: 6h30min · 4 stops
+              - img [ref=e1835]
+            - generic [ref=e1837] [cursor=pointer]:
+              - generic [ref=e1838]: BR
+              - generic [ref=e1839]:
+                - generic [ref=e1841]: BRTC Articulated
+                - generic [ref=e1842]: Motijheel→Shahbag→Farmgate→Mohakhali→Abdullahpur
+              - generic [ref=e1843]:
+                - generic [ref=e1844]: ৳45
+                - generic [ref=e1845]: 52min · 14 stops
+              - img [ref=e1846]
+            - generic [ref=e1848] [cursor=pointer]:
+              - generic [ref=e1849]: PR
+              - generic [ref=e1850]:
+                - generic [ref=e1852]: Projapoti Paribahan
+                - generic [ref=e1853]: Mirpur 12→Shyamoli→College Gate→Azimpur→Sadarghat
+              - generic [ref=e1854]:
+                - generic [ref=e1855]: ৳30
+                - generic [ref=e1856]: 45min · 11 stops
+              - img [ref=e1857]
+        - generic [ref=e1859] [cursor=pointer]:
+          - generic [ref=e1860]:
+            - img [ref=e1862]
+            - generic [ref=e1865]: AI Assistant
+            - generic [ref=e1866]: Beta
+          - paragraph [ref=e1867]: Ask in Bangla or English — 'Which bus goes from Gulshan to Motijheel?'
+          - generic [ref=e1868]:
+            - generic [ref=e1869]: How much to Cox's Bazar?
+            - generic [ref=e1870]: Airport → Farmgate
+            - generic [ref=e1871]: Sadarghat launch times
+          - generic [ref=e1872]:
+            - generic [ref=e1873]: Ask anything...
+            - img [ref=e1875]
+      - generic [ref=e1877]:
+        - generic [ref=e1878]:
+          - generic [ref=e1879]:
+            - generic [ref=e1880]: Sponsored
+            - generic [ref=e1881]: Google AdSense
+          - insertion [ref=e1883]:
+            - iframe [ref=e1885]:
+              
+        - generic [ref=e1886]:
+          - generic [ref=e1887]:
+            - img [ref=e1888]:
+              - generic [ref=e1890]: SOS
+            - text: Emergency Numbers
+          - generic [ref=e1891]:
+            - link "Police 999" [ref=e1892] [cursor=pointer]:
+              - /url: tel:999
+              - generic [ref=e1893]: Police
+              - generic [ref=e1894]: "999"
+            - link "Ambulance 199" [ref=e1895] [cursor=pointer]:
+              - /url: tel:199
+              - generic [ref=e1896]: Ambulance
+              - generic [ref=e1897]: "199"
+            - link "Fire service 102" [ref=e1898] [cursor=pointer]:
+              - /url: tel:102
+              - generic [ref=e1899]: Fire service
+              - generic [ref=e1900]: "102"
+            - link "Highway +880-2" [ref=e1901] [cursor=pointer]:
+              - /url: tel:+880-2
+              - generic [ref=e1902]: Highway
+              - generic [ref=e1903]: +880-2
+    - generic [ref=e1905]:
+      - generic [ref=e1906]: Sponsored
+      - generic [ref=e1907]:
+        - generic [ref=e1908] [cursor=pointer]:
+          - generic [ref=e1909]: Ad
+          - generic [ref=e1910]: 💳
+          - generic [ref=e1911]: bKash · 10% cashback on travel
+          - generic [ref=e1912]: Use bKash for bus/train tickets
+        - generic [ref=e1913] [cursor=pointer]:
+          - generic [ref=e1914]: Ad
+          - generic [ref=e1915]: 🛡️
+          - generic [ref=e1916]: Travel Insurance · from ৳99
+          - generic [ref=e1917]: Cover your journey
+        - generic [ref=e1918] [cursor=pointer]:
+          - generic [ref=e1919]: Ad
+          - generic [ref=e1920]: 🚗
+          - generic [ref=e1921]: Uber · 50% off first 3 rides
+          - generic [ref=e1922]: "Promo code: KOYJABO50"
+        - generic [ref=e1923] [cursor=pointer]:
+          - generic [ref=e1924]: Ad
+          - generic [ref=e1925]: 🏨
+          - generic [ref=e1926]: Cox's Bazar Hotels · ৳1200/night
+          - generic [ref=e1927]: Book directly, no fees
+      - generic [ref=e1928]:
+        - button "🔍 Dhaka to Chittagong bus" [ref=e1929] [cursor=pointer]:
+          - generic [ref=e1930]: 🔍
+          - text: Dhaka to Chittagong bus
+        - button "🔍 Metro schedule today" [ref=e1931] [cursor=pointer]:
+          - generic [ref=e1932]: 🔍
+          - text: Metro schedule today
+        - button "🔍 Sadarghat launch time" [ref=e1933] [cursor=pointer]:
+          - generic [ref=e1934]: 🔍
+          - text: Sadarghat launch time
+        - button "🔍 Biman flight Dhaka Cox's Bazar" [ref=e1935] [cursor=pointer]:
+          - generic [ref=e1936]: 🔍
+          - text: Biman flight Dhaka Cox's Bazar
+    - contentinfo [ref=e1937]:
+      - generic [ref=e1938]:
+        - generic [ref=e1939]:
+          - generic [ref=e1940]:
+            - button "ক কই যাবো" [ref=e1941] [cursor=pointer]:
+              - generic [ref=e1944]: ক
+              - generic [ref=e1945]: কই যাবো
+            - paragraph [ref=e1946]: Smart transit guide for Dhaka commuters
+            - generic [ref=e1947]:
+              - generic "Facebook" [ref=e1948] [cursor=pointer]: f
+              - generic "LinkedIn" [ref=e1949] [cursor=pointer]: in
+              - generic "X (Twitter)" [ref=e1950] [cursor=pointer]: X
+              - generic "YouTube" [ref=e1951] [cursor=pointer]: ▶
+              - generic "Other" [ref=e1952] [cursor=pointer]: ✦
+          - generic [ref=e1953]:
+            - generic [ref=e1954]: Explore
+            - button "Local Bus" [ref=e1955] [cursor=pointer]
+            - button "Metro" [ref=e1956] [cursor=pointer]
+            - button "Train" [ref=e1957] [cursor=pointer]
+            - button "Flights" [ref=e1958] [cursor=pointer]
+            - button "Launch" [ref=e1959] [cursor=pointer]
+            - button "Fare" [ref=e1960] [cursor=pointer]
+          - generic [ref=e1961]:
+            - generic [ref=e1962]: Account
+            - button "Profile" [ref=e1963] [cursor=pointer]
+            - button "Favorites" [ref=e1964] [cursor=pointer]
+            - button "History" [ref=e1965] [cursor=pointer]
+            - button "Settings" [ref=e1966] [cursor=pointer]
+            - button "Sign In" [ref=e1967] [cursor=pointer]
+          - generic [ref=e1968]:
+            - generic [ref=e1969]: Company
+            - button "Why KoyJabo" [ref=e1970] [cursor=pointer]
+            - button "About" [ref=e1971] [cursor=pointer]
+            - button "Blog" [ref=e1972] [cursor=pointer]
+            - button "QA" [ref=e1973] [cursor=pointer]
+            - button "Contact" [ref=e1974] [cursor=pointer]
+          - generic [ref=e1975]:
+            - generic [ref=e1976]: Legal
+            - button "Privacy" [ref=e1977] [cursor=pointer]
+            - button "Terms" [ref=e1978] [cursor=pointer]
+            - button "Release" [ref=e1979] [cursor=pointer]
+        - generic [ref=e1980]:
+          - generic [ref=e1981]: © 2026 KoyJabo · All rights reserved
+          - generic [ref=e1982]: All systems operational
+  - generic [ref=e827]:
+    - generic: AI Assistant · ask me
+    - button "AI Assistant" [ref=e829] [cursor=pointer]:
+      - img [ref=e830]
+  - generic:
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic: ক
+          - generic: KoyJabo
+        - button "Close menu": ×
+      - generic:
+        - generic:
+          - generic: Explore
+          - button "Home":
+            - generic: Home
+            - generic:
+              - img
+          - button "Local Bus":
+            - generic: Local Bus
+            - generic:
+              - img
+          - button "Metro":
+            - generic: Metro
+            - generic:
+              - img
+          - button "Train":
+            - generic: Train
+            - generic:
+              - img
+          - button "Intercity":
+            - generic: Intercity
+            - generic:
+              - img
+          - button "Launch":
+            - generic: Launch
+            - generic:
+              - img
+          - button "Flights":
+            - generic: Flights
+            - generic:
+              - img
+          - button "Fare":
+            - generic: Fare
+            - generic:
+              - img
+          - button "AI Assistant":
+            - generic: AI Assistant
+            - generic:
+              - img
+        - generic:
+          - generic: Account
+          - button "Profile":
+            - generic: Profile
+            - generic:
+              - img
+          - button "Favorites":
+            - generic: Favorites
+            - generic:
+              - img
+          - button "History":
+            - generic: History
+            - generic:
+              - img
+          - button "Settings":
+            - generic: Settings
+            - generic:
+              - img
+          - button "Sign In":
+            - generic: Sign In
+            - generic:
+              - img
+        - generic:
+          - generic: Company
+          - button "Why KoyJabo":
+            - generic: Why KoyJabo
+            - generic:
+              - img
+          - button "About":
+            - generic: About
+            - generic:
+              - img
+          - button "Blog":
+            - generic: Blog
+            - generic:
+              - img
+          - button "QA":
+            - generic: QA
+            - generic:
+              - img
+          - button "Contact":
+            - generic: Contact
+            - generic:
+              - img
+          - button "Release":
+            - generic: Release
+            - generic:
+              - img
+        - generic:
+          - generic: Legal
+          - button "Privacy":
+            - generic: Privacy
+            - generic:
+              - img
+          - button "Terms":
+            - generic: Terms
+            - generic:
+              - img
+  - generic [ref=e838]:
+    - generic [ref=e839]: Sponsored
+    - generic [ref=e840]: Google AdSense · 320 × 50
+    - button "✕" [ref=e841] [cursor=pointer]

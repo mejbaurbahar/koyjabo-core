@@ -1,0 +1,396 @@
+- generic [ref=e13]:
+  - generic [ref=e30]:
+    - button "KoyJabo Home" [ref=e31] [cursor=pointer]:
+      - generic [ref=e34]: ক
+      - generic [ref=e35]: KoyJabo
+    - navigation [ref=e36]:
+      - button "🏠 Home" [ref=e37] [cursor=pointer]:
+        - generic [ref=e38]: 🏠
+        - text: Home
+      - button "🚌 Local Bus" [ref=e39] [cursor=pointer]:
+        - generic [ref=e40]: 🚌
+        - text: Local Bus
+      - button "🚇 Metro" [ref=e41] [cursor=pointer]:
+        - generic [ref=e42]: 🚇
+        - text: Metro
+      - button "🚆 Train" [ref=e43] [cursor=pointer]:
+        - generic [ref=e44]: 🚆
+        - text: Train
+      - button "🧭 Intercity" [ref=e45] [cursor=pointer]:
+        - generic [ref=e46]: 🧭
+        - text: Intercity
+      - button "⛴️ Launch" [ref=e47] [cursor=pointer]:
+        - generic [ref=e48]: ⛴️
+        - text: Launch
+      - button "✈️ Flights" [ref=e49] [cursor=pointer]:
+        - generic [ref=e50]: ✈️
+        - text: Flights
+    - generic [ref=e51]:
+      - button "Menu" [ref=e52] [cursor=pointer]:
+        - img [ref=e53]
+      - button "EN" [ref=e54] [cursor=pointer]:
+        - img [ref=e55]
+        - generic [ref=e59]: EN
+      - button "Toggle theme" [ref=e60] [cursor=pointer]:
+        - img [ref=e61]
+      - button "Install app" [ref=e67] [cursor=pointer]:
+        - img [ref=e68]
+  - generic [ref=e1882]:
+    - main [ref=e1885]:
+      - generic [ref=e1886]:
+        - generic [ref=e1890]:
+          - generic [ref=e1891]:
+            - generic [ref=e1892]: ✦ KoyJabo · bus
+            - heading "Every Dhaka bus · in one app" [level=1] [ref=e1893]
+            - paragraph [ref=e1894]: 2,412 live routes, 1,000+ stops, 140+ operators — works offline too.
+            - generic [ref=e1895]:
+              - generic [ref=e1896]:
+                - generic [ref=e1897]: 2,412
+                - generic [ref=e1898]: Routes
+              - generic [ref=e1899]:
+                - generic [ref=e1900]: 1,043
+                - generic [ref=e1901]: Stops
+              - generic [ref=e1902]:
+                - generic [ref=e1903]: 140+
+                - generic [ref=e1904]: Operators
+              - generic [ref=e1905]:
+                - generic [ref=e1906]: ★ 4.4
+                - generic [ref=e1907]: Avg rating
+          - img "3D bus" [ref=e1909]:
+            - generic [ref=e1940]: MOTIJHEEL · 6
+        - generic [ref=e1973]:
+          - generic [ref=e1974]:
+            - generic [ref=e1975]:
+              - img [ref=e1977]
+              - generic [ref=e1980]: "e.g. Green Line, Raida #7, BRTC Double, Route 6..."
+            - generic [ref=e1981]:
+              - button "Name" [ref=e1982] [cursor=pointer]
+              - button "Route" [ref=e1983] [cursor=pointer]
+              - button "Operator" [ref=e1984] [cursor=pointer]
+            - generic [ref=e1985]:
+              - generic [ref=e1986]:
+                - img [ref=e1988]
+                - generic [ref=e1991]:
+                  - generic [ref=e1992]: From
+                  - generic [ref=e1993]: Gulshan 1
+              - generic [ref=e1994]:
+                - img [ref=e1996]
+                - generic [ref=e1998]:
+                  - generic [ref=e1999]: To
+                  - generic [ref=e2000]: Motijheel
+              - button "Find bus" [ref=e2001] [cursor=pointer]:
+                - img [ref=e2002]
+                - text: Find bus
+            - generic [ref=e2005]:
+              - button "⚡ Fastest" [ref=e2006] [cursor=pointer]
+              - button "৳ Cheapest" [ref=e2007] [cursor=pointer]
+              - button "❄️ AC" [ref=e2008] [cursor=pointer]
+              - button "🚻 Toilet" [ref=e2009] [cursor=pointer]
+              - button "👥 Less crowd" [ref=e2010] [cursor=pointer]
+          - generic [ref=e2011]:
+            - generic [ref=e2012]:
+              - heading "Popular bus routes" [level=2] [ref=e2014]
+              - generic [ref=e2015]:
+                - generic [ref=e2016] [cursor=pointer]:
+                  - generic [ref=e2017]: GL
+                  - generic [ref=e2018]:
+                    - generic [ref=e2019]:
+                      - generic [ref=e2020]: Green Line · Route 6
+                      - generic [ref=e2021]: AC
+                    - generic [ref=e2022]: Gulshan ↔ Motijheel
+                    - generic [ref=e2023]:
+                      - generic [ref=e2024]:
+                        - img [ref=e2025]
+                        - img [ref=e2027]
+                        - img [ref=e2029]
+                        - img [ref=e2031]
+                        - img [ref=e2033]
+                      - generic [ref=e2035]: "4.6"
+                      - generic [ref=e2036]: (587)
+                      - generic [ref=e2037]: · 42m · 9 stops
+                  - generic [ref=e2038]:
+                    - generic [ref=e2039]: ৳ 60
+                    - img [ref=e2040]
+                - generic [ref=e2042] [cursor=pointer]:
+                  - generic [ref=e2043]: HF
+                  - generic [ref=e2044]:
+                    - generic [ref=e2046]: Hanif · Route 11
+                    - generic [ref=e2047]: Uttara ↔ Paltan
+                    - generic [ref=e2048]:
+                      - generic [ref=e2049]:
+                        - img [ref=e2050]
+                        - img [ref=e2052]
+                        - img [ref=e2054]
+                        - img [ref=e2056]
+                        - img [ref=e2058]
+                      - generic [ref=e2060]: "4.1"
+                      - generic [ref=e2061]: (412)
+                      - generic [ref=e2062]: · 1h 10m · 18 stops
+                  - generic [ref=e2063]:
+                    - generic [ref=e2064]: ৳ 50
+                    - img [ref=e2065]
+                - generic [ref=e2067] [cursor=pointer]:
+                  - generic [ref=e2068]: BR
+                  - generic [ref=e2069]:
+                    - generic [ref=e2070]:
+                      - generic [ref=e2071]: BRTC Double Decker
+                      - generic [ref=e2072]: AC
+                    - generic [ref=e2073]: Motijheel ↔ Gabtoli
+                    - generic [ref=e2074]:
+                      - generic [ref=e2075]:
+                        - img [ref=e2076]
+                        - img [ref=e2078]
+                        - img [ref=e2080]
+                        - img [ref=e2082]
+                        - img [ref=e2084]
+                      - generic [ref=e2086]: "4.3"
+                      - generic [ref=e2087]: (298)
+                      - generic [ref=e2088]: · 52m · 14 stops
+                  - generic [ref=e2089]:
+                    - generic [ref=e2090]: ৳ 45
+                    - img [ref=e2091]
+                - generic [ref=e2093] [cursor=pointer]:
+                  - generic [ref=e2094]: PR
+                  - generic [ref=e2095]:
+                    - generic [ref=e2097]: Projapoti Paribahan
+                    - generic [ref=e2098]: Mirpur ↔ Sadarghat
+                    - generic [ref=e2099]:
+                      - generic [ref=e2100]:
+                        - img [ref=e2101]
+                        - img [ref=e2103]
+                        - img [ref=e2105]
+                        - img [ref=e2107]
+                        - img [ref=e2109]
+                      - generic [ref=e2111]: "3.9"
+                      - generic [ref=e2112]: (187)
+                      - generic [ref=e2113]: · 45m · 11 stops
+                  - generic [ref=e2114]:
+                    - generic [ref=e2115]: ৳ 30
+                    - img [ref=e2116]
+                - generic [ref=e2118] [cursor=pointer]:
+                  - generic [ref=e2119]: AB
+                  - generic [ref=e2120]:
+                    - generic [ref=e2122]: Anabil Super
+                    - generic [ref=e2123]: Gulistan ↔ Savar
+                    - generic [ref=e2124]:
+                      - generic [ref=e2125]:
+                        - img [ref=e2126]
+                        - img [ref=e2128]
+                        - img [ref=e2130]
+                        - img [ref=e2132]
+                        - img [ref=e2134]
+                      - generic [ref=e2136]: "3.8"
+                      - generic [ref=e2137]: (134)
+                      - generic [ref=e2138]: · 1h 30m · 22 stops
+                  - generic [ref=e2139]:
+                    - generic [ref=e2140]: ৳ 70
+                    - img [ref=e2141]
+            - generic [ref=e2143]:
+              - generic [ref=e2144]:
+                - generic [ref=e2145]:
+                  - generic [ref=e2147]: Buses near you · live
+                  - generic [ref=e2148]: Farmgate
+                - generic [ref=e2149]:
+                  - generic [ref=e2151]: "GL #6"
+                  - generic [ref=e2152]: 400 m ↗
+                  - generic [ref=e2153]: 2 min
+                - generic [ref=e2154]:
+                  - generic [ref=e2156]: BRTC Double
+                  - generic [ref=e2157]: 900 m ↗
+                  - generic [ref=e2158]: 5 min
+                - generic [ref=e2159]:
+                  - generic [ref=e2161]: "Hanif #11"
+                  - generic [ref=e2162]: 1.4 km ↗
+                  - generic [ref=e2163]: 8 min
+                - generic [ref=e2164]:
+                  - generic [ref=e2166]: Projapoti
+                  - generic [ref=e2167]: 2.1 km ↘
+                  - generic [ref=e2168]: 12 min
+                - button "View all on map →" [ref=e2169] [cursor=pointer]
+              - generic [ref=e2170]:
+                - generic [ref=e2171]: Sponsored
+                - generic [ref=e2172]: Google AdSense · 300×250
+                - generic [ref=e2173]: reserved
+              - generic [ref=e2174]:
+                - generic [ref=e2175]: Top operators
+                - generic [ref=e2176]:
+                  - generic [ref=e2177] [cursor=pointer]:
+                    - generic [ref=e2178]: GL
+                    - generic [ref=e2179]: Green Line
+                  - generic [ref=e2180] [cursor=pointer]:
+                    - generic [ref=e2181]: BR
+                    - generic [ref=e2182]: BRTC
+                  - generic [ref=e2183] [cursor=pointer]:
+                    - generic [ref=e2184]: HF
+                    - generic [ref=e2185]: Hanif
+                  - generic [ref=e2186] [cursor=pointer]:
+                    - generic [ref=e2187]: SH
+                    - generic [ref=e2188]: Shyamoli
+                  - generic [ref=e2189] [cursor=pointer]:
+                    - generic [ref=e2190]: PR
+                    - generic [ref=e2191]: Projapoti
+                  - generic [ref=e2192] [cursor=pointer]:
+                    - generic [ref=e2193]: AB
+                    - generic [ref=e2194]: Anabil
+          - generic [ref=e2195]:
+            - generic [ref=e2196]: Sponsored
+            - generic [ref=e2197]: Google AdSense · 728×90
+            - generic [ref=e2198]: reserved
+    - contentinfo [ref=e2199]:
+      - generic [ref=e2200]:
+        - generic [ref=e2201]:
+          - generic [ref=e2202]:
+            - button "ক কই যাবো" [ref=e2203] [cursor=pointer]:
+              - generic [ref=e2206]: ক
+              - generic [ref=e2207]: কই যাবো
+            - paragraph [ref=e2208]: Smart transit guide for Dhaka commuters
+            - generic [ref=e2209]:
+              - generic "Facebook" [ref=e2210] [cursor=pointer]: f
+              - generic "LinkedIn" [ref=e2211] [cursor=pointer]: in
+              - generic "X (Twitter)" [ref=e2212] [cursor=pointer]: X
+              - generic "YouTube" [ref=e2213] [cursor=pointer]: ▶
+              - generic "Other" [ref=e2214] [cursor=pointer]: ✦
+          - generic [ref=e2215]:
+            - generic [ref=e2216]: Explore
+            - button "Local Bus" [ref=e2217] [cursor=pointer]
+            - button "Metro" [ref=e2218] [cursor=pointer]
+            - button "Train" [ref=e2219] [cursor=pointer]
+            - button "Flights" [ref=e2220] [cursor=pointer]
+            - button "Launch" [ref=e2221] [cursor=pointer]
+            - button "Fare" [ref=e2222] [cursor=pointer]
+          - generic [ref=e2223]:
+            - generic [ref=e2224]: Account
+            - button "Profile" [ref=e2225] [cursor=pointer]
+            - button "Favorites" [ref=e2226] [cursor=pointer]
+            - button "History" [ref=e2227] [cursor=pointer]
+            - button "Settings" [ref=e2228] [cursor=pointer]
+            - button "Sign In" [ref=e2229] [cursor=pointer]
+          - generic [ref=e2230]:
+            - generic [ref=e2231]: Company
+            - button "Why KoyJabo" [ref=e2232] [cursor=pointer]
+            - button "About" [ref=e2233] [cursor=pointer]
+            - button "Blog" [ref=e2234] [cursor=pointer]
+            - button "QA" [ref=e2235] [cursor=pointer]
+            - button "Contact" [ref=e2236] [cursor=pointer]
+          - generic [ref=e2237]:
+            - generic [ref=e2238]: Legal
+            - button "Privacy" [ref=e2239] [cursor=pointer]
+            - button "Terms" [ref=e2240] [cursor=pointer]
+            - button "Release" [ref=e2241] [cursor=pointer]
+        - generic [ref=e2242]:
+          - generic [ref=e2243]: © 2026 KoyJabo · All rights reserved
+          - generic [ref=e2244]: All systems operational
+  - generic [ref=e807]:
+    - generic: AI Assistant · ask me
+    - button "AI Assistant" [ref=e809] [cursor=pointer]:
+      - img [ref=e810]
+  - generic:
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic: ক
+          - generic: KoyJabo
+        - button "Close menu": ×
+      - generic:
+        - generic:
+          - generic: Explore
+          - button "Home":
+            - generic: Home
+            - generic:
+              - img
+          - button "Local Bus":
+            - generic: Local Bus
+            - generic:
+              - img
+          - button "Metro":
+            - generic: Metro
+            - generic:
+              - img
+          - button "Train":
+            - generic: Train
+            - generic:
+              - img
+          - button "Intercity":
+            - generic: Intercity
+            - generic:
+              - img
+          - button "Launch":
+            - generic: Launch
+            - generic:
+              - img
+          - button "Flights":
+            - generic: Flights
+            - generic:
+              - img
+          - button "Fare":
+            - generic: Fare
+            - generic:
+              - img
+          - button "AI Assistant":
+            - generic: AI Assistant
+            - generic:
+              - img
+        - generic:
+          - generic: Account
+          - button "Profile":
+            - generic: Profile
+            - generic:
+              - img
+          - button "Favorites":
+            - generic: Favorites
+            - generic:
+              - img
+          - button "History":
+            - generic: History
+            - generic:
+              - img
+          - button "Settings":
+            - generic: Settings
+            - generic:
+              - img
+          - button "Sign In":
+            - generic: Sign In
+            - generic:
+              - img
+        - generic:
+          - generic: Company
+          - button "Why KoyJabo":
+            - generic: Why KoyJabo
+            - generic:
+              - img
+          - button "About":
+            - generic: About
+            - generic:
+              - img
+          - button "Blog":
+            - generic: Blog
+            - generic:
+              - img
+          - button "QA":
+            - generic: QA
+            - generic:
+              - img
+          - button "Contact":
+            - generic: Contact
+            - generic:
+              - img
+          - button "Release":
+            - generic: Release
+            - generic:
+              - img
+        - generic:
+          - generic: Legal
+          - button "Privacy":
+            - generic: Privacy
+            - generic:
+              - img
+          - button "Terms":
+            - generic: Terms
+            - generic:
+              - img
+  - generic [ref=e818]:
+    - generic [ref=e819]: Sponsored
+    - generic [ref=e820]: Google AdSense · 320 × 50
+    - button "✕" [ref=e821] [cursor=pointer]

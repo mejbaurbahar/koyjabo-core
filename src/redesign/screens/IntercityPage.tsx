@@ -5,6 +5,7 @@ import { PageShell } from './PageShell';
 import { Plane3D } from '../components/Vehicles3D';
 import { INTERCITY_BUS_ROUTES, BUS_OPERATORS, MAJOR_TRANSPORT_HUBS } from '../../../data/intercityData';
 import { SuggestionDropdown, Suggestion } from '../components/SuggestionDropdown';
+import { earnCoins } from '../utils/koyCoinService';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:Lang; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -92,7 +93,6 @@ export function IntercityPage(props: Props) {
       r.busOperators.some(op => op.toLowerCase().includes(q))
     );
   }, [nameSearch, from, to]);
-  const canSearchJourneys = Boolean(from.trim() && to.trim());
 
   const DIVISION_COLORS: Record<string, string> = {
     Dhaka: '#3b82f6', Chattogram: '#10b981', Sylhet: '#a855f7',
@@ -283,15 +283,14 @@ export function IntercityPage(props: Props) {
           </div>
 
           <button
-            disabled={!canSearchJourneys}
-            onClick={() => canSearchJourneys && onNav('results')}
+            onClick={() => { earnCoins(5,'Intercity search'); onNav('results'); }}
             style={{
               marginTop: 16, width: '100%',
               background: `linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)`,
               border: 'none', borderRadius: 14,
               padding: '14px 24px',
               fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 15, fontWeight: 700, color: '#fff',
-              cursor: canSearchJourneys ? 'pointer' : 'not-allowed', opacity: canSearchJourneys ? 1 : 0.5, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+              cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
               letterSpacing: 0.3,
             }}
           >

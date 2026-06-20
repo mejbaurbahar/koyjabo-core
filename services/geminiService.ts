@@ -1,4 +1,5 @@
 import { BUS_DATA, METRO_STATIONS, STATIONS } from '../constants';
+import { noVerifiedDataMessage, VERIFIED_FACTS } from './transportKnowledge';
 import { BD_TRAIN_ROUTES, TRAIN_STATIONS } from '../data/bangladeshTrainData';
 import { INTERCITY_BUS_ROUTES, MAJOR_TRANSPORT_HUBS } from '../data/intercityData';
 import { getOfflineIntercityData } from '../intercity/offlineService';
@@ -821,13 +822,24 @@ const findLocalBusInfo = (query: string): string => {
   const isBn = /[\u0980-\u09FF]/.test(query);
   const localIntent = lowerQuery.includes('bus') || lowerQuery.includes('local') || lowerQuery.includes('বাস') || lowerQuery.includes('route') || lowerQuery.includes('রুট') || lowerQuery.includes('to') || lowerQuery.includes('থেকে');
   if (localIntent) {
-    const mentionedStations = Object.values(STATIONS).filter(s =>
-      lowerQuery.includes(normalize(s.name)) || (s.bnName && lowerQuery.includes(normalize(s.bnName)))
-    );
+    // Digit-safe: "মিরপুর ১" must not match inside "মিরপুর ১০"
+    const dsSafeMatch = (hay: string, needle: string): boolean => {
+      const i = hay.indexOf(needle);
+      if (i < 0) return false;
+      const after = hay[i + needle.length];
+      if (/[0-9০-৯]/.test(needle.slice(-1)) && after && /[0-9০-৯]/.test(after)) return false;
+      return true;
+    };
+    const mentionedStations = Object.values(STATIONS).filter(s => {
+      const sn = normalize(s.name);
+      const bn = s.bnName ? normalize(s.bnName) : '';
+      return dsSafeMatch(lowerQuery, sn) || (!!bn && dsSafeMatch(lowerQuery, bn));
+    });
     if (mentionedStations.length >= 2) {
       const sorted = mentionedStations.slice(0, 2).sort((a, b) => {
-        const ai = lowerQuery.indexOf(normalize(a.name));
-        const bi = lowerQuery.indexOf(normalize(b.name));
+        const sna = normalize(a.name); const snb = normalize(b.name);
+        const ai = lowerQuery.indexOf(sna) >= 0 ? lowerQuery.indexOf(sna) : (a.bnName ? lowerQuery.indexOf(normalize(a.bnName)) : 9999);
+        const bi = lowerQuery.indexOf(snb) >= 0 ? lowerQuery.indexOf(snb) : (b.bnName ? lowerQuery.indexOf(normalize(b.bnName)) : 9999);
         return (ai < 0 ? 9999 : ai) - (bi < 0 ? 9999 : bi);
       });
       const route = findBusRoute(sorted[0].name, sorted[1].name, isBn);
@@ -1710,31 +1722,91 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
       let fromLoc = gIntent.from;
       let toLoc = gIntent.to;
 
+      // If classifyIntent found intercity locations (districts/cities), use intercity data.
+      // Graph engine (Dijkstra) only handles local Dhaka routes — don't let it answer intercity.
+      if (fromLoc && toLoc) {
+        const intercityResult = findIntercityRoute(query, _gpsDistrict);
+        if (intercityResult && intercityResult.length > 80) {
+          return intercityResult;
+        }
+      }
+
       // If intercity fails, look for local stations
       if (!fromLoc || !toLoc) {
         const lowerQ = query.toLowerCase();
+
+        // Digit-safe match: "Mirpur 1" must NOT match inside "Mirpur 10"
+        const safeMatch = (hay: string, needle: string): boolean => {
+          const i = hay.indexOf(needle);
+          if (i < 0) return false;
+          const after = hay[i + needle.length];
+          if (/[0-9০-৯]/.test(needle.slice(-1)) && after && /[0-9০-৯]/.test(after)) return false;
+          return true;
+        };
+
         // Look in STATIONS and METRO_STATIONS
-        const mentioned = [...Object.values(STATIONS), ...Object.values(METRO_STATIONS)].filter(s =>
-          lowerQ.includes(s.name.toLowerCase()) || (s.bnName && lowerQ.includes(s.bnName))
-        );
-        
-        // Very basic positional heuristic: first mentioned = from, second = to.
-        // E.g. "Mirpur 10 to Dhanmondi"
-        if (mentioned.length >= 2) {
-          const getIdx = (s: typeof mentioned[0]) => {
-            const ni = lowerQ.indexOf(s.name.toLowerCase());
+        const mentioned = [...Object.values(STATIONS), ...Object.values(METRO_STATIONS)].filter(s => {
+          const sn = s.name.toLowerCase();
+          const bn = s.bnName || '';
+          if (safeMatch(lowerQ, sn)) return true;
+          if (bn && safeMatch(lowerQ, bn)) return true;
+          // Base-name reverse match: "Gulshan" in query → matches "Gulshan 1"
+          const baseEn = sn.replace(/\s+\d+$/, '');
+          if (baseEn !== sn && baseEn.length >= 4) {
+            const re = new RegExp(`(?<![a-z])${baseEn.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![a-z0-9])`, 'i');
+            if (re.test(lowerQ)) return true;
+          }
+          return false;
+        });
+
+        // Deduplicate same-base stations: "Gulshan 1" + "Gulshan 2" → keep only "Gulshan 1"
+        const seenBase = new Set<string>();
+        const mentionedDeduped = mentioned.filter(s => {
+          const base = s.name.toLowerCase().replace(/\s+\d+$/, '');
+          if (seenBase.has(base)) return false;
+          seenBase.add(base);
+          return true;
+        });
+
+        if (mentionedDeduped.length >= 2) {
+          // Semantic nav-intent check: "how to go X", "route to X", "reach X"
+          // In these cases the named place is ALWAYS the destination, never the origin.
+          // If the query also has "X to Y" or "X থেকে Y", fall through to positional.
+          const hasExplicitFrom = /\bfrom\b|থেকে|হতে/i.test(lowerQ);
+          const hasNavToIntent = /(?:how\s+(?:to\s+)?(?:go|get)\s+(?:to\s+)?|route\s+to\s+|(?:reach|take\s+me\s+to|go\s+to|directions?\s+to|nearest\s+way\s+to|how\s+can\s+i\s+(?:get\s+to|reach)\s+))/i.test(lowerQ);
+
+          if (hasNavToIntent && !hasExplicitFrom) {
+            // Nav intent without explicit from: mentioned[0] = dest (GPS = from via context)
+            // The GPS area was already appended as "AREA to DEST" by AIChatPage,
+            // so mentionedDeduped[0] = AREA (from), mentionedDeduped[1] = DEST.
+            // Positional sort handles this correctly since AREA comes first in text.
+          }
+
+          // Positional sort: first in text = from, second = to (safe with above context)
+          const getIdx = (s: typeof mentionedDeduped[0]) => {
+            const sn = s.name.toLowerCase();
+            const ni = lowerQ.indexOf(sn);
             if (ni >= 0) return ni;
-            return s.bnName ? lowerQ.indexOf(s.bnName) : -1;
+            if (s.bnName) { const bi = lowerQ.indexOf(s.bnName); if (bi >= 0) return bi; }
+            const base = sn.replace(/\s+\d+$/, '');
+            return base !== sn ? lowerQ.indexOf(base) : -1;
           };
-          const firstIdx = getIdx(mentioned[0]);
-          const secondIdx = getIdx(mentioned[1]);
+          const firstIdx = getIdx(mentionedDeduped[0]);
+          const secondIdx = getIdx(mentionedDeduped[1]);
 
           if (firstIdx <= secondIdx) {
-            fromLoc = mentioned[0].id;
-            toLoc = mentioned[1].id;
+            fromLoc = mentionedDeduped[0].id;
+            toLoc = mentionedDeduped[1].id;
           } else {
-            fromLoc = mentioned[1].id;
-            toLoc = mentioned[0].id;
+            fromLoc = mentionedDeduped[1].id;
+            toLoc = mentionedDeduped[0].id;
+          }
+        } else if (mentionedDeduped.length === 1 && _gpsDistrict) {
+          // Single station with GPS context: station = destination, GPS = origin
+          const hasNavToIntent = /(?:how\s+(?:to\s+)?(?:go|get)|route\s+to|reach|go\s+to|directions?\s+to|nearest\s+way)/i.test(lowerQ);
+          if (hasNavToIntent) {
+            toLoc = mentionedDeduped[0].id;
+            fromLoc = resolveLocation(_gpsDistrict) ?? undefined;
           }
         }
       }
@@ -1743,7 +1815,21 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
         try {
           const graphResult = await planAndFormat(fromLoc, toLoc, isBn);
           if (graphResult && !graphResult.startsWith('🤔') && graphResult.length > 60) {
+            const extraDirect = BUS_DATA.filter(b => {
+              if (b.active === false) return false;
+              const fi = b.stops.indexOf(fromLoc as string);
+              const ti = b.stops.indexOf(toLoc as string);
+              return fi >= 0 && ti > fi && !graphResult.includes(b.name);
+            }).map(b => `🚌 **${b.name}**${b.bnName ? ` (${b.bnName})` : ''}`);
+            if (extraDirect.length > 0) {
+              const label = isBn ? '\n\n🚌 **সরাসরি যায় এমন অন্যান্য বাস:**\n' : '\n\n🚌 **Other buses also going directly:**\n';
+              return graphResult + label + extraDirect.join('\n');
+            }
             return graphResult;
+          }
+          // graph returned 🤔 (no route found) — show honest "no verified data" message
+          if (graphResult && graphResult.startsWith('🤔') && fromLoc && toLoc) {
+            return noVerifiedDataMessage(fromLoc, toLoc, isBn);
           }
         } catch (_) { /* fallthrough to legacy engine */ }
       }
@@ -1789,11 +1875,19 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   }
 // 1. Check for specific Bus Route (A to B)
   if (lowerQuery.includes(" to ") || lowerQuery.includes(" from ") || lowerQuery.includes(" থেকে ")) {
-    // Extract potential locations?
-    // Since we don't have NLP, we iterate known stations
-    const mentionedStations = Object.values(STATIONS).filter(s =>
-      lowerQuery.includes(normalize(s.name)) || (s.bnName && lowerQuery.includes(normalize(s.bnName)))
-    );
+    // Digit-safe match: prevents "মিরপুর ১" matching inside "মিরপুর ১০"
+    const legacySafeMatch = (hay: string, needle: string): boolean => {
+      const i = hay.indexOf(needle);
+      if (i < 0) return false;
+      const after = hay[i + needle.length];
+      if (/[0-9০-৯]/.test(needle.slice(-1)) && after && /[0-9০-৯]/.test(after)) return false;
+      return true;
+    };
+    const mentionedStations = Object.values(STATIONS).filter(s => {
+      const sn = normalize(s.name);
+      const bn = s.bnName ? normalize(s.bnName) : '';
+      return legacySafeMatch(lowerQuery, sn) || (!!bn && legacySafeMatch(lowerQuery, bn));
+    });
 
     if (mentionedStations.length >= 2) {
       const busRes = findBusRoute(mentionedStations[0].name, mentionedStations[1].name, isBn);

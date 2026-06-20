@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { STATIONS } from '../../../constants';
 import { KJ_TOKENS, T, SANS, BEN, chipBtn } from '../tokens';
 import { PageShell } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
 import { Icon } from '../components/Icons';
 import { askGeminiRoute, ChatMessage } from '../../../services/geminiService';
-import { getAllSessions, saveChatMessage } from '../../../services/chatHistoryManager';
+import { askGitHubModels } from '../../../services/githubModelsService';
+import { getAllSessions, getSession, saveChatMessage, deleteSession } from '../../../services/chatHistoryManager';
 
-interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; authUser?: { id?: string; displayName?: string; username?: string } | null; }
+interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
 function AvatarAI({ tk }: { tk: any }) {
   return (
@@ -100,41 +102,131 @@ function ChatBubble({ msg, tk, lang }: { msg: any; tk: any; lang:'bn'|'en' }) {
       {!isUser && <AvatarAI tk={tk}/>}
       {isUser && <div style={{ width:32,height:32,borderRadius:999,background:tk.accentSoft,color:tk.accent,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontFamily:SANS,fontWeight:700,fontSize:12 }}>MF</div>}
       <div style={{ background:isUser?tk.primary:tk.panel,color:isUser?tk.primaryInk:tk.text,border:isUser?0:`1px solid ${tk.line}`,borderRadius:16,padding:'12px 16px',fontFamily:BEN,fontSize:14,lineHeight:1.6 }}>
-        {msg.text}
+        {isUser ? msg.text : renderMd(msg.text, tk)}
       </div>
     </div>
   );
 }
 
+function renderMd(text: string, tk: any) {
+  const lines = text.split('\n');
+  return lines.map((line, i) => {
+    const trimmed = line.trim();
+    if (!trimmed) return <div key={i} style={{ height: 10 }} />;
+    if (/^─{3,}$/.test(trimmed)) return <div key={i} style={{ borderTop:`1px solid ${tk.line}`, margin:'18px 0 14px' }} />;
+
+    const parseBold = (s: string) => {
+      const parts = s.split(/\*\*(.+?)\*\*/);
+      return parts.map((p, j) => j % 2 === 1
+        ? <strong key={j} style={{ fontWeight:700, color:tk.text }}>{p}</strong>
+        : p);
+    };
+
+    const isRouteTag = /^[🏆⚡💸🚌]/.test(trimmed) && trimmed.includes('**') && trimmed.length < 80;
+    const isFlow = trimmed.startsWith('📍');
+    const isSummary = trimmed.startsWith('⏱️');
+    const isStep = /^\s*🚌|^\s*🚇|^\s*🚂|^\s*🚶|^\s*✈️/.test(trimmed);
+    const isReason = trimmed.startsWith('💡');
+    const isHeader = /^🗺️/.test(trimmed);
+
+    let bg = 'transparent';
+    let borderL = 'none';
+    let pl = 0;
+    let mb = 3;
+
+    if (isRouteTag) { bg = `${tk.primarySoft}44`; pl = 8; mb = 4; }
+    if (isFlow) { bg = `${tk.panelMuted}`; pl = 8; mb = 4; }
+    if (isStep) { pl = 12; mb = 3; borderL = `2px solid ${tk.line}`; }
+    if (isReason) { bg = `${tk.accentSoft}22`; pl = 8; mb = 2; }
+    if (isHeader) { mb = 6; }
+
+    return (
+      <div key={i} style={{
+        marginBottom: mb,
+        paddingLeft: pl,
+        paddingTop: isRouteTag ? 6 : isReason ? 4 : 0,
+        paddingBottom: isRouteTag ? 4 : 0,
+        paddingRight: (isRouteTag || isFlow || isReason) ? 8 : 0,
+        background: bg,
+        borderLeft: borderL,
+        borderRadius: (isRouteTag || isFlow || isReason) ? 8 : 0,
+      }}>
+        {parseBold(trimmed)}
+      </div>
+    );
+  });
+}
+
+// Find nearest station name from GPS coords using all known STATIONS
+function nearestArea(lat: number, lng: number): string {
+  const stationList = Object.values(STATIONS).filter((s: any) => s.lat && s.lng);
+  let best: any = stationList[0];
+  let bestDist = Infinity;
+  for (const s of stationList as any[]) {
+    const d = (s.lat - lat) ** 2 + (s.lng - lng) ** 2;
+    if (d < bestDist) { bestDist = d; best = s; }
+  }
+  return best?.name || 'Dhaka';
+}
+
 export function AIChatPage(props: Props) {
-  const { theme, device, lang, authUser } = props;
+  const { theme, device, lang } = props;
   const tk = KJ_TOKENS[theme];
   const isMobile = device === 'mobile';
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Msg[]>(INIT_MESSAGES);
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
+  const userAreaRef = useRef<string>('');
+
+  useEffect(() => {
+    const consent = localStorage.getItem('kj-location-consent');
+    if (consent !== 'yes') return;
+    // Use stored area first (fast), then refresh in background
+    const stored = localStorage.getItem('kj-location-area');
+    if (stored) userAreaRef.current = stored;
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        const area = nearestArea(pos.coords.latitude, pos.coords.longitude);
+        userAreaRef.current = area;
+        localStorage.setItem('kj-location-area', area);
+      },
+      () => {},
+      { timeout: 5000, maximumAge: 300000 }
+    );
+  }, []);
   const suggestions = [
     { bn:'কোন বাস গুলশান থেকে মতিঝিল?', en:'Bus Gulshan to Motijheel?' },
     { bn:'বিমানবন্দর → ফার্মগেট', en:'Airport → Farmgate' },
     { bn:'সদরঘাট লঞ্চ সময়', en:'Sadarghat launch times' },
     { bn:'মেট্রো সময়সূচি', en:'Metro schedule' },
   ];
-  const recents = getAllSessions()
-    .slice()
-    .sort((a, b) => b.lastUpdated - a.lastUpdated)
-    .slice(0, 6)
-    .map(session => ({
-      id: session.id,
-      title: session.messages.find(message => message.role === 'user')?.text || T(lang, 'নতুন কথোপকথন', 'New conversation'),
-    }));
+
+  const [showAllRecents, setShowAllRecents] = useState(false);
+  const [allRecents, setAllRecents] = useState(() =>
+    getAllSessions().slice().sort((a, b) => b.lastUpdated - a.lastUpdated)
+      .map(s => ({ id: s.id, title: s.messages.find(m => m.role === 'user')?.text || T(lang, 'নতুন কথোপকথন', 'New conversation') }))
+  );
+  const recents = showAllRecents ? allRecents : allRecents.slice(0, 5);
+
+  function loadSession(id: string) {
+    const session = getSession(id);
+    if (!session) return;
+    setSessionId(id);
+    const msgs: Msg[] = session.messages.map((m, i) => ({ id: i, isUser: m.role === 'user', text: m.text }));
+    setMessages(msgs.length ? msgs : INIT_MESSAGES);
+  }
+
+  function handleDeleteSession(id: string, e: React.MouseEvent) {
+    e.stopPropagation();
+    deleteSession(id);
+    setAllRecents(prev => prev.filter(r => r.id !== id));
+    if (sessionId === id) { setSessionId(null); setMessages(INIT_MESSAGES); }
+  }
 
   async function send() {
     if (!input.trim() || isLoading) return;
-    if (!authUser) {
-      setMessages(m => [...m, { id: Date.now(), isUser:false, text:T(lang,'AI চ্যাট ব্যবহার করতে আগে সাইন ইন করুন।','Please sign in before using AI chat.') }]);
-      return;
-    }
     const userText = input.trim();
     const userMsg = { id: Date.now(), isUser:true, text:userText };
     setMessages(m => [...m, userMsg]);
@@ -142,12 +234,50 @@ export function AIChatPage(props: Props) {
     setSessionId(nextSessionId);
     setInput('');
     setIsLoading(true);
+    // Refresh recents list (new session title)
+    setAllRecents(getAllSessions().slice().sort((a, b) => b.lastUpdated - a.lastUpdated)
+      .map(s => ({ id: s.id, title: s.messages.find(m => m.role === 'user')?.text || T(lang, 'নতুন কথোপকথন', 'New conversation') })));
     try {
       const currentMessages = [...messages, userMsg];
       const chatHistory: ChatMessage[] = currentMessages
         .filter(m => !(m as any).rich)
         .map(m => ({ role: m.isUser ? 'user' : 'assistant', text: m.text }));
-      const response = await askGeminiRoute(userText, undefined, chatHistory, 'Mejbaur');
+
+      const hasFrom = /\bfrom\b|থেকে|হতে/i.test(userText);
+      const area = userAreaRef.current;
+
+      // Extract destination from "how to go X", "route to X", "reach X" etc.
+      function extractGoToDest(q: string): string | null {
+        const m = q.match(
+          /^(?:how\s+(?:to\s+)?(?:go|get)\s+(?:to\s+)?|route\s+to\s+|(?:reach|take\s+me\s+to|go\s+to|directions?\s+to|best\s+(?:bus|way)\s+(?:to|for)|nearest\s+way\s+to|how\s+can\s+i\s+(?:get\s+to|reach)\s+))(.+?)(?:\?|$)/i
+        ) || q.match(/(?:কিভাবে\s+যাব[োো]?\s+|যেতে\s+চাই\s+|যাবো?\s+কিভাবে\s+)(.+?)(?:\?|।|$)/i);
+        return m ? m[1].trim().replace(/[?।]$/, '').trim() : null;
+      }
+
+      const goToDest = !hasFrom ? extractGoToDest(userText) : null;
+      let queryForOffline: string;
+      if (area && goToDest) {
+        // Build unambiguous "FROM to DEST" — prevents positional reversal
+        queryForOffline = `${area} to ${goToDest} [Context: User is in ${area} area]`;
+      } else if (!hasFrom && area) {
+        queryForOffline = `${userText} from ${area} [Context: User is in ${area} area]`;
+      } else {
+        queryForOffline = userText;
+      }
+
+      let response: string;
+      try {
+        response = await askGitHubModels(userText, chatHistory);
+      } catch {
+        response = await askGeminiRoute(queryForOffline, undefined, chatHistory, 'Mejbaur');
+        // Prepend "Your current location" when GPS was injected and area not already in response
+        if (!hasFrom && area && response && !response.includes(area)) {
+          const prefix = lang === 'bn'
+            ? `📍 **আপনার বর্তমান অবস্থান:** ${area}\n\n`
+            : `📍 **Your current location:** ${area}\n\n`;
+          response = prefix + response;
+        }
+      }
       saveChatMessage({ role: 'assistant', text: response, timestamp: Date.now() } as any, nextSessionId);
       setMessages(m => [...m, { id: Date.now()+1, isUser:false, text:response }]);
     } catch {
@@ -163,27 +293,44 @@ export function AIChatPage(props: Props) {
         {/* Left sidebar — fixed on desktop */}
         {!isMobile && (
           <div style={{ width:280,flexShrink:0,borderRight:`1px solid ${tk.line}`,display:'flex',flexDirection:'column',overflow:'hidden auto',background:tk.panel }}>
-            <div style={{ padding:'18px 16px', borderBottom:`1px solid ${tk.line}` }}>
+            <div style={{ padding:'14px 16px', borderBottom:`1px solid ${tk.line}` }}>
               <div style={{ fontFamily:SANS,fontSize:10,fontWeight:700,color:tk.textFaint,letterSpacing:1.4,textTransform:'uppercase',marginBottom:10 }}>
                 {T(lang,'সাম্প্রতিক কথোপকথন','Recent conversations')}
               </div>
-              {recents.length > 0 ? recents.map((r)=>(
-                <div key={r.id} style={{ padding:'8px 10px',borderRadius:10,cursor:'default',fontFamily:BEN,fontSize:13,color:tk.textDim,marginBottom:4 }}
-                  onMouseEnter={e=>(e.currentTarget.style.background=tk.chipBg)} onMouseLeave={e=>(e.currentTarget.style.background='transparent')}>
-                  💬 {r.title}
-                </div>
-              )) : (
-                <div style={{ fontFamily:BEN,fontSize:13,color:tk.textFaint,lineHeight:1.6,padding:'8px 0' }}>
-                  {T(lang,'এখনো কোনো কথোপকথন নেই। প্রশ্ন করলে এখানে দেখা যাবে।','No conversations yet. Ask a question and it will appear here.')}
+              {recents.length > 0 ? (
+                <>
+                  {recents.map((r) => (
+                    <div key={r.id}
+                      onClick={() => loadSession(r.id)}
+                      style={{ display:'flex',alignItems:'center',gap:6,padding:'7px 8px',borderRadius:10,cursor:'pointer',fontFamily:BEN,fontSize:12,color:tk.textDim,marginBottom:3,background: sessionId===r.id ? tk.primarySoft : 'transparent' }}
+                      onMouseEnter={e=>(e.currentTarget.style.background=tk.chipBg)}
+                      onMouseLeave={e=>(e.currentTarget.style.background=sessionId===r.id ? tk.primarySoft : 'transparent')}>
+                      <span style={{ flexShrink:0 }}>💬</span>
+                      <span style={{ flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap' }}>{r.title}</span>
+                      <button
+                        onClick={e => handleDeleteSession(r.id, e)}
+                        style={{ flexShrink:0,background:'none',border:'none',cursor:'pointer',color:tk.textFaint,fontSize:14,padding:'0 2px',lineHeight:1 }}
+                        title={T(lang,'মুছুন','Delete')}>×</button>
+                    </div>
+                  ))}
+                  {allRecents.length > 5 && (
+                    <button onClick={() => setShowAllRecents(v => !v)} style={{ width:'100%',background:'none',border:`1px solid ${tk.line}`,borderRadius:8,padding:'5px',fontFamily:SANS,fontSize:11,color:tk.textFaint,cursor:'pointer',marginTop:4 }}>
+                      {showAllRecents ? T(lang,'কম দেখুন','Show less') : T(lang,`আরও ${allRecents.length - 5}টি দেখুন`,`Load ${allRecents.length - 5} more`)}
+                    </button>
+                  )}
+                </>
+              ) : (
+                <div style={{ fontFamily:BEN,fontSize:12,color:tk.textFaint,lineHeight:1.6,padding:'6px 0' }}>
+                  {T(lang,'এখনো কোনো কথোপকথন নেই।','No conversations yet.')}
                 </div>
               )}
             </div>
-            <div style={{ padding:'16px' }}>
+            <div style={{ padding:'14px 16px' }}>
               <div style={{ fontFamily:SANS,fontSize:10,fontWeight:700,color:tk.textFaint,letterSpacing:1.4,textTransform:'uppercase',marginBottom:10 }}>
                 {T(lang,'পরামর্শ','Suggestions')}
               </div>
               {suggestions.map((s,i)=>(
-                <button key={i} onClick={()=>setInput(T(lang,s.bn,s.en))} style={{ display:'block',width:'100%',textAlign:'left',padding:'8px 10px',borderRadius:10,border:`1px solid ${tk.line}`,background:'transparent',color:tk.text,fontFamily:BEN,fontSize:12,cursor:'pointer',marginBottom:6 }}>
+                <button key={i} onClick={()=>setInput(T(lang,s.bn,s.en))} style={{ display:'block',width:'100%',textAlign:'left',padding:'7px 10px',borderRadius:10,border:`1px solid ${tk.line}`,background:'transparent',color:tk.text,fontFamily:BEN,fontSize:12,cursor:'pointer',marginBottom:5 }}>
                   {T(lang,s.bn,s.en)}
                 </button>
               ))}

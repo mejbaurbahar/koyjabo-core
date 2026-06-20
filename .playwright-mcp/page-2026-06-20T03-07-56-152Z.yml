@@ -1,0 +1,455 @@
+- generic [active] [ref=e1]:
+  - status [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - img "KoyJabo" [ref=e10]
+      - generic [ref=e11]: কই যাবো
+      - generic [ref=e12]: KOYJABO
+      - generic [ref=e15]: আপনার রুট লোড হচ্ছে…
+  - generic [ref=e16]:
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - img [ref=e20]
+        - generic [ref=e25]: ক
+      - generic [ref=e27]: কই যাবো
+      - generic [ref=e28]: KOYJABO
+      - generic [ref=e31]: Loading your routes…
+    - generic [ref=e33]:
+      - button "KoyJabo Home" [ref=e34] [cursor=pointer]:
+        - img "KoyJabo" [ref=e36]
+        - generic [ref=e37]: কই যাবো
+      - navigation [ref=e38]:
+        - button "🏠 Home" [ref=e39] [cursor=pointer]:
+          - generic [ref=e40]: 🏠
+          - text: Home
+        - button "🚌 Local Bus" [ref=e41] [cursor=pointer]:
+          - generic [ref=e42]: 🚌
+          - text: Local Bus
+        - button "🚇 Metro" [ref=e43] [cursor=pointer]:
+          - generic [ref=e44]: 🚇
+          - text: Metro
+        - button "🚆 Train" [ref=e45] [cursor=pointer]:
+          - generic [ref=e46]: 🚆
+          - text: Train
+        - button "🧭 Intercity" [ref=e47] [cursor=pointer]:
+          - generic [ref=e48]: 🧭
+          - text: Intercity
+        - button "⛴️ Launch" [ref=e49] [cursor=pointer]:
+          - generic [ref=e50]: ⛴️
+          - text: Launch
+        - button "✈️ Flights" [ref=e51] [cursor=pointer]:
+          - generic [ref=e52]: ✈️
+          - text: Flights
+      - generic [ref=e53]:
+        - button "Menu" [ref=e54] [cursor=pointer]:
+          - img [ref=e55]
+        - button "🪙 45" [ref=e56] [cursor=pointer]:
+          - generic [ref=e57]: 🪙
+          - generic [ref=e58]: "45"
+        - button "EN" [ref=e59] [cursor=pointer]:
+          - img [ref=e60]
+          - generic [ref=e64]: EN
+        - button "Toggle theme" [ref=e65] [cursor=pointer]:
+          - img [ref=e66]
+        - button "Install app" [ref=e72] [cursor=pointer]:
+          - img [ref=e73]
+    - generic [ref=e79]:
+      - main [ref=e81]:
+        - generic [ref=e82]:
+          - generic [ref=e86]:
+            - generic [ref=e87]:
+              - generic [ref=e88]: ✦ KoyJabo · train
+              - heading "Bangladesh Railway · all routes" [level=1] [ref=e89]
+              - paragraph [ref=e90]: 350+ intercity trains, e-ticket booking, live position tracking — including Padma Bridge route.
+              - generic [ref=e91]:
+                - generic [ref=e92]:
+                  - generic [ref=e93]: 350+
+                  - generic [ref=e94]: Trains
+                - generic [ref=e95]:
+                  - generic [ref=e96]: "64"
+                  - generic [ref=e97]: Districts
+                - generic [ref=e98]:
+                  - generic [ref=e99]: 5 days
+                  - generic [ref=e100]: Advance booking
+                - generic [ref=e101]:
+                  - generic [ref=e102]: ★ 4.5
+                  - generic [ref=e103]: Avg rating
+            - img "3D metro train" [ref=e105]:
+              - generic [ref=e131]: M6
+          - generic [ref=e192]:
+            - generic [ref=e193]:
+              - generic [ref=e194]:
+                - button "🚆 E-ticket" [ref=e195] [cursor=pointer]
+                - button "🔍 PNR" [ref=e196] [cursor=pointer]
+                - button "📍 Live" [ref=e197] [cursor=pointer]
+                - button "🛤 Route map" [ref=e198] [cursor=pointer]
+              - generic [ref=e199]:
+                - img [ref=e201]
+                - generic [ref=e204]: "e.g. Cox's Bazar Express, Sonar Bangla, #786..."
+                - generic [ref=e205]:
+                  - generic [ref=e206]: Name
+                  - generic [ref=e207]: Number
+                  - generic [ref=e208]: PNR
+              - generic [ref=e209]:
+                - generic [ref=e210]:
+                  - img [ref=e212]
+                  - generic [ref=e215]:
+                    - generic [ref=e216]: From
+                    - textbox "Dhaka" [ref=e217]
+                - generic [ref=e218]:
+                  - img [ref=e220]
+                  - generic [ref=e222]:
+                    - generic [ref=e223]: To
+                    - textbox "Cox's Bazar" [ref=e224]
+                - generic [ref=e225]:
+                  - img [ref=e227]
+                  - generic [ref=e230]:
+                    - generic [ref=e231]: Date
+                    - generic [ref=e232]: 15 May
+                - button "Search" [ref=e233] [cursor=pointer]:
+                  - img [ref=e234]
+                  - text: Search
+            - generic [ref=e237]:
+              - generic [ref=e238]:
+                - heading "Favorite trains" [level=2] [ref=e240]
+                - generic [ref=e241]:
+                  - generic [ref=e243] [cursor=pointer]:
+                    - generic [ref=e244]:
+                      - generic [ref=e245]: 813/814
+                      - generic [ref=e246]: 🚆
+                    - generic [ref=e247]:
+                      - generic [ref=e249]: Cox's Bazar Express
+                      - generic [ref=e250]: Dhaka (Kamalapur) → Cox's Bazar
+                      - generic [ref=e251]:
+                        - generic [ref=e252]:
+                          - img [ref=e253]
+                          - img [ref=e255]
+                          - img [ref=e257]
+                          - img [ref=e259]
+                          - img [ref=e261]
+                        - generic [ref=e263]: "4.3"
+                        - generic [ref=e264]: "(0) · Off: Mon (from Dhk), Tue (from CXB)"
+                    - generic [ref=e265]:
+                      - generic [ref=e266]: ৳ 505–2100
+                      - generic [ref=e267]: 23:00 PM → 07:20
+                      - generic [ref=e268]: 420 km
+                  - generic [ref=e270] [cursor=pointer]:
+                    - generic [ref=e271]:
+                      - generic [ref=e272]: 815/816
+                      - generic [ref=e273]: 🚆
+                    - generic [ref=e274]:
+                      - generic [ref=e276]: Parjotak Express
+                      - generic [ref=e277]: Dhaka (Kamalapur) → Cox's Bazar
+                      - generic [ref=e278]:
+                        - generic [ref=e279]:
+                          - img [ref=e280]
+                          - img [ref=e282]
+                          - img [ref=e284]
+                          - img [ref=e286]
+                          - img [ref=e288]
+                        - generic [ref=e290]: "4.3"
+                        - generic [ref=e291]: "(0) · Off: Wed"
+                    - generic [ref=e292]:
+                      - generic [ref=e293]: ৳ 505–2100
+                      - generic [ref=e294]: 06:15 AM → 14:40
+                      - generic [ref=e295]: 420 km
+                  - generic [ref=e297] [cursor=pointer]:
+                    - generic [ref=e298]:
+                      - generic [ref=e299]: 791/792
+                      - generic [ref=e300]: 🚆
+                    - generic [ref=e301]:
+                      - generic [ref=e303]: Banalata Express
+                      - generic [ref=e304]: Dhaka (Kamalapur) → Chapainawabganj
+                      - generic [ref=e305]:
+                        - generic [ref=e306]:
+                          - img [ref=e307]
+                          - img [ref=e309]
+                          - img [ref=e311]
+                          - img [ref=e313]
+                          - img [ref=e315]
+                        - generic [ref=e317]: "4.3"
+                        - generic [ref=e318]: "(0) · Off: Fri"
+                    - generic [ref=e319]:
+                      - generic [ref=e320]: ৳ 265–1160
+                      - generic [ref=e321]: 13:30 PM → 19:15
+                      - generic [ref=e322]: 256 km
+                  - generic [ref=e324] [cursor=pointer]:
+                    - generic [ref=e325]:
+                      - generic [ref=e326]: 825/826
+                      - generic [ref=e327]: 🚆
+                    - generic [ref=e328]:
+                      - generic [ref=e330]: Jahanabad Express
+                      - generic [ref=e331]: Dhaka (Kamalapur) → Khulna
+                      - generic [ref=e332]:
+                        - generic [ref=e333]:
+                          - img [ref=e334]
+                          - img [ref=e336]
+                          - img [ref=e338]
+                          - img [ref=e340]
+                          - img [ref=e342]
+                        - generic [ref=e344]: "4.3"
+                        - generic [ref=e345]: "(0) · Off: Mon"
+                    - generic [ref=e346]:
+                      - generic [ref=e347]: ৳ 220–1050
+                      - generic [ref=e348]: 20:00 PM → 23:45
+                      - generic [ref=e349]: 210 km
+                  - generic [ref=e351] [cursor=pointer]:
+                    - generic [ref=e352]:
+                      - generic [ref=e353]: 827/828
+                      - generic [ref=e354]: 🚆
+                    - generic [ref=e355]:
+                      - generic [ref=e357]: Ruposhi Bangla Express
+                      - generic [ref=e358]: Dhaka (Kamalapur) → Benapole
+                      - generic [ref=e359]:
+                        - generic [ref=e360]:
+                          - img [ref=e361]
+                          - img [ref=e363]
+                          - img [ref=e365]
+                          - img [ref=e367]
+                          - img [ref=e369]
+                        - generic [ref=e371]: "4.3"
+                        - generic [ref=e372]: "(0) · Off: Mon"
+                    - generic [ref=e373]:
+                      - generic [ref=e374]: ৳ 240–1100
+                      - generic [ref=e375]: 10:45 AM → 14:30
+                      - generic [ref=e376]: 230 km
+              - generic [ref=e377]:
+                - generic [ref=e378]:
+                  - generic [ref=e379]: Coach classes
+                  - generic [ref=e380]:
+                    - generic [ref=e381]: 🛏️
+                    - generic [ref=e382]:
+                      - generic [ref=e383]: AC Berth
+                      - generic [ref=e384]: 40 berths
+                    - generic [ref=e385]: ৳ 2,656
+                  - generic [ref=e386]:
+                    - generic [ref=e387]: 💺
+                    - generic [ref=e388]:
+                      - generic [ref=e389]: Snigdha
+                      - generic [ref=e390]: 44 seats
+                    - generic [ref=e391]: ৳ 1,591
+                  - generic [ref=e392]:
+                    - generic [ref=e393]: 🪑
+                    - generic [ref=e394]:
+                      - generic [ref=e395]: AC Chair
+                      - generic [ref=e396]: 54 seats
+                    - generic [ref=e397]: ৳ 980
+                  - generic [ref=e398]:
+                    - generic [ref=e399]: 🎫
+                    - generic [ref=e400]:
+                      - generic [ref=e401]: Shovon Chair
+                      - generic [ref=e402]: 88 seats
+                    - generic [ref=e403]: ৳ 535
+                  - generic [ref=e404]:
+                    - generic [ref=e405]: 🧳
+                    - generic [ref=e406]:
+                      - generic [ref=e407]: Shovon
+                      - generic [ref=e408]: 120 seats
+                    - generic [ref=e409]: ৳ 405
+                - generic [ref=e410]:
+                  - generic [ref=e411]: Major stations
+                  - generic [ref=e412]:
+                    - generic [ref=e413] [cursor=pointer]:
+                      - generic [ref=e414]: 🏛️
+                      - text: Dhaka (Kamalapur)
+                    - generic [ref=e415] [cursor=pointer]:
+                      - generic [ref=e416]: 🏛️
+                      - text: Tejgaon
+                    - generic [ref=e417] [cursor=pointer]:
+                      - generic [ref=e418]: 🏛️
+                      - text: Dhaka Cantonment
+                    - generic [ref=e419] [cursor=pointer]:
+                      - generic [ref=e420]: 🏛️
+                      - text: Biman Bandar (Airport)
+                    - generic [ref=e421] [cursor=pointer]:
+                      - generic [ref=e422]: 🏛️
+                      - text: Tongi
+                    - generic [ref=e423] [cursor=pointer]:
+                      - generic [ref=e424]: 🏛️
+                      - text: Joydebpur
+                    - generic [ref=e425] [cursor=pointer]:
+                      - generic [ref=e426]: 🏛️
+                      - text: Narsingdi
+                    - generic [ref=e427] [cursor=pointer]:
+                      - generic [ref=e428]: 🏛️
+                      - text: Bhairab Bazar
+                    - generic [ref=e429] [cursor=pointer]:
+                      - generic [ref=e430]: 🏛️
+                      - text: Kishoreganj
+                    - generic [ref=e431] [cursor=pointer]:
+                      - generic [ref=e432]: 🏛️
+                      - text: Mymensingh
+                    - generic [ref=e433] [cursor=pointer]:
+                      - generic [ref=e434]: 🏛️
+                      - text: Netrokona
+                    - generic [ref=e435] [cursor=pointer]:
+                      - generic [ref=e436]: 🏛️
+                      - text: Mohanganj
+                - insertion [ref=e439]:
+                  - iframe [ref=e441]:
+                    
+            - insertion [ref=e444]:
+              - iframe [ref=e446]:
+                
+      - contentinfo [ref=e447]:
+        - generic [ref=e448]:
+          - generic [ref=e449]:
+            - generic [ref=e450]:
+              - button "KoyJabo কই যাবো" [ref=e451] [cursor=pointer]:
+                - img "KoyJabo" [ref=e453]
+                - generic [ref=e454]: কই যাবো
+              - paragraph [ref=e455]: Smart transit guide for Dhaka commuters
+              - generic [ref=e456]:
+                - link "f" [ref=e457] [cursor=pointer]:
+                  - /url: https://www.facebook.com/koyjabo/
+                - link "in" [ref=e458] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/company/koy-jabo/
+            - generic [ref=e459]:
+              - generic [ref=e460]: Explore
+              - button "Local Bus" [ref=e461] [cursor=pointer]
+              - button "Metro" [ref=e462] [cursor=pointer]
+              - button "Train" [ref=e463] [cursor=pointer]
+              - button "Flights" [ref=e464] [cursor=pointer]
+              - button "Launch" [ref=e465] [cursor=pointer]
+              - button "Fare" [ref=e466] [cursor=pointer]
+            - generic [ref=e467]:
+              - generic [ref=e468]: Account
+              - button "Profile" [ref=e469] [cursor=pointer]
+              - button "Favorites" [ref=e470] [cursor=pointer]
+              - button "History" [ref=e471] [cursor=pointer]
+              - button "Settings" [ref=e472] [cursor=pointer]
+              - button "Sign In" [ref=e473] [cursor=pointer]
+            - generic [ref=e474]:
+              - generic [ref=e475]: Company
+              - button "Why KoyJabo" [ref=e476] [cursor=pointer]
+              - button "About" [ref=e477] [cursor=pointer]
+              - button "Blog" [ref=e478] [cursor=pointer]
+              - button "QA" [ref=e479] [cursor=pointer]
+              - button "Contact" [ref=e480] [cursor=pointer]
+            - generic [ref=e481]:
+              - generic [ref=e482]: Legal
+              - button "Privacy" [ref=e483] [cursor=pointer]
+              - button "Terms" [ref=e484] [cursor=pointer]
+              - button "Release" [ref=e485] [cursor=pointer]
+          - generic [ref=e486]:
+            - generic [ref=e487]: © 2026 KoyJabo · All rights reserved
+            - generic [ref=e488]: Made in Dhaka for Bangladesh
+    - generic [ref=e490]:
+      - generic: AI Assistant · ask me
+      - button "AI Assistant" [ref=e492] [cursor=pointer]:
+        - img [ref=e493]
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - img "KoyJabo"
+            - generic: KoyJabo
+          - button "Close menu": ×
+        - generic:
+          - generic:
+            - generic: Explore
+            - button "Home":
+              - generic: Home
+              - generic:
+                - img
+            - button "Local Bus":
+              - generic: Local Bus
+              - generic:
+                - img
+            - button "Metro":
+              - generic: Metro
+              - generic:
+                - img
+            - button "Train":
+              - generic: Train
+              - generic:
+                - img
+            - button "Intercity":
+              - generic: Intercity
+              - generic:
+                - img
+            - button "Launch":
+              - generic: Launch
+              - generic:
+                - img
+            - button "Flights":
+              - generic: Flights
+              - generic:
+                - img
+            - button "Fare":
+              - generic: Fare
+              - generic:
+                - img
+            - button "AI Assistant":
+              - generic: AI Assistant
+              - generic:
+                - img
+          - generic:
+            - generic: Account
+            - button "Profile":
+              - generic: Profile
+              - generic:
+                - img
+            - button "🪙 KoyCoins":
+              - generic: 🪙 KoyCoins
+              - generic:
+                - img
+            - button "Favorites":
+              - generic: Favorites
+              - generic:
+                - img
+            - button "History":
+              - generic: History
+              - generic:
+                - img
+            - button "Settings":
+              - generic: Settings
+              - generic:
+                - img
+            - button "Sign In":
+              - generic: Sign In
+              - generic:
+                - img
+          - generic:
+            - generic: Company
+            - button "Why KoyJabo":
+              - generic: Why KoyJabo
+              - generic:
+                - img
+            - button "About":
+              - generic: About
+              - generic:
+                - img
+            - button "Blog":
+              - generic: Blog
+              - generic:
+                - img
+            - button "QA":
+              - generic: QA
+              - generic:
+                - img
+            - button "Contact":
+              - generic: Contact
+              - generic:
+                - img
+            - button "Release":
+              - generic: Release
+              - generic:
+                - img
+          - generic:
+            - generic: Legal
+            - button "Privacy":
+              - generic: Privacy
+              - generic:
+                - img
+            - button "Terms":
+              - generic: Terms
+              - generic:
+                - img
+    - generic [ref=e501]:
+      - insertion [ref=e503]:
+        - iframe [ref=e505]:
+          
+      - button "×" [ref=e506] [cursor=pointer]

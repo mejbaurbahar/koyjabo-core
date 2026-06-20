@@ -1,0 +1,461 @@
+- generic [ref=e13]:
+  - generic [ref=e30]:
+    - button "KoyJabo Home" [ref=e31] [cursor=pointer]:
+      - generic [ref=e34]: ক
+      - generic [ref=e35]: KoyJabo
+    - navigation [ref=e36]:
+      - button "🏠 Home" [ref=e37] [cursor=pointer]:
+        - generic [ref=e38]: 🏠
+        - text: Home
+      - button "🚌 Local Bus" [ref=e39] [cursor=pointer]:
+        - generic [ref=e40]: 🚌
+        - text: Local Bus
+      - button "🚇 Metro" [ref=e41] [cursor=pointer]:
+        - generic [ref=e42]: 🚇
+        - text: Metro
+      - button "🚆 Train" [ref=e43] [cursor=pointer]:
+        - generic [ref=e44]: 🚆
+        - text: Train
+      - button "🧭 Intercity" [ref=e45] [cursor=pointer]:
+        - generic [ref=e46]: 🧭
+        - text: Intercity
+      - button "⛴️ Launch" [ref=e47] [cursor=pointer]:
+        - generic [ref=e48]: ⛴️
+        - text: Launch
+      - button "✈️ Flights" [ref=e49] [cursor=pointer]:
+        - generic [ref=e50]: ✈️
+        - text: Flights
+    - generic [ref=e51]:
+      - button "Menu" [ref=e52] [cursor=pointer]:
+        - img [ref=e53]
+      - button "EN" [ref=e54] [cursor=pointer]:
+        - img [ref=e55]
+        - generic [ref=e59]: EN
+      - button "Toggle theme" [ref=e60] [cursor=pointer]:
+        - img [ref=e61]
+      - button "Install app" [ref=e67] [cursor=pointer]:
+        - img [ref=e68]
+  - generic [ref=e2729]:
+    - generic [ref=e2731]:
+      - button [ref=e2732] [cursor=pointer]:
+        - img [ref=e2733]
+      - generic [ref=e2735]: Go back
+    - main [ref=e2736]:
+      - generic [ref=e2737]:
+        - generic [ref=e2738]:
+          - generic [ref=e2739]:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - img
+                  - generic:
+                    - button "Start" [ref=e2740] [cursor=pointer]:
+                      - generic [ref=e2743]: Start
+                    - button "●" [ref=e2744] [cursor=pointer]:
+                      - generic [ref=e2746]: ●
+                    - button "●" [ref=e2747] [cursor=pointer]:
+                      - generic [ref=e2749]: ●
+                    - button "●" [ref=e2750] [cursor=pointer]:
+                      - generic [ref=e2752]: ●
+                    - button "●" [ref=e2753] [cursor=pointer]:
+                      - generic [ref=e2755]: ●
+                    - button "●" [ref=e2756] [cursor=pointer]:
+                      - generic [ref=e2758]: ●
+                    - button "●" [ref=e2759] [cursor=pointer]:
+                      - generic [ref=e2761]: ●
+                    - button "●" [ref=e2762] [cursor=pointer]:
+                      - generic [ref=e2764]: ●
+                    - button "●" [ref=e2765] [cursor=pointer]:
+                      - generic [ref=e2767]: ●
+                    - button "●" [ref=e2768] [cursor=pointer]:
+                      - generic [ref=e2770]: ●
+                    - button "●" [ref=e2771] [cursor=pointer]:
+                      - generic [ref=e2773]: ●
+                    - button "●" [ref=e2774] [cursor=pointer]:
+                      - generic [ref=e2776]: ●
+                    - button "●" [ref=e2777] [cursor=pointer]:
+                      - generic [ref=e2779]: ●
+                    - button "●" [ref=e2780] [cursor=pointer]:
+                      - generic [ref=e2782]: ●
+                    - button "●" [ref=e2783] [cursor=pointer]:
+                      - generic [ref=e2785]: ●
+                    - button "●" [ref=e2786] [cursor=pointer]:
+                      - generic [ref=e2788]: ●
+                    - button "●" [ref=e2789] [cursor=pointer]:
+                      - generic [ref=e2791]: ●
+                    - button "●" [ref=e2792] [cursor=pointer]:
+                      - generic [ref=e2794]: ●
+                    - button "●" [ref=e2795] [cursor=pointer]:
+                      - generic [ref=e2797]: ●
+                    - button "●" [ref=e2798] [cursor=pointer]:
+                      - generic [ref=e2800]: ●
+                    - button "●" [ref=e2801] [cursor=pointer]:
+                      - generic [ref=e2803]: ●
+                    - button "●" [ref=e2804] [cursor=pointer]:
+                      - generic [ref=e2806]: ●
+                    - button "●" [ref=e2807] [cursor=pointer]:
+                      - generic [ref=e2809]: ●
+                    - button "●" [ref=e2810] [cursor=pointer]:
+                      - generic [ref=e2812]: ●
+                    - button "●" [ref=e2813] [cursor=pointer]:
+                      - generic [ref=e2815]: ●
+                    - button "●" [ref=e2816] [cursor=pointer]:
+                      - generic [ref=e2818]: ●
+                    - button "Destination" [ref=e2819] [cursor=pointer]:
+                      - generic [ref=e2822]: Destination
+                - generic [ref=e2823]:
+                  - button "Zoom in" [disabled] [ref=e2824]: +
+                  - button "Zoom out" [ref=e2825] [cursor=pointer]: −
+            - generic [ref=e2826]: Agradut
+            - generic [ref=e2828]: Straight line
+            - generic [ref=e2829]: 27 stops
+            - generic [ref=e2830]:
+              - button "Layers" [ref=e2831]:
+                - img [ref=e2832]
+                - text: Layers
+              - button "🚦Traffic" [ref=e2836]: 🚦Traffic
+            - generic [ref=e2837]:
+              - button "Zoom in" [ref=e2838]: +
+              - button "Zoom out" [ref=e2839]: −
+          - generic: Live tracking
+        - generic [ref=e2840]:
+          - generic [ref=e2841]:
+            - generic [ref=e2842]:
+              - generic [ref=e2843]:
+                - generic [ref=e2844]: A
+                - generic [ref=e2845]:
+                  - generic [ref=e2846]: Agradut
+                  - generic [ref=e2847]:
+                    - generic [ref=e2848]: ★ 4.2
+                    - generic [ref=e2849]: 324 reviews
+                    - generic [ref=e2850]: Semi-Sitting
+              - generic [ref=e2851]: Savar ⇄ Notun Bazar
+              - generic [ref=e2852]: 🕐 5:30 AM - 10:30 PM
+              - generic [ref=e2853]:
+                - generic [ref=e2854]:
+                  - generic [ref=e2855]: "27"
+                  - generic [ref=e2856]: stops
+                - generic [ref=e2857]:
+                  - generic [ref=e2858]: 111m
+                  - generic [ref=e2859]: time
+                - generic [ref=e2860]:
+                  - generic [ref=e2861]: ৳30
+                  - generic [ref=e2862]: fare
+                - generic [ref=e2863]:
+                  - generic [ref=e2864]: Semi-Sitting
+                  - generic [ref=e2865]: type
+            - generic [ref=e2866]:
+              - generic [ref=e2867]:
+                - text: Stops
+                - generic [ref=e2868]: (27)
+              - generic [ref=e2873]:
+                - generic [ref=e2874]:
+                  - generic [ref=e2875]: Savar
+                  - generic [ref=e2876]: Boarding
+                - generic [ref=e2877]: 4:22 PM
+              - generic [ref=e2882]:
+                - generic [ref=e2884]: Nabinagar (Savar)
+                - generic [ref=e2885]: 4:29 PM
+              - generic [ref=e2890]:
+                - generic [ref=e2892]: Bank Town
+                - generic [ref=e2893]: 4:36 PM
+              - generic [ref=e2898]:
+                - generic [ref=e2900]: Hemayetpur
+                - generic [ref=e2901]: 4:43 PM
+              - generic [ref=e2906]:
+                - generic [ref=e2908]: Boliarpur
+                - generic [ref=e2909]: 5:50 PM
+              - generic [ref=e2914]:
+                - generic [ref=e2916]: Modhumoti
+                - generic [ref=e2917]: 5:57 PM
+              - generic [ref=e2922]:
+                - generic [ref=e2924]: Amin Bazar
+                - generic [ref=e2925]: 5:04 PM
+              - generic [ref=e2930]:
+                - generic [ref=e2932]: Parbat
+                - generic [ref=e2933]: 6:11 PM
+              - generic [ref=e2938]:
+                - generic [ref=e2940]: Gabtoli
+                - generic [ref=e2941]: 6:18 PM
+              - generic [ref=e2946]:
+                - generic [ref=e2948]: Mazar Road
+                - generic [ref=e2949]: 6:25 PM
+              - generic [ref=e2954]:
+                - generic [ref=e2956]: Technical
+                - generic [ref=e2957]: 6:32 PM
+              - generic [ref=e2962]:
+                - generic [ref=e2964]: Kallyanpur
+                - generic [ref=e2965]: 7:39 PM
+              - generic [ref=e2970]:
+                - generic [ref=e2972]: Shyamoli
+                - generic [ref=e2973]: 7:46 PM
+              - generic [ref=e2978]:
+                - generic [ref=e2980]: Shishu Mela
+                - generic [ref=e2981]: 7:53 PM
+              - generic [ref=e2986]:
+                - generic [ref=e2988]: Agargaon
+                - generic [ref=e2989]: 8:00 PM
+              - generic [ref=e2994]:
+                - generic [ref=e2996]: Zia Uddyan
+                - generic [ref=e2997]: 8:07 PM
+              - generic [ref=e3002]:
+                - generic [ref=e3004]: Bijoy Sarani
+                - generic [ref=e3005]: 8:14 PM
+              - generic [ref=e3010]:
+                - generic [ref=e3012]: Jahangir Gate
+                - generic [ref=e3013]: 9:21 PM
+              - generic [ref=e3018]:
+                - generic [ref=e3020]: Mohakhali
+                - generic [ref=e3021]: 9:28 PM
+              - generic [ref=e3026]:
+                - generic [ref=e3028]: Mohakhali Flyover
+                - generic [ref=e3029]: 9:35 PM
+              - generic [ref=e3034]:
+                - generic [ref=e3036]: Wireless Gate
+                - generic [ref=e3037]: 9:42 PM
+              - generic [ref=e3042]:
+                - generic [ref=e3044]: Gulshan 1
+                - generic [ref=e3045]: 10:49 PM
+              - generic [ref=e3050]:
+                - generic [ref=e3052]: Badda Link Road
+                - generic [ref=e3053]: 10:56 PM
+              - generic [ref=e3058]:
+                - generic [ref=e3060]: Bashtola
+                - generic [ref=e3061]: 10:03 PM
+              - generic [ref=e3066]:
+                - generic [ref=e3068]: Shahjadpur
+                - generic [ref=e3069]: 11:10 PM
+              - generic [ref=e3074]:
+                - generic [ref=e3076]: Uttar Badda
+                - generic [ref=e3077]: 11:17 PM
+              - generic [ref=e3081]:
+                - generic [ref=e3082]:
+                  - generic [ref=e3083]: Notun Bazar
+                  - generic [ref=e3084]: Destination
+                - generic [ref=e3085]: 11:24 PM
+            - generic [ref=e3086]:
+              - generic [ref=e3087]:
+                - generic [ref=e3088]: Sponsored
+                - generic [ref=e3089]: Google AdSense
+              - insertion [ref=e3091]:
+                - iframe [ref=e3093]:
+                  
+            - generic [ref=e3094]:
+              - generic [ref=e3095]:
+                - generic [ref=e3096]:
+                  - text: 4.2★★★★☆
+                  - generic [ref=e3097]: 324 reviews
+                - generic [ref=e3098]:
+                  - generic [ref=e3100]: "5"
+                  - generic [ref=e3104]: "4"
+                  - generic [ref=e3108]: "3"
+                  - generic [ref=e3112]: "2"
+                  - generic [ref=e3116]: "1"
+              - generic [ref=e3119]:
+                - generic [ref=e3120]: Clean
+                - generic [ref=e3121]: AC works
+                - generic [ref=e3122]: On-time
+                - generic [ref=e3123]: Safe
+              - button "⭐ Write a review" [ref=e3124] [cursor=pointer]
+          - generic [ref=e3125]:
+            - generic [ref=e3126]:
+              - generic [ref=e3127]: Bus info
+              - generic [ref=e3128]:
+                - generic [ref=e3129]: Operator
+                - generic [ref=e3130]: Agradut
+              - generic [ref=e3131]:
+                - generic [ref=e3132]: Bus ID
+                - generic [ref=e3133]: agradut
+              - generic [ref=e3134]:
+                - generic [ref=e3135]: Fare
+                - generic [ref=e3136]: ৳ 30
+              - generic [ref=e3137]:
+                - generic [ref=e3138]: Type
+                - generic [ref=e3139]: Semi-Sitting
+              - generic [ref=e3140]:
+                - generic [ref=e3141]: Hours
+                - generic [ref=e3142]: 5:30 AM - 10:30 PM
+              - paragraph [ref=e3143]: ℹ️ KoyJabo shows info only — no ticket sales.
+            - generic [ref=e3144]:
+              - generic [ref=e3145]:
+                - generic [ref=e3146]: Sponsored
+                - generic [ref=e3147]: Google AdSense
+              - insertion [ref=e3149]:
+                - iframe [ref=e3151]:
+                  
+      - generic [ref=e3152]:
+        - button "🤍 Save" [ref=e3153] [cursor=pointer]
+        - button "⭐ Rate" [ref=e3154] [cursor=pointer]
+        - button "🗺 Start navigation" [ref=e3155] [cursor=pointer]
+    - contentinfo [ref=e3156]:
+      - generic [ref=e3157]:
+        - generic [ref=e3158]:
+          - generic [ref=e3159]:
+            - button "ক কই যাবো" [ref=e3160] [cursor=pointer]:
+              - generic [ref=e3163]: ক
+              - generic [ref=e3164]: কই যাবো
+            - paragraph [ref=e3165]: Smart transit guide for Dhaka commuters
+            - generic [ref=e3166]:
+              - generic "Facebook" [ref=e3167] [cursor=pointer]: f
+              - generic "LinkedIn" [ref=e3168] [cursor=pointer]: in
+              - generic "X (Twitter)" [ref=e3169] [cursor=pointer]: X
+              - generic "YouTube" [ref=e3170] [cursor=pointer]: ▶
+              - generic "Other" [ref=e3171] [cursor=pointer]: ✦
+          - generic [ref=e3172]:
+            - generic [ref=e3173]: Explore
+            - button "Local Bus" [ref=e3174] [cursor=pointer]
+            - button "Metro" [ref=e3175] [cursor=pointer]
+            - button "Train" [ref=e3176] [cursor=pointer]
+            - button "Flights" [ref=e3177] [cursor=pointer]
+            - button "Launch" [ref=e3178] [cursor=pointer]
+            - button "Fare" [ref=e3179] [cursor=pointer]
+          - generic [ref=e3180]:
+            - generic [ref=e3181]: Account
+            - button "Profile" [ref=e3182] [cursor=pointer]
+            - button "Favorites" [ref=e3183] [cursor=pointer]
+            - button "History" [ref=e3184] [cursor=pointer]
+            - button "Settings" [ref=e3185] [cursor=pointer]
+            - button "Sign In" [ref=e3186] [cursor=pointer]
+          - generic [ref=e3187]:
+            - generic [ref=e3188]: Company
+            - button "Why KoyJabo" [ref=e3189] [cursor=pointer]
+            - button "About" [ref=e3190] [cursor=pointer]
+            - button "Blog" [ref=e3191] [cursor=pointer]
+            - button "QA" [ref=e3192] [cursor=pointer]
+            - button "Contact" [ref=e3193] [cursor=pointer]
+          - generic [ref=e3194]:
+            - generic [ref=e3195]: Legal
+            - button "Privacy" [ref=e3196] [cursor=pointer]
+            - button "Terms" [ref=e3197] [cursor=pointer]
+            - button "Release" [ref=e3198] [cursor=pointer]
+        - generic [ref=e3199]:
+          - generic [ref=e3200]: © 2026 KoyJabo · All rights reserved
+          - generic [ref=e3201]: All systems operational
+  - generic [ref=e821]:
+    - generic: AI Assistant · ask me
+    - button "AI Assistant" [ref=e823] [cursor=pointer]:
+      - img [ref=e824]
+  - generic:
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic: ক
+          - generic: KoyJabo
+        - button "Close menu": ×
+      - generic:
+        - generic:
+          - generic: Explore
+          - button "Home":
+            - generic: Home
+            - generic:
+              - img
+          - button "Local Bus":
+            - generic: Local Bus
+            - generic:
+              - img
+          - button "Metro":
+            - generic: Metro
+            - generic:
+              - img
+          - button "Train":
+            - generic: Train
+            - generic:
+              - img
+          - button "Intercity":
+            - generic: Intercity
+            - generic:
+              - img
+          - button "Launch":
+            - generic: Launch
+            - generic:
+              - img
+          - button "Flights":
+            - generic: Flights
+            - generic:
+              - img
+          - button "Fare":
+            - generic: Fare
+            - generic:
+              - img
+          - button "AI Assistant":
+            - generic: AI Assistant
+            - generic:
+              - img
+        - generic:
+          - generic: Account
+          - button "Profile":
+            - generic: Profile
+            - generic:
+              - img
+          - button "Favorites":
+            - generic: Favorites
+            - generic:
+              - img
+          - button "History":
+            - generic: History
+            - generic:
+              - img
+          - button "Settings":
+            - generic: Settings
+            - generic:
+              - img
+          - button "Sign In":
+            - generic: Sign In
+            - generic:
+              - img
+        - generic:
+          - generic: Company
+          - button "Why KoyJabo":
+            - generic: Why KoyJabo
+            - generic:
+              - img
+          - button "About":
+            - generic: About
+            - generic:
+              - img
+          - button "Blog":
+            - generic: Blog
+            - generic:
+              - img
+          - button "QA":
+            - generic: QA
+            - generic:
+              - img
+          - button "Contact":
+            - generic: Contact
+            - generic:
+              - img
+          - button "Release":
+            - generic: Release
+            - generic:
+              - img
+        - generic:
+          - generic: Legal
+          - button "Privacy":
+            - generic: Privacy
+            - generic:
+              - img
+          - button "Terms":
+            - generic: Terms
+            - generic:
+              - img
+  - generic [ref=e832]:
+    - generic [ref=e833]: Sponsored
+    - generic [ref=e834]: Google AdSense · 320 × 50
+    - button "✕" [ref=e835] [cursor=pointer]
+  - generic [ref=e2716]:
+    - generic [ref=e2717]: Sponsored
+    - button "Skip ad ✕" [ref=e2718] [cursor=pointer]:
+      - text: Skip ad
+      - generic [ref=e2719]: ✕
+    - generic [ref=e2720]:
+      - generic [ref=e2721]:
+        - generic [ref=e2722]: ✈️
+        - generic [ref=e2723]: Cox's Bazar Travel
+      - generic [ref=e2724]:
+        - generic [ref=e2725]: Cox's Bazar Hotels · from ৳1200/night
+        - generic [ref=e2726]: Book direct, no hidden fees
+        - button "View deals →" [ref=e2727] [cursor=pointer]

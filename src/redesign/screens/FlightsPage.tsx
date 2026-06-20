@@ -7,8 +7,9 @@ import { Icon } from '../components/Icons';
 import { ModeHero } from '../components/ModeHero';
 import { Stars } from '../components/Stars';
 import { SuggestionDropdown, Suggestion } from '../components/SuggestionDropdown';
+import { earnCoins } from '../utils/koyCoinService';
 
-interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
+interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string,p?:Record<string,string>)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
 const AIRLINES = [
   { code:'BG', name:{bn:'বিমান বাংলাদেশ',en:'Biman Bangladesh'}, dep:'07:15', arr:'08:15', dur:'1h 0m', stop:'Nonstop', fare:'4,499', seats:9, col:['#006a4e','#10b981'] as [string,string], rating:4.2, reviews:1240 },
@@ -33,21 +34,6 @@ const CABINS = [
   { l:'Economy Plus', bn:'ইকোনমি প্লাস', c:'#0ea5e9', p:'৳ 6,200', e:'🪑', desc:{bn:'বাড়তি লেগরুম',en:'Extra legroom'} },
   { l:'Economy', bn:'ইকোনমি', c:'#10b981', p:'৳ 4,199', e:'💺', desc:{bn:'স্ট্যান্ডার্ড · ২০কেজি',en:'Standard · 20kg'} },
   { l:'Saver', bn:'সেভার', c:'#f59e0b', p:'৳ 3,990', e:'🎒', desc:{bn:'কেবিন ব্যাগ মাত্র',en:'Cabin bag only'} },
-];
-
-const BIMAN_LINKS = [
-  { en:'Official Biman portal', bn:'বিমানের অফিসিয়াল পোর্টাল', href:'https://biman.gov.bd/' },
-  { en:'Book tickets', bn:'টিকেট বুকিং', href:'https://www.biman-airlines.com/?#flight' },
-  { en:'Flight status', bn:'ফ্লাইটের অবস্থা', href:'https://www.biman-airlines.com/?#flight-status' },
-  { en:'Flight schedule', bn:'ফ্লাইট সূচি', href:'https://www.biman-airlines.com/?#flight-schedule' },
-  { en:'Baggage information', bn:'লাগেজ তথ্য', href:'https://www.biman-airlines.com/baggageAll' },
-  { en:'Destination map', bn:'ডেস্টিনেশন ম্যাপ', href:'https://www.biman-airlines.com/destinations' },
-];
-
-const BIMAN_NOTES = [
-  { en:'Use Biman booking, flight status and schedule pages for final live fare, seat and timing confirmation.', bn:'চূড়ান্ত লাইভ ভাড়া, সিট ও সময় নিশ্চিত করতে বিমানের বুকিং, ফ্লাইট স্ট্যাটাস ও সূচি পেজ ব্যবহার করুন।' },
-  { en:'Check baggage rules before airport arrival, because cabin and checked baggage limits vary by ticket and route.', bn:'এয়ারপোর্টে যাওয়ার আগে লাগেজ নিয়ম দেখুন, কারণ টিকেট ও রুটভেদে কেবিন ও চেকড ব্যাগেজ সীমা বদলায়।' },
-  { en:'For domestic office help, use the official Biman contact page linked from biman.gov.bd.', bn:'ডোমেস্টিক অফিস সহায়তার জন্য biman.gov.bd থেকে দেওয়া অফিসিয়াল যোগাযোগ পেজ ব্যবহার করুন।' },
 ];
 
 export function FlightsPage(props: Props) {
@@ -77,7 +63,6 @@ export function FlightsPage(props: Props) {
 
   const fromSuggestions = useMemo(() => filterAirports(fromAirport), [fromAirport]);
   const toSuggestions = useMemo(() => filterAirports(toAirport), [toAirport]);
-  const canFindFlights = Boolean(fromAirport.trim() && toAirport.trim());
 
   return (
     <PageShell {...props}>
@@ -152,32 +137,9 @@ export function FlightsPage(props: Props) {
                 anchorRef={toRef as React.RefObject<HTMLElement>}
               />
             )}
-            <button disabled={!canFindFlights} onClick={()=>canFindFlights && onNav('results')} style={{ background:'linear-gradient(135deg,#1e5aa0,#0a1d3a)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'10px 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:canFindFlights?'pointer':'not-allowed', opacity:canFindFlights?1:0.5, display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #1e5aa0', marginTop:10 }}>
+            <button onClick={()=>{ earnCoins(5, 'Flight search'); onNav('results'); }} style={{ background:'linear-gradient(135deg,#1e5aa0,#0a1d3a)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'10px 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #1e5aa0', marginTop:10 }}>
               <Icon.search s={16}/>{T(lang,'ফ্লাইট খুঁজুন','Find flights')}
             </button>
-          </div>
-
-          <div style={{ ...card(16), marginBottom:18 }}>
-            <SectionHeader tk={tk} lang={lang} title={T(lang,'বিমান অফিসিয়াল তথ্য','Biman official information')}/>
-            <div style={{ fontFamily:SANS, fontSize:11, fontWeight:700, color:tk.textFaint, margin:'4px 0 12px' }}>{T(lang,'সূত্র: biman.gov.bd','Source: biman.gov.bd')}</div>
-            <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1.05fr 0.95fr', gap:14 }}>
-              <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-                {BIMAN_NOTES.map((note,i)=>(
-                  <div key={i} style={{ display:'flex', gap:10, alignItems:'flex-start', background:tk.panelMuted, border:`1px solid ${tk.line}`, borderRadius:12, padding:12 }}>
-                    <span style={{ width:24, height:24, flexShrink:0, borderRadius:999, display:'inline-flex', alignItems:'center', justifyContent:'center', background:tk.primarySoft, color:tk.primary, fontFamily:SANS, fontWeight:900, fontSize:12 }}>{i+1}</span>
-                    <span style={{ fontFamily:lang==='bn'?BEN:SANS, fontSize:13, color:tk.textDim, lineHeight:1.6 }}>{T(lang,note.bn,note.en)}</span>
-                  </div>
-                ))}
-              </div>
-              <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1fr 1fr', gap:8, alignContent:'start' }}>
-                {BIMAN_LINKS.map(link=>(
-                  <a key={link.href} href={link.href} target="_blank" rel="noreferrer" style={{ textDecoration:'none', color:tk.text, background:tk.inputBg, border:`1px solid ${tk.line}`, borderRadius:12, padding:'10px 12px', fontFamily:lang==='bn'?BEN:SANS, fontWeight:800, fontSize:12, display:'flex', alignItems:'center', justifyContent:'space-between', gap:8 }}>
-                    <span>{T(lang,link.bn,link.en)}</span>
-                    <span style={{ color:tk.primary }}>↗</span>
-                  </a>
-                ))}
-              </div>
-            </div>
           </div>
 
           <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1.5fr 1fr', gap:18 }}>
@@ -186,7 +148,7 @@ export function FlightsPage(props: Props) {
               <SectionHeader tk={tk} lang={lang} title={T(lang,"এয়ারলাইন গাইড · ঢাকা → কক্সবাজার","Airline guide · Dhaka → Cox's Bazar")} action={T(lang,'সব দেখুন','See all')}/>
               <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
                 {AIRLINES.map((a,i)=>(
-                  <div key={i} onClick={()=>onNav('vehicle')} style={{ ...card(14), position:'relative', overflow:'hidden', cursor:'pointer' }}>
+                  <div key={i} onClick={()=>{ earnCoins(2, 'View flight details'); onNav('flight-detail', { code: a.code }); }} style={{ ...card(14), position:'relative', overflow:'hidden', cursor:'pointer' }}>
                     {a.best && <div style={{ position:'absolute', top:0, right:0, background:'linear-gradient(90deg,#0ea5e9,#22d3ee)', color:'#04130d', padding:'3px 10px', borderRadius:'0 16px 0 10px', fontFamily:SANS, fontWeight:800, fontSize:9, letterSpacing:1 }}>★ {T(lang,'সেরা','BEST')}</div>}
                     {a.cheap && <div style={{ position:'absolute', top:0, right:0, background:'linear-gradient(90deg,#a855f7,#7c3aed)', color:'#fff', padding:'3px 10px', borderRadius:'0 16px 0 10px', fontFamily:SANS, fontWeight:800, fontSize:9, letterSpacing:1 }}>৳ {T(lang,'সস্তা','CHEAPEST')}</div>}
                     <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:10 }}>

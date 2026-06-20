@@ -1,0 +1,485 @@
+- generic [ref=e1]:
+  - generic [ref=e13]:
+    - generic [ref=e30]:
+      - button "KoyJabo Home" [ref=e31] [cursor=pointer]:
+        - generic [ref=e34]: ক
+        - generic [ref=e35]: KoyJabo
+      - navigation [ref=e36]:
+        - button "🏠 Home" [ref=e37] [cursor=pointer]:
+          - generic [ref=e38]: 🏠
+          - text: Home
+        - button "🚌 Local Bus" [ref=e39] [cursor=pointer]:
+          - generic [ref=e40]: 🚌
+          - text: Local Bus
+        - button "🚇 Metro" [ref=e41] [cursor=pointer]:
+          - generic [ref=e42]: 🚇
+          - text: Metro
+        - button "🚆 Train" [ref=e43] [cursor=pointer]:
+          - generic [ref=e44]: 🚆
+          - text: Train
+        - button "🧭 Intercity" [ref=e45] [cursor=pointer]:
+          - generic [ref=e46]: 🧭
+          - text: Intercity
+        - button "⛴️ Launch" [ref=e47] [cursor=pointer]:
+          - generic [ref=e48]: ⛴️
+          - text: Launch
+        - button "✈️ Flights" [ref=e49] [cursor=pointer]:
+          - generic [ref=e50]: ✈️
+          - text: Flights
+      - generic [ref=e51]:
+        - button "Menu" [ref=e52] [cursor=pointer]:
+          - img [ref=e53]
+        - button "EN" [ref=e54] [cursor=pointer]:
+          - img [ref=e55]
+          - generic [ref=e59]: EN
+        - button "Toggle theme" [ref=e60] [cursor=pointer]:
+          - img [ref=e61]
+        - button "Install app" [ref=e67] [cursor=pointer]:
+          - img [ref=e68]
+    - generic [ref=e969]:
+      - main [ref=e971]:
+        - generic [ref=e972]:
+          - generic [ref=e976]:
+            - generic [ref=e977]:
+              - generic [ref=e978]: ✦ KoyJabo · launch
+              - heading "River journeys · from Sadarghat to everywhere" [level=1] [ref=e979]
+              - paragraph [ref=e980]: 60+ launch routes, overnight cabin service across Padma and Meghna — Barisal, Bhola, Patuakhali, Chandpur.
+              - generic [ref=e981]:
+                - generic [ref=e982]:
+                  - generic [ref=e983]: 60+
+                  - generic [ref=e984]: Routes
+                - generic [ref=e985]:
+                  - generic [ref=e986]: "14"
+                  - generic [ref=e987]: Terminals
+                - generic [ref=e988]:
+                  - generic [ref=e989]: ৳ 300+
+                  - generic [ref=e990]: From
+                - generic [ref=e991]:
+                  - generic [ref=e992]: 6–12h
+                  - generic [ref=e993]: Duration
+            - img "3D river launch" [ref=e995]
+          - generic [ref=e1038]:
+            - generic [ref=e1039]:
+              - generic [ref=e1040]:
+                - img [ref=e1042]
+                - generic [ref=e1045]: e.g. Sundarban-12, Kirtonkhola-10, Parabat-18...
+                - generic [ref=e1046]:
+                  - generic [ref=e1047]: Name
+                  - generic [ref=e1048]: Number
+                  - generic [ref=e1049]: Operator
+              - generic [ref=e1050]:
+                - generic [ref=e1051]:
+                  - img [ref=e1053]
+                  - generic [ref=e1056]:
+                    - generic [ref=e1057]: From terminal
+                    - textbox "Sadarghat · Dhaka" [active] [ref=e1058]
+                - generic [ref=e1059]:
+                  - img [ref=e1061]
+                  - generic [ref=e1063]:
+                    - generic [ref=e1064]: To
+                    - textbox "Barisal" [ref=e1065]
+                - generic [ref=e1066]:
+                  - img [ref=e1068]
+                  - generic [ref=e1071]:
+                    - generic [ref=e1072]: Date
+                    - generic [ref=e1073]: 15 May
+                - button "Find launch" [ref=e1074] [cursor=pointer]:
+                  - img [ref=e1075]
+                  - text: Find launch
+            - generic [ref=e1078]:
+              - generic [ref=e1079]:
+                - heading "Tonight's launches · Sadarghat → Barisal" [level=2] [ref=e1081]
+                - generic [ref=e1082]:
+                  - generic [ref=e1083] [cursor=pointer]:
+                    - generic [ref=e1084]:
+                      - generic [ref=e1085]: ⛴️
+                      - generic [ref=e1086]:
+                        - generic [ref=e1087]: Sundarban-12
+                        - generic [ref=e1088]: Sundarban Navigation
+                        - generic [ref=e1089]:
+                          - generic [ref=e1090]:
+                            - img [ref=e1091]
+                            - img [ref=e1093]
+                            - img [ref=e1095]
+                            - img [ref=e1097]
+                            - img [ref=e1099]
+                          - generic [ref=e1101]: "4.5"
+                          - generic [ref=e1102]: (0)
+                    - generic [ref=e1103]:
+                      - generic [ref=e1104]:
+                        - generic [ref=e1105]: 6:30 PM
+                        - generic [ref=e1106]: Sadarghat
+                      - generic [ref=e1108]: 10h 30m · ⛴
+                      - generic [ref=e1109]:
+                        - generic [ref=e1110]: 5:00 AM
+                        - generic [ref=e1111]: Barisal
+                    - generic [ref=e1112]:
+                      - generic [ref=e1113]:
+                        - generic [ref=e1114]: Deck
+                        - generic [ref=e1115]: ৳ 300
+                      - generic [ref=e1116]:
+                        - generic [ref=e1117]: VIP Cabin
+                        - generic [ref=e1118]: ৳ 4500
+                      - button "Details →" [ref=e1119]
+                  - generic [ref=e1120] [cursor=pointer]:
+                    - generic [ref=e1121]:
+                      - generic [ref=e1122]: ⛴️
+                      - generic [ref=e1123]:
+                        - generic [ref=e1124]: Parabat-18
+                        - generic [ref=e1125]: Parabat Shipping
+                        - generic [ref=e1126]:
+                          - generic [ref=e1127]:
+                            - img [ref=e1128]
+                            - img [ref=e1130]
+                            - img [ref=e1132]
+                            - img [ref=e1134]
+                            - img [ref=e1136]
+                          - generic [ref=e1138]: "4.3"
+                          - generic [ref=e1139]: (0)
+                    - generic [ref=e1140]:
+                      - generic [ref=e1141]:
+                        - generic [ref=e1142]: 7:00 PM
+                        - generic [ref=e1143]: Sadarghat
+                      - generic [ref=e1145]: 11h 0m · ⛴
+                      - generic [ref=e1146]:
+                        - generic [ref=e1147]: 6:00 AM
+                        - generic [ref=e1148]: Barisal
+                    - generic [ref=e1149]:
+                      - generic [ref=e1150]:
+                        - generic [ref=e1151]: Deck
+                        - generic [ref=e1152]: ৳ 280
+                      - generic [ref=e1153]:
+                        - generic [ref=e1154]: VIP Cabin
+                        - generic [ref=e1155]: ৳ 4000
+                      - button "Details →" [ref=e1156]
+                  - generic [ref=e1157] [cursor=pointer]:
+                    - generic [ref=e1158]: ★ PREMIUM
+                    - generic [ref=e1159]:
+                      - generic [ref=e1160]: ⛴️
+                      - generic [ref=e1161]:
+                        - generic [ref=e1162]: Kirtonkhola-10
+                        - generic [ref=e1163]: Kirtonkhola Shipping
+                        - generic [ref=e1164]:
+                          - generic [ref=e1165]:
+                            - img [ref=e1166]
+                            - img [ref=e1168]
+                            - img [ref=e1170]
+                            - img [ref=e1172]
+                            - img [ref=e1174]
+                          - generic [ref=e1176]: "4.6"
+                          - generic [ref=e1177]: (521)
+                    - generic [ref=e1178]:
+                      - generic [ref=e1179]:
+                        - generic [ref=e1180]: 7:30 PM
+                        - generic [ref=e1181]: Sadarghat
+                      - generic [ref=e1183]: 11h 0m · ⛴
+                      - generic [ref=e1184]:
+                        - generic [ref=e1185]: 6:30 AM
+                        - generic [ref=e1186]: Barisal
+                    - generic [ref=e1187]:
+                      - generic [ref=e1188]:
+                        - generic [ref=e1189]: Deck
+                        - generic [ref=e1190]: ৳ 300
+                      - generic [ref=e1191]:
+                        - generic [ref=e1192]: VIP Cabin
+                        - generic [ref=e1193]: ৳ 5500
+                      - button "Details →" [ref=e1194]
+                  - generic [ref=e1195] [cursor=pointer]:
+                    - generic [ref=e1196]:
+                      - generic [ref=e1197]: ⛴️
+                      - generic [ref=e1198]:
+                        - generic [ref=e1199]: MV Adventure-9
+                        - generic [ref=e1200]: MV Adventure Lines
+                        - generic [ref=e1201]:
+                          - generic [ref=e1202]:
+                            - img [ref=e1203]
+                            - img [ref=e1205]
+                            - img [ref=e1207]
+                            - img [ref=e1209]
+                            - img [ref=e1211]
+                          - generic [ref=e1213]: "4.1"
+                          - generic [ref=e1214]: (0)
+                    - generic [ref=e1215]:
+                      - generic [ref=e1216]:
+                        - generic [ref=e1217]: 8:00 PM
+                        - generic [ref=e1218]: Sadarghat
+                      - generic [ref=e1220]: 11h 0m · ⛴
+                      - generic [ref=e1221]:
+                        - generic [ref=e1222]: 7:00 AM
+                        - generic [ref=e1223]: Barisal
+                    - generic [ref=e1224]:
+                      - generic [ref=e1225]:
+                        - generic [ref=e1226]: Deck
+                        - generic [ref=e1227]: ৳ 250
+                      - generic [ref=e1228]:
+                        - generic [ref=e1229]: VIP Cabin
+                        - generic [ref=e1230]: ৳ 3500
+                      - button "Details →" [ref=e1231]
+              - generic [ref=e1232]:
+                - generic [ref=e1233]:
+                  - generic [ref=e1234]: Cabin classes
+                  - generic [ref=e1235]:
+                    - generic [ref=e1236]: 🛏️
+                    - generic [ref=e1237]:
+                      - generic [ref=e1238]: VIP Suite
+                      - generic [ref=e1239]: TV · AC · bath
+                    - generic [ref=e1240]: ৳ 5,500
+                  - generic [ref=e1241]:
+                    - generic [ref=e1242]: 🚪
+                    - generic [ref=e1243]:
+                      - generic [ref=e1244]: Deluxe Cabin
+                      - generic [ref=e1245]: AC · double bed
+                    - generic [ref=e1246]: ৳ 3,500
+                  - generic [ref=e1247]:
+                    - generic [ref=e1248]: 👪
+                    - generic [ref=e1249]:
+                      - generic [ref=e1250]: Family Cabin
+                      - generic [ref=e1251]: For 4 · fan
+                    - generic [ref=e1252]: ৳ 2,200
+                  - generic [ref=e1253]:
+                    - generic [ref=e1254]: 🛌
+                    - generic [ref=e1255]:
+                      - generic [ref=e1256]: Single Cabin
+                      - generic [ref=e1257]: For 1
+                    - generic [ref=e1258]: ৳ 1,200
+                  - generic [ref=e1259]:
+                    - generic [ref=e1260]: 🧳
+                    - generic [ref=e1261]:
+                      - generic [ref=e1262]: Deck Floor
+                      - generic [ref=e1263]: Open deck
+                    - generic [ref=e1264]: ৳ 300
+                - generic [ref=e1265]:
+                  - generic [ref=e1266]: Popular routes
+                  - generic [ref=e1267]:
+                    - generic [ref=e1268]: Sadarghat
+                    - img [ref=e1269]
+                    - generic [ref=e1271]: Barisal
+                    - generic [ref=e1272]: 10h
+                    - generic [ref=e1273]: ৳ 300+
+                  - generic [ref=e1274]:
+                    - generic [ref=e1275]: Sadarghat
+                    - img [ref=e1276]
+                    - generic [ref=e1278]: Bhola
+                    - generic [ref=e1279]: 6h
+                    - generic [ref=e1280]: ৳ 250+
+                  - generic [ref=e1281]:
+                    - generic [ref=e1282]: Sadarghat
+                    - img [ref=e1283]
+                    - generic [ref=e1285]: Patuakhali
+                    - generic [ref=e1286]: 12h
+                    - generic [ref=e1287]: ৳ 400+
+                  - generic [ref=e1288]:
+                    - generic [ref=e1289]: Sadarghat
+                    - img [ref=e1290]
+                    - generic [ref=e1292]: Chandpur
+                    - generic [ref=e1293]: 3h
+                    - generic [ref=e1294]: ৳ 200+
+                - generic [ref=e1295]:
+                  - generic [ref=e1296]:
+                    - generic [ref=e1297]: Sponsored
+                    - generic [ref=e1298]: Google AdSense
+                  - insertion [ref=e1300]:
+                    - iframe [ref=e1302]:
+                      
+            - generic [ref=e1303]:
+              - heading "🌊 Safety & travel tips" [level=2] [ref=e1305]
+              - generic [ref=e1306]:
+                - generic [ref=e1307]:
+                  - generic [ref=e1308]: 🧥
+                  - generic [ref=e1309]: Wear a life jacket
+                - generic [ref=e1310]:
+                  - generic [ref=e1311]: 🌦
+                  - generic [ref=e1312]: Check weather forecast
+                - generic [ref=e1313]:
+                  - generic [ref=e1314]: 📞
+                  - generic [ref=e1315]: "Hotline: 16223"
+            - generic [ref=e1316]:
+              - generic [ref=e1317]:
+                - generic [ref=e1318]: Sponsored
+                - generic [ref=e1319]: Google AdSense
+              - insertion [ref=e1321]:
+                - iframe [ref=e1323]:
+                  
+      - contentinfo [ref=e1324]:
+        - generic [ref=e1325]:
+          - generic [ref=e1326]:
+            - generic [ref=e1327]:
+              - button "ক কই যাবো" [ref=e1328] [cursor=pointer]:
+                - generic [ref=e1331]: ক
+                - generic [ref=e1332]: কই যাবো
+              - paragraph [ref=e1333]: Smart transit guide for Dhaka commuters
+              - generic [ref=e1334]:
+                - generic "Facebook" [ref=e1335] [cursor=pointer]: f
+                - generic "LinkedIn" [ref=e1336] [cursor=pointer]: in
+                - generic "X (Twitter)" [ref=e1337] [cursor=pointer]: X
+                - generic "YouTube" [ref=e1338] [cursor=pointer]: ▶
+                - generic "Other" [ref=e1339] [cursor=pointer]: ✦
+            - generic [ref=e1340]:
+              - generic [ref=e1341]: Explore
+              - button "Local Bus" [ref=e1342] [cursor=pointer]
+              - button "Metro" [ref=e1343] [cursor=pointer]
+              - button "Train" [ref=e1344] [cursor=pointer]
+              - button "Flights" [ref=e1345] [cursor=pointer]
+              - button "Launch" [ref=e1346] [cursor=pointer]
+              - button "Fare" [ref=e1347] [cursor=pointer]
+            - generic [ref=e1348]:
+              - generic [ref=e1349]: Account
+              - button "Profile" [ref=e1350] [cursor=pointer]
+              - button "Favorites" [ref=e1351] [cursor=pointer]
+              - button "History" [ref=e1352] [cursor=pointer]
+              - button "Settings" [ref=e1353] [cursor=pointer]
+              - button "Sign In" [ref=e1354] [cursor=pointer]
+            - generic [ref=e1355]:
+              - generic [ref=e1356]: Company
+              - button "Why KoyJabo" [ref=e1357] [cursor=pointer]
+              - button "About" [ref=e1358] [cursor=pointer]
+              - button "Blog" [ref=e1359] [cursor=pointer]
+              - button "QA" [ref=e1360] [cursor=pointer]
+              - button "Contact" [ref=e1361] [cursor=pointer]
+            - generic [ref=e1362]:
+              - generic [ref=e1363]: Legal
+              - button "Privacy" [ref=e1364] [cursor=pointer]
+              - button "Terms" [ref=e1365] [cursor=pointer]
+              - button "Release" [ref=e1366] [cursor=pointer]
+          - generic [ref=e1367]:
+            - generic [ref=e1368]: © 2026 KoyJabo · All rights reserved
+            - generic [ref=e1369]: All systems operational
+    - generic [ref=e821]:
+      - generic: AI Assistant · ask me
+      - button "AI Assistant" [ref=e823] [cursor=pointer]:
+        - img [ref=e824]
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic: ক
+            - generic: KoyJabo
+          - button "Close menu": ×
+        - generic:
+          - generic:
+            - generic: Explore
+            - button "Home":
+              - generic: Home
+              - generic:
+                - img
+            - button "Local Bus":
+              - generic: Local Bus
+              - generic:
+                - img
+            - button "Metro":
+              - generic: Metro
+              - generic:
+                - img
+            - button "Train":
+              - generic: Train
+              - generic:
+                - img
+            - button "Intercity":
+              - generic: Intercity
+              - generic:
+                - img
+            - button "Launch":
+              - generic: Launch
+              - generic:
+                - img
+            - button "Flights":
+              - generic: Flights
+              - generic:
+                - img
+            - button "Fare":
+              - generic: Fare
+              - generic:
+                - img
+            - button "AI Assistant":
+              - generic: AI Assistant
+              - generic:
+                - img
+          - generic:
+            - generic: Account
+            - button "Profile":
+              - generic: Profile
+              - generic:
+                - img
+            - button "Favorites":
+              - generic: Favorites
+              - generic:
+                - img
+            - button "History":
+              - generic: History
+              - generic:
+                - img
+            - button "Settings":
+              - generic: Settings
+              - generic:
+                - img
+            - button "Sign In":
+              - generic: Sign In
+              - generic:
+                - img
+          - generic:
+            - generic: Company
+            - button "Why KoyJabo":
+              - generic: Why KoyJabo
+              - generic:
+                - img
+            - button "About":
+              - generic: About
+              - generic:
+                - img
+            - button "Blog":
+              - generic: Blog
+              - generic:
+                - img
+            - button "QA":
+              - generic: QA
+              - generic:
+                - img
+            - button "Contact":
+              - generic: Contact
+              - generic:
+                - img
+            - button "Release":
+              - generic: Release
+              - generic:
+                - img
+          - generic:
+            - generic: Legal
+            - button "Privacy":
+              - generic: Privacy
+              - generic:
+                - img
+            - button "Terms":
+              - generic: Terms
+              - generic:
+                - img
+    - generic [ref=e832]:
+      - generic [ref=e833]: Sponsored
+      - generic [ref=e834]: Google AdSense · 320 × 50
+      - button "✕" [ref=e835] [cursor=pointer]
+  - generic [ref=e1371]:
+    - button "📍 Sadarghat" [ref=e1372] [cursor=pointer]:
+      - generic [ref=e1373]: 📍
+      - generic [ref=e1375]: Sadarghat
+    - button "📍 Barisal Ghat" [ref=e1376] [cursor=pointer]:
+      - generic [ref=e1377]: 📍
+      - generic [ref=e1379]: Barisal Ghat
+    - button "📍 Khulna Ghat" [ref=e1380] [cursor=pointer]:
+      - generic [ref=e1381]: 📍
+      - generic [ref=e1383]: Khulna Ghat
+    - button "📍 Patuakhali Ghat" [ref=e1384] [cursor=pointer]:
+      - generic [ref=e1385]: 📍
+      - generic [ref=e1387]: Patuakhali Ghat
+    - button "📍 Bhola Ghat" [ref=e1388] [cursor=pointer]:
+      - generic [ref=e1389]: 📍
+      - generic [ref=e1391]: Bhola Ghat
+    - button "📍 Chandpur Ghat" [ref=e1392] [cursor=pointer]:
+      - generic [ref=e1393]: 📍
+      - generic [ref=e1395]: Chandpur Ghat
+    - button "📍 Narayanganj Terminal" [ref=e1396] [cursor=pointer]:
+      - generic [ref=e1397]: 📍
+      - generic [ref=e1399]: Narayanganj Terminal
+    - button "📍 Madaripur Ghat" [ref=e1400] [cursor=pointer]:
+      - generic [ref=e1401]: 📍
+      - generic [ref=e1403]: Madaripur Ghat

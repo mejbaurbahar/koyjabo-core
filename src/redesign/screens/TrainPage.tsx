@@ -8,6 +8,7 @@ import { ModeHero } from '../components/ModeHero';
 import { Stars } from '../components/Stars';
 import { BD_TRAIN_ROUTES, TRAIN_STATIONS } from '../../../data/bangladeshTrainData';
 import { SuggestionDropdown, Suggestion } from '../components/SuggestionDropdown';
+import { earnCoins } from '../utils/koyCoinService';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string,p?:Record<string,string>)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -59,21 +60,6 @@ const COACHES = [
 
 const MAJOR_STATIONS = Object.values(TRAIN_STATIONS).slice(0, 12);
 
-const RAILWAY_LINKS = [
-  { en:'Official Railway portal', bn:'রেলওয়ে অফিসিয়াল পোর্টাল', href:'https://railway.gov.bd/' },
-  { en:'Railway e-ticket', bn:'রেলওয়ে ই-টিকেট', href:'https://eticket.railway.gov.bd/' },
-  { en:'All train schedules', bn:'সকল ট্রেনের সময়সূচি', href:'https://railway.gov.bd/pages/static-pages/691997d5933eb65569ddf8e2' },
-  { en:'Eastern zone schedule', bn:'পূর্বাঞ্চলের ট্রেনের সময়সূচি', href:'https://railway.gov.bd/pages/static-pages/691997bf933eb65569ddec51' },
-  { en:'Western zone schedule', bn:'পশ্চিমাঞ্চলের ট্রেনের সময়সূচি', href:'https://railway.gov.bd/pages/static-pages/691997b8933eb65569dde71d' },
-  { en:'Important station phones', bn:'গুরুত্বপূর্ণ স্টেশনের টেলিফোন', href:'https://railway.gov.bd/pages/static-pages/691997be933eb65569ddebc6' },
-];
-
-const RAILWAY_NOTES = [
-  { en:'Use Bangladesh Railway e-ticket for final seat availability, payment and live booking status.', bn:'চূড়ান্ত সিট, পেমেন্ট ও লাইভ বুকিং স্ট্যাটাসের জন্য বাংলাদেশ রেলওয়ে ই-টিকেট ব্যবহার করুন।' },
-  { en:'Official schedules are split into all trains, eastern zone, western zone and inter-country passenger trains.', bn:'অফিসিয়াল সময়সূচি সকল ট্রেন, পূর্বাঞ্চল, পশ্চিমাঞ্চল ও আন্তঃদেশীয় যাত্রীবাহী ট্রেন হিসেবে ভাগ করা আছে।' },
-  { en:'Keep station phone information handy for platform, delay or service confirmation before travel.', bn:'যাত্রার আগে প্ল্যাটফর্ম, বিলম্ব বা সেবা নিশ্চিত করতে স্টেশনের টেলিফোন তথ্য হাতের কাছে রাখুন।' },
-];
-
 export function TrainPage(props: Props) {
   const { theme, device, lang, onNav, params } = props;
   const tk = KJ_TOKENS[theme];
@@ -108,7 +94,6 @@ export function TrainPage(props: Props) {
     return TRAINS.filter(r => routeIncludes(r.source, fromQ) && routeIncludes(r.source, toQ));
   }, [fromStation, toStation]);
   const hasTrainSearch = Boolean(fromStation.trim() || toStation.trim());
-  const canFindTrain = Boolean(fromStation.trim() && toStation.trim());
 
   return (
     <PageShell {...props}>
@@ -160,32 +145,9 @@ export function TrainPage(props: Props) {
                 <div style={{ width:28, height:28, borderRadius:8, background:tk.amberSoft, color:tk.amber, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><Icon.clock s={14}/></div>
                 <div><div style={{ fontFamily:SANS, fontSize:10, fontWeight:600, color:tk.textFaint, textTransform:'uppercase', letterSpacing:1.2 }}>{T(lang,'তারিখ','Date')}</div><div style={{ fontFamily:BEN, fontSize:14, fontWeight:600, color:tk.text }}>15 May</div></div>
               </div>
-              <button disabled={!canFindTrain} onClick={()=>canFindTrain && onNav('results')} style={{ background:'linear-gradient(135deg,#5b21b6,#7c3aed)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'0 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:canFindTrain?'pointer':'not-allowed', opacity:canFindTrain?1:0.5, display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #7c3aed' }}>
+              <button onClick={()=>{ earnCoins(5,'Train search'); onNav('results'); }} style={{ background:'linear-gradient(135deg,#5b21b6,#7c3aed)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'0 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #7c3aed' }}>
                 <Icon.search s={16}/>{T(lang,'খুঁজুন','Search')}
               </button>
-            </div>
-          </div>
-
-          <div style={{ ...card(16), marginBottom:18 }}>
-            <SectionHeader tk={tk} lang={lang} title={T(lang,'বাংলাদেশ রেলওয়ে অফিসিয়াল তথ্য','Bangladesh Railway official information')}/>
-            <div style={{ fontFamily:SANS, fontSize:11, fontWeight:700, color:tk.textFaint, margin:'4px 0 12px' }}>{T(lang,'সূত্র: railway.gov.bd','Source: railway.gov.bd')}</div>
-            <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1.05fr 0.95fr', gap:14 }}>
-              <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-                {RAILWAY_NOTES.map((note,i)=>(
-                  <div key={i} style={{ display:'flex', gap:10, alignItems:'flex-start', background:tk.panelMuted, border:`1px solid ${tk.line}`, borderRadius:12, padding:12 }}>
-                    <span style={{ width:24, height:24, flexShrink:0, borderRadius:999, display:'inline-flex', alignItems:'center', justifyContent:'center', background:'#7c3aed22', color:'#a78bfa', fontFamily:SANS, fontWeight:900, fontSize:12 }}>{i+1}</span>
-                    <span style={{ fontFamily:lang==='bn'?BEN:SANS, fontSize:13, color:tk.textDim, lineHeight:1.6 }}>{T(lang,note.bn,note.en)}</span>
-                  </div>
-                ))}
-              </div>
-              <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1fr 1fr', gap:8, alignContent:'start' }}>
-                {RAILWAY_LINKS.map(link=>(
-                  <a key={link.href} href={link.href} target="_blank" rel="noreferrer" style={{ textDecoration:'none', color:tk.text, background:tk.inputBg, border:`1px solid ${tk.line}`, borderRadius:12, padding:'10px 12px', fontFamily:lang==='bn'?BEN:SANS, fontWeight:800, fontSize:12, display:'flex', alignItems:'center', justifyContent:'space-between', gap:8 }}>
-                    <span>{T(lang,link.bn,link.en)}</span>
-                    <span style={{ color:'#a78bfa' }}>↗</span>
-                  </a>
-                ))}
-              </div>
             </div>
           </div>
 

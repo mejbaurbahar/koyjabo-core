@@ -13,18 +13,19 @@
  */
 
 import { BUS_DATA, STATIONS, METRO_STATIONS } from '../constants';
+import { busRouteConfidence, metroConfidence, confidenceBadge, fareEstimateNote } from './transportKnowledge';
 import { BD_TRAIN_ROUTES, TRAIN_STATIONS } from '../data/bangladeshTrainData';
 import { fuzzyMatchLocation } from './travelAI';
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const WALK_SPEED_KMH = 4.5;           // Average walking speed
 const WALK_MAX_METERS = 600;          // Auto-generate walk edges within this range
-const TRANSFER_PENALTY_MIN = 5;       // +5 min per mode change
+const TRANSFER_PENALTY_MIN = 20;      // Real-world Dhaka: ~20 min wait+walk per transfer
 const BUS_AVG_KMH = 15;              // Dhaka bus avg (traffic)
 const METRO_AVG_KMH = 35;            // MRT-6 average
-const SCORE_W_TIME = 0.6;
-const SCORE_W_COST = 0.3;
-const SCORE_W_XFER = 0.1;
+const SCORE_W_TIME = 0.4;
+const SCORE_W_COST = 0.1;
+const SCORE_W_XFER = 0.5;            // Heavy penalty for transfers — prefer direct routes
 
 // Metro fare schedule (BDT) based on stations apart
 const METRO_FARE_SCHEDULE = [20, 20, 30, 30, 40, 40, 60, 60, 80, 80, 100, 100, 100, 100, 100, 100];
@@ -494,9 +495,9 @@ export function findRoutes(
     results.push({ steps, totalTimeMin, totalCostBDT, transfers: Math.max(0, transfers), score, tag });
   }
 
-  // Add a direct single-bus route if one exists and isn't already represented
-  const direct = findDirectBus(fromId, toId);
-  if (direct) {
+  // Add ALL direct single-bus routes not already represented
+  const directs = findAllDirectBuses(fromId, toId);
+  for (const direct of directs) {
     const alreadyShown = results.some(r =>
       r.transfers === 0 && r.steps.some(s => s.routeName === direct.steps[0].routeName)
     );
@@ -512,19 +513,27 @@ export function findRoutes(
 
   // Deduplicate: remove routes that are identical (same steps sequence)
   const seen = new Set<string>();
-  return finalRoutes.filter(r => {
+  const unique = finalRoutes.filter(r => {
     const key = r.steps.map(s => `${s.fromId}-${s.mode}-${s.toId}`).join('|');
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
   });
+
+  // Sort: direct (0 transfers) always first, then by score
+  return unique.sort((a, b) => {
+    if (a.transfers === 0 && b.transfers > 0) return -1;
+    if (b.transfers === 0 && a.transfers > 0) return 1;
+    return a.score - b.score;
+  });
 }
 
-// ── Direct single-bus route finder ───────────────────────────────────────────
-// Scans BUS_DATA for a route that covers both stops without any transfer.
+// ── Direct bus route finder — returns ALL buses serving this pair ─────────────
 
-function findDirectBus(fromId: string, toId: string): GraphRoute | null {
+function findAllDirectBuses(fromId: string, toId: string): GraphRoute[] {
   const { nodes } = getGraph();
+  const routes: GraphRoute[] = [];
+
   for (const bus of BUS_DATA.filter(b => b.active !== false)) {
     const fromIdx = bus.stops.indexOf(fromId);
     const toIdx = bus.stops.indexOf(toId);
@@ -548,24 +557,24 @@ function findDirectBus(fromId: string, toId: string): GraphRoute | null {
 
     const roundedTime = Math.round(totalTime);
     const roundedCost = Math.round(totalCost);
-    const step: PathStep = {
-      fromId, fromName: fromNode.name, fromBnName: fromNode.bnName,
-      toId, toName: toNode.name, toBnName: toNode.bnName,
-      mode: 'bus', timeMin: totalTime, costBDT: roundedCost,
-      routeName: bus.name, routeBnName: bus.bnName,
-      instruction: `🚌 Take **${bus.name}** from ${fromNode.name} → ${toNode.name}`,
-      instructionBn: `🚌 **${bus.bnName}** বাসে ${fromNode.bnName} থেকে ${toNode.bnName}`,
-    };
-    return {
-      steps: [step],
+    routes.push({
+      steps: [{
+        fromId, fromName: fromNode.name, fromBnName: fromNode.bnName,
+        toId, toName: toNode.name, toBnName: toNode.bnName,
+        mode: 'bus', timeMin: totalTime, costBDT: roundedCost,
+        routeName: bus.name, routeBnName: bus.bnName,
+        instruction: `🚌 Take **${bus.name}** from ${fromNode.name} → ${toNode.name}`,
+        instructionBn: `🚌 **${bus.bnName || bus.name}** বাসে ${fromNode.bnName || fromNode.name} থেকে ${toNode.bnName || toNode.name}`,
+      }],
       totalTimeMin: roundedTime,
       totalCostBDT: roundedCost,
       transfers: 0,
       score: roundedTime * SCORE_W_TIME + roundedCost * SCORE_W_COST,
       tag: 'direct',
-    };
+    });
   }
-  return null;
+  // Sort direct buses: fastest first
+  return routes.sort((a, b) => a.totalTimeMin - b.totalTimeMin);
 }
 
 // ── Location resolver ─────────────────────────────────────────────────────────
@@ -636,11 +645,46 @@ export function findRoutesFromCoords(
 // Converts GraphRoute[] into a human-readable string (EN or BN)
 
 const TAG_LABELS: Record<GraphRoute['tag'], { en: string; bn: string; emoji: string }> = {
-  balanced: { en: 'Best Route (Balanced)',      bn: 'সেরা রুট (সুষম)',           emoji: '🏆' },
+  balanced: { en: 'Recommended Route',          bn: 'প্রস্তাবিত রুট',             emoji: '🏆' },
   fastest:  { en: 'Fastest Route',              bn: 'দ্রুততম রুট',               emoji: '⚡' },
-  cheapest: { en: 'Cheapest Route',             bn: 'সাশ্রয়ী রুট',               emoji: '💸' },
-  direct:   { en: 'Direct Route (No Transfer)', bn: 'সরাসরি রুট (সরাসরি বাস)', emoji: '🚌' },
+  cheapest: { en: 'Budget Route',               bn: 'সাশ্রয়ী রুট',               emoji: '💸' },
+  direct:   { en: 'Direct Bus (No Transfer)',   bn: 'সরাসরি বাস (বদলাতে হবে না)', emoji: '🚌' },
 };
+
+// Extract key journey points: origin, transfer hubs, destination
+function keyJourneyPoints(steps: PathStep[]): string[] {
+  const points: string[] = [];
+  if (steps.length === 0) return points;
+  points.push(steps[0].fromName);
+  for (let i = 0; i < steps.length - 1; i++) {
+    // Transfer point: where vehicle changes
+    if (steps[i].mode !== steps[i + 1].mode ||
+        (steps[i].routeName && steps[i + 1].routeName && steps[i].routeName !== steps[i + 1].routeName)) {
+      points.push(steps[i].toName);
+    }
+  }
+  points.push(steps[steps.length - 1].toName);
+  return [...new Set(points)];
+}
+
+// Build reasoning text for each route
+function routeReason(route: GraphRoute, isBn: boolean): string {
+  const vehicles = [...new Set(route.steps.filter(s => s.mode === 'bus' || s.mode === 'metro' || s.mode === 'train').map(s => s.routeName || ''))].filter(Boolean);
+  if (route.transfers === 0) {
+    return isBn
+      ? `সরাসরি ${vehicles[0] || 'বাস'} — কোনো বদল নেই, বোর্ড করুন এবং পৌঁছে নামুন।`
+      : `Direct ${vehicles[0] || 'bus'} — board once, no changes needed.`;
+  }
+  if (route.transfers === 1) {
+    const hub = route.steps.find((_, i) => i > 0 && route.steps[i - 1].routeName !== route.steps[i].routeName)?.fromName || '';
+    return isBn
+      ? `${hub ? hub + '-এ ' : ''}একবার বদল করতে হবে। স্থানীয় যাত্রীরা এই পথ বেশি ব্যবহার করেন।`
+      : `One transfer${hub ? ` at ${hub}` : ''}. Common commuter route used by locals.`;
+  }
+  return isBn
+    ? `${route.transfers}টি বদল প্রয়োজন। উপরের সরাসরি বিকল্প না থাকলে এটি ব্যবহার করুন।`
+    : `${route.transfers} transfers needed. Use only when direct options above are unavailable.`;
+}
 
 export function formatRoutes(
   routes: GraphRoute[],
@@ -650,26 +694,46 @@ export function formatRoutes(
 ): string {
   if (routes.length === 0) {
     return isBn
-      ? `🤔 **${fromName} → ${toName}** এর জন্য কোনো রুট খুঁজে পাওয়া যায়নি। অনুগ্রহ করে নির্দিষ্ট স্টেশনের নাম দিন।`
-      : `🤔 No route found from **${fromName}** to **${toName}**. Please specify a more exact station name.`;
+      ? `🤔 **${fromName} → ${toName}** এর জন্য কোনো রুট পাওয়া যায়নি। আরও নির্দিষ্ট স্টেশনের নাম দিন।`
+      : `🤔 No route found from **${fromName}** to **${toName}**. Try a more specific station name.`;
   }
 
   const header = isBn
-    ? `🗺️ **${fromName} → ${toName}** রুট পরিকল্পনা\n\n`
-    : `🗺️ **${fromName} → ${toName}** Route Options\n\n`;
+    ? `🗺️ **${fromName} → ${toName}**\n\n`
+    : `🗺️ **${fromName} → ${toName}**\n\n`;
 
-  const sections = routes.map((route, idx) => {
+  const sections = routes.map((route) => {
     const label = TAG_LABELS[route.tag];
     const title = `${label.emoji} **${isBn ? label.bn : label.en}**`;
+
+    // Key journey flow: Origin → Hub → Destination
+    const keyPoints = keyJourneyPoints(route.steps);
+    const flow = keyPoints.join(' → ');
+
     const summary = isBn
-      ? `⏱️ ~${Math.round(route.totalTimeMin)} মিনিট | 💰 ৳${route.totalCostBDT} | 🔄 ${route.transfers} ট্রান্সফার`
-      : `⏱️ ~${Math.round(route.totalTimeMin)} min | 💰 ৳${route.totalCostBDT} | 🔄 ${route.transfers} transfer(s)`;
+      ? `⏱️ ~${Math.round(route.totalTimeMin)} মিনিট | 💰 ৳${route.totalCostBDT} | 🔄 ${route.transfers === 0 ? 'সরাসরি' : route.transfers + ' বদল'}`
+      : `⏱️ ~${Math.round(route.totalTimeMin)} min | 💰 ৳${route.totalCostBDT} | 🔄 ${route.transfers === 0 ? 'Direct' : route.transfers + ' transfer(s)'}`;
 
+    // Human-readable steps — skip short walks < 3 min
     const steps = route.steps
-      .map((s, i) => `  ${i + 1}. ${isBn ? s.instructionBn : s.instruction}`)
-      .join('\n');
+      .filter(s => !(s.mode === 'walk' && s.timeMin < 3))
+      .map(s => {
+        if (s.mode === 'walk') return `  🚶 Walk ~${Math.round(s.timeMin)} min to **${s.toName}**`;
+        if (s.mode === 'bus') return `  🚌 **${s.routeName}** — ${s.fromName} → ${s.toName}`;
+        if (s.mode === 'metro') return `  🚇 **Metro MRT-6** ✅ — ${s.fromName} → ${s.toName} (৳${s.costBDT})`;
+        if (s.mode === 'train') return `  🚂 **${s.routeName}** — ${s.fromName} → ${s.toName}`;
+        return `  📍 ${s.fromName} → ${s.toName}`;
+      });
 
-    return `${title}\n${summary}\n${steps}`;
+    const reason = routeReason(route, isBn);
+
+    // Confidence label
+    const hasModes = route.steps.map(s => s.mode);
+    const ds = hasModes.includes('metro') ? metroConfidence() : busRouteConfidence(route.steps[0]?.routeName);
+    const dsLabel = confidenceBadge(ds, isBn);
+    const fareNote = fareEstimateNote(isBn);
+
+    return [title, `📍 ${flow}`, summary, ...steps, `💡 ${reason}`, `_${dsLabel} · ${fareNote}_`].join('\n');
   });
 
   // Peak-hour warning
@@ -677,8 +741,8 @@ export function formatRoutes(
   const isPeak = (hour >= 8 && hour <= 10) || (hour >= 17 && hour <= 20);
   const peakNote = isPeak
     ? (isBn
-        ? '\n\n⏰ **পিক আওয়ার সতর্কতা:** বর্তমানে ট্রাফিক জ্যাম আছে — বাসের সময় ১.৫-২x বেশি লাগতে পারে। মেট্রো সবচেয়ে দ্রুত।'
-        : '\n\n⏰ **Peak Hour Alert:** Heavy traffic now — bus time may be 1.5–2x longer. Metro is fastest.')
+        ? '\n\n⏰ **পিক আওয়ার:** ট্রাফিক জ্যাম আছে — বাসের সময় ১.৫-২x বেশি। মেট্রো সবচেয়ে দ্রুত।'
+        : '\n\n⏰ **Peak hours:** Heavy traffic — bus times 1.5–2x longer. Metro is fastest option.')
     : '';
 
   return header + sections.join('\n\n─────\n\n') + peakNote;

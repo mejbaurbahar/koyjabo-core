@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Tokens, Lang, SANS, BEN, T } from '../tokens';
 
+
 function AdsenseUnit({ slot, format = 'auto' }: { slot: string; format?: string }) {
   const insRef = useRef<HTMLElement>(null);
   const pushed = useRef(false);
