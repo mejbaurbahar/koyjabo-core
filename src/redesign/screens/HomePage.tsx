@@ -999,153 +999,160 @@ function KoyJaboStory({
 
 // ─── MetroLive strip ──────────────────────────────────────────────────────────
 
-const METRO_STATIONS = [
-  'উত্তরা উত্তর', 'উত্তরা সেন্টার', 'পল্লবী', 'মিরপুর ১১', 'মিরপুর ১০',
-  'কাজীপাড়া', 'শেওড়াপাড়া', 'আগারগাঁও', 'বিজয় সরণি', 'ফার্মগেট',
-  'কারওয়ান বাজার', 'শাহবাগ', 'ঢাকা বিশ্ববিদ্যালয়', 'বাংলাদেশ সচিবালয়', 'মতিঝিল',
+const METRO_STATIONS_BN = [
+  'উত্তরা উত্তর','উত্তরা সেন্টার','পল্লবী','মিরপুর ১১','মিরপুর ১০',
+  'কাজীপাড়া','শেওড়াপাড়া','আগারগাঁও','বিজয় সরণি','ফার্মগেট',
+  'কারওয়ান বাজার','শাহবাগ','ঢাকা বিশ্ববিদ্যালয়','সচিবালয়','মতিঝিল',
 ];
 const METRO_STATIONS_EN = [
-  'Uttara North', 'Uttara Center', 'Pallabi', 'Mirpur 11', 'Mirpur 10',
-  'Kazipara', 'Shewrapara', 'Agargaon', 'Bijoy Sarani', 'Farmgate',
-  'Karwan Bazar', 'Shahbag', 'Dhaka University', 'Bangladesh Secretariat', 'Motijheel',
+  'Uttara North','Uttara Center','Pallabi','Mirpur 11','Mirpur 10',
+  'Kazipara','Shewrapara','Agargaon','Bijoy Sarani','Farmgate',
+  'Karwan Bazar','Shahbag','Dhaka Univ.','Secretariat','Motijheel',
 ];
-const CURRENT_STATION = 9; // Farmgate index
+const TOTAL = METRO_STATIONS_EN.length; // 15
+
+function MetroTrainSVG() {
+  return (
+    <svg viewBox="0 0 72 28" width="72" height="28" style={{ display:'block', filter:'drop-shadow(0 0 6px rgba(96,165,250,0.8))' }}>
+      {/* body */}
+      <rect x="1" y="5" width="70" height="18" rx="5" fill="#1d4ed8"/>
+      <rect x="1" y="5" width="70" height="18" rx="5" fill="url(#mg)" opacity="0.6"/>
+      {/* stripe */}
+      <rect x="1" y="9" width="70" height="3" fill="#3b82f6" opacity="0.7"/>
+      {/* windows */}
+      <rect x="5"  y="11" width="12" height="8" rx="2" fill="#bfdbfe" opacity="0.9"/>
+      <rect x="21" y="11" width="12" height="8" rx="2" fill="#bfdbfe" opacity="0.9"/>
+      <rect x="37" y="11" width="12" height="8" rx="2" fill="#bfdbfe" opacity="0.9"/>
+      <rect x="53" y="11" width="10" height="8" rx="2" fill="#bfdbfe" opacity="0.7"/>
+      {/* front headlights */}
+      <circle cx="67" cy="12" r="2.5" fill="#fde68a"/>
+      <circle cx="67" cy="20" r="2.5" fill="#fde68a"/>
+      {/* pantograph */}
+      <line x1="20" y1="5" x2="15" y2="1" stroke="#94a3b8" strokeWidth="1"/>
+      <line x1="30" y1="5" x2="35" y2="1" stroke="#94a3b8" strokeWidth="1"/>
+      <line x1="15" y1="1" x2="35" y2="1" stroke="#94a3b8" strokeWidth="1.5"/>
+      {/* wheels */}
+      <circle cx="14" cy="24" r="3.5" fill="#1e3a8a" stroke="#60a5fa" strokeWidth="1"/>
+      <circle cx="14" cy="24" r="1.2" fill="#93c5fd"/>
+      <circle cx="56" cy="24" r="3.5" fill="#1e3a8a" stroke="#60a5fa" strokeWidth="1"/>
+      <circle cx="56" cy="24" r="1.2" fill="#93c5fd"/>
+      <defs>
+        <linearGradient id="mg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="white" stopOpacity="0.25"/>
+          <stop offset="100%" stopColor="white" stopOpacity="0"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
 
 function MetroLiveStrip({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobile: boolean }) {
-  return (
-    <div
-      style={{
-        background: tk.metroBg,
-        borderRadius: 18,
-        padding: isMobile ? '14px 14px' : '18px 22px',
-        border: `1px solid rgba(59,130,246,0.3)`,
-        position: 'relative',
-        overflow: 'hidden',
-      }}
-    >
-      {/* Radial glow */}
-      <div
-        style={{
-          position: 'absolute',
-          top: -60,
-          left: '30%',
-          width: 260,
-          height: 260,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }}
-      />
+  const [trainIdx, setTrainIdx] = useState(4); // starts at Mirpur 10
+  const [countdown, setCountdown] = useState(2);
+  const [atStation, setAtStation] = useState(true);
 
-      <div style={{ position: 'relative', zIndex: 1 }}>
+  useEffect(() => {
+    // countdown ticks every second
+    const cd = setInterval(() => {
+      setCountdown(c => {
+        if (c <= 1) {
+          // train departs, animate to next station
+          setAtStation(false);
+          setTimeout(() => {
+            setTrainIdx(idx => (idx + 1) % TOTAL);
+            setAtStation(true);
+          }, 1200);
+          return 4; // reset to 4s countdown
+        }
+        return c - 1;
+      });
+    }, 1000);
+    return () => clearInterval(cd);
+  }, []);
+
+  const trainPct = (trainIdx / (TOTAL - 1)) * 100;
+  const stations = lang === 'bn' ? METRO_STATIONS_BN : METRO_STATIONS_EN;
+
+  return (
+    <div style={{
+      background: tk.metroBg,
+      borderRadius: 18,
+      padding: isMobile ? '14px 14px' : '18px 22px',
+      border: '1px solid rgba(59,130,246,0.3)',
+      position: 'relative', overflow: 'hidden',
+    }}>
+      {/* Background glow */}
+      <div style={{ position:'absolute', top:-60, left:'30%', width:260, height:260, borderRadius:'50%', background:'radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%)', pointerEvents:'none' }}/>
+
+      <div style={{ position:'relative', zIndex:1 }}>
         {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span
-              style={{
-                background: 'linear-gradient(135deg, #3b82f6, #1e3a8a)',
-                borderRadius: 8,
-                padding: '4px 10px',
-                fontFamily: SANS,
-                fontSize: 12,
-                fontWeight: 800,
-                color: 'white',
-                letterSpacing: 0.5,
-              }}
-            >
-              M6
-            </span>
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:14 }}>
+          <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+            <span style={{ background:'linear-gradient(135deg,#3b82f6,#1e3a8a)', borderRadius:8, padding:'4px 10px', fontFamily:SANS, fontSize:12, fontWeight:800, color:'white', letterSpacing:0.5 }}>M6</span>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span
-                  style={{
-                    width: 7,
-                    height: 7,
-                    borderRadius: '50%',
-                    background: '#22c55e',
-                    animation: 'kjpulse 1.5s ease-in-out infinite',
-                    display: 'inline-block',
-                  }}
-                />
-                <span style={{ fontFamily: SANS, fontSize: 12, fontWeight: 600, color: '#93c5fd' }}>
-                  {T(lang, 'লাইভ · এমআরটি লাইন ৬', 'Live · MRT Line 6')}
-                </span>
+              <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+                <span style={{ width:7, height:7, borderRadius:'50%', background:'#22c55e', animation:'kjpulse 1.5s ease-in-out infinite', display:'inline-block' }}/>
+                <span style={{ fontFamily:SANS, fontSize:12, fontWeight:600, color:'#93c5fd' }}>{T(lang,'লাইভ · এমআরটি লাইন ৬','Live · MRT Line 6')}</span>
               </div>
-              <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 11, color: 'rgba(255,255,255,0.5)', marginTop: 1 }}>
-                {T(lang, 'উত্তরা উত্তর → মতিঝিল', 'Uttara North → Motijheel')}
+              <div style={{ fontFamily:lang==='bn'?BEN:SANS, fontSize:11, color:'rgba(255,255,255,0.5)', marginTop:1 }}>
+                {T(lang,'উত্তরা উত্তর → মতিঝিল','Uttara North → Motijheel')}
               </div>
             </div>
           </div>
-          <div style={{ textAlign: 'right' }}>
-            <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>
-              {T(lang, 'পরের ট্রেন', 'Next train')}
-            </div>
-            <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 22, fontWeight: 800, color: '#60a5fa' }}>
-              {T(lang, '২ মিনিট', '2 min')}
-            </div>
+          <div style={{ textAlign:'right' }}>
+            <div style={{ fontFamily:lang==='bn'?BEN:SANS, fontSize:11, color:'rgba(255,255,255,0.4)' }}>{T(lang,'পরের ট্রেন','Next train')}</div>
+            <div style={{ fontFamily:lang==='bn'?BEN:SANS, fontSize:22, fontWeight:800, color:'#60a5fa' }}>{countdown} {T(lang,'মিনিট','min')}</div>
           </div>
         </div>
 
-        {/* Station dots */}
-        <div style={{ overflowX: 'auto', paddingBottom: 4 }}>
-          <div style={{ minWidth: isMobile ? 560 : '100%', position: 'relative', padding: '8px 0 12px' }}>
-            {/* Progress line behind */}
-            <div
-              style={{
-                position: 'absolute',
-                top: 15,
-                left: 8,
-                right: 8,
-                height: 4,
-                borderRadius: 999,
-                background: 'rgba(255,255,255,0.1)',
-              }}
-            />
-            <div
-              style={{
-                position: 'absolute',
-                top: 15,
-                left: 8,
-                width: `${(CURRENT_STATION / (METRO_STATIONS.length - 1)) * 100}%`,
-                height: 4,
-                borderRadius: 999,
-                background: 'linear-gradient(90deg, #3b82f6, #60a5fa)',
-              }}
-            />
+        {/* Animated track */}
+        <div style={{ overflowX:'auto', paddingBottom:4 }}>
+          <div style={{ minWidth: isMobile ? 580 : '100%', position:'relative', padding:'0 4px 28px' }}>
+            {/* Overhead wire */}
+            <div style={{ position:'absolute', top:6, left:4, right:4, height:1, background:'rgba(148,163,184,0.3)', zIndex:0 }}/>
+
+            {/* Track rail */}
+            <div style={{ position:'absolute', top:26, left:4, right:4, height:5, borderRadius:999, background:'rgba(255,255,255,0.08)' }}/>
+            {/* Completed track */}
+            <div style={{ position:'absolute', top:26, left:4, width:`${trainPct}%`, height:5, borderRadius:999, background:'linear-gradient(90deg,#1e40af,#60a5fa)', transition:'width 1.2s ease-in-out' }}/>
+
+            {/* Animated train — sits on track */}
+            <div style={{
+              position:'absolute',
+              top:3, // wire height
+              left: `calc(${trainPct}% - 36px)`,
+              transition: atStation ? 'left 1.2s cubic-bezier(.4,0,.2,1)' : 'none',
+              zIndex:3,
+              transform: atStation ? 'scaleX(1)' : 'scaleX(1)',
+            }}>
+              <MetroTrainSVG/>
+              {/* Motion blur when moving */}
+              {!atStation && (
+                <div style={{ position:'absolute', top:0, left:-20, width:20, height:28, background:'linear-gradient(90deg,transparent,rgba(59,130,246,0.3))', borderRadius:4 }}/>
+              )}
+            </div>
 
             {/* Station dots */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', position: 'relative' }}>
-              {METRO_STATIONS.map((sbn, i) => {
-                const isPast = i < CURRENT_STATION;
-                const isCurrent = i === CURRENT_STATION;
+            <div style={{ display:'flex', justifyContent:'space-between', position:'relative', zIndex:2, paddingTop:18 }}>
+              {stations.map((name, i) => {
+                const isPast = i < trainIdx;
+                const isCurr = i === trainIdx;
                 return (
-                  <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, flex: 1 }}>
-                    <div
-                      style={{
-                        width: isCurrent ? 14 : 9,
-                        height: isCurrent ? 14 : 9,
-                        borderRadius: '50%',
-                        background: isCurrent ? '#60a5fa' : isPast ? '#3b82f6' : 'rgba(255,255,255,0.15)',
-                        border: isCurrent ? '3px solid white' : 'none',
-                        boxShadow: isCurrent ? '0 0 12px rgba(96,165,250,0.8)' : 'none',
-                        transition: 'all 0.3s ease',
-                        flexShrink: 0,
-                      }}
-                    />
-                    {isCurrent && (
-                      <span
-                        style={{
-                          fontFamily: lang === 'bn' ? BEN : SANS,
-                          fontSize: 9,
-                          fontWeight: 700,
-                          color: '#60a5fa',
-                          whiteSpace: 'nowrap',
-                          maxWidth: 60,
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}
-                      >
-                        {lang === 'bn' ? sbn : METRO_STATIONS_EN[i]}
+                  <div key={i} style={{ display:'flex', flexDirection:'column', alignItems:'center', flex:1 }}>
+                    {/* Vertical connector from wire to dot */}
+                    <div style={{ width:1, height:8, background: isPast||isCurr ? 'rgba(96,165,250,0.4)' : 'rgba(255,255,255,0.1)' }}/>
+                    <div style={{
+                      width: isCurr ? 12 : 7,
+                      height: isCurr ? 12 : 7,
+                      borderRadius:'50%',
+                      background: isCurr ? '#60a5fa' : isPast ? '#3b82f6' : 'rgba(255,255,255,0.15)',
+                      border: isCurr ? '2px solid white' : 'none',
+                      boxShadow: isCurr ? '0 0 10px rgba(96,165,250,0.9)' : 'none',
+                      transition:'all 0.4s ease',
+                    }}/>
+                    {isCurr && (
+                      <span style={{ fontFamily:lang==='bn'?BEN:SANS, fontSize:8, fontWeight:700, color:'#93c5fd', whiteSpace:'nowrap', marginTop:3 }}>
+                        {name}
                       </span>
                     )}
                   </div>
@@ -1156,33 +1163,16 @@ function MetroLiveStrip({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobi
         </div>
 
         {/* Footer */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: isMobile ? 12 : 24,
-            flexWrap: 'wrap',
-            paddingTop: 8,
-            borderTop: '1px solid rgba(255,255,255,0.08)',
-          }}
-        >
+        <div style={{ display:'flex', alignItems:'center', gap: isMobile ? 12 : 24, flexWrap:'wrap', paddingTop:8, borderTop:'1px solid rgba(255,255,255,0.08)' }}>
           {[
-            { label: T(lang, 'ভাড়া', 'Fare'), value: '৳২০–১০০' },
-            { label: T(lang, 'সময়', 'Hours'), value: '7:10AM – 9:40PM' },
-            { label: '', value: T(lang, 'সময়মতো চলছে', 'On time, no delays') },
+            { label:T(lang,'ভাড়া','Fare'), value:'৳২০–১০০' },
+            { label:T(lang,'সময়','Hours'), value:'7:10AM – 9:40PM' },
+            { label:'', value:T(lang,'সময়মতো চলছে, বিলম্ব নেই','On time, no delays') },
           ].map((item, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-              {item.label && (
-                <span style={{ fontFamily: SANS, fontSize: 10, color: 'rgba(255,255,255,0.4)', fontWeight: 500 }}>
-                  {item.label}
-                </span>
-              )}
-              {i === 2 && (
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', display: 'inline-block' }} />
-              )}
-              <span style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.75)' }}>
-                {item.value}
-              </span>
+            <div key={i} style={{ display:'flex', alignItems:'center', gap:5 }}>
+              {item.label && <span style={{ fontFamily:SANS, fontSize:10, color:'rgba(255,255,255,0.4)', fontWeight:500 }}>{item.label}</span>}
+              {i===2 && <span style={{ width:6, height:6, borderRadius:'50%', background:'#22c55e', display:'inline-block' }}/>}
+              <span style={{ fontFamily:lang==='bn'?BEN:SANS, fontSize:11, fontWeight:600, color:'rgba(255,255,255,0.75)' }}>{item.value}</span>
             </div>
           ))}
         </div>
