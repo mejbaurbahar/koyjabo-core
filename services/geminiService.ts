@@ -1721,6 +1721,15 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
       let fromLoc = gIntent.from;
       let toLoc = gIntent.to;
 
+      // If classifyIntent found intercity locations (districts/cities), use intercity data.
+      // Graph engine (Dijkstra) only handles local Dhaka routes — don't let it answer intercity.
+      if (fromLoc && toLoc) {
+        const intercityResult = findIntercityRoute(query, _gpsDistrict);
+        if (intercityResult && intercityResult.length > 80) {
+          return intercityResult;
+        }
+      }
+
       // If intercity fails, look for local stations
       if (!fromLoc || !toLoc) {
         const lowerQ = query.toLowerCase();

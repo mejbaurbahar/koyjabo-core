@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, chipBtn } from '../tokens';
 import { PageShell } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
@@ -141,6 +141,38 @@ function renderMd(text: string, tk: any) {
   });
 }
 
+// Nearest area from GPS coords using major Bangladesh locations
+function nearestArea(lat: number, lng: number): string {
+  const areas = [
+    { name: 'Uttara', lat: 23.8759, lng: 90.3795 },
+    { name: 'Mirpur', lat: 23.8223, lng: 90.3654 },
+    { name: 'Gulshan', lat: 23.7928, lng: 90.4144 },
+    { name: 'Banani', lat: 23.7937, lng: 90.4066 },
+    { name: 'Dhanmondi', lat: 23.7461, lng: 90.3742 },
+    { name: 'Mohammadpur', lat: 23.7625, lng: 90.3580 },
+    { name: 'Farmgate', lat: 23.7581, lng: 90.3903 },
+    { name: 'Motijheel', lat: 23.7330, lng: 90.4182 },
+    { name: 'Old Dhaka', lat: 23.7104, lng: 90.4074 },
+    { name: 'Khilgaon', lat: 23.7502, lng: 90.4279 },
+    { name: 'Badda', lat: 23.7814, lng: 90.4278 },
+    { name: 'Demra', lat: 23.7126, lng: 90.4559 },
+    { name: 'Savar', lat: 23.8580, lng: 90.2660 },
+    { name: 'Gazipur', lat: 23.9999, lng: 90.4203 },
+    { name: 'Narayanganj', lat: 23.6238, lng: 90.5000 },
+    { name: 'Chattogram', lat: 22.3569, lng: 91.7832 },
+    { name: 'Sylhet', lat: 24.8949, lng: 91.8687 },
+    { name: 'Rajshahi', lat: 24.3745, lng: 88.6042 },
+    { name: 'Khulna', lat: 22.8456, lng: 89.5403 },
+    { name: 'Barishal', lat: 22.7010, lng: 90.3535 },
+  ];
+  let best = areas[0], bestDist = Infinity;
+  for (const a of areas) {
+    const d = (a.lat - lat) ** 2 + (a.lng - lng) ** 2;
+    if (d < bestDist) { bestDist = d; best = a; }
+  }
+  return best.name;
+}
+
 export function AIChatPage(props: Props) {
   const { theme, device, lang } = props;
   const tk = KJ_TOKENS[theme];
@@ -149,6 +181,16 @@ export function AIChatPage(props: Props) {
   const [messages, setMessages] = useState<Msg[]>(INIT_MESSAGES);
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
+  const userAreaRef = useRef<string>('');
+
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(
+      pos => { userAreaRef.current = nearestArea(pos.coords.latitude, pos.coords.longitude); },
+      () => {},
+      { timeout: 5000, maximumAge: 300000 }
+    );
+  }, []);
   const suggestions = [
     { bn:'কোন বাস গুলশান থেকে মতিঝিল?', en:'Bus Gulshan to Motijheel?' },
     { bn:'বিমানবন্দর → ফার্মগেট', en:'Airport → Farmgate' },
@@ -178,11 +220,21 @@ export function AIChatPage(props: Props) {
       const chatHistory: ChatMessage[] = currentMessages
         .filter(m => !(m as any).rich)
         .map(m => ({ role: m.isUser ? 'user' : 'assistant', text: m.text }));
+
+      // Inject GPS area context when user didn't specify a "from" location
+      const hasFrom = /\bfrom\b|থেকে|হতে|\bfrom\b/i.test(userText);
+      const area = userAreaRef.current;
+      const queryForOffline = (!hasFrom && area)
+        ? `${userText} [Context: User is in ${area} area]`
+        : userText;
+
       let response: string;
       try {
+        // CF Workers AI gets the raw query (has its own system prompt with GPS note)
         response = await askGitHubModels(userText, chatHistory);
       } catch {
-        response = await askGeminiRoute(userText, undefined, chatHistory, 'Mejbaur');
+        // Offline fallback gets GPS context injected
+        response = await askGeminiRoute(queryForOffline, undefined, chatHistory, 'Mejbaur');
       }
       saveChatMessage({ role: 'assistant', text: response, timestamp: Date.now() } as any, nextSessionId);
       setMessages(m => [...m, { id: Date.now()+1, isUser:false, text:response }]);
