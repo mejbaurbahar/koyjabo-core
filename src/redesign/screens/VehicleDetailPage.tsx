@@ -23,19 +23,42 @@ export function VehicleDetailPage(props: Props) {
   const [tab, setTab] = useState<'stops'|'seats'|'amenities'|'photos'|'reviews'>('stops');
   const card = (r=16): React.CSSProperties => ({ background:tk.panel,border:`1px solid ${tk.line}`,borderRadius:r,padding:16 });
 
+  // Build launch meta from passed params if available
+  const launchMeta = kind === 'launch' && params?.name ? {
+    hero: `linear-gradient(135deg,${params.col || '#0c1a2e'},${params.col || '#0369a1'}aa)`,
+    title: params.name,
+    titleBn: params.nameBn || params.name,
+    route: `${params.from || 'Sadarghat'} → ${params.to || 'Barisal'}`,
+    routeBn: `${params.from || 'সদরঘাট'} → ${params.to || 'বরিশাল'}`,
+    dep: params.dep || '8:00 PM',
+    arr: params.arr || '6:00 AM',
+    dur: params.dur || '10h',
+    stats: [
+      ['৳'+(params.deck||'300'),'deck'],
+      ['৳'+(params.cabin||'1200'),'cabin'],
+      ['৳'+(params.vip||'4000'),'VIP'],
+      [(params.rating||'4.1')+'★','rating'],
+    ] as [string,string][],
+  } : null;
+
   const meta: Record<VehicleKind,{hero:string,title:string,titleBn:string,route:string,routeBn:string,dep:string,arr:string,dur:string,stats:[string,string][]}>  = {
     bus:{ hero:'linear-gradient(135deg,#064e3b,#10b981)', title:'Green Line Paribahan',titleBn:'গ্রীন লাইন পরিবহন',route:'Gulshan → Motijheel',routeBn:'গুলশান → মতিঝিল',dep:'4:22 PM',arr:'5:10 PM',dur:'48 min',stats:[['12','stops'],['৳60','fare'],['AC','type'],['4.2★','rating']] },
     train:{ hero:'linear-gradient(135deg,#1e1b4b,#6d28d9)', title:'Cox\'s Bazar Express',titleBn:'কক্সবাজার এক্সপ্রেস',route:'Dhaka → Cox\'s Bazar',routeBn:'ঢাকা → কক্সবাজার',dep:'10:00 PM',arr:'7:00 AM',dur:'9h',stats:[['390km','distance'],['৳200+','fare'],['5 classes','coach'],['4.5★','rating']] },
     plane:{ hero:'linear-gradient(135deg,#1e3a8a,#6d28d9)', title:'BG-431 Biman Bangladesh',titleBn:'BG-431 বিমান বাংলাদেশ',route:'Dhaka → Cox\'s Bazar',routeBn:'ঢাকা → কক্সবাজার',dep:'8:00 AM',arr:'8:55 AM',dur:'55 min',stats:[['162','seats'],['৳4500','fare'],['2 classes','class'],['4.3★','rating']] },
     launch:{ hero:'linear-gradient(135deg,#0c1a2e,#0369a1)', title:'Sundarban-12',titleBn:'সুন্দরবন-১২',route:'Sadarghat → Barisal',routeBn:'সদরঘাট → বরিশাল',dep:'8:00 PM',arr:'6:00 AM',dur:'10h',stats:[['5 cabins','classes'],['৳300+','deck fare'],['Overnight','duration'],['4.3★','rating']] },
   };
-  const m = meta[kind];
+  const m = launchMeta || meta[kind];
+
+  const launchStops = kind === 'launch' && params?.from ? [
+    { bn: params.from, en: params.from, t: params.dep || '8:00 PM', type: 'boarding' as const },
+    { bn: params.to || 'Barisal', en: params.to || 'Barisal', t: params.arr || '6:00 AM', type: 'destination' as const },
+  ] : null;
 
   const stops: Record<VehicleKind,{bn:string,en:string,t:string,type?:string}[]> = {
     bus:[{bn:'গুলশান ২',en:'Gulshan 2',t:'4:22 PM',type:'boarding'},{bn:'বাড্ডা',en:'Badda',t:'4:31 PM'},{bn:'রামপুরা',en:'Rampura',t:'4:38 PM'},{bn:'মালিবাগ',en:'Malibagh',t:'4:45 PM'},{bn:'মতিঝিল',en:'Motijheel',t:'5:10 PM',type:'destination'}],
     train:[{bn:'ঢাকা',en:'Dhaka',t:'10:00 PM',type:'boarding'},{bn:'কুমিল্লা',en:'Comilla',t:'12:30 AM'},{bn:'চট্টগ্রাম',en:'Chittagong',t:'3:30 AM',type:'rest'},{bn:'কক্সবাজার',en:"Cox's Bazar",t:'7:00 AM',type:'destination'}],
     plane:[{bn:'হজরত শাহজালাল বিমানবন্দর',en:'Hazrat Shahjalal Airport',t:'8:00 AM',type:'boarding'},{bn:'কক্সবাজার বিমানবন্দর',en:"Cox's Bazar Airport",t:'8:55 AM',type:'destination'}],
-    launch:[{bn:'সদরঘাট',en:'Sadarghat',t:'8:00 PM',type:'boarding'},{bn:'চাঁদপুর',en:'Chandpur',t:'11:30 PM'},{bn:'বরিশাল',en:'Barisal',t:'6:00 AM',type:'destination'}],
+    launch: launchStops || [{bn:'সদরঘাট',en:'Sadarghat',t:'8:00 PM',type:'boarding'},{bn:'চাঁদপুর',en:'Chandpur',t:'11:30 PM'},{bn:'বরিশাল',en:'Barisal',t:'6:00 AM',type:'destination'}],
   };
 
   const amenities: Record<VehicleKind,{e:string,l:string}[]> = {
@@ -49,7 +72,7 @@ export function VehicleDetailPage(props: Props) {
     bus:[{icon:'🌐',t:'greenlinebd.com'},{icon:'🏢',t:T(lang,'সায়েদাবাদ কাউন্টার','Sayedabad counter')},{icon:'📞',t:'01700-000000'}],
     train:[{icon:'🌐',t:'eticket.railway.gov.bd'},{icon:'🏢',t:T(lang,'কমলাপুর স্টেশন','Kamalapur Station')},{icon:'📞',t:'131'}],
     plane:[{icon:'🌐',t:'biman.com.bd / us-bangla.com'},{icon:'🏢',t:T(lang,'শাহজালাল বিমানবন্দর','Shahjalal Airport')},{icon:'📞',t:'13600'}],
-    launch:[{icon:'🌐',t:'biwtc.gov.bd'},{icon:'🏢',t:T(lang,'সদরঘাট টার্মিনাল','Sadarghat Terminal')},{icon:'📞',t:'16223'}],
+    launch:[{icon:'🌐',t:'biwtc.gov.bd'},{icon:'🏢',t: params?.operator ? T(lang, params.operatorBn||params.operator, params.operator) : T(lang,'সদরঘাট টার্মিনাল','Sadarghat Terminal')},{icon:'📞',t:'16223'}],
   };
 
   const tabs: {key:typeof tab,label:string}[] = [{key:'stops',label:T(lang,'স্টপ','Stops')},{key:'seats',label:T(lang,'আসন','Seats')},{key:'amenities',label:T(lang,'সুবিধা','Amenities')},{key:'photos',label:T(lang,'ছবি','Photos')},{key:'reviews',label:T(lang,'রিভিউ','Reviews')}];

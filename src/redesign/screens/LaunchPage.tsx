@@ -10,7 +10,7 @@ import { SuggestionDropdown, Suggestion } from '../components/SuggestionDropdown
 import { earnCoins } from '../utils/koyCoinService';
 import { LAUNCH_ROUTES, LAUNCH_TERMINALS } from '../../../data/bangladeshLaunchData';
 
-interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
+interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string,p?:Record<string,string>)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
 // Use real LAUNCH_TERMINALS from data file (12 terminals)
 
@@ -140,7 +140,7 @@ export function LaunchPage(props: Props) {
                 {filteredLaunches.length === 0
                   ? <div style={{ fontFamily:BEN, fontSize:13, color:tk.textFaint, padding:'16px 0' }}>{T(lang,'এই রুটে কোনো লঞ্চ পাওয়া যায়নি।','No launches found for this route.')}</div>
                   : filteredLaunches.map((l,i)=>(
-                  <div key={l.id} onClick={()=>onNav('vehicle')} style={{ ...card(14), position:'relative', overflow:'hidden', cursor:'pointer' }}>
+                  <div key={l.id} onClick={()=>onNav('vehicle', { kind:'launch', id:l.id, name:l.name.en, nameBn:l.name.bn, from: fromLabel, to: toLabel, dep:l.dep, arr:l.arr, dur:l.dur, deck:String(l.deck), cabin:String(l.cabin), vip:String(l.vip), operator:l.operator.en, operatorBn:l.operator.bn, rating:String(l.rating), type:l.type, col:l.col })} style={{ ...card(14), position:'relative', overflow:'hidden', cursor:'pointer' }}>
                     {l.overnight && <div style={{ position:'absolute', top:0, right:0, background:'linear-gradient(90deg,#7c3aed,#a855f7)', color:'#fff', padding:'3px 10px', borderRadius:'0 16px 0 10px', fontFamily:SANS, fontWeight:800, fontSize:9, letterSpacing:1 }}>🌙 OVERNIGHT</div>}
                     <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:10 }}>
                       <div style={{ width:56, height:44, borderRadius:10, background:`linear-gradient(135deg,${l.col},${l.col}cc)`, flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center', fontSize:24 }}>⛴️</div>
