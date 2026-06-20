@@ -1795,6 +1795,17 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
         try {
           const graphResult = await planAndFormat(fromLoc, toLoc, isBn);
           if (graphResult && !graphResult.startsWith('🤔') && graphResult.length > 60) {
+            // Find additional direct buses not already shown in the graph result
+            const extraDirect = BUS_DATA.filter(b => {
+              if (b.active === false) return false;
+              const fi = b.stops.indexOf(fromLoc);
+              const ti = b.stops.indexOf(toLoc);
+              return fi >= 0 && ti > fi && !graphResult.includes(b.name);
+            }).map(b => `🚌 **${b.name}**${b.bnName ? ` (${b.bnName})` : ''}`);
+            if (extraDirect.length > 0) {
+              const label = isBn ? '\n\n🚌 **সরাসরি যায় এমন অন্যান্য বাস:**\n' : '\n\n🚌 **Other buses also going directly:**\n';
+              return graphResult + label + extraDirect.join('\n');
+            }
             return graphResult;
           }
         } catch (_) { /* fallthrough to legacy engine */ }
