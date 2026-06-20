@@ -120,7 +120,7 @@ export function TrainPage(props: Props) {
                 ))}
               </div>
             </div>
-            <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1fr 1fr 0.8fr auto', gap:10 }}>
+            <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1fr 1fr auto', gap:10 }}>
               {/* FROM with real station suggestions via portal */}
               <div ref={fromRef} style={{ background:tk.inputBg, border:`1px solid ${fromFocus?tk.primary:tk.line}`, borderRadius:14, padding:'10px 14px', display:'flex', alignItems:'center', gap:10 }}>
                 <div style={{ width:28, height:28, borderRadius:8, background:tk.primarySoft, color:tk.primaryDeep, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><Icon.pin s={14}/></div>
@@ -139,11 +139,7 @@ export function TrainPage(props: Props) {
                 </div>
               </div>
               {toFocus && <SuggestionDropdown suggestions={filterStations(toStation, 'to')} onSelect={s=>{setToStation(s.label);setToFocus(false);}} onDismiss={()=>setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef}/>}
-              <div style={{ background:tk.inputBg, border:`1px solid ${tk.line}`, borderRadius:14, padding:'10px 14px', display:'flex', alignItems:'center', gap:10 }}>
-                <div style={{ width:28, height:28, borderRadius:8, background:tk.amberSoft, color:tk.amber, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><Icon.clock s={14}/></div>
-                <div><div style={{ fontFamily:SANS, fontSize:10, fontWeight:600, color:tk.textFaint, textTransform:'uppercase', letterSpacing:1.2 }}>{T(lang,'তারিখ','Date')}</div><div style={{ fontFamily:BEN, fontSize:14, fontWeight:600, color:tk.text }}>15 May</div></div>
-              </div>
-              <button onClick={()=>{ earnCoins(5,'Train search'); onNav('results'); }} style={{ background:'linear-gradient(135deg,#5b21b6,#7c3aed)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'0 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #7c3aed' }}>
+              <button onClick={()=>{ earnCoins(5,'Train search'); document.getElementById('train-results')?.scrollIntoView({ behavior:'smooth', block:'start' }); }} style={{ background:'linear-gradient(135deg,#5b21b6,#7c3aed)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'0 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #7c3aed' }}>
                 <Icon.search s={16}/>{T(lang,'খুঁজুন','Search')}
               </button>
             </div>
@@ -151,7 +147,7 @@ export function TrainPage(props: Props) {
 
           <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1.5fr 1fr', gap:18 }}>
             {/* Trains list */}
-            <div>
+            <div id="train-results">
               <SectionHeader tk={tk} lang={lang}
                 title={hasTrainSearch
                   ? T(lang,`${filteredTrains.length}টি ট্রেন পাওয়া গেছে`,`${filteredTrains.length} trains found`)

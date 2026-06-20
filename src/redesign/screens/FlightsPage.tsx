@@ -111,7 +111,7 @@ export function FlightsPage(props: Props) {
                 <button key={i} style={{ ...chipBtn(tk), background:c.on?tk.text:tk.panelMuted, color:c.on?tk.bg:tk.text, borderColor:c.on?tk.text:tk.line, fontWeight:c.on?700:500 }}>{c.l}</button>
               ))}
             </div>
-            <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1fr 1fr 0.9fr auto', gap:10 }}>
+            <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1fr 1fr auto', gap:10 }}>
               {/* From */}
               <div ref={fromRef} style={{ background:tk.inputBg, border:`1px solid ${fromFocus?tk.primary:tk.line}`, borderRadius:14, padding:'10px 14px', display:'flex', alignItems:'center', gap:10 }}>
                 <div style={{ width:28, height:28, borderRadius:8, background:tk.primarySoft, color:tk.primaryDeep, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><Icon.pin s={14}/></div>
@@ -142,11 +142,6 @@ export function FlightsPage(props: Props) {
                   />
                 </div>
               </div>
-              {/* Date */}
-              <div style={{ background:tk.inputBg, border:`1px solid ${tk.line}`, borderRadius:14, padding:'10px 14px', display:'flex', alignItems:'center', gap:10 }}>
-                <div style={{ width:28, height:28, borderRadius:8, background:tk.amberSoft, color:tk.amber, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><Icon.clock s={14}/></div>
-                <div><div style={{ fontFamily:SANS, fontSize:10, fontWeight:600, color:tk.textFaint, textTransform:'uppercase', letterSpacing:1.2 }}>{T(lang,'তারিখ','Date')}</div><div style={{ fontFamily:BEN, fontSize:14, fontWeight:600, color:tk.text }}>15 May</div></div>
-              </div>
             </div>
             {fromFocus && (
               <SuggestionDropdown
@@ -166,14 +161,14 @@ export function FlightsPage(props: Props) {
                 anchorRef={toRef as React.RefObject<HTMLElement>}
               />
             )}
-            <button onClick={()=>{ earnCoins(5, 'Flight search'); onNav('results'); }} style={{ background:'linear-gradient(135deg,#1e5aa0,#0a1d3a)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'10px 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #1e5aa0', marginTop:10 }}>
+            <button onClick={()=>{ earnCoins(5, 'Flight search'); document.getElementById('flights-results')?.scrollIntoView({ behavior:'smooth', block:'start' }); }} style={{ background:'linear-gradient(135deg,#1e5aa0,#0a1d3a)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'10px 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #1e5aa0', marginTop:10 }}>
               <Icon.search s={16}/>{T(lang,'ফ্লাইট খুঁজুন','Find flights')}
             </button>
           </div>
 
           <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1.5fr 1fr', gap:18 }}>
             {/* Flights list */}
-            <div>
+            <div id="flights-results">
               <SectionHeader tk={tk} lang={lang} title={T(lang,`এয়ারলাইন গাইড · ${fromIATA} → ${toIATA}`,`Airline guide · ${fromAirportName} → ${toAirportName}`)} action={T(lang,'সব দেখুন','See all')}/>
               <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
                 {filteredFlights2.length === 0

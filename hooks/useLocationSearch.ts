@@ -145,10 +145,19 @@ export function useLocationSearch(
       s.sub.includes(query)
     );
 
-    // Merge OSM results (avoid duplicates by id)
+    // Deduplicate OSM results by normalized name to avoid showing same place twice
+    const norm = (s: string) => s.toLowerCase().replace(/[\s\-\.,'()]+/g, '');
+    const seenNames = new Set<string>(staticMatches.map(s => norm(s.label)));
     const staticIds = new Set(staticMatches.map(s => s.id));
+
     const osmMapped: LocationSuggestion[] = osmResults
-      .filter(r => !staticIds.has(r.id) && r.name)
+      .filter(r => {
+        if (!r.name || staticIds.has(r.id)) return false;
+        const n = norm(r.name);
+        if (seenNames.has(n)) return false;
+        seenNames.add(n);
+        return true;
+      })
       .map(r => ({
         id: r.id,
         label: r.name,
@@ -172,13 +181,23 @@ export function searchAllLocations(query: string, limit = 20): LocationSuggestio
   if (!query.trim()) return staticList.slice(0, limit);
 
   const q = query.toLowerCase().trim();
+  const norm = (s: string) => s.toLowerCase().replace(/[\s\-\.,'()]+/g, '');
   const staticMatches = staticList.filter(s =>
     s.label.toLowerCase().includes(q) ||
     s.sub.toLowerCase().includes(q)
   );
 
+  const seenNames = new Set<string>(staticMatches.map(s => norm(s.label)));
+  const staticIds = new Set(staticMatches.map(s => s.id));
+
   const osmSync = searchLocationsSync(query, limit)
-    .filter(r => !staticMatches.find(s => s.id === r.id))
+    .filter(r => {
+      if (!r.name || staticIds.has(r.id)) return false;
+      const n = norm(r.name);
+      if (seenNames.has(n)) return false;
+      seenNames.add(n);
+      return true;
+    })
     .map(r => ({ id: r.id, label: r.name, sub: r.bnName || r.category, lat: r.lat ?? undefined, lng: r.lng ?? undefined, category: r.category }));
 
   return [...staticMatches, ...osmSync].slice(0, limit);

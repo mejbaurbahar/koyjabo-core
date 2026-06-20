@@ -380,7 +380,7 @@ export function IntercityPage(props: Props) {
           </div>
 
           <button
-            onClick={() => { earnCoins(5,'Intercity search'); onNav('results'); }}
+            onClick={() => { earnCoins(5,'Intercity search'); document.getElementById('intercity-results')?.scrollIntoView({ behavior:'smooth', block:'start' }); }}
             style={{
               marginTop: 16, width: '100%',
               background: `linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)`,
@@ -396,7 +396,7 @@ export function IntercityPage(props: Props) {
         </div>
 
         {(nameSearch || from || to) && (
-        <div style={{ marginTop: 32 }}>
+        <div id="intercity-results" style={{ marginTop: 32 }}>
           <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 700, letterSpacing: 0.8, textTransform: 'uppercase', color: tk.textFaint, marginBottom: 16 }}>
             {lbl(`${filteredDistricts.length} routes found`, `${filteredDistricts.length}টি রুট পাওয়া গেছে`)}
           </div>
