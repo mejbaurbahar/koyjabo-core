@@ -84,6 +84,8 @@ function SearchPanel({
   const [fromFocus, setFromFocus] = useState(false);
   const [toFocus, setToFocus] = useState(false);
   const [searchFocus, setSearchFocus] = useState(false);
+  const [sortPref, setSortPref] = useState<'now'|'fastest'|'cheapest'|'non-ac'|null>(null);
+  const [sameLocError, setSameLocError] = useState(false);
   const fromRef = useRef<HTMLDivElement>(null);
   const toRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
@@ -346,7 +348,7 @@ function SearchPanel({
             />
           </div>
         </div>
-        {fromFocus && <SuggestionDropdown suggestions={filterModeOptions(from, 'from')} onSelect={s => { setFrom(s.label); setFromFocus(false); }} onDismiss={() => setFromFocus(false)} tk={tk} lang={lang} anchorRef={fromRef} />}
+        {fromFocus && <SuggestionDropdown suggestions={filterModeOptions(from, 'from')} onSelect={s => { setFrom(s.label); setFromFocus(false); setSameLocError(false); }} onDismiss={() => setFromFocus(false)} tk={tk} lang={lang} anchorRef={fromRef} />}
 
         {/* Swap (desktop only) */}
         {!isMobile && (
@@ -389,12 +391,28 @@ function SearchPanel({
             />
           </div>
         </div>
-        {toFocus && <SuggestionDropdown suggestions={filterModeOptions(to, 'to')} onSelect={s => { setTo(s.label); setToFocus(false); }} onDismiss={() => setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef} />}
+        {toFocus && <SuggestionDropdown suggestions={filterModeOptions(to, 'to')} onSelect={s => { setTo(s.label); setToFocus(false); setSameLocError(false); }} onDismiss={() => setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef} />}
 
+        {/* From = To error */}
+        {sameLocError && (
+          <div style={{ gridColumn: '1 / -1', order: -1, background: '#ef444422', border: '1px solid #ef4444', borderRadius: 10, padding: '8px 14px', fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 12, color: '#ef4444', fontWeight: 600 }}>
+            ⚠ {T(lang, 'শুরু ও গন্তব্য আলাদা হতে হবে', 'From and To must be different locations')}
+          </div>
+        )}
         {/* Find routes — navigates with real from/to */}
         <button
           data-kj-find-routes
-          onClick={() => onNav(activeMode === 'bus' ? 'results' : modeRoute(), from || to ? { from, to, mode: activeMode } : { mode: activeMode })}
+          onClick={() => {
+            const f = from.trim().toLowerCase();
+            const t = to.trim().toLowerCase();
+            if (f && t && f === t) { setSameLocError(true); return; }
+            setSameLocError(false);
+            const params: Record<string, string> = { mode: activeMode };
+            if (from) params.from = from;
+            if (to) params.to = to;
+            if (sortPref) params.sort = sortPref;
+            onNav(activeMode === 'bus' ? 'results' : modeRoute(), params);
+          }}
           style={{
             gridColumn: isMobile ? '1 / -1' : 'auto',
             order: isMobile ? 0 : 3,
@@ -419,33 +437,37 @@ function SearchPanel({
         </button>
       </div>
 
-      {/* Footer chips */}
+      {/* Footer chips — functional sort/filter shortcuts */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: isMobile ? 'nowrap' : 'wrap', overflowX: 'auto', scrollbarWidth: 'none' }}>
         {[
-          T(lang, 'এখনই ছাড়ুন · ৪:২২ PM', 'Leave now · 4:22 PM'),
-          T(lang, 'দ্রুততম', 'Fastest'),
-          T(lang, 'সস্তাতম', 'Cheapest'),
-          ...(!isMobile ? [T(lang, 'Non-AC only', 'Non-AC only')] : []),
-        ].map((chip, i) => (
-          <button
-            key={i}
-            style={{
-              background: i === 0 ? tk.primarySoft : tk.panelMuted,
-              border: `1px solid ${i === 0 ? tk.primary : tk.line}`,
-              borderRadius: 999,
-              padding: '5px 12px',
-              fontFamily: lang === 'bn' ? BEN : SANS,
-              fontSize: 11,
-              fontWeight: 500,
-              color: i === 0 ? tk.primary : tk.textDim,
-              cursor: 'pointer',
-              whiteSpace: 'nowrap',
-              flexShrink: 0,
-            }}
-          >
-            {chip}
-          </button>
-        ))}
+          { id: 'now' as const, label: T(lang, `এখনই ছাড়ুন · ${new Date().toLocaleTimeString('en-BD',{hour:'2-digit',minute:'2-digit'})}`, `Leave now · ${new Date().toLocaleTimeString('en-BD',{hour:'2-digit',minute:'2-digit'})}`) },
+          { id: 'fastest' as const, label: T(lang, 'দ্রুততম', 'Fastest') },
+          { id: 'cheapest' as const, label: T(lang, 'সস্তাতম', 'Cheapest') },
+          ...(!isMobile ? [{ id: 'non-ac' as const, label: T(lang, 'Non-AC only', 'Non-AC only') }] : []),
+        ].map((chip) => {
+          const active = sortPref === chip.id;
+          return (
+            <button
+              key={chip.id}
+              onClick={() => setSortPref(active ? null : chip.id)}
+              style={{
+                background: active ? tk.primarySoft : tk.panelMuted,
+                border: `1px solid ${active ? tk.primary : tk.line}`,
+                borderRadius: 999,
+                padding: '5px 12px',
+                fontFamily: lang === 'bn' ? BEN : SANS,
+                fontSize: 11,
+                fontWeight: active ? 700 : 500,
+                color: active ? tk.primary : tk.textDim,
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+                flexShrink: 0,
+              }}
+            >
+              {active && '✓ '}{chip.label}
+            </button>
+          );
+        })}
         <span
           style={{
             marginLeft: 'auto',
