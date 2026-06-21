@@ -419,6 +419,10 @@ export default defineConfig(({ mode }) => {
           output: {
             assetFileNames: 'assets/[name]-[hash].[ext]',
             manualChunks(id) {
+              // Split heavy data files into separate cacheable chunks
+              if (id.includes('bangladeshTrainData')) return 'train-data';
+              if (id.includes('geminiService') || id.includes('travelAI') || id.includes('advancedQaData') || id.includes('aiLearning')) return 'ai-service';
+              if (id.includes('intercityData') || id.includes('offlineService')) return 'intercity-data';
               if (id.includes('node_modules/leaflet')) return 'leaflet';
               if (id.includes('node_modules/react-dom')) return 'react-dom';
               if (id.includes('node_modules/react/')) return 'react';
