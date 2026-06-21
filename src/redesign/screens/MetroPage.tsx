@@ -1,5 +1,5 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
-import { KJ_TOKENS, T, SANS, BEN, chipBtn } from '../tokens';
+import { KJ_TOKENS, T, SANS, BEN, chipBtn, N, Fare } from '../tokens';
 import { PageShell } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
 import { SectionHeader } from '../components/SectionHeader';
@@ -110,7 +110,7 @@ export function MetroPage(props: Props) {
           gradient="linear-gradient(135deg, #00130e 0%, #00543c 50%, #10b981 100%)"
           title={T(lang,'ঢাকা মেট্রো · MRT-6 লাইভ','Dhaka Metro · MRT-6 live')}
           subtitle={T(lang,'উত্তরা থেকে কমলাপুর পর্যন্ত ১৭টি স্টেশন · প্রতি ৮ মিনিটে ট্রেন · ৪৫ মিনিটে পুরো লাইন।','17 stations from Uttara to Kamalapur · trains every 8 min · 45 min end-to-end.')}
-          stats={[{v:'17',l:T(lang,'স্টেশন','Stations')},{v:'8 min',l:T(lang,'ফ্রিকোয়েন্সি','Frequency')},{v:'৳ 20-100',l:T(lang,'ভাড়া','Fare range')},{v:'7am–9pm',l:T(lang,'চলমান','Operating')}]}
+          stats={[{v:N(17,lang),l:T(lang,'স্টেশন','Stations')},{v:N(8,lang)+' min',l:T(lang,'ফ্রিকোয়েন্সি','Frequency')},{v:'৳ '+N('20',lang)+'-'+N(100,lang),l:T(lang,'ভাড়া','Fare range')},{v:N('7',lang)+'am–'+N(9,lang)+'pm',l:T(lang,'চলমান','Operating')}]}
         />
 
         <div style={{ padding:isMobile?'0 16px':'0 40px' }}>
@@ -119,10 +119,10 @@ export function MetroPage(props: Props) {
             <div style={{ background:'linear-gradient(135deg,#00130e,#00543c)', borderRadius:18, padding:20, color:'#fff', position:'relative', overflow:'hidden' }}>
               <div style={{ position:'absolute', right:-40, top:-40, width:160, height:160, borderRadius:999, background:'rgba(16,185,129,0.25)' }} className="kj-anim-pulse"/>
               <div style={{ fontFamily:SANS, fontSize:11, fontWeight:700, letterSpacing:1.4, color:'rgba(255,255,255,0.7)', textTransform:'uppercase', marginBottom:8 }}>{T(lang,'পরবর্তী ট্রেন','Next train')} · {nearestName}</div>
-              <div style={{ fontFamily:SANS, fontWeight:800, fontSize:isMobile?48:56, color:'#fff', letterSpacing:-2, lineHeight:1 }}>2:15</div>
+              <div style={{ fontFamily:SANS, fontWeight:800, fontSize:isMobile?48:56, color:'#fff', letterSpacing:-2, lineHeight:1 }}>{N('2:15', lang)}</div>
               <div style={{ fontFamily:BEN, fontSize:13, color:'rgba(255,255,255,0.7)', marginTop:6 }}>{T(lang,'উত্তরা উত্তর → মতিঝিল','Uttara North → Motijheel')}</div>
               <div style={{ display:'flex', gap:12, marginTop:14 }}>
-                {[{l:T(lang,'পরের ট্রেন','After'),v:'10:08'},{l:T(lang,'তার পর','Then'),v:'10:16'}].map((t,i)=>(
+                {[{l:T(lang,'পরের ট্রেন','After'),v:N('10:08',lang)},{l:T(lang,'তার পর','Then'),v:N('10:16',lang)}].map((t,i)=>(
                   <div key={i} style={{ background:'rgba(255,255,255,0.12)', borderRadius:10, padding:'8px 12px' }}>
                     <div style={{ fontFamily:SANS, fontSize:9, fontWeight:700, color:'rgba(255,255,255,0.6)', textTransform:'uppercase', letterSpacing:1 }}>{t.l}</div>
                     <div style={{ fontFamily:SANS, fontWeight:800, fontSize:14, color:'#fff' }}>{t.v}</div>
@@ -133,7 +133,7 @@ export function MetroPage(props: Props) {
 
             <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
               {[
-                { bg:`linear-gradient(135deg,${tk.primary},${tk.primaryDeep})`, ink:tk.primaryInk, label:T(lang,'একক যাত্রা টোকেন','Single journey token'), route:'metro-token', sub:T(lang,'৳ ২০ – ১০০','৳ 20 – 100') },
+                { bg:`linear-gradient(135deg,${tk.primary},${tk.primaryDeep})`, ink:tk.primaryInk, label:T(lang,'একক যাত্রা টোকেন','Single journey token'), route:'metro-token', sub:T(lang,'৳ ২০ – ১০০','৳ '+N(20,lang)+' – '+N(100,lang)) },
                 { bg:`linear-gradient(135deg,#7c3aed,#5b21b6)`, ink:'#fff', label:T(lang,'র‍্যাপিড পাস','MRT Rapid Pass'), route:'metro-pass', sub:T(lang,'১০% ছাড়','10% discount') },
               ].map((c,i)=>(
                 <button key={i} onClick={()=>onNav(c.route)} style={{ background:c.bg, color:c.ink, border:0, borderRadius:14, padding:'14px 18px', cursor:'pointer', textAlign:'left', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
@@ -176,7 +176,7 @@ export function MetroPage(props: Props) {
                       {T(lang,s.bn,s.en)}
                     </div>
                     {isCurrent && <div style={{ fontFamily:SANS, fontSize:8, color:tk.primary, fontWeight:800, marginTop:18, whiteSpace:'nowrap' }}>{T(lang,'নিকটতম','NEAREST')} · {nearestDistance}</div>}
-                    <div style={{ fontFamily:SANS, fontSize:8, color:tk.primary, fontWeight:700, marginTop:20 }}>৳{s.fare}</div>
+                    <div style={{ fontFamily:SANS, fontSize:8, color:tk.primary, fontWeight:700, marginTop:20 }}>{Fare(s.fare, lang)}</div>
                   </div>
                 );
               })}
@@ -203,8 +203,8 @@ export function MetroPage(props: Props) {
               </div>
               {hasSearched && calcFare ? (
                 <div style={{ background:`linear-gradient(135deg,${tk.primary},${tk.primaryDeep})`, color:tk.primaryInk, borderRadius:14, padding:'10px 18px', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', minWidth:100 }}>
-                  <div style={{ fontFamily:SANS, fontWeight:800, fontSize:22, letterSpacing:-0.5 }}>৳ {calcFare.fare}</div>
-                  <div style={{ fontFamily:SANS, fontSize:10, fontWeight:700, opacity:0.8, letterSpacing:1 }}>{calcFare.stops} {T(lang,'স্টেশন','STOPS')}</div>
+                  <div style={{ fontFamily:SANS, fontWeight:800, fontSize:22, letterSpacing:-0.5 }}>{Fare(calcFare.fare, lang)}</div>
+                  <div style={{ fontFamily:SANS, fontSize:10, fontWeight:700, opacity:0.8, letterSpacing:1 }}>{N(calcFare.stops, lang)} {T(lang,'স্টেশন','STOPS')}</div>
                 </div>
               ) : (
                 <button onClick={()=>{ if (fareFrom && fareTo) setHasSearched(true); }}
@@ -220,10 +220,10 @@ export function MetroPage(props: Props) {
           {/* Info grid */}
           <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr 1fr':'repeat(4,1fr)', gap:10, marginBottom:18 }}>
             {[
-              {ic:'⏰',t:T(lang,'অপারেটিং','Operating'),v:'7:10 AM – 9:40 PM'},
+              {ic:'⏰',t:T(lang,'অপারেটিং','Operating'),v:N('7:10',lang)+' AM – '+N('9:40',lang)+' PM'},
               {ic:'🗓',t:T(lang,'ছুটির দিন','Off day'),v:T(lang,'শুক্রবার সকাল','Fri morning')},
-              {ic:'🎫',t:T(lang,'ভাড়া','Fare'),v:'৳ 20 – 100'},
-              {ic:'⚡',t:T(lang,'সর্বোচ্চ গতি','Top speed'),v:'100 km/h'},
+              {ic:'🎫',t:T(lang,'ভাড়া','Fare'),v:'৳ '+N(20,lang)+' – '+N(100,lang)},
+              {ic:'⚡',t:T(lang,'সর্বোচ্চ গতি','Top speed'),v:N(100,lang)+' km/h'},
             ].map((s,i)=>(
               <div key={i} style={card(14)}>
                 <div style={{ fontSize:22 }}>{s.ic}</div>

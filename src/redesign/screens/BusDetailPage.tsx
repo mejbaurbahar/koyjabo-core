@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { KJ_TOKENS, T, SANS, BEN, chipBtn } from '../tokens';
+import { KJ_TOKENS, T, SANS, BEN, chipBtn, N, Fare } from '../tokens';
 import { PageShell } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
 import { Pill } from '../components/Pill';
@@ -170,8 +170,8 @@ export function BusDetailPage(props: Props) {
               <div style={{ fontFamily:SANS,fontSize:11,color:tk.textFaint,marginBottom:12 }}>{bus.hours}</div>
               <div style={{ display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8 }}>
                 {[
-                  {v:String(bus.stops.length),l:T(lang,'স্টপ','stops')},
-                  {v:`৳${fareAmt}`,l:T(lang,'ভাড়া','fare')},
+                  {v:N(bus.stops.length, lang),l:T(lang,'স্টপ','stops')},
+                  {v:Fare(fareAmt, lang),l:T(lang,'ভাড়া','fare')},
                   {v:bus.type,l:T(lang,'ধরন','type')},
                 ].map((s,i)=>(
                   <div key={i} style={{ background:tk.panelMuted,borderRadius:10,padding:'8px 6px',textAlign:'center' }}>
@@ -183,7 +183,7 @@ export function BusDetailPage(props: Props) {
             </div>
 
             <div style={{ ...card(18),marginBottom:16 }}>
-              <div style={{ fontFamily:BEN,fontWeight:700,fontSize:15,color:tk.text,marginBottom:14 }}>{T(lang,'স্টপসমূহ','Stops')} <span style={{ fontFamily:SANS,fontSize:11,color:tk.textFaint }}>({realStops.length})</span></div>
+              <div style={{ fontFamily:BEN,fontWeight:700,fontSize:15,color:tk.text,marginBottom:14 }}>{T(lang,'স্টপসমূহ','Stops')} <span style={{ fontFamily:SANS,fontSize:11,color:tk.textFaint }}>({N(realStops.length, lang)})</span></div>
               {realStops.map((s,i)=>{
                 const isNearest = nearest?.index === i;
                 const showHelp = isNearest && nearest.distance <= 1.5;
@@ -220,7 +220,7 @@ export function BusDetailPage(props: Props) {
               {[
                 {l:T(lang,'অপারেটর','Operator'),v:bus.name},
                 {l:T(lang,'বাস আইডি','Bus ID'),v:bus.id},
-                {l:T(lang,'ভাড়া','Fare'),v:`৳ ${fareAmt}`},
+                {l:T(lang,'ভাড়া','Fare'),v:'৳ '+N(fareAmt, lang)},
                 {l:T(lang,'বাসের ধরন','Type'),v:bus.type},
                 {l:T(lang,'সময়সূচি','Hours'),v:bus.hours},
               ].map((d,i)=>(
@@ -231,7 +231,7 @@ export function BusDetailPage(props: Props) {
               ))}
               {nearest && (
                 <p style={{ fontFamily:BEN,fontSize:12,opacity:0.82,marginTop:8 }}>
-                  {T(lang,'নিকটতম স্টপ','Nearest stop')}: {lang === 'bn' ? realStops[nearest.index]?.bn : realStops[nearest.index]?.en} · {nearest.distance.toFixed(1)} km
+                  {T(lang,'নিকটতম স্টপ','Nearest stop')}: {lang === 'bn' ? realStops[nearest.index]?.bn : realStops[nearest.index]?.en} · {N(nearest.distance.toFixed(1), lang)} km
                 </p>
               )}
             </div>

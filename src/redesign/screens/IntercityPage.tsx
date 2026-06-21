@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef } from 'react';
-import { KJ_TOKENS, SANS, BEN, T, Tokens, Lang } from '../tokens';
+import { KJ_TOKENS, SANS, BEN, T, Tokens, Lang, N, Fare } from '../tokens';
 import { AdSlot } from '../components/AdSlot';
 import { PageShell } from './PageShell';
 import { Plane3D } from '../components/Vehicles3D';
@@ -58,6 +58,7 @@ const STATS = [
   { val: 'Live', label: 'Schedules', labelBn: 'শিডিউল' },
   { val: '50+', label: 'Operators', labelBn: 'অপারেটর' },
 ];
+// Note: STATS vals converted to Bengali at render time via N()
 
 const ALL_INTERCITY_LOCATIONS = [...INTERCITY_BUS_ROUTES, ...MAJOR_TRANSPORT_HUBS];
 
@@ -444,7 +445,7 @@ export function IntercityPage(props: Props) {
                 border: '1px solid rgba(255,255,255,0.2)', borderRadius: 12,
                 padding: '10px 16px', textAlign: 'center', minWidth: 72,
               }}>
-                <div style={{ fontFamily: SANS, fontSize: 20, fontWeight: 800, color: '#fff' }}>{s.val}</div>
+                <div style={{ fontFamily: SANS, fontSize: 20, fontWeight: 800, color: '#fff' }}>{N(s.val, lang)}</div>
                 <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 11, color: 'rgba(255,255,255,0.75)' }}>
                   {lbl(s.label, s.labelBn)}
                 </div>
@@ -569,7 +570,7 @@ export function IntercityPage(props: Props) {
             return (
               <>
                 <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 700, letterSpacing: 0.8, textTransform: 'uppercase', color: tk.textFaint, marginBottom: 16 }}>
-                  {lbl(`${operatorCards.length} bus operators found`, `${operatorCards.length}টি বাস অপারেটর পাওয়া গেছে`)}
+                  {lbl(`${N(operatorCards.length,lang)} bus operators found`, `${N(operatorCards.length,lang)}টি বাস অপারেটর পাওয়া গেছে`)}
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                   {operatorCards.slice(0, 40).map((c, i) => {
@@ -605,7 +606,7 @@ export function IntercityPage(props: Props) {
           })() : (
           <>
           <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 700, letterSpacing: 0.8, textTransform: 'uppercase', color: tk.textFaint, marginBottom: 16 }}>
-            {lbl(`${filteredResults.length} ${activeChip} routes found`, `${filteredResults.length}টি ${activeChip} রুট পাওয়া গেছে`)}
+            {lbl(`${N(filteredResults.length,lang)} ${activeChip} routes found`, `${N(filteredResults.length,lang)}টি ${activeChip} রুট পাওয়া গেছে`)}
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {filteredResults.slice(0, 30).map((r: any, i: number) => {
@@ -641,8 +642,8 @@ export function IntercityPage(props: Props) {
                       <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint, marginTop: 2 }}>{r.dep} – {r.arr} · {r.dur} · {r.daysOp}</div>
                     </div>
                     <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                      <div style={{ fontFamily: SANS, fontSize: 13, fontWeight: 700, color: tk.text }}>৳{r.fareEco.toLocaleString()}</div>
-                      {r.fareBiz && <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textDim }}>Biz: ৳{r.fareBiz.toLocaleString()}</div>}
+                      <div style={{ fontFamily: SANS, fontSize: 13, fontWeight: 700, color: tk.text }}>{Fare(r.fareEco.toLocaleString(), lang)}</div>
+                      {r.fareBiz && <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textDim }}>Biz: {Fare(r.fareBiz.toLocaleString(), lang)}</div>}
                     </div>
                   </button>
                 );
@@ -661,8 +662,8 @@ export function IntercityPage(props: Props) {
                       <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint, marginTop: 2 }}>{r.dep} → {r.arr} · {r.dur}</div>
                     </div>
                     <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                      <div style={{ fontFamily: SANS, fontSize: 13, fontWeight: 700, color: tk.text }}>৳{r.deck}</div>
-                      <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textDim }}>Cabin: ৳{r.cabin}</div>
+                      <div style={{ fontFamily: SANS, fontSize: 13, fontWeight: 700, color: tk.text }}>{Fare(r.deck, lang)}</div>
+                      <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textDim }}>Cabin: {Fare(r.cabin, lang)}</div>
                     </div>
                   </button>
                 );

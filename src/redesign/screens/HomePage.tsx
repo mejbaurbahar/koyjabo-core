@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { KJ_TOKENS, Tokens, Lang, SANS, BEN, T } from '../tokens';
+import { KJ_TOKENS, Tokens, Lang, SANS, BEN, T, N } from '../tokens';
 import { TopBar } from '../components/TopBar';
 import { MobileTabBar } from '../components/MobileTabBar';
 import { AdSlot } from '../components/AdSlot';
@@ -1149,7 +1149,7 @@ function MetroLiveStrip({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobi
           <div style={{ textAlign:'right', minWidth:72 }}>
             <div style={{ fontFamily:SANS, fontSize:11, color:'rgba(255,255,255,0.4)' }}>{T(lang,'পরের ট্রেন','Next train')}</div>
             <div style={{ fontFamily:SANS, fontSize:22, fontWeight:800, color:'#60a5fa', fontVariantNumeric:'tabular-nums', letterSpacing:'-0.5px' }}>
-              {countdown} <span style={{ fontSize:14 }}>{T(lang,'মিনিট','min')}</span>
+              {N(countdown, lang)} <span style={{ fontSize:14 }}>{T(lang,'মিনিট','min')}</span>
             </div>
           </div>
         </div>
@@ -1389,7 +1389,7 @@ function PopularRoutes({
             </div>
             <div style={{ textAlign: 'right', flexShrink: 0 }}>
               <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 13, fontWeight: 700, color: tk.text }}>{fareLabel(bus)}</div>
-              <div style={{ fontFamily: SANS, fontSize: 10, color: tk.textFaint }}>{bus.stops.length} {T(lang, 'স্টপ', 'stops')}</div>
+              <div style={{ fontFamily: SANS, fontSize: 10, color: tk.textFaint }}>{N(bus.stops.length, lang)} {T(lang, 'স্টপ', 'stops')}</div>
             </div>
             <Icon.arrowR s={16} />
           </div>

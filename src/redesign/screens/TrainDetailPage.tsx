@@ -1,5 +1,5 @@
 import React from 'react';
-import { KJ_TOKENS, T, SANS, BEN } from '../tokens';
+import { KJ_TOKENS, T, SANS, BEN, N, Fare } from '../tokens';
 import { PageShell } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
 import { Pill } from '../components/Pill';
@@ -32,11 +32,11 @@ export function TrainDetailPage(props: Props) {
   const stops = train.routeStops;
 
   const coaches = [
-    { l:'Shuvan', bn:'শোভন', c:'#6b7280', f:`৳${train.fare.shuvan}` },
-    { l:'Shuvan Chair', bn:'শোভন চেয়ার', c:'#f59e0b', f:`৳${train.fare.shuvanChair}` },
-    { l:'Snigdha', bn:'স্নিগ্ধা', c:'#3b82f6', f:`৳${train.fare.snigdha}` },
-    train.fare.firstClassBerth ? { l:'First Class Berth', bn:'প্রথম শ্রেণি বার্থ', c:'#10b981', f:`৳${train.fare.firstClassBerth}` } : null,
-    train.fare.acBerth ? { l:'AC Berth', bn:'এসি বার্থ', c:'#7c3aed', f:`৳${train.fare.acBerth}` } : null,
+    { l:'Shuvan', bn:'শোভন', c:'#6b7280', f:Fare(train.fare.shuvan, lang) },
+    { l:'Shuvan Chair', bn:'শোভন চেয়ার', c:'#f59e0b', f:Fare(train.fare.shuvanChair, lang) },
+    { l:'Snigdha', bn:'স্নিগ্ধা', c:'#3b82f6', f:Fare(train.fare.snigdha, lang) },
+    train.fare.firstClassBerth ? { l:'First Class Berth', bn:'প্রথম শ্রেণি বার্থ', c:'#10b981', f:Fare(train.fare.firstClassBerth, lang) } : null,
+    train.fare.acBerth ? { l:'AC Berth', bn:'এসি বার্থ', c:'#7c3aed', f:Fare(train.fare.acBerth, lang) } : null,
   ].filter((x): x is {l:string;bn:string;c:string;f:string} => !!x);
 
   const depTime = stops[0]?.departure ? fmtT(stops[0].departure) : train.dhakaDepart;
@@ -71,7 +71,7 @@ export function TrainDetailPage(props: Props) {
             <div style={{ flex:1, textAlign:'center', minWidth:120 }}>
               {train.totalDuration && <div style={{ fontFamily:SANS, fontSize:11, opacity:0.7 }}>⏱ {train.totalDuration}</div>}
               <div style={{ height:2, background:'rgba(255,255,255,0.35)', borderRadius:999, margin:'6px 0' }}/>
-              <div style={{ fontFamily:SANS, fontSize:10, opacity:0.6 }}>{stops.length} stations</div>
+              <div style={{ fontFamily:SANS, fontSize:10, opacity:0.6 }}>{N(stops.length, lang)} stations</div>
             </div>
             <div style={{ textAlign:'center' }}>
               <div style={{ fontFamily:SANS, fontWeight:800, fontSize:18 }}>{toLabel.replace(/_/g,' ')}</div>
@@ -122,7 +122,7 @@ export function TrainDetailPage(props: Props) {
               <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:16 }}>
                 <div style={{ fontFamily:BEN, fontWeight:700, fontSize:15, color:tk.text }}>
                   {T(lang,'রুট','Routes')}
-                  <span style={{ fontFamily:SANS, fontSize:11, color:tk.textFaint, fontWeight:400, marginLeft:6 }}>({stops.length} {T(lang,'স্টেশন','stations')})</span>
+                  <span style={{ fontFamily:SANS, fontSize:11, color:tk.textFaint, fontWeight:400, marginLeft:6 }}>({N(stops.length, lang)} {T(lang,'স্টেশন','stations')})</span>
                 </div>
                 {train.totalDuration && (
                   <span style={{ fontFamily:SANS, fontSize:12, color:tk.textFaint }}>
@@ -262,10 +262,10 @@ export function TrainDetailPage(props: Props) {
               </div>
               <div style={{ display:'flex', flexDirection:'column', gap:4 }}>
                 {[
-                  [T(lang,'বয়স','Age'), '65+'],
-                  [T(lang,'ছাড়','Discount'), '25%'],
-                  [T(lang,'সাপ্তাহিক সীমা','Weekly limit'), T(lang,'২ যাত্রা','2 trips')],
-                  [T(lang,'সহযাত্রী','Co-passenger'), '1'],
+                  [T(lang,'বয়স','Age'), N(65, lang)+'+'],
+                  [T(lang,'ছাড়','Discount'), N(25, lang)+'%'],
+                  [T(lang,'সাপ্তাহিক সীমা','Weekly limit'), T(lang,'২ যাত্রা',`${N(2,lang)} trips`)],
+                  [T(lang,'সহযাত্রী','Co-passenger'), N(1, lang)],
                 ].map(([l,v],i) => (
                   <div key={i} style={{ display:'flex', justifyContent:'space-between', fontFamily:SANS, fontSize:12 }}>
                     <span style={{ color:tk.textFaint }}>{l}</span>
@@ -282,10 +282,10 @@ export function TrainDetailPage(props: Props) {
               </div>
               <div style={{ display:'flex', flexDirection:'column', gap:4, marginBottom:10 }}>
                 {[
-                  [T(lang,'সার্ভিস চার্জ','Service charge'), '৳20'],
-                  [T(lang,'ভ্যাট','VAT'), '15%'],
-                  [T(lang,'বিছানা ফি','Bedding fee'), '৳50'],
-                  [T(lang,'সর্বোচ্চ টিকেট','Max tickets'), '4'],
+                  [T(lang,'সার্ভিস চার্জ','Service charge'), Fare(20, lang)],
+                  [T(lang,'ভ্যাট','VAT'), N(15, lang)+'%'],
+                  [T(lang,'বিছানা ফি','Bedding fee'), Fare(50, lang)],
+                  [T(lang,'সর্বোচ্চ টিকেট','Max tickets'), N(4, lang)],
                 ].map(([l,v],i) => (
                   <div key={i} style={{ display:'flex', justifyContent:'space-between', fontFamily:SANS, fontSize:12 }}>
                     <span style={{ color:tk.textFaint }}>{l}</span>

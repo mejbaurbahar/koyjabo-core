@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useCallback } from 'react';
-import { KJ_TOKENS, T, SANS, BEN, chipBtn } from '../tokens';
+import { KJ_TOKENS, T, SANS, BEN, chipBtn, N } from '../tokens';
 import { PageShell } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
 import { SectionHeader } from '../components/SectionHeader';
@@ -138,7 +138,7 @@ export function LocalBusPage(props: Props) {
           gradient="linear-gradient(135deg, #006a4e 0%, #10b981 60%, #fbbf24 100%)"
           title={T(lang,'ঢাকার সব বাস · এক অ্যাপে','Every Dhaka bus · in one app')}
           subtitle={T(lang,'২,৪১২টি লাইভ রুট, ১,০০০+ স্টপ, ১৪০+ অপারেটর — অফলাইনেও কাজ করে।','2,412 live routes, 1,000+ stops, 140+ operators — works offline too.')}
-          stats={[{v:'2,412',l:T(lang,'রুট','Routes')},{v:'1,043',l:T(lang,'স্টপ','Stops')},{v:'140+',l:T(lang,'অপারেটর','Operators')},{v:'★ 4.4',l:T(lang,'গড় রেটিং','Avg rating')}]}
+          stats={[{v:N('2,412',lang),l:T(lang,'রুট','Routes')},{v:N('1,043',lang),l:T(lang,'স্টপ','Stops')},{v:N(140,lang)+'+',l:T(lang,'অপারেটর','Operators')},{v:'★ '+N('4.4',lang),l:T(lang,'গড় রেটিং','Avg rating')}]}
         />
 
         <div style={{ padding:isMobile?'0 16px':'0 40px' }}>
@@ -201,7 +201,7 @@ export function LocalBusPage(props: Props) {
                 <>
                   <SectionHeader tk={tk} lang={lang}
                     title={(hasSearched && (searchQuery || fromInput || toInput))
-                      ? T(lang, `${filteredRoutes.length}টি রুট পাওয়া গেছে`, `${filteredRoutes.length} routes found`)
+                      ? T(lang, `${N(filteredRoutes.length,lang)}টি রুট পাওয়া গেছে`, `${N(filteredRoutes.length,lang)} routes found`)
                       : T(lang,'জনপ্রিয় বাস রুট','Popular bus routes')}
                     action={T(lang,'সব দেখুন','See all')}/>
                   <div style={{ display:'flex', flexDirection:'column', gap:10 }}>

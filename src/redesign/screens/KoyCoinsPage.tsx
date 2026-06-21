@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { KJ_TOKENS, T, SANS, BEN } from '../tokens';
+import { KJ_TOKENS, T, SANS, BEN, N } from '../tokens';
 import { PageShell } from './PageShell';
 import {
   getBalance, isAdFree, getAdFreeUntil, getTransactions,
@@ -103,7 +103,7 @@ export function KoyCoinsPage(props: Props) {
             {/* Balance */}
             <div style={{ textAlign:'center' }}>
               <div style={{ fontSize:44, filter:'drop-shadow(0 0 16px rgba(245,158,11,0.7))' }}>🪙</div>
-              <div style={{ fontFamily:SANS, fontWeight:900, fontSize:isMobile?52:64, lineHeight:1, letterSpacing:-3 }}>{balance}</div>
+              <div style={{ fontFamily:SANS, fontWeight:900, fontSize:isMobile?52:64, lineHeight:1, letterSpacing:-3 }}>{N(balance, lang)}</div>
               <div style={{ fontFamily:BEN, fontSize:13, opacity:0.8 }}>{T(lang,'কয় কয়েন','KoyCoins')}</div>
             </div>
 
@@ -139,7 +139,7 @@ export function KoyCoinsPage(props: Props) {
             <div style={{ width:48, height:48, borderRadius:14, background:`linear-gradient(135deg,${gold},#d97706)`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:22, flexShrink:0 }}>🎁</div>
             <div style={{ flex:1 }}>
               <div style={{ fontFamily:BEN, fontWeight:700, fontSize:14, color:tk.text }}>{T(lang,'ডেইলি বোনাস','Daily bonus')}</div>
-              <div style={{ fontFamily:SANS, fontSize:12, color:tk.textFaint, marginTop:2 }}>+10 {T(lang,'কয়েন প্রতিদিন','coins per day')}</div>
+              <div style={{ fontFamily:SANS, fontSize:12, color:tk.textFaint, marginTop:2 }}>+{N(10,lang)} {T(lang,'কয়েন প্রতিদিন','coins per day')}</div>
             </div>
             <button onClick={handleClaim} style={{ background:dailyClaimed?tk.panelMuted:`linear-gradient(135deg,${gold},#d97706)`, color:dailyClaimed?tk.textFaint:'#fff', border:`1px solid ${dailyClaimed?tk.line:gold}`, borderRadius:10, padding:'9px 18px', fontFamily:SANS, fontWeight:700, fontSize:13, cursor:dailyClaimed?'default':'pointer' }}>
               {dailyClaimed ? T(lang,'✓ সংগ্রহ হয়েছে','✓ Claimed') : T(lang,'সংগ্রহ করুন','Claim')}
@@ -163,7 +163,7 @@ export function KoyCoinsPage(props: Props) {
                       <div style={{ fontSize:24, marginBottom:4 }}>{p.e}</div>
                       <div style={{ fontFamily:BEN, fontWeight:700, fontSize:14, color:tk.text }}>{T(lang,p.bn,p.en)}</div>
                       <div style={{ borderTop:`1px dashed ${canAfford?p.col:tk.line}`, margin:'8px 0' }}/>
-                      <div style={{ fontFamily:SANS, fontWeight:800, fontSize:15, color:canAfford?p.col:tk.textFaint }}>🪙 {p.cost}</div>
+                      <div style={{ fontFamily:SANS, fontWeight:800, fontSize:15, color:canAfford?p.col:tk.textFaint }}>🪙 {N(p.cost, lang)}</div>
                       <button onClick={()=>handleActivate(p.hours,p.cost)} style={{ marginTop:10, width:'100%', background:canAfford?`linear-gradient(135deg,${p.col},${p.col}99)`:'transparent', color:canAfford?'#fff':tk.textFaint, border:`1px solid ${canAfford?p.col:tk.line}`, borderRadius:8, padding:'8px 0', fontFamily:SANS, fontWeight:700, fontSize:12, cursor:canAfford?'pointer':'default' }}>
                         {T(lang,'ব্যবহার করুন','Use')}
                       </button>
@@ -179,7 +179,7 @@ export function KoyCoinsPage(props: Props) {
             <div style={{ width:48, height:48, borderRadius:14, background:'rgba(16,185,129,0.15)', border:'1px solid #10b981', display:'flex', alignItems:'center', justifyContent:'center', fontSize:22, flexShrink:0 }}>✅</div>
             <div style={{ flex:1 }}>
               <div style={{ fontFamily:BEN, fontWeight:700, fontSize:14, color:tk.text }}>{T(lang,'ভ্রমণ সম্পন্ন করুন','Complete a trip')}</div>
-              <div style={{ fontFamily:SANS, fontSize:12, color:tk.textFaint, marginTop:2 }}>+15 {T(lang,'কয়েন প্রতিটি সম্পূর্ণ যাত্রায়','coins per completed journey')}</div>
+              <div style={{ fontFamily:SANS, fontSize:12, color:tk.textFaint, marginTop:2 }}>+{N(15,lang)} {T(lang,'কয়েন প্রতিটি সম্পূর্ণ যাত্রায়','coins per completed journey')}</div>
             </div>
             <button onClick={()=>{ claimOneTimeBonus(`trip-${Date.now()}`,15,'Trip completed'); refresh(); showToast(T(lang,'+১৫ কয়েন পেলেন!','+15 coins earned!')); }} style={{ background:'linear-gradient(135deg,#10b981,#059669)', color:'#fff', border:0, borderRadius:10, padding:'9px 16px', fontFamily:SANS, fontWeight:700, fontSize:12, cursor:'pointer' }}>
               {T(lang,'সম্পন্ন হয়েছে','Done')}
@@ -200,7 +200,7 @@ export function KoyCoinsPage(props: Props) {
                   <div style={{ fontSize:24 }}>{s.e}</div>
                   <div style={{ flex:1 }}>
                     <div style={{ fontFamily:BEN, fontWeight:700, fontSize:13, color:tk.text }}>{T(lang,s.bn,s.en)}</div>
-                    <div style={{ fontFamily:SANS, fontSize:11, color:s.claimed?tk.textFaint:s.col, fontWeight:700 }}>🪙 +{s.pts} {s.claimed?T(lang,'সংগ্রহ হয়েছে','claimed'):T(lang,'কয়েন','coins')}</div>
+                    <div style={{ fontFamily:SANS, fontSize:11, color:s.claimed?tk.textFaint:s.col, fontWeight:700 }}>🪙 +{N(s.pts, lang)} {s.claimed?T(lang,'সংগ্রহ হয়েছে','claimed'):T(lang,'কয়েন','coins')}</div>
                   </div>
                   <button onClick={()=>{ if(s.claimed) return; window.open(s.url,'_blank'); setTimeout(()=>{ const ok = claimOneTimeBonus(s.id, s.pts, T(lang,s.bn,s.en)+' follow'); if(ok){ refresh(); s.setClaimed(true); showToast(T(lang,`+${s.pts} কয়েন পেলেন!`,`+${s.pts} coins earned!`)); }}, 1500); }} style={{ background:s.claimed?'transparent':`linear-gradient(135deg,${s.col},${s.col}99)`, color:s.claimed?tk.textFaint:'#fff', border:`1px solid ${s.claimed?tk.line:s.col}`, borderRadius:9, padding:'8px 14px', fontFamily:SANS, fontWeight:700, fontSize:12, cursor:s.claimed?'default':'pointer', whiteSpace:'nowrap' }}>
                     {s.claimed ? T(lang,'✓ সম্পন্ন','✓ Done') : T(lang,'ফলো করুন','Follow')}
@@ -227,7 +227,7 @@ export function KoyCoinsPage(props: Props) {
                       <div style={{ fontFamily:BEN, fontSize:13, color:tk.text }}>{T(lang,step.bn,step.en)}</div>
                       {(step as any).oneTime && <div style={{ fontFamily:SANS, fontSize:10, color:tk.textFaint }}>{T(lang,'একবার','One-time')}</div>}
                     </div>
-                    <div style={{ fontFamily:SANS, fontWeight:800, fontSize:13, color:step.col, flexShrink:0 }}>{step.pts}</div>
+                    <div style={{ fontFamily:SANS, fontWeight:800, fontSize:13, color:step.col, flexShrink:0 }}>{step.pts.replace(/(\d+)/, m => N(m, lang))}</div>
                   </div>
                 </div>
               ))}
@@ -255,7 +255,7 @@ export function KoyCoinsPage(props: Props) {
                         <div style={{ fontFamily:SANS, fontSize:10, color:tk.textFaint }}>{fmtDate(tx.ts)}</div>
                       </div>
                       <div style={{ fontFamily:SANS, fontWeight:700, fontSize:13, color:tx.type==='earn'?'#10b981':'#ef4444', flexShrink:0 }}>
-                        {tx.type==='earn'?'+':'-'}{tx.amount}
+                        {tx.type==='earn'?'+':'-'}{N(tx.amount, lang)}
                       </div>
                     </div>
                   </div>

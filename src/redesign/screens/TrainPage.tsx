@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef } from 'react';
-import { KJ_TOKENS, T, SANS, BEN, chipBtn } from '../tokens';
+import { KJ_TOKENS, T, SANS, BEN, chipBtn, N, Fare } from '../tokens';
 import { PageShell } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
 import { SectionHeader } from '../components/SectionHeader';
@@ -295,7 +295,7 @@ export function TrainPage(props: Props) {
                   <div style={{ fontFamily:BEN, fontWeight:600, fontSize:13, color:tk.text }}>{T(lang,t.bn,t.en)}</div>
                   <div style={{ fontFamily:SANS, fontSize:11, color:tk.textFaint }}>{T(lang,t.rbn,t.ren)}</div>
                 </div>
-                <span style={{ fontFamily:SANS, fontSize:10, color:t.col[0], fontWeight:700 }}>{t.source.stops.length} stops</span>
+                <span style={{ fontFamily:SANS, fontSize:10, color:t.col[0], fontWeight:700 }}>{N(t.source.stops.length, lang)} stops</span>
               </div>
             </div>
           ))}
@@ -324,7 +324,7 @@ export function TrainPage(props: Props) {
             {[
               { l:T(lang,'ছাড়ে','Departs'), v:routeMapTrain.dep, icon:'🕐' },
               { l:T(lang,'পৌঁছায়','Arrives'), v:routeMapTrain.arr, icon:'🏁' },
-              { l:T(lang,'ভাড়া','Fare'), v:`৳ ${routeMapTrain.fare}`, icon:'💰' },
+              { l:T(lang,'ভাড়া','Fare'), v:'৳ '+N(routeMapTrain.fare, lang), icon:'💰' },
               { l:T(lang,'ছুটির দিন','Off day'), v:routeMapTrain.off.includes('/') ? routeMapTrain.off.split('/')[lang==='bn'?0:1] : routeMapTrain.off, icon:'📅' },
             ].map((s,i) => (
               <div key={i} style={{ background:tk.panelMuted, borderRadius:10, padding:'8px 10px', display:'flex', alignItems:'center', gap:8 }}>
@@ -339,7 +339,7 @@ export function TrainPage(props: Props) {
 
           {/* Stops route visual */}
           <div style={{ fontFamily:BEN, fontWeight:700, fontSize:13, color:tk.text, marginBottom:10 }}>
-            {T(lang,'স্টপসমূহ','Stops')} ({routeMapTrain.source.stops.length})
+            {T(lang,'স্টপসমূহ','Stops')} ({N(routeMapTrain.source.stops.length, lang)})
           </div>
           <div style={{ maxHeight:280, overflowY:'auto' }}>
             {routeMapTrain.source.stops.map((stopId, idx) => {
@@ -391,7 +391,7 @@ export function TrainPage(props: Props) {
           gradient="linear-gradient(135deg, #5b21b6 0%, #7c3aed 50%, #f59e0b 100%)"
           title={T(lang,'বাংলাদেশ রেলওয়ে · সকল রুট','Bangladesh Railway · all routes')}
           subtitle={T(lang,'৩৫০+ আন্তঃনগর ট্রেন, ই-টিকেট বুকিং, লাইভ অবস্থান ট্র্যাকিং — পদ্মা সেতু রুট সহ।','350+ intercity trains, e-ticket booking, live position tracking — including Padma Bridge route.')}
-          stats={[{v:'132',l:T(lang,'ট্রেন','Trains')},{v:'260',l:T(lang,'স্টেশন','Stations')},{v:'10 days',l:T(lang,'অগ্রিম বুকিং','Advance booking')},{v:'★ 4.5',l:T(lang,'গড় রেটিং','Avg rating')}]}
+          stats={[{v:N(132,lang),l:T(lang,'ট্রেন','Trains')},{v:N(260,lang),l:T(lang,'স্টেশন','Stations')},{v:N(10,lang)+' days',l:T(lang,'অগ্রিম বুকিং','Advance booking')},{v:'★ '+N('4.5',lang),l:T(lang,'গড় রেটিং','Avg rating')}]}
         />
 
         <div style={{ padding:isMobile?'0 16px':'0 40px' }}>
@@ -459,7 +459,7 @@ export function TrainPage(props: Props) {
                         <div style={{ fontFamily:BEN, fontWeight:600, fontSize:13, color:tk.text }}>{T(lang,t.bn,t.en)}</div>
                         <div style={{ fontFamily:SANS, fontSize:11, color:tk.textFaint }}>{T(lang,t.rbn,t.ren)}</div>
                       </div>
-                      <span style={{ fontFamily:SANS, fontWeight:700, fontSize:12, color:tk.textFaint }}>৳ {t.fare}</span>
+                      <span style={{ fontFamily:SANS, fontWeight:700, fontSize:12, color:tk.textFaint }}>৳ {N(t.fare, lang)}</span>
                     </div>
                   ))}
                 </div>
@@ -532,7 +532,7 @@ export function TrainPage(props: Props) {
               <div id="train-results">
                 <SectionHeader tk={tk} lang={lang}
                   title={hasTrainSearch
-                    ? T(lang,`${filteredTrains.length}টি ট্রেন পাওয়া গেছে`,`${filteredTrains.length} trains found`)
+                    ? T(lang,`${N(filteredTrains.length,lang)}টি ট্রেন পাওয়া গেছে`,`${N(filteredTrains.length,lang)} trains found`)
                     : T(lang,'প্রিয় ট্রেন','Favorite trains')}
                   action={T(lang,'প্রিয় ট্রেন','Favorite trains')}/>
                 <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
@@ -556,8 +556,8 @@ export function TrainPage(props: Props) {
                           </div>
                         </div>
                         <div style={{ textAlign:'right', flexShrink:0 }}>
-                          <div style={{ fontFamily:SANS, fontWeight:800, fontSize:14, color:tk.text }}>৳ {t.fare}</div>
-                          <div style={{ fontFamily:SANS, fontSize:10, color:tk.textFaint }}>{t.dep} → {t.arr}</div>
+                          <div style={{ fontFamily:SANS, fontWeight:800, fontSize:14, color:tk.text }}>৳ {N(t.fare, lang)}</div>
+                          <div style={{ fontFamily:SANS, fontSize:10, color:tk.textFaint }}>{N(t.dep, lang)} → {N(t.arr, lang)}</div>
                           <div style={{ fontFamily:SANS, fontSize:10, color:tk.textFaint }}>{t.dur}</div>
                         </div>
                       </div>
@@ -575,7 +575,7 @@ export function TrainPage(props: Props) {
                         <div style={{ fontFamily:BEN, fontWeight:700, fontSize:13, color:tk.text }}>{T(lang,c.bn,c.l)}</div>
                         <div style={{ fontFamily:SANS, fontSize:10, color:tk.textFaint }}>{c.n}</div>
                       </div>
-                      <div style={{ fontFamily:SANS, fontWeight:800, fontSize:14, color:c.c }}>{c.fare}</div>
+                      <div style={{ fontFamily:SANS, fontWeight:800, fontSize:14, color:c.c }}>{Fare(c.fare.replace(/৳\s*/,''), lang)}</div>
                     </div>
                   ))}
                 </div>

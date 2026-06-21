@@ -1,5 +1,5 @@
 import React, { useState, useRef, useMemo } from 'react';
-import { KJ_TOKENS, T, SANS, BEN, chipBtn } from '../tokens';
+import { KJ_TOKENS, T, SANS, BEN, chipBtn, N, Fare } from '../tokens';
 import { PageShell } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
 import { SectionHeader } from '../components/SectionHeader';
@@ -81,7 +81,7 @@ export function LaunchPage(props: Props) {
           gradient="linear-gradient(135deg, #0c4a6e 0%, #0ea5e9 50%, #fbbf24 100%)"
           title={T(lang,'নদীপথে যাত্রা · সদরঘাট থেকে সারাদেশে','River journeys · from Sadarghat to everywhere')}
           subtitle={T(lang,'৬০+ লঞ্চ রুট, রাতের কেবিন সার্ভিস, পদ্মা ও মেঘনা পার হয়ে — বরিশাল, ভোলা, পটুয়াখালী, চাঁদপুর।','60+ launch routes, overnight cabin service across Padma and Meghna — Barisal, Bhola, Patuakhali, Chandpur.')}
-          stats={[{v:'60+',l:T(lang,'রুট','Routes')},{v:'14',l:T(lang,'ঘাট','Terminals')},{v:'৳ 300+',l:T(lang,'শুরু থেকে','From')},{v:'6–12h',l:T(lang,'যাত্রাকাল','Duration')}]}
+          stats={[{v:N(60,lang)+'+',l:T(lang,'রুট','Routes')},{v:N(14,lang),l:T(lang,'ঘাট','Terminals')},{v:'৳ '+N(300,lang)+'+',l:T(lang,'শুরু থেকে','From')},{v:N(6,lang)+'–'+N(12,lang)+'h',l:T(lang,'যাত্রাকাল','Duration')}]}
         />
 
         <div style={{ padding:isMobile?'0 16px':'0 40px' }}>
@@ -158,20 +158,20 @@ export function LaunchPage(props: Props) {
                       </div>
                     </div>
                     <div style={{ display:'flex', alignItems:'center', gap:10, padding:'10px 0', borderTop:`1px dashed ${tk.line}`, borderBottom:`1px dashed ${tk.line}`, marginBottom:10 }}>
-                      <div><div style={{ fontFamily:SANS, fontWeight:700, fontSize:14, color:tk.text }}>{l.dep}</div><div style={{ fontFamily:BEN, fontSize:10, color:tk.textFaint }}>{fromLabel}</div></div>
+                      <div><div style={{ fontFamily:SANS, fontWeight:700, fontSize:14, color:tk.text }}>{N(l.dep, lang)}</div><div style={{ fontFamily:BEN, fontSize:10, color:tk.textFaint }}>{fromLabel}</div></div>
                       <div style={{ flex:1, height:1, background:tk.line, position:'relative' }}>
                         <span style={{ position:'absolute', left:'50%', top:-8, transform:'translateX(-50%)', background:tk.panel, padding:'0 6px', fontFamily:SANS, fontSize:10, fontWeight:700, color:tk.textFaint, whiteSpace:'nowrap' }}>{l.dur} · ⛴</span>
                       </div>
-                      <div style={{ textAlign:'right' }}><div style={{ fontFamily:SANS, fontWeight:700, fontSize:14, color:tk.text }}>{l.arr}</div><div style={{ fontFamily:BEN, fontSize:10, color:tk.textFaint }}>{toLabel}</div></div>
+                      <div style={{ textAlign:'right' }}><div style={{ fontFamily:SANS, fontWeight:700, fontSize:14, color:tk.text }}>{N(l.arr, lang)}</div><div style={{ fontFamily:BEN, fontSize:10, color:tk.textFaint }}>{toLabel}</div></div>
                     </div>
                     <div style={{ display:'flex', gap:8 }}>
                       <div style={{ flex:1, background:tk.panelMuted, borderRadius:10, padding:'8px 10px' }}>
                         <div style={{ fontFamily:SANS, fontSize:9, fontWeight:700, color:tk.textFaint, letterSpacing:1, textTransform:'uppercase' }}>{T(lang,'ডেক','Deck')}</div>
-                        <div style={{ fontFamily:SANS, fontWeight:800, fontSize:14, color:tk.text }}>৳ {l.deck}</div>
+                        <div style={{ fontFamily:SANS, fontWeight:800, fontSize:14, color:tk.text }}>{Fare(l.deck, lang)}</div>
                       </div>
                       <div style={{ flex:1, background:`${l.col}22`, borderRadius:10, padding:'8px 10px' }}>
                         <div style={{ fontFamily:SANS, fontSize:9, fontWeight:700, color:l.col, letterSpacing:1, textTransform:'uppercase' }}>VIP {T(lang,'কেবিন','Cabin')}</div>
-                        <div style={{ fontFamily:SANS, fontWeight:800, fontSize:14, color:l.col }}>৳ {l.vip}</div>
+                        <div style={{ fontFamily:SANS, fontWeight:800, fontSize:14, color:l.col }}>{Fare(l.vip, lang)}</div>
                       </div>
                       <button style={{ background:l.col, color:'#fff', border:0, borderRadius:10, padding:'8px 14px', fontFamily:SANS, fontWeight:700, fontSize:12, cursor:'pointer' }}>{T(lang,'বিস্তারিত','Details')} →</button>
                     </div>
@@ -191,7 +191,7 @@ export function LaunchPage(props: Props) {
                       <div style={{ fontFamily:BEN, fontWeight:700, fontSize:13, color:tk.text }}>{T(lang,c.bn,c.l)}</div>
                       <div style={{ fontFamily:BEN, fontSize:11, color:tk.textFaint }}>{T(lang,c.desc.bn,c.desc.en)}</div>
                     </div>
-                    <div style={{ fontFamily:SANS, fontWeight:800, fontSize:14, color:c.c }}>{c.p}</div>
+                    <div style={{ fontFamily:SANS, fontWeight:800, fontSize:14, color:c.c }}>{Fare(c.p.replace(/৳\s*/,''), lang)}</div>
                   </div>
                 ))}
               </div>

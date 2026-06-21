@@ -61,6 +61,16 @@ export const BEN = "'Hind Siliguri', 'Inter', system-ui, sans-serif";
 
 export const T = (lang: Lang, bn: string, en: string): string => lang === 'bn' ? bn : en;
 
+const BN_DIGITS = '০১২৩৪৫৬৭৮৯';
+/** Convert digits to Bengali numerals when lang === 'bn' */
+export const N = (value: string | number, lang: Lang): string => {
+  if (lang !== 'bn') return String(value);
+  return String(value).replace(/[0-9]/g, d => BN_DIGITS[+d]);
+};
+/** Format fare with Bengali numerals: ৳405 or ৳৪০৫ */
+export const Fare = (amount: string | number, lang: Lang): string =>
+  '৳' + N(String(amount).replace(/^৳/, ''), lang);
+
 export const chipBtn = (tk: Tokens): React.CSSProperties => ({
   background: tk.panelMuted,
   border: `1px solid ${tk.line}`,

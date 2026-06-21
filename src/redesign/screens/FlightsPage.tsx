@@ -1,5 +1,5 @@
 import React, { useRef, useMemo, useState } from 'react';
-import { KJ_TOKENS, T, SANS, BEN, chipBtn } from '../tokens';
+import { KJ_TOKENS, T, SANS, BEN, chipBtn, N, Fare } from '../tokens';
 import { PageShell } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
 import { SectionHeader } from '../components/SectionHeader';
@@ -101,7 +101,7 @@ export function FlightsPage(props: Props) {
           gradient="linear-gradient(135deg, #0a1d3a 0%, #1e5aa0 55%, #22d3ee 100%)"
           title={T(lang,'অভ্যন্তরীণ ফ্লাইট · এক সার্চে','Domestic flights · one search')}
           subtitle={T(lang,'৪টি এয়ারলাইন ও ৮টি বিমানবন্দরের রুট গাইড। চূড়ান্ত ভাড়া ও সিট এয়ারলাইনের অফিসিয়াল সাইটে যাচাই করুন।','Route guide for 4 airlines and 8 airports. Verify final fares and seats on official airline sites.')}
-          stats={[{v:'4',l:T(lang,'এয়ারলাইন','Airlines')},{v:'8',l:T(lang,'বিমানবন্দর','Airports')},{v:'৳ 3,990',l:T(lang,'শুরু থেকে','From')},{v:'★ 4.4',l:T(lang,'গড় রেটিং','Avg rating')}]}
+          stats={[{v:N(4,lang),l:T(lang,'এয়ারলাইন','Airlines')},{v:N(8,lang),l:T(lang,'বিমানবন্দর','Airports')},{v:'৳ '+N('3,990',lang),l:T(lang,'শুরু থেকে','From')},{v:'★ '+N('4.4',lang),l:T(lang,'গড় রেটিং','Avg rating')}]}
         />
 
         <div style={{ padding:isMobile?'0 16px':'0 40px' }}>
@@ -192,18 +192,18 @@ export function FlightsPage(props: Props) {
                         </div>
                       </div>
                       <div style={{ textAlign:'right' }}>
-                        <div style={{ fontFamily:SANS, fontWeight:800, fontSize:18, color:tk.text, letterSpacing:-0.3 }}>৳ {a.fare}</div>
+                        <div style={{ fontFamily:SANS, fontWeight:800, fontSize:18, color:tk.text, letterSpacing:-0.3 }}>৳ {N(a.fare, lang)}</div>
                         <div style={{ fontFamily:SANS, fontSize:10, color:tk.textFaint, fontWeight:600 }}>{T(lang,'অফিসিয়াল সাইটে যাচাই করুন','verify official site')}</div>
                       </div>
                     </div>
                     <div style={{ display:'flex', alignItems:'center', gap:10, paddingTop:10, borderTop:`1px dashed ${tk.line}` }}>
-                      <div><div style={{ fontFamily:SANS, fontWeight:700, fontSize:15, color:tk.text }}>{a.dep}</div><div style={{ fontFamily:SANS, fontSize:10, color:tk.textFaint }}>DAC</div></div>
+                      <div><div style={{ fontFamily:SANS, fontWeight:700, fontSize:15, color:tk.text }}>{N(a.dep, lang)}</div><div style={{ fontFamily:SANS, fontSize:10, color:tk.textFaint }}>DAC</div></div>
                       <div style={{ flex:1, position:'relative', height:14 }}>
                         <div style={{ position:'absolute', top:'50%', left:0, right:0, height:1.5, background:tk.line }}/>
                         <span style={{ position:'absolute', left:'50%', top:-3, transform:'translateX(-50%)', fontSize:12 }}>✈️</span>
                         <span style={{ position:'absolute', left:'50%', bottom:-12, transform:'translateX(-50%)', fontFamily:SANS, fontSize:9, fontWeight:700, color:tk.textFaint, whiteSpace:'nowrap' }}>{a.dur} · {a.stop}</span>
                       </div>
-                      <div style={{ textAlign:'right' }}><div style={{ fontFamily:SANS, fontWeight:700, fontSize:15, color:tk.text }}>{a.arr}</div><div style={{ fontFamily:SANS, fontSize:10, color:tk.textFaint }}>CXB</div></div>
+                      <div style={{ textAlign:'right' }}><div style={{ fontFamily:SANS, fontWeight:700, fontSize:15, color:tk.text }}>{N(a.arr, lang)}</div><div style={{ fontFamily:SANS, fontSize:10, color:tk.textFaint }}>CXB</div></div>
                       <button style={{ ...chipBtn(tk), padding:'7px 12px', fontSize:11, fontWeight:700, background:a.col[1], color:'#fff', borderColor:a.col[1], marginLeft:6 }}>{T(lang,'বিস্তারিত','Details')} →</button>
                     </div>
                   </div>
@@ -219,7 +219,7 @@ export function FlightsPage(props: Props) {
                   <div key={i} style={{ display:'flex', alignItems:'center', gap:10, padding:'10px 0', borderTop:i?`1px dashed ${tk.line}`:'' }}>
                     <div style={{ width:32, height:32, borderRadius:8, background:`${c.c}22`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:16 }}>{c.e}</div>
                     <div style={{ flex:1 }}><div style={{ fontFamily:BEN, fontWeight:700, fontSize:13, color:tk.text }}>{T(lang,c.bn,c.l)}</div><div style={{ fontFamily:BEN, fontSize:11, color:tk.textFaint }}>{T(lang,c.desc.bn,c.desc.en)}</div></div>
-                    <div style={{ fontFamily:SANS, fontWeight:800, fontSize:13, color:c.c }}>{c.p}</div>
+                    <div style={{ fontFamily:SANS, fontWeight:800, fontSize:13, color:c.c }}>{Fare(c.p.replace(/৳\s*/,''), lang)}</div>
                   </div>
                 ))}
               </div>

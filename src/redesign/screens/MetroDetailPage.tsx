@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { KJ_TOKENS, T, SANS, BEN, Tokens, Lang } from '../tokens';
+import { KJ_TOKENS, T, SANS, BEN, Tokens, Lang, N, Fare } from '../tokens';
 import { PageShell } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
 import { Train3D } from '../components/Vehicles3D';
@@ -155,7 +155,7 @@ export function MetroDetailPage(props: ScreenProps) {
                   {lbl('Next Train', 'পরবর্তী ট্রেন')}
                 </div>
                 <div style={{ fontFamily: SANS, fontSize: 22, fontWeight: 800, color: '#ffb800', fontVariantNumeric: 'tabular-nums' }}>
-                  {mins}:{secs}
+                  {N(mins, lang)}:{N(secs, lang)}
                 </div>
               </div>
             </div>
@@ -165,7 +165,7 @@ export function MetroDetailPage(props: ScreenProps) {
         {/* ── Station Map ──────────────────────────────────────────────── */}
         <div style={{ ...card, marginBottom: 24, overflow: 'hidden' }}>
           <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 700, letterSpacing: 0.8, textTransform: 'uppercase', color: tk.textFaint, marginBottom: 16 }}>
-            {lbl('Full Route Map — 17 Stations', 'সম্পূর্ণ রুট ম্যাপ — ১৭ স্টেশন')}
+            {lbl(`Full Route Map — ${N(17,lang)} Stations`, `সম্পূর্ণ রুট ম্যাপ — ${N(17,lang)} স্টেশন`)}
           </div>
           <div style={{ overflowX: 'auto', paddingBottom: 12 }}>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 0, minWidth: STATIONS.length * 80, position: 'relative', paddingTop: 16 }}>
@@ -214,7 +214,7 @@ export function MetroDetailPage(props: ScreenProps) {
                     color: st.fare === 0 ? '#22c55e' : tk.textFaint,
                     marginTop: 24,
                   }}>
-                    {st.fareLabel}
+                    {Fare(st.fare, lang)}
                   </div>
                 </div>
               ))}
@@ -235,7 +235,7 @@ export function MetroDetailPage(props: ScreenProps) {
               }}>
                 <div style={{ fontSize: 28, marginBottom: 8 }}>{step.icon}</div>
                 <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 700, color: tk.primary, marginBottom: 4 }}>
-                  {lbl(`Step ${i + 1}`, `ধাপ ${i + 1}`)}
+                  {lbl(`Step ${N(i + 1, lang)}`, `ধাপ ${N(i + 1, lang)}`)}
                 </div>
                 <div style={{ fontFamily: font, fontSize: 12, color: tk.textDim, lineHeight: 1.4 }}>
                   {lbl(step.en, step.bn)}
@@ -262,7 +262,7 @@ export function MetroDetailPage(props: ScreenProps) {
                   {lbl(st.name, st.nameBn)}
                 </span>
                 <span style={{ fontFamily: SANS, fontSize: 13, fontWeight: 700, color: st.fare === 0 ? '#22c55e' : tk.textDim }}>
-                  {st.fareLabel}
+                  {Fare(st.fare, lang)}
                 </span>
               </div>
             ))}
@@ -280,19 +280,19 @@ export function MetroDetailPage(props: ScreenProps) {
           <div style={{ display: 'flex', gap: isMobile ? 16 : 32, flexWrap: 'wrap', alignItems: 'flex-start' }}>
             {/* Big score */}
             <div style={{ textAlign: 'center', minWidth: 80 }}>
-              <div style={{ fontFamily: SANS, fontSize: 48, fontWeight: 900, color: tk.text, lineHeight: 1 }}>4.8</div>
+              <div style={{ fontFamily: SANS, fontSize: 48, fontWeight: 900, color: tk.text, lineHeight: 1 }}>{N('4.8', lang)}</div>
               <div style={{ fontFamily: SANS, fontSize: 20, color: '#fbbf24', margin: '4px 0' }}>★★★★★</div>
-              <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint }}>1,248 {lbl('reviews', 'রিভিউ')}</div>
+              <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint }}>{N('1,248', lang)} {lbl('reviews', 'রিভিউ')}</div>
             </div>
             {/* Histogram */}
             <div style={{ flex: 1, minWidth: 160 }}>
               {HISTOGRAM.map((row) => (
                 <div key={row.stars} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                  <span style={{ fontFamily: SANS, fontSize: 12, color: tk.textDim, width: 20, textAlign: 'right' }}>{row.stars}★</span>
+                  <span style={{ fontFamily: SANS, fontSize: 12, color: tk.textDim, width: 20, textAlign: 'right' }}>{N(row.stars, lang)}★</span>
                   <div style={{ flex: 1, height: 8, background: tk.panelMuted, borderRadius: 4, overflow: 'hidden' }}>
                     <div style={{ width: `${row.pct}%`, height: '100%', background: '#fbbf24', borderRadius: 4 }} />
                   </div>
-                  <span style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint, width: 28 }}>{row.pct}%</span>
+                  <span style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint, width: 28 }}>{N(row.pct, lang)}%</span>
                 </div>
               ))}
             </div>
