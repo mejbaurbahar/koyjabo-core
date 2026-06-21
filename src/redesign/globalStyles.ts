@@ -4,8 +4,6 @@ export function injectGlobalStyles() {
   const style = document.createElement('style');
   style.id = 'kj-global-styles';
   style.textContent = `
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap');
-
     html, body { margin: 0; padding: 0; background: #05060b; font-family: 'Inter', system-ui, sans-serif; }
     * { box-sizing: border-box; }
     #root { min-height: 100vh; }

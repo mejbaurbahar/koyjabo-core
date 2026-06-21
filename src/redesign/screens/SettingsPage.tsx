@@ -22,7 +22,7 @@ interface ScreenProps {
 function Toggle({ on, onChange, tk }: { on: boolean; onChange: () => void; tk: Tokens }) {
   return (
     <div onClick={onChange} style={{ width: 44, height: 24, borderRadius: 999, cursor: 'pointer', flexShrink: 0, background: on ? tk.primary : tk.panelMuted, border: `1px solid ${on ? tk.primary : tk.line}`, position: 'relative', transition: 'background 0.2s' }}>
-      <div style={{ position: 'absolute', top: 3, left: on ? 22 : 3, width: 16, height: 16, borderRadius: '50%', background: on ? tk.primaryInk : tk.textFaint, transition: 'left 0.2s' }} />
+      <div style={{ position: 'absolute', top: 3, left: 3, width: 16, height: 16, borderRadius: '50%', background: on ? tk.primaryInk : tk.textFaint, transform: `translateX(${on ? 19 : 0}px)`, transition: 'transform 0.2s' }} />
     </div>
   );
 }

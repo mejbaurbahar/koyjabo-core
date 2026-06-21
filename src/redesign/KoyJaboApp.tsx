@@ -1,49 +1,54 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, Suspense } from 'react';
 import { KJ_TOKENS, Theme, Lang, Device } from './tokens';
 import { injectGlobalStyles } from './globalStyles';
 import { SplashScreen } from './SplashScreen';
 import { LocationConsentModal } from './components/LocationConsentModal';
 
-// Lazy imports — all screens
+// HomePage is eager — it's always the landing screen
 import { HomePage } from './screens/HomePage';
-import { LocalBusPage } from './screens/LocalBusPage';
-import { MetroPage } from './screens/MetroPage';
-import { TrainPage } from './screens/TrainPage';
-import { LaunchPage } from './screens/LaunchPage';
-import { FlightsPage } from './screens/FlightsPage';
-import { AIChatPage } from './screens/AIChatPage';
-import { IntercityPage } from './screens/IntercityPage';
-import { RouteResultsV2Page } from './screens/RouteResultsV2Page';
-import { FareCalcPage } from './screens/FareCalcPage';
-import { IntercityDetailPage } from './screens/IntercityDetailPage';
-import { BusDetailPage } from './screens/BusDetailPage';
-import { MetroDetailPage } from './screens/MetroDetailPage';
-import { TrainDetailPage } from './screens/TrainDetailPage';
-import { VehicleDetailPage } from './screens/VehicleDetailPage';
-import { RateReviewPage } from './screens/RateReviewPage';
-import { MetroTokenPage } from './screens/MetroTokenPage';
-import { MetroPassPage } from './screens/MetroPassPage';
-import { ProfilePage } from './screens/ProfilePage';
-import { FavoritesPage } from './screens/FavoritesPage';
-import { HistoryPage } from './screens/HistoryPage';
-import { SettingsPage } from './screens/SettingsPage';
-import { EditProfilePage } from './screens/EditProfilePage';
-import { PasswordPage } from './screens/PasswordPage';
-import { DevicesPage } from './screens/DevicesPage';
-import { SignInPage } from './screens/SignInPage';
-import { SignUpPage } from './screens/SignUpPage';
-import { WhyPage } from './screens/WhyPage';
-import { AboutPage } from './screens/AboutPage';
-import { BlogsPage } from './screens/BlogsPage';
-import { BlogDetailPage } from './screens/BlogDetailPage';
-import { QAPage } from './screens/QAPage';
-import { ContactPage } from './screens/ContactPage';
-import { ReleasePage } from './screens/ReleasePage';
-import { PrivacyPage } from './screens/PrivacyPage';
-import { TermsPage } from './screens/TermsPage';
-import { InstallPage } from './screens/InstallPage';
+// System state pages are eager — needed for error boundaries and 404 handling
 import { ErrorPage404, ErrorPage500, OfflinePage, MaintenancePage } from './screens/SystemStatesPage';
-import { FlightDetailPage } from './screens/FlightDetailPage';
+
+// All other screens are lazy — only loaded when the user navigates there
+const LocalBusPage = React.lazy(() => import('./screens/LocalBusPage').then(m => ({ default: m.LocalBusPage })));
+const MetroPage = React.lazy(() => import('./screens/MetroPage').then(m => ({ default: m.MetroPage })));
+const TrainPage = React.lazy(() => import('./screens/TrainPage').then(m => ({ default: m.TrainPage })));
+const LaunchPage = React.lazy(() => import('./screens/LaunchPage').then(m => ({ default: m.LaunchPage })));
+const FlightsPage = React.lazy(() => import('./screens/FlightsPage').then(m => ({ default: m.FlightsPage })));
+const AIChatPage = React.lazy(() => import('./screens/AIChatPage').then(m => ({ default: m.AIChatPage })));
+const IntercityPage = React.lazy(() => import('./screens/IntercityPage').then(m => ({ default: m.IntercityPage })));
+const RouteResultsV2Page = React.lazy(() => import('./screens/RouteResultsV2Page').then(m => ({ default: m.RouteResultsV2Page })));
+const FareCalcPage = React.lazy(() => import('./screens/FareCalcPage').then(m => ({ default: m.FareCalcPage })));
+const IntercityDetailPage = React.lazy(() => import('./screens/IntercityDetailPage').then(m => ({ default: m.IntercityDetailPage })));
+const BusDetailPage = React.lazy(() => import('./screens/BusDetailPage').then(m => ({ default: m.BusDetailPage })));
+const MetroDetailPage = React.lazy(() => import('./screens/MetroDetailPage').then(m => ({ default: m.MetroDetailPage })));
+const TrainDetailPage = React.lazy(() => import('./screens/TrainDetailPage').then(m => ({ default: m.TrainDetailPage })));
+const VehicleDetailPage = React.lazy(() => import('./screens/VehicleDetailPage').then(m => ({ default: m.VehicleDetailPage })));
+const FlightDetailPage = React.lazy(() => import('./screens/FlightDetailPage').then(m => ({ default: m.FlightDetailPage })));
+const RateReviewPage = React.lazy(() => import('./screens/RateReviewPage').then(m => ({ default: m.RateReviewPage })));
+const MetroTokenPage = React.lazy(() => import('./screens/MetroTokenPage').then(m => ({ default: m.MetroTokenPage })));
+const MetroPassPage = React.lazy(() => import('./screens/MetroPassPage').then(m => ({ default: m.MetroPassPage })));
+const ProfilePage = React.lazy(() => import('./screens/ProfilePage').then(m => ({ default: m.ProfilePage })));
+const FavoritesPage = React.lazy(() => import('./screens/FavoritesPage').then(m => ({ default: m.FavoritesPage })));
+const HistoryPage = React.lazy(() => import('./screens/HistoryPage').then(m => ({ default: m.HistoryPage })));
+const SettingsPage = React.lazy(() => import('./screens/SettingsPage').then(m => ({ default: m.SettingsPage })));
+const EditProfilePage = React.lazy(() => import('./screens/EditProfilePage').then(m => ({ default: m.EditProfilePage })));
+const PasswordPage = React.lazy(() => import('./screens/PasswordPage').then(m => ({ default: m.PasswordPage })));
+const DevicesPage = React.lazy(() => import('./screens/DevicesPage').then(m => ({ default: m.DevicesPage })));
+const SignInPage = React.lazy(() => import('./screens/SignInPage').then(m => ({ default: m.SignInPage })));
+const SignUpPage = React.lazy(() => import('./screens/SignUpPage').then(m => ({ default: m.SignUpPage })));
+const WhyPage = React.lazy(() => import('./screens/WhyPage').then(m => ({ default: m.WhyPage })));
+const AboutPage = React.lazy(() => import('./screens/AboutPage').then(m => ({ default: m.AboutPage })));
+const BlogsPage = React.lazy(() => import('./screens/BlogsPage').then(m => ({ default: m.BlogsPage })));
+const BlogDetailPage = React.lazy(() => import('./screens/BlogDetailPage').then(m => ({ default: m.BlogDetailPage })));
+const QAPage = React.lazy(() => import('./screens/QAPage').then(m => ({ default: m.QAPage })));
+const ContactPage = React.lazy(() => import('./screens/ContactPage').then(m => ({ default: m.ContactPage })));
+const ReleasePage = React.lazy(() => import('./screens/ReleasePage').then(m => ({ default: m.ReleasePage })));
+const PrivacyPage = React.lazy(() => import('./screens/PrivacyPage').then(m => ({ default: m.PrivacyPage })));
+const TermsPage = React.lazy(() => import('./screens/TermsPage').then(m => ({ default: m.TermsPage })));
+const InstallPage = React.lazy(() => import('./screens/InstallPage').then(m => ({ default: m.InstallPage })));
+
+const LazyFallback = () => <div style={{ minHeight: '60vh' }} />;
 import { claimDailyBonus } from './utils/koyCoinService';
 import { NavDrawer } from './components/NavDrawer';
 // FloatingControls removed per user request
@@ -361,7 +366,9 @@ export function KoyJaboApp() {
 
   const screenContent = (
     <div key={screenKey} className={`kj-screen kj-${dir}`} style={{ minHeight: '100%' }}>
-      {renderScreen(top.route, top.params)}
+      <Suspense fallback={<LazyFallback />}>
+        {renderScreen(top.route, top.params)}
+      </Suspense>
     </div>
   );
 

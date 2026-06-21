@@ -87,9 +87,15 @@ export function useLocationSearch(
   const [loading, setLoading] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Preload OSM data in background
+  // Preload OSM data only after browser is idle — avoids blocking initial paint
   useEffect(() => {
-    if (includeOSM) preloadLocations();
+    if (!includeOSM) return;
+    if (typeof requestIdleCallback !== 'undefined') {
+      const id = requestIdleCallback(() => preloadLocations(), { timeout: 5000 });
+      return () => cancelIdleCallback(id);
+    }
+    const t = setTimeout(preloadLocations, 4000);
+    return () => clearTimeout(t);
   }, [includeOSM]);
 
   // Debounced OSM search

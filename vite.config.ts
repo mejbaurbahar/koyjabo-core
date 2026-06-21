@@ -116,9 +116,10 @@ export default defineConfig(({ mode }) => {
         workbox: {
 
           globPatterns: [
-            '**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest,webp,jpg,jpeg,gif,txt,xml}',
+            // Exclude JSON from root glob — bd-locations.json (1.8MB) would block SW install
+            '**/*.{js,css,html,ico,png,svg,woff,woff2,ttf,webmanifest,manifest,webp,jpg,jpeg,gif,txt,xml}',
             'intercity/**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest,txt,xml}',
-            'data/**/*.json'  // Include all JSON data files for offline
+            'data/**/*.json'  // Include data dir JSONs for offline
           ],
           navigateFallback: 'index.html',  // Enable automatic fallback to index.html for SPA offline support
           navigateFallbackDenylist: [/^\/api/, /^\/intercity/, /^\/ads\.txt/, /^\/robots\.txt/, /^\/sitemap\.xml/],
@@ -129,7 +130,7 @@ export default defineConfig(({ mode }) => {
           skipWaiting: true,
           clientsClaim: true,
           // Cache versioning for proper updates
-          cacheId: 'dhaka-commute-v45',
+          cacheId: 'dhaka-commute-v46',
           maximumFileSizeToCacheInBytes: 10485760, // 10 MB
 
           runtimeCaching: [
@@ -423,6 +424,7 @@ export default defineConfig(({ mode }) => {
               if (id.includes('bangladeshTrainData')) return 'train-data';
               if (id.includes('geminiService') || id.includes('travelAI') || id.includes('advancedQaData') || id.includes('aiLearning')) return 'ai-service';
               if (id.includes('intercityData') || id.includes('offlineService')) return 'intercity-data';
+              if (id.includes('blogPosts')) return 'blog-data';
               if (id.includes('node_modules/leaflet')) return 'leaflet';
               if (id.includes('node_modules/react-dom')) return 'react-dom';
               if (id.includes('node_modules/react/')) return 'react';

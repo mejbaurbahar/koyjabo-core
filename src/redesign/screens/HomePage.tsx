@@ -1162,17 +1162,15 @@ function MetroLiveStrip({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobi
 
             {/* Track rail */}
             <div style={{ position:'absolute', top:26, left:4, right:4, height:5, borderRadius:999, background:'rgba(255,255,255,0.08)' }}/>
-            {/* Completed track */}
-            <div style={{ position:'absolute', top:26, left:4, width:`${trainPct}%`, height:5, borderRadius:999, background:'linear-gradient(90deg,#1e40af,#60a5fa)', transition:'width 1.2s ease-in-out' }}/>
+            {/* Completed track — scaleX is GPU-composited unlike width */}
+            <div style={{ position:'absolute', top:26, left:4, right:4, height:5, borderRadius:999, background:'linear-gradient(90deg,#1e40af,#60a5fa)', transformOrigin:'left center', transform:`scaleX(${trainPct/100})`, transition:'transform 1.2s ease-in-out' }}/>
 
-            {/* Animated train — GPU layer, no layout impact */}
+            {/* Train position — no CSS left-transition (non-composited); snaps per tick */}
             <div style={{
               position:'absolute',
               top:3,
               left: `calc(${trainPct}% - 36px)`,
-              transition: atStation ? 'left 1.2s cubic-bezier(.4,0,.2,1)' : 'none',
               zIndex:3,
-              willChange:'left',
               contain:'layout style paint',
             }}>
               <MetroTrainSVG/>

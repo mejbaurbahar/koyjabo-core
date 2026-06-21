@@ -19,6 +19,10 @@ Disallow: /404.html
 # Sitemap Location
 Sitemap: https://koyjabo.com/sitemap.xml
 
+# LLM/AI Discovery
+LLM-Data: https://koyjabo.com/.well-known/llm-data.json
+LLM-Index: https://koyjabo.com/llms.txt
+
 # Google Bots - Full Access
 User-agent: Googlebot
 Allow: /

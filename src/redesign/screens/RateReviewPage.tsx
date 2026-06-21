@@ -95,7 +95,7 @@ export function RateReviewPage(props: Props) {
         {/* Anonymous toggle */}
         <div style={{ display:'flex',alignItems:'center',gap:12,marginBottom:20 }}>
           <div onClick={()=>setAnon(a=>!a)} style={{ width:36,height:22,borderRadius:999,background:anon?tk.primary:tk.line,position:'relative',cursor:'pointer',transition:'background .2s' }}>
-            <div style={{ position:'absolute',top:2,left:anon?16:2,width:18,height:18,borderRadius:999,background:'#fff',transition:'left .2s',boxShadow:'0 1px 3px rgba(0,0,0,0.3)' }}/>
+            <div style={{ position:'absolute',top:2,left:2,width:18,height:18,borderRadius:999,background:'#fff',transform:`translateX(${anon?14:0}px)`,transition:'transform .2s',boxShadow:'0 1px 3px rgba(0,0,0,0.3)' }}/>
           </div>
           <span style={{ fontFamily:BEN,fontSize:13,color:tk.text }}>{T(lang,'বেনামে পোস্ট করুন','Post anonymously')}</span>
         </div>
