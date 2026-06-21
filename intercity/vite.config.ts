@@ -62,7 +62,7 @@ export default defineConfig(({ mode }) => {
           clientsClaim: true,
           skipWaiting: true,
           // Cache versioning for proper updates - BUMPED to v4 to force cache refresh
-          cacheId: 'dhaka-commute-intercity-v5',
+          cacheId: 'dhaka-commute-intercity-v6',
           // Runtime caching for intercity navigation
           navigateFallbackAllowlist: [/^\/intercity/],  // Only handle intercity routes
           // Runtime caching for intercity external resources

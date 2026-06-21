@@ -34,9 +34,20 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
-# Service worker must never be cached by the browser (always fetch fresh)
+# Service workers must never be cached — both main and intercity
 [[headers]]
   for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[[headers]]
+  for = "/intercity/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+# Intercity HTML — always revalidate so SW update is picked up immediately
+[[headers]]
+  for = "/intercity/index.html"
   [headers.values]
     Cache-Control = "no-cache, no-store, must-revalidate"
 
@@ -68,19 +79,29 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=(self)"
 
-# SPA redirect - all routes to index.html
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
-# Handle intercity subdirectory
+# Intercity sub-app — MUST come before /* catch-all.
+# force=true overrides Netlify's built-in pretty-URL trailing-slash redirect
+# so /intercity stays /intercity and never becomes /intercity/.
 [[redirects]]
   from = "/intercity"
   to = "/intercity/index.html"
   status = 200
+  force = true
+
+[[redirects]]
+  from = "/intercity/"
+  to = "/intercity/index.html"
+  status = 200
+  force = true
 
 [[redirects]]
   from = "/intercity/*"
   to = "/intercity/:splat"
+  status = 200
+  force = true
+
+# SPA redirect - all other routes to main app index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
   status = 200
