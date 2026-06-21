@@ -47,12 +47,12 @@ function BlogCard({
   blog: typeof BLOGS[0];
   tk: Tokens;
   lang: Lang;
-  onNav: (r: string) => void;
+  onNav: (r: string, p?: Record<string, string>) => void;
 }) {
   const lbl = (en: string, bn: string) => T(lang, bn, en);
   return (
     <div
-      onClick={() => onNav('blog-detail')}
+      onClick={() => onNav('blog-detail', { slug: blog.id })}
       style={{
         background: tk.panel,
         backdropFilter: 'blur(10px)',
@@ -65,7 +65,7 @@ function BlogCard({
       }}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => e.key === 'Enter' && onNav('blog-detail')}
+      onKeyDown={(e) => e.key === 'Enter' && onNav('blog-detail', { slug: blog.id })}
     >
       {/* Gradient hero thumbnail */}
       <div

@@ -113,6 +113,7 @@ function detailPath(route: string, params: Record<string, string> = {}) {
   if (params.from) query.set('from', slugify(params.from));
   if (params.to) query.set('to', slugify(params.to));
   const suffix = query.toString() ? `?${query.toString()}` : '';
+  if (route === 'blog-detail') return `/blogs/${params.slug || 'post'}`;
   if (route === 'bus-detail') return `/bus/${busSlug(params.busId)}${suffix}`;
   if (route === 'metro-detail') return `/metro/${slugify(params.stationId || params.id || 'detail')}${suffix}`;
   if (route === 'train-detail') return `/train/${slugify(params.trainId || params.id || 'detail')}${suffix}`;
@@ -137,7 +138,7 @@ function detailPath(route: string, params: Record<string, string> = {}) {
 }
 
 function pathForEntry(entry: StackEntry) {
-  if (['bus-detail', 'metro-detail', 'train-detail', 'intercity-detail', 'vehicle', 'flight-detail'].includes(entry.route)) {
+  if (['bus-detail', 'metro-detail', 'train-detail', 'intercity-detail', 'vehicle', 'flight-detail', 'blog-detail'].includes(entry.route)) {
     return detailPath(entry.route, entry.params || {});
   }
   if (entry.route === 'results') {
@@ -165,6 +166,7 @@ function entryFromLocation(): StackEntry {
   if (path.startsWith('/intercity/') && path !== '/intercity') return { route: 'intercity-detail', params: { ...params, id: path.split('/')[2] || '' } };
   if (path.startsWith('/launch/') && path !== '/launch') return { route: 'vehicle', params: { ...params, id: path.split('/')[2] || '' } };
   if (path.startsWith('/air/') && path !== '/air') return { route: 'flight-detail', params: { ...params, code: (path.split('/')[2] || '').toUpperCase() } };
+  if (path.startsWith('/blogs/') && path !== '/blogs') return { route: 'blog-detail', params: { ...params, slug: path.split('/')[2] || '' } };
   const match = Object.entries(ROUTE_PATHS).find(([, routePath]) => routePath === path);
   return { route: match?.[0] || 'home' };
 }
@@ -455,6 +457,7 @@ export function KoyJaboApp() {
       <NavDrawer
         open={menuOpen} theme={theme} lang={lang}
         activeRoute={top.route}
+        isLoggedIn={!!user}
         onClose={() => setMenuOpen(false)}
         onNav={(r) => { setMenuOpen(false); nav(r); }}
       />

@@ -58,9 +58,10 @@ interface NavDrawerProps {
   theme: Theme;
   lang: Lang;
   activeRoute?: string;
+  isLoggedIn?: boolean;
 }
 
-export function NavDrawer({ open, onClose, onNav, theme, lang, activeRoute }: NavDrawerProps) {
+export function NavDrawer({ open, onClose, onNav, theme, lang, activeRoute, isLoggedIn }: NavDrawerProps) {
   const tk = KJ_TOKENS[theme] as Tokens;
 
   const handleNav = (route: string) => {
@@ -183,7 +184,11 @@ export function NavDrawer({ open, onClose, onNav, theme, lang, activeRoute }: Na
               </div>
 
               {/* Links */}
-              {group.links.map((link) => {
+              {group.links.filter(link => {
+                // Hide Sign In when user is already logged in
+                if (link.route === 'signin' && isLoggedIn) return false;
+                return true;
+              }).map((link) => {
                 const isActive = activeRoute === link.route;
                 return (
                   <button
