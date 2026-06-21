@@ -182,6 +182,7 @@ export function AIChatPage(props: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const userAreaRef = useRef<string>('');
+  const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const consent = localStorage.getItem('kj-location-consent');
@@ -200,6 +201,11 @@ export function AIChatPage(props: Props) {
       { timeout: 5000, maximumAge: 300000 }
     );
   }, []);
+  // Auto-scroll to latest message whenever messages or loading state changes
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, [messages, isLoading]);
+
   const chatUser = getAuthUser();
   const userAvatarUrl = chatUser?.avatarUrl;
   const userInitials = (chatUser?.displayName || chatUser?.username || 'KJ').slice(0, 2).toUpperCase();
@@ -358,6 +364,7 @@ export function AIChatPage(props: Props) {
                 </div>
               </div>
             )}
+            <div ref={bottomRef} style={{ height:1, flexShrink:0 }}/>
           </div>
           {/* Mobile suggestion chips */}
           {isMobile && (

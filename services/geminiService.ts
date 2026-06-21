@@ -854,12 +854,47 @@ const findLocalBusInfo = (query: string): string => {
   return "";
 };
 
+// ── Date helpers ─────────────────────────────────────────────────────────────
+const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+function detectJourneyDate(query: string): { date: Date; label: string; labelBn: string } | null {
+  const lq = query.toLowerCase();
+  const today = new Date(); today.setHours(0,0,0,0);
+  if (/agami\s*kal|agamikal|tomorrow|আগামীকাল/.test(lq)) {
+    const d = new Date(today); d.setDate(d.getDate()+1);
+    return { date:d, label:`${d.getDate()}-${MONTHS_SHORT[d.getMonth()]}-${d.getFullYear()}`, labelBn:'আগামীকাল' };
+  }
+  if (/paroshhu|parshu|পরশু|day after tomorrow/.test(lq)) {
+    const d = new Date(today); d.setDate(d.getDate()+2);
+    return { date:d, label:`${d.getDate()}-${MONTHS_SHORT[d.getMonth()]}-${d.getFullYear()}`, labelBn:'পরশু' };
+  }
+  if (/\baaj\b|আজ\b|\btoday\b/.test(lq)) {
+    const d = new Date(today);
+    return { date:d, label:`${d.getDate()}-${MONTHS_SHORT[d.getMonth()]}-${d.getFullYear()}`, labelBn:'আজ' };
+  }
+  return null;
+}
+
+function isOffDay(offDay: string, date: Date): boolean {
+  if (!offDay || offDay === 'None') return false;
+  const dayName = DAY_NAMES[date.getDay()];
+  return offDay.split(/[,/\s]+/).some(d => d.trim().toLowerCase() === dayName.toLowerCase());
+}
+
+function buildBookingUrl(fromCity: string, toCity: string, dateLabel: string, seatClass = 'S_CHAIR'): string {
+  const f = fromCity.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+  const t = toCity.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+  return `https://eticket.railway.gov.bd/booking/train-list?fromcity=${encodeURIComponent(f)}&tocity=${encodeURIComponent(t)}&doj=${encodeURIComponent(dateLabel)}&adults=1&childs=0&classes=${seatClass}`;
+}
+
 // ── Train lookup using live BD_TRAIN_ROUTES data ────────────────────────────
 const findTrainInfo = (query: string): string => {
   const lowerQuery = normalize(query);
-  const isBn = /[\u0980-\u09FF]/.test(query);
+  const isBn = /[ঀ-৿]/.test(query);
+  const journeyDate = detectJourneyDate(query);
+  const hasBookingIntent = /jeta chai|jabo|যাব|যেতে চাই|ticket|টিকিট|book|বুক|want to go|going to/.test(query.toLowerCase());
 
-  // Deduplicate routes (same logic as TrainListPage)
   const seen = new Set<string>();
   const uniqueRoutes = BD_TRAIN_ROUTES.filter(r => {
     if (seen.has(r.id)) return false;
@@ -873,31 +908,100 @@ const findTrainInfo = (query: string): string => {
     lowerQuery.includes(r.number.toLowerCase()) ||
     (r.bnName && lowerQuery.includes(normalize(r.bnName)))
   );
+
   if (byName.length > 0) {
-    const r = byName[0];
-    const from = TRAIN_STATIONS[r.from];
-    const to = TRAIN_STATIONS[r.to];
-    const fromName = isBn ? from?.bnName : from?.name;
-    const toName = isBn ? to?.bnName : to?.name;
+    let r = byName[0];
+    // If user has travel intent and multiple matches exist, prefer the one going TO the destination
+    if (hasBookingIntent && byName.length > 1) {
+      const stationEntries = Object.values(TRAIN_STATIONS);
+      const mentionedSts = stationEntries.filter(st =>
+        lowerQuery.includes(normalize(st.name)) || lowerQuery.includes(normalize(st.bnName || ''))
+      );
+      if (mentionedSts.length >= 1) {
+        const destId = mentionedSts[mentionedSts.length - 1].id;
+        const best = byName.find(rt => rt.to === destId || rt.stops.slice(-3).includes(destId));
+        if (best) r = best;
+      }
+    }
+    // If single match but user says "jeta chai" (want to go) → look for reverse direction pair
+    if (hasBookingIntent && byName.length === 1) {
+      const baseName = normalize(r.name).replace(/\d+/g,'').trim().substring(0,10);
+      const paired = uniqueRoutes.find(rt =>
+        rt.id !== r.id && normalize(rt.name).replace(/\d+/g,'').trim().startsWith(baseName) && rt.to === r.from
+      );
+      if (paired) r = paired;
+    }
+
+    const fromSt = TRAIN_STATIONS[r.from];
+    const toSt   = TRAIN_STATIONS[r.to];
+    const fromName = isBn ? (fromSt?.bnName || fromSt?.name) : fromSt?.name;
+    const toName   = isBn ? (toSt?.bnName || toSt?.name) : toSt?.name;
     const name = isBn ? r.bnName : r.name;
     const stopNames = r.stops.map(id => {
       const st = TRAIN_STATIONS[id];
-      return st ? (isBn ? st.bnName : st.name) : id;
+      return st ? (isBn ? (st.bnName || st.name) : st.name) : id.replace(/_/g,' ');
     }).join(' → ');
-    return isBn
-      ? `🚂 **${name}** (${r.number})\n📍 **রুট:** ${fromName} → ${toName}\n🛑 **স্টপ:** ${stopNames}\n🕐 **ঢাকা ছাড়ে:** ${r.dhakaDepart} | **ফেরার সময়:** ${r.returnDepart}\n💰 **ভাড়া:** শুভন ৳${r.fare.shuvan} | স্নিগ্ধা ৳${r.fare.snigdha}${r.fare.acBerth ? ` | এসি বার্থ ৳${r.fare.acBerth}` : ''}\n📏 **দূরত্ব:** ${r.distanceKm} কিমি | **বন্ধের দিন:** ${r.offDay}`
-      : `🚂 **${name}** (${r.number})\n📍 **Route:** ${fromName} → ${toName}\n🛑 **Stops:** ${stopNames}\n🕐 **Depart:** ${r.dhakaDepart} | **Return:** ${r.returnDepart}\n💰 **Fare:** Shuvan ৳${r.fare.shuvan} | Snigdha ৳${r.fare.snigdha}${r.fare.acBerth ? ` | AC Berth ৳${r.fare.acBerth}` : ''}\n📏 **Distance:** ${r.distanceKm} km | **Off Day:** ${r.offDay}`;
+
+    let response = isBn
+      ? `\u{1F682} **${name}** (${r.number})\n\u{1F4CD} **রুট:** ${fromName} → ${toName}\n\u{1F6D1} **স্টপ:** ${stopNames}\n\u{1F550} **ছাড়ে:** ${r.dhakaDepart||'—'}${r.destinationArrive?` | **পৌঁছায়:** ${r.destinationArrive}`:''}${r.totalDuration?` | **সময়:** ${r.totalDuration}`:''}\n\u{1F4B0} **ভাড়া:** শোভন ৳${r.fare.shuvan} | শোভন চেয়ার ৳${r.fare.shuvanChair} | স্নিগ্ধা ৳${r.fare.snigdha}${r.fare.acBerth?` | এসি বার্থ ৳${r.fare.acBerth}`:''}\n\u{1F4CF} **দূরত্ব:** ${r.distanceKm} কিমি | **বন্ধের দিন:** ${r.offDay}${r.runningDays?.length?`\n\u{1F4C5} **চলে:** ${r.runningDays.join(', ')}`:''}` 
+      : `\u{1F682} **${name}** (${r.number})\n\u{1F4CD} **Route:** ${fromName} → ${toName}\n\u{1F6D1} **Stops:** ${stopNames}\n\u{1F550} **Dep:** ${r.dhakaDepart||'—'}${r.destinationArrive?` | **Arr:** ${r.destinationArrive}`:''}${r.totalDuration?` | **Duration:** ${r.totalDuration}`:''}\n\u{1F4B0} **Fare:** Shuvan ৳${r.fare.shuvan} | Shuvan Chair ৳${r.fare.shuvanChair} | Snigdha ৳${r.fare.snigdha}${r.fare.acBerth?` | AC Berth ৳${r.fare.acBerth}`:''}\n\u{1F4CF} **Distance:** ${r.distanceKm} km | **Off Day:** ${r.offDay}${r.runningDays?.length?`\n\u{1F4C5} **Runs:** ${r.runningDays.join(', ')}`:''}`;
+
+    // Per-stop schedule from routeStops
+    const rs = (r as any).routeStops;
+    if (rs?.length) {
+      response += '\n\n\u{1F6D1} **' + (isBn ? 'স্টেশনভিত্তিক সময়সূচি:' : 'Station-wise schedule:') + '**\n';
+      response += rs.slice(0, 10).map((s: any) => {
+        const arr = s.arrival ? s.arrival.replace(' BST','') : '—';
+        const dep = s.departure ? s.departure.replace(' BST','') : '—';
+        const halt = s.halt && s.halt !== 'None' && s.halt !== '0' && s.halt !== 'undefined' ? ` | ${isBn?'বিরতি':'Halt'} ${s.halt}মি` : '';
+        const lbl = s.label || s.city.replace(/_/g,' ');
+        return `  • ${lbl}: ${isBn?'আসে':'Arr'} ${arr} | ${isBn?'ছাড়ে':'Dep'} ${dep}${halt}`;
+      }).join('\n');
+    }
+
+    // Journey date section
+    if (journeyDate) {
+      const offOnDay = isOffDay(r.offDay, journeyDate.date);
+      const bookUrl = buildBookingUrl(fromSt?.name || r.from, toSt?.name || r.to, journeyDate.label);
+      if (isBn) {
+        response += `\n\n\u{1F4C5} **${journeyDate.labelBn} (${journeyDate.label}) যাত্রা:**`;
+        if (offOnDay) {
+          response += `\n⚠️ **সতর্কতা:** ${journeyDate.labelBn} এই ট্রেনের **বন্ধের দিন** (${r.offDay})। এই তারিখে ট্রেন চলবে না।`;
+        } else {
+          response += `\n✅ ট্রেন চলবে।\n\u{1F3AB} **টিকিট বুক করুন:** [eticket.railway.gov.bd](${bookUrl})\n⏰ **ছাড়ার সময়:** ${r.dhakaDepart||'—'} (${fromName} থেকে)\n\u{1F4A1} **টিপস:** বুকিং থিকিট ১০ দিন আগে থেকে পাওয়া যায়। সার্ভিস চার্জ ৳২০ + ১০প্র৳ ভ্যাট।`;
+        }
+      } else {
+        response += `\n\n\u{1F4C5} **Journey on ${journeyDate.label}:**`;
+        if (offOnDay) {
+          response += `\n⚠️ **Warning:** ${journeyDate.label} is the train's **off day** (${r.offDay}). Train won't run.`;
+        } else {
+          response += `\n✅ Train runs.\n\u{1F3AB} **Book ticket:** [eticket.railway.gov.bd](${bookUrl})\n⏰ **Departs:** ${r.dhakaDepart||'—'} from ${fromName}\n\u{1F4A1} **Tips:** Tickets available 10 days in advance. ৳20 service charge + 15% VAT applies.`;
+        }
+      }
+    }
+    return response;
   }
 
   // 2. Search by from/to station names
   const stationEntries = Object.values(TRAIN_STATIONS);
   const mentionedStations = stationEntries.filter(st =>
-    lowerQuery.includes(normalize(st.name)) || lowerQuery.includes(normalize(st.bnName))
+    lowerQuery.includes(normalize(st.name)) || lowerQuery.includes(normalize(st.bnName || ''))
   );
 
   if (mentionedStations.length >= 2) {
-    const fromSt = mentionedStations[0];
-    const toSt = mentionedStations[1];
+    const sorted = mentionedStations.slice(0,2).sort((a,b) => {
+      const ai = Math.min(
+        lowerQuery.indexOf(normalize(a.name))>=0?lowerQuery.indexOf(normalize(a.name)):9999,
+        lowerQuery.indexOf(normalize(a.bnName||''))>=0?lowerQuery.indexOf(normalize(a.bnName||'')):9999
+      );
+      const bi = Math.min(
+        lowerQuery.indexOf(normalize(b.name))>=0?lowerQuery.indexOf(normalize(b.name)):9999,
+        lowerQuery.indexOf(normalize(b.bnName||''))>=0?lowerQuery.indexOf(normalize(b.bnName||'')):9999
+      );
+      return ai - bi;
+    });
+    const fromSt = sorted[0];
+    const toSt   = sorted[1];
     const matchingRoutes = uniqueRoutes.filter(r => {
       const fi = r.stops.indexOf(fromSt.id);
       const ti = r.stops.indexOf(toSt.id);
@@ -905,34 +1009,41 @@ const findTrainInfo = (query: string): string => {
     });
     if (matchingRoutes.length > 0) {
       const header = isBn
-        ? `🚂 **${isBn ? fromSt.bnName : fromSt.name} → ${isBn ? toSt.bnName : toSt.name}** রুটের ট্রেন:\n\n`
-        : `🚂 **Trains from ${fromSt.name} → ${toSt.name}:**\n\n`;
-      const lines = matchingRoutes.slice(0, 5).map(r => {
-        const name = isBn ? r.bnName : r.name;
-        return `• **${name}** (${r.number}) — ছাড়ে ${r.dhakaDepart} | ভাড়া ৳${r.fare.shuvan}+`;
+        ? `\u{1F682} **${fromSt.bnName||fromSt.name} → ${toSt.bnName||toSt.name}** রুটের ট্রেন:\n\n`
+        : `\u{1F682} **Trains from ${fromSt.name} → ${toSt.name}:**\n\n`;
+      const lines = matchingRoutes.slice(0,5).map(r => {
+        const nm = isBn ? r.bnName : r.name;
+        const offWarn = journeyDate && isOffDay(r.offDay, journeyDate.date) ? ' ⚠️ বন্ধ' : '';
+        return `• **${nm}** (${r.number}) — ছাড়ে ${r.dhakaDepart} | ভাড়া ৳${r.fare.shuvan}+${offWarn}`;
       });
-      return header + lines.join('\n');
+      let resp = header + lines.join('\n');
+      if (journeyDate) {
+        const bookUrl = buildBookingUrl(fromSt.name, toSt.name, journeyDate.label);
+        resp += isBn
+          ? `\n\n\u{1F4C5} **${journeyDate.labelBn} টিকিট:** [eticket.railway.gov.bd](${bookUrl})`
+          : `\n\n\u{1F4C5} **Tickets for ${journeyDate.label}:** [eticket.railway.gov.bd](${bookUrl})`;
+      }
+      return resp;
     }
   } else if (mentionedStations.length === 1) {
     const st = mentionedStations[0];
     const isNavIntent = lowerQuery.match(/(jabo|train|ticket|যাব|ট্রেন|টিকিট|কিভাবে|route|রুট|কোন|which)/);
     if (isNavIntent) {
-      const routes = uniqueRoutes.filter(r => r.stops.includes(st.id)).slice(0, 5);
+      const routes = uniqueRoutes.filter(r => r.stops.includes(st.id)).slice(0,5);
       if (routes.length > 0) {
         const header = isBn
-          ? `🚂 **${st.bnName}** স্টেশনে থামে এমন ট্রেন:\n\n`
-          : `🚂 **Trains stopping at ${st.name}:**\n\n`;
+          ? `\u{1F682} **${st.bnName||st.name}** স্টেশনে থামে এমন ট্রেন:\n\n`
+          : `\u{1F682} **Trains stopping at ${st.name}:**\n\n`;
         const lines = routes.map(r => {
           const from = TRAIN_STATIONS[r.from];
-          const to = TRAIN_STATIONS[r.to];
-          const name = isBn ? r.bnName : r.name;
-          return `• **${name}** (${r.number}) — ${isBn ? from?.bnName : from?.name} → ${isBn ? to?.bnName : to?.name}`;
+          const to   = TRAIN_STATIONS[r.to];
+          const nm = isBn ? r.bnName : r.name;
+          return `• **${nm}** (${r.number}) — ${isBn?from?.bnName:from?.name} → ${isBn?to?.bnName:to?.name}`;
         });
         return header + lines.join('\n');
       }
     }
   }
-
   // 3. General train listing for a division/region
   const regionMap: Record<string, string> = {
     'sylhet': 'Sylhet', 'সিলেট': 'Sylhet',
