@@ -69,6 +69,7 @@ export function TrainPage(props: Props) {
 
   const [fromStation, setFromStation] = useState(params?.from ?? '');
   const [toStation, setToStation] = useState(params?.to ?? params?.search ?? '');
+  const [hasSearched, setHasSearched] = useState(!!(params?.from || params?.to || params?.search));
   const [fromFocus, setFromFocus] = useState(false);
   const [toFocus, setToFocus] = useState(false);
   const fromRef = useRef<HTMLDivElement>(null);
@@ -83,15 +84,15 @@ export function TrainPage(props: Props) {
   const filteredTrains = useMemo(() => {
     const fromQ = fromStation.toLowerCase();
     const toQ = toStation.toLowerCase();
-    if (!fromQ && !toQ) {
+    if (!hasSearched || (!fromQ && !toQ)) {
       const featured = FEATURED_TRAIN_IDS
         .map(id => TRAINS.find(train => train.source.id === id))
         .filter((train): train is typeof TRAINS[number] => !!train);
       return featured.length ? featured : TRAINS.slice(0, 5);
     }
     return TRAINS.filter(r => routeIncludes(r.source, fromQ) && routeIncludes(r.source, toQ));
-  }, [fromStation, toStation]);
-  const hasTrainSearch = Boolean(fromStation.trim() || toStation.trim());
+  }, [fromStation, toStation, hasSearched]);
+  const hasTrainSearch = hasSearched && Boolean(fromStation.trim() || toStation.trim());
 
   return (
     <PageShell {...props}>
@@ -139,7 +140,7 @@ export function TrainPage(props: Props) {
                 </div>
               </div>
               {toFocus && <SuggestionDropdown suggestions={filterStations(toStation, 'to')} onSelect={s=>{setToStation(s.label);setToFocus(false);}} onDismiss={()=>setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef}/>}
-              <button onClick={()=>{ earnCoins(5,'Train search'); document.getElementById('train-results')?.scrollIntoView({ behavior:'smooth', block:'start' }); }} style={{ background:'linear-gradient(135deg,#5b21b6,#7c3aed)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'0 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #7c3aed' }}>
+              <button onClick={()=>{ earnCoins(5,'Train search'); setHasSearched(true); document.getElementById('train-results')?.scrollIntoView({ behavior:'smooth', block:'start' }); }} style={{ background:'linear-gradient(135deg,#5b21b6,#7c3aed)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'0 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #7c3aed' }}>
                 <Icon.search s={16}/>{T(lang,'খুঁজুন','Search')}
               </button>
             </div>

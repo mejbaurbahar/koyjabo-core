@@ -39,6 +39,7 @@ export function LaunchPage(props: Props) {
 
   const [fromTerminal, setFromTerminal] = useState(params?.from ?? '');
   const [toTerminal, setToTerminal] = useState(params?.to ?? params?.search ?? '');
+  const [hasSearched, setHasSearched] = useState(!!(params?.from || params?.to || params?.search));
   const [fromFocus, setFromFocus] = useState(false);
   const [toFocus, setToFocus] = useState(false);
   const fromRef = useRef<HTMLDivElement>(null);
@@ -124,7 +125,7 @@ export function LaunchPage(props: Props) {
                   />
                 </div>
               </div>
-              <button onClick={()=>{ earnCoins(5,'Launch search'); document.getElementById('launch-results')?.scrollIntoView({ behavior:'smooth', block:'start' }); }} style={{ background:'linear-gradient(135deg,#0ea5e9,#075985)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'0 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #0ea5e9' }}>
+              <button onClick={()=>{ earnCoins(5,'Launch search'); setHasSearched(true); document.getElementById('launch-results')?.scrollIntoView({ behavior:'smooth', block:'start' }); }} style={{ background:'linear-gradient(135deg,#0ea5e9,#075985)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'0 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #0ea5e9' }}>
                 <Icon.search s={16}/>{T(lang,'লঞ্চ খুঁজুন','Find launch')}
               </button>
             </div>
@@ -137,7 +138,9 @@ export function LaunchPage(props: Props) {
             <div id="launch-results">
               <SectionHeader tk={tk} lang={lang} title={T(lang,`আজকের লঞ্চ · ${fromLabel} → ${toLabel}`,`Tonight's launches · ${fromLabel} → ${toLabel}`)} action={T(lang,'সব দেখুন','All')}/>
               <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-                {filteredLaunches.length === 0
+                {!hasSearched
+                  ? <div style={{ fontFamily:BEN, fontSize:13, color:tk.textFaint, padding:'16px 0', textAlign:'center' }}>{T(lang,'ঘাট বেছে লঞ্চ খুঁজুন বোতাম চাপুন','Select terminals and tap Find launch')}</div>
+                  : filteredLaunches.length === 0
                   ? <div style={{ fontFamily:BEN, fontSize:13, color:tk.textFaint, padding:'16px 0' }}>{T(lang,'এই রুটে কোনো লঞ্চ পাওয়া যায়নি।','No launches found for this route.')}</div>
                   : filteredLaunches.map((l,i)=>(
                   <div key={l.id} onClick={()=>onNav('vehicle', { kind:'launch', id:l.id, name:l.name.en, nameBn:l.name.bn, from: fromLabel, to: toLabel, dep:l.dep, arr:l.arr, dur:l.dur, deck:String(l.deck), cabin:String(l.cabin), vip:String(l.vip), operator:l.operator.en, operatorBn:l.operator.bn, rating:String(l.rating), type:l.type, col:l.col })} style={{ ...card(14), position:'relative', overflow:'hidden', cursor:'pointer' }}>

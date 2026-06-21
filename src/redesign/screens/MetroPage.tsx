@@ -48,6 +48,7 @@ export function MetroPage(props: Props) {
 
   const [fareFrom, setFareFrom] = useState('');
   const [fareTo, setFareTo] = useState('');
+  const [hasSearched, setHasSearched] = useState(false);
   const [fromFocus, setFromFocus] = useState(false);
   const [toFocus, setToFocus] = useState(false);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
@@ -199,19 +200,20 @@ export function MetroPage(props: Props) {
                   <input value={fareTo} onChange={e=>setFareTo(e.target.value)} onFocus={()=>setToFocus(true)} onBlur={()=>setTimeout(()=>setToFocus(false),150)} placeholder={T(lang,'মতিঝিল','Motijheel')} style={{ background:'transparent', border:'none', outline:'none', fontFamily:BEN, fontSize:14, fontWeight:600, color:tk.text, width:'100%', marginTop:2 }}/>
                 </div>
               </div>
-              {calcFare ? (
+              {hasSearched && calcFare ? (
                 <div style={{ background:`linear-gradient(135deg,${tk.primary},${tk.primaryDeep})`, color:tk.primaryInk, borderRadius:14, padding:'10px 18px', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', minWidth:100 }}>
                   <div style={{ fontFamily:SANS, fontWeight:800, fontSize:22, letterSpacing:-0.5 }}>৳ {calcFare.fare}</div>
                   <div style={{ fontFamily:SANS, fontSize:10, fontWeight:700, opacity:0.8, letterSpacing:1 }}>{calcFare.stops} {T(lang,'স্টেশন','STOPS')}</div>
                 </div>
               ) : (
-                <div style={{ background:tk.panelMuted, border:`1px solid ${tk.line}`, borderRadius:14, padding:'10px 18px', display:'flex', alignItems:'center', justifyContent:'center', minWidth:100, color:tk.textFaint, fontFamily:SANS, fontSize:12, textAlign:'center' }}>
-                  {T(lang,'২টি স্টেশন বেছে নিন','Select 2 stations')}
-                </div>
+                <button onClick={()=>{ if (fareFrom && fareTo) setHasSearched(true); }}
+                  style={{ background: fareFrom && fareTo ? `linear-gradient(135deg,${tk.primary},${tk.primaryDeep})` : tk.panelMuted, border: fareFrom && fareTo ? 'none' : `1px solid ${tk.line}`, borderRadius:14, padding:'10px 18px', cursor: fareFrom && fareTo ? 'pointer' : 'default', minWidth:100, color: fareFrom && fareTo ? tk.primaryInk : tk.textFaint, fontFamily:SANS, fontSize:12, fontWeight:700, textAlign:'center' }}>
+                  {T(lang,'ভাড়া দেখুন','Check Fare')}
+                </button>
               )}
             </div>
-            {fromFocus && <SuggestionDropdown suggestions={filterStations(fareFrom)} onSelect={s=>{setFareFrom(s.label);setFromFocus(false);}} onDismiss={()=>setFromFocus(false)} tk={tk} lang={lang} anchorRef={fromRef}/>}
-            {toFocus && <SuggestionDropdown suggestions={filterStations(fareTo)} onSelect={s=>{setFareTo(s.label);setToFocus(false);}} onDismiss={()=>setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef}/>}
+            {fromFocus && <SuggestionDropdown suggestions={filterStations(fareFrom)} onSelect={s=>{setFareFrom(s.label);setFromFocus(false);setHasSearched(false);}} onDismiss={()=>setFromFocus(false)} tk={tk} lang={lang} anchorRef={fromRef}/>}
+            {toFocus && <SuggestionDropdown suggestions={filterStations(fareTo)} onSelect={s=>{setFareTo(s.label);setToFocus(false);setHasSearched(false);}} onDismiss={()=>setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef}/>}
           </div>
 
           {/* Info grid */}

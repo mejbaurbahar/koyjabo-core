@@ -69,6 +69,7 @@ export function IntercityPage(props: Props) {
   const [nameSearch, setNameSearch] = useState(params?.search ?? '');
   const [from, setFrom] = useState(params?.from ?? '');
   const [to, setTo] = useState(params?.to ?? '');
+  const [hasSearched, setHasSearched] = useState(!!(params?.from || params?.to || params?.search));
 
   const lbl = (en: string, bn: string) => T(lang, bn, en);
   const [fromFocus, setFromFocus] = useState(false);
@@ -530,7 +531,7 @@ export function IntercityPage(props: Props) {
           </div>
 
           <button
-            onClick={() => { earnCoins(5,'Intercity search'); document.getElementById('intercity-results')?.scrollIntoView({ behavior:'smooth', block:'start' }); }}
+            onClick={() => { earnCoins(5,'Intercity search'); setHasSearched(true); document.getElementById('intercity-results')?.scrollIntoView({ behavior:'smooth', block:'start' }); }}
             style={{
               marginTop: 16, width: '100%',
               background: `linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)`,
@@ -545,7 +546,7 @@ export function IntercityPage(props: Props) {
           </button>
         </div>
 
-        {(nameSearch || from || to || activeChip === 'Train' || activeChip === 'Flight' || activeChip === 'Launch') && (
+        {hasSearched && (
         <div id="intercity-results" style={{ marginTop: 32 }}>
           {/* For bus: expand into per-operator cards */}
           {activeChip === 'Bus' ? (() => {

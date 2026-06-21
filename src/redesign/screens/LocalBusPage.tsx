@@ -44,6 +44,8 @@ export function LocalBusPage(props: Props) {
   const [searchQuery, setSearchQuery] = useState(props.params?.search ?? '');
   const [fromInput, setFromInput] = useState(props.params?.from ?? '');
   const [toInput, setToInput] = useState(props.params?.to ?? '');
+  // Only show results after search button click
+  const [hasSearched, setHasSearched] = useState(!!(props.params?.from || props.params?.to || props.params?.search));
   const [fromFocus, setFromFocus] = useState(false);
   const [toFocus, setToFocus] = useState(false);
   const fromRef = useRef<HTMLDivElement>(null);
@@ -71,8 +73,9 @@ export function LocalBusPage(props: Props) {
       r.stops.some(s => s.toLowerCase().includes(qNorm) || s.toLowerCase().includes(q));
   };
 
-  // Real bus route filtering
+  // Real bus route filtering — only active after search button click
   const filteredRoutes = useMemo(() => {
+    // searchQuery (name/route text) is always live; from/to requires hasSearched
     const q = searchQuery.trim().toLowerCase();
     const f = fromInput.trim();
     const t = toInput.trim();
@@ -86,15 +89,15 @@ export function LocalBusPage(props: Props) {
         r.stops.some(s => s.toLowerCase().includes(norm(q)))
       ).slice(0, 20);
     }
+    if (!hasSearched) return BUS_DATA.filter(r => r.active !== false && r.name.length > 3).slice(0, 10);
     if (f && t) {
       const results = BUS_DATA.filter(r => matchesStation(r, f) && matchesStation(r, t)).slice(0, 20);
       if (results.length) return results;
     }
     if (f) return BUS_DATA.filter(r => matchesStation(r, f)).slice(0, 15);
     if (t) return BUS_DATA.filter(r => matchesStation(r, t)).slice(0, 15);
-    // Default: popular named routes
     return BUS_DATA.filter(r => r.active !== false && r.name.length > 3).slice(0, 10);
-  }, [searchQuery, fromInput, toInput]);
+  }, [searchQuery, fromInput, toInput, hasSearched]);
 
   const [mode, setMode] = useState<'buses'|'transit'>('buses');
 
@@ -171,7 +174,7 @@ export function LocalBusPage(props: Props) {
                 </div>
               </div>
               {toFocus && <SuggestionDropdown suggestions={filterStations(toInput, 'to')} onSelect={s=>{setToInput(s.label);setToFocus(false);}} onDismiss={()=>setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef}/>}
-              <button onClick={()=>{ if (fromInput || toInput) trackRouteSearch(fromInput, toInput); onNav('results', { from: fromInput, to: toInput, search: searchQuery }); }} style={{ background:`linear-gradient(135deg,${tk.primary},${tk.primaryDeep})`, color:tk.primaryInk, border:0, borderRadius:14, padding:isMobile?'12px 16px':'0 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:`0 8px 22px -10px ${tk.primary}` }}>
+              <button onClick={()=>{ if (fromInput || toInput) trackRouteSearch(fromInput, toInput); setHasSearched(true); onNav('results', { from: fromInput, to: toInput, search: searchQuery }); }} style={{ background:`linear-gradient(135deg,${tk.primary},${tk.primaryDeep})`, color:tk.primaryInk, border:0, borderRadius:14, padding:isMobile?'12px 16px':'0 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:`0 8px 22px -10px ${tk.primary}` }}>
                 <Icon.search s={16}/>{T(lang,'বাস খুঁজুন','Find bus')}
               </button>
             </div>
@@ -197,7 +200,7 @@ export function LocalBusPage(props: Props) {
               {mode === 'buses' ? (
                 <>
                   <SectionHeader tk={tk} lang={lang}
-                    title={(searchQuery || fromInput || toInput)
+                    title={(hasSearched && (searchQuery || fromInput || toInput))
                       ? T(lang, `${filteredRoutes.length}টি রুট পাওয়া গেছে`, `${filteredRoutes.length} routes found`)
                       : T(lang,'জনপ্রিয় বাস রুট','Popular bus routes')}
                     action={T(lang,'সব দেখুন','See all')}/>
