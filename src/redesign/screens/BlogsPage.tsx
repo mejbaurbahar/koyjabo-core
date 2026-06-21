@@ -35,6 +35,7 @@ const BLOGS = BLOG_POSTS.map(p => {
     tags: p.keywords?.slice(0, 3) ?? [],
     from,
     to,
+    coverImage: p.coverImage || null,
   };
 });
 
@@ -67,17 +68,20 @@ function BlogCard({
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && onNav('blog-detail', { slug: blog.id })}
     >
-      {/* Gradient hero thumbnail */}
+      {/* Cover image or gradient hero thumbnail */}
       <div
         style={{
-          background: `linear-gradient(135deg, ${blog.from} 0%, ${blog.to} 100%)`,
-          height: 120,
+          background: blog.coverImage
+            ? `url(${blog.coverImage}) center/cover no-repeat, linear-gradient(135deg, ${blog.from} 0%, ${blog.to} 100%)`
+            : `linear-gradient(135deg, ${blog.from} 0%, ${blog.to} 100%)`,
+          height: 140,
           position: 'relative',
           display: 'flex',
           alignItems: 'flex-end',
           padding: '12px 14px',
         }}
       >
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.5) 30%, transparent 100%)' }} />
         <span
           style={{
             background: 'rgba(0,0,0,0.35)',

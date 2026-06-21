@@ -101,9 +101,10 @@ export function BlogDetailPage(props: Props) {
           </button>
         </div>
 
-        {/* Hero */}
-        <div style={{ height: 200, background: `linear-gradient(135deg,${gradFrom},${gradTo})`, borderRadius: 18, marginBottom: 16, display: 'flex', alignItems: 'flex-end', padding: 20 }}>
-          <h1 style={{ fontFamily: font, fontWeight: 700, fontSize: isMobile ? 20 : 26, color: '#fff', margin: 0, textShadow: '0 2px 8px rgba(0,0,0,0.4)', lineHeight: 1.3 }}>
+        {/* Hero image or gradient */}
+        <div style={{ height: isMobile ? 200 : 340, background: post.coverImage ? `url(${post.coverImage}) center/cover no-repeat, linear-gradient(135deg,${gradFrom},${gradTo})` : `linear-gradient(135deg,${gradFrom},${gradTo})`, borderRadius: 18, marginBottom: 16, display: 'flex', alignItems: 'flex-end', padding: 20, position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 40%, transparent 100%)', borderRadius: 18 }} />
+          <h1 style={{ fontFamily: font, fontWeight: 700, fontSize: isMobile ? 20 : 26, color: '#fff', margin: 0, textShadow: '0 2px 8px rgba(0,0,0,0.4)', lineHeight: 1.3, position: 'relative', zIndex: 1 }}>
             {title}
           </h1>
         </div>
