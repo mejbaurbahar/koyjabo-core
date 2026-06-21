@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { KJ_TOKENS, SANS, BEN, T, Tokens, Lang } from '../tokens';
 import { AdSlot } from '../components/AdSlot';
 import { PageShell } from './PageShell';
+import { findOperator, findRoutesByFromTo } from '../../../data/intercityOperatorData';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:Lang; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -284,8 +285,30 @@ export function IntercityDetailPage(props: Props) {
   const fromCity = params?.from || 'Dhaka';
   const toCity = params?.to || params?.district || 'Destination';
 
-  // Build route stops from params
-  const routeStops = buildStops(routeText, counterLocation, fromCity, toCity);
+  // Look up real operator + route data
+  const realOperator = findOperator(operatorName);
+  const realRoutes = fromCity && toCity ? findRoutesByFromTo(fromCity, toCity).filter(r => r.operator.id === (realOperator?.id || '')) : [];
+  const realRoute = realRoutes[0]?.route || null;
+
+  // Use real stops if available, else build from params
+  const routeStops: StopEntry[] = realRoute
+    ? realRoute.stops.map(s => ({
+        name: s.name,
+        nameBn: s.bnName,
+        time: s.arrivalTime || '',
+        kind: (s.type === 'origin' ? 'boarding' : s.type === 'destination' ? 'destination' : s.type === 'major' ? 'rest' : 'stop') as StopEntry['kind'],
+      }))
+    : buildStops(routeText, counterLocation, fromCity, toCity);
+
+  // Use real data for display fields when available
+  const displayFareNonAC = realRoute?.fareNonAC || fareNonAC;
+  const displayFareAC = realRoute?.fareAC || fareAC;
+  const displayDuration = realRoute?.durationHrs || '';
+  const displayCounters = realRoute ? realRoute.dhakaCounters.join(' / ') : counterLocation;
+  const displayContact = realOperator?.phone[0] || contactNumber;
+  const departureTimes = realRoute?.departureTimes || [];
+  const busTypes = realRoute?.busType || (realOperator?.busTypes || []);
+  const operatorPolicy = realOperator?.policy || null;
 
   const tabContent = () => {
     switch (activeTab) {
@@ -302,12 +325,51 @@ export function IntercityDetailPage(props: Props) {
           {lbl('Reviews from fellow passengers.', 'অন্য যাত্রীদের রিভিউ।')}
         </div>
       );
-      case 'policy': return (
-        <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 14, color: tk.textDim, lineHeight: 1.6 }}>
-          {lbl('Cancellation and refund policy: No refund after boarding. Ticket transfer allowed 2h before departure.',
-            'বাতিল ও রিফান্ড নীতি: বোর্ডিংয়ের পরে রিফান্ড নেই। ছাড়ার ২ ঘণ্টা আগে টিকেট স্থানান্তর সম্ভব।')}
-        </div>
-      );
+      case 'policy': {
+        const pol = operatorPolicy;
+        const policyItems = pol ? [
+          { icon: '❌', title: lbl('Cancellation', 'বাতিল নীতি'), text: pol.cancellation },
+          { icon: '💰', title: lbl('Refund', 'রিফান্ড'), text: pol.refund },
+          { icon: '🧳', title: lbl('Luggage', 'মালপত্র'), text: pol.luggage },
+          { icon: '🚌', title: lbl('Boarding', 'বোর্ডিং'), text: pol.boarding },
+          { icon: '👶', title: lbl('Children', 'শিশু'), text: pol.childPolicy },
+        ] : [{ icon: '📋', title: lbl('Policy', 'নীতি'), text: lbl('Contact operator for policy details.', 'অপারেটরের সাথে যোগাযোগ করুন।') }];
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {policyItems.map((item, i) => (
+              <div key={i} style={{ background: tk.panelMuted, borderRadius: 12, padding: '12px 14px' }}>
+                <div style={{ fontFamily: SANS, fontSize: 13, fontWeight: 700, color: tk.text, marginBottom: 4 }}>{item.icon} {item.title}</div>
+                <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 13, color: tk.textDim, lineHeight: 1.6 }}>{item.text}</div>
+              </div>
+            ))}
+            {pol?.specialNotes?.map((note, i) => (
+              <div key={`note-${i}`} style={{ background: `${tk.amber}22`, border: `1px solid ${tk.amber}44`, borderRadius: 10, padding: '10px 12px', fontFamily: SANS, fontSize: 12, color: tk.textDim }}>
+                ℹ️ {note}
+              </div>
+            ))}
+            {departureTimes.length > 0 && (
+              <div style={{ background: tk.panelMuted, borderRadius: 12, padding: '12px 14px' }}>
+                <div style={{ fontFamily: SANS, fontSize: 13, fontWeight: 700, color: tk.text, marginBottom: 8 }}>🕐 {lbl('Departure Times (from Dhaka)', 'ঢাকা থেকে ছাড়ার সময়')}</div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                  {departureTimes.map((t, i) => (
+                    <span key={i} style={{ background: tk.primarySoft, color: tk.primary, borderRadius: 8, padding: '4px 10px', fontFamily: SANS, fontSize: 13, fontWeight: 700 }}>{t}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+            {busTypes.length > 0 && (
+              <div style={{ background: tk.panelMuted, borderRadius: 12, padding: '12px 14px' }}>
+                <div style={{ fontFamily: SANS, fontSize: 13, fontWeight: 700, color: tk.text, marginBottom: 8 }}>🚌 {lbl('Bus Types', 'বাসের ধরন')}</div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                  {busTypes.map((t, i) => (
+                    <span key={i} style={{ background: tk.accentSoft, color: tk.accent, borderRadius: 8, padding: '4px 10px', fontFamily: SANS, fontSize: 12, fontWeight: 600 }}>{t}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      }
     }
   };
 
@@ -368,7 +430,7 @@ export function IntercityDetailPage(props: Props) {
           }}>
             <div style={{ textAlign: 'center', flex: 1 }}>
               <div style={{ fontFamily: SANS, fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>{routeText.split('⇄')[0]?.trim() || 'Dhaka'}</div>
-              <div style={{ fontFamily: SANS, fontSize: 20, fontWeight: 800, color: '#fff' }}>{counterLocation.split('/')[0]?.trim() || 'Counter'}</div>
+              <div style={{ fontFamily: SANS, fontSize: 20, fontWeight: 800, color: '#fff' }}>{displayCounters.split('/')[0]?.trim() || 'Counter'}</div>
               <div style={{ fontFamily: SANS, fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>{lbl('Boarding point', 'বোর্ডিং পয়েন্ট')}</div>
             </div>
             <div style={{ textAlign: 'center', flexShrink: 0 }}>
@@ -381,8 +443,8 @@ export function IntercityDetailPage(props: Props) {
             </div>
             <div style={{ textAlign: 'center', flex: 1 }}>
               <div style={{ fontFamily: SANS, fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>{routeText.split('⇄')[1]?.trim() || "Destination"}</div>
-              <div style={{ fontFamily: SANS, fontSize: 20, fontWeight: 800, color: '#fff' }}>{fareNonAC}</div>
-              {fareAC && <div style={{ fontFamily: SANS, fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>AC: {fareAC}</div>}
+              <div style={{ fontFamily: SANS, fontSize: 20, fontWeight: 800, color: '#fff' }}>{displayFareNonAC}</div>
+              {displayFareAC && <div style={{ fontFamily: SANS, fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>AC: {displayFareAC}</div>}
             </div>
           </div>
 
@@ -391,8 +453,9 @@ export function IntercityDetailPage(props: Props) {
             {[
               { val: fromCity, label: lbl('From', 'থেকে') },
               { val: toCity, label: lbl('To', 'গন্তব্য') },
-              { val: fareNonAC, label: lbl('Non-AC', 'নন-এসি') },
-              ...(fareAC ? [{ val: fareAC, label: lbl('AC', 'এসি') }] : []),
+              { val: displayFareNonAC, label: lbl('Non-AC', 'নন-এসি') },
+              ...(displayFareAC ? [{ val: displayFareAC, label: lbl('AC', 'এসি') }] : []),
+              ...(displayDuration ? [{ val: displayDuration, label: lbl('Duration', 'সময়') }] : []),
             ].map((s) => (
               <div key={s.label} style={{
                 background: 'rgba(255,255,255,0.12)', borderRadius: 10, padding: '8px 14px', textAlign: 'center',
@@ -517,8 +580,8 @@ export function IntercityDetailPage(props: Props) {
                 {lbl('Where to Buy', 'কোথায় কিনবেন')}
               </div>
               {[
-                { icon: '🏢', label: counterLocation },
-                { icon: '📞', label: contactNumber },
+                { icon: '🏢', label: displayCounters },
+                { icon: '📞', label: displayContact },
               ].map((item) => (
                 <div key={item.label} style={{
                   display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8,
