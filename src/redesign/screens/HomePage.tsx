@@ -40,12 +40,12 @@ interface HomePageProps {
 // ─── SearchPanel ──────────────────────────────────────────────────────────────
 
 const SEARCH_MODES = [
-  { bn: 'লোকাল বাস', en: 'Local Bus', id: 'bus' },
-  { bn: 'মেট্রো', en: 'Metro', id: 'metro' },
-  { bn: 'আন্তঃজেলা', en: 'Intercity', id: 'intercity' },
-  { bn: 'ট্রেন', en: 'Train', id: 'train' },
-  { bn: 'লঞ্চ', en: 'Launch', id: 'launch' },
-  { bn: 'বিমান', en: 'Air', id: 'flights' },
+  { bn: 'লোকাল বাস', en: 'Local Bus', id: 'bus',      icon: '🚌' },
+  { bn: 'মেট্রো',    en: 'Metro',     id: 'metro',     icon: '🚇' },
+  { bn: 'আন্তঃজেলা', en: 'Intercity', id: 'intercity', icon: '🧭' },
+  { bn: 'ট্রেন',     en: 'Train',     id: 'train',     icon: '🚆' },
+  { bn: 'লঞ্চ',      en: 'Launch',    id: 'launch',    icon: '⛴️' },
+  { bn: 'বিমান',     en: 'Air',       id: 'flights',   icon: '✈️' },
 ] as const;
 
 type SearchModeId = typeof SEARCH_MODES[number]['id'];
@@ -250,14 +250,19 @@ function SearchPanel({
             key={m.id}
             data-kj-search-mode={m.id}
             onClick={() => changeMode(m.id)}
+            title={T(lang, m.bn, m.en)}
             style={{
               ...pillBase,
               background: activeMode === m.id ? tk.primary : tk.panelMuted,
               color: activeMode === m.id ? tk.primaryInk : tk.textDim,
               border: activeMode === m.id ? 'none' : `1px solid ${tk.line}`,
+              // On mobile: square icon-only pill; on desktop: wider with text
+              padding: isMobile ? '7px 10px' : undefined,
+              minWidth: isMobile ? 0 : undefined,
+              fontSize: isMobile ? 18 : undefined,
             }}
           >
-            {T(lang, m.bn, m.en)}
+            {isMobile ? m.icon : T(lang, m.bn, m.en)}
           </button>
         ))}
         {!isMobile && (
