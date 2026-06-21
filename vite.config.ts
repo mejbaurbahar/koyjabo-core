@@ -129,7 +129,7 @@ export default defineConfig(({ mode }) => {
           skipWaiting: true,
           clientsClaim: true,
           // Cache versioning for proper updates
-          cacheId: 'dhaka-commute-v43',
+          cacheId: 'dhaka-commute-v44',
           maximumFileSizeToCacheInBytes: 10485760, // 10 MB
 
           runtimeCaching: [
@@ -151,36 +151,38 @@ export default defineConfig(({ mode }) => {
               handler: 'NetworkOnly',
             },
 
-            // Cache Intercity App - StaleWhileRevalidate: serve from cache instantly, update in background
+            // Intercity App - NetworkFirst: always fetch fresh HTML when online
             {
               urlPattern: ({ request, url }) => {
                 return request.destination === 'document' && url.pathname.startsWith('/intercity');
               },
-              handler: 'StaleWhileRevalidate',
+              handler: 'NetworkFirst',
               options: {
                 cacheName: 'intercity-pages',
+                networkTimeoutSeconds: 5,
                 expiration: {
                   maxEntries: 10,
-                  maxAgeSeconds: 30 * 24 * 60 * 60
+                  maxAgeSeconds: 24 * 60 * 60
                 },
                 cacheableResponse: {
                   statuses: [0, 200]
                 }
               }
             },
-            // Main App - StaleWhileRevalidate: serve from cache instantly, update in background
+            // Main App - NetworkFirst: always fetch fresh HTML when online (fixes mobile cache)
             {
               urlPattern: ({ request, url }) => {
                 const isIntercity = url.pathname.startsWith('/intercity');
                 const isApi = url.pathname.startsWith('/api');
                 return request.destination === 'document' && !isIntercity && !isApi;
               },
-              handler: 'StaleWhileRevalidate',
+              handler: 'NetworkFirst',
               options: {
                 cacheName: 'main-pages',
+                networkTimeoutSeconds: 5,
                 expiration: {
                   maxEntries: 50,
-                  maxAgeSeconds: 7 * 24 * 60 * 60
+                  maxAgeSeconds: 24 * 60 * 60
                 },
                 cacheableResponse: {
                   statuses: [0, 200]
