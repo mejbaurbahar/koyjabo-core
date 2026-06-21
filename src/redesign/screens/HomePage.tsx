@@ -256,13 +256,12 @@ function SearchPanel({
               background: activeMode === m.id ? tk.primary : tk.panelMuted,
               color: activeMode === m.id ? tk.primaryInk : tk.textDim,
               border: activeMode === m.id ? 'none' : `1px solid ${tk.line}`,
-              // On mobile: square icon-only pill; on desktop: wider with text
-              padding: isMobile ? '7px 10px' : undefined,
-              minWidth: isMobile ? 0 : undefined,
-              fontSize: isMobile ? 18 : undefined,
+              padding: '7px 11px',
+              minWidth: 0,
+              fontSize: 18,
             }}
           >
-            {isMobile ? m.icon : T(lang, m.bn, m.en)}
+            {m.icon}
           </button>
         ))}
         {!isMobile && (
