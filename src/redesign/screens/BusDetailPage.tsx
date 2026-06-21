@@ -98,6 +98,7 @@ export function BusDetailPage(props: Props) {
 
   useEffect(() => {
     if (!navigator.geolocation) return;
+    if (localStorage.getItem('kj-location-consent') !== 'yes') return;
     const id = navigator.geolocation.watchPosition(
       pos => setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
       () => {},

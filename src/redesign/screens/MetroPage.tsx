@@ -65,6 +65,7 @@ export function MetroPage(props: Props) {
       setLocationStatus('unsupported');
       return;
     }
+    if (localStorage.getItem('kj-location-consent') !== 'yes') return;
     navigator.geolocation.getCurrentPosition(
       pos => {
         setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
