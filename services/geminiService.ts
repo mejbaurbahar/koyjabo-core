@@ -1730,9 +1730,18 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
     const bnEntry = Object.entries(MAJOR_LOCATIONS_BN).find(([, bn]) => bn && area.includes(bn.toLowerCase()));
     if (bnEntry) return bnEntry[0];
     // Dhaka metro sub-areas
-    const dhakaKeywords = ['mirpur', 'gulshan', 'banani', 'dhanmondi', 'uttara', 'mohammadpur',
+    const dhakaKeywords = [
+      'mirpur', 'gulshan', 'banani', 'dhanmondi', 'uttara', 'mohammadpur',
       'farmgate', 'motijheel', 'tejgaon', 'badda', 'rampura', 'shyamoli', 'keraniganj',
-      'savar', 'ashulia', 'tongi', 'old dhaka', 'agargaon', 'pallabi', 'kazipara'];
+      'savar', 'ashulia', 'tongi', 'old dhaka', 'agargaon', 'pallabi', 'kazipara',
+      // Additional Dhaka-area suburbs/upazilas
+      'hemayetpur', 'aminbazar', 'gabtoli', 'bosila', 'kathalbagan', 'jigatola',
+      'shahbagh', 'azimpur', 'lalbagh', 'demra', 'jatrabari', 'postogola',
+      'khilgaon', 'malibagh', 'mouchak', 'tejturi', 'kamrangirchar', 'hazaribagh',
+      'kalabagan', 'hatirjheel', 'rampura', 'khilkhet', 'nikunja', 'bashundhara',
+      'vatara', 'baridhara', 'cantonment', 'airport', 'dakshinkhan', 'uttarkhan',
+      'turag', 'diabari', 'gazipur', 'narayanganj', 'matuail',
+    ];
     if (dhakaKeywords.some(k => area.includes(k))) return 'Dhaka';
     return undefined;
   })();

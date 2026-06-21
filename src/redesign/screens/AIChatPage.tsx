@@ -260,12 +260,12 @@ export function AIChatPage(props: Props) {
       const hasFrom = /\bfrom\b|থেকে|হতে/i.test(userText);
       const area = userAreaRef.current;
 
-      // Extract destination from "how to go X", "route to X", "reach X" etc.
+      // Extract destination from "how to go X", "want to go X", "jeta chai X" etc.
       function extractGoToDest(q: string): string | null {
         const m = q.match(
-          /^(?:how\s+(?:to\s+)?(?:go|get)\s+(?:to\s+)?|route\s+to\s+|(?:reach|take\s+me\s+to|go\s+to|directions?\s+to|best\s+(?:bus|way)\s+(?:to|for)|nearest\s+way\s+to|how\s+can\s+i\s+(?:get\s+to|reach)\s+))(.+?)(?:\?|$)/i
-        ) || q.match(/(?:কিভাবে\s+যাব[োো]?\s+|যেতে\s+চাই\s+|যাবো?\s+কিভাবে\s+)(.+?)(?:\?|।|$)/i);
-        return m ? m[1].trim().replace(/[?।]$/, '').trim() : null;
+          /(?:how\s+(?:to\s+)?(?:go|get)\s+(?:to\s+)?|route\s+to\s+|reach\s+|take\s+me\s+to\s+|go\s+to\s+|directions?\s+to\s+|best\s+(?:bus|way)\s+(?:to|for)\s+|nearest\s+way\s+to\s+|how\s+can\s+i\s+(?:get\s+to|reach)\s+|(?:i\s+)?want\s+to\s+go(?:\s+to)?\s+|(?:i\s+)?want\s+to\s+visit\s+|(?:i\s+)?need\s+to\s+go(?:\s+to)?\s+|(?:i\s+)?(?:am|m)\s+going(?:\s+to)?\s+)([a-zA-Zঀ-৿][a-zA-Zঀ-৿\s']{1,40})(?:\?|।|,|$)/i
+        ) || q.match(/(?:কিভাবে\s+যাব[োো]?\s+|যেতে\s+চাই\s+|যাবো?\s+কিভাবে\s+|জেতে\s+চাই\s+|jeta\s+chai\s*,?\s*|jabo\s+|jete\s+chai\s+|jaite\s+chai\s+)([a-zA-Zঀ-৿][a-zA-Zঀ-৿\s']{1,40})(?:\?|।|,|$)/i);
+        return m ? m[1].trim().replace(/[?।,]$/, '').trim() : null;
       }
 
       const goToDest = !hasFrom ? extractGoToDest(userText) : null;
