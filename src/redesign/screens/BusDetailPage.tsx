@@ -142,6 +142,7 @@ export function BusDetailPage(props: Props) {
             highlightStartId={fromId}
             highlightEndId={toId}
             isReversed={isRouteReversed}
+            height="100%"
           />
         </div>
 
