@@ -31,12 +31,18 @@ export interface OperatorRoute {
 
 export interface OperatorPolicy {
   cancellation: string;
+  cancellationBn: string;
   refund: string;
+  refundBn: string;
   luggage: string;
+  luggageBn: string;
   boarding: string;
+  boardingBn: string;
   idRequired: boolean;
   childPolicy: string;
+  childPolicyBn: string;
   specialNotes: string[];
+  specialNotesBn: string[];
 }
 
 export interface BusOperatorDetail {
@@ -62,14 +68,23 @@ export interface BusOperatorDetail {
 
 const STD_POLICY: OperatorPolicy = {
   cancellation: 'Cancel 24h+ before: 10% fee. Cancel 12–24h: 25% fee. Cancel <12h: 50% fee. No refund after bus departure.',
+  cancellationBn: 'বাতিল ২৪ঘণ্টা+ আগে: ১০% ফি। বাতিল ১২-২৪ঘণ্টা: ২৫% ফি। বাতিল ১২ঘণ্টার কম: ৫০% ফি। বাস ছাড়ার পর কোনো রিফান্ড নেই।',
   refund: 'Refund in 5–7 working days for mobile payment. 7–10 days for card/net banking. Counter tickets: cash refund same day.',
+  refundBn: 'মোবাইল পেমেন্ট: ৫-৭ কার্যদিবসে রিফান্ড। কার্ড/নেট ব্যাংকিং: ৭-১০ কার্যদিবস। কাউন্টার টিকেট: একই দিনে নগদ ফেরত।',
   luggage: '20kg free per passenger. Excess luggage: ৳5 per kg. No animals or hazardous items. Luggage goes in lower compartment only.',
+  luggageBn: 'প্রতি যাত্রী ২০ কেজি বিনামূল্যে। অতিরিক্ত লাগেজ: ৳৫ প্রতি কেজি। পশু বা বিপজ্জনক পণ্য নিষিদ্ধ। লাগেজ শুধু নিচের কম্পার্টমেন্টে।',
   boarding: 'Arrive at counter 20–30 minutes before departure. Seat forfeited if not boarded 5 min before scheduled departure.',
+  boardingBn: 'ছাড়ার ২০-৩০ মিনিট আগে কাউন্টারে পৌঁছান। নির্ধারিত সময়ের ৫ মিনিট আগে না এলে আসন বাতিল হবে।',
   idRequired: false,
   childPolicy: 'Children under 3 travel free (no seat). Children 3–12: 50% fare with seat.',
+  childPolicyBn: '৩ বছরের কম শিশু বিনামূল্যে (আসন নেই)। ৩-১২ বছর: আসনসহ ৫০% ভাড়া।',
   specialNotes: [
     'Verify fares at counter or on Shohoz.com — fares may change on holidays.',
     'During Eid, Puja and other holidays advance booking strongly recommended.',
+  ],
+  specialNotesBn: [
+    'কাউন্টারে বা Shohoz.com-এ ভাড়া যাচাই করুন — ছুটির দিনে ভাড়া পরিবর্তন হতে পারে।',
+    'ঈদ, পূজা ও অন্যান্য উৎসবে আগাম বুকিং করার জন্য অনুরোধ করা হচ্ছে।',
   ],
 };
 
@@ -191,12 +206,19 @@ export const BUS_OPERATOR_DETAILS: BusOperatorDetail[] = [
     policy: {
       ...STD_POLICY,
       cancellation: 'Cancel 24h+: 10% fee. Cancel 12–24h: 20% fee. Cancel <12h: 50% fee. Counter tickets: non-refundable after departure.',
+      cancellationBn: 'বাতিল ২৪ঘণ্টা+ আগে: ১০% ফি। বাতিল ১২-২৪ঘণ্টা: ২০% ফি। বাতিল ১২ঘণ্টার কম: ৫০% ফি। কাউন্টার টিকেট: ছাড়ার পরে অফেরতযোগ্য।',
       luggage: '20kg free. Extra ৳5/kg. No food items in premium sleepers.',
+      luggageBn: '২০ কেজি বিনামূল্যে। অতিরিক্ত ৳৫/কেজি। প্রিমিয়াম স্লিপারে খাবার নিষিদ্ধ।',
       idRequired: true,
       specialNotes: [
         'Premium Volvo/Scania sleeper — bring NID/passport for identity verification.',
         'Online booking via greenlinebd.com or Shohoz.com.',
         'International route (Kolkata) requires passport.',
+      ],
+      specialNotesBn: [
+        'প্রিমিয়াম ভলভো/স্ক্যানিয়া স্লিপার — পরিচয় যাচাইয়ের জন্য এনআইডি/পাসপোর্ট আনুন।',
+        'greenlinebd.com বা Shohoz.com-এ অনলাইনে বুকিং করুন।',
+        'আন্তর্জাতিক রুট (কলকাতা)-এর জন্য পাসপোর্ট প্রয়োজন।',
       ],
     },
   },
@@ -294,6 +316,11 @@ export const BUS_OPERATOR_DETAILS: BusOperatorDetail[] = [
         'Book via Shohoz.com or counter at Malibagh/Gabtoli.',
         'Double Decker AC service on Dhaka–Khulna corridor.',
         'Padma Bridge routes: no ferry crossing, consistent schedules.',
+      ],
+      specialNotesBn: [
+        'Shohoz.com বা মালিবাগ/গাবতলী কাউন্টারে বুকিং করুন।',
+        'ঢাকা–খুলনা করিডোরে ডাবল ডেকার এসি সার্ভিস।',
+        'পদ্মা সেতু রুটে ফেরি পার নেই, নিয়মিত সময়সূচি।',
       ],
     },
   },
@@ -395,6 +422,11 @@ export const BUS_OPERATOR_DETAILS: BusOperatorDetail[] = [
         'Book online via Shohoz.com or call 16374.',
         'Hanif has been operating since 1984 — one of oldest operators.',
       ],
+      specialNotesBn: [
+        'সারাদেশ কভারেজ — ৬৪ জেলায় সার্ভিস।',
+        'Shohoz.com-এ অনলাইনে বুকিং করুন বা কল করুন ১৬৩৭৪।',
+        'হানিফ ১৯৮৪ সাল থেকে পরিচালিত — অন্যতম পুরনো অপারেটর।',
+      ],
     },
   },
 
@@ -477,6 +509,11 @@ export const BUS_OPERATOR_DETAILS: BusOperatorDetail[] = [
         'Specialist in northern Bangladesh routes.',
         'Earliest morning departures from Gabtoli 7 AM.',
         'Book via Shohoz.com, call 09613655555.',
+      ],
+      specialNotesBn: [
+        'উত্তরাঞ্চলের রুটে বিশেষজ্ঞ।',
+        'গাবতলী থেকে সকাল ৭টায় প্রথম ছাড়।',
+        'Shohoz.com-এ বুকিং করুন বা কল করুন ০৯৬১৩৬৫৫৫৫৫।',
       ],
     },
   },

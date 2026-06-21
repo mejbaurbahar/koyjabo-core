@@ -3,6 +3,10 @@ import { KJ_TOKENS, SANS, BEN, T, Tokens, Lang } from '../tokens';
 import { AdSlot } from '../components/AdSlot';
 import { PageShell } from './PageShell';
 import { findOperator, findRoutesByFromTo } from '../../../data/intercityOperatorData';
+import BusRating from '../../../components/BusRating';
+import BusPhotoGallery from '../../../components/BusPhotoGallery';
+import { getBusRatings, BusRatingSummary } from '../../../services/communityDataService';
+import { earnCoins } from '../utils/koyCoinService';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:Lang; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -72,20 +76,22 @@ const AMENITIES = [
 
 // Seat layout: 10 rows × 4 seats (2+2)
 type SeatState = 'available' | 'booked' | 'selected' | 'ladies';
-const INITIAL_SEATS: SeatState[][] = Array.from({ length: 10 }, (_, row) =>
-  Array.from({ length: 4 }, (__, col) => {
-    if ((row === 2 && col === 0) || (row === 2 && col === 1) || (row === 4 && col === 2)) return 'booked';
-    if (row === 1 && col === 3) return 'ladies';
-    if (row === 0 && col === 0) return 'selected';
-    return 'available';
-  })
+const INITIAL_SEATS: SeatState[][] = Array.from({ length: 10 }, () =>
+  Array.from({ length: 4 }, () => 'available' as SeatState)
 );
 
-const SEAT_COLORS: Record<SeatState, { bg: string; border: string; label: string }> = {
-  available:  { bg: 'transparent',   border: '#10b981', label: 'Available' },
-  booked:     { bg: '#374151',        border: '#374151', label: 'Booked' },
-  selected:   { bg: '#10b981',        border: '#10b981', label: 'Selected' },
-  ladies:     { bg: '#fce7f355',      border: '#ec4899', label: "Ladies'" },
+const SEAT_COLORS: Record<SeatState, { bg: string; border: string }> = {
+  available:  { bg: 'transparent',   border: '#10b981' },
+  booked:     { bg: '#374151',        border: '#374151' },
+  selected:   { bg: '#10b981',        border: '#10b981' },
+  ladies:     { bg: '#fce7f355',      border: '#ec4899' },
+};
+
+const SEAT_LABEL_MAP: Record<SeatState, { en: string; bn: string }> = {
+  available: { en: 'Available', bn: 'খালি' },
+  booked:    { en: 'Booked',    bn: 'বুকড' },
+  selected:  { en: 'Selected',  bn: 'নির্বাচিত' },
+  ladies:    { en: "Ladies'",   bn: 'মহিলা' },
 };
 
 const SPONSORED_CARDS = [
@@ -140,7 +146,9 @@ function SeatsTab({ tk, lang }: { tk: Tokens; lang: Lang }) {
               width: 16, height: 16, borderRadius: 4,
               background: meta.bg, border: `2px solid ${meta.border}`,
             }} />
-            <span style={{ fontFamily: SANS, fontSize: 12, color: tk.textDim }}>{meta.label}</span>
+            <span style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 12, color: tk.textDim }}>
+              {lbl(SEAT_LABEL_MAP[state].en, SEAT_LABEL_MAP[state].bn)}
+            </span>
           </div>
         ))}
       </div>
@@ -175,7 +183,7 @@ function SeatsTab({ tk, lang }: { tk: Tokens; lang: Lang }) {
                     color: state === 'selected' ? '#fff' : state === 'booked' ? '#6b7280' : state === 'ladies' ? '#ec4899' : '#10b981',
                     transition: 'all 0.1s ease',
                   }}
-                  title={`Row ${ri + 1} Seat ${ci + 1} — ${state}`}
+                  title={`Row ${ri + 1} Seat ${ci + 1} — ${lbl(SEAT_LABEL_MAP[state].en, SEAT_LABEL_MAP[state].bn)}`}
                 >
                   {`${ri + 1}${String.fromCharCode(65 + ci)}`}
                 </button>
@@ -272,6 +280,9 @@ export function IntercityDetailPage(props: Props) {
   const isMobile = device === 'mobile';
   const tk: Tokens = KJ_TOKENS[theme];
   const [activeTab, setActiveTab] = useState<TabId>('seats');
+  const [showPhotos, setShowPhotos] = useState(false);
+  const [showRating, setShowRating] = useState(false);
+  const [ratingSummary, setRatingSummary] = useState<BusRatingSummary | null>(null);
   const lbl = (en: string, bn: string) => T(lang, bn, en);
 
   // Use passed operator data or fall back to defaults
@@ -310,29 +321,83 @@ export function IntercityDetailPage(props: Props) {
   const busTypes = realRoute?.busType || (realOperator?.busTypes || []);
   const operatorPolicy = realOperator?.policy || null;
 
+  React.useEffect(() => {
+    getBusRatings(operatorName).then(setRatingSummary).catch(() => setRatingSummary(null));
+  }, [operatorName]);
+
+  // Full-screen photo/rating views
+  if (showPhotos) return (
+    <PageShell {...props} canBack>
+      <div style={{ padding: isMobile ? '16px 12px 100px' : '24px 40px 80px', maxWidth: 920, margin: '0 auto' }}>
+        <div style={{ background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 18, padding: 0, overflow: 'hidden' }}>
+          <BusPhotoGallery
+            busId={operatorName}
+            busName={operatorName}
+            busBnName={realOperator?.bnName || operatorName}
+            onBack={() => setShowPhotos(false)}
+            onSuccess={() => earnCoins(8, 'Photo uploaded')}
+          />
+        </div>
+      </div>
+    </PageShell>
+  );
+
+  if (showRating) return (
+    <PageShell {...props} canBack>
+      <div style={{ padding: isMobile ? '16px 12px 100px' : '24px 40px 80px', maxWidth: 920, margin: '0 auto' }}>
+        <div style={{
+          background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 18,
+          padding: 0, overflow: 'hidden',
+          minHeight: isMobile ? 'calc(100vh - 150px)' : 'calc(100vh - 190px)',
+          display: 'flex',
+        }}>
+          <BusRating
+            busId={operatorName}
+            busName={operatorName}
+            onBack={() => {
+              setShowRating(false);
+              getBusRatings(operatorName).then(setRatingSummary).catch(() => setRatingSummary(null));
+            }}
+            onSuccess={() => earnCoins(10, 'Review submitted')}
+          />
+        </div>
+      </div>
+    </PageShell>
+  );
+
   const tabContent = () => {
     switch (activeTab) {
       case 'seats': return <SeatsTab tk={tk} lang={lang} />;
       case 'route': return <RouteTab tk={tk} lang={lang} stops={routeStops} />;
       case 'bus': return <BusTab tk={tk} lang={lang} />;
       case 'photos': return (
-        <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 14, color: tk.textDim }}>
-          {lbl('Photos will be added by the community.', 'কমিউনিটি ছবি যোগ করবে।')}
-        </div>
+        <BusPhotoGallery
+          busId={operatorName}
+          busName={operatorName}
+          busBnName={realOperator?.bnName || operatorName}
+          onBack={() => setActiveTab('bus')}
+          onSuccess={() => earnCoins(8, 'Photo uploaded')}
+        />
       );
       case 'reviews': return (
-        <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 14, color: tk.textDim }}>
-          {lbl('Reviews from fellow passengers.', 'অন্য যাত্রীদের রিভিউ।')}
-        </div>
+        <BusRating
+          busId={operatorName}
+          busName={operatorName}
+          onBack={() => setActiveTab('bus')}
+          onSuccess={() => {
+            earnCoins(10, 'Review submitted');
+            getBusRatings(operatorName).then(setRatingSummary).catch(() => {});
+          }}
+        />
       );
       case 'policy': {
         const pol = operatorPolicy;
         const policyItems = pol ? [
-          { icon: '❌', title: lbl('Cancellation', 'বাতিল নীতি'), text: pol.cancellation },
-          { icon: '💰', title: lbl('Refund', 'রিফান্ড'), text: pol.refund },
-          { icon: '🧳', title: lbl('Luggage', 'মালপত্র'), text: pol.luggage },
-          { icon: '🚌', title: lbl('Boarding', 'বোর্ডিং'), text: pol.boarding },
-          { icon: '👶', title: lbl('Children', 'শিশু'), text: pol.childPolicy },
+          { icon: '❌', title: lbl('Cancellation', 'বাতিল নীতি'), text: T(lang, pol.cancellationBn || '', pol.cancellation) },
+          { icon: '💰', title: lbl('Refund', 'রিফান্ড'), text: T(lang, pol.refundBn || '', pol.refund) },
+          { icon: '🧳', title: lbl('Luggage', 'মালপত্র'), text: T(lang, pol.luggageBn || '', pol.luggage) },
+          { icon: '🚌', title: lbl('Boarding', 'বোর্ডিং'), text: T(lang, pol.boardingBn || '', pol.boarding) },
+          { icon: '👶', title: lbl('Children', 'শিশু'), text: T(lang, pol.childPolicyBn || '', pol.childPolicy) },
         ] : [{ icon: '📋', title: lbl('Policy', 'নীতি'), text: lbl('Contact operator for policy details.', 'অপারেটরের সাথে যোগাযোগ করুন।') }];
         return (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -343,8 +408,8 @@ export function IntercityDetailPage(props: Props) {
               </div>
             ))}
             {pol?.specialNotes?.map((note, i) => (
-              <div key={`note-${i}`} style={{ background: `${tk.amber}22`, border: `1px solid ${tk.amber}44`, borderRadius: 10, padding: '10px 12px', fontFamily: SANS, fontSize: 12, color: tk.textDim }}>
-                ℹ️ {note}
+              <div key={`note-${i}`} style={{ background: `${tk.amber}22`, border: `1px solid ${tk.amber}44`, borderRadius: 10, padding: '10px 12px', fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 12, color: tk.textDim }}>
+                ℹ️ {pol.specialNotesBn?.[i] ? T(lang, pol.specialNotesBn[i], note) : note}
               </div>
             ))}
             {departureTimes.length > 0 && (
@@ -405,7 +470,9 @@ export function IntercityDetailPage(props: Props) {
               </h1>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4, flexWrap: 'wrap' }}>
                 <span style={{ fontFamily: SANS, fontSize: 13, color: 'rgba(255,255,255,0.75)' }}>
-                  ⭐ 4.2 (324 {lbl('reviews', 'রিভিউ')})
+                  ⭐ {ratingSummary
+                    ? `${ratingSummary.average.toFixed(1)} (${ratingSummary.count} ${lbl('reviews', 'রিভিউ')})`
+                    : `4.2 (${lbl('loading...', 'লোড হচ্ছে...')})`}
                 </span>
                 <div style={{
                   display: 'flex', alignItems: 'center', gap: 5,
@@ -416,6 +483,29 @@ export function IntercityDetailPage(props: Props) {
                     {lbl('Live info', 'লাইভ তথ্য')}
                   </span>
                 </div>
+              </div>
+              {/* Photo / Review action buttons */}
+              <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+                <button
+                  onClick={() => setShowPhotos(true)}
+                  style={{
+                    background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)',
+                    borderRadius: 10, padding: '8px 14px', color: '#fff',
+                    fontFamily: SANS, fontSize: 12, fontWeight: 600, cursor: 'pointer',
+                  }}
+                >
+                  📷 {lbl('Photos', 'ছবি')}
+                </button>
+                <button
+                  onClick={() => setShowRating(true)}
+                  style={{
+                    background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)',
+                    borderRadius: 10, padding: '8px 14px', color: '#fff',
+                    fontFamily: SANS, fontSize: 12, fontWeight: 600, cursor: 'pointer',
+                  }}
+                >
+                  ★ {lbl('Review', 'রিভিউ')}
+                </button>
               </div>
             </div>
           </div>
