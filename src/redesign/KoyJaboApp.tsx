@@ -451,29 +451,7 @@ export function KoyJaboApp() {
       )}
       {stage}
       {aiFab}
-      {/* Desktop view toggle — shown only on small screens */}
-      {vw < 1024 && (
-        <button
-          onClick={() => setForceDesktop(f => !f)}
-          style={{
-            position: 'fixed',
-            // On AI chat page, lift above fixed input bar (60px tab + 72px input = 132px + buffer)
-            bottom: isPhone ? (top.route === 'ai' ? 148 : 86) : (showAnchor ? 72 : 16),
-            left: 16, zIndex: 9500,
-            background: 'rgba(13,22,42,0.9)', backdropFilter: 'blur(12px)',
-            WebkitBackdropFilter: 'blur(12px)',
-            border: `1px solid ${forceDesktop ? 'rgba(0,245,255,0.5)' : 'rgba(255,255,255,0.15)'}`,
-            borderRadius: 999,
-            padding: '7px 14px', fontFamily: "'Inter',sans-serif",
-            fontSize: 11, fontWeight: 700,
-            color: forceDesktop ? '#00f5ff' : 'rgba(255,255,255,0.7)',
-            cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6,
-            boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
-          }}
-        >
-          {forceDesktop ? '📱 Mobile view' : '🖥 Desktop view'}
-        </button>
-      )}
+      {/* Desktop view toggle removed — mobile users always get mobile layout */}
       <NavDrawer
         open={menuOpen} theme={theme} lang={lang}
         activeRoute={top.route}
