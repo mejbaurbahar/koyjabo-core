@@ -53,6 +53,12 @@ export function BusDetailPage(props: Props) {
   const bus = BUS_DATA.find(b => b.id === busId) ?? BUS_DATA[0];
   const fromId = resolveStationId(params?.from ?? '', bus.stops[0]);
   const toId = resolveStationId(params?.to ?? '', bus.stops[bus.stops.length - 1]);
+
+  // Detect if user's from→to direction is reverse of the bus route order
+  // e.g. bus goes Gabtoli(0)→Gulshan(5), user searched Gulshan→Gabtoli → isReversed=true
+  const fromIdx = bus.stops.indexOf(fromId);
+  const toIdx = bus.stops.indexOf(toId);
+  const isRouteReversed = fromIdx > toIdx && fromIdx !== -1 && toIdx !== -1;
   const [favoriteIds, setFavoriteIds] = useState<string[]>(() => getFavoriteBusIds());
   const [userLocation, setUserLocation] = useState<UserLocation | null>(null);
   const [showRating, setShowRating] = useState(false);
@@ -60,18 +66,21 @@ export function BusDetailPage(props: Props) {
   const [showHelpline, setShowHelpline] = useState(false);
   const [ratingSummary, setRatingSummary] = useState<BusRatingSummary | null>(null);
 
-  const realStops = useMemo(() => bus.stops.map((sid, i) => {
-    const st = STATIONS[sid];
-    return {
-      id: sid,
-      en: st?.name ?? sid.replace(/_/g,' '),
-      bn: st?.bnName ?? sid,
-      lat: st?.lat,
-      lng: st?.lng,
-      isFrom: sid === fromId || (!params?.from && i === 0),
-      isTo: sid === toId || (!params?.to && i === bus.stops.length - 1),
-    };
-  }), [bus, fromId, toId, params?.from, params?.to]);
+  const realStops = useMemo(() => {
+    const stopsInOrder = isRouteReversed ? [...bus.stops].reverse() : bus.stops;
+    return stopsInOrder.map((sid, i) => {
+      const st = STATIONS[sid];
+      return {
+        id: sid,
+        en: st?.name ?? sid.replace(/_/g,' '),
+        bn: st?.bnName ?? sid,
+        lat: st?.lat,
+        lng: st?.lng,
+        isFrom: sid === fromId || (!params?.from && i === 0),
+        isTo: sid === toId || (!params?.to && i === stopsInOrder.length - 1),
+      };
+    });
+  }, [bus, fromId, toId, params?.from, params?.to, isRouteReversed]);
 
   const nearest = useMemo(() => {
     if (!userLocation) return null;
@@ -131,6 +140,7 @@ export function BusDetailPage(props: Props) {
             userLocation={userLocation}
             highlightStartId={fromId}
             highlightEndId={toId}
+            isReversed={isRouteReversed}
           />
         </div>
 
