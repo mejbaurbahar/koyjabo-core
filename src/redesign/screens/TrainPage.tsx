@@ -13,7 +13,7 @@ import { earnCoins } from '../utils/koyCoinService';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string,p?:Record<string,string>)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
-type Tab = 'eticket' | 'pnr' | 'live' | 'routemap';
+type Tab = 'eticket' | 'pnr' | 'routemap';
 
 const stationName = (id: string) => TRAIN_STATIONS[id]?.name ?? id.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 const stationBnName = (id: string) => TRAIN_STATIONS[id]?.bnName ?? stationName(id);
@@ -45,7 +45,13 @@ const TRAINS = BD_TRAIN_ROUTES.map(r => ({
   n: 0,
 }));
 
-const FEATURED_TRAIN_IDS = ['coxsbazar-express','parjotak-express','banalata-express','jahanabad-express','ruposhi-bangla'];
+const FEATURED_TRAIN_IDS = [
+  'coxs-bazar-express-813',
+  'suborno-express-701',
+  'sonar-bangla-express-787',
+  'parabat-express-709',
+  'jahanabad-express-825',
+];
 
 const COACHES = [
   { l:'AC Berth', bn:'এসি বার্থ', c:'#7c3aed', fare:'৳ 2,656', n:'40 berths', e:'🛏️' },
@@ -128,7 +134,6 @@ export function TrainPage(props: Props) {
   const TABS: { id: Tab; label: string; icon: string }[] = [
     { id: 'eticket', label: T(lang,'ই-টিকেট','E-ticket'), icon: '🚆' },
     { id: 'pnr',     label: 'PNR',                          icon: '🔍' },
-    { id: 'live',    label: T(lang,'লাইভ','Live'),           icon: '📍' },
     { id: 'routemap',label: T(lang,'রুট ম্যাপ','Route map'), icon: '🛤' },
   ];
 
@@ -434,8 +439,6 @@ export function TrainPage(props: Props) {
                       onMouseDown={() => {
                         if (activeTab === 'pnr') {
                           window.open('https://eticket.railway.gov.bd/verify-ticket', '_blank');
-                        } else if (activeTab === 'live') {
-                          window.open('https://eticket.railway.gov.bd/train-tracking', '_blank');
                         } else if (activeTab === 'routemap') {
                           setRouteMapTrain(t);
                           setRouteMapSearch(t.en);
@@ -503,23 +506,6 @@ export function TrainPage(props: Props) {
                   style={{ width:'100%', background: pnrInput.trim() ? 'linear-gradient(135deg,#059669,#10b981)' : tk.panelMuted, color: pnrInput.trim() ? '#fff' : tk.textFaint, border:0, borderRadius:14, padding:'13px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor: pnrInput.trim() ? 'pointer' : 'default', display:'flex', alignItems:'center', justifyContent:'center', gap:8 }}
                 >
                   🔍 {T(lang,'PNR যাচাই করুন','Verify PNR')} →
-                </button>
-              </div>
-            )}
-
-            {activeTab === 'live' && (
-              <div style={{ marginTop:4, display:'flex', gap:10, flexWrap:'wrap' }}>
-                <button
-                  onClick={() => window.open('https://eticket.railway.gov.bd/train-tracking', '_blank')}
-                  style={{ flex:1, background:'linear-gradient(135deg,#ef4444,#f97316)', color:'#fff', border:0, borderRadius:14, padding:'13px 16px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, boxShadow:'0 8px 22px -10px #ef4444' }}
-                >
-                  📍 {T(lang,'লাইভ ট্র্যাকার খুলুন','Open Live Tracker')}
-                </button>
-                <button
-                  onClick={() => window.open('https://eticket.railway.gov.bd', '_blank')}
-                  style={{ background:tk.panelMuted, color:tk.text, border:`1px solid ${tk.line}`, borderRadius:14, padding:'13px 16px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', gap:8 }}
-                >
-                  🎫 {T(lang,'ই-টিকেট','E-Ticket')}
                 </button>
               </div>
             )}
@@ -605,7 +591,6 @@ export function TrainPage(props: Props) {
           )}
 
           {activeTab === 'pnr' && renderPNR()}
-          {activeTab === 'live' && renderLive()}
           {activeTab === 'routemap' && renderRouteMap()}
 
           <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
