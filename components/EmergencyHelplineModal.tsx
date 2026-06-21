@@ -1,5 +1,6 @@
 
 import React, { useMemo, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Phone, Shield, Activity, Flame, MapPin, Navigation2 } from 'lucide-react';
 import { UserLocation } from '../types';
 import { NATIONAL_HELPLINES } from '../data/emergencyHelplines';
@@ -25,13 +26,28 @@ const EmergencyHelplineModal: React.FC<EmergencyHelplineModalProps> = ({
         return findNearestEmergencyServicesByType(userLocation, 2);
     }, [userLocation]);
 
-    // Lock body scroll when modal is open
+    // Lock ALL scrollable containers when modal is open
     useEffect(() => {
-        if (isOpen) {
-            const prev = document.body.style.overflow;
-            document.body.style.overflow = 'hidden';
-            return () => { document.body.style.overflow = prev; };
-        }
+        if (!isOpen) return;
+        // Lock html + body
+        const htmlPrev = document.documentElement.style.overflow;
+        const bodyPrev = document.body.style.overflow;
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+        // Also lock the app's custom scroller div (overflow:auto on the main container)
+        const scrollers = document.querySelectorAll<HTMLElement>('[data-app-scroller]');
+        const scrollerPrevValues: string[] = [];
+        scrollers.forEach((el, i) => {
+            scrollerPrevValues[i] = el.style.overflowY;
+            el.style.overflowY = 'hidden';
+        });
+        return () => {
+            document.documentElement.style.overflow = htmlPrev;
+            document.body.style.overflow = bodyPrev;
+            scrollers.forEach((el, i) => {
+                el.style.overflowY = scrollerPrevValues[i];
+            });
+        };
     }, [isOpen]);
 
     if (!isOpen) return null;
@@ -100,14 +116,14 @@ const EmergencyHelplineModal: React.FC<EmergencyHelplineModalProps> = ({
         );
     };
 
-    return (
+    return createPortal(
         <div
-            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999 }}
-            className="flex items-end md:items-center justify-center bg-black/50 backdrop-blur-sm animate-in fade-in"
+            style={{ position: 'fixed', inset: 0, zIndex: 99999 }}
+            className="flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in p-4"
             onClick={onClose}
         >
             <div
-                className="bg-kj-panel w-full md:max-w-2xl md:rounded-2xl rounded-t-3xl h-[100dvh] md:h-auto md:max-h-[90vh] flex flex-col shadow-2xl animate-in slide-in-from-bottom md:slide-in-from-bottom-0"
+                className="bg-kj-panel w-full max-w-2xl rounded-2xl max-h-[90vh] flex flex-col shadow-2xl animate-in slide-in-from-bottom duration-200"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
@@ -218,13 +234,14 @@ const EmergencyHelplineModal: React.FC<EmergencyHelplineModalProps> = ({
                 </div>
 
                 {/* Footer */}
-                <div className="p-4 pb-[max(env(safe-area-inset-bottom),1rem)] border-t border-kj-line bg-gray-50 dark:bg-kj-chip-bg shrink-0 rounded-b-3xl md:rounded-b-2xl">
+                <div className="p-4 border-t border-kj-line bg-gray-50 dark:bg-kj-chip-bg shrink-0 rounded-b-2xl">
                     <p className="text-xs text-center text-kj-text-dim">
                         {t('emergency.emergencyFooter')} <span className="font-bold text-kj-accent">{formatNumber(999)}</span> {t('emergency.immediately')}
                     </p>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };
 

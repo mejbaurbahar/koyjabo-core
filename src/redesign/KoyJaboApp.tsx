@@ -394,7 +394,7 @@ export function KoyJaboApp() {
           boxShadow: '0 40px 100px -30px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04)',
           flexShrink: 0,
         }}>
-          <div ref={scrollerRef} style={{
+          <div ref={scrollerRef} data-app-scroller="true" style={{
             width: '100%', height: '100%', borderRadius: 40,
             overflow: 'hidden auto', background: tk.bg,
             position: 'relative', WebkitOverflowScrolling: 'touch',
@@ -407,7 +407,7 @@ export function KoyJaboApp() {
     );
   } else {
     stage = (
-      <div ref={scrollerRef} style={{
+      <div ref={scrollerRef} data-app-scroller="true" style={{
         width: '100%', height: '100vh',
         overflowX: forceDesktop ? 'auto' : 'hidden', // allow h-scroll in desktop-on-phone mode
         overflowY: 'auto',
