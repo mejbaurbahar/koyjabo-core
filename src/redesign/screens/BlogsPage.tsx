@@ -2,75 +2,41 @@ import React from 'react';
 import { KJ_TOKENS, T, SANS, BEN, Tokens, Lang } from '../tokens';
 import { PageShell, PageShellProps } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
+import { BLOG_POSTS } from '../../../data/blogPosts';
 
-const BLOGS = [
-  {
-    id: 'mrt6',
-    titleEn: 'MRT-6 Complete Guide 2026',
-    titleBn: 'মেট্রো রেল সম্পূর্ণ গাইড ২০২৬',
-    date: 'Jun 10',
-    category: 'Metro',
-    readTime: '8 min',
-    tags: ['metro', 'guide'],
-    from: '#1e3a8a',
-    to: '#3b82f6',
-  },
-  {
-    id: 'coxsbazar-bus',
-    titleEn: "Cox's Bazar Bus Guide",
-    titleBn: 'কক্সবাজার বাস গাইড',
-    date: 'Jun 8',
-    category: 'Intercity',
-    readTime: '6 min',
-    tags: ['intercity', 'bus'],
-    from: '#064e3b',
-    to: '#10b981',
-  },
-  {
-    id: 'sadarghat',
-    titleEn: 'Sadarghat Launch Terminal',
-    titleBn: 'সদরঘাট লঞ্চ টার্মিনাল',
-    date: 'Jun 5',
-    category: 'Launch',
-    readTime: '5 min',
-    tags: ['launch', 'terminal'],
-    from: '#075985',
-    to: '#0ea5e9',
-  },
-  {
-    id: 'dhaka-traffic',
-    titleEn: 'Dhaka Traffic Tips 2026',
-    titleBn: 'ঢাকা ট্রাফিক টিপস',
-    date: 'Jun 3',
-    category: 'Tips',
-    readTime: '4 min',
-    tags: ['tips', 'traffic'],
-    from: '#b45309',
-    to: '#f59e0b',
-  },
-  {
-    id: 'train-eticket',
-    titleEn: 'Bangladesh Railway E-ticket',
-    titleBn: 'বাংলাদেশ রেলওয়ে ই-টিকেট',
-    date: 'Jun 1',
-    category: 'Train',
-    readTime: '7 min',
-    tags: ['train', 'eticket'],
-    from: '#5b21b6',
-    to: '#8b5cf6',
-  },
-  {
-    id: 'airport-city',
-    titleEn: 'Airport to City Guide',
-    titleBn: 'বিমানবন্দর থেকে শহর',
-    date: 'May 28',
-    category: 'Flights',
-    readTime: '5 min',
-    tags: ['flights', 'airport'],
-    from: '#b91c1c',
-    to: '#ef4444',
-  },
-];
+// Category → gradient colors
+const CAT_COLORS: Record<string, [string, string]> = {
+  Metro:     ['#1e3a8a', '#3b82f6'],
+  Intercity: ['#064e3b', '#10b981'],
+  Launch:    ['#075985', '#0ea5e9'],
+  Tips:      ['#b45309', '#f59e0b'],
+  Train:     ['#5b21b6', '#8b5cf6'],
+  Flights:   ['#b91c1c', '#ef4444'],
+  Guide:     ['#065f46', '#34d399'],
+  News:      ['#1e3a8a', '#6366f1'],
+};
+
+function catColors(category: string): [string, string] {
+  return CAT_COLORS[category] ?? ['#374151', '#6b7280'];
+}
+
+// Map BLOG_POSTS to the shape expected by BlogCard
+const BLOGS = BLOG_POSTS.map(p => {
+  const [from, to] = catColors(p.category);
+  const dateObj = new Date(p.publishDate);
+  const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  return {
+    id: p.slug,
+    titleEn: p.title,
+    titleBn: p.bnTitle || p.title,
+    date: dateStr,
+    category: p.category,
+    readTime: p.readTime,
+    tags: p.keywords?.slice(0, 3) ?? [],
+    from,
+    to,
+  };
+});
 
 function BlogCard({
   blog,
@@ -202,7 +168,7 @@ export function BlogsPage(props: PageShellProps) {
   const isMobile = device === 'mobile';
   const lbl = (en: string, bn: string) => T(lang, bn, en);
   const firstRow = BLOGS.slice(0, 3);
-  const secondRow = BLOGS.slice(3, 6);
+  const secondRow = BLOGS.slice(3);
 
   return (
     <PageShell {...props}>
