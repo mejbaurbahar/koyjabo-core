@@ -113,7 +113,7 @@ export function TrainDetailPage(props: Props) {
                 ))}
               </div>
               <div style={{ marginTop:12, padding:10, background:tk.amberSoft, borderRadius:10, fontFamily:BEN, fontSize:12, color:tk.amber }}>
-                {T(lang,'ভাড়া তথ্য বাংলাদেশ রেলওয়ে ডেটা থেকে দেখানো হয়েছে।','Fare information is shown from Bangladesh Railway data.')}
+                {T(lang,'ভাড়া বাংলাদেশ রেলওয়ে ডেটা থেকে। অতিরিক্ত: সার্ভিস চার্জ ৳২০ + ১৫% ভ্যাট।','Base fare from Bangladesh Railway. Add: ৳20 service charge + 15% VAT.')}
               </div>
             </div>
 
@@ -254,6 +254,52 @@ export function TrainDetailPage(props: Props) {
             >
               🎫 {T(lang,'অনলাইনে টিকেট বুক করুন','Book Ticket Online')}
             </button>
+
+            {/* Senior citizen discount */}
+            <div style={{ ...card(14), background:'linear-gradient(135deg,#065f4622,#10b98122)', borderColor:'#10b98144' }}>
+              <div style={{ fontFamily:BEN, fontWeight:700, fontSize:13, color:tk.text, marginBottom:8 }}>
+                👴 {T(lang,'প্রবীণ নাগরিক ছাড়','Senior Citizen Discount')}
+              </div>
+              <div style={{ display:'flex', flexDirection:'column', gap:4 }}>
+                {[
+                  [T(lang,'বয়স','Age'), '65+'],
+                  [T(lang,'ছাড়','Discount'), '25%'],
+                  [T(lang,'সাপ্তাহিক সীমা','Weekly limit'), T(lang,'২ যাত্রা','2 trips')],
+                  [T(lang,'সহযাত্রী','Co-passenger'), '1'],
+                ].map(([l,v],i) => (
+                  <div key={i} style={{ display:'flex', justifyContent:'space-between', fontFamily:SANS, fontSize:12 }}>
+                    <span style={{ color:tk.textFaint }}>{l}</span>
+                    <span style={{ color:tk.text, fontWeight:700 }}>{v}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Fees + Payment methods */}
+            <div style={{ ...card(14) }}>
+              <div style={{ fontFamily:BEN, fontWeight:700, fontSize:13, color:tk.text, marginBottom:8 }}>
+                💳 {T(lang,'ফি ও পেমেন্ট','Fees & Payment')}
+              </div>
+              <div style={{ display:'flex', flexDirection:'column', gap:4, marginBottom:10 }}>
+                {[
+                  [T(lang,'সার্ভিস চার্জ','Service charge'), '৳20'],
+                  [T(lang,'ভ্যাট','VAT'), '15%'],
+                  [T(lang,'বিছানা ফি','Bedding fee'), '৳50'],
+                  [T(lang,'সর্বোচ্চ টিকেট','Max tickets'), '4'],
+                ].map(([l,v],i) => (
+                  <div key={i} style={{ display:'flex', justifyContent:'space-between', fontFamily:SANS, fontSize:12 }}>
+                    <span style={{ color:tk.textFaint }}>{l}</span>
+                    <span style={{ color:tk.text, fontWeight:700 }}>{v}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{ fontFamily:SANS, fontSize:11, color:tk.textFaint, marginBottom:6 }}>{T(lang,'পেমেন্ট পদ্ধতি','Payment methods')}:</div>
+              <div style={{ display:'flex', flexWrap:'wrap', gap:4 }}>
+                {['bKash','Nagad','Rocket','Visa','MasterCard','DBBL Nexus'].map(m => (
+                  <span key={m} style={{ background:tk.panelMuted, border:`1px solid ${tk.line}`, borderRadius:6, padding:'3px 8px', fontFamily:SANS, fontSize:10, fontWeight:600, color:tk.textDim }}>{m}</span>
+                ))}
+              </div>
+            </div>
 
             {!isMobile && <AdSlot tk={tk} lang={lang} kind="mid-rect"/>}
           </div>

@@ -53,12 +53,16 @@ const FEATURED_TRAIN_IDS = [
   'jahanabad-express-825',
 ];
 
+// Official seat classes from Bangladesh Railway API (handshake)
 const COACHES = [
-  { l:'AC Berth', bn:'এসি বার্থ', c:'#7c3aed', fare:'৳ 2,656', n:'40 berths', e:'🛏️' },
-  { l:'Snigdha', bn:'স্নিগ্ধা', c:'#3b82f6', fare:'৳ 1,591', n:'44 seats', e:'💺' },
-  { l:'AC Chair', bn:'এসি চেয়ার', c:'#10b981', fare:'৳ 980', n:'54 seats', e:'🪑' },
-  { l:'Shovon Chair', bn:'শোভন চেয়ার', c:'#f59e0b', fare:'৳ 535', n:'88 seats', e:'🎫' },
-  { l:'Shovon', bn:'শোভন', c:'#6b7280', fare:'৳ 405', n:'120 seats', e:'🧳' },
+  { l:'AC Berth',      bn:'এসি বার্থ',   c:'#7c3aed', fare:'৳ 2,656', n:'AC_B', e:'🛏️' },
+  { l:'AC Seat',       bn:'এসি সিট',     c:'#6366f1', fare:'৳ 1,980', n:'AC_S', e:'💺' },
+  { l:'Snigdha',       bn:'স্নিগ্ধা',    c:'#3b82f6', fare:'৳ 1,591', n:'SNIGDHA', e:'🪑' },
+  { l:'First Berth',   bn:'প্রথম বার্থ', c:'#10b981', fare:'৳ 1,200', n:'F_BERTH', e:'🛋️' },
+  { l:'AC Chair',      bn:'এসি চেয়ার',  c:'#0ea5e9', fare:'৳ 980',   n:'AC_CHAIR', e:'🪑' },
+  { l:'Shovon Chair',  bn:'শোভন চেয়ার', c:'#f59e0b', fare:'৳ 535',   n:'S_CHAIR', e:'🎫' },
+  { l:'Shovon',        bn:'শোভন',        c:'#6b7280', fare:'৳ 405',   n:'SHOVAN', e:'🧳' },
+  { l:'Shulov',        bn:'সুলভ',        c:'#84cc16', fare:'৳ 185',   n:'SHULOV', e:'🎟️' },
 ];
 
 const MAJOR_STATIONS = Object.values(TRAIN_STATIONS).slice(0, 12);
@@ -387,7 +391,7 @@ export function TrainPage(props: Props) {
           gradient="linear-gradient(135deg, #5b21b6 0%, #7c3aed 50%, #f59e0b 100%)"
           title={T(lang,'বাংলাদেশ রেলওয়ে · সকল রুট','Bangladesh Railway · all routes')}
           subtitle={T(lang,'৩৫০+ আন্তঃনগর ট্রেন, ই-টিকেট বুকিং, লাইভ অবস্থান ট্র্যাকিং — পদ্মা সেতু রুট সহ।','350+ intercity trains, e-ticket booking, live position tracking — including Padma Bridge route.')}
-          stats={[{v:'350+',l:T(lang,'ট্রেন','Trains')},{v:'64',l:T(lang,'জেলা','Districts')},{v:'5 days',l:T(lang,'অগ্রিম বুকিং','Advance booking')},{v:'★ 4.5',l:T(lang,'গড় রেটিং','Avg rating')}]}
+          stats={[{v:'132',l:T(lang,'ট্রেন','Trains')},{v:'260',l:T(lang,'স্টেশন','Stations')},{v:'10 days',l:T(lang,'অগ্রিম বুকিং','Advance booking')},{v:'★ 4.5',l:T(lang,'গড় রেটিং','Avg rating')}]}
         />
 
         <div style={{ padding:isMobile?'0 16px':'0 40px' }}>
