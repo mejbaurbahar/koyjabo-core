@@ -909,10 +909,13 @@ const findTrainInfo = (query: string): string => {
     (r.bnName && lowerQuery.includes(normalize(r.bnName)))
   );
 
+  const DHAKA_STATION_IDS = new Set(['kamalapur','dhaka_ud','cantonment','airport_r','tejgaon','tongi','joydebpur']);
+
   if (byName.length > 0) {
     let r = byName[0];
-    // If user has travel intent and multiple matches exist, prefer the one going TO the destination
+
     if (hasBookingIntent && byName.length > 1) {
+      // Step 1: try to match a station mentioned in the query as destination
       const stationEntries = Object.values(TRAIN_STATIONS);
       const mentionedSts = stationEntries.filter(st =>
         lowerQuery.includes(normalize(st.name)) || lowerQuery.includes(normalize(st.bnName || ''))
@@ -921,13 +924,27 @@ const findTrainInfo = (query: string): string => {
         const destId = mentionedSts[mentionedSts.length - 1].id;
         const best = byName.find(rt => rt.to === destId || rt.stops.slice(-3).includes(destId));
         if (best) r = best;
+      } else {
+        // Step 2: no destination in query — user is at Dhaka area and says "jeta chai"
+        // Prefer the outbound train (does NOT end at Dhaka/kamalapur = odd→even convention)
+        // EVEN number = outbound from Dhaka (828 = Dhaka→Benapole)
+        // ODD  number = inbound to Dhaka  (827 = Benapole→Dhaka)
+        const outbound = byName.find(rt => {
+          const num = parseInt(rt.number);
+          return num % 2 === 0 || !DHAKA_STATION_IDS.has(rt.to);
+        });
+        if (outbound) r = outbound;
       }
     }
-    // If single match but user says "jeta chai" (want to go) → look for reverse direction pair
+
+    // If single match + booking intent → look for reverse direction pair (outbound)
     if (hasBookingIntent && byName.length === 1) {
       const baseName = normalize(r.name).replace(/\d+/g,'').trim().substring(0,10);
+      // Prefer even-numbered paired train (outbound from Dhaka)
       const paired = uniqueRoutes.find(rt =>
-        rt.id !== r.id && normalize(rt.name).replace(/\d+/g,'').trim().startsWith(baseName) && rt.to === r.from
+        rt.id !== r.id &&
+        normalize(rt.name).replace(/\d+/g,'').trim().startsWith(baseName) &&
+        (parseInt(rt.number) % 2 === 0 || !DHAKA_STATION_IDS.has(rt.to))
       );
       if (paired) r = paired;
     }
@@ -949,13 +966,17 @@ const findTrainInfo = (query: string): string => {
     // Per-stop schedule from routeStops
     const rs = (r as any).routeStops;
     if (rs?.length) {
-      response += '\n\n\u{1F6D1} **' + (isBn ? 'স্টেশনভিত্তিক সময়সূচি:' : 'Station-wise schedule:') + '**\n';
-      response += rs.slice(0, 10).map((s: any) => {
-        const arr = s.arrival ? s.arrival.replace(' BST','') : '—';
-        const dep = s.departure ? s.departure.replace(' BST','') : '—';
-        const halt = s.halt && s.halt !== 'None' && s.halt !== '0' && s.halt !== 'undefined' ? ` | ${isBn?'বিরতি':'Halt'} ${s.halt}মি` : '';
+      response += '\n\n🛑 **' + (isBn ? 'স্টেশনভিত্তিক সময়সূচি:' : 'Station-wise schedule:') + '**\n';
+      response += rs.slice(0, 12).map((s: any) => {
+        const fmtT = (t: string) => t ? t.replace(' BST','').trim() : '—';
+        const arr = fmtT(s.arrival);
+        const dep = fmtT(s.departure);
+        const haltNum = s.halt && s.halt !== 'None' && s.halt !== '0' && s.halt !== 'undefined' ? parseInt(s.halt) : 0;
+        const haltStr = haltNum > 0
+          ? ` | ${isBn ? 'বিরতি' : 'Halt'} ${haltNum} ${isBn ? 'মিনিট' : 'min'}`
+          : '';
         const lbl = s.label || s.city.replace(/_/g,' ');
-        return `  • ${lbl}: ${isBn?'আসে':'Arr'} ${arr} | ${isBn?'ছাড়ে':'Dep'} ${dep}${halt}`;
+        return `  • ${lbl}: ${isBn ? 'আসে' : 'Arr'} ${arr} | ${isBn ? 'ছাড়ে' : 'Dep'} ${dep}${haltStr}`;
       }).join('\n');
     }
 
