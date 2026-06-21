@@ -1,7 +1,7 @@
 name: Weekly Transport Data Refresh
 
 # Runs every Sunday at 8:00 PM BDT (= 14:00 UTC).
-# Creates a PR to dev with updated transport-cache.json — no auto-merge.
+# Pushes updated transport-cache.json directly to dev — no PR needed.
 on:
   schedule:
     - cron: '0 14 * * 0'    # Sunday 14:00 UTC = 8:00 PM BDT
@@ -18,7 +18,6 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: write
-      pull-requests: write
 
     steps:
       - name: Checkout dev
@@ -27,10 +26,10 @@ jobs:
           ref: dev
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Node.js 20
+      - name: Setup Node.js 22
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies
@@ -51,31 +50,19 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Create branch and open PR
+      - name: Commit and push to dev
         if: steps.diff.outputs.changed == 'true'
         run: |
           DATE=$(date -u +"%Y-%m-%d")
-          BRANCH="data/weekly-refresh-${DATE}"
-
           git config user.name  "KoyJabo Data Bot"
           git config user.email "data-bot@koyjabo.com"
-          git checkout -b "$BRANCH"
           git add data/transport-cache.json
 
-          TRAIN=$(node -e "try{const d=require('./data/transport-cache.json');console.log(d.trainRoutes?.routes?.length||0)}catch{console.log(0)}")
-          LAUNCH=$(node -e "try{const d=require('./data/transport-cache.json');console.log(d.launchRoutes?.routes?.length||0)}catch{console.log(0)}")
+          TRAIN=$(node -e "try{const d=JSON.parse(require('fs').readFileSync('./data/transport-cache.json','utf8'));console.log(d.trainRoutes?.routes?.length||0)}catch{console.log(0)}")
+          LAUNCH=$(node -e "try{const d=JSON.parse(require('fs').readFileSync('./data/transport-cache.json','utf8'));console.log(d.launchRoutes?.routes?.length||0)}catch{console.log(0)}")
           git commit -m "chore(data): weekly refresh ${DATE} — ${TRAIN} trains, ${LAUNCH} launches"
-          git push origin "$BRANCH"
-
-          printf '## Weekly Data Refresh\n\nAutomated refresh of `data/transport-cache.json`.\nSources: Bangladesh Railway, DMTCL Metro, BRTA bus fares, BIWTC launches.\nReview diff before merging.\n' > /tmp/pr_body.md
-          gh pr create \
-            --base dev \
-            --head "$BRANCH" \
-            --title "chore(data): weekly transport data refresh ${DATE}" \
-            --body-file /tmp/pr_body.md
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git push origin dev
 
       - name: No changes
         if: steps.diff.outputs.changed == 'false'
-        run: echo "✅ Transport data already up to date — no PR needed."
+        run: echo "✅ Transport data already up to date — no commit needed."

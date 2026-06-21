@@ -49,39 +49,60 @@ function saveCache(data) {
 
 // ─── 1. Bangladesh Railway intercity train list ─────────────────────────────
 // Source: Shohoz API (powers eticket.railway.gov.bd official booking)
+// Step 1: GET /all-trains/info → list of 132 train numbers
+// Step 2: POST /train-routes { model: num } → per-train route + timing data
 async function fetchTrainRoutes() {
   console.log('🚆 Fetching Bangladesh Railway routes...');
+  const BASE = 'https://railspaapi.shohoz.com/v1.0/web';
+  const HEADERS = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'Origin': 'https://eticket.railway.gov.bd',
+    'User-Agent': 'KoyJabo/1.0 (data-refresh; koyjabo.com)',
+  };
+
   try {
-    // Shohoz public endpoint — returns all BR intercity trains
-    // Shohoz uses POST for search; train route list is via the booking search page
-    const data = await fetchJSON(
-      'https://railspaapi.shohoz.com/v1.0/web/train-routes',
-      {
-        method: 'POST',
-        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'User-Agent': 'KoyJabo/1.0 (data-refresh; koyjabo.com)' },
-        body: JSON.stringify({}),
+    // Step 1: get all train numbers
+    const allData = await fetchJSON(`${BASE}/all-trains/info`, { headers: HEADERS });
+    if (!allData?.data?.trains?.length) throw new Error('No trains in all-trains/info response');
+
+    const trainList = allData.data.trains; // [{train_number, origin_city, destination_city, zone}]
+    console.log(`  → Found ${trainList.length} train numbers, fetching routes...`);
+
+    // Step 2: fetch route data for each train (batch of 8 at a time)
+    const routes = [];
+    const BATCH = 8;
+    for (let i = 0; i < trainList.length; i += BATCH) {
+      const batch = trainList.slice(i, i + BATCH);
+      const results = await Promise.allSettled(
+        batch.map(t => fetchJSON(`${BASE}/train-routes`, {
+          method: 'POST',
+          headers: HEADERS,
+          body: JSON.stringify({ model: t.train_number }),
+        }))
+      );
+      for (let j = 0; j < batch.length; j++) {
+        const t = batch[j];
+        const r = results[j];
+        if (r.status === 'fulfilled' && r.value?.data?.train_name) {
+          const d = r.value.data;
+          const stops = (d.routes || []).map(s => s.city);
+          routes.push({
+            number: t.train_number,
+            name: d.train_name.replace(/\s*\(\d+\)\s*$/, '').trim(),
+            from: t.origin_city,
+            to: t.destination_city,
+            zone: t.zone,
+            runningDays: d.days || [],
+            totalDuration: d.total_duration || '',
+            stops,
+          });
+        }
       }
-    );
+    }
 
-    if (!data?.data) throw new Error('Unexpected Shohoz response shape');
-
-    const routes = data.data.map(r => ({
-      id: r.train_no?.toString() || r.id,
-      name: r.train_name || r.name,
-      number: r.train_no?.toString() || '',
-      from: r.origin_station_name || '',
-      to: r.destination_station_name || '',
-      departureTime: r.departure_time || '',
-      arrivalTime: r.arrival_time || '',
-      offDay: r.off_day || 'None',
-      classes: (r.seat_types || []).map(s => ({
-        name: s.type,
-        fare: s.fare,
-      })),
-    }));
-
-    console.log(`  ✓ ${routes.length} train routes fetched`);
-    return { routes, fetchedAt: new Date().toISOString(), source: 'railspaapi.shohoz.com' };
+    console.log(`  ✓ ${routes.length} train routes fetched with full data`);
+    return { routes, totalTrains: trainList.length, fetchedAt: new Date().toISOString(), source: 'railspaapi.shohoz.com' };
   } catch (err) {
     console.error(`  ✗ Train routes fetch failed: ${err.message}`);
     return null;
@@ -151,41 +172,35 @@ async function fetchLaunchRoutes() {
   return { routes, totalRoutes: 67, fetchedAt: new Date().toISOString(), source: 'biwtc.gov.bd' };
 }
 
-// ─── 5. Check Bangladesh Railway train fare update ──────────────────────────
+// ─── 5. Bangladesh Railway system config (public handshake endpoint) ──────────
 async function fetchTrainFares() {
-  console.log('🚆 Fetching Bangladesh Railway fares...');
+  console.log('🚆 Fetching Bangladesh Railway system config...');
   try {
-    // BR Shohoz fare endpoint (requires origin + destination)
-    // We fetch for the most common routes as a spot-check
-    const commonRoutes = [
-      { from: 'Dhaka', to: "Cox's Bazar", fromCode: 'DHK', toCode: 'CXB' },
-      { from: 'Dhaka', to: 'Chittagong', fromCode: 'DHK', toCode: 'CTG' },
-      { from: 'Dhaka', to: 'Sylhet', fromCode: 'DHK', toCode: 'SYL' },
-    ];
-
-    const results = [];
-    for (const route of commonRoutes) {
-      try {
-        const params = new URLSearchParams({
-          from_city: route.from,
-          to_city: route.to,
-          date_of_journey: new Date().toISOString().slice(0, 10),
-          seat_class: 'S_CHAIR',
-        });
-        const data = await fetchJSON(
-          `https://railspaapi.shohoz.com/v1.0/web/bookings/search-trips-v2?${params}`,
-          { headers: { 'Accept': 'application/json', 'User-Agent': 'KoyJabo/1.0' } }
-        );
-        if (data?.data?.trains?.length > 0) {
-          results.push({ route: `${route.from}→${route.to}`, trains: data.data.trains.length });
-        }
-      } catch { /* individual route failure is OK */ }
-    }
-
-    console.log(`  ✓ Train fare spot-check: ${results.length}/${commonRoutes.length} routes OK`);
-    return { spotCheck: results, fetchedAt: new Date().toISOString() };
+    // /handshake is public — returns service charge, VAT, seat types, payment methods
+    const data = await fetchJSON('https://railspaapi.shohoz.com/v1.0/web/handshake', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Origin': 'https://eticket.railway.gov.bd' },
+      body: '{}',
+    });
+    if (!data?.data) throw new Error('No data in handshake response');
+    const d = data.data;
+    const config = {
+      serviceCharge: d.service_charge,
+      vatPercent: d.vat?.amount,
+      beddingFee: d.bedding?.fee,
+      maxTicketsPerOrder: d.max_ticket_per_order,
+      tripSearchDayLimit: d.trip_search_day_limit,
+      totalStations: d.cities?.length || 0,
+      totalTrainNames: d.train_names?.length || 0,
+      seniorCitizenDiscount: d.senior_citizen?.DISCOUNT_PERCENT,
+      seniorCitizenAge: d.senior_citizen?.AGE_THRESHOLD,
+      fetchedAt: new Date().toISOString(),
+      source: 'railspaapi.shohoz.com/handshake',
+    };
+    console.log(`  ✓ System config: ${config.totalStations} stations, ${config.totalTrainNames} trains`);
+    return config;
   } catch (err) {
-    console.error(`  ✗ Train fare fetch failed: ${err.message}`);
+    console.error(`  ✗ System config fetch failed: ${err.message}`);
     return null;
   }
 }
