@@ -418,9 +418,12 @@ export default defineConfig(({ mode }) => {
         rollupOptions: {
           output: {
             assetFileNames: 'assets/[name]-[hash].[ext]',
-            manualChunks: {
-              leaflet: ['leaflet'],
-              vendor: ['react', 'react-dom', 'lucide-react']
+            manualChunks(id) {
+              if (id.includes('node_modules/leaflet')) return 'leaflet';
+              if (id.includes('node_modules/react-dom')) return 'react-dom';
+              if (id.includes('node_modules/react/')) return 'react';
+              if (id.includes('node_modules/lucide-react')) return 'lucide';
+              if (id.includes('node_modules/')) return 'vendor';
             }
           }
         },

@@ -224,10 +224,12 @@ User-agent: DataForSeoBot
 Disallow: /
 
 User-agent: PetalBot
-Disallow: /
+Allow: /
+Crawl-delay: 10
 
 User-agent: Bytespider
-Disallow: /
+Allow: /
+Crawl-delay: 10
 
 # Allow Yandex (Russian) - Minimal Access
 User-agent: YandexBot

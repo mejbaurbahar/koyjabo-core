@@ -87,7 +87,20 @@
     "twitter": "https://twitter.com/koyjabo",
     "youtube": "https://www.youtube.com/@koyjabo"
   },
-  "generated_at": "2026-06-14T00:00:00.000Z",
+  "alternateFormats": [
+    "https://koyjabo.com/data.csv",
+    "https://koyjabo.com/data.xml",
+    "https://koyjabo.com/data.ttl"
+  ],
+  "chunks": [
+    { "title": "Dhaka Local Bus Routes", "content": "200+ Dhaka local bus routes with stop-by-stop navigation. BRTA-regulated fares at ৳2.53/km city rate.", "tokens": 420 },
+    { "title": "Metro Rail MRT-6", "content": "17 stations Uttara North to Kamalapur. Fares ৳20–100. Runs 7:10am–9:40pm, closed Fridays. Every 8 minutes.", "tokens": 380 },
+    { "title": "Intercity Travel", "content": "Bus, train, flight, and launch routes across all 64 Bangladesh districts. Compare schedules and fares.", "tokens": 350 },
+    { "title": "Bangladesh Railway", "content": "350+ intercity trains. Book at eticket.railway.gov.bd. Major routes: Cox's Bazar, Sylhet, Chittagong, Khulna.", "tokens": 360 },
+    { "title": "BIWTC Launch Routes", "content": "67+ launch routes from Sadarghat terminal. Nightly departures 6–9 PM to Barisal, Patuakhali, Khulna, Chandpur.", "tokens": 340 },
+    { "title": "AI Travel Assistant", "content": "Bilingual AI assistant (Bengali + English) powered by Google Gemini 2.0 for transport queries.", "tokens": 300 }
+  ],
+  "generated_at": "2026-06-21T00:00:00.000Z",
   "metadata": [
     {
       "url": "https://www.koyjabo.com",

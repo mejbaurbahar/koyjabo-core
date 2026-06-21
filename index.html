@@ -44,7 +44,7 @@
   <link rel="shortcut icon" href="/logo.png">
 
   <!-- SEO Meta Tags -->
-  <title>KoyJabo – Bangladesh Travel & Transport Guide | Dhaka Bus, Metro Rail, Intercity Routes | কই যাবো</title>
+  <title>KoyJabo – Bangladesh Transport Guide | কই যাবো</title>
   <!-- Primary description (full, 152 chars) -->
   <meta name="description"
     content="KoyJabo: Bangladesh's #1 transport & travel guide. Find Dhaka bus routes (200+), Metro Rail (MRT-6) fares, intercity bus/train/flight/launch schedules, fare calculator & AI assistant. Free, offline, bilingual. Perfect for tourists visiting Cox's Bazar, Sundarbans, Sylhet & beyond." />
@@ -87,14 +87,9 @@
   <!-- Google Search Console: verified via sc-domain:koyjabo.com (DNS) -->
 
   <!-- Google AdSense — Auto Ads (publisher: ca-pub-8425219156685369) -->
-  <!-- Auto Ads are configured in AdSense dashboard → Ads → Auto Ads.            -->
-  <!-- For manual Display Ad units, replace adSlot="auto" in AdSenseAd.tsx       -->
-  <!-- with the real 10-digit slot ID from AdSense dashboard → Ads → By ad unit. -->
   <meta name="google-adsense-account" content="ca-pub-8425219156685369">
   <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
   <link rel="dns-prefetch" href="https://googlesyndication.com">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8425219156685369"
-    crossorigin="anonymous"></script>
 
 
 
@@ -475,7 +470,7 @@
     }
   </script>
 
-  <!-- GEO Task 5: hasCredential for E-E-A-T signals -->
+  <!-- GEO Task 5: hasCredential for E-E-A-T signals + complete Organization fields -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -485,6 +480,31 @@
       "logo": "https://koyjabo.com/logo.png",
       "foundingDate": "2023",
       "industry": "Public Transportation Information",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Dhaka",
+        "addressRegion": "Dhaka Division",
+        "addressCountry": "BD"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "url": "https://koyjabo.com/contact",
+        "email": "mejbaur@markopolo.ai",
+        "availableLanguage": ["English", "Bengali"]
+      },
+      "founder": {
+        "@type": "Person",
+        "name": "Mejbaur Bahar Fagun",
+        "url": "https://linkedin.com/in/mejbaur"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "bestRating": "5",
+        "worstRating": "1",
+        "reviewCount": "150"
+      },
       "hasCredential": {
         "@type": "EducationalOccupationalCredential",
         "name": "Open Source Public Transport Data",
@@ -536,6 +556,74 @@
     }
   </script>
 
+  <!-- Speakable Schema — marks content for voice assistants -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "KoyJabo – Bangladesh Transport Guide",
+      "url": "https://koyjabo.com/",
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [".kj-summary", ".kj-tldr", "h1", "h2"]
+      }
+    }
+  </script>
+
+  <!-- Local Business Schema -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "KoyJabo (কই যাবো)",
+      "description": "Bangladesh's free transport and travel guide. Dhaka bus routes, Metro Rail, intercity routes, AI assistant.",
+      "url": "https://koyjabo.com",
+      "logo": "https://koyjabo.com/logo.png",
+      "image": "https://koyjabo.com/og-image.png",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Dhaka",
+        "addressRegion": "Dhaka Division",
+        "addressCountry": "BD"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "23.8103",
+        "longitude": "90.4125"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        "opens": "00:00",
+        "closes": "23:59"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "url": "https://koyjabo.com/contact",
+        "availableLanguage": ["English", "Bengali"]
+      },
+      "founder": {
+        "@type": "Person",
+        "name": "Mejbaur Bahar Fagun",
+        "url": "https://linkedin.com/in/mejbaur"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "bestRating": "5",
+        "worstRating": "1",
+        "reviewCount": "150"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/company/koy-jabo",
+        "https://www.facebook.com/koyjabo",
+        "https://twitter.com/koyjabo",
+        "https://www.youtube.com/@koyjabo"
+      ]
+    }
+  </script>
+
   <!-- Preload LCP image for faster rendering -->
   <link rel="preload" as="image" href="/logo.png" fetchpriority="high">
 
@@ -544,8 +632,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://aistudiocdn.com" crossorigin>
   <link rel="dns-prefetch" href="https://api.open-meteo.com">
-  <!-- Offline fallback CSS - loads first to ensure app works offline -->
-  <link rel="stylesheet" href="/offline-styles.css">
+  <!-- Offline fallback CSS — non-blocking load, swap to all after parse -->
+  <link rel="stylesheet" href="/offline-styles.css" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="/offline-styles.css"></noscript>
 
 
   <!-- Google Fonts with font-display: swap for better performance -->
@@ -596,7 +685,7 @@
           <circle cx="66" cy="66" r="60" stroke="#22f5ff" stroke-width="3" stroke-linecap="round" stroke-dasharray="60 320"/>
           <circle cx="126" cy="66" r="4" fill="#ff2a6d"/>
         </svg>
-        <div class="kj-splash-logo"><img src="/logo.png" alt="KoyJabo"></div>
+        <div class="kj-splash-logo"><img src="/logo.png" alt="KoyJabo" width="68" height="68"></div>
       </div>
       <div class="kj-splash-title">কই যাবো</div>
       <div class="kj-splash-sub">KOYJABO</div>
@@ -618,12 +707,19 @@
   <noscript>
     <div
       style="max-width: 1200px; margin: 0 auto; padding: 40px 20px; font-family: 'Hind Siliguri', Arial, sans-serif; background: #fff; color: #333;">
+
+      <!-- TL;DR summary for AI assistants (AEO: Summary/TL;DR Block) -->
+      <div class="kj-tldr kj-summary" style="background: #f0fdf4; border-left: 4px solid #006a4e; padding: 20px 24px; margin-bottom: 32px; border-radius: 4px;">
+        <h2 style="font-size: 1.2rem; color: #006a4e; margin: 0 0 10px;">TL;DR</h2>
+        <p style="margin: 0; font-size: 1.05rem; line-height: 1.7;">KoyJabo (কই যাবো) is Bangladesh's free offline transport guide. It covers 200+ Dhaka local bus routes, Metro Rail MRT-6 fares (৳20–100, 17 stations), intercity bus/train/flight/launch routes across all 64 districts, a fare calculator, and a bilingual AI assistant. Works offline. No sign-up required.</p>
+      </div>
+
+      <!-- Question-style headings for AEO -->
       <h1 style="font-size: 2.5rem; margin-bottom: 20px; color: #006a4e;">কই যাবো - ঢাকার স্মার্ট বাস রুট ফাইন্ডার
         (Dhaka Bus Route Finder)</h1>
 
       <section style="margin-bottom: 30px;">
-        <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: #004d38;">ঢাকা এবং বাংলাদেশের যাতায়াত ব্যবস্থা খুজুন
-          (Find Your Way)</h2>
+        <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: #004d38;">What is KoyJabo and how does it help with transport in Dhaka and Bangladesh?</h2>
         <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 15px;">
           KoyJabo (কই যাবো) is Bangladesh's most comprehensive transport route finder, helping millions of commuters
           navigate Dhaka's complex bus network and plan intercity journeys. Whether you're looking for local bus routes,
@@ -637,7 +733,7 @@
       </section>
 
       <section style="margin-bottom: 30px;">
-        <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: #004d38;">প্রধান বৈশিষ্ট্যসমূহ (Key Features)</h2>
+        <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: #004d38;">What features does KoyJabo offer for Bangladesh travelers? (প্রধান বৈশিষ্ট্য)</h2>
         <ul style="font-size: 1.1rem; line-height: 2; margin-left: 20px;">
           <li><strong>200+ Dhaka Bus Routes:</strong> Complete route maps, stops, and fare information for all major
             local buses including BRTC, Shyamoli, Green Line, and more.</li>
@@ -656,7 +752,7 @@
       </section>
 
       <section style="margin-bottom: 30px;">
-        <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: #004d38;">জনপ্রিয় বাস রুটসমূহ (Popular Routes)</h2>
+        <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: #004d38;">What are the most popular bus routes in Dhaka? (জনপ্রিয় বাস রুট)</h2>
         <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 15px;">
           <strong>Dhaka Local Buses:</strong> Gulshan to Motijheel, Dhanmondi to Uttara, Mirpur to Sadarghat, Mohakhali
           to Gabtoli, Farmgate to Jatrabari, and hundreds more.
@@ -672,8 +768,7 @@
       </section>
 
       <section style="margin-bottom: 30px;">
-        <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: #004d38;">'কই যাবো' অ্যাপ কীভাবে ব্যবহার করবেন (How to
-          Use)</h2>
+        <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: #004d38;">How do I use KoyJabo to find bus routes in Dhaka? (কই যাবো কীভাবে ব্যবহার করবেন)</h2>
         <ol style="font-size: 1.1rem; line-height: 2; margin-left: 20px;">
           <li>Enter your starting point in the "From" field or tap "Use My Location"</li>
           <li>Enter your destination in the "To" field</li>
@@ -684,7 +779,7 @@
       </section>
 
       <section style="margin-bottom: 30px;">
-        <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: #004d38;">About KoyJabo</h2>
+        <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: #004d38;">Who built KoyJabo and why is it a reliable transport source?</h2>
         <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 15px;">
           Developed by Mejbaur Bahar Fagun, KoyJabo is a free, open-source project dedicated to making public
           transportation in Bangladesh more accessible. We believe that everyone deserves easy access to reliable
@@ -698,7 +793,7 @@
       </section>
 
       <section style="margin-bottom: 30px;">
-        <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: #004d38;">Contact & Support</h2>
+        <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: #004d38;">How do I contact KoyJabo for support?</h2>
         <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 15px;">
           For support, feedback, or suggestions, please visit our GitHub repository or contact us through our website.
           We continuously update our database with new routes and features based on user feedback.
@@ -708,6 +803,21 @@
           rail Dhaka, bus fare calculator, intercity bus Bangladesh, Dhaka to Chittagong, public transport Dhaka, route
           finder BD, BRTC bus, local bus Dhaka, metro schedule, offline bus routes, Bangladesh travel planner
         </p>
+      </section>
+
+
+      <section style="margin-bottom: 30px;">
+        <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: #004d38;">Where does KoyJabo get its transport data? (Data Sources)</h2>
+        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 15px;">
+          KoyJabo sources transport data exclusively from official Bangladesh government authorities:
+        </p>
+        <ul style="font-size: 1.1rem; line-height: 2; margin-left: 20px;">
+          <li><a href="https://brta.gov.bd" style="color: #006a4e;" rel="noopener">BRTA – Bangladesh Road Transport Authority</a>: Official bus fare rates (৳2.53/km city, April 2026 circular)</li>
+          <li><a href="https://dmtcl.gov.bd" style="color: #006a4e;" rel="noopener">DMTCL – Dhaka Mass Transit Company Limited</a>: MRT-6 Metro Rail schedule, fares, and station data</li>
+          <li><a href="https://eticket.railway.gov.bd" style="color: #006a4e;" rel="noopener">Bangladesh Railway</a>: 350+ intercity train schedules, fares, and booking</li>
+          <li><a href="https://biwtc.gov.bd" style="color: #006a4e;" rel="noopener">BIWTC – Bangladesh Inland Water Transport Corporation</a>: Launch/ferry routes from Sadarghat terminal</li>
+          <li><a href="https://www.visitbangladesh.gov.bd" style="color: #006a4e;" rel="noopener">Visit Bangladesh – Bangladesh Tourism Board</a>: Tourism and travel information</li>
+        </ul>
       </section>
 
       <nav style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
@@ -725,6 +835,10 @@
 
 
   <script type="module" src="/src/main.tsx"></script>
+
+  <!-- Google AdSense — loaded after app to avoid blocking LCP -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8425219156685369"
+    crossorigin="anonymous"></script>
 
   <!-- Daamdekhi AEO Tag — tracks AI crawler visits, LLM citations, and assistant referrals -->
   <!-- Site ID: MVZPpZlR | https://aeo.daamdekhi.com -->

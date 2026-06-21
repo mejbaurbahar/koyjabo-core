@@ -79,6 +79,15 @@ Allow: /
 User-agent: Bytespider
 Allow: /
 
+User-agent: Anchor Browser
+Allow: /
+
+User-agent: ProRataInc
+Allow: /
+
+User-agent: Novellum AI Crawl
+Allow: /
+
 User-agent: Cohere-ai
 Allow: /
 
