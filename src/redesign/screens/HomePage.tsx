@@ -15,6 +15,8 @@ import { AIRPORTS_DATA } from '../../../data/bangladeshFlightData';
 import { LAUNCH_TERMINALS as LAUNCH_TERMINALS_DATA } from '../../../data/bangladeshLaunchData';
 import { SuggestionDropdown, Suggestion } from '../components/SuggestionDropdown';
 import { useLocationSearch } from '../../../hooks/useLocationSearch';
+import { getFavoriteBusIds } from '../utils/favorites';
+import { getUserHistory } from '../../../services/analyticsService';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -1207,73 +1209,66 @@ function MetroLiveStrip({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobi
 
 // ─── Saved Routes ─────────────────────────────────────────────────────────────
 
-const SAVED = [
-  { label: { bn: 'বাসা → অফিস', en: 'HOME → WORK' }, route: 'Banani → Karwan Bazar', time: '28 min · ৳ 40', colorKey: 'primary' as const },
-  { label: { bn: 'অফিস → বাসা', en: 'WORK → HOME' }, route: 'Karwan Bazar → Banani', time: '35 min · ৳ 40', colorKey: 'accent' as const },
-  { label: { bn: 'সপ্তাহান্তে', en: 'WEEKENDS' }, route: 'Banani → Dhanmondi 32', time: '42 min · ৳ 60', colorKey: 'amber' as const },
-  { label: { bn: 'বাবার বাসা', en: "DAD'S HOUSE" }, route: 'Banani → Mirpur DOHS', time: '55 min · ৳ 75', colorKey: 'primaryDeep' as const },
-];
+// ─── Saved Routes — reads real user favorites + search history ───────────────
 
-function SavedRoutes({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobile: boolean }) {
-  const getColor = (key: string) => (tk as Record<string, string>)[key] ?? tk.primary;
+function SavedRoutes({ tk, lang, isMobile, onNav }: { tk: Tokens; lang: Lang; isMobile: boolean; onNav: (r: string, p?: Record<string, string>) => void }) {
+  const colors = [tk.primary, tk.accent, tk.amber, tk.primaryDeep];
+
+  // Real data: favorited buses
+  const favIds = getFavoriteBusIds();
+  const favBuses = favIds.map(id => BUS_DATA.find(b => b.id === id)).filter(Boolean) as typeof BUS_DATA;
+
+  // Real data: user's most-searched routes
+  const history = getUserHistory();
+  const topRoutes = Object.entries(history.mostUsedRoutes || {})
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 4)
+    .map(([key]) => { const [from, to] = key.split('-'); return { from, to }; });
+
+  const isEmpty = favBuses.length === 0 && topRoutes.length === 0;
+
+  if (isEmpty) {
+    return (
+      <div style={{ background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 16, padding: '24px 16px', textAlign: 'center' }}>
+        <div style={{ fontSize: 32, marginBottom: 8 }}>🔖</div>
+        <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 14, fontWeight: 600, color: tk.text, marginBottom: 4 }}>
+          {T(lang, 'কোনো সেভ করা রুট নেই', 'No saved routes yet')}
+        </div>
+        <div style={{ fontFamily: SANS, fontSize: 12, color: tk.textFaint }}>
+          {T(lang, 'বাস বিস্তারিতে ❤️ আইকন চাপুন সেভ করতে', 'Tap ❤️ on any bus detail page to save')}
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: isMobile ? 'none' : 'repeat(4, minmax(0, 1fr))',
-        gap: 12,
-        overflowX: isMobile ? 'auto' : 'hidden',
-        paddingBottom: isMobile ? 4 : 0,
-        flexWrap: isMobile ? 'nowrap' : 'wrap',
-        width: '100%',
-      }}
-    >
-      {SAVED.map((s, i) => (
-        <div
-          key={i}
-          style={{
-            background: tk.panel,
-            border: `1px solid ${tk.line}`,
-            borderRadius: 16,
-            padding: '14px 16px',
-            minWidth: isMobile ? 180 : 0,
-            flex: isMobile ? '0 0 auto' : undefined,
-            cursor: 'pointer',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 6,
-          }}
-        >
+    <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'none' : 'repeat(4, minmax(0, 1fr))', gap: 12, overflowX: isMobile ? 'auto' : 'hidden', paddingBottom: isMobile ? 4 : 0, width: '100%' }}>
+      {/* Favorited buses */}
+      {favBuses.slice(0, 4).map((bus, i) => (
+        <div key={bus.id} onClick={() => onNav('bus-detail', { busId: bus.id })}
+          style={{ background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 16, padding: '14px 16px', minWidth: isMobile ? 180 : 0, flex: isMobile ? '0 0 auto' : undefined, cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: 6 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div
-              style={{
-                width: 10,
-                height: 10,
-                borderRadius: '50%',
-                background: getColor(s.colorKey),
-                flexShrink: 0,
-              }}
-            />
-            <span
-              style={{
-                fontFamily: SANS,
-                fontSize: 10,
-                fontWeight: 700,
-                color: getColor(s.colorKey),
-                textTransform: 'uppercase',
-                letterSpacing: 0.6,
-              }}
-            >
-              {T(lang, s.label.bn, s.label.en)}
+            <div style={{ width: 10, height: 10, borderRadius: '50%', background: colors[i % colors.length], flexShrink: 0 }} />
+            <span style={{ fontFamily: SANS, fontSize: 10, fontWeight: 700, color: colors[i % colors.length], textTransform: 'uppercase', letterSpacing: 0.6 }}>
+              {T(lang, 'প্রিয়', 'SAVED')}
             </span>
           </div>
-          <div style={{ fontFamily: SANS, fontSize: 13, fontWeight: 600, color: tk.text }}>
-            {s.route}
+          <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 13, fontWeight: 600, color: tk.text }}>{lang === 'bn' ? bus.bnName : bus.name}</div>
+          <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{bus.routeString}</div>
+        </div>
+      ))}
+      {/* Most-searched routes */}
+      {topRoutes.filter((_, i) => i < 4 - Math.min(favBuses.length, 4)).map((r, i) => (
+        <div key={`route-${i}`} onClick={() => onNav('results', { from: r.from, to: r.to })}
+          style={{ background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 16, padding: '14px 16px', minWidth: isMobile ? 180 : 0, flex: isMobile ? '0 0 auto' : undefined, cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ width: 10, height: 10, borderRadius: '50%', background: colors[(favBuses.length + i) % colors.length], flexShrink: 0 }} />
+            <span style={{ fontFamily: SANS, fontSize: 10, fontWeight: 700, color: colors[(favBuses.length + i) % colors.length], textTransform: 'uppercase', letterSpacing: 0.6 }}>
+              {T(lang, 'সাম্প্রতিক', 'RECENT')}
+            </span>
           </div>
-          <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint }}>
-            {s.time}
-          </div>
+          <div style={{ fontFamily: SANS, fontSize: 13, fontWeight: 600, color: tk.text }}>{r.from} → {r.to}</div>
+          <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint }}>{T(lang, 'সার্চ করা রুট', 'Searched route')}</div>
         </div>
       ))}
     </div>
@@ -1282,63 +1277,7 @@ function SavedRoutes({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobile:
 
 // ─── Popular Routes ───────────────────────────────────────────────────────────
 
-const POPULAR_ROUTES = [
-  {
-    code: 'GL',
-    name: { en: 'Green Line', bn: 'গ্রীন লাইন পরিবহন' },
-    path: 'Gulshan 2→Badda→Rampura→Malibagh→Motijheel',
-    fare: '৳60',
-    time: '48min',
-    stops: '12 stops',
-    tag: 'AC',
-    dots: ['#006a4e', '#10b981'],
-    route: 'bus-detail',
-  },
-  {
-    code: 'HF',
-    name: { en: 'Hanif Enterprise', bn: 'হানিফ এন্টারপ্রাইজ' },
-    path: 'Uttara 7→Airport→Banani→Farmgate→Paltan',
-    fare: '৳75',
-    time: '1h15min',
-    stops: '18 stops',
-    tag: '',
-    dots: ['#d92644', '#ff7a3a'],
-    route: 'bus-detail',
-  },
-  {
-    code: 'SH',
-    name: { en: 'Shyamoli NR Travels', bn: 'শ্যামলী এনআর' },
-    path: 'Sayedabad→Jatrabari→Kachpur→Chittagong',
-    fare: '৳680',
-    time: '6h30min',
-    stops: '4 stops',
-    tag: 'AC · Intercity',
-    dots: ['#b46a13', '#f7b955'],
-    route: 'bus-detail',
-  },
-  {
-    code: 'BR',
-    name: { en: 'BRTC Articulated', bn: 'বিআরটিসি' },
-    path: 'Motijheel→Shahbag→Farmgate→Mohakhali→Abdullahpur',
-    fare: '৳45',
-    time: '52min',
-    stops: '14 stops',
-    tag: '',
-    dots: ['#0c8a62', '#1a3a8b'],
-    route: 'bus-detail',
-  },
-  {
-    code: 'PR',
-    name: { en: 'Projapoti Paribahan', bn: 'প্রজাপতি' },
-    path: 'Mirpur 12→Shyamoli→College Gate→Azimpur→Sadarghat',
-    fare: '৳30',
-    time: '45min',
-    stops: '11 stops',
-    tag: '',
-    dots: ['#2c5e1a', '#7eb344'],
-    route: 'bus-detail',
-  },
-];
+// ─── Popular Routes — real BUS_DATA, user history first, then most-stop buses ─
 
 function PopularRoutes({
   tk,
@@ -1347,117 +1286,89 @@ function PopularRoutes({
 }: {
   tk: Tokens;
   lang: Lang;
-  onNav: (r: string) => void;
+  onNav: (r: string, p?: Record<string, string>) => void;
 }) {
+  // 1. User's most-searched buses (real history)
+  const history = getUserHistory();
+  const topBusIds = Object.entries(history.mostUsedBuses || {})
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([id]) => id);
+
+  // 2. Fall back to buses with most stops from BUS_DATA (genuinely high-coverage routes)
+  const fallbackBuses = [...BUS_DATA]
+    .filter(b => b.active !== false && b.stops.length >= 6)
+    .sort((a, b) => b.stops.length - a.stops.length)
+    .slice(0, 5);
+
+  // Merge: user's buses first, fill rest from fallback
+  const seenIds = new Set<string>();
+  const displayBuses: typeof BUS_DATA = [];
+  for (const id of topBusIds) {
+    const bus = BUS_DATA.find(b => b.id === id);
+    if (bus && !seenIds.has(bus.id)) { seenIds.add(bus.id); displayBuses.push(bus); }
+  }
+  for (const bus of fallbackBuses) {
+    if (!seenIds.has(bus.id) && displayBuses.length < 5) { seenIds.add(bus.id); displayBuses.push(bus); }
+  }
+
+  // Route color derivation
+  const routeColor = (bus: typeof BUS_DATA[0]) => {
+    if (bus.type === 'AC') return ['#006a4e', '#10b981'];
+    if (bus.type === 'Double-Decker') return ['#1e3a8a', '#3b82f6'];
+    if (bus.type === 'Local') return ['#7c3aed', '#a855f7'];
+    return ['#b45309', '#f59e0b'];
+  };
+
+  const fareLabel = (bus: typeof BUS_DATA[0]) => {
+    if (bus.type === 'AC') return '৳60+';
+    if (bus.type === 'Double-Decker') return '৳50';
+    return '৳25–40';
+  };
+
   return (
-    <div
-      style={{
-        background: tk.panel,
-        border: `1px solid ${tk.line}`,
-        borderRadius: 18,
-        overflow: 'hidden',
-      }}
-    >
-      {POPULAR_ROUTES.map((r, i) => (
-        <div
-          key={i}
-          onClick={() => onNav(r.route)}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 12,
-            padding: '13px 16px',
-            borderBottom: i < POPULAR_ROUTES.length - 1 ? `1px solid ${tk.line}` : 'none',
-            cursor: 'pointer',
-            transition: 'background 0.15s ease',
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLDivElement).style.background = tk.panelMuted;
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLDivElement).style.background = 'transparent';
-          }}
-        >
-          {/* Brand dot(s) */}
+    <div style={{ background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 18, overflow: 'hidden' }}>
+      {displayBuses.map((bus, i) => {
+        const code = bus.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+        const [c1, c2] = routeColor(bus);
+        const isUserFav = topBusIds.includes(bus.id);
+        return (
           <div
-            style={{
-              width: 38,
-              height: 38,
-              borderRadius: 10,
-              background: `linear-gradient(135deg, ${r.dots[0]}, ${r.dots[1]})`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontFamily: SANS,
-              fontSize: 11,
-              fontWeight: 800,
-              color: 'white',
-              flexShrink: 0,
-            }}
+            key={bus.id}
+            onClick={() => onNav('bus-detail', { busId: bus.id })}
+            style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '13px 16px', borderBottom: i < displayBuses.length - 1 ? `1px solid ${tk.line}` : 'none', cursor: 'pointer', transition: 'background 0.15s ease' }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.background = tk.panelMuted; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.background = 'transparent'; }}
           >
-            {r.code}
-          </div>
-
-          {/* Route info */}
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
-              <span
-                style={{
-                  fontFamily: lang === 'bn' ? BEN : SANS,
-                  fontSize: 13,
-                  fontWeight: 600,
-                  color: tk.text,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {lang === 'bn' ? r.name.bn : r.name.en}
-              </span>
-              {r.tag && (
-                <span
-                  style={{
-                    fontFamily: SANS,
-                    fontSize: 10,
-                    fontWeight: 600,
-                    color: tk.amber,
-                    background: tk.amberSoft,
-                    borderRadius: 5,
-                    padding: '1px 5px',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {r.tag}
+            <div style={{ width: 38, height: 38, borderRadius: 10, background: `linear-gradient(135deg,${c1},${c2})`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: SANS, fontSize: 11, fontWeight: 800, color: 'white', flexShrink: 0 }}>
+              {code}
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
+                <span style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 13, fontWeight: 600, color: tk.text, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {lang === 'bn' ? bus.bnName : bus.name}
                 </span>
-              )}
+                {bus.type && bus.type !== 'Local' && (
+                  <span style={{ fontFamily: SANS, fontSize: 10, fontWeight: 600, color: tk.amber, background: tk.amberSoft, borderRadius: 5, padding: '1px 5px', whiteSpace: 'nowrap' }}>{bus.type}</span>
+                )}
+                {isUserFav && (
+                  <span style={{ fontFamily: SANS, fontSize: 10, fontWeight: 600, color: tk.primary, background: tk.primarySoft, borderRadius: 5, padding: '1px 5px', whiteSpace: 'nowrap' }}>
+                    {T(lang, 'আপনার রুট', 'Your route')}
+                  </span>
+                )}
+              </div>
+              <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textFaint, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {bus.routeString}
+              </div>
             </div>
-            <div
-              style={{
-                fontFamily: SANS,
-                fontSize: 11,
-                color: tk.textFaint,
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {r.path}
+            <div style={{ textAlign: 'right', flexShrink: 0 }}>
+              <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 13, fontWeight: 700, color: tk.text }}>{fareLabel(bus)}</div>
+              <div style={{ fontFamily: SANS, fontSize: 10, color: tk.textFaint }}>{bus.stops.length} {T(lang, 'স্টপ', 'stops')}</div>
             </div>
+            <Icon.arrowR s={16} />
           </div>
-
-          {/* Meta */}
-          <div style={{ textAlign: 'right', flexShrink: 0 }}>
-            <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 13, fontWeight: 700, color: tk.text }}>
-              {r.fare}
-            </div>
-            <div style={{ fontFamily: SANS, fontSize: 10, color: tk.textFaint }}>
-              {r.time} · {r.stops}
-            </div>
-          </div>
-
-          <Icon.arrowR s={16} />
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
@@ -2098,7 +2009,7 @@ export function HomePage({
             action={T(lang, 'সব দেখুন', 'See all')}
             onAction={() => onNav('favorites')}
           />
-          <SavedRoutes tk={tk} lang={lang} isMobile={isMobile} />
+          <SavedRoutes tk={tk} lang={lang} isMobile={isMobile} onNav={onNav} />
         </div>
 
         {/* ── Ad strip ── */}
