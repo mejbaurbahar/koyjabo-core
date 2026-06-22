@@ -125,7 +125,7 @@ export const INTERCITY_BUS_ROUTES: IntercityBusRoute[] = [
 
 // Major Transport Hubs (Non-District HQ)
 export const MAJOR_TRANSPORT_HUBS: IntercityBusRoute[] = [
-    { district: "Benapole", division: "Khulna", busOperators: ["Green Line", "Sohag", "Shyamoli", "SP Golden"], mainContactNumber: "16557", route: "Dhaka ⇄ Benapole (Land Port)", costNonAC: "৳700", costAC: "৳1200-1500" },
+    { district: "Benapole", division: "Khulna", busOperators: ["Shohagh Paribahan", "Hanif Enterprise", "Royal Coach", "Royal Maitri", "Star Deluxe", "Green Line", "Shyamoli"], mainContactNumber: "16557", route: "Dhaka ⇄ Benapole (Land Port)", costNonAC: "৳750", costAC: "৳850-৳1,700" },
     { district: "Teknaf", division: "Chattogram", busOperators: ["Saintmartin", "Shyamoli", "Relax", "Soudia"], mainContactNumber: "01762-691341", route: "Dhaka ⇄ Teknaf", costNonAC: "৳1100", costAC: "৳1800+" },
     { district: "Kuakata", division: "Barishal", busOperators: ["Sakura", "Green Line", "Kuakata Express"], mainContactNumber: "01711-131742", route: "Dhaka ⇄ Kuakata (Beach)", costNonAC: "৳850", costAC: "৳1200-1600" },
     { district: "Sreemangal", division: "Sylhet", busOperators: ["Ena", "Shyamoli", "Hanif"], mainContactNumber: "01712-069722", route: "Dhaka ⇄ Sreemangal", costNonAC: "৳550", costAC: "৳900" },
