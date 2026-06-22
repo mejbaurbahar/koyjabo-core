@@ -3499,6 +3499,43 @@ export const BUS_DATA: BusRoute[] = [
     type: 'Sitting',
     hours: '9:30 AM',
   },
+  // ── Bandarban corridor (Shohoz confirmed) ────────────────────────────────
+  {
+    id: 'shyamoli_bandarban',
+    name: 'Shyamoli Paribahan (Dhaka-Bandarban)',
+    bnName: 'শ্যামলী পরিবহন (ঢাকা-বান্দরবান)',
+    routeString: 'Dhaka ⇄ Bandarban',
+    stops: ['sayedabad', 'chittagong', 'bandarban'],
+    type: 'Sitting',
+    hours: '8:30 PM, 10:15 PM',
+  },
+  {
+    id: 'hanif_bandarban',
+    name: 'Hanif Enterprise (Dhaka-Bandarban)',
+    bnName: 'হানিফ এন্টারপ্রাইজ (ঢাকা-বান্দরবান)',
+    routeString: 'Dhaka ⇄ Bandarban',
+    stops: ['sayedabad', 'chittagong', 'bandarban'],
+    type: 'Sitting',
+    hours: '7:30 AM, 8:30 PM, 9:15 PM',
+  },
+  {
+    id: 'saintmartin_hyundai_bandarban',
+    name: 'Saintmartin Hyundai (Dhaka-Bandarban)',
+    bnName: 'সেন্টমার্টিন হুন্দাই (ঢাকা-বান্দরবান)',
+    routeString: 'Dhaka ⇄ Bandarban',
+    stops: ['abdullahpur', 'arambagh', 'chittagong', 'bandarban'],
+    type: 'AC',
+    hours: '8:00 AM, 11:30 PM, 11:45 PM',
+  },
+  {
+    id: 'soudia_bandarban',
+    name: 'Soudia Coach Service (Dhaka-Bandarban)',
+    bnName: 'সৌদিয়া কোচ সার্ভিস (ঢাকা-বান্দরবান)',
+    routeString: 'Dhaka ⇄ Bandarban',
+    stops: ['sayedabad', 'chittagong', 'bandarban'],
+    type: 'AC',
+    hours: '9:00 PM',
+  },
   // ── Major intercity operators from Shohoz live data ─────────────────────
   // Sylhet corridor
   {
