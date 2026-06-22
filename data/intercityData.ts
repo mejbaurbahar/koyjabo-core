@@ -81,7 +81,7 @@ export const INTERCITY_BUS_ROUTES: IntercityBusRoute[] = [
     { district: "Joypurhat", division: "Rajshahi", busOperators: ["Shohagh", "Hanif Enterprise", "SR Travels", "Shyamoli"], mainContactNumber: "01713-402641", route: "Dhaka ⇄ Joypurhat", costNonAC: "৳600", costAC: "৳1,000" },
 
     // Khulna Division (10 Districts)
-    { district: "Khulna", division: "Khulna", busOperators: ["Shohagh Paribahan", "Hanif Enterprise", "Green Line", "Eagle", "Soudia", "BRTC", "Sohag"], mainContactNumber: "01711-612433", route: "Dhaka (Gabtoli/Sayedabad) ⇄ Khulna", costNonAC: "৳650", costAC: "৳950-৳1,400" },
+    { district: "Khulna", division: "Khulna", busOperators: ["Tungipara Express", "Shohagh Paribahan", "Emad Paribahan", "Dola Paribahan", "Hanif Enterprise", "Ena Transport", "Diganta Paribahan", "Master Travels", "Green Line", "BRTC"], mainContactNumber: "01711-612433", route: "Dhaka (Sayedabad/Gabtoli) ⇄ Khulna", costNonAC: "৳600-৳690", costAC: "৳850-৳1,250" },
     { district: "Bagerhat", division: "Khulna", busOperators: ["Shohagh", "Hanif Enterprise", "Tungipara Express", "Falguni"], mainContactNumber: "01711-266512", route: "Dhaka ⇄ Bagerhat", costNonAC: "৳700", costAC: "৳1,100" },
     { district: "Satkhira", division: "Khulna", busOperators: ["Shohagh", "Satkhira Express", "SP Golden Line", "Hanif"], mainContactNumber: "01711-357833", route: "Dhaka ⇄ Satkhira", costNonAC: "৳700", costAC: "৳1,100" },
     { district: "Jashore", division: "Khulna", busOperators: ["Shohagh Paribahan", "Hanif Enterprise", "Royal Coach", "Green Line", "Eagle", "Star Deluxe"], mainContactNumber: "16557", route: "Dhaka ⇄ Jashore", costNonAC: "৳600", costAC: "৳850-৳1,300" },
