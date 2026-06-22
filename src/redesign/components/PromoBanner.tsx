@@ -13,6 +13,7 @@ interface Deal {
   originalPrice: string | null;
   sub: { bn: string; en: string };
   badge: { bn: string; en: string } | null;
+  promoCode?: string | null;
   nav?: string;
   params?: Record<string, string>;
 }
@@ -105,6 +106,26 @@ function DealCard({
   onNav: (route: string, params?: Record<string, string>) => void;
 }) {
   const [hovered, setHovered] = React.useState(false);
+  const [copied, setCopied] = React.useState(false);
+
+  const handleCopy = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!deal.promoCode) return;
+    navigator.clipboard.writeText(deal.promoCode).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }).catch(() => {
+      // fallback for older browsers
+      const ta = document.createElement('textarea');
+      ta.value = deal.promoCode!;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
 
   return (
     <div
@@ -174,12 +195,34 @@ function DealCard({
       </div>
 
       {/* Sub-label */}
-      <div style={{ fontFamily: BEN, fontSize: 10, color: tk.textFaint, fontWeight: 500 }}>
+      <div style={{ fontFamily: BEN, fontSize: 10, color: tk.textFaint, fontWeight: 500, marginBottom: deal.promoCode ? 7 : 0 }}>
         {T(lang, deal.sub.bn, deal.sub.en)}
       </div>
 
-      {/* Arrow */}
-      {deal.nav && (
+      {/* Promo code row with copy button */}
+      {deal.promoCode && (
+        <div
+          onClick={handleCopy}
+          style={{
+            display: 'flex', alignItems: 'center', gap: 6,
+            background: copied ? `${tk.primary}22` : tk.panelMuted,
+            border: `1px dashed ${copied ? tk.primary : tk.line}`,
+            borderRadius: 7, padding: '4px 7px',
+            cursor: 'pointer', transition: 'all .15s',
+            marginTop: 2,
+          }}
+        >
+          <span style={{ fontFamily: SANS, fontWeight: 800, fontSize: 11, color: tk.primary, letterSpacing: 1, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {deal.promoCode}
+          </span>
+          <span style={{ fontSize: 12, flexShrink: 0, transition: 'transform .15s', transform: copied ? 'scale(1.2)' : 'scale(1)' }}>
+            {copied ? '✅' : '📋'}
+          </span>
+        </div>
+      )}
+
+      {/* Arrow — only when no promo code (promo code replaces it) */}
+      {deal.nav && !deal.promoCode && (
         <div style={{
           position: 'absolute', bottom: 9, right: 10,
           fontFamily: SANS, fontSize: 12, color: tk.primary, fontWeight: 700,

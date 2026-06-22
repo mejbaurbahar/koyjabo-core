@@ -169,6 +169,71 @@
       "sub": { "bn": "ডেক ক্লাস", "en": "Deck class" },
       "badge": null,
       "nav": "launch-hub"
+    },
+    {
+      "id": "shohoz-shyamoli-sylhet",
+      "page": ["home", "bus", "intercity"],
+      "emoji": "🚌",
+      "tag": { "bn": "Shohoz ডিসকাউন্ট", "en": "Shohoz Discount" },
+      "title": { "bn": "শ্যামলী · ঢাকা → সিলেট", "en": "Shyamoli · Dhaka → Sylhet" },
+      "price": "৳৬৮০",
+      "originalPrice": "৳৭৪০",
+      "sub": { "bn": "Shohoz-এ বুক করুন", "en": "Book on Shohoz" },
+      "badge": { "bn": "৬০ টাকা ছাড়", "en": "৳60 OFF" },
+      "promoCode": null,
+      "nav": "intercity"
+    },
+    {
+      "id": "shohoz-rongdhonu-rangpur",
+      "page": ["home", "bus", "intercity"],
+      "emoji": "🚌",
+      "tag": { "bn": "Shohoz অফার", "en": "Shohoz Offer" },
+      "title": { "bn": "রংধনু এক্সপ্রেস · ঢাকা → রংপুর", "en": "Rongdhonu · Dhaka → Rangpur" },
+      "price": "৳১,০০০",
+      "originalPrice": "৳১,৩০০",
+      "sub": { "bn": "AC স্লিপার", "en": "AC Sleeper" },
+      "badge": { "bn": "৩০০ টাকা ছাড়", "en": "৳300 OFF" },
+      "promoCode": null,
+      "nav": "intercity"
+    },
+    {
+      "id": "shohoz-bangla-star-pabna",
+      "page": ["home", "bus", "intercity"],
+      "emoji": "🚌",
+      "tag": { "bn": "Shohoz ডিল", "en": "Shohoz Deal" },
+      "title": { "bn": "বাংলা স্টার · ঢাকা → পাবনা", "en": "Bangla Star · Dhaka → Pabna" },
+      "price": "৳৬৫০",
+      "originalPrice": "৳৭০০",
+      "sub": { "bn": "Shohoz-এ বুক করুন", "en": "Book on Shohoz" },
+      "badge": { "bn": "৫০ টাকা ছাড়", "en": "৳50 OFF" },
+      "promoCode": null,
+      "nav": "intercity"
+    },
+    {
+      "id": "pathao-new-user",
+      "page": ["home"],
+      "emoji": "🛵",
+      "tag": { "bn": "Pathao অফার", "en": "Pathao Offer" },
+      "title": { "bn": "Pathao বাইক রাইড", "en": "Pathao Bike Ride" },
+      "price": "বিনামূল্যে",
+      "originalPrice": null,
+      "sub": { "bn": "নতুন ব্যবহারকারী · ১ম রাইড ফ্রি", "en": "New user · 1st ride free" },
+      "badge": { "bn": "নতুন", "en": "NEW" },
+      "promoCode": "PATHAO1ST",
+      "nav": "home"
+    },
+    {
+      "id": "shohoz-labiba-kuakata",
+      "page": ["home", "bus", "intercity"],
+      "emoji": "🏖️",
+      "tag": { "bn": "কুয়াকাটা ডিল", "en": "Kuakata Deal" },
+      "title": { "bn": "LABIBA · ঢাকা → কুয়াকাটা", "en": "LABIBA · Dhaka → Kuakata" },
+      "price": "৳৮০০",
+      "originalPrice": "৳৮৫০",
+      "sub": { "bn": "Shohoz-এ বুক করুন", "en": "Book on Shohoz" },
+      "badge": { "bn": "৫০ টাকা ছাড়", "en": "৳50 OFF" },
+      "promoCode": null,
+      "nav": "intercity"
     }
   ]
 }

@@ -41,23 +41,9 @@ export function AboutPage(props: PageShellProps) {
             marginBottom: 32,
           }}
         >
-          {/* Logo animation */}
-          <div
-            style={{
-              width: 80,
-              height: 80,
-              borderRadius: 20,
-              background: `linear-gradient(135deg, ${tk.primary} 0%, #a855f7 100%)`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 20px',
-              fontSize: 36,
-              boxShadow: `0 0 40px ${tk.primary}55`,
-              animation: 'none',
-            }}
-          >
-            <span style={{ fontFamily: "'Hind Siliguri',sans-serif", fontWeight: 700, fontSize: 40, color: '#fff', lineHeight: 1 }}>ক</span>
+          {/* Logo */}
+          <div style={{ margin: '0 auto 20px', width: 88, height: 88, borderRadius: 22, overflow: 'hidden', boxShadow: `0 0 40px ${tk.primary}55`, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#05060b' }}>
+            <img src="/logo.png" alt="KoyJabo" width={88} height={88} style={{ display: 'block', width: '100%', height: '100%', objectFit: 'contain' }} />
           </div>
           <h1
             style={{
