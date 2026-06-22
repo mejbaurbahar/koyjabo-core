@@ -1548,7 +1548,7 @@ const EMERGENCY = [
   { label: { bn: 'পুলিশ', en: 'Police' }, number: '999', color: 'accent' as const },
   { label: { bn: 'অ্যাম্বুলেন্স', en: 'Ambulance' }, number: '199', color: 'accent' as const },
   { label: { bn: 'ফায়ার সার্ভিস', en: 'Fire service' }, number: '102', color: 'amber' as const },
-  { label: { bn: 'হাইওয়ে', en: 'Highway' }, number: '+880-2', color: 'primary' as const },
+  { label: { bn: 'হাইওয়ে পুলিশ', en: 'Highway Police' }, number: '01769-693333', color: 'primary' as const },
 ];
 
 function EmergencyGrid({ tk, lang }: { tk: Tokens; lang: Lang }) {
