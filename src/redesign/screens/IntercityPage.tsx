@@ -458,15 +458,8 @@ export function IntercityPage(props: Props) {
 
       {/* Search section */}
       <div style={{ padding: isMobile ? '20px 16px' : '28px 40px' }}>
-        {/* Name/operator search */}
+        {/* Mode chips */}
         <div style={{ marginBottom: 20 }}>
-          <label style={labelStyle}>{lbl('Search by name or route', 'নাম বা রুট দিয়ে খুঁজুন')}</label>
-          <input
-            style={{ ...inputStyle, fontSize: 14 }}
-            placeholder={lbl('e.g. Green Line, Cox\'s Bazar Express, BG-437, Sundarban-12…', 'যেমন: গ্রীন লাইন, কক্সবাজার এক্সপ্রেস, BG-437…')}
-            value={nameSearch}
-            onChange={(e) => setNameSearch(e.target.value)}
-          />
           {/* Mode chips */}
           <div style={{ display: 'flex', gap: 8, marginTop: 10, flexWrap: 'wrap' }}>
             {CHIPS.map((c) => (
