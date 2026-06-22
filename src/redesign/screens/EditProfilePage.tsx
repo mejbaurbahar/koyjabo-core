@@ -12,22 +12,20 @@ export function EditProfilePage(props: Props) {
   const { user } = useAuth();
 
   const INITIAL = {
-    name:     user?.displayName || 'Mejbaur Fagun',
-    username: user?.username || 'mejbaur_fagun',
-    phone:    '+880 1700-000000',
-    home:     T(lang,'বনানী, ঢাকা','Banani, Dhaka'),
-    work:     T(lang,'কারওয়ান বাজার, ঢাকা','Karwan Bazar, Dhaka'),
-    bio:      '',
+    name:  user?.displayName || '',
+    phone: '',
+    home:  '',
+    work:  '',
+    bio:   '',
   };
 
-  const [name,     setName]     = useState(INITIAL.name);
-  const [username, setUsername] = useState(INITIAL.username);
-  const [phone,    setPhone]    = useState(INITIAL.phone);
-  const [home,     setHome]     = useState(INITIAL.home);
-  const [work,     setWork]     = useState(INITIAL.work);
-  const [bio,      setBio]      = useState(INITIAL.bio);
+  const [name,  setName]  = useState(INITIAL.name);
+  const [phone, setPhone] = useState(INITIAL.phone);
+  const [home,  setHome]  = useState(INITIAL.home);
+  const [work,  setWork]  = useState(INITIAL.work);
+  const [bio,   setBio]   = useState(INITIAL.bio);
 
-  const isDirty = name !== INITIAL.name || username !== INITIAL.username ||
+  const isDirty = name !== INITIAL.name ||
     phone !== INITIAL.phone || home !== INITIAL.home || work !== INITIAL.work || bio !== INITIAL.bio;
 
   const inputStyle: React.CSSProperties = {
@@ -58,19 +56,36 @@ export function EditProfilePage(props: Props) {
         </div>
 
         <div style={{ display:'flex',flexDirection:'column',gap:14 }}>
-          {/* Editable fields */}
-          {[
-            { l:T(lang,'পূর্ণ নাম','Full name'),   v:name,     set:setName },
-            { l:T(lang,'ইউজারনেম','Username'),     v:username, set:setUsername },
-            { l:T(lang,'ফোন','Phone'),             v:phone,    set:setPhone },
-            { l:T(lang,'বাড়ির এলাকা','Home area'), v:home,     set:setHome },
-            { l:T(lang,'কর্মস্থল এলাকা','Work area'),v:work,   set:setWork },
-          ].map((f,i) => (
-            <div key={i}>
-              <label style={{ fontFamily:SANS,fontSize:11,fontWeight:700,color:tk.textFaint,textTransform:'uppercase',letterSpacing:1,display:'block',marginBottom:6 }}>{f.l}</label>
-              <input value={f.v} onChange={e => f.set(e.target.value)} style={inputStyle}/>
-            </div>
-          ))}
+          {/* Full name — editable */}
+          <div>
+            <label style={{ fontFamily:SANS,fontSize:11,fontWeight:700,color:tk.textFaint,textTransform:'uppercase',letterSpacing:1,display:'block',marginBottom:6 }}>{T(lang,'পূর্ণ নাম','Full name')}</label>
+            <input value={name} onChange={e => setName(e.target.value)} style={inputStyle}/>
+          </div>
+
+          {/* Username — read-only */}
+          <div>
+            <label style={{ fontFamily:SANS,fontSize:11,fontWeight:700,color:tk.textFaint,textTransform:'uppercase',letterSpacing:1,display:'block',marginBottom:6 }}>{T(lang,'ইউজারনেম','Username')}</label>
+            <input value={user?.username || ''} readOnly disabled style={readOnlyStyle}/>
+            <div style={{ fontFamily:SANS,fontSize:11,color:tk.textFaint,marginTop:4 }}>{T(lang,'ইউজারনেম পরিবর্তন করা যাবে না','Username cannot be changed')}</div>
+          </div>
+
+          {/* Phone */}
+          <div>
+            <label style={{ fontFamily:SANS,fontSize:11,fontWeight:700,color:tk.textFaint,textTransform:'uppercase',letterSpacing:1,display:'block',marginBottom:6 }}>{T(lang,'ফোন','Phone')}</label>
+            <input value={phone} onChange={e => setPhone(e.target.value)} placeholder={T(lang,'ফোন নম্বর যোগ করুন','Add phone number')} style={inputStyle}/>
+          </div>
+
+          {/* Home area */}
+          <div>
+            <label style={{ fontFamily:SANS,fontSize:11,fontWeight:700,color:tk.textFaint,textTransform:'uppercase',letterSpacing:1,display:'block',marginBottom:6 }}>{T(lang,'বাড়ির এলাকা','Home area')}</label>
+            <input value={home} onChange={e => setHome(e.target.value)} placeholder={T(lang,'বাড়ির এলাকা যোগ করুন','Add home area')} style={inputStyle}/>
+          </div>
+
+          {/* Work area */}
+          <div>
+            <label style={{ fontFamily:SANS,fontSize:11,fontWeight:700,color:tk.textFaint,textTransform:'uppercase',letterSpacing:1,display:'block',marginBottom:6 }}>{T(lang,'কর্মস্থল এলাকা','Work area')}</label>
+            <input value={work} onChange={e => setWork(e.target.value)} placeholder={T(lang,'কর্মস্থল এলাকা যোগ করুন','Add work area')} style={inputStyle}/>
+          </div>
 
           {/* Email — read-only */}
           <div>
