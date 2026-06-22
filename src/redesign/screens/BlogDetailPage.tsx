@@ -7,7 +7,6 @@ import { BLOG_POSTS } from '../../../data/blogPosts';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string,p?:Record<string,string>)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
-// Simple markdown-to-React renderer (handles **bold**, *italic*, # headers, - lists, \n\n paragraphs)
 function renderMarkdown(text: string, tk: Record<string, string>, isbn: boolean) {
   if (!text) return null;
   const font = isbn ? BEN : SANS;
@@ -16,23 +15,98 @@ function renderMarkdown(text: string, tk: Record<string, string>, isbn: boolean)
   let i = 0;
 
   const inlineStyles = (line: string): React.ReactNode => {
-    // Bold + italic
-    const parts = line.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g);
+    // Strip inline backtick code, then bold/italic
+    const parts = line.split(/(`[^`]+`|\*\*[^*]+\*\*|\*[^*]+\*)/g);
     return parts.map((part, pi) => {
-      if (part.startsWith('**') && part.endsWith('**')) {
+      if (part.startsWith('**') && part.endsWith('**'))
         return <strong key={pi} style={{ color: tk.text }}>{part.slice(2, -2)}</strong>;
-      }
-      if (part.startsWith('*') && part.endsWith('*')) {
+      if (part.startsWith('*') && part.endsWith('*'))
         return <em key={pi}>{part.slice(1, -1)}</em>;
+      if (part.startsWith('`') && part.endsWith('`'))
+        return <code key={pi} style={{ fontFamily: 'monospace', background: tk.panelMuted, padding: '1px 5px', borderRadius: 4, fontSize: 13 }}>{part.slice(1, -1)}</code>;
+      // Inline links [text](url)
+      const linkRe = /\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g;
+      const segs: React.ReactNode[] = [];
+      let last = 0, m;
+      linkRe.lastIndex = 0;
+      while ((m = linkRe.exec(part)) !== null) {
+        if (m.index > last) segs.push(part.slice(last, m.index));
+        segs.push(<a key={m.index} href={m[2]} target="_blank" rel="noopener noreferrer" style={{ color: tk.primary, textDecoration: 'underline' }}>{m[1]}</a>);
+        last = m.index + m[0].length;
       }
-      return part;
+      if (last < part.length) segs.push(part.slice(last));
+      return segs.length > 1 ? segs : part;
     });
   };
 
+  const isTableRow = (l: string) => l.trim().startsWith('|') && l.trim().endsWith('|');
+  const isSeparator = (l: string) => /^\s*\|[\s|:-]+\|\s*$/.test(l);
+  const parseRow = (l: string) => l.trim().slice(1, -1).split('|').map(c => c.trim());
+
   while (i < lines.length) {
     const line = lines[i];
-    if (!line.trim()) { i++; continue; }
+    const trimmed = line.trim();
 
+    // Skip horizontal rules
+    if (/^-{3,}$/.test(trimmed) || /^\*{3,}$/.test(trimmed)) { i++; continue; }
+
+    // Empty line
+    if (!trimmed) { i++; continue; }
+
+    // Table
+    if (isTableRow(line) && i + 1 < lines.length && isSeparator(lines[i + 1])) {
+      const headers = parseRow(line);
+      i += 2; // skip header + separator
+      const rows: string[][] = [];
+      while (i < lines.length && isTableRow(lines[i])) {
+        rows.push(parseRow(lines[i]));
+        i++;
+      }
+      elements.push(
+        <div key={`tbl-${i}`} style={{ overflowX: 'auto', margin: '16px 0' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: font, fontSize: 13 }}>
+            <thead>
+              <tr>
+                {headers.map((h, hi) => (
+                  <th key={hi} style={{ background: tk.primarySoft, color: tk.primary, padding: '8px 12px', textAlign: 'left', borderBottom: `2px solid ${tk.primary}44`, whiteSpace: 'nowrap', fontWeight: 700 }}>
+                    {inlineStyles(h)}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row, ri) => (
+                <tr key={ri} style={{ background: ri % 2 === 0 ? tk.panel : tk.panelMuted }}>
+                  {row.map((cell, ci) => (
+                    <td key={ci} style={{ padding: '8px 12px', borderBottom: `1px solid ${tk.line}`, color: ci === 0 ? tk.text : tk.textDim, fontWeight: ci === 0 ? 700 : 400 }}>
+                      {inlineStyles(cell)}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+      continue;
+    }
+
+    // Blockquote
+    if (trimmed.startsWith('> ')) {
+      const qlines: string[] = [];
+      while (i < lines.length && lines[i].trim().startsWith('> ')) {
+        qlines.push(lines[i].trim().slice(2));
+        i++;
+      }
+      elements.push(
+        <blockquote key={`bq-${i}`} style={{ borderLeft: `3px solid ${tk.primary}`, paddingLeft: 14, margin: '12px 0', color: tk.textDim, fontFamily: font, fontSize: 13, lineHeight: 1.7 }}>
+          {qlines.map((ql, qi) => <div key={qi}>{inlineStyles(ql)}</div>)}
+        </blockquote>
+      );
+      continue;
+    }
+
+    // Headings
     if (line.startsWith('# ')) {
       elements.push(<h1 key={i} style={{ fontFamily: font, fontSize: 22, fontWeight: 800, color: tk.text, margin: '20px 0 10px' }}>{inlineStyles(line.slice(2))}</h1>);
     } else if (line.startsWith('## ')) {
@@ -40,13 +114,20 @@ function renderMarkdown(text: string, tk: Record<string, string>, isbn: boolean)
     } else if (line.startsWith('### ')) {
       elements.push(<h3 key={i} style={{ fontFamily: font, fontSize: 15, fontWeight: 700, color: tk.text, margin: '14px 0 6px' }}>{inlineStyles(line.slice(4))}</h3>);
     } else if (line.startsWith('- ') || line.startsWith('* ')) {
-      // Collect list items
       const items: React.ReactNode[] = [];
       while (i < lines.length && (lines[i].startsWith('- ') || lines[i].startsWith('* '))) {
         items.push(<li key={i} style={{ marginBottom: 4 }}>{inlineStyles(lines[i].slice(2))}</li>);
         i++;
       }
       elements.push(<ul key={`ul-${i}`} style={{ fontFamily: font, fontSize: 14, color: tk.textDim, lineHeight: 1.7, paddingLeft: 20, margin: '8px 0' }}>{items}</ul>);
+      continue;
+    } else if (/^\d+\. /.test(line)) {
+      const items: React.ReactNode[] = [];
+      while (i < lines.length && /^\d+\. /.test(lines[i])) {
+        items.push(<li key={i} style={{ marginBottom: 4 }}>{inlineStyles(lines[i].replace(/^\d+\. /, ''))}</li>);
+        i++;
+      }
+      elements.push(<ol key={`ol-${i}`} style={{ fontFamily: font, fontSize: 14, color: tk.textDim, lineHeight: 1.7, paddingLeft: 20, margin: '8px 0' }}>{items}</ol>);
       continue;
     } else {
       elements.push(<p key={i} style={{ fontFamily: font, fontSize: 14, color: tk.textDim, lineHeight: 1.8, margin: '10px 0' }}>{inlineStyles(line)}</p>);
