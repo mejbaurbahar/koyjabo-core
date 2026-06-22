@@ -259,31 +259,31 @@ export function TrainPage(props: Props) {
     </div>
   );
 
-  // Route map tab
+  // Route map tab — fully inline, no external redirects
   const renderRouteMap = () => (
     <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
-      {/* Search + official link */}
+      {/* Search */}
       <div style={card(16)}>
-        <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:12 }}>
-          <div style={{ flex:1, background:tk.inputBg, border:`1px solid ${tk.line}`, borderRadius:12, padding:'10px 14px', display:'flex', alignItems:'center', gap:8 }}>
-            <Icon.search s={14}/>
-            <input
-              value={routeMapSearch}
-              onChange={e => setRouteMapSearch(e.target.value)}
-              placeholder={T(lang,'ট্রেন নাম বা নম্বর খুঁজুন...','Search train name or number...')}
-              style={{ flex:1, background:'transparent', border:'none', outline:'none', fontFamily:BEN, fontSize:13, color:tk.text }}
-            />
-          </div>
-          <button
-            onClick={() => window.open('https://eticket.railway.gov.bd/train-information', '_blank')}
-            style={{ background:'linear-gradient(135deg,#5b21b6,#7c3aed)', color:'#fff', border:0, borderRadius:12, padding:'10px 14px', fontFamily:SANS, fontWeight:700, fontSize:12, cursor:'pointer', whiteSpace:'nowrap', flexShrink:0 }}
-          >
-            🛤 {T(lang,'সম্পূর্ণ ম্যাপ','Full Map')}
-          </button>
+        <div style={{ background:tk.inputBg, border:`1px solid ${tk.line}`, borderRadius:12, padding:'10px 14px', display:'flex', alignItems:'center', gap:8, marginBottom:12 }}>
+          <Icon.search s={14}/>
+          <input
+            value={routeMapSearch}
+            onChange={e => setRouteMapSearch(e.target.value)}
+            placeholder={T(lang,'ট্রেন নাম বা নম্বর খুঁজুন...','Search train name or number...')}
+            style={{ flex:1, background:'transparent', border:'none', outline:'none', fontFamily:BEN, fontSize:13, color:tk.text }}
+          />
+          {routeMapSearch && (
+            <button onClick={() => setRouteMapSearch('')} style={{ background:'none', border:'none', color:tk.textFaint, cursor:'pointer', fontSize:14, lineHeight:1, padding:0 }}>✕</button>
+          )}
         </div>
 
-        {/* Train list for route selection */}
-        <div style={{ display:'flex', flexDirection:'column', gap:6, maxHeight:340, overflowY:'auto' }}>
+        {/* Train list */}
+        <div style={{ display:'flex', flexDirection:'column', gap:6, maxHeight:300, overflowY:'auto' }}>
+          {routeMapResults.length === 0 && (
+            <div style={{ textAlign:'center', padding:'24px 0', color:tk.textFaint, fontFamily:BEN, fontSize:13 }}>
+              {T(lang,'কোনো ট্রেন পাওয়া যায়নি','No trains found')}
+            </div>
+          )}
           {routeMapResults.map(t => (
             <div
               key={t.source.id}
@@ -296,69 +296,104 @@ export function TrainPage(props: Props) {
                   <div style={{ fontFamily:BEN, fontWeight:600, fontSize:13, color:tk.text }}>{T(lang,t.bn,t.en)}</div>
                   <div style={{ fontFamily:SANS, fontSize:11, color:tk.textFaint }}>{T(lang,t.rbn,t.ren)}</div>
                 </div>
-                <span style={{ fontFamily:SANS, fontSize:10, color:t.col[0], fontWeight:700 }}>{N(t.source.stops.length, lang)} stops</span>
+                <div style={{ textAlign:'right', flexShrink:0 }}>
+                  <div style={{ fontFamily:SANS, fontSize:10, color:t.col[0], fontWeight:700 }}>{N(t.source.stops.length, lang)} {T(lang,'স্টপ','stops')}</div>
+                  <div style={{ fontFamily:SANS, fontSize:9, color:tk.textFaint }}>{t.dur}</div>
+                </div>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Route detail when a train is selected */}
+      {/* Full inline route map when a train is selected */}
       {routeMapTrain && (
         <div style={card(16)}>
-          <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:14 }}>
-            <div style={{ width:40, height:40, borderRadius:10, background:`linear-gradient(135deg,${routeMapTrain.col[0]},${routeMapTrain.col[1]})`, color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:SANS, fontWeight:800, fontSize:13 }}>{routeMapTrain.num}</div>
+          {/* Train header */}
+          <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:16, paddingBottom:14, borderBottom:`1px solid ${tk.line}` }}>
+            <div style={{ width:44, height:44, borderRadius:10, background:`linear-gradient(135deg,${routeMapTrain.col[0]},${routeMapTrain.col[1]})`, color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:SANS, fontWeight:800, fontSize:14, flexShrink:0 }}>{routeMapTrain.num}</div>
             <div style={{ flex:1 }}>
               <div style={{ fontFamily:BEN, fontWeight:700, fontSize:15, color:tk.text }}>{T(lang,routeMapTrain.bn,routeMapTrain.en)}</div>
-              <div style={{ fontFamily:SANS, fontSize:11, color:tk.textFaint }}>{T(lang,routeMapTrain.rbn,routeMapTrain.ren)} · {routeMapTrain.dur}</div>
+              <div style={{ fontFamily:SANS, fontSize:11, color:tk.textFaint, marginTop:2 }}>{T(lang,routeMapTrain.rbn,routeMapTrain.ren)} · {routeMapTrain.dur} · {T(lang,'ছুটি','Off')}: {routeMapTrain.off}</div>
             </div>
-            <button
-              onClick={() => window.open(`https://eticket.railway.gov.bd/train-information`, '_blank')}
-              style={{ background:`${routeMapTrain.col[0]}22`, color:routeMapTrain.col[0], border:`1px solid ${routeMapTrain.col[0]}44`, borderRadius:8, padding:'6px 12px', fontFamily:SANS, fontWeight:700, fontSize:11, cursor:'pointer' }}
-            >
-              {T(lang,'বিস্তারিত','Details')} ↗
-            </button>
           </div>
 
-          {/* Schedule */}
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, marginBottom:14 }}>
+          {/* Key stats */}
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:8, marginBottom:16 }}>
             {[
               { l:T(lang,'ছাড়ে','Departs'), v:routeMapTrain.dep, icon:'🕐' },
               { l:T(lang,'পৌঁছায়','Arrives'), v:routeMapTrain.arr, icon:'🏁' },
-              { l:T(lang,'ভাড়া','Fare'), v:'৳ '+N(routeMapTrain.fare, lang), icon:'💰' },
-              { l:T(lang,'ছুটির দিন','Off day'), v:routeMapTrain.off.includes('/') ? routeMapTrain.off.split('/')[lang==='bn'?0:1] : routeMapTrain.off, icon:'📅' },
+              { l:T(lang,'ন্যূনতম ভাড়া','Min fare'), v:'৳'+N(routeMapTrain.fare,lang), icon:'💰' },
             ].map((s,i) => (
-              <div key={i} style={{ background:tk.panelMuted, borderRadius:10, padding:'8px 10px', display:'flex', alignItems:'center', gap:8 }}>
-                <span>{s.icon}</span>
-                <div>
-                  <div style={{ fontFamily:SANS, fontSize:10, color:tk.textFaint }}>{s.l}</div>
-                  <div style={{ fontFamily:SANS, fontWeight:700, fontSize:13, color:tk.text }}>{s.v}</div>
-                </div>
+              <div key={i} style={{ background:tk.panelMuted, borderRadius:10, padding:'8px 10px', textAlign:'center' }}>
+                <div style={{ fontSize:16, marginBottom:3 }}>{s.icon}</div>
+                <div style={{ fontFamily:SANS, fontWeight:700, fontSize:12, color:tk.text }}>{s.v}</div>
+                <div style={{ fontFamily:SANS, fontSize:9, color:tk.textFaint }}>{s.l}</div>
               </div>
             ))}
           </div>
 
-          {/* Stops route visual */}
-          <div style={{ fontFamily:BEN, fontWeight:700, fontSize:13, color:tk.text, marginBottom:10 }}>
-            {T(lang,'স্টপসমূহ','Stops')} ({N(routeMapTrain.source.stops.length, lang)})
+          {/* Full station timeline */}
+          <div style={{ fontFamily:BEN, fontWeight:700, fontSize:13, color:tk.text, marginBottom:12 }}>
+            🛤 {T(lang,'সম্পূর্ণ রুট','Full Route')} — {N(routeMapTrain.source.routeStops.length || routeMapTrain.source.stops.length, lang)} {T(lang,'স্টেশন','stations')}
           </div>
-          <div style={{ maxHeight:280, overflowY:'auto' }}>
-            {routeMapTrain.source.stops.map((stopId, idx) => {
+          <div style={{ maxHeight:480, overflowY:'auto', paddingRight:4 }}>
+            {(routeMapTrain.source.routeStops.length > 0
+              ? routeMapTrain.source.routeStops
+              : routeMapTrain.source.stops.map(id => ({ city:id, label:stationName(id), arrival:'', departure:'', halt:'', duration:'' }))
+            ).map((stop, idx, arr) => {
               const isFirst = idx === 0;
-              const isLast = idx === routeMapTrain.source.stops.length - 1;
-              const name = stationName(stopId);
-              const bnName = stationBnName(stopId);
+              const isLast = idx === arr.length - 1;
+              const hasHalt = stop.halt && stop.halt !== '---' && stop.halt !== '';
+              const timeToShow = isFirst ? stop.departure : isLast ? stop.arrival : (stop.arrival || stop.departure);
+              const depTime = !isFirst && !isLast && stop.departure && stop.departure !== stop.arrival ? stop.departure : '';
               return (
-                <div key={stopId} style={{ display:'flex', gap:12, paddingBottom: isLast ? 0 : 10, position:'relative' }}>
-                  <div style={{ width:20, flexShrink:0, position:'relative', display:'flex', justifyContent:'center' }}>
-                    {!isLast && <div style={{ position:'absolute', top:16, bottom:-4, width:2, background:routeMapTrain.col[0], opacity:0.3 }}/>}
-                    <div style={{ width: isFirst||isLast ? 16 : 10, height: isFirst||isLast ? 16 : 10, borderRadius:999, marginTop:4, background: isFirst ? routeMapTrain.col[0] : isLast ? routeMapTrain.col[1] : tk.line, border:`2px solid ${routeMapTrain.col[0]}`, flexShrink:0 }}/>
+                <div key={stop.city + idx} style={{ display:'flex', gap:12, paddingBottom: isLast ? 0 : 2, position:'relative', minHeight:42 }}>
+                  {/* Left: dot + line */}
+                  <div style={{ width:24, flexShrink:0, position:'relative', display:'flex', flexDirection:'column', alignItems:'center' }}>
+                    {!isLast && (
+                      <div style={{ position:'absolute', top:isFirst ? 20 : 16, bottom:0, width:2, background:`linear-gradient(${routeMapTrain.col[0]},${routeMapTrain.col[1]})`, opacity:0.25 }}/>
+                    )}
+                    <div style={{
+                      width: isFirst||isLast ? 18 : hasHalt ? 12 : 8,
+                      height: isFirst||isLast ? 18 : hasHalt ? 12 : 8,
+                      borderRadius:999,
+                      marginTop: isFirst ? 6 : 8,
+                      background: isFirst ? routeMapTrain.col[0] : isLast ? routeMapTrain.col[1] : hasHalt ? `${routeMapTrain.col[0]}88` : tk.line,
+                      border:`2px solid ${isFirst||isLast||hasHalt ? routeMapTrain.col[0] : tk.line}`,
+                      flexShrink:0,
+                      zIndex:1,
+                    }}/>
                   </div>
-                  <div style={{ flex:1, display:'flex', alignItems:'center', justifyContent:'space-between', paddingBottom:2 }}>
-                    <div>
-                      <span style={{ fontFamily:BEN, fontWeight: isFirst||isLast ? 700 : 400, fontSize:13, color:tk.text }}>{T(lang,bnName,name)}</span>
-                      {isFirst && <span style={{ marginLeft:8, background:`${routeMapTrain.col[0]}22`, color:routeMapTrain.col[0], fontFamily:SANS, fontSize:9, fontWeight:700, padding:'2px 6px', borderRadius:6 }}>START</span>}
-                      {isLast && <span style={{ marginLeft:8, background:`${routeMapTrain.col[1]}22`, color:routeMapTrain.col[1], fontFamily:SANS, fontSize:9, fontWeight:700, padding:'2px 6px', borderRadius:6 }}>END</span>}
+                  {/* Right: station info */}
+                  <div style={{ flex:1, display:'flex', alignItems:'flex-start', justifyContent:'space-between', paddingBottom:10, borderBottom: isLast ? 'none' : `1px dashed ${tk.line}22` }}>
+                    <div style={{ flex:1 }}>
+                      <div style={{ display:'flex', alignItems:'center', gap:6, flexWrap:'wrap' }}>
+                        <span style={{ fontFamily:BEN, fontWeight: isFirst||isLast||hasHalt ? 700 : 400, fontSize: isFirst||isLast ? 14 : 13, color: isFirst||isLast ? tk.text : hasHalt ? tk.text : tk.textDim }}>
+                          {stop.label || stationName(stop.city)}
+                        </span>
+                        {isFirst && <span style={{ background:`${routeMapTrain.col[0]}22`, color:routeMapTrain.col[0], fontFamily:SANS, fontSize:9, fontWeight:700, padding:'1px 6px', borderRadius:4 }}>START</span>}
+                        {isLast && <span style={{ background:`${routeMapTrain.col[1]}22`, color:routeMapTrain.col[1], fontFamily:SANS, fontSize:9, fontWeight:700, padding:'1px 6px', borderRadius:4 }}>END</span>}
+                        {hasHalt && !isFirst && !isLast && <span style={{ background:`${routeMapTrain.col[0]}18`, color:routeMapTrain.col[0], fontFamily:SANS, fontSize:9, fontWeight:600, padding:'1px 5px', borderRadius:4 }}>{stop.halt}m halt</span>}
+                      </div>
+                      {stop.duration && stop.duration !== '---' && !isFirst && (
+                        <div style={{ fontFamily:SANS, fontSize:10, color:tk.textFaint, marginTop:1 }}>
+                          +{stop.duration} {T(lang,'পরে','from prev')}
+                        </div>
+                      )}
+                    </div>
+                    {/* Time column */}
+                    <div style={{ textAlign:'right', flexShrink:0, minWidth:70 }}>
+                      {timeToShow && (
+                        <div style={{ fontFamily:SANS, fontWeight:700, fontSize:12, color: isFirst||isLast ? routeMapTrain.col[0] : tk.text }}>
+                          {timeToShow.replace(' BST','').replace(' am',' AM').replace(' pm',' PM')}
+                        </div>
+                      )}
+                      {depTime && (
+                        <div style={{ fontFamily:SANS, fontSize:10, color:tk.textFaint }}>
+                          dep {depTime.replace(' BST','').replace(' am',' AM').replace(' pm',' PM')}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -368,20 +403,14 @@ export function TrainPage(props: Props) {
         </div>
       )}
 
-      {/* Link to official route map */}
-      <div style={{ ...card(14), background:'linear-gradient(135deg,#5b21b633,#7c3aed22)', borderColor:'#7c3aed44', display:'flex', alignItems:'center', gap:14 }}>
-        <span style={{ fontSize:28 }}>🛤</span>
-        <div style={{ flex:1 }}>
-          <div style={{ fontFamily:BEN, fontWeight:700, fontSize:14, color:tk.text }}>{T(lang,'সম্পূর্ণ ট্রেন তথ্য ও রুট ম্যাপ','Complete Train Info & Route Map')}</div>
-          <div style={{ fontFamily:SANS, fontSize:11, color:tk.textFaint, marginTop:2 }}>{T(lang,'বাংলাদেশ রেলওয়ের অফিসিয়াল ট্রেন ইনফরমেশন পেজ','Bangladesh Railway official train information page')}</div>
+      {/* Prompt when nothing selected */}
+      {!routeMapTrain && (
+        <div style={{ ...card(14), textAlign:'center', padding:'28px 16px', color:tk.textFaint }}>
+          <div style={{ fontSize:36, marginBottom:8 }}>🛤</div>
+          <div style={{ fontFamily:BEN, fontSize:14, color:tk.textDim }}>{T(lang,'উপরের তালিকা থেকে একটি ট্রেন বেছে নিন','Select a train above to see full route')}</div>
+          <div style={{ fontFamily:SANS, fontSize:11, marginTop:4 }}>{T(lang,'সমস্ত স্টেশন ও সময়সূচি দেখুন','View all stations with timing')}</div>
         </div>
-        <button
-          onClick={() => window.open('https://eticket.railway.gov.bd/train-information', '_blank')}
-          style={{ background:'linear-gradient(135deg,#5b21b6,#7c3aed)', color:'#fff', border:0, borderRadius:12, padding:'10px 16px', fontFamily:SANS, fontWeight:700, fontSize:12, cursor:'pointer', flexShrink:0 }}
-        >
-          {T(lang,'দেখুন','View')} ↗
-        </button>
-      </div>
+      )}
     </div>
   );
 
