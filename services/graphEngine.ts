@@ -685,11 +685,22 @@ export function findRoutes(
   });
 
   // Sort: direct (0 transfers) always first, then by score
-  return unique.sort((a, b) => {
+  const sorted = unique.sort((a, b) => {
     if (a.transfers === 0 && b.transfers > 0) return -1;
     if (b.transfers === 0 && a.transfers > 0) return 1;
     return a.score - b.score;
   });
+
+  // When direct buses exist, suppress high-transfer Dijkstra routes:
+  // keep all directs + at most 2 non-direct routes (max 1 transfer each)
+  const directCount = sorted.filter(r => r.transfers === 0).length;
+  if (directCount > 0) {
+    const directs = sorted.filter(r => r.transfers === 0);
+    const lowXfer = sorted.filter(r => r.transfers > 0 && r.transfers <= 2).slice(0, 2);
+    return [...directs, ...lowXfer];
+  }
+
+  return sorted;
 }
 
 // ── Direct bus route finder — returns ALL buses serving this pair ─────────────
@@ -701,12 +712,17 @@ function findAllDirectBuses(fromId: string, toId: string): GraphRoute[] {
   for (const bus of BUS_DATA.filter(b => b.active !== false)) {
     const fromIdx = bus.stops.indexOf(fromId);
     const toIdx = bus.stops.indexOf(toId);
-    if (fromIdx < 0 || toIdx < 0 || fromIdx >= toIdx) continue;
+    // Both stops must exist and be different
+    if (fromIdx < 0 || toIdx < 0 || fromIdx === toIdx) continue;
+
+    // Buses run BOTH ways — compute distance using the segment regardless of stored direction
+    const startIdx = Math.min(fromIdx, toIdx);
+    const endIdx   = Math.max(fromIdx, toIdx);
 
     let totalTime = 0;
     let totalCost = 0;
-    for (let i = fromIdx; i < toIdx; i++) {
-      const a = nodes.get(bus.stops[i]);
+    for (let i = startIdx; i < endIdx; i++) {
+      const a  = nodes.get(bus.stops[i]);
       const b2 = nodes.get(bus.stops[i + 1]);
       if (!a || !b2) continue;
       const distKm = haversineM(a.lat, a.lng, b2.lat, b2.lng) / 1000;
@@ -716,7 +732,7 @@ function findAllDirectBuses(fromId: string, toId: string): GraphRoute[] {
     if (totalTime === 0) continue;
 
     const fromNode = nodes.get(fromId);
-    const toNode = nodes.get(toId);
+    const toNode   = nodes.get(toId);
     if (!fromNode || !toNode) continue;
 
     const roundedTime = Math.round(totalTime);
