@@ -8,20 +8,37 @@ function AdsenseUnit({ slot, format = 'auto' }: { slot: string; format?: string 
 
   useEffect(() => {
     pushed.current = false;
-    const pushAd = () => {
-      const ins = insRef.current;
-      if (!ins || pushed.current) return;
+    const ins = insRef.current;
+    if (!ins) return;
+
+    const doPush = () => {
+      if (pushed.current) return;
       const status = ins.getAttribute('data-adsbygoogle-status');
       if (status === 'done' || status === 'filled') return;
       if (typeof (window as any).adsbygoogle === 'undefined') {
-        window.setTimeout(pushAd, 1600);
-        return;
+        const t = setTimeout(doPush, 1500);
+        return () => clearTimeout(t);
       }
       pushed.current = true;
       try { ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({}); }
       catch { pushed.current = false; }
     };
-    pushAd();
+
+    // Push only when element is near viewport — improves viewability score → better CPM
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            observer.disconnect();
+            doPush();
+          }
+        },
+        { rootMargin: '400px 0px' } // start 400px before entering view
+      );
+      observer.observe(ins);
+      return () => observer.disconnect();
+    }
+    doPush(); // fallback for browsers without IntersectionObserver
   }, [slot, format]);
 
   return (

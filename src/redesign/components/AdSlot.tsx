@@ -4,10 +4,10 @@ import { Tokens, Lang } from '../tokens';
 type AdKind = 'leaderboard' | 'mid-rect' | 'mob-banner' | 'anchor';
 
 const DIMS: Record<AdKind, { w: number; h: number; format: string; slot: string }> = {
-  leaderboard:  { w: 728, h: 90,  format: 'horizontal', slot: '7294303750' },
-  'mid-rect':   { w: 300, h: 250, format: 'rectangle',  slot: '7294303750' },
-  'mob-banner': { w: 320, h: 100, format: 'horizontal', slot: '7294303750' },
-  anchor:       { w: 320, h: 50,  format: 'horizontal', slot: '7294303750' },
+  leaderboard:  { w: 728, h: 90,  format: 'auto', slot: '7294303750' },
+  'mid-rect':   { w: 300, h: 250, format: 'auto', slot: '7294303750' },
+  'mob-banner': { w: 320, h: 100, format: 'auto', slot: '7294303750' },
+  anchor:       { w: 320, h: 50,  format: 'auto', slot: '7294303750' },
 };
 
 function RealAd({ format, slot }: { format: string; slot: string }) {
@@ -16,19 +16,30 @@ function RealAd({ format, slot }: { format: string; slot: string }) {
 
   useEffect(() => {
     pushed.current = false;
-    const tryPush = () => {
-      const ins = insRef.current;
-      if (!ins || pushed.current) return;
+    const ins = insRef.current;
+    if (!ins) return;
+
+    const doPush = () => {
+      if (pushed.current) return;
       const status = ins.getAttribute('data-adsbygoogle-status');
       if (status === 'done' || status === 'filled') return;
       if (typeof (window as any).adsbygoogle === 'undefined') {
-        setTimeout(tryPush, 2000);
+        setTimeout(doPush, 1500);
         return;
       }
       pushed.current = true;
       try { ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({}); } catch { pushed.current = false; }
     };
-    tryPush();
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) { observer.disconnect(); doPush(); } },
+        { rootMargin: '400px 0px' }
+      );
+      observer.observe(ins);
+      return () => observer.disconnect();
+    }
+    doPush();
   }, [slot]);
 
   return (
