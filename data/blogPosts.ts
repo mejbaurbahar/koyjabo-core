@@ -36,7 +36,7 @@ export const BLOG_POSTS: BlogPost[] = [
 			'how to get Pathao discount', 'Pathao YAYDAY', 'Pathao FAST10',
 			'KoyJabo transport deals', 'Bangladesh ride hailing promo',
 		],
-		category: 'Tips & Tricks',
+		category: 'Tips',
 		content: `
 Are you looking for **Pathao promo codes in 2026**? You're in the right place. KoyJabo has collected all verified, working Pathao discount codes — for rides, food delivery, and parcels — updated as of June 2026.
 
@@ -304,7 +304,7 @@ Pathao releases new promo codes:
 			'automated traffic enforcement Dhaka', 'Dhaka smart city', 'KoyJabo traffic guide',
 			'avoid traffic fines Dhaka', 'DMP Hello app', 'smart traffic signal Dhaka'
 		],
-		category: 'Tips & Tricks',
+		category: 'Tips',
 		content: `
 A major change is finally arriving in Dhaka's traffic management. From now on, it's not just the traffic police you need to watch out for — **an AI-based system will automatically detect who is breaking the law.**
 
@@ -1913,7 +1913,7 @@ Use **KoyJabo** to:
 			'ঢাকা যানজট এড়ানো', 'rush hour Dhaka timing', 'Dhaka commuter tips',
 			'metro vs bus Dhaka', 'early morning Dhaka commute', 'KoyJabo traffic tips'
 		],
-		category: 'Tips & Tricks',
+		category: 'Tips',
 		content: `
 Dhaka's traffic is one of the most challenging in the world. The city regularly features in global "worst traffic" rankings. But millions of people navigate it daily — and those who do it smartly save 1–2 hours per day. Here's how.
 
@@ -2527,7 +2527,7 @@ Avoid private CNGs. Shared electric Tomtoms (Easy bikes) cost only **৳10 - ৳
 			'transport fares Bangladesh 2026', 'hotel prices Bangladesh',
 			'is Bangladesh expensive', 'travel budget planner', 'KoyJabo cost guide'
 		],
-		category: 'Tips & Tricks',
+		category: 'Tips',
 		content: `
 How much does it cost to travel in Bangladesh in 2026? Whether you are a backpacker or a luxury traveler, here is the real breakdown.
 
