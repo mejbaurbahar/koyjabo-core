@@ -10,7 +10,7 @@ import { Stars } from '../components/Stars';
 import { BUS_DATA, STATIONS } from '../../../constants';
 import { SuggestionDropdown, Suggestion } from '../components/SuggestionDropdown';
 import { useLocationSearch } from '../../../hooks/useLocationSearch';
-import { trackBusSearch, trackRouteSearch } from '../../../services/analyticsService';
+import { trackBusSearch, trackRouteSearch, getUserHistory } from '../../../services/analyticsService';
 import { earnCoins } from '../utils/koyCoinService';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string,p?:Record<string,string>)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
@@ -29,11 +29,44 @@ const LIVE_BUSES = [
   { b:'Projapoti', t:'12 min', dist:'2.1 km', dir:'↘', col:'#f59e0b' },
 ];
 
-const OPERATORS = [
-  { l:'GL', n:'Green Line', c:'#10b981' },{ l:'BR', n:'BRTC', c:'#3b82f6' },
-  { l:'HF', n:'Hanif', c:'#ef4444' },{ l:'SH', n:'Shyamoli', c:'#f59e0b' },
-  { l:'PR', n:'Projapoti', c:'#7eb344' },{ l:'AB', n:'Anabil', c:'#a855f7' },
-];
+const OP_COLORS = ['#10b981','#3b82f6','#ef4444','#f59e0b','#7c3aed','#a855f7'];
+
+// Derive real top operators: user search history first, then BUS_DATA by coverage
+function buildTopOperators(): Array<{ l: string; n: string; c: string; busId: string }> {
+  try {
+    const searches = getUserHistory().busSearches || [];
+    if (searches.length >= 3) {
+      const freq = new Map<string, { name: string; count: number }>();
+      for (const s of [...searches].reverse()) {
+        const ex = freq.get(s.busId);
+        if (ex) ex.count++;
+        else freq.set(s.busId, { name: s.busName, count: 1 });
+      }
+      const top = [...freq.entries()]
+        .sort((a, b) => b[1].count - a[1].count)
+        .slice(0, 6);
+      if (top.length >= 3) {
+        return top.map(([id, v], i) => ({
+          l: v.name.replace(/[^A-Za-z]/g, '').slice(0, 2).toUpperCase() || v.name.slice(0, 2).toUpperCase(),
+          n: v.name,
+          c: OP_COLORS[i % OP_COLORS.length],
+          busId: id,
+        }));
+      }
+    }
+  } catch {}
+  // Fallback: real buses from BUS_DATA sorted by stop coverage (widest routes first)
+  return BUS_DATA
+    .filter(b => (b as any).active !== false && b.stops.length >= 10)
+    .sort((a, b) => b.stops.length - a.stops.length)
+    .slice(0, 6)
+    .map((bus, i) => ({
+      l: bus.name.replace(/[^A-Za-z]/g, '').slice(0, 2).toUpperCase() || bus.name.slice(0, 2).toUpperCase(),
+      n: bus.name,
+      c: OP_COLORS[i % OP_COLORS.length],
+      busId: bus.id,
+    }));
+}
 
 export function LocalBusPage(props: Props) {
   const { theme, device, lang, onNav } = props;
@@ -50,6 +83,9 @@ export function LocalBusPage(props: Props) {
   const [toFocus, setToFocus] = useState(false);
   const fromRef = useRef<HTMLDivElement>(null);
   const toRef = useRef<HTMLDivElement>(null);
+
+  // Real top operators: from user search history or BUS_DATA coverage fallback
+  const topOperators = useMemo(() => buildTopOperators(), []);
 
   // Comprehensive location search — 729 Dhaka stops + 14K OSM locations
   const { suggestions: fromSuggestions } = useLocationSearch(fromInput, { limit: 20, categories: ['bus_stop', 'railway_station', 'ferry_terminal'] });
@@ -307,12 +343,14 @@ export function LocalBusPage(props: Props) {
               </div>
               <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'mid-rect'}/>
               <div style={card(14)}>
-                <div style={{ fontFamily:BEN, fontWeight:700, fontSize:13, color:tk.text, marginBottom:10 }}>{T(lang,'শীর্ষ অপারেটর','Top operators')}</div>
+                <div style={{ fontFamily:BEN, fontWeight:700, fontSize:13, color:tk.text, marginBottom:10 }}>
+                  {T(lang, getUserHistory().busSearches?.length >= 3 ? 'আপনার সেরা বাস' : 'জনপ্রিয় বাস', getUserHistory().busSearches?.length >= 3 ? 'Your top buses' : 'Popular buses')}
+                </div>
                 <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:6 }}>
-                  {OPERATORS.map((o,i)=>(
-                    <div key={i} style={{ background:`${o.c}22`, borderRadius:10, padding:'10px 8px', textAlign:'center', cursor:'pointer' }}>
+                  {topOperators.map((o,i)=>(
+                    <div key={i} onClick={() => onNav('bus-detail', { busId: o.busId })} style={{ background:`${o.c}22`, borderRadius:10, padding:'10px 8px', textAlign:'center', cursor:'pointer' }}>
                       <div style={{ fontFamily:SANS, fontWeight:800, fontSize:13, color:o.c }}>{o.l}</div>
-                      <div style={{ fontFamily:SANS, fontSize:9, color:tk.textFaint, marginTop:2, fontWeight:600 }}>{o.n}</div>
+                      <div style={{ fontFamily:SANS, fontSize:9, color:tk.textFaint, marginTop:2, fontWeight:600, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{o.n}</div>
                     </div>
                   ))}
                 </div>
