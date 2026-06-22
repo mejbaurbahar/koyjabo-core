@@ -47,9 +47,6 @@ const COLS = [
 const SOCIAL = [
   { label: 'f', title: 'Facebook', href: 'https://www.facebook.com/koyjabo/' },
   { label: 'in', title: 'LinkedIn', href: 'https://www.linkedin.com/company/koy-jabo/' },
-  { label: 'X', title: 'Twitter / X', href: 'https://twitter.com/koyjabo' },
-  { label: '▶', title: 'YouTube', href: 'https://www.youtube.com/@koyjabo' },
-  { label: '✦', title: 'GitHub', href: 'https://github.com/fagun18/Dhaka-Commute' },
 ];
 
 interface KJFooterProps {
@@ -72,17 +69,33 @@ export function KJFooter({ tk, lang, isMobile, onNav }: KJFooterProps) {
         boxSizing: 'border-box',
       }}
     >
-      {/* Decorative blob — top-right glow */}
+      {/* Decorative blob — top-right, pulsing glow */}
       <div
+        className="kj-anim-pulse"
         style={{
           position: 'absolute',
           right: -60,
           top: -60,
-          width: 220,
-          height: 220,
+          width: 260,
+          height: 260,
           borderRadius: 999,
-          background: `${tk.primary}14`,
+          background: `radial-gradient(circle, ${tk.primary}28 0%, ${tk.primary}08 60%, transparent 100%)`,
           pointerEvents: 'none',
+        }}
+      />
+      {/* Decorative blob — bottom-left, offset phase */}
+      <div
+        className="kj-anim-glow"
+        style={{
+          position: 'absolute',
+          left: -80,
+          bottom: -80,
+          width: 200,
+          height: 200,
+          borderRadius: 999,
+          background: `radial-gradient(circle, ${tk.accent}18 0%, ${tk.accent}06 60%, transparent 100%)`,
+          pointerEvents: 'none',
+          animationDelay: '1.2s',
         }}
       />
 
