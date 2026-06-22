@@ -61,7 +61,9 @@ export function PromoBanner({ tk, lang, page, onNav }: PromoBannerProps) {
 
   useEffect(() => {
     fetchDeals().then(all => {
-      setDeals(all.filter(d => d.page.includes(page) && !isExpired(d)));
+      const valid = all.filter(d => d.page.includes(page) && !isExpired(d));
+      valid.sort((a, b) => (b.promoCode ? 1 : 0) - (a.promoCode ? 1 : 0));
+      setDeals(valid);
     });
   }, [page]);
 

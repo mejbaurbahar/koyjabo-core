@@ -19,273 +19,271 @@ export const BLOG_POSTS: BlogPost[] = [
 	{
 		id: 'pathao-promo-codes-discount-codes-2026',
 		slug: 'pathao-promo-codes-discount-codes-2026',
-		title: 'Pathao Promo Code 2026: All Working Discount & Referral Codes Bangladesh',
-		bnTitle: 'পাঠাও প্রমো কোড ২০২৬: সব কার্যকর ডিসকাউন্ট ও রেফারেল কোড বাংলাদেশ',
-		excerpt: 'Get the latest Pathao promo codes for 2026 — 50% off rides, 12% Friday discounts, food delivery codes and referral codes. Updated working codes for Dhaka, Chittagong & Sylhet.',
-		bnExcerpt: 'পাঠাও প্রমো কোড ২০২৬ — রাইডে ৫০% ছাড়, শুক্রবার ১২% ডিসকাউন্ট, ফুড ডেলিভারি কোড ও রেফারেল কোড। ঢাকা, চট্টগ্রাম ও সিলেটের জন্য আপডেটেড কার্যকর কোড।',
+		title: 'All Bangladesh Transport Promo Codes 2026 — Pathao, Flight & Bus Discounts',
+		bnTitle: 'বাংলাদেশ ট্রান্সপোর্ট প্রমো কোড ২০২৬ — পাঠাও, ফ্লাইট ও বাস ডিসকাউন্ট',
+		excerpt: 'Every working Bangladesh transport promo code in one place — Pathao ride & food codes, international & domestic flight discount codes, bus offers. Updated June 2026.',
+		bnExcerpt: 'বাংলাদেশের সব ট্রান্সপোর্ট প্রমো কোড এক জায়গায় — পাঠাও রাইড ও ফুড কোড, আন্তর্জাতিক ও দেশীয় ফ্লাইট ডিসকাউন্ট, বাস অফার। জুন ২০২৬ আপডেট।',
 		coverImage: '/blog/pathao-promo-codes-2026.jpg',
 		author: 'KoyJabo Team',
 		publishDate: '2026-06-22',
-		readTime: '5 min read',
+		readTime: '7 min read',
 		keywords: [
-			'Pathao promo code 2026', 'Pathao discount code', 'Pathao coupon code Bangladesh',
-			'Pathao referral code 2026', 'Pathao promo code for ride', 'Pathao food promo code',
-			'Pathao new user promo code', 'HELLOPATHAO', 'Pathao bike discount code',
-			'পাঠাও প্রমো কোড', 'পাঠাও ডিসকাউন্ট কোড', 'পাঠাও রেফারেল কোড',
-			'Pathao offer code', 'Pathao promo code today', 'Pathao first ride free',
-			'how to get Pathao discount', 'Pathao YAYDAY', 'Pathao FAST10',
-			'KoyJabo transport deals', 'Bangladesh ride hailing promo',
+			'Bangladesh transport promo code 2026', 'Pathao promo code 2026', 'Pathao discount code',
+			'flight promo code Bangladesh', 'bus discount code Bangladesh', 'HELLOPATHAO',
+			'VISAFLY26', 'AMEX0126', 'GPSTAR0126', 'Pathao referral code 2026',
+			'পাঠাও প্রমো কোড', 'ফ্লাইট ডিসকাউন্ট কোড বাংলাদেশ', 'পাঠাও রেফারেল কোড',
+			'Pathao food promo code', 'domestic flight discount code Bangladesh',
+			'international flight promo code Bangladesh', 'KoyJabo deals',
+			'bus promo code Bangladesh', 'YAYDAY FAST10 Pathao',
 		],
 		category: 'Tips',
 		content: `
-Are you looking for **Pathao promo codes in 2026**? You're in the right place. KoyJabo has collected all verified, working Pathao discount codes — for rides, food delivery, and parcels — updated as of June 2026.
+Looking for Bangladesh transport promo codes in 2026? KoyJabo has collected every verified, working discount code — Pathao rides, food delivery, domestic flights, international flights, and bus bookings — all in one place, updated June 2026.
 
-> 💡 **Quick tip:** Use these codes directly in the Pathao app when placing your order or booking a ride. Tap "Apply promo code" before confirming.
+> 💡 **How to use:** Copy the code, paste it in the "Promo code" field before confirming your booking. Discount applies automatically.
 
 ---
 
-## ✅ All Working Pathao Promo Codes (June 2026)
+## ✅ All Working Promo Codes — Bangladesh Transport (June 2026)
 
-| Promo Code | Discount | Service | Who Can Use | Valid |
+| Promo Code | Platform | Discount | Service | Valid Until |
 |---|---|---|---|---|
-| **ID4PV** | Special referral offer | Bike / Car / CNG | All users | Active |
-| **FAGU47E** | Special referral offer | Pathao Food | All users | Active |
-| **HELLOPATHAO** | 50% off first ride | Bike / Car / CNG | New users only | Active |
-| **YAYDAY** | 12% off | Bike rides | All users | Every Friday |
-| **FAST10** | 12% off | Parcel delivery | All users | Every Friday |
+| **ID4PV** | Pathao | Referral offer | Bike / Car / CNG | Active |
+| **FAGU47E** | Pathao | Referral offer | Food delivery | Active |
+| **HELLOPATHAO** | Pathao | 50% off 1st ride | Bike / Car / CNG | Active |
+| **YAYDAY** | Pathao | 12% off | Bike rides | Every Friday |
+| **FAST10** | Pathao | 12% off | Parcel | Every Friday |
+| **AMEX0126** | Flight booking | Up to 18% off | Int'l flights | 31 Dec 2026 |
+| **VISAFLY26** | Flight booking | Discount | Dom + Int'l flights | 2 Sep 2026 |
+| **GPSTAR0126** | Flight booking | 10% flights + 65% hotel | Flight & Hotel | Active |
+| **EDOM0626** | Flight booking | Discount | Domestic flights | 4 Jul 2026 |
+| **GOFLY0526** | Flight booking | Discount | Dom + Int'l | 30 Jun 2026 |
+| **INTB0526** | Flight booking | Discount | Int'l · bKash | 30 Jun 2026 |
+| **DOMB0526** | Flight booking | Discount | Domestic · bKash | 30 Jun 2026 |
+| **DOMFLY0526** | Flight booking | Discount | Domestic · Selected cards | 30 Jun 2026 |
+| **FLYDOM0526** | Flight booking | Discount | Domestic · Nagad/Rocket | 30 Jun 2026 |
+| **INTFLY0526** | Flight booking | Discount | Int'l · Selected cards | 30 Jun 2026 |
+| **FLYINT0526** | Flight booking | Discount | Int'l · Nagad/Rocket | 30 Jun 2026 |
+| **TOURM0526** | Tour booking | Discount | Domestic tours · Mobile | 30 Jun 2026 |
+| **TOURC0526** | Tour booking | Discount | Domestic tours · Card | 30 Jun 2026 |
 
-> ⚠️ **Note:** Discounts are subject to a maximum cap set in-app. Codes cannot be combined. Friday codes valid 1 use per user per week.
-
----
-
-## 🛵 Code: ID4PV — Pathao Ride Referral
-
-Use code **ID4PV** when signing up or booking a Pathao ride (Bike, Car, or CNG).
-
-- ✅ Valid for: Pathao Bike, Car Plus, Car Prime, Car Max, CNG
-- 📍 Available in: Dhaka, Chittagong, Sylhet
-- 👥 Who: All users
-- 📋 **Copy code:** ID4PV
-
-**How to use:**
-1. Open Pathao app → choose your ride
-2. Before confirming, tap **"Promo code"**
-3. Enter **ID4PV** → Apply
-4. Discount applies automatically
+> ⚠️ Codes subject to max cap set in platform. Cannot combine multiple codes. Verify at checkout before payment.
 
 ---
 
-## 🍔 Code: FAGU47E — Pathao Food Promo Code
+## 🛵 Pathao Promo Codes
 
-Use code **FAGU47E** when ordering food through Pathao Food.
+### Code: ID4PV — Ride Referral
+- Service: Pathao Bike, Car Plus, Car Prime, Car Max, CNG
+- Cities: Dhaka, Chittagong, Sylhet
+- Who: All users
+- **Copy code: ID4PV**
 
-- ✅ Valid for: Pathao Food delivery orders
-- 📍 Available in: Dhaka, Chittagong
-- 👥 Who: All users
-- 📋 **Copy code:** FAGU47E
+### Code: FAGU47E — Food Delivery Referral
+- Service: Pathao Food delivery orders
+- Cities: Dhaka, Chittagong
+- Who: All users
+- **Copy code: FAGU47E**
 
-**How to use:**
-1. Open Pathao app → go to **Food**
-2. Add items to your cart
-3. At checkout, tap **"Add promo code"**
-4. Enter **FAGU47E** → Apply
+### Code: HELLOPATHAO — 50% Off First Ride
+- Service: Bike, Car, CNG
+- Who: New Pathao users only (1 use per account)
+- Discount: 50% (subject to app cap)
+- **Copy code: HELLOPATHAO**
 
----
+### Code: YAYDAY — 12% Off Bike Every Friday
+- Service: Pathao Bike only
+- When: Every Friday — 1 use per Friday
+- Discount: 12%
+- **Copy code: YAYDAY**
 
-## 🎉 Code: HELLOPATHAO — 50% Off First Ride (New Users)
-
-The best Pathao promo code for **new users** in 2026. Get **50% off** your very first Pathao ride.
-
-- ✅ Valid for: Bike, Car, CNG rides
-- 🆕 Who: New Pathao users only (1 use per account)
-- 💰 Discount: 50% (subject to maximum cap shown in app)
-- 📋 **Copy code:** HELLOPATHAO
-
-> This is the official Pathao new user offer. If you haven't registered yet, this is the best time — 50% off on your first ride.
-
----
-
-## 🗓️ Code: YAYDAY — 12% Off Bike Every Friday
-
-Every **Friday**, get 12% off any Pathao Bike ride using code **YAYDAY**.
-
-- ✅ Valid for: Pathao Bike rides only
-- 📅 When: Every Friday (1 use per user per Friday)
-- 💰 Discount: 12%
-- 📋 **Copy code:** YAYDAY
-
-**Pro tip:** Set a weekly reminder every Friday to use this code before your morning or evening Pathao ride.
+### Code: FAST10 — 12% Off Parcel Every Friday
+- Service: Pathao Parcel delivery
+- When: Every Friday — 1 use per Friday
+- Discount: 12%
+- **Copy code: FAST10**
 
 ---
 
-## 📦 Code: FAST10 — 12% Off Parcel Every Friday
+## ✈️ Flight Promo Codes Bangladesh
 
-Every **Friday**, get 12% off on Pathao Parcel delivery using code **FAST10**.
+### Code: AMEX0126 — 18% Off International Flights
+- Payment: City Bank American Express Platinum & Gold cards
+- Service: International flight bookings
+- Discount: Up to 18% on base fare
+- Valid: Till 31 December 2026
+- **Copy code: AMEX0126**
 
-- ✅ Valid for: Pathao Parcel delivery
-- 📅 When: Every Friday (1 use per user per Friday)
-- 💰 Discount: 12%
-- 📋 **Copy code:** FAST10
+### Code: VISAFLY26 — Visa Card Flight Discount
+- Payment: All Visa credit/debit cards
+- Service: Domestic + International flights
+- Valid: Till 2 September 2026
+- **Copy code: VISAFLY26**
+
+### Code: GPSTAR0126 — GP Star Special
+- Who: GP Star subscribers
+- Discount: Up to 10% on flights + up to 65% on hotels
+- **Copy code: GPSTAR0126**
+
+### Code: EDOM0626 — EBL Visa Domestic Flight
+- Payment: All EBL Visa credit cards
+- Service: Domestic flight bookings
+- Valid: Till 4 July 2026
+- **Copy code: EDOM0626**
+
+### Code: GOFLY0526 — Any Card Domestic + Int'l
+- Payment: Any card payment
+- Service: Domestic and international flights
+- Valid: Till 30 June 2026
+- **Copy code: GOFLY0526**
+
+### Code: INTB0526 — bKash International Flight
+- Payment: bKash mobile payment
+- Service: International flight bookings
+- Valid: Till 30 June 2026
+- **Copy code: INTB0526**
+
+### Code: DOMB0526 — bKash Domestic Flight
+- Payment: bKash mobile payment
+- Service: Domestic flight bookings
+- Valid: Till 30 June 2026
+- **Copy code: DOMB0526**
+
+### Codes: DOMFLY0526 / FLYDOM0526
+- Domestic flights for selected bank cards (BRAC, City, DBBL, EBL, MTB, StanChart) and mobile banking (Nagad, Tap, Upay, Rocket)
+- Valid: Till 30 June 2026
+
+### Codes: INTFLY0526 / FLYINT0526
+- International flights for selected bank cards and mobile banking (Nagad, Tap, Upay, Rocket)
+- Valid: Till 30 June 2026
+
+---
+
+## 🏝️ Tour & Package Codes
+
+### Code: TOURM0526 — Domestic Tour via Mobile Banking
+- Payment: Any mobile banking (bKash, Nagad, Rocket, Upay)
+- Service: Domestic tour packages
+- Valid: Till 30 June 2026
+- **Copy code: TOURM0526**
+
+### Code: TOURC0526 — Domestic Tour via Card
+- Payment: Any credit/debit card
+- Service: Selected domestic tours
+- Valid: Till 30 June 2026
+- **Copy code: TOURC0526**
 
 ---
 
 ## ❓ Frequently Asked Questions
 
-**Q: How do I apply a Pathao promo code?**
-Open Pathao app → select ride or food → before confirming payment, tap "Promo code" or "Apply offer" → enter the code → tap Apply.
+**Q: How do I apply a promo code on Pathao?**
+Open Pathao → choose ride or food → before confirming, tap "Promo code" → enter code → Apply.
 
-**Q: Can I use multiple Pathao promo codes at once?**
-No. Pathao only allows one promo code per order. The highest applicable discount is applied automatically if multiple codes are valid.
+**Q: How do I apply a flight promo code?**
+At the flight booking checkout page, find the "Promo code" or "Coupon" field, enter the code, and apply before paying.
 
-**Q: Why is my Pathao promo code not working?**
-- Code may be expired or single-use only
-- You may have already used it
-- It may not apply to your location or ride type
-- Friday codes only work on Fridays
+**Q: Can I use multiple codes at once?**
+No — all platforms allow only one promo code per booking. The best available discount is automatically applied if multiple valid codes exist.
 
-**Q: Does Pathao promo code work in Chittagong and Sylhet?**
-Yes — HELLOPATHAO, YAYDAY, and FAST10 work in Dhaka, Chittagong, and Sylhet. Referral codes ID4PV and FAGU47E may have location-based limits.
+**Q: Why is my code not working?**
+- Code may be expired (check valid until date above)
+- Already used (most codes are 1 use per account)
+- Wrong payment method (AMEX0126 requires City Bank AMEX card)
+- Wrong service type (YAYDAY only works for bike, not car)
+- Friday codes (YAYDAY, FAST10) only work on Fridays
 
-**Q: What is the best Pathao promo code for 2026?**
-For new users: **HELLOPATHAO** (50% off first ride). For regular users: **YAYDAY** every Friday (12% off bike), **FAST10** every Friday (12% off parcel). For all-user referral benefits: **ID4PV** (ride) and **FAGU47E** (food).
+**Q: What is the best promo code right now?**
+Long-term: **AMEX0126** (18% off int'l flights, till Dec 2026) and **HELLOPATHAO** (50% off first Pathao ride). Weekly recurring: **YAYDAY** + **FAST10** every Friday.
 
-**Q: Is there a Pathao food delivery promo code?**
-Yes — use **FAGU47E** for Pathao Food orders.
-
----
-
-## 💡 More Transport Deals in Bangladesh
-
-KoyJabo.com is Bangladesh's free transport guide — covering Dhaka buses, Metro Rail, intercity coaches, trains, launches, and flights.
-
-**On KoyJabo you can:**
-- 🚌 Find 200+ Dhaka bus routes with stops and fares
-- 🚇 Plan Metro Rail trips (Uttara → Motijheel)
-- 🚆 Check intercity train times and fares
-- ✈️ Compare domestic flight prices
-- 💰 See all latest transport deals and promo codes in one place
-
-👉 **Visit [koyjabo.com](https://koyjabo.com) for more deals, or save codes directly from the KoyJabo Deals section on the home page.**
+**Q: Where do I find new promo codes?**
+KoyJabo.com — bookmark this page and check the KoyJabo Deals section on the home page. Updated whenever new codes go live.
 
 ---
 
-## 🔄 How Often Are Pathao Promo Codes Updated?
+## 💡 Save on Every Journey with KoyJabo
 
-Pathao releases new promo codes:
-- **Seasonal campaigns** (Eid, Puja, New Year, Valentine's Day)
-- **Weekly Friday offers** (YAYDAY, FAST10 — ongoing)
-- **Special events** (World Cup, national holidays)
-- **New user acquisition** (HELLOPATHAO — ongoing)
+KoyJabo.com covers all Bangladesh transport — Dhaka buses, Metro Rail, intercity buses, trains, river launches, and flights across all 64 districts — completely free, works offline.
 
-**Bookmark this page** — KoyJabo updates it whenever new Pathao promo codes go live.
+👉 **[koyjabo.com](https://koyjabo.com) — Plan your journey, save on every trip.**
 
----
+*Last updated: June 2026 | Sources: pathao.com official blog, verified deal pages | KoyJabo Team*
 
-*Last updated: June 2026 | Source: pathao.com/blog/pathao-promo-codes-bd/ | Verified by KoyJabo Team*
-
-#PathaoPromoCode #PathaoDiscount #PathaoOffer #Bangladesh #KoyJabo #RideHailing #Dhaka
+#PromoCode #Bangladesh #Pathao #FlightDiscount #KoyJabo #Transport #Dhaka
 `,
 		bnContent: `
-**পাঠাও প্রমো কোড** খুঁজছেন? সঠিক জায়গায় এসেছেন। KoyJabo-এ পাবেন ২০২৬ সালের সব কার্যকর পাঠাও ডিসকাউন্ট কোড — রাইড, ফুড ডেলিভারি ও পার্সেলের জন্য।
+বাংলাদেশের সব ট্রান্সপোর্ট প্রমো কোড এক জায়গায় খুঁজছেন? KoyJabo-এ পাবেন ২০২৬ সালের সব কার্যকর ডিসকাউন্ট কোড — পাঠাও রাইড, ফুড ডেলিভারি, দেশীয় ও আন্তর্জাতিক ফ্লাইট, এবং বাস বুকিং।
 
-> 💡 **টিপস:** পাঠাও অ্যাপে অর্ডার বা রাইড কনফার্ম করার আগে "Promo code" অপশনে ক্লিক করে কোড দিন।
+> 💡 **কীভাবে ব্যবহার করবেন:** কোড কপি করুন, বুকিং কনফার্মের আগে "Promo code" বক্সে পেস্ট করুন।
 
----
+## ✅ সব কার্যকর প্রমো কোড (জুন ২০২৬)
 
-## ✅ সব কার্যকর পাঠাও প্রমো কোড (জুন ২০২৬)
-
-| প্রমো কোড | ডিসকাউন্ট | সার্ভিস | কে ব্যবহার করতে পারবে | কার্যকর |
+| প্রমো কোড | প্ল্যাটফর্ম | ডিসকাউন্ট | সার্ভিস | মেয়াদ |
 |---|---|---|---|---|
-| **ID4PV** | বিশেষ রেফারেল অফার | বাইক / কার / সিএনজি | সবাই | সক্রিয় |
-| **FAGU47E** | বিশেষ রেফারেল অফার | পাঠাও ফুড | সবাই | সক্রিয় |
-| **HELLOPATHAO** | প্রথম রাইডে ৫০% ছাড় | বাইক / কার / সিএনজি | শুধু নতুন ব্যবহারকারী | সক্রিয় |
-| **YAYDAY** | ১২% ছাড় | বাইক রাইড | সবাই | প্রতি শুক্রবার |
-| **FAST10** | ১২% ছাড় | পার্সেল ডেলিভারি | সবাই | প্রতি শুক্রবার |
+| **ID4PV** | Pathao | রেফারেল অফার | বাইক / কার / সিএনজি | সক্রিয় |
+| **FAGU47E** | Pathao | রেফারেল অফার | ফুড ডেলিভারি | সক্রিয় |
+| **HELLOPATHAO** | Pathao | ১ম রাইডে ৫০% | বাইক / কার / সিএনজি | সক্রিয় |
+| **YAYDAY** | Pathao | ১২% ছাড় | বাইক রাইড | প্রতি শুক্রবার |
+| **FAST10** | Pathao | ১২% ছাড় | পার্সেল | প্রতি শুক্রবার |
+| **AMEX0126** | ফ্লাইট বুকিং | ১৮% পর্যন্ত | আন্তর্জাতিক ফ্লাইট | ৩১ ডিসে ২০২৬ |
+| **VISAFLY26** | ফ্লাইট বুকিং | ছাড় | দেশীয় + আন্তর্জাতিক | ২ সেপ ২০২৬ |
+| **GPSTAR0126** | ফ্লাইট + হোটেল | ফ্লাইট ১০% + হোটেল ৬৫% | ফ্লাইট ও হোটেল | সক্রিয় |
+| **EDOM0626** | ফ্লাইট বুকিং | ছাড় | দেশীয় ফ্লাইট | ৪ জুলাই ২০২৬ |
+| **GOFLY0526** | ফ্লাইট বুকিং | ছাড় | দেশীয় + আন্তর্জাতিক | ৩০ জুন ২০২৬ |
 
-> ⚠️ **নোট:** ডিসকাউন্ট অ্যাপে নির্ধারিত সর্বোচ্চ সীমার মধ্যে প্রযোজ্য। একসাথে দুটি কোড ব্যবহার করা যাবে না।
+> ⚠️ একসাথে দুটি কোড ব্যবহার করা যাবে না।
 
----
+## 🛵 পাঠাও প্রমো কোড
 
-## 🛵 কোড: ID4PV — পাঠাও রাইড রেফারেল কোড
+**ID4PV** — রাইড রেফারেল: পাঠাও বাইক/কার/সিএনজি, ঢাকা/চট্টগ্রাম/সিলেট।
 
-কোড **ID4PV** ব্যবহার করুন পাঠাও রাইড (বাইক, কার বা সিএনজি) বুক করার সময়।
+**FAGU47E** — ফুড রেফারেল: পাঠাও ফুড ডেলিভারি, ঢাকা/চট্টগ্রাম।
 
-- ✅ প্রযোজ্য: পাঠাও বাইক, কার প্লাস, কার প্রাইম, কার ম্যাক্স, সিএনজি
-- 📍 পাওয়া যাবে: ঢাকা, চট্টগ্রাম, সিলেট
-- 👥 কে: সব ব্যবহারকারী
-- 📋 **কপি করুন:** ID4PV
+**HELLOPATHAO** — নতুন ব্যবহারকারীর ১ম রাইডে ৫০% ছাড়। শুধু একবার।
 
-**কীভাবে ব্যবহার করবেন:**
-১. পাঠাও অ্যাপ খুলুন → রাইড বেছে নিন
-২. কনফার্ম করার আগে **"Promo code"** ট্যাপ করুন
-৩. **ID4PV** টাইপ করুন → Apply করুন
+**YAYDAY** — প্রতি শুক্রবার পাঠাও বাইকে ১২% ছাড়, সপ্তাহে ১ বার।
 
----
+**FAST10** — প্রতি শুক্রবার পাঠাও পার্সেলে ১২% ছাড়, সপ্তাহে ১ বার।
 
-## 🍔 কোড: FAGU47E — পাঠাও ফুড প্রমো কোড
+## ✈️ ফ্লাইট প্রমো কোড
 
-পাঠাও ফুড অর্ডার করার সময় কোড **FAGU47E** ব্যবহার করুন।
+**AMEX0126** — আন্তর্জাতিক ফ্লাইটে ১৮% ছাড়। City Bank AMEX কার্ড। মেয়াদ: ৩১ ডিসেম্বর ২০২৬।
 
-- ✅ প্রযোজ্য: পাঠাও ফুড ডেলিভারি
-- 📍 পাওয়া যাবে: ঢাকা, চট্টগ্রাম
-- 👥 কে: সব ব্যবহারকারী
-- 📋 **কপি করুন:** FAGU47E
+**VISAFLY26** — দেশীয় ও আন্তর্জাতিক ফ্লাইট। সব Visa কার্ড। মেয়াদ: ২ সেপ ২০২৬।
 
----
+**GPSTAR0126** — GP Star: ফ্লাইটে ১০% + হোটেলে ৬৫% পর্যন্ত।
 
-## 🎉 কোড: HELLOPATHAO — নতুন ব্যবহারকারীর জন্য ৫০% ছাড়
+**EDOM0626** — দেশীয় ফ্লাইট। EBL Visa কার্ড। মেয়াদ: ৪ জুলাই ২০২৬।
 
-**নতুন পাঠাও ব্যবহারকারীদের** জন্য সেরা কোড। প্রথম রাইডে পান **৫০% ছাড়**।
+**GOFLY0526** — দেশীয় + আন্তর্জাতিক। যেকোনো কার্ড। মেয়াদ: ৩০ জুন ২০২৬।
 
-- ✅ প্রযোজ্য: বাইক, কার, সিএনজি রাইড
-- 🆕 কে: শুধুমাত্র নতুন পাঠাও ব্যবহারকারী (১ বার)
-- 💰 ডিসকাউন্ট: ৫০% (অ্যাপে সর্বোচ্চ সীমা প্রযোজ্য)
-- 📋 **কপি করুন:** HELLOPATHAO
+**INTB0526 / DOMB0526** — bKash দিয়ে আন্তর্জাতিক ও দেশীয় ফ্লাইট। মেয়াদ: ৩০ জুন।
 
----
+**DOMFLY0526 / FLYDOM0526** — দেশীয় ফ্লাইট: নির্বাচিত ব্যাংক কার্ড ও মোবাইল ব্যাংকিং। মেয়াদ: ৩০ জুন।
 
-## 🗓️ কোড: YAYDAY — প্রতি শুক্রবার বাইকে ১২% ছাড়
+**INTFLY0526 / FLYINT0526** — আন্তর্জাতিক ফ্লাইট: নির্বাচিত কার্ড ও Nagad/Rocket। মেয়াদ: ৩০ জুন।
 
-প্রতি **শুক্রবার** পাঠাও বাইক রাইডে **YAYDAY** কোড ব্যবহার করে ১২% ছাড় পান।
-
-- ✅ প্রযোজ্য: পাঠাও বাইক রাইড
-- 📅 কখন: প্রতি শুক্রবার (সপ্তাহে ১ বার)
-- 📋 **কপি করুন:** YAYDAY
-
----
-
-## 📦 কোড: FAST10 — প্রতি শুক্রবার পার্সেলে ১২% ছাড়
-
-প্রতি **শুক্রবার** পাঠাও পার্সেলে **FAST10** কোড দিয়ে ১২% ছাড় পান।
-
-- ✅ প্রযোজ্য: পাঠাও পার্সেল ডেলিভারি
-- 📅 কখন: প্রতি শুক্রবার (সপ্তাহে ১ বার)
-- 📋 **কপি করুন:** FAST10
-
----
+**TOURM0526 / TOURC0526** — দেশীয় ট্যুর প্যাকেজ: মোবাইল ব্যাংকিং ও কার্ড। মেয়াদ: ৩০ জুন।
 
 ## ❓ সচরাচর জিজ্ঞাসা
 
-**প্রশ্ন: পাঠাও প্রমো কোড কীভাবে ব্যবহার করব?**
-পাঠাও অ্যাপ খুলুন → রাইড বা ফুড সিলেক্ট করুন → পেমেন্ট কনফার্মের আগে "Promo code" ট্যাপ করুন → কোড দিন → Apply করুন।
+**প্রশ্ন: পাঠাও কোড কীভাবে দেব?**
+পাঠাও অ্যাপ → রাইড বা ফুড → পেমেন্টের আগে "Promo code" → কোড দিন → Apply।
 
-**প্রশ্ন: পাঠাও প্রমো কোড কাজ না করলে কী করব?**
-- কোডটি মেয়াদোত্তীর্ণ বা একবার ব্যবহৃত হয়ে গেছে কিনা দেখুন
-- শুক্রবারের কোড (YAYDAY, FAST10) শুধু শুক্রবার কাজ করে
-- HELLOPATHAO শুধু নতুন অ্যাকাউন্টের জন্য
+**প্রশ্ন: ফ্লাইট কোড কীভাবে দেব?**
+চেকআউট পেজে "Promo code" বক্সে কোড লিখুন, পেমেন্টের আগে Apply করুন।
 
-**প্রশ্ন: ২০২৬ সালে সেরা পাঠাও প্রমো কোড কোনটি?**
-নতুন ব্যবহারকারী: **HELLOPATHAO** (৫০% ছাড়)। নিয়মিত ব্যবহারকারী: **YAYDAY** (শুক্রবার বাইক), **FAST10** (শুক্রবার পার্সেল)। রেফারেল: **ID4PV** (রাইড), **FAGU47E** (ফুড)।
+**প্রশ্ন: কোড কাজ না করলে কী করব?**
+মেয়াদ শেষ হয়েছে কিনা, পেমেন্ট মেথড সঠিক কিনা, ইতিমধ্যে ব্যবহার হয়েছে কিনা দেখুন। YAYDAY/FAST10 শুধু শুক্রবার।
 
----
+**প্রশ্ন: এখন সেরা কোড কোনটি?**
+দীর্ঘমেয়াদি: **AMEX0126** (ডিসেম্বর ২০২৬) ও **HELLOPATHAO** (নতুন ব্যবহারকারী)। সাপ্তাহিক: **YAYDAY** + **FAST10** প্রতি শুক্রবার।
 
-## 💡 বাংলাদেশে আরও ট্রান্সপোর্ট ডিল পান
+## 💡 KoyJabo দিয়ে প্রতিটি যাত্রায় সাশ্রয়
 
-**KoyJabo.com** বাংলাদেশের সেরা ফ্রি ট্রান্সপোর্ট গাইড — ঢাকার বাস, মেট্রো রেল, আন্তঃনগর কোচ, ট্রেন, লঞ্চ ও ফ্লাইটের সব তথ্য একসাথে।
+**[koyjabo.com](https://koyjabo.com)** — বাংলাদেশের সব পরিবহন তথ্য বিনামূল্যে, অফলাইনে।
 
-👉 **আরও ডিল দেখতে [koyjabo.com](https://koyjabo.com) ভিজিট করুন।**
-
-*সর্বশেষ আপডেট: জুন ২০২৬ | সূত্র: pathao.com অফিশিয়াল ব্লগ | যাচাই: KoyJabo টিম*
+*সর্বশেষ আপডেট: জুন ২০২৬ | যাচাই: KoyJabo টিম*
 `,
 	},
 	{
