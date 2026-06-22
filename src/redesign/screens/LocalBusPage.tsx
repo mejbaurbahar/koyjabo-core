@@ -2,6 +2,7 @@ import React, { useState, useMemo, useRef, useCallback } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, chipBtn, N } from '../tokens';
 import { PageShell } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
+import { PromoBanner } from '../components/PromoBanner';
 import { SectionHeader } from '../components/SectionHeader';
 import { Pill } from '../components/Pill';
 import { Icon } from '../components/Icons';
@@ -341,6 +342,7 @@ export function LocalBusPage(props: Props) {
                   {T(lang,'ম্যাপে সব দেখুন','View all on map')} →
                 </button>
               </div>
+              <PromoBanner tk={tk} lang={lang} page="bus" onNav={onNav}/>
               <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'mid-rect'}/>
               <div style={card(14)}>
                 <div style={{ fontFamily:BEN, fontWeight:700, fontSize:13, color:tk.text, marginBottom:10 }}>

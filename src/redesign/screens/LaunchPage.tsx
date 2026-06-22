@@ -2,6 +2,7 @@ import React, { useState, useRef, useMemo } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, chipBtn, N, Fare } from '../tokens';
 import { PageShell } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
+import { PromoBanner } from '../components/PromoBanner';
 import { SectionHeader } from '../components/SectionHeader';
 import { Icon } from '../components/Icons';
 import { ModeHero } from '../components/ModeHero';
@@ -196,6 +197,7 @@ export function LaunchPage(props: Props) {
                 ))}
               </div>
 
+              <PromoBanner tk={tk} lang={lang} page="launch" onNav={onNav}/>
               <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'mid-rect'}/>
             </div>
           </div>

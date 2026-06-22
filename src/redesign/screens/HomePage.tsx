@@ -3,6 +3,7 @@ import { KJ_TOKENS, Tokens, Lang, SANS, BEN, T, N } from '../tokens';
 import { TopBar } from '../components/TopBar';
 import { MobileTabBar } from '../components/MobileTabBar';
 import { AdSlot } from '../components/AdSlot';
+import { PromoBanner } from '../components/PromoBanner';
 import { Icon } from '../components/Icons';
 import { Pill } from '../components/Pill';
 import { Bus3D, MiniVehicle, TravelHeroScene } from '../components/Vehicles3D';
@@ -1946,6 +1947,11 @@ export function HomePage({
               <TravelHeroScene tk={tk} height={200} />
             </div>
           )}
+        </div>
+
+        {/* ── KoyJabo Deals banner ── */}
+        <div style={section}>
+          <PromoBanner tk={tk} lang={lang} page="home" onNav={onNav} />
         </div>
 
         {/* ── Ad: leaderboard/mob-banner ── */}

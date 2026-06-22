@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { KJ_TOKENS, SANS, BEN, T, Tokens, Lang, N, Fare } from '../tokens';
 import { AdSlot } from '../components/AdSlot';
+import { PromoBanner } from '../components/PromoBanner';
 import { PageShell } from './PageShell';
 import { Plane3D } from '../components/Vehicles3D';
 import { INTERCITY_BUS_ROUTES, BUS_OPERATORS, MAJOR_TRANSPORT_HUBS } from '../../../data/intercityData';
@@ -698,6 +699,7 @@ export function IntercityPage(props: Props) {
 
         {/* Ad slot */}
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: 32 }}>
+          <PromoBanner tk={tk} lang={lang} page="intercity" onNav={onNav}/>
           <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
         </div>
       </div>
