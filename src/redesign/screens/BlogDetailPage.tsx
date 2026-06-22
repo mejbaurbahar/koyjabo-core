@@ -3,6 +3,7 @@ import { KJ_TOKENS, T, SANS, BEN } from '../tokens';
 import { PageShell } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
 import { Pill } from '../components/Pill';
+import { PromoBanner } from '../components/PromoBanner';
 import { BLOG_POSTS } from '../../../data/blogPosts';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string,p?:Record<string,string>)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
@@ -218,7 +219,14 @@ export function BlogDetailPage(props: Props) {
           {renderMarkdown(content, tk, lang === 'bn')}
         </div>
 
-        <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
+        <div style={{ margin: '24px 0' }}>
+          <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
+        </div>
+
+        {/* Deals banner */}
+        <div style={{ margin: '8px 0 24px' }}>
+          <PromoBanner tk={tk} lang={lang} page="blog" onNav={onNav} />
+        </div>
 
         {/* Related posts */}
         {related.length > 0 && (

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Tokens, Lang, SANS, BEN, T } from '../tokens';
 
-export type PromoPage = 'home' | 'bus' | 'train' | 'metro' | 'flight' | 'intercity' | 'launch';
+export type PromoPage = 'home' | 'bus' | 'train' | 'metro' | 'flight' | 'intercity' | 'launch' | 'blog';
 
 interface Deal {
   id: string;
