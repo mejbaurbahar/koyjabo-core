@@ -862,6 +862,12 @@ export const STATIONS: Record<string, Station> = {
   bonpara:        { id: 'bonpara',        name: 'Bonpara',               bnName: 'বনপাড়া',                lat: 24.5013, lng: 88.9680 },
   puthia:         { id: 'puthia',         name: 'Puthia',                bnName: 'পুঠিয়া',                lat: 24.3673, lng: 88.8598 },
   sirajganj:      { id: 'sirajganj',      name: 'Sirajganj',             bnName: 'সিরাজগঞ্জ',              lat: 24.4540, lng: 89.7035 },
+  // ── Pabna/Sirajganj corridor stops ───────────────────────────────────────
+  ullapara:       { id: 'ullapara',       name: 'Ullapara',              bnName: 'উল্লাপাড়া',              lat: 24.3437, lng: 89.5937 },
+  shahjadpur_srj: { id: 'shahjadpur_srj', name: 'Shahjadpur (Sirajganj)',bnName: 'শাহজাদপুর (সিরাজগঞ্জ)',  lat: 24.3069, lng: 89.5625 },
+  baghabari:      { id: 'baghabari',      name: 'Baghabari',             bnName: 'বাঘাবাড়ী',               lat: 24.1400, lng: 89.4400 },
+  bera_pabna:     { id: 'bera_pabna',     name: 'Bera',                  bnName: 'বেড়া',                   lat: 24.0865, lng: 89.4231 },
+  kashinathpur:   { id: 'kashinathpur',   name: 'Kashinathpur',          bnName: 'কাশিনাথপুর',              lat: 24.1700, lng: 89.3500 },
   // ── Satkhira/Khulna corridor stops ───────────────────────────────────────
   kalaroa:        { id: 'kalaroa',        name: 'Kalaroa',               bnName: 'কালারোয়া',               lat: 22.6261, lng: 89.0651 },
   patkelghata:    { id: 'patkelghata',    name: 'Patkelghata',           bnName: 'পাটকেলঘাটা',             lat: 22.8060, lng: 89.2950 },
@@ -3717,6 +3723,25 @@ export const BUS_DATA: BusRoute[] = [
     stops: ['mohakhali_bus_stand', 'shaistaganj', 'sylhet', 'sunamganj'],
     type: 'Sitting',
     hours: '9:00 AM - 11:45 PM',
+  },
+  // ── Pabna corridor operators (Shohoz confirmed) ──────────────────────────
+  {
+    id: 'bangla_star_pabna',
+    name: 'Bangla Star (Dhaka-Pabna)',
+    bnName: 'বাংলা স্টার (ঢাকা-পাবনা)',
+    routeString: 'Dhaka ⇄ Pabna',
+    stops: ['technical', 'sirajganj', 'ullapara', 'shahjadpur_srj', 'baghabari', 'bera_pabna', 'kashinathpur', 'paksey'],
+    type: 'AC',
+    hours: '8:45 AM - 11:55 PM',
+  },
+  {
+    id: 'pabna_express_sirajganj',
+    name: 'Pabna Express (Dhaka-Pabna via Sirajganj)',
+    bnName: 'পাবনা এক্সপ্রেস (ঢাকা-পাবনা)',
+    routeString: 'Dhaka ⇄ Pabna',
+    stops: ['sayedabad', 'sirajganj', 'ullapara', 'shahjadpur_srj', 'baghabari', 'bera_pabna', 'kashinathpur', 'paksey'],
+    type: 'Sitting',
+    hours: '8:00 AM - 11:30 PM',
   },
   // ── New operators from Shohoz confirmed data ────────────────────────────
   {
