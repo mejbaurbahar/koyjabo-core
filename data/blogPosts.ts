@@ -17,6 +17,278 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
 	{
+		id: 'pathao-promo-codes-discount-codes-2026',
+		slug: 'pathao-promo-codes-discount-codes-2026',
+		title: 'Pathao Promo Code 2026: All Working Discount & Referral Codes Bangladesh',
+		bnTitle: 'পাঠাও প্রমো কোড ২০২৬: সব কার্যকর ডিসকাউন্ট ও রেফারেল কোড বাংলাদেশ',
+		excerpt: 'Get the latest Pathao promo codes for 2026 — 50% off rides, 12% Friday discounts, food delivery codes and referral codes. Updated working codes for Dhaka, Chittagong & Sylhet.',
+		bnExcerpt: 'পাঠাও প্রমো কোড ২০২৬ — রাইডে ৫০% ছাড়, শুক্রবার ১২% ডিসকাউন্ট, ফুড ডেলিভারি কোড ও রেফারেল কোড। ঢাকা, চট্টগ্রাম ও সিলেটের জন্য আপডেটেড কার্যকর কোড।',
+		coverImage: '/blog/pathao-promo-codes-2026.jpg',
+		author: 'KoyJabo Team',
+		publishDate: '2026-06-22',
+		readTime: '5 min read',
+		keywords: [
+			'Pathao promo code 2026', 'Pathao discount code', 'Pathao coupon code Bangladesh',
+			'Pathao referral code 2026', 'Pathao promo code for ride', 'Pathao food promo code',
+			'Pathao new user promo code', 'HELLOPATHAO', 'Pathao bike discount code',
+			'পাঠাও প্রমো কোড', 'পাঠাও ডিসকাউন্ট কোড', 'পাঠাও রেফারেল কোড',
+			'Pathao offer code', 'Pathao promo code today', 'Pathao first ride free',
+			'how to get Pathao discount', 'Pathao YAYDAY', 'Pathao FAST10',
+			'KoyJabo transport deals', 'Bangladesh ride hailing promo',
+		],
+		category: 'Tips & Tricks',
+		content: `
+Are you looking for **Pathao promo codes in 2026**? You're in the right place. KoyJabo has collected all verified, working Pathao discount codes — for rides, food delivery, and parcels — updated as of June 2026.
+
+> 💡 **Quick tip:** Use these codes directly in the Pathao app when placing your order or booking a ride. Tap "Apply promo code" before confirming.
+
+---
+
+## ✅ All Working Pathao Promo Codes (June 2026)
+
+| Promo Code | Discount | Service | Who Can Use | Valid |
+|---|---|---|---|---|
+| **ID4PV** | Special referral offer | Bike / Car / CNG | All users | Active |
+| **FAGU47E** | Special referral offer | Pathao Food | All users | Active |
+| **HELLOPATHAO** | 50% off first ride | Bike / Car / CNG | New users only | Active |
+| **YAYDAY** | 12% off | Bike rides | All users | Every Friday |
+| **FAST10** | 12% off | Parcel delivery | All users | Every Friday |
+
+> ⚠️ **Note:** Discounts are subject to a maximum cap set in-app. Codes cannot be combined. Friday codes valid 1 use per user per week.
+
+---
+
+## 🛵 Code: ID4PV — Pathao Ride Referral
+
+Use code **ID4PV** when signing up or booking a Pathao ride (Bike, Car, or CNG).
+
+- ✅ Valid for: Pathao Bike, Car Plus, Car Prime, Car Max, CNG
+- 📍 Available in: Dhaka, Chittagong, Sylhet
+- 👥 Who: All users
+- 📋 **Copy code:** ID4PV
+
+**How to use:**
+1. Open Pathao app → choose your ride
+2. Before confirming, tap **"Promo code"**
+3. Enter **ID4PV** → Apply
+4. Discount applies automatically
+
+---
+
+## 🍔 Code: FAGU47E — Pathao Food Promo Code
+
+Use code **FAGU47E** when ordering food through Pathao Food.
+
+- ✅ Valid for: Pathao Food delivery orders
+- 📍 Available in: Dhaka, Chittagong
+- 👥 Who: All users
+- 📋 **Copy code:** FAGU47E
+
+**How to use:**
+1. Open Pathao app → go to **Food**
+2. Add items to your cart
+3. At checkout, tap **"Add promo code"**
+4. Enter **FAGU47E** → Apply
+
+---
+
+## 🎉 Code: HELLOPATHAO — 50% Off First Ride (New Users)
+
+The best Pathao promo code for **new users** in 2026. Get **50% off** your very first Pathao ride.
+
+- ✅ Valid for: Bike, Car, CNG rides
+- 🆕 Who: New Pathao users only (1 use per account)
+- 💰 Discount: 50% (subject to maximum cap shown in app)
+- 📋 **Copy code:** HELLOPATHAO
+
+> This is the official Pathao new user offer. If you haven't registered yet, this is the best time — 50% off on your first ride.
+
+---
+
+## 🗓️ Code: YAYDAY — 12% Off Bike Every Friday
+
+Every **Friday**, get 12% off any Pathao Bike ride using code **YAYDAY**.
+
+- ✅ Valid for: Pathao Bike rides only
+- 📅 When: Every Friday (1 use per user per Friday)
+- 💰 Discount: 12%
+- 📋 **Copy code:** YAYDAY
+
+**Pro tip:** Set a weekly reminder every Friday to use this code before your morning or evening Pathao ride.
+
+---
+
+## 📦 Code: FAST10 — 12% Off Parcel Every Friday
+
+Every **Friday**, get 12% off on Pathao Parcel delivery using code **FAST10**.
+
+- ✅ Valid for: Pathao Parcel delivery
+- 📅 When: Every Friday (1 use per user per Friday)
+- 💰 Discount: 12%
+- 📋 **Copy code:** FAST10
+
+---
+
+## ❓ Frequently Asked Questions
+
+**Q: How do I apply a Pathao promo code?**
+Open Pathao app → select ride or food → before confirming payment, tap "Promo code" or "Apply offer" → enter the code → tap Apply.
+
+**Q: Can I use multiple Pathao promo codes at once?**
+No. Pathao only allows one promo code per order. The highest applicable discount is applied automatically if multiple codes are valid.
+
+**Q: Why is my Pathao promo code not working?**
+- Code may be expired or single-use only
+- You may have already used it
+- It may not apply to your location or ride type
+- Friday codes only work on Fridays
+
+**Q: Does Pathao promo code work in Chittagong and Sylhet?**
+Yes — HELLOPATHAO, YAYDAY, and FAST10 work in Dhaka, Chittagong, and Sylhet. Referral codes ID4PV and FAGU47E may have location-based limits.
+
+**Q: What is the best Pathao promo code for 2026?**
+For new users: **HELLOPATHAO** (50% off first ride). For regular users: **YAYDAY** every Friday (12% off bike), **FAST10** every Friday (12% off parcel). For all-user referral benefits: **ID4PV** (ride) and **FAGU47E** (food).
+
+**Q: Is there a Pathao food delivery promo code?**
+Yes — use **FAGU47E** for Pathao Food orders.
+
+---
+
+## 💡 More Transport Deals in Bangladesh
+
+KoyJabo.com is Bangladesh's free transport guide — covering Dhaka buses, Metro Rail, intercity coaches, trains, launches, and flights.
+
+**On KoyJabo you can:**
+- 🚌 Find 200+ Dhaka bus routes with stops and fares
+- 🚇 Plan Metro Rail trips (Uttara → Motijheel)
+- 🚆 Check intercity train times and fares
+- ✈️ Compare domestic flight prices
+- 💰 See all latest transport deals and promo codes in one place
+
+👉 **Visit [koyjabo.com](https://koyjabo.com) for more deals, or save codes directly from the KoyJabo Deals section on the home page.**
+
+---
+
+## 🔄 How Often Are Pathao Promo Codes Updated?
+
+Pathao releases new promo codes:
+- **Seasonal campaigns** (Eid, Puja, New Year, Valentine's Day)
+- **Weekly Friday offers** (YAYDAY, FAST10 — ongoing)
+- **Special events** (World Cup, national holidays)
+- **New user acquisition** (HELLOPATHAO — ongoing)
+
+**Bookmark this page** — KoyJabo updates it whenever new Pathao promo codes go live.
+
+---
+
+*Last updated: June 2026 | Source: pathao.com/blog/pathao-promo-codes-bd/ | Verified by KoyJabo Team*
+
+#PathaoPromoCode #PathaoDiscount #PathaoOffer #Bangladesh #KoyJabo #RideHailing #Dhaka
+`,
+		bnContent: `
+**পাঠাও প্রমো কোড** খুঁজছেন? সঠিক জায়গায় এসেছেন। KoyJabo-এ পাবেন ২০২৬ সালের সব কার্যকর পাঠাও ডিসকাউন্ট কোড — রাইড, ফুড ডেলিভারি ও পার্সেলের জন্য।
+
+> 💡 **টিপস:** পাঠাও অ্যাপে অর্ডার বা রাইড কনফার্ম করার আগে "Promo code" অপশনে ক্লিক করে কোড দিন।
+
+---
+
+## ✅ সব কার্যকর পাঠাও প্রমো কোড (জুন ২০২৬)
+
+| প্রমো কোড | ডিসকাউন্ট | সার্ভিস | কে ব্যবহার করতে পারবে | কার্যকর |
+|---|---|---|---|---|
+| **ID4PV** | বিশেষ রেফারেল অফার | বাইক / কার / সিএনজি | সবাই | সক্রিয় |
+| **FAGU47E** | বিশেষ রেফারেল অফার | পাঠাও ফুড | সবাই | সক্রিয় |
+| **HELLOPATHAO** | প্রথম রাইডে ৫০% ছাড় | বাইক / কার / সিএনজি | শুধু নতুন ব্যবহারকারী | সক্রিয় |
+| **YAYDAY** | ১২% ছাড় | বাইক রাইড | সবাই | প্রতি শুক্রবার |
+| **FAST10** | ১২% ছাড় | পার্সেল ডেলিভারি | সবাই | প্রতি শুক্রবার |
+
+> ⚠️ **নোট:** ডিসকাউন্ট অ্যাপে নির্ধারিত সর্বোচ্চ সীমার মধ্যে প্রযোজ্য। একসাথে দুটি কোড ব্যবহার করা যাবে না।
+
+---
+
+## 🛵 কোড: ID4PV — পাঠাও রাইড রেফারেল কোড
+
+কোড **ID4PV** ব্যবহার করুন পাঠাও রাইড (বাইক, কার বা সিএনজি) বুক করার সময়।
+
+- ✅ প্রযোজ্য: পাঠাও বাইক, কার প্লাস, কার প্রাইম, কার ম্যাক্স, সিএনজি
+- 📍 পাওয়া যাবে: ঢাকা, চট্টগ্রাম, সিলেট
+- 👥 কে: সব ব্যবহারকারী
+- 📋 **কপি করুন:** ID4PV
+
+**কীভাবে ব্যবহার করবেন:**
+১. পাঠাও অ্যাপ খুলুন → রাইড বেছে নিন
+২. কনফার্ম করার আগে **"Promo code"** ট্যাপ করুন
+৩. **ID4PV** টাইপ করুন → Apply করুন
+
+---
+
+## 🍔 কোড: FAGU47E — পাঠাও ফুড প্রমো কোড
+
+পাঠাও ফুড অর্ডার করার সময় কোড **FAGU47E** ব্যবহার করুন।
+
+- ✅ প্রযোজ্য: পাঠাও ফুড ডেলিভারি
+- 📍 পাওয়া যাবে: ঢাকা, চট্টগ্রাম
+- 👥 কে: সব ব্যবহারকারী
+- 📋 **কপি করুন:** FAGU47E
+
+---
+
+## 🎉 কোড: HELLOPATHAO — নতুন ব্যবহারকারীর জন্য ৫০% ছাড়
+
+**নতুন পাঠাও ব্যবহারকারীদের** জন্য সেরা কোড। প্রথম রাইডে পান **৫০% ছাড়**।
+
+- ✅ প্রযোজ্য: বাইক, কার, সিএনজি রাইড
+- 🆕 কে: শুধুমাত্র নতুন পাঠাও ব্যবহারকারী (১ বার)
+- 💰 ডিসকাউন্ট: ৫০% (অ্যাপে সর্বোচ্চ সীমা প্রযোজ্য)
+- 📋 **কপি করুন:** HELLOPATHAO
+
+---
+
+## 🗓️ কোড: YAYDAY — প্রতি শুক্রবার বাইকে ১২% ছাড়
+
+প্রতি **শুক্রবার** পাঠাও বাইক রাইডে **YAYDAY** কোড ব্যবহার করে ১২% ছাড় পান।
+
+- ✅ প্রযোজ্য: পাঠাও বাইক রাইড
+- 📅 কখন: প্রতি শুক্রবার (সপ্তাহে ১ বার)
+- 📋 **কপি করুন:** YAYDAY
+
+---
+
+## 📦 কোড: FAST10 — প্রতি শুক্রবার পার্সেলে ১২% ছাড়
+
+প্রতি **শুক্রবার** পাঠাও পার্সেলে **FAST10** কোড দিয়ে ১২% ছাড় পান।
+
+- ✅ প্রযোজ্য: পাঠাও পার্সেল ডেলিভারি
+- 📅 কখন: প্রতি শুক্রবার (সপ্তাহে ১ বার)
+- 📋 **কপি করুন:** FAST10
+
+---
+
+## ❓ সচরাচর জিজ্ঞাসা
+
+**প্রশ্ন: পাঠাও প্রমো কোড কীভাবে ব্যবহার করব?**
+পাঠাও অ্যাপ খুলুন → রাইড বা ফুড সিলেক্ট করুন → পেমেন্ট কনফার্মের আগে "Promo code" ট্যাপ করুন → কোড দিন → Apply করুন।
+
+**প্রশ্ন: পাঠাও প্রমো কোড কাজ না করলে কী করব?**
+- কোডটি মেয়াদোত্তীর্ণ বা একবার ব্যবহৃত হয়ে গেছে কিনা দেখুন
+- শুক্রবারের কোড (YAYDAY, FAST10) শুধু শুক্রবার কাজ করে
+- HELLOPATHAO শুধু নতুন অ্যাকাউন্টের জন্য
+
+**প্রশ্ন: ২০২৬ সালে সেরা পাঠাও প্রমো কোড কোনটি?**
+নতুন ব্যবহারকারী: **HELLOPATHAO** (৫০% ছাড়)। নিয়মিত ব্যবহারকারী: **YAYDAY** (শুক্রবার বাইক), **FAST10** (শুক্রবার পার্সেল)। রেফারেল: **ID4PV** (রাইড), **FAGU47E** (ফুড)।
+
+---
+
+## 💡 বাংলাদেশে আরও ট্রান্সপোর্ট ডিল পান
+
+**KoyJabo.com** বাংলাদেশের সেরা ফ্রি ট্রান্সপোর্ট গাইড — ঢাকার বাস, মেট্রো রেল, আন্তঃনগর কোচ, ট্রেন, লঞ্চ ও ফ্লাইটের সব তথ্য একসাথে।
+
+👉 **আরও ডিল দেখতে [koyjabo.com](https://koyjabo.com) ভিজিট করুন।**
+
+*সর্বশেষ আপডেট: জুন ২০২৬ | সূত্র: pathao.com অফিশিয়াল ব্লগ | যাচাই: KoyJabo টিম*
+`,
+	},
+	{
 		id: 'ai-traffic-system-dhaka-violations-fines',
 		slug: 'ai-traffic-system-dhaka-violations-fines',
 		title: 'Dhaka Traffic Rules, Violations & Fine List (2026 Guide)',
