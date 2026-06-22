@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tokens, Lang, SANS, BEN, T } from '../tokens';
 import { Logo } from './Logo';
+import { useAuth } from '../../contexts/AuthContext';
 
 const COLS = [
   {
@@ -57,6 +58,14 @@ interface KJFooterProps {
 }
 
 export function KJFooter({ tk, lang, isMobile, onNav }: KJFooterProps) {
+  const { user } = useAuth();
+  const isLoggedIn = !!user;
+
+  const cols = COLS.map(col => ({
+    ...col,
+    items: col.items.filter(item => !(isLoggedIn && item.route === 'signin')),
+  }));
+
   return (
     <footer
       style={{
@@ -168,7 +177,7 @@ export function KJFooter({ tk, lang, isMobile, onNav }: KJFooterProps) {
         </div>
 
         {/* Link columns */}
-        {COLS.map((col, i) => (
+        {cols.map((col, i) => (
           <div key={i}>
             <div
               style={{
@@ -220,7 +229,7 @@ export function KJFooter({ tk, lang, isMobile, onNav }: KJFooterProps) {
               display: 'inline-block',
             }}
           />
-          {T(lang, 'সব সিস্টেম সচল', 'All systems operational')}
+          {T(lang, 'ঢাকায় তৈরি, বাংলাদেশের জন্য', 'Made in Dhaka for Bangladesh')}
         </span>
       </div>
     </footer>
