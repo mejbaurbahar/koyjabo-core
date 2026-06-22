@@ -50,7 +50,7 @@ export const INTERCITY_BUS_ROUTES: IntercityBusRoute[] = [
     { district: "Manikganj", division: "Dhaka", busOperators: ["Shubho Jatra", "Paturiagami", "Selfi"], mainContactNumber: "-", route: "Dhaka (Gabtoli) ⇄ Manikganj", costNonAC: "৳150", costAC: "৳250" },
     { district: "Munshiganj", division: "Dhaka", busOperators: ["Nayan", "Dighirpar Transport"], mainContactNumber: "-", route: "Dhaka (Gulistan) ⇄ Munshiganj", costNonAC: "৳100 - 150", costAC: "-" },
     { district: "Tangail", division: "Dhaka", busOperators: ["Nirala Super", "Dhaleshwari", "Jhatika"], mainContactNumber: "01711-356655", route: "Dhaka (Mohakhali) ⇄ Tangail", costNonAC: "৳300", costAC: "৳500" },
-    { district: "Faridpur", division: "Dhaka", busOperators: ["Golden Line", "Hanif", "Sakura"], mainContactNumber: "01705-403333", route: "Dhaka (Gabtoli) ⇄ Faridpur", costNonAC: "৳400", costAC: "৳600" },
+    { district: "Faridpur", division: "Dhaka", busOperators: ["Comfort Line Pvt Ltd", "Golden Line", "Hanif Enterprise", "Sakura"], mainContactNumber: "01705-403333", route: "Dhaka (Gabtoli/Nabinagar) ⇄ Faridpur (via Padma Bridge)", costNonAC: "৳400", costAC: "৳600" },
     { district: "Gopalganj", division: "Dhaka", busOperators: ["Tungipara Express", "Imad", "Dola"], mainContactNumber: "01711-266512", route: "Dhaka (Sayedabad) ⇄ Gopalganj", costNonAC: "৳500", costAC: "৳800" },
     { district: "Madaripur", division: "Dhaka", busOperators: ["Chandra Paribahan", "Sharbick"], mainContactNumber: "01716-249539", route: "Dhaka ⇄ Madaripur (via Padma Bridge)", costNonAC: "৳400", costAC: "৳600" },
     { district: "Rajbari", division: "Dhaka", busOperators: ["Rabeya", "Hanif", "Soudia"], mainContactNumber: "01713-402641", route: "Dhaka ⇄ Rajbari", costNonAC: "৳450", costAC: "৳700" },
@@ -66,8 +66,8 @@ export const INTERCITY_BUS_ROUTES: IntercityBusRoute[] = [
     { district: "Feni", division: "Chattogram", busOperators: ["Star Line", "Ena Transport", "Dream Line", "Soudia Coach"], mainContactNumber: "01730-028006", route: "Dhaka ⇄ Feni", costNonAC: "৳450", costAC: "৳650" },
     { district: "Noakhali", division: "Chattogram", busOperators: ["Ekushey", "Himachal", "Ekhlas"], mainContactNumber: "01712-877797", route: "Dhaka ⇄ Noakhali", costNonAC: "৳500", costAC: "৳700" },
     { district: "Lakshmipur", division: "Chattogram", busOperators: ["Ekhlas", "Himachal", "Jonaki"], mainContactNumber: "01711-422477", route: "Dhaka ⇄ Lakshmipur", costNonAC: "৳550", costAC: "৳750" },
-    { district: "Khagrachhari", division: "Chattogram", busOperators: ["Shyamoli Paribahan", "Saintmartin Travels", "Shanti", "Hanif Enterprise"], mainContactNumber: "01970-060070", route: "Dhaka ⇄ Khagrachhari", costNonAC: "৳750", costAC: "৳1,200" },
-    { district: "Rangamati", division: "Chattogram", busOperators: ["Shyamoli Paribahan", "Dolphin", "Soudia Coach", "Evergreen Transport"], mainContactNumber: "01716-964648", route: "Dhaka ⇄ Rangamati", costNonAC: "৳850", costAC: "৳1,200-৳1,300" },
+    { district: "Khagrachhari", division: "Chattogram", busOperators: ["Shyamoli Paribahan", "Saintmartin Hyundai (Robi Express)", "Hanif Enterprise (Volvo)", "Soudia Coach Service"], mainContactNumber: "01970-060070", route: "Dhaka ⇄ Khagrachhari", costNonAC: "৳800-৳880", costAC: "৳1,600-৳1,700" },
+    { district: "Rangamati", division: "Chattogram", busOperators: ["Shyamoli Paribahan", "Hanif Enterprise", "Saintmartin Hyundai (Robi Express)", "Evergreen Transport", "Soudia Coach Service"], mainContactNumber: "01716-964648", route: "Dhaka ⇄ Rangamati (via Chittagong)", costNonAC: "৳790-৳900", costAC: "৳1,300-৳1,800" },
     { district: "Bandarban", division: "Chattogram", busOperators: ["Shyamoli Paribahan", "Hanif Enterprise", "Hanif Enterprise (Volvo)", "Saintmartin Hyundai (Robi Express)", "Saintmartin Travels Ltd.", "Soudia Coach Service", "S. Alam Service"], mainContactNumber: "01762-691341", route: "Dhaka ⇄ Bandarban (via Chittagong)", costNonAC: "৳830-৳900", costAC: "৳1,300-৳1,800" },
 
     // Rajshahi Division (8 Districts) — Akota & KTC Hanif confirmed by Shohoz
@@ -102,7 +102,7 @@ export const INTERCITY_BUS_ROUTES: IntercityBusRoute[] = [
 
     // Sylhet Division (4 Districts) — Shyamoli/Bilash/Ena confirmed, NOT Shohagh
     { district: "Sylhet", division: "Sylhet", busOperators: ["Shyamoli Paribahan", "Hanif Enterprise", "Bilash Paribahan", "Ena Transport", "Green Line", "London Express", "Al-Mobaraka", "Paradise Express", "BRTC"], mainContactNumber: "01713-100200", route: "Dhaka (Mohakhali/Sayedabad) ⇄ Sylhet", costNonAC: "৳680-৳740", costAC: "৳900-৳1,500" },
-    { district: "Moulvibazar", division: "Sylhet", busOperators: ["Shyamoli Paribahan", "Ena Transport", "Hanif Enterprise", "BRTC"], mainContactNumber: "01712-069722", route: "Dhaka ⇄ Moulvibazar", costNonAC: "৳550", costAC: "৳900" },
+    { district: "Moulvibazar", division: "Sylhet", busOperators: ["Hanif Enterprise", "Bilash Paribahan", "Ena Transport", "Shyamoli Paribahan", "Imperial Express"], mainContactNumber: "01712-069722", route: "Dhaka ⇄ Moulvibazar (via Shaistaganj/Sreemangal)", costNonAC: "৳580-৳600", costAC: "৳750-৳1,100" },
     { district: "Habiganj", division: "Sylhet", busOperators: ["Ena Transport", "Shyamoli Paribahan", "Diganta", "Modern"], mainContactNumber: "01712-069722", route: "Dhaka ⇄ Habiganj", costNonAC: "৳450", costAC: "৳700" },
     { district: "Sunamganj", division: "Sylhet", busOperators: ["Shyamoli Paribahan", "Bilash Paribahan", "Hanif Enterprise", "Ena Transport", "Paradise Express"], mainContactNumber: "01716-964648", route: "Dhaka ⇄ Sunamganj", costNonAC: "৳790-৳850", costAC: "৳1,100-৳1,600" },
 
@@ -126,9 +126,9 @@ export const INTERCITY_BUS_ROUTES: IntercityBusRoute[] = [
 // Major Transport Hubs (Non-District HQ)
 export const MAJOR_TRANSPORT_HUBS: IntercityBusRoute[] = [
     { district: "Benapole", division: "Khulna", busOperators: ["Shohagh Paribahan", "Hanif Enterprise", "Royal Coach", "Royal Maitri", "Star Deluxe", "Green Line", "Shyamoli"], mainContactNumber: "16557", route: "Dhaka ⇄ Benapole (Land Port)", costNonAC: "৳750", costAC: "৳850-৳1,700" },
-    { district: "Teknaf", division: "Chattogram", busOperators: ["Saintmartin", "Shyamoli", "Relax", "Soudia"], mainContactNumber: "01762-691341", route: "Dhaka ⇄ Teknaf", costNonAC: "৳1100", costAC: "৳1800+" },
-    { district: "Kuakata", division: "Barishal", busOperators: ["Sakura", "Green Line", "Kuakata Express"], mainContactNumber: "01711-131742", route: "Dhaka ⇄ Kuakata (Beach)", costNonAC: "৳850", costAC: "৳1200-1600" },
-    { district: "Sreemangal", division: "Sylhet", busOperators: ["Ena", "Shyamoli", "Hanif"], mainContactNumber: "01712-069722", route: "Dhaka ⇄ Sreemangal", costNonAC: "৳550", costAC: "৳900" },
+    { district: "Teknaf", division: "Chattogram", busOperators: ["Saintmartin Travels", "Saintmartin Travels Ltd.", "Shyamoli Paribahan"], mainContactNumber: "01762-691341", route: "Dhaka ⇄ Teknaf (via Cox's Bazar)", costNonAC: "-", costAC: "৳1,500-৳2,000" },
+    { district: "Kuakata", division: "Barishal", busOperators: ["LABIBA Classic", "Shyamoli Paribahan", "Ena Transport", "Emad Paribahan", "Soudia Coach Service", "S. Alam Service"], mainContactNumber: "01711-131742", route: "Dhaka ⇄ Kuakata (via Barisal/Patuakhali)", costNonAC: "৳800-৳950", costAC: "৳1,000-৳1,400" },
+    { district: "Sreemangal", division: "Sylhet", busOperators: ["Hanif Enterprise", "Bilash Paribahan", "Ena Transport", "Shyamoli Paribahan", "Imperial Express"], mainContactNumber: "01712-069722", route: "Dhaka ⇄ Sreemangal (via Shaistaganj)", costNonAC: "৳580-৳600", costAC: "৳750-৳1,100" },
     { district: "Bhairab", division: "Dhaka", busOperators: ["Ena", "Anannya", "Chalantika"], mainContactNumber: "01712-069722", route: "Dhaka ⇄ Bhairab", costNonAC: "৳300", costAC: "৳450" },
 ];
 
