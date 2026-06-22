@@ -8,6 +8,7 @@ import { SectionHeader } from '../components/SectionHeader';
 import { getUserHistory } from '../../../services/analyticsService';
 import { getAuthUser } from '../../../services/communityDataService';
 import { getFavoriteBusIds } from '../utils/favorites';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface ScreenProps {
   theme: 'dark' | 'light';
@@ -37,6 +38,7 @@ export function ProfilePage(props: ScreenProps) {
   const lbl = (en: string, bn: string) => T(lang, bn, en);
   const font = lang === 'bn' ? BEN : SANS;
   const [confirmSignOut, setConfirmSignOut] = useState(false);
+  const { logout } = useAuth();
   const user = getAuthUser();
   const history = getUserHistory();
   const favoriteCount = getFavoriteBusIds().length;
@@ -199,7 +201,7 @@ export function ProfilePage(props: ScreenProps) {
         title={lbl('Sign out?', 'সাইন আউট করবেন?')}
         message={lbl('You will be signed out of your account.', 'আপনি আপনার অ্যাকাউন্ট থেকে সাইন আউট হয়ে যাবেন।')}
         confirmLabel={lbl('Sign out', 'সাইন আউট')}
-        onConfirm={() => { setConfirmSignOut(false); onNav('signin'); }}
+        onConfirm={() => { logout(); setConfirmSignOut(false); onNav('signin'); }}
         onClose={() => setConfirmSignOut(false)}
       />
     </PageShell>
