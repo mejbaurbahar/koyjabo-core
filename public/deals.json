@@ -4,457 +4,964 @@
   "deals": [
     {
       "id": "pathao-ride-referral",
-      "page": ["home", "bus", "intercity", "metro", "train", "flight", "launch"],
+      "page": [
+        "home",
+        "bus",
+        "intercity",
+        "metro",
+        "train",
+        "flight",
+        "launch"
+      ],
       "emoji": "🛵",
-      "tag": { "bn": "Pathao রাইড", "en": "Pathao Ride" },
-      "title": { "bn": "Pathao বাইক/কার রাইড", "en": "Pathao Bike/Car Ride" },
+      "tag": {
+        "bn": "Pathao রাইড",
+        "en": "Pathao Ride"
+      },
+      "title": {
+        "bn": "Pathao বাইক/কার রাইড",
+        "en": "Pathao Bike/Car Ride"
+      },
       "price": "ছাড় পান",
       "originalPrice": null,
-      "sub": { "bn": "রেফারেল কোড ব্যবহার করুন", "en": "Use referral code" },
-      "badge": { "bn": "কোড", "en": "CODE" },
+      "sub": {
+        "bn": "রেফারেল কোড ব্যবহার করুন",
+        "en": "Use referral code"
+      },
+      "badge": {
+        "bn": "কোড",
+        "en": "CODE"
+      },
       "promoCode": "ID4PV",
       "nav": "home"
     },
     {
       "id": "pathao-food-referral",
-      "page": ["home", "bus", "intercity", "metro", "train", "flight", "launch"],
+      "page": [
+        "home",
+        "bus",
+        "intercity",
+        "metro",
+        "train",
+        "flight",
+        "launch"
+      ],
       "emoji": "🍔",
-      "tag": { "bn": "Pathao ফুড", "en": "Pathao Food" },
-      "title": { "bn": "Pathao ফুড ডেলিভারি", "en": "Pathao Food Delivery" },
+      "tag": {
+        "bn": "Pathao ফুড",
+        "en": "Pathao Food"
+      },
+      "title": {
+        "bn": "Pathao ফুড ডেলিভারি",
+        "en": "Pathao Food Delivery"
+      },
       "price": "ছাড় পান",
       "originalPrice": null,
-      "sub": { "bn": "রেফারেল কোড ব্যবহার করুন", "en": "Use referral code" },
-      "badge": { "bn": "কোড", "en": "CODE" },
+      "sub": {
+        "bn": "রেফারেল কোড ব্যবহার করুন",
+        "en": "Use referral code"
+      },
+      "badge": {
+        "bn": "কোড",
+        "en": "CODE"
+      },
       "promoCode": "FAGU47E",
       "nav": "home"
     },
     {
       "id": "gz-flight-cxb-01",
-      "page": ["home", "flight", "intercity"],
+      "page": [
+        "home",
+        "flight",
+        "intercity"
+      ],
       "emoji": "✈️",
-      "tag": { "bn": "ফ্লাইট অফার", "en": "Flight Deal" },
-      "title": { "bn": "ঢাকা → কক্সবাজার", "en": "Dhaka → Cox's Bazar" },
+      "tag": {
+        "bn": "ফ্লাইট অফার",
+        "en": "Flight Deal"
+      },
+      "title": {
+        "bn": "ঢাকা → কক্সবাজার",
+        "en": "Dhaka → Cox's Bazar"
+      },
       "price": "৳২,৪৯৯",
       "originalPrice": "৳৩,৫০০",
-      "sub": { "bn": "এক দিক · সীমিত সময়", "en": "One way · Limited time" },
-      "badge": { "bn": "২৮% ছাড়", "en": "28% OFF" },
+      "sub": {
+        "bn": "এক দিক · সীমিত সময়",
+        "en": "One way · Limited time"
+      },
+      "badge": {
+        "bn": "২৮% ছাড়",
+        "en": "28% OFF"
+      },
       "nav": "flights-hub"
     },
     {
       "id": "gz-flight-zyl-01",
-      "page": ["home", "flight", "intercity"],
+      "page": [
+        "home",
+        "flight",
+        "intercity"
+      ],
       "emoji": "✈️",
-      "tag": { "bn": "সেরা দাম", "en": "Best Price" },
-      "title": { "bn": "ঢাকা → সিলেট", "en": "Dhaka → Sylhet" },
+      "tag": {
+        "bn": "সেরা দাম",
+        "en": "Best Price"
+      },
+      "title": {
+        "bn": "ঢাকা → সিলেট",
+        "en": "Dhaka → Sylhet"
+      },
       "price": "৳২,২৯৯",
       "originalPrice": "৳২,৮০০",
-      "sub": { "bn": "এক দিক", "en": "One way" },
-      "badge": { "bn": "১৮% ছাড়", "en": "18% OFF" },
+      "sub": {
+        "bn": "এক দিক",
+        "en": "One way"
+      },
+      "badge": {
+        "bn": "১৮% ছাড়",
+        "en": "18% OFF"
+      },
       "nav": "flights-hub"
     },
     {
       "id": "gz-flight-cgp-01",
-      "page": ["home", "flight"],
+      "page": [
+        "home",
+        "flight"
+      ],
       "emoji": "✈️",
-      "tag": { "bn": "বাজেট ফ্লাইট", "en": "Budget Flight" },
-      "title": { "bn": "ঢাকা → চট্টগ্রাম", "en": "Dhaka → Chittagong" },
+      "tag": {
+        "bn": "বাজেট ফ্লাইট",
+        "en": "Budget Flight"
+      },
+      "title": {
+        "bn": "ঢাকা → চট্টগ্রাম",
+        "en": "Dhaka → Chittagong"
+      },
       "price": "৳১,৯৯৯",
       "originalPrice": "৳২,৫০০",
-      "sub": { "bn": "এক দিক", "en": "One way" },
-      "badge": { "bn": "২০% ছাড়", "en": "20% OFF" },
+      "sub": {
+        "bn": "এক দিক",
+        "en": "One way"
+      },
+      "badge": {
+        "bn": "২০% ছাড়",
+        "en": "20% OFF"
+      },
       "nav": "flights-hub"
     },
     {
       "id": "train-ctg-01",
-      "page": ["home", "train", "intercity"],
+      "page": [
+        "home",
+        "train",
+        "intercity"
+      ],
       "emoji": "🚆",
-      "tag": { "bn": "ট্রেন ডিল", "en": "Train Deal" },
-      "title": { "bn": "ঢাকা → চট্টগ্রাম", "en": "Dhaka → Chittagong" },
+      "tag": {
+        "bn": "ট্রেন ডিল",
+        "en": "Train Deal"
+      },
+      "title": {
+        "bn": "ঢাকা → চট্টগ্রাম",
+        "en": "Dhaka → Chittagong"
+      },
       "price": "৳৪০৫",
       "originalPrice": null,
-      "sub": { "bn": "শোভন চেয়ার", "en": "Shovon Chair" },
+      "sub": {
+        "bn": "শোভন চেয়ার",
+        "en": "Shovon Chair"
+      },
       "badge": null,
       "nav": "train-hub"
     },
     {
       "id": "train-syl-01",
-      "page": ["home", "train"],
+      "page": [
+        "home",
+        "train"
+      ],
       "emoji": "🚆",
-      "tag": { "bn": "ট্রেন", "en": "Train" },
-      "title": { "bn": "ঢাকা → সিলেট", "en": "Dhaka → Sylhet" },
+      "tag": {
+        "bn": "ট্রেন",
+        "en": "Train"
+      },
+      "title": {
+        "bn": "ঢাকা → সিলেট",
+        "en": "Dhaka → Sylhet"
+      },
       "price": "৳৩৭৫",
       "originalPrice": null,
-      "sub": { "bn": "শোভন চেয়ার", "en": "Shovon Chair" },
+      "sub": {
+        "bn": "শোভন চেয়ার",
+        "en": "Shovon Chair"
+      },
       "badge": null,
       "nav": "train-hub"
     },
     {
       "id": "train-cxb-01",
-      "page": ["train"],
+      "page": [
+        "train"
+      ],
       "emoji": "🚆",
-      "tag": { "bn": "কক্সবাজার এক্সপ্রেস", "en": "Cox's Bazar Exp." },
-      "title": { "bn": "ঢাকা → কক্সবাজার", "en": "Dhaka → Cox's Bazar" },
+      "tag": {
+        "bn": "কক্সবাজার এক্সপ্রেস",
+        "en": "Cox's Bazar Exp."
+      },
+      "title": {
+        "bn": "ঢাকা → কক্সবাজার",
+        "en": "Dhaka → Cox's Bazar"
+      },
       "price": "৳৭৪৫",
       "originalPrice": null,
-      "sub": { "bn": "শোভন চেয়ার", "en": "Shovon Chair" },
+      "sub": {
+        "bn": "শোভন চেয়ার",
+        "en": "Shovon Chair"
+      },
       "badge": null,
       "nav": "train-hub"
     },
     {
       "id": "train-khl-01",
-      "page": ["train", "intercity"],
+      "page": [
+        "train",
+        "intercity"
+      ],
       "emoji": "🚆",
-      "tag": { "bn": "পদ্মা সেতু রুট", "en": "Padma Bridge Route" },
-      "title": { "bn": "ঢাকা → খুলনা", "en": "Dhaka → Khulna" },
+      "tag": {
+        "bn": "পদ্মা সেতু রুট",
+        "en": "Padma Bridge Route"
+      },
+      "title": {
+        "bn": "ঢাকা → খুলনা",
+        "en": "Dhaka → Khulna"
+      },
       "price": "৳৪৪৫",
       "originalPrice": null,
-      "sub": { "bn": "মাত্র ৩ঘ ৪৫ মিনিট", "en": "Only 3h 45 min" },
-      "badge": { "bn": "দ্রুততম", "en": "Fastest" },
+      "sub": {
+        "bn": "মাত্র ৩ঘ ৪৫ মিনিট",
+        "en": "Only 3h 45 min"
+      },
+      "badge": {
+        "bn": "দ্রুততম",
+        "en": "Fastest"
+      },
       "nav": "train-hub"
     },
     {
       "id": "bus-ctg-01",
-      "page": ["bus", "intercity"],
+      "page": [
+        "bus",
+        "intercity"
+      ],
       "emoji": "🚌",
-      "tag": { "bn": "বাস অফার", "en": "Bus Offer" },
-      "title": { "bn": "ঢাকা → চট্টগ্রাম", "en": "Dhaka → Chittagong" },
+      "tag": {
+        "bn": "বাস অফার",
+        "en": "Bus Offer"
+      },
+      "title": {
+        "bn": "ঢাকা → চট্টগ্রাম",
+        "en": "Dhaka → Chittagong"
+      },
       "price": "৳৬৮০",
       "originalPrice": null,
-      "sub": { "bn": "নন-এসি", "en": "Non-AC" },
+      "sub": {
+        "bn": "নন-এসি",
+        "en": "Non-AC"
+      },
       "badge": null,
       "nav": "intercity"
     },
     {
       "id": "bus-syl-01",
-      "page": ["bus", "intercity"],
+      "page": [
+        "bus",
+        "intercity"
+      ],
       "emoji": "🚌",
-      "tag": { "bn": "এসি বাস", "en": "AC Bus" },
-      "title": { "bn": "ঢাকা → সিলেট", "en": "Dhaka → Sylhet" },
+      "tag": {
+        "bn": "এসি বাস",
+        "en": "AC Bus"
+      },
+      "title": {
+        "bn": "ঢাকা → সিলেট",
+        "en": "Dhaka → Sylhet"
+      },
       "price": "৳৯০০",
       "originalPrice": null,
-      "sub": { "bn": "এসি সিটিং", "en": "AC Sitting" },
+      "sub": {
+        "bn": "এসি সিটিং",
+        "en": "AC Sitting"
+      },
       "badge": null,
       "nav": "intercity"
     },
     {
       "id": "metro-single-01",
-      "page": ["metro"],
+      "page": [
+        "metro"
+      ],
       "emoji": "🚇",
-      "tag": { "bn": "সিঙ্গেল রাইড", "en": "Single Ride" },
-      "title": { "bn": "যেকোনো স্টেশন", "en": "Any station" },
+      "tag": {
+        "bn": "সিঙ্গেল রাইড",
+        "en": "Single Ride"
+      },
+      "title": {
+        "bn": "যেকোনো স্টেশন",
+        "en": "Any station"
+      },
       "price": "৳২০",
       "originalPrice": null,
-      "sub": { "bn": "সর্বনিম্ন ভাড়া", "en": "Minimum fare" },
+      "sub": {
+        "bn": "সর্বনিম্ন ভাড়া",
+        "en": "Minimum fare"
+      },
       "badge": null,
       "nav": "metro-hub"
     },
     {
       "id": "metro-full-01",
-      "page": ["metro"],
+      "page": [
+        "metro"
+      ],
       "emoji": "🚇",
-      "tag": { "bn": "পুরো রুট", "en": "Full Route" },
-      "title": { "bn": "উত্তরা → মতিঝিল", "en": "Uttara → Motijheel" },
+      "tag": {
+        "bn": "পুরো রুট",
+        "en": "Full Route"
+      },
+      "title": {
+        "bn": "উত্তরা → মতিঝিল",
+        "en": "Uttara → Motijheel"
+      },
       "price": "৳১০০",
       "originalPrice": null,
-      "sub": { "bn": "১৭ স্টেশন", "en": "17 stations" },
+      "sub": {
+        "bn": "১৭ স্টেশন",
+        "en": "17 stations"
+      },
       "badge": null,
       "nav": "metro-hub"
     },
     {
       "id": "launch-bsl-01",
-      "page": ["home", "launch", "intercity"],
+      "page": [
+        "home",
+        "launch",
+        "intercity"
+      ],
       "emoji": "🚢",
-      "tag": { "bn": "ডেক ক্লাস", "en": "Deck Class" },
-      "title": { "bn": "সদরঘাট → বরিশাল", "en": "Sadarghat → Barisal" },
+      "tag": {
+        "bn": "ডেক ক্লাস",
+        "en": "Deck Class"
+      },
+      "title": {
+        "bn": "সদরঘাট → বরিশাল",
+        "en": "Sadarghat → Barisal"
+      },
       "price": "৳২৮০",
       "originalPrice": null,
-      "sub": { "bn": "৮-১০ ঘণ্টা", "en": "8-10 hours" },
+      "sub": {
+        "bn": "৮-১০ ঘণ্টা",
+        "en": "8-10 hours"
+      },
       "badge": null,
       "nav": "launch-hub"
     },
     {
       "id": "launch-bsl-vip",
-      "page": ["launch"],
+      "page": [
+        "launch"
+      ],
       "emoji": "🛳️",
-      "tag": { "bn": "ভিআইপি কেবিন", "en": "VIP Cabin" },
-      "title": { "bn": "সদরঘাট → বরিশাল", "en": "Sadarghat → Barisal" },
+      "tag": {
+        "bn": "ভিআইপি কেবিন",
+        "en": "VIP Cabin"
+      },
+      "title": {
+        "bn": "সদরঘাট → বরিশাল",
+        "en": "Sadarghat → Barisal"
+      },
       "price": "৳১,৫০০",
       "originalPrice": null,
-      "sub": { "bn": "আরামদায়ক কেবিন", "en": "Comfortable cabin" },
+      "sub": {
+        "bn": "আরামদায়ক কেবিন",
+        "en": "Comfortable cabin"
+      },
       "badge": null,
       "nav": "launch-hub"
     },
     {
       "id": "launch-khl-01",
-      "page": ["launch"],
+      "page": [
+        "launch"
+      ],
       "emoji": "🚢",
-      "tag": { "bn": "লঞ্চ ডিল", "en": "Launch Deal" },
-      "title": { "bn": "সদরঘাট → খুলনা", "en": "Sadarghat → Khulna" },
+      "tag": {
+        "bn": "লঞ্চ ডিল",
+        "en": "Launch Deal"
+      },
+      "title": {
+        "bn": "সদরঘাট → খুলনা",
+        "en": "Sadarghat → Khulna"
+      },
       "price": "৳৩৫০",
       "originalPrice": null,
-      "sub": { "bn": "ডেক ক্লাস", "en": "Deck class" },
+      "sub": {
+        "bn": "ডেক ক্লাস",
+        "en": "Deck class"
+      },
       "badge": null,
       "nav": "launch-hub"
     },
     {
       "id": "shohoz-shyamoli-sylhet",
-      "page": ["home", "bus", "intercity"],
+      "page": [
+        "home",
+        "bus",
+        "intercity"
+      ],
       "emoji": "🚌",
-      "tag": { "bn": "Shohoz ডিসকাউন্ট", "en": "Shohoz Discount" },
-      "title": { "bn": "শ্যামলী · ঢাকা → সিলেট", "en": "Shyamoli · Dhaka → Sylhet" },
+      "tag": {
+        "bn": "Shohoz ডিসকাউন্ট",
+        "en": "Shohoz Discount"
+      },
+      "title": {
+        "bn": "শ্যামলী · ঢাকা → সিলেট",
+        "en": "Shyamoli · Dhaka → Sylhet"
+      },
       "price": "৳৬৮০",
       "originalPrice": "৳৭৪০",
-      "sub": { "bn": "Shohoz-এ বুক করুন", "en": "Book on Shohoz" },
-      "badge": { "bn": "৬০ টাকা ছাড়", "en": "৳60 OFF" },
+      "sub": {
+        "bn": "Shohoz-এ বুক করুন",
+        "en": "Book on Shohoz"
+      },
+      "badge": {
+        "bn": "৬০ টাকা ছাড়",
+        "en": "৳60 OFF"
+      },
       "promoCode": null,
       "nav": "intercity"
     },
     {
       "id": "shohoz-rongdhonu-rangpur",
-      "page": ["home", "bus", "intercity"],
+      "page": [
+        "home",
+        "bus",
+        "intercity"
+      ],
       "emoji": "🚌",
-      "tag": { "bn": "Shohoz অফার", "en": "Shohoz Offer" },
-      "title": { "bn": "রংধনু এক্সপ্রেস · ঢাকা → রংপুর", "en": "Rongdhonu · Dhaka → Rangpur" },
+      "tag": {
+        "bn": "Shohoz অফার",
+        "en": "Shohoz Offer"
+      },
+      "title": {
+        "bn": "রংধনু এক্সপ্রেস · ঢাকা → রংপুর",
+        "en": "Rongdhonu · Dhaka → Rangpur"
+      },
       "price": "৳১,০০০",
       "originalPrice": "৳১,৩০০",
-      "sub": { "bn": "AC স্লিপার", "en": "AC Sleeper" },
-      "badge": { "bn": "৩০০ টাকা ছাড়", "en": "৳300 OFF" },
+      "sub": {
+        "bn": "AC স্লিপার",
+        "en": "AC Sleeper"
+      },
+      "badge": {
+        "bn": "৩০০ টাকা ছাড়",
+        "en": "৳300 OFF"
+      },
       "promoCode": null,
       "nav": "intercity"
     },
     {
       "id": "shohoz-bangla-star-pabna",
-      "page": ["home", "bus", "intercity"],
+      "page": [
+        "home",
+        "bus",
+        "intercity"
+      ],
       "emoji": "🚌",
-      "tag": { "bn": "Shohoz ডিল", "en": "Shohoz Deal" },
-      "title": { "bn": "বাংলা স্টার · ঢাকা → পাবনা", "en": "Bangla Star · Dhaka → Pabna" },
+      "tag": {
+        "bn": "Shohoz ডিল",
+        "en": "Shohoz Deal"
+      },
+      "title": {
+        "bn": "বাংলা স্টার · ঢাকা → পাবনা",
+        "en": "Bangla Star · Dhaka → Pabna"
+      },
       "price": "৳৬৫০",
       "originalPrice": "৳৭০০",
-      "sub": { "bn": "Shohoz-এ বুক করুন", "en": "Book on Shohoz" },
-      "badge": { "bn": "৫০ টাকা ছাড়", "en": "৳50 OFF" },
+      "sub": {
+        "bn": "Shohoz-এ বুক করুন",
+        "en": "Book on Shohoz"
+      },
+      "badge": {
+        "bn": "৫০ টাকা ছাড়",
+        "en": "৳50 OFF"
+      },
       "promoCode": null,
       "nav": "intercity"
     },
     {
       "id": "pathao-new-user",
-      "page": ["home", "bus", "intercity"],
+      "page": [
+        "home",
+        "bus",
+        "intercity"
+      ],
       "emoji": "🛵",
-      "tag": { "bn": "Pathao নতুন ব্যবহারকারী", "en": "Pathao New User" },
-      "title": { "bn": "Pathao রাইডে ৫০% ছাড়", "en": "50% off Pathao ride" },
+      "tag": {
+        "bn": "Pathao নতুন ব্যবহারকারী",
+        "en": "Pathao New User"
+      },
+      "title": {
+        "bn": "Pathao রাইডে ৫০% ছাড়",
+        "en": "50% off Pathao ride"
+      },
       "price": "৫০% ছাড়",
       "originalPrice": null,
-      "sub": { "bn": "নতুন ব্যবহারকারী · Bike/Car/CNG", "en": "New users · Bike/Car/CNG" },
-      "badge": { "bn": "নতুন", "en": "NEW" },
+      "sub": {
+        "bn": "নতুন ব্যবহারকারী · Bike/Car/CNG",
+        "en": "New users · Bike/Car/CNG"
+      },
+      "badge": {
+        "bn": "নতুন",
+        "en": "NEW"
+      },
       "promoCode": "HELLOPATHAO",
       "nav": "home"
     },
     {
       "id": "pathao-friday-bike",
-      "page": ["home", "bus"],
+      "page": [
+        "home",
+        "bus"
+      ],
       "emoji": "🚲",
-      "tag": { "bn": "Pathao শুক্রবার অফার", "en": "Pathao Friday Offer" },
-      "title": { "bn": "প্রতি শুক্রবার বাইকে ছাড়", "en": "Bike discount every Friday" },
+      "tag": {
+        "bn": "Pathao শুক্রবার অফার",
+        "en": "Pathao Friday Offer"
+      },
+      "title": {
+        "bn": "প্রতি শুক্রবার বাইকে ছাড়",
+        "en": "Bike discount every Friday"
+      },
       "price": "১২% ছাড়",
       "originalPrice": null,
-      "sub": { "bn": "শুধু শুক্রবার · সপ্তাহে ১ বার", "en": "Fridays only · 1 use per week" },
-      "badge": { "bn": "শুক্রবার", "en": "FRIDAY" },
+      "sub": {
+        "bn": "শুধু শুক্রবার · সপ্তাহে ১ বার",
+        "en": "Fridays only · 1 use per week"
+      },
+      "badge": {
+        "bn": "শুক্রবার",
+        "en": "FRIDAY"
+      },
       "promoCode": "YAYDAY",
       "nav": "home"
     },
     {
       "id": "pathao-friday-parcel",
-      "page": ["home"],
+      "page": [
+        "home"
+      ],
       "emoji": "📦",
-      "tag": { "bn": "Pathao পার্সেল ডিল", "en": "Pathao Parcel Deal" },
-      "title": { "bn": "পার্সেলে ১২% ছাড় প্রতি শুক্রবার", "en": "12% off parcel every Friday" },
+      "tag": {
+        "bn": "Pathao পার্সেল ডিল",
+        "en": "Pathao Parcel Deal"
+      },
+      "title": {
+        "bn": "পার্সেলে ১২% ছাড় প্রতি শুক্রবার",
+        "en": "12% off parcel every Friday"
+      },
       "price": "১২% ছাড়",
       "originalPrice": null,
-      "sub": { "bn": "শুধু শুক্রবার · সপ্তাহে ১ বার", "en": "Fridays only · 1 use per week" },
+      "sub": {
+        "bn": "শুধু শুক্রবার · সপ্তাহে ১ বার",
+        "en": "Fridays only · 1 use per week"
+      },
       "badge": null,
       "promoCode": "FAST10",
       "nav": "home"
     },
     {
       "id": "shohoz-labiba-kuakata",
-      "page": ["home", "bus", "intercity"],
+      "page": [
+        "home",
+        "bus",
+        "intercity"
+      ],
       "emoji": "🏖️",
-      "tag": { "bn": "কুয়াকাটা ডিল", "en": "Kuakata Deal" },
-      "title": { "bn": "LABIBA · ঢাকা → কুয়াকাটা", "en": "LABIBA · Dhaka → Kuakata" },
+      "tag": {
+        "bn": "কুয়াকাটা ডিল",
+        "en": "Kuakata Deal"
+      },
+      "title": {
+        "bn": "LABIBA · ঢাকা → কুয়াকাটা",
+        "en": "LABIBA · Dhaka → Kuakata"
+      },
       "price": "৳৮০০",
       "originalPrice": "৳৮৫০",
-      "sub": { "bn": "Shohoz-এ বুক করুন", "en": "Book on Shohoz" },
-      "badge": { "bn": "৫০ টাকা ছাড়", "en": "৳50 OFF" },
+      "sub": {
+        "bn": "Shohoz-এ বুক করুন",
+        "en": "Book on Shohoz"
+      },
+      "badge": {
+        "bn": "৫০ টাকা ছাড়",
+        "en": "৳50 OFF"
+      },
       "promoCode": null,
       "nav": "intercity"
     },
     {
       "id": "gz-amex-intl-dec26",
-      "page": ["home", "flight", "blog"],
+      "page": [
+        "home",
+        "flight",
+        "blog"
+      ],
       "emoji": "✈️",
-      "tag": { "bn": "আন্তর্জাতিক ফ্লাইট", "en": "Int'l Flight" },
-      "title": { "bn": "আন্তর্জাতিক ফ্লাইটে ১৮% ছাড়", "en": "Up to 18% off Int'l Flight" },
+      "tag": {
+        "bn": "আন্তর্জাতিক ফ্লাইট",
+        "en": "Int'l Flight"
+      },
+      "title": {
+        "bn": "আন্তর্জাতিক ফ্লাইটে ১৮% ছাড়",
+        "en": "Up to 18% off Int'l Flight"
+      },
       "price": "১৮% পর্যন্ত",
       "originalPrice": null,
-      "sub": { "bn": "City Bank AMEX কার্ড · ৩১ ডিসে '২৬ পর্যন্ত", "en": "City Bank AMEX card · Till 31 Dec '26" },
-      "badge": { "bn": "১৮% ছাড়", "en": "18% OFF" },
+      "sub": {
+        "bn": "City Bank AMEX কার্ড · ৩১ ডিসে '২৬ পর্যন্ত",
+        "en": "City Bank AMEX card · Till 31 Dec '26"
+      },
+      "badge": {
+        "bn": "১৮% ছাড়",
+        "en": "18% OFF"
+      },
       "promoCode": "AMEX0126",
-      "nav": "flights-hub"
+      "nav": "flights-hub",
+      "expiresAt": "2026-12-31"
     },
     {
       "id": "gz-ebl-dom-jul26",
-      "page": ["home", "flight", "blog"],
+      "page": [
+        "home",
+        "flight",
+        "blog"
+      ],
       "emoji": "✈️",
-      "tag": { "bn": "দেশীয় ফ্লাইট", "en": "Domestic Flight" },
-      "title": { "bn": "দেশীয় ফ্লাইটে EBL ভিসা ছাড়", "en": "EBL Visa discount on domestic flight" },
+      "tag": {
+        "bn": "দেশীয় ফ্লাইট",
+        "en": "Domestic Flight"
+      },
+      "title": {
+        "bn": "দেশীয় ফ্লাইটে EBL ভিসা ছাড়",
+        "en": "EBL Visa discount on domestic flight"
+      },
       "price": "ছাড় পান",
       "originalPrice": null,
-      "sub": { "bn": "EBL Visa কার্ড · ৪ জুলাই '২৬ পর্যন্ত", "en": "EBL Visa card · Till 4 Jul '26" },
+      "sub": {
+        "bn": "EBL Visa কার্ড · ৪ জুলাই '২৬ পর্যন্ত",
+        "en": "EBL Visa card · Till 4 Jul '26"
+      },
       "badge": null,
       "promoCode": "EDOM0626",
-      "nav": "flights-hub"
+      "nav": "flights-hub",
+      "expiresAt": "2026-07-04"
     },
     {
       "id": "gz-visa-fly-sep26",
-      "page": ["home", "flight", "blog", "intercity"],
+      "page": [
+        "home",
+        "flight",
+        "blog",
+        "intercity"
+      ],
       "emoji": "✈️",
-      "tag": { "bn": "ভিসা কার্ড ডিল", "en": "Visa Card Deal" },
-      "title": { "bn": "ভিসা কার্ডে ফ্লাইট ডিসকাউন্ট", "en": "Flight discount with Visa card" },
+      "tag": {
+        "bn": "ভিসা কার্ড ডিল",
+        "en": "Visa Card Deal"
+      },
+      "title": {
+        "bn": "ভিসা কার্ডে ফ্লাইট ডিসকাউন্ট",
+        "en": "Flight discount with Visa card"
+      },
       "price": "ছাড় পান",
       "originalPrice": null,
-      "sub": { "bn": "সব Visa কার্ড · ২ সেপ্টেম্বর '২৬ পর্যন্ত", "en": "All Visa cards · Till 2 Sep '26" },
+      "sub": {
+        "bn": "সব Visa কার্ড · ২ সেপ্টেম্বর '২৬ পর্যন্ত",
+        "en": "All Visa cards · Till 2 Sep '26"
+      },
       "badge": null,
       "promoCode": "VISAFLY26",
-      "nav": "flights-hub"
+      "nav": "flights-hub",
+      "expiresAt": "2026-09-02"
     },
     {
       "id": "gz-gpstar-deal",
-      "page": ["home", "flight", "blog"],
+      "page": [
+        "home",
+        "flight",
+        "blog"
+      ],
       "emoji": "✈️",
-      "tag": { "bn": "GP Star অফার", "en": "GP Star Offer" },
-      "title": { "bn": "GP Star: ফ্লাইট + হোটেল ছাড়", "en": "GP Star: flight + hotel discount" },
+      "tag": {
+        "bn": "GP Star অফার",
+        "en": "GP Star Offer"
+      },
+      "title": {
+        "bn": "GP Star: ফ্লাইট + হোটেল ছাড়",
+        "en": "GP Star: flight + hotel discount"
+      },
       "price": "১০% পর্যন্ত",
       "originalPrice": null,
-      "sub": { "bn": "ফ্লাইট ১০% + হোটেল ৬৫% ছাড়", "en": "Flight 10% + hotel up to 65% off" },
-      "badge": { "bn": "GP Star", "en": "GP Star" },
+      "sub": {
+        "bn": "ফ্লাইট ১০% + হোটেল ৬৫% ছাড়",
+        "en": "Flight 10% + hotel up to 65% off"
+      },
+      "badge": {
+        "bn": "GP Star",
+        "en": "GP Star"
+      },
       "promoCode": "GPSTAR0126",
       "nav": "flights-hub"
     },
     {
       "id": "gz-bkash-intl",
-      "page": ["flight", "blog"],
+      "page": [
+        "flight",
+        "blog"
+      ],
       "emoji": "✈️",
-      "tag": { "bn": "bKash ফ্লাইট", "en": "bKash Flight" },
-      "title": { "bn": "bKash পেমেন্টে আন্তর্জাতিক ফ্লাইট ছাড়", "en": "Int'l flight discount with bKash" },
+      "tag": {
+        "bn": "bKash ফ্লাইট",
+        "en": "bKash Flight"
+      },
+      "title": {
+        "bn": "bKash পেমেন্টে আন্তর্জাতিক ফ্লাইট ছাড়",
+        "en": "Int'l flight discount with bKash"
+      },
       "price": "ছাড় পান",
       "originalPrice": null,
-      "sub": { "bn": "bKash পেমেন্ট · ৩০ জুন '২৬ পর্যন্ত", "en": "bKash payment · Till 30 Jun '26" },
+      "sub": {
+        "bn": "bKash পেমেন্ট · ৩০ জুন '২৬ পর্যন্ত",
+        "en": "bKash payment · Till 30 Jun '26"
+      },
       "badge": null,
       "promoCode": "INTB0526",
-      "nav": "flights-hub"
+      "nav": "flights-hub",
+      "expiresAt": "2026-06-30"
     },
     {
       "id": "gz-bkash-dom",
-      "page": ["flight", "blog"],
+      "page": [
+        "flight",
+        "blog"
+      ],
       "emoji": "✈️",
-      "tag": { "bn": "bKash দেশীয়", "en": "bKash Domestic" },
-      "title": { "bn": "bKash পেমেন্টে দেশীয় ফ্লাইট ছাড়", "en": "Domestic flight discount with bKash" },
+      "tag": {
+        "bn": "bKash দেশীয়",
+        "en": "bKash Domestic"
+      },
+      "title": {
+        "bn": "bKash পেমেন্টে দেশীয় ফ্লাইট ছাড়",
+        "en": "Domestic flight discount with bKash"
+      },
       "price": "ছাড় পান",
       "originalPrice": null,
-      "sub": { "bn": "bKash পেমেন্ট · ৩০ জুন '২৬ পর্যন্ত", "en": "bKash payment · Till 30 Jun '26" },
+      "sub": {
+        "bn": "bKash পেমেন্ট · ৩০ জুন '২৬ পর্যন্ত",
+        "en": "bKash payment · Till 30 Jun '26"
+      },
       "badge": null,
       "promoCode": "DOMB0526",
-      "nav": "flights-hub"
+      "nav": "flights-hub",
+      "expiresAt": "2026-06-30"
     },
     {
       "id": "gz-cards-dom",
-      "page": ["flight", "blog"],
+      "page": [
+        "flight",
+        "blog"
+      ],
       "emoji": "✈️",
-      "tag": { "bn": "কার্ড ডিসকাউন্ট", "en": "Card Discount" },
-      "title": { "bn": "নির্বাচিত কার্ডে দেশীয় ফ্লাইট ছাড়", "en": "Domestic flight discount for selected cards" },
+      "tag": {
+        "bn": "কার্ড ডিসকাউন্ট",
+        "en": "Card Discount"
+      },
+      "title": {
+        "bn": "নির্বাচিত কার্ডে দেশীয় ফ্লাইট ছাড়",
+        "en": "Domestic flight discount for selected cards"
+      },
       "price": "ছাড় পান",
       "originalPrice": null,
-      "sub": { "bn": "BRAC/City/DBBL/EBL/MTB/StanChart কার্ড", "en": "BRAC/City/DBBL/EBL/MTB/StanChart cards" },
+      "sub": {
+        "bn": "BRAC/City/DBBL/EBL/MTB/StanChart কার্ড",
+        "en": "BRAC/City/DBBL/EBL/MTB/StanChart cards"
+      },
       "badge": null,
       "promoCode": "DOMFLY0526",
-      "nav": "flights-hub"
+      "nav": "flights-hub",
+      "expiresAt": "2026-06-30"
     },
     {
       "id": "gz-mfs-dom",
-      "page": ["flight", "blog"],
+      "page": [
+        "flight",
+        "blog"
+      ],
       "emoji": "✈️",
-      "tag": { "bn": "মোবাইল ব্যাংকিং", "en": "Mobile Banking" },
-      "title": { "bn": "দেশীয় ফ্লাইটে মোবাইল ব্যাংকিং ছাড়", "en": "Domestic flight discount via mobile banking" },
+      "tag": {
+        "bn": "মোবাইল ব্যাংকিং",
+        "en": "Mobile Banking"
+      },
+      "title": {
+        "bn": "দেশীয় ফ্লাইটে মোবাইল ব্যাংকিং ছাড়",
+        "en": "Domestic flight discount via mobile banking"
+      },
       "price": "ছাড় পান",
       "originalPrice": null,
-      "sub": { "bn": "Nagad/Tap/Upay/Rocket · ৩০ জুন '২৬", "en": "Nagad/Tap/Upay/Rocket · Till 30 Jun '26" },
+      "sub": {
+        "bn": "Nagad/Tap/Upay/Rocket · ৩০ জুন '২৬",
+        "en": "Nagad/Tap/Upay/Rocket · Till 30 Jun '26"
+      },
       "badge": null,
       "promoCode": "FLYDOM0526",
-      "nav": "flights-hub"
+      "nav": "flights-hub",
+      "expiresAt": "2026-06-30"
     },
     {
       "id": "gz-cards-intl",
-      "page": ["flight", "blog"],
+      "page": [
+        "flight",
+        "blog"
+      ],
       "emoji": "✈️",
-      "tag": { "bn": "আন্তর্জাতিক কার্ড", "en": "Int'l Card Deal" },
-      "title": { "bn": "নির্বাচিত কার্ডে আন্তর্জাতিক ফ্লাইট ছাড়", "en": "Int'l flight discount for selected cards" },
+      "tag": {
+        "bn": "আন্তর্জাতিক কার্ড",
+        "en": "Int'l Card Deal"
+      },
+      "title": {
+        "bn": "নির্বাচিত কার্ডে আন্তর্জাতিক ফ্লাইট ছাড়",
+        "en": "Int'l flight discount for selected cards"
+      },
       "price": "ছাড় পান",
       "originalPrice": null,
-      "sub": { "bn": "BRAC/City/DBBL/EBL/MTB/StanChart কার্ড", "en": "BRAC/City/DBBL/EBL/MTB/StanChart cards" },
+      "sub": {
+        "bn": "BRAC/City/DBBL/EBL/MTB/StanChart কার্ড",
+        "en": "BRAC/City/DBBL/EBL/MTB/StanChart cards"
+      },
       "badge": null,
       "promoCode": "INTFLY0526",
-      "nav": "flights-hub"
+      "nav": "flights-hub",
+      "expiresAt": "2026-06-30"
     },
     {
       "id": "gz-mfs-intl",
-      "page": ["flight", "blog"],
+      "page": [
+        "flight",
+        "blog"
+      ],
       "emoji": "✈️",
-      "tag": { "bn": "আন্তর্জাতিক মোবাইল", "en": "Int'l Mobile Banking" },
-      "title": { "bn": "আন্তর্জাতিক ফ্লাইটে মোবাইল ব্যাংকিং ছাড়", "en": "Int'l flight discount via mobile banking" },
+      "tag": {
+        "bn": "আন্তর্জাতিক মোবাইল",
+        "en": "Int'l Mobile Banking"
+      },
+      "title": {
+        "bn": "আন্তর্জাতিক ফ্লাইটে মোবাইল ব্যাংকিং ছাড়",
+        "en": "Int'l flight discount via mobile banking"
+      },
       "price": "ছাড় পান",
       "originalPrice": null,
-      "sub": { "bn": "Nagad/Tap/Upay/Rocket · ৩০ জুন '২৬", "en": "Nagad/Tap/Upay/Rocket · Till 30 Jun '26" },
+      "sub": {
+        "bn": "Nagad/Tap/Upay/Rocket · ৩০ জুন '২৬",
+        "en": "Nagad/Tap/Upay/Rocket · Till 30 Jun '26"
+      },
       "badge": null,
       "promoCode": "FLYINT0526",
-      "nav": "flights-hub"
+      "nav": "flights-hub",
+      "expiresAt": "2026-06-30"
     },
     {
       "id": "gz-any-card-flight",
-      "page": ["home", "flight", "blog"],
+      "page": [
+        "home",
+        "flight",
+        "blog"
+      ],
       "emoji": "✈️",
-      "tag": { "bn": "সব কার্ড ফ্লাইট ডিল", "en": "All Card Flight Deal" },
-      "title": { "bn": "যেকোনো কার্ডে ফ্লাইট বুকিং ছাড়", "en": "Flight booking discount with any card" },
+      "tag": {
+        "bn": "সব কার্ড ফ্লাইট ডিল",
+        "en": "All Card Flight Deal"
+      },
+      "title": {
+        "bn": "যেকোনো কার্ডে ফ্লাইট বুকিং ছাড়",
+        "en": "Flight booking discount with any card"
+      },
       "price": "ছাড় পান",
       "originalPrice": null,
-      "sub": { "bn": "দেশীয় ও আন্তর্জাতিক · ৩০ জুন '২৬", "en": "Domestic & Int'l · Till 30 Jun '26" },
+      "sub": {
+        "bn": "দেশীয় ও আন্তর্জাতিক · ৩০ জুন '২৬",
+        "en": "Domestic & Int'l · Till 30 Jun '26"
+      },
       "badge": null,
       "promoCode": "GOFLY0526",
-      "nav": "flights-hub"
+      "nav": "flights-hub",
+      "expiresAt": "2026-06-30"
     },
     {
       "id": "gz-tour-mobile",
-      "page": ["flight", "blog", "intercity"],
+      "page": [
+        "flight",
+        "blog",
+        "intercity"
+      ],
       "emoji": "🏝️",
-      "tag": { "bn": "ট্যুর মোবাইল ডিল", "en": "Tour Mobile Deal" },
-      "title": { "bn": "দেশীয় ট্যুরে মোবাইল ব্যাংকিং ছাড়", "en": "Domestic tour discount via mobile banking" },
+      "tag": {
+        "bn": "ট্যুর মোবাইল ডিল",
+        "en": "Tour Mobile Deal"
+      },
+      "title": {
+        "bn": "দেশীয় ট্যুরে মোবাইল ব্যাংকিং ছাড়",
+        "en": "Domestic tour discount via mobile banking"
+      },
       "price": "ছাড় পান",
       "originalPrice": null,
-      "sub": { "bn": "মোবাইল ব্যাংকিং · ৩০ জুন '২৬ পর্যন্ত", "en": "Any mobile banking · Till 30 Jun '26" },
+      "sub": {
+        "bn": "মোবাইল ব্যাংকিং · ৩০ জুন '২৬ পর্যন্ত",
+        "en": "Any mobile banking · Till 30 Jun '26"
+      },
       "badge": null,
       "promoCode": "TOURM0526",
-      "nav": "intercity"
+      "nav": "intercity",
+      "expiresAt": "2026-06-30"
     },
     {
       "id": "gz-tour-card",
-      "page": ["flight", "blog", "intercity"],
+      "page": [
+        "flight",
+        "blog",
+        "intercity"
+      ],
       "emoji": "🏝️",
-      "tag": { "bn": "ট্যুর কার্ড ডিল", "en": "Tour Card Deal" },
-      "title": { "bn": "দেশীয় ট্যুরে কার্ড পেমেন্টে ছাড়", "en": "Domestic tour discount with card payment" },
+      "tag": {
+        "bn": "ট্যুর কার্ড ডিল",
+        "en": "Tour Card Deal"
+      },
+      "title": {
+        "bn": "দেশীয় ট্যুরে কার্ড পেমেন্টে ছাড়",
+        "en": "Domestic tour discount with card payment"
+      },
       "price": "ছাড় পান",
       "originalPrice": null,
-      "sub": { "bn": "যেকোনো কার্ড পেমেন্ট · ৩০ জুন '২৬", "en": "Any card payment · Till 30 Jun '26" },
+      "sub": {
+        "bn": "যেকোনো কার্ড পেমেন্ট · ৩০ জুন '২৬",
+        "en": "Any card payment · Till 30 Jun '26"
+      },
       "badge": null,
       "promoCode": "TOURC0526",
-      "nav": "intercity"
+      "nav": "intercity",
+      "expiresAt": "2026-06-30"
     }
   ]
 }

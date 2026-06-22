@@ -14,8 +14,14 @@ interface Deal {
   sub: { bn: string; en: string };
   badge: { bn: string; en: string } | null;
   promoCode?: string | null;
+  expiresAt?: string | null;  // ISO date 'YYYY-MM-DD', null/absent = no expiry
   nav?: string;
   params?: Record<string, string>;
+}
+
+function isExpired(deal: Deal): boolean {
+  if (!deal.expiresAt) return false;
+  return new Date(deal.expiresAt) < new Date(new Date().toDateString());
 }
 
 interface DealsFile {
@@ -55,7 +61,7 @@ export function PromoBanner({ tk, lang, page, onNav }: PromoBannerProps) {
 
   useEffect(() => {
     fetchDeals().then(all => {
-      setDeals(all.filter(d => d.page.includes(page)));
+      setDeals(all.filter(d => d.page.includes(page) && !isExpired(d)));
     });
   }, [page]);
 
