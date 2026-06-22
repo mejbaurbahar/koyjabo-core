@@ -96,25 +96,25 @@ const SEAT_LABEL_MAP: Record<SeatState, { en: string; bn: string }> = {
 
 const SPONSORED_CARDS = [
   {
-    brand: 'bKash', brandColor: '#e2136e', icon: '💳',
-    title: '10% cashback on bus tickets',
-    titleBn: 'বাস টিকেটে ১০% ক্যাশব্যাক',
-    sub: 'Pay with bKash · T&C apply',
-    subBn: 'bKash দিয়ে পেমেন্ট করুন',
+    brand: 'Pathao', brandColor: '#e8173b', icon: '🛵',
+    title: '50% off your first ride',
+    titleBn: 'প্রথম রাইডে ৫০% ছাড়',
+    sub: 'New users · Code: HELLOPATHAO',
+    subBn: 'নতুন ব্যবহারকারী · কোড: HELLOPATHAO',
   },
   {
-    brand: 'Travel Insurance', brandColor: '#0ea5e9', icon: '🛡️',
-    title: 'Cover your intercity journey',
-    titleBn: 'আপনার যাত্রা সুরক্ষিত রাখুন',
-    sub: 'From ৳49 per trip',
-    subBn: '৳৪৯ থেকে শুরু প্রতি ট্রিপে',
+    brand: 'Pathao', brandColor: '#e8173b', icon: '📦',
+    title: '12% off parcel every Friday',
+    titleBn: 'প্রতি শুক্রবার পার্সেলে ১২% ছাড়',
+    sub: 'Code: FAST10 · 1 use per Friday',
+    subBn: 'কোড: FAST10 · সপ্তাহে ১ বার',
   },
   {
-    brand: 'Uber', brandColor: '#000', icon: '🚗',
-    title: '50% off your next ride',
-    titleBn: 'পরের রাইডে ৫০% ছাড়',
-    sub: 'Use code KOYJABO50',
-    subBn: 'কোড KOYJABO50 ব্যবহার করুন',
+    brand: 'Pathao', brandColor: '#e8173b', icon: '🚲',
+    title: '12% off bike every Friday',
+    titleBn: 'প্রতি শুক্রবার বাইকে ১২% ছাড়',
+    sub: 'Code: YAYDAY · 1 use per Friday',
+    subBn: 'কোড: YAYDAY · সপ্তাহে ১ বার',
   },
 ];
 
