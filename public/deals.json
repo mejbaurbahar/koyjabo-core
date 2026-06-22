@@ -3,6 +3,32 @@
   "_updated": "2026-06-22",
   "deals": [
     {
+      "id": "pathao-ride-referral",
+      "page": ["home", "bus", "intercity", "metro", "train", "flight", "launch"],
+      "emoji": "🛵",
+      "tag": { "bn": "Pathao রাইড", "en": "Pathao Ride" },
+      "title": { "bn": "Pathao বাইক/কার রাইড", "en": "Pathao Bike/Car Ride" },
+      "price": "ছাড় পান",
+      "originalPrice": null,
+      "sub": { "bn": "রেফারেল কোড ব্যবহার করুন", "en": "Use referral code" },
+      "badge": { "bn": "কোড", "en": "CODE" },
+      "promoCode": "ID4PV",
+      "nav": "home"
+    },
+    {
+      "id": "pathao-food-referral",
+      "page": ["home", "bus", "intercity", "metro", "train", "flight", "launch"],
+      "emoji": "🍔",
+      "tag": { "bn": "Pathao ফুড", "en": "Pathao Food" },
+      "title": { "bn": "Pathao ফুড ডেলিভারি", "en": "Pathao Food Delivery" },
+      "price": "ছাড় পান",
+      "originalPrice": null,
+      "sub": { "bn": "রেফারেল কোড ব্যবহার করুন", "en": "Use referral code" },
+      "badge": { "bn": "কোড", "en": "CODE" },
+      "promoCode": "FAGU47E",
+      "nav": "home"
+    },
+    {
       "id": "gz-flight-cxb-01",
       "page": ["home", "flight", "intercity"],
       "emoji": "✈️",
