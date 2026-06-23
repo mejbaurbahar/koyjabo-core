@@ -185,12 +185,11 @@ export function AIChatPage(props: Props) {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Warm-up: load cached area and refresh GPS in background
     const consent = localStorage.getItem('kj-location-consent');
-    if (consent !== 'yes') return;
-    // Use stored area first (fast), then refresh in background
     const stored = localStorage.getItem('kj-location-area');
     if (stored) userAreaRef.current = stored;
-    if (!navigator.geolocation) return;
+    if (consent !== 'yes' || !navigator.geolocation) return;
     navigator.geolocation.getCurrentPosition(
       pos => {
         const area = nearestArea(pos.coords.latitude, pos.coords.longitude);
@@ -201,6 +200,27 @@ export function AIChatPage(props: Props) {
       { timeout: 5000, maximumAge: 300000 }
     );
   }, []);
+
+  // Returns cached area immediately, or fetches fresh GPS (max 6 s) if cache is empty.
+  // Resolves with null when GPS is denied, unavailable, or timed out.
+  function getOrFetchArea(): Promise<string | null> {
+    if (userAreaRef.current) return Promise.resolve(userAreaRef.current);
+    if (!navigator.geolocation) return Promise.resolve(null);
+    return new Promise(resolve => {
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          const area = nearestArea(pos.coords.latitude, pos.coords.longitude);
+          userAreaRef.current = area;
+          localStorage.setItem('kj-location-area', area);
+          localStorage.setItem('kj-location-consent', 'yes');
+          resolve(area);
+        },
+        () => resolve(null),
+        { timeout: 6000, maximumAge: 60000 }
+      );
+    });
+  }
+
   // Auto-scroll to latest message whenever messages or loading state changes
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
@@ -258,17 +278,34 @@ export function AIChatPage(props: Props) {
         .map(m => ({ role: m.isUser ? 'user' : 'assistant', text: m.text }));
 
       const hasFrom = /\bfrom\b|থেকে|হতে/i.test(userText);
-      const area = userAreaRef.current;
 
       // Extract destination from "how to go X", "want to go X", "jeta chai X" etc.
       function extractGoToDest(q: string): string | null {
         const m = q.match(
-          /(?:how\s+(?:to\s+)?(?:go|get)\s+(?:to\s+)?|route\s+to\s+|reach\s+|take\s+me\s+to\s+|go\s+to\s+|directions?\s+to\s+|best\s+(?:bus|way)\s+(?:to|for)\s+|nearest\s+way\s+to\s+|how\s+can\s+i\s+(?:get\s+to|reach)\s+|(?:i\s+)?want\s+to\s+go(?:\s+to)?\s+|(?:i\s+)?want\s+to\s+visit\s+|(?:i\s+)?need\s+to\s+go(?:\s+to)?\s+|(?:i\s+)?(?:am|m)\s+going(?:\s+to)?\s+)([a-zA-Zঀ-৿][a-zA-Zঀ-৿\s']{1,40})(?:\?|।|,|$)/i
-        ) || q.match(/(?:কিভাবে\s+যাব[োো]?\s+|যেতে\s+চাই\s+|যাবো?\s+কিভাবে\s+|জেতে\s+চাই\s+|jeta\s+chai\s*,?\s*|jabo\s+|jete\s+chai\s+|jaite\s+chai\s+)([a-zA-Zঀ-৿][a-zA-Zঀ-৿\s']{1,40})(?:\?|।|,|$)/i);
+          /(?:how\s+(?:to\s+)?(?:go|get)\s+(?:to\s+)?|route\s+to\s+|reach\s+|take\s+me\s+to\s+|go\s+to\s+|directions?\s+to\s+|best\s+(?:bus|way)\s+(?:to|for)\s+|nearest\s+way\s+to\s+|how\s+can\s+i\s+(?:get\s+to|reach)\s+|(?:i\s+)?want\s+to\s+go(?:\s+to)?\s+|(?:i\s+)?want\s+to\s+visit\s+|(?:i\s+)?need\s+to\s+go(?:\s+to)?\s+|(?:i\s+)?(?:am|m)\s+going(?:\s+to)?\s+)([a-zA-Z\u0980-\u09FF][a-zA-Z\u0980-\u09FF\s']{1,40})(?:\?|।|,|$)/i
+        ) || q.match(/(?:কিভাবে\s+যাব[োো]?\s+|যেতে\s+চাই\s+|যাবো?\s+কিভাবে\s+|জেতে\s+চাই\s+|jeta\s+chai\s*,?\s*|jabo\s+|jete\s+chai\s+|jaite\s+chai\s+)([a-zA-Z\u0980-\u09FF][a-zA-Z\u0980-\u09FF\s']{1,40})(?:\?|।|,|$)/i);
         return m ? m[1].trim().replace(/[?।,]$/, '').trim() : null;
       }
 
       const goToDest = !hasFrom ? extractGoToDest(userText) : null;
+      const isNavIntent = !hasFrom && goToDest !== null;
+
+      // When nav-intent is detected and no cached area, proactively fetch GPS now.
+      let area = userAreaRef.current;
+      if (isNavIntent && !area) {
+        area = await getOrFetchArea() ?? '';
+      }
+
+      // If still no area after GPS attempt, ask user to specify origin
+      if (isNavIntent && !area && goToDest) {
+        const noLocMsg = lang === 'bn'
+          ? `📍 আপনার বর্তমান অবস্থান জানতে পারছি না।\n\n**${goToDest}** যেতে চান, কিন্তু আপনি কোথা থেকে যাচ্ছেন? একটু বলুন — যেমন: \'মিরপুর থেকে ${goToDest}\' বা \'ফার্মগেট থেকে ${goToDest}\'।`
+          : `📍 I couldn't detect your current location.\n\nYou want to go to **${goToDest}** — where are you starting from? Try: \'Mirpur to ${goToDest}\' or \'Farmgate to ${goToDest}\'.`;
+        saveChatMessage({ role: 'assistant', text: noLocMsg, timestamp: Date.now() } as any, nextSessionId);
+        setMessages(m => [...m, { id: Date.now()+1, isUser:false, text: noLocMsg }]);
+        return;
+      }
+
       let queryForOffline: string;
       if (area && goToDest) {
         // Build unambiguous "FROM to DEST" — prevents positional reversal
@@ -300,6 +337,7 @@ export function AIChatPage(props: Props) {
       setIsLoading(false);
     }
   }
+
 
   return (
     <PageShell {...props}>

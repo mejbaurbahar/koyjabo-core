@@ -2115,10 +2115,15 @@ export const askGeminiRoute = async (userQuery: string, _userApiKey?: string, ch
   if (needsSmartAI && (travelIntent.from || travelIntent.to)) {
     const smartResult = buildSmartResponse(query);
     if (smartResult && !responseParts.some(p => p.includes(smartResult.substring(0, 20)))) {
+      // Resolve correct from/to for the header:
+      // classifyIntent sets from=undefined when nav-intent ("how to go X") is detected —
+      // substitute GPS district so the header reads "GPS → Destination" not "undefined → X".
+      const headerFrom = travelIntent.from ?? _gpsDistrict ?? undefined;
+      const headerTo = travelIntent.to;
       // Prepend ranked route header when we have both from+to and it's a route/comparison query
-      if (travelIntent.from && travelIntent.to &&
+      if (headerFrom && headerTo &&
           (travelIntent.type === 'route' || travelIntent.type === 'comparison' || travelIntent.type === 'recommendation')) {
-        const header = buildRankedRouteHeader(travelIntent.from, travelIntent.to, isBn);
+        const header = buildRankedRouteHeader(headerFrom, headerTo, isBn);
         responseParts.push(header + smartResult);
       } else {
         responseParts.push(smartResult);

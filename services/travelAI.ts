@@ -304,6 +304,8 @@ function detectIntentType(lower: string): TravelIntent['type'] {
 }
 
 // Tokenize a query and extract location mentions (handles multi-word names)
+// Returns locations sorted by their FIRST occurrence in the query, so positional
+// order is preserved: "X to Y" always yields [X, Y], never [Y, X].
 function extractLocations(query: string): string[] {
   const lower = query.toLowerCase();
   const found: string[] = [];
@@ -330,7 +332,17 @@ function extractLocations(query: string): string[] {
     }
   }
 
-  return [...new Set(found)];
+  const unique = [...new Set(found)];
+
+  // Sort by first occurrence position in the lowercased query so that
+  // "Benapole to Dhaka" → [Benapole, Dhaka] and "Dhaka to Benapole" → [Dhaka, Benapole].
+  unique.sort((a, b) => {
+    const posA = lower.indexOf(a.toLowerCase());
+    const posB = lower.indexOf(b.toLowerCase());
+    return (posA < 0 ? 99999 : posA) - (posB < 0 ? 99999 : posB);
+  });
+
+  return unique;
 }
 
 export function classifyIntent(query: string): TravelIntent {
@@ -338,10 +350,16 @@ export function classifyIntent(query: string): TravelIntent {
   const isBn = /[\u0980-\u09FF]/.test(query);
   const locations = extractLocations(query);
 
+  // Nav-intent detection: "how to go X", "route to X", "X jabo", "reach X" etc.
+  // In these patterns the named place is ALWAYS the destination, never the origin.
+  // When we detect this and only one location was found, assign it to `to` (from = GPS context).
+  const isNavToIntent = locations.length === 1 &&
+    /\b(how\s+(?:to\s+)?(?:go|get|reach)|route\s+to|reach|go\s+to|want\s+to\s+go|directions?\s+to|jabo|jaite|jete|jite|kivabe|kemne|যাব|যেতে|যাবো|কিভাবে|কেমনে)\b/i.test(lower);
+
   return {
     type: detectIntentType(lower),
-    from: locations[0],
-    to: locations[1],
+    from: isNavToIntent ? undefined : locations[0],
+    to: isNavToIntent ? locations[0] : locations[1],
     mode: detectMode(lower),
     preferences: {
       ac: lower.includes('ac') || lower.includes('এসি') ? true
