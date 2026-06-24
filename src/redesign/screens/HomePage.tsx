@@ -2085,10 +2085,8 @@ export function HomePage({
           <NativeAdSectionReal tk={tk} lang={lang} isMobile={isMobile}/>
         </div>
 
-        {/* ── Multiplex ad — related content grid ── */}
-        <div style={{ ...section, display: 'flex', justifyContent: 'center' }}>
-          <AdSlot tk={tk} lang={lang} kind="multiplex" />
-        </div>
+        {/* ── Multiplex ad — no wrapper padding when slot is empty ── */}
+        <AdSlot tk={tk} lang={lang} kind="multiplex" />
 
         {/* ── Footer ── */}
         <KJFooterComponent tk={tk} lang={lang} isMobile={isMobile} onNav={onNav}/>

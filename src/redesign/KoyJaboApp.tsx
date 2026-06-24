@@ -452,7 +452,7 @@ export function KoyJaboApp() {
         WebkitOverflowScrolling: 'touch',
         paddingLeft: showRails ? 184 : 0,
         paddingRight: showRails ? 184 : 0,
-        paddingBottom: showAnchor ? 96 : 0,
+        paddingBottom: 0,
         boxSizing: 'border-box',
       }}>
         {/* When forcing desktop on phone, content needs min-width to render properly */}
