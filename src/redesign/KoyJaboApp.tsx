@@ -176,10 +176,16 @@ function entryFromLocation(): StackEntry {
   return { route: match?.[0] || 'home' };
 }
 
+function getInitialLang(): Lang {
+  if (typeof window === 'undefined') return 'bn';
+  const stored = localStorage.getItem('kj-language');
+  return stored === 'en' ? 'en' : 'bn';
+}
+
 export function KoyJaboApp() {
   const { user } = useAuth();
   const [theme, setTheme] = useState<Theme>('dark');
-  const [lang, setLang] = useState<Lang>('en');
+  const [lang, setLang] = useState<Lang>(getInitialLang);
   const [forceDesktop, setForceDesktop] = useState(false); // phone user can request desktop view
   const [stack, setStack] = useState<StackEntry[]>(() => [entryFromLocation()]);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -299,11 +305,19 @@ export function KoyJaboApp() {
   // Back button only on detail/leaf pages, not on hub/main pages
   const showBack = canBack && SHOW_BACK_ROUTES.has(top.route);
 
+  const toggleLang = useCallback(() => {
+    setLang(l => {
+      const next = l === 'bn' ? 'en' : 'bn';
+      localStorage.setItem('kj-language', next);
+      return next;
+    });
+  }, []);
+
   const sharedProps = {
     theme, device: resolvedDevice, lang,
     route: top.route, params: top.params ?? {},
     canBack: showBack, onBack: back, onNav: nav, onNavTab: navTab,
-    onLang: () => setLang(l => l === 'bn' ? 'en' : 'bn'),
+    onLang: toggleLang,
     onTheme: () => setTheme(t => t === 'dark' ? 'light' : 'dark'),
     onMenu: () => setMenuOpen(true),
   } as any; // typed via each screen's Props interface
@@ -445,7 +459,7 @@ export function KoyJaboApp() {
         device={resolvedDevice}
         activeRoute={top.route}
         canBack={canBack} onBack={back}
-        onNav={nav} onLang={() => setLang(l => l === 'bn' ? 'en' : 'bn')}
+        onNav={nav} onLang={toggleLang}
         onTheme={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
         onMenu={() => setMenuOpen(true)}
         user={user}
