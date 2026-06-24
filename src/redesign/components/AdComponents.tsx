@@ -206,9 +206,38 @@ export function VignetteAd({ tk, lang, open, onClose }: { tk: Tokens; lang: Lang
         {count === 0 && <span>✕</span>}
       </button>
       <div style={{ width: 'min(420px,100%)', minHeight: 360, maxHeight: '76vh', borderRadius: 18, overflow: 'hidden', background: tk.bg, border: `1px solid ${tk.line}`, boxShadow: tk.shadowLg, display: 'flex', flexDirection: 'column' }}>
-        <div style={{ minHeight: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 12 }}>
-          <AdsenseUnit slot="9568870428" format="fluid" layout="in-article"/>
-        </div>
+        {(() => {
+          const VignetteAdInner = () => {
+            const [vFilled, setVFilled] = React.useState<boolean | null>(null);
+            const vAds = [
+              { icon:'🤖', title:'KoyJabo AI ট্রাভেল সহায়ক', titleEn:'KoyJabo AI Travel Assistant', sub:'যেকোনো ট্রান্সপোর্ট প্রশ্ন করুন বিনামূলে', subEn:'Ask transport questions free — Bengali & English', href:'/ai', bg:'linear-gradient(135deg,#064e3b,#065f46)', accent:'#10b981' },
+              { icon:'🗺️', title:'আন্তঃজেলা ভ্রমণ পরিকল্পনা', titleEn:'Intercity Travel Planner', sub:'বাস, ট্রেন, লঞ্চ ও বিমান এক জায়গায়', subEn:'Bus, train, launch & flights in one app', href:'/intercity', bg:'linear-gradient(135deg,#1e3a5f,#1d4ed8)', accent:'#60a5fa' },
+            ];
+            const va = vAds[Math.floor(Math.random() * vAds.length)];
+            const nav = () => { onClose(); window.history.pushState({}, '', va.href); window.dispatchEvent(new PopStateEvent('popstate')); };
+            return (
+              <>
+                <div style={{ display: vFilled === false ? 'none' : 'block', minHeight: vFilled === true ? 300 : 0 }}>
+                  <div style={{ minHeight: vFilled === true ? 300 : 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 12 }}>
+                    <AdsenseUnit slot="9568870428" format="fluid" layout="in-article" onFillResult={setVFilled}/>
+                  </div>
+                </div>
+                {vFilled === false && (
+                  <div onClick={nav} style={{ cursor:'pointer', padding:'32px 24px', display:'flex', flexDirection:'column', alignItems:'center', gap:16, textAlign:'center', background:va.bg, flex:1, minHeight:300 }}>
+                    <span style={{ fontSize:56 }}>{va.icon}</span>
+                    <div style={{ fontFamily:lang==='bn'?BEN:SANS, fontSize:20, fontWeight:800, color:'#fff' }}>{T(lang,va.title,va.titleEn)}</div>
+                    <div style={{ fontFamily:lang==='bn'?BEN:SANS, fontSize:14, color:'rgba(255,255,255,0.75)', lineHeight:1.5 }}>{T(lang,va.sub,va.subEn)}</div>
+                    <div style={{ marginTop:8, background:'rgba(255,255,255,0.15)', borderRadius:12, padding:'12px 24px', fontFamily:SANS, fontWeight:700, fontSize:14, color:va.accent }}>
+                      {T(lang,'চেষ্টা করুন →','Try it →')}
+                    </div>
+                    <div style={{ fontFamily:SANS, fontSize:10, color:'rgba(255,255,255,0.3)', marginTop:4 }}>PROMOTED</div>
+                  </div>
+                )}
+              </>
+            );
+          };
+          return <VignetteAdInner />;
+        })()}
       </div>
     </div>
   );
