@@ -120,6 +120,7 @@ if (typeof document !== 'undefined') {
 export function PromoBanner({ tk, lang, page, onNav }: PromoBannerProps) {
   const [deals, setDeals] = useState<Deal[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
+  // Start canRight true when deals exist — correct after measurement
   const [canLeft, setCanLeft] = useState(false);
   const [canRight, setCanRight] = useState(false);
 
@@ -139,16 +140,31 @@ export function PromoBanner({ tk, lang, page, onNav }: PromoBannerProps) {
   }, []);
 
   useEffect(() => {
+    if (deals.length === 0) return;
     const el = scrollRef.current;
     if (!el) return;
-    // After deals render, check if scrollable
-    const timer = setTimeout(updateArrows, 100);
+
+    // Measure immediately, then again after paint settles
+    updateArrows();
+    const t1 = setTimeout(updateArrows, 80);
+    const t2 = setTimeout(updateArrows, 300);
+
     el.addEventListener('scroll', updateArrows, { passive: true });
-    window.addEventListener('resize', updateArrows, { passive: true });
+
+    // ResizeObserver: fires when container size changes (mobile viewport, font load, etc.)
+    let ro: ResizeObserver | null = null;
+    if ('ResizeObserver' in window) {
+      ro = new ResizeObserver(updateArrows);
+      ro.observe(el);
+    } else {
+      window.addEventListener('resize', updateArrows, { passive: true });
+    }
+
     return () => {
-      clearTimeout(timer);
+      clearTimeout(t1);
+      clearTimeout(t2);
       el.removeEventListener('scroll', updateArrows);
-      window.removeEventListener('resize', updateArrows);
+      ro ? ro.disconnect() : window.removeEventListener('resize', updateArrows);
     };
   }, [deals, updateArrows]);
 
