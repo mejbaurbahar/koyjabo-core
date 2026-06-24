@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { Tokens, Lang, SANS, BEN, T } from '../tokens';
 
 export type PromoPage = 'home' | 'bus' | 'train' | 'metro' | 'flight' | 'intercity' | 'launch' | 'blog';
@@ -14,7 +14,7 @@ interface Deal {
   sub: { bn: string; en: string };
   badge: { bn: string; en: string } | null;
   promoCode?: string | null;
-  expiresAt?: string | null;  // ISO date 'YYYY-MM-DD', null/absent = no expiry
+  expiresAt?: string | null;
   nav?: string;
   params?: Record<string, string>;
 }
@@ -29,7 +29,6 @@ interface DealsFile {
   deals: Deal[];
 }
 
-// Module-level cache so deals.json is fetched once per session
 let _dealsCache: Deal[] | null = null;
 let _dealsPromise: Promise<Deal[]> | null = null;
 
@@ -56,8 +55,73 @@ interface PromoBannerProps {
   onNav: (route: string, params?: Record<string, string>) => void;
 }
 
+// ── Scroll arrow button ─────────────────────────────────────────────────────
+function ScrollArrow({
+  dir,
+  onClick,
+  visible,
+  tk,
+}: {
+  dir: 'left' | 'right';
+  onClick: () => void;
+  visible: boolean;
+  tk: Tokens;
+}) {
+  if (!visible) return null;
+  return (
+    <button
+      onClick={onClick}
+      aria-label={dir === 'left' ? 'Scroll left' : 'Scroll right'}
+      className="kj-scroll-arrow"
+      style={{
+        position: 'absolute',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        [dir]: 0,
+        zIndex: 10,
+        width: 36,
+        height: 36,
+        borderRadius: '50%',
+        border: `1.5px solid ${tk.primary}66`,
+        background: tk.panel,
+        boxShadow: `0 2px 12px rgba(0,0,0,0.35), 0 0 0 2px ${tk.primary}22`,
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: 16,
+        color: tk.primary,
+        fontWeight: 800,
+        transition: 'opacity 0.2s',
+        animation: 'kj-arrow-pulse 1.8s ease-in-out infinite',
+      }}
+    >
+      {dir === 'left' ? '‹' : '›'}
+    </button>
+  );
+}
+
+// Inject pulse animation once
+if (typeof document !== 'undefined') {
+  const id = '__kj-arrow-style';
+  if (!document.getElementById(id)) {
+    const s = document.createElement('style');
+    s.id = id;
+    s.textContent = `
+      @keyframes kj-arrow-pulse {
+        0%,100% { box-shadow: 0 2px 12px rgba(0,0,0,0.35), 0 0 0 2px rgba(16,185,129,0.13); transform: translateY(-50%) scale(1); }
+        50% { box-shadow: 0 2px 16px rgba(0,0,0,0.45), 0 0 0 5px rgba(16,185,129,0.22); transform: translateY(-50%) scale(1.08); }
+      }
+    `;
+    document.head.appendChild(s);
+  }
+}
+
 export function PromoBanner({ tk, lang, page, onNav }: PromoBannerProps) {
   const [deals, setDeals] = useState<Deal[]>([]);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canLeft, setCanLeft] = useState(false);
+  const [canRight, setCanRight] = useState(false);
 
   useEffect(() => {
     fetchDeals().then(all => {
@@ -66,6 +130,33 @@ export function PromoBanner({ tk, lang, page, onNav }: PromoBannerProps) {
       setDeals(valid);
     });
   }, [page]);
+
+  const updateArrows = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanLeft(el.scrollLeft > 4);
+    setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    // After deals render, check if scrollable
+    const timer = setTimeout(updateArrows, 100);
+    el.addEventListener('scroll', updateArrows, { passive: true });
+    window.addEventListener('resize', updateArrows, { passive: true });
+    return () => {
+      clearTimeout(timer);
+      el.removeEventListener('scroll', updateArrows);
+      window.removeEventListener('resize', updateArrows);
+    };
+  }, [deals, updateArrows]);
+
+  const scroll = (dir: 'left' | 'right') => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir === 'left' ? -440 : 440, behavior: 'smooth' });
+  };
 
   if (deals.length === 0) return null;
 
@@ -92,14 +183,24 @@ export function PromoBanner({ tk, lang, page, onNav }: PromoBannerProps) {
         </span>
       </div>
 
-      {/* Scrollable deal cards */}
-      <div style={{
-        display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 6,
-        scrollbarWidth: 'none', msOverflowStyle: 'none',
-      } as React.CSSProperties}>
-        {deals.map(deal => (
-          <DealCard key={deal.id} deal={deal} tk={tk} lang={lang} onNav={onNav} />
-        ))}
+      {/* Scrollable row with arrow buttons */}
+      <div style={{ position: 'relative' }}>
+        <ScrollArrow dir="left"  onClick={() => scroll('left')}  visible={canLeft}  tk={tk} />
+        <ScrollArrow dir="right" onClick={() => scroll('right')} visible={canRight} tk={tk} />
+
+        <div
+          ref={scrollRef}
+          style={{
+            display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 6,
+            scrollbarWidth: 'none', msOverflowStyle: 'none',
+            paddingLeft: canLeft ? 20 : 0,
+            paddingRight: canRight ? 20 : 0,
+          } as React.CSSProperties}
+        >
+          {deals.map(deal => (
+            <DealCard key={deal.id} deal={deal} tk={tk} lang={lang} onNav={onNav} />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -123,7 +224,6 @@ function DealCard({
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }).catch(() => {
-      // fallback for older browsers
       const ta = document.createElement('textarea');
       ta.value = deal.promoCode!;
       document.body.appendChild(ta);
@@ -153,14 +253,12 @@ function DealCard({
         overflow: 'hidden',
       }}
     >
-      {/* Glow blob */}
       <div style={{
         position: 'absolute', top: -20, right: -20,
         width: 60, height: 60, borderRadius: 999,
         background: `${tk.primary}10`, pointerEvents: 'none',
       }} />
 
-      {/* Discount badge — top-right */}
       {deal.badge && (
         <div style={{
           position: 'absolute', top: 8, right: 8,
@@ -172,7 +270,6 @@ function DealCard({
         </div>
       )}
 
-      {/* Tag */}
       <div style={{
         display: 'inline-block',
         background: `${tk.primary}20`, borderRadius: 6, padding: '2px 7px', marginBottom: 7,
@@ -182,7 +279,6 @@ function DealCard({
         {T(lang, deal.tag.bn, deal.tag.en)}
       </div>
 
-      {/* Emoji + title */}
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: 5, marginBottom: 5 }}>
         <span style={{ fontSize: 15, lineHeight: 1.2, flexShrink: 0 }}>{deal.emoji}</span>
         <div style={{ fontFamily: BEN, fontWeight: 700, fontSize: 12, color: tk.text, lineHeight: 1.3 }}>
@@ -190,7 +286,6 @@ function DealCard({
         </div>
       </div>
 
-      {/* Price row */}
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 5, marginBottom: 2 }}>
         <span style={{ fontFamily: SANS, fontWeight: 900, fontSize: 17, color: tk.primary, lineHeight: 1 }}>
           {deal.price}
@@ -202,12 +297,10 @@ function DealCard({
         )}
       </div>
 
-      {/* Sub-label */}
       <div style={{ fontFamily: BEN, fontSize: 10, color: tk.textFaint, fontWeight: 500, marginBottom: deal.promoCode ? 7 : 0 }}>
         {T(lang, deal.sub.bn, deal.sub.en)}
       </div>
 
-      {/* Promo code row with copy button */}
       {deal.promoCode && (
         <div
           onClick={handleCopy}
@@ -229,7 +322,6 @@ function DealCard({
         </div>
       )}
 
-      {/* Arrow — only when no promo code (promo code replaces it) */}
       {deal.nav && !deal.promoCode && (
         <div style={{
           position: 'absolute', bottom: 9, right: 10,
