@@ -117,6 +117,10 @@ export function TrainDetailPage(props: Props) {
               </div>
             </div>
 
+            <div style={{ margin: '16px 0' }}>
+              <AdSlot tk={tk} lang={lang} kind="in-article" />
+            </div>
+
             {/* Routes */}
             <div style={{ ...card(18), marginBottom:16 }}>
               <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:16 }}>
@@ -222,6 +226,9 @@ export function TrainDetailPage(props: Props) {
             </div>
 
             <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
+            <div style={{ margin: '20px 0' }}>
+              <AdSlot tk={tk} lang={lang} kind="multiplex" />
+            </div>
           </div>
 
           {/* Sidebar */}

@@ -246,6 +246,9 @@ export function MetroDetailPage(props: ScreenProps) {
         </div>
 
         {/* ── Fare Table ───────────────────────────────────────────────── */}
+        <div style={{ margin: '16px 0' }}>
+          <AdSlot tk={tk} lang={lang} kind="in-article" />
+        </div>
         <div style={{ ...card, marginBottom: 24 }}>
           <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 700, letterSpacing: 0.8, textTransform: 'uppercase', color: tk.textFaint, marginBottom: 16 }}>
             {lbl('Fare Table (from Uttara North)', 'ভাড়ার তালিকা (উত্তরা উত্তর থেকে)')}
@@ -314,6 +317,9 @@ export function MetroDetailPage(props: ScreenProps) {
         {/* Ad Slot */}
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
           <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
+        </div>
+        <div style={{ margin: '20px 0' }}>
+          <AdSlot tk={tk} lang={lang} kind="multiplex" />
         </div>
       </div>
     </PageShell>

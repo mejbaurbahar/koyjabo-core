@@ -629,6 +629,9 @@ export function TrainPage(props: Props) {
           {activeTab === 'routemap' && renderRouteMap()}
 
           <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
+          <div style={{ margin: '20px 0' }}>
+            <AdSlot tk={tk} lang={lang} kind="multiplex" />
+          </div>
         </div>
       </div>
     </PageShell>

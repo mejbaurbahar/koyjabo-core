@@ -236,6 +236,9 @@ export function MetroPage(props: Props) {
 
           <PromoBanner tk={tk} lang={lang} page="metro" onNav={onNav}/>
           <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
+          <div style={{ margin: '20px 0' }}>
+            <AdSlot tk={tk} lang={lang} kind="multiplex" />
+          </div>
         </div>
       </div>
     </PageShell>
