@@ -34,9 +34,19 @@ data/collected/
 # Processed intermediate data (regenerate via: node scripts/process-bd-locations.mjs)
 data/generated/
 
-# Playwright test screenshots
-*.png
+# Dev screenshots and AI tooling artifacts — never commit these
 .playwright-mcp/
+.agent/
+.gemini/
+scroll-screenshots/
+# Root-level and misc PNG screenshots (Playwright/manual testing)
+# Exception: public/ and intercity/public/ contain real app assets
+*.png
+!public/*.png
+!public/buses-image/*.png
+!public/images/**/*.png
+!intercity/public/*.png
+!intercity-route-finder/public/*.png
 
 # Secret management scripts — run locally, never commit
 update-smtp-secret.cjs
@@ -51,6 +61,12 @@ data/comprehensive-bangladesh-intercity-routes.json
 
 # Local intercity public data mirrors (should not be committed)
 intercity/public/data/*.json
+
+# Backup files
+*.backup
+
+# Dead projects that should not be in this repo
+intercity-route-finder/
 
 # User PII, device tracking, and search history — must not be in git
 # These are community data store files managed by the Cloudflare proxy

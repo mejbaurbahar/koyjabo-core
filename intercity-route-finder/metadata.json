@@ -1,7 +1,0 @@
-{
-  "name": "BdTravelMate: Intercity & Local Router",
-  "description": "A comprehensive travel planner for Bangladesh integrating local Dhaka buses with intercity flights, trains, and buses. Finds the best multi-modal routes.",
-  "requestFramePermissions": [
-    "geolocation"
-  ]
-}
