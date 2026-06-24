@@ -1006,7 +1006,7 @@ const buildViaHubSuggestions = (from: string, to: string): Array<{
     return candidates.sort((a, b) => b.score - a.score).slice(0, 3).map(({ score: _s, ...rest }) => rest);
 };
 
-export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | 'bn' = 'en'): RouteResponse => {
+export const getOfflineIntercityData = async (from: string, to: string, lang: 'en' | 'bn' = 'en'): Promise<RouteResponse> => {
     const connFrom = getConnectivity(from);
     const connTo = getConnectivity(to);
     const coordFrom = DISTRICT_COORDINATES[from];

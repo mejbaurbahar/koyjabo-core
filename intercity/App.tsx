@@ -193,9 +193,9 @@ function App() {
       }
 
       setLoading(true);
-      setTimeout(() => {
+      setTimeout(async () => {
         try {
-          const resultData = getOfflineIntercityData(fromParam, toParam, language as 'en' | 'bn');
+          const resultData = await getOfflineIntercityData(fromParam, toParam, language as 'en' | 'bn');
           setResult(resultData);
         } catch (err) {
           // silently ignore
@@ -327,9 +327,9 @@ function App() {
     setResult(null);
 
     // Simulate a brief loading for UX
-    setTimeout(() => {
+    setTimeout(async () => {
       try {
-        const resultData = getOfflineIntercityData(from, to, language as 'en' | 'bn');
+        const resultData = await getOfflineIntercityData(from, to, language as 'en' | 'bn');
 
         setResult(resultData);
         window.history.pushState({}, '', buildIntercityUrl(from, to));
