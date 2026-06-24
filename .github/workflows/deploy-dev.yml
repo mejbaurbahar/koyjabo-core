@@ -54,6 +54,15 @@ jobs:
           fi
           echo "Build OK — $(find dist -type f | wc -l) files"
 
+      - name: Sanitize dist — remove private data files
+        run: |
+          rm -f dist/bd-locations.json
+          rm -f "dist/intercity/bangladesh-intercity-routes.json"
+          rm -f "dist/intercity/comprehensive-bangladesh-intercity-routes.json"
+          rm -rf dist/intercity/data/
+          rm -rf dist/data/
+          echo "Sanitized. Remaining files: $(find dist -type f | wc -l)"
+
       - name: Clone koyjabo-dev (deploy target)
         env:
           DATA_GITHUB_TOKEN: ${{ secrets.DATA_GITHUB_TOKEN }}

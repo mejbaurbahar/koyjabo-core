@@ -51,3 +51,12 @@ data/comprehensive-bangladesh-intercity-routes.json
 
 # Local intercity public data mirrors (should not be committed)
 intercity/public/data/*.json
+
+# User PII, device tracking, and search history — must not be in git
+# These are community data store files managed by the Cloudflare proxy
+data/users/
+data/devices/
+data/history/
+data/avatars/
+data/results/
+data/advanced-qa.raw.json

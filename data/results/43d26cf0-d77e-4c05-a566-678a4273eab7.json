@@ -1,5 +1,0 @@
-{
-  "success": false,
-  "error": "API rate limit exceeded for user ID 245405312. If you reach out to GitHub Support for help, please include the request ID 1401:399B48:79168E2:1C108733:6A34483E and timestamp 2026-06-18 19:34:22 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) - https://docs.github.com/en/rest/using-the-rest-api/getting-started-with-the-rest-api#rate-limiting",
-  "completedAt": 1781811262893
-}

@@ -52,6 +52,18 @@ jobs:
           fi
           echo "Build OK — $(find dist -type f | wc -l) files"
 
+      - name: Sanitize dist — remove private data files
+        run: |
+          # bd-locations.json is served via private proxy — must never be a static file
+          rm -f dist/bd-locations.json
+          # Intercity standalone JSON data dumps — not needed; data is bundled in JS chunks
+          rm -f "dist/intercity/bangladesh-intercity-routes.json"
+          rm -f "dist/intercity/comprehensive-bangladesh-intercity-routes.json"
+          rm -rf dist/intercity/data/
+          # Root-level intercity data mirror (should not be deployed)
+          rm -rf dist/data/
+          echo "Sanitized. Remaining files: $(find dist -type f | wc -l)"
+
       - name: Clone Dhaka-Commute gh-pages branch (deploy target)
         env:
           DATA_GITHUB_TOKEN: ${{ secrets.DATA_GITHUB_TOKEN }}
