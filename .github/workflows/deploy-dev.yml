@@ -54,13 +54,18 @@ jobs:
           fi
           echo "Build OK — $(find dist -type f | wc -l) files"
 
-      - name: Sanitize dist — remove private data files
+      - name: Sanitize dist — remove private data and duplicate files
         run: |
           rm -f dist/bd-locations.json
           rm -f "dist/intercity/bangladesh-intercity-routes.json"
           rm -f "dist/intercity/comprehensive-bangladesh-intercity-routes.json"
           rm -rf dist/intercity/data/
           rm -rf dist/data/
+          find dist/intercity -maxdepth 1 -name "index-*.js"            -delete 2>/dev/null || true
+          find dist/intercity -maxdepth 1 -name "index-*.css"           -delete 2>/dev/null || true
+          find dist/intercity -maxdepth 1 -name "leaflet-*.js"          -delete 2>/dev/null || true
+          find dist/intercity -maxdepth 1 -name "vendor-*.js"           -delete 2>/dev/null || true
+          find dist/intercity -maxdepth 1 -name "workbox-window*.js"    -delete 2>/dev/null || true
           echo "Sanitized. Remaining files: $(find dist -type f | wc -l)"
 
       - name: Clone koyjabo-dev (deploy target)

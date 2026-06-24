@@ -120,6 +120,17 @@ export default defineConfig(({ mode }) => {
             '**/*.{js,css,html,ico,png,svg,woff,woff2,ttf,webmanifest,manifest,webp,jpg,jpeg,gif,txt,xml}',
             'intercity/**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest,txt,xml}'
           ],
+          globIgnores: [
+            // Removed from public/ — exclude from precache so SW does not reference missing files
+            'enhanced-sw.js',
+            'visitor-counter.html',
+            // intercity root-level JS/CSS are duplicates of intercity/assets/ — precache only the assets/ versions
+            'intercity/index-*.js',
+            'intercity/index-*.css',
+            'intercity/leaflet-*.js',
+            'intercity/vendor-*.js',
+            'intercity/workbox-window*.js',
+          ],
           navigateFallback: 'index.html',  // Enable automatic fallback to index.html for SPA offline support
           navigateFallbackDenylist: [/^\/api/, /^\/intercity/, /^\/ads\.txt/, /^\/robots\.txt/, /^\/sitemap\.xml/],
           cleanupOutdatedCaches: true,
