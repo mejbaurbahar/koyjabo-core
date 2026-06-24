@@ -1,37 +1,29 @@
 name: Auth Handler
 
-# Secure backend for KoyJabo authentication.
-# User data is written to the PRIVATE repo (mejbaurbahar/koyjabo) via DATA_GITHUB_TOKEN.
-# Temp results are written to this public repo via the automatic GITHUB_TOKEN.
-
 on:
   workflow_dispatch:
     inputs:
       requestId:
-        description: 'Unique request ID (UUID from the frontend)'
+        description: 'Request ID'
         required: true
         type: string
       action:
-        description: 'Auth action (signup, save-data, record-query, etc.)'
+        description: 'Auth action'
         required: true
         type: string
       email:
-        description: 'User email (masked in logs immediately)'
         required: false
         type: string
         default: ''
       passwordHash:
-        description: 'SHA-256 pre-hashed password (never plaintext)'
         required: false
         type: string
         default: ''
       userId:
-        description: 'User ID (for authenticated operations)'
         required: false
         type: string
         default: ''
       data:
-        description: 'Additional JSON payload'
         required: false
         type: string
         default: '{}'
@@ -55,17 +47,26 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Checkout auth scripts (private)
+        uses: actions/checkout@v4
+        with:
+          repository: mejbaurbahar/koyjabo
+          token: ${{ secrets.DATA_GITHUB_TOKEN }}
+          path: _auth
+          sparse-checkout: .github/scripts
+          sparse-checkout-cone-mode: false
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '24'
 
       - name: Install auth script dependencies
-        working-directory: .github/scripts
+        working-directory: _auth/.github/scripts
         run: npm install --production
 
       - name: Run auth handler
-        working-directory: .github/scripts
+        working-directory: _auth/.github/scripts
         env:
           AUTH_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DATA_GITHUB_TOKEN: ${{ secrets.DATA_GITHUB_TOKEN || secrets.DEPLOY_TOKEN }}

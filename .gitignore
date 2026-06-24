@@ -53,6 +53,9 @@ update-smtp-secret.cjs
 setup-secrets.cjs
 setup-koyjabo-core-secrets.cjs
 
+# Auth implementation scripts — live in private koyjabo repo, never in public source
+.github/scripts/
+
 # Sensitive local transport dataset files
 public/bd-locations.json
 public/data/*.json
