@@ -45,12 +45,21 @@ function AdsenseUnit({ slot, format = 'auto', onFillResult }: { slot: string; fo
       const status = ins.getAttribute('data-adsbygoogle-status');
       if (status === 'done' || status === 'filled') { checkFill(); return; }
       const asg = (window as any).adsbygoogle;
-      if (!asg || typeof asg.push !== 'function') { onFillResult?.(false); return; }
+      // Not ready yet — retry (script may still be loading)
+      if (!asg || typeof asg.push !== 'function') {
+        timer.current = window.setTimeout(doPush, 1000);
+        return;
+      }
       pushed.current = true;
       try { asg.push({}); }
       catch { pushed.current = false; onFillResult?.(false); return; }
-      timer.current = window.setTimeout(() => { checkFill(); }, 3000);
+      timer.current = window.setTimeout(() => { checkFill(); }, 3500);
     };
+
+    // Hard timeout — if never pushed after 7s → blocked
+    const blockTimeout = window.setTimeout(() => {
+      if (!pushed.current) onFillResult?.(false);
+    }, 7000);
 
     if ('IntersectionObserver' in window) {
       const observer = new IntersectionObserver(
@@ -58,10 +67,10 @@ function AdsenseUnit({ slot, format = 'auto', onFillResult }: { slot: string; fo
         { rootMargin: '400px 0px' }
       );
       observer.observe(ins);
-      return () => { observer.disconnect(); clearTimeout(timer.current); };
+      return () => { observer.disconnect(); clearTimeout(timer.current); clearTimeout(blockTimeout); };
     }
     doPush();
-    return () => clearTimeout(timer.current);
+    return () => { clearTimeout(timer.current); clearTimeout(blockTimeout); };
   }, [slot, format]);
 
   return (
@@ -79,17 +88,48 @@ function AdsenseUnit({ slot, format = 'auto', onFillResult }: { slot: string; fo
 
 // ── SideRailAd: fixed skyscraper (desktop ≥1500px gutters)
 export function SideRailAd({ tk, lang, side }: { tk: Tokens; lang: Lang; side: 'left' | 'right' }) {
+  const [filled, setFilled] = useState<boolean | null>(null);
+
+  const handleRailClick = () => {
+    window.history.pushState({}, '', '/advertise');
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  };
+
   return (
     <div style={{
       position: 'fixed', top: '50%', transform: 'translateY(-50%)',
       [side]: 8, width: 160, zIndex: 80,
-      background: tk.panelMuted, border: `1px solid ${tk.line}`, borderRadius: 12,
-      minHeight: 600, display: 'flex', flexDirection: 'column', alignItems: 'stretch',
+      background: filled === false ? 'linear-gradient(180deg,#064e3b,#022c22)' : filled === null ? 'transparent' : tk.panelMuted,
+      border: filled === false ? '1px solid #10b98133' : `1px solid ${tk.line}`,
+      borderRadius: 12,
+      minHeight: filled !== null ? 220 : 0,
+      display: 'flex', flexDirection: 'column', alignItems: 'stretch',
       justifyContent: 'flex-start', padding: 8, overflow: 'hidden',
+      transition: 'min-height 0.3s',
     }}>
-      <div style={{ minHeight: 560, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <AdsenseUnit slot="7294303750"/>
+      <div style={{ display: filled === false ? 'none' : 'block', minHeight: filled === true ? 560 : 0 }}>
+        <div style={{ minHeight: filled === true ? 560 : 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <AdsenseUnit slot="7294303750" onFillResult={setFilled}/>
+        </div>
       </div>
+      {filled === false && (
+        <div
+          onClick={handleRailClick}
+          style={{ cursor: 'pointer', padding: '12px 8px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, textAlign: 'center' }}
+        >
+          <span style={{ fontSize: 32 }}>📢</span>
+          <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 12, fontWeight: 700, color: '#fff', lineHeight: 1.4 }}>
+            {T(lang, 'KoyJabo-তে বিজ্ঞাপন দিন', 'Advertise on KoyJabo')}
+          </div>
+          <div style={{ fontFamily: SANS, fontSize: 10, color: 'rgba(255,255,255,0.65)', lineHeight: 1.4 }}>
+            {T(lang, '৫০,০০০+ ব্যবহারকারী', '50K+ users')}
+          </div>
+          <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 700, color: '#10b981', marginTop: 4 }}>
+            {T(lang, 'রেট দেখুন →', 'View rates →')}
+          </div>
+          <div style={{ fontFamily: SANS, fontSize: 9, color: 'rgba(255,255,255,0.3)', marginTop: 8 }}>PROMOTED</div>
+        </div>
+      )}
     </div>
   );
 }
@@ -207,19 +247,95 @@ export function AdIntentRow({ tk, lang }: { tk: Tokens; lang: Lang }) {
   );
 }
 
+// Native house ad cards shown when AdSense doesn't fill in NativeAdSection
+const NATIVE_HOUSE_ADS = [
+  {
+    icon: '📢', color: '#10b981', bg: '#06402522',
+    title: 'Advertise on KoyJabo', titleBn: 'KoyJabo-তে বিজ্ঞাপন দিন',
+    sub: 'Reach 50K+ monthly transport users · ৳3,000/month', subBn: '৫০,০০০+ মাসিক ট্রান্সপোর্ট ব্যবহারকারী · ৳৩,০০০/মাস',
+    href: '/advertise',
+  },
+  {
+    icon: '🏖️', color: '#3b82f6', bg: '#1e3a5f22',
+    title: "Cox's Bazar Tour Packages", titleBn: 'কক্সবাজার ট্যুর প্যাকেজ',
+    sub: 'Book 3N/4D packages · starting ৳8,500', subBn: '৩ রাত ৪ দিন প্যাকেজ · ৳৮,৫০০ থেকে',
+    href: '/intercity',
+  },
+  {
+    icon: '💼', color: '#8b5cf6', bg: '#312e8122',
+    title: 'KoyJabo API for Developers', titleBn: 'ডেভেলপারদের জন্য API',
+    sub: 'Bus, train & intercity data · ৳300/month', subBn: 'বাস, ট্রেন ও আন্তঃজেলা ডেটা · ৳৩০০/মাস',
+    href: '/api-access',
+  },
+];
+let nativeHouseIdx = 0;
+
 // ── NativeAdSection: multiplex grid + related searches
 export function NativeAdSection({ tk, lang, isMobile }: { tk: Tokens; lang: Lang; isMobile: boolean }) {
+  const [filled, setFilled] = useState<boolean | null>(null);
+  const h = isMobile ? 120 : 100;
+
+  const houseAd = NATIVE_HOUSE_ADS[nativeHouseIdx % NATIVE_HOUSE_ADS.length];
+
+  const handleHouseNav = () => {
+    if (houseAd.href.startsWith('/')) {
+      window.history.pushState({}, '', houseAd.href);
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    }
+  };
+
   const related = [
     T(lang, 'ঢাকা থেকে চট্টগ্রাম বাস', 'Dhaka to Chittagong bus'),
     T(lang, 'আজকের মেট্রো সময়সূচি', 'Metro schedule today'),
     T(lang, 'সদরঘাট লঞ্চ সময়', 'Sadarghat launch time'),
-    T(lang, 'বিমান কক্সবাজার ফ্লাইট', 'Biman flight Dhaka Cox\'s Bazar'),
+    T(lang, 'বিমান কক্সবাজার ফ্লাইট', "Biman flight Dhaka Cox's Bazar"),
   ];
+
   return (
     <div>
-      <div style={{ background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 14, padding: 10, minHeight: isMobile ? 120 : 100, marginBottom: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <AdsenseUnit slot="7294303750" format={isMobile ? 'horizontal' : 'auto'}/>
+      {/* AdSense unit — hidden once confirmed unfilled */}
+      <div style={{ display: filled === false ? 'none' : 'block', marginBottom: filled === true ? 16 : 0 }}>
+        <div style={{
+          background: 'transparent',
+          borderRadius: 14, overflow: 'hidden',
+          minHeight: filled === true ? h : 0,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <AdsenseUnit slot="7294303750" format={isMobile ? 'horizontal' : 'auto'} onFillResult={setFilled}/>
+        </div>
       </div>
+
+      {/* House ad fallback */}
+      {filled === false && (
+        <div
+          onClick={handleHouseNav}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => e.key === 'Enter' && handleHouseNav()}
+          style={{
+            marginBottom: 16, borderRadius: 14, padding: '16px 20px',
+            background: `linear-gradient(135deg, ${houseAd.bg}, transparent)`,
+            border: `1px solid ${houseAd.color}33`,
+            display: 'flex', alignItems: 'center', gap: 14, cursor: 'pointer',
+            minHeight: h,
+          }}
+        >
+          <span style={{ fontSize: 36, flexShrink: 0 }}>{houseAd.icon}</span>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 15, fontWeight: 700, color: tk.text, marginBottom: 4 }}>
+              {T(lang, houseAd.titleBn, houseAd.title)}
+            </div>
+            <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 12, color: tk.textDim, lineHeight: 1.4 }}>
+              {T(lang, houseAd.subBn, houseAd.sub)}
+            </div>
+          </div>
+          <div style={{ fontFamily: SANS, fontSize: 12, fontWeight: 700, color: houseAd.color, flexShrink: 0 }}>
+            {T(lang, 'দেখুন →', 'View →')}
+          </div>
+          <div style={{ position: 'absolute' as const, top: 0, right: 8, fontFamily: SANS, fontSize: 9, color: tk.textFaint, letterSpacing: 0.5 }}>PROMOTED</div>
+        </div>
+      )}
+
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
         {related.map((r, i) => (
           <button key={i} style={{ background: tk.panelMuted, border: `1px solid ${tk.line}`, borderRadius: 999, padding: '6px 12px', fontFamily: BEN, fontSize: 12, color: tk.textDim, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 5 }}>

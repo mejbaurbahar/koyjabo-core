@@ -162,18 +162,6 @@ function HouseAd({
   );
 }
 
-// Detect whether AdSense is blocked or script failed to load
-function isAdSenseBlocked(): boolean {
-  // If adsbygoogle array was hijacked to something non-array, blocked
-  if (typeof window === 'undefined') return true;
-  const asg = (window as any).adsbygoogle;
-  if (asg === undefined) return true;
-  // Check if the script element for pagead is in the DOM
-  const scripts = document.querySelectorAll('script[src*="pagead2.googlesyndication"]');
-  if (scripts.length === 0) return true;
-  return false;
-}
-
 function RealAd({
   format,
   slot,
@@ -191,12 +179,6 @@ function RealAd({
     pushed.current = false;
     const ins = insRef.current;
     if (!ins) return;
-
-    // Fast-fail if blocked
-    if (isAdSenseBlocked()) {
-      onFillResult(false);
-      return;
-    }
 
     const checkFill = () => {
       const status = ins.getAttribute('data-adsbygoogle-status');
@@ -219,8 +201,9 @@ function RealAd({
       if (status === 'done' || status === 'filled') { checkFill(); return; }
 
       const asg = (window as any).adsbygoogle;
+      // adsbygoogle not ready yet — retry in 1s (script still loading, not necessarily blocked)
       if (!asg || typeof asg.push !== 'function') {
-        onFillResult(false);
+        timerRef.current = window.setTimeout(doPush, 1000);
         return;
       }
 
@@ -244,6 +227,11 @@ function RealAd({
       }, 3000);
     };
 
+    // Hard timeout: if adsbygoogle never available after 7s → assume blocked
+    const blockTimeout = window.setTimeout(() => {
+      if (!pushed.current) onFillResult(false);
+    }, 7000);
+
     if ('IntersectionObserver' in window) {
       const observer = new IntersectionObserver(
         ([entry]) => {
@@ -258,10 +246,11 @@ function RealAd({
       return () => {
         observer.disconnect();
         clearTimeout(timerRef.current);
+        clearTimeout(blockTimeout);
       };
     }
     doPush();
-    return () => clearTimeout(timerRef.current);
+    return () => { clearTimeout(timerRef.current); clearTimeout(blockTimeout); };
   }, [slot]);
 
   return (
