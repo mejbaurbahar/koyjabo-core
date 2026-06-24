@@ -18,7 +18,7 @@ function isAdSenseAvailable(): boolean {
   return scripts.length > 0;
 }
 
-function AdsenseUnit({ slot, format = 'auto', onFillResult }: { slot: string; format?: string; onFillResult?: (filled: boolean) => void }) {
+function AdsenseUnit({ slot, format = 'auto', layout, onFillResult }: { slot: string; format?: string; layout?: string; onFillResult?: (filled: boolean) => void }) {
   const insRef = useRef<HTMLElement>(null);
   const pushed = useRef(false);
   const timer = useRef<number>(0);
@@ -82,6 +82,7 @@ function AdsenseUnit({ slot, format = 'auto', onFillResult }: { slot: string; fo
       data-ad-slot={slot}
       data-ad-format={format}
       data-full-width-responsive="true"
+      {...(layout ? { 'data-ad-layout': layout } : {})}
     />
   );
 }
@@ -109,7 +110,7 @@ export function SideRailAd({ tk, lang, side }: { tk: Tokens; lang: Lang; side: '
     }}>
       <div style={{ display: filled === false ? 'none' : 'block', minHeight: filled === true ? 560 : 0 }}>
         <div style={{ minHeight: filled === true ? 560 : 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <AdsenseUnit slot="7294303750" onFillResult={setFilled}/>
+          <AdsenseUnit slot="3797668998" onFillResult={setFilled}/>
         </div>
       </div>
       {filled === false && (
@@ -177,7 +178,7 @@ export function AnchorAd({ tk, lang, onClose }: { tk: Tokens; lang: Lang; onClos
       paddingBottom: 'calc(8px + env(safe-area-inset-bottom))',
     }}>
       <div style={{ flex: 1, minHeight: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <AdsenseUnit slot="7294303750" format="horizontal" onFillResult={setFilled}/>
+        <AdsenseUnit slot="3797668998" format="horizontal" onFillResult={setFilled}/>
       </div>
       <button onClick={onClose} style={{ background: tk.panelMuted, border: `1px solid ${tk.line}`, borderRadius: 999, color: tk.textFaint, cursor: 'pointer', fontSize: 16, width: 32, height: 32, lineHeight: 1 }}>×</button>
     </div>
@@ -206,7 +207,7 @@ export function VignetteAd({ tk, lang, open, onClose }: { tk: Tokens; lang: Lang
       </button>
       <div style={{ width: 'min(420px,100%)', minHeight: 360, maxHeight: '76vh', borderRadius: 18, overflow: 'hidden', background: tk.bg, border: `1px solid ${tk.line}`, boxShadow: tk.shadowLg, display: 'flex', flexDirection: 'column' }}>
         <div style={{ minHeight: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 12 }}>
-          <AdsenseUnit slot="7294303750"/>
+          <AdsenseUnit slot="9568870428" format="fluid" layout="in-article"/>
         </div>
       </div>
     </div>
@@ -235,7 +236,7 @@ export function AdIntentRow({ tk, lang }: { tk: Tokens; lang: Lang }) {
         <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }} onClick={() => setDialogOpen(false)}>
           <div style={{ background: tk.bg, border: `1px solid ${tk.line}`, borderRadius: 20, padding: 24, maxWidth: 360, width: '100%' }} onClick={e => e.stopPropagation()}>
             <div style={{ minHeight: 250, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
-              <AdsenseUnit slot="7294303750"/>
+              <AdsenseUnit slot="3797668998"/>
             </div>
             <button onClick={() => setDialogOpen(false)} style={{ background: tk.primary, color: tk.primaryInk, border: 0, borderRadius: 12, padding: '10px 20px', fontFamily: SANS, fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
               {T(lang, 'বন্ধ করুন', 'Close')}
@@ -301,7 +302,7 @@ export function NativeAdSection({ tk, lang, isMobile }: { tk: Tokens; lang: Lang
           minHeight: filled === true ? h : 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
-          <AdsenseUnit slot="7294303750" format={isMobile ? 'horizontal' : 'auto'} onFillResult={setFilled}/>
+          <AdsenseUnit slot="2707948607" format="autorelaxed" onFillResult={setFilled}/>
         </div>
       </div>
 

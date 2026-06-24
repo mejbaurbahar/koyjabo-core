@@ -2080,9 +2080,14 @@ export function HomePage({
           </div>
         </div>
 
-        {/* ── NativeAdSection ── */}
+        {/* ── NativeAdSection (Multiplex) ── */}
         <div style={section}>
           <NativeAdSectionReal tk={tk} lang={lang} isMobile={isMobile}/>
+        </div>
+
+        {/* ── Multiplex ad — related content grid ── */}
+        <div style={{ ...section, display: 'flex', justifyContent: 'center' }}>
+          <AdSlot tk={tk} lang={lang} kind="multiplex" />
         </div>
 
         {/* ── Footer ── */}

@@ -1,18 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Tokens, Lang, SANS, BEN, T } from '../tokens';
 
-type AdKind = 'leaderboard' | 'mid-rect' | 'mob-banner' | 'anchor' | 'in-article';
+type AdKind = 'leaderboard' | 'mid-rect' | 'mob-banner' | 'anchor' | 'in-article' | 'multiplex';
 
-// IMPORTANT: Each placement must have a UNIQUE slot ID from AdSense dashboard.
-// Go to AdSense → Ads → By ad unit → Display ad → create one per row below.
-// Using the same slot ID for multiple placements means AdSense counts only 1 impression/page
-// instead of 3–4, cutting potential revenue by ~70%.
+// Ad unit slots — ca-pub-8425219156685369
+// Display ad (koyjabo):    3797668998  — all banner/rect placements
+// Multiplex ad:            2707948607  — native grid / related content
+// In-article ad:           9568870428  — fluid in-article between content
 const DIMS: Record<AdKind, { w: number; h: number; format: string; slot: string; layout?: string }> = {
-  leaderboard:  { w: 728, h: 90,  format: 'auto',        slot: '7294303750' },           // Slot: Desktop top banner
-  'mid-rect':   { w: 300, h: 250, format: 'auto',        slot: '7294303750' },           // TODO: replace with new slot ID
-  'mob-banner': { w: 320, h: 100, format: 'auto',        slot: '7294303750' },           // TODO: replace with new slot ID
-  anchor:       { w: 320, h: 50,  format: 'auto',        slot: '7294303750' },           // TODO: replace with new slot ID
-  'in-article': { w: 728, h: 280, format: 'fluid',       slot: '7294303750', layout: 'in-article' }, // TODO: replace with new slot ID
+  leaderboard:  { w: 728, h: 90,  format: 'auto',        slot: '3797668998' },
+  'mid-rect':   { w: 300, h: 250, format: 'auto',        slot: '3797668998' },
+  'mob-banner': { w: 320, h: 100, format: 'auto',        slot: '3797668998' },
+  anchor:       { w: 320, h: 50,  format: 'auto',        slot: '3797668998' },
+  'in-article': { w: 728, h: 280, format: 'fluid',       slot: '9568870428', layout: 'in-article' },
+  multiplex:    { w: 728, h: 280, format: 'autorelaxed', slot: '2707948607' },
 };
 
 // House ads rotate when AdSense is blocked or unfilled
