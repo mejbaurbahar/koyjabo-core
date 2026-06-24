@@ -9,7 +9,9 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 const intercityRedirectPlugin = {
   name: 'intercity-redirect',
   closeBundle() {
-    const html = `<!DOCTYPE html><html lang="bn"><head><meta charset="UTF-8"/><title>কই যাবো</title><script>window.location.replace('/intercity'+window.location.search+window.location.hash);</script></head><body></body></html>`;
+    // sessionStorage trick: store intended path, redirect to main app root
+    // Direct redirect to /intercity loops (GitHub Pages sees it as a directory)
+    const html = `<!DOCTYPE html><html lang="bn"><head><meta charset="UTF-8"/><title>কই যাবো</title><script>try{sessionStorage.setItem('__kj_path','/intercity'+location.search+location.hash);}catch(e){}location.replace('/');</script></head><body></body></html>`;
     try { writeFileSync('dist/intercity/index.html', html); } catch { /* intercity/dist not present in this build */ }
   },
 };

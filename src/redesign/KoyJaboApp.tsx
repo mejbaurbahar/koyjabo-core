@@ -160,6 +160,17 @@ function pathForEntry(entry: StackEntry) {
 }
 
 function entryFromLocation(): StackEntry {
+  // Restore path stored by intercity/index.html or 404.html sessionStorage redirect
+  try {
+    const stored = sessionStorage.getItem('__kj_path') || sessionStorage.getItem('redirect');
+    if (stored) {
+      sessionStorage.removeItem('__kj_path');
+      sessionStorage.removeItem('redirect');
+      const url = new URL(stored, window.location.origin);
+      window.history.replaceState({}, '', url.pathname + url.search + url.hash);
+    }
+  } catch { /* sessionStorage unavailable */ }
+
   const path = window.location.pathname.replace(/\/+$/, '') || '/';
   const search = new URLSearchParams(window.location.search);
   const params = Object.fromEntries(search.entries()) as Record<string, string>;

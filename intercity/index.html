@@ -2,17 +2,12 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>কই যাবো — আন্তঃজেলা রুট</title>
-  <meta http-equiv="refresh" content="0; url=/" />
+  <title>কই যাবো</title>
   <script>
-    var dest = '/intercity' + window.location.search + window.location.hash;
-    window.location.replace(dest);
+    // Store intended path, send to main app — direct /intercity redirect loops on GitHub Pages
+    try { sessionStorage.setItem('__kj_path', '/intercity' + location.search + location.hash); } catch(e) {}
+    location.replace('/');
   </script>
 </head>
-<body>
-  <noscript>
-    <a href="/intercity">আন্তঃজেলা রুট দেখুন →</a>
-  </noscript>
-</body>
+<body></body>
 </html>

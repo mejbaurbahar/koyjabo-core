@@ -6,17 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>কই যাবো - লোড হচ্ছে...</title>
     <script>
-        // GitHub Pages SPA redirect — route back to the correct sub-app
-        var path = window.location.pathname;
-        if (path === '/intercity' || path.startsWith('/intercity/')) {
-            // Avoid redirect loop: if already at /intercity/ don't redirect again
-            if (path !== '/intercity/' && path !== '/intercity/index.html') {
-                window.location.replace('/intercity/');
-            }
-        } else {
-            sessionStorage.redirect = location.href;
-            window.location.replace('/');
-        }
+        // GitHub Pages SPA redirect — store path, send to main app
+        try { sessionStorage.setItem('redirect', location.href); } catch(e) {}
+        window.location.replace('/');
     </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
