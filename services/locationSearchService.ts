@@ -1,7 +1,7 @@
 /**
  * Comprehensive Bangladesh Location Search Service
  * Data: 14,642 locations from OpenStreetMap (ODbL license)
- * Lazy-loads /bd-locations.json on first use
+ * Loads private location dataset through the configured proxy.
  */
 
 export interface CompactLocation {
@@ -15,6 +15,8 @@ export interface CompactLocation {
   cf: number;    // confidence 0-100
 }
 
+import { loadPrivateData } from './privateDataService';
+
 export interface LocationResult {
   id: string;
   name: string;
@@ -25,6 +27,9 @@ export interface LocationResult {
   confidence: number;
   score: number;
 }
+
+const PRIVATE_LOCATION_DATA_PATH = 'data/transport/bd-locations.json';
+const USE_PRIVATE_LOCATION_DATA = Boolean(import.meta.env.VITE_API_PROXY);
 
 const CATEGORY_LABELS: Record<string, { en: string; bn: string }> = {
   railway_station: { en: 'Railway Station', bn: 'রেলওয়ে স্টেশন' },
@@ -55,18 +60,27 @@ async function loadLocations(): Promise<CompactLocation[]> {
   if (_locations) return _locations;
   if (_loadPromise) return _loadPromise;
 
-  _loadPromise = fetch('/bd-locations.json')
-    .then(r => r.json())
-    .then((data: CompactLocation[]) => {
-      _locations = data;
-      console.log(`[LocationSearch] Loaded ${data.length} locations`);
-      return data;
-    })
-    .catch(err => {
-      console.warn('[LocationSearch] Failed to load bd-locations.json:', err.message);
+  _loadPromise = (async () => {
+    let data: CompactLocation[] | null = null;
+
+    if (USE_PRIVATE_LOCATION_DATA) {
+      data = await loadPrivateData<CompactLocation[]>(PRIVATE_LOCATION_DATA_PATH, 'bd-locations');
+    }
+
+    if (!data) {
+      console.warn('[LocationSearch] Location dataset unavailable; using built-in static locations only.');
       _loadPromise = null;
       return [] as CompactLocation[];
-    });
+    }
+
+    _locations = data;
+    console.log(`[LocationSearch] Loaded ${data.length} locations`);
+    return data;
+  })().catch(err => {
+    console.warn('[LocationSearch] Failed to load bd-locations.json:', err?.message || err);
+    _loadPromise = null;
+    return [] as CompactLocation[];
+  });
 
   return _loadPromise;
 }

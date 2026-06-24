@@ -1,6 +1,6 @@
 // Example Integration: Using the Complete Bangladesh Intercity Database
 
-import intercityData from './data/comprehensive-bangladesh-intercity-routes.json';
+import { loadPrivateData } from './services/privateDataService';
 
 // Type definition for routes
 interface IntercityRoute {
@@ -20,7 +20,13 @@ interface IntercityRoute {
 }
 
 // 1. Search routes between two cities
-export function searchIntercityRoutes(origin: string, destination: string): IntercityRoute[] {
+async function getIntercityData(): Promise<{ routes: IntercityRoute[] }> {
+    return await loadPrivateData<{ routes: IntercityRoute[] }>('data/transport/comprehensive-bangladesh-intercity-routes.json', 'example-intercity-data')
+        || { routes: [] };
+}
+
+export async function searchIntercityRoutes(origin: string, destination: string): Promise<IntercityRoute[]> {
+    const intercityData = await getIntercityData();
     return intercityData.routes.filter(
         (route: IntercityRoute) => route.origin === origin && route.destination === destination
     );

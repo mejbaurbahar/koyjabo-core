@@ -42,3 +42,12 @@ data/generated/
 update-smtp-secret.cjs
 setup-secrets.cjs
 setup-koyjabo-core-secrets.cjs
+
+# Sensitive local transport dataset files
+public/bd-locations.json
+public/data/*.json
+data/bangladesh-intercity-routes.json
+data/comprehensive-bangladesh-intercity-routes.json
+
+# Local intercity public data mirrors (should not be committed)
+intercity/public/data/*.json

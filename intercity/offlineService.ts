@@ -1,7 +1,7 @@
 import { EnhancedIntercityResponse, BusOption, TrainOption, FlightOption, DrivingInfo, TravelTips, RouteResponse } from './types';
 import { BRTC_DHAKA_INTERCITY, BRTC_REGIONAL_INTERCITY } from '../BRTC_INTERCITY_ROUTES_DATA';
 import { DISTRICT_COORDINATES } from './constants';
-import COMPREHENSIVE_ROUTES from '../data/comprehensive-bangladesh-intercity-routes.json';
+import { loadPrivateData } from '../services/privateDataService';
 
 interface Connectivity {
     bus: boolean;
@@ -114,6 +114,49 @@ const findBrtcRoutes = (from: string, to: string) => {
 };
 
 const MAJOR_HUBS = ["Dhaka", "Chattogram", "Sylhet", "Rajshahi", "Khulna", "Barishal", "Rangpur", "Mymensingh", "Jashore", "Bogura", "Cumilla", "Feni", "Bhairab", "Dinajpur", "Panchagarh"];
+
+const PRIVATE_INTERCITY_DATA_PATH = 'data/transport/comprehensive-bangladesh-intercity-routes.json';
+const USE_PRIVATE_INTERCITY_DATA = Boolean(import.meta.env.VITE_API_PROXY);
+const INTERCITY_CACHE_KEY = 'kj_comprehensive_intercity_routes';
+
+async function loadCachedComprehensiveRoutes(): Promise<any[]> {
+    if (typeof window === 'undefined') return [];
+
+    try {
+        const raw = localStorage.getItem(INTERCITY_CACHE_KEY);
+        if (raw) {
+            const parsed = JSON.parse(raw);
+            return parsed?.routes ?? [];
+        }
+    } catch {
+        // ignore parse errors
+    }
+
+    if (USE_PRIVATE_INTERCITY_DATA) {
+        try {
+            const data = await loadPrivateData<any>(PRIVATE_INTERCITY_DATA_PATH, 'comprehensive-intercity-routes');
+            if (data) {
+                localStorage.setItem(INTERCITY_CACHE_KEY, JSON.stringify(data));
+                return data.routes ?? [];
+            }
+        } catch {
+            // ignore remote load failures
+        }
+    }
+
+    return [];
+}
+
+async function refreshComprehensiveRoutesCache(): Promise<void> {
+    if (!USE_PRIVATE_INTERCITY_DATA) return;
+    try {
+        const data = await loadPrivateData<any>(PRIVATE_INTERCITY_DATA_PATH, 'comprehensive-intercity-routes');
+        if (!data) return;
+        localStorage.setItem(INTERCITY_CACHE_KEY, JSON.stringify(data));
+    } catch {
+        // ignore network failures
+    }
+}
 
 // --- DETAILED ROUTE DATA ---
 
@@ -982,16 +1025,18 @@ export const getOfflineIntercityData = (from: string, to: string, lang: 'en' | '
     const isBn = lang === 'bn';
 
     // Get comprehensive data
-    const comprehensiveRoutes = (COMPREHENSIVE_ROUTES as any).routes.filter((r: any) =>
+    const comprehensiveRoutesRaw = await loadCachedComprehensiveRoutes();
+    const comprehensiveRoutes = comprehensiveRoutesRaw.filter((r: any) =>
         (r.origin.toLowerCase() === from.toLowerCase() && r.destination.toLowerCase() === to.toLowerCase()) ||
         (r.origin.toLowerCase() === to.toLowerCase() && r.destination.toLowerCase() === from.toLowerCase())
     );
 
     // Fallback search if exact match fails
-    const partialRoutes = comprehensiveRoutes.length > 0 ? [] : (COMPREHENSIVE_ROUTES as any).routes.filter((r: any) =>
+    const partialRoutes = comprehensiveRoutes.length > 0 ? [] : comprehensiveRoutesRaw.filter((r: any) =>
         (r.origin.toLowerCase().includes(from.toLowerCase()) && r.destination.toLowerCase().includes(to.toLowerCase())) ||
         (r.origin.toLowerCase().includes(to.toLowerCase()) && r.destination.toLowerCase().includes(from.toLowerCase()))
     );
+
 
     const routesToDisplay = comprehensiveRoutes.length > 0 ? comprehensiveRoutes : partialRoutes;
 

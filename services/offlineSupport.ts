@@ -1,14 +1,28 @@
+import { loadPrivateData } from './privateDataService';
+
 /**
  * Offline Support Service for Dhaka Commute
  * Ensures all features work perfectly offline: main app, intercity search, AI chat
  */
 
+const PRIVATE_INTERCITY_DATA_PATH = 'data/transport/comprehensive-bangladesh-intercity-routes.json';
+const USE_PRIVATE_INTERCITY_DATA = Boolean(import.meta.env.VITE_API_PROXY);
+
+async function fetchIntercityRouteData(): Promise<any | null> {
+    if (USE_PRIVATE_INTERCITY_DATA) {
+        return loadPrivateData<any>(PRIVATE_INTERCITY_DATA_PATH, 'comprehensive-intercity-routes');
+    }
+    return null;
+}
+
 // 1. Check if comprehensive intercity data is available
 export async function ensureIntercityDataCached(): Promise<boolean> {
     try {
-        // Try to import the comprehensive database
-        const response = await fetch('/data/comprehensive-bangladesh-intercity-routes.json');
-        const data = await response.json();
+        let data = await fetchIntercityRouteData();
+
+        if (!data) {
+            throw new Error('Intercity route data unavailable');
+        }
 
         // Cache in localStorage for instant offline access
         localStorage.setItem('intercity_routes_cache', JSON.stringify(data));
@@ -16,14 +30,10 @@ export async function ensureIntercityDataCached(): Promise<boolean> {
 
         return true;
     } catch (error) {
+        console.warn('[OfflineSupport] Failed to fetch intercity data:', error);
 
-        // Check if we have cached data from before
         const cached = localStorage.getItem('intercity_routes_cache');
-        if (cached) {
-            return true;
-        }
-
-        return false;
+        return Boolean(cached);
     }
 }
 

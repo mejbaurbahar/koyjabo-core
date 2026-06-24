@@ -4,6 +4,10 @@
  */
 
 import { BUS_DATA, STATIONS, METRO_STATIONS, METRO_LINES, RAILWAY_STATIONS, AIRPORTS } from '../constants';
+import { loadPrivateData } from './privateDataService';
+
+const PRIVATE_INTERCITY_DATA_PATH = 'data/transport/comprehensive-bangladesh-intercity-routes.json';
+const USE_PRIVATE_INTERCITY_DATA = Boolean(import.meta.env.VITE_API_PROXY);
 
 // ==================== DATA CACHING ====================
 
@@ -43,18 +47,20 @@ export async function cacheAllEssentialData(): Promise<boolean> {
  */
 async function cacheIntercityData(): Promise<void> {
     try {
-        const response = await fetch('/data/comprehensive-bangladesh-intercity-routes.json');
-        const data = await response.json();
+        let data: any | null = null;
+        if (USE_PRIVATE_INTERCITY_DATA) {
+            data = await loadPrivateData<any>(PRIVATE_INTERCITY_DATA_PATH, 'comprehensive-intercity-routes');
+        }
+
+        if (!data) {
+            throw new Error('Intercity route data unavailable');
+        }
 
         localStorage.setItem('intercity_routes_cache', JSON.stringify(data));
         localStorage.setItem('intercity_routes_cache_time', new Date().toISOString());
 
     } catch (error) {
-
-        // Check if we have cached data from before
-        const cached = localStorage.getItem('intercity_routes_cache');
-        if (cached) {
-        }
+        console.warn('[EnhancedOfflineSupport] Failed to cache intercity data:', error);
     }
 }
 

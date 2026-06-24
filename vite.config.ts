@@ -116,10 +116,9 @@ export default defineConfig(({ mode }) => {
         workbox: {
 
           globPatterns: [
-            // Exclude JSON from root glob — bd-locations.json (1.8MB) would block SW install
+            // Exclude JSON from root glob — bd-locations.json would block SW install and sensitive transport data should not be precached.
             '**/*.{js,css,html,ico,png,svg,woff,woff2,ttf,webmanifest,manifest,webp,jpg,jpeg,gif,txt,xml}',
-            'intercity/**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest,txt,xml}',
-            'data/**/*.json'  // Include data dir JSONs for offline
+            'intercity/**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf,webmanifest,manifest,txt,xml}'
           ],
           navigateFallback: 'index.html',  // Enable automatic fallback to index.html for SPA offline support
           navigateFallbackDenylist: [/^\/api/, /^\/intercity/, /^\/ads\.txt/, /^\/robots\.txt/, /^\/sitemap\.xml/],
