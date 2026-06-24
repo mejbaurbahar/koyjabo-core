@@ -94,6 +94,9 @@ const SEAT_LABEL_MAP: Record<SeatState, { en: string; bn: string }> = {
   ladies:    { en: "Ladies'",   bn: 'মহিলা' },
 };
 
+// Set to true once Shohoz/BusBD/Bdtickets affiliate approvals are final
+const AFFILIATE_APPROVED = false;
+
 const TICKET_PLATFORMS = [
   {
     id: 'shohoz',
@@ -694,7 +697,8 @@ export function IntercityDetailPage(props: Props) {
             <AdSlot tk={tk} lang={lang} kind="mid-rect" />
           </div>
 
-          {/* Book Online — affiliate ticket platforms */}
+          {/* Book Online — affiliate ticket platforms (hidden until partner approval) */}
+          {AFFILIATE_APPROVED && (
           <div style={{ marginBottom: 24 }}>
             <div style={{ fontFamily: SANS, fontSize: 13, fontWeight: 700, color: tk.text, marginBottom: 12 }}>
               🎟️ {lbl('Book Ticket Online', 'অনলাইনে টিকেট বুক করুন')}
@@ -726,6 +730,7 @@ export function IntercityDetailPage(props: Props) {
               ℹ️ {lbl('KoyJabo links to partner platforms · prices may vary', 'KoyJabo পার্টনার প্ল্যাটফর্মে লিঙ্ক করে · দাম ভিন্ন হতে পারে')}
             </div>
           </div>
+          )}
 
           {/* Sponsored native cards */}
           <div style={{ marginBottom: 24 }}>
@@ -814,6 +819,7 @@ export function IntercityDetailPage(props: Props) {
                 </div>
               ))}
 
+              {AFFILIATE_APPROVED && (
               <div style={{ marginTop: 14 }}>
                 <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 700, color: tk.textFaint, marginBottom: 8 }}>
                   {lbl('Book Online', 'অনলাইনে বুক করুন')}
@@ -839,6 +845,16 @@ export function IntercityDetailPage(props: Props) {
                   ℹ️ {lbl('Partner links · info only', 'পার্টনার লিঙ্ক · শুধু তথ্য')}
                 </div>
               </div>
+              )}
+              {!AFFILIATE_APPROVED && (
+                <div style={{
+                  marginTop: 14, background: tk.amberSoft, border: `1px solid ${tk.amber}`,
+                  borderRadius: 10, padding: '8px 10px',
+                  fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 11, color: tk.textDim, lineHeight: 1.5,
+                }}>
+                  ℹ {lbl("KoyJabo doesn't sell tickets · info only", 'KoyJabo টিকেট বিক্রি করে না · শুধু তথ্য')}
+                </div>
+              )}
             </div>
           </div>
         )}

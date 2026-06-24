@@ -2,43 +2,66 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Tokens, Lang, SANS, BEN, T } from '../tokens';
 
 
-function AdsenseUnit({ slot, format = 'auto' }: { slot: string; format?: string }) {
+// Anchor house-ad fallback (shown when AdSense blocked/unfilled in AnchorAd)
+const ANCHOR_HOUSE = [
+  { text: '📢 Advertise on KoyJabo — ৳3,000/month · Reach 50K+ users', textBn: '📢 KoyJabo-তে বিজ্ঞাপন দিন — ৳৩,০০০/মাস · ৫০,০০০+ ব্যবহারকারী', href: '/advertise', color: '#10b981' },
+  { text: '🚌 200+ Dhaka bus routes — Free & offline forever', textBn: '🚌 ২০০+ ঢাকা বাস রুট — বিনামূল্যে ও অফলাইনে', href: '/', color: '#60a5fa' },
+  { text: '🗺️ Plan Bangladesh intercity trips with KoyJabo', textBn: '🗺️ KoyJabo দিয়ে আন্তঃজেলা ভ্রমণ পরিকল্পনা করুন', href: '/intercity', color: '#a78bfa' },
+];
+let anchorHouseIdx = 0;
+
+function isAdSenseAvailable(): boolean {
+  if (typeof window === 'undefined') return false;
+  const asg = (window as any).adsbygoogle;
+  if (!asg) return false;
+  const scripts = document.querySelectorAll('script[src*="pagead2.googlesyndication"]');
+  return scripts.length > 0;
+}
+
+function AdsenseUnit({ slot, format = 'auto', onFillResult }: { slot: string; format?: string; onFillResult?: (filled: boolean) => void }) {
   const insRef = useRef<HTMLElement>(null);
   const pushed = useRef(false);
+  const timer = useRef<number>(0);
 
   useEffect(() => {
     pushed.current = false;
     const ins = insRef.current;
     if (!ins) return;
 
+    if (!isAdSenseAvailable()) {
+      onFillResult?.(false);
+      return;
+    }
+
+    const checkFill = () => {
+      const h = ins.clientHeight || (ins as HTMLElement).offsetHeight;
+      const iframe = ins.querySelector('iframe');
+      const ok = h > 5 || !!(iframe && (iframe.src || iframe.srcdoc));
+      onFillResult?.(ok);
+    };
+
     const doPush = () => {
       if (pushed.current) return;
       const status = ins.getAttribute('data-adsbygoogle-status');
-      if (status === 'done' || status === 'filled') return;
-      if (typeof (window as any).adsbygoogle === 'undefined') {
-        const t = setTimeout(doPush, 1500);
-        return () => clearTimeout(t);
-      }
+      if (status === 'done' || status === 'filled') { checkFill(); return; }
+      const asg = (window as any).adsbygoogle;
+      if (!asg || typeof asg.push !== 'function') { onFillResult?.(false); return; }
       pushed.current = true;
-      try { ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({}); }
-      catch { pushed.current = false; }
+      try { asg.push({}); }
+      catch { pushed.current = false; onFillResult?.(false); return; }
+      timer.current = window.setTimeout(() => { checkFill(); }, 3000);
     };
 
-    // Push only when element is near viewport — improves viewability score → better CPM
     if ('IntersectionObserver' in window) {
       const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            observer.disconnect();
-            doPush();
-          }
-        },
-        { rootMargin: '400px 0px' } // start 400px before entering view
+        ([entry]) => { if (entry.isIntersecting) { observer.disconnect(); doPush(); } },
+        { rootMargin: '400px 0px' }
       );
       observer.observe(ins);
-      return () => observer.disconnect();
+      return () => { observer.disconnect(); clearTimeout(timer.current); };
     }
-    doPush(); // fallback for browsers without IntersectionObserver
+    doPush();
+    return () => clearTimeout(timer.current);
   }, [slot, format]);
 
   return (
@@ -73,6 +96,38 @@ export function SideRailAd({ tk, lang, side }: { tk: Tokens; lang: Lang; side: '
 
 // ── AnchorAd: sticky bottom bar
 export function AnchorAd({ tk, lang, onClose }: { tk: Tokens; lang: Lang; onClose: () => void }) {
+  const [filled, setFilled] = useState<boolean | null>(null);
+  const houseAd = ANCHOR_HOUSE[anchorHouseIdx % ANCHOR_HOUSE.length];
+
+  const handleHouseClick = () => {
+    if (houseAd.href.startsWith('/')) {
+      window.history.pushState({}, '', houseAd.href);
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    }
+    onClose();
+  };
+
+  if (filled === false) {
+    return (
+      <div style={{
+        position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 9000,
+        background: 'linear-gradient(135deg,#064e3b,#065f46)',
+        borderTop: '1px solid #10b98133',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '10px 16px', paddingBottom: 'calc(10px + env(safe-area-inset-bottom))',
+        minHeight: 56,
+      }}>
+        <div
+          onClick={handleHouseClick}
+          style={{ flex: 1, cursor: 'pointer', fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 13, fontWeight: 600, color: '#fff' }}
+        >
+          {T(lang, houseAd.textBn, houseAd.text)}
+        </div>
+        <button onClick={onClose} style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.25)', borderRadius: 999, color: '#fff', cursor: 'pointer', fontSize: 16, width: 32, height: 32, lineHeight: 1, flexShrink: 0, marginLeft: 12 }}>×</button>
+      </div>
+    );
+  }
+
   return (
     <div style={{
       position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 9000,
@@ -82,7 +137,7 @@ export function AnchorAd({ tk, lang, onClose }: { tk: Tokens; lang: Lang; onClos
       paddingBottom: 'calc(8px + env(safe-area-inset-bottom))',
     }}>
       <div style={{ flex: 1, minHeight: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <AdsenseUnit slot="7294303750" format="horizontal"/>
+        <AdsenseUnit slot="7294303750" format="horizontal" onFillResult={setFilled}/>
       </div>
       <button onClick={onClose} style={{ background: tk.panelMuted, border: `1px solid ${tk.line}`, borderRadius: 999, color: tk.textFaint, cursor: 'pointer', fontSize: 16, width: 32, height: 32, lineHeight: 1 }}>×</button>
     </div>
