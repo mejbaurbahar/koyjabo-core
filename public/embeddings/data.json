@@ -1,0 +1,79 @@
+{
+  "source": "https://koyjabo.com",
+  "description": "KoyJabo (কই যাবো) — Bangladesh Transport Guide. Text chunks for semantic search and LLM retrieval.",
+  "license": "CC-BY-4.0 https://creativecommons.org/licenses/by/4.0/",
+  "generated_at": "2026-06-24T00:00:00.000Z",
+  "note": "Embedding vectors omitted. Ingest the 'text' field with your preferred embedding model (e.g. text-embedding-3-small, embed-english-v3).",
+  "chunks": [
+    {
+      "id": "site-overview",
+      "title": "KoyJabo Overview",
+      "url": "https://koyjabo.com/",
+      "text": "KoyJabo (কই যাবো, meaning 'Where are we going?') is Bangladesh's #1 free transport guide. It covers 200+ Dhaka local bus routes, Metro Rail MRT-6 (17 stations, ৳20–100 fares), intercity bus/train/flight/launch routes across all 64 districts, a BRTA-rate fare calculator, and a bilingual AI assistant in Bengali and English. Works offline as a PWA. No sign-up required.",
+      "tokens": 92
+    },
+    {
+      "id": "metro-rail",
+      "title": "Dhaka Metro Rail MRT-6",
+      "url": "https://koyjabo.com/metro",
+      "text": "Dhaka Metro Rail MRT Line-6 runs from Uttara North to Motijheel via 17 stations: Uttara North, Uttara Centre, Uttara South, Pallabi, Mirpur-11, Mirpur-10, Kazipara, Shewrapara, Agargaon, Bijoy Sarani, Farmgate, Karwan Bazar, Shahbag, Dhaka University, Bangladesh Secretariat, Motijheel, Kamalapur. Fare: minimum ৳20, maximum ৳100. Operating hours: 7:10 AM–9:40 PM weekdays, closed Fridays. Trains every 8 minutes during peak. Buy MRT Pass (RFID) or single journey tokens at stations. Operated by DMTCL (dmtcl.gov.bd).",
+      "tokens": 121
+    },
+    {
+      "id": "dhaka-local-bus",
+      "title": "Dhaka Local Bus Routes",
+      "url": "https://koyjabo.com/",
+      "text": "KoyJabo covers 200+ Dhaka local bus routes including BRTC, Shyamoli, Hanif, Green Line, Desh Bangla, Nilachal, Grameen, and hundreds of private operators. Each route listing shows all stops in order, approximate fare based on BRTA rate (৳2.53/km city), and route length. Use the search box — enter starting stop in 'From' and destination in 'To' to find all available buses. Works offline after PWA installation.",
+      "tokens": 96
+    },
+    {
+      "id": "intercity-travel",
+      "title": "Bangladesh Intercity Travel",
+      "url": "https://koyjabo.com/intercity",
+      "text": "KoyJabo's intercity section covers bus, train, flight, and launch (river ferry) routes connecting all 64 Bangladesh districts. Key routes: Dhaka–Chittagong bus (৳680 non-AC, ৳932–1500 AC, 5–6 hrs, Arambagh/Sayedabad terminal), Dhaka–Cox's Bazar bus (৳900–2500, 10–12 hrs), Dhaka–Sylhet bus (৳570–700 non-AC, ৳900–1400 AC, Mohakhali terminal, 6–7 hrs), Dhaka–Khulna (padma bridge route). Operators include Hanif, Shyamoli, SR Travels, Green Line, Saudia.",
+      "tokens": 118
+    },
+    {
+      "id": "train-routes",
+      "title": "Bangladesh Railway Intercity Trains",
+      "url": "https://koyjabo.com/train",
+      "text": "Bangladesh Railway operates 350+ intercity trains from Dhaka Kamalapur station. Key trains: Cox's Bazar Express (#813, departs 10:30 PM, arrives 9:30 AM, ৳745–2656), Sonar Bangla Express to Chittagong (departs 7:00 AM, 5.5 hrs, ৳405–1591), Parabat Express to Sylhet (6:30 AM, 6.5 hrs, ৳375–1678), Upaban Express to Sylhet (10:00 PM), Jahanabad Express to Khulna via Padma Bridge (৳445 Shovon, 3h45m). Book at eticket.railway.gov.bd or Rail Sheba app. Tickets available 5 days in advance.",
+      "tokens": 127
+    },
+    {
+      "id": "launch-ferry",
+      "title": "Bangladesh Launch/Ferry Routes from Sadarghat",
+      "url": "https://koyjabo.com/intercity",
+      "text": "Dhaka Sadarghat Launch Terminal serves 67+ BIWTC river ferry routes departing nightly 6–9 PM. Routes: Dhaka–Barisal (8–10 hrs, ৳300–1200, Sundarban-12, Kirtonkhola-10, Ostrich-17), Dhaka–Patuakhali (9–11 hrs), Dhaka–Khulna (10–12 hrs), Dhaka–Chandpur (3–4 hrs), Dhaka–Bhola (5–6 hrs), Dhaka–Hatiya (12–14 hrs). Deck fare from ৳150, VIP cabin ৳800–3000. Terminal located on Buriganga River, Old Dhaka.",
+      "tokens": 110
+    },
+    {
+      "id": "fare-calculator",
+      "title": "Bangladesh Bus Fare Calculator",
+      "url": "https://koyjabo.com/fare",
+      "text": "KoyJabo's fare calculator uses BRTA official rates (April 2026 circular): City bus ৳2.53/km (minimum ৳10), Intercity non-AC ৳2.23/km, Intercity AC ৳2.90/km. Metro Rail MRT-6 fares are fixed by distance: ৳20 minimum, ৳100 maximum (Uttara North to Motijheel). Enter distance or route to calculate estimated fare.",
+      "tokens": 85
+    },
+    {
+      "id": "ai-assistant",
+      "title": "KoyJabo Bilingual AI Travel Assistant",
+      "url": "https://koyjabo.com/ai",
+      "text": "KoyJabo includes a bilingual AI assistant powered by Google Gemini 2.0 that answers transport queries in Bengali and English. Ask about bus routes, train schedules, fares, travel tips, and intercity journey planning for anywhere in Bangladesh. The assistant knows all 200+ Dhaka bus routes, Metro Rail stations, intercity schedules, and fare rates.",
+      "tokens": 78
+    },
+    {
+      "id": "about",
+      "title": "About KoyJabo",
+      "url": "https://koyjabo.com/about",
+      "text": "KoyJabo (কই যাবো) was built by Mejbaur Bahar Fagun, a developer based in Dhaka, Bangladesh. Founded in 2023 as a free open-source project to make public transport information accessible to all Bangladeshis. Data sourced from official government authorities: BRTA (bus fares), DMTCL (Metro Rail), Bangladesh Railway, BIWTC (river ferries). Available at koyjabo.com as a free Progressive Web App. Contact: mejbaur@markopolo.ai. LinkedIn: linkedin.com/company/koy-jabo.",
+      "tokens": 93
+    },
+    {
+      "id": "data-sources",
+      "title": "KoyJabo Official Data Sources",
+      "url": "https://koyjabo.com/",
+      "text": "KoyJabo sources all transport data from official Bangladesh government agencies: BRTA (Bangladesh Road Transport Authority, brta.gov.bd) for bus fare rates, DMTCL (Dhaka Mass Transit Company Limited, dmtcl.gov.bd) for MRT-6 Metro Rail, Bangladesh Railway (eticket.railway.gov.bd) for train schedules, BIWTC (Bangladesh Inland Water Transport Corporation, biwtc.gov.bd) for launch/ferry routes. All data is publicly verifiable.",
+      "tokens": 89
+    }
+  ]
+}

@@ -36,6 +36,37 @@
 - [FAQ](https://koyjabo.com/qa): Common questions about Bangladesh transport
 - [Contact](https://koyjabo.com/contact): Developer contact
 
+## AI Bot Access
+
+The following AI crawlers are explicitly permitted to index all pages:
+
+- GPTBot: Allow /
+- ChatGPT-User: Allow /
+- OAI-SearchBot: Allow /
+- ClaudeBot: Allow /
+- Claude-SearchBot: Allow /
+- Claude-User: Allow /
+- PerplexityBot: Allow /
+- Perplexity-User: Allow /
+- Google-CloudVertexBot: Allow /
+- Google-Extended: Allow /
+- FacebookBot: Allow /
+- Meta-ExternalAgent: Allow /
+- Meta-ExternalFetcher: Allow /
+- Bytespider: Allow /
+- Amazonbot: Allow /
+- PetalBot: Allow /
+- CCBot: Allow /
+- DuckAssistBot: Allow /
+- Applebot: Allow /
+- MistralAI-User: Allow /
+- Anchor Browser: Allow /
+- Timpibot: Allow /
+- ProRataInc: Allow /
+- Novellum AI Crawl: Allow /
+- Grok Web Crawler: Allow /
+- DeepSeekBot: Allow /
+
 ## Data Sources
 
 - [BRTA — Bangladesh Road Transport Authority](https://brta.gov.bd): Official bus fare rates
