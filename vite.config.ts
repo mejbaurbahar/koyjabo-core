@@ -1,8 +1,18 @@
 import path from 'path';
+import { writeFileSync } from 'fs';
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
+
+// Plugin: after build, replace intercity/index.html with a redirect to main app
+const intercityRedirectPlugin = {
+  name: 'intercity-redirect',
+  closeBundle() {
+    const html = `<!DOCTYPE html><html lang="bn"><head><meta charset="UTF-8"/><title>কই যাবো</title><script>window.location.replace('/intercity'+window.location.search+window.location.hash);</script></head><body></body></html>`;
+    try { writeFileSync('dist/intercity/index.html', html); } catch { /* intercity/dist not present in this build */ }
+  },
+};
 
 
 
@@ -51,6 +61,7 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       react(),
+      intercityRedirectPlugin,
 
       viteStaticCopy({
         targets: [
@@ -132,7 +143,8 @@ export default defineConfig(({ mode }) => {
             'intercity/workbox-window*.js',
           ],
           navigateFallback: 'index.html',  // Enable automatic fallback to index.html for SPA offline support
-          navigateFallbackDenylist: [/^\/api/, /^\/intercity/, /^\/ads\.txt/, /^\/robots\.txt/, /^\/sitemap\.xml/],
+          // Only deny actual static file paths — NOT the /intercity page itself (must fall through to index.html)
+          navigateFallbackDenylist: [/^\/api/, /^\/intercity\/(assets|data|sw\.js|workbox-|manifest\.webmanifest|logo\.png)/, /^\/ads\.txt/, /^\/robots\.txt/, /^\/sitemap\.xml/],
           cleanupOutdatedCaches: true,
           // Inline the workbox runtime instead of loading from CDN
           mode: 'production',
@@ -140,7 +152,7 @@ export default defineConfig(({ mode }) => {
           skipWaiting: true,
           clientsClaim: true,
           // Cache versioning for proper updates
-          cacheId: 'dhaka-commute-v48',
+          cacheId: 'dhaka-commute-v49',
           maximumFileSizeToCacheInBytes: 10485760, // 10 MB
 
           runtimeCaching: [
