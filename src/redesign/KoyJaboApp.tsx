@@ -47,6 +47,8 @@ const ReleasePage = React.lazy(() => import('./screens/ReleasePage').then(m => (
 const PrivacyPage = React.lazy(() => import('./screens/PrivacyPage').then(m => ({ default: m.PrivacyPage })));
 const TermsPage = React.lazy(() => import('./screens/TermsPage').then(m => ({ default: m.TermsPage })));
 const InstallPage = React.lazy(() => import('./screens/InstallPage').then(m => ({ default: m.InstallPage })));
+const AdvertisePage = React.lazy(() => import('./screens/AdvertisePage').then(m => ({ default: m.AdvertisePage })));
+const APIPage = React.lazy(() => import('./screens/APIPage').then(m => ({ default: m.APIPage })));
 
 const LazyFallback = () => <div style={{ minHeight: '60vh' }} />;
 import { claimDailyBonus } from './utils/koyCoinService';
@@ -104,6 +106,8 @@ const ROUTE_PATHS: Record<string, string> = {
   privacy: '/privacy',
   terms: '/terms',
   install: '/install',
+  advertise: '/advertise',
+  api: '/api-access',
 };
 
 const slugify = (value: string) => value.toLowerCase().trim().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -369,6 +373,8 @@ export function KoyJaboApp() {
       case 'privacy': return <PrivacyPage {...p}/>;
       case 'terms': return <TermsPage {...p}/>;
       case 'install': return <InstallPage {...p}/>;
+      case 'advertise': return <AdvertisePage {...p}/>;
+      case 'api': return <APIPage {...p}/>;
       case '500': return <ErrorPage500 theme={theme} lang={lang}/>;
       case 'offline': return <OfflinePage theme={theme} lang={lang}/>;
       case 'maintenance': return <MaintenancePage theme={theme} lang={lang}/>;

@@ -3075,6 +3075,20 @@
     <priority>0.7</priority>
   </url>
 
+  <!-- Monetization Pages -->
+  <url>
+    <loc>https://koyjabo.com/advertise</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://koyjabo.com/api-access</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <!-- LLM/AI Knowledge Feeds -->
   <url>
     <loc>https://koyjabo.com/.well-known/llm-data.json</loc>

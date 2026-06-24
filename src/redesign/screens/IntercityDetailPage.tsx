@@ -94,6 +94,39 @@ const SEAT_LABEL_MAP: Record<SeatState, { en: string; bn: string }> = {
   ladies:    { en: "Ladies'",   bn: 'মহিলা' },
 };
 
+const TICKET_PLATFORMS = [
+  {
+    id: 'shohoz',
+    name: 'Shohoz',
+    nameBn: 'শহজ',
+    color: '#e11d48',
+    icon: '🎟️',
+    tagline: 'Book bus tickets online',
+    taglineBn: 'অনলাইনে বাস টিকেট বুক করুন',
+    url: 'https://www.shohoz.com/bus?utm_source=koyjabo&utm_medium=affiliate&utm_campaign=intercity',
+  },
+  {
+    id: 'busbd',
+    name: 'BusBD',
+    nameBn: 'বাসবিডি',
+    color: '#2563eb',
+    icon: '🚌',
+    tagline: 'Compare & book bus seats',
+    taglineBn: 'বাস সিট তুলনা করে বুক করুন',
+    url: 'https://www.busbd.com.bd/?utm_source=koyjabo&utm_medium=affiliate&utm_campaign=intercity',
+  },
+  {
+    id: 'bdtickets',
+    name: 'Bdtickets',
+    nameBn: 'বিডিটিকেটস',
+    color: '#7c3aed',
+    icon: '📲',
+    tagline: 'Fast online ticket booking',
+    taglineBn: 'দ্রুত অনলাইন টিকেট বুকিং',
+    url: 'https://bdtickets.com/?utm_source=koyjabo&utm_medium=affiliate&utm_campaign=intercity',
+  },
+];
+
 const SPONSORED_CARDS = [
   {
     brand: 'Pathao', brandColor: '#e8173b', icon: '🛵',
@@ -108,13 +141,6 @@ const SPONSORED_CARDS = [
     titleBn: 'প্রতি শুক্রবার পার্সেলে ১২% ছাড়',
     sub: 'Code: FAST10 · 1 use per Friday',
     subBn: 'কোড: FAST10 · সপ্তাহে ১ বার',
-  },
-  {
-    brand: 'Pathao', brandColor: '#e8173b', icon: '🚲',
-    title: '12% off bike every Friday',
-    titleBn: 'প্রতি শুক্রবার বাইকে ১২% ছাড়',
-    sub: 'Code: YAYDAY · 1 use per Friday',
-    subBn: 'কোড: YAYDAY · সপ্তাহে ১ বার',
   },
 ];
 
@@ -271,6 +297,76 @@ function BusTab({ tk, lang }: { tk: Tokens; lang: Lang }) {
           </div>
         </div>
       ))}
+    </div>
+  );
+}
+
+const TRAVEL_PACKAGES: Record<string, { title: string; titleBn: string; price: string; nights: string; url: string; img: string }[]> = {
+  "cox's bazar": [
+    { title: "Cox's Bazar 3N/4D Package", titleBn: "কক্সবাজার ৩ রাত ৪ দিন", price: "৳8,500", nights: "3 nights", url: "https://www.go.com.bd/?utm_source=koyjabo&utm_medium=leads", img: "🏖️" },
+    { title: "Honeymoon Special Package", titleBn: "হানিমুন স্পেশাল", price: "৳14,000", nights: "3 nights", url: "https://www.go.com.bd/?utm_source=koyjabo&utm_medium=leads", img: "💑" },
+  ],
+  "sylhet": [
+    { title: "Sylhet Tea Garden Tour 2N/3D", titleBn: "সিলেট চা বাগান ২ রাত ৩ দিন", price: "৳6,500", nights: "2 nights", url: "https://www.go.com.bd/?utm_source=koyjabo&utm_medium=leads", img: "🍃" },
+  ],
+  "chittagong": [
+    { title: "Chittagong City + Rangamati 3D", titleBn: "চট্টগ্রাম + রাঙামাটি ৩ দিন", price: "৳7,200", nights: "2 nights", url: "https://www.go.com.bd/?utm_source=koyjabo&utm_medium=leads", img: "⛰️" },
+  ],
+  "khulna": [
+    { title: "Sundarbans 2N/3D Package", titleBn: "সুন্দরবন ২ রাত ৩ দিন", price: "৳9,500", nights: "2 nights", url: "https://www.go.com.bd/?utm_source=koyjabo&utm_medium=leads", img: "🌿" },
+  ],
+  "rajshahi": [
+    { title: "Rajshahi Heritage 2D Tour", titleBn: "রাজশাহী ঐতিহ্য ২ দিন ভ্রমণ", price: "৳5,000", nights: "1 night", url: "https://www.go.com.bd/?utm_source=koyjabo&utm_medium=leads", img: "🏛️" },
+  ],
+};
+
+function TravelPackagesSection({ tk, lang, toCity }: { tk: Tokens; lang: Lang; toCity: string }) {
+  const lbl = (en: string, bn: string) => T(lang, bn, en);
+  const key = toCity.toLowerCase();
+  const packages = TRAVEL_PACKAGES[key];
+  if (!packages || packages.length === 0) return null;
+  return (
+    <div style={{ marginBottom: 24 }}>
+      <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 700, letterSpacing: 0.8, textTransform: 'uppercase' as const, color: tk.textFaint, marginBottom: 12 }}>
+        {lbl('Travel Packages', 'ট্রাভেল প্যাকেজ')}
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 10 }}>
+        {packages.map((pkg, i) => (
+          <a
+            key={i}
+            href={pkg.url}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            style={{
+              background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 14,
+              padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 14,
+              textDecoration: 'none', cursor: 'pointer',
+            }}
+          >
+            <div style={{
+              width: 44, height: 44, borderRadius: 12, flexShrink: 0,
+              background: '#06b6d422', border: '1px solid #06b6d444',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22,
+            }}>
+              {pkg.img}
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 700, color: '#06b6d4', marginBottom: 2, textTransform: 'uppercase' as const, letterSpacing: 0.4 }}>
+                {lbl('PACKAGE', 'প্যাকেজ')}
+              </div>
+              <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 14, fontWeight: 600, color: tk.text }}>
+                {lbl(pkg.title, pkg.titleBn)}
+              </div>
+              <div style={{ fontFamily: SANS, fontSize: 12, color: tk.textDim }}>
+                {pkg.nights} · {lbl('from', 'থেকে')} {pkg.price}
+              </div>
+            </div>
+            <div style={{ fontFamily: SANS, fontSize: 13, fontWeight: 700, color: '#10b981', flexShrink: 0 }}>
+              {pkg.price} ›
+            </div>
+          </a>
+        ))}
+      </div>
     </div>
   );
 }
@@ -598,6 +694,39 @@ export function IntercityDetailPage(props: Props) {
             <AdSlot tk={tk} lang={lang} kind="mid-rect" />
           </div>
 
+          {/* Book Online — affiliate ticket platforms */}
+          <div style={{ marginBottom: 24 }}>
+            <div style={{ fontFamily: SANS, fontSize: 13, fontWeight: 700, color: tk.text, marginBottom: 12 }}>
+              🎟️ {lbl('Book Ticket Online', 'অনলাইনে টিকেট বুক করুন')}
+            </div>
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' as const }}>
+              {TICKET_PLATFORMS.map((p) => (
+                <a
+                  key={p.id}
+                  href={p.url}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  style={{
+                    flex: '1 1 140px', minWidth: 130,
+                    background: `${p.color}12`, border: `1.5px solid ${p.color}44`,
+                    borderRadius: 14, padding: '14px 12px', textDecoration: 'none',
+                    display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 6,
+                    cursor: 'pointer', transition: 'all 0.15s',
+                  }}
+                >
+                  <span style={{ fontSize: 28 }}>{p.icon}</span>
+                  <span style={{ fontFamily: SANS, fontSize: 13, fontWeight: 800, color: p.color }}>{p.name}</span>
+                  <span style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 11, color: tk.textDim, textAlign: 'center' as const, lineHeight: 1.4 }}>
+                    {lbl(p.tagline, p.taglineBn)}
+                  </span>
+                </a>
+              ))}
+            </div>
+            <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 11, color: tk.textFaint, marginTop: 8 }}>
+              ℹ️ {lbl('KoyJabo links to partner platforms · prices may vary', 'KoyJabo পার্টনার প্ল্যাটফর্মে লিঙ্ক করে · দাম ভিন্ন হতে পারে')}
+            </div>
+          </div>
+
           {/* Sponsored native cards */}
           <div style={{ marginBottom: 24 }}>
             <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 700, letterSpacing: 0.8, textTransform: 'uppercase', color: tk.textFaint, marginBottom: 12 }}>
@@ -633,6 +762,9 @@ export function IntercityDetailPage(props: Props) {
               ))}
             </div>
           </div>
+
+          {/* Travel Packages */}
+          <TravelPackagesSection tk={tk} lang={lang} toCity={toCity} />
 
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
@@ -682,12 +814,30 @@ export function IntercityDetailPage(props: Props) {
                 </div>
               ))}
 
-              <div style={{
-                marginTop: 14, background: tk.amberSoft, border: `1px solid ${tk.amber}`,
-                borderRadius: 10, padding: '8px 10px',
-                fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 11, color: tk.textDim, lineHeight: 1.5,
-              }}>
-                ℹ {lbl("KoyJabo doesn't sell tickets · info only", 'KoyJabo টিকেট বিক্রি করে না · শুধু তথ্য')}
+              <div style={{ marginTop: 14 }}>
+                <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 700, color: tk.textFaint, marginBottom: 8 }}>
+                  {lbl('Book Online', 'অনলাইনে বুক করুন')}
+                </div>
+                {TICKET_PLATFORMS.map((p) => (
+                  <a
+                    key={p.id}
+                    href={p.url}
+                    target="_blank"
+                    rel="noopener noreferrer sponsored"
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8,
+                      background: `${p.color}10`, border: `1px solid ${p.color}33`,
+                      borderRadius: 8, padding: '8px 10px', textDecoration: 'none',
+                    }}
+                  >
+                    <span style={{ fontSize: 16 }}>{p.icon}</span>
+                    <span style={{ fontFamily: SANS, fontSize: 13, fontWeight: 700, color: p.color }}>{p.name}</span>
+                    <span style={{ marginLeft: 'auto', fontFamily: SANS, fontSize: 12, color: tk.textFaint }}>›</span>
+                  </a>
+                ))}
+                <div style={{ fontFamily: SANS, fontSize: 10, color: tk.textFaint, lineHeight: 1.4 }}>
+                  ℹ️ {lbl('Partner links · info only', 'পার্টনার লিঙ্ক · শুধু তথ্য')}
+                </div>
               </div>
             </div>
           </div>
