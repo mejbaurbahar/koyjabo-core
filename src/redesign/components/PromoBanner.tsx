@@ -141,7 +141,7 @@ export function PromoBanner({ tk, lang, page, onNav }: PromoBannerProps) {
 
   useEffect(() => {
     if (deals.length === 0) return;
-    const el = scrollRef.current;
+    const el: HTMLDivElement | null = scrollRef.current;
     if (!el) return;
 
     // Measure immediately, then again after paint settles
@@ -152,19 +152,15 @@ export function PromoBanner({ tk, lang, page, onNav }: PromoBannerProps) {
     el.addEventListener('scroll', updateArrows, { passive: true });
 
     // ResizeObserver: fires when container size changes (mobile viewport, font load, etc.)
-    let ro: ResizeObserver | null = null;
-    if ('ResizeObserver' in window) {
-      ro = new ResizeObserver(updateArrows);
-      ro.observe(el);
-    } else {
-      window.addEventListener('resize', updateArrows, { passive: true });
-    }
+    // ResizeObserver detects container size changes (viewport change, font load, etc.)
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(updateArrows) : null;
+    ro?.observe(el);
 
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
       el.removeEventListener('scroll', updateArrows);
-      ro ? ro.disconnect() : window.removeEventListener('resize', updateArrows);
+      ro?.disconnect();
     };
   }, [deals, updateArrows]);
 
