@@ -1,7 +1,0 @@
-{
-  "name": "Dhaka Alive Landing",
-  "description": "An animated landing page showcasing the vibrant city of Dhaka, featuring iconic landmarks like the National Parliament, Shaheed Minar, and Curzon Hall, with dynamic transportation elements and AI-powered insights.",
-  "requestFramePermissions": [
-    "geolocation"
-  ]
-}

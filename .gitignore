@@ -65,8 +65,43 @@ intercity/public/data/*.json
 # Backup files
 *.backup
 
-# Dead projects that should not be in this repo
+# Dead projects / excluded sub-apps
 intercity-route-finder/
+dhaka-alive-landing/
+examples/
+
+# Root-level debug, test, and one-off scripts
+*.cjs
+check-app*.js
+koyjabo-debug.js
+scroll-test*.js
+test-auth.js
+fix-blog.*
+fix_offline.js
+loader.js
+server.js
+testGraph.ts
+testSim.ts
+tmp_runs.json
+*_snippet_persist
+
+# Old deployment config files (Netlify/Render not in use)
+netlify.toml
+render.yaml
+
+# Data export dumps
+dhaka_transport_data_export.json
+
+# Ad network documentation
+EZOIC_*.md
+
+# Temp HTML utility files
+generate-icons.html
+HTML_SNIPPET_TO_ADD.html
+SEO_META_TAGS.html
+visitor-sync-test.html
+redirect.html
+error-page.html
 
 # User PII, device tracking, and search history — must not be in git
 # These are community data store files managed by the Cloudflare proxy
