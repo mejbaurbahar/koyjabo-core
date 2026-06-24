@@ -4,9 +4,9 @@ import { Tokens, Lang, SANS, BEN, T } from '../tokens';
 
 // Anchor house-ad fallback (shown when AdSense blocked/unfilled in AnchorAd)
 const ANCHOR_HOUSE = [
-  { text: '📢 Advertise on KoyJabo — ৳3,000/month · Reach 50K+ users', textBn: '📢 KoyJabo-তে বিজ্ঞাপন দিন — ৳৩,০০০/মাস · ৫০,০০০+ ব্যবহারকারী', href: '/advertise', color: '#10b981' },
-  { text: '🚌 200+ Dhaka bus routes — Free & offline forever', textBn: '🚌 ২০০+ ঢাকা বাস রুট — বিনামূল্যে ও অফলাইনে', href: '/', color: '#60a5fa' },
-  { text: '🗺️ Plan Bangladesh intercity trips with KoyJabo', textBn: '🗺️ KoyJabo দিয়ে আন্তঃজেলা ভ্রমণ পরিকল্পনা করুন', href: '/intercity', color: '#a78bfa' },
+  { text: '🚌 200+ Dhaka bus routes — Free & offline forever', textBn: '🚌 ২০০+ ঢাকা বাস রুট — বিনামূল্যে ও অফলাইনে', href: '/', color: '#10b981' },
+  { text: '🗺️ Plan Bangladesh intercity trips with KoyJabo', textBn: '🗺️ KoyJabo দিয়ে আন্তঃজেলা ভ্রমণ পরিকল্পনা করুন', href: '/intercity', color: '#60a5fa' },
+  { text: '🤖 Ask KoyJabo AI — bus, train & travel answers instantly', textBn: '🤖 KoyJabo AI-কে জিজ্ঞেস করুন — বাস, ট্রেন ও ভ্রমণ তথ্য', href: '/ai', color: '#a78bfa' },
 ];
 let anchorHouseIdx = 0;
 
@@ -91,7 +91,7 @@ export function SideRailAd({ tk, lang, side }: { tk: Tokens; lang: Lang; side: '
   const [filled, setFilled] = useState<boolean | null>(null);
 
   const handleRailClick = () => {
-    window.history.pushState({}, '', '/advertise');
+    window.history.pushState({}, '', '/ai');
     window.dispatchEvent(new PopStateEvent('popstate'));
   };
 
@@ -117,15 +117,15 @@ export function SideRailAd({ tk, lang, side }: { tk: Tokens; lang: Lang; side: '
           onClick={handleRailClick}
           style={{ cursor: 'pointer', padding: '12px 8px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, textAlign: 'center' }}
         >
-          <span style={{ fontSize: 32 }}>📢</span>
+          <span style={{ fontSize: 32 }}>🤖</span>
           <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 12, fontWeight: 700, color: '#fff', lineHeight: 1.4 }}>
-            {T(lang, 'KoyJabo-তে বিজ্ঞাপন দিন', 'Advertise on KoyJabo')}
+            {T(lang, 'KoyJabo AI সহায়ক', 'KoyJabo AI Assistant')}
           </div>
           <div style={{ fontFamily: SANS, fontSize: 10, color: 'rgba(255,255,255,0.65)', lineHeight: 1.4 }}>
-            {T(lang, '৫০,০০০+ ব্যবহারকারী', '50K+ users')}
+            {T(lang, 'বাস, ট্রেন ও ভ্রমণ প্রশ্ন করুন', 'Ask transport questions')}
           </div>
           <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 700, color: '#10b981', marginTop: 4 }}>
-            {T(lang, 'রেট দেখুন →', 'View rates →')}
+            {T(lang, 'চেষ্টা করুন →', 'Try it →')}
           </div>
           <div style={{ fontFamily: SANS, fontSize: 9, color: 'rgba(255,255,255,0.3)', marginTop: 8 }}>PROMOTED</div>
         </div>
@@ -250,10 +250,10 @@ export function AdIntentRow({ tk, lang }: { tk: Tokens; lang: Lang }) {
 // Native house ad cards shown when AdSense doesn't fill in NativeAdSection
 const NATIVE_HOUSE_ADS = [
   {
-    icon: '📢', color: '#10b981', bg: '#06402522',
-    title: 'Advertise on KoyJabo', titleBn: 'KoyJabo-তে বিজ্ঞাপন দিন',
-    sub: 'Reach 50K+ monthly transport users · ৳3,000/month', subBn: '৫০,০০০+ মাসিক ট্রান্সপোর্ট ব্যবহারকারী · ৳৩,০০০/মাস',
-    href: '/advertise',
+    icon: '🤖', color: '#10b981', bg: '#06402522',
+    title: 'KoyJabo AI Travel Assistant', titleBn: 'KoyJabo AI ট্রাভেল সহায়ক',
+    sub: 'Ask any transport question in Bengali or English — free', subBn: 'যেকোনো ট্রান্সপোর্ট প্রশ্ন করুন বাংলায় বা ইংরেজিতে — বিনামূল্যে',
+    href: '/ai',
   },
   {
     icon: '🏖️', color: '#3b82f6', bg: '#1e3a5f22',

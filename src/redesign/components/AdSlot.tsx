@@ -13,16 +13,16 @@ const DIMS: Record<AdKind, { w: number; h: number; format: string; slot: string 
 // House ads rotate when AdSense is blocked or unfilled
 const HOUSE_ADS = [
   {
-    icon: '📢',
-    headline: 'Advertise on KoyJabo',
-    headlineBn: 'KoyJabo-তে বিজ্ঞাপন দিন',
-    sub: 'Reach 50,000+ monthly Bangladesh transport users',
-    subBn: '৫০,০০০+ মাসিক বাংলাদেশ ট্রান্সপোর্ট ব্যবহারকারী',
-    cta: 'View rates →',
-    ctaBn: 'রেট দেখুন →',
+    icon: '🗺️',
+    headline: 'Intercity Travel Planner',
+    headlineBn: 'আন্তঃজেলা ভ্রমণ পরিকল্পনা করুন',
+    sub: 'Compare bus, train, launch & flights across Bangladesh',
+    subBn: 'বাস, ট্রেন, লঞ্চ ও বিমান তুলনা করুন',
+    cta: 'Explore →',
+    ctaBn: 'এক্সপ্লোর করুন →',
     bg: 'linear-gradient(135deg,#064e3b,#065f46)',
     accent: '#10b981',
-    href: '/advertise',
+    href: '/intercity',
   },
   {
     icon: '🏖️',

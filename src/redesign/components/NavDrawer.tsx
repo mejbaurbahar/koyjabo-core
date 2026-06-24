@@ -45,7 +45,6 @@ const GROUPS: { heading: { bn: string; en: string }; links: DrawerLink[] }[] = [
   {
     heading: { bn: 'উপার্জন', en: 'Earn / Partner' },
     links: [
-      { bn: 'বিজ্ঞাপন দিন', en: 'Advertise With Us', route: 'advertise' },
       { bn: 'API অ্যাক্সেস', en: 'API Access', route: 'api' },
     ],
   },

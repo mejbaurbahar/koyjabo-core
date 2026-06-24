@@ -106,7 +106,6 @@ const ROUTE_PATHS: Record<string, string> = {
   privacy: '/privacy',
   terms: '/terms',
   install: '/install',
-  advertise: '/advertise',
   api: '/api-access',
 };
 
@@ -373,8 +372,8 @@ export function KoyJaboApp() {
       case 'privacy': return <PrivacyPage {...p}/>;
       case 'terms': return <TermsPage {...p}/>;
       case 'install': return <InstallPage {...p}/>;
-      case 'advertise': return <AdvertisePage {...p}/>;
       case 'api': return <APIPage {...p}/>;
+      case 'advertise': return <ErrorPage404 theme={theme} lang={lang} onHome={() => navTab('home')}/>;
       case '500': return <ErrorPage500 theme={theme} lang={lang}/>;
       case 'offline': return <OfflinePage theme={theme} lang={lang}/>;
       case 'maintenance': return <MaintenancePage theme={theme} lang={lang}/>;
