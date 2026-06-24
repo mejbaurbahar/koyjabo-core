@@ -1,13 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Tokens, Lang, SANS, BEN, T } from '../tokens';
 
-type AdKind = 'leaderboard' | 'mid-rect' | 'mob-banner' | 'anchor';
+type AdKind = 'leaderboard' | 'mid-rect' | 'mob-banner' | 'anchor' | 'in-article';
 
-const DIMS: Record<AdKind, { w: number; h: number; format: string; slot: string }> = {
-  leaderboard:  { w: 728, h: 90,  format: 'horizontal', slot: '7294303750' },
-  'mid-rect':   { w: 300, h: 250, format: 'rectangle',  slot: '7294303750' },
-  'mob-banner': { w: 320, h: 100, format: 'horizontal', slot: '7294303750' },
-  anchor:       { w: 320, h: 50,  format: 'horizontal', slot: '7294303750' },
+// IMPORTANT: Each placement must have a UNIQUE slot ID from AdSense dashboard.
+// Go to AdSense → Ads → By ad unit → Display ad → create one per row below.
+// Using the same slot ID for multiple placements means AdSense counts only 1 impression/page
+// instead of 3–4, cutting potential revenue by ~70%.
+const DIMS: Record<AdKind, { w: number; h: number; format: string; slot: string; layout?: string }> = {
+  leaderboard:  { w: 728, h: 90,  format: 'auto',        slot: '7294303750' },           // Slot: Desktop top banner
+  'mid-rect':   { w: 300, h: 250, format: 'auto',        slot: '7294303750' },           // TODO: replace with new slot ID
+  'mob-banner': { w: 320, h: 100, format: 'auto',        slot: '7294303750' },           // TODO: replace with new slot ID
+  anchor:       { w: 320, h: 50,  format: 'auto',        slot: '7294303750' },           // TODO: replace with new slot ID
+  'in-article': { w: 728, h: 280, format: 'fluid',       slot: '7294303750', layout: 'in-article' }, // TODO: replace with new slot ID
 };
 
 // House ads rotate when AdSense is blocked or unfilled
@@ -165,10 +170,12 @@ function HouseAd({
 function RealAd({
   format,
   slot,
+  layout,
   onFillResult,
 }: {
   format: string;
   slot: string;
+  layout?: string;
   onFillResult: (filled: boolean) => void;
 }) {
   const insRef = useRef<HTMLElement>(null);
@@ -262,6 +269,7 @@ function RealAd({
       data-ad-slot={slot}
       data-ad-format={format}
       data-full-width-responsive="true"
+      {...(layout ? { 'data-ad-layout': layout } : {})}
     />
   );
 }
@@ -277,7 +285,7 @@ export function AdSlot({
   kind?: AdKind;
   sticky?: boolean;
 }) {
-  const { w, h, format, slot } = DIMS[kind];
+  const { w, h, format, slot, layout } = DIMS[kind];
   // null = unknown (loading), true = adsense filled, false = show house ad
   const [filled, setFilled] = useState<boolean | null>(null);
 
@@ -303,7 +311,7 @@ export function AdSlot({
         display: filled === false ? 'none' : 'block',
         minHeight: filled === true ? h : 0,
       }}>
-        <RealAd format={format} slot={slot} onFillResult={setFilled} />
+        <RealAd format={format} slot={slot} layout={layout} onFillResult={setFilled} />
       </div>
 
       {/* House ad fallback — shown when AdSense blocked or unfilled */}

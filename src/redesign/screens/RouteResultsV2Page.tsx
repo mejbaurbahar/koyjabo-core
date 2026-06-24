@@ -358,6 +358,11 @@ export function RouteResultsV2Page(props: Props) {
                   <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
                 </div>
               )}
+              {idx === 5 && (
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <AdSlot tk={tk} lang={lang} kind="in-article" />
+                </div>
+              )}
               <div style={{ background: tk.panel, border: `1px solid ${r.isAC ? '#10b981' : tk.line}`, borderRadius: 18, overflow: 'hidden', boxShadow: tk.shadow }}>
                 {r.isAC && (
                   <div style={{ background: 'linear-gradient(135deg,#10b981,#059669)', padding: '7px 16px', display: 'flex', alignItems: 'center', gap: 8 }}>
