@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { KJ_TOKENS, T, SANS, BEN } from '../tokens';
 import { PageShell } from './PageShell';
 import { Logo } from '../components/Logo';
+import { Turnstile } from '../components/Turnstile';
 import { signupUser } from '../../services/githubAuthService';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -20,12 +21,13 @@ export function SignUpPage(props: Props) {
   const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [cfToken, setCfToken] = useState('');
 
   const strength = pw.length > 12 ? 5 : pw.length > 8 ? 4 : pw.length > 5 ? 3 : pw.length > 2 ? 2 : pw.length > 0 ? 1 : 0;
   const strengthLabel = ['','Weak','Fair','Good','Strong','Excellent'][strength];
   const strengthColor = ['',tk.accent,'#f59e0b','#f59e0b','#10b981','#10b981'][strength];
 
-  const canSubmit = name.trim().length > 0 && email.trim().length > 0 && pw.length >= 6 && pw === confirmPw && agreed && !loading;
+  const canSubmit = name.trim().length > 0 && email.trim().length > 0 && pw.length >= 6 && pw === confirmPw && agreed && !loading && cfToken.length > 0;
 
   async function handleSignUp(e: React.FormEvent) {
     e.preventDefault();
@@ -135,6 +137,8 @@ export function SignUpPage(props: Props) {
               {T(lang,'আমি ','I agree to the ')}<span style={{ color:tk.primary }}>{T(lang,'গোপনীয়তা নীতি','Privacy Policy')}</span>{T(lang,' এবং ','  and ')}<span style={{ color:tk.primary }}>{T(lang,'সেবার শর্তাবলি','Terms of Service')}</span>{T(lang,'-তে সম্মত আছি','')}
             </span>
           </div>
+
+          <Turnstile theme={theme} onVerify={setCfToken} onExpire={() => setCfToken('')} />
 
           <button
             type="submit"

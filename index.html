@@ -875,6 +875,9 @@
 
   <script type="module" src="/src/main.tsx"></script>
 
+  <!-- Cloudflare Turnstile — loaded only when auth pages are visited -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
   <!-- Google AdSense — loaded after app to avoid blocking LCP -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8425219156685369"
     crossorigin="anonymous"></script>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { KJ_TOKENS, T, SANS, BEN } from '../tokens';
 import { PageShell } from './PageShell';
 import { Logo } from '../components/Logo';
+import { Turnstile } from '../components/Turnstile';
 import { loginUser } from '../../services/githubAuthService';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -18,10 +19,12 @@ export function SignInPage(props: Props) {
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [cfToken, setCfToken] = useState('');
 
   async function handleSignIn(e: React.FormEvent) {
     e.preventDefault();
     if (!email.trim() || !password) return;
+    if (!cfToken) { setError(T(lang, 'নিরাপত্তা যাচাই সম্পন্ন করুন', 'Please complete the security check')); return; }
     setLoading(true);
     setError('');
     try {
@@ -43,7 +46,7 @@ export function SignInPage(props: Props) {
     }
   }
 
-  const canSubmit = email.trim().length > 0 && password.length > 0 && !loading;
+  const canSubmit = email.trim().length > 0 && password.length > 0 && !loading && cfToken.length > 0;
 
   return (
     <PageShell {...props}>
@@ -91,6 +94,8 @@ export function SignInPage(props: Props) {
               </button>
             </div>
           </div>
+
+          <Turnstile theme={theme} onVerify={setCfToken} onExpire={() => setCfToken('')} />
 
           <button
             type="submit"
