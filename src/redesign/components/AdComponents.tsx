@@ -12,15 +12,21 @@ function AdsenseUnit({ slot, format = 'auto', layout, onFillResult }: { slot: st
     if (!ins) return;
 
     const checkFill = () => {
+      const status = ins.getAttribute('data-adsbygoogle-status');
       const h = ins.clientHeight || (ins as HTMLElement).offsetHeight;
+      // Explicitly unfilled → collapse
+      if (status === 'unfilled') { onFillResult?.(false); return; }
+      // Has height or iframe → filled
+      if (h > 5) { onFillResult?.(true); return; }
       const iframe = ins.querySelector('iframe');
-      const ok = h > 5 || !!(iframe && (iframe.src || iframe.srcdoc));
-      onFillResult?.(ok);
+      if (iframe && (iframe.src || iframe.srcdoc)) { onFillResult?.(true); return; }
+      // status='done' but h=0 → still rendering, final timeout handles it
     };
 
     const doPush = () => {
       if (pushed.current) return;
       const status = ins.getAttribute('data-adsbygoogle-status');
+      if (status === 'unfilled') { onFillResult?.(false); return; }
       if (status === 'done' || status === 'filled') { checkFill(); return; }
       const asg = (window as any).adsbygoogle;
       if (!asg || typeof asg.push !== 'function') {
@@ -30,12 +36,20 @@ function AdsenseUnit({ slot, format = 'auto', layout, onFillResult }: { slot: st
       pushed.current = true;
       try { asg.push({}); }
       catch { pushed.current = false; onFillResult?.(false); return; }
-      timer.current = window.setTimeout(() => { checkFill(); }, 3500);
+      // First check at 3.5s, final decision at 7s total
+      timer.current = window.setTimeout(() => {
+        checkFill();
+        timer.current = window.setTimeout(() => {
+          const h = ins.clientHeight || (ins as HTMLElement).offsetHeight;
+          const iframe = ins.querySelector('iframe');
+          onFillResult?.(h > 5 || !!(iframe && (iframe.src || iframe.srcdoc)));
+        }, 3500);
+      }, 3500);
     };
 
     const blockTimeout = window.setTimeout(() => {
       if (!pushed.current) onFillResult?.(false);
-    }, 7000);
+    }, 10000);
 
     if ('IntersectionObserver' in window) {
       const observer = new IntersectionObserver(

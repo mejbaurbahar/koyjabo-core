@@ -39,15 +39,14 @@ function RealAd({
     const checkFill = () => {
       const status = ins.getAttribute('data-adsbygoogle-status');
       const h = ins.clientHeight || (ins as HTMLElement).offsetHeight;
-      if (status === 'done' || status === 'filled') {
-        onFillResult(h > 5);
-        return;
-      }
+      // Explicitly unfilled by AdSense → collapse
+      if (status === 'unfilled') { onFillResult(false); return; }
+      // Visible height → filled
+      if (h > 5) { onFillResult(true); return; }
+      // Iframe with content → filled
       const iframe = ins.querySelector('iframe');
-      if (iframe && (iframe.src || iframe.srcdoc)) {
-        onFillResult(true);
-        return;
-      }
+      if (iframe && (iframe.src || iframe.srcdoc)) { onFillResult(true); return; }
+      // status='done' but h=0 means ad is still rendering — let final timeout decide
     };
 
     const doPush = () => {
@@ -66,17 +65,19 @@ function RealAd({
       catch { pushed.current = false; onFillResult(false); return; }
 
       timerRef.current = window.setTimeout(() => {
-        checkFill();
+        checkFill(); // only resolves true (or unfilled=false); never collapses on h=0
         timerRef.current = window.setTimeout(() => {
+          // Final decision at 7s total — gives slow connections enough time
           const h = ins.clientHeight || (ins as HTMLElement).offsetHeight;
-          onFillResult(h > 5);
-        }, 2000);
+          const iframe = ins.querySelector('iframe');
+          onFillResult(h > 5 || !!(iframe && (iframe.src || iframe.srcdoc)));
+        }, 3500);
       }, 3500);
     };
 
     const blockTimeout = window.setTimeout(() => {
       if (!pushed.current) onFillResult(false);
-    }, 7000);
+    }, 10000);
 
     if ('IntersectionObserver' in window) {
       const observer = new IntersectionObserver(
