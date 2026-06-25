@@ -40,10 +40,12 @@ function RealAd({
       const status = ins.getAttribute('data-adsbygoogle-status');
       // Explicitly unfilled by AdSense → collapse
       if (status === 'unfilled') { onFillResult(false); return; }
-      // Require iframe to exist — ins.clientHeight alone is unreliable (AdSense sets
-      // height on ins even when unfilled). iframe only exists when ad is actually served.
+      // Require iframe with real src — ins.clientHeight alone is unreliable (AdSense sets
+      // height on ins even when unfilled). When Google serves an ad the iframe gets a
+      // doubleclick/googlesyndication src; responsive iframes start at height=0 and resize
+      // asynchronously, so offsetHeight check is too strict.
       const iframe = ins.querySelector('iframe');
-      if (iframe && (iframe.offsetHeight > 5 || (iframe.src && iframe.src !== 'about:blank'))) {
+      if (iframe && iframe.src && !iframe.src.startsWith('about:') && iframe.src.length > 10) {
         onFillResult(true); return;
       }
       // No iframe yet — ad still loading, let final timeout decide
@@ -67,9 +69,9 @@ function RealAd({
       timerRef.current = window.setTimeout(() => {
         checkFill(); // resolves true (iframe present) or false (unfilled); otherwise waits
         timerRef.current = window.setTimeout(() => {
-          // Final decision at 7s total — require iframe (not just ins height)
+          // Final decision at 7s total — require iframe with real src
           const iframe = ins.querySelector('iframe');
-          onFillResult(!!(iframe && (iframe.offsetHeight > 5 || (iframe.src && iframe.src !== 'about:blank'))));
+          onFillResult(!!(iframe && iframe.src && !iframe.src.startsWith('about:') && iframe.src.length > 10));
         }, 3500);
       }, 3500);
     };
