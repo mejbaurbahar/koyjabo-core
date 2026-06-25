@@ -99,7 +99,7 @@ const ROUTE_PATHS: Record<string, string> = {
   signup: '/signup',
   why: '/why',
   about: '/about',
-  blogs: '/blogs',
+  blogs: '/blog',
   qa: '/qa',
   contact: '/contact',
   release: '/release',
@@ -107,6 +107,8 @@ const ROUTE_PATHS: Record<string, string> = {
   terms: '/terms',
   install: '/install',
   api: '/api-access',
+  advertise: '/advertise',
+  'daily-journey': '/daily-journey',
 };
 
 const slugify = (value: string) => value.toLowerCase().trim().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -121,7 +123,7 @@ function detailPath(route: string, params: Record<string, string> = {}) {
   if (params.from) query.set('from', slugify(params.from));
   if (params.to) query.set('to', slugify(params.to));
   const suffix = query.toString() ? `?${query.toString()}` : '';
-  if (route === 'blog-detail') return `/blogs/${params.slug || 'post'}`;
+  if (route === 'blog-detail') return `/blog/${params.slug || 'post'}`;
   if (route === 'bus-detail') return `/bus/${busSlug(params.busId)}${suffix}`;
   if (route === 'metro-detail') return `/metro/${slugify(params.stationId || params.id || 'detail')}${suffix}`;
   if (route === 'train-detail') return `/train/${slugify(params.trainId || params.id || 'detail')}${suffix}`;
@@ -185,7 +187,9 @@ function entryFromLocation(): StackEntry {
   if (path.startsWith('/intercity/') && path !== '/intercity') return { route: 'intercity-detail', params: { ...params, id: path.split('/')[2] || '' } };
   if (path.startsWith('/launch/') && path !== '/launch') return { route: 'vehicle', params: { ...params, id: path.split('/')[2] || '' } };
   if (path.startsWith('/air/') && path !== '/air') return { route: 'flight-detail', params: { ...params, code: (path.split('/')[2] || '').toUpperCase() } };
-  if (path.startsWith('/blogs/') && path !== '/blogs') return { route: 'blog-detail', params: { ...params, slug: path.split('/')[2] || '' } };
+  if ((path.startsWith('/blog/') || path.startsWith('/blogs/')) && path !== '/blog' && path !== '/blogs') {
+    return { route: 'blog-detail', params: { ...params, slug: path.split('/')[2] || '' } };
+  }
   const match = Object.entries(ROUTE_PATHS).find(([, routePath]) => routePath === path);
   return { route: match?.[0] || 'home' };
 }
@@ -384,7 +388,8 @@ export function KoyJaboApp() {
       case 'terms': return <TermsPage {...p}/>;
       case 'install': return <InstallPage {...p}/>;
       case 'api': return <APIPage {...p}/>;
-      case 'advertise': return <ErrorPage404 theme={theme} lang={lang} onHome={() => navTab('home')}/>;
+      case 'advertise': return <AdvertisePage {...p}/>;
+      case 'daily-journey': return <HomePage {...p}/>;
       case '500': return <ErrorPage500 theme={theme} lang={lang}/>;
       case 'offline': return <OfflinePage theme={theme} lang={lang}/>;
       case 'maintenance': return <MaintenancePage theme={theme} lang={lang}/>;

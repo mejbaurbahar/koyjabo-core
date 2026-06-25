@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, N, Fare } from '../tokens';
 import { PageShell } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
 import { Pill } from '../components/Pill';
 import { BD_TRAIN_ROUTES, TRAIN_STATIONS } from '../../../data/bangladeshTrainData';
+import { useDocumentTitle, setCanonicalUrl } from '../utils/useDocumentTitle';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -30,6 +31,11 @@ export function TrainDetailPage(props: Props) {
 
   const train = BD_TRAIN_ROUTES.find(t => t.id === params?.trainId) ?? BD_TRAIN_ROUTES[0];
   const stops = train.routeStops;
+
+  const fromName = stationName(stops[0]?.city ?? train.from);
+  const toName = stationName(stops[stops.length - 1]?.city ?? train.to);
+  useDocumentTitle(`${train.name}: ${fromName} → ${toName}`);
+  useEffect(() => { setCanonicalUrl(`/train/${train.id}`); }, [train.id]);
 
   const coaches = [
     { l:'Shuvan', bn:'শোভন', c:'#6b7280', f:Fare(train.fare.shuvan, lang) },

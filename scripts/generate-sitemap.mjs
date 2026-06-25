@@ -95,9 +95,15 @@ const staticPages = [
   urlEntry(`${BASE}/terms`, TODAY, 'monthly', '0.5'),
   urlEntry(`${BASE}/contact`, TODAY, 'monthly', '0.5'),
   urlEntry(`${BASE}/for-ai`, TODAY, 'monthly', '0.6'),
-  urlEntry(`${BASE}/daily-journey`, TODAY, 'monthly', '0.4'),
   urlEntry(`${BASE}/history`, TODAY, 'monthly', '0.4'),
   urlEntry(`${BASE}/train`, TODAY, 'weekly', '0.8'),
+  urlEntry(`${BASE}/local-bus`, TODAY, 'weekly', '0.8'),
+  urlEntry(`${BASE}/metro`, TODAY, 'weekly', '0.8'),
+  urlEntry(`${BASE}/launch`, TODAY, 'weekly', '0.7'),
+  urlEntry(`${BASE}/air`, TODAY, 'weekly', '0.7'),
+  urlEntry(`${BASE}/advertise`, TODAY, 'monthly', '0.5'),
+  urlEntry(`${BASE}/api-access`, TODAY, 'monthly', '0.4'),
+  urlEntry(`${BASE}/fare`, TODAY, 'monthly', '0.6'),
 ];
 
 const blogPages = blogEntries.map(({ slug, date }) =>

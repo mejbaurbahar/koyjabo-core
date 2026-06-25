@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { KJ_TOKENS, SANS, BEN, T, Tokens, Lang } from '../tokens';
 import { AdSlot } from '../components/AdSlot';
 import { PageShell } from './PageShell';
@@ -7,6 +7,7 @@ import BusRating from '../../../components/BusRating';
 import BusPhotoGallery from '../../../components/BusPhotoGallery';
 import { getBusRatings, BusRatingSummary } from '../../../services/communityDataService';
 import { earnCoins } from '../utils/koyCoinService';
+import { useDocumentTitle, setCanonicalUrl } from '../utils/useDocumentTitle';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:Lang; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -394,6 +395,12 @@ export function IntercityDetailPage(props: Props) {
   const contactNumber = params?.contact || '16557';
   const fromCity = params?.from || 'Dhaka';
   const toCity = params?.to || params?.district || 'Destination';
+
+  useDocumentTitle(`${operatorName}: ${fromCity} → ${toCity}`);
+  useEffect(() => {
+    const slug = (operatorName + '-' + fromCity + '-' + toCity).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    setCanonicalUrl(`/intercity/${slug}`);
+  }, [operatorName, fromCity, toCity]);
 
   // Look up real operator + route data
   const realOperator = findOperator(operatorName);

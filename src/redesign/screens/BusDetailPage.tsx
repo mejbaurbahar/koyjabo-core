@@ -12,6 +12,7 @@ import { getBusRatings, BusRatingSummary } from '../../../services/communityData
 import { earnCoins } from '../utils/koyCoinService';
 import type { UserLocation } from '../../../types';
 import { getFavoriteBusIds, toggleFavoriteBus } from '../utils/favorites';
+import { useDocumentTitle, setCanonicalUrl } from '../utils/useDocumentTitle';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string,p?:Record<string,string>)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -53,6 +54,11 @@ export function BusDetailPage(props: Props) {
   const bus = BUS_DATA.find(b => b.id === busId) ?? BUS_DATA[0];
   const fromId = resolveStationId(params?.from ?? '', bus.stops[0]);
   const toId = resolveStationId(params?.to ?? '', bus.stops[bus.stops.length - 1]);
+
+  const startName = STATIONS[bus.stops[0]]?.name ?? bus.stops[0];
+  const endName = STATIONS[bus.stops[bus.stops.length - 1]]?.name ?? bus.stops[bus.stops.length - 1];
+  useDocumentTitle(`${bus.name}: ${startName} ⇄ ${endName}`);
+  useEffect(() => { setCanonicalUrl(`/bus/${busId}`); }, [busId]);
 
   // Detect if user's from→to direction is reverse of the bus route order
   // e.g. bus goes Gabtoli(0)→Gulshan(5), user searched Gulshan→Gabtoli → isReversed=true

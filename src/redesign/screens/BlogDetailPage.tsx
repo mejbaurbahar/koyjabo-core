@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { KJ_TOKENS, T, SANS, BEN } from '../tokens';
 import { PageShell } from './PageShell';
 import { AdSlot } from '../components/AdSlot';
 import { Pill } from '../components/Pill';
 import { PromoBanner } from '../components/PromoBanner';
 import { BLOG_POSTS } from '../../../data/blogPosts';
+import { useDocumentTitle, setCanonicalUrl } from '../utils/useDocumentTitle';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string,p?:Record<string,string>)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -162,6 +163,9 @@ export function BlogDetailPage(props: Props) {
   const content = lang === 'bn' && post.bnContent ? post.bnContent : post.content;
   const excerpt = lang === 'bn' && post.bnExcerpt ? post.bnExcerpt : post.excerpt;
   const font = lang === 'bn' ? BEN : SANS;
+
+  useDocumentTitle(post.title);
+  useEffect(() => { setCanonicalUrl(`/blog/${post.slug}`); }, [post.slug]);
 
   // Related posts (same category, excluding current)
   const related = BLOG_POSTS.filter(p => p.category === post.category && p.slug !== post.slug).slice(0, 3);
