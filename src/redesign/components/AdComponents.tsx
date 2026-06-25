@@ -11,42 +11,59 @@ function AdsenseUnit({ slot, format = 'auto', layout, onFillResult }: { slot: st
     const ins = insRef.current;
     if (!ins) return;
 
+    let pollId = 0;
+    let resolved = false;
+    const resolve = (filled: boolean) => {
+      if (resolved) return;
+      resolved = true;
+      onFillResult?.(filled);
+    };
+
+    const isFilled = () => {
+      const iframe = ins.querySelector('iframe');
+      return !!(iframe && iframe.src && !iframe.src.startsWith('about:') && iframe.src.length > 10);
+    };
+
     const checkFill = () => {
       const status = ins.getAttribute('data-adsbygoogle-status');
-      if (status === 'unfilled') { onFillResult?.(false); return; }
-      // Require iframe with real src — ins height alone is unreliable (set even when unfilled)
-      const iframe = ins.querySelector('iframe');
-      if (iframe && iframe.src && !iframe.src.startsWith('about:') && iframe.src.length > 10) {
-        onFillResult?.(true); return;
-      }
+      if (status === 'unfilled') { resolve(false); return true; }
+      if (isFilled()) { resolve(true); return true; }
+      return false;
+    };
+
+    // Poll up to 20s — gives AdSense time to recover from transient errors
+    const startPolling = () => {
+      const startedAt = Date.now();
+      const tick = () => {
+        if (checkFill()) return;
+        if (Date.now() - startedAt > 20000) { resolve(false); return; }
+        pollId = window.setTimeout(tick, 1000);
+      };
+      tick();
     };
 
     const doPush = () => {
       if (pushed.current) return;
       const status = ins.getAttribute('data-adsbygoogle-status');
-      if (status === 'unfilled') { onFillResult?.(false); return; }
-      if (status === 'done' || status === 'filled') { checkFill(); return; }
+      if (status === 'done' || status === 'filled' || status === 'unfilled') {
+        if (checkFill()) return;
+        startPolling();
+        return;
+      }
       const asg = (window as any).adsbygoogle;
       if (!asg || typeof asg.push !== 'function') {
-        timer.current = window.setTimeout(doPush, 1000);
+        timer.current = window.setTimeout(doPush, 500);
         return;
       }
       pushed.current = true;
       try { asg.push({}); }
-      catch { pushed.current = false; onFillResult?.(false); return; }
-      // First check at 3.5s, final decision at 7s total
-      timer.current = window.setTimeout(() => {
-        checkFill();
-        timer.current = window.setTimeout(() => {
-          const iframe = ins.querySelector('iframe');
-          onFillResult?.(!!(iframe && iframe.src && !iframe.src.startsWith('about:') && iframe.src.length > 10));
-        }, 3500);
-      }, 3500);
+      catch { pushed.current = false; resolve(false); return; }
+      startPolling();
     };
 
     const blockTimeout = window.setTimeout(() => {
-      if (!pushed.current) onFillResult?.(false);
-    }, 10000);
+      if (!pushed.current) resolve(false);
+    }, 25000);
 
     if ('IntersectionObserver' in window) {
       const observer = new IntersectionObserver(
@@ -54,10 +71,10 @@ function AdsenseUnit({ slot, format = 'auto', layout, onFillResult }: { slot: st
         { rootMargin: '400px 0px' }
       );
       observer.observe(ins);
-      return () => { observer.disconnect(); clearTimeout(timer.current); clearTimeout(blockTimeout); };
+      return () => { observer.disconnect(); clearTimeout(timer.current); clearTimeout(blockTimeout); clearTimeout(pollId); };
     }
     doPush();
-    return () => { clearTimeout(timer.current); clearTimeout(blockTimeout); };
+    return () => { clearTimeout(timer.current); clearTimeout(blockTimeout); clearTimeout(pollId); };
   }, [slot, format]);
 
   return (

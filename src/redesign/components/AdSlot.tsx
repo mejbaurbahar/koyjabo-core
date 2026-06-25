@@ -36,66 +36,85 @@ function RealAd({
     const ins = insRef.current;
     if (!ins) return;
 
+    let pollId = 0;
+    let resolved = false;
+    const resolve = (filled: boolean) => {
+      if (resolved) return;
+      resolved = true;
+      onFillResult(filled);
+    };
+
+    const isFilled = () => {
+      const iframe = ins.querySelector('iframe');
+      return !!(iframe && iframe.src && !iframe.src.startsWith('about:') && iframe.src.length > 10);
+    };
+
     const checkFill = () => {
       const status = ins.getAttribute('data-adsbygoogle-status');
-      // Explicitly unfilled by AdSense → collapse
-      if (status === 'unfilled') { onFillResult(false); return; }
-      // Require iframe with real src — ins.clientHeight alone is unreliable (AdSense sets
-      // height on ins even when unfilled). When Google serves an ad the iframe gets a
-      // doubleclick/googlesyndication src; responsive iframes start at height=0 and resize
-      // asynchronously, so offsetHeight check is too strict.
-      const iframe = ins.querySelector('iframe');
-      if (iframe && iframe.src && !iframe.src.startsWith('about:') && iframe.src.length > 10) {
-        onFillResult(true); return;
-      }
-      // No iframe yet — ad still loading, let final timeout decide
+      if (status === 'unfilled') { resolve(false); return true; }
+      if (isFilled()) { resolve(true); return true; }
+      return false;
+    };
+
+    // Poll every 1s for up to 20s — gives AdSense time to recover from transient
+    // network/CSP errors and inject iframe even when initial push appears to fail
+    const startPolling = () => {
+      const startedAt = Date.now();
+      const tick = () => {
+        if (checkFill()) return;
+        if (Date.now() - startedAt > 20000) { resolve(false); return; }
+        pollId = window.setTimeout(tick, 1000);
+      };
+      tick();
     };
 
     const doPush = () => {
       if (pushed.current) return;
       const status = ins.getAttribute('data-adsbygoogle-status');
-      if (status === 'done' || status === 'filled') { checkFill(); return; }
+      if (status === 'done' || status === 'filled' || status === 'unfilled') {
+        if (checkFill()) return;
+        startPolling();
+        return;
+      }
 
       const asg = (window as any).adsbygoogle;
       if (!asg || typeof asg.push !== 'function') {
-        timerRef.current = window.setTimeout(doPush, 1000);
+        timerRef.current = window.setTimeout(doPush, 500);
         return;
       }
 
       pushed.current = true;
       try { asg.push({}); }
-      catch { pushed.current = false; onFillResult(false); return; }
+      catch { pushed.current = false; resolve(false); return; }
 
-      timerRef.current = window.setTimeout(() => {
-        checkFill(); // resolves true (iframe present) or false (unfilled); otherwise waits
-        timerRef.current = window.setTimeout(() => {
-          // Final decision at 7s total — require iframe with real src
-          const iframe = ins.querySelector('iframe');
-          onFillResult(!!(iframe && iframe.src && !iframe.src.startsWith('about:') && iframe.src.length > 10));
-        }, 3500);
-      }, 3500);
+      startPolling();
     };
 
     const blockTimeout = window.setTimeout(() => {
-      if (!pushed.current) onFillResult(false);
-    }, 10000);
+      if (!pushed.current) resolve(false);
+    }, 25000);
 
     if ('IntersectionObserver' in window) {
       const observer = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) { observer.disconnect(); doPush(); }
         },
-        { rootMargin: '200px 0px' }
+        { rootMargin: '400px 0px' }
       );
       observer.observe(ins);
       return () => {
         observer.disconnect();
         clearTimeout(timerRef.current);
         clearTimeout(blockTimeout);
+        clearTimeout(pollId);
       };
     }
     doPush();
-    return () => { clearTimeout(timerRef.current); clearTimeout(blockTimeout); };
+    return () => {
+      clearTimeout(timerRef.current);
+      clearTimeout(blockTimeout);
+      clearTimeout(pollId);
+    };
   }, [slot]);
 
   return (
