@@ -113,11 +113,11 @@ export function KJFooter({ tk, lang, isMobile, onNav }: KJFooterProps) {
       <div
         style={{
           position: 'relative',
-          maxWidth: 1120,
+          maxWidth: 1600,
           margin: '0 auto',
-          padding: isMobile ? '28px 18px 18px' : '40px 40px 22px',
+          padding: isMobile ? '28px 18px 18px' : '40px 60px 22px',
           display: 'grid',
-          gap: isMobile ? 26 : 32,
+          gap: isMobile ? 26 : 40,
           gridTemplateColumns: isMobile ? '1fr 1fr' : '1.5fr repeat(4, 1fr)',
         }}
       >
@@ -206,7 +206,7 @@ export function KJFooter({ tk, lang, isMobile, onNav }: KJFooterProps) {
         style={{
           position: 'relative',
           borderTop: `1px solid ${tk.line}`,
-          padding: isMobile ? '14px 18px' : '16px 40px',
+          padding: isMobile ? '14px 18px' : '16px 60px',
           display: 'flex',
           flexWrap: 'wrap',
           gap: 10,
