@@ -181,7 +181,7 @@ async function triggerWorkflow(
   inputs: Record<string, string>
 ): Promise<void> {
   let res: Response;
-  const body = {
+  const body: Record<string, string> = {
     requestId,
     action,
     email:        inputs.email        || '',
@@ -189,6 +189,8 @@ async function triggerWorkflow(
     userId:       inputs.userId       || '',
     data:         inputs.data         || '{}',
   };
+  // Pass Turnstile token to Worker for server-side verification on auth actions
+  if (inputs.cfToken) body.cfToken = inputs.cfToken;
   try {
     if (PROXY) {
       // Proxy path: Worker triggers dispatch server-side, token never in browser
@@ -278,13 +280,15 @@ export async function signupUser(
   email: string,
   password: string,
   username: string,
-  displayName: string
+  displayName: string,
+  cfToken = ''
 ): Promise<AuthResult> {
   const passwordHash = await sha256(password);
   return triggerAndWait('signup', {
     email: email.toLowerCase().trim(),
     passwordHash,
-    data: JSON.stringify({ username, displayName })
+    data: JSON.stringify({ username, displayName }),
+    cfToken,
   });
 }
 

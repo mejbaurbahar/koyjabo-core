@@ -37,7 +37,7 @@ export function SignUpPage(props: Props) {
     setError('');
     try {
       const username = name.trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
-      const result = await signupUser(email, pw, username || 'user', name.trim());
+      const result = await signupUser(email, pw, username || 'user', name.trim(), cfToken);
       if (!result.success) throw new Error(result.error || T(lang, 'সাইন আপ ব্যর্থ হয়েছে', 'Sign up failed'));
       login({
         id: result.userId!,
