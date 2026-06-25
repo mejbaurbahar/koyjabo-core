@@ -38,15 +38,13 @@ function RealAd({
 
     const checkFill = () => {
       const status = ins.getAttribute('data-adsbygoogle-status');
-      const h = ins.clientHeight || (ins as HTMLElement).offsetHeight;
       // Explicitly unfilled by AdSense → collapse
       if (status === 'unfilled') { onFillResult(false); return; }
-      // Visible height → filled
-      if (h > 5) { onFillResult(true); return; }
-      // Iframe with content → filled
+      // Only count as filled when iframe has actual rendered content
+      // (AdSense sets height on ins even when unfilled, so height alone is unreliable)
       const iframe = ins.querySelector('iframe');
-      if (iframe && (iframe.src || iframe.srcdoc)) { onFillResult(true); return; }
-      // status='done' but h=0 means ad is still rendering — let final timeout decide
+      if (iframe && iframe.offsetHeight > 5) { onFillResult(true); return; }
+      // No iframe yet — ad still loading, let final timeout decide
     };
 
     const doPush = () => {
@@ -65,12 +63,11 @@ function RealAd({
       catch { pushed.current = false; onFillResult(false); return; }
 
       timerRef.current = window.setTimeout(() => {
-        checkFill(); // only resolves true (or unfilled=false); never collapses on h=0
+        checkFill(); // resolves true (iframe present) or false (unfilled); otherwise waits
         timerRef.current = window.setTimeout(() => {
-          // Final decision at 7s total — gives slow connections enough time
-          const h = ins.clientHeight || (ins as HTMLElement).offsetHeight;
+          // Final decision at 7s total — require real iframe content
           const iframe = ins.querySelector('iframe');
-          onFillResult(h > 5 || !!(iframe && (iframe.src || iframe.srcdoc)));
+          onFillResult(!!(iframe && iframe.offsetHeight > 5));
         }, 3500);
       }, 3500);
     };
