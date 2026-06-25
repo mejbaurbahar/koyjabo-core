@@ -192,9 +192,7 @@ export function ProfilePage(props: ScreenProps) {
             </div>
 
             <AdSlot tk={tk} lang={lang} kind="mid-rect" />
-            <div style={{ margin: '16px 0' }}>
               <AdSlot tk={tk} lang={lang} kind="multiplex" />
-            </div>
           </div>
         </div>
       </div>

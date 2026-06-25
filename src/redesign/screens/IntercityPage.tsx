@@ -457,9 +457,7 @@ export function IntercityPage(props: Props) {
       </div>
 
       {/* Ad after hero */}
-      <div style={{ display:'flex', justifyContent:'center', padding: isMobile ? '0 16px' : '0 40px', margin:'16px 0' }}>
-        <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
-      </div>
+      <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
 
       {/* Search section */}
       <div style={{ padding: isMobile ? '20px 16px' : '28px 40px' }}>
@@ -681,9 +679,7 @@ export function IntercityPage(props: Props) {
         )}
 
         {/* Ad between results and popular operators */}
-        <div style={{ margin:'24px 0' }}>
-          <AdSlot tk={tk} lang={lang} kind="in-article"/>
-        </div>
+        <AdSlot tk={tk} lang={lang} kind="in-article"/>
 
         {/* Popular Operators */}
         <div style={{ marginTop: 28 }}>
@@ -701,16 +697,10 @@ export function IntercityPage(props: Props) {
         </div>
 
         {/* Ad slot */}
-        <div style={{ margin: '16px 0' }}>
-          <AdSlot tk={tk} lang={lang} kind="in-article" />
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 16 }}>
-          <PromoBanner tk={tk} lang={lang} page="intercity" onNav={onNav}/>
-          <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
-        </div>
-        <div style={{ margin: '20px 0' }}>
+        <AdSlot tk={tk} lang={lang} kind="in-article" />
+        <PromoBanner tk={tk} lang={lang} page="intercity" onNav={onNav}/>
+        <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
           <AdSlot tk={tk} lang={lang} kind="multiplex" />
-        </div>
       </div>
 
     </div>

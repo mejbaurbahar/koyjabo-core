@@ -168,10 +168,7 @@ export function SettingsPage(props: ScreenProps) {
         <div style={{ textAlign: 'center', marginTop: 16, fontFamily: SANS, fontSize: 11, color: tk.textFaint }}>
           KoyJabo · v1.5.2 · Build 2026.06.18
         </div>
-
-        <div style={{ margin: '20px 0' }}>
           <AdSlot tk={tk} lang={lang} kind="multiplex" />
-        </div>
       </div>
 
       <ConfirmModal tk={tk} lang={lang} open={confirmClear} title={lbl('Clear search history?', 'অনুসন্ধান ইতিহাস মুছবেন?')} message={lbl('All your search history will be permanently deleted.', 'আপনার সমস্ত অনুসন্ধান ইতিহাস স্থায়ীভাবে মুছে যাবে।')} confirmLabel={lbl('Clear', 'মুছুন')} onConfirm={() => setConfirmClear(false)} onClose={() => setConfirmClear(false)} />

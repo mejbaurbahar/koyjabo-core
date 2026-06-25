@@ -56,9 +56,7 @@ export function QAPage(props: Props) {
         {items.length===0 && <div style={{ textAlign:'center',padding:40,color:tk.textFaint,fontFamily:BEN }}>{T(lang,'কোনো ফলাফল নেই।','No results found.')}</div>}
 
         <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
-        <div style={{ margin: '20px 0' }}>
           <AdSlot tk={tk} lang={lang} kind="multiplex" />
-        </div>
       </div>
     </PageShell>
   );

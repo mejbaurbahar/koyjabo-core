@@ -237,9 +237,7 @@ export function FlightDetailPage(props: Props) {
 
           {!adFree && <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'mid-rect'} />}
           {!adFree && (
-            <div style={{ margin: '20px 0' }}>
               <AdSlot tk={tk} lang={lang} kind="multiplex" />
-            </div>
           )}
           {!adFree && <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'} />}
         </div>

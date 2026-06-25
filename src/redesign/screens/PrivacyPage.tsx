@@ -53,10 +53,7 @@ export function PrivacyPage(props: Props) {
           <div style={{ fontFamily:BEN,fontWeight:700,fontSize:14,color:tk.primary,marginBottom:6 }}>{T(lang,'আরও পড়ুন','Read full policy')}</div>
           <div style={{ fontFamily:BEN,fontSize:13,color:tk.textDim }}>{T(lang,'সম্পূর্ণ নীতির জন্য আমাদের সাথে যোগাযোগ করুন: koyjabo@gmail.com','For the full policy contact us at: koyjabo@gmail.com')}</div>
         </div>
-
-        <div style={{ margin: '20px 0' }}>
           <AdSlot tk={tk} lang={lang} kind="multiplex" />
-        </div>
         <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
       </div>
     </PageShell>

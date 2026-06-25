@@ -116,10 +116,7 @@ export function TrainDetailPage(props: Props) {
                 {T(lang,'ভাড়া বাংলাদেশ রেলওয়ে ডেটা থেকে। অতিরিক্ত: সার্ভিস চার্জ ৳২০ + ১৫% ভ্যাট।','Base fare from Bangladesh Railway. Add: ৳20 service charge + 15% VAT.')}
               </div>
             </div>
-
-            <div style={{ margin: '16px 0' }}>
               <AdSlot tk={tk} lang={lang} kind="in-article" />
-            </div>
 
             {/* Routes */}
             <div style={{ ...card(18), marginBottom:16 }}>
@@ -226,9 +223,7 @@ export function TrainDetailPage(props: Props) {
             </div>
 
             <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
-            <div style={{ margin: '20px 0' }}>
               <AdSlot tk={tk} lang={lang} kind="multiplex" />
-            </div>
           </div>
 
           {/* Sidebar */}

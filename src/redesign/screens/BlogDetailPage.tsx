@@ -211,10 +211,7 @@ export function BlogDetailPage(props: Props) {
             {excerpt}
           </div>
         )}
-
-        <div style={{ margin: '16px 0' }}>
           <AdSlot tk={tk} lang={lang} kind="in-article" />
-        </div>
 
         {/* Main content */}
         <div style={{ marginTop: 20 }}>
@@ -223,9 +220,7 @@ export function BlogDetailPage(props: Props) {
 
         <div style={{ margin: '24px 0' }}>
           <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
-          <div style={{ margin: '20px 0' }}>
             <AdSlot tk={tk} lang={lang} kind="multiplex" />
-          </div>
         </div>
 
         {/* Deals banner */}

@@ -304,9 +304,7 @@ export function FareCalcPage(props: Props) {
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
           <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'mid-rect'} />
         </div>
-        <div style={{ margin: '20px 0' }}>
           <AdSlot tk={tk} lang={lang} kind="multiplex" />
-        </div>
       </div>
 
     </div>

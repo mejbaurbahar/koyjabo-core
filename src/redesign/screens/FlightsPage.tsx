@@ -231,9 +231,7 @@ export function FlightsPage(props: Props) {
           </div>
 
           {/* Ad between results and tip */}
-          <div style={{ margin:'18px 0' }}>
-            <AdSlot tk={tk} lang={lang} kind="in-article"/>
-          </div>
+          <AdSlot tk={tk} lang={lang} kind="in-article"/>
 
           <div style={{ ...card(14), background:tk.amberSoft, borderColor:tk.amber, marginBottom:18 }}>
             <div style={{ fontFamily:BEN, fontSize:13, color:tk.amber, lineHeight:1.6 }}>
@@ -241,9 +239,7 @@ export function FlightsPage(props: Props) {
             </div>
           </div>
 
-          <div style={{ margin:'18px 0' }}>
-            <AdSlot tk={tk} lang={lang} kind="multiplex"/>
-          </div>
+          <AdSlot tk={tk} lang={lang} kind="multiplex"/>
           <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
         </div>
       </div>

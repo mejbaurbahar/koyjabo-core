@@ -281,12 +281,8 @@ export function AboutPage(props: PageShellProps) {
         </div>
 
         {/* Ads */}
-        <div style={{ margin: '20px 0' }}>
           <AdSlot tk={tk} lang={lang} kind="in-article" />
-        </div>
-        <div style={{ margin: '20px 0' }}>
           <AdSlot tk={tk} lang={lang} kind="multiplex" />
-        </div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
         </div>

@@ -184,10 +184,7 @@ export function MetroPage(props: Props) {
             </div>
           </div>
 
-          {/* Ad between station map and fare calculator */}
-          <div style={{ display:'flex', justifyContent:'center', marginBottom:18 }}>
-            <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
-          </div>
+          <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
 
           {/* Fare calculator with real station picker */}
           <div style={{ ...card(16), marginBottom:18 }}>
@@ -223,10 +220,7 @@ export function MetroPage(props: Props) {
             {toFocus && <SuggestionDropdown suggestions={filterStations(fareTo)} onSelect={s=>{setFareTo(s.label);setToFocus(false);setHasSearched(false);}} onDismiss={()=>setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef}/>}
           </div>
 
-          {/* Ad between fare calc and info grid */}
-          <div style={{ margin:'18px 0' }}>
-            <AdSlot tk={tk} lang={lang} kind="in-article"/>
-          </div>
+          <AdSlot tk={tk} lang={lang} kind="in-article"/>
 
           {/* Info grid */}
           <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr 1fr':'repeat(4,1fr)', gap:10, marginBottom:18 }}>
@@ -246,9 +240,7 @@ export function MetroPage(props: Props) {
 
           <PromoBanner tk={tk} lang={lang} page="metro" onNav={onNav}/>
           <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
-          <div style={{ margin: '20px 0' }}>
             <AdSlot tk={tk} lang={lang} kind="multiplex" />
-          </div>
         </div>
       </div>
     </PageShell>
