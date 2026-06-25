@@ -74,7 +74,9 @@ export function KJFooter({ tk, lang, isMobile, onNav }: KJFooterProps) {
         borderTop: `1px solid ${tk.line}`,
         position: 'relative',
         overflow: 'hidden',
-        width: '100%',
+        // Extend into rail padding on wide screens
+        width: 'calc(100% + 2 * var(--rail-pad, 0px))',
+        marginLeft: 'calc(-1 * var(--rail-pad, 0px))',
         boxSizing: 'border-box',
       }}
     >

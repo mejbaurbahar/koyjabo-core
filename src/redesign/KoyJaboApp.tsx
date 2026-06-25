@@ -454,6 +454,8 @@ export function KoyJaboApp() {
         paddingRight: showRails ? 184 : 0,
         paddingBottom: 0,
         boxSizing: 'border-box',
+        // CSS variable lets KJFooter extend beyond the rail padding
+        ['--rail-pad' as string]: showRails ? '184px' : '0px',
       }}>
         {/* When forcing desktop on phone, content needs min-width to render properly */}
         <div style={{ minWidth: forceDesktop ? 1280 : 'auto' }}>
