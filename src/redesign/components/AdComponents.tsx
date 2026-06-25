@@ -67,24 +67,27 @@ function AdsenseUnit({ slot, format = 'auto', layout, onFillResult }: { slot: st
 export function SideRailAd({ tk, lang, side }: { tk: Tokens; lang: Lang; side: 'left' | 'right' }) {
   const [filled, setFilled] = useState<boolean | null>(null);
 
-  // Collapse completely when unfilled — no house ad
-  if (filled === false) return null;
-
   return (
-    <div style={{
-      position: 'fixed', top: '50%', transform: 'translateY(-50%)',
-      [side]: 8, width: 160, zIndex: 80,
-      background: filled === true ? tk.panelMuted : 'transparent',
-      border: filled === true ? `1px solid ${tk.line}` : 'none',
-      borderRadius: 12,
-      minHeight: filled === true ? 600 : 0,
-      display: 'flex', flexDirection: 'column', alignItems: 'stretch',
-      justifyContent: 'flex-start', padding: filled === true ? 8 : 0, overflow: 'hidden',
-    }}>
-      <div style={{ minHeight: filled === true ? 560 : 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <>
+      {/* Hidden detection unit — mounted always so fill can be detected */}
+      <div style={{ position: 'fixed', [side]: -9999, top: 0, width: 0, height: 0, overflow: 'hidden', opacity: 0, pointerEvents: 'none' }}>
         <AdsenseUnit slot="3797668998" onFillResult={setFilled}/>
       </div>
-    </div>
+
+      {/* Visible rail — only shown when AdSense confirms fill */}
+      {filled === true && (
+        <div style={{
+          position: 'fixed', top: '50%', transform: 'translateY(-50%)',
+          [side]: 8, width: 160, zIndex: 80,
+          background: tk.panelMuted, border: `1px solid ${tk.line}`,
+          borderRadius: 12, minHeight: 600,
+          display: 'flex', flexDirection: 'column', alignItems: 'stretch',
+          justifyContent: 'flex-start', padding: 8, overflow: 'hidden',
+        }}>
+          <AdsenseUnit slot="3797668998"/>
+        </div>
+      )}
+    </>
   );
 }
 
