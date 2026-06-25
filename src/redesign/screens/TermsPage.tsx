@@ -47,6 +47,9 @@ export function TermsPage(props: Props) {
           <div style={{ fontFamily:BEN,fontSize:13,color:tk.textDim }}>koyjabo@gmail.com</div>
         </div>
 
+        <div style={{ margin: '20px 0' }}>
+          <AdSlot tk={tk} lang={lang} kind="multiplex" />
+        </div>
         <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
       </div>
     </PageShell>

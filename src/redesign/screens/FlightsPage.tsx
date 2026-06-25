@@ -230,12 +230,20 @@ export function FlightsPage(props: Props) {
             </div>
           </div>
 
-          <div style={{ ...card(14), background:tk.amberSoft, borderColor:tk.amber, marginTop:18, marginBottom:18 }}>
+          {/* Ad between results and tip */}
+          <div style={{ margin:'18px 0' }}>
+            <AdSlot tk={tk} lang={lang} kind="in-article"/>
+          </div>
+
+          <div style={{ ...card(14), background:tk.amberSoft, borderColor:tk.amber, marginBottom:18 }}>
             <div style={{ fontFamily:BEN, fontSize:13, color:tk.amber, lineHeight:1.6 }}>
               ℹ️ {T(lang,'কই যাবো শুধুমাত্র ফ্লাইট তথ্য দেখায় — টিকেট কিনতে সরাসরি এয়ারলাইন ওয়েবসাইট বা বিমানবন্দরে যান।','KoyJabo shows flight info only — purchase tickets at official airline websites or airports.')}
             </div>
           </div>
 
+          <div style={{ margin:'18px 0' }}>
+            <AdSlot tk={tk} lang={lang} kind="multiplex"/>
+          </div>
           <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
         </div>
       </div>

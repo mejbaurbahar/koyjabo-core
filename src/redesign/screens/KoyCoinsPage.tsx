@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, N } from '../tokens';
 import { PageShell } from './PageShell';
+import { AdSlot } from '../components/AdSlot';
 import {
   getBalance, isAdFree, getAdFreeUntil, getTransactions,
   activateAdFree, claimDailyBonus, claimOneTimeBonus, isOneTimeClaimed,
@@ -271,6 +272,16 @@ export function KoyCoinsPage(props: Props) {
               <div style={{ fontFamily:SANS, fontSize:12, color:tk.textFaint, marginTop:6 }}>{T(lang,'বাস/ট্রানজিট সার্চ করুন ও কয়েন পান','Search bus/transit routes to earn coins')}</div>
             </div>
           )}
+        </div>
+
+        <div style={{ margin: '20px 0' }}>
+          <AdSlot tk={tk} lang={lang} kind="in-article" />
+        </div>
+        <div style={{ margin: '16px 0' }}>
+          <AdSlot tk={tk} lang={lang} kind="multiplex" />
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
+          <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
         </div>
       </div>
     </PageShell>

@@ -567,8 +567,14 @@ export function TrainPage(props: Props) {
                   action={T(lang,'প্রিয় ট্রেন','Favorite trains')}/>
                 <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
                   {filteredTrains.length === 0 && <div style={{ fontFamily:BEN, fontSize:13, color:tk.textFaint, padding:'16px 0', textAlign:'center' }}>{T(lang,'কোনো ট্রেন পাওয়া যায়নি','No trains found for this route')}</div>}
-                  {filteredTrains.map(t=>(
-                    <div key={t.source.id} onClick={()=>onNav('train-detail',{trainId:t.source.id})} style={{ ...card(14), cursor:'pointer' }}>
+                  {filteredTrains.map((t,i)=>(
+                    <React.Fragment key={t.source.id}>
+                      {i === 5 && (
+                        <div style={{ display:'flex', justifyContent:'center' }}>
+                          <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
+                        </div>
+                      )}
+                    <div onClick={()=>onNav('train-detail',{trainId:t.source.id})} style={{ ...card(14), cursor:'pointer' }}>
                       <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:10 }}>
                         <div style={{ width:48, height:48, borderRadius:12, flexShrink:0, background:`linear-gradient(135deg,${t.col[0]},${t.col[1]})`, color:'#fff', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center' }}>
                           <span style={{ fontFamily:SANS, fontWeight:800, fontSize:12 }}>{t.num}</span>
@@ -592,6 +598,7 @@ export function TrainPage(props: Props) {
                         </div>
                       </div>
                     </div>
+                    </React.Fragment>
                   ))}
                 </div>
               </div>

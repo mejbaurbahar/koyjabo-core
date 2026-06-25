@@ -2030,6 +2030,11 @@ export function HomePage({
           <MetroLiveStrip tk={tk} lang={lang} isMobile={isMobile} />
         </div>
 
+        {/* ── Ad strip ── */}
+        <div style={{ ...section, display: 'flex', justifyContent: 'center' }}>
+          <AdSlot tk={tk} lang={lang} kind="in-article" />
+        </div>
+
         {/* ── Saved Routes ── */}
         <div style={section}>
           <SectionHeader

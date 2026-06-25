@@ -184,6 +184,11 @@ export function MetroPage(props: Props) {
             </div>
           </div>
 
+          {/* Ad between station map and fare calculator */}
+          <div style={{ display:'flex', justifyContent:'center', marginBottom:18 }}>
+            <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
+          </div>
+
           {/* Fare calculator with real station picker */}
           <div style={{ ...card(16), marginBottom:18 }}>
             <div style={{ fontFamily:BEN, fontWeight:700, fontSize:14, color:tk.text, marginBottom:14 }}>{T(lang,'ভাড়া ক্যালকুলেটর','Fare Calculator')} 🎫</div>
@@ -216,6 +221,11 @@ export function MetroPage(props: Props) {
             </div>
             {fromFocus && <SuggestionDropdown suggestions={filterStations(fareFrom)} onSelect={s=>{setFareFrom(s.label);setFromFocus(false);setHasSearched(false);}} onDismiss={()=>setFromFocus(false)} tk={tk} lang={lang} anchorRef={fromRef}/>}
             {toFocus && <SuggestionDropdown suggestions={filterStations(fareTo)} onSelect={s=>{setFareTo(s.label);setToFocus(false);setHasSearched(false);}} onDismiss={()=>setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef}/>}
+          </div>
+
+          {/* Ad between fare calc and info grid */}
+          <div style={{ margin:'18px 0' }}>
+            <AdSlot tk={tk} lang={lang} kind="in-article"/>
           </div>
 
           {/* Info grid */}

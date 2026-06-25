@@ -456,6 +456,11 @@ export function IntercityPage(props: Props) {
         </div>
       </div>
 
+      {/* Ad after hero */}
+      <div style={{ display:'flex', justifyContent:'center', padding: isMobile ? '0 16px' : '0 40px', margin:'16px 0' }}>
+        <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
+      </div>
+
       {/* Search section */}
       <div style={{ padding: isMobile ? '20px 16px' : '28px 40px' }}>
         {/* Mode chips */}
@@ -674,6 +679,11 @@ export function IntercityPage(props: Props) {
           )}
         </div>
         )}
+
+        {/* Ad between results and popular operators */}
+        <div style={{ margin:'24px 0' }}>
+          <AdSlot tk={tk} lang={lang} kind="in-article"/>
+        </div>
 
         {/* Popular Operators */}
         <div style={{ marginTop: 28 }}>

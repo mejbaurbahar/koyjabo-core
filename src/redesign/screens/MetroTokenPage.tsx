@@ -105,6 +105,9 @@ export function MetroTokenPage(props: Props) {
           </div>
         </div>
 
+        <div style={{ margin: '20px 0' }}>
+          <AdSlot tk={tk} lang={lang} kind="multiplex" />
+        </div>
         <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
       </div>
     </PageShell>

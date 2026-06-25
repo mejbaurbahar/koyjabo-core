@@ -344,9 +344,15 @@ export function AdvertisePage(props: PageShellProps) {
           </div>
         </div>
 
-        {/* Ad */}
+        {/* Ads */}
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <AdSlot tk={tk} lang={lang} kind="mid-rect" />
+        </div>
+        <div style={{ margin: '20px 0' }}>
+          <AdSlot tk={tk} lang={lang} kind="multiplex" />
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
         </div>
       </div>
     </PageShell>
