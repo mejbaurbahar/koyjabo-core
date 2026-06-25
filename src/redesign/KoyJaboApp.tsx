@@ -446,7 +446,7 @@ export function KoyJaboApp() {
     stage = (
       <div ref={scrollerRef} data-app-scroller="true" style={{
         width: '100%', height: '100vh',
-        overflowX: forceDesktop ? 'auto' : 'hidden', // allow h-scroll in desktop-on-phone mode
+        overflowX: forceDesktop ? 'auto' : 'hidden',
         overflowY: 'auto',
         background: tk.bg, position: 'relative',
         WebkitOverflowScrolling: 'touch',
@@ -454,8 +454,6 @@ export function KoyJaboApp() {
         paddingRight: showRails ? 184 : 0,
         paddingBottom: 0,
         boxSizing: 'border-box',
-        // CSS variable lets KJFooter extend beyond the rail padding
-        ['--rail-pad' as string]: showRails ? '184px' : '0px',
       }}>
         {/* When forcing desktop on phone, content needs min-width to render properly */}
         <div style={{ minWidth: forceDesktop ? 1280 : 'auto' }}>
