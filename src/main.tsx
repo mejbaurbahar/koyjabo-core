@@ -70,6 +70,9 @@ import AntiScraping from '../components/AntiScraping';
 import { ToastProvider } from '../contexts/ToastContext';
 import { LanguageProvider } from '../contexts/LanguageContext';
 import { AuthProvider } from './contexts/AuthContext';
+import { killConsoleInProd, installAntiDevtools } from './utils/security';
+killConsoleInProd();
+installAntiDevtools();
 
 const rootElement = document.getElementById('root');
 if (rootElement) {

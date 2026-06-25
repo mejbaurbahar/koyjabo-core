@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import type { AuthUser, AuthSession, AuthStatus } from '../types/auth';
 import { fetchAvatar, getOrCreateDeviceId, recordDeviceLogin, fetchUserHistoryFromGitHub, syncHistoryToGitHub } from '../services/githubAuthService';
 import { setHistoryUser, getUserHistory, loadHistoryData } from '../../services/analyticsService';
+import { secureStorage } from '../utils/secureStorage';
 
 // ── Session storage keys ──────────────────────────────────────────────────────
 const SESSION_KEY = 'koyjabo_auth_session';
@@ -13,16 +14,16 @@ function saveSession(user: AuthUser): void {
     deviceId: getOrCreateDeviceId(),
     expiresAt: Date.now() + SESSION_TTL_DAYS * 24 * 60 * 60 * 1000
   };
-  localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+  secureStorage.setItem(SESSION_KEY, JSON.stringify(session));
 }
 
 function loadSession(): AuthSession | null {
   try {
-    const raw = localStorage.getItem(SESSION_KEY);
+    const raw = secureStorage.getItem(SESSION_KEY);
     if (!raw) return null;
     const session: AuthSession = JSON.parse(raw);
     if (session.expiresAt < Date.now()) {
-      localStorage.removeItem(SESSION_KEY);
+      secureStorage.removeItem(SESSION_KEY);
       return null;
     }
     return session;
@@ -103,7 +104,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         mostUsedTrains: h.mostUsedTrains,
       });
     }
-    localStorage.removeItem(SESSION_KEY);
+    secureStorage.removeItem(SESSION_KEY);
     setHistoryUser(null);
     setUser(null);
     setStatus('unauthenticated');

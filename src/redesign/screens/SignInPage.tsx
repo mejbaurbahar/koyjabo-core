@@ -5,6 +5,7 @@ import { Logo } from '../components/Logo';
 import { Turnstile } from '../components/Turnstile';
 import { loginUser } from '../../services/githubAuthService';
 import { useAuth } from '../../contexts/AuthContext';
+import { checkRateLimit, getRateLimitRemainingMs, sanitizeFormField } from '../../utils/security';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -23,12 +24,18 @@ export function SignInPage(props: Props) {
 
   async function handleSignIn(e: React.FormEvent) {
     e.preventDefault();
+    const allowed = checkRateLimit('signin:' + email.trim(), 5, 15 * 60 * 1000);
+    if (!allowed) {
+      const wait = Math.ceil(getRateLimitRemainingMs('signin:' + email.trim()) / 60000);
+      setError(T(lang, `অনেকবার চেষ্টা করা হয়েছে। ${wait} মিনিট পরে চেষ্টা করুন।`, `Too many attempts. Try again in ${wait} minute(s).`));
+      return;
+    }
     if (!email.trim() || !password) return;
     if (!cfToken) { setError(T(lang, 'নিরাপত্তা যাচাই সম্পন্ন করুন', 'Please complete the security check')); return; }
     setLoading(true);
     setError('');
     try {
-      const result = await loginUser(email, password);
+      const result = await loginUser(sanitizeFormField(email, 'email'), password);
       login({
         id: result.userId,
         email: result.email,
