@@ -519,7 +519,7 @@ interface TileData {
   badge?: { bn: string; en: string };
   route: string;
   mode: SearchModeId;
-  vehicleKind: 'bus' | 'train' | 'plane' | 'launch' | 'chatbot';
+  vehicleKind: 'bus' | 'train' | 'plane' | 'launch' | 'chatbot' | 'truck';
 }
 
 const TILES: TileData[] = [
@@ -529,7 +529,7 @@ const TILES: TileData[] = [
   { grad: 'linear-gradient(135deg, #f59e0b, #b45309)', label: { bn: 'আন্তঃজেলা', en: 'Intercity' }, sub: '64 districts · bus/train/flight', route: 'intercity', mode: 'intercity', vehicleKind: 'plane' },
   { grad: 'linear-gradient(135deg, #0ea5e9, #075985)', label: { bn: 'লঞ্চ ও স্টিমার', en: 'Launch & Steamer' }, sub: 'Sadarghat → Barisal', route: 'launch-hub', mode: 'launch', vehicleKind: 'launch' },
   { grad: 'linear-gradient(135deg, #8b5cf6, #5b21b6)', label: { bn: 'অভ্যন্তরীণ ফ্লাইট', en: 'Flights' }, sub: '4 airlines · 8 airports', badge: { bn: 'নতুন', en: 'New' }, route: 'flights-hub', mode: 'flights', vehicleKind: 'plane' },
-  { grad: 'linear-gradient(135deg, #ef4444, #7f1d1d)', label: { bn: 'ট্রাক ও পণ্য', en: 'Truck & Freight' }, sub: 'Lalamove · TruckLagbe', badge: { bn: 'নতুন', en: 'New' }, route: 'truck-hub', mode: 'truck', vehicleKind: 'bus' },
+  { grad: 'linear-gradient(135deg, #ef4444, #7f1d1d)', label: { bn: 'ট্রাক ও পণ্য', en: 'Truck & Freight' }, sub: '64 districts · 16 vehicle types', badge: { bn: 'নতুন', en: 'New' }, route: 'truck-hub', mode: 'truck', vehicleKind: 'truck' },
   { grad: 'linear-gradient(135deg, #ef4444, #b91c1c)', label: { bn: 'AI সহায়ক', en: 'AI Assistant' }, sub: 'Ask in Bangla', badge: { bn: 'নতুন', en: 'New' }, route: 'ai', mode: 'bus', vehicleKind: 'chatbot' },
 ];
 
@@ -610,7 +610,12 @@ function ModeTile({
           }}
         >
           <span style={{ fontSize: tile.vehicleKind === 'bus' ? 20 : tile.vehicleKind === 'chatbot' ? 18 : 20 }}>
-            {tile.vehicleKind === 'bus' ? '🚌' : tile.vehicleKind === 'train' ? '🚆' : tile.vehicleKind === 'plane' ? '✈️' : tile.vehicleKind === 'launch' ? '⛴️' : '🤖'}
+            {tile.vehicleKind === 'bus' ? '🚌'
+              : tile.vehicleKind === 'train' ? '🚆'
+              : tile.vehicleKind === 'plane' ? '✈️'
+              : tile.vehicleKind === 'launch' ? '⛴️'
+              : tile.vehicleKind === 'truck' ? '🚛'
+              : '🤖'}
           </span>
         </div>
         {tile.badge && (
