@@ -912,6 +912,139 @@ export function Chatbot3D({
   );
 }
 
+// ─── Truck3D ──────────────────────────────────────────────────────────────────
+
+export function Truck3D({
+  size = 200,
+  palette = ['#ef4444', '#7f1d1d', '#0a0a0a', '#fbbf24'],
+}: {
+  size?: number;
+  palette?: string[];
+}) {
+  const [body, dark, shadow, accent] = palette;
+  const w = 240;
+  const h = 150;
+
+  return (
+    <svg
+      width={size}
+      height={size * (h / w)}
+      viewBox={`0 0 ${w} ${h}`}
+      overflow="visible"
+      role="img"
+      aria-label="3D truck"
+    >
+      <defs>
+        <linearGradient id="truck-cargo" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.2" />
+          <stop offset="35%" stopColor={body} />
+          <stop offset="85%" stopColor={dark} />
+          <stop offset="100%" stopColor={shadow} />
+        </linearGradient>
+        <linearGradient id="truck-cab" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.18" />
+          <stop offset="45%" stopColor={body} />
+          <stop offset="100%" stopColor={dark} />
+        </linearGradient>
+        <linearGradient id="truck-window" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#e0f3ff" stopOpacity="0.85" />
+          <stop offset="100%" stopColor="#3a6a8c" stopOpacity="0.9" />
+        </linearGradient>
+        <radialGradient id="truck-shadow-rg" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#000000" stopOpacity="0.32" />
+          <stop offset="100%" stopColor="#000000" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="truck-grille" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={dark} />
+          <stop offset="100%" stopColor={shadow} />
+        </linearGradient>
+      </defs>
+
+      {/* Speed streaks */}
+      {[0, 1, 2, 3, 4].map((i) => (
+        <rect
+          key={i}
+          x={4 + i * 14}
+          y={86 + i * 4}
+          width={26 + i * 4}
+          height={2}
+          rx={1}
+          fill={body}
+          opacity={0.22}
+          className="kj-anim-streak"
+          style={{ animationDelay: `${i * 0.18}s`, animationName: 'kj-streak', animationDuration: '1.4s', animationTimingFunction: 'linear', animationIterationCount: 'infinite' }}
+        />
+      ))}
+
+      {/* Ground shadow */}
+      <ellipse cx={130} cy={140} rx={92} ry={6} fill="url(#truck-shadow-rg)" />
+
+      <g className="kj-anim-suspend">
+        {/* Cargo box (rear) */}
+        <path
+          d="M40 50 L150 50 L150 122 L40 122 Z"
+          fill="url(#truck-cargo)"
+        />
+        {/* Cargo box top edge */}
+        <path d="M40 50 L150 50 L154 56 L36 56 Z" fill={dark} opacity={0.55}/>
+        {/* Cargo box side bars (corrugated panels) */}
+        {[0, 1, 2, 3].map((i) => (
+          <line
+            key={i}
+            x1={56 + i * 24}
+            y1={58}
+            x2={56 + i * 24}
+            y2={120}
+            stroke={dark}
+            strokeWidth={1.2}
+            opacity={0.4}
+          />
+        ))}
+        {/* Accent stripe along bottom */}
+        <rect x={40} y={106} width={110} height={5} fill={accent} opacity={0.85}/>
+        {/* Logo plate */}
+        <rect x={68} y={72} width={54} height={20} rx={2} fill="#ffffff" opacity={0.16}/>
+        <text x={95} y={87} fill="#ffffff" opacity={0.85} fontSize={11} fontFamily="Inter, sans-serif" fontWeight={800} textAnchor="middle">CARGO</text>
+
+        {/* Cab (front) */}
+        <path
+          d="M150 70 L186 70 L196 78 L196 122 L150 122 Z"
+          fill="url(#truck-cab)"
+        />
+        {/* Cab top edge */}
+        <path d="M150 70 L186 70 L190 76 L150 76 Z" fill={dark} opacity={0.6}/>
+        {/* Windshield */}
+        <path
+          d="M154 78 L184 78 L188 95 L154 95 Z"
+          fill="url(#truck-window)"
+        />
+        {/* Window reflection */}
+        <path d="M156 80 L168 80 L168 90 L160 92 Z" fill="#ffffff" opacity={0.32}/>
+        {/* Door line */}
+        <line x1={170} y1={96} x2={170} y2={122} stroke={dark} strokeWidth={1.2} opacity={0.55}/>
+        {/* Door handle */}
+        <rect x={177} y={104} width={6} height={1.5} rx={0.5} fill={dark} opacity={0.7}/>
+        {/* Grille + bumper */}
+        <rect x={188} y={98} width={9} height={18} rx={1.2} fill="url(#truck-grille)"/>
+        <line x1={189.5} y1={102} x2={196} y2={102} stroke={accent} strokeWidth={1.2} opacity={0.7}/>
+        <line x1={189.5} y1={107} x2={196} y2={107} stroke={accent} strokeWidth={1.2} opacity={0.7}/>
+        {/* Headlamp */}
+        <circle cx={193} cy={92} r={3} fill="#fff7c4" opacity={0.95}/>
+        <circle cx={193} cy={92} r={1.2} fill="#fff"/>
+
+        {/* Wheels */}
+        {[64, 116, 168].map((cx, i) => (
+          <g key={i}>
+            <circle cx={cx} cy={124} r={11} fill="#1a1a1a"/>
+            <circle cx={cx} cy={124} r={5.5} fill="#3a3a3a"/>
+            <circle cx={cx} cy={124} r={2.5} fill="#1a1a1a"/>
+          </g>
+        ))}
+      </g>
+    </svg>
+  );
+}
+
 // ─── TravelHeroScene ──────────────────────────────────────────────────────────
 
 export function TravelHeroScene({

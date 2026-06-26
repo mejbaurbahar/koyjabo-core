@@ -116,8 +116,8 @@ export function TruckPage(props: Props) {
           title={T(lang, 'ট্রাক ও পণ্য পরিবহন · দেশজুড়ে', 'Truck & freight · nationwide')}
           subtitle={T(
             lang,
-            'মোটরসাইকেল থেকে ৪০ টন ট্রেইলার — বুক করুন Lalamove বা TruckLagbe-এর মাধ্যমে। ৬৪ জেলায় কভারেজ।',
-            'Motorcycle to 40-ton trailer — book via Lalamove or TruckLagbe. Coverage across 64 districts.',
+            'মোটরসাইকেল থেকে ৪০ টন ট্রেইলার — সারাদেশে অন-ডিমান্ড পিকআপ ও বিড-ভিত্তিক ভাড়া। ৬৪ জেলায় কভারেজ।',
+            'Motorcycle to 40-ton trailer — on-demand pickup + bid-based rental nationwide. Coverage across 64 districts.',
           )}
           stats={[
             { v: N(TRUCK_CATEGORIES.length, lang), l: T(lang, 'যানবাহন', 'Vehicles') },
@@ -270,7 +270,7 @@ export function TruckPage(props: Props) {
                       cursor: 'pointer',
                     }}
                   >
-                    {pid === 'all' ? lbl('All', 'সব') : lang === 'bn' ? prov!.bnName : prov!.name}
+                    {pid === 'all' ? lbl('All', 'সব') : (lang === 'bn' ? prov!.displayLabel.bn : prov!.displayLabel.en)}
                   </button>
                 );
               })}
@@ -355,8 +355,8 @@ export function TruckPage(props: Props) {
                         🚛
                       </div>
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontFamily: BEN, fontWeight: 700, fontSize: 13, color: tk.text }}>{lang === 'bn' ? p.bnName : p.name}</div>
-                        <div style={{ fontFamily: BEN, fontSize: 11, color: tk.textFaint, lineHeight: 1.35 }}>{lang === 'bn' ? p.bookingModel.bn : p.bookingModel.en}</div>
+                        <div style={{ fontFamily: BEN, fontWeight: 700, fontSize: 13, color: tk.text }}>{lang === 'bn' ? p.displayLabel.bn : p.displayLabel.en}</div>
+                        <div style={{ fontFamily: BEN, fontSize: 11, color: tk.textFaint, lineHeight: 1.35 }}>{lang === 'bn' ? p.tagline.bn : p.tagline.en}</div>
                       </div>
                     </div>
                     {p.stats && (
@@ -500,7 +500,7 @@ function TruckCard({
         <div style={{ display: 'flex', gap: 6, flexShrink: 0, alignItems: 'center' }}>
           <div style={{ display: 'flex', gap: 4 }}>
             {providers.map(p => (
-              <span key={p.id} title={p.name} style={{ width: 8, height: 8, borderRadius: 999, background: p.color, display: 'inline-block' }}/>
+              <span key={p.id} title={lang === 'bn' ? p.displayLabel.bn : p.displayLabel.en} style={{ width: 8, height: 8, borderRadius: 999, background: p.color, display: 'inline-block' }}/>
             ))}
           </div>
           <button
@@ -626,8 +626,8 @@ function QuotePanel({
 
           <div style={{ fontFamily: BEN, fontSize: 11, color: tk.textFaint, marginTop: 8, lineHeight: 1.45 }}>
             {lang === 'bn'
-              ? `নোট: TruckLagbe বিড-ভিত্তিক — চূড়ান্ত ভাড়া ভেন্ডর বিড করার পর। Lalamove অ্যাপে রিয়েল-টাইম ফিক্সড প্রাইস। অতিরিক্ত: লোডার ৳${SURCHARGES.loaderPerPerson.low}-${SURCHARGES.loaderPerPerson.high}/জন, রাত ১০টার পর +৳${SURCHARGES.nightAfter10pm.low}।`
-              : `Note: TruckLagbe uses reverse-bidding — exact fare comes after vendor bids. Lalamove app shows real-time fixed price. Extras: loader ৳${SURCHARGES.loaderPerPerson.low}-${SURCHARGES.loaderPerPerson.high}/person, after-10pm +৳${SURCHARGES.nightAfter10pm.low}.`}
+              ? `নোট: বিডিং মার্কেটপ্লেসে চূড়ান্ত ভাড়া ভেন্ডর বিড করার পর; অন-ডিমান্ড সার্ভিসে রিয়েল-টাইম ফিক্সড প্রাইস। অতিরিক্ত: লোডার ৳${SURCHARGES.loaderPerPerson.low}-${SURCHARGES.loaderPerPerson.high}/জন, রাত ১০টার পর +৳${SURCHARGES.nightAfter10pm.low}।`
+              : `Note: On the bidding marketplace, exact fare comes after vendor bids; the on-demand service shows real-time fixed price. Extras: loader ৳${SURCHARGES.loaderPerPerson.low}-${SURCHARGES.loaderPerPerson.high}/person, after-10pm +৳${SURCHARGES.nightAfter10pm.low}.`}
           </div>
         </div>
       )}
@@ -655,10 +655,10 @@ function QuotePanel({
               }}>🚛</div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontFamily: BEN, fontWeight: 700, fontSize: 13, color: tk.text }}>
-                  {lang === 'bn' ? p.bnName : p.name}
+                  {lang === 'bn' ? p.displayLabel.bn : p.displayLabel.en}
                 </div>
                 <div style={{ fontFamily: BEN, fontSize: 11, color: tk.textFaint, lineHeight: 1.4 }}>
-                  {lang === 'bn' ? p.bookingModel.bn : p.bookingModel.en}
+                  {lang === 'bn' ? p.tagline.bn : p.tagline.en}
                 </div>
               </div>
               {p.phone && (

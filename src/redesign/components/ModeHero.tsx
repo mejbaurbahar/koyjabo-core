@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tokens, Lang, SANS, BEN, T } from '../tokens';
-import { Bus3D, Train3D, Plane3D, Launch3D } from './Vehicles3D';
+import { Bus3D, Train3D, Plane3D, Launch3D, Truck3D } from './Vehicles3D';
 
 type VehicleKind = 'bus' | 'train' | 'plane' | 'launch' | 'truck';
 
@@ -21,7 +21,7 @@ function Vehicle3D({ kind, size }: { kind: VehicleKind; size: number }) {
   if (kind === 'bus') return <Bus3D size={size}/>;
   if (kind === 'train') return <Train3D size={size}/>;
   if (kind === 'plane') return <Plane3D size={size}/>;
-  if (kind === 'truck') return <Bus3D size={size} palette={['#ef4444','#7f1d1d','#0a0a0a','#fbbf24']}/>;
+  if (kind === 'truck') return <Truck3D size={size}/>;
   return <Launch3D size={size}/>;
 }
 

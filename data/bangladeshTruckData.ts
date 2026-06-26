@@ -27,6 +27,10 @@ export interface TruckProvider {
   id: ProviderId;
   name: string;
   bnName: string;
+  /** Neutral category label shown in UI (no brand name) */
+  displayLabel: { en: string; bn: string };
+  /** Short neutral tagline shown in UI (no brand name) */
+  tagline: { en: string; bn: string };
   url: string;
   phone?: string;
   email?: string;
@@ -44,6 +48,8 @@ export const TRUCK_PROVIDERS: TruckProvider[] = [
     id: 'lalamove',
     name: 'Lalamove Bangladesh',
     bnName: 'লালামুভ বাংলাদেশ',
+    displayLabel: { en: 'On-demand service', bn: 'অন-ডিমান্ড সার্ভিস' },
+    tagline: { en: 'Fixed price · instant dispatch', bn: 'ফিক্সড প্রাইস · তাৎক্ষণিক ডিসপ্যাচ' },
     url: 'https://www.lalamove.com/bn/',
     coverage: {
       en: 'On-demand within major cities (Dhaka, Chattogram). Select pickup in app for availability.',
@@ -74,6 +80,8 @@ export const TRUCK_PROVIDERS: TruckProvider[] = [
     id: 'trucklagbe',
     name: 'Truck Lagbe',
     bnName: 'ট্রাক লাগবে',
+    displayLabel: { en: 'Bidding marketplace', bn: 'বিডিং মার্কেটপ্লেস' },
+    tagline: { en: 'Vendors bid · best price wins', bn: 'ভেন্ডররা বিড করে · সেরা দাম জেতে' },
     url: 'https://trucklagbe.com/en/home/',
     phone: '+880 9638 000 245',
     email: 'customercare@trucklagbe.com',

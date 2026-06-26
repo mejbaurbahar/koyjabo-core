@@ -16,18 +16,18 @@ export const RELEASE_NOTES: ReleaseNote[] = [
     date: '2026-06-26',
     type: 'minor',
     features: [
-      'New Truck & Freight transport mode — book pickups, trucks, trailers via Lalamove and TruckLagbe',
+      'New Truck & Freight transport mode — book pickups, trucks, trailers across Bangladesh',
       'Real BD market rates baked in: per-km pricing, route tolls (Padma, Meghna, Bhairab), surcharges',
       'Auto road-distance calculation when both cities selected (Haversine × 1.30 road factor)',
       'Inline quote panel with full fare breakdown — Base + km × rate + tolls × 2',
-      'No external redirects — call-to-book CTA shows TruckLagbe hotline directly'
+      'No external redirects — call-to-book CTA shows partner hotline directly'
     ],
     bnFeatures: [
-      'নতুন ট্রাক ও পণ্য পরিবহন মোড — লালামুভ ও ট্রাকলাগবে-এর মাধ্যমে পিকআপ, ট্রাক, ট্রেইলার বুক করুন',
+      'নতুন ট্রাক ও পণ্য পরিবহন মোড — পিকআপ, ট্রাক, ট্রেইলার সারাদেশে বুক করুন',
       'প্রকৃত বাংলাদেশি মার্কেট রেট: প্রতি-কিমি প্রাইসিং, রুট টোল (পদ্মা, মেঘনা, ভৈরব), সারচার্জ',
       'দুটি শহর বাছার সাথে সাথে স্বয়ংক্রিয় সড়ক-দূরত্ব হিসাব (Haversine × ১.৩০ সড়ক ফ্যাক্টর)',
       'ইনলাইন কোট প্যানেল — বেস + কিমি × রেট + টোল × ২ এর পূর্ণ ভাড়া ব্রেকডাউন',
-      'কোনো এক্সটার্নাল রিডাইরেক্ট নেই — কল-টু-বুক CTA সরাসরি ট্রাকলাগবে হটলাইন দেখায়'
+      'কোনো এক্সটার্নাল রিডাইরেক্ট নেই — কল-টু-বুক CTA সরাসরি পার্টনার হটলাইন দেখায়'
     ],
     fixes: [
       'Quote panel now scrolls into view when "Get Quote" tapped from scrolled-down state'
