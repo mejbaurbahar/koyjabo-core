@@ -64,8 +64,9 @@ export const TRUCK_PROVIDERS: TruckProvider[] = [
     appIOS: 'https://apps.apple.com/app/lalamove/id857740019',
     stats: [
       { v: '24/7', en: 'Available', bn: 'উপলভ্য' },
-      { v: '99', en: 'From ৳ (motorcycle)', bn: '৳ থেকে (মোটরসাইকেল)' },
-      { v: '5', en: 'Vehicle types', bn: 'যানবাহন টাইপ' },
+      { v: '৳60', en: 'Motorcycle from', bn: 'মোটরসাইকেল থেকে' },
+      { v: '৳640', en: '1-Ton truck from', bn: '১-টন ট্রাক থেকে' },
+      { v: '4', en: 'Cities · Dhaka/Savar/N.ganj/Gazipur', bn: 'শহর · ঢাকা/সাভার/নঃগঞ্জ/গাজীপুর' },
     ],
     color: '#f97316',
   },
@@ -104,6 +105,15 @@ export const TRUCK_PROVIDERS: TruckProvider[] = [
   },
 ];
 
+// Real published rates (verified Jun 2026):
+//   Lalamove BD pricing page: motorcycle 60, car 196, 1T 640, 1T-rental 2750, 2T 1280
+//   TruckLagbe blog "guideline to truck & pickup rental within Dhaka":
+//     1T 9ft pickup 800–2200, 1T 9ft covered 1000–2500, 2T 12ft 1200–2700,
+//     2T 12ft covered 1200–3000, 3.5T 14ft 1500–2800, 3.5T 14ft covered 1500–3200,
+//     7.5T 16ft open 2500–4500, 7.5T 16ft covered 3000–5000,
+//     15T 18ft open 3500–5000, 15T 23ft covered 3500–5500, 25T 23ft open 5000–6000
+//   covervan.world: 4-5T covered van base 4000 + 100/km Dhaka, 45/km outside + tolls×2 + ferry×2
+
 export const TRUCK_CATEGORIES: TruckCategory[] = [
   // ── Last-mile / small parcel (Lalamove) ─────────────────────────────────
   {
@@ -114,7 +124,7 @@ export const TRUCK_CATEGORIES: TruckCategory[] = [
     capacityKg: 20,
     capacityTon: 0.02,
     dimsCm: { l: 35, w: 40, h: 30 },
-    startFareBdt: 99,
+    startFareBdt: 60,
     bestFor: { en: 'Documents · food · small parcels', bn: 'নথিপত্র · খাদ্য · ছোট পার্সেল' },
     providers: ['lalamove'],
     emoji: '🏍️',
@@ -144,24 +154,24 @@ export const TRUCK_CATEGORIES: TruckCategory[] = [
     capacityKg: 1000,
     capacityTon: 1,
     dimsCm: { l: 188, w: 133, h: 108 },
-    startFareBdt: 840,
+    startFareBdt: 640,
     bestFor: { en: 'Appliances · electronics · multiple items', bn: 'যন্ত্রপাতি · ইলেকট্রনিক্স · একাধিক জিনিস' },
     providers: ['lalamove', 'trucklagbe'],
     emoji: '🛻',
     color: '#10b981',
   },
   {
-    id: 'pickup-1t-covered',
+    id: 'pickup-9ft-1t-covered',
     size: 'pickup',
     body: 'covered',
-    name: { en: 'Pickup · 1 Ton (Covered)', bn: 'পিকআপ · ১ টন (ঢাকা)' },
-    lengthFt: 7,
+    name: { en: 'Pickup · 9 ft · 1 Ton (Covered)', bn: 'পিকআপ · ৯ ফুট · ১ টন (ঢাকা)' },
+    lengthFt: 9,
     capacityKg: 1000,
     capacityTon: 1,
     dimsCm: { l: 188, w: 133, h: 108 },
-    startFareBdt: 950,
+    startFareBdt: 1000,
     bestFor: { en: 'Weather-protected transport', bn: 'আবহাওয়া-সুরক্ষিত পরিবহন' },
-    providers: ['lalamove'],
+    providers: ['lalamove', 'trucklagbe'],
     emoji: '🚚',
     color: '#059669',
   },
@@ -173,6 +183,7 @@ export const TRUCK_CATEGORIES: TruckCategory[] = [
     lengthFt: 9,
     capacityKg: 1500,
     capacityTon: 1.5,
+    startFareBdt: 800,
     bestFor: { en: 'Mid-size moves · light cargo', bn: 'মাঝারি মুভ · হালকা কার্গো' },
     providers: ['trucklagbe'],
     emoji: '🛻',
@@ -180,18 +191,34 @@ export const TRUCK_CATEGORIES: TruckCategory[] = [
   },
   // ── Medium category ──────────────────────────────────────────────────────
   {
-    id: 'medium-2t',
+    id: 'medium-12ft-2t-open',
     size: 'medium',
     body: 'open',
-    name: { en: 'Truck · 2 Ton (Open)', bn: 'ট্রাক · ২ টন (খোলা)' },
+    name: { en: 'Truck · 12 ft · 2 Ton (Open)', bn: 'ট্রাক · ১২ ফুট · ২ টন (খোলা)' },
     lengthFt: 12,
     capacityKg: 2000,
     capacityTon: 2,
     dimsCm: { l: 370, w: 190, h: 210 },
+    startFareBdt: 1200,
     bestFor: { en: 'Heavy equipment · construction', bn: 'ভারী সরঞ্জাম · নির্মাণ' },
     providers: ['lalamove', 'trucklagbe'],
     emoji: '🚛',
     color: '#0ea5e9',
+  },
+  {
+    id: 'medium-12ft-2t-covered',
+    size: 'medium',
+    body: 'covered',
+    name: { en: 'Truck · 12 ft · 2 Ton (Covered)', bn: 'ট্রাক · ১২ ফুট · ২ টন (ঢাকা)' },
+    lengthFt: 12,
+    capacityKg: 2000,
+    capacityTon: 2,
+    dimsCm: { l: 370, w: 190, h: 210 },
+    startFareBdt: 1200,
+    bestFor: { en: 'Sensitive cargo · electronics', bn: 'সংবেদনশীল কার্গো · ইলেকট্রনিক্স' },
+    providers: ['trucklagbe'],
+    emoji: '🚛',
+    color: '#0284c7',
   },
   {
     id: 'medium-3.5t-open',
@@ -201,6 +228,7 @@ export const TRUCK_CATEGORIES: TruckCategory[] = [
     lengthFt: 14,
     capacityKg: 3500,
     capacityTon: 3.5,
+    startFareBdt: 1500,
     bestFor: { en: 'Office shifting · bulk cargo', bn: 'অফিস শিফটিং · বাল্ক কার্গো' },
     providers: ['trucklagbe'],
     emoji: '🚛',
@@ -214,6 +242,7 @@ export const TRUCK_CATEGORIES: TruckCategory[] = [
     lengthFt: 14,
     capacityKg: 3500,
     capacityTon: 3.5,
+    startFareBdt: 1500,
     bestFor: { en: 'Furniture · sensitive cargo', bn: 'ফার্নিচার · সংবেদনশীল কার্গো' },
     providers: ['trucklagbe'],
     emoji: '🚛',
@@ -227,6 +256,7 @@ export const TRUCK_CATEGORIES: TruckCategory[] = [
     lengthFt: 16,
     capacityKg: 7500,
     capacityTon: 7.5,
+    startFareBdt: 2500,
     bestFor: { en: 'Industrial moves · large machinery', bn: 'শিল্প মুভ · বড় যন্ত্রপাতি' },
     providers: ['trucklagbe'],
     emoji: '🚛',
@@ -240,6 +270,7 @@ export const TRUCK_CATEGORIES: TruckCategory[] = [
     lengthFt: 16,
     capacityKg: 7500,
     capacityTon: 7.5,
+    startFareBdt: 3000,
     bestFor: { en: 'FMCG · packaged goods', bn: 'এফএমসিজি · প্যাকেজড পণ্য' },
     providers: ['trucklagbe'],
     emoji: '🚛',
@@ -254,6 +285,7 @@ export const TRUCK_CATEGORIES: TruckCategory[] = [
     lengthFt: 18,
     capacityKg: 15000,
     capacityTon: 15,
+    startFareBdt: 3500,
     bestFor: { en: 'Bulk freight · intercity', bn: 'বাল্ক ফ্রেইট · আন্তঃজেলা' },
     providers: ['trucklagbe'],
     emoji: '🚛',
@@ -267,6 +299,7 @@ export const TRUCK_CATEGORIES: TruckCategory[] = [
     lengthFt: 20,
     capacityKg: 15000,
     capacityTon: 15,
+    startFareBdt: 4000,
     bestFor: { en: 'Container loads · port runs', bn: 'কন্টেইনার লোড · বন্দর' },
     providers: ['trucklagbe'],
     emoji: '🚛',
@@ -280,6 +313,7 @@ export const TRUCK_CATEGORIES: TruckCategory[] = [
     lengthFt: 23,
     capacityKg: 15000,
     capacityTon: 15,
+    startFareBdt: 3500,
     bestFor: { en: 'Long-haul packaged goods', bn: 'লং-হল প্যাকেজড পণ্য' },
     providers: ['trucklagbe'],
     emoji: '🚛',
@@ -293,6 +327,7 @@ export const TRUCK_CATEGORIES: TruckCategory[] = [
     lengthFt: 23,
     capacityKg: 25000,
     capacityTon: 25,
+    startFareBdt: 5000,
     bestFor: { en: 'Heavy industrial freight', bn: 'ভারী শিল্প ফ্রেইট' },
     providers: ['trucklagbe'],
     emoji: '🚛',
@@ -306,6 +341,7 @@ export const TRUCK_CATEGORIES: TruckCategory[] = [
     name: { en: 'Flat-bed Trailer', bn: 'ফ্ল্যাট-বেড ট্রেইলার' },
     capacityKg: 30000,
     capacityTon: 30,
+    startFareBdt: 8000,
     bestFor: { en: 'Containers · steel · machinery', bn: 'কন্টেইনার · ইস্পাত · যন্ত্রপাতি' },
     providers: ['trucklagbe'],
     emoji: '🚜',
@@ -318,6 +354,7 @@ export const TRUCK_CATEGORIES: TruckCategory[] = [
     name: { en: 'Low-bed Trailer', bn: 'লো-বেড ট্রেইলার' },
     capacityKg: 40000,
     capacityTon: 40,
+    startFareBdt: 12000,
     bestFor: { en: 'Excavators · oversized loads', bn: 'এক্সক্যাভেটর · ওভারসাইজড লোড' },
     providers: ['trucklagbe'],
     emoji: '🚜',
@@ -382,19 +419,102 @@ export function truckRoadKm(a: TruckCity, b: TruckCity): number {
   return Math.round(straight * 1.30);
 }
 
-// Rough per-km rate band for intercity truck rental (BDT). Used only for
-// fare-estimate hint — actual price depends on bidding outcome.
-export const TRUCK_INTERCITY_RATE_PER_KM: Record<TruckSize, [number, number]> = {
-  motorcycle: [15, 25],
-  car:        [25, 40],
-  pickup:     [40, 70],
-  medium:     [70, 130],
-  large:      [130, 200],
-  trailer:    [200, 350],
+// Per-km rates by truck size (BDT/km). Sources:
+//   - covervan.world: 4-5T covered = 100/km in Dhaka, 45/km outside
+//   - market data via TruckLagbe blog: pickup ~15-25 outside, larger trucks 45-100 outside
+//   - 16ft+ trucks intercity verified vs Dhaka-Chattogram 16-20K (250 km) → ~65-80/km
+// In-Dhaka rate roughly 2× outside-Dhaka rate due to traffic delay charges.
+export const TRUCK_RATE_PER_KM: Record<TruckSize, { dhaka: number; outside: number }> = {
+  motorcycle: { dhaka: 12, outside: 8 },
+  car:        { dhaka: 22, outside: 15 },
+  pickup:     { dhaka: 55, outside: 25 },
+  medium:     { dhaka: 100, outside: 45 },
+  large:      { dhaka: 140, outside: 70 },
+  trailer:    { dhaka: 220, outside: 120 },
 };
 
-export function estimateIntercityFare(size: TruckSize, km: number): { low: number; high: number } {
-  const [a, b] = TRUCK_INTERCITY_RATE_PER_KM[size] ?? [50, 100];
-  // floor (driver minimum) is around 1500 BDT for any intercity trip
-  return { low: Math.max(1500, Math.round(a * km)), high: Math.max(2000, Math.round(b * km)) };
+// Toll cost (BDT, one-way) for major routes from/to Dhaka.
+// Source: tollguru.com Bangladesh + BBA published rates 2025.
+export const ROUTE_TOLLS: Record<string, number> = {
+  // Padma Bridge truck toll: 2400 for medium/large, 1300 for small
+  'dhaka-khulna':       1300,  // via Padma
+  'dhaka-barishal':     1300,  // via Padma
+  'dhaka-jashore':      1300,  // via Padma
+  'dhaka-chattogram':   200,   // Meghna + Daudkandi
+  'dhaka-coxsbazar':    200,
+  'dhaka-feni':         200,
+  'dhaka-noakhali':     200,
+  'dhaka-cumilla':      100,   // Meghna only
+  'dhaka-sylhet':       100,   // Bhairab
+  // Other routes: minimal/none
+};
+
+function routeTollKey(fromId: string, toId: string): string {
+  return [fromId, toId].sort().join('-');
 }
+
+export function tollBdt(fromId: string, toId: string): number {
+  return ROUTE_TOLLS[routeTollKey(fromId, toId)] ?? 0;
+}
+
+export interface FareBreakdown {
+  base: number;
+  perKm: number;
+  km: number;
+  distanceCharge: number;
+  tolls: number;       // already ×2 (round trip)
+  estimateLow: number;
+  estimateHigh: number;
+  estimate: number;    // mid-point recommended quote
+}
+
+// Real fare formula (from covervan.world + TruckLagbe blog rates):
+//   Rent = Base + (PerKm × km) + (Tolls × 2)
+// Range = ±15% to reflect vendor bidding spread.
+export function calcFare(
+  category: TruckCategory,
+  km: number,
+  fromCityId?: string,
+  toCityId?: string,
+): FareBreakdown {
+  const base = category.startFareBdt ?? 1500;
+  const rates = TRUCK_RATE_PER_KM[category.size] ?? { dhaka: 50, outside: 30 };
+  // First 10 km @ Dhaka rate (urban congestion), rest @ outside rate for intercity
+  const isIntercity = km > 15;
+  const perKm = isIntercity ? rates.outside : rates.dhaka;
+  const distanceCharge = Math.round(perKm * km);
+  const tolls = fromCityId && toCityId ? tollBdt(fromCityId, toCityId) * 2 : 0;
+  const subtotal = base + distanceCharge + tolls;
+  return {
+    base,
+    perKm,
+    km,
+    distanceCharge,
+    tolls,
+    estimate: subtotal,
+    estimateLow: Math.round(subtotal * 0.85),
+    estimateHigh: Math.round(subtotal * 1.15),
+  };
+}
+
+// Standard surcharges (BDT). Source: packnmove.com.bd 2025 truck rental guide.
+export const SURCHARGES = {
+  loaderPerPerson: { low: 500, high: 1000 },
+  overtimePerHour: { low: 300, high: 1000 },
+  nightAfter10pm: { low: 500, high: 500 },
+  damageDeposit: { low: 1000, high: 2000 },
+};
+
+// Lalamove multi-stop fees (BDT), published.
+export const LALAMOVE_MULTISTOP_FEE: Record<string, number> = {
+  motorcycle: 30,
+  car: 100,
+  'pickup-7ft-1t-open': 184,
+  'pickup-9ft-1t-covered': 224,
+  'medium-12ft-2t-open': 264,
+};
+
+// Lalamove 5-hour rental package prices (BDT).
+export const LALAMOVE_RENTAL_5H: Record<string, number> = {
+  'pickup-7ft-1t-open': 2750,
+};

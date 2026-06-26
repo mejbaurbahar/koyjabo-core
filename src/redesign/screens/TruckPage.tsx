@@ -15,9 +15,10 @@ import {
   TruckCategory,
   TruckSize,
   ProviderId,
-  estimateIntercityFare,
+  calcFare,
   findTruckCity,
   truckRoadKm,
+  SURCHARGES,
 } from '../../../data/bangladeshTruckData';
 
 interface Props {
@@ -271,15 +272,19 @@ export function TruckPage(props: Props) {
 
           {/* Inline quote panel — shows full booking info on this platform */}
           {selectedCat && (
-            <QuotePanel
-              c={selectedCat}
-              tk={tk}
-              lang={lang}
-              fromCity={fromCity?.[lang === 'bn' ? 'bn' : 'en'] ?? from ?? '—'}
-              toCity={toCity?.[lang === 'bn' ? 'bn' : 'en'] ?? to ?? '—'}
-              distanceKm={distanceKm}
-              onClose={() => setSelectedCat(null)}
-            />
+            <div id="truck-quote-panel">
+              <QuotePanel
+                c={selectedCat}
+                tk={tk}
+                lang={lang}
+                fromCity={fromCity?.[lang === 'bn' ? 'bn' : 'en'] ?? from ?? '—'}
+                toCity={toCity?.[lang === 'bn' ? 'bn' : 'en'] ?? to ?? '—'}
+                fromCityId={fromCity?.id}
+                toCityId={toCity?.id}
+                distanceKm={distanceKm}
+                onClose={() => setSelectedCat(null)}
+              />
+            </div>
           )}
 
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.5fr 1fr', gap: 18 }}>
@@ -308,7 +313,17 @@ export function TruckPage(props: Props) {
                       lang={lang}
                       distanceKm={distanceKm}
                       isMobile={isMobile}
-                      onSelect={() => { earnCoins(3, 'Truck quote'); setSelectedCat(c); }}
+                      onSelect={() => {
+                        earnCoins(3, 'Truck quote');
+                        setSelectedCat(c);
+                        // Scroll the freshly-rendered quote panel into view
+                        setTimeout(() => {
+                          document.getElementById('truck-quote-panel')?.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start',
+                          });
+                        }, 50);
+                      }}
                     />
                   ))
                 )}
@@ -400,7 +415,8 @@ function TruckCard({
   isMobile: boolean;
   onSelect: () => void;
 }) {
-  const fare = distanceKm > 0 ? estimateIntercityFare(c.size, distanceKm) : null;
+  const fareB = distanceKm > 0 ? calcFare(c, distanceKm) : null;
+  const fare = fareB ? { low: fareB.estimateLow, high: fareB.estimateHigh } : null;
   const providers = TRUCK_PROVIDERS.filter(p => c.providers.includes(p.id));
   const card = (p = 16): React.CSSProperties => ({
     background: tk.panel,
@@ -498,19 +514,22 @@ function TruckCard({
 
 // Inline quote panel — shows full booking detail on KoyJabo, no external redirect
 function QuotePanel({
-  c, tk, lang, fromCity, toCity, distanceKm, onClose,
+  c, tk, lang, fromCity, toCity, fromCityId, toCityId, distanceKm, onClose,
 }: {
   c: TruckCategory;
   tk: Tokens;
   lang: 'bn' | 'en';
   fromCity: string;
   toCity: string;
+  fromCityId?: string;
+  toCityId?: string;
   distanceKm: number;
   onClose: () => void;
 }) {
-  const fare = distanceKm > 0 ? estimateIntercityFare(c.size, distanceKm) : null;
+  const fareB = distanceKm > 0 ? calcFare(c, distanceKm, fromCityId, toCityId) : null;
   const providers = TRUCK_PROVIDERS.filter(p => c.providers.includes(p.id));
-  const mid = fare ? Math.round((fare.low + fare.high) / 2) : null;
+  const mid = fareB ? fareB.estimate : null;
+  // Avg intercity truck speed ~40km/h (Dhaka-Chattogram 250km in ~6h, 240km Dhaka-Sylhet ~6h)
   const driveHrs = distanceKm > 0 ? +(distanceKm / 40).toFixed(1) : 0;
 
   return (
@@ -560,7 +579,7 @@ function QuotePanel({
         <QuoteStat tk={tk} label={lang === 'bn' ? 'বডি' : 'Body'} value={c.body} color={tk.accent}/>
       </div>
 
-      {fare && mid !== null && (
+      {fareB && mid !== null && (
         <div style={{
           background: `${c.color}18`,
           border: `1px solid ${c.color}55`,
@@ -569,18 +588,32 @@ function QuotePanel({
           marginBottom: 14,
         }}>
           <div style={{ fontFamily: SANS, fontSize: 10, fontWeight: 700, color: c.color, letterSpacing: 1.4, textTransform: 'uppercase' }}>
-            {lang === 'bn' ? 'অনুমিত ভাড়া' : 'Estimated fare'}
+            {lang === 'bn' ? 'অনুমিত ভাড়া (মার্কেট রেট)' : 'Estimated fare (market rate)'}
           </div>
           <div style={{ fontFamily: SANS, fontWeight: 900, fontSize: 28, color: tk.text, letterSpacing: -0.5 }}>
             {Fare(mid, lang)}
           </div>
           <div style={{ fontFamily: SANS, fontSize: 12, color: tk.textDim, marginTop: 2 }}>
-            {lang === 'bn' ? 'রেঞ্জ:' : 'Range:'} {Fare(fare.low, lang)} – {Fare(fare.high, lang)}
+            {lang === 'bn' ? 'রেঞ্জ:' : 'Range:'} {Fare(fareB.estimateLow, lang)} – {Fare(fareB.estimateHigh, lang)}
           </div>
-          <div style={{ fontFamily: BEN, fontSize: 11, color: tk.textFaint, marginTop: 6, lineHeight: 1.45 }}>
+
+          {/* Breakdown — based on covervan.world formula: Base + (km × rate) + tolls×2 */}
+          <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px dashed ${c.color}55` }}>
+            <div style={{ fontFamily: SANS, fontSize: 9, fontWeight: 700, color: c.color, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 6 }}>
+              {lang === 'bn' ? 'ভাড়ার ব্রেকডাউন' : 'Fare breakdown'}
+            </div>
+            <BreakdownRow tk={tk} label={lang === 'bn' ? 'বেস ফেয়ার' : 'Base fare'} value={Fare(fareB.base, lang)}/>
+            <BreakdownRow tk={tk} label={`${N(fareB.km, lang)} km × ৳${N(fareB.perKm, lang)}/km`} value={Fare(fareB.distanceCharge, lang)}/>
+            {fareB.tolls > 0 && (
+              <BreakdownRow tk={tk} label={lang === 'bn' ? 'টোল (×2 রাউন্ড-ট্রিপ)' : 'Tolls (×2 round trip)'} value={Fare(fareB.tolls, lang)}/>
+            )}
+            <BreakdownRow tk={tk} label={lang === 'bn' ? 'মোট' : 'Total'} value={Fare(fareB.estimate, lang)} bold/>
+          </div>
+
+          <div style={{ fontFamily: BEN, fontSize: 11, color: tk.textFaint, marginTop: 8, lineHeight: 1.45 }}>
             {lang === 'bn'
-              ? 'নোট: TruckLagbe বিড-ভিত্তিক — সঠিক ভাড়া ভেন্ডর বিড করার পর পাবেন। Lalamove অ্যাপে রিয়েল-টাইম ফিক্সড প্রাইস। লোডার আলাদা ৫০০-১৫০০ টাকা।'
-              : 'Note: TruckLagbe uses reverse-bidding — exact fare comes after vendor bids. Lalamove app shows real-time fixed price. Loaders extra ৳500–1500.'}
+              ? `নোট: TruckLagbe বিড-ভিত্তিক — চূড়ান্ত ভাড়া ভেন্ডর বিড করার পর। Lalamove অ্যাপে রিয়েল-টাইম ফিক্সড প্রাইস। অতিরিক্ত: লোডার ৳${SURCHARGES.loaderPerPerson.low}-${SURCHARGES.loaderPerPerson.high}/জন, রাত ১০টার পর +৳${SURCHARGES.nightAfter10pm.low}।`
+              : `Note: TruckLagbe uses reverse-bidding — exact fare comes after vendor bids. Lalamove app shows real-time fixed price. Extras: loader ৳${SURCHARGES.loaderPerPerson.low}-${SURCHARGES.loaderPerPerson.high}/person, after-10pm +৳${SURCHARGES.nightAfter10pm.low}.`}
           </div>
         </div>
       )}
@@ -658,6 +691,24 @@ function QuoteStat({ tk, label, value, color }: { tk: Tokens; label: string; val
       <div style={{ fontFamily: SANS, fontWeight: 800, fontSize: 16, color, marginTop: 2 }}>
         {value}
       </div>
+    </div>
+  );
+}
+
+function BreakdownRow({ tk, label, value, bold }: { tk: Tokens; label: string; value: string; bold?: boolean }) {
+  return (
+    <div style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: '3px 0',
+      fontFamily: SANS,
+      fontSize: 12,
+      color: bold ? tk.text : tk.textDim,
+      fontWeight: bold ? 800 : 500,
+    }}>
+      <span>{label}</span>
+      <span>{value}</span>
     </div>
   );
 }
