@@ -13,6 +13,7 @@ const NAV_ITEMS = [
   { bn: 'আন্তঃজেলা', en: 'Intercity', route: 'intercity', ic: '🧭' },
   { bn: 'লঞ্চ', en: 'Launch', route: 'launch-hub', ic: '⛴️' },
   { bn: 'ফ্লাইট', en: 'Flights', route: 'flights-hub', ic: '✈️' },
+  { bn: 'ট্রাক', en: 'Truck', route: 'truck-hub', ic: '🚛' },
 ] as const;
 
 interface TopBarProps {

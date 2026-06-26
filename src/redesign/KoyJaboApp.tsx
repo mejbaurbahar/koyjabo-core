@@ -15,6 +15,7 @@ const MetroPage = React.lazy(() => import('./screens/MetroPage').then(m => ({ de
 const TrainPage = React.lazy(() => import('./screens/TrainPage').then(m => ({ default: m.TrainPage })));
 const LaunchPage = React.lazy(() => import('./screens/LaunchPage').then(m => ({ default: m.LaunchPage })));
 const FlightsPage = React.lazy(() => import('./screens/FlightsPage').then(m => ({ default: m.FlightsPage })));
+const TruckPage = React.lazy(() => import('./screens/TruckPage').then(m => ({ default: m.TruckPage })));
 const AIChatPage = React.lazy(() => import('./screens/AIChatPage').then(m => ({ default: m.AIChatPage })));
 const IntercityPage = React.lazy(() => import('./screens/IntercityPage').then(m => ({ default: m.IntercityPage })));
 const RouteResultsV2Page = React.lazy(() => import('./screens/RouteResultsV2Page').then(m => ({ default: m.RouteResultsV2Page })));
@@ -70,7 +71,7 @@ interface StackEntry {
 
 const SECTION_MAP: Record<string, string> = {
   home: 'home', 'bus-hub': 'search', 'metro-hub': 'search', 'train-hub': 'search',
-  'launch-hub': 'search', 'flights-hub': 'search', intercity: 'search',
+  'launch-hub': 'search', 'flights-hub': 'search', 'truck-hub': 'search', intercity: 'search',
   ai: 'ai', favorites: 'saved', profile: 'you', history: 'you', settings: 'you',
 };
 
@@ -88,6 +89,7 @@ const ROUTE_PATHS: Record<string, string> = {
   'train-hub': '/train',
   'launch-hub': '/launch',
   'flights-hub': '/air',
+  'truck-hub': '/truck',
   intercity: '/intercity',
   fare: '/fare',
   ai: '/ai',
@@ -281,7 +283,7 @@ export function KoyJaboApp() {
     setDir('fwd');
     setShowSkeleton(true);
     pushUrl(entry);
-    if (['results', 'bus-hub', 'metro-hub', 'train-hub', 'flights-hub', 'intercity', 'launch-hub'].includes(route)) {
+    if (['results', 'bus-hub', 'metro-hub', 'train-hub', 'flights-hub', 'intercity', 'launch-hub', 'truck-hub'].includes(route)) {
     }
     setTimeout(() => {
       setStack(s => [...s, entry]);
@@ -355,6 +357,7 @@ export function KoyJaboApp() {
       case 'train-hub': return <TrainPage {...p}/>;
       case 'launch-hub': return <LaunchPage {...p}/>;
       case 'flights-hub': return <FlightsPage {...p}/>;
+      case 'truck-hub': return <TruckPage {...p}/>;
       case 'ai': return <AIChatPage {...p}/>;
       case 'intercity': return <IntercityPage {...p}/>;
       case 'results': return <RouteResultsV2Page {...p}/>;

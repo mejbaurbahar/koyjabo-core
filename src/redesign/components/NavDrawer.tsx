@@ -17,6 +17,7 @@ const GROUPS: { heading: { bn: string; en: string }; links: DrawerLink[] }[] = [
       { bn: 'আন্তঃজেলা', en: 'Intercity', route: 'intercity' },
       { bn: 'লঞ্চ', en: 'Launch', route: 'launch-hub' },
       { bn: 'ফ্লাইট', en: 'Flights', route: 'flights-hub' },
+      { bn: 'ট্রাক', en: 'Truck', route: 'truck-hub' },
       { bn: 'ভাড়া', en: 'Fare', route: 'fare' },
       { bn: 'AI সহায়ক', en: 'AI Assistant', route: 'ai' },
     ],
