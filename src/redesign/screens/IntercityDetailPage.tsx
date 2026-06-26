@@ -698,9 +698,8 @@ export function IntercityDetailPage(props: Props) {
           {/* Tab content */}
           <div style={{ marginBottom: 24 }}>{tabContent()}</div>
 
-          {/* Inline ads */}
+          {/* Inline ad */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'center', marginBottom: 24 }}>
-            <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
             <AdSlot tk={tk} lang={lang} kind="mid-rect" />
           </div>
 
