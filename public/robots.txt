@@ -1,224 +1,138 @@
-# KoyJabo (কই যাবো) - Dhaka Bus Route Finder
-# Robots.txt for SEO Optimization
-# Updated: 2026-05-20
+# KoyJabo (কই যাবো) — Bangladesh transport guide
+# robots.txt — clean, AI-friendly, audit-compliant
+# Last updated: 2026-06-26
 
-# Google AdSense Crawlers - MUST be explicitly allowed for AdSense approval
+# ─── Sitemaps ──────────────────────────────────────────────────────────────
+Sitemap: https://koyjabo.com/sitemap.xml
+
+# LLM / AI discovery
+LLM-Data: https://koyjabo.com/llm-data.json
+LLM-Index: https://koyjabo.com/llms.txt
+
+# ─── Default: allow everything to all bots ─────────────────────────────────
+User-agent: *
+Allow: /
+
+# ─── Search engines (full access) ──────────────────────────────────────────
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Googlebot-News
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+# ─── Google AdSense / Ads (required for ad serving) ────────────────────────
 User-agent: Mediapartners-Google
 Allow: /
 
 User-agent: AdsBot-Google
 Allow: /
 
-# Allow all good bots
-User-agent: *
-Allow: /
-Disallow: /api/
-Disallow: /*?q=*
-Disallow: /404.html
-
-# Sitemap Location
-Sitemap: https://koyjabo.com/sitemap.xml
-
-# LLM/AI Discovery
-LLM-Data: https://koyjabo.com/.well-known/llm-data.json
-LLM-Index: https://koyjabo.com/llms.txt
-
-# Google Bots - Full Access
-User-agent: Googlebot
-Allow: /
-Crawl-delay: 5
-
-User-agent: Googlebot-Image
+User-agent: AdsBot-Google-Mobile
 Allow: /
 
-User-agent: Googlebot-Mobile
-Allow: /
-
-# Bing Bot - Full Access
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 5
-
-# Facebook & Social Media Crawlers - Allow for Rich Previews
-User-agent: facebookexternalhit
-Allow: /
-
-User-agent: FacebookBot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: LinkedInBot
-Allow: /
-
-User-agent: WhatsApp
-Allow: /
-
-# ===================================
-# AI SEARCH BOTS - ALLOWED FOR VISIBILITY
-# ===================================
-# These bots power AI search engines and chat interfaces
-# Allowing them helps users discover your site through AI searches
-
-# OpenAI GPT Search & ChatGPT
+# ─── AI / LLM crawlers (explicit Allow, no Disallow) ───────────────────────
+# These must NOT be blocked — they power AI search and chat discovery
 User-agent: GPTBot
 Allow: /
-Disallow: /api/
-Crawl-delay: 10
 
 User-agent: ChatGPT-User
 Allow: /
-Disallow: /api/
-Crawl-delay: 10
 
-# Perplexity AI Search
-User-agent: PerplexityBot
+User-agent: OAI-SearchBot
 Allow: /
-Disallow: /api/
-Crawl-delay: 10
-
-# Anthropic / Claude – all variants
-User-agent: anthropic-ai
-Allow: /
-Crawl-delay: 5
-
-User-agent: Claude-Web
-Allow: /
-Crawl-delay: 5
 
 User-agent: ClaudeBot
 Allow: /
-Crawl-delay: 5
+
+User-agent: Claude-Web
+Allow: /
 
 User-agent: Claude-SearchBot
 Allow: /
-Crawl-delay: 5
 
 User-agent: Claude-User
 Allow: /
-Crawl-delay: 5
 
-# OpenAI additional
-User-agent: OAI-SearchBot
+User-agent: anthropic-ai
 Allow: /
-Crawl-delay: 5
 
-# Google additional AI crawlers
-User-agent: Google-CloudVertexBot
+User-agent: PerplexityBot
 Allow: /
-Crawl-delay: 5
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
 
 User-agent: GoogleOther
 Allow: /
-Crawl-delay: 5
 
-# Meta AI
-User-agent: Meta-ExternalAgent
+User-agent: Google-CloudVertexBot
 Allow: /
-Crawl-delay: 5
 
-User-agent: Meta-ExternalFetcher
-Allow: /
-Crawl-delay: 5
-
-# Amazon Alexa / Lex
 User-agent: Amazonbot
 Allow: /
-Crawl-delay: 5
 
-# Apple (Siri suggestions)
 User-agent: Applebot
 Allow: /
-Crawl-delay: 5
 
 User-agent: Applebot-Extended
 Allow: /
-Crawl-delay: 5
 
-# Mistral AI
-User-agent: MistralAI-User
+User-agent: Meta-ExternalAgent
 Allow: /
-Crawl-delay: 5
 
-# DeepSeek
-User-agent: DeepSeekBot
+User-agent: Meta-ExternalFetcher
 Allow: /
-Crawl-delay: 5
 
-# xAI (Grok)
-User-agent: Grok Web Crawler
-Allow: /
-Crawl-delay: 5
-
-# DuckDuckGo AI
-User-agent: DuckAssistBot
-Allow: /
-Crawl-delay: 5
-
-# Perplexity user
-User-agent: Perplexity-User
-Allow: /
-Crawl-delay: 5
-
-# Timpi
-User-agent: Timpibot
-Allow: /
-Crawl-delay: 5
-
-# ProRata
-User-agent: ProRataInc
-Allow: /
-Crawl-delay: 5
-
-# Novellum
-User-agent: Novellum AI Crawl
-Allow: /
-Crawl-delay: 5
-
-# Anchor Browser
-User-agent: Anchor Browser
-Allow: /
-Crawl-delay: 5
-
-# Cohere AI
-User-agent: cohere-ai
-Allow: /
-Disallow: /api/
-Crawl-delay: 10
-
-# Common Crawl (used by many AI models)
 User-agent: CCBot
 Allow: /
-Disallow: /api/
-Crawl-delay: 15
 
-# Google Gemini/Bard (if separate)
-User-agent: Google-Extended
+User-agent: Bytespider
 Allow: /
-Disallow: /api/
-Crawl-delay: 10
 
-# ===================================
-# BLOCK ONLY AGGRESSIVE SCRAPERS
-# ===================================
+User-agent: cohere-ai
+Allow: /
 
-# Block Omgili (aggressive scraper)
-User-agent: Omgilibot
-Disallow: /
+User-agent: MistralAI-User
+Allow: /
 
-# Block SEO Tool Scrapers (Save Bandwidth)
-# Note: You may want to allow these if you use their services
+User-agent: DeepSeekBot
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: Timpibot
+Allow: /
+
+# ─── Blocked: aggressive scrapers / SEO drainers ───────────────────────────
 User-agent: SemrushBot
 Disallow: /
 
 User-agent: AhrefsBot
 Disallow: /
 
-User-agent: DotBot
+User-agent: MJ12bot
 Disallow: /
 
-User-agent: MJ12bot
+User-agent: DotBot
 Disallow: /
 
 User-agent: BLEXBot
@@ -227,44 +141,5 @@ Disallow: /
 User-agent: DataForSeoBot
 Disallow: /
 
-User-agent: PetalBot
-Allow: /
-Crawl-delay: 10
-
-User-agent: Bytespider
-Allow: /
-Crawl-delay: 10
-
-# Allow Yandex (Russian) - Minimal Access
-User-agent: YandexBot
-Allow: /
-Disallow: /api/
-Crawl-delay: 20
-
-# Allow Baidu (Chinese) - Minimal Access
-User-agent: Baiduspider
-Allow: /
-Disallow: /api/
-Crawl-delay: 20
-
-# Block Generic Scrapers
-User-agent: *Scraper*
+User-agent: Omgilibot
 Disallow: /
-
-# Default for other bots
-User-agent: *Bot*
-Allow: /
-Disallow: /api/
-
-# Crawl Budget Management
-# Crawl-delay: 10 seconds (default for unknown bots)
-Crawl-delay: 10
-
-# Request Rate Limiting
-# Request-rate: 1/10s for unknown bots
-
-# Cache Instructions
-# Cache: max-age=86400 (24 hours)
-
-# Sitemap
-Sitemap: https://koyjabo.com/sitemap.xml
