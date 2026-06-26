@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const HOME_TITLE = 'KoyJabo – Dhaka Bus, Metro Rail & Bangladesh Travel | কই যাবো';
+const HOME_TITLE = 'KoyJabo — Bangladesh Bus, Metro & Travel Guide | কই যাবো';
 
 export function useDocumentTitle(title: string | null | undefined) {
   useEffect(() => {
