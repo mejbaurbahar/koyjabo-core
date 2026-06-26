@@ -47,6 +47,7 @@ const SEARCH_MODES = [
   { bn: 'ট্রেন',     en: 'Train',     id: 'train',     icon: '🚆' },
   { bn: 'লঞ্চ',      en: 'Launch',    id: 'launch',    icon: '⛴️' },
   { bn: 'বিমান',     en: 'Air',       id: 'flights',   icon: '✈️' },
+  { bn: 'ট্রাক',     en: 'Truck',     id: 'truck',     icon: '🚛' },
 ] as const;
 
 type SearchModeId = typeof SEARCH_MODES[number]['id'];
@@ -99,6 +100,7 @@ function SearchPanel({
     intercity: undefined, // all categories
     launch: ['ferry_terminal'],
     flights: ['airport'],
+    truck: undefined,
   };
 
   // Comprehensive from/to search using useLocationSearch hook
@@ -147,6 +149,7 @@ function SearchPanel({
     mode === 'train' ? 'train-hub' :
     mode === 'launch' ? 'launch-hub' :
     mode === 'flights' ? 'flights-hub' :
+    mode === 'truck' ? 'truck-hub' :
     'intercity';
 
   const modeSearchPlaceholder = {
@@ -156,6 +159,7 @@ function SearchPanel({
     train: T(lang, 'ট্রেন, স্টেশন, নম্বর...', 'Search train, station, number...'),
     launch: T(lang, 'লঞ্চ, ঘাট, রুট...', 'Search launch, terminal, route...'),
     flights: T(lang, 'বিমানবন্দর বা ফ্লাইট রুট...', 'Search airport or flight route...'),
+    truck: T(lang, 'পিকআপ, ট্রাক, রুট...', 'Search pickup, truck, route...'),
   } as Record<SearchModeId, string>;
 
   const fromPlaceholder = {
@@ -165,6 +169,7 @@ function SearchPanel({
     train: T(lang, 'ঢাকা (কমলাপুর)', 'Dhaka (Kamalapur)'),
     launch: T(lang, 'সদরঘাট', 'Sadarghat'),
     flights: T(lang, 'ঢাকা (DAC)', 'Dhaka (DAC)'),
+    truck: T(lang, 'ঢাকা', 'Dhaka'),
   } as Record<SearchModeId, string>;
 
   const toPlaceholder = {
@@ -174,6 +179,7 @@ function SearchPanel({
     train: T(lang, 'চট্টগ্রাম', 'Chattogram'),
     launch: T(lang, 'বরিশাল ঘাট', 'Barisal Ghat'),
     flights: T(lang, 'কক্সবাজার (CXB)', "Cox's Bazar (CXB)"),
+    truck: T(lang, 'চট্টগ্রাম', 'Chattogram'),
   } as Record<SearchModeId, string>;
 
   const submitSearch = (value = searchQ) => {
@@ -523,6 +529,7 @@ const TILES: TileData[] = [
   { grad: 'linear-gradient(135deg, #f59e0b, #b45309)', label: { bn: 'আন্তঃজেলা', en: 'Intercity' }, sub: '64 districts · bus/train/flight', route: 'intercity', mode: 'intercity', vehicleKind: 'plane' },
   { grad: 'linear-gradient(135deg, #0ea5e9, #075985)', label: { bn: 'লঞ্চ ও স্টিমার', en: 'Launch & Steamer' }, sub: 'Sadarghat → Barisal', route: 'launch-hub', mode: 'launch', vehicleKind: 'launch' },
   { grad: 'linear-gradient(135deg, #8b5cf6, #5b21b6)', label: { bn: 'অভ্যন্তরীণ ফ্লাইট', en: 'Flights' }, sub: '4 airlines · 8 airports', badge: { bn: 'নতুন', en: 'New' }, route: 'flights-hub', mode: 'flights', vehicleKind: 'plane' },
+  { grad: 'linear-gradient(135deg, #ef4444, #7f1d1d)', label: { bn: 'ট্রাক ও পণ্য', en: 'Truck & Freight' }, sub: 'Lalamove · TruckLagbe', badge: { bn: 'নতুন', en: 'New' }, route: 'truck-hub', mode: 'truck', vehicleKind: 'bus' },
   { grad: 'linear-gradient(135deg, #ef4444, #b91c1c)', label: { bn: 'AI সহায়ক', en: 'AI Assistant' }, sub: 'Ask in Bangla', badge: { bn: 'নতুন', en: 'New' }, route: 'ai', mode: 'bus', vehicleKind: 'chatbot' },
 ];
 
