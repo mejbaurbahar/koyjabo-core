@@ -325,21 +325,62 @@ export const TRUCK_CATEGORIES: TruckCategory[] = [
   },
 ];
 
-// Popular city/route preset suggestions
-export const TRUCK_CITIES = [
-  { id: 'dhaka',       en: 'Dhaka',       bn: 'ঢাকা' },
-  { id: 'chattogram',  en: 'Chattogram',  bn: 'চট্টগ্রাম' },
-  { id: 'sylhet',      en: 'Sylhet',      bn: 'সিলেট' },
-  { id: 'khulna',      en: 'Khulna',      bn: 'খুলনা' },
-  { id: 'rajshahi',    en: 'Rajshahi',    bn: 'রাজশাহী' },
-  { id: 'barishal',    en: 'Barishal',    bn: 'বরিশাল' },
-  { id: 'rangpur',     en: 'Rangpur',     bn: 'রংপুর' },
-  { id: 'mymensingh',  en: 'Mymensingh',  bn: 'ময়মনসিংহ' },
-  { id: 'cumilla',     en: 'Cumilla',     bn: 'কুমিল্লা' },
-  { id: 'narayanganj', en: 'Narayanganj', bn: 'নারায়ণগঞ্জ' },
-  { id: 'gazipur',     en: 'Gazipur',     bn: 'গাজীপুর' },
-  { id: 'jashore',     en: 'Jashore',     bn: 'যশোর' },
+// Popular city/route preset suggestions with coords for Haversine distance calc
+export interface TruckCity {
+  id: string;
+  en: string;
+  bn: string;
+  lat: number;
+  lng: number;
+}
+
+export const TRUCK_CITIES: TruckCity[] = [
+  { id: 'dhaka',       en: 'Dhaka',       bn: 'ঢাকা',         lat: 23.8103, lng: 90.4125 },
+  { id: 'chattogram',  en: 'Chattogram',  bn: 'চট্টগ্রাম',   lat: 22.3569, lng: 91.7832 },
+  { id: 'sylhet',      en: 'Sylhet',      bn: 'সিলেট',        lat: 24.8949, lng: 91.8687 },
+  { id: 'khulna',      en: 'Khulna',      bn: 'খুলনা',        lat: 22.8456, lng: 89.5403 },
+  { id: 'rajshahi',    en: 'Rajshahi',    bn: 'রাজশাহী',     lat: 24.3745, lng: 88.6042 },
+  { id: 'barishal',    en: 'Barishal',    bn: 'বরিশাল',      lat: 22.7010, lng: 90.3535 },
+  { id: 'rangpur',     en: 'Rangpur',     bn: 'রংপুর',       lat: 25.7439, lng: 89.2752 },
+  { id: 'mymensingh',  en: 'Mymensingh',  bn: 'ময়মনসিংহ',   lat: 24.7471, lng: 90.4203 },
+  { id: 'cumilla',     en: 'Cumilla',     bn: 'কুমিল্লা',    lat: 23.4607, lng: 91.1809 },
+  { id: 'narayanganj', en: 'Narayanganj', bn: 'নারায়ণগঞ্জ',  lat: 23.6238, lng: 90.5000 },
+  { id: 'gazipur',     en: 'Gazipur',     bn: 'গাজীপুর',     lat: 23.9999, lng: 90.4203 },
+  { id: 'jashore',     en: 'Jashore',     bn: 'যশোর',        lat: 23.1697, lng: 89.2137 },
+  { id: 'bogura',      en: 'Bogura',      bn: 'বগুড়া',       lat: 24.8465, lng: 89.3776 },
+  { id: 'coxsbazar',   en: "Cox's Bazar", bn: 'কক্সবাজার',   lat: 21.4272, lng: 92.0058 },
+  { id: 'jamalpur',    en: 'Jamalpur',    bn: 'জামালপুর',    lat: 24.9375, lng: 89.9372 },
+  { id: 'tangail',     en: 'Tangail',     bn: 'টাঙ্গাইল',    lat: 24.2513, lng: 89.9167 },
+  { id: 'dinajpur',    en: 'Dinajpur',    bn: 'দিনাজপুর',    lat: 25.6217, lng: 88.6354 },
+  { id: 'pabna',       en: 'Pabna',       bn: 'পাবনা',        lat: 24.0064, lng: 89.2372 },
+  { id: 'feni',        en: 'Feni',        bn: 'ফেনী',         lat: 23.0159, lng: 91.3976 },
+  { id: 'noakhali',    en: 'Noakhali',    bn: 'নোয়াখালী',    lat: 22.8696, lng: 91.0996 },
 ];
+
+export function findTruckCity(q: string): TruckCity | null {
+  if (!q) return null;
+  const lower = q.trim().toLowerCase();
+  return TRUCK_CITIES.find(c =>
+    c.en.toLowerCase() === lower ||
+    c.bn === q.trim() ||
+    c.id === lower ||
+    c.en.toLowerCase().includes(lower) ||
+    c.bn.includes(q.trim()),
+  ) ?? null;
+}
+
+// Haversine + 1.30 road factor (BD roads more winding than ~1.15)
+export function truckRoadKm(a: TruckCity, b: TruckCity): number {
+  if (a.id === b.id) return 0;
+  const R = 6371;
+  const dLat = (b.lat - a.lat) * Math.PI / 180;
+  const dLng = (b.lng - a.lng) * Math.PI / 180;
+  const x = Math.sin(dLat / 2) ** 2 +
+    Math.cos(a.lat * Math.PI / 180) * Math.cos(b.lat * Math.PI / 180) *
+    Math.sin(dLng / 2) ** 2;
+  const straight = R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
+  return Math.round(straight * 1.30);
+}
 
 // Rough per-km rate band for intercity truck rental (BDT). Used only for
 // fare-estimate hint — actual price depends on bidding outcome.

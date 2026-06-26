@@ -16,6 +16,8 @@ import {
   TruckSize,
   ProviderId,
   estimateIntercityFare,
+  findTruckCity,
+  truckRoadKm,
 } from '../../../data/bangladeshTruckData';
 
 interface Props {
@@ -61,9 +63,19 @@ export function TruckPage(props: Props) {
   const [toFocus, setToFocus] = useState(false);
   const [sizeFilter, setSizeFilter] = useState<'all' | TruckSize>('all');
   const [providerFilter, setProviderFilter] = useState<'all' | ProviderId>('all');
-  const [distanceKm, setDistanceKm] = useState<number>(0);
+  const [selectedCat, setSelectedCat] = useState<TruckCategory | null>(null);
   const fromRef = useRef<HTMLDivElement>(null);
   const toRef = useRef<HTMLDivElement>(null);
+
+  // Auto-resolved city from typed/selected text
+  const fromCity = useMemo(() => findTruckCity(from), [from]);
+  const toCity = useMemo(() => findTruckCity(to), [to]);
+
+  // Auto-calculated road distance — no manual input needed
+  const distanceKm = useMemo(() => {
+    if (!fromCity || !toCity) return 0;
+    return truckRoadKm(fromCity, toCity);
+  }, [fromCity, toCity]);
 
   const citySuggestions = (q: string): Suggestion[] => {
     const lower = q.toLowerCase();
@@ -147,22 +159,17 @@ export function TruckPage(props: Props) {
                   />
                 </div>
               </div>
-              <div style={{ background: tk.inputBg, border: `1px solid ${tk.line}`, borderRadius: 14, padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 10, minWidth: isMobile ? 0 : 140 }}>
+              <div style={{ background: distanceKm > 0 ? tk.primarySoft : tk.inputBg, border: `1px solid ${distanceKm > 0 ? tk.primary : tk.line}`, borderRadius: 14, padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 10, minWidth: isMobile ? 0 : 140 }}>
                 <div style={{ width: 28, height: 28, borderRadius: 8, background: tk.amberSoft, color: tk.amber, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   📏
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontFamily: SANS, fontSize: 10, fontWeight: 600, color: tk.textFaint, textTransform: 'uppercase', letterSpacing: 1.2 }}>
-                    {lbl('Distance (km)', 'দূরত্ব (কিমি)')}
+                    {lbl('Road distance', 'সড়ক দূরত্ব')}
                   </div>
-                  <input
-                    type="number"
-                    min={0}
-                    value={distanceKm || ''}
-                    onChange={e => setDistanceKm(Number(e.target.value) || 0)}
-                    placeholder={lbl('e.g. 260', 'যেমন ২৬০')}
-                    style={{ fontFamily: SANS, fontSize: 14, fontWeight: 700, color: tk.text, background: 'transparent', border: 'none', outline: 'none', width: '100%', padding: 0 }}
-                  />
+                  <div style={{ fontFamily: SANS, fontSize: 14, fontWeight: 800, color: distanceKm > 0 ? tk.primary : tk.textFaint }}>
+                    {distanceKm > 0 ? `${N(distanceKm, lang)} km` : lbl('Pick both cities', 'দুটি শহর বাছুন')}
+                  </div>
                 </div>
               </div>
               <button
@@ -262,6 +269,19 @@ export function TruckPage(props: Props) {
             </div>
           </div>
 
+          {/* Inline quote panel — shows full booking info on this platform */}
+          {selectedCat && (
+            <QuotePanel
+              c={selectedCat}
+              tk={tk}
+              lang={lang}
+              fromCity={fromCity?.[lang === 'bn' ? 'bn' : 'en'] ?? from ?? '—'}
+              toCity={toCity?.[lang === 'bn' ? 'bn' : 'en'] ?? to ?? '—'}
+              distanceKm={distanceKm}
+              onClose={() => setSelectedCat(null)}
+            />
+          )}
+
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.5fr 1fr', gap: 18 }}>
             {/* Results */}
             <div id="truck-results">
@@ -280,7 +300,17 @@ export function TruckPage(props: Props) {
                     {T(lang, 'এই ফিল্টারে কোনো যানবাহন নেই।', 'No vehicles match these filters.')}
                   </div>
                 ) : (
-                  filteredCats.map(c => <TruckCard key={c.id} c={c} tk={tk} lang={lang} distanceKm={distanceKm} isMobile={isMobile} />)
+                  filteredCats.map(c => (
+                    <TruckCard
+                      key={c.id}
+                      c={c}
+                      tk={tk}
+                      lang={lang}
+                      distanceKm={distanceKm}
+                      isMobile={isMobile}
+                      onSelect={() => { earnCoins(3, 'Truck quote'); setSelectedCat(c); }}
+                    />
+                  ))
                 )}
               </div>
             </div>
@@ -311,25 +341,21 @@ export function TruckPage(props: Props) {
                         ))}
                       </div>
                     )}
-                    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                      <a href={p.url} target="_blank" rel="noopener noreferrer" style={{ background: p.color, color: '#fff', borderRadius: 8, padding: '6px 12px', fontFamily: SANS, fontSize: 11, fontWeight: 700, textDecoration: 'none' }}>
-                        {lbl('Open site', 'সাইট খুলুন')} ↗
-                      </a>
-                      {p.appAndroid && (
-                        <a href={p.appAndroid} target="_blank" rel="noopener noreferrer" style={{ background: tk.panelMuted, color: tk.text, borderRadius: 8, padding: '6px 12px', fontFamily: SANS, fontSize: 11, fontWeight: 700, textDecoration: 'none', border: `1px solid ${tk.line}` }}>
-                          Android
-                        </a>
-                      )}
-                      {p.appIOS && (
-                        <a href={p.appIOS} target="_blank" rel="noopener noreferrer" style={{ background: tk.panelMuted, color: tk.text, borderRadius: 8, padding: '6px 12px', fontFamily: SANS, fontSize: 11, fontWeight: 700, textDecoration: 'none', border: `1px solid ${tk.line}` }}>
-                          iOS
-                        </a>
-                      )}
-                    </div>
                     {p.phone && (
-                      <div style={{ fontFamily: SANS, fontSize: 11, color: tk.textDim }}>
-                        📞 <a href={`tel:${p.phone.replace(/\s/g, '')}`} style={{ color: tk.primary, textDecoration: 'none' }}>{p.phone}</a>
-                      </div>
+                      <a
+                        href={`tel:${p.phone.replace(/\s/g, '')}`}
+                        style={{ background: p.color, color: '#fff', borderRadius: 8, padding: '8px 12px', fontFamily: SANS, fontSize: 12, fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6, alignSelf: 'flex-start' }}
+                      >
+                        📞 {p.phone}
+                      </a>
+                    )}
+                    {p.email && (
+                      <a
+                        href={`mailto:${p.email}`}
+                        style={{ fontFamily: SANS, fontSize: 11, color: tk.primary, textDecoration: 'none' }}
+                      >
+                        ✉️ {p.email}
+                      </a>
                     )}
                   </div>
                 ))}
@@ -365,13 +391,14 @@ export function TruckPage(props: Props) {
 }
 
 function TruckCard({
-  c, tk, lang, distanceKm,
+  c, tk, lang, distanceKm, onSelect,
 }: {
   c: TruckCategory;
   tk: Tokens;
   lang: 'bn' | 'en';
   distanceKm: number;
   isMobile: boolean;
+  onSelect: () => void;
 }) {
   const fare = distanceKm > 0 ? estimateIntercityFare(c.size, distanceKm) : null;
   const providers = TRUCK_PROVIDERS.filter(p => c.providers.includes(p.id));
@@ -440,32 +467,198 @@ function TruckCard({
             </div>
           </div>
         )}
-        <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+        <div style={{ display: 'flex', gap: 6, flexShrink: 0, alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 4 }}>
+            {providers.map(p => (
+              <span key={p.id} title={p.name} style={{ width: 8, height: 8, borderRadius: 999, background: p.color, display: 'inline-block' }}/>
+            ))}
+          </div>
+          <button
+            onClick={onSelect}
+            style={{
+              background: `linear-gradient(135deg,${c.color},${c.color}cc)`,
+              color: '#fff',
+              border: 0,
+              borderRadius: 10,
+              padding: '8px 14px',
+              fontFamily: SANS,
+              fontWeight: 700,
+              fontSize: 12,
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {lang === 'bn' ? 'কোট নিন' : 'Get quote'} →
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Inline quote panel — shows full booking detail on KoyJabo, no external redirect
+function QuotePanel({
+  c, tk, lang, fromCity, toCity, distanceKm, onClose,
+}: {
+  c: TruckCategory;
+  tk: Tokens;
+  lang: 'bn' | 'en';
+  fromCity: string;
+  toCity: string;
+  distanceKm: number;
+  onClose: () => void;
+}) {
+  const fare = distanceKm > 0 ? estimateIntercityFare(c.size, distanceKm) : null;
+  const providers = TRUCK_PROVIDERS.filter(p => c.providers.includes(p.id));
+  const mid = fare ? Math.round((fare.low + fare.high) / 2) : null;
+  const driveHrs = distanceKm > 0 ? +(distanceKm / 40).toFixed(1) : 0;
+
+  return (
+    <div style={{
+      background: tk.panel,
+      border: `2px solid ${c.color}`,
+      borderRadius: 18,
+      padding: 18,
+      marginBottom: 18,
+      boxShadow: `0 18px 40px -20px ${c.color}80`,
+      position: 'relative',
+    }}>
+      <button
+        onClick={onClose}
+        aria-label={lang === 'bn' ? 'বন্ধ করুন' : 'Close'}
+        style={{
+          position: 'absolute', top: 12, right: 12,
+          background: tk.panelMuted, color: tk.text,
+          border: `1px solid ${tk.line}`, borderRadius: 999,
+          width: 30, height: 30, fontSize: 16, lineHeight: 1, cursor: 'pointer',
+        }}
+      >×</button>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
+        <div style={{
+          width: 64, height: 50, borderRadius: 12,
+          background: `linear-gradient(135deg,${c.color},${c.color}cc)`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28,
+        }}>{c.emoji}</div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontFamily: SANS, fontSize: 10, fontWeight: 700, color: c.color, letterSpacing: 1.4, textTransform: 'uppercase' }}>
+            {lang === 'bn' ? 'লাইভ কোট' : 'Live quote'}
+          </div>
+          <div style={{ fontFamily: BEN, fontWeight: 800, fontSize: 18, color: tk.text, lineHeight: 1.25 }}>
+            {lang === 'bn' ? c.name.bn : c.name.en}
+          </div>
+          <div style={{ fontFamily: BEN, fontSize: 12, color: tk.textDim, marginTop: 2 }}>
+            {fromCity} → {toCity}
+          </div>
+        </div>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 10, marginBottom: 14 }}>
+        <QuoteStat tk={tk} label={lang === 'bn' ? 'দূরত্ব' : 'Distance'} value={distanceKm > 0 ? `${N(distanceKm, lang)} km` : '—'} color={tk.primary}/>
+        <QuoteStat tk={tk} label={lang === 'bn' ? 'অনুমিত সময়' : 'Drive time'} value={distanceKm > 0 ? `~${N(driveHrs, lang)}h` : '—'} color={tk.amber}/>
+        <QuoteStat tk={tk} label={lang === 'bn' ? 'ক্যাপাসিটি' : 'Capacity'} value={`${N(c.capacityTon, lang)} ton`} color={c.color}/>
+        <QuoteStat tk={tk} label={lang === 'bn' ? 'বডি' : 'Body'} value={c.body} color={tk.accent}/>
+      </div>
+
+      {fare && mid !== null && (
+        <div style={{
+          background: `${c.color}18`,
+          border: `1px solid ${c.color}55`,
+          borderRadius: 14,
+          padding: 14,
+          marginBottom: 14,
+        }}>
+          <div style={{ fontFamily: SANS, fontSize: 10, fontWeight: 700, color: c.color, letterSpacing: 1.4, textTransform: 'uppercase' }}>
+            {lang === 'bn' ? 'অনুমিত ভাড়া' : 'Estimated fare'}
+          </div>
+          <div style={{ fontFamily: SANS, fontWeight: 900, fontSize: 28, color: tk.text, letterSpacing: -0.5 }}>
+            {Fare(mid, lang)}
+          </div>
+          <div style={{ fontFamily: SANS, fontSize: 12, color: tk.textDim, marginTop: 2 }}>
+            {lang === 'bn' ? 'রেঞ্জ:' : 'Range:'} {Fare(fare.low, lang)} – {Fare(fare.high, lang)}
+          </div>
+          <div style={{ fontFamily: BEN, fontSize: 11, color: tk.textFaint, marginTop: 6, lineHeight: 1.45 }}>
+            {lang === 'bn'
+              ? 'নোট: TruckLagbe বিড-ভিত্তিক — সঠিক ভাড়া ভেন্ডর বিড করার পর পাবেন। Lalamove অ্যাপে রিয়েল-টাইম ফিক্সড প্রাইস। লোডার আলাদা ৫০০-১৫০০ টাকা।'
+              : 'Note: TruckLagbe uses reverse-bidding — exact fare comes after vendor bids. Lalamove app shows real-time fixed price. Loaders extra ৳500–1500.'}
+          </div>
+        </div>
+      )}
+
+      <div>
+        <div style={{ fontFamily: BEN, fontWeight: 700, fontSize: 13, color: tk.text, marginBottom: 8 }}>
+          {lang === 'bn' ? 'বুক করতে কল করুন' : 'Call to book'}
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {providers.map(p => (
-            <a
-              key={p.id}
-              href={p.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                background: p.color,
-                color: '#fff',
-                border: 0,
-                borderRadius: 10,
-                padding: '8px 12px',
-                fontFamily: SANS,
-                fontWeight: 700,
-                fontSize: 11,
-                cursor: 'pointer',
-                textDecoration: 'none',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {p.name.split(' ')[0]} ↗
-            </a>
+            <div key={p.id} style={{
+              background: tk.inputBg,
+              border: `1px solid ${tk.line}`,
+              borderRadius: 12,
+              padding: 12,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
+              flexWrap: 'wrap',
+            }}>
+              <div style={{
+                width: 32, height: 32, borderRadius: 8,
+                background: `${p.color}22`, color: p.color,
+                display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0,
+              }}>🚛</div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontFamily: BEN, fontWeight: 700, fontSize: 13, color: tk.text }}>
+                  {lang === 'bn' ? p.bnName : p.name}
+                </div>
+                <div style={{ fontFamily: BEN, fontSize: 11, color: tk.textFaint, lineHeight: 1.4 }}>
+                  {lang === 'bn' ? p.bookingModel.bn : p.bookingModel.en}
+                </div>
+              </div>
+              {p.phone && (
+                <a
+                  href={`tel:${p.phone.replace(/\s/g, '')}`}
+                  style={{
+                    background: p.color, color: '#fff',
+                    borderRadius: 10, padding: '8px 14px',
+                    fontFamily: SANS, fontWeight: 700, fontSize: 12,
+                    textDecoration: 'none', whiteSpace: 'nowrap',
+                  }}
+                >
+                  📞 {lang === 'bn' ? 'কল' : 'Call'}
+                </a>
+              )}
+              {!p.phone && (
+                <span style={{
+                  background: tk.panelMuted, color: tk.textDim,
+                  borderRadius: 10, padding: '8px 14px',
+                  fontFamily: SANS, fontWeight: 600, fontSize: 11,
+                }}>
+                  {lang === 'bn' ? 'অ্যাপ-অনলি বুকিং' : 'App-only booking'}
+                </span>
+              )}
+            </div>
           ))}
         </div>
       </div>
     </div>
   );
 }
+
+function QuoteStat({ tk, label, value, color }: { tk: Tokens; label: string; value: string; color: string }) {
+  return (
+    <div style={{
+      background: tk.panelMuted,
+      border: `1px solid ${tk.line}`,
+      borderRadius: 12,
+      padding: '8px 10px',
+    }}>
+      <div style={{ fontFamily: SANS, fontSize: 9, fontWeight: 700, color: tk.textFaint, letterSpacing: 1.2, textTransform: 'uppercase' }}>
+        {label}
+      </div>
+      <div style={{ fontFamily: SANS, fontWeight: 800, fontSize: 16, color, marginTop: 2 }}>
+        {value}
+      </div>
+    </div>
+  );
+}
+
