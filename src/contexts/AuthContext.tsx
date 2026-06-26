@@ -14,16 +14,38 @@ function saveSession(user: AuthUser): void {
     deviceId: getOrCreateDeviceId(),
     expiresAt: Date.now() + SESSION_TTL_DAYS * 24 * 60 * 60 * 1000
   };
-  secureStorage.setItem(SESSION_KEY, JSON.stringify(session));
+  const payload = JSON.stringify(session);
+  secureStorage.setItem(SESSION_KEY, payload);
+  // Mirror to plain localStorage so legacy readers (communityDataService
+  // getAuthUser, etc.) keep seeing the same avatar + profile data.
+  try { localStorage.setItem(SESSION_KEY, payload); } catch {}
 }
 
 function loadSession(): AuthSession | null {
   try {
-    const raw = secureStorage.getItem(SESSION_KEY);
+    // Primary: obfuscated secure storage
+    let raw = secureStorage.getItem(SESSION_KEY);
+
+    // Fallback: legacy plain localStorage (pre-secureStorage migration).
+    // Some flows (community data service) still write here, so accounts
+    // created before the migration keep working — and the user's avatar
+    // doesn't vanish from TopBar when only the plain key has the data.
+    if (!raw) {
+      try {
+        const legacy = localStorage.getItem(SESSION_KEY);
+        if (legacy) {
+          raw = legacy;
+          // Promote to secure storage on first read
+          secureStorage.setItem(SESSION_KEY, legacy);
+        }
+      } catch { /* localStorage may throw in private mode */ }
+    }
+
     if (!raw) return null;
     const session: AuthSession = JSON.parse(raw);
     if (session.expiresAt < Date.now()) {
       secureStorage.removeItem(SESSION_KEY);
+      try { localStorage.removeItem(SESSION_KEY); } catch {}
       return null;
     }
     return session;
@@ -105,6 +127,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
     }
     secureStorage.removeItem(SESSION_KEY);
+    try { localStorage.removeItem(SESSION_KEY); } catch {}
     setHistoryUser(null);
     setUser(null);
     setStatus('unauthenticated');
