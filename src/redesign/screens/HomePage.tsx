@@ -1980,8 +1980,8 @@ export function HomePage({
             <p style={{ margin: '8px 0 0', fontSize: 13, lineHeight: 1.6, color: tk.text }}>
               {T(
                 lang,
-                'কই যাবো বাংলাদেশের ফ্রি অফলাইন পরিবহন গাইড। ২০০+ ঢাকা বাস রুট, MRT-6 মেট্রো (১৭ স্টেশন, ৳২০–১০০), ৬৪ জেলায় আন্তঃজেলা বাস/ট্রেন/ফ্লাইট/লঞ্চ, ট্রাক ও পণ্য পরিবহন (১৬ ভেহিকল টাইপ, রিয়েল মার্কেট রেট), ভাড়া ক্যালকুলেটর, এবং দ্বিভাষিক AI সহায়ক। অফলাইনে কাজ করে। সাইন-আপ লাগে না।',
-                'KoyJabo is Bangladesh\'s free offline transport guide. Covers 200+ Dhaka bus routes, MRT-6 Metro Rail (17 stations, ৳20–100), intercity bus/train/flight/launch across 64 districts, truck & freight (16 vehicle types, real market rates), a fare calculator, and a bilingual AI assistant. Works offline. No sign-up.',
+                'কই যাবো বাংলাদেশের ফ্রি অফলাইন পরিবহন গাইড। ২০০+ ঢাকা বাস রুট, MRT-6 মেট্রো (১৭ স্টেশন, ৳২০–১০০), ৬৪ জেলায় আন্তঃজেলা বাস/ট্রেন/ফ্লাইট/লঞ্চ, ট্রাক ও পণ্য পরিবহন (১৬ ভেহিকল টাইপ, রিয়েল মার্কেট রেট), ভাড়া ক্যালকুলেটর, এবং দ্বিভাষিক AI সহায়ক। অফলাইনে কাজ করে।',
+                'KoyJabo is Bangladesh\'s free offline transport guide. Covers 200+ Dhaka bus routes, MRT-6 Metro Rail (17 stations, ৳20–100), intercity bus/train/flight/launch across 64 districts, truck & freight (16 vehicle types, real market rates), a fare calculator, and a bilingual AI assistant. Works offline.',
               )}
             </p>
           </details>

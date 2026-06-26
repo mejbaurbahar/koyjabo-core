@@ -21,7 +21,7 @@ export function ContactPage(props: Props) {
 
         <div style={{ display:'grid',gridTemplateColumns:isMobile?'1fr':'1fr 1fr',gap:12,marginBottom:24 }}>
           {[
-            { e:'📧', l:'Email', v:'koyjabo@gmail.com', c:tk.primarySoft, fc:tk.primary },
+            { e:'📧', l:'Email', v:'koyjabo.bd@gmail.com', c:tk.primarySoft, fc:tk.primary },
             { e:'📘', l:'Facebook', v:'facebook.com/koyjabo', c:'#1877f22a', fc:'#1877f2' },
             { e:'💼', l:'LinkedIn', v:'linkedin.com/company/koy-jabo', c:tk.chipBg, fc:tk.text },
             { e:'📝', l:T(lang,'ভুল তথ্য জানান','Report issue'), v:'Contact form', c:tk.accentSoft, fc:tk.accent },

@@ -75,7 +75,7 @@ export function PrivacyPage(props: Props) {
         lbl('Right to portability: export your favorites + history as JSON.', 'পোর্টেবিলিটির অধিকার: ফেভারিট ও হিস্টরি JSON হিসেবে রপ্তানি।'),
         lbl('Right to correction: update or fix any data we hold.', 'সংশোধনের অধিকার: আমাদের কাছে থাকা ডেটা আপডেট বা ঠিক করুন।'),
         lbl('Right to object: opt out of analytics via browser Do-Not-Track.', 'আপত্তির অধিকার: ব্রাউজার Do-Not-Track দিয়ে অ্যানালিটিক্স থেকে অপ্ট-আউট।'),
-        lbl('To exercise: email koyjabo@gmail.com — we respond within 30 days.', 'প্রয়োগ করতে: koyjabo@gmail.com-এ ইমেইল — ৩০ দিনে সাড়া দেই।'),
+        lbl('To exercise: email koyjabo.bd@gmail.com — we respond within 30 days.', 'প্রয়োগ করতে: koyjabo.bd@gmail.com-এ ইমেইল — ৩০ দিনে সাড়া দেই।'),
       ],
     },
     {
@@ -101,7 +101,7 @@ export function PrivacyPage(props: Props) {
     },
     {
       h: lbl('8. Children', '৮. শিশুদের গোপনীয়তা'),
-      body: lbl('KoyJabo is rated General. We do not knowingly collect data from children under 13. If you are a parent and believe your child has provided us data, email koyjabo@gmail.com and we will delete it promptly.', 'কই যাবো জেনারেল রেটেড। আমরা জেনেশুনে ১৩ বছরের কম বয়সী শিশুদের কাছ থেকে ডেটা সংগ্রহ করি না। অভিভাবক হিসাবে আপনার সন্তান ডেটা দিয়েছে মনে করলে koyjabo@gmail.com-এ ইমেইল করুন, দ্রুত মুছে ফেলব।'),
+      body: lbl('KoyJabo is rated General. We do not knowingly collect data from children under 13. If you are a parent and believe your child has provided us data, email koyjabo.bd@gmail.com and we will delete it promptly.', 'কই যাবো জেনারেল রেটেড। আমরা জেনেশুনে ১৩ বছরের কম বয়সী শিশুদের কাছ থেকে ডেটা সংগ্রহ করি না। অভিভাবক হিসাবে আপনার সন্তান ডেটা দিয়েছে মনে করলে koyjabo.bd@gmail.com-এ ইমেইল করুন, দ্রুত মুছে ফেলব।'),
     },
     {
       h: lbl('9. International transfers', '৯. আন্তর্জাতিক স্থানান্তর'),
@@ -119,9 +119,9 @@ export function PrivacyPage(props: Props) {
       h: lbl('12. Contact', '১২. যোগাযোগ'),
       body: lbl('Privacy questions or requests:', 'গোপনীয়তা সংক্রান্ত প্রশ্ন বা অনুরোধ:'),
       bullets: [
-        'Email: koyjabo@gmail.com',
-        'GitHub: github.com/mejbaurbahar/koyjabo-core',
+        'Email: koyjabo.bd@gmail.com',
         lbl('Mailing: Dhaka, Bangladesh', 'মেইলিং: ঢাকা, বাংলাদেশ'),
+        lbl('Response time: within 30 days.', 'রেসপন্স সময়: ৩০ দিনের মধ্যে।'),
       ],
     },
   ];
@@ -179,7 +179,7 @@ export function PrivacyPage(props: Props) {
         <div style={{ ...card(14),background:tk.primarySoft,borderColor:tk.primary, marginTop:20 }}>
           <div style={{ fontFamily:BEN,fontWeight:700,fontSize:14,color:tk.primary,marginBottom:6 }}>{T(lang,'প্রশ্ন আছে?','Questions?')}</div>
           <div style={{ fontFamily:BEN,fontSize:13,color:tk.textDim,lineHeight:1.6 }}>
-            {T(lang,'যেকোনো গোপনীয়তা বা ডেটা সংক্রান্ত প্রশ্ন: koyjabo@gmail.com। আমরা ৩০ দিনের মধ্যে সাড়া দেই।','For any privacy or data-related queries: koyjabo@gmail.com. We respond within 30 days.')}
+            {T(lang,'যেকোনো গোপনীয়তা বা ডেটা সংক্রান্ত প্রশ্ন: koyjabo.bd@gmail.com। আমরা ৩০ দিনের মধ্যে সাড়া দেই।','For any privacy or data-related queries: koyjabo.bd@gmail.com. We respond within 30 days.')}
           </div>
         </div>
 
