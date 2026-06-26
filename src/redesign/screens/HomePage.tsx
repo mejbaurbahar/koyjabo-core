@@ -2019,12 +2019,11 @@ export function HomePage({
                 tile={tile}
                 lang={lang}
                 onClick={() => {
-                  if (tile.route === 'ai') {
-                    onNav(tile.route);
-                    return;
-                  }
-                  setHomeSearchMode(tile.mode);
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  // Navigate to the tile's hub page so the click actually
+                  // opens that section instead of just changing the search
+                  // mode at the top of Home (which felt like "nothing
+                  // happened" to users).
+                  onNav(tile.route);
                 }}
               />
             ))}
