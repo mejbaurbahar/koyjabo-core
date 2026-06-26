@@ -103,7 +103,6 @@ const staticPages = [
   urlEntry(`${BASE}/air`, TODAY, 'weekly', '0.7'),
   urlEntry(`${BASE}/truck`, TODAY, 'weekly', '0.7'),
   urlEntry(`${BASE}/advertise`, TODAY, 'monthly', '0.5'),
-  urlEntry(`${BASE}/api-access`, TODAY, 'monthly', '0.4'),
   urlEntry(`${BASE}/fare`, TODAY, 'monthly', '0.6'),
 ];
 
