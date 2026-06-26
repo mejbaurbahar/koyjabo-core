@@ -344,46 +344,45 @@ export function TruckPage(props: Props) {
 
             {/* Sidebar */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              {/* Capacity guide — neutral, no brand names */}
               <div style={card(16)}>
                 <div style={{ fontFamily: BEN, fontWeight: 700, fontSize: 14, color: tk.text, marginBottom: 10 }}>
-                  {T(lang, 'অংশীদার প্রোভাইডার', 'Partner providers')}
+                  {T(lang, '📦 ওজন অনুযায়ী ট্রাক বাছাই', '📦 Pick truck by load weight')}
                 </div>
-                {TRUCK_PROVIDERS.map((p, i) => (
-                  <div key={p.id} style={{ display: 'flex', flexDirection: 'column', gap: 8, padding: '12px 0', borderTop: i ? `1px dashed ${tk.line}` : '' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <div style={{ width: 36, height: 36, borderRadius: 10, background: `${p.color}22`, color: p.color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>
-                        🚛
-                      </div>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontFamily: BEN, fontWeight: 700, fontSize: 13, color: tk.text }}>{lang === 'bn' ? p.displayLabel.bn : p.displayLabel.en}</div>
-                        <div style={{ fontFamily: BEN, fontSize: 11, color: tk.textFaint, lineHeight: 1.35 }}>{lang === 'bn' ? p.tagline.bn : p.tagline.en}</div>
-                      </div>
+                {[
+                  { range: lbl('< 20 kg', '< ২০ কেজি'),     pick: lbl('Motorcycle',         'মোটরসাইকেল'),       use: lbl('Documents, food, parcel',  'নথি, খাদ্য, পার্সেল') },
+                  { range: lbl('< 400 kg', '< ৪০০ কেজি'),   pick: lbl('Car (sedan)',        'কার'),                use: lbl('Small boxed goods',       'ছোট বক্সড পণ্য') },
+                  { range: lbl('1–1.5 ton', '১–১.৫ টন'),    pick: lbl('Pickup 7–9 ft',      'পিকআপ ৭–৯ ফুট'),     use: lbl('Appliances, electronics', 'যন্ত্রপাতি, ইলেকট্রনিক্স') },
+                  { range: lbl('2–3.5 ton', '২–৩.৫ টন'),    pick: lbl('Truck 12–14 ft',     'ট্রাক ১২–১৪ ফুট'),    use: lbl('Office/home shifting',    'অফিস/বাসা শিফটিং') },
+                  { range: lbl('7.5 ton',   '৭.৫ টন'),      pick: lbl('Truck 16 ft',        'ট্রাক ১৬ ফুট'),      use: lbl('FMCG, packaged goods',    'এফএমসিজি, প্যাকেজড') },
+                  { range: lbl('15–25 ton', '১৫–২৫ টন'),    pick: lbl('Truck 18–23 ft',     'ট্রাক ১৮–২৩ ফুট'),   use: lbl('Industrial freight',      'শিল্প ফ্রেইট') },
+                  { range: lbl('> 30 ton',  '> ৩০ টন'),     pick: lbl('Flat/Low-bed trailer','ফ্ল্যাট/লো-বেড ট্রেইলার'), use: lbl('Containers, machinery', 'কন্টেইনার, যন্ত্রপাতি') },
+                ].map((row, i) => (
+                  <div key={i} style={{ display: 'flex', gap: 8, padding: '10px 0', borderTop: i ? `1px dashed ${tk.line}` : '' }}>
+                    <div style={{ flex: '0 0 80px', fontFamily: SANS, fontWeight: 800, fontSize: 12, color: tk.primary }}>{row.range}</div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontFamily: BEN, fontWeight: 700, fontSize: 12, color: tk.text }}>{row.pick}</div>
+                      <div style={{ fontFamily: BEN, fontSize: 11, color: tk.textFaint }}>{row.use}</div>
                     </div>
-                    {p.stats && (
-                      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                        {p.stats.map((s, k) => (
-                          <span key={k} style={{ background: `${p.color}18`, color: p.color, borderRadius: 6, padding: '3px 8px', fontFamily: SANS, fontSize: 10, fontWeight: 700 }}>
-                            {s.v} · {lang === 'bn' ? s.bn : s.en}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                    {p.phone && (
-                      <a
-                        href={`tel:${p.phone.replace(/\s/g, '')}`}
-                        style={{ background: p.color, color: '#fff', borderRadius: 8, padding: '8px 12px', fontFamily: SANS, fontSize: 12, fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6, alignSelf: 'flex-start' }}
-                      >
-                        📞 {p.phone}
-                      </a>
-                    )}
-                    {p.email && (
-                      <a
-                        href={`mailto:${p.email}`}
-                        style={{ fontFamily: SANS, fontSize: 11, color: tk.primary, textDecoration: 'none' }}
-                      >
-                        ✉️ {p.email}
-                      </a>
-                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* Booking checklist */}
+              <div style={card(16)}>
+                <div style={{ fontFamily: BEN, fontWeight: 700, fontSize: 14, color: tk.text, marginBottom: 10 }}>
+                  {T(lang, '✅ বুক করার আগে চেকলিস্ট', '✅ Pre-booking checklist')}
+                </div>
+                {[
+                  { ic: '⚖️', t: lbl('Total weight estimated',         'মোট ওজন আনুমানিক করেছেন') },
+                  { ic: '📏', t: lbl('Largest item dimension known',   'সবচেয়ে বড় আইটেমের মাপ জানেন') },
+                  { ic: '🕒', t: lbl('Loading window confirmed',       'লোডিং সময় নিশ্চিত করেছেন') },
+                  { ic: '👷', t: lbl('Need loaders? (extra ৳500-1500)', 'লেবার দরকার? (৳৫০০-১৫০০ অতিরিক্ত)') },
+                  { ic: '🌉', t: lbl('Route tolls checked',            'রুটের টোল চেক করেছেন') },
+                ].map((row, i) => (
+                  <div key={i} style={{ display: 'flex', gap: 8, padding: '8px 0', borderTop: i ? `1px dashed ${tk.line}` : '', alignItems: 'center' }}>
+                    <span style={{ fontSize: 18 }}>{row.ic}</span>
+                    <span style={{ fontFamily: BEN, fontSize: 12, color: tk.textDim, flex: 1 }}>{row.t}</span>
                   </div>
                 ))}
               </div>
