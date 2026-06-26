@@ -92,21 +92,57 @@ if (rootElement) {
   );
 }
 
-// Register PWA Service Worker (safe fallback if virtual module is unavailable)
+// Register PWA Service Worker + auto-update on every deploy.
+// Users never need to hard-refresh: the SW checks for new versions every 60s,
+// on tab focus, and on visibility change; when a new SW takes over,
+// the page silently reloads to pick up the latest chunks.
+let reloadInFlight = false;
+function silentReload() {
+  if (reloadInFlight) return;
+  reloadInFlight = true;
+  window.location.reload();
+}
+
 async function registerPWAWorker() {
   try {
     const mod = await import(/* @vite-ignore */ 'virtual:pwa-register');
-    mod.registerSW({
+    const updateSW = mod.registerSW({
       immediate: true,
       onNeedRefresh() {
-        // New service worker activated with new assets — reload so the running
-        // page doesn't try to load old chunk filenames that no longer exist.
-        window.location.reload();
+        // New SW waiting → ask it to skipWaiting (already configured in vite),
+        // then reload once it takes control via the controllerchange listener.
+        silentReload();
       },
       onOfflineReady() {
         window.dispatchEvent(new CustomEvent('pwa-offline-ready'));
       },
+      onRegisteredSW(_swUrl, registration) {
+        if (!registration) return;
+        // Poll for a new SW every 60s — Workbox by default only checks
+        // on navigation, which doesn't fire inside a SPA. This makes
+        // long-lived tabs pick up new deploys without manual refresh.
+        const POLL_MS = 60_000;
+        setInterval(() => {
+          if (document.visibilityState === 'visible') {
+            registration.update().catch(() => {});
+          }
+        }, POLL_MS);
+
+        // Also check immediately on tab focus or visibility change —
+        // user came back to the tab, probably the moment they expect
+        // to see the freshest content.
+        const checkNow = () => {
+          if (document.visibilityState === 'visible') {
+            registration.update().catch(() => {});
+          }
+        };
+        document.addEventListener('visibilitychange', checkNow);
+        window.addEventListener('focus', checkNow);
+      },
     });
+
+    // Expose for manual triggering if needed (e.g. dev console)
+    (window as any).__kjUpdateSW = updateSW;
   } catch {
     // PWA plugin not active for this runtime; continue without SW registration.
   }
@@ -118,6 +154,25 @@ void registerPWAWorker();
 // This catches the case where skipWaiting activates a new SW mid-session.
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.addEventListener('controllerchange', () => {
-    window.location.reload();
+    silentReload();
   });
+
+  // BUILD_VERSION fallback — if HTML refreshes but SW didn't update for any
+  // reason, compare the build-time constant baked into the HTML with the
+  // running JS. If a new version is detected on focus, force reload.
+  const RUNNING_VERSION = __KJ_BUILD_VERSION__;
+  const checkVersion = async () => {
+    if (document.visibilityState !== 'visible') return;
+    try {
+      const r = await fetch(`/version.json?ts=${Date.now()}`, { cache: 'no-store' });
+      if (!r.ok) return;
+      const { version } = await r.json();
+      if (version && version !== RUNNING_VERSION) {
+        silentReload();
+      }
+    } catch { /* offline or missing — ignore */ }
+  };
+  setInterval(checkVersion, 120_000);
+  document.addEventListener('visibilitychange', checkVersion);
+  window.addEventListener('focus', checkVersion);
 }

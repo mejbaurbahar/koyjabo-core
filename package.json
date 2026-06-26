@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "cd intercity && npm install && npm run build && cd .. && node scripts/generate-sitemap.mjs && vite build",
+    "build": "cd intercity && npm install && npm run build && cd .. && export BUILD_VERSION=$(node -e 'process.stdout.write(String(Date.now()))') && node scripts/generate-sitemap.mjs && vite build",
     "build:sitemap": "node scripts/generate-sitemap.mjs",
     "build:qa": "node scripts/build-advanced-qa.mjs",
     "preview": "vite preview",

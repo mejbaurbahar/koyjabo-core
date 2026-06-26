@@ -137,6 +137,8 @@ export default defineConfig(({ mode }) => {
             // Removed from public/ — exclude from precache so SW does not reference missing files
             'enhanced-sw.js',
             'visitor-counter.html',
+            // version.json is the build-version probe — must always come from network
+            'version.json',
             // intercity root-level JS/CSS are duplicates of intercity/assets/ — precache only the assets/ versions
             'intercity/index-*.js',
             'intercity/index-*.css',
@@ -146,7 +148,7 @@ export default defineConfig(({ mode }) => {
           ],
           navigateFallback: 'index.html',  // Enable automatic fallback to index.html for SPA offline support
           // Only deny actual static file paths — NOT the /intercity page itself (must fall through to index.html)
-          navigateFallbackDenylist: [/^\/api/, /^\/intercity\/(assets|data|sw\.js|workbox-|manifest\.webmanifest|logo\.png)/, /^\/ads\.txt/, /^\/robots\.txt/, /^\/sitemap\.xml/],
+          navigateFallbackDenylist: [/^\/api/, /^\/intercity\/(assets|data|sw\.js|workbox-|manifest\.webmanifest|logo\.png)/, /^\/ads\.txt/, /^\/robots\.txt/, /^\/sitemap\.xml/, /^\/version\.json/],
           cleanupOutdatedCaches: true,
           // Inline the workbox runtime instead of loading from CDN
           mode: 'production',
@@ -154,10 +156,16 @@ export default defineConfig(({ mode }) => {
           skipWaiting: true,
           clientsClaim: true,
           // Cache versioning for proper updates
-          cacheId: 'dhaka-commute-v61',
+          cacheId: 'dhaka-commute-v62',
           maximumFileSizeToCacheInBytes: 10485760, // 10 MB
 
           runtimeCaching: [
+            // version.json — ALWAYS network. Used by the app to silently
+            // detect new deploys without forcing users to hard-refresh.
+            {
+              urlPattern: ({ url }) => url.pathname === '/version.json',
+              handler: 'NetworkOnly',
+            },
             // Google AdSense / DoubleClick — ALWAYS NetworkOnly; never cache ad scripts or impressions
             {
               urlPattern: /^https:\/\/(?:pagead2|adservice|partner|tpc)\.googlesyndication\.com\/.*/i,
@@ -459,6 +467,9 @@ export default defineConfig(({ mode }) => {
         },
     },
     define: {
+      // Build-time version string — used by main.tsx to detect new deploys
+      // without requiring a hard refresh from users.
+      '__KJ_BUILD_VERSION__': JSON.stringify(process.env.BUILD_VERSION || `${Date.now()}`),
       'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
       'process.env.GEMINI_API_KEY_1': JSON.stringify(env.GEMINI_API_KEY_1 || env.GEMINI_API_KEY),

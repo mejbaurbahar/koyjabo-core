@@ -8,3 +8,6 @@ interface ImportMetaEnv {
 interface ImportMeta {
     readonly env: ImportMetaEnv;
 }
+
+// Injected at build time via vite.config.ts → define
+declare const __KJ_BUILD_VERSION__: string;

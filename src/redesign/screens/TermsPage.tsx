@@ -21,7 +21,7 @@ export function TermsPage(props: Props) {
   const sections: Section[] = [
     {
       h: lbl('1. Acceptance of terms', '১. শর্তাবলি গ্রহণ'),
-      body: lbl('By accessing KoyJabo via koyjabo.com, dev.koyjabo.com, our mobile PWA, or any subdomain, you agree to be bound by these Terms of Service and our Privacy Policy. If you do not agree, please discontinue use immediately.', 'koyjabo.com, dev.koyjabo.com, আমাদের মোবাইল PWA, বা যেকোনো সাবডোমেইনের মাধ্যমে কই যাবো ব্যবহার করে আপনি এই সেবার শর্তাবলি ও গোপনীয়তা নীতি মেনে চলতে সম্মত হন। সম্মত না হলে অবিলম্বে ব্যবহার বন্ধ করুন।'),
+      body: lbl('By accessing KoyJabo at koyjabo.com or via our mobile PWA, you agree to be bound by these Terms of Service and our Privacy Policy. If you do not agree, please discontinue use immediately.', 'koyjabo.com-এ বা আমাদের মোবাইল PWA-এর মাধ্যমে কই যাবো ব্যবহার করে আপনি এই সেবার শর্তাবলি ও গোপনীয়তা নীতি মেনে চলতে সম্মত হন। সম্মত না হলে অবিলম্বে ব্যবহার বন্ধ করুন।'),
     },
     {
       h: lbl('2. Information-only service', '২. শুধুমাত্র তথ্য সেবা'),
@@ -57,25 +57,39 @@ export function TermsPage(props: Props) {
     },
     {
       h: lbl('5. Acceptable use', '৫. গ্রহণযোগ্য ব্যবহার'),
-      body: lbl('You agree NOT to:', 'আপনি সম্মত হন NOT to:'),
+      body: lbl('You agree NOT to do any of the following:', 'আপনি নিচের কোনোটি করতে সম্মত নন:'),
       bullets: [
-        lbl('Scrape, mirror, or republish KoyJabo data without written permission (community/personal use OK).', 'লিখিত অনুমতি ছাড়া কই যাবো ডেটা স্ক্র্যাপ, মিরর, বা পুনঃপ্রকাশ করা (কমিউনিটি/ব্যক্তিগত ব্যবহার ঠিক)।'),
-        lbl('Submit false route or fare reviews intended to mislead.', 'বিভ্রান্ত করার জন্য মিথ্যা রুট বা ভাড়া রিভিউ জমা দেওয়া।'),
-        lbl('Reverse-engineer or attempt to bypass security measures (Turnstile, rate limits).', 'রিভার্স-ইঞ্জিনিয়ার বা সিকিউরিটি ব্যবস্থা (Turnstile, রেট লিমিট) বাইপাস চেষ্টা।'),
-        lbl('Use automated tools (bots, scrapers) to access the service in bulk.', 'বাল্কে সেবা অ্যাক্সেসে স্বয়ংক্রিয় টুল (বট, স্ক্র্যাপার) ব্যবহার।'),
-        lbl('Upload illegal, defamatory, harassing, or harmful content to community features.', 'কমিউনিটি ফিচারে অবৈধ, মানহানিকর, হয়রানিমূলক, বা ক্ষতিকর সামগ্রী আপলোড।'),
-        lbl('Use KoyJabo for any commercial purpose without prior written approval.', 'আগে লিখিত অনুমোদন ছাড়া বাণিজ্যিক উদ্দেশ্যে কই যাবো ব্যবহার।'),
+        lbl('Scrape, crawl, copy, mirror, republish, redistribute, or commercially exploit ANY data, content, code, design, or asset from KoyJabo without prior written permission. Personal viewing in a browser is the only permitted use.', 'প্রিয় লিখিত অনুমতি ছাড়া কই যাবোর কোনো ডেটা, কনটেন্ট, কোড, ডিজাইন, বা অ্যাসেট স্ক্র্যাপ, ক্রল, কপি, মিরর, পুনঃপ্রকাশ, পুনঃবিতরণ, বা বাণিজ্যিকভাবে ব্যবহার করা যাবে না। কেবল ব্রাউজারে ব্যক্তিগত দেখাই অনুমোদিত।'),
+        lbl('Train, fine-tune, or build AI/ML models on KoyJabo content without prior written permission. Standard AI search-engine crawling for indexing is the only exception.', 'লিখিত অনুমতি ছাড়া কই যাবো কনটেন্টে AI/ML মডেল প্রশিক্ষণ, ফাইন-টিউন, বা তৈরি নিষিদ্ধ। শুধু স্বাভাবিক AI সার্চ-ইঞ্জিন ইনডেক্সিং ব্যতিক্রম।'),
+        lbl('No hacking, penetration testing, exploit attempts, or security research without prior written authorization. Unauthorized access, denial-of-service attempts, SQL injection, XSS, brute-force, or any intrusion will be reported to law enforcement.', 'লিখিত অনুমতি ছাড়া হ্যাকিং, পেনিট্রেশন টেস্টিং, এক্সপ্লয়েট চেষ্টা, বা নিরাপত্তা গবেষণা নিষিদ্ধ। অননুমোদিত প্রবেশ, DoS চেষ্টা, SQL ইনজেকশন, XSS, ব্রুট-ফোর্স, বা যেকোনো অনুপ্রবেশ আইন প্রয়োগকারী সংস্থার কাছে রিপোর্ট করা হবে।'),
+        lbl('Submit false route or fare reviews intended to mislead other users.', 'অন্য ব্যবহারকারীদের বিভ্রান্ত করার জন্য মিথ্যা রুট বা ভাড়া রিভিউ জমা দেওয়া।'),
+        lbl('Reverse-engineer, decompile, deobfuscate, or attempt to bypass any security measure (Turnstile, rate limits, auth gates, CSP).', 'যেকোনো নিরাপত্তা ব্যবস্থা (Turnstile, রেট লিমিট, auth গেট, CSP) রিভার্স-ইঞ্জিনিয়ার, ডিকম্পাইল, ডিঅবফাস্কেট, বা বাইপাস চেষ্টা।'),
+        lbl('Use automated tools (bots, scrapers, headless browsers) to access the service in bulk or at high frequency.', 'বাল্কে বা উচ্চ ফ্রিকোয়েন্সিতে সেবা অ্যাক্সেসে স্বয়ংক্রিয় টুল (বট, স্ক্র্যাপার, headless ব্রাউজার) ব্যবহার।'),
+        lbl('Upload illegal, defamatory, harassing, hateful, or harmful content to community features.', 'কমিউনিটি ফিচারে অবৈধ, মানহানিকর, হয়রানিমূলক, ঘৃণাত্মক, বা ক্ষতিকর সামগ্রী আপলোড।'),
+        lbl('Use KoyJabo, its data, or its design for any commercial purpose without prior written approval.', 'আগে লিখিত অনুমোদন ছাড়া কই যাবো, এর ডেটা, বা ডিজাইন বাণিজ্যিক উদ্দেশ্যে ব্যবহার।'),
       ],
     },
     {
       h: lbl('6. Intellectual property', '৬. মেধাস্বত্ব'),
-      body: lbl('All content on KoyJabo is protected:', 'কই যাবোর সব সামগ্রী সুরক্ষিত:'),
+      body: lbl('All content, code, data, designs, brand assets, and accumulated route information on KoyJabo are PROPRIETARY and protected. KoyJabo is NOT open source. You may not reuse, copy, redistribute, or repurpose anything from this platform without prior written permission from the owner.', 'কই যাবোর সব কনটেন্ট, কোড, ডেটা, ডিজাইন, ব্র্যান্ড অ্যাসেট, এবং সংগৃহীত রুট তথ্য মালিকানাধীন এবং সুরক্ষিত। কই যাবো ওপেন সোর্স নয়। মালিকের আগে লিখিত অনুমতি ছাড়া এই প্ল্যাটফর্ম থেকে কিছু পুনঃব্যবহার, কপি, পুনঃবিতরণ, বা পুনঃউদ্দেশ্যে ব্যবহার করা যাবে না।'),
       bullets: [
-        lbl('Source code: MIT License — open source at github.com/mejbaurbahar/koyjabo-core.', 'সোর্স কোড: MIT লাইসেন্স — github.com/mejbaurbahar/koyjabo-core-এ ওপেন সোর্স।'),
-        lbl('Transport route data: CC-BY-4.0 — free to use with attribution.', 'পরিবহন রুট ডেটা: CC-BY-4.0 — অ্যাট্রিবিউশনসহ ফ্রি ব্যবহার।'),
-        lbl('Logo, brand name "KoyJabo / কই যাবো": trademarks of Mejbaur Bahar Fagun.', 'লোগো, ব্র্যান্ড নাম "KoyJabo / কই যাবো": Mejbaur Bahar Fagun-এর ট্রেডমার্ক।'),
-        lbl('AI-generated blog cover images: CC0 (public domain).', 'AI-জেনারেটেড ব্লগ কভার ইমেজ: CC0 (পাবলিক ডোমেইন)।'),
-        lbl('User-submitted reviews/photos: you retain ownership, grant us a worldwide royalty-free license to display.', 'ইউজার-জমা দেওয়া রিভিউ/ফটো: মালিকানা আপনার, প্রদর্শনের জন্য আমাদের বিশ্বব্যাপী রয়্যালটি-ফ্রি লাইসেন্স দেন।'),
+        lbl('Source code, repository contents, build artifacts: ALL RIGHTS RESERVED — Mejbaur Bahar Fagun. No license is granted to third parties.', 'সোর্স কোড, রিপোজিটরি কনটেন্ট, বিল্ড আর্টিফ্যাক্ট: সমস্ত অধিকার সংরক্ষিত — Mejbaur Bahar Fagun। তৃতীয় পক্ষকে কোনো লাইসেন্স প্রদান করা হয়নি।'),
+        lbl('Transport route data, fare tables, district maps, AI training datasets: PROPRIETARY. Compiled with significant effort; redistribution prohibited.', 'পরিবহন রুট ডেটা, ভাড়ার টেবিল, জেলা ম্যাপ, AI প্রশিক্ষণ ডেটাসেট: মালিকানাধীন। উল্লেখযোগ্য পরিশ্রমে সংকলিত; পুনঃবিতরণ নিষিদ্ধ।'),
+        lbl('Logo, brand name "KoyJabo / কই যাবো", visual identity: registered trademarks of Mejbaur Bahar Fagun.', 'লোগো, ব্র্যান্ড নাম "KoyJabo / কই যাবো", ভিজ্যুয়াল আইডেন্টিটি: Mejbaur Bahar Fagun-এর নিবন্ধিত ট্রেডমার্ক।'),
+        lbl('User-submitted content (reviews/photos): you retain ownership, but you grant KoyJabo a worldwide, perpetual, royalty-free license to display, store, and moderate that content.', 'ইউজার-জমা দেওয়া কনটেন্ট (রিভিউ/ফটো): মালিকানা আপনার, তবে কই যাবোকে এই কনটেন্ট প্রদর্শন, সংরক্ষণ, ও মডারেশনের বিশ্বব্যাপী, স্থায়ী, রয়্যালটি-ফ্রি লাইসেন্স প্রদান করেন।'),
+        lbl('To request any usage license, email the address in section 16 with the specific data/asset and intended use. Unauthorized use will be enforced through DMCA notices and legal action under Bangladeshi copyright law.', 'যেকোনো ব্যবহার লাইসেন্সের জন্য, সেকশন ১৬-এ থাকা ঠিকানায় নির্দিষ্ট ডেটা/অ্যাসেট ও উদ্দেশ্য জানিয়ে ইমেইল করুন। অননুমোদিত ব্যবহার DMCA নোটিশ ও বাংলাদেশি কপিরাইট আইনের অধীনে আইনি ব্যবস্থা নেওয়া হবে।'),
+      ],
+    },
+    {
+      h: lbl('6a. Security & responsible disclosure', '৬ক. নিরাপত্তা ও দায়িত্বশীল প্রকাশ'),
+      body: lbl('Unauthorized hacking or attack attempts against KoyJabo, its infrastructure, partners, or users are STRICTLY PROHIBITED and may constitute criminal offenses under the Bangladesh Digital Security Act, 2018 (and successor laws), as well as international computer-misuse statutes.', 'কই যাবো, এর অবকাঠামো, অংশীদার, বা ব্যবহারকারীদের বিরুদ্ধে অননুমোদিত হ্যাকিং বা আক্রমণ চেষ্টা কঠোরভাবে নিষিদ্ধ এবং বাংলাদেশ ডিজিটাল নিরাপত্তা আইন ২০১৮ (ও পরবর্তী আইন) এবং আন্তর্জাতিক কম্পিউটার-অপব্যবহার আইনের অধীনে অপরাধ হতে পারে।'),
+      bullets: [
+        lbl('No port scanning, vulnerability scanning, fuzzing, or automated probing without written authorization.', 'লিখিত অনুমোদন ছাড়া কোনো পোর্ট স্ক্যানিং, vulnerability স্ক্যানিং, fuzzing, বা স্বয়ংক্রিয় probing নয়।'),
+        lbl('No DoS, DDoS, or any traffic flood designed to degrade the service.', 'সেবা ব্যাহত করার জন্য কোনো DoS, DDoS, বা ট্রাফিক ফ্লাড নয়।'),
+        lbl('No credential stuffing, brute force, password spraying, or auth bypass attempts.', 'কোনো credential stuffing, brute force, password spraying, বা auth bypass চেষ্টা নয়।'),
+        lbl('No exploit attempts against XSS, SQLi, SSRF, CSRF, deserialization, or any other vulnerability class.', 'XSS, SQLi, SSRF, CSRF, deserialization, বা অন্য কোনো vulnerability ক্লাসের বিরুদ্ধে কোনো exploit চেষ্টা নয়।'),
+        lbl('If you find a security issue, report it responsibly to the contact email in section 16. We respond within 7 days. Public disclosure before we patch is grounds for legal action.', 'নিরাপত্তা সমস্যা খুঁজে পেলে, সেকশন ১৬-এর কন্টাক্ট ইমেইলে দায়িত্বশীলভাবে রিপোর্ট করুন। ৭ দিনের মধ্যে সাড়া দেই। প্যাচের আগে পাবলিক প্রকাশ আইনি ব্যবস্থার ভিত্তি।'),
+        lbl('Violators may face account ban, IP block, civil liability, and criminal referral.', 'লঙ্ঘনকারীরা অ্যাকাউন্ট ব্যান, IP ব্লক, দেওয়ানি দায়, ও ফৌজদারি referral-এর মুখোমুখি হতে পারেন।'),
       ],
     },
     {
@@ -137,9 +151,9 @@ export function TermsPage(props: Props) {
       h: lbl('16. Contact', '১৬. যোগাযোগ'),
       body: lbl('Questions about these terms?', 'এই শর্তাবলি সম্পর্কে প্রশ্ন?'),
       bullets: [
-        'Email: koyjabo@gmail.com',
-        'GitHub: github.com/mejbaurbahar/koyjabo-core',
+        'Email: koyjabo.bd@gmail.com',
         lbl('Mailing: Dhaka, Bangladesh', 'মেইলিং: ঢাকা, বাংলাদেশ'),
+        lbl('Response time: within 7 business days.', 'রেসপন্স সময়: ৭ কার্যদিবসের মধ্যে।'),
       ],
     },
   ];
@@ -196,7 +210,7 @@ export function TermsPage(props: Props) {
 
         <div style={{ ...card(14),background:tk.amberSoft,borderColor:tk.amber, marginTop:20 }}>
           <div style={{ fontFamily:BEN,fontWeight:700,fontSize:14,color:tk.amber,marginBottom:6 }}>{T(lang,'প্রশ্ন আছে?','Have questions?')}</div>
-          <div style={{ fontFamily:BEN,fontSize:13,color:tk.textDim }}>koyjabo@gmail.com · github.com/mejbaurbahar/koyjabo-core</div>
+          <div style={{ fontFamily:BEN,fontSize:13,color:tk.textDim }}>koyjabo.bd@gmail.com</div>
         </div>
 
         <AdSlot tk={tk} lang={lang} kind="multiplex" />
