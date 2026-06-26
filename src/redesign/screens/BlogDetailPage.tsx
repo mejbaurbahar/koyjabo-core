@@ -223,8 +223,7 @@ export function BlogDetailPage(props: Props) {
         </div>
 
         <div style={{ margin: '24px 0' }}>
-          <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
-            <AdSlot tk={tk} lang={lang} kind="multiplex" />
+          <AdSlot tk={tk} lang={lang} kind="multiplex" />
         </div>
 
         {/* Deals banner */}

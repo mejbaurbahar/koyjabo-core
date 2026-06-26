@@ -699,8 +699,7 @@ export function IntercityPage(props: Props) {
         {/* Ad slot */}
         <AdSlot tk={tk} lang={lang} kind="in-article" />
         <PromoBanner tk={tk} lang={lang} page="intercity" onNav={onNav}/>
-        <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
-          <AdSlot tk={tk} lang={lang} kind="multiplex" />
+        <AdSlot tk={tk} lang={lang} kind="multiplex" />
       </div>
 
     </div>

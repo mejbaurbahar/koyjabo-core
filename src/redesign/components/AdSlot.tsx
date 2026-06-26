@@ -148,6 +148,10 @@ export function AdSlot({
   // Collapsed when null (detecting) or false (unfilled) — no empty box, no house ad
   if (filled === false) return null;
 
+  // Reserve height during detection (filled === null) so AdSense sees valid slot
+  // dimensions and actually fills. Collapsing to 0 before push was suppressing fills.
+  const reservedHeight = filled === null ? h : (filled === true ? h : 0);
+
   return (
     <div
       style={{
@@ -161,7 +165,7 @@ export function AdSlot({
         zIndex: sticky ? 10 : undefined,
         flexShrink: 0,
         margin: '0 auto',
-        minHeight: filled === true ? h : 0,
+        minHeight: reservedHeight,
       }}
     >
       <RealAd format={format} slot={slot} layout={layout} onFillResult={setFilled} />
