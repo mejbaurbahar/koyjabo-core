@@ -12,9 +12,9 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: ReleaseNote[] = [
   {
-    version: '1.3.0',
+    version: '2.0.0',
     date: '2026-06-26',
-    type: 'minor',
+    type: 'major',
     features: [
       'New Truck & Freight transport mode — book pickups, trucks, trailers across Bangladesh',
       'Real BD market rates baked in: per-km pricing, route tolls (Padma, Meghna, Bhairab), surcharges',

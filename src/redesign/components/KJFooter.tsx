@@ -12,6 +12,7 @@ const COLS = [
       { bn: 'ট্রেন', en: 'Train', route: 'train-hub' },
       { bn: 'ফ্লাইট', en: 'Flights', route: 'flights-hub' },
       { bn: 'লঞ্চ', en: 'Launch', route: 'launch-hub' },
+      { bn: 'ট্রাক', en: 'Truck', route: 'truck-hub' },
       { bn: 'ভাড়া ক্যালকুলেটর', en: 'Fare calculator', route: 'fare' },
     ],
   },

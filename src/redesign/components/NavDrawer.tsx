@@ -38,7 +38,7 @@ const GROUPS: { heading: { bn: string; en: string }; links: DrawerLink[] }[] = [
       { bn: 'কেন KoyJabo', en: 'Why KoyJabo', route: 'why' },
       { bn: 'আমাদের সম্পর্কে', en: 'About', route: 'about' },
       { bn: 'ব্লগ', en: 'Blog', route: 'blogs' },
-      { bn: 'QA', en: 'QA', route: 'qa' },
+      { bn: 'প্রশ্নোত্তর', en: 'QA', route: 'qa' },
       { bn: 'যোগাযোগ', en: 'Contact', route: 'contact' },
       { bn: 'রিলিজ', en: 'Release', route: 'release' },
     ],

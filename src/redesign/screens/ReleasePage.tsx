@@ -23,11 +23,17 @@ const UI_RELEASES = [
 const DATA_RELEASES = RELEASE_NOTES.map(r => ({
   v: `v${r.version}`,
   date: new Date(r.date).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }),
+  iso: r.date,
   items: [...(r.features||[]), ...(r.fixes||[]), ...(r.improvements||[])],
   bnItems: [...(r.bnFeatures||[]), ...(r.bnFixes||[]), ...(r.bnImprovements||[])],
 }));
 
-const releases = [...UI_RELEASES, ...DATA_RELEASES];
+// Sort merged list by date DESC so latest release always at top
+const releases = [...UI_RELEASES, ...DATA_RELEASES].sort((a, b) => {
+  const da = new Date((a as any).iso ?? a.date).getTime();
+  const db = new Date((b as any).iso ?? b.date).getTime();
+  return db - da;
+});
 
 export function ReleasePage(props: Props) {
   const { theme, device, lang } = props;
