@@ -1231,7 +1231,7 @@ export function MiniVehicle({
   kind,
   palette,
 }: {
-  kind: 'bus' | 'train' | 'plane' | 'launch' | 'chatbot';
+  kind: 'bus' | 'train' | 'plane' | 'launch' | 'chatbot' | 'truck';
   palette?: string[];
 }) {
   switch (kind) {
@@ -1245,6 +1245,8 @@ export function MiniVehicle({
       return <Launch3D size={80} palette={palette} />;
     case 'chatbot':
       return <Chatbot3D size={70} palette={palette} />;
+    case 'truck':
+      return <Truck3D size={90} palette={palette} />;
     default:
       return null;
   }
