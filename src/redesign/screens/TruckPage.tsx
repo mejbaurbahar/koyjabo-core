@@ -36,6 +36,13 @@ interface Props {
   params?: Record<string, string>;
 }
 
+const BODY_LABEL: Record<string, { en: string; bn: string }> = {
+  open:    { en: 'Open',     bn: 'খোলা' },
+  covered: { en: 'Covered',  bn: 'ঢাকা' },
+  flatbed: { en: 'Flat-bed', bn: 'ফ্ল্যাট-বেড' },
+  lowbed:  { en: 'Low-bed',  bn: 'লো-বেড' },
+};
+
 const SIZE_FILTERS: { id: 'all' | TruckSize; en: string; bn: string; emoji: string }[] = [
   { id: 'all',        en: 'All',        bn: 'সব',          emoji: '🚛' },
   { id: 'motorcycle', en: 'Motorcycle', bn: 'মোটরসাইকেল', emoji: '🏍️' },
@@ -169,7 +176,7 @@ export function TruckPage(props: Props) {
                     {lbl('Road distance', 'সড়ক দূরত্ব')}
                   </div>
                   <div style={{ fontFamily: SANS, fontSize: 14, fontWeight: 800, color: distanceKm > 0 ? tk.primary : tk.textFaint }}>
-                    {distanceKm > 0 ? `${N(distanceKm, lang)} km` : lbl('Pick both cities', 'দুটি শহর বাছুন')}
+                    {distanceKm > 0 ? `${N(distanceKm, lang)} ${lbl('km', 'কিমি')}` : lbl('Pick both cities', 'দুটি শহর বাছুন')}
                   </div>
                 </div>
               </div>
@@ -452,20 +459,22 @@ function TruckCard({
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 0', borderTop: `1px dashed ${tk.line}`, borderBottom: `1px dashed ${tk.line}`, marginBottom: 10, flexWrap: 'wrap' }}>
         <span style={{ background: tk.panelMuted, borderRadius: 6, padding: '3px 8px', fontFamily: SANS, fontSize: 11, fontWeight: 700, color: tk.text }}>
-          ⚖️ {N(c.capacityKg < 1000 ? `${c.capacityKg} kg` : `${c.capacityTon} ton`, lang)}
+          ⚖️ {c.capacityKg < 1000
+            ? `${N(c.capacityKg, lang)} ${lang === 'bn' ? 'কেজি' : 'kg'}`
+            : `${N(c.capacityTon, lang)} ${lang === 'bn' ? 'টন' : 'ton'}`}
         </span>
         {c.lengthFt && (
           <span style={{ background: tk.panelMuted, borderRadius: 6, padding: '3px 8px', fontFamily: SANS, fontSize: 11, fontWeight: 700, color: tk.text }}>
-            📏 {N(c.lengthFt, lang)} ft
+            📏 {N(c.lengthFt, lang)} {lang === 'bn' ? 'ফুট' : 'ft'}
           </span>
         )}
         {c.dimsCm && (
           <span style={{ background: tk.panelMuted, borderRadius: 6, padding: '3px 8px', fontFamily: SANS, fontSize: 11, fontWeight: 700, color: tk.textDim }}>
-            {N(c.dimsCm.l, lang)}×{N(c.dimsCm.w, lang)}×{N(c.dimsCm.h, lang)} cm
+            {N(c.dimsCm.l, lang)}×{N(c.dimsCm.w, lang)}×{N(c.dimsCm.h, lang)} {lang === 'bn' ? 'সেমি' : 'cm'}
           </span>
         )}
-        <span style={{ background: `${c.color}22`, color: c.color, borderRadius: 6, padding: '3px 8px', fontFamily: SANS, fontSize: 11, fontWeight: 700, textTransform: 'capitalize' }}>
-          {c.body}
+        <span style={{ background: `${c.color}22`, color: c.color, borderRadius: 6, padding: '3px 8px', fontFamily: SANS, fontSize: 11, fontWeight: 700 }}>
+          {lang === 'bn' ? BODY_LABEL[c.body]?.bn : BODY_LABEL[c.body]?.en}
         </span>
       </div>
 
@@ -578,10 +587,10 @@ function QuotePanel({
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 10, marginBottom: 14 }}>
-        <QuoteStat tk={tk} label={lang === 'bn' ? 'দূরত্ব' : 'Distance'} value={distanceKm > 0 ? `${N(distanceKm, lang)} km` : '—'} color={tk.primary}/>
-        <QuoteStat tk={tk} label={lang === 'bn' ? 'অনুমিত সময়' : 'Drive time'} value={distanceKm > 0 ? `~${N(driveHrs, lang)}h` : '—'} color={tk.amber}/>
-        <QuoteStat tk={tk} label={lang === 'bn' ? 'ক্যাপাসিটি' : 'Capacity'} value={`${N(c.capacityTon, lang)} ton`} color={c.color}/>
-        <QuoteStat tk={tk} label={lang === 'bn' ? 'বডি' : 'Body'} value={c.body} color={tk.accent}/>
+        <QuoteStat tk={tk} label={lang === 'bn' ? 'দূরত্ব' : 'Distance'} value={distanceKm > 0 ? `${N(distanceKm, lang)} ${lang === 'bn' ? 'কিমি' : 'km'}` : '—'} color={tk.primary}/>
+        <QuoteStat tk={tk} label={lang === 'bn' ? 'অনুমিত সময়' : 'Drive time'} value={distanceKm > 0 ? `~${N(driveHrs, lang)}${lang === 'bn' ? 'ঘ' : 'h'}` : '—'} color={tk.amber}/>
+        <QuoteStat tk={tk} label={lang === 'bn' ? 'ক্যাপাসিটি' : 'Capacity'} value={`${N(c.capacityTon, lang)} ${lang === 'bn' ? 'টন' : 'ton'}`} color={c.color}/>
+        <QuoteStat tk={tk} label={lang === 'bn' ? 'বডি' : 'Body'} value={lang === 'bn' ? (BODY_LABEL[c.body]?.bn ?? c.body) : (BODY_LABEL[c.body]?.en ?? c.body)} color={tk.accent}/>
       </div>
 
       {fareB && mid !== null && (
@@ -608,7 +617,7 @@ function QuotePanel({
               {lang === 'bn' ? 'ভাড়ার ব্রেকডাউন' : 'Fare breakdown'}
             </div>
             <BreakdownRow tk={tk} label={lang === 'bn' ? 'বেস ফেয়ার' : 'Base fare'} value={Fare(fareB.base, lang)}/>
-            <BreakdownRow tk={tk} label={`${N(fareB.km, lang)} km × ৳${N(fareB.perKm, lang)}/km`} value={Fare(fareB.distanceCharge, lang)}/>
+            <BreakdownRow tk={tk} label={`${N(fareB.km, lang)} ${lang === 'bn' ? 'কিমি' : 'km'} × ৳${N(fareB.perKm, lang)}/${lang === 'bn' ? 'কিমি' : 'km'}`} value={Fare(fareB.distanceCharge, lang)}/>
             {fareB.tolls > 0 && (
               <BreakdownRow tk={tk} label={lang === 'bn' ? 'টোল (×2 রাউন্ড-ট্রিপ)' : 'Tolls (×2 round trip)'} value={Fare(fareB.tolls, lang)}/>
             )}
