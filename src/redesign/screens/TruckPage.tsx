@@ -270,6 +270,11 @@ export function TruckPage(props: Props) {
             </div>
           </div>
 
+          {/* In-article ad — between filters and results */}
+          <div style={{ marginBottom: 18 }}>
+            <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'}/>
+          </div>
+
           {/* Inline quote panel — shows full booking info on this platform */}
           {selectedCat && (
             <div id="truck-quote-panel">
