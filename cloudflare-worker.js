@@ -3,21 +3,26 @@
  *
  * Deploy at: api.koyjabo.com  (or koyjabo-auth-proxy.mejbaur-bahar.workers.dev)
  * Environment variables (set in Cloudflare dashboard):
- *   GH_TOKEN    — fine-grained PAT: actions:write on koyjabo-core + contents:read on koyjabo
- *   DATA_TOKEN  — classic PAT with contents:write on koyjabo (used for direct data writes)
- *   APP_OWNER   — mejbaurbahar
- *   APP_REPO    — Dhaka-Commute
- *   DATA_OWNER  — mejbaurbahar
- *   DATA_REPO   — koyjabo
+ *   GH_TOKEN          — fine-grained PAT: actions:write on koyjabo-core + contents:read on koyjabo
+ *   DATA_TOKEN        — classic PAT with contents:write on koyjabo (used for direct data writes)
+ *   APP_OWNER         — mejbaurbahar
+ *   APP_REPO          — Dhaka-Commute
+ *   DATA_OWNER        — mejbaurbahar
+ *   DATA_REPO         — koyjabo
+ *   TURNSTILE_SECRET  — Cloudflare Turnstile secret key
+ *   JWT_SECRET        — random 32+ byte secret used to HMAC session tokens (same as workflow)
  *
  * What this hides from browser DevTools:
  *   - Private repo name (koyjabo)
  *   - File paths inside the private repo
  *   - GitHub token (never reaches the browser)
  *   - Raw GitHub API metadata (sha, html_url, git_url, _links, etc.)
+ *   - bcryptHash (compared server-side via /gh action=auth-login, never returned)
  *
  * Users see only: GET/POST https://api.koyjabo.com/gh (your domain)
  */
+
+import bcrypt from 'bcryptjs';
 
 const ALLOWED_ORIGINS = [
   'https://koyjabo.com',
@@ -32,7 +37,54 @@ const ALLOWED_ACTIONS = new Set([
   'update-profile', 'save-history', 'record-device', 'logout-device',
   'upload-avatar', 'record-visit', 'save-data', 'record-query', 'delete-data',
   'google-signup', 'set-google-password',
+  // New server-side auth helpers — bcrypt + session token issuance never leak to client
+  'auth-login', 'auth-google-lookup', 'auth-reset-status',
 ]);
+
+// Paths whose READ must never be exposed via /gh?r=d&p=...
+// Forces login + reset-status lookups through dedicated POST actions that
+// strip bcryptHash/sensitive metadata before responding.
+const READ_DENY_PATTERNS = [
+  /^data\/users\/index\.json$/,
+  /^data\/users\/[^/]+\.json$/,
+  /^data\/password_resets\//,
+  /^data\/auth\//,
+];
+
+// save-data / delete-data path whitelist. Each entry pairs a regex with an
+// optional `userBound` flag — when true, the userId capture group must equal
+// the session-owned userId.
+const WRITE_PATH_RULES = [
+  // User-bound (require valid session token whose userId matches)
+  { re: /^data\/history\/([\w-]+)\.json$/,            userBound: true },
+  { re: /^data\/devices\/([\w-]+)\.json$/,            userBound: true },
+  { re: /^data\/avatars\/([\w-]+)\.json$/,            userBound: true },
+  { re: /^data\/reminders\/([\w-]+)\.json$/,          userBound: true },
+  { re: /^data\/chat\/([\w-]+)\/sessions\.json$/,     userBound: true },
+  // Community writes — no userId binding, gated by rate limit + Turnstile when sensitive
+  { re: /^data\/ratings\/[\w-]+\.json$/,              userBound: false },
+  { re: /^data\/photos\/[\w-]+\.json$/,               userBound: false, turnstile: true },
+  { re: /^data\/train-ratings\/[\w-]+\.json$/,        userBound: false },
+  { re: /^data\/train-photos\/[\w-]+\.json$/,         userBound: false, turnstile: true },
+  { re: /^data\/traffic\/\d{4}-\d{2}-\d{2}\.json$/,   userBound: false },
+  { re: /^data\/bus-locations\/[\w-]+\.json$/,        userBound: false },
+  { re: /^data\/feedback\/\d{4}-\d{2}-\d{2}\.json$/,  userBound: false },
+  { re: /^data\/learning\/queries\/\d{4}-\d{2}-\d{2}\.json$/, userBound: false },
+  // anonymous chat backup (no auth)
+  { re: /^data\/chat\/anonymous\/sessions\.json$/,    userBound: false },
+];
+
+// Paths explicitly blocked from save-data/delete-data — these must never be
+// writable from the public worker even though they live under data/.
+// Admin scripts that need to mutate these must call the GitHub API directly
+// from a privileged context (CI, CLI), NOT via the public proxy.
+const WRITE_DENY_PATTERNS = [
+  /^data\/users\//,        // user records — only the workflow may create / mutate
+  /^data\/transport\//,    // static transport datasets
+  /^data\/ai\//,           // AI learning index
+  /^data\/stats\//,        // global stats
+  /^data\/results\//,      // workflow result inbox
+];
 
 function corsHeaders(origin) {
   const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
@@ -53,13 +105,128 @@ function ghHeaders(token) {
   };
 }
 
+// ── Session token helpers (HMAC-SHA256, no storage required) ─────────────────
+// Token format: `${userId}.${expiryMs}.${hexHmac}`
+const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+
+async function _hmacSha256Hex(secret, message) {
+  const key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign'],
+  );
+  const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(message));
+  return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function issueSessionToken(userId, jwtSecret) {
+  if (!jwtSecret) return '';
+  const expiry = Date.now() + SESSION_TTL_MS;
+  const sig = await _hmacSha256Hex(jwtSecret, `${userId}.${expiry}`);
+  return `${userId}.${expiry}.${sig}`;
+}
+
+// Returns the userId if the token is valid + not expired, otherwise null.
+async function verifySessionToken(token, jwtSecret) {
+  if (!token || !jwtSecret) return null;
+  const parts = String(token).split('.');
+  if (parts.length !== 3) return null;
+  const [userId, expiryStr, sig] = parts;
+  if (!/^[\w-]{6,64}$/.test(userId)) return null;
+  const expiry = Number(expiryStr);
+  if (!Number.isFinite(expiry) || expiry < Date.now()) return null;
+  const expected = await _hmacSha256Hex(jwtSecret, `${userId}.${expiry}`);
+  // constant-time-ish compare — short signature so timing leak is negligible
+  if (expected.length !== sig.length) return null;
+  let diff = 0;
+  for (let i = 0; i < expected.length; i++) diff |= expected.charCodeAt(i) ^ sig.charCodeAt(i);
+  return diff === 0 ? userId : null;
+}
+
+// ── Turnstile verification helper ────────────────────────────────────────────
+async function verifyTurnstile(token, ip, secret) {
+  if (!token || !secret) return false;
+  try {
+    const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `secret=${encodeURIComponent(secret)}&response=${encodeURIComponent(token)}&remoteip=${encodeURIComponent(ip || '')}`,
+    });
+    const data = await res.json().catch(() => ({}));
+    return data.success === true;
+  } catch { return false; }
+}
+
+// ── Write path validation ────────────────────────────────────────────────────
+function validateWritePath(path, sessionUserId) {
+  if (typeof path !== 'string' || !path.startsWith('data/')) {
+    return { ok: false, status: 400, message: 'Invalid path' };
+  }
+  if (!/^[\w/.-]+\.json$/.test(path) || path.includes('..')) {
+    return { ok: false, status: 400, message: 'Invalid path' };
+  }
+  for (const deny of WRITE_DENY_PATTERNS) {
+    if (deny.test(path)) return { ok: false, status: 403, message: 'Path not allowed' };
+  }
+  for (const rule of WRITE_PATH_RULES) {
+    const m = path.match(rule.re);
+    if (!m) continue;
+    if (rule.userBound) {
+      if (!sessionUserId) return { ok: false, status: 401, message: 'Session required' };
+      if (m[1] !== sessionUserId) return { ok: false, status: 403, message: 'Session/path mismatch' };
+    }
+    return { ok: true, rule };
+  }
+  return { ok: false, status: 403, message: 'Path not whitelisted' };
+}
+
+function isReadDenied(path) {
+  return READ_DENY_PATTERNS.some(re => re.test(path));
+}
+
 // ── Rate limiter ──────────────────────────────────────────────────────────────
-// Raised to 1800/min (30/sec): a single page load fires ~60 ratings requests.
-// With the old 600/min limit, 10 simultaneous page loads from the same IP
-// (common behind NAT/mobile carrier) would hit the ceiling.
+// Per-isolate in-memory counter. Cloudflare often routes the same client IP
+// to the same isolate via affinity, so this catches the common abuse cases,
+// but it is NOT a global limit — a determined attacker can spread requests
+// across isolates and bypass it. For production scale, bind a Cloudflare
+// Rate Limiting binding in wrangler.toml:
+//
+//   [[unsafe.bindings]]
+//   type = "ratelimit"
+//   name = "RATE_LIMIT"
+//   namespace_id = "<your-namespace-id>"
+//   simple = { limit = 60, period = 60 }
+//
+// then call `await env.RATE_LIMIT.limit({ key: ip })` in the hot path. Until
+// that is configured, the soft per-isolate limit below is the defence.
 const reqCount = new Map();
+const RATE_BUCKETS = {
+  // Per-action ceilings layered on top of the global per-IP one. Tighter
+  // ceilings on the high-risk endpoints (writes, auth) so a single attacker
+  // can't loop quickly enough to brute-force or spam.
+  'auth-login':         { limit: 10,  windowMs: 60_000 },
+  'auth-google-lookup': { limit: 10,  windowMs: 60_000 },
+  'auth-reset-status':  { limit: 30,  windowMs: 60_000 },
+  signup:               { limit: 5,   windowMs: 60_000 },
+  login:                { limit: 10,  windowMs: 60_000 },
+  'forgot-password':    { limit: 5,   windowMs: 60_000 },
+  'reset-password':     { limit: 5,   windowMs: 60_000 },
+  'change-password':    { limit: 5,   windowMs: 60_000 },
+  'save-data':          { limit: 30,  windowMs: 60_000 },
+  'delete-data':        { limit: 30,  windowMs: 60_000 },
+  'record-query':       { limit: 30,  windowMs: 60_000 },
+  'upload-avatar':      { limit: 5,   windowMs: 60_000 },
+  'google-signup':      { limit: 5,   windowMs: 60_000 },
+};
+
 function isRateLimited(ip, limit = 1800, windowMs = 60_000) {
   const now = Date.now();
+  // Trim stale entries opportunistically — the map shouldn't leak unbounded.
+  if (reqCount.size > 5000) {
+    for (const [k, v] of reqCount) if (v.resetAt < now) reqCount.delete(k);
+  }
   const entry = reqCount.get(ip);
   if (!entry || now > entry.resetAt) {
     reqCount.set(ip, { count: 1, resetAt: now + windowMs });
@@ -267,6 +434,21 @@ export default {
       return new Response('Not found', { status: 404 });
     }
 
+    // ── GET /ip  — Return the caller's IP (CF edge knows it; saves a hop to a
+    // third-party service like ipify and avoids leaking traffic outside the
+    // Cloudflare boundary).
+    if ((url.pathname === '/ip' || url.pathname === '/ip/') && request.method === 'GET') {
+      const ip = request.headers.get('CF-Connecting-IP') || '';
+      return new Response(JSON.stringify({ ip }), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store',
+          ...corsHeaders(origin),
+        },
+      });
+    }
+
     // ── POST /ai  — Cloudflare Workers AI (no token needed) ─────────────────
     if ((url.pathname === '/ai' || url.pathname === '/ai/') && request.method === 'POST') {
       if (!env.AI) {
@@ -459,6 +641,16 @@ If asked who built you: "Mejbaur Bahar Fagun, software engineer, Bangladesh."`;
         );
       }
 
+      // Block reads of sensitive paths (user records, password reset blobs,
+      // auth metadata). These must go through dedicated POST actions that
+      // strip bcryptHash + verify intent.
+      if (r === 'd' && isReadDenied(p)) {
+        return new Response(
+          JSON.stringify({ error: 'Forbidden path' }),
+          { status: 403, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
+        );
+      }
+
       // Primary fetch with 3-layer caching (CF cache → ETag → GitHub API)
       let result = await ghFetch(TOKEN, repo.owner, repo.repo, p, ctx);
 
@@ -487,7 +679,18 @@ If asked who built you: "Mejbaur Bahar Fagun, software engineer, Bangladesh."`;
       }
 
       const isUserData = p.startsWith('data/users/') || p.startsWith('data/results/');
-      return new Response(JSON.stringify(result.decoded), {
+
+      // Inject a fresh session token into successful workflow result reads so
+      // newly-signed-up users get a session immediately without a second
+      // Turnstile challenge. The requestId in the path is an unguessable UUID
+      // generated by the polling client, so only that client can pull this.
+      let payload = result.decoded;
+      if (isUserData && p.startsWith('data/results/') && payload && payload.success && payload.userId) {
+        const sessionToken = await issueSessionToken(payload.userId, env.JWT_SECRET || '');
+        if (sessionToken) payload = { ...payload, sessionToken };
+      }
+
+      return new Response(JSON.stringify(payload), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
@@ -531,23 +734,20 @@ If asked who built you: "Mejbaur Bahar Fagun, software engineer, Bangladesh."`;
         );
       }
 
+      // Per-action rate limit (additional ceiling on top of the global one).
+      const bucket = RATE_BUCKETS[body.action];
+      if (bucket && isRateLimited(`${ip}:${body.action}`, bucket.limit, bucket.windowMs)) {
+        return new Response(
+          JSON.stringify({ error: 'Too many requests. Please wait a moment and try again.' }),
+          { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': '60', ...corsHeaders(origin) } }
+        );
+      }
+
       // ── Cloudflare Turnstile verification for auth actions ─────────────────
-      if (['signup', 'login', 'google-signup'].includes(body.action)) {
+      if (['signup', 'login', 'google-signup', 'auth-login', 'auth-google-lookup'].includes(body.action)) {
         const cfToken = body.cfToken || body.turnstileToken || '';
-        if (!cfToken) {
-          return new Response(
-            JSON.stringify({ error: 'Security check required' }),
-            { status: 403, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
-          );
-        }
-        const ip = request.headers.get('CF-Connecting-IP') || '';
-        const tsRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: `secret=${encodeURIComponent(env.TURNSTILE_SECRET || '')}&response=${encodeURIComponent(cfToken)}&remoteip=${encodeURIComponent(ip)}`,
-        });
-        const tsData = await tsRes.json();
-        if (!tsData.success) {
+        const ipAddr = request.headers.get('CF-Connecting-IP') || '';
+        if (!await verifyTurnstile(cfToken, ipAddr, env.TURNSTILE_SECRET)) {
           return new Response(
             JSON.stringify({ error: 'Security check failed. Please refresh and try again.' }),
             { status: 403, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
@@ -562,16 +762,169 @@ If asked who built you: "Mejbaur Bahar Fagun, software engineer, Bangladesh."`;
         );
       }
 
+      // Resolve sessionUserId once — used by write-path validation below.
+      const sessionUserId = await verifySessionToken(body.sessionToken || '', env.JWT_SECRET || '');
+
+      // ── auth-login — bcrypt compare runs SERVER-SIDE, hash never leaves CF ─
+      if (body.action === 'auth-login') {
+        const emailHash = String(body.emailHash || '').trim();
+        const passwordSha = String(body.passwordSha || '').trim();
+        if (!/^[a-f0-9]{64}$/.test(emailHash) || !/^[a-f0-9]{64}$/.test(passwordSha)) {
+          return new Response(
+            JSON.stringify({ error: 'Invalid email or password.' }),
+            { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
+          );
+        }
+        // Read index → userId → user file (server-side only, bcryptHash stays in worker).
+        const indexResult = await ghFetch(TOKEN, DATA_OWNER, DATA_REPO, 'data/users/index.json', ctx);
+        const index = indexResult.status === 200 ? indexResult.decoded : null;
+        const userId = index?.[emailHash];
+        if (!userId) {
+          return new Response(
+            JSON.stringify({ error: 'Invalid email or password.' }),
+            { status: 401, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
+          );
+        }
+        const userResult = await ghFetch(TOKEN, DATA_OWNER, DATA_REPO, `data/users/${userId}.json`, ctx);
+        const user = userResult.status === 200 ? userResult.decoded : null;
+        if (!user?.bcryptHash) {
+          return new Response(
+            JSON.stringify({ error: 'Invalid email or password.' }),
+            { status: 401, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
+          );
+        }
+        const ok = await bcrypt.compare(passwordSha, user.bcryptHash);
+        if (!ok) {
+          return new Response(
+            JSON.stringify({ error: 'Invalid email or password.' }),
+            { status: 401, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
+          );
+        }
+        const sessionToken = await issueSessionToken(userId, env.JWT_SECRET || '');
+        return new Response(
+          JSON.stringify({
+            success: true,
+            userId,
+            username: user.username,
+            displayName: user.displayName,
+            provider: user.provider || 'password',
+            hasPassword: !!user.bcryptHash,
+            sessionToken,
+          }),
+          { status: 200, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', ...corsHeaders(origin) } }
+        );
+      }
+
+      // ── auth-google-lookup — find an existing Google user without leaking
+      // bcryptHash or arbitrary fields. Caller must have already verified the
+      // Firebase ID-token client-side (this just maps email → userId).
+      if (body.action === 'auth-google-lookup') {
+        const emailHash = String(body.emailHash || '').trim();
+        if (!/^[a-f0-9]{64}$/.test(emailHash)) {
+          return new Response(
+            JSON.stringify({ error: 'Bad request' }),
+            { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
+          );
+        }
+        const indexResult = await ghFetch(TOKEN, DATA_OWNER, DATA_REPO, 'data/users/index.json', ctx);
+        const index = indexResult.status === 200 ? indexResult.decoded : null;
+        const userId = index?.[emailHash];
+        if (!userId) {
+          return new Response(
+            JSON.stringify({ exists: false }),
+            { status: 200, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', ...corsHeaders(origin) } }
+          );
+        }
+        const userResult = await ghFetch(TOKEN, DATA_OWNER, DATA_REPO, `data/users/${userId}.json`, ctx);
+        const user = userResult.status === 200 ? userResult.decoded : null;
+        if (!user) {
+          return new Response(
+            JSON.stringify({ exists: false }),
+            { status: 200, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', ...corsHeaders(origin) } }
+          );
+        }
+        const sessionToken = await issueSessionToken(userId, env.JWT_SECRET || '');
+        return new Response(
+          JSON.stringify({
+            exists: true,
+            userId,
+            username: user.username,
+            displayName: user.displayName,
+            provider: user.provider || 'google',
+            hasPassword: !!user.bcryptHash,
+            sessionToken,
+          }),
+          { status: 200, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', ...corsHeaders(origin) } }
+        );
+      }
+
+      // ── auth-reset-status — gated read of password_resets/<tokenHash>.json
+      // Returns only {used, expired, notFound}. Raw blob never leaves worker.
+      if (body.action === 'auth-reset-status') {
+        const tokenHash = String(body.tokenHash || '').trim();
+        if (!/^[a-f0-9]{64}$/.test(tokenHash)) {
+          return new Response(
+            JSON.stringify({ used: false, expired: false, notFound: true }),
+            { status: 200, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', ...corsHeaders(origin) } }
+          );
+        }
+        const r = await ghFetch(TOKEN, DATA_OWNER, DATA_REPO, `data/password_resets/${tokenHash}.json`, ctx);
+        if (r.status !== 200 || !r.decoded) {
+          return new Response(
+            JSON.stringify({ used: false, expired: false, notFound: true }),
+            { status: 200, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', ...corsHeaders(origin) } }
+          );
+        }
+        const data = r.decoded;
+        return new Response(
+          JSON.stringify({
+            used: data.used === true,
+            expired: typeof data.expiresAt === 'number' && data.expiresAt < Date.now(),
+            notFound: false,
+          }),
+          { status: 200, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', ...corsHeaders(origin) } }
+        );
+      }
+
       // ── Direct data writes (no GitHub Actions needed) ─────────────────────
       if (body.action === 'save-data') {
         let payload = {};
         try { payload = JSON.parse(body.data || '{}'); } catch { /* ignore */ }
         const { path, content, message } = payload;
-        if (!path || content === undefined || !String(path).startsWith('data/')) {
+        if (content === undefined) {
           return new Response(
-            JSON.stringify({ error: 'Invalid path or content for save-data' }),
+            JSON.stringify({ error: 'Invalid content for save-data' }),
             { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
           );
+        }
+        const check = validateWritePath(path, sessionUserId);
+        if (!check.ok) {
+          return new Response(
+            JSON.stringify({ error: check.message }),
+            { status: check.status, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
+          );
+        }
+        // Cap payload size — refuse anything bigger than 1MB to avoid abuse of
+        // the free Worker tier or a runaway client (an avatar payload tops out
+        // well under this once the canvas resize has run).
+        const sizeOk = JSON.stringify(content).length <= 1_000_000;
+        if (!sizeOk) {
+          return new Response(
+            JSON.stringify({ error: 'Payload too large' }),
+            { status: 413, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
+          );
+        }
+        // Turnstile required for sensitive community writes (photos) — keeps
+        // bot upload spam down. Other community writes are protected by the
+        // per-IP rate limiter only.
+        if (check.rule?.turnstile) {
+          const ipAddr = request.headers.get('CF-Connecting-IP') || '';
+          if (!await verifyTurnstile(body.cfToken || '', ipAddr, env.TURNSTILE_SECRET)) {
+            return new Response(
+              JSON.stringify({ error: 'Security check required' }),
+              { status: 403, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
+            );
+          }
         }
         const writeResult = await writeDataFile(DATA_TOKEN, DATA_OWNER, DATA_REPO, path, content, message, ctx);
         return new Response(
@@ -584,10 +937,11 @@ If asked who built you: "Mejbaur Bahar Fagun, software engineer, Bangladesh."`;
         let payload = {};
         try { payload = JSON.parse(body.data || '{}'); } catch { /* ignore */ }
         const { path, message } = payload;
-        if (!path || !String(path).startsWith('data/')) {
+        const check = validateWritePath(path, sessionUserId);
+        if (!check.ok) {
           return new Response(
-            JSON.stringify({ error: 'Invalid path for delete-data' }),
-            { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
+            JSON.stringify({ error: check.message }),
+            { status: check.status, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } }
           );
         }
         const delResult = await deleteDataFile(DATA_TOKEN, DATA_OWNER, DATA_REPO, path, message, ctx);

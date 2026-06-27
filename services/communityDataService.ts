@@ -118,6 +118,10 @@ async function repoGet<T>(path: string): Promise<T | null> {
   finally { _release(); }
 }
 
+function _sessionToken(): string {
+  try { return localStorage.getItem('koyjabo_session_token') || ''; } catch { return ''; }
+}
+
 async function repoDelete(path: string, message?: string): Promise<boolean> {
   const user = getAuthUser();
   try {
@@ -129,6 +133,7 @@ async function repoDelete(path: string, message?: string): Promise<boolean> {
         requestId: crypto.randomUUID(),
         action: 'delete-data',
         userId: user?.id || 'anonymous',
+        sessionToken: _sessionToken(),
         data: JSON.stringify({ path, message: message || `delete: ${path}` }),
       }),
     });
@@ -150,6 +155,7 @@ async function repoPut(path: string, content: unknown, message?: string): Promis
         requestId: crypto.randomUUID(),
         action: 'save-data',
         userId: user?.id || 'anonymous',
+        sessionToken: _sessionToken(),
         data: JSON.stringify({ path, content, message: message || `community: ${path}` }),
       }),
     });
