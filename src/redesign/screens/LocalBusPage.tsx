@@ -237,7 +237,7 @@ export function LocalBusPage(props: Props) {
               {mode === 'buses' ? (
                 <>
                   <SectionHeader tk={tk} lang={lang}
-                    title={(hasSearched && (searchQuery || fromInput || toInput))
+                    title={(searchQuery || hasSearched && (fromInput || toInput))
                       ? T(lang, `${N(filteredRoutes.length,lang)}টি রুট পাওয়া গেছে`, `${N(filteredRoutes.length,lang)} routes found`)
                       : T(lang,'জনপ্রিয় বাস রুট','Popular bus routes')}
                     action={T(lang,'সব দেখুন','See all')}/>
