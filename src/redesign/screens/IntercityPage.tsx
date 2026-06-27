@@ -528,20 +528,29 @@ export function IntercityPage(props: Props) {
             </div>
           </div>
 
-          <button
-            onClick={() => { earnCoins(5,'Intercity search'); setHasSearched(true); document.getElementById('intercity-results')?.scrollIntoView({ behavior:'smooth', block:'start' }); }}
-            style={{
-              marginTop: 16, width: '100%',
-              background: `linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)`,
-              border: 'none', borderRadius: 14,
-              padding: '14px 24px',
-              fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 15, fontWeight: 700, color: '#fff',
-              cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-              letterSpacing: 0.3,
-            }}
-          >
-            🔍 {lbl('Search Journeys', 'যাত্রা খুঁজুন')}
-          </button>
+          {(() => {
+            const canSearch = !!(from.trim() || to.trim() || nameSearch.trim());
+            return (
+              <button
+                disabled={!canSearch}
+                onClick={() => { if (!canSearch) return; earnCoins(5,'Intercity search'); setHasSearched(true); document.getElementById('intercity-results')?.scrollIntoView({ behavior:'smooth', block:'start' }); }}
+                style={{
+                  marginTop: 16, width: '100%',
+                  background: canSearch ? `linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)` : tk.panelMuted,
+                  border: 'none', borderRadius: 14,
+                  padding: '14px 24px',
+                  fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 15, fontWeight: 700,
+                  color: canSearch ? '#fff' : tk.textFaint,
+                  cursor: canSearch ? 'pointer' : 'not-allowed',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                  letterSpacing: 0.3,
+                  opacity: canSearch ? 1 : 0.6,
+                }}
+              >
+                🔍 {lbl('Search Journeys', 'যাত্রা খুঁজুন')}
+              </button>
+            );
+          })()}
         </div>
 
         {hasSearched && (

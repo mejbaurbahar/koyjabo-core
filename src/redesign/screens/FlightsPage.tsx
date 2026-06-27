@@ -163,9 +163,14 @@ export function FlightsPage(props: Props) {
                 anchorRef={toRef as React.RefObject<HTMLElement>}
               />
             )}
-            <button onClick={()=>{ earnCoins(5, 'Flight search'); setHasSearched(true); document.getElementById('flights-results')?.scrollIntoView({ behavior:'smooth', block:'start' }); }} style={{ background:'linear-gradient(135deg,#1e5aa0,#0a1d3a)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'10px 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #1e5aa0', marginTop:10 }}>
-              <Icon.search s={16}/>{T(lang,'ফ্লাইট খুঁজুন','Find flights')}
-            </button>
+            {(() => {
+              const canSearch = !!(fromAirport.trim() || toAirport.trim());
+              return (
+                <button disabled={!canSearch} onClick={()=>{ if (!canSearch) return; earnCoins(5, 'Flight search'); setHasSearched(true); document.getElementById('flights-results')?.scrollIntoView({ behavior:'smooth', block:'start' }); }} style={{ background: canSearch?'linear-gradient(135deg,#1e5aa0,#0a1d3a)':tk.panelMuted, color: canSearch?'#fff':tk.textFaint, border:0, borderRadius:14, padding:isMobile?'12px 16px':'10px 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor: canSearch?'pointer':'not-allowed', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow: canSearch?'0 8px 22px -10px #1e5aa0':'none', marginTop:10, opacity: canSearch?1:0.6 }}>
+                  <Icon.search s={16}/>{T(lang,'ফ্লাইট খুঁজুন','Find flights')}
+                </button>
+              );
+            })()}
           </div>
 
           <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1.5fr 1fr', gap:18 }}>

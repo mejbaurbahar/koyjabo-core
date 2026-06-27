@@ -515,9 +515,14 @@ export function TrainPage(props: Props) {
                   </div>
                 </div>
                 {toFocus && <SuggestionDropdown suggestions={filterStations(toStation,'to')} onSelect={s=>{setToStation(s.label);setToFocus(false);}} onDismiss={()=>setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef}/>}
-                <button onClick={()=>{ earnCoins(5,'Train search'); setHasSearched(true); document.getElementById('train-results')?.scrollIntoView({ behavior:'smooth', block:'start' }); }} style={{ background:'linear-gradient(135deg,#5b21b6,#7c3aed)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'0 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #7c3aed' }}>
-                  <Icon.search s={16}/>{T(lang,'খুঁজুন','Search')}
-                </button>
+                {(() => {
+                  const canSearch = !!(fromStation.trim() || toStation.trim());
+                  return (
+                    <button disabled={!canSearch} onClick={()=>{ if (!canSearch) return; earnCoins(5,'Train search'); setHasSearched(true); document.getElementById('train-results')?.scrollIntoView({ behavior:'smooth', block:'start' }); }} style={{ background: canSearch?'linear-gradient(135deg,#5b21b6,#7c3aed)':tk.panelMuted, color: canSearch?'#fff':tk.textFaint, border:0, borderRadius:14, padding:isMobile?'12px 16px':'0 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor: canSearch?'pointer':'not-allowed', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow: canSearch?'0 8px 22px -10px #7c3aed':'none', opacity: canSearch?1:0.6 }}>
+                      <Icon.search s={16}/>{T(lang,'খুঁজুন','Search')}
+                    </button>
+                  );
+                })()}
               </div>
             )}
 
