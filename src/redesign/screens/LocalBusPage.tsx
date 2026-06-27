@@ -112,11 +112,10 @@ export function LocalBusPage(props: Props) {
 
   // Real bus route filtering — only active after search button click
   const filteredRoutes = useMemo(() => {
-    // searchQuery (name/route text) is always live; from/to requires hasSearched
+    if (!hasSearched) return BUS_DATA.filter(r => r.active !== false && r.name.length > 3).slice(0, 10);
     const q = searchQuery.trim().toLowerCase();
     const f = fromInput.trim();
     const t = toInput.trim();
-
     if (q) {
       return BUS_DATA.filter(r =>
         r.name.toLowerCase().includes(q) ||
@@ -126,7 +125,6 @@ export function LocalBusPage(props: Props) {
         r.stops.some(s => s.toLowerCase().includes(norm(q)))
       ).slice(0, 20);
     }
-    if (!hasSearched) return BUS_DATA.filter(r => r.active !== false && r.name.length > 3).slice(0, 10);
     if (f && t) {
       const results = BUS_DATA.filter(r => matchesStation(r, f) && matchesStation(r, t)).slice(0, 20);
       if (results.length) return results;
@@ -211,9 +209,14 @@ export function LocalBusPage(props: Props) {
                 </div>
               </div>
               {toFocus && <SuggestionDropdown suggestions={filterStations(toInput, 'to')} onSelect={s=>{setToInput(s.label);setToFocus(false);}} onDismiss={()=>setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef}/>}
-              <button onClick={()=>{ if (fromInput || toInput) trackRouteSearch(fromInput, toInput); setHasSearched(true); onNav('results', { from: fromInput, to: toInput, search: searchQuery }); }} style={{ background:`linear-gradient(135deg,${tk.primary},${tk.primaryDeep})`, color:tk.primaryInk, border:0, borderRadius:14, padding:isMobile?'12px 16px':'0 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:`0 8px 22px -10px ${tk.primary}` }}>
-                <Icon.search s={16}/>{T(lang,'বাস খুঁজুন','Find bus')}
-              </button>
+              {(() => {
+                const canSearch = !!(searchQuery.trim() || fromInput.trim() || toInput.trim());
+                return (
+                  <button disabled={!canSearch} onClick={()=>{ if (!canSearch) return; if (fromInput || toInput) trackRouteSearch(fromInput, toInput); setHasSearched(true); onNav('results', { from: fromInput, to: toInput, search: searchQuery }); }} style={{ background: canSearch?`linear-gradient(135deg,${tk.primary},${tk.primaryDeep})`:tk.panelMuted, color: canSearch?tk.primaryInk:tk.textFaint, border:0, borderRadius:14, padding:isMobile?'12px 16px':'0 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor: canSearch?'pointer':'not-allowed', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow: canSearch?`0 8px 22px -10px ${tk.primary}`:'none', opacity: canSearch?1:0.6 }}>
+                    <Icon.search s={16}/>{T(lang,'বাস খুঁজুন','Find bus')}
+                  </button>
+                );
+              })()}
             </div>
             <div style={{ display:'flex', gap:6, marginTop:12, flexWrap:'wrap' }}>
               {[{l:'⚡ '+T(lang,'দ্রুততম','Fastest'),on:true},{l:'৳ '+T(lang,'সস্তা','Cheapest')},{l:'❄️ AC'},{l:'🚻 '+T(lang,'টয়লেট','Toilet')},{l:'👥 '+T(lang,'কম ভিড়','Less crowd')}].map((c,i)=>(
@@ -237,7 +240,7 @@ export function LocalBusPage(props: Props) {
               {mode === 'buses' ? (
                 <>
                   <SectionHeader tk={tk} lang={lang}
-                    title={(hasSearched && (searchQuery || fromInput || toInput))
+                    title={hasSearched
                       ? T(lang, `${N(filteredRoutes.length,lang)}টি রুট পাওয়া গেছে`, `${N(filteredRoutes.length,lang)} routes found`)
                       : T(lang,'জনপ্রিয় বাস রুট','Popular bus routes')}
                     action={T(lang,'সব দেখুন','See all')}/>

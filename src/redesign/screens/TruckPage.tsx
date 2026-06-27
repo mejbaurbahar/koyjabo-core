@@ -180,23 +180,32 @@ export function TruckPage(props: Props) {
                   </div>
                 </div>
               </div>
-              <button
-                onClick={() => {
-                  earnCoins(5, 'Truck search');
-                  document.getElementById('truck-results')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
-                style={{
-                  background: 'linear-gradient(135deg,#ef4444,#7f1d1d)',
-                  color: '#fff', border: 0, borderRadius: 14,
-                  padding: isMobile ? '12px 16px' : '0 22px',
-                  fontFamily: SANS, fontWeight: 700, fontSize: 14, cursor: 'pointer',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                  minHeight: isMobile ? 48 : 'auto',
-                  boxShadow: '0 8px 22px -10px #ef4444',
-                }}
-              >
-                <Icon.search s={16}/>{T(lang, 'ট্রাক দেখুন', 'Show trucks')}
-              </button>
+              {(() => {
+                const canSearch = !!(from.trim() && to.trim());
+                return (
+                  <button
+                    disabled={!canSearch}
+                    onClick={() => {
+                      if (!canSearch) return;
+                      earnCoins(5, 'Truck search');
+                      document.getElementById('truck-results')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }}
+                    style={{
+                      background: canSearch ? 'linear-gradient(135deg,#ef4444,#7f1d1d)' : tk.panelMuted,
+                      color: canSearch ? '#fff' : tk.textFaint, border: 0, borderRadius: 14,
+                      padding: isMobile ? '12px 16px' : '0 22px',
+                      fontFamily: SANS, fontWeight: 700, fontSize: 14,
+                      cursor: canSearch ? 'pointer' : 'not-allowed',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                      minHeight: isMobile ? 48 : 'auto',
+                      boxShadow: canSearch ? '0 8px 22px -10px #ef4444' : 'none',
+                      opacity: canSearch ? 1 : 0.6,
+                    }}
+                  >
+                    <Icon.search s={16}/>{T(lang, 'ট্রাক দেখুন', 'Show trucks')}
+                  </button>
+                );
+              })()}
             </div>
             {fromFocus && (
               <SuggestionDropdown

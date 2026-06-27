@@ -39,12 +39,15 @@ export function LaunchPage(props: Props) {
   const lbl = (en: string, bn: string) => lang === 'bn' ? bn : en;
 
   const [fromTerminal, setFromTerminal] = useState(params?.from ?? '');
-  const [toTerminal, setToTerminal] = useState(params?.to ?? params?.search ?? '');
+  const [toTerminal, setToTerminal] = useState(params?.to ?? '');
+  const [nameSearch, setNameSearch] = useState(params?.search ?? '');
   const [hasSearched, setHasSearched] = useState(!!(params?.from || params?.to || params?.search));
   const [fromFocus, setFromFocus] = useState(false);
   const [toFocus, setToFocus] = useState(false);
+  const [nameFocus, setNameFocus] = useState(false);
   const fromRef = useRef<HTMLDivElement>(null);
   const toRef = useRef<HTMLDivElement>(null);
+  const nameRef = useRef<HTMLDivElement>(null);
 
   const filterTerminals = (q: string): Suggestion[] => {
     const lower = q.toLowerCase();
@@ -57,6 +60,26 @@ export function LaunchPage(props: Props) {
   const fromSuggestions = useMemo(() => filterTerminals(fromTerminal), [fromTerminal, lang]);
   const toSuggestions = useMemo(() => filterTerminals(toTerminal), [toTerminal, lang]);
 
+  const nameSuggestions = useMemo<Suggestion[]>(() => {
+    const q = nameSearch.trim();
+    const ql = q.toLowerCase();
+    const matched = q
+      ? LAUNCH_ROUTES.filter(r =>
+          r.name.en.toLowerCase().includes(ql) || r.name.bn.includes(q) ||
+          r.operator.en.toLowerCase().includes(ql) || r.operator.bn.includes(q))
+      : LAUNCH_ROUTES;
+    const seen = new Set<string>();
+    const out: Suggestion[] = [];
+    for (const r of matched) {
+      const label = lang === 'bn' ? r.name.bn : r.name.en;
+      if (seen.has(label)) continue;
+      seen.add(label);
+      out.push({ id: r.id, label, sub: lang === 'bn' ? r.operator.bn : r.operator.en });
+      if (out.length >= 20) break;
+    }
+    return out;
+  }, [nameSearch, lang]);
+
   // Filter real routes by selected terminals (match by name or id)
   const matchTerminalId = (q: string) => {
     if (!q) return null;
@@ -66,12 +89,17 @@ export function LaunchPage(props: Props) {
   const fromId = matchTerminalId(fromTerminal);
   const toId = matchTerminalId(toTerminal);
   const filteredLaunches = useMemo(() => {
-    if (fromId && toId) return LAUNCH_ROUTES.filter(r => r.from === fromId && r.to === toId);
-    if (fromId) return LAUNCH_ROUTES.filter(r => r.from === fromId);
-    if (toId) return LAUNCH_ROUTES.filter(r => r.to === toId);
+    const nq = nameSearch.trim().toLowerCase();
+    const byName = (r: typeof LAUNCH_ROUTES[0]) => !nq ||
+      r.name.en.toLowerCase().includes(nq) || r.name.bn.includes(nameSearch.trim()) ||
+      r.operator.en.toLowerCase().includes(nq) || r.operator.bn.includes(nameSearch.trim());
+    if (nq && !fromId && !toId) return LAUNCH_ROUTES.filter(byName);
+    if (fromId && toId) return LAUNCH_ROUTES.filter(r => r.from === fromId && r.to === toId && byName(r));
+    if (fromId) return LAUNCH_ROUTES.filter(r => r.from === fromId && byName(r));
+    if (toId) return LAUNCH_ROUTES.filter(r => r.to === toId && byName(r));
     // Default: Sadarghat → Barisal (most popular route)
     return LAUNCH_ROUTES.filter(r => r.from === 'sadarghat' && r.to === 'barisal');
-  }, [fromId, toId]);
+  }, [fromId, toId, nameSearch]);
   const fromLabel = fromId ? LAUNCH_TERMINALS.find(t=>t.id===fromId)?.[lang==='bn'?'bn':'en'] ?? 'Sadarghat' : (lang==='bn'?'সদরঘাট':'Sadarghat');
   const toLabel = toId ? LAUNCH_TERMINALS.find(t=>t.id===toId)?.[lang==='bn'?'bn':'en'] ?? 'Barisal' : (lang==='bn'?'বরিশাল':'Barisal');
 
@@ -88,15 +116,23 @@ export function LaunchPage(props: Props) {
         <div style={{ padding:isMobile?'0 16px':'0 40px' }}>
           {/* Search */}
           <div style={{ ...card(16), marginBottom:18 }}>
-            <div style={{ background:tk.inputBg, border:`1px solid ${tk.line}`, borderRadius:14, padding:'10px 14px', display:'flex', alignItems:'center', gap:12, marginBottom:12 }}>
+            <div ref={nameRef} style={{ background:tk.inputBg, border:`1px solid ${nameFocus?tk.primary:tk.line}`, borderRadius:14, padding:'10px 14px', display:'flex', alignItems:'center', gap:12, marginBottom:12, transition:'border-color 0.15s' }}>
               <div style={{ width:32, height:32, borderRadius:10, flexShrink:0, background:'linear-gradient(135deg,#0ea5e9,#075985)', color:'#fff', display:'flex', alignItems:'center', justifyContent:'center' }} className="kj-anim-glow"><Icon.search s={16}/></div>
-              <span style={{ flex:1, fontFamily:BEN, fontSize:14, color:tk.textFaint }}>{T(lang,'যেমন: সুন্দরবন-১২, কীর্তনখোলা-১০, পারাবত-১৮...','e.g. Sundarban-12, Kirtonkhola-10, Parabat-18...')}</span>
+              <input
+                value={nameSearch}
+                onChange={e => setNameSearch(e.target.value)}
+                onFocus={() => setNameFocus(true)}
+                onBlur={() => setTimeout(() => setNameFocus(false), 150)}
+                placeholder={T(lang,'যেমন: সুন্দরবন-১২, কীর্তনখোলা-১০, পারাবত-১৮...','e.g. Sundarban-12, Kirtonkhola-10, Parabat-18...')}
+                style={{ flex:1, fontFamily:BEN, fontSize:14, color:tk.text, background:'transparent', border:'none', outline:'none', minWidth:0 }}
+              />
               <div style={{ display:'flex', gap:4 }}>
-                {[{l:T(lang,'নাম','Name'),c:'#0ea5e9'},{l:T(lang,'নম্বর','Number'),c:'#0c4a6e'},{l:T(lang,'অপারেটর','Operator'),c:'#fbbf24'}].map((c,i)=>(
+                {[{l:T(lang,'নাম','Name'),c:'#0ea5e9'},{l:T(lang,'অপারেটর','Operator'),c:'#fbbf24'}].map((c,i)=>(
                   <span key={i} style={{ padding:'4px 8px', borderRadius:6, fontFamily:SANS, fontSize:10, fontWeight:700, background:`${c.c}22`, color:c.c }}>{c.l}</span>
                 ))}
               </div>
             </div>
+            {nameFocus && <SuggestionDropdown suggestions={nameSuggestions} onSelect={s => { setNameSearch(s.label); setNameFocus(false); }} onDismiss={() => setNameFocus(false)} tk={tk} lang={lang} anchorRef={nameRef as React.RefObject<HTMLElement>}/>}
             <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1fr 1fr auto', gap:10 }}>
               <div ref={fromRef} style={{ background:tk.inputBg, border:`1px solid ${tk.line}`, borderRadius:14, padding:'10px 14px', display:'flex', alignItems:'center', gap:10 }}>
                 <div style={{ width:28, height:28, borderRadius:8, background:tk.primarySoft, color:tk.primaryDeep, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><Icon.pin s={14}/></div>
@@ -126,9 +162,14 @@ export function LaunchPage(props: Props) {
                   />
                 </div>
               </div>
-              <button onClick={()=>{ earnCoins(5,'Launch search'); setHasSearched(true); document.getElementById('launch-results')?.scrollIntoView({ behavior:'smooth', block:'start' }); }} style={{ background:'linear-gradient(135deg,#0ea5e9,#075985)', color:'#fff', border:0, borderRadius:14, padding:isMobile?'12px 16px':'0 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow:'0 8px 22px -10px #0ea5e9' }}>
-                <Icon.search s={16}/>{T(lang,'লঞ্চ খুঁজুন','Find launch')}
-              </button>
+              {(() => {
+                const canSearch = !!(nameSearch.trim() || fromTerminal.trim() || toTerminal.trim());
+                return (
+                  <button disabled={!canSearch} onClick={()=>{ if (!canSearch) return; earnCoins(5,'Launch search'); setHasSearched(true); document.getElementById('launch-results')?.scrollIntoView({ behavior:'smooth', block:'start' }); }} style={{ background: canSearch?'linear-gradient(135deg,#0ea5e9,#075985)':tk.panelMuted, color: canSearch?'#fff':tk.textFaint, border:0, borderRadius:14, padding:isMobile?'12px 16px':'0 22px', fontFamily:SANS, fontWeight:700, fontSize:14, cursor: canSearch?'pointer':'not-allowed', display:'flex', alignItems:'center', justifyContent:'center', gap:8, minHeight:isMobile?48:'auto', boxShadow: canSearch?'0 8px 22px -10px #0ea5e9':'none', opacity: canSearch?1:0.6 }}>
+                    <Icon.search s={16}/>{T(lang,'লঞ্চ খুঁজুন','Find launch')}
+                  </button>
+                );
+              })()}
             </div>
             {fromFocus && <SuggestionDropdown suggestions={fromSuggestions} onSelect={s => { setFromTerminal(s.label); setFromFocus(false); }} onDismiss={() => setFromFocus(false)} tk={tk} lang={lang} anchorRef={fromRef as React.RefObject<HTMLElement>}/>}
             {toFocus && <SuggestionDropdown suggestions={toSuggestions} onSelect={s => { setToTerminal(s.label); setToFocus(false); }} onDismiss={() => setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef as React.RefObject<HTMLElement>}/>}
@@ -137,10 +178,14 @@ export function LaunchPage(props: Props) {
           <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr':'1.5fr 1fr', gap:18 }}>
             {/* Launches list */}
             <div id="launch-results">
-              <SectionHeader tk={tk} lang={lang} title={T(lang,`আজকের লঞ্চ · ${fromLabel} → ${toLabel}`,`Tonight's launches · ${fromLabel} → ${toLabel}`)} action={T(lang,'সব দেখুন','All')}/>
+              <SectionHeader tk={tk} lang={lang} title={
+                !hasSearched
+                  ? T(lang,'লঞ্চ খুঁজুন','Find a launch')
+                  : T(lang,`${N(filteredLaunches.length,lang)}টি লঞ্চ পাওয়া গেছে`,`${N(filteredLaunches.length,lang)} launches found`)
+              } action={T(lang,'সব দেখুন','All')}/>
               <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
                 {!hasSearched
-                  ? <div style={{ fontFamily:BEN, fontSize:13, color:tk.textFaint, padding:'16px 0', textAlign:'center' }}>{T(lang,'ঘাট বেছে লঞ্চ খুঁজুন বোতাম চাপুন','Select terminals and tap Find launch')}</div>
+                  ? <div style={{ fontFamily:BEN, fontSize:13, color:tk.textFaint, padding:'16px 0', textAlign:'center' }}>{T(lang,'লঞ্চের নাম লিখুন বা ঘাট বেছে নিন','Type launch name or pick terminals')}</div>
                   : filteredLaunches.length === 0
                   ? <div style={{ fontFamily:BEN, fontSize:13, color:tk.textFaint, padding:'16px 0' }}>{T(lang,'এই রুটে কোনো লঞ্চ পাওয়া যায়নি।','No launches found for this route.')}</div>
                   : filteredLaunches.map((l,i)=>(
