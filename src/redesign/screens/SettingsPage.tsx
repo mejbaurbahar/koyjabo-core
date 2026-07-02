@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { STATIONS } from '../../../constants';
 import { KJ_TOKENS, T, SANS, BEN, Tokens } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard } from '../components/AdSlot';
 import { ConfirmModal } from '../components/ConfirmModal';
 import { Icon } from '../components/Icons';
 
@@ -155,7 +155,13 @@ export function SettingsPage(props: ScreenProps) {
           </div>
         ))}
 
-        <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
+        <NativeAdCard
+          tk={tk}
+          lang={lang}
+          kind={isMobile ? 'mob-banner' : 'leaderboard'}
+          title={lbl('Personalized offers', 'ব্যক্তিগত অফার')}
+          icon="🎯"
+        />
 
         {/* Sign out */}
         <button
@@ -168,7 +174,14 @@ export function SettingsPage(props: ScreenProps) {
         <div style={{ textAlign: 'center', marginTop: 16, fontFamily: SANS, fontSize: 11, color: tk.textFaint }}>
           KoyJabo · v1.5.2 · Build 2026.06.18
         </div>
-          <AdSlot tk={tk} lang={lang} kind="multiplex" />
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind="multiplex"
+            title={lbl('More like this', 'আরও দেখুন')}
+            subtitle={lbl('Travel & transport', 'ভ্রমণ ও পরিবহন')}
+            icon="🧭"
+          />
       </div>
 
       <ConfirmModal tk={tk} lang={lang} open={confirmClear} title={lbl('Clear search history?', 'অনুসন্ধান ইতিহাস মুছবেন?')} message={lbl('All your search history will be permanently deleted.', 'আপনার সমস্ত অনুসন্ধান ইতিহাস স্থায়ীভাবে মুছে যাবে।')} confirmLabel={lbl('Clear', 'মুছুন')} onConfirm={() => setConfirmClear(false)} onClose={() => setConfirmClear(false)} />

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, N, Fare } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard } from '../components/AdSlot';
 import { Pill } from '../components/Pill';
 import { BD_TRAIN_ROUTES, TRAIN_STATIONS } from '../../../data/bangladeshTrainData';
 import { useDocumentTitle, setCanonicalUrl } from '../utils/useDocumentTitle';
@@ -122,7 +122,13 @@ export function TrainDetailPage(props: Props) {
                 {T(lang,'ভাড়া বাংলাদেশ রেলওয়ে ডেটা থেকে। অতিরিক্ত: সার্ভিস চার্জ ৳২০ + ১৫% ভ্যাট।','Base fare from Bangladesh Railway. Add: ৳20 service charge + 15% VAT.')}
               </div>
             </div>
-              <AdSlot tk={tk} lang={lang} kind="in-article" />
+              <NativeAdCard
+                tk={tk}
+                lang={lang}
+                kind="in-article"
+                title={T(lang, 'সংশ্লিষ্ট ট্রেন অফার', 'Related train offers')}
+                icon="🎫"
+              />
 
             {/* Routes */}
             <div style={{ ...card(18), marginBottom:16 }}>
@@ -228,8 +234,21 @@ export function TrainDetailPage(props: Props) {
               )}
             </div>
 
-            <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
-              <AdSlot tk={tk} lang={lang} kind="multiplex" />
+            <NativeAdCard
+              tk={tk}
+              lang={lang}
+              kind={isMobile?'mob-banner':'leaderboard'}
+              title={T(lang, 'রেল ভ্রমণের জন্য অফার', 'Offers for rail travel')}
+              icon="🚆"
+            />
+            <NativeAdCard
+              tk={tk}
+              lang={lang}
+              kind="multiplex"
+              title={T(lang, 'আরও দেখুন', 'More like this')}
+              subtitle={T(lang, 'সংশ্লিষ্ট রুট', 'Related routes')}
+              icon="🧭"
+            />
           </div>
 
           {/* Sidebar */}
@@ -309,7 +328,17 @@ export function TrainDetailPage(props: Props) {
               </div>
             </div>
 
-            {!isMobile && <AdSlot tk={tk} lang={lang} kind="mid-rect"/>}
+            {!isMobile && (
+              <NativeAdCard
+                tk={tk}
+                lang={lang}
+                kind="mid-rect"
+                title={T(lang, 'ভ্রমণ ও টিকেট অফার', 'Travel & ticket offers')}
+                subtitle={T(lang, 'কার্ড ও প্ল্যাটফর্ম ডিল', 'Card & platform deals')}
+                icon="🎁"
+                compact
+              />
+            )}
           </div>
         </div>
       </div>

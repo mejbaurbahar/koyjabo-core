@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, chipBtn, N, Fare } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard } from '../components/AdSlot';
 import { Pill } from '../components/Pill';
 import { BUS_DATA, STATIONS } from '../../../constants';
 import BusRouteMap from '../../../components/BusRouteMap';
@@ -217,7 +217,13 @@ export function BusDetailPage(props: Props) {
               })}
             </div>
 
-            <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
+            <NativeAdCard
+              tk={tk}
+              lang={lang}
+              kind={isMobile?'mob-banner':'leaderboard'}
+              title={T(lang, 'এই রুটের জন্য অফার', 'Offers along this route')}
+              icon="🎯"
+            />
           </div>
 
           <div style={{ display:'flex',flexDirection:'column',gap:16 }}>
@@ -250,7 +256,15 @@ export function BusDetailPage(props: Props) {
                 {T(lang,'ছবি দেখুন / আপলোড','Photos / upload')}
               </button>
             </div>
-            <AdSlot tk={tk} lang={lang} kind="mid-rect"/>
+            <NativeAdCard
+              tk={tk}
+              lang={lang}
+              kind="mid-rect"
+              title={T(lang, 'যাত্রীদের জন্য অফার', 'For your journey')}
+              subtitle={T(lang, 'রাইড, ফুড ও পার্সেল', 'Ride, food & parcel')}
+              icon="🎁"
+              compact
+            />
           </div>
         </div>
       </div>

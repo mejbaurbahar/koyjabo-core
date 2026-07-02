@@ -1,7 +1,7 @@
 import React from 'react';
 import { KJ_TOKENS, T, SANS, BEN, Tokens, Lang } from '../tokens';
 import { PageShell, PageShellProps } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard } from '../components/AdSlot';
 
 const TEAM = [
   { role: 'Developer', roleBn: 'ডেভেলপার', initials: 'MB', color: '#3b82f6', desc: 'Full-stack, PWA architecture', descBn: 'ফুল-স্ট্যাক, PWA আর্কিটেকচার' },
@@ -281,11 +281,28 @@ export function AboutPage(props: PageShellProps) {
         </div>
 
         {/* Ads */}
-          <AdSlot tk={tk} lang={lang} kind="in-article" />
-          <AdSlot tk={tk} lang={lang} kind="multiplex" />
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
-        </div>
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind="in-article"
+            title={T(lang, 'সংশ্লিষ্ট বিষয়বস্তু', 'Related content')}
+            icon="📰"
+          />
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind="multiplex"
+            title={T(lang, 'আরও দেখুন', 'More like this')}
+            subtitle={T(lang, 'ভ্রমণ ও পরিবহন', 'Travel & transport')}
+            icon="🧭"
+          />
+        <NativeAdCard
+          tk={tk}
+          lang={lang}
+          kind={isMobile ? 'mob-banner' : 'leaderboard'}
+          title={T(lang, 'পার্টনার অফার', 'Partner offers')}
+          icon="🎯"
+        />
       </div>
     </PageShell>
   );

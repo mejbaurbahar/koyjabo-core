@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { KJ_TOKENS, SANS, BEN, T, Tokens, Lang, N, Fare } from '../tokens';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard } from '../components/AdSlot';
 import { PromoBanner } from '../components/PromoBanner';
 import { PageShell } from './PageShell';
 import { Plane3D } from '../components/Vehicles3D';
@@ -457,7 +457,16 @@ export function IntercityPage(props: Props) {
       </div>
 
       {/* Ad after hero */}
-      <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
+      <div style={{ padding: isMobile ? '0 16px' : '0 40px' }}>
+        <NativeAdCard
+          tk={tk}
+          lang={lang}
+          kind={isMobile?'mob-banner':'leaderboard'}
+          title={lbl('Intercity travel offers', 'আন্তঃজেলা ভ্রমণ অফার')}
+          subtitle={lbl('Bus, train, flight, launch deals', 'বাস, ট্রেন, ফ্লাইট, লঞ্চ ডিল')}
+          icon="🧭"
+        />
+      </div>
 
       {/* Search section */}
       <div style={{ padding: isMobile ? '20px 16px' : '28px 40px' }}>
@@ -678,9 +687,19 @@ export function IntercityPage(props: Props) {
             })}
           </div>
           {filteredResults.length === 0 && (
-            <div style={{ textAlign: 'center', padding: '32px 16px', color: tk.textFaint, fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 14 }}>
-              {lbl(`No ${activeChip} routes found. Try different locations.`, 'কোনো রুট পাওয়া যায়নি।')}
-            </div>
+            <>
+              <div style={{ textAlign: 'center', padding: '32px 16px', color: tk.textFaint, fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 14 }}>
+                {lbl(`No ${activeChip} routes found. Try different locations.`, 'কোনো রুট পাওয়া যায়নি।')}
+              </div>
+              <NativeAdCard
+                tk={tk}
+                lang={lang}
+                kind="in-article"
+                title={lbl('Alternative options', 'বিকল্প অপশন')}
+                subtitle={lbl('Explore other travel routes', 'অন্যান্য ভ্রমণ রুট দেখুন')}
+                icon="🔀"
+              />
+            </>
           )}
           </>
           )}
@@ -688,7 +707,13 @@ export function IntercityPage(props: Props) {
         )}
 
         {/* Ad between results and popular operators */}
-        <AdSlot tk={tk} lang={lang} kind="in-article"/>
+        <NativeAdCard
+          tk={tk}
+          lang={lang}
+          kind="in-article"
+          title={lbl('Related travel deals', 'সংশ্লিষ্ট ভ্রমণ ডিল')}
+          icon="🎫"
+        />
 
         {/* Popular Operators */}
         <div style={{ marginTop: 28 }}>
@@ -706,9 +731,22 @@ export function IntercityPage(props: Props) {
         </div>
 
         {/* Ad slot */}
-        <AdSlot tk={tk} lang={lang} kind="in-article" />
+        <NativeAdCard
+          tk={tk}
+          lang={lang}
+          kind="in-article"
+          title={lbl('More travel ideas', 'আরও ভ্রমণ আইডিয়া')}
+          icon="💡"
+        />
         <PromoBanner tk={tk} lang={lang} page="intercity" onNav={onNav}/>
-        <AdSlot tk={tk} lang={lang} kind="multiplex" />
+        <NativeAdCard
+          tk={tk}
+          lang={lang}
+          kind="multiplex"
+          title={lbl('You might also like', 'আপনার পছন্দ হতে পারে')}
+          subtitle={lbl('Related routes & offers', 'সংশ্লিষ্ট রুট ও অফার')}
+          icon="🧭"
+        />
       </div>
 
     </div>

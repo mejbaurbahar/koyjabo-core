@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, chipBtn, N, Fare } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard } from '../components/AdSlot';
 import { PromoBanner } from '../components/PromoBanner';
 import { SectionHeader } from '../components/SectionHeader';
 import { Icon } from '../components/Icons';
@@ -575,9 +575,13 @@ export function TrainPage(props: Props) {
                   {filteredTrains.map((t,i)=>(
                     <React.Fragment key={t.source.id}>
                       {i === 5 && (
-                        <div style={{ display:'flex', justifyContent:'center' }}>
-                          <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
-                        </div>
+                        <NativeAdCard
+                          tk={tk}
+                          lang={lang}
+                          kind={isMobile?'mob-banner':'leaderboard'}
+                          title={T(lang, 'ট্রেন যাত্রীদের জন্য অফার', 'Offers for train travelers')}
+                          icon="🚆"
+                        />
                       )}
                     <div onClick={()=>onNav('train-detail',{trainId:t.source.id})} style={{ ...card(14), cursor:'pointer' }}>
                       <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:10 }}>
@@ -632,7 +636,15 @@ export function TrainPage(props: Props) {
                   </div>
                 </div>
                 <PromoBanner tk={tk} lang={lang} page="train" onNav={onNav}/>
-                <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'mid-rect'}/>
+                <NativeAdCard
+                  tk={tk}
+                  lang={lang}
+                  kind={isMobile?'mob-banner':'mid-rect'}
+                  title={T(lang, 'রেল ভ্রমণ ডিল', 'Rail travel deals')}
+                  subtitle={T(lang, 'কেবিন ও AC বার্থ', 'Cabin & AC berth')}
+                  icon="🎫"
+                  compact
+                />
               </div>
             </div>
           )}
@@ -640,8 +652,21 @@ export function TrainPage(props: Props) {
           {activeTab === 'pnr' && renderPNR()}
           {activeTab === 'routemap' && renderRouteMap()}
 
-          <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
-            <AdSlot tk={tk} lang={lang} kind="multiplex" />
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind={isMobile?'mob-banner':'leaderboard'}
+            title={T(lang, 'রেল যাত্রা টিপস', 'Rail travel tips')}
+            icon="🛤️"
+          />
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind="multiplex"
+            title={T(lang, 'আরও দেখুন', 'More like this')}
+            subtitle={T(lang, 'সংশ্লিষ্ট রুট ও অফার', 'Related routes & offers')}
+            icon="🧭"
+          />
         </div>
       </div>
     </PageShell>

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { KJ_TOKENS, T, SANS, BEN } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard } from '../components/AdSlot';
 import { Pill } from '../components/Pill';
 import { PromoBanner } from '../components/PromoBanner';
 import { BLOG_POSTS } from '../../../data/blogPosts';
@@ -215,7 +215,13 @@ export function BlogDetailPage(props: Props) {
             {excerpt}
           </div>
         )}
-          <AdSlot tk={tk} lang={lang} kind="in-article" />
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind="in-article"
+            title={T(lang, 'সংশ্লিষ্ট বিষয়বস্তু', 'Related content')}
+            icon="📰"
+          />
 
         {/* Main content */}
         <div style={{ marginTop: 20 }}>
@@ -223,7 +229,14 @@ export function BlogDetailPage(props: Props) {
         </div>
 
         <div style={{ margin: '24px 0' }}>
-          <AdSlot tk={tk} lang={lang} kind="multiplex" />
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind="multiplex"
+            title={T(lang, 'আরও পড়ুন', 'You might also read')}
+            subtitle={T(lang, 'সংশ্লিষ্ট ব্লগ ও অফার', 'Related blogs & offers')}
+            icon="📖"
+          />
         </div>
 
         {/* Deals banner */}

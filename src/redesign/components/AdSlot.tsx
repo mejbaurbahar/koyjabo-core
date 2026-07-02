@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Tokens, Lang } from '../tokens';
+import { Tokens, Lang, SANS, BEN, T } from '../tokens';
 
 type AdKind = 'leaderboard' | 'mid-rect' | 'mob-banner' | 'anchor' | 'in-article' | 'multiplex';
 
@@ -169,6 +169,161 @@ export function AdSlot({
       }}
     >
       <RealAd format={format} slot={slot} layout={layout} onFillResult={setFilled} />
+    </div>
+  );
+}
+
+// ─── NativeAdCard ────────────────────────────────────────────────────────────
+// Panel-styled ad card: matches feature cards (tk.panel + tk.line + radius 18).
+// Renders a subtle "Sponsored" pill (top-right) per AdSense policy.
+// Collapses to null when unfilled — no empty box, no layout gap.
+// Use in empty content states (no favorites/history/results) and in
+// content columns where a bare AdSense iframe would clash with UI cards.
+export function NativeAdCard({
+  tk,
+  lang,
+  kind = 'in-article',
+  title,
+  subtitle,
+  icon,
+  compact,
+}: {
+  tk: Tokens;
+  lang: Lang;
+  kind?: AdKind;
+  title?: string;
+  subtitle?: string;
+  icon?: React.ReactNode;
+  compact?: boolean;
+}) {
+  const { w, h, format, slot, layout } = DIMS[kind];
+  const [filled, setFilled] = useState<boolean | null>(null);
+  const font = lang === 'bn' ? BEN : SANS;
+
+  // Detecting: reserve height so AdSense measures a real slot.
+  // Unfilled: collapse entirely — no ghost card in the layout.
+  if (filled === false) return null;
+
+  const reservedHeight = filled === null ? h : h;
+  const padY = compact ? 10 : 14;
+  const padX = compact ? 12 : 16;
+
+  return (
+    <div
+      style={{
+        background: tk.panel,
+        border: `1px solid ${tk.line}`,
+        borderRadius: 18,
+        padding: `${padY}px ${padX}px`,
+        boxShadow: tk.shadow,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 10,
+        overflow: 'hidden',
+        boxSizing: 'border-box',
+        width: '100%',
+        maxWidth: '100%',
+      }}
+    >
+      {/* Header row: title (optional) + Sponsored pill */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: title ? 'space-between' : 'flex-end',
+          gap: 8,
+          minHeight: 18,
+        }}
+      >
+        {title && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+            {icon && (
+              <span
+                style={{
+                  width: 26,
+                  height: 26,
+                  borderRadius: 8,
+                  background: tk.primarySoft,
+                  color: tk.primary,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                  fontSize: 14,
+                }}
+              >
+                {icon}
+              </span>
+            )}
+            <div style={{ minWidth: 0 }}>
+              <div
+                style={{
+                  fontFamily: font,
+                  fontSize: 13,
+                  fontWeight: 700,
+                  color: tk.text,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {title}
+              </div>
+              {subtitle && (
+                <div
+                  style={{
+                    fontFamily: SANS,
+                    fontSize: 10,
+                    color: tk.textFaint,
+                    marginTop: 1,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {subtitle}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+        <span
+          aria-label="Sponsored"
+          style={{
+            background: tk.panelMuted,
+            border: `1px solid ${tk.line}`,
+            borderRadius: 999,
+            padding: '2px 8px',
+            fontFamily: SANS,
+            fontSize: 9,
+            fontWeight: 700,
+            letterSpacing: 0.8,
+            color: tk.textFaint,
+            textTransform: 'uppercase',
+            whiteSpace: 'nowrap',
+            flexShrink: 0,
+          }}
+        >
+          {T(lang, 'স্পনসর', 'Sponsored')}
+        </span>
+      </div>
+
+      {/* Ad body — reserve height while detecting so AdSense can fill */}
+      <div
+        style={{
+          width: '100%',
+          minHeight: reservedHeight,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden',
+          borderRadius: 10,
+        }}
+      >
+        <div style={{ width: '100%', maxWidth: w }}>
+          <RealAd format={format} slot={slot} layout={layout} onFillResult={setFilled} />
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { KJ_TOKENS, SANS, BEN, T, Tokens, Lang } from '../tokens';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard } from '../components/AdSlot';
 import { PageShell } from './PageShell';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:Lang; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
@@ -299,12 +299,32 @@ export function FareCalcPage(props: Props) {
 
         {/* Ad slot */}
         <div style={{ margin: '12px 0' }}>
-          <AdSlot tk={tk} lang={lang} kind="in-article" />
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind="in-article"
+            title={T(lang, 'ভ্রমণ ও রাইড অফার', 'Travel & ride offers')}
+            icon="🎯"
+          />
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
-          <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'mid-rect'} />
+        <div style={{ marginTop: 8 }}>
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind={isMobile ? 'mob-banner' : 'mid-rect'}
+            title={T(lang, 'ভাড়া সাশ্রয়ের টিপস', 'Save on your fare')}
+            icon="💰"
+            compact
+          />
         </div>
-          <AdSlot tk={tk} lang={lang} kind="multiplex" />
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind="multiplex"
+            title={T(lang, 'আরও দেখুন', 'More like this')}
+            subtitle={T(lang, 'পরিবহন ও ভ্রমণ', 'Transport & travel')}
+            icon="🧭"
+          />
       </div>
 
     </div>

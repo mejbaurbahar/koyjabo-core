@@ -1,7 +1,7 @@
 import React from 'react';
 import { KJ_TOKENS, T, SANS, BEN, Tokens } from '../tokens';
 import { PageShell, PageShellProps } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard } from '../components/AdSlot';
 
 const GREEN = '#10b981';
 
@@ -345,13 +345,29 @@ export function AdvertisePage(props: PageShellProps) {
         </div>
 
         {/* Ads */}
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <AdSlot tk={tk} lang={lang} kind="mid-rect" />
-        </div>
-          <AdSlot tk={tk} lang={lang} kind="multiplex" />
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
-        </div>
+        <NativeAdCard
+          tk={tk}
+          lang={lang}
+          kind="mid-rect"
+          title={T(lang, 'বিজ্ঞাপনদাতাদের উদাহরণ', 'Advertiser showcase')}
+          icon="📣"
+          compact
+        />
+        <NativeAdCard
+          tk={tk}
+          lang={lang}
+          kind="multiplex"
+          title={T(lang, 'আরও দেখুন', 'More like this')}
+          subtitle={T(lang, 'পার্টনার ও অফার', 'Partners & offers')}
+          icon="🎯"
+        />
+        <NativeAdCard
+          tk={tk}
+          lang={lang}
+          kind={isMobile ? 'mob-banner' : 'leaderboard'}
+          title={T(lang, 'সংশ্লিষ্ট প্রচার', 'Related promotions')}
+          icon="📢"
+        />
       </div>
     </PageShell>
   );

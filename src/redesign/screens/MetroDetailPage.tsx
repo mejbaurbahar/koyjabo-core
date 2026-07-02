@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, Tokens, Lang, N, Fare } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard } from '../components/AdSlot';
 import { Train3D } from '../components/Vehicles3D';
 
 interface ScreenProps {
@@ -246,7 +246,13 @@ export function MetroDetailPage(props: ScreenProps) {
         </div>
 
         {/* ── Fare Table ───────────────────────────────────────────────── */}
-          <AdSlot tk={tk} lang={lang} kind="in-article" />
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind="in-article"
+            title={T(lang, 'মেট্রো যাত্রীদের জন্য', 'For metro riders')}
+            icon="🚇"
+          />
         <div style={{ ...card, marginBottom: 24 }}>
           <div style={{ fontFamily: SANS, fontSize: 11, fontWeight: 700, letterSpacing: 0.8, textTransform: 'uppercase', color: tk.textFaint, marginBottom: 16 }}>
             {lbl('Fare Table (from Uttara North)', 'ভাড়ার তালিকা (উত্তরা উত্তর থেকে)')}
@@ -313,10 +319,23 @@ export function MetroDetailPage(props: ScreenProps) {
         </div>
 
         {/* Ad Slot */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
-          <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
+        <div style={{ marginBottom: 24 }}>
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind={isMobile ? 'mob-banner' : 'leaderboard'}
+            title={T(lang, 'ঢাকা মেট্রো অফার', 'Dhaka metro offers')}
+            icon="🎫"
+          />
         </div>
-          <AdSlot tk={tk} lang={lang} kind="multiplex" />
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind="multiplex"
+            title={T(lang, 'আরও দেখুন', 'More like this')}
+            subtitle={T(lang, 'পরিবহন ও ভ্রমণ', 'Transport & travel')}
+            icon="🧭"
+          />
       </div>
     </PageShell>
   );

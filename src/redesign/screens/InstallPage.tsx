@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { KJ_TOKENS, T, SANS, BEN } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard } from '../components/AdSlot';
 import { Logo } from '../components/Logo';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
@@ -98,8 +98,21 @@ export function InstallPage(props: Props) {
             ))}
           </div>
         </div>
-          <AdSlot tk={tk} lang={lang} kind="multiplex" />
-        <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind="multiplex"
+            title={T(lang, 'আরও দেখুন', 'More like this')}
+            subtitle={T(lang, 'ভ্রমণ ও পরিবহন', 'Travel & transport')}
+            icon="🧭"
+          />
+        <NativeAdCard
+          tk={tk}
+          lang={lang}
+          kind={isMobile?'mob-banner':'leaderboard'}
+          title={T(lang, 'পার্টনার অফার', 'Partner offers')}
+          icon="🎯"
+        />
       </div>
     </PageShell>
   );

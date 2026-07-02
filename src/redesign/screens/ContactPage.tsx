@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { KJ_TOKENS, T, SANS, BEN } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard } from '../components/AdSlot';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -64,7 +64,13 @@ export function ContactPage(props: Props) {
           </div>
         </div>
 
-        <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
+        <NativeAdCard
+          tk={tk}
+          lang={lang}
+          kind={isMobile?'mob-banner':'leaderboard'}
+          title={T(lang, 'সংশ্লিষ্ট সাহায্য ও অফার', 'Related help & offers')}
+          icon="💬"
+        />
       </div>
     </PageShell>
   );

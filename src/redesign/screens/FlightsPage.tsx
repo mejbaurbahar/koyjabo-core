@@ -1,7 +1,7 @@
 import React, { useRef, useMemo, useState } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, chipBtn, N, Fare } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard } from '../components/AdSlot';
 import { PromoBanner } from '../components/PromoBanner';
 import { SectionHeader } from '../components/SectionHeader';
 import { Icon } from '../components/Icons';
@@ -231,12 +231,26 @@ export function FlightsPage(props: Props) {
               </div>
 
               <PromoBanner tk={tk} lang={lang} page="flight" onNav={onNav}/>
-              <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'mid-rect'}/>
+              <NativeAdCard
+                tk={tk}
+                lang={lang}
+                kind={isMobile?'mob-banner':'mid-rect'}
+                title={T(lang, 'ফ্লাইট অফার ও ছাড়', 'Flight offers & discounts')}
+                subtitle={T(lang, 'কার্ড ও এয়ারলাইন ডিল', 'Card & airline deals')}
+                icon="✈️"
+                compact
+              />
             </div>
           </div>
 
           {/* Ad between results and tip */}
-          <AdSlot tk={tk} lang={lang} kind="in-article"/>
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind="in-article"
+            title={T(lang, 'সংশ্লিষ্ট ভ্রমণ অফার', 'Related travel offers')}
+            icon="🎫"
+          />
 
           <div style={{ ...card(14), background:tk.amberSoft, borderColor:tk.amber, marginBottom:18 }}>
             <div style={{ fontFamily:BEN, fontSize:13, color:tk.amber, lineHeight:1.6 }}>
@@ -244,8 +258,21 @@ export function FlightsPage(props: Props) {
             </div>
           </div>
 
-          <AdSlot tk={tk} lang={lang} kind="multiplex"/>
-          <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind="multiplex"
+            title={T(lang, 'আরও দেখুন', 'You might also like')}
+            subtitle={T(lang, 'সংশ্লিষ্ট গন্তব্য ও অফার', 'Related destinations & offers')}
+            icon="🧭"
+          />
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind={isMobile?'mob-banner':'leaderboard'}
+            title={T(lang, 'বাজেট ভ্রমণ টিপস', 'Budget travel tips')}
+            icon="💰"
+          />
         </div>
       </div>
     </PageShell>

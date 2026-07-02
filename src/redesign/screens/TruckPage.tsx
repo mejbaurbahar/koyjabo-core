@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, N, Fare, Tokens } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard } from '../components/AdSlot';
 import { PromoBanner } from '../components/PromoBanner';
 import { SectionHeader } from '../components/SectionHeader';
 import { Icon } from '../components/Icons';
@@ -288,7 +288,13 @@ export function TruckPage(props: Props) {
 
           {/* In-article ad — between filters and results */}
           <div style={{ marginBottom: 18 }}>
-            <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'}/>
+            <NativeAdCard
+              tk={tk}
+              lang={lang}
+              kind={isMobile ? 'mob-banner' : 'leaderboard'}
+              title={T(lang, 'ট্রাক ও পণ্য অফার', 'Truck & freight offers')}
+              icon="🚛"
+            />
           </div>
 
           {/* Inline quote panel — shows full booking info on this platform */}
@@ -397,7 +403,15 @@ export function TruckPage(props: Props) {
               </div>
 
               <PromoBanner tk={tk} lang={lang} page="bus" onNav={onNav}/>
-              <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'mid-rect'}/>
+              <NativeAdCard
+                tk={tk}
+                lang={lang}
+                kind={isMobile ? 'mob-banner' : 'mid-rect'}
+                title={T(lang, 'পণ্য পরিবহন ডিল', 'Freight deals')}
+                subtitle={T(lang, 'ট্রাক ও লেবার', 'Truck & labor')}
+                icon="📦"
+                compact
+              />
             </div>
           </div>
 
@@ -418,7 +432,13 @@ export function TruckPage(props: Props) {
             </div>
           </div>
 
-          <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'}/>
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind={isMobile ? 'mob-banner' : 'leaderboard'}
+            title={T(lang, 'পণ্য পরিবহন টিপস', 'Freight tips')}
+            icon="📋"
+          />
         </div>
       </div>
     </PageShell>

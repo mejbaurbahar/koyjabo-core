@@ -1,7 +1,7 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, chipBtn, N, Fare } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard } from '../components/AdSlot';
 import { PromoBanner } from '../components/PromoBanner';
 import { SectionHeader } from '../components/SectionHeader';
 import { Icon } from '../components/Icons';
@@ -243,7 +243,15 @@ export function LaunchPage(props: Props) {
               </div>
 
               <PromoBanner tk={tk} lang={lang} page="launch" onNav={onNav}/>
-              <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'mid-rect'}/>
+              <NativeAdCard
+                tk={tk}
+                lang={lang}
+                kind={isMobile?'mob-banner':'mid-rect'}
+                title={T(lang, 'লঞ্চ যাত্রার অফার', 'Launch travel offers')}
+                subtitle={T(lang, 'কেবিন ও ডেক ডিল', 'Cabin & deck deals')}
+                icon="⛴️"
+                compact
+              />
             </div>
           </div>
 
@@ -259,7 +267,13 @@ export function LaunchPage(props: Props) {
             </div>
           </div>
 
-          <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind={isMobile?'mob-banner':'leaderboard'}
+            title={T(lang, 'আরও নদী ভ্রমণ টিপস', 'More river travel tips')}
+            icon="🌊"
+          />
         </div>
       </div>
     </PageShell>

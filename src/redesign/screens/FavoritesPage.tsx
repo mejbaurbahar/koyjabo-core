@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, Tokens } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard } from '../components/AdSlot';
 import { ConfirmModal } from '../components/ConfirmModal';
 import { BUS_DATA } from '../../../constants';
 import { getFavoriteBusIds, setFavoriteBusIds } from '../utils/favorites';
@@ -128,11 +128,21 @@ export function FavoritesPage(props: ScreenProps) {
             })}
           </div>
         ) : (
-          <div style={{ ...card, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '56px 24px', gap: 12, textAlign: 'center' }}>
-            <div style={{ fontFamily: font, fontWeight: 700, fontSize: 18, color: tk.textDim }}>{lbl('No favorites yet', 'এখনো কোনো প্রিয় নেই')}</div>
-            <div style={{ fontFamily: font, fontSize: 14, color: tk.textFaint, maxWidth: 300, lineHeight: 1.5 }}>
-              {lbl('Tap the heart on a real bus route to save it here.', 'বাস রুটের হার্ট চাপলে এখানে সেভ হবে।')}
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 16 }}>
+            <div style={{ ...card, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '56px 24px', gap: 12, textAlign: 'center' }}>
+              <div style={{ fontFamily: font, fontWeight: 700, fontSize: 18, color: tk.textDim }}>{lbl('No favorites yet', 'এখনো কোনো প্রিয় নেই')}</div>
+              <div style={{ fontFamily: font, fontSize: 14, color: tk.textFaint, maxWidth: 300, lineHeight: 1.5 }}>
+                {lbl('Tap the heart on a real bus route to save it here.', 'বাস রুটের হার্ট চাপলে এখানে সেভ হবে।')}
+              </div>
             </div>
+            <NativeAdCard
+              tk={tk}
+              lang={lang}
+              kind="mid-rect"
+              title={lbl('You might like these', 'আপনার পছন্দ হতে পারে')}
+              subtitle={lbl('Curated travel picks', 'নির্বাচিত ভ্রমণ অফার')}
+              icon="✨"
+            />
           </div>
         )}
           <AdSlot tk={tk} lang={lang} kind="multiplex" />

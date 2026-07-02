@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, Tokens } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard } from '../components/AdSlot';
 import { getUserHistory } from '../../../services/analyticsService';
 import { getJourneyHistory, getTodayJourney } from '../../../services/journeyTrackerService';
 
@@ -123,13 +123,23 @@ export function HistoryPage(props: ScreenProps) {
         </div>
 
         {!hasData ? (
-          <div style={{ ...card, padding: '64px 24px', textAlign: 'center' }}>
-            <div style={{ fontFamily: font, fontWeight: 700, fontSize: 20, color: tk.text, marginBottom: 8 }}>
-              {lbl('No real history found', 'কোনো আসল ইতিহাস পাওয়া যায়নি')}
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.2fr 1fr', gap: 20 }}>
+            <div style={{ ...card, padding: '64px 24px', textAlign: 'center' }}>
+              <div style={{ fontFamily: font, fontWeight: 700, fontSize: 20, color: tk.text, marginBottom: 8 }}>
+                {lbl('No real history found', 'কোনো আসল ইতিহাস পাওয়া যায়নি')}
+              </div>
+              <div style={{ fontFamily: font, fontSize: 14, color: tk.textDim, lineHeight: 1.6 }}>
+                {lbl('Search buses, trains, intercity routes, or use community features. Your real activity will appear here.', 'বাস, ট্রেন, আন্তঃজেলা রুট সার্চ করলে বা কমিউনিটি ফিচার ব্যবহার করলে আপনার আসল কার্যকলাপ এখানে দেখা যাবে।')}
+              </div>
             </div>
-            <div style={{ fontFamily: font, fontSize: 14, color: tk.textDim, lineHeight: 1.6 }}>
-              {lbl('Search buses, trains, intercity routes, or use community features. Your real activity will appear here.', 'বাস, ট্রেন, আন্তঃজেলা রুট সার্চ করলে বা কমিউনিটি ফিচার ব্যবহার করলে আপনার আসল কার্যকলাপ এখানে দেখা যাবে।')}
-            </div>
+            <NativeAdCard
+              tk={tk}
+              lang={lang}
+              kind="mid-rect"
+              title={lbl('Explore travel offers', 'ভ্রমণ অফার দেখুন')}
+              subtitle={lbl('Trip ideas & partner deals', 'ট্রিপ আইডিয়া ও পার্টনার ডিল')}
+              icon="🧭"
+            />
           </div>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.4fr 1fr', gap: 20 }}>

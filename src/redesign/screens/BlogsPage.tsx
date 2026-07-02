@@ -1,7 +1,7 @@
 import React from 'react';
 import { KJ_TOKENS, T, SANS, BEN, Tokens, Lang } from '../tokens';
 import { PageShell, PageShellProps } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard } from '../components/AdSlot';
 import { BLOG_POSTS } from '../../../data/blogPosts';
 
 // Category → gradient colors
@@ -218,8 +218,16 @@ export function BlogsPage(props: PageShellProps) {
         </div>
 
         {/* Native ad between rows */}
-        <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'center' }}>
-          <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'mid-rect'} />
+        <div style={{ marginBottom: 24 }}>
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind={isMobile ? 'mob-banner' : 'mid-rect'}
+            title={T(lang, 'পাঠকদের জন্য সুপারিশ', 'Recommended for readers')}
+            subtitle={T(lang, 'ভ্রমণ ও পরিবহন', 'Travel & transport')}
+            icon="📚"
+            compact
+          />
         </div>
 
         {/* Second row */}
@@ -237,9 +245,13 @@ export function BlogsPage(props: PageShellProps) {
         </div>
 
         {/* Footer ad */}
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
-        </div>
+        <NativeAdCard
+          tk={tk}
+          lang={lang}
+          kind={isMobile ? 'mob-banner' : 'leaderboard'}
+          title={T(lang, 'আরও পড়ুন', 'More reads')}
+          icon="📖"
+        />
       </div>
     </PageShell>
   );
