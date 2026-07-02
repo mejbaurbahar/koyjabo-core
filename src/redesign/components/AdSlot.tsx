@@ -167,6 +167,8 @@ export function AdSlot({
         flexShrink: 0,
         margin: '0 auto',
         minHeight: reservedHeight,
+        visibility: filled === true ? 'visible' : 'hidden',
+        pointerEvents: filled === true ? 'auto' : 'none',
       }}
     >
       <RealAd format={format} slot={slot} layout={layout} onFillResult={setFilled} />
@@ -277,6 +279,8 @@ export function NativeAdCard({
         boxSizing: 'border-box',
         width: '100%',
         maxWidth: '100%',
+        visibility: isFilled ? 'visible' : 'hidden',
+        pointerEvents: isFilled ? 'auto' : 'none',
       }}
     >
       {/* Header row: only shown when filled — don't show floating title with no ad */}
