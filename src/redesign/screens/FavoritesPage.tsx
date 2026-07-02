@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, Tokens } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot, NativeAdCard } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 import { ConfirmModal } from '../components/ConfirmModal';
 import { BUS_DATA } from '../../../constants';
 import { getFavoriteBusIds, setFavoriteBusIds } from '../utils/favorites';
@@ -159,6 +159,7 @@ export function FavoritesPage(props: ScreenProps) {
         onConfirm={() => removeTarget && removeFavorite(removeTarget)}
         onClose={() => setRemoveTarget(null)}
       />
+          <AdCluster tk={tk} lang={lang} count={2} isMobile={isMobile}/>
     </PageShell>
   );
 }

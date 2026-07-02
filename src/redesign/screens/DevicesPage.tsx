@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { KJ_TOKENS, T, SANS, BEN } from '../tokens';
 import { PageShell } from './PageShell';
 import { ConfirmModal } from '../components/ConfirmModal';
+import { AdCluster } from '../components/AdSlot';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -68,6 +69,9 @@ export function DevicesPage(props: Props) {
           confirmLabel={T(lang,'হ্যাঁ, সরান','Yes, remove')}
           onClose={()=>setConfirm(c=>({...c,open:false}))}
           onConfirm={()=>setConfirm(c=>({...c,open:false}))}/>
+        <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <AdCluster tk={tk} lang={lang} count={5} isMobile={isMobile}/>
+        </div>
       </div>
     </PageShell>
   );

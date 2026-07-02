@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { STATIONS } from '../../../constants';
 import { KJ_TOKENS, T, SANS, BEN, Tokens } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot, NativeAdCard } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 import { ConfirmModal } from '../components/ConfirmModal';
 import { Icon } from '../components/Icons';
 
@@ -187,6 +187,7 @@ export function SettingsPage(props: ScreenProps) {
       <ConfirmModal tk={tk} lang={lang} open={confirmClear} title={lbl('Clear search history?', 'অনুসন্ধান ইতিহাস মুছবেন?')} message={lbl('All your search history will be permanently deleted.', 'আপনার সমস্ত অনুসন্ধান ইতিহাস স্থায়ীভাবে মুছে যাবে।')} confirmLabel={lbl('Clear', 'মুছুন')} onConfirm={() => setConfirmClear(false)} onClose={() => setConfirmClear(false)} />
       <ConfirmModal tk={tk} lang={lang} open={confirmDelete} title={lbl('Delete account?', 'অ্যাকাউন্ট মুছবেন?')} message={lbl('This action is irreversible. All your data will be permanently deleted.', 'এই পদক্ষেপ অপরিবর্তনীয়।')} confirmLabel={lbl('Delete', 'মুছুন')} onConfirm={() => setConfirmDelete(false)} onClose={() => setConfirmDelete(false)} />
       <ConfirmModal tk={tk} lang={lang} open={confirmSignOut} title={lbl('Sign out?', 'সাইন আউট করবেন?')} message={lbl('You will be signed out of your account.', 'আপনি সাইন আউট হয়ে যাবেন।')} confirmLabel={lbl('Sign out', 'সাইন আউট')} onConfirm={() => { setConfirmSignOut(false); onNav('signin'); }} onClose={() => setConfirmSignOut(false)} />
+          <AdCluster tk={tk} lang={lang} count={3} isMobile={isMobile}/>
     </PageShell>
   );
 }

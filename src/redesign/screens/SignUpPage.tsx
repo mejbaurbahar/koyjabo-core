@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { KJ_TOKENS, T, SANS, BEN } from '../tokens';
 import { PageShell } from './PageShell';
+import { AdCluster } from '../components/AdSlot';
 import { Logo } from '../components/Logo';
 import { Turnstile } from '../components/Turnstile';
 import { signupUser } from '../../services/githubAuthService';
@@ -166,6 +167,9 @@ export function SignUpPage(props: Props) {
         </form>
       </div>
       <style>{`@keyframes kj-spin{to{transform:rotate(360deg)}}`}</style>
+        <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <AdCluster tk={tk} lang={lang} count={5} isMobile={isMobile}/>
+        </div>
     </PageShell>
   );
 }

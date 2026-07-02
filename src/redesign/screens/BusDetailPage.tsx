@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, chipBtn, N, Fare } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot, NativeAdCard } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 import { Pill } from '../components/Pill';
 import { BUS_DATA, STATIONS } from '../../../constants';
 import BusRouteMap from '../../../components/BusRouteMap';
@@ -120,6 +120,7 @@ export function BusDetailPage(props: Props) {
           <BusRating busId={bus.id} busName={bus.name} onBack={() => { setShowRating(false); getBusRatings(bus.id).then(setRatingSummary).catch(() => setRatingSummary(null)); }} onSuccess={() => earnCoins(10, 'Bus review submitted')}/>
         </div>
       </div>
+          <AdCluster tk={tk} lang={lang} count={3} isMobile={isMobile}/>
     </PageShell>
   );
   if (showPhotos) return (
@@ -129,6 +130,7 @@ export function BusDetailPage(props: Props) {
           <BusPhotoGallery busId={bus.id} busName={bus.name} busBnName={bus.bnName} onBack={() => setShowPhotos(false)} onSuccess={() => earnCoins(8, 'Bus photo uploaded')}/>
         </div>
       </div>
+          <AdCluster tk={tk} lang={lang} count={3} isMobile={isMobile}/>
     </PageShell>
   );
 
@@ -287,6 +289,7 @@ export function BusDetailPage(props: Props) {
         userLocation={userLocation}
         currentLocationName={nearestStopName}
       />
+          <AdCluster tk={tk} lang={lang} count={3} isMobile={isMobile}/>
     </PageShell>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { KJ_TOKENS, T, SANS, BEN } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot, NativeAdCard } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 import { Pill } from '../components/Pill';
 import { PromoBanner } from '../components/PromoBanner';
 import { BLOG_POSTS } from '../../../data/blogPosts';
@@ -267,6 +267,7 @@ export function BlogDetailPage(props: Props) {
           </div>
         )}
       </div>
+          <AdCluster tk={tk} lang={lang} count={3} isMobile={isMobile}/>
     </PageShell>
   );
 }

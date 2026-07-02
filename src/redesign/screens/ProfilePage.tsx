@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, Tokens, Lang } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot, NativeAdCard } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 import { ConfirmModal } from '../components/ConfirmModal';
 import { Icon } from '../components/Icons';
 import { SectionHeader } from '../components/SectionHeader';
@@ -220,6 +220,7 @@ export function ProfilePage(props: ScreenProps) {
         onConfirm={() => { logout(); setConfirmSignOut(false); onNav('signin'); }}
         onClose={() => setConfirmSignOut(false)}
       />
+          <AdCluster tk={tk} lang={lang} count={3} isMobile={isMobile}/>
     </PageShell>
   );
 }

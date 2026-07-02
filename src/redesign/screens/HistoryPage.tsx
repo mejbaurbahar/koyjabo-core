@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, Tokens } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot, NativeAdCard } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 import { getUserHistory } from '../../../services/analyticsService';
 import { getJourneyHistory, getTodayJourney } from '../../../services/journeyTrackerService';
 
@@ -210,6 +210,7 @@ export function HistoryPage(props: ScreenProps) {
           <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
         </div>
       </div>
+          <AdCluster tk={tk} lang={lang} count={2} isMobile={isMobile}/>
     </PageShell>
   );
 }

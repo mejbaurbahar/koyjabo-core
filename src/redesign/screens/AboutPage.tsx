@@ -1,7 +1,7 @@
 import React from 'react';
 import { KJ_TOKENS, T, SANS, BEN, Tokens, Lang } from '../tokens';
 import { PageShell, PageShellProps } from './PageShell';
-import { AdSlot, NativeAdCard } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 
 const TEAM = [
   { role: 'Developer', roleBn: 'ডেভেলপার', initials: 'MB', color: '#3b82f6', desc: 'Full-stack, PWA architecture', descBn: 'ফুল-স্ট্যাক, PWA আর্কিটেকচার' },
@@ -304,6 +304,7 @@ export function AboutPage(props: PageShellProps) {
           icon="🎯"
         />
       </div>
+          <AdCluster tk={tk} lang={lang} count={2} isMobile={isMobile}/>
     </PageShell>
   );
 }

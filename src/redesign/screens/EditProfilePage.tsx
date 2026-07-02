@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { KJ_TOKENS, T, SANS, BEN } from '../tokens';
 import { PageShell } from './PageShell';
 import { useAuth } from '../../contexts/AuthContext';
+import { AdCluster } from '../components/AdSlot';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -111,6 +112,9 @@ export function EditProfilePage(props: Props) {
           <button onClick={onBack} style={{ background:'transparent',border:0,color:tk.textDim,fontFamily:SANS,fontSize:13,cursor:'pointer',padding:'8px 0' }}>
             {T(lang,'বাতিল করুন','Cancel')}
           </button>
+        </div>
+        <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <AdCluster tk={tk} lang={lang} count={5} isMobile={isMobile}/>
         </div>
       </div>
     </PageShell>

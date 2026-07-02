@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, Tokens, Lang, N, Fare } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot, NativeAdCard } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 import { Train3D } from '../components/Vehicles3D';
 
 interface ScreenProps {
@@ -337,6 +337,7 @@ export function MetroDetailPage(props: ScreenProps) {
             icon="🧭"
           />
       </div>
+          <AdCluster tk={tk} lang={lang} count={2} isMobile={isMobile}/>
     </PageShell>
   );
 }

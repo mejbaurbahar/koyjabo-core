@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { KJ_TOKENS, T, SANS, BEN } from '../tokens';
 import { PageShell } from './PageShell';
+import { AdCluster } from '../components/AdSlot';
 import { Logo } from '../components/Logo';
 import { forgotPassword, resetPassword } from '../../services/githubAuthService';
 
@@ -108,6 +109,9 @@ export function ForgotPasswordPage(props: Props) {
           </button>
         </form>
       </div>
+        <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <AdCluster tk={tk} lang={lang} count={5} isMobile={isMobile}/>
+        </div>
     </PageShell>
   );
 }

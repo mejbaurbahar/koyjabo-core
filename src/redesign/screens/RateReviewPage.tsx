@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { KJ_TOKENS, T, SANS, BEN } from '../tokens';
 import { PageShell } from './PageShell';
+import { AdCluster } from '../components/AdSlot';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -103,6 +104,9 @@ export function RateReviewPage(props: Props) {
         <button style={{ width:'100%',background:tk.primary,color:tk.primaryInk,border:0,borderRadius:14,padding:'14px 20px',fontFamily:BEN,fontWeight:700,fontSize:16,cursor:'pointer',boxShadow:`0 6px 16px -6px ${tk.primary}` }}>
           {T(lang,'রিভিউ পোস্ট করুন','Post Review')}
         </button>
+        <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <AdCluster tk={tk} lang={lang} count={5} isMobile={isMobile}/>
+        </div>
       </div>
     </PageShell>
   );

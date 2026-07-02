@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Tokens, Lang, SANS, BEN, T } from '../tokens';
+import { Tokens, Lang, SANS, BEN } from '../tokens';
 
 type AdKind = 'leaderboard' | 'mid-rect' | 'mob-banner' | 'anchor' | 'in-article' | 'multiplex';
 
@@ -179,6 +179,58 @@ export function AdSlot({
 // Collapses to null when unfilled — no empty box, no layout gap.
 // Use in empty content states (no favorites/history/results) and in
 // content columns where a bare AdSense iframe would clash with UI cards.
+// ─── AdCluster ────────────────────────────────────────────────────────────────
+// Renders a diverse block of N NativeAdCards. Used to top up pages that fall
+// below the site-wide floor of 5 ad slots. Kinds rotate so each card fills a
+// distinct AdSense unit (multiplex + in-article + leaderboard + mid-rect).
+export function AdCluster({
+  tk,
+  lang,
+  count,
+  isMobile,
+}: {
+  tk: Tokens;
+  lang: Lang;
+  count: number;
+  isMobile: boolean;
+}) {
+  if (count <= 0) return null;
+  const bannerKind: AdKind = isMobile ? 'mob-banner' : 'leaderboard';
+  const midKind: AdKind = isMobile ? 'mob-banner' : 'mid-rect';
+  const preset: Array<{
+    kind: AdKind;
+    titleBn: string;
+    titleEn: string;
+    subBn?: string;
+    subEn?: string;
+    icon: string;
+    compact?: boolean;
+  }> = [
+    { kind: 'in-article', titleBn: 'সংশ্লিষ্ট বিষয়বস্তু', titleEn: 'Related content', icon: '📰' },
+    { kind: 'multiplex', titleBn: 'আরও দেখুন', titleEn: 'More like this', subBn: 'ভ্রমণ ও পরিবহন', subEn: 'Travel & transport', icon: '🧭' },
+    { kind: bannerKind, titleBn: 'পার্টনার অফার', titleEn: 'Partner offers', icon: '🎯' },
+    { kind: midKind, titleBn: 'আপনার জন্য প্রস্তাবিত', titleEn: 'Recommended for you', subBn: 'ট্রিপ ও ডিল', subEn: 'Trips & deals', icon: '🎁', compact: true },
+    { kind: 'in-article', titleBn: 'ভ্রমণ ও যাত্রা টিপস', titleEn: 'Travel & journey tips', icon: '💡' },
+  ];
+  const slots = preset.slice(0, Math.min(count, preset.length));
+  return (
+    <>
+      {slots.map((s, i) => (
+        <NativeAdCard
+          key={`ad-cluster-${i}`}
+          tk={tk}
+          lang={lang}
+          kind={s.kind}
+          title={lang === 'bn' ? s.titleBn : s.titleEn}
+          subtitle={s.subBn ? (lang === 'bn' ? s.subBn : s.subEn) : undefined}
+          icon={s.icon}
+          compact={s.compact}
+        />
+      ))}
+    </>
+  );
+}
+
 export function NativeAdCard({
   tk,
   lang,
@@ -225,88 +277,60 @@ export function NativeAdCard({
         maxWidth: '100%',
       }}
     >
-      {/* Header row: title (optional) + Sponsored pill */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: title ? 'space-between' : 'flex-end',
-          gap: 8,
-          minHeight: 18,
-        }}
-      >
-        {title && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
-            {icon && (
-              <span
-                style={{
-                  width: 26,
-                  height: 26,
-                  borderRadius: 8,
-                  background: tk.primarySoft,
-                  color: tk.primary,
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                  fontSize: 14,
-                }}
-              >
-                {icon}
-              </span>
-            )}
-            <div style={{ minWidth: 0 }}>
+      {/* Header row: title (optional). No "Sponsored" pill —
+         the AdSense iframe carries its own AdChoices indicator. */}
+      {title && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, minHeight: 18 }}>
+          {icon && (
+            <span
+              style={{
+                width: 26,
+                height: 26,
+                borderRadius: 8,
+                background: tk.primarySoft,
+                color: tk.primary,
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                fontSize: 14,
+              }}
+            >
+              {icon}
+            </span>
+          )}
+          <div style={{ minWidth: 0 }}>
+            <div
+              style={{
+                fontFamily: font,
+                fontSize: 13,
+                fontWeight: 700,
+                color: tk.text,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {title}
+            </div>
+            {subtitle && (
               <div
                 style={{
-                  fontFamily: font,
-                  fontSize: 13,
-                  fontWeight: 700,
-                  color: tk.text,
+                  fontFamily: SANS,
+                  fontSize: 10,
+                  color: tk.textFaint,
+                  marginTop: 1,
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
                 }}
               >
-                {title}
+                {subtitle}
               </div>
-              {subtitle && (
-                <div
-                  style={{
-                    fontFamily: SANS,
-                    fontSize: 10,
-                    color: tk.textFaint,
-                    marginTop: 1,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {subtitle}
-                </div>
-              )}
-            </div>
+            )}
           </div>
-        )}
-        <span
-          aria-label="Sponsored"
-          style={{
-            background: tk.panelMuted,
-            border: `1px solid ${tk.line}`,
-            borderRadius: 999,
-            padding: '2px 8px',
-            fontFamily: SANS,
-            fontSize: 9,
-            fontWeight: 700,
-            letterSpacing: 0.8,
-            color: tk.textFaint,
-            textTransform: 'uppercase',
-            whiteSpace: 'nowrap',
-            flexShrink: 0,
-          }}
-        >
-          {T(lang, 'স্পনসর', 'Sponsored')}
-        </span>
-      </div>
+        </div>
+      )}
 
       {/* Ad body — reserve height while detecting so AdSense can fill */}
       <div

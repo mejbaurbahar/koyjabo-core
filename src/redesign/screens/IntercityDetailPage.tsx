@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { KJ_TOKENS, SANS, BEN, T, Tokens, Lang } from '../tokens';
-import { AdSlot, NativeAdCard } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 import { PageShell } from './PageShell';
 import { findOperator, findRoutesByFromTo } from '../../../data/intercityOperatorData';
 import BusRating from '../../../components/BusRating';
@@ -445,6 +445,7 @@ export function IntercityDetailPage(props: Props) {
           />
         </div>
       </div>
+          <AdCluster tk={tk} lang={lang} count={3} isMobile={isMobile}/>
     </PageShell>
   );
 
@@ -468,6 +469,7 @@ export function IntercityDetailPage(props: Props) {
           />
         </div>
       </div>
+          <AdCluster tk={tk} lang={lang} count={3} isMobile={isMobile}/>
     </PageShell>
   );
 
@@ -879,6 +881,7 @@ export function IntercityDetailPage(props: Props) {
       </div>
 
     </div>
+          <AdCluster tk={tk} lang={lang} count={3} isMobile={isMobile}/>
     </PageShell>
   );
 }

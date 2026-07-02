@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { KJ_TOKENS, SANS, BEN, T, Tokens, Lang } from '../tokens';
-import { AdSlot, NativeAdCard } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 import { PageShell } from './PageShell';
 import { BUS_DATA, STATIONS } from '../../../constants';
 import { trackBusSearch } from '../../../services/analyticsService';
@@ -448,6 +448,7 @@ export function RouteResultsV2Page(props: Props) {
         </div>
       </div>
     </div>
+          <AdCluster tk={tk} lang={lang} count={1} isMobile={isMobile}/>
     </PageShell>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, N, Fare } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot, NativeAdCard } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 import { Pill } from '../components/Pill';
 import { BD_TRAIN_ROUTES, TRAIN_STATIONS } from '../../../data/bangladeshTrainData';
 import { useDocumentTitle, setCanonicalUrl } from '../utils/useDocumentTitle';
@@ -342,6 +342,7 @@ export function TrainDetailPage(props: Props) {
           </div>
         </div>
       </div>
+          <AdCluster tk={tk} lang={lang} count={1} isMobile={isMobile}/>
     </PageShell>
   );
 }
