@@ -95,11 +95,12 @@ function RealAd({
     }, 25000);
 
     if ('IntersectionObserver' in window) {
+      const scroller = ins.closest('[data-app-scroller]') as Element | null;
       const observer = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) { observer.disconnect(); doPush(); }
         },
-        { rootMargin: '400px 0px' }
+        { root: scroller || null, rootMargin: '400px 0px' }
       );
       observer.observe(ins);
       return () => {
@@ -252,22 +253,23 @@ export function NativeAdCard({
   const [filled, setFilled] = useState<boolean | null>(null);
   const font = lang === 'bn' ? BEN : SANS;
 
-  // Detecting: reserve height so AdSense measures a real slot.
+  // Detecting: reserve height so AdSense measures a real slot (transparent — no ghost dark box).
   // Unfilled: collapse entirely — no ghost card in the layout.
   if (filled === false) return null;
 
   const reservedHeight = filled === null ? h : h;
   const padY = compact ? 10 : 14;
   const padX = compact ? 12 : 16;
+  const isFilled = filled === true;
 
   return (
     <div
       style={{
-        background: tk.panel,
-        border: `1px solid ${tk.line}`,
+        background: isFilled ? tk.panel : 'transparent',
+        border: isFilled ? `1px solid ${tk.line}` : 'none',
         borderRadius: 18,
-        padding: `${padY}px ${padX}px`,
-        boxShadow: tk.shadow,
+        padding: isFilled ? `${padY}px ${padX}px` : 0,
+        boxShadow: isFilled ? tk.shadow : 'none',
         display: 'flex',
         flexDirection: 'column',
         gap: 10,
@@ -277,9 +279,8 @@ export function NativeAdCard({
         maxWidth: '100%',
       }}
     >
-      {/* Header row: title (optional). No "Sponsored" pill —
-         the AdSense iframe carries its own AdChoices indicator. */}
-      {title && (
+      {/* Header row: only shown when filled — don't show floating title with no ad */}
+      {title && isFilled && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, minHeight: 18 }}>
           {icon && (
             <span

@@ -66,9 +66,10 @@ function AdsenseUnit({ slot, format = 'auto', layout, onFillResult }: { slot: st
     }, 25000);
 
     if ('IntersectionObserver' in window) {
+      const scroller = ins.closest('[data-app-scroller]') as Element | null;
       const observer = new IntersectionObserver(
         ([entry]) => { if (entry.isIntersecting) { observer.disconnect(); doPush(); } },
-        { rootMargin: '400px 0px' }
+        { root: scroller || null, rootMargin: '400px 0px' }
       );
       observer.observe(ins);
       return () => { observer.disconnect(); clearTimeout(timer.current); clearTimeout(blockTimeout); clearTimeout(pollId); };
