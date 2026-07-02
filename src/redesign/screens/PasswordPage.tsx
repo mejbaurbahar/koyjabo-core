@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { KJ_TOKENS, T, SANS, BEN } from '../tokens';
 import { PageShell } from './PageShell';
+import { AdCluster } from '../components/AdSlot';
 import { ConfirmModal } from '../components/ConfirmModal';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
@@ -92,6 +93,9 @@ export function PasswordPage(props: Props) {
         <ConfirmModal tk={tk} lang={lang} open={confirm} title={T(lang,'সাইন আউট','Sign out all')} message={T(lang,'অন্য সব ডিভাইস সাইন আউট হবে।','All other devices will be signed out.')}
           confirmLabel={T(lang,'হ্যাঁ','Yes')} onClose={()=>setConfirm(false)} onConfirm={()=>setConfirm(false)}/>
       </div>
+        <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <AdCluster tk={tk} lang={lang} count={5} isMobile={isMobile}/>
+        </div>
     </PageShell>
   );
 }

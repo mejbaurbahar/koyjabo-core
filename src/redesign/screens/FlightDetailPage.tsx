@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, chipBtn } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 import { Stars } from '../components/Stars';
 import { isAdFree } from '../utils/koyCoinService';
 
@@ -235,13 +235,38 @@ export function FlightDetailPage(props: Props) {
             </div>
           )}
 
-          {!adFree && <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'mid-rect'} />}
           {!adFree && (
-              <AdSlot tk={tk} lang={lang} kind="multiplex" />
+            <NativeAdCard
+              tk={tk}
+              lang={lang}
+              kind={isMobile?'mob-banner':'mid-rect'}
+              title={T(lang, 'এই রুটে ফ্লাইট অফার', 'Flight offers on this route')}
+              icon="✈️"
+              compact
+            />
           )}
-          {!adFree && <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'} />}
+          {!adFree && (
+            <NativeAdCard
+              tk={tk}
+              lang={lang}
+              kind="multiplex"
+              title={T(lang, 'সংশ্লিষ্ট ভ্রমণ', 'Related travel')}
+              subtitle={T(lang, 'হোটেল, ট্রান্সফার, বীমা', 'Hotels, transfers, insurance')}
+              icon="🧳"
+            />
+          )}
+          {!adFree && (
+            <NativeAdCard
+              tk={tk}
+              lang={lang}
+              kind={isMobile?'mob-banner':'leaderboard'}
+              title={T(lang, 'বাজেট ভ্রমণ টিপস', 'Budget travel tips')}
+              icon="💰"
+            />
+          )}
         </div>
       </div>
+          <AdCluster tk={tk} lang={lang} count={2} isMobile={isMobile}/>
     </PageShell>
   );
 }

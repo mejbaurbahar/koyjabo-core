@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef, useCallback } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, chipBtn, N } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 import { PromoBanner } from '../components/PromoBanner';
 import { SectionHeader } from '../components/SectionHeader';
 import { Pill } from '../components/Pill';
@@ -254,9 +254,13 @@ export function LocalBusPage(props: Props) {
                       return (
                         <React.Fragment key={r.id||i}>
                           {i === 5 && (
-                            <div style={{ display:'flex', justifyContent:'center' }}>
-                              <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
-                            </div>
+                            <NativeAdCard
+                              tk={tk}
+                              lang={lang}
+                              kind={isMobile?'mob-banner':'leaderboard'}
+                              title={T(lang, 'এই রুটের জন্য অফার', 'Offers for this route')}
+                              icon="🎯"
+                            />
                           )}
                           <div onClick={()=>{ trackBusSearch(r.id, r.name); onNav('bus-detail', { busId: r.id, from: fromInput, to: toInput }); }} style={{ ...card(14), display:'flex', alignItems:'center', gap:12, cursor:'pointer' }}>
                             <div style={{ width:44, height:44, borderRadius:12, flexShrink:0, background:`linear-gradient(135deg,${col}cc,${col})`, color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:SANS, fontWeight:800, fontSize:13 }}>{initials}</div>
@@ -353,7 +357,16 @@ export function LocalBusPage(props: Props) {
                 </button>
               </div>
               <PromoBanner tk={tk} lang={lang} page="bus" onNav={onNav}/>
-              <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'mid-rect'}/>
+              <NativeAdCard
+                tk={tk}
+                lang={lang}
+                kind={isMobile?'mob-banner':'mid-rect'}
+                title={T(lang, 'ঢাকা যাত্রা অফার', 'Dhaka commute offers')}
+                subtitle={T(lang, 'রাইড ও পরিবহন ডিল', 'Ride & transit deals')}
+                icon="🛵"
+                compact
+              />
+
               <div style={card(14)}>
                 <div style={{ fontFamily:BEN, fontWeight:700, fontSize:13, color:tk.text, marginBottom:10 }}>
                   {T(lang, getUserHistory().busSearches?.length >= 3 ? 'আপনার সেরা বাস' : 'জনপ্রিয় বাস', getUserHistory().busSearches?.length >= 3 ? 'Your top buses' : 'Popular buses')}
@@ -370,9 +383,16 @@ export function LocalBusPage(props: Props) {
             </div>
           </div>
 
-          <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind={isMobile?'mob-banner':'leaderboard'}
+            title={T(lang, 'আরও ঢাকা যাত্রা টিপস', 'More Dhaka commute tips')}
+            icon="🚏"
+          />
         </div>
       </div>
+          <AdCluster tk={tk} lang={lang} count={2} isMobile={isMobile}/>
     </PageShell>
   );
 }

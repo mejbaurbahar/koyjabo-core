@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { KJ_TOKENS, Tokens, Lang, SANS, BEN, T, N } from '../tokens';
 import { TopBar } from '../components/TopBar';
 import { MobileTabBar } from '../components/MobileTabBar';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard } from '../components/AdSlot';
 import { PromoBanner } from '../components/PromoBanner';
 import { Icon } from '../components/Icons';
 import { Pill } from '../components/Pill';
@@ -1266,14 +1266,24 @@ function SavedRoutes({ tk, lang, isMobile, onNav }: { tk: Tokens; lang: Lang; is
 
   if (isEmpty) {
     return (
-      <div style={{ background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 16, padding: '24px 16px', textAlign: 'center' }}>
-        <div style={{ fontSize: 32, marginBottom: 8 }}>🔖</div>
-        <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 14, fontWeight: 600, color: tk.text, marginBottom: 4 }}>
-          {T(lang, 'কোনো সেভ করা রুট নেই', 'No saved routes yet')}
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 12 }}>
+        <div style={{ background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 16, padding: '24px 16px', textAlign: 'center' }}>
+          <div style={{ fontSize: 32, marginBottom: 8 }}>🔖</div>
+          <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 14, fontWeight: 600, color: tk.text, marginBottom: 4 }}>
+            {T(lang, 'কোনো সেভ করা রুট নেই', 'No saved routes yet')}
+          </div>
+          <div style={{ fontFamily: SANS, fontSize: 12, color: tk.textFaint }}>
+            {T(lang, 'বাস বিস্তারিতে ❤️ আইকন চাপুন সেভ করতে', 'Tap ❤️ on any bus detail page to save')}
+          </div>
         </div>
-        <div style={{ fontFamily: SANS, fontSize: 12, color: tk.textFaint }}>
-          {T(lang, 'বাস বিস্তারিতে ❤️ আইকন চাপুন সেভ করতে', 'Tap ❤️ on any bus detail page to save')}
-        </div>
+        <NativeAdCard
+          tk={tk}
+          lang={lang}
+          kind="mid-rect"
+          title={T(lang, 'আপনার জন্য প্রস্তাবিত', 'Recommended for you')}
+          subtitle={T(lang, 'ভ্রমণ অফার ও ডিল', 'Travel offers & deals')}
+          icon="✨"
+        />
       </div>
     );
   }
@@ -1946,9 +1956,18 @@ export function HomePage({
 
             {/* Right: desktop only — minWidth:0 prevents grid overflow */}
             {!isMobile && (
-              <div style={{ minWidth: 0, overflow: 'hidden' }}>
+              <div style={{ minWidth: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: 12 }}>
                 <TravelHeroScene tk={tk} height={280} />
                 <OfflinePWACard tk={tk} lang={lang} />
+                <NativeAdCard
+                  tk={tk}
+                  lang={lang}
+                  kind="mid-rect"
+                  title={T(lang, 'ভ্রমণ পার্টনার অফার', 'Travel partner offers')}
+                  subtitle={T(lang, 'নির্বাচিত ডিল ও ছাড়', 'Curated deals & discounts')}
+                  icon="🎁"
+                  compact
+                />
               </div>
             )}
           </div>
@@ -1992,9 +2011,16 @@ export function HomePage({
           <PromoBanner tk={tk} lang={lang} page="home" onNav={onNav} />
         </div>
 
-        {/* ── Ad: leaderboard/mob-banner ── */}
-        <div style={{ ...section, display: 'flex', justifyContent: 'center' }}>
-          <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
+        {/* ── Ad: leaderboard/mob-banner (native card) ── */}
+        <div style={section}>
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind={isMobile ? 'mob-banner' : 'leaderboard'}
+            title={T(lang, 'অংশীদার অফার', 'Partner offers')}
+            subtitle={T(lang, 'ভ্রমণ ও পরিবহন', 'Travel & transport')}
+            icon="🎯"
+          />
         </div>
 
         {/* ── Mode tiles ── */}
@@ -2030,9 +2056,15 @@ export function HomePage({
           </div>
         </div>
 
-        {/* ── Ad strip ── */}
-        <div style={{ ...section, display: 'flex', justifyContent: 'center' }}>
-          <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
+        {/* ── Ad strip (native card) ── */}
+        <div style={section}>
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind={isMobile ? 'mob-banner' : 'leaderboard'}
+            title={T(lang, 'জনপ্রিয় ভ্রমণ ডিল', 'Popular travel deals')}
+            icon="🧳"
+          />
         </div>
 
         {/* ── AdIntentRow ── */}
@@ -2050,9 +2082,15 @@ export function HomePage({
           <KoyJaboStory tk={tk} lang={lang} onNav={onNav} />
         </div>
 
-        {/* ── Ad strip ── */}
-        <div style={{ ...section, display: 'flex', justifyContent: 'center' }}>
-          <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
+        {/* ── Ad strip (native card) ── */}
+        <div style={section}>
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind={isMobile ? 'mob-banner' : 'leaderboard'}
+            title={T(lang, 'পরিবহন ও ভ্রমণ', 'Transport & travel')}
+            icon="🚀"
+          />
         </div>
 
         {/* ── Metro Live ── */}
@@ -2067,9 +2105,16 @@ export function HomePage({
           <MetroLiveStrip tk={tk} lang={lang} isMobile={isMobile} />
         </div>
 
-        {/* ── Ad strip ── */}
-        <div style={{ ...section, display: 'flex', justifyContent: 'center' }}>
-          <AdSlot tk={tk} lang={lang} kind="in-article" />
+        {/* ── In-article native card ── */}
+        <div style={section}>
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind="in-article"
+            title={T(lang, 'সংশ্লিষ্ট বিষয়বস্তু', 'Related content')}
+            subtitle={T(lang, 'ভ্রমণ ও পরিবহন বিষয়ে', 'Around travel & transport')}
+            icon="📰"
+          />
         </div>
 
         {/* ── Saved Routes ── */}
@@ -2084,9 +2129,15 @@ export function HomePage({
           <SavedRoutes tk={tk} lang={lang} isMobile={isMobile} onNav={onNav} />
         </div>
 
-        {/* ── Ad strip ── */}
-        <div style={{ ...section, display: 'flex', justifyContent: 'center' }}>
-          <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
+        {/* ── Ad strip (native card) ── */}
+        <div style={section}>
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind={isMobile ? 'mob-banner' : 'leaderboard'}
+            title={T(lang, 'আপনার পছন্দের রুটের জন্য', 'For your favorite routes')}
+            icon="⭐"
+          />
         </div>
 
         {/* ── Popular routes + AI card + mid-rect + Emergency (2-col desktop) ── */}
@@ -2116,7 +2167,15 @@ export function HomePage({
 
             {/* Right column */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <AdSlot tk={tk} lang={lang} kind="mid-rect" />
+              <NativeAdCard
+                tk={tk}
+                lang={lang}
+                kind="mid-rect"
+                title={T(lang, 'সংশ্লিষ্ট অফার', 'Related offers')}
+                subtitle={T(lang, 'পরিবহন ও ভ্রমণ', 'Transport & travel')}
+                icon="🎯"
+                compact
+              />
               <EmergencyGrid tk={tk} lang={lang} />
             </div>
           </div>

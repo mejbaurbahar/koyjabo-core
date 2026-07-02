@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { KJ_TOKENS, T, SANS, BEN } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 import { Bus3D, Train3D, Plane3D, Launch3D } from '../components/Vehicles3D';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
@@ -204,7 +204,13 @@ export function VehicleDetailPage(props: Props) {
                 )}
               </div>
             )}
-            <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
+            <NativeAdCard
+              tk={tk}
+              lang={lang}
+              kind={isMobile?'mob-banner':'leaderboard'}
+              title={T(lang, 'এই যাত্রার জন্য অফার', 'Offers for this journey')}
+              icon="🎯"
+            />
           </div>
 
           {!isMobile && (
@@ -218,11 +224,20 @@ export function VehicleDetailPage(props: Props) {
                 ))}
                 <p style={{ fontFamily:BEN,fontSize:11,opacity:0.7,marginTop:10 }}>ℹ️ {T(lang,'শুধু তথ্য · টিকেট বিক্রয় নেই।','Info only · no ticket sales.')}</p>
               </div>
-              <AdSlot tk={tk} lang={lang} kind="mid-rect"/>
+              <NativeAdCard
+                tk={tk}
+                lang={lang}
+                kind="mid-rect"
+                title={T(lang, 'যাত্রীদের জন্য', 'For your trip')}
+                subtitle={T(lang, 'ভ্রমণ ও পার্টনার ডিল', 'Travel & partner deals')}
+                icon="🎁"
+                compact
+              />
             </div>
           )}
         </div>
       </div>
+          <AdCluster tk={tk} lang={lang} count={3} isMobile={isMobile}/>
     </PageShell>
   );
 }

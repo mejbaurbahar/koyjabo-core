@@ -1,7 +1,7 @@
 import React from 'react';
 import { KJ_TOKENS, T, SANS, BEN, Tokens, Lang } from '../tokens';
 import { PageShell, PageShellProps } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 
 const FEATURES = [
   {
@@ -325,11 +325,23 @@ export function WhyPage(props: PageShellProps) {
         </div>
 
         {/* Ads */}
-          <AdSlot tk={tk} lang={lang} kind="multiplex" />
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
-        </div>
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind="multiplex"
+            title={lbl('More like this', 'আরও দেখুন')}
+            subtitle={lbl('Travel & transport', 'ভ্রমণ ও পরিবহন')}
+            icon="🧭"
+          />
+        <NativeAdCard
+          tk={tk}
+          lang={lang}
+          kind={isMobile ? 'mob-banner' : 'leaderboard'}
+          title={lbl('Partner offers', 'পার্টনার অফার')}
+          icon="🎯"
+        />
       </div>
+          <AdCluster tk={tk} lang={lang} count={3} isMobile={isMobile}/>
     </PageShell>
   );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { KJ_TOKENS, T, SANS, BEN } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -80,9 +80,23 @@ export function MetroPassPage(props: Props) {
             ))}
           </div>
         </div>
-          <AdSlot tk={tk} lang={lang} kind="multiplex" />
-        <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind="multiplex"
+            title={T(lang, 'মেট্রো যাত্রীদের অফার', 'Offers for metro riders')}
+            subtitle={T(lang, 'রিচার্জ ও পেমেন্ট', 'Recharge & payment')}
+            icon="🎫"
+          />
+        <NativeAdCard
+          tk={tk}
+          lang={lang}
+          kind={isMobile?'mob-banner':'leaderboard'}
+          title={T(lang, 'পরিবহন ডিল', 'Transit deals')}
+          icon="🚇"
+        />
       </div>
+          <AdCluster tk={tk} lang={lang} count={3} isMobile={isMobile}/>
     </PageShell>
   );
 }

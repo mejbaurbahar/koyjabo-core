@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { KJ_TOKENS, SANS, BEN, T, Tokens, Lang } from '../tokens';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 import { PageShell } from './PageShell';
 import { findOperator, findRoutesByFromTo } from '../../../data/intercityOperatorData';
 import BusRating from '../../../components/BusRating';
@@ -445,6 +445,7 @@ export function IntercityDetailPage(props: Props) {
           />
         </div>
       </div>
+          <AdCluster tk={tk} lang={lang} count={3} isMobile={isMobile}/>
     </PageShell>
   );
 
@@ -468,6 +469,7 @@ export function IntercityDetailPage(props: Props) {
           />
         </div>
       </div>
+          <AdCluster tk={tk} lang={lang} count={3} isMobile={isMobile}/>
     </PageShell>
   );
 
@@ -699,8 +701,16 @@ export function IntercityDetailPage(props: Props) {
           <div style={{ marginBottom: 24 }}>{tabContent()}</div>
 
           {/* Inline ad */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'center', marginBottom: 24 }}>
-            <AdSlot tk={tk} lang={lang} kind="mid-rect" />
+          <div style={{ marginBottom: 24 }}>
+            <NativeAdCard
+              tk={tk}
+              lang={lang}
+              kind="mid-rect"
+              title={T(lang, 'এই রুটের জন্য অফার', 'Offers for this route')}
+              subtitle={T(lang, 'বুকিং ও ভ্রমণ ডিল', 'Booking & travel deals')}
+              icon="🎯"
+              compact
+            />
           </div>
 
           {/* Book Online — affiliate ticket platforms (hidden until partner approval) */}
@@ -777,9 +787,13 @@ export function IntercityDetailPage(props: Props) {
           {/* Travel Packages */}
           <TravelPackagesSection tk={tk} lang={lang} toCity={toCity} />
 
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
-          </div>
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind={isMobile ? 'mob-banner' : 'leaderboard'}
+            title={T(lang, 'গন্তব্যে আরও কিছু', 'More at your destination')}
+            icon="📍"
+          />
         </div>
 
         {/* Right sidebar — desktop only */}
@@ -867,6 +881,7 @@ export function IntercityDetailPage(props: Props) {
       </div>
 
     </div>
+          <AdCluster tk={tk} lang={lang} count={3} isMobile={isMobile}/>
     </PageShell>
   );
 }

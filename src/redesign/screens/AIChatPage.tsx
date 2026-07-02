@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { STATIONS } from '../../../constants';
 import { KJ_TOKENS, T, SANS, BEN, chipBtn } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, AdCluster } from '../components/AdSlot';
 import { Icon } from '../components/Icons';
 import { askGeminiRoute, ChatMessage } from '../../../services/geminiService';
 import { askGitHubModels } from '../../../services/githubModelsService';
@@ -438,6 +438,11 @@ export function AIChatPage(props: Props) {
           </div>
         </div>
       </div>
+      {!isMobile && (
+        <div style={{ padding: '20px 40px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <AdCluster tk={tk} lang={lang} count={5} isMobile={isMobile}/>
+        </div>
+      )}
     </PageShell>
   );
 }

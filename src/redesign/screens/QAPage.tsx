@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { KJ_TOKENS, T, SANS, BEN } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -53,11 +53,36 @@ export function QAPage(props: Props) {
           ))}
         </div>
 
-        {items.length===0 && <div style={{ textAlign:'center',padding:40,color:tk.textFaint,fontFamily:BEN }}>{T(lang,'কোনো ফলাফল নেই।','No results found.')}</div>}
+        {items.length===0 && (
+          <>
+            <div style={{ textAlign:'center',padding:40,color:tk.textFaint,fontFamily:BEN }}>{T(lang,'কোনো ফলাফল নেই।','No results found.')}</div>
+            <NativeAdCard
+              tk={tk}
+              lang={lang}
+              kind="in-article"
+              title={T(lang, 'সংশ্লিষ্ট সাহায্য', 'Related help')}
+              icon="💡"
+            />
+          </>
+        )}
 
-        <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
-          <AdSlot tk={tk} lang={lang} kind="multiplex" />
+        <NativeAdCard
+          tk={tk}
+          lang={lang}
+          kind={isMobile?'mob-banner':'leaderboard'}
+          title={T(lang, 'সহায়ক তথ্য ও অফার', 'Helpful info & offers')}
+          icon="💬"
+        />
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind="multiplex"
+            title={T(lang, 'আরও দেখুন', 'More like this')}
+            subtitle={T(lang, 'ভ্রমণ ও পরিবহন', 'Travel & transport')}
+            icon="🧭"
+          />
       </div>
+          <AdCluster tk={tk} lang={lang} count={2} isMobile={isMobile}/>
     </PageShell>
   );
 }

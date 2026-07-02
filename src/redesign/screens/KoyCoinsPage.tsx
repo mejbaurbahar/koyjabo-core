@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, N } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 import {
   getBalance, isAdFree, getAdFreeUntil, getTransactions,
   activateAdFree, claimDailyBonus, claimOneTimeBonus, isOneTimeClaimed,
@@ -273,12 +273,32 @@ export function KoyCoinsPage(props: Props) {
             </div>
           )}
         </div>
-          <AdSlot tk={tk} lang={lang} kind="in-article" />
-          <AdSlot tk={tk} lang={lang} kind="multiplex" />
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
-          <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind="in-article"
+            title={T(lang, 'কয়েন খরচের অফার', 'Coin-worthy offers')}
+            icon="🪙"
+          />
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind="multiplex"
+            title={T(lang, 'আরও দেখুন', 'More like this')}
+            subtitle={T(lang, 'রিওয়ার্ড ও অফার', 'Rewards & offers')}
+            icon="🎁"
+          />
+        <div style={{ marginBottom: 20 }}>
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind={isMobile ? 'mob-banner' : 'leaderboard'}
+            title={T(lang, 'পার্টনার অফার', 'Partner offers')}
+            icon="🎯"
+          />
         </div>
       </div>
+          <AdCluster tk={tk} lang={lang} count={2} isMobile={isMobile}/>
     </PageShell>
   );
 }

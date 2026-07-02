@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { KJ_TOKENS, SANS, BEN, T, Tokens, Lang } from '../tokens';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 import { PageShell } from './PageShell';
 import { BUS_DATA, STATIONS } from '../../../constants';
 import { trackBusSearch } from '../../../services/analyticsService';
@@ -334,34 +334,53 @@ export function RouteResultsV2Page(props: Props) {
         {/* Results list */}
         <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 14 }}>
           {RESULTS.length === 0 && (
-            <div style={{ background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 16, padding: '32px 24px', textAlign: 'center' }}>
-              <div style={{ fontSize: 40, marginBottom: 12 }}>🔍</div>
-              <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 16, fontWeight: 700, color: tk.text, marginBottom: 8 }}>
-                {lbl('No buses found', 'কোনো বাস পাওয়া যায়নি')}
+            <>
+              <div style={{ background: tk.panel, border: `1px solid ${tk.line}`, borderRadius: 16, padding: '32px 24px', textAlign: 'center' }}>
+                <div style={{ fontSize: 40, marginBottom: 12 }}>🔍</div>
+                <div style={{ fontFamily: lang === 'bn' ? BEN : SANS, fontSize: 16, fontWeight: 700, color: tk.text, marginBottom: 8 }}>
+                  {lbl('No buses found', 'কোনো বাস পাওয়া যায়নি')}
+                </div>
+                <div style={{ fontFamily: SANS, fontSize: 13, color: tk.textFaint }}>
+                  {lbl('Try adjusting filters or changing From/To', 'ফিল্টার পরিবর্তন করুন বা রুট বদলান')}
+                </div>
+                {activeFilterCount > 0 && (
+                  <button onClick={() => { setActiveTOD(null); setFareMin(20); setFareMax(1200); setSelTypes(new Set()); setSelOps(new Set()); setSelAmenities(new Set()); setNonAcOnly(false); }}
+                    style={{ marginTop: 16, background: tk.primarySoft, border: `1px solid ${tk.primary}`, borderRadius: 10, padding: '8px 18px', cursor: 'pointer', fontFamily: SANS, fontSize: 13, color: tk.primary, fontWeight: 600 }}>
+                    {lbl('Clear all filters', 'সব ফিল্টার মুছুন')}
+                  </button>
+                )}
               </div>
-              <div style={{ fontFamily: SANS, fontSize: 13, color: tk.textFaint }}>
-                {lbl('Try adjusting filters or changing From/To', 'ফিল্টার পরিবর্তন করুন বা রুট বদলান')}
-              </div>
-              {activeFilterCount > 0 && (
-                <button onClick={() => { setActiveTOD(null); setFareMin(20); setFareMax(1200); setSelTypes(new Set()); setSelOps(new Set()); setSelAmenities(new Set()); setNonAcOnly(false); }}
-                  style={{ marginTop: 16, background: tk.primarySoft, border: `1px solid ${tk.primary}`, borderRadius: 10, padding: '8px 18px', cursor: 'pointer', fontFamily: SANS, fontSize: 13, color: tk.primary, fontWeight: 600 }}>
-                  {lbl('Clear all filters', 'সব ফিল্টার মুছুন')}
-                </button>
-              )}
-            </div>
+              <NativeAdCard
+                tk={tk}
+                lang={lang}
+                kind="in-article"
+                title={lbl('Related travel options', 'সংশ্লিষ্ট ভ্রমণ বিকল্প')}
+                subtitle={lbl('Alternate routes & deals', 'বিকল্প রুট ও ডিল')}
+                icon="🧭"
+              />
+            </>
           )}
 
           {RESULTS.map((r, idx) => (
             <React.Fragment key={r.busId}>
               {idx === 2 && (
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <AdSlot tk={tk} lang={lang} kind={isMobile ? 'mob-banner' : 'leaderboard'} />
-                </div>
+                <NativeAdCard
+                  tk={tk}
+                  lang={lang}
+                  kind={isMobile ? 'mob-banner' : 'leaderboard'}
+                  title={lbl('Related deals for this route', 'এই রুটের জন্য সংশ্লিষ্ট ডিল')}
+                  icon="🎯"
+                />
               )}
               {idx === 5 && (
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <AdSlot tk={tk} lang={lang} kind="in-article" />
-                </div>
+                <NativeAdCard
+                  tk={tk}
+                  lang={lang}
+                  kind="in-article"
+                  title={lbl('You might also consider', 'আপনি এগুলিও দেখতে পারেন')}
+                  subtitle={lbl('Alternate operators & fares', 'বিকল্প অপারেটর ও ভাড়া')}
+                  icon="💡"
+                />
               )}
               <div style={{ background: tk.panel, border: `1px solid ${r.isAC ? '#10b981' : tk.line}`, borderRadius: 18, overflow: 'hidden', boxShadow: tk.shadow }}>
                 {r.isAC && (
@@ -429,6 +448,7 @@ export function RouteResultsV2Page(props: Props) {
         </div>
       </div>
     </div>
+          <AdCluster tk={tk} lang={lang} count={1} isMobile={isMobile}/>
     </PageShell>
   );
 }

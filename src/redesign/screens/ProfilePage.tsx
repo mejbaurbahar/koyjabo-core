@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, Tokens, Lang } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 import { ConfirmModal } from '../components/ConfirmModal';
 import { Icon } from '../components/Icons';
 import { SectionHeader } from '../components/SectionHeader';
@@ -191,8 +191,23 @@ export function ProfilePage(props: ScreenProps) {
               ))}
             </div>
 
-            <AdSlot tk={tk} lang={lang} kind="mid-rect" />
-              <AdSlot tk={tk} lang={lang} kind="multiplex" />
+            <NativeAdCard
+              tk={tk}
+              lang={lang}
+              kind="mid-rect"
+              title={lbl('For you', 'আপনার জন্য')}
+              subtitle={lbl('Travel & partner offers', 'ভ্রমণ ও পার্টনার অফার')}
+              icon="🎁"
+              compact
+            />
+              <NativeAdCard
+                tk={tk}
+                lang={lang}
+                kind="multiplex"
+                title={lbl('More like this', 'আরও দেখুন')}
+                subtitle={lbl('Related offers', 'সংশ্লিষ্ট অফার')}
+                icon="🧭"
+              />
           </div>
         </div>
       </div>
@@ -205,6 +220,7 @@ export function ProfilePage(props: ScreenProps) {
         onConfirm={() => { logout(); setConfirmSignOut(false); onNav('signin'); }}
         onClose={() => setConfirmSignOut(false)}
       />
+          <AdCluster tk={tk} lang={lang} count={3} isMobile={isMobile}/>
     </PageShell>
   );
 }

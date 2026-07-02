@@ -1,7 +1,7 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { KJ_TOKENS, T, SANS, BEN, chipBtn, N, Fare } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 import { PromoBanner } from '../components/PromoBanner';
 import { SectionHeader } from '../components/SectionHeader';
 import { Icon } from '../components/Icons';
@@ -184,7 +184,13 @@ export function MetroPage(props: Props) {
             </div>
           </div>
 
-          <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind={isMobile?'mob-banner':'leaderboard'}
+            title={T(lang, 'মেট্রো যাত্রীদের জন্য অফার', 'Offers for metro riders')}
+            icon="🚇"
+          />
 
           {/* Fare calculator with real station picker */}
           <div style={{ ...card(16), marginBottom:18 }}>
@@ -220,7 +226,14 @@ export function MetroPage(props: Props) {
             {toFocus && <SuggestionDropdown suggestions={filterStations(fareTo)} onSelect={s=>{setFareTo(s.label);setToFocus(false);setHasSearched(false);}} onDismiss={()=>setToFocus(false)} tk={tk} lang={lang} anchorRef={toRef}/>}
           </div>
 
-          <AdSlot tk={tk} lang={lang} kind="in-article"/>
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind="in-article"
+            title={T(lang, 'সংশ্লিষ্ট বিষয়বস্তু', 'Related content')}
+            subtitle={T(lang, 'মেট্রো ও গণপরিবহন', 'Metro & public transit')}
+            icon="📰"
+          />
 
           {/* Info grid */}
           <div style={{ display:'grid', gridTemplateColumns:isMobile?'1fr 1fr':'repeat(4,1fr)', gap:10, marginBottom:18 }}>
@@ -239,9 +252,17 @@ export function MetroPage(props: Props) {
           </div>
 
           <PromoBanner tk={tk} lang={lang} page="metro" onNav={onNav}/>
-          <AdSlot tk={tk} lang={lang} kind="multiplex" />
+          <NativeAdCard
+            tk={tk}
+            lang={lang}
+            kind="multiplex"
+            title={T(lang, 'আরও দেখুন', 'You might also like')}
+            subtitle={T(lang, 'সম্পর্কিত ভ্রমণ ও পরিবহন', 'Related travel & transport')}
+            icon="🧭"
+          />
         </div>
       </div>
+          <AdCluster tk={tk} lang={lang} count={2} isMobile={isMobile}/>
     </PageShell>
   );
 }

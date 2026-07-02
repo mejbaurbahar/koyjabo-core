@@ -1,7 +1,7 @@
 import React from 'react';
 import { KJ_TOKENS, T, SANS, BEN } from '../tokens';
 import { PageShell } from './PageShell';
-import { AdSlot } from '../components/AdSlot';
+import { AdSlot, NativeAdCard, AdCluster } from '../components/AdSlot';
 
 interface Props { theme:'dark'|'light'; device:'desktop'|'mobile'; lang:'bn'|'en'; route:string; canBack:boolean; onNav:(r:string)=>void; onNavTab?:(r:string)=>void; onBack:()=>void; onLang:()=>void; onTheme:()=>void; onMenu:()=>void; params?:Record<string,string>; }
 
@@ -172,7 +172,15 @@ export function PrivacyPage(props: Props) {
                 ))}
               </ul>
             )}
-            {i === 5 && <AdSlot tk={tk} lang={lang} kind="in-article" />}
+            {i === 5 && (
+              <NativeAdCard
+                tk={tk}
+                lang={lang}
+                kind="in-article"
+                title={T(lang, 'সংশ্লিষ্ট বিষয়বস্তু', 'Related content')}
+                icon="📰"
+              />
+            )}
           </section>
         ))}
 
@@ -183,9 +191,23 @@ export function PrivacyPage(props: Props) {
           </div>
         </div>
 
-        <AdSlot tk={tk} lang={lang} kind="multiplex" />
-        <AdSlot tk={tk} lang={lang} kind={isMobile?'mob-banner':'leaderboard'}/>
+        <NativeAdCard
+          tk={tk}
+          lang={lang}
+          kind="multiplex"
+          title={T(lang, 'আরও দেখুন', 'More like this')}
+          subtitle={T(lang, 'ভ্রমণ ও পরিবহন', 'Travel & transport')}
+          icon="🧭"
+        />
+        <NativeAdCard
+          tk={tk}
+          lang={lang}
+          kind={isMobile?'mob-banner':'leaderboard'}
+          title={T(lang, 'পার্টনার অফার', 'Partner offers')}
+          icon="🎯"
+        />
       </div>
+          <AdCluster tk={tk} lang={lang} count={2} isMobile={isMobile}/>
     </PageShell>
   );
 }

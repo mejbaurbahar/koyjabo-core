@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Tokens, Lang } from '../tokens';
+import { Tokens, Lang, SANS, BEN } from '../tokens';
 
 type AdKind = 'leaderboard' | 'mid-rect' | 'mob-banner' | 'anchor' | 'in-article' | 'multiplex';
 
@@ -95,11 +95,12 @@ function RealAd({
     }, 25000);
 
     if ('IntersectionObserver' in window) {
+      const scroller = ins.closest('[data-app-scroller]') as Element | null;
       const observer = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) { observer.disconnect(); doPush(); }
         },
-        { rootMargin: '400px 0px' }
+        { root: scroller || null, rootMargin: '400px 0px' }
       );
       observer.observe(ins);
       return () => {
@@ -166,9 +167,192 @@ export function AdSlot({
         flexShrink: 0,
         margin: '0 auto',
         minHeight: reservedHeight,
+        visibility: filled === true ? 'visible' : 'hidden',
+        pointerEvents: filled === true ? 'auto' : 'none',
       }}
     >
       <RealAd format={format} slot={slot} layout={layout} onFillResult={setFilled} />
+    </div>
+  );
+}
+
+// ─── NativeAdCard ────────────────────────────────────────────────────────────
+// Panel-styled ad card: matches feature cards (tk.panel + tk.line + radius 18).
+// Renders a subtle "Sponsored" pill (top-right) per AdSense policy.
+// Collapses to null when unfilled — no empty box, no layout gap.
+// Use in empty content states (no favorites/history/results) and in
+// content columns where a bare AdSense iframe would clash with UI cards.
+// ─── AdCluster ────────────────────────────────────────────────────────────────
+// Renders a diverse block of N NativeAdCards. Used to top up pages that fall
+// below the site-wide floor of 5 ad slots. Kinds rotate so each card fills a
+// distinct AdSense unit (multiplex + in-article + leaderboard + mid-rect).
+export function AdCluster({
+  tk,
+  lang,
+  count,
+  isMobile,
+}: {
+  tk: Tokens;
+  lang: Lang;
+  count: number;
+  isMobile: boolean;
+}) {
+  if (count <= 0) return null;
+  const bannerKind: AdKind = isMobile ? 'mob-banner' : 'leaderboard';
+  const midKind: AdKind = isMobile ? 'mob-banner' : 'mid-rect';
+  const preset: Array<{
+    kind: AdKind;
+    titleBn: string;
+    titleEn: string;
+    subBn?: string;
+    subEn?: string;
+    icon: string;
+    compact?: boolean;
+  }> = [
+    { kind: 'in-article', titleBn: 'সংশ্লিষ্ট বিষয়বস্তু', titleEn: 'Related content', icon: '📰' },
+    { kind: 'multiplex', titleBn: 'আরও দেখুন', titleEn: 'More like this', subBn: 'ভ্রমণ ও পরিবহন', subEn: 'Travel & transport', icon: '🧭' },
+    { kind: bannerKind, titleBn: 'পার্টনার অফার', titleEn: 'Partner offers', icon: '🎯' },
+    { kind: midKind, titleBn: 'আপনার জন্য প্রস্তাবিত', titleEn: 'Recommended for you', subBn: 'ট্রিপ ও ডিল', subEn: 'Trips & deals', icon: '🎁', compact: true },
+    { kind: 'in-article', titleBn: 'ভ্রমণ ও যাত্রা টিপস', titleEn: 'Travel & journey tips', icon: '💡' },
+  ];
+  const slots = preset.slice(0, Math.min(count, preset.length));
+  return (
+    <>
+      {slots.map((s, i) => (
+        <NativeAdCard
+          key={`ad-cluster-${i}`}
+          tk={tk}
+          lang={lang}
+          kind={s.kind}
+          title={lang === 'bn' ? s.titleBn : s.titleEn}
+          subtitle={s.subBn ? (lang === 'bn' ? s.subBn : s.subEn) : undefined}
+          icon={s.icon}
+          compact={s.compact}
+        />
+      ))}
+    </>
+  );
+}
+
+export function NativeAdCard({
+  tk,
+  lang,
+  kind = 'in-article',
+  title,
+  subtitle,
+  icon,
+  compact,
+}: {
+  tk: Tokens;
+  lang: Lang;
+  kind?: AdKind;
+  title?: string;
+  subtitle?: string;
+  icon?: React.ReactNode;
+  compact?: boolean;
+}) {
+  const { w, h, format, slot, layout } = DIMS[kind];
+  const [filled, setFilled] = useState<boolean | null>(null);
+  const font = lang === 'bn' ? BEN : SANS;
+
+  // Detecting: reserve height so AdSense measures a real slot (transparent — no ghost dark box).
+  // Unfilled: collapse entirely — no ghost card in the layout.
+  if (filled === false) return null;
+
+  const reservedHeight = filled === null ? h : h;
+  const padY = compact ? 10 : 14;
+  const padX = compact ? 12 : 16;
+  const isFilled = filled === true;
+
+  return (
+    <div
+      style={{
+        background: isFilled ? tk.panel : 'transparent',
+        border: isFilled ? `1px solid ${tk.line}` : 'none',
+        borderRadius: 18,
+        padding: isFilled ? `${padY}px ${padX}px` : 0,
+        boxShadow: isFilled ? tk.shadow : 'none',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 10,
+        overflow: 'hidden',
+        boxSizing: 'border-box',
+        width: '100%',
+        maxWidth: '100%',
+        visibility: isFilled ? 'visible' : 'hidden',
+        pointerEvents: isFilled ? 'auto' : 'none',
+      }}
+    >
+      {/* Header row: only shown when filled — don't show floating title with no ad */}
+      {title && isFilled && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, minHeight: 18 }}>
+          {icon && (
+            <span
+              style={{
+                width: 26,
+                height: 26,
+                borderRadius: 8,
+                background: tk.primarySoft,
+                color: tk.primary,
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                fontSize: 14,
+              }}
+            >
+              {icon}
+            </span>
+          )}
+          <div style={{ minWidth: 0 }}>
+            <div
+              style={{
+                fontFamily: font,
+                fontSize: 13,
+                fontWeight: 700,
+                color: tk.text,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {title}
+            </div>
+            {subtitle && (
+              <div
+                style={{
+                  fontFamily: SANS,
+                  fontSize: 10,
+                  color: tk.textFaint,
+                  marginTop: 1,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {subtitle}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Ad body — reserve height while detecting so AdSense can fill */}
+      <div
+        style={{
+          width: '100%',
+          minHeight: reservedHeight,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden',
+          borderRadius: 10,
+        }}
+      >
+        <div style={{ width: '100%', maxWidth: w }}>
+          <RealAd format={format} slot={slot} layout={layout} onFillResult={setFilled} />
+        </div>
+      </div>
     </div>
   );
 }
