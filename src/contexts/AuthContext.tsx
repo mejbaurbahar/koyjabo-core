@@ -128,6 +128,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
     secureStorage.removeItem(SESSION_KEY);
     try { localStorage.removeItem(SESSION_KEY); } catch {}
+    try { localStorage.removeItem('koyjabo_session_token'); } catch {}
     setHistoryUser(null);
     setUser(null);
     setStatus('unauthenticated');

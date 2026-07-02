@@ -1,40 +1,35 @@
 /**
  * KoyJabo Auth Service
  *
- * Architecture (with VITE_API_PROXY set — Cloudflare Worker):
- *  - ALL operations → proxy at api.koyjabo.com (token + repo names hidden from browser)
+ * All operations go through the Cloudflare Worker proxy:
+ *  - login / google-lookup use a POST /gh action where bcrypt runs server-side
+ *    and the bcryptHash never reaches the browser
+ *  - signup / change-password / forgot-password / reset-password are
+ *    dispatched to a GitHub Actions workflow (~30–90 s)
  *
- * Architecture (fallback — direct GitHub API):
- *  - READ  operations → api.github.com directly (~1s)
- *  - WRITE operations → GitHub Actions workflow dispatch, poll for result (~30-90s)
+ * The legacy direct-GitHub-API fallback (with a browser-side VITE_GITHUB_TOKEN)
+ * has been removed — that path leaked a PAT into the JS bundle.
  */
 
-import bcrypt from 'bcryptjs';
 import type { AuthResult, Device } from '../types/auth';
 
-const APP_OWNER     = 'mejbaurbahar';
-const APP_REPO      = 'Dhaka-Commute';
-const DATA_OWNER    = 'mejbaurbahar';
-const DATA_REPO     = 'koyjabo';
-const WORKFLOW_FILE = 'auth.yml';
-
-// All requests go through the Cloudflare Worker proxy — repo names, token,
-// and raw GitHub metadata never appear in the browser's Network tab.
-// Use || not ?? so empty string env vars also fall back to the worker URL.
 const PROXY = (import.meta.env.VITE_API_PROXY as string | undefined)
   || 'https://koyjabo-auth-proxy.mejbaur-bahar.workers.dev';
-const TOKEN = (import.meta.env.VITE_GITHUB_TOKEN as string | undefined) ?? '';
 
-const APP_BASE  = `https://api.github.com/repos/${APP_OWNER}/${APP_REPO}`;
-const DATA_BASE = `https://api.github.com/repos/${DATA_OWNER}/${DATA_REPO}`;
+const SESSION_TOKEN_LS_KEY = 'koyjabo_session_token';
 
-function ghHeaders(): Record<string, string> {
-  return {
-    Authorization: `Bearer ${TOKEN}`,
-    Accept: 'application/vnd.github.v3+json',
-    'Content-Type': 'application/json',
-  };
+export function getSessionToken(): string {
+  try { return localStorage.getItem(SESSION_TOKEN_LS_KEY) || ''; } catch { return ''; }
 }
+
+export function setSessionToken(token: string): void {
+  try {
+    if (token) localStorage.setItem(SESSION_TOKEN_LS_KEY, token);
+    else       localStorage.removeItem(SESSION_TOKEN_LS_KEY);
+  } catch { /* quota */ }
+}
+
+export function clearSessionToken(): void { setSessionToken(''); }
 
 function friendlyHttpError(status: number): string {
   if (status === 401) return 'Service authentication failed. Please try again later.';
@@ -71,8 +66,11 @@ export function getOrCreateDeviceId(): string {
 }
 
 async function getClientIP(): Promise<string> {
+  // Resolve via the worker — keeps the lookup inside the Cloudflare boundary
+  // and avoids leaking a per-user IP to an unrelated third party.
   try {
-    const r = await fetch('https://api.ipify.org?format=json', { signal: AbortSignal.timeout(3000) });
+    const r = await fetch(`${PROXY}/ip`, { credentials: 'omit', signal: AbortSignal.timeout(3000) });
+    if (!r.ok) return 'Unknown';
     const j = await r.json();
     return j.ip || 'Unknown';
   } catch {
@@ -80,31 +78,21 @@ async function getClientIP(): Promise<string> {
   }
 }
 
-// ── GitHub Contents API helpers ───────────────────────────────────────────────
+// ── Proxy read helpers ───────────────────────────────────────────────────────
 
-const USER_INDEX_LS_KEY = 'kj_user_index_cache';
-const USER_INDEX_TTL    = 30 * 60 * 1000; // 30 minutes
-
-// In-flight deduplication: path → pending Promise
 const inFlight = new Map<string, Promise<unknown>>();
 
 async function fetchRepo<T = unknown>(repo: 'd' | 'a', path: string): Promise<T | null> {
-  const url = PROXY
-    ? `${PROXY}/gh?r=${repo}&p=${encodeURIComponent(path)}`
-    : `${repo === 'd' ? DATA_BASE : APP_BASE}/contents/${path}`;
-
+  const url = `${PROXY}/gh?r=${repo}&p=${encodeURIComponent(path)}`;
   let res: Response;
   let attempt = 0;
   while (true) {
     try {
-      res = PROXY
-        ? await fetch(url, { credentials: 'omit' })
-        : await fetch(url, { headers: ghHeaders() });
+      res = await fetch(url, { credentials: 'omit' });
     } catch (err) {
       throw new Error(friendlyNetworkError(err));
     }
     if (res.status === 429 && attempt < 3) {
-      // Exponential back-off: 2s, 4s, 8s
       await new Promise(r => setTimeout(r, 2000 * (2 ** attempt)));
       attempt++;
       continue;
@@ -114,58 +102,15 @@ async function fetchRepo<T = unknown>(repo: 'd' | 'a', path: string): Promise<T 
 
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(friendlyHttpError(res.status));
-  if (PROXY) return res.json() as Promise<T>;
-  const data = await res.json() as { content?: string };
-  if (!data.content) return null;
-  return JSON.parse(atob(data.content.replace(/\n/g, ''))) as T;
+  return res.json() as Promise<T>;
 }
-
-function loadUserIndexFromStorage(): { data: any; expires: number } | null {
-  try {
-    const raw = localStorage.getItem(USER_INDEX_LS_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw);
-    if (parsed?.expires > Date.now()) return parsed;
-    localStorage.removeItem(USER_INDEX_LS_KEY);
-  } catch { /* ignore */ }
-  return null;
-}
-
-function saveUserIndexToStorage(data: unknown): void {
-  try {
-    localStorage.setItem(USER_INDEX_LS_KEY, JSON.stringify({ data, expires: Date.now() + USER_INDEX_TTL }));
-  } catch { /* ignore — storage quota */ }
-}
-
-// In-memory layer on top of localStorage (avoids JSON.parse on every call)
-let userIndexMem: { data: any; expires: number } | null = loadUserIndexFromStorage();
 
 async function fetchDataFile<T = unknown>(path: string): Promise<T | null> {
-  const isUserIndex = path === 'data/users/index.json';
-
-  // 1. Memory cache hit
-  if (isUserIndex && userIndexMem && userIndexMem.expires > Date.now()) {
-    return userIndexMem.data as T;
-  }
-
-  // 2. In-flight deduplication — don't fire two requests for the same path
   const cacheKey = `d:${path}`;
   if (inFlight.has(cacheKey)) {
     return inFlight.get(cacheKey) as Promise<T | null>;
   }
-
-  const promise = fetchRepo<T>('d', path).then(data => {
-    inFlight.delete(cacheKey);
-    if (isUserIndex && data) {
-      userIndexMem = { data, expires: Date.now() + USER_INDEX_TTL };
-      saveUserIndexToStorage(data);
-    }
-    return data;
-  }).catch(err => {
-    inFlight.delete(cacheKey);
-    throw err;
-  });
-
+  const promise = fetchRepo<T>('d', path).finally(() => inFlight.delete(cacheKey));
   inFlight.set(cacheKey, promise);
   return promise;
 }
@@ -174,13 +119,12 @@ function fetchAppFile<T = unknown>(path: string): Promise<T | null> {
   return fetchRepo<T>('a', path);
 }
 
-// ── Workflow trigger via GitHub Actions dispatch ──────────────────────────────
+// ── Workflow trigger via GitHub Actions dispatch (through worker) ────────────
 async function triggerWorkflow(
   requestId: string,
   action: string,
   inputs: Record<string, string>
 ): Promise<void> {
-  let res: Response;
   const body: Record<string, string> = {
     requestId,
     action,
@@ -189,28 +133,17 @@ async function triggerWorkflow(
     userId:       inputs.userId       || '',
     data:         inputs.data         || '{}',
   };
-  // Pass Turnstile token to Worker for server-side verification on auth actions
   if (inputs.cfToken) body.cfToken = inputs.cfToken;
+  const sessionToken = getSessionToken();
+  if (sessionToken) body.sessionToken = sessionToken;
+  let res: Response;
   try {
-    if (PROXY) {
-      // Proxy path: Worker triggers dispatch server-side, token never in browser
-      res = await fetch(`${PROXY}/gh`, {
-        method: 'POST',
-        credentials: 'omit',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-    } else {
-      // Direct path: token visible in Authorization header in DevTools
-      res = await fetch(`${APP_BASE}/actions/workflows/${WORKFLOW_FILE}/dispatches`, {
-        method: 'POST',
-        headers: ghHeaders(),
-        body: JSON.stringify({
-          ref: 'main',
-          inputs: body,
-        }),
-      });
-    }
+    res = await fetch(`${PROXY}/gh`, {
+      method: 'POST',
+      credentials: 'omit',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
   } catch (err) {
     throw new Error(friendlyNetworkError(err));
   }
@@ -224,8 +157,13 @@ async function pollForResult(requestId: string, timeoutMs = 180_000): Promise<Au
   await new Promise(r => setTimeout(r, 20_000));
 
   while (Date.now() < deadline) {
-    const result = await fetchAppFile<AuthResult>(path).catch(() => null);
-    if (result) return result;
+    const result = await fetchAppFile<AuthResult & { sessionToken?: string }>(path).catch(() => null);
+    if (result) {
+      // Worker mints a session token on successful result reads. Persist it so
+      // subsequent user-bound writes (history, devices, avatar) authenticate.
+      if (result.sessionToken) setSessionToken(result.sessionToken);
+      return result;
+    }
     // Poll every 8s — reduces GitHub API usage by ~60% vs 3s interval
     await new Promise(r => setTimeout(r, 8_000));
   }
@@ -245,32 +183,51 @@ async function triggerAndWait(
 // ── Public API ────────────────────────────────────────────────────────────────
 
 /**
- * LOGIN — fast path: read user data directly, verify bcrypt in browser.
- * No GitHub Actions needed. Returns in ~1-2 seconds.
+ * LOGIN — sends email-hash + password-SHA to the worker, which performs the
+ * bcrypt comparison server-side. The bcryptHash never reaches the browser.
  */
 export async function loginUser(
   email: string,
-  password: string
+  password: string,
+  cfToken = '',
 ): Promise<{ userId: string; username: string; displayName: string; email: string }> {
   const normalizedEmail = email.toLowerCase().trim();
-  const emailHashKey = await sha256(normalizedEmail);
+  const emailHash  = await sha256(normalizedEmail);
+  const passwordSha = await sha256(password);
 
-  const index = await fetchDataFile<Record<string, string>>('data/users/index.json');
-  if (!index || !index[emailHashKey]) {
+  let res: Response;
+  try {
+    res = await fetch(`${PROXY}/gh`, {
+      method: 'POST',
+      credentials: 'omit',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        requestId: crypto.randomUUID(),
+        action: 'auth-login',
+        emailHash,
+        passwordSha,
+        cfToken,
+      }),
+    });
+  } catch (err) {
+    throw new Error(friendlyNetworkError(err));
+  }
+  if (res.status === 401 || res.status === 400) {
     throw new Error('Invalid email or password.');
   }
-
-  const userId = index[emailHashKey];
-
-  interface UserProfile { bcryptHash: string; username: string; displayName: string; }
-  const user = await fetchDataFile<UserProfile>(`data/users/${userId}.json`);
-  if (!user) throw new Error('Account not found. Please contact support.');
-
-  const passwordSha = await sha256(password);
-  const valid = await bcrypt.compare(passwordSha, user.bcryptHash);
-  if (!valid) throw new Error('Invalid email or password.');
-
-  return { userId, username: user.username, displayName: user.displayName, email: normalizedEmail };
+  if (!res.ok) throw new Error(friendlyHttpError(res.status));
+  const data = await res.json() as {
+    success?: boolean; userId?: string; username?: string; displayName?: string;
+    sessionToken?: string;
+  };
+  if (!data.success || !data.userId) throw new Error('Invalid email or password.');
+  if (data.sessionToken) setSessionToken(data.sessionToken);
+  return {
+    userId:      data.userId,
+    username:    data.username || '',
+    displayName: data.displayName || '',
+    email:       normalizedEmail,
+  };
 }
 
 /**
@@ -284,6 +241,9 @@ export async function signupUser(
   cfToken = ''
 ): Promise<AuthResult> {
   const passwordHash = await sha256(password);
+  // triggerAndWait → pollForResult persists the session token returned by the
+  // worker as soon as the workflow result file is readable, so no follow-up
+  // login is needed.
   return triggerAndWait('signup', {
     email: email.toLowerCase().trim(),
     passwordHash,
@@ -301,19 +261,30 @@ export async function forgotPassword(email: string): Promise<AuthResult> {
 }
 
 /**
- * CHECK RESET STATUS — polls whether a password reset link has been used.
- * Reads the reset file directly from the private repo via the Worker (fast, no workflow needed).
+ * CHECK RESET STATUS — asks the worker whether a password reset link has been
+ * used. The worker reads `data/password_resets/<tokenHash>.json` server-side
+ * and returns only the three flags below — the raw blob never leaves Cloudflare.
  */
 export async function checkResetStatus(sessionToken: string): Promise<{ used: boolean; expired: boolean; notFound: boolean }> {
   const tokenHash = await sha256(sessionToken);
   try {
-    const resp = await fetch(`${PROXY}/gh?r=d&p=data/password_resets/${tokenHash}.json`, {
+    const resp = await fetch(`${PROXY}/gh`, {
+      method: 'POST',
       credentials: 'omit',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        requestId: crypto.randomUUID(),
+        action: 'auth-reset-status',
+        tokenHash,
+      }),
     });
-    if (resp.status === 404) return { used: false, expired: false, notFound: true };
+    if (!resp.ok) return { used: false, expired: false, notFound: false };
     const data = await resp.json();
-    if (!data) return { used: false, expired: false, notFound: true };
-    return { used: data.used === true, expired: data.expiresAt < Date.now(), notFound: false };
+    return {
+      used:     data?.used === true,
+      expired:  data?.expired === true,
+      notFound: data?.notFound === true,
+    };
   } catch {
     return { used: false, expired: false, notFound: false };
   }
@@ -519,11 +490,15 @@ export function getAuthErrorKey(message: string): string | null {
 }
 
 /**
- * GOOGLE LOGIN / SIGNUP — fires Firebase OAuth popup, then checks GitHub repo.
- * New Google users get a workflow-created account (no password, provider=google).
- * Existing Google users are logged in directly (fast path, no workflow needed).
+ * GOOGLE LOGIN / SIGNUP — fires Firebase OAuth popup, then asks the worker
+ * whether the email is already registered. The worker performs the index +
+ * user-record lookup server-side and only returns public fields + a session
+ * token. The user index and bcryptHash never reach the browser.
+ *
+ * @param cfToken — Turnstile token; required by the worker's auth-google-lookup
+ *                   action. UI should issue one before calling this.
  */
-export async function loginWithGoogle(): Promise<{
+export async function loginWithGoogle(cfToken = ''): Promise<{
   userId: string;
   username: string;
   displayName: string;
@@ -563,24 +538,43 @@ export async function loginWithGoogle(): Promise<{
   if (!firebaseUser.email) throw new Error('Google account has no email address.');
 
   const normalizedEmail = firebaseUser.email.toLowerCase().trim();
-  const emailHashKey    = await sha256(normalizedEmail);
+  const emailHash       = await sha256(normalizedEmail);
   const googlePhotoUrl  = firebaseUser.photoURL ?? undefined;
 
-  // Fast path: existing user — read profile directly, no workflow needed
-  const index = await fetchDataFile<Record<string, string>>('data/users/index.json');
-  if (index?.[emailHashKey]) {
-    const userId = index[emailHashKey];
-    const user = await fetchDataFile<{
-      username: string; displayName: string; provider?: string; bcryptHash?: string | null;
-    }>(`data/users/${userId}.json`);
-    if (!user) throw new Error('Account not found. Please contact support.');
+  // Fast path: existing user. Worker does the lookup so the user index +
+  // bcryptHash never reach the browser.
+  let lookupRes: Response;
+  try {
+    lookupRes = await fetch(`${PROXY}/gh`, {
+      method: 'POST',
+      credentials: 'omit',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        requestId: crypto.randomUUID(),
+        action: 'auth-google-lookup',
+        emailHash,
+        cfToken,
+      }),
+    });
+  } catch (err) {
+    throw new Error(friendlyNetworkError(err));
+  }
+  if (!lookupRes.ok && lookupRes.status !== 403) {
+    throw new Error(friendlyHttpError(lookupRes.status));
+  }
+  const lookup = lookupRes.ok ? await lookupRes.json() as {
+    exists?: boolean; userId?: string; username?: string; displayName?: string;
+    hasPassword?: boolean; sessionToken?: string;
+  } : { exists: false };
+  if (lookup?.exists && lookup.userId) {
+    if (lookup.sessionToken) setSessionToken(lookup.sessionToken);
     return {
-      userId,
-      username:    user.username,
-      displayName: user.displayName,
+      userId:      lookup.userId,
+      username:    lookup.username || '',
+      displayName: lookup.displayName || '',
       email:       normalizedEmail,
       provider:    'google',
-      hasPassword: !!user.bcryptHash,
+      hasPassword: !!lookup.hasPassword,
       googlePhotoUrl,
     };
   }

@@ -1,6 +1,7 @@
 export function signOutUser() {
   try {
     localStorage.removeItem('koyjabo_auth_session');
+    localStorage.removeItem('koyjabo_session_token');
     sessionStorage.removeItem('koyjabo_post_login_redirect');
   } catch {
     // Storage may be unavailable in private/browser-restricted contexts.
