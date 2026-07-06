@@ -1,0 +1,84 @@
+{
+    "id": "/",
+    "name": "কই যাবো",
+    "short_name": "কই যাবো",
+    "description": "Find Dhaka bus routes instantly! 200+ buses, metro rail guide, AI assistant, and fare calculator.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0f172a",
+    "theme_color": "#0f172a",
+    "orientation": "portrait-primary",
+    "scope": "/",
+    "lang": "bn",
+    "dir": "ltr",
+    "categories": [
+        "travel",
+        "navigation",
+        "transportation"
+    ],
+    "icons": [
+        {
+            "src": "/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/apple-touch-icon.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/mobile-screenshot.png",
+            "sizes": "500x572",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label": "Home Screen Mobile"
+        },
+        {
+            "src": "/og-image.png",
+            "sizes": "1200x630",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label": "Home Screen Desktop"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Find Bus Route",
+            "short_name": "Routes",
+            "description": "Search for bus routes in Dhaka",
+            "url": "/?action=search",
+            "icons": [
+                {
+                    "src": "/icon-192x192.png",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                }
+            ]
+        },
+        {
+            "name": "AI Assistant",
+            "short_name": "AI Help",
+            "description": "Get AI-powered route suggestions",
+            "url": "/?action=ai",
+            "icons": [
+                {
+                    "src": "/icon-192x192.png",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                }
+            ]
+        }
+    ],
+    "related_applications": [],
+    "prefer_related_applications": false
+}

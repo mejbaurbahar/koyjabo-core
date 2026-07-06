@@ -1,0 +1,28 @@
+type,mode,route_name,origin,destination,duration_hrs,fare_min_bdt,fare_max_bdt,operator,notes
+metro,MRT Line-6,Uttara North – Motijheel,Uttara North,Motijheel,0.5,20,100,DMTCL,16 stations; Rapid Pass or token; 7 AM–8 PM weekdays
+metro,MRT Line-6,Mirpur-10 – Motijheel,Mirpur-10,Motijheel,0.3,40,60,DMTCL,Via Farmgate and Shahbag
+metro,MRT Line-6,Uttara North – Farmgate,Uttara North,Farmgate,0.35,60,70,DMTCL,Connects to city centre
+bus_city,Multiple routes,Mirpur – Motijheel,Mirpur,Motijheel,1.0,5,15,BRTC/Private,Subject to Dhaka traffic delays
+bus_city,Multiple routes,Gulshan – Sadarghat,Gulshan,Sadarghat,1.0,10,20,Private,Passes Motijheel
+bus_city,Multiple routes,Uttara – Farmgate,Uttara,Farmgate,1.0,15,25,Private,Connects to metro at Farmgate
+bus_city,Multiple routes,Dhanmondi – Motijheel,Dhanmondi,Motijheel,0.75,10,20,Private,Multiple routes available
+bus_intercity,Dhaka–Chittagong,Dhaka to Chittagong,Dhaka (Arambagh/Sayedabad),Chittagong,4.5,680,1500,Hanif/Shyamoli/GreenLine/Soudia,Non-AC/AC available
+bus_intercity,Dhaka–Sylhet,Dhaka to Sylhet,Dhaka (Mohakhali),Sylhet,5.5,570,1400,Shyamoli/Hanif/GreenLine/London Express,National Highway N2
+bus_intercity,Dhaka–Cox's Bazar,Dhaka to Cox's Bazar,Dhaka (Arambagh/Sayedabad),Cox's Bazar,11.0,900,2500,SR/Soudia/GreenLine/Hanif,Night coaches available
+bus_intercity,Dhaka–Rajshahi,Dhaka to Rajshahi,Dhaka (Gabtoli/Kalyanpur),Rajshahi,5.0,600,1300,Hanif/Shyamoli/Desh Travels,N6 highway
+bus_intercity,Dhaka–Khulna,Dhaka to Khulna,Dhaka (Gabtoli),Khulna,7.5,600,1200,Soudia/Shyamoli/Hanif,Night buses popular
+bus_intercity,Dhaka–Barisal,Dhaka to Barisal,Dhaka (Gabtoli),Barisal,4.0,400,700,Sakura/Hanif,Also reachable by launch
+bus_intercity,Dhaka–Rangpur,Dhaka to Rangpur,Dhaka (Gabtoli/Kalyanpur),Rangpur,6.5,700,1400,Hanif/Shyamoli/BRTC,Northbound highway
+bus_intercity,Dhaka–Mymensingh,Dhaka to Mymensingh,Dhaka (Mohakhali),Mymensingh,2.5,200,400,Multiple operators,Highway N4
+train,Subarna Express,Dhaka–Chittagong Express,Dhaka Kamalapur,Chittagong,6.5,165,860,Bangladesh Railway,Multiple daily departures
+train,Parabat Express,Dhaka–Sylhet,Dhaka Kamalapur,Sylhet,6.5,375,1678,Bangladesh Railway,Departs 6:40 AM (Tues off)
+train,Upaban Express,Dhaka–Sylhet Night,Dhaka Kamalapur,Sylhet,7.0,375,1678,Bangladesh Railway,Night train; departs 10:00 PM
+train,Silk City Express,Dhaka–Rajshahi,Dhaka Kamalapur,Rajshahi,5.5,315,1340,Bangladesh Railway,Departs 7:40 AM
+train,Sundarban Express,Dhaka–Khulna,Dhaka Kamalapur,Khulna,9.0,250,1591,Bangladesh Railway,Departs 6:20 AM
+train,Cox's Bazar Express,Dhaka–Cox's Bazar Direct,Dhaka Kamalapur,Cox's Bazar,10.0,745,2656,Bangladesh Railway,Direct train since 2023; departs 10:30 PM
+launch,Dhaka–Barisal,Dhaka to Barisal Night Launch,Dhaka Sadarghat,Barisal,8.0,150,2000,BIWTC/Sundarban/Parabat,Overnight scenic river journey; departs ~9 PM
+launch,Dhaka–Khulna,Dhaka to Khulna River,Dhaka Sadarghat,Khulna,12.0,200,3000,BIWTC/Private,Overnight; passes Sundarbans area
+launch,Dhaka–Chandpur,Dhaka to Chandpur,Dhaka Sadarghat,Chandpur,4.0,120,600,BIWTC/Private,Day and night launches available
+air,Dhaka–Cox's Bazar,Dhaka to Cox's Bazar Flight,Hazrat Shahjalal International Airport,Cox's Bazar Airport,1.0,4500,12000,Biman/NovoAir/US-Bangla,Multiple daily flights
+air,Dhaka–Chittagong,Dhaka to Chittagong Flight,Hazrat Shahjalal International Airport,Shah Amanat Airport,0.75,3500,10000,Biman/NovoAir/US-Bangla,Multiple daily flights
+air,Dhaka–Sylhet,Dhaka to Sylhet Flight,Hazrat Shahjalal International Airport,Osmani International Airport,0.75,3500,10000,Biman/NovoAir,Multiple daily flights

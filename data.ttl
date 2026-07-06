@@ -1,0 +1,179 @@
+@prefix kj: <https://koyjabo.com/vocab#> .
+@prefix schema: <https://schema.org/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+
+# ---------------------------------------------------------------
+# KoyJabo Transport Data – RDF/Turtle (Linked Data)
+# License: CC-BY-4.0 https://creativecommons.org/licenses/by/4.0/
+# Source:  https://koyjabo.com
+# Author:  Mejbaur Bahar Fagun
+# Updated: 2026-05-20
+# ---------------------------------------------------------------
+
+<https://koyjabo.com>
+    a schema:WebSite ;
+    schema:name "KoyJabo" ;
+    schema:alternateName "কই যাবো" ;
+    schema:description "Bangladesh's leading free travel and transport guide. 200+ Dhaka bus routes, Metro Rail (MRT Line-6), intercity buses, trains, river ferries, and domestic flights." ;
+    schema:url <https://koyjabo.com> ;
+    schema:inLanguage "en", "bn" ;
+    schema:author kj:MejbaurBaharFagun ;
+    dct:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dct:modified "2026-05-20"^^xsd:date .
+
+kj:MejbaurBaharFagun
+    a schema:Person ;
+    schema:name "Mejbaur Bahar Fagun" ;
+    schema:url <https://linkedin.com/in/mejbaur/> .
+
+# --- Metro Rail ---
+
+kj:MRTLine6
+    a schema:TrainRoute ;
+    schema:name "Dhaka MRT Line-6 (Uttara North – Motijheel)" ;
+    schema:description "Dhaka's urban metro rail. 20.1 km, 16 stations from Uttara North to Motijheel." ;
+    schema:operatedBy kj:DMTCL ;
+    schema:departureStation kj:UttaraNorthStation ;
+    schema:arrivalStation kj:MotijheelStation ;
+    kj:lengthKm "20.1"^^xsd:decimal ;
+    kj:fareMinBDT "20"^^xsd:integer ;
+    kj:fareMaxBDT "100"^^xsd:integer ;
+    kj:operatingHoursWeekday "07:00–20:00" ;
+    kj:operatingHoursFriday "08:00–20:00" ;
+    kj:peakFrequencyMin "8"^^xsd:integer ;
+    kj:ticketingOptions "Single-journey token or Rapid Pass RFID card" ;
+    schema:url <https://koyjabo.com/#metro> .
+
+kj:DMTCL
+    a schema:Organization ;
+    schema:name "Dhaka Mass Transit Company Limited" ;
+    schema:alternateName "DMTCL" .
+
+kj:UttaraNorthStation
+    a schema:TrainStation ;
+    schema:name "Uttara North MRT Station" ;
+    geo:lat "23.8715"^^xsd:decimal ;
+    geo:long "90.3985"^^xsd:decimal .
+
+kj:MotijheelStation
+    a schema:TrainStation ;
+    schema:name "Motijheel MRT Station" ;
+    geo:lat "23.7279"^^xsd:decimal ;
+    geo:long "90.4170"^^xsd:decimal .
+
+# --- Intercity Bus Routes ---
+
+kj:DhakaCittagongBus
+    a schema:BusRoute ;
+    schema:name "Dhaka – Chittagong Intercity Bus" ;
+    schema:departureStation kj:ArambaghTerminal ;
+    schema:arrivalStation kj:ChittagongBusTerminal ;
+    kj:durationHrs "4.5"^^xsd:decimal ;
+    kj:fareNonACBDT "680"^^xsd:integer ;
+    kj:fareACMaxBDT "1500"^^xsd:integer ;
+    kj:operators "Hanif Enterprise, Shyamoli, GreenLine, Soudia" ;
+    schema:url <https://koyjabo.com/intercity> .
+
+kj:DhakaSylhetBus
+    a schema:BusRoute ;
+    schema:name "Dhaka – Sylhet Intercity Bus" ;
+    schema:departureStation kj:MohakhaliTerminal ;
+    kj:durationHrs "5.5"^^xsd:decimal ;
+    kj:fareNonACBDT "570"^^xsd:integer ;
+    kj:fareACMaxBDT "1400"^^xsd:integer ;
+    kj:operators "Shyamoli, Hanif, GreenLine, London Express" ;
+    schema:url <https://koyjabo.com/intercity> .
+
+kj:DhakaCoxsBazarBus
+    a schema:BusRoute ;
+    schema:name "Dhaka – Cox's Bazar Intercity Bus" ;
+    schema:departureStation kj:ArambaghTerminal ;
+    kj:durationHrs "11"^^xsd:decimal ;
+    kj:fareNonACBDT "900"^^xsd:integer ;
+    kj:fareACMaxBDT "2500"^^xsd:integer ;
+    kj:operators "SR Travels, Soudia, GreenLine, Hanif" ;
+    schema:url <https://koyjabo.com/intercity> .
+
+kj:ArambaghTerminal
+    a schema:BusStation ;
+    schema:name "Arambagh/Sayedabad Bus Terminal, Dhaka" ;
+    geo:lat "23.7330"^^xsd:decimal ;
+    geo:long "90.4100"^^xsd:decimal .
+
+kj:MohakhaliTerminal
+    a schema:BusStation ;
+    schema:name "Mohakhali Bus Terminal, Dhaka" ;
+    geo:lat "23.7805"^^xsd:decimal ;
+    geo:long "90.4029"^^xsd:decimal .
+
+kj:ChittagongBusTerminal
+    a schema:BusStation ;
+    schema:name "Chittagong (Dampara) Bus Terminal" ;
+    schema:addressLocality "Chittagong" ;
+    schema:addressCountry "BD" .
+
+# --- Intercity Trains ---
+
+kj:SubarnaExpress
+    a schema:TrainTrip ;
+    schema:name "Subarna Express" ;
+    schema:description "Dhaka–Chittagong intercity express." ;
+    schema:operatedBy kj:BangladeshRailway ;
+    schema:departureStation kj:DhakaKamalapur ;
+    kj:durationHrs "6.5"^^xsd:decimal ;
+    kj:fareMinBDT "165"^^xsd:integer ;
+    kj:fareMaxBDT "1591"^^xsd:integer ;
+    schema:url <https://koyjabo.com/intercity#trains> .
+
+kj:CoxsBazarExpress
+    a schema:TrainTrip ;
+    schema:name "Cox's Bazar Express" ;
+    schema:description "First direct Dhaka–Cox's Bazar train, operational since 2023." ;
+    schema:operatedBy kj:BangladeshRailway ;
+    schema:departureStation kj:DhakaKamalapur ;
+    schema:departureTime "22:30"^^xsd:time ;
+    kj:durationHrs "10"^^xsd:decimal ;
+    kj:fareMinBDT "745"^^xsd:integer ;
+    kj:fareMaxBDT "2656"^^xsd:integer ;
+    schema:url <https://koyjabo.com/intercity#trains> .
+
+kj:BangladeshRailway
+    a schema:Organization ;
+    schema:name "Bangladesh Railway" ;
+    schema:url <https://www.railway.gov.bd> .
+
+kj:DhakaKamalapur
+    a schema:TrainStation ;
+    schema:name "Dhaka Kamalapur Railway Station" ;
+    schema:description "Main intercity railway terminal in Dhaka, Bangladesh." ;
+    geo:lat "23.7330"^^xsd:decimal ;
+    geo:long "90.4268"^^xsd:decimal .
+
+# --- River Launches ---
+
+kj:DhakaBarisalLaunch
+    a kj:RiverLaunch ;
+    schema:name "Dhaka – Barisal Night Launch" ;
+    schema:description "Overnight river ferry from Sadarghat, Dhaka to Barisal. Popular budget travel option on Bangladesh's inland waterways." ;
+    schema:operatedBy kj:BIWTC ;
+    schema:departureStation kj:SadarghatTerminal ;
+    kj:durationHrs "8"^^xsd:decimal ;
+    kj:fareMinBDT "150"^^xsd:integer ;
+    kj:fareMaxBDT "2000"^^xsd:integer ;
+    schema:url <https://koyjabo.com/intercity#launch> .
+
+kj:BIWTC
+    a schema:Organization ;
+    schema:name "Bangladesh Inland Water Transport Corporation" ;
+    schema:alternateName "BIWTC" ;
+    schema:url <https://biwtc.gov.bd> .
+
+kj:SadarghatTerminal
+    a schema:CivicStructure ;
+    schema:name "Sadarghat Launch Terminal, Dhaka" ;
+    schema:description "Main river ferry/launch terminal in Dhaka, on the Buriganga River." ;
+    geo:lat "23.7069"^^xsd:decimal ;
+    geo:long "90.4069"^^xsd:decimal .

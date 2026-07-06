@@ -1,0 +1,5 @@
+/* 
+  This file exists to satisfy requests for /index.css that might come from 
+  stale service workers or misconfigured crawlers. 
+  The actual application styles are bundled by Vite.
+*/

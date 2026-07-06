@@ -1,0 +1,117 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.env.local
+.env.*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+dev-dist/
+.claude/
+
+# OSM collected raw data (regenerate via: node scripts/collect-bd-locations.mjs)
+data/collected/
+# Processed intermediate data (regenerate via: node scripts/process-bd-locations.mjs)
+data/generated/
+
+# Dev screenshots and AI tooling artifacts — never commit these
+.playwright-mcp/
+.agent/
+.gemini/
+scroll-screenshots/
+# Root-level and misc PNG screenshots (Playwright/manual testing)
+# Exception: public/ and intercity/public/ contain real app assets
+*.png
+!public/*.png
+!public/buses-image/*.png
+!public/images/**/*.png
+!intercity/public/*.png
+!intercity-route-finder/public/*.png
+
+# Secret management scripts — run locally, never commit
+update-smtp-secret.cjs
+setup-secrets.cjs
+setup-koyjabo-core-secrets.cjs
+
+# Auth implementation scripts — live in private koyjabo repo, never in public source
+.github/scripts/
+
+# Sensitive local transport dataset files
+public/bd-locations.json
+public/data/*.json
+data/bangladesh-intercity-routes.json
+data/comprehensive-bangladesh-intercity-routes.json
+
+# Local intercity public data mirrors (should not be committed)
+intercity/public/data/*.json
+
+# Backup files
+*.backup
+
+# Dead projects / excluded sub-apps
+intercity-route-finder/
+dhaka-alive-landing/
+examples/
+
+# Root-level debug, test, and one-off scripts
+*.cjs
+check-app*.js
+koyjabo-debug.js
+scroll-test*.js
+test-auth.js
+fix-blog.*
+fix_offline.js
+loader.js
+server.js
+testGraph.ts
+testSim.ts
+tmp_runs.json
+*_snippet_persist
+
+# Old deployment config files (Netlify/Render not in use)
+netlify.toml
+render.yaml
+
+# Data export dumps
+dhaka_transport_data_export.json
+
+# Ad network documentation
+EZOIC_*.md
+
+# Temp HTML utility files
+generate-icons.html
+HTML_SNIPPET_TO_ADD.html
+SEO_META_TAGS.html
+visitor-sync-test.html
+redirect.html
+error-page.html
+
+# User PII, device tracking, and search history — must not be in git
+# These are community data store files managed by the Cloudflare proxy
+data/users/
+data/devices/
+data/history/
+data/avatars/
+data/results/
+data/advanced-qa.raw.json
+.aider*

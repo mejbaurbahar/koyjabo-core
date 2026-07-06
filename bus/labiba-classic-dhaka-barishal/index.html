@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+  <!-- Security headers -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta http-equiv="X-DNS-Prefetch-Control" content="off" />
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="Permissions-Policy" content="geolocation=(self), camera=(), microphone=(), payment=(), fullscreen=(self)" />
+  <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin-allow-popups" />
+  <!-- Note: 'unsafe-inline' is still required on script-src/style-src because
+       Google Ads + Tailwind CDN + the FOLM theme bootstrap all inject inline
+       <script>/<style>. Switching to nonces would force every ads / Tailwind
+       drop-in to opt in too. Everything else has been narrowed to a fixed
+       origin list — no `https:` wildcards, no open connect-src. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://static.cloudflareinsights.com https://www.googletagmanager.com https://www.google-analytics.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://fundingchoicesmessages.google.com https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google https://www.googleadservices.com https://www.google.com https://adservice.google.com https://aistudiocdn.com https://shop.daamdekhi.com https://cdn.tailwindcss.com https://apis.google.com https://www.ezojs.com https://go.ezoic.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://koyjabo-auth-proxy.fagun115946.workers.dev https://api.koyjabo.com https://*.koyjabo.com https://api.github.com https://raw.githubusercontent.com https://challenges.cloudflare.com https://www.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.google.com https://*.googletagmanager.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://stats.g.doubleclick.net https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google https://csi.gstatic.com https://www.google.com.bd https://api.tomtom.com https://api.maptiler.com https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://firebaseinstallations.googleapis.com https://www.googleapis.com https://aistudiocdn.com https://fundingchoicesmessages.google.com https://www.ezojs.com https://*.ezoic.net; frame-src https://challenges.cloudflare.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://fundingchoicesmessages.google.com https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google https://www.googleadservices.com https://*.firebaseapp.com https://apis.google.com https://accounts.google.com https://*.ezoic.net; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;" />
+
+
+  <!-- Prevent Flash of Light Mode (FOLM) - Apply dark mode before page renders -->
+  <script>
+    // This MUST run before page renders to prevent white flash
+    (function () {
+      const theme = localStorage.getItem('theme');
+      // Default to dark if no preference is stored, or if theme is 'dark'
+      if (!theme || theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+
+
+  <!-- PWA Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="কই যাবো">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#040814">
+
+  <!-- Manifest -->
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Apple Touch Icons & Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/icon-512x512.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/logo.png">
+  <link rel="shortcut icon" href="/logo.png">
+
+  <!-- SEO Meta Tags -->
+  <title>LABIBA Classic (Dhaka-Barishal) Bus Route - লাবিবা ক্লাসিক (ঢাকা-বরিশাল) | KoyJabo</title>
+  <!-- Primary description: answer-first, 80-110 chars per Leadstore AEO audit -->
+  <meta name="description" content="LABIBA Classic (Dhaka-Barishal) bus route in Dhaka. See stops, fare guidance and route details in Bengali and English on KoyJabo." />
+  <!-- AEO short description ≤100 chars for answer engines -->
+  <meta name="aeo-description" content="Find Dhaka bus routes, stops and fares for 200+ local buses. বাংলা + English, free and offline." />
+  <!-- LLM/AI discovery -->
+  <link rel="alternate" type="application/json" href="/.well-known/llm-data.json" title="LLM Site Data" />
+  <!-- TL;DR for AI assistants (AEO Task 2) -->
+  <meta name="summary" content="LABIBA Classic (Dhaka-Barishal) bus route in Dhaka. See stops, fare guidance and route details in Bengali and English on KoyJabo." />
+  <meta name="keywords" content="LABIBA Classic (Dhaka-Barishal) bus route, লাবিবা ক্লাসিক (ঢাকা-বরিশাল) বাস রুট, dhaka bus route, ঢাকা বাস রুট" />
+  <meta name="author" content="Mejbaur Bahar Fagun" />
+  <meta name="publisher" content="কই যাবো" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="googlebot" content="index, follow" />
+  <meta name="bingbot" content="index, follow" />
+  <meta name="language" content="en" />
+  <meta http-equiv="content-language" content="en, bn" />
+  <meta name="revisit-after" content="3 days" />
+  <meta name="distribution" content="global" />
+  <meta name="rating" content="general" />
+
+  <!-- Licensing & machine-readable data links (for AI/LLMs/crawlers) -->
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
+  <meta name="dcterms.license" content="https://creativecommons.org/licenses/by/4.0/" />
+  <meta name="dcterms.rights" content="CC-BY-4.0 – Attribution: KoyJabo (https://koyjabo.com)" />
+  <link rel="alternate" href="https://koyjabo.com/data.csv" type="text/csv" title="Transport routes (CSV)" />
+  <link rel="alternate" href="https://koyjabo.com/data.xml" type="application/xml" title="Transport routes (XML)" />
+  <!-- Temporal metadata -->
+  <meta property="article:published_time" content="2022-01-01T00:00:00+06:00" />
+  <meta property="article:modified_time" content="2026-06-15T00:00:00+06:00" />
+
+  <!-- Google Analytics 4 (Measurement ID: G-7L601M5G9R) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7L601M5G9R"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-7L601M5G9R', { send_page_view: true });
+  </script>
+
+  <!-- Google Search Console: verified via sc-domain:koyjabo.com (DNS) -->
+
+  <!-- Google AdSense — Auto Ads (publisher: ca-pub-8425219156685369) -->
+  <meta name="google-adsense-account" content="ca-pub-8425219156685369">
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://googlesyndication.com">
+  <!-- Ezoic + Media.net preconnects -->
+  <link rel="preconnect" href="https://www.ezojs.com" crossorigin>
+  <link rel="dns-prefetch" href="https://go.ezoic.net">
+
+  <!-- AdSense ad-blocking recovery message (Funding Choices) -->
+  <script async src="https://fundingchoicesmessages.google.com/i/pub-8425219156685369?ers=1"></script>
+  <script>(function() {function signalGooglefcPresent() {if (!window.frames['googlefcPresent']) {if (document.body) {const iframe = document.createElement('iframe'); iframe.style = 'width: 0; height: 0; border: none; z-index: -1000; left: -1000px; top: -1000px;'; iframe.style.display = 'none'; iframe.name = 'googlefcPresent'; document.body.appendChild(iframe);} else {setTimeout(signalGooglefcPresent, 0);}}}signalGooglefcPresent();})();</script>
+
+
+
+  <!-- Geo Tags for Local SEO -->
+  <meta name="geo.region" content="BD-13" />
+  <meta name="geo.placename" content="Dhaka" />
+  <meta name="geo.position" content="23.8103;90.4125" />
+  <meta name="ICBM" content="23.8103, 90.4125" />
+
+  <!-- Canonical & Hreflang — covers local users + diaspora markets (UK, US, UAE, Saudi, Malaysia, Italy, Singapore, Australia, Canada) -->
+  <link rel="canonical" href="https://koyjabo.com/bus/labiba-classic-dhaka-barishal" />
+  <link rel="alternate" hreflang="en" href="https://koyjabo.com/" />
+  <link rel="alternate" hreflang="bn" href="https://koyjabo.com/" />
+  <link rel="alternate" hreflang="en-GB" href="https://koyjabo.com/" />
+  <link rel="alternate" hreflang="en-US" href="https://koyjabo.com/" />
+  <link rel="alternate" hreflang="en-AE" href="https://koyjabo.com/" />
+  <link rel="alternate" hreflang="en-SA" href="https://koyjabo.com/" />
+  <link rel="alternate" hreflang="en-MY" href="https://koyjabo.com/" />
+  <link rel="alternate" hreflang="en-SG" href="https://koyjabo.com/" />
+  <link rel="alternate" hreflang="en-AU" href="https://koyjabo.com/" />
+  <link rel="alternate" hreflang="en-CA" href="https://koyjabo.com/" />
+  <link rel="alternate" hreflang="it" href="https://koyjabo.com/" />
+  <link rel="alternate" hreflang="x-default" href="https://koyjabo.com/" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://koyjabo.com/bus/labiba-classic-dhaka-barishal" />
+  <meta property="og:title" content="LABIBA Classic (Dhaka-Barishal) Bus Route - লাবিবা ক্লাসিক (ঢাকা-বরিশাল) | KoyJabo" />
+  <meta property="og:description" content="LABIBA Classic (Dhaka-Barishal) bus route in Dhaka. See stops, fare guidance and route details in Bengali and English on KoyJabo." />
+  <meta property="og:site_name" content="KoyJabo (কই যাবো)" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="bn_BD" />
+
+  <!-- Social Media Preview Image -->
+  <link rel="image_src" href="https://koyjabo.com/logo.png" />
+  <meta property="og:image" content="https://koyjabo.com/logo.png" />
+  <meta property="og:image:secure_url" content="https://koyjabo.com/logo.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="512" />
+  <meta property="og:image:height" content="512" />
+  <meta property="og:image:alt" content="কই যাবো - Logo" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@koyjabo" />
+  <meta name="twitter:title" content="LABIBA Classic (Dhaka-Barishal) Bus Route - লাবিবা ক্লাসিক (ঢাকা-বরিশাল) | KoyJabo" />
+  <meta name="twitter:description" content="LABIBA Classic (Dhaka-Barishal) bus route in Dhaka. See stops, fare guidance and route details in Bengali and English on KoyJabo." />
+  <meta name="twitter:image" content="https://koyjabo.com/logo.png" />
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "name": "কই যাবো (KoyJabo)",
+          "alternateName": ["KoyJabo", "কই যাবো", "Koi Jabo"],
+          "url": "https://koyjabo.com/",
+          "description": "Bangladesh's most comprehensive transport guide. Find Dhaka local bus routes (200+), metro rail guide, intercity bus/train/flight/launch routes, fare calculator, and AI travel assistant. Bilingual (Bengali/English), works offline.",
+          "applicationCategory": "TravelApplication",
+          "operatingSystem": "Any",
+          "inLanguage": ["bn", "en"],
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "BDT" },
+          "featureList": "Dhaka Bus Route Finder, Metro Rail Guide MRT-6, Intercity Bus Routes, Train Schedule Bangladesh, Flight Routes Bangladesh, Launch Ferry Routes, Fare Calculator, AI Travel Assistant, Offline Mode, Bilingual Bengali English",
+          "author": { "@type": "Person", "name": "Mejbaur Bahar Fagun", "url": "https://linkedin.com/in/mejbaur/" }
+        },
+        {
+          "@type": "Organization",
+          "name": "KoyJabo",
+          "alternateName": "কই যাবো",
+          "url": "https://koyjabo.com/",
+          "logo": { "@type": "ImageObject", "url": "https://koyjabo.com/logo.png", "width": 512, "height": 512 },
+          "description": "Bangladesh's free offline transport guide covering 200+ Dhaka bus routes, Metro Rail MRT-6, intercity bus/train/flight/launch routes, fare calculator, and bilingual AI assistant.",
+          "foundingDate": "2023",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Dhaka",
+            "addressRegion": "Dhaka",
+            "addressCountry": "BD"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "mejbaur@markopolo.ai",
+            "contactType": "customer support",
+            "availableLanguage": ["Bengali", "English"]
+          },
+          "founder": {
+            "@type": "Person",
+            "name": "Mejbaur Bahar Fagun",
+            "url": "https://linkedin.com/in/mejbaur"
+          },
+          "sameAs": [
+            "https://github.com/mejbaurbahar/Dhaka-Commute",
+            "https://www.linkedin.com/company/koy-jabo/",
+            "https://www.facebook.com/koyjabo",
+            "https://twitter.com/koyjabo",
+            "https://www.youtube.com/@koyjabo"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "name": "কই যাবো - Bangladesh Transport Guide",
+          "url": "https://koyjabo.com/",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": { "@type": "EntryPoint", "urlTemplate": "https://koyjabo.com/?q={search_term_string}" },
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://koyjabo.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Intercity Routes", "item": "https://koyjabo.com/intercity" },
+            { "@type": "ListItem", "position": 3, "name": "AI Assistant", "item": "https://koyjabo.com/#ai-assistant" }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "ঢাকায় বাস রুট কিভাবে খুঁজবো?",
+              "acceptedAnswer": { "@type": "Answer", "text": "কই যাবো অ্যাপে 'From' এ আপনার বর্তমান অবস্থান এবং 'To' তে গন্তব্য লিখুন। অ্যাপ তৎক্ষণাৎ সব বাস রুট, ভাড়া ও স্টপ দেখাবে। ২০০+ বাস রুটের তথ্য অফলাইনেও পাওয়া যায়।" }
+            },
+            {
+              "@type": "Question",
+              "name": "ঢাকা মেট্রো রেলের ভাড়া কত?",
+              "acceptedAnswer": { "@type": "Answer", "text": "ঢাকা মেট্রো রেল (MRT Line 6) এর ন্যূনতম ভাড়া ৳২০ এবং সর্বোচ্চ ৳১০০। উত্তরা উত্তর থেকে মতিঝিল পর্যন্ত ৳১০০। প্রতিটি স্টেশনে MRT পাস বা সিঙ্গেল টিকেট কেনা যায়।" }
+            },
+            {
+              "@type": "Question",
+              "name": "ঢাকা থেকে চট্টগ্রাম বাস ভাড়া কত?",
+              "acceptedAnswer": { "@type": "Answer", "text": "ঢাকা থেকে চট্টগ্রাম বাস ভাড়া নন-এসি ৳৬৮০, এসি ৳৯৩২-১৫০০। গ্রীন লাইন, সৌদিয়া, হানিফ, শ্যামলী, এনা, শোহাগ সার্ভিস আছে। সায়েদাবাদ বাস টার্মিনাল থেকে ছাড়ে।" }
+            },
+            {
+              "@type": "Question",
+              "name": "ঢাকা থেকে কক্সবাজার যাওয়ার সহজ উপায় কোনটি?",
+              "acceptedAnswer": { "@type": "Answer", "text": "ঢাকা থেকে কক্সবাজার যাওয়ার উপায়: ১) বাস: গ্রীন লাইন, হানিফ, শ্যামলী - ১০-১২ ঘন্টা, ভাড়া ৳৯০০-২৫০০। ২) ট্রেন: কক্সবাজার এক্সপ্রেস (রাত ১০:৩০), পারজোটাক এক্সপ্রেস - শোভন চেয়ার ৳৭৪৫, এসি বার্থ ৳২৬৫৬। ৩) ফ্লাইট: বিমান, ইউএস-বাংলা, নভোএয়ার - ১ ঘন্টা, ৳৪৫০০-১২০০০।" }
+            },
+            {
+              "@type": "Question",
+              "name": "ঢাকা থেকে সিলেট ট্রেনের সময়সূচী কী?",
+              "acceptedAnswer": { "@type": "Answer", "text": "ঢাকা থেকে সিলেট ট্রেন: পারাবত এক্সপ্রেস (সকাল ৬:৩০, মঙ্গলবার বন্ধ), জয়ন্তিকা এক্সপ্রেস (সকাল ১১:১৫), কালনী এক্সপ্রেস (বিকাল ২:৫৫, শুক্রবার বন্ধ), উপবন এক্সপ্রেস (রাত ১০:০০)। ভাড়া: শোভন চেয়ার ৳৩৭৫, স্নিগ্ধা ৳৭১৯, এসি বার্থ ৳১৬৭৮। যাত্রাকাল ৬.৫-৮ ঘন্টা।" }
+            },
+            {
+              "@type": "Question",
+              "name": "ঢাকা থেকে রাজশাহী বাস ভাড়া কত?",
+              "acceptedAnswer": { "@type": "Answer", "text": "ঢাকা থেকে রাজশাহী বাস ভাড়া নন-এসি ৳৬০০-৭০০, এসি ৳৯০০-১৩০০। দেশ ট্রাভেলস, ন্যাশনাল ট্রাভেলস, হানিফ, শ্যামলী, গ্রামীণ ট্রাভেলস সার্ভিস আছে। কল্যাণপুর/মহাখালী বাস টার্মিনাল থেকে ছাড়ে।" }
+            },
+            {
+              "@type": "Question",
+              "name": "ট্রেন টিকেট অনলাইনে কিভাবে কিনবো?",
+              "acceptedAnswer": { "@type": "Answer", "text": "বাংলাদেশ রেলওয়ের অনলাইন টিকেট বুকিং: eticket.railway.gov.bd ওয়েবসাইটে যান অথবা Rail Sheba অ্যাপ ডাউনলোড করুন। ৫ দিন আগে থেকে টিকেট পাওয়া যায়। বিকাশ, নগদ, কার্ডে পেমেন্ট করা যায়।" }
+            },
+            {
+              "@type": "Question",
+              "name": "সদরঘাট থেকে কোন কোন জায়গায় লঞ্চ যায়?",
+              "acceptedAnswer": { "@type": "Answer", "text": "ঢাকার সদরঘাট লঞ্চ টার্মিনাল থেকে লঞ্চ যায়: বরিশাল (৬-৮ ঘন্টা, ৳৩০০-১২০০), ভোলা (৫-৬ ঘন্টা), পটুয়াখালী (৮-১০ ঘন্টা), খুলনা (১০-১২ ঘন্টা), চাঁদপুর (৩-৪ ঘন্টা)। সাধারণত সন্ধ্যা ৬টা - রাত ৮টার মধ্যে ছাড়ে।" }
+            },
+            {
+              "@type": "Question",
+              "name": "শাহজালাল বিমানবন্দর থেকে ঢাকা শহরে কিভাবে আসবো?",
+              "acceptedAnswer": { "@type": "Answer", "text": "হজরত শাহজালাল আন্তর্জাতিক বিমানবন্দর থেকে শহরে আসার উপায়: ১) ট্যাক্সি: ৳৫০০-৮০০ (মতিঝিল)। ২) উবার/পাঠাও: ৳৩০০-৫০০। ৩) BRTC এয়ারপোর্ট বাস: ৳৮০ (মতিঝিল)। ৪) মেট্রো রেল: উত্তরা নর্থ স্টেশন পর্যন্ত হেঁটে (১০ মিনিট), তারপর মেট্রো।" }
+            },
+            {
+              "@type": "Question",
+              "name": "বান্দরবানে যেতে কি পারমিট লাগে?",
+              "acceptedAnswer": { "@type": "Answer", "text": "বান্দরবান শহরে যেতে পারমিট লাগে না। তবে রুমা উপজেলা, থানচি, বগা লেক যেতে পর্যটন পুলিশের কাছ থেকে পারমিট নিতে হয়। বান্দরবান সদরের পর্যটন পুলিশ অফিসে জাতীয় পরিচয়পত্র/পাসপোর্ট দিয়ে পারমিট পাওয়া যায়।" }
+            },
+            {
+              "@type": "Question",
+              "name": "সেন্ট মার্টিন দ্বীপ যাওয়ার উপায় কী?",
+              "acceptedAnswer": { "@type": "Answer", "text": "সেন্ট মার্টিন যাওয়ার রুট: ঢাকা → কক্সবাজার (বাস/ট্রেন/ফ্লাইট) → টেকনাফ (১ ঘন্টা বাস) → সেন্ট মার্টিন (জাহাজে ৩-৪ ঘন্টা)। জাহাজ সকাল ৯টায় ছাড়ে। কেয়ারী সিন্দবাদ, কুতুবদিয়া জাহাজ পাওয়া যায়। একমুখী ভাড়া ৳৫০০-১৫০০। সেরা সময়: নভেম্বর-মার্চ।" }
+            },
+            {
+              "@type": "Question",
+              "name": "ঢাকায় উবার বা পাঠাওতে কত ভাড়া লাগে?",
+              "acceptedAnswer": { "@type": "Answer", "text": "ঢাকায় রাইড শেয়ারিং ভাড়া: উবার (মোটরসাইকেল) প্রথম ৩ কিমি ৳৫০-৭০, পরে প্রতি কিমি ৳১৫-২০। পাঠাও মোটরসাইকেল ৳৩৫-৪৫ বেস। উবার/পাঠাও গাড়ি ৳৮০-১৫০ বেস + প্রতি কিমি ৳২৫-৩০। CNG অটোরিকশা মিটারে ৳৪০-৬০ প্রথম ২ কিমি।" }
+            },
+            {
+              "@type": "Question",
+              "name": "বাংলাদেশ ভ্রমণের সেরা সময় কোনটি?",
+              "acceptedAnswer": { "@type": "Answer", "text": "বাংলাদেশ ভ্রমণের সেরা সময় নভেম্বর থেকে মার্চ। এই সময় আবহাওয়া শুষ্ক ও ঠান্ডা। কক্সবাজার, সুন্দরবন, সেন্ট মার্টিন - সব জায়গায় যাওয়া যায়। এপ্রিল-মে গরম বেশি। জুন-অক্টোবর বর্ষাকাল (সুন্দরবন সুন্দর হয়, কিন্তু সেন্ট মার্টিন বন্ধ থাকে)।" }
+            },
+            {
+              "@type": "Question",
+              "name": "ঢাকা থেকে খুলনা ট্রেন না লঞ্চ কোনটা ভালো?",
+              "acceptedAnswer": { "@type": "Answer", "text": "ঢাকা-খুলনা রুটে ট্রেন ও লঞ্চ দুটোই জনপ্রিয়। ট্রেন: জাহানাবাদ এক্সপ্রেস (পদ্মা সেতু হয়ে, মাত্র ৩ঘন্টা ৪৫ মিনিট), শোভন চেয়ার ৳৪৪৫। লঞ্চ: সুন্দরবন, পারাবত ইত্যাদি - সদরঘাট থেকে রাতের যাত্রা ১০-১২ ঘন্টা, ডেক ৳৩০০-৫০০, কেবিন ৳১০০০-৩০০০। পদ্মা সেতুর পর ট্রেনই দ্রুততম।" }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I find local bus routes in Dhaka?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Use KoyJabo (koyjabo.com) to find any Dhaka local bus route. Enter your start and destination — the app instantly shows all bus routes, fares, and stops from 200+ bus services. Works offline too." }
+            },
+            {
+              "@type": "Question",
+              "name": "What is the fare for Dhaka Metro Rail (MRT Line 6)?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Dhaka Metro Rail (MRT Line 6) minimum fare is ৳20, maximum ৳100 for the full route (Uttara North to Motijheel). Buy MRT Pass or single-journey tickets at any station. Runs 7:00 AM - 9:00 PM, closed Friday." }
+            },
+            {
+              "@type": "Question",
+              "name": "How to travel from Dhaka to Cox's Bazar?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Dhaka to Cox's Bazar: Bus (10-12 hrs, ৳900-2500 via Green Line, Hanif, Shyamoli from Sayedabad Terminal), Train (Cox's Bazar Express, 10:30 PM, Shovan Chair ৳745, AC Berth ৳2656), Flight (1 hr, ৳4500-12000 by Biman/US-Bangla/Novoair). Bus is most popular for budget travelers." }
+            },
+            {
+              "@type": "Question",
+              "name": "What trains run from Dhaka to Chittagong?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Dhaka to Chittagong trains: Sonar Bangla Express (7:00 AM), Mahanagar Provati (7:45 AM), Parjotak Express (6:15 AM), Suborno Express (4:30 PM), Mahanagar Express (9:20 PM), Turna Express (11:40 PM). Journey 5-6.5 hours. Fares: Shovon Chair ৳405, Snigdha ৳777, AC Berth ৳1591. Book at eticket.railway.gov.bd." }
+            },
+            {
+              "@type": "Question",
+              "name": "How to book Bangladesh Railway train tickets online?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Book Bangladesh train tickets at eticket.railway.gov.bd or the Rail Sheba app. Tickets available 5 days in advance. Payment via bKash, Nagad, Rocket, or debit/credit card. Bring ticket printout or mobile screenshot for travel." }
+            },
+            {
+              "@type": "Question",
+              "name": "How to reach Saint Martin Island Bangladesh?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Route to Saint Martin: Dhaka → Cox's Bazar (bus/train/flight) → Teknaf (1 hr by local bus) → Saint Martin (3-4 hrs by ship, departs 9 AM). Ships: Keari Sindbad, Kutubdia, Sea Truck. One-way fare ৳500-1500. Best season: November-March. Often closed during monsoon." }
+            },
+            {
+              "@type": "Question",
+              "name": "What is the bus fare from Dhaka to Sylhet?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Dhaka to Sylhet bus fare: Non-AC ৳570-700, AC ৳900-1400. Operators: Green Line, Ena, London Express, Hanif, Shyamoli, Al-Mobaraka. Journey 6-7 hours from Mohakhali Bus Terminal. Train is also popular: Parabat Express, Upaban Express (6.5-8 hrs, ৳375-1678)." }
+            },
+            {
+              "@type": "Question",
+              "name": "What are the ferry/launch routes from Dhaka Sadarghat?",
+              "acceptedAnswer": { "@type": "Answer", "text": "From Dhaka Sadarghat Terminal: To Barisal (6-8 hrs overnight, ৳300-1200, Sundarban/Parabat/Kirtankhola), Bhola (5-6 hrs, ৳300-600), Patuakhali (8-10 hrs), Khulna (10-12 hrs), Chandpur (3-4 hrs). Launches depart 6 PM - 8 PM. Buy tickets at Sadarghat." }
+            },
+            {
+              "@type": "Question",
+              "name": "Does Bangladesh have ride-sharing apps like Uber?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Yes! Dhaka and Chittagong have Uber (cars and motorcycles) and Pathao (motorcycles and cars). Motorcycle rides start from ৳35-50 base fare. Cars start ৳80-100. Shohoz also offers ride-sharing. Ride-sharing is popular for avoiding Dhaka traffic. Available 24/7." }
+            }
+          ]
+        }
+      ]
+    }
+  </script>
+
+
+  <!-- HowTo Schema for Better Featured Snippets -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Find Bus Routes in Dhaka Using কই যাবো",
+      "description": "Step-by-step guide to finding the best bus route in Dhaka city using KoyJabo app",
+      "image": "https://koyjabo.com/og-image.png",
+      "totalTime": "PT2M",
+      "estimatedCost": {
+        "@type": "MonetaryAmount",
+        "currency": "BDT",
+        "value": "0"
+      },
+      "tool": [
+        {
+          "@type": "HowToTool",
+          "name": "কই যাবো App"
+        }
+      ],
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Open কই যাবো",
+          "text": "Visit koyjabo.com or open the installed PWA app",
+          "url": "https://koyjabo.com/"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Enter Your Starting Point",
+          "text": "Type your starting location in the 'From' field or use 'Use My Location'"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Enter Your Destination",
+          "text": "Type your destination in the 'To' field"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "View Route Options",
+          "text": "Browse through the list of available bus routes with fares and stops"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "Select Your Bus",
+          "text": "Choose the best bus route based on time, distance, and fare"
+        }
+      ]
+    }
+  </script>
+
+  <!-- Software Application Schema for App Store Listing -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "কই যাবো",
+      "operatingSystem": "Web, Android, iOS",
+      "applicationCategory": "TravelApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "BDT"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Mejbaur Bahar Fagun"
+      }
+    }
+  </script>
+
+  <!-- Video Schema for YouTube Demo -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoObject",
+      "name": "KoyJabo (কই যাবো) - Bangladesh Bus Route Finder Demo",
+      "description": "Watch how KoyJabo helps you find bus routes across Bangladesh. Navigate 200+ Dhaka buses, Metro Rail (MRT Line 6), intercity routes with AI assistance. Free, offline-ready transport planner for Bangladesh.",
+      "thumbnailUrl": [
+        "https://img.youtube.com/vi/-lL9BCEZP5U/maxresdefault.jpg",
+        "https://img.youtube.com/vi/-lL9BCEZP5U/hqdefault.jpg",
+        "https://img.youtube.com/vi/-lL9BCEZP5U/mqdefault.jpg"
+      ],
+      "uploadDate": "2024-12-15T00:00:00Z",
+      "duration": "PT3M45S",
+      "contentUrl": "https://www.youtube.com/watch?v=-lL9BCEZP5U",
+      "embedUrl": "https://www.youtube.com/embed/-lL9BCEZP5U",
+      "publisher": {
+        "@type": "Organization",
+        "name": "KoyJabo",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://koyjabo.com/logo.png",
+          "width": 512,
+          "height": 512
+        }
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Mejbaur Bahar Fagun",
+        "url": "https://linkedin.com/in/mejbaur/"
+      },
+      "regionsAllowed": "BD,IN,PK,NP,LK,MM,TH,MY,SG,ID,PH,GB,US,AE,SA,IT,AU,CA,DE,FR,NL,JP,KR",
+      "inLanguage": ["en", "bn"],
+      "keywords": "KoyJabo, Dhaka bus routes, Bangladesh transport, MRT Line 6, bus finder, route planner, কই যাবো, ঢাকা বাস, মেট্রো রেল"
+    }
+  </script>
+
+
+
+  <!-- Tourism & Travel Schema for international Google discovery -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TouristInformationCenter",
+      "name": "KoyJabo – Bangladesh Travel Guide",
+      "description": "Bangladesh's leading digital travel and transport guide. Plan trips to Cox's Bazar, Sundarbans, Sylhet, Bandarban and all districts. Find buses, trains, flights, and ferry routes.",
+      "url": "https://koyjabo.com/",
+      "logo": "https://koyjabo.com/logo.png",
+      "availableLanguage": [
+        { "@type": "Language", "name": "English" },
+        { "@type": "Language", "name": "Bengali" }
+      ],
+      "touristType": ["Adventure tourist", "Cultural tourist", "Backpacker", "Business traveller", "Bangladeshi diaspora"],
+      "knowsAbout": [
+        "Bangladesh public transport",
+        "Dhaka bus routes",
+        "Cox's Bazar beach travel",
+        "Sundarbans tour packages",
+        "Sylhet tea garden tours",
+        "Bandarban hill trekking",
+        "Bangladesh train travel",
+        "Dhaka Metro Rail MRT-6"
+      ]
+    }
+  </script>
+
+  <!-- AEO Task 6: TableOfContents ItemList for answer engines -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Table of Contents — KoyJabo Bangladesh Transport Guide",
+      "description": "Quick navigation index for KoyJabo's transport coverage",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Dhaka Local Bus Routes (200+)", "url": "https://koyjabo.com/local-bus" },
+        { "@type": "ListItem", "position": 2, "name": "Metro Rail MRT-6 Fares & Schedule", "url": "https://koyjabo.com/metro" },
+        { "@type": "ListItem", "position": 3, "name": "Bangladesh Train Routes", "url": "https://koyjabo.com/train" },
+        { "@type": "ListItem", "position": 4, "name": "Intercity Bus, Flight & Launch", "url": "https://koyjabo.com/intercity" },
+        { "@type": "ListItem", "position": 5, "name": "Fare Calculator", "url": "https://koyjabo.com/commute-cost" },
+        { "@type": "ListItem", "position": 6, "name": "AI Travel Assistant", "url": "https://koyjabo.com/ai" },
+        { "@type": "ListItem", "position": 7, "name": "Emergency Helplines (80+)", "url": "https://koyjabo.com/" }
+      ]
+    }
+  </script>
+
+  <!-- GEO Task 5: hasCredential for E-E-A-T signals + complete Organization fields -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "KoyJabo",
+      "url": "https://koyjabo.com",
+      "logo": "https://koyjabo.com/logo.png",
+      "foundingDate": "2023",
+      "industry": "Public Transportation Information",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Dhaka",
+        "addressRegion": "Dhaka Division",
+        "addressCountry": "BD"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "url": "https://koyjabo.com/contact",
+        "email": "mejbaur@markopolo.ai",
+        "availableLanguage": ["English", "Bengali"]
+      },
+      "founder": {
+        "@type": "Person",
+        "name": "Mejbaur Bahar Fagun",
+        "url": "https://linkedin.com/in/mejbaur"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "bestRating": "5",
+        "worstRating": "1",
+        "reviewCount": "150"
+      },
+      "hasCredential": {
+        "@type": "EducationalOccupationalCredential",
+        "name": "Open Source Public Transport Data",
+        "credentialCategory": "Community Verified",
+        "recognizedBy": { "@type": "Organization", "name": "BRTA – Bangladesh Road Transport Authority" }
+      },
+      "knowsAbout": ["Bangladesh transport", "Dhaka bus routes", "MRT-6 Metro Rail", "Bangladesh Railway", "BIWTC ferry routes"],
+      "sameAs": [
+        "https://github.com/fagun18/Dhaka-Commute",
+        "https://www.linkedin.com/company/koy-jabo",
+        "https://www.facebook.com/koyjabo",
+        "https://twitter.com/koyjabo",
+        "https://www.youtube.com/@koyjabo",
+        "https://www.youtube.com/watch?v=-lL9BCEZP5U",
+        "https://www.wikidata.org/wiki/Q140308869",
+        "https://medium.com/p/376790125108"
+      ]
+    }
+  </script>
+
+  <!-- LLMO Task 5: hasPart chunk metadata for LLM content segmentation -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "KoyJabo – Bangladesh Transport Guide",
+      "url": "https://koyjabo.com/",
+      "hasPart": [
+        { "@type": "WebPageElement", "name": "Local Bus Route Finder", "description": "Search 200+ Dhaka bus routes with stop lists and fares", "cssSelector": "#bus-search" },
+        { "@type": "WebPageElement", "name": "Metro Rail MRT-6 Live", "description": "MRT-6 next train countdown, 17 stations, ৳20–100 fare", "cssSelector": "#metro-live" },
+        { "@type": "WebPageElement", "name": "Intercity Travel Planner", "description": "Bus, train, flight and launch routes across 64 districts", "cssSelector": "#intercity" },
+        { "@type": "WebPageElement", "name": "AI Travel Assistant", "description": "Bilingual AI assistant for Bangladesh travel queries", "cssSelector": "#ai-assistant" },
+        { "@type": "WebPageElement", "name": "Fare Calculator", "description": "BRTA-rate bus fare and MRT fare calculator", "cssSelector": "#fare-calc" }
+      ]
+    }
+  </script>
+
+  <!-- GEO Task 3: authoritative source citations -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Bangladesh Public Transport Guide 2026",
+      "dateModified": "2026-06-14",
+      "author": { "@type": "Person", "name": "Mejbaur Bahar Fagun", "url": "https://linkedin.com/in/mejbaur" },
+      "citation": [
+        { "@type": "CreativeWork", "name": "BRTA Fare Circular (April 2026)", "url": "https://brta.gov.bd" },
+        { "@type": "CreativeWork", "name": "DMTCL MRT-6 Official Schedule", "url": "https://dmtcl.gov.bd" },
+        { "@type": "CreativeWork", "name": "Bangladesh Railway Timetable", "url": "https://eticket.railway.gov.bd" },
+        { "@type": "CreativeWork", "name": "BIWTC Launch Route List", "url": "https://biwtc.gov.bd" }
+      ]
+    }
+  </script>
+
+  <!-- Speakable Schema — marks content for voice assistants -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "KoyJabo – Bangladesh Transport Guide",
+      "url": "https://koyjabo.com/",
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [".kj-summary", ".kj-tldr", "h1", "h2"]
+      }
+    }
+  </script>
+
+  <!-- Local Business Schema -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "KoyJabo (কই যাবো)",
+      "description": "Bangladesh's free transport and travel guide. Dhaka bus routes, Metro Rail, intercity routes, AI assistant.",
+      "url": "https://koyjabo.com",
+      "logo": "https://koyjabo.com/logo.png",
+      "image": "https://koyjabo.com/og-image.png",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Dhaka",
+        "addressRegion": "Dhaka Division",
+        "addressCountry": "BD"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "23.8103",
+        "longitude": "90.4125"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        "opens": "00:00",
+        "closes": "23:59"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "url": "https://koyjabo.com/contact",
+        "availableLanguage": ["English", "Bengali"]
+      },
+      "founder": {
+        "@type": "Person",
+        "name": "Mejbaur Bahar Fagun",
+        "url": "https://linkedin.com/in/mejbaur"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "bestRating": "5",
+        "worstRating": "1",
+        "reviewCount": "150"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/company/koy-jabo",
+        "https://www.facebook.com/koyjabo",
+        "https://twitter.com/koyjabo",
+        "https://www.youtube.com/@koyjabo",
+        "https://www.wikidata.org/wiki/Q140308869",
+        "https://medium.com/p/376790125108"
+      ]
+    }
+  </script>
+
+  <!-- Preload LCP image for faster rendering -->
+  <link rel="preload" as="image" href="/logo.png" fetchpriority="high">
+
+  <!-- Preconnect to critical origins for faster resource loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://aistudiocdn.com" crossorigin>
+  <link rel="dns-prefetch" href="https://api.open-meteo.com">
+  <!-- Offline fallback CSS — non-blocking load, swap to all after parse -->
+  <link rel="stylesheet" href="/offline-styles.css" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="/offline-styles.css"></noscript>
+
+
+  <!-- Google Fonts with font-display: swap for better performance -->
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap"
+    rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap"
+      rel="stylesheet">
+  </noscript>
+  <style>
+    #kj-splash {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 50% 38%, #0b1733 0%, #05060b 70%);
+      color: #eafcff;
+      font-family: 'Inter', 'Hind Siliguri', system-ui, sans-serif;
+    }
+    #kj-splash .kj-splash-col { display: flex; flex-direction: column; align-items: center; }
+    #kj-splash .kj-splash-ring { position: relative; width: 132px; height: 132px; display: flex; align-items: center; justify-content: center; margin-bottom: 26px; }
+    #kj-splash .kj-splash-ring svg { position: absolute; inset: 0; animation: kjWheel 2.6s linear infinite; }
+    #kj-splash .kj-splash-logo { width: 68px; height: 68px; border-radius: 18px; background: #05060b; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; box-shadow: 0 14px 40px -10px rgba(0,200,230,0.65), inset 0 0 0 1px rgba(255,255,255,0.12); }
+    #kj-splash .kj-splash-logo img { width: 100%; height: 100%; -o-object-fit: contain; object-fit: contain; display: block; }
+    #kj-splash .kj-splash-title { font-family: 'Hind Siliguri', 'Inter', system-ui, sans-serif; font-weight: 700; font-size: 30px; letter-spacing: 0; }
+    #kj-splash .kj-splash-sub { font-size: 11px; font-weight: 700; letter-spacing: 4px; color: #4ad6ee; margin-top: 4px; }
+    #kj-splash .kj-splash-bar { width: 168px; height: 4px; border-radius: 999px; background: rgba(255,255,255,0.1); margin-top: 22px; overflow: hidden; }
+    #kj-splash .kj-splash-bar i { display: block; height: 100%; width: 42%; border-radius: 999px; background: linear-gradient(90deg, #22f5ff, #ff2a6d); animation: kjLoadBar 1.2s ease-in-out infinite; }
+    #kj-splash .kj-splash-tag { font-size: 11px; color: #6b7a91; margin-top: 14px; }
+    @keyframes kjLoadBar { 0% { transform: translateX(-120%); } 100% { transform: translateX(330%); } }
+    @keyframes kjWheel { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+  </style>
+    <script type="module" crossorigin src="/assets/index--dyW4hrg.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/leaflet-BF7F7cMi.js">
+    <link rel="modulepreload" crossorigin href="/assets/react-ClBwdsT_.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-Dh4DHJYO.js">
+    <link rel="modulepreload" crossorigin href="/assets/react-dom-D62oQSBP.js">
+    <link rel="modulepreload" crossorigin href="/assets/train-data-Bfg7o-rQ.js">
+    <link rel="modulepreload" crossorigin href="/assets/intercity-data-bTzBh1aQ.js">
+    <link rel="modulepreload" crossorigin href="/assets/ai-service-CEDT5AsF.js">
+    <link rel="modulepreload" crossorigin href="/assets/lucide-CpIzVVU8.js">
+    <link rel="stylesheet" crossorigin href="/assets/leaflet-Dgihpmma.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-PJ9lV6rO.css">
+  <link rel="manifest" href="/manifest.webmanifest">  <script type="application/ld+json" data-static-seo="route">{"@context":"https://schema.org","@type":"WebPage","name":"LABIBA Classic (Dhaka-Barishal) Bus Route","url":"https://koyjabo.com/bus/labiba-classic-dhaka-barishal","description":"LABIBA Classic (Dhaka-Barishal) bus route in Dhaka.","about":{"@type":"BusTrip","name":"LABIBA Classic (Dhaka-Barishal) Bus Route"}}</script>
+</head>
+
+<body style="margin:0;padding:0;background:#05060b">
+
+  <div id="kj-splash" role="status" aria-live="polite">
+    <div class="kj-splash-col">
+      <div class="kj-splash-ring">
+        <svg viewBox="0 0 132 132" width="132" height="132" fill="none" aria-hidden="true">
+          <circle cx="66" cy="66" r="60" stroke="rgba(255,255,255,0.08)" stroke-width="3"/>
+          <circle cx="66" cy="66" r="60" stroke="#22f5ff" stroke-width="3" stroke-linecap="round" stroke-dasharray="60 320"/>
+          <circle cx="126" cy="66" r="4" fill="#ff2a6d"/>
+        </svg>
+        <div class="kj-splash-logo"><img src="/logo.png" alt="KoyJabo" width="68" height="68"></div>
+      </div>
+      <div class="kj-splash-title">কই যাবো</div>
+      <div class="kj-splash-sub">KOYJABO</div>
+      <div class="kj-splash-bar"><i></i></div>
+      <div id="kj-splash-tag" class="kj-splash-tag" data-bn="আপনার রুট লোড হচ্ছে…" data-en="Loading your routes…">আপনার রুট লোড হচ্ছে…</div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var lang = localStorage.getItem('app-language') || 'bn';
+      var tag = document.getElementById('kj-splash-tag');
+      if (tag) tag.textContent = tag.getAttribute(lang === 'en' ? 'data-en' : 'data-bn');
+    })();
+  </script>
+
+  <!-- TL;DR for AI/search crawlers — AEO Summary block, visually hidden, accessible to bots -->
+  <div class="kj-tldr kj-summary" style="position:absolute;left:-9999px;top:0;width:1px;overflow:hidden" aria-label="Site summary">
+    <h2>TL;DR — KoyJabo (কই যাবো)</h2>
+    <p>KoyJabo is Bangladesh's free offline transport guide covering 200+ Dhaka bus routes, Metro Rail MRT-6 fares (৳20–100, 17 stations), intercity bus/train/flight/launch routes across all 64 districts, truck &amp; freight booking with real BD market rates, a BRTA-rate fare calculator, and a bilingual Bengali/English AI assistant. Works offline.</p>
+  </div>
+
+  <main class="kj-static-seo" style="position:absolute;left:-9999px;top:0;width:1px;overflow:hidden" aria-hidden="true">
+      <article>
+        <h1>LABIBA Classic (Dhaka-Barishal) Bus Route - লাবিবা ক্লাসিক (ঢাকা-বরিশাল)</h1>
+        <p>LABIBA Classic (Dhaka-Barishal) is a Dhaka local bus route listed on KoyJabo with route details, stops and fare guidance.</p>
+      </article>
+    </main>
+  <div id="root"></div>
+
+    <!-- SEO Content for Search Engines -->
+  <noscript>
+    <div
+      style="max-width: 1200px; margin: 0 auto; padding: 40px 20px; font-family: 'Hind Siliguri', Arial, sans-serif; background: #fff; color: #333;">
+
+      <!-- TL;DR summary for AI assistants (AEO: Summary/TL;DR Block) -->
+      <div class="kj-tldr kj-summary" style="background: #f0fdf4; border-left: 4px solid #006a4e; padding: 20px 24px; margin-bottom: 32px; border-radius: 4px;">
+        <h2 style="font-size: 1.2rem; color: #006a4e; margin: 0 0 10px;">TL;DR</h2>
+        <p style="margin: 0; font-size: 1.05rem; line-height: 1.7;">KoyJabo (কই যাবো) is Bangladesh's free offline transport guide. It covers 200+ Dhaka local bus routes, Metro Rail MRT-6 fares (৳20–100, 17 stations), intercity bus/train/flight/launch routes across all 64 districts, a fare calculator, and a bilingual AI assistant. Works offline.</p>
+      </div>
+
+      <!-- Question-style headings for AEO -->
+      <h1 style="font-size: 2.5rem; margin-bottom: 20px; color: #006a4e;">কই যাবো - ঢাকার স্মার্ট বাস রুট ফাইন্ডার
+        (Dhaka Bus Route Finder)</h1>
+
+      <section style="margin-bottom: 30px;">
+        <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: #004d38;">What is KoyJabo and how does it help with transport in Dhaka and Bangladesh?</h2>
+        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 15px;">
+          KoyJabo (কই যাবো) is Bangladesh's most comprehensive transport route finder, helping millions of commuters
+          navigate Dhaka's complex bus network and plan intercity journeys. Whether you're looking for local bus routes,
+          Metro Rail schedules, or intercity travel options, we've got you covered.
+        </p>
+        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 15px;">
+          Our platform includes real-time information for over 200 Dhaka local buses, detailed Metro Rail (MRT Line 6)
+          schedules and fares, intercity bus routes connecting all 64 districts, train schedules, and domestic flight
+          information. All features work offline, making it perfect for on-the-go navigation.
+        </p>
+      </section>
+
+      <section style="margin-bottom: 30px;">
+        <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: #004d38;">What features does KoyJabo offer for Bangladesh travelers? (প্রধান বৈশিষ্ট্য)</h2>
+        <ul style="font-size: 1.1rem; line-height: 2; margin-left: 20px;">
+          <li><strong>200+ Dhaka Bus Routes:</strong> Complete route maps, stops, and fare information for all major
+            local buses including BRTC, Shyamoli, Green Line, and more.</li>
+          <li><strong>Metro Rail Guide:</strong> Full MRT Line 6 schedule, station list, fare calculator, and real-time
+            updates.</li>
+          <li><strong>আন্তঃজেলা রুট খুঁজুন (Intercity Travel):</strong> Bus, train, and flight schedules for travel
+            between all major cities
+            including Dhaka-Chittagong, Dhaka-Sylhet, Dhaka-Khulna, and more.</li>
+          <li><strong>AI Assistant:</strong> Get instant answers about routes, fares, and travel tips in Bengali and
+            English.</li>
+          <li><strong>Fare Calculator:</strong> Calculate accurate fares for buses, metro, and intercity travel.</li>
+          <li><strong>Offline Maps:</strong> Access all route information without internet connection.</li>
+          <li><strong>Live Navigation:</strong> Turn-by-turn directions and real-time location tracking.</li>
+          <li><strong>Multilingual:</strong> Full support in Bengali (বাংলা) and English.</li>
+        </ul>
+      </section>
+
+      <section style="margin-bottom: 30px;">
+        <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: #004d38;">What are the most popular bus routes in Dhaka? (জনপ্রিয় বাস রুট)</h2>
+        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 15px;">
+          <strong>Dhaka Local Buses:</strong> Gulshan to Motijheel, Dhanmondi to Uttara, Mirpur to Sadarghat, Mohakhali
+          to Gabtoli, Farmgate to Jatrabari, and hundreds more.
+        </p>
+        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 15px;">
+          <strong>Metro Rail (MRT-6):</strong> Uttara North to Motijheel via Agargaon, Farmgate, Shahbag, and
+          Secretariat stations.
+        </p>
+        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 15px;">
+          <strong>Intercity Routes:</strong> Dhaka to Chittagong, Dhaka to Sylhet, Dhaka to Rajshahi, Dhaka to Khulna,
+          Dhaka to Cox's Bazar, Dhaka to Rangpur, and all major district connections.
+        </p>
+      </section>
+
+      <section style="margin-bottom: 30px;">
+        <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: #004d38;">How do I use KoyJabo to find bus routes in Dhaka? (কই যাবো কীভাবে ব্যবহার করবেন)</h2>
+        <ol style="font-size: 1.1rem; line-height: 2; margin-left: 20px;">
+          <li>Enter your starting point in the "From" field or tap "Use My Location"</li>
+          <li>Enter your destination in the "To" field</li>
+          <li>Browse available bus routes with detailed stop information and fares</li>
+          <li>Select your preferred route and start navigating</li>
+          <li>Use the AI Assistant for personalized travel recommendations</li>
+        </ol>
+      </section>
+
+      <section style="margin-bottom: 30px;">
+        <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: #004d38;">Who built KoyJabo and why is it a reliable transport source?</h2>
+        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 15px;">
+          Developed by Mejbaur Bahar Fagun, KoyJabo is a free, open-source project dedicated to making public
+          transportation in Bangladesh more accessible. We believe that everyone deserves easy access to reliable
+          transport information, which is why all our features are completely free and work offline.
+        </p>
+        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 15px;">
+          Our mission is to reduce commute time, lower transportation costs, and make daily travel stress-free for
+          millions of Bangladeshi commuters. Whether you're a daily commuter, tourist, or first-time visitor to Dhaka,
+          KoyJabo is your trusted companion for navigating Bangladesh's transport network.
+        </p>
+      </section>
+
+      <section style="margin-bottom: 30px;">
+        <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: #004d38;">How do I contact KoyJabo for support?</h2>
+        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 15px;">
+          For support, feedback, or suggestions, please visit our GitHub repository or contact us through our website.
+          We continuously update our database with new routes and features based on user feedback.
+        </p>
+        <p style="font-size: 1.1rem; line-height: 1.8;">
+          <strong>Keywords:</strong> Dhaka bus route, কই যাবো, ঢাকা বাস রুট, Bangladesh transport, MRT Line 6, metro
+          rail Dhaka, bus fare calculator, intercity bus Bangladesh, Dhaka to Chittagong, public transport Dhaka, route
+          finder BD, BRTC bus, local bus Dhaka, metro schedule, offline bus routes, Bangladesh travel planner
+        </p>
+      </section>
+
+
+      <section style="margin-bottom: 30px;">
+        <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: #004d38;">Where does KoyJabo get its transport data? (Data Sources)</h2>
+        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 15px;">
+          KoyJabo sources transport data exclusively from official Bangladesh government authorities:
+        </p>
+        <ul style="font-size: 1.1rem; line-height: 2; margin-left: 20px;">
+          <li><a href="https://brta.gov.bd" style="color: #006a4e;" rel="noopener">BRTA – Bangladesh Road Transport Authority</a>: Official bus fare rates (৳2.53/km city, April 2026 circular)</li>
+          <li><a href="https://dmtcl.gov.bd" style="color: #006a4e;" rel="noopener">DMTCL – Dhaka Mass Transit Company Limited</a>: MRT-6 Metro Rail schedule, fares, and station data</li>
+          <li><a href="https://eticket.railway.gov.bd" style="color: #006a4e;" rel="noopener">Bangladesh Railway</a>: 350+ intercity train schedules, fares, and booking</li>
+          <li><a href="https://biwtc.gov.bd" style="color: #006a4e;" rel="noopener">BIWTC – Bangladesh Inland Water Transport Corporation</a>: Launch/ferry routes from Sadarghat terminal</li>
+          <li><a href="https://www.visitbangladesh.gov.bd" style="color: #006a4e;" rel="noopener">Visit Bangladesh – Bangladesh Tourism Board</a>: Tourism and travel information</li>
+        </ul>
+      </section>
+
+      <nav style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+        <p style="font-weight: bold; margin-bottom: 10px; color: #374151;">Pages:</p>
+        <a href="/" style="margin-right: 20px; color: #006a4e; text-decoration: underline;">Home</a>
+        <a href="/intercity" style="margin-right: 20px; color: #006a4e; text-decoration: underline;">Intercity Routes</a>
+        <a href="/about" style="margin-right: 20px; color: #006a4e; text-decoration: underline;">About KoyJabo</a>
+        <a href="/contact" style="margin-right: 20px; color: #006a4e; text-decoration: underline;">Contact</a>
+        <a href="/privacy" style="margin-right: 20px; color: #006a4e; text-decoration: underline;">Privacy Policy</a>
+        <a href="/terms" style="margin-right: 20px; color: #006a4e; text-decoration: underline;">Terms of Service</a>
+        <a href="/blog" style="margin-right: 20px; color: #006a4e; text-decoration: underline;">Blog</a>
+      </nav>
+    </div>
+  </noscript>
+
+
+
+  <!-- Cloudflare Turnstile — loaded only when auth pages are visited -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+  <!-- Google AdSense — loaded after app to avoid blocking LCP -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8425219156685369"
+    crossorigin="anonymous"></script>
+  <script>
+    // Enable Auto Ads — lets AdSense place additional ads beyond manual slots,
+    // boosting ads-per-impression and coverage. Harmless if dashboard has Auto
+    // Ads disabled.
+    (window.adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-8425219156685369",
+      enable_page_level_ads: true
+    });
+  </script>
+
+  <!-- ─── Ezoic Leap (SPA mode) ──────────────────────────────────────────────
+       SETUP: Sign up at https://ezoic.com → Sites → Add Site → choose "Ezoic Leap (JS)"
+       Replace YOUR_EZOIC_SITE_ID below with your numeric site ID from the Ezoic dashboard.
+       ──────────────────────────────────────────────────────────────────────── -->
+  <script async src="//www.ezojs.com/ezoic/sa.min.js"></script>
+  <script>
+    window.ezstandalone = window.ezstandalone || {};
+    ezstandalone.cmd = ezstandalone.cmd || [];
+    // SPA: called by router on each page change (see src/redesign/KoyJaboApp.tsx)
+    window.__ezInitAds = function () {
+      ezstandalone.cmd.push(function () {
+        if (ezstandalone.enabled) {
+          ezstandalone.destroyAll();
+          ezstandalone.display();
+        } else {
+          // Placeholder IDs — create these in Ezoic dashboard → Ad Tester
+          ezstandalone.define(101, 102, 103, 104, 105);
+          ezstandalone.enable();
+          ezstandalone.display();
+        }
+      });
+    };
+    window.__ezInitAds();
+  </script>
+
+  <!-- Daamdekhi AEO Tag — tracks AI crawler visits, LLM citations, and assistant referrals -->
+  <!-- Site ID: MVZPpZlR | https://aeo.daamdekhi.com -->
+  <script async src="https://shop.daamdekhi.com/aeo/tag.js" data-site="MVZPpZlR"></script>
+  <img src="https://shop.daamdekhi.com/aeo/tag/collect.gif?site=MVZPpZlR" height="1" width="1" alt="" style="position:absolute;left:-9999px;" referrerpolicy="no-referrer" />
+
+</body>
+
+</html>

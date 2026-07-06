@@ -1,0 +1,50 @@
+name: Send Announcement Email
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_email:
+        description: 'TEST MODE — leave blank to send to ALL users, or enter one address to test first'
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  send:
+    name: Send Announcement
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout auth scripts (private)
+        uses: actions/checkout@v4
+        with:
+          repository: mejbaurbahar/koyjabo
+          token: ${{ secrets.DATA_GITHUB_TOKEN }}
+          path: _auth
+          sparse-checkout: .github/scripts
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        working-directory: _auth/.github/scripts
+        run: npm install --production
+
+      - name: Send announcement email(s)
+        working-directory: _auth/.github/scripts
+        env:
+          DATA_GITHUB_TOKEN: ${{ secrets.DATA_GITHUB_TOKEN || secrets.DEPLOY_TOKEN }}
+          AUTH_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SMTP_EMAIL:        ${{ secrets.SMTP_EMAIL }}
+          SMTP_PASSWORD:     ${{ secrets.SMTP_PASSWORD }}
+          ENCRYPTION_KEY:    ${{ secrets.ENCRYPTION_KEY }}
+          APP_URL:           ${{ secrets.APP_URL }}
+          INPUT_TEST_EMAIL:  ${{ github.event.inputs.test_email }}
+        run: node send-announcement.js

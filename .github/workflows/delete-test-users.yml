@@ -1,0 +1,38 @@
+name: Delete Test Users (Admin)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  delete-users:
+    name: Delete Test Accounts
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout auth scripts (private)
+        uses: actions/checkout@v4
+        with:
+          repository: mejbaurbahar/koyjabo
+          token: ${{ secrets.DATA_GITHUB_TOKEN }}
+          path: _auth
+          sparse-checkout: .github/scripts
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        working-directory: _auth/.github/scripts
+        run: npm install --production
+
+      - name: Run delete script
+        working-directory: _auth/.github/scripts
+        env:
+          DATA_GITHUB_TOKEN: ${{ secrets.DATA_GITHUB_TOKEN }}
+        run: node delete-users.js

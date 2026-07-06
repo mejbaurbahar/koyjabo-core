@@ -1,0 +1,138 @@
+name: Build & Deploy to koyjabo.com
+
+# Runs from koyjabo-core (private repo) → deploys built dist to Dhaka-Commute.
+# Triggering fresh run to verify surgical sync.
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write  # needed for GITHUB_TOKEN self-push (Dhaka-Commute → itself)
+
+jobs:
+  build-and-deploy:
+    name: Build → Push to Dhaka-Commute
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout koyjabo-core
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+        env:
+          NODE_ENV: production
+          GENERATE_SOURCEMAP: false
+          VITE_API_PROXY: https://koyjabo-auth-proxy.fagun115946.workers.dev
+          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
+          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
+          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
+          VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
+          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
+          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
+          VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}
+
+      - name: Verify build output
+        run: |
+          if [ ! -f dist/index.html ]; then
+            echo "ERROR: dist/index.html not found. Build may have failed."
+            exit 1
+          fi
+          echo "Build OK — $(find dist -type f | wc -l) files"
+
+      - name: Sanitize dist — remove private data and duplicate files
+        run: |
+          # bd-locations.json is served via private proxy — must never be a static file
+          rm -f dist/bd-locations.json
+          # Intercity standalone JSON data dumps — not needed; data is bundled in JS chunks
+          rm -f "dist/intercity/bangladesh-intercity-routes.json"
+          rm -f "dist/intercity/comprehensive-bangladesh-intercity-routes.json"
+          rm -rf dist/intercity/data/
+          # Root-level intercity data mirror (should not be deployed)
+          rm -rf dist/data/
+          # Remove duplicate root-level JS/CSS in intercity/ (exact copies of intercity/assets/)
+          find dist/intercity -maxdepth 1 -name "index-*.js"            -delete 2>/dev/null || true
+          find dist/intercity -maxdepth 1 -name "index-*.css"           -delete 2>/dev/null || true
+          find dist/intercity -maxdepth 1 -name "leaflet-*.js"          -delete 2>/dev/null || true
+          find dist/intercity -maxdepth 1 -name "vendor-*.js"           -delete 2>/dev/null || true
+          find dist/intercity -maxdepth 1 -name "workbox-window*.js"    -delete 2>/dev/null || true
+          echo "Sanitized. Remaining files: $(find dist -type f | wc -l)"
+
+      - name: Clone Dhaka-Commute gh-pages branch (deploy target)
+        env:
+          DATA_GITHUB_TOKEN: ${{ secrets.DATA_GITHUB_TOKEN }}
+        run: |
+          git clone \
+            --branch gh-pages \
+            "https://x-access-token:${DATA_GITHUB_TOKEN}@github.com/mejbaurbahar/Dhaka-Commute.git" \
+            deploy-repo
+
+      - name: Swap dist content (preserve workflows)
+        run: |
+          cd deploy-repo
+
+          # Remove all git-tracked files EXCEPT workflows
+          git ls-files | grep -v '^\.github/workflows/' | xargs rm -f 2>/dev/null || true
+
+          # Remove leftover empty directories (skip .git and .github/workflows)
+          find . \
+            -not -path './.git*' \
+            -not -path './.github/workflows*' \
+            -type d -empty -delete 2>/dev/null || true
+
+          # Copy new build output
+          cp -r ../dist/. .
+
+          # Ensure domain and Jekyll bypass are always present
+          echo "koyjabo.com" > CNAME
+          touch .nojekyll
+
+          # Ensure Pages deployment workflow is always present
+          mkdir -p .github/workflows
+          cp "$GITHUB_WORKSPACE/.github/deploy-assets/pages.yml" .github/workflows/pages.yml
+
+      - name: Commit and push to gh-pages
+        env:
+          DATA_GITHUB_TOKEN: ${{ secrets.DATA_GITHUB_TOKEN }}
+        run: |
+          cd deploy-repo
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin \
+            "https://x-access-token:${DATA_GITHUB_TOKEN}@github.com/mejbaurbahar/Dhaka-Commute.git"
+
+          git add -A
+
+          # Skip commit if nothing changed
+          if git diff --cached --quiet; then
+            echo "Nothing changed — skipping deploy"
+            exit 0
+          fi
+
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          git commit -m "deploy: $(date -u '+%Y-%m-%d %H:%M UTC') | core@${SHORT_SHA}"
+          
+          # Use force push to ensure history matches and increase buffer for large assets
+          git config http.postBuffer 524288000
+          git push origin HEAD:gh-pages --force
+
+      - name: Deploy summary
+        if: success()
+        run: |
+          echo "### Deployed to koyjabo.com" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Time: $(date -u '+%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "- URL: https://koyjabo.com" >> $GITHUB_STEP_SUMMARY
